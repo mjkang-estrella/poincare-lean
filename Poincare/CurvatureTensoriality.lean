@@ -257,4 +257,97 @@ theorem curvatureOp_add_field
   simp only [ContinuousLinearMap.add_apply]
   module
 
+/-- The curvature operator distributes over finite sums of `C²` fields. -/
+theorem curvatureOp_finsetSum_field {ι : Type*} [DecidableEq ι]
+    {X Y : Π y : M, TangentSpace I y} {x : M} (s : Finset ι)
+    (Z : ι → Π y : M, TangentSpace I y)
+    (hZ : ∀ i ∈ s, CMDiffAt 2 (T% (Z i)) x)
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x) :
+    curvatureOp cov X Y (fun y ↦ ∑ i ∈ s, Z i y) x =
+      ∑ i ∈ s, curvatureOp cov X Y (Z i) x := by
+  induction s using Finset.induction with
+  | empty => simpa using curvatureOp_zero_field cov
+  | insert a s ha ih =>
+    have hsum : (fun y ↦ ∑ i ∈ insert a s, Z i y) =
+        Z a + fun y ↦ ∑ i ∈ s, Z i y := by
+      funext y
+      simp [Finset.sum_insert ha]
+    rw [hsum, curvatureOp_add_field cov
+      (hZ a (Finset.mem_insert_self a s))
+      (ContMDiffAt.sum_section fun i hi ↦ hZ i (Finset.mem_insert_of_mem hi))
+      hX hY,
+      Finset.sum_insert ha, ih fun i hi ↦ hZ i (Finset.mem_insert_of_mem hi)]
+
+open Trivialization in
+/--
+**Value-dependence of the curvature in the field slot**: a `C²` field
+vanishing at `x` has vanishing curvature at `x`.  Consequently `R(X,Y)Z|ₓ`
+depends only on `Z x` among `C²` fields.
+-/
+theorem curvatureOp_eq_zero_of_value_eq_zero
+    {X Y D : Π y : M, TangentSpace I y} {x : M}
+    (hD : CMDiffAt 2 (T% D) x) (hDx : D x = 0)
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x) :
+    curvatureOp cov X Y D x = 0 := by
+  classical
+  set e := trivializationAt E (TangentSpace I) x with he
+  set b := Module.finBasis ℝ E with hb
+  have hxe : x ∈ e.baseSet := FiberBundle.mem_baseSet_trivializationAt' x
+  have hev := e.eventually_eq_localFrame_sum_coeff_smul (I := I) b
+    (s := D) hxe
+  have hframe : ∀ i, CMDiffAt 2 (T% (e.localFrame b i)) x := fun i ↦
+    contMDiffAt_localFrame_of_mem (I := I) (n := 2) (e := e) (b := b) i hxe
+  have hcoeff : ∀ i, CMDiffAt 2
+      (fun y ↦ e.localFrame_coeff I b i y (D y)) x := fun i ↦
+    (contMDiffAt_iff_localFrame_coeff (I := I) (e := e) (b := b) hxe).mp hD i
+  set Zs : _ → Π y : M, TangentSpace I y := fun i ↦
+    (fun y ↦ e.localFrame_coeff I b i y (D y)) • e.localFrame b i with hZs
+  have hsummand : ∀ i, CMDiffAt 2 (T% (Zs i)) x := fun i ↦
+    (hcoeff i).smul_section (hframe i)
+  have hSd : CMDiffAt 2 (T% (fun y ↦ ∑ i, Zs i y)) x :=
+    ContMDiffAt.sum_section fun i _ ↦ hsummand i
+  have h1 : curvatureOp cov X Y D x =
+      curvatureOp cov X Y (fun y ↦ ∑ i, Zs i y) x := by
+    apply curvatureOp_congr_of_eventuallyEq cov hD hSd hX hY
+    filter_upwards [hev] with y hy
+    simpa [hZs] using hy
+  rw [h1, curvatureOp_finsetSum_field cov Finset.univ Zs
+    (fun i _ ↦ hsummand i) hX hY]
+  have hzero : ∀ i, curvatureOp cov X Y (Zs i) x = 0 := by
+    intro i
+    rw [hZs]
+    rw [curvatureOp_smul_field cov (hcoeff i) (hframe i) hX hY]
+    have hc0 : e.localFrame_coeff I b i x (D x) = 0 := by
+      rw [hDx]
+      exact map_zero _
+    rw [hc0, zero_smul]
+  simp [hzero]
+
+/--
+**The curvature depends only on the field value**: two `C²` fields agreeing
+at `x` have the same curvature there.  In particular the canonical Ricci
+form `ricciBilinearAt` is extension-independent.
+-/
+theorem curvatureOp_congr_of_value_eq
+    {X Y Z Z' : Π y : M, TangentSpace I y} {x : M}
+    (hZ : CMDiffAt 2 (T% Z) x) (hZ' : CMDiffAt 2 (T% Z') x)
+    (hZZ' : Z x = Z' x)
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x) :
+    curvatureOp cov X Y Z x = curvatureOp cov X Y Z' x := by
+  have hneg : CMDiffAt 2 (T% ((fun _ : M ↦ (-1 : ℝ)) • Z')) x :=
+    contMDiffAt_const.smul_section hZ'
+  have hD : CMDiffAt 2 (T% (Z + (fun _ : M ↦ (-1 : ℝ)) • Z')) x :=
+    hZ.add_section hneg
+  have hDx : (Z + (fun _ : M ↦ (-1 : ℝ)) • Z') x = 0 := by
+    simp [hZZ']
+  have h0 := curvatureOp_eq_zero_of_value_eq_zero cov hD hDx hX hY
+  rw [curvatureOp_add_field cov hZ hneg hX hY,
+    curvatureOp_smul_field cov contMDiffAt_const hZ' hX hY] at h0
+  have : curvatureOp cov X Y Z x - curvatureOp cov X Y Z' x = 0 := by
+    rw [show curvatureOp cov X Y Z x - curvatureOp cov X Y Z' x =
+      curvatureOp cov X Y Z x + (-1 : ℝ) • curvatureOp cov X Y Z' x by
+        module]
+    exact h0
+  exact sub_eq_zero.mp this
+
 end CovariantDerivative
