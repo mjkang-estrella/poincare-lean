@@ -174,4 +174,87 @@ theorem curvatureOp_smul_field {f : M → ℝ}
   rw [e4]
   module
 
+/-- The curvature operator vanishes on the zero field. -/
+theorem curvatureOp_zero_field
+    {X Y : Π y : M, TangentSpace I y} {x : M} :
+    curvatureOp cov X Y 0 x = 0 := by
+  have hcovD := cov.isCovariantDerivativeOnUniv
+  have h0 : cov (0 : Π y : M, TangentSpace I y) = 0 := by
+    ext1 y
+    exact hcovD.zero
+  rw [curvatureOp_apply]
+  simp [h0]
+  rw [show (fun y : M ↦ (0 : TangentSpace I y)) =
+    (0 : Π y : M, TangentSpace I y) from rfl, h0]
+  simp
+
+omit [I.Boundaryless] [CompleteSpace E] in
+/--
+**Additivity of the curvature operator in the field slot**:
+`R(X,Y)(Z + Z') = R(X,Y)Z + R(X,Y)Z'` pointwise for `Z, Z'` `C²` and
+`X, Y` differentiable at `x`.
+-/
+theorem curvatureOp_add_field
+    {X Y Z Z' : Π y : M, TangentSpace I y} {x : M}
+    (hZ : CMDiffAt 2 (T% Z) x) (hZ' : CMDiffAt 2 (T% Z') x)
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x) :
+    curvatureOp cov X Y (Z + Z') x =
+      curvatureOp cov X Y Z x + curvatureOp cov X Y Z' x := by
+  have hcovD := cov.isCovariantDerivativeOnUniv
+  have hZd : ∀ᶠ y in 𝓝 x, MDiffAt (T% Z) y := by
+    obtain ⟨v, hv, hZv⟩ :=
+      (contMDiffAt_iff_contMDiffOn_nhds (n := 2) (by norm_num)).mp hZ
+    filter_upwards [interior_mem_nhds.mpr hv] with y hy
+    exact (((hZv.mono interior_subset) y hy).contMDiffAt
+      (isOpen_interior.mem_nhds hy)).mdifferentiableAt two_ne_zero
+  have hZ'd : ∀ᶠ y in 𝓝 x, MDiffAt (T% Z') y := by
+    obtain ⟨v, hv, hZv⟩ :=
+      (contMDiffAt_iff_contMDiffOn_nhds (n := 2) (by norm_num)).mp hZ'
+    filter_upwards [interior_mem_nhds.mpr hv] with y hy
+    exact (((hZv.mono interior_subset) y hy).contMDiffAt
+      (isOpen_interior.mem_nhds hy)).mdifferentiableAt two_ne_zero
+  have hZx : MDiffAt (T% Z) x := hZ.mdifferentiableAt two_ne_zero
+  have hZ'x : MDiffAt (T% Z') x := hZ'.mdifferentiableAt two_ne_zero
+  have hZZ' : CMDiffAt 2 (T% (Z + Z')) x := hZ.add_section hZ'
+  have hsec : ∀ (W : Π y : M, TangentSpace I y),
+      (fun y ↦ cov (Z + Z') y (W y)) =ᶠ[𝓝 x]
+        fun y ↦ cov Z y (W y) + cov Z' y (W y) := by
+    intro W
+    filter_upwards [hZd, hZ'd] with y hZy hZ'y
+    rw [hcovD.add hZy hZ'y]
+    simp
+  set DY : Π y : M, TangentSpace I y := fun y ↦ cov Z y (Y y)
+  set DY' : Π y : M, TangentSpace I y := fun y ↦ cov Z' y (Y y)
+  set DX : Π y : M, TangentSpace I y := fun y ↦ cov Z y (X y)
+  set DX' : Π y : M, TangentSpace I y := fun y ↦ cov Z' y (X y)
+  have hDYd : MDiffAt (T% DY) x := mdiffAt_cov_section_of_contMDiffAt cov hZ hY
+  have hDY'd : MDiffAt (T% DY') x :=
+    mdiffAt_cov_section_of_contMDiffAt cov hZ' hY
+  have hDXd : MDiffAt (T% DX) x := mdiffAt_cov_section_of_contMDiffAt cov hZ hX
+  have hDX'd : MDiffAt (T% DX') x :=
+    mdiffAt_cov_section_of_contMDiffAt cov hZ' hX
+  have hrepl : ∀ (W : Π y : M, TangentSpace I y)
+      (DW DW' : Π y : M, TangentSpace I y),
+      DW = (fun y ↦ cov Z y (W y)) → DW' = (fun y ↦ cov Z' y (W y)) →
+      MDiffAt (T% (fun y ↦ cov (Z + Z') y (W y))) x →
+      MDiffAt (T% (DW + DW')) x →
+      cov (fun y ↦ cov (Z + Z') y (W y)) x = cov (DW + DW') x := by
+    intro W DW DW' hDWdef hDW'def hAW hA'W
+    apply hcovD.congr_of_eventuallyEq hAW hA'W univ_mem
+    filter_upwards [hsec W] with y hy
+    rw [hy, hDWdef, hDW'def]
+    simp
+  have e1 := hrepl Y DY DY' rfl rfl
+    (mdiffAt_cov_section_of_contMDiffAt cov hZZ' hY)
+    (mdifferentiableAt_add_section hDYd hDY'd)
+  have e2 := hrepl X DX DX' rfl rfl
+    (mdiffAt_cov_section_of_contMDiffAt cov hZZ' hX)
+    (mdifferentiableAt_add_section hDXd hDX'd)
+  rw [hcovD.add hDYd hDY'd] at e1
+  rw [hcovD.add hDXd hDX'd] at e2
+  have e3 : cov (Z + Z') x = cov Z x + cov Z' x := hcovD.add hZx hZ'x
+  rw [curvatureOp_apply, curvatureOp_apply, curvatureOp_apply, e1, e2, e3]
+  simp only [ContinuousLinearMap.add_apply]
+  module
+
 end CovariantDerivative
