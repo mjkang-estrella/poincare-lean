@@ -11,6 +11,7 @@ cross terms cancel pairwise, and the second-order defect
 
 import Poincare.LocalConnectionRegularity
 import Poincare.ChartIdentification
+import Poincare.LeviCivitaUniqueness
 
 noncomputable section
 
@@ -452,5 +453,145 @@ theorem ricciBilinearAt_smul_right (x : M) (c : ℝ) (u w : TangentSpace I x) :
   unfold curvatureTensorAt
   rw [TensorialAt.mkHom₂_apply_eq_extend, TensorialAt.mkHom₂_apply_eq_extend]
   exact curvatureOp_extend_smul cov c w v u
+
+/-- A `C²`-at-`x` field is differentiable near `x`. -/
+private theorem eventually_mdiffAt_of_contMDiffAt
+    {Z : Π y : M, TangentSpace I y} {x : M} (hZ : CMDiffAt 2 (T% Z) x) :
+    ∀ᶠ y in 𝓝 x, MDiffAt (T% Z) y := by
+  obtain ⟨v, hv, hZv⟩ :=
+    (contMDiffAt_iff_contMDiffOn_nhds (n := 2) (by norm_num)).mp hZ
+  filter_upwards [interior_mem_nhds.mpr hv] with y hy
+  exact (((hZv.mono interior_subset) y hy).contMDiffAt
+    (isOpen_interior.mem_nhds hy)).mdifferentiableAt two_ne_zero
+
+/--
+**First Bianchi identity, pointwise form**: for a torsion-free connection
+and fields `C²` at `x`, the cyclic curvature sum vanishes at `x`.
+-/
+theorem bianchi_first_at (htf : ∀ y : M, TorsionFreeAt cov y)
+    {X Y Z : Π y : M, TangentSpace I y} {x : M}
+    (hX : CMDiffAt 2 (T% X) x) (hY : CMDiffAt 2 (T% Y) x)
+    (hZ : CMDiffAt 2 (T% Z) x) :
+    curvatureOp cov X Y Z x + curvatureOp cov Y Z X x
+      + curvatureOp cov Z X Y x = 0 := by
+  haveI : IsManifold I 3 M := IsManifold.of_le (n := ∞) (by
+    rw [show (3 : ℕ∞ω) = ((3 : ℕ∞) : ℕ∞ω) from rfl,
+      show (∞ : ℕ∞ω) = ((⊤ : ℕ∞) : ℕ∞ω) from rfl]
+    exact WithTop.coe_le_coe.mpr le_top)
+  haveI : IsManifold I (minSmoothness ℝ 2) M := by
+    rw [minSmoothness_of_isRCLikeNormedField]
+    infer_instance
+  haveI : IsManifold I (minSmoothness ℝ 3) M := by
+    rw [minSmoothness_of_isRCLikeNormedField]
+    infer_instance
+  haveI : IsManifold I (((2 : ℕ∞) : ℕ∞ω) + 1) M := by
+    exact_mod_cast (inferInstance : IsManifold I 3 M)
+  have hcovD := cov.isCovariantDerivativeOnUniv
+  have hXd := eventually_mdiffAt_of_contMDiffAt hX
+  have hYd := eventually_mdiffAt_of_contMDiffAt hY
+  have hZd := eventually_mdiffAt_of_contMDiffAt hZ
+  have hX1 : MDiffAt (T% X) x := hX.mdifferentiableAt two_ne_zero
+  have hY1 : MDiffAt (T% Y) x := hY.mdifferentiableAt two_ne_zero
+  have hZ1 : MDiffAt (T% Z) x := hZ.mdifferentiableAt two_ne_zero
+  -- Brackets are differentiable at `x`.
+  have hbr : ∀ {A B : Π y : M, TangentSpace I y},
+      CMDiffAt 2 (T% A) x → CMDiffAt 2 (T% B) x →
+        MDiffAt (T% (mlieBracket I A B)) x := by
+    intro A B hA hB
+    have h2 : minSmoothness ℝ ((1 : ℕ∞) + 1) ≤ ((2 : ℕ∞) : ℕ∞ω) := by
+      simp
+      norm_num
+    exact (ContMDiffAt.mlieBracket_vectorField (m := 1) (n := 2)
+      hA hB h2).mdifferentiableAt one_ne_zero
+  -- Direction-grouped torsion conversion, localized.
+  have egrp : ∀ (A B W : Π y : M, TangentSpace I y),
+      CMDiffAt 2 (T% A) x → CMDiffAt 2 (T% B) x → MDiffAt (T% W) x →
+      cov (fun y ↦ cov B y (A y)) x (W x)
+        - cov (fun y ↦ cov A y (B y)) x (W x)
+        = cov (mlieBracket I A B) x (W x) := by
+    intro A B W hA hB hW
+    have hDBA := mdiffAt_cov_section_of_contMDiffAt cov hB
+      (hA.mdifferentiableAt two_ne_zero)
+    have hDAB := mdiffAt_cov_section_of_contMDiffAt cov hA
+      (hB.mdifferentiableAt two_ne_zero)
+    have hsub : cov ((fun y ↦ cov B y (A y)) - fun y ↦ cov A y (B y)) x =
+        cov (fun y ↦ cov B y (A y)) x - cov (fun y ↦ cov A y (B y)) x := by
+      have hns : -(fun y ↦ cov A y (B y)) =
+          (-1 : ℝ) • fun y ↦ cov A y (B y) :=
+        (neg_one_smul ℝ _).symm
+      have hd : MDiffAt (T% (-(fun y ↦ cov A y (B y)))) x := by
+        rw [hns]
+        exact mdifferentiableAt_const.smul_section hDAB
+      have hneg : cov (-(fun y ↦ cov A y (B y))) x =
+          - cov (fun y ↦ cov A y (B y)) x := by
+        rw [hns, hcovD.smul_const (-1 : ℝ) hDAB]
+        simp
+      calc cov ((fun y ↦ cov B y (A y)) - fun y ↦ cov A y (B y)) x
+          = cov ((fun y ↦ cov B y (A y)) + -(fun y ↦ cov A y (B y))) x := by
+            rw [sub_eq_add_neg]
+        _ = cov (fun y ↦ cov B y (A y)) x
+            + cov (-(fun y ↦ cov A y (B y))) x := hcovD.add hDBA hd
+        _ = _ := by rw [hneg, sub_eq_add_neg]
+    have hcongr : cov ((fun y ↦ cov B y (A y)) - fun y ↦ cov A y (B y)) x =
+        cov (mlieBracket I A B) x := by
+      apply hcovD.congr_of_eventuallyEq
+        (mdifferentiableAt_sub_section hDBA hDAB) (hbr hA hB) univ_mem
+      filter_upwards [eventually_mdiffAt_of_contMDiffAt hA,
+        eventually_mdiffAt_of_contMDiffAt hB] with y hAy hBy
+      simpa using htf y hAy hBy
+    rw [← ContinuousLinearMap.sub_apply, ← hsub, hcongr]
+  have e1 := egrp Y Z X hY hZ hX1
+  have e2 := egrp Z X Y hZ hX hY1
+  have e3 := egrp X Y Z hX hY hZ1
+  -- Pointwise torsion against brackets.
+  have t1 : cov (mlieBracket I Y Z) x (X x) - cov X x (mlieBracket I Y Z x)
+      = mlieBracket I X (mlieBracket I Y Z) x := htf x hX1 (hbr hY hZ)
+  have t2 : cov (mlieBracket I Z X) x (Y x) - cov Y x (mlieBracket I Z X x)
+      = mlieBracket I Y (mlieBracket I Z X) x := htf x hY1 (hbr hZ hX)
+  have t3 : cov (mlieBracket I X Y) x (Z x) - cov Z x (mlieBracket I X Y x)
+      = mlieBracket I Z (mlieBracket I X Y) x := htf x hZ1 (hbr hX hY)
+  -- Cyclic Jacobi.
+  have mX : CMDiffAt (minSmoothness ℝ 2) (T% X) x := by simpa using hX
+  have mY : CMDiffAt (minSmoothness ℝ 2) (T% Y) x := by simpa using hY
+  have mZ : CMDiffAt (minSmoothness ℝ 2) (T% Z) x := by simpa using hZ
+  have l1 := leibniz_identity_mlieBracket_apply (x := x) mX mY mZ
+  have l2 := leibniz_identity_mlieBracket_apply (x := x) mY mZ mX
+  have l3 := leibniz_identity_mlieBracket_apply (x := x) mZ mX mY
+  have l4 := leibniz_identity_mlieBracket_apply (x := x) mY mX mZ
+  have l5 := leibniz_identity_mlieBracket_apply (x := x) mZ mY mX
+  have l6 := leibniz_identity_mlieBracket_apply (x := x) mX mZ mY
+  have s1 : mlieBracket I (mlieBracket I X Y) Z x
+      = - mlieBracket I Z (mlieBracket I X Y) x := mlieBracket_swap_apply
+  have s2 : mlieBracket I (mlieBracket I Y Z) X x
+      = - mlieBracket I X (mlieBracket I Y Z) x := mlieBracket_swap_apply
+  have s3 : mlieBracket I (mlieBracket I Z X) Y x
+      = - mlieBracket I Y (mlieBracket I Z X) x := mlieBracket_swap_apply
+  have s4 : mlieBracket I (mlieBracket I Y X) Z x
+      = - mlieBracket I Z (mlieBracket I Y X) x := mlieBracket_swap_apply
+  have s5 : mlieBracket I (mlieBracket I Z Y) X x
+      = - mlieBracket I X (mlieBracket I Z Y) x := mlieBracket_swap_apply
+  have s6 : mlieBracket I (mlieBracket I X Z) Y x
+      = - mlieBracket I Y (mlieBracket I X Z) x := mlieBracket_swap_apply
+  have h1 : (2 : ℝ) • (mlieBracket I X (mlieBracket I Y Z) x
+      + mlieBracket I Y (mlieBracket I Z X) x
+      + mlieBracket I Z (mlieBracket I X Y) x)
+      = mlieBracket I Y (mlieBracket I X Z) x
+        + mlieBracket I Z (mlieBracket I Y X) x
+        + mlieBracket I X (mlieBracket I Z Y) x := by
+    linear_combination (norm := module) l1 + l2 + l3 + s1 + s2 + s3
+  have h2 : (2 : ℝ) • (mlieBracket I Y (mlieBracket I X Z) x
+      + mlieBracket I Z (mlieBracket I Y X) x
+      + mlieBracket I X (mlieBracket I Z Y) x)
+      = mlieBracket I X (mlieBracket I Y Z) x
+        + mlieBracket I Y (mlieBracket I Z X) x
+        + mlieBracket I Z (mlieBracket I X Y) x := by
+    linear_combination (norm := module) l4 + l5 + l6 + s4 + s5 + s6
+  have jac : mlieBracket I X (mlieBracket I Y Z) x
+      + mlieBracket I Y (mlieBracket I Z X) x
+      + mlieBracket I Z (mlieBracket I X Y) x = 0 := by
+    linear_combination (norm := module)
+      ((1 : ℝ)/3) • ((2 : ℝ) • h1 + h2)
+  simp only [curvatureOp_apply]
+  linear_combination (norm := module) e1 + e2 + e3 + t1 + t2 + t3 + jac
 
 end CovariantDerivative
