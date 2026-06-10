@@ -113,4 +113,60 @@ theorem ricciBilinearAt_def (x : M) (u w : TangentSpace I x) :
       ricciTraceAt cov (derivRegularAt_extend cov w) u :=
   rfl
 
+/--
+**Germ locality of the curvature operator in its field slot**: two fields
+that are `C²` at `x` and agree near `x` have the same curvature at `x`.
+-/
+theorem curvatureOp_congr_of_eventuallyEq
+    {Z Z' X Y : Π y : M, TangentSpace I y} {x : M}
+    (hZ : CMDiffAt 2 (T% Z) x) (hZ' : CMDiffAt 2 (T% Z') x)
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x)
+    (hZZ' : Z =ᶠ[𝓝 x] Z') :
+    curvatureOp cov X Y Z x = curvatureOp cov X Y Z' x := by
+  -- Neighbourhoods of `C²` regularity for both fields.
+  obtain ⟨v, hv, hZv⟩ := (contMDiffAt_iff_contMDiffOn_nhds (by norm_num)).mp hZ
+  obtain ⟨v', hv', hZv'⟩ :=
+    (contMDiffAt_iff_contMDiffOn_nhds (by norm_num)).mp hZ'
+  -- Pointwise equality of `cov Z` and `cov Z'` near `x`.
+  have hcov_ev : ∀ᶠ y in 𝓝 x, cov Z y = cov Z' y := by
+    filter_upwards [eventually_mem_nhds_iff.mpr hv,
+      eventually_mem_nhds_iff.mpr hv', hZZ'.eventually_nhds] with y hyv hyv' hyZ
+    exact cov.isCovariantDerivativeOnUniv.congr_of_eventuallyEq
+      ((hZv.contMDiffAt hyv).mdifferentiableAt two_ne_zero)
+      ((hZv'.contMDiffAt hyv').mdifferentiableAt two_ne_zero)
+      univ_mem hyZ
+  have hcovx : cov Z x = cov Z' x :=
+    (hcov_ev.self_of_nhds)
+  -- The two inner sections agree near `x`, in both direction slots.
+  have hinner : ∀ (W : Π y : M, TangentSpace I y),
+      (fun y ↦ cov Z y (W y)) =ᶠ[𝓝 x] fun y ↦ cov Z' y (W y) := by
+    intro W
+    filter_upwards [hcov_ev] with y hy
+    rw [hy]
+  -- Outer covariant derivatives agree at `x` by germ locality, using the
+  -- local regularity of both inner sections.
+  have houter : ∀ (W : Π y : M, TangentSpace I y), MDiffAt (T% W) x →
+      cov (fun y ↦ cov Z y (W y)) x = cov (fun y ↦ cov Z' y (W y)) x := by
+    intro W hW
+    exact cov.isCovariantDerivativeOnUniv.congr_of_eventuallyEq
+      (mdiffAt_cov_section_of_contMDiffAt cov hZ hW)
+      (mdiffAt_cov_section_of_contMDiffAt cov hZ' hW)
+      univ_mem (hinner W)
+  rw [curvatureOp_apply, curvatureOp_apply, houter Y hY, houter X hX, hcovx]
+
+/--
+Germ locality of the Ricci trace: fields that are `C²` at `x` and agree near
+`x` define the same Ricci values through the pointwise curvature tensor.
+-/
+theorem curvatureTensorAt_congr_of_eventuallyEq [CompleteSpace E]
+    {Z Z' : Π y : M, TangentSpace I y} {x : M}
+    (hZ : CMDiffAt 2 (T% Z) x) (hZ' : CMDiffAt 2 (T% Z') x)
+    (hreg : DerivRegularAt cov Z x) (hreg' : DerivRegularAt cov Z' x)
+    (hZZ' : Z =ᶠ[𝓝 x] Z') (v w : TangentSpace I x) :
+    curvatureTensorAt cov hreg v w = curvatureTensorAt cov hreg' v w := by
+  unfold curvatureTensorAt
+  rw [TensorialAt.mkHom₂_apply_eq_extend, TensorialAt.mkHom₂_apply_eq_extend]
+  exact curvatureOp_congr_of_eventuallyEq cov hZ hZ'
+    (mdifferentiableAt_extend ..) (mdifferentiableAt_extend ..) hZZ'
+
 end CovariantDerivative
