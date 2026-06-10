@@ -390,7 +390,7 @@ theorem ricciBilinearAt_smul_left (x : M) (c : ℝ) (u w : TangentSpace I x) :
 /--
 Curvature against extensions is additive in the extended value.
 -/
-private theorem curvatureOp_extend_add
+theorem curvatureOp_extend_add
     {x : M} (w w' v u : TangentSpace I x) :
     curvatureOp cov (extend E v) (extend E u) (extend E (w + w')) x =
       curvatureOp cov (extend E v) (extend E u) (extend E w) x
@@ -411,7 +411,7 @@ private theorem curvatureOp_extend_add
 /--
 Curvature against extensions is homogeneous in the extended value.
 -/
-private theorem curvatureOp_extend_smul
+theorem curvatureOp_extend_smul
     {x : M} (c : ℝ) (w v u : TangentSpace I x) :
     curvatureOp cov (extend E v) (extend E u) (extend E (c • w)) x =
       c • curvatureOp cov (extend E v) (extend E u) (extend E w) x := by
@@ -593,5 +593,67 @@ theorem bianchi_first_at (htf : ∀ y : M, TorsionFreeAt cov y)
       ((1 : ℝ)/3) • ((2 : ℝ) • h1 + h2)
   simp only [curvatureOp_apply]
   linear_combination (norm := module) e1 + e2 + e3 + t1 + t2 + t3 + jac
+
+/-! ## The Ricci antisymmetry identity -/
+
+/--
+The pair-curvature endomorphism `v ↦ R(u, w) v` at `x`, defined through
+canonical extensions; linear by field-slot tensoriality.
+-/
+noncomputable def pairCurvatureEndAt (x : M) (u w : TangentSpace I x) :
+    TangentSpace I x →ₗ[ℝ] TangentSpace I x where
+  toFun v := curvatureOp cov (extend E u) (extend E w) (extend E v) x
+  map_add' v v' := curvatureOp_extend_add cov v v' u w
+  map_smul' c v := curvatureOp_extend_smul cov c v u w
+
+/--
+**The Ricci antisymmetry identity**: for a torsion-free connection, the
+antisymmetric part of the Ricci tensor is minus the trace of the
+pair-curvature operator.  (For Levi-Civita connections that trace vanishes
+by metric antisymmetry, giving symmetry of the Ricci tensor.)
+-/
+theorem ricciBilinearAt_sub_swap (htf : ∀ y : M, TorsionFreeAt cov y)
+    (x : M) (u w : TangentSpace I x) :
+    ricciBilinearAt cov x u w - ricciBilinearAt cov x w u =
+      - LinearMap.trace ℝ (TangentSpace I x)
+          (pairCurvatureEndAt cov x u w) := by
+  have hABC : curvatureEndAt cov (derivRegularAt_extend cov w) u
+      + pairCurvatureEndAt cov x u w
+      - curvatureEndAt cov (derivRegularAt_extend cov u) w = 0 := by
+    apply LinearMap.ext
+    intro v
+    have hb := bianchi_first_at cov htf
+      (contMDiffAt_extend' (k := 2) I E v)
+      (contMDiffAt_extend' (k := 2) I E u)
+      (contMDiffAt_extend' (k := 2) I E w)
+    have hA : curvatureEndAt cov (derivRegularAt_extend cov w) u v =
+        curvatureOp cov (extend E v) (extend E u) (extend E w) x := by
+      rw [curvatureEndAt_apply]
+      unfold curvatureTensorAt
+      rw [TensorialAt.mkHom₂_apply_eq_extend]
+    have hC : curvatureEndAt cov (derivRegularAt_extend cov u) w v =
+        curvatureOp cov (extend E v) (extend E w) (extend E u) x := by
+      rw [curvatureEndAt_apply]
+      unfold curvatureTensorAt
+      rw [TensorialAt.mkHom₂_apply_eq_extend]
+    have hC' : curvatureOp cov (extend E w) (extend E v) (extend E u) x =
+        - curvatureOp cov (extend E v) (extend E w) (extend E u) x :=
+      curvatureOp_antisymm_apply cov _ _ _ x
+    simp only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.zero_apply,
+      hA, hC]
+    have hB : pairCurvatureEndAt cov x u w v =
+        curvatureOp cov (extend E u) (extend E w) (extend E v) x := rfl
+    rw [hB]
+    linear_combination (norm := module) hb - hC'
+  have htr := congrArg (LinearMap.trace ℝ (TangentSpace I x)) hABC
+  simp only [map_add, map_sub, map_zero] at htr
+  have hA : LinearMap.trace ℝ (TangentSpace I x)
+      (curvatureEndAt cov (derivRegularAt_extend cov w) u) =
+      ricciBilinearAt cov x u w := rfl
+  have hC : LinearMap.trace ℝ (TangentSpace I x)
+      (curvatureEndAt cov (derivRegularAt_extend cov u) w) =
+      ricciBilinearAt cov x w u := rfl
+  rw [hA, hC] at htr
+  linarith
 
 end CovariantDerivative
