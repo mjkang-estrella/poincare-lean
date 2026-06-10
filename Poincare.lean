@@ -6,6 +6,7 @@ import Poincare.RicciFlowEquation
 import Poincare.LocalConnectionRegularity
 import Poincare.ChartIdentification
 import Poincare.CurvatureTensoriality
+import Poincare.KoszulExistence
 import Poincare.Statement
 import Poincare.Milestones
 import Poincare.Assembly
