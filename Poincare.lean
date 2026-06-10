@@ -1,3 +1,4 @@
+import Poincare.RiemannCurvatureOperator
 import Poincare.Statement
 import Poincare.Milestones
 import Poincare.Assembly
