@@ -656,4 +656,84 @@ theorem ricciBilinearAt_sub_swap (htf : ∀ y : M, TorsionFreeAt cov y)
   rw [hA, hC] at htr
   linarith
 
+/-! ## Curvature pair antisymmetry from metric compatibility -/
+
+/-- Congruence for the exterior derivative of scalar functions. -/
+theorem extDerivFun_congr {f f' : M → ℝ} {x : M} (h : f =ᶠ[𝓝 x] f') :
+    extDerivFun (I := I) f x = extDerivFun (I := I) f' x := by
+  unfold extDerivFun
+  rw [h.mfderiv_eq, h.self_of_nhds]
+
+section PairAntisymm
+
+variable {g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ}
+
+/--
+**Pair antisymmetry of the curvature from metric compatibility**:
+`g(R(X,Y)Z, W) + g(Z, R(X,Y)W) = 0` whenever the connection is compatible
+with `g`, the fields `Z, W` are `C²`, `X, Y` are differentiable, the scalar
+pairing `g(Z,W)` is `C²`, and pairings of differentiable fields are
+differentiable (a regularity property of `g` to be discharged from bundle
+smoothness).
+-/
+theorem curvature_pair_antisymm_of_compat
+    (hc : ∀ y : M, MetricCompatibleAt g cov y)
+    {X Y Z W : Π y : M, TangentSpace I y} {x : M}
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x)
+    (hZ : CMDiffAt 2 (T% Z) x) (hW : CMDiffAt 2 (T% W) x)
+    (hF : CMDiffAt 2 (fun y ↦ g y (Z y) (W y)) x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x) :
+    g x (curvatureOp cov X Y Z x) (W x)
+      + g x (Z x) (curvatureOp cov X Y W x) = 0 := by
+  have hZd := eventually_mdiffAt_of_contMDiffAt (I := I) hZ
+  have hWd := eventually_mdiffAt_of_contMDiffAt (I := I) hW
+  have hZx : MDiffAt (T% Z) x := hZ.mdifferentiableAt two_ne_zero
+  have hWx : MDiffAt (T% W) x := hW.mdifferentiableAt two_ne_zero
+  -- The derivation identity for the pairing function.
+  have hder := extDerivFun_apply_mlieBracket hF hX hY
+  -- Eventual compatibility expansion of the iterated derivative.
+  have hGexp : ∀ (V : Π y : M, TangentSpace I y),
+      (fun y ↦ extDerivFun (fun y' ↦ g y' (Z y') (W y')) y (V y))
+        =ᶠ[𝓝 x] fun y ↦ g y (cov Z y (V y)) (W y)
+          + g y (Z y) (cov W y (V y)) := by
+    intro V
+    filter_upwards [hZd, hWd] with y hZy hWy
+    exact hc y hZy hWy (V y)
+  -- Differentiability of the inner covariant-derivative sections.
+  have hDZY := mdiffAt_cov_section_of_contMDiffAt cov hZ hY
+  have hDZX := mdiffAt_cov_section_of_contMDiffAt cov hZ hX
+  have hDWY := mdiffAt_cov_section_of_contMDiffAt cov hW hY
+  have hDWX := mdiffAt_cov_section_of_contMDiffAt cov hW hX
+  -- Expand one outer iterated derivative.
+  have houter : ∀ (V V₀ : Π y : M, TangentSpace I y),
+      MDiffAt (T% V) x → MDiffAt (T% V₀) x →
+      MDiffAt (T% (fun y ↦ cov Z y (V y))) x →
+      MDiffAt (T% (fun y ↦ cov W y (V y))) x →
+      extDerivFun (fun y ↦ extDerivFun (fun y' ↦ g y' (Z y') (W y')) y (V y))
+          x (V₀ x) =
+        g x (cov (fun y ↦ cov Z y (V y)) x (V₀ x)) (W x)
+          + g x ((fun y ↦ cov Z y (V y)) x) (cov W x (V₀ x))
+          + (g x (cov Z x (V₀ x)) ((fun y ↦ cov W y (V y)) x)
+            + g x (Z x) (cov (fun y ↦ cov W y (V y)) x (V₀ x))) := by
+    intro V V₀ hV hV₀ hDZV hDWV
+    rw [extDerivFun_congr (hGexp V)]
+    have hsplit :
+        (fun y ↦ g y (cov Z y (V y)) (W y) + g y (Z y) (cov W y (V y))) =
+          (fun y ↦ g y (cov Z y (V y)) (W y))
+            + fun y ↦ g y (Z y) (cov W y (V y)) := rfl
+    rw [hsplit, extDerivFun_add (hP _ _ hDZV hWx) (hP _ _ hZx hDWV)]
+    rw [ContinuousLinearMap.add_apply,
+      hc x hDZV hWx (V₀ x), hc x hZx hDWV (V₀ x)]
+  have e1 := houter Y X hY hX hDZY hDWY
+  have e2 := houter X Y hX hY hDZX hDWX
+  -- The bracket term via compatibility at `x`.
+  have e3 := hc x hZx hWx (mlieBracket I X Y x)
+  -- Assemble.
+  rw [curvatureOp_apply, curvatureOp_apply]
+  simp only [map_sub, ContinuousLinearMap.sub_apply]
+  linarith [hder, e1, e2, e3]
+
+end PairAntisymm
+
 end CovariantDerivative
