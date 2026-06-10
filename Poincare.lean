@@ -4,6 +4,7 @@ import Poincare.LeviCivitaUniqueness
 import Poincare.BianchiIdentity
 import Poincare.RicciFlowEquation
 import Poincare.LocalConnectionRegularity
+import Poincare.ChartIdentification
 import Poincare.Statement
 import Poincare.Milestones
 import Poincare.Assembly
