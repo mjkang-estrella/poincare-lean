@@ -16,6 +16,7 @@ and the curvature conditions used by the finite-extinction pillar.
 
 import Mathlib.Geometry.Manifold.VectorBundle.CovariantDerivative.Basic
 import Mathlib.Geometry.Manifold.VectorField.LieBracket
+import Mathlib.LinearAlgebra.Trace
 
 noncomputable section
 
@@ -197,6 +198,61 @@ theorem curvatureTensorAt_self (hreg : DerivRegularAt cov Z x)
   unfold curvatureTensorAt
   rw [TensorialAt.mkHom₂_apply_eq_extend, curvatureOp_self]
   rfl
+
+/-! ## Ricci trace
+
+With the curvature pointwise bilinear in `(X, Y)`, the Ricci curvature value
+`Ric(w, Z)(x) = tr (v ↦ R(v, w) Z|_x)` is well defined.  Linearity in `w` is
+inherited from the curvature tensor and the trace.
+-/
+
+/--
+The curvature endomorphism `v ↦ R(v, w) Z|_x` of the tangent space at `x`,
+as a linear map.
+-/
+noncomputable def curvatureEndAt (hreg : DerivRegularAt cov Z x)
+    (w : TangentSpace I x) :
+    TangentSpace I x →ₗ[𝕜] TangentSpace I x where
+  toFun v := curvatureTensorAt cov hreg v w
+  map_add' v v' := by simp
+  map_smul' c v := by simp
+
+theorem curvatureEndAt_apply (hreg : DerivRegularAt cov Z x)
+    (w v : TangentSpace I x) :
+    curvatureEndAt cov hreg w v = curvatureTensorAt cov hreg v w :=
+  rfl
+
+theorem curvatureEndAt_add (hreg : DerivRegularAt cov Z x)
+    (w w' : TangentSpace I x) :
+    curvatureEndAt cov hreg (w + w') =
+      curvatureEndAt cov hreg w + curvatureEndAt cov hreg w' :=
+  LinearMap.ext fun v ↦ map_add (curvatureTensorAt cov hreg v) w w'
+
+theorem curvatureEndAt_smul (hreg : DerivRegularAt cov Z x)
+    (c : 𝕜) (w : TangentSpace I x) :
+    curvatureEndAt cov hreg (c • w) = c • curvatureEndAt cov hreg w :=
+  LinearMap.ext fun v ↦ map_smul (curvatureTensorAt cov hreg v) c w
+
+/--
+The Ricci curvature value at `x` in direction `w` against the field `Z`:
+the trace of `v ↦ R(v, w) Z|_x` on the tangent space at `x`.
+-/
+noncomputable def ricciTraceAt (hreg : DerivRegularAt cov Z x)
+    (w : TangentSpace I x) : 𝕜 :=
+  LinearMap.trace 𝕜 (TangentSpace I x) (curvatureEndAt cov hreg w)
+
+theorem ricciTraceAt_add (hreg : DerivRegularAt cov Z x)
+    (w w' : TangentSpace I x) :
+    ricciTraceAt cov hreg (w + w') =
+      ricciTraceAt cov hreg w + ricciTraceAt cov hreg w' := by
+  unfold ricciTraceAt
+  rw [curvatureEndAt_add, map_add]
+
+theorem ricciTraceAt_smul (hreg : DerivRegularAt cov Z x)
+    (c : 𝕜) (w : TangentSpace I x) :
+    ricciTraceAt cov hreg (c • w) = c • ricciTraceAt cov hreg w := by
+  unfold ricciTraceAt
+  rw [curvatureEndAt_smul, map_smul]
 
 end Tensorial
 
