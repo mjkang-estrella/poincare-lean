@@ -112,4 +112,55 @@ theorem koszulRHS_smul_right {X Y Z : Π y : M, TangentSpace I y} {x : M}
     extDerivFun (I := I) f x (X x) * hgsymm (Y x) (Z x)
       + extDerivFun (I := I) f x (Y x) * hgsymm (X x) (Z x)
 
+/--
+**Additivity of the Koszul functional in the test field.**
+-/
+theorem koszulRHS_add_right {X Y Z Z' : Π y : M, TangentSpace I y} {x : M}
+    (hZ : MDiffAt (T% Z) x) (hZ' : MDiffAt (T% Z') x)
+    (hPYZ : MDiffAt (fun y ↦ g y (Y y) (Z y)) x)
+    (hPYZ' : MDiffAt (fun y ↦ g y (Y y) (Z' y)) x)
+    (hPXZ : MDiffAt (fun y ↦ g y (X y) (Z y)) x)
+    (hPXZ' : MDiffAt (fun y ↦ g y (X y) (Z' y)) x) :
+    koszulRHS g X Y (Z + Z') x =
+      koszulRHS g X Y Z x + koszulRHS g X Y Z' x := by
+  have hfun : ∀ (W : Π y : M, TangentSpace I y),
+      (fun y ↦ g y (W y) ((Z + Z') y)) =
+        (fun y ↦ g y (W y) (Z y)) + fun y ↦ g y (W y) (Z' y) := by
+    intro W
+    funext y
+    simp
+  have e1 : extDerivFun (fun y ↦ g y (Y y) ((Z + Z') y)) x (X x) =
+      extDerivFun (fun y ↦ g y (Y y) (Z y)) x (X x)
+        + extDerivFun (fun y ↦ g y (Y y) (Z' y)) x (X x) := by
+    rw [hfun Y, extDerivFun_add hPYZ hPYZ']
+    simp
+  have e2 : extDerivFun (fun y ↦ g y (X y) ((Z + Z') y)) x (Y x) =
+      extDerivFun (fun y ↦ g y (X y) (Z y)) x (Y x)
+        + extDerivFun (fun y ↦ g y (X y) (Z' y)) x (Y x) := by
+    rw [hfun X, extDerivFun_add hPXZ hPXZ']
+    simp
+  have e3 : extDerivFun (fun y ↦ g y (X y) (Y y)) x ((Z + Z') x) =
+      extDerivFun (fun y ↦ g y (X y) (Y y)) x (Z x)
+        + extDerivFun (fun y ↦ g y (X y) (Y y)) x (Z' x) := by
+    have h : (Z + Z') x = Z x + Z' x := rfl
+    rw [h, map_add]
+  have e4 : g x (mlieBracket I X (Z + Z') x) (Y x) =
+      g x (mlieBracket I X Z x) (Y x)
+        + g x (mlieBracket I X Z' x) (Y x) := by
+    rw [mlieBracket_add_right hZ hZ']
+    simp
+  have e5 : g x (mlieBracket I Y (Z + Z') x) (X x) =
+      g x (mlieBracket I Y Z x) (X x)
+        + g x (mlieBracket I Y Z' x) (X x) := by
+    rw [mlieBracket_add_right hZ hZ']
+    simp
+  have e6 : g x (mlieBracket I X Y x) ((Z + Z') x) =
+      g x (mlieBracket I X Y x) (Z x)
+        + g x (mlieBracket I X Y x) (Z' x) := by
+    have h : (Z + Z') x = Z x + Z' x := rfl
+    rw [h, map_add]
+  unfold koszulRHS
+  rw [e1, e2, e3, e4, e5, e6]
+  ring
+
 end CovariantDerivative
