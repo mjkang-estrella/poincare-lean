@@ -895,4 +895,69 @@ theorem curvature_pair_symm
     hA1 a d c b, hA1 d c a b, hA1 c a d b,
     hA1 b a c d, hA1 a c d b]
 
+/-! ## Sectional and scalar curvature -/
+
+/--
+The sectional-curvature numerator `g(R(u,v)v, u)` at `x` (the unnormalized
+sectional curvature of the plane spanned by `u, v`).
+-/
+noncomputable def sectionalNumeratorAt (x : M)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (u v : TangentSpace I x) : ℝ :=
+  g x (curvatureOp cov (extend E u) (extend E v) (extend E v) x) u
+
+/-- The sectional numerator is symmetric in its two vectors. -/
+theorem sectionalNumeratorAt_symm
+    {g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ}
+    (htf : ∀ y : M, TorsionFreeAt cov y)
+    (hc : ∀ y : M, MetricCompatibleAt g cov y) {x : M}
+    (hgsymm : ∀ v w : TangentSpace I x, g x v w = g x w v)
+    (hgC : ∀ (A B : Π y : M, TangentSpace I y), CMDiffAt 2 (T% A) x →
+      CMDiffAt 2 (T% B) x → CMDiffAt 2 (fun y ↦ g y (A y) (B y)) x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (u v : TangentSpace I x) :
+    sectionalNumeratorAt cov x g u v = sectionalNumeratorAt cov x g v u :=
+  curvature_pair_symm cov htf hc hgsymm hgC hP u v v u
+
+/-- The sectional numerator vanishes on degenerate (equal-vector) planes. -/
+theorem sectionalNumeratorAt_self (x : M)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (u : TangentSpace I x) :
+    sectionalNumeratorAt cov x g u u = 0 := by
+  unfold sectionalNumeratorAt
+  rw [curvatureOp_self]
+  simp
+
+/--
+The Ricci tensor at `x` as a linear map into the dual space.
+-/
+noncomputable def ricciDualAt (x : M) :
+    TangentSpace I x →ₗ[ℝ] Module.Dual ℝ (TangentSpace I x) where
+  toFun u :=
+    { toFun := fun w ↦ ricciBilinearAt cov x u w
+      map_add' := fun w w' ↦ ricciBilinearAt_add_right cov x u w w'
+      map_smul' := fun c w ↦ ricciBilinearAt_smul_right cov x c u w }
+  map_add' u u' := by
+    apply LinearMap.ext
+    intro w
+    exact ricciBilinearAt_add_left cov x u u' w
+  map_smul' c u := by
+    apply LinearMap.ext
+    intro w
+    exact ricciBilinearAt_smul_left cov x c u w
+
+/--
+The scalar curvature at `x` with respect to a nondegenerate bilinear form
+realizing the metric: the trace of the Ricci endomorphism obtained by
+raising an index.
+-/
+noncomputable def scalarCurvatureAt (x : M)
+    (b : LinearMap.BilinForm ℝ (TangentSpace I x)) (hb : b.Nondegenerate) :
+    ℝ :=
+  letI : FiniteDimensional ℝ (TangentSpace I x) := ‹FiniteDimensional ℝ E›
+  LinearMap.trace ℝ (TangentSpace I x)
+    (((LinearMap.BilinForm.toDual b hb).symm.toLinearMap) ∘ₗ
+      ricciDualAt cov x)
+
 end CovariantDerivative
