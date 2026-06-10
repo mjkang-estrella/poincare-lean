@@ -143,3 +143,44 @@ theorem euclidean_static_isRicciFlowSolutionAt (t₀ : ℝ) (x : F) :
       contMDiff_vectorSpace_iff_contDiff.mp hZ
     rw [deriv_const, flat_ricciTraceAt_eq_zero hZcd hreg w]
     ring
+
+/-! ## Canonical Ricci values of the flat connection -/
+
+open FiberBundle in
+/-- On the model space, the canonical extension of a tangent vector is the
+constant section. -/
+theorem extend_model_space {x : F} (w : TangentSpace 𝓘(ℝ, F) x) :
+    extend F w = fun _ ↦ (w : F) := by
+  funext x'
+  simp only [FiberBundle.extend]
+  rw [← Trivialization.symmL_apply ℝ, TangentBundle.symmL_model_space]
+  simp
+  rfl
+
+open FiberBundle in
+/-- Extended sections are admissible for the flat connection. -/
+theorem flat_derivRegularAt_extend {x : F} (w : TangentSpace 𝓘(ℝ, F) x) :
+    DerivRegularAt (flatCovariantDerivative ℝ F) (extend F w) x := by
+  intro W hW
+  rw [mdiffAt_vectorSpace_iff_differentiableAt]
+  have hS : (fun y ↦ flatCovariantDerivative ℝ F (extend F w) y (W y)) =
+      fun _ ↦ (0 : F) := by
+    funext y
+    rw [extend_model_space w]
+    simp
+    rfl
+  rw [hS]
+  exact differentiableAt_const _
+
+open FiberBundle in
+/--
+**The canonical Ricci values of Euclidean space vanish**: the Ricci trace of
+the flat connection against any canonical extension is zero.
+-/
+theorem flat_ricciTraceAt_extend_eq_zero {x : F}
+    (w u : TangentSpace 𝓘(ℝ, F) x)
+    (hreg : DerivRegularAt (flatCovariantDerivative ℝ F) (extend F w) x) :
+    ricciTraceAt (flatCovariantDerivative ℝ F) hreg u = 0 := by
+  apply flat_ricciTraceAt_eq_zero
+  rw [extend_model_space w]
+  exact contDiff_const
