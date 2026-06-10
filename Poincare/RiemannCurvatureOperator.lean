@@ -199,6 +199,29 @@ theorem curvatureTensorAt_self (hreg : DerivRegularAt cov Z x)
   rw [TensorialAt.mkHom₂_apply_eq_extend, curvatureOp_self]
   rfl
 
+omit [IsManifold I 2 M] [CompleteSpace E] [CompleteSpace 𝕜]
+  [FiniteDimensional 𝕜 E] in
+/--
+Any `C¹` covariant derivative is `DerivRegularAt` along every `C²` field at
+every point: the regularity hypothesis of the pointwise curvature tensor is
+automatic for smooth connections and fields.
+-/
+theorem derivRegularAt_of_contMDiff
+    [ContMDiffCovariantDerivative cov 1]
+    {Z : Π x : M, TangentSpace I x} (hZ : CMDiff 2 (T% Z)) (x : M) :
+    DerivRegularAt cov Z x := by
+  intro W hW
+  have hcov :=
+    (ContMDiffCovariantDerivative.contMDiff (cov := cov) (k := 1)).contMDiff
+      (σ := Z) hZ.contMDiffOn
+  have hϕ : MDifferentiableAt I (I.prod 𝓘(𝕜, E →L[𝕜] E))
+      (fun y ↦ TotalSpace.mk' (E →L[𝕜] E)
+        (E := fun (b : M) ↦ TangentSpace I b →L[𝕜] TangentSpace I b)
+        y (cov Z y)) x :=
+    (hcov.contMDiffAt Filter.univ_mem).mdifferentiableAt one_ne_zero
+  exact MDifferentiableAt.clm_bundle_apply (b := id)
+    (ϕ := fun y ↦ cov Z y) (v := W) hϕ hW
+
 /-! ## Ricci trace
 
 With the curvature pointwise bilinear in `(X, Y)`, the Ricci curvature value
