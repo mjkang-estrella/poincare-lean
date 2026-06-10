@@ -13,6 +13,8 @@ space is flat.
 
 import Poincare.RiemannCurvatureOperator
 import Mathlib.Analysis.Calculus.FDeriv.Symmetric
+import Mathlib.Analysis.InnerProductSpace.Calculus
+import Mathlib.Geometry.Manifold.VectorBundle.CovariantDerivative.Torsion
 import Mathlib.Geometry.Manifold.VectorBundle.MDifferentiable
 
 noncomputable section
@@ -103,3 +105,39 @@ theorem flatCovariantDerivative_curvatureOp_eq_zero
     ContinuousLinearMap.flip_apply, map_sub]
   rw [hsymm (V x) (W x)]
   abel
+
+/-! ## The flat connection is Levi-Civita for the Euclidean metric
+
+The two defining properties of the Levi-Civita connection — vanishing torsion
+and metric compatibility — hold for the flat connection on an inner product
+space.
+-/
+
+/-- The flat connection is torsion-free. -/
+theorem flatCovariantDerivative_torsion_eq_zero
+    [CompleteSpace 𝕜] [CompleteSpace E] [FiniteDimensional 𝕜 E] :
+    (flatCovariantDerivative 𝕜 E).torsion = 0 := by
+  rw [CovariantDerivative.torsion_eq_zero_iff]
+  intro X Y x hX hY
+  rw [mlieBracket_vectorSpace_eq]
+  rfl
+
+open scoped RealInnerProductSpace in
+/--
+The flat connection is compatible with the Euclidean metric: the derivative
+of the pointwise inner product of two vector fields obeys the Riemannian
+product rule.  Together with `flatCovariantDerivative_torsion_eq_zero`, this
+identifies the flat connection as the Levi-Civita connection of Euclidean
+space.
+-/
+theorem flatCovariantDerivative_inner_compatible
+    {F : Type*} [NormedAddCommGroup F] [InnerProductSpace ℝ F]
+    {Y Z : F → F} {x : F}
+    (hY : DifferentiableAt ℝ Y x) (hZ : DifferentiableAt ℝ Z x) (v : F) :
+    fderiv ℝ (fun y ↦ ⟪Y y, Z y⟫) x v =
+      ⟪Z x, flatCovariantDerivative ℝ F Y x v⟫ +
+        ⟪Y x, flatCovariantDerivative ℝ F Z x v⟫ := by
+  rw [fderiv_inner_apply ℝ hY hZ v,
+    real_inner_comm (Z x) (fderiv ℝ Y x v)]
+  simp only [flatCovariantDerivative_apply]
+  exact add_comm _ _
