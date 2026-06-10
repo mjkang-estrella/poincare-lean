@@ -118,3 +118,53 @@ theorem leviCivita_unique_at
   simpa using h0
 
 end CovariantDerivative
+
+namespace CovariantDerivative
+
+variable [IsManifold I 1 M]
+variable {g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ}
+variable {cov : CovariantDerivative I E (TangentSpace I : M → Type _)} {x : M}
+
+/--
+**The Koszul formula.**  Any torsion-free metric-compatible connection
+satisfies
+`2 g(∇_X Y, Z) = X g(Y,Z) + Y g(X,Z) - Z g(X,Y)
+  + g([X,Y],Z) - g([X,Z],Y) - g([Y,Z],X)`,
+so the metric determines the connection on differentiable fields.  This is
+the computational core of both halves of the fundamental theorem of
+Riemannian geometry.
+-/
+theorem koszul_formula
+    (hgsymm : ∀ v w : TangentSpace I x, g x v w = g x w v)
+    (hc : MetricCompatibleAt g cov x) (ht : TorsionFreeAt cov x)
+    {X Y Z : Π y : M, TangentSpace I y}
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x)
+    (hZ : MDiffAt (T% Z) x) :
+    2 * g x (cov Y x (X x)) (Z x) =
+      extDerivFun (fun y ↦ g y (Y y) (Z y)) x (X x)
+        + extDerivFun (fun y ↦ g y (X y) (Z y)) x (Y x)
+        - extDerivFun (fun y ↦ g y (X y) (Y y)) x (Z x)
+        + g x (VectorField.mlieBracket I X Y x) (Z x)
+        - g x (VectorField.mlieBracket I X Z x) (Y x)
+        - g x (VectorField.mlieBracket I Y Z x) (X x) := by
+  have c1 := hc hY hZ (X x)
+  have c2 := hc hX hZ (Y x)
+  have c3 := hc hX hY (Z x)
+  have p1 : g x (cov Y x (X x)) (Z x) - g x (cov X x (Y x)) (Z x)
+      = g x (VectorField.mlieBracket I X Y x) (Z x) := by
+    rw [← ContinuousLinearMap.sub_apply, ← map_sub, ht hX hY]
+  have p2 : g x (cov Z x (X x)) (Y x) - g x (cov X x (Z x)) (Y x)
+      = g x (VectorField.mlieBracket I X Z x) (Y x) := by
+    rw [← ContinuousLinearMap.sub_apply, ← map_sub, ht hX hZ]
+  have p3 : g x (cov Z x (Y x)) (X x) - g x (cov Y x (Z x)) (X x)
+      = g x (VectorField.mlieBracket I Y Z x) (X x) := by
+    rw [← ContinuousLinearMap.sub_apply, ← map_sub, ht hY hZ]
+  have sy1 : g x (Y x) (cov Z x (X x)) = g x (cov Z x (X x)) (Y x) :=
+    hgsymm _ _
+  have sy2 : g x (X x) (cov Z x (Y x)) = g x (cov Z x (Y x)) (X x) :=
+    hgsymm _ _
+  have sy3 : g x (X x) (cov Y x (Z x)) = g x (cov Y x (Z x)) (X x) :=
+    hgsymm _ _
+  linarith
+
+end CovariantDerivative
