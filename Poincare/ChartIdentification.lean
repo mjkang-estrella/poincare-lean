@@ -12,6 +12,7 @@ the model space to manifolds.
 -/
 
 import Mathlib.Geometry.Manifold.VectorField.LieBracket
+import Poincare.FlatModelConnection
 
 noncomputable section
 
@@ -98,3 +99,77 @@ theorem extDerivFun_apply_chart {f : M → 𝕜} {x : M} (hf : MDiffAt f x)
   rfl
 
 end Boundaryless
+
+section DerivationIdentity
+
+open VectorField
+
+variable {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℝ E']
+  {H' : Type*} [TopologicalSpace H'] {I' : ModelWithCorners ℝ E' H'}
+  {N : Type*} [TopologicalSpace N] [ChartedSpace H' N]
+  [IsManifold I' 2 N] [I'.Boundaryless] [CompleteSpace E']
+
+/--
+**The bracket-derivation identity, chart form.**  For `f` `C²` at `x` and
+fields `X, Y` differentiable at `x` on a boundaryless real manifold, the
+derivative of `f` along the Lie bracket is the commutator of iterated
+derivatives, expressed through the chart at `x`.
+-/
+theorem extDerivFun_apply_mlieBracket_chart
+    {f : N → ℝ} {X Y : Π y : N, TangentSpace I' y} {x : N}
+    (hf : CMDiffAt 2 f x) (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x) :
+    extDerivFun f x (mlieBracket I' X Y x) =
+      fderiv ℝ (fun z ↦ fderiv ℝ (f ∘ (extChartAt I' x).symm) z
+          (mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm Y z))
+        (extChartAt I' x x) (X x)
+      - fderiv ℝ (fun z ↦ fderiv ℝ (f ∘ (extChartAt I' x).symm) z
+          (mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm X z))
+        (extChartAt I' x x) (Y x) := by
+  -- The chart representative of `f` is `C²`.
+  have hFc : ContDiffAt ℝ 2 (f ∘ (extChartAt I' x).symm) (extChartAt I' x x) := by
+    have h := (contMDiffAt_iff.mp hf).2
+    rw [I'.range_eq_univ, contDiffWithinAt_univ] at h
+    have heq : (extChartAt 𝓘(ℝ, ℝ) (f x)) ∘ f ∘ (extChartAt I' x).symm =
+        f ∘ (extChartAt I' x).symm := by
+      funext z
+      simp
+    rwa [heq] at h
+  have hsymm := hFc.isSymmSndFDerivAt (by simp)
+  -- The pulled-back fields are differentiable at the chart image.
+  have hinv : (mfderiv% (extChartAt I' x).symm (extChartAt I' x x)).IsInvertible := by
+    have h := isInvertible_mfderivWithin_extChartAt_symm
+      (mem_extChartAt_target (I := I') x)
+    rwa [I'.range_eq_univ, mfderivWithin_univ] at h
+  have hpull : ∀ (U : Π y : N, TangentSpace I' y), MDiffAt (T% U) x →
+      DifferentiableAt ℝ
+        (mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm U)
+        (extChartAt I' x x) := by
+    intro U hU
+    have hsm : CMDiffAt 2 ((extChartAt I' x).symm : E' → N)
+        (extChartAt I' x x) := by
+      have h := contMDiffWithinAt_extChartAt_symm_range (n := 2) x
+        (mem_extChartAt_target (I := I') x)
+      rwa [I'.range_eq_univ, contMDiffWithinAt_univ] at h
+    have hU' : MDiffAt[univ] (T% U)
+        ((extChartAt I' x).symm (extChartAt I' x x)) := by
+      rw [(extChartAt I' x).left_inv (mem_extChartAt_source x),
+        mdifferentiableWithinAt_univ]
+      exact hU
+    have h := hU'.mpullback_vectorField_preimage hsm hinv le_rfl
+    rw [preimage_univ, mdifferentiableWithinAt_univ] at h
+    exact mdiffAt_vectorSpace_iff_differentiableAt.mp h
+  -- Centers of the pulled-back fields.
+  have hc : ∀ (U : Π y : N, TangentSpace I' y),
+      mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm U (extChartAt I' x x)
+        = U x := by
+    intro U
+    rw [← mpullbackWithin_univ, ← I'.range_eq_univ]
+    exact mpullbackWithin_extChartAt_symm_self U x
+  -- Reduce to the model space and apply the model identity.
+  rw [extDerivFun_apply_chart (hf.mdifferentiableAt two_ne_zero),
+    mlieBracket_apply_chart]
+  simp only [I'.range_eq_univ, lieBracketWithin_univ, mpullbackWithin_univ]
+  rw [fderiv_apply_lieBracket_of_isSymmSndFDerivAt hFc hsymm
+    (hpull Y hY) (hpull X hX), hc X, hc Y]
+
+end DerivationIdentity
