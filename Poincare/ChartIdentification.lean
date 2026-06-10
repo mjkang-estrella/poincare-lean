@@ -172,4 +172,167 @@ theorem extDerivFun_apply_mlieBracket_chart
   rw [fderiv_apply_lieBracket_of_isSymmSndFDerivAt hFc hsymm
     (hpull Y hY) (hpull X hX), hc X, hc Y]
 
+/--
+Away from the center: the pullback under the inverse chart at a source point
+is the chart derivative of the field.
+-/
+theorem mpullback_extChartAt_symm_apply {x y : N}
+    (hy : y ∈ (extChartAt I' x).source) (U : Π z : N, TangentSpace I' z) :
+    mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm U (extChartAt I' x y) =
+      mfderiv% (extChartAt I' x) y (U y) := by
+  rw [VectorField.mpullback]
+  have h1 : (extChartAt I' x).symm (extChartAt I' x y) = y :=
+    (extChartAt I' x).left_inv hy
+  have hyT : extChartAt I' x y ∈ (extChartAt I' x).target :=
+    (extChartAt I' x).map_source hy
+  have c1 := mfderiv_extChartAt_comp_mfderivWithin_extChartAt_symm
+    (x := x) hyT
+  have c2 := mfderivWithin_extChartAt_symm_comp_mfderiv_extChartAt
+    (x := x) hyT
+  rw [I'.range_eq_univ, mfderivWithin_univ] at c1 c2
+  have hinv : (mfderiv% (extChartAt I' x).symm (extChartAt I' x y)).inverse =
+      mfderiv% (extChartAt I' x) ((extChartAt I' x).symm (extChartAt I' x y)) :=
+    ContinuousLinearMap.inverse_eq c2 c1
+  rw [hinv, h1]
+
+/--
+Near `x`, the invariant iterated-derivative function agrees with its chart
+representative.
+-/
+theorem extDerivFun_section_eventually_chart {f : N → ℝ} {x : N}
+    (hf : CMDiffAt 2 f x) (U : Π z : N, TangentSpace I' z) :
+    ∀ᶠ y in 𝓝 x, extDerivFun f y (U y) =
+      fderiv ℝ (f ∘ (extChartAt I' x).symm) (extChartAt I' x y)
+        (mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm U
+          (extChartAt I' x y)) := by
+  have hFc : ContDiffAt ℝ 2 (f ∘ (extChartAt I' x).symm)
+      (extChartAt I' x x) := by
+    have h := (contMDiffAt_iff.mp hf).2
+    rw [I'.range_eq_univ, contDiffWithinAt_univ] at h
+    have heq : (extChartAt 𝓘(ℝ, ℝ) (f x)) ∘ f ∘ (extChartAt I' x).symm =
+        f ∘ (extChartAt I' x).symm := by
+      funext z
+      simp
+    rwa [heq] at h
+  have hf1 : ∀ᶠ y in 𝓝 x, MDiffAt f y := by
+    obtain ⟨v, hv, hfv⟩ :=
+      (contMDiffAt_iff_contMDiffOn_nhds (n := 2) (by norm_num)).mp hf
+    filter_upwards [interior_mem_nhds.mpr hv] with y hy
+    exact (((hfv.mono interior_subset) y hy).contMDiffAt
+      (isOpen_interior.mem_nhds hy)).mdifferentiableAt two_ne_zero
+  have hFev : ∀ᶠ y in 𝓝 x, DifferentiableAt ℝ
+      (f ∘ (extChartAt I' x).symm) (extChartAt I' x y) :=
+    (continuousAt_extChartAt (I := I') x).eventually
+      ((hFc.eventually (by norm_num)).mono fun z hz ↦
+        hz.differentiableAt two_ne_zero)
+  filter_upwards [hf1, hFev,
+    (isOpen_extChartAt_source (I := I') x).mem_nhds
+      (mem_extChartAt_source x)] with y hfy hFy hys
+  rw [mpullback_extChartAt_symm_apply hys U]
+  have hcomp : mfderiv% f y =
+      (fderiv ℝ (f ∘ (extChartAt I' x).symm) ((extChartAt I' x) y)) ∘L
+        mfderiv% (extChartAt I' x) y := by
+    have hfeq : f =ᶠ[𝓝 y]
+        (f ∘ (extChartAt I' x).symm) ∘ (extChartAt I' x) := by
+      filter_upwards [(isOpen_extChartAt_source (I := I') x).mem_nhds hys]
+        with z hz
+      simp only [Function.comp_apply]
+      rw [(extChartAt I' x).left_inv hz]
+    rw [hfeq.mfderiv_eq, mfderiv_comp y
+      (mdifferentiableAt_iff_differentiableAt.mpr hFy)
+      (mdifferentiableAt_extChartAt
+        (by rwa [extChartAt_source] at hys))]
+    congr 1
+    exact mfderiv_eq_fderiv
+  simp only [extDerivFun, ContinuousLinearMap.comp_apply, hcomp]
+  rfl
+
+/--
+**The bracket-derivation identity** (invariant form): on a boundaryless real
+manifold, `df([X,Y]) = X(Y f) - Y(X f)` at every point where `f` is `C²` and
+`X, Y` are differentiable.
+-/
+theorem extDerivFun_apply_mlieBracket
+    {f : N → ℝ} {X Y : Π y : N, TangentSpace I' y} {x : N}
+    (hf : CMDiffAt 2 f x) (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x) :
+    extDerivFun f x (mlieBracket I' X Y x) =
+      extDerivFun (fun y ↦ extDerivFun f y (Y y)) x (X x)
+        - extDerivFun (fun y ↦ extDerivFun f y (X y)) x (Y x) := by
+  have hFc : ContDiffAt ℝ 2 (f ∘ (extChartAt I' x).symm)
+      (extChartAt I' x x) := by
+    have h := (contMDiffAt_iff.mp hf).2
+    rw [I'.range_eq_univ, contDiffWithinAt_univ] at h
+    have heq : (extChartAt 𝓘(ℝ, ℝ) (f x)) ∘ f ∘ (extChartAt I' x).symm =
+        f ∘ (extChartAt I' x).symm := by
+      funext z
+      simp
+    rwa [heq] at h
+  have hinv : (mfderiv% (extChartAt I' x).symm
+      (extChartAt I' x x)).IsInvertible := by
+    have h := isInvertible_mfderivWithin_extChartAt_symm
+      (mem_extChartAt_target (I := I') x)
+    rwa [I'.range_eq_univ, mfderivWithin_univ] at h
+  have hpull : ∀ (U : Π y : N, TangentSpace I' y), MDiffAt (T% U) x →
+      DifferentiableAt ℝ
+        (mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm U)
+        (extChartAt I' x x) := by
+    intro U hU
+    have hsm : CMDiffAt 2 ((extChartAt I' x).symm : E' → N)
+        (extChartAt I' x x) := by
+      have h := contMDiffWithinAt_extChartAt_symm_range (n := 2) x
+        (mem_extChartAt_target (I := I') x)
+      rwa [I'.range_eq_univ, contMDiffWithinAt_univ] at h
+    have hU' : MDiffAt[univ] (T% U)
+        ((extChartAt I' x).symm (extChartAt I' x x)) := by
+      rw [(extChartAt I' x).left_inv (mem_extChartAt_source x),
+        mdifferentiableWithinAt_univ]
+      exact hU
+    have h := hU'.mpullback_vectorField_preimage hsm hinv le_rfl
+    rw [preimage_univ, mdifferentiableWithinAt_univ] at h
+    exact mdiffAt_vectorSpace_iff_differentiableAt.mp h
+  -- The invariant iterated derivative equals the chart-side derivative.
+  have hterm : ∀ (U V₀ : Π y : N, TangentSpace I' y), MDiffAt (T% U) x →
+      extDerivFun (fun y ↦ extDerivFun f y (U y)) x (V₀ x) =
+        fderiv ℝ (fun z ↦ fderiv ℝ (f ∘ (extChartAt I' x).symm) z
+            (mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm U z))
+          (extChartAt I' x x) (V₀ x) := by
+    intro U V₀ hU
+    set g : N → ℝ := fun y ↦ extDerivFun f y (U y) with hg
+    set c : E' → ℝ := fun z ↦ fderiv ℝ (f ∘ (extChartAt I' x).symm) z
+      (mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm U z) with hc
+    have hgc : g =ᶠ[𝓝 x] c ∘ (extChartAt I' x) := by
+      filter_upwards [extDerivFun_section_eventually_chart hf U] with y hy
+      exact hy
+    have hcd : DifferentiableAt ℝ c (extChartAt I' x x) := by
+      apply DifferentiableAt.clm_apply
+      · exact (hFc.fderiv_right (m := 1) (by norm_num)).differentiableAt
+          one_ne_zero
+      · exact hpull U hU
+    have hgd : MDiffAt g x := by
+      refine MDifferentiableAt.congr_of_eventuallyEq ?_ hgc
+      exact (mdifferentiableAt_iff_differentiableAt.mpr hcd).comp x
+        (mdifferentiableAt_extChartAt (mem_chart_source H' x))
+    rw [extDerivFun_apply_chart hgd (V₀ x)]
+    congr 1
+    apply Filter.EventuallyEq.fderiv_eq
+    have hev : ∀ᶠ z in 𝓝 (extChartAt I' x x),
+        z ∈ (extChartAt I' x).target :=
+      (isOpen_extChartAt_target x).mem_nhds (mem_extChartAt_target x)
+    have hsx : (extChartAt I' x).symm (extChartAt I' x x) = x :=
+      (extChartAt I' x).left_inv (mem_extChartAt_source x)
+    have hgc2 : ∀ᶠ y in 𝓝 ((extChartAt I' x).symm (extChartAt I' x x)),
+        g y = (c ∘ (extChartAt I' x)) y := by
+      rw [hsx]
+      exact hgc
+    have hgc' := (continuousAt_extChartAt_symm (I := I') x).eventually hgc2
+    filter_upwards [hev, hgc'] with z hzT hzg
+    have h2 : (extChartAt I' x) ((extChartAt I' x).symm z) = z :=
+      (extChartAt I' x).right_inv hzT
+    show g ((extChartAt I' x).symm z) = c z
+    rw [hzg]
+    show c ((extChartAt I' x) ((extChartAt I' x).symm z)) = c z
+    rw [h2]
+  rw [extDerivFun_apply_mlieBracket_chart hf hX hY,
+    hterm Y X hY, hterm X Y hX]
+
 end DerivationIdentity
