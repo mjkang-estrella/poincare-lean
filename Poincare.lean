@@ -1,4 +1,5 @@
 import Poincare.RiemannCurvatureOperator
+import Poincare.FlatModelConnection
 import Poincare.Statement
 import Poincare.Milestones
 import Poincare.Assembly
