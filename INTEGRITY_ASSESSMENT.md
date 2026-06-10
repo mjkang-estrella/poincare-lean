@@ -77,3 +77,19 @@ the audit suite cannot detect the difference. Any future claim of completion
 must be checked against Finding 1: a `poincare_conjecture` theorem obtained
 through a trivially-instantiated production certificate would still have to
 prove `ExtinctionImpliesSphereStatement`, i.e. the conjecture itself.
+
+## Addendum (same day): mitigations landed
+
+- `Poincare/ProofProgress/MoiseSmoothabilityTarget.lean` replaces the false
+  all-charts-compatibility smoothability frontier with the correct
+  existence-shaped Moise target and proves its one-point-recognized case.
+- `Poincare/ProofProgress/GroundedFiniteExtinctionCertificate.lean` defines
+  `GroundedFiniteExtinctionProductionCertificate` /
+  `GroundedUniversalFiniteExtinctionStatement`, a content-bearing
+  replacement for the vacuous certificate that existentially requires the
+  actual named analytic/surgery/control/width/frontier packages, and proves
+  it refines the legacy pillar. Future work should target the grounded
+  statement; the legacy certificate should be considered deprecated.
+- Note on the final gate: the reserved theorem `poincare_conjecture` must
+  prove `PoincareConjectureStatement` itself, so vacuous certificates cannot
+  fake project completion — they only hollow out the intermediate pillar.
