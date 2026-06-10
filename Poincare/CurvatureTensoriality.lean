@@ -12,6 +12,7 @@ cross terms cancel pairwise, and the second-order defect
 import Poincare.LocalConnectionRegularity
 import Poincare.ChartIdentification
 import Poincare.LeviCivitaUniqueness
+import Mathlib.LinearAlgebra.BilinearForm.Properties
 
 noncomputable section
 
@@ -735,5 +736,97 @@ theorem curvature_pair_antisymm_of_compat
   linarith [hder, e1, e2, e3]
 
 end PairAntisymm
+
+/-! ## Symmetry of the Ricci tensor -/
+
+/--
+A skew operator with respect to a nondegenerate bilinear form on a
+finite-dimensional space is traceless.
+-/
+theorem trace_eq_zero_of_skew {V : Type*} [AddCommGroup V] [Module ℝ V]
+    [FiniteDimensional ℝ V] (b : LinearMap.BilinForm ℝ V)
+    (hb : b.Nondegenerate) (B : V →ₗ[ℝ] V)
+    (hskew : ∀ v w, b (B v) w = - b v (B w)) :
+    LinearMap.trace ℝ V B = 0 := by
+  set Φ := LinearMap.BilinForm.toDual b hb with hΦ
+  have hconj : Φ.toLinearMap ∘ₗ B =
+      - ((Module.Dual.transpose (R := ℝ) B) ∘ₗ Φ.toLinearMap) := by
+    apply LinearMap.ext
+    intro v
+    apply LinearMap.ext
+    intro w
+    simp only [LinearMap.comp_apply, LinearMap.neg_apply,
+      Module.Dual.transpose_apply, LinearMap.coe_comp,
+      LinearEquiv.coe_coe, Function.comp_apply]
+    rw [LinearMap.BilinForm.toDual_def, LinearMap.BilinForm.toDual_def]
+    exact hskew v w
+  have hB : B = - (Φ.symm.conj (Module.Dual.transpose (R := ℝ) B)) := by
+    apply LinearMap.ext
+    intro v
+    have := congrArg (fun (L : V →ₗ[ℝ] Module.Dual ℝ V) ↦ Φ.symm (L v)) hconj
+    simpa [LinearEquiv.conj_apply] using this
+  have htr := congrArg (LinearMap.trace ℝ V) hB
+  rw [map_neg, LinearMap.trace_conj', LinearMap.trace_transpose'] at htr
+  linarith
+
+section RicciSymm
+
+variable {g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ}
+
+/--
+**Symmetry of the Ricci tensor** for a torsion-free metric-compatible
+connection: `Ric(u, w) = Ric(w, u)`, given nondegeneracy of the metric at
+the point and the pairing-regularity of `g`.
+-/
+theorem ricciBilinearAt_symm
+    (htf : ∀ y : M, TorsionFreeAt cov y)
+    (hc : ∀ y : M, MetricCompatibleAt g cov y) {x : M}
+    (hgsymm : ∀ v w : TangentSpace I x, g x v w = g x w v)
+    (hgnd : ∀ v : TangentSpace I x, (∀ w, g x v w = 0) → v = 0)
+    (hgC : ∀ (A B : Π y : M, TangentSpace I y), CMDiffAt 2 (T% A) x →
+      CMDiffAt 2 (T% B) x → CMDiffAt 2 (fun y ↦ g y (A y) (B y)) x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (u w : TangentSpace I x) :
+    ricciBilinearAt cov x u w = ricciBilinearAt cov x w u := by
+  haveI : FiniteDimensional ℝ (TangentSpace I x) := ‹FiniteDimensional ℝ E›
+  have h := ricciBilinearAt_sub_swap cov htf x u w
+  set b : LinearMap.BilinForm ℝ (TangentSpace I x) :=
+    LinearMap.mk₂ ℝ (fun v z ↦ g x v z)
+      (fun a a' n ↦ by simp) (fun c a n ↦ by simp)
+      (fun a n n' ↦ by simp) (fun c a n ↦ by simp) with hbdef
+  have hbnd : b.Nondegenerate := by
+    constructor
+    · intro v hv
+      exact hgnd v fun z ↦ by simpa [hbdef] using hv z
+    · intro z hz
+      refine hgnd z fun v ↦ ?_
+      rw [hgsymm]
+      simpa [hbdef] using hz v
+  have hskew : ∀ v z, b (pairCurvatureEndAt cov x u w v) z =
+      - b v (pairCurvatureEndAt cov x u w z) := by
+    intro v z
+    have hpa := curvature_pair_antisymm_of_compat cov hc
+      (X := extend E u) (Y := extend E w) (Z := extend E v)
+      (W := extend E z)
+      (mdifferentiableAt_extend ..) (mdifferentiableAt_extend ..)
+      (contMDiffAt_extend' (k := 2) I E v)
+      (contMDiffAt_extend' (k := 2) I E z)
+      (hgC _ _ (contMDiffAt_extend' (k := 2) I E v)
+        (contMDiffAt_extend' (k := 2) I E z)) hP
+    simp only [extend_apply_self] at hpa
+    have hv : pairCurvatureEndAt cov x u w v =
+        curvatureOp cov (extend E u) (extend E w) (extend E v) x := rfl
+    have hz : pairCurvatureEndAt cov x u w z =
+        curvatureOp cov (extend E u) (extend E w) (extend E z) x := rfl
+    simp only [hbdef, LinearMap.mk₂_apply, hv, hz]
+    linarith
+  have htr0 : LinearMap.trace ℝ (TangentSpace I x)
+      (pairCurvatureEndAt cov x u w) = 0 :=
+    trace_eq_zero_of_skew b hbnd _ hskew
+  rw [htr0] at h
+  linarith
+
+end RicciSymm
 
 end CovariantDerivative
