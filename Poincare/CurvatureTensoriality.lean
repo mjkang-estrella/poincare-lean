@@ -350,4 +350,107 @@ theorem curvatureOp_congr_of_value_eq
     exact h0
   exact sub_eq_zero.mp this
 
+/-! ## The genuine Ricci tensor
+
+With value-dependence established, the canonical Ricci form is
+extension-independent and bilinear: it is the Ricci tensor.
+-/
+
+/--
+**Extension-independence of the Ricci form**: the Ricci trace against any
+admissible `C²` field equals the canonical Ricci form at the field value.
+-/
+theorem ricciTraceAt_eq_ricciBilinearAt
+    {Z : Π y : M, TangentSpace I y} {x : M} (hZ : CMDiffAt 2 (T% Z) x)
+    (hreg : DerivRegularAt cov Z x) (u : TangentSpace I x) :
+    ricciTraceAt cov hreg u = ricciBilinearAt cov x u (Z x) := by
+  unfold ricciBilinearAt ricciTraceAt
+  congr 1
+  apply LinearMap.ext
+  intro v
+  rw [curvatureEndAt_apply, curvatureEndAt_apply]
+  unfold curvatureTensorAt
+  rw [TensorialAt.mkHom₂_apply_eq_extend, TensorialAt.mkHom₂_apply_eq_extend]
+  exact curvatureOp_congr_of_value_eq cov hZ
+    (contMDiffAt_extend' (k := 2) I E (Z x)) (by simp)
+    (mdifferentiableAt_extend ..) (mdifferentiableAt_extend ..)
+
+/-- The Ricci tensor is additive in its first argument. -/
+theorem ricciBilinearAt_add_left (x : M) (u u' w : TangentSpace I x) :
+    ricciBilinearAt cov x (u + u') w =
+      ricciBilinearAt cov x u w + ricciBilinearAt cov x u' w :=
+  ricciTraceAt_add cov _ u u'
+
+/-- The Ricci tensor is homogeneous in its first argument. -/
+theorem ricciBilinearAt_smul_left (x : M) (c : ℝ) (u w : TangentSpace I x) :
+    ricciBilinearAt cov x (c • u) w = c • ricciBilinearAt cov x u w :=
+  ricciTraceAt_smul cov _ c u
+
+/--
+Curvature against extensions is additive in the extended value.
+-/
+private theorem curvatureOp_extend_add
+    {x : M} (w w' v u : TangentSpace I x) :
+    curvatureOp cov (extend E v) (extend E u) (extend E (w + w')) x =
+      curvatureOp cov (extend E v) (extend E u) (extend E w) x
+        + curvatureOp cov (extend E v) (extend E u) (extend E w') x := by
+  have h1 : curvatureOp cov (extend E v) (extend E u) (extend E (w + w')) x =
+      curvatureOp cov (extend E v) (extend E u)
+        (extend E w + extend E w') x := by
+    apply curvatureOp_congr_of_value_eq cov
+      (contMDiffAt_extend' (k := 2) I E (w + w'))
+      ((contMDiffAt_extend' (k := 2) I E w).add_section
+        (contMDiffAt_extend' (k := 2) I E w'))
+      (by simp) (mdifferentiableAt_extend ..) (mdifferentiableAt_extend ..)
+  rw [h1, curvatureOp_add_field cov
+    (contMDiffAt_extend' (k := 2) I E w)
+    (contMDiffAt_extend' (k := 2) I E w')
+    (mdifferentiableAt_extend ..) (mdifferentiableAt_extend ..)]
+
+/--
+Curvature against extensions is homogeneous in the extended value.
+-/
+private theorem curvatureOp_extend_smul
+    {x : M} (c : ℝ) (w v u : TangentSpace I x) :
+    curvatureOp cov (extend E v) (extend E u) (extend E (c • w)) x =
+      c • curvatureOp cov (extend E v) (extend E u) (extend E w) x := by
+  have h1 : curvatureOp cov (extend E v) (extend E u) (extend E (c • w)) x =
+      curvatureOp cov (extend E v) (extend E u)
+        ((fun _ : M ↦ c) • extend E w) x := by
+    apply curvatureOp_congr_of_value_eq cov
+      (contMDiffAt_extend' (k := 2) I E (c • w))
+      (contMDiffAt_const.smul_section (contMDiffAt_extend' (k := 2) I E w))
+      (by simp) (mdifferentiableAt_extend ..) (mdifferentiableAt_extend ..)
+  rw [h1, curvatureOp_smul_field cov contMDiffAt_const
+    (contMDiffAt_extend' (k := 2) I E w)
+    (mdifferentiableAt_extend ..) (mdifferentiableAt_extend ..)]
+
+/-- The Ricci tensor is additive in its second argument. -/
+theorem ricciBilinearAt_add_right (x : M) (u w w' : TangentSpace I x) :
+    ricciBilinearAt cov x u (w + w') =
+      ricciBilinearAt cov x u w + ricciBilinearAt cov x u w' := by
+  unfold ricciBilinearAt ricciTraceAt
+  rw [← map_add]
+  congr 1
+  apply LinearMap.ext
+  intro v
+  simp only [LinearMap.add_apply, curvatureEndAt_apply]
+  unfold curvatureTensorAt
+  rw [TensorialAt.mkHom₂_apply_eq_extend, TensorialAt.mkHom₂_apply_eq_extend,
+    TensorialAt.mkHom₂_apply_eq_extend]
+  exact curvatureOp_extend_add cov w w' v u
+
+/-- The Ricci tensor is homogeneous in its second argument. -/
+theorem ricciBilinearAt_smul_right (x : M) (c : ℝ) (u w : TangentSpace I x) :
+    ricciBilinearAt cov x u (c • w) = c • ricciBilinearAt cov x u w := by
+  unfold ricciBilinearAt ricciTraceAt
+  rw [← map_smul]
+  congr 1
+  apply LinearMap.ext
+  intro v
+  simp only [LinearMap.smul_apply, curvatureEndAt_apply]
+  unfold curvatureTensorAt
+  rw [TensorialAt.mkHom₂_apply_eq_extend, TensorialAt.mkHom₂_apply_eq_extend]
+  exact curvatureOp_extend_smul cov c w v u
+
 end CovariantDerivative
