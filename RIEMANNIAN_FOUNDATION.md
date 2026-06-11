@@ -51,6 +51,23 @@ replacing reliance on the vacuous interface scaffold documented in
   `leviCivitaConnection : CovariantDerivative` with `IsLeviCivitaAt` at
   every point; the metric-only Ricci flow formulation.
 
+- `Poincare/EuclideanLeviCivitaCheck.lean` — end-to-end model validation:
+  the constructed Levi-Civita connection of the Euclidean metric *is* the
+  flat connection (by bundled uniqueness), and its curvature vanishes on
+  `C²` fields through the whole pipeline.
+- `Poincare/CurvatureConditions.lean` — `IsEinsteinAt`, `HasNonnegRicciAt`,
+  `HasPosRicciAt` against the genuine Ricci tensor; Euclidean space is
+  Ricci-flat; scalar curvature of Einstein connections is `lam * dim`;
+  Einstein metrics flow by linear scaling (exact Ricci flow solutions);
+  the extinction time `1/(2 lam)` of the shrinking family, with vanishing
+  at and negativity past it — the first quantitative extinction statements.
+
+Additions to earlier modules: bundled uniqueness
+(`leviCivitaConnection_eq_of_isLeviCivita`), the `IsLeviCivitaAt` and
+metric-only flow wiring in `KoszulExistence.lean`, the `C^k` instance for
+the flat connection in `FlatModelConnection.lean`, and the canonical flat
+Ricci vanishing in `RicciFlowEquation.lean`.
+
 ## What this layer provides
 
 For any symmetric, nondegenerate, pairing-regular metric on a boundaryless
