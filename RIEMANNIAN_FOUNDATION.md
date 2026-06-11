@@ -153,7 +153,12 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   `heat_supersolution_nonneg_preserved` — Hamilton's "nonnegative scalar
   curvature is preserved", modulo the evolution equation (the honest
   hypothesis awaiting commutation machinery). The centerpiece of
-  Hamilton's analytic toolkit, complete in both variants.
+  Hamilton's analytic toolkit, complete in both variants. The Bochner
+  layer joins the strata: `covariantHessian` (the geometric second
+  derivative of the Christoffel connection, symmetric by Schwarz +
+  corrector symmetry), `curvedLaplacian` (the Laplace–Beltrami operator,
+  trace of the covariant Hessian), and the anchor `curvedLaplacian_const`
+  (= the flat Laplacian on constant metrics).
 
 ## What this layer provides
 
