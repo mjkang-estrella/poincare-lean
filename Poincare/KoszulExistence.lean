@@ -9,6 +9,7 @@ against the bracket correction terms by symmetry of the metric.
 -/
 
 import Poincare.CurvatureTensoriality
+import Poincare.RicciFlowEquation
 
 noncomputable section
 
@@ -1112,6 +1113,85 @@ noncomputable def leviCivitaConnection
   toFun := leviCivitaCovFun g hgsymm hgnd hP
   isCovariantDerivativeOnUniv :=
     isCovariantDerivativeOn_leviCivitaCovFun g hgsymm hgnd hP
+
+/-- The constructed value depends only on the value of the direction
+field. -/
+theorem leviCivitaValueAt_congr_direction
+    {X X' Y : Π y : M, TangentSpace I y} {x : M}
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    (hX : MDiffAt (T% X) x) (hX' : MDiffAt (T% X') x)
+    (hY : MDiffAt (T% Y) x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (b : LinearMap.BilinForm ℝ (TangentSpace I x)) (hb : b.Nondegenerate)
+    (hbg : ∀ v w : TangentSpace I x, b v w = g x v w)
+    (hXX' : X x = X' x) :
+    leviCivitaValueAt g (hgsymm x) hX hY hP b hb =
+      leviCivitaValueAt g (hgsymm x) hX' hY hP b hb := by
+  apply sub_eq_zero.mp
+  apply hb.1
+  intro z
+  simp only [map_sub, LinearMap.sub_apply]
+  rw [b_leviCivitaValueAt g (hgsymm x) hX hY hP b hb z,
+    b_leviCivitaValueAt g (hgsymm x) hX' hY hP b hb z,
+    koszulRHS_congr_of_direction_value_eq g hgsymm hY
+      (mdifferentiableAt_extend ..) hP hX hX' hXX']
+  ring
+
+variable (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+  (hgnd : ∀ (y : M) (v : TangentSpace I y), (∀ w, g y v w = 0) → v = 0)
+  (hP : ∀ (x : M) (A B : Π y : M, TangentSpace I y),
+    MDiffAt (T% A) x → MDiffAt (T% B) x →
+      MDiffAt (fun y ↦ g y (A y) (B y)) x)
+
+/-- The bundled connection applied along a differentiable direction field
+is the field-level constructed value. -/
+theorem leviCivitaConnection_apply_field
+    {X Y : Π y : M, TangentSpace I y} {x : M}
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x) :
+    leviCivitaConnection g hgsymm hgnd hP Y x (X x) =
+      leviCivitaValueAt g (hgsymm x) hX hY (hP x) (metricBilinAt g x)
+        (metricBilinAt_nondegenerate g hgsymm hgnd x) := by
+  have h := leviCivitaCovFun_apply g hgsymm hgnd hP hY (X x)
+  rw [show leviCivitaConnection g hgsymm hgnd hP Y x (X x) =
+    leviCivitaCovFun g hgsymm hgnd hP Y x (X x) from rfl, h]
+  exact leviCivitaValueAt_congr_direction g hgsymm
+    (mdifferentiableAt_extend ..) hX hY (hP x) (metricBilinAt g x)
+    (metricBilinAt_nondegenerate g hgsymm hgnd x) (metricBilinAt_apply g x)
+    (by simp)
+
+/-- The bundled Levi-Civita connection is torsion-free at every point. -/
+theorem leviCivitaConnection_torsionFreeAt (x : M) :
+    TorsionFreeAt (leviCivitaConnection g hgsymm hgnd hP) x := by
+  intro X Y hX hY
+  rw [leviCivitaConnection_apply_field g hgsymm hgnd hP hX hY,
+    leviCivitaConnection_apply_field g hgsymm hgnd hP hY hX]
+  exact leviCivitaValueAt_torsionFree g hgsymm hX hY (hP x)
+    (metricBilinAt g x) (metricBilinAt_nondegenerate g hgsymm hgnd x)
+    (metricBilinAt_apply g x)
+
+/-- The bundled Levi-Civita connection is metric-compatible at every
+point. -/
+theorem leviCivitaConnection_metricCompatibleAt (x : M) :
+    MetricCompatibleAt g (leviCivitaConnection g hgsymm hgnd hP) x := by
+  intro Y Z hY hZ v
+  have h := leviCivitaValueAt_compat g hgsymm
+    (mdifferentiableAt_extend (σ₀ := v) ..) hY hZ (hP x)
+    (metricBilinAt g x) (metricBilinAt_nondegenerate g hgsymm hgnd x)
+    (metricBilinAt_apply g x)
+  rw [extend_apply_self] at h
+  rw [h]
+  congr 1
+  · congr 1
+    exact congrArg (g x) (leviCivitaCovFun_apply g hgsymm hgnd hP hY v).symm
+  · congr 1
+    exact (leviCivitaCovFun_apply g hgsymm hgnd hP hZ v).symm
+
+/-- **The bundled Levi-Civita connection is Levi-Civita** at every point. -/
+theorem leviCivitaConnection_isLeviCivitaAt (x : M) :
+    IsLeviCivitaAt g (leviCivitaConnection g hgsymm hgnd hP) x :=
+  ⟨leviCivitaConnection_metricCompatibleAt g hgsymm hgnd hP x,
+    leviCivitaConnection_torsionFreeAt g hgsymm hgnd hP x⟩
 
 end Bundled
 
