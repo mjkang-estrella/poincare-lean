@@ -632,6 +632,55 @@ theorem modelLeviCivita_const_ricciBilinearAt_eq_zero
       (flat_derivRegularAt_extend w) u).trans
     (flat_ricciTraceAt_extend_eq_zero w u _)
 
+
+/-- The flat connection is regular along `C²` fields. -/
+theorem flat_derivRegularAt_of_contDiff
+    {F' : Type*} [NormedAddCommGroup F'] [NormedSpace ℝ F']
+    {Z : Π y : F', TangentSpace 𝓘(ℝ, F') y} {x : F'}
+    (hZcd : ContDiff ℝ 2 (Z : F' → F')) :
+    DerivRegularAt (flatCovariantDerivative ℝ F') Z x := by
+  intro W hW
+  rw [mdiffAt_vectorSpace_iff_differentiableAt]
+  exact ((hZcd.contDiffAt.fderiv_right (m := 1)
+    (by norm_num)).differentiableAt one_ne_zero).clm_apply
+    (mdiffAt_vectorSpace_iff_differentiableAt.mp hW)
+
+/--
+**Constant metrics give static Ricci flow solutions on the model space**:
+any constant symmetric metric, with the Christoffel-form connections, is a
+static solution of the flow.
+-/
+theorem const_metric_static_model_flow
+    {F' : Type*} [NormedAddCommGroup F'] [InnerProductSpace ℝ F']
+    [CompleteSpace F'] [FiniteDimensional ℝ F']
+    (G₀ : F' →L[ℝ] F' →L[ℝ] ℝ)
+    (hGsymm₀ : ∀ p q : F', G₀ p q = G₀ q p)
+    (b : Π y : F', LinearMap.BilinForm ℝ F')
+    (hb : ∀ y, (b y).Nondegenerate)
+    (hbg : ∀ (y : F') (v w : F'), b y v w = G₀ v w) (t₀ : ℝ) (x : F') :
+    IsRicciFlowSolutionAt (fun _ ↦ fun _ : F' ↦ G₀)
+      (fun _ ↦ modelLeviCivita (fun _ ↦ G₀) b hb) t₀ x := by
+  haveI := modelLeviCivita_contMDiff (fun _ : F' ↦ G₀) (k := 1)
+    contDiff_const b hb (fun y v w' ↦ hbg y v w')
+  apply isRicciFlowSolutionAt_of_model_metric
+    (hGd := fun _ ↦ differentiable_const G₀)
+    (hGsymm := fun _ y p q ↦ hGsymm₀ p q)
+    (hbg := fun _ y v w ↦ hbg y v w)
+  intro Z hZ hreg w
+  rw [deriv_const]
+  have hZcd : ContDiff ℝ 2 (Z : F' → F') :=
+    contMDiff_vectorSpace_iff_contDiff.mp hZ
+  have hagree : ∀ (y : F') (Y : Π z : F', TangentSpace 𝓘(ℝ, F') z),
+      MDifferentiableAt 𝓘(ℝ, F') (𝓘(ℝ, F').prod 𝓘(ℝ, F')) (T% Y) y →
+        (modelLeviCivita (fun _ ↦ G₀) b hb) Y y =
+          (flatCovariantDerivative ℝ F') Y y := fun y Y _ ↦
+    congrFun (congrFun (congrArg CovariantDerivative.toFun
+      (modelLeviCivita_const_eq_flat G₀ b hb)) Y) y
+  rw [ricciTraceAt_eq_of_agree (modelLeviCivita (fun _ ↦ G₀) b hb)
+      hagree (hZ x) hreg (flat_derivRegularAt_of_contDiff hZcd) w,
+    flat_ricciTraceAt_eq_zero hZcd (flat_derivRegularAt_of_contDiff hZcd) w]
+  ring
+
 end Smoothness
 
 end CovariantDerivative
