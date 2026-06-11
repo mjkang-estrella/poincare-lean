@@ -557,4 +557,22 @@ theorem IsEinsteinAt.flow_evolution
       (lam / (1 - 2 * lam * t)) x :=
   hEin.const_smul ht
 
+/--
+**The full affine symmetry of the Ricci flow**: composing time translation
+and parabolic rescaling, every affine reparametrization `t ↦ c⁻¹ t + s` of a
+solution (with metric scaled by `c`) is a solution.
+-/
+theorem IsRicciFlowSolutionAt.parabolic_reparam
+    {g : ℝ → Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ}
+    {covt : ℝ → CovariantDerivative I E (TangentSpace I : M → Type _)}
+    {t₀ : ℝ} {x : M}
+    (sol : IsRicciFlowSolutionAt g covt t₀ x) {c : ℝ} (hc : c ≠ 0) (s : ℝ)
+    (hP : ∀ (t : ℝ) (A B : Π y : M, TangentSpace I y),
+      MDiffAt (T% A) x → MDiffAt (T% B) x →
+        MDiffAt (fun y ↦ g t y (A y) (B y)) x) :
+    IsRicciFlowSolutionAt (fun t ↦ fun y ↦ c • g (c⁻¹ * t + s) y)
+      (fun t ↦ covt (c⁻¹ * t + s)) (c * (t₀ - s)) x :=
+  (sol.time_shift s).parabolic_rescale hc
+    (fun t A B hA hB ↦ hP (t + s) A B hA hB)
+
 end CovariantDerivative
