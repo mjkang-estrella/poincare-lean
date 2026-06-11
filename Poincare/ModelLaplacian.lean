@@ -1321,3 +1321,123 @@ theorem curvedLaplacian_sq_ge (G : E → E →L[ℝ] E →L[ℝ] ℝ)
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative Filter
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The local Laplacian chain rule**: `Δ(φ∘f) = φ'(f) Δf + φ''(f) |∇f|²`
+with `φ` only `C²` near the value `f x` — the form usable for `log` and
+other partially defined outer functions in entropy computations.
+-/
+theorem modelLaplacian_comp_at (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f)
+    {φ : ℝ → ℝ} {x : E} (hφ : ContDiffAt ℝ 2 φ (f x)) :
+    modelLaplacian b hb (fun y ↦ φ (f y)) x =
+      deriv φ (f x) * modelLaplacian b hb f x
+        + deriv (deriv φ) (f x)
+          * b (metricGradient b hb f x) (metricGradient b hb f x) := by
+  have hfd : Differentiable ℝ f := hf.differentiable (by norm_num)
+  have hf1 : Differentiable ℝ (fderiv ℝ f) :=
+    (hf.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)
+  -- `φ` is `C²` on a neighbourhood of `f x`; pull back along `f`.
+  obtain ⟨u, hu, hφu⟩ := hφ.contDiffOn (m := 2) le_rfl (by norm_num)
+  have huf : ∀ᶠ y in nhds x, f y ∈ interior u :=
+    (hfd x).continuousAt.preimage_mem_nhds (interior_mem_nhds.mpr hu)
+  have hφd : ∀ᶠ y in nhds x, DifferentiableAt ℝ φ (f y) := by
+    filter_upwards [huf] with y hy
+    exact ((hφu.mono interior_subset (f y) hy).contDiffAt
+      (isOpen_interior.mem_nhds hy)).differentiableAt (by norm_num)
+  -- The chain identity holds near `x`.
+  have hd1ev : (fun y ↦ fderiv ℝ (fun z ↦ φ (f z)) y) =ᶠ[nhds x]
+      fun y ↦ deriv φ (f y) • fderiv ℝ f y := by
+    filter_upwards [hφd] with y hy
+    rw [show (fun z ↦ φ (f z)) = φ ∘ f from rfl,
+      fderiv_comp y hy (hfd y)]
+    ext v
+    simp only [ContinuousLinearMap.comp_apply,
+      ContinuousLinearMap.smul_apply, smul_eq_mul]
+    rw [show fderiv ℝ φ (f y) (fderiv ℝ f y v) =
+      (fderiv ℝ f y v) • deriv φ (f y) from by
+        rw [← fderiv_deriv]
+        simp [mul_comm]]
+    simp [smul_eq_mul, mul_comm]
+  -- Local regularity of `deriv φ` near `f x`.
+  have hφint : ContDiffOn ℝ 2 φ (interior u) :=
+    hφu.mono interior_subset
+  have hfx_int : f x ∈ interior u := huf.self_of_nhds
+  have hderiv1 : ContDiffOn ℝ 1 (deriv φ) (interior u) :=
+    hφint.deriv_of_isOpen isOpen_interior (by norm_num)
+  have hφ1At : DifferentiableAt ℝ (deriv φ) (f x) :=
+    ((hderiv1 (f x) hfx_int).contDiffAt
+      (isOpen_interior.mem_nhds hfx_int)).differentiableAt one_ne_zero
+  have hφdAt : ∀ᶠ y in nhds x, DifferentiableAt ℝ φ (f y) := hφd
+  -- Second derivative at `x` through the eventual chain identity.
+  have hcdiff : DifferentiableAt ℝ (fun y ↦ deriv φ (f y)) x :=
+    hφ1At.comp x (hfd x)
+  have hd2 : fderiv ℝ (fderiv ℝ (fun y ↦ φ (f y))) x =
+      deriv φ (f x) • fderiv ℝ (fderiv ℝ f) x
+        + (deriv (deriv φ) (f x) • fderiv ℝ f x).smulRight
+          (fderiv ℝ f x) := by
+    rw [hd1ev.fderiv_eq]
+    refine Eq.trans (fderiv_smul hcdiff (hf1 x)) ?_
+    have hfc : fderiv ℝ (fun z ↦ deriv φ (f z)) x =
+        deriv (deriv φ) (f x) • fderiv ℝ f x := by
+      rw [show (fun z ↦ deriv φ (f z)) = deriv φ ∘ f from rfl,
+        fderiv_comp x hφ1At (hfd x)]
+      ext v
+      simp only [ContinuousLinearMap.comp_apply,
+        ContinuousLinearMap.smul_apply, smul_eq_mul]
+      rw [show fderiv ℝ (deriv φ) (f x) (fderiv ℝ f x v) =
+        (fderiv ℝ f x v) • deriv (deriv φ) (f x) from by
+          rw [← fderiv_deriv]
+          simp [mul_comm]]
+      simp [smul_eq_mul, mul_comm]
+    rw [hfc]
+  -- Trace as in the global chain rule.
+  unfold modelLaplacian
+  rw [hd2]
+  have hsm : ((deriv (deriv φ) (f x) • fderiv ℝ f x).smulRight
+      (fderiv ℝ f x)) = deriv (deriv φ) (f x) •
+        ((fderiv ℝ f x).smulRight (fderiv ℝ f x)) := by
+    ext v
+    simp [ContinuousLinearMap.smulRight_apply, smul_smul, mul_comm]
+  rw [hsm]
+  simp only [ContinuousLinearMap.coe_add, ContinuousLinearMap.coe_smul,
+    LinearMap.comp_add, LinearMap.comp_smul, map_add, map_smul,
+    smul_eq_mul]
+  have hcross : LinearMap.trace ℝ E
+      ((LinearMap.BilinForm.toDual b hb).symm.toLinearMap ∘ₗ
+        (LinearMap.toContinuousLinearMap.symm.toLinearMap.comp
+          (((fderiv ℝ f x).smulRight (fderiv ℝ f x)).toLinearMap))) =
+      fderiv ℝ f x ((LinearMap.BilinForm.toDual b hb).symm
+        (LinearMap.toContinuousLinearMap.symm (fderiv ℝ f x))) := by
+    have hcomp : (LinearMap.BilinForm.toDual b hb).symm.toLinearMap ∘ₗ
+        (LinearMap.toContinuousLinearMap.symm.toLinearMap.comp
+          (((fderiv ℝ f x).smulRight (fderiv ℝ f x)).toLinearMap)) =
+        LinearMap.smulRight ((fderiv ℝ f x : E →ₗ[ℝ] ℝ))
+          ((LinearMap.BilinForm.toDual b hb).symm
+            (LinearMap.toContinuousLinearMap.symm (fderiv ℝ f x))) := by
+      apply LinearMap.ext
+      intro v
+      have h1 : ((fderiv ℝ f x).smulRight (fderiv ℝ f x)).toLinearMap v =
+          fderiv ℝ f x v • fderiv ℝ f x := rfl
+      simp only [LinearMap.comp_apply, LinearMap.coe_comp,
+        Function.comp_apply, LinearEquiv.coe_coe, h1, map_smul,
+        LinearMap.smulRight_apply, ContinuousLinearMap.coe_coe]
+    rw [hcomp, LinearMap.trace_smulRight]
+    rfl
+  rw [hcross]
+  have hpair : fderiv ℝ f x ((LinearMap.BilinForm.toDual b hb).symm
+      (LinearMap.toContinuousLinearMap.symm (fderiv ℝ f x))) =
+      b (metricGradient b hb f x) (metricGradient b hb f x) := by
+    rw [← b_metricGradient b hb f x]
+    rfl
+  rw [hpair]
+
+end RicciFlow
