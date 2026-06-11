@@ -60,7 +60,11 @@ replacing reliance on the vacuous interface scaffold documented in
   Ricci-flat; scalar curvature of Einstein connections is `lam * dim`;
   Einstein metrics flow by linear scaling (exact Ricci flow solutions);
   the extinction time `1/(2 lam)` of the shrinking family, with vanishing
-  at and negativity past it — the first quantitative extinction statements.
+  at and negativity past it — the first quantitative extinction statements;
+  Ricci agreement for coincident connections; scale invariance of the
+  Levi-Civita connection; time-translation invariance and full parabolic
+  rescaling of flow solutions; the fixed-point characterization (static
+  solutions ⟺ Ricci-flat).
 
 Additions to earlier modules: bundled uniqueness
 (`leviCivitaConnection_eq_of_isLeviCivita`), the `IsLeviCivitaAt` and
