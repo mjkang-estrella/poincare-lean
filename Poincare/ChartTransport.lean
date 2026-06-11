@@ -309,18 +309,19 @@ with which `blendedChartMetric` satisfies all its hypotheses.
 -/
 theorem exists_blending_cutoff [I.Boundaryless] (x₀ : M) :
     ∃ χ : E → ℝ, ContDiff ℝ ∞ χ ∧ (∀ z, 0 ≤ χ z) ∧ (∀ z, χ z ≤ 1) ∧
-      (∀ z, χ z ≠ 0 → z ∈ (extChartAt I x₀).target) ∧
+      (tsupport χ ⊆ (extChartAt I x₀).target) ∧
       (∀ᶠ z in nhds (extChartAt I x₀ x₀), χ z = 1) := by
   obtain ⟨ε, hε, hball⟩ := Metric.isOpen_iff.mp
     (isOpen_extChartAt_target x₀) (extChartAt I x₀ x₀)
     (mem_extChartAt_target x₀)
   let f : ContDiffBump (extChartAt I x₀ x₀) :=
-    ⟨ε / 2, ε, by positivity, by linarith⟩
-  refine ⟨f, f.contDiff, fun z ↦ f.nonneg, fun z ↦ f.le_one,
-    fun z hz ↦ ?_, ?_⟩
-  · exact hball (f.support_eq ▸ Function.mem_support.mpr hz)
+    ⟨ε / 4, ε / 2, by positivity, by linarith⟩
+  refine ⟨f, f.contDiff, fun z ↦ f.nonneg, fun z ↦ f.le_one, ?_, ?_⟩
+  · rw [f.tsupport_eq]
+    exact subset_trans (Metric.closedBall_subset_ball
+      (show (ε / 2 : ℝ) < ε by linarith)) hball
   · filter_upwards [Metric.closedBall_mem_nhds _ (by positivity :
-      (0 : ℝ) < ε / 2)] with z hz
+      (0 : ℝ) < ε / 4)] with z hz
     exact f.one_of_mem_closedBall hz
 
 /--
@@ -347,7 +348,8 @@ theorem exists_global_chart_metric [I.Boundaryless]
     fun z v hv ↦ blendedChartMetric_posDef χ G₀ hG₀pos g hgpos x₀
       (hχ0 z) (hχ1 z)
       (fun hne ↦ isInvertible_mfderivWithin_extChartAt_symm
-        (I := I) (hχsupp z hne)) hv, ?_⟩
+        (I := I) (hχsupp (subset_tsupport χ (Function.mem_support.mpr hne))))
+      hv, ?_⟩
   filter_upwards [hχone] with z hz
   ext v w
   rw [blendedChartMetric_apply, hz]
@@ -523,5 +525,62 @@ theorem chartLeviCivita_metricCompatibleAt (χ : E → ℝ)
     (fun z' v w ↦ rfl) z
 
 end ChartConnection
+
+
+section BlendedSmooth
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+  {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
+  {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+  [IsManifold I ∞ M] [I.Boundaryless]
+
+/--
+**Global smoothness of the blended metric** (scalar form): with a cutoff
+compactly supported in the chart target and a `C^m` metric section, every
+scalar evaluation of the blended metric is `C^m` on all of the model space
+— by gluing the on-target product with the off-support constant.
+-/
+theorem contDiff_blendedChartMetric_scalar
+    (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (x₀ : M) {m : ℕ∞ω} (hm : m + 1 ≤ (∞ : ℕ∞ω))
+    (hχ : ContDiff ℝ ∞ χ)
+    (htsupp : tsupport χ ⊆ (extChartAt I x₀).target)
+    (hg : ContMDiff I (I.prod 𝓘(ℝ, E →L[ℝ] E →L[ℝ] ℝ)) m
+      (fun y ↦ TotalSpace.mk' (E →L[ℝ] E →L[ℝ] ℝ)
+        (E := fun y ↦ TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+        y (g y)))
+    (v w : E) :
+    ContDiff ℝ m (fun z ↦ blendedChartMetric χ G₀ g x₀ z v w) := by
+  have hχm : ContDiff ℝ m χ := hχ.of_le (le_trans le_self_add hm)
+  rw [contDiff_iff_contDiffAt]
+  intro z₀
+  by_cases hz₀ : z₀ ∈ (extChartAt I x₀).target
+  · -- On the target: the product of smooth functions.
+    have hchart : ContDiffAt ℝ m (fun z ↦ chartMetric g x₀ z v w) z₀ := by
+      have h := (contMDiffOn_chartMetric_pairing g x₀ hm hg v w) z₀ hz₀
+      have h2 := h.contMDiffAt
+        ((isOpen_extChartAt_target x₀).mem_nhds hz₀)
+      exact contMDiffAt_iff_contDiffAt.mp h2
+    have : ContDiffAt ℝ m (fun z ↦ χ z * chartMetric g x₀ z v w
+        + (1 - χ z) * G₀ v w) z₀ :=
+      (hχm.contDiffAt.mul hchart).add
+        ((contDiff_const.sub hχm).contDiffAt.mul contDiffAt_const)
+    exact this.congr_of_eventuallyEq (Filter.Eventually.of_forall
+      fun z ↦ blendedChartMetric_apply χ G₀ g x₀ z v w)
+  · -- Off the support: locally the constant `G₀`.
+    have hz₀' : z₀ ∉ tsupport χ := fun h ↦ hz₀ (htsupp h)
+    have hopen : IsOpen (tsupport χ)ᶜ := (isClosed_tsupport χ).isOpen_compl
+    have hzero : ∀ᶠ z in nhds z₀, χ z = 0 := by
+      filter_upwards [hopen.mem_nhds hz₀'] with z hz
+      exact image_eq_zero_of_notMem_tsupport hz
+    have : ContDiffAt ℝ m (fun _ : E ↦ (G₀ v w : ℝ)) z₀ := contDiffAt_const
+    refine this.congr_of_eventuallyEq ?_
+    filter_upwards [hzero] with z hz
+    rw [blendedChartMetric_apply, hz]
+    ring
+
+end BlendedSmooth
 
 end CovariantDerivative
