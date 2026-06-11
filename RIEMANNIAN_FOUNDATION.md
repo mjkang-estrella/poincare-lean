@@ -163,7 +163,10 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   anchors; **the curved spatial maximum principle** (the corrector dies at
   critical points) and **the parabolic maximum principle on curved
   backgrounds** (`curved_parabolic_min_principle_strict`) — Hamilton's
-  maximum principle in the geometric generality his estimates require.
+  maximum principle in the geometric generality his estimates require;
+  and the Laplacian product rule `Δ(fg) = fΔg + gΔf + 2b(∇f,∇g)` with its
+  square form — the identity of every Bochner formula and
+  integration-by-parts computation in Perelman's functionals.
 
 ## What this layer provides
 
