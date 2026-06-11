@@ -163,4 +163,146 @@ theorem koszulRHS_add_right {X Y Z Z' : Π y : M, TangentSpace I y} {x : M}
   rw [e1, e2, e3, e4, e5, e6]
   ring
 
+section ValueDependence
+
+variable [FiniteDimensional ℝ E] [T2Space M]
+
+private theorem extDerivFun_congr' {f f' : M → ℝ} {x : M}
+    (h : f =ᶠ[𝓝 x] f') :
+    extDerivFun (I := I) f x = extDerivFun (I := I) f' x := by
+  unfold extDerivFun
+  rw [h.mfderiv_eq, h.self_of_nhds]
+
+/-- The Koszul functional vanishes on the zero test field. -/
+theorem koszulRHS_zero_right {X Y : Π y : M, TangentSpace I y} {x : M} :
+    koszulRHS g X Y 0 x = 0 := by
+  have h0 : ∀ (W : Π y : M, TangentSpace I y),
+      (fun y ↦ g y (W y) ((0 : Π y : M, TangentSpace I y) y)) =
+        fun _ : M ↦ (0 : ℝ) := by
+    intro W
+    funext y
+    simp
+  have hED : extDerivFun (I := I) (fun _ : M ↦ (0 : ℝ)) x = 0 := by
+    unfold extDerivFun
+    rw [(hasMFDerivAt_const (0 : ℝ) x).mfderiv]
+    ext v
+    simp
+  unfold koszulRHS
+  rw [h0 Y, h0 X, hED]
+  simp [VectorField.mlieBracket_zero_right]
+
+/-- Germ locality of the Koszul functional in the test field. -/
+theorem koszulRHS_congr_of_eventuallyEq
+    {X Y Z Z' : Π y : M, TangentSpace I y} {x : M}
+    (hZZ' : Z =ᶠ[𝓝 x] Z') :
+    koszulRHS g X Y Z x = koszulRHS g X Y Z' x := by
+  have hpair : ∀ (W : Π y : M, TangentSpace I y),
+      (fun y ↦ g y (W y) (Z y)) =ᶠ[𝓝 x] fun y ↦ g y (W y) (Z' y) := by
+    intro W
+    filter_upwards [hZZ'] with y hy
+    rw [hy]
+  have hx0 : Z x = Z' x := hZZ'.self_of_nhds
+  unfold koszulRHS
+  rw [extDerivFun_congr' (hpair Y), extDerivFun_congr' (hpair X), hx0,
+    Filter.EventuallyEq.mlieBracket_vectorField_eq
+      (Filter.EventuallyEq.rfl (f := X)) hZZ',
+    Filter.EventuallyEq.mlieBracket_vectorField_eq
+      (Filter.EventuallyEq.rfl (f := Y)) hZZ']
+
+/-- The Koszul functional distributes over finite sums of test fields. -/
+theorem koszulRHS_finsetSum_right {ι : Type*} [DecidableEq ι]
+    {X Y : Π y : M, TangentSpace I y} {x : M}
+    (hgsymm : ∀ v w : TangentSpace I x, g x v w = g x w v)
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (s : Finset ι) (Zs : ι → Π y : M, TangentSpace I y)
+    (hZs : ∀ i, MDiffAt (T% (Zs i)) x) :
+    koszulRHS g X Y (fun y ↦ ∑ i ∈ s, Zs i y) x =
+      ∑ i ∈ s, koszulRHS g X Y (Zs i) x := by
+  induction s using Finset.induction with
+  | empty => simpa using koszulRHS_zero_right (g := g) (X := X) (Y := Y)
+  | insert a s ha ih =>
+    have hsum : (fun y ↦ ∑ i ∈ insert a s, Zs i y) =
+        Zs a + fun y ↦ ∑ i ∈ s, Zs i y := by
+      funext y
+      simp [Finset.sum_insert ha]
+    have hsd : MDiffAt (T% (fun y ↦ ∑ i ∈ s, Zs i y)) x :=
+      MDifferentiableAt.sum_section fun i ↦ hZs i
+    rw [hsum, koszulRHS_add_right (hZs a) hsd
+      (hP _ _ hY (hZs a)) (hP _ _ hY hsd)
+      (hP _ _ hX (hZs a)) (hP _ _ hX hsd),
+      Finset.sum_insert ha, ih]
+
+open Trivialization in
+/-- The Koszul functional vanishes on differentiable fields vanishing at the
+point. -/
+theorem koszulRHS_eq_zero_of_value_eq_zero
+    {X Y D : Π y : M, TangentSpace I y} {x : M}
+    (hgsymm : ∀ v w : TangentSpace I x, g x v w = g x w v)
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (hD : MDiffAt (T% D) x) (hDx : D x = 0) :
+    koszulRHS g X Y D x = 0 := by
+  classical
+  set e := trivializationAt E (TangentSpace I) x with he
+  set b := Module.finBasis ℝ E with hb
+  have hxe : x ∈ e.baseSet := FiberBundle.mem_baseSet_trivializationAt' x
+  have hev := e.eventually_eq_localFrame_sum_coeff_smul (I := I) b
+    (s := D) hxe
+  have hframe : ∀ i, MDiffAt (T% (e.localFrame b i)) x := fun i ↦
+    (contMDiffAt_localFrame_of_mem (I := I) (n := 1) (e := e) (b := b) i
+      hxe).mdifferentiableAt one_ne_zero
+  have hcoeff : ∀ i, MDiffAt (fun y ↦ e.localFrame_coeff I b i y (D y)) x :=
+    fun i ↦ (mdifferentiableAt_iff_localFrame_coeff (I := I) (e := e)
+      (b := b) hxe).mp hD i
+  set Zs : _ → Π y : M, TangentSpace I y := fun i ↦
+    (fun y ↦ e.localFrame_coeff I b i y (D y)) • e.localFrame b i with hZs
+  have hsummand : ∀ i, MDiffAt (T% (Zs i)) x := fun i ↦
+    (hcoeff i).smul_section (hframe i)
+  have h1 : koszulRHS g X Y D x =
+      koszulRHS g X Y (fun y ↦ ∑ i, Zs i y) x := by
+    apply koszulRHS_congr_of_eventuallyEq
+    filter_upwards [hev] with y hy
+    simpa [hZs] using hy
+  rw [h1, koszulRHS_finsetSum_right hgsymm hX hY hP Finset.univ Zs
+    hsummand]
+  have hzero : ∀ i, koszulRHS g X Y (Zs i) x = 0 := by
+    intro i
+    rw [hZs]
+    rw [koszulRHS_smul_right hgsymm (hcoeff i) hX hY (hframe i)
+      (hP _ _ hY (hframe i)) (hP _ _ hX (hframe i))]
+    have hc0 : e.localFrame_coeff I b i x (D x) = 0 := by
+      rw [hDx]
+      exact map_zero _
+    rw [hc0, zero_mul]
+  simp [hzero]
+
+/-- The Koszul functional depends only on the value of the test field. -/
+theorem koszulRHS_congr_of_value_eq
+    {X Y Z Z' : Π y : M, TangentSpace I y} {x : M}
+    (hgsymm : ∀ v w : TangentSpace I x, g x v w = g x w v)
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (hZ : MDiffAt (T% Z) x) (hZ' : MDiffAt (T% Z') x)
+    (hZZ' : Z x = Z' x) :
+    koszulRHS g X Y Z x = koszulRHS g X Y Z' x := by
+  have hns : MDiffAt (T% ((-1 : ℝ) • Z')) x :=
+    mdifferentiableAt_const.smul_section hZ'
+  have hD : MDiffAt (T% (Z + (-1 : ℝ) • Z')) x :=
+    mdifferentiableAt_add_section hZ hns
+  have hDx : (Z + (-1 : ℝ) • Z') x = 0 := by
+    simp [hZZ']
+  have h0 := koszulRHS_eq_zero_of_value_eq_zero hgsymm hX hY hP hD hDx
+  rw [koszulRHS_add_right hZ hns (hP _ _ hY hZ) (hP _ _ hY hns)
+    (hP _ _ hX hZ) (hP _ _ hX hns),
+    show ((-1 : ℝ) • Z') = (fun _ : M ↦ (-1 : ℝ)) • Z' from rfl,
+    koszulRHS_smul_right hgsymm mdifferentiableAt_const hX hY hZ'
+      (hP _ _ hY hZ') (hP _ _ hX hZ')] at h0
+  linarith
+
+end ValueDependence
+
 end CovariantDerivative
