@@ -106,4 +106,34 @@ theorem curvatureOp_leviCivitaConnection_euclidean
   rw [curvatureOp_apply] at h
   exact h
 
+
+/--
+**Euclidean space has zero sectional curvature**: the sectional numerator
+of the flat connection vanishes on all planes, for any fibrewise metric.
+-/
+theorem flat_sectionalNumeratorAt_eq_zero (x : F)
+    (g : Π y : F, TangentSpace 𝓘(ℝ, F) y →L[ℝ] TangentSpace 𝓘(ℝ, F) y
+      →L[ℝ] ℝ)
+    (u v : TangentSpace 𝓘(ℝ, F) x) :
+    sectionalNumeratorAt (flatCovariantDerivative ℝ F) x g u v = 0 := by
+  unfold sectionalNumeratorAt
+  have hcurv : curvatureOp (flatCovariantDerivative ℝ F)
+      (FiberBundle.extend F u) (FiberBundle.extend F v)
+      (FiberBundle.extend F v) x = 0 := by
+    set Z : Π y : F, TangentSpace 𝓘(ℝ, F) y := FiberBundle.extend F v
+      with hZdef
+    have hZcd : ContDiff ℝ 2 (Z : F → F) := by
+      rw [hZdef, extend_model_space v]
+      exact contDiff_const
+    apply flatCovariantDerivative_curvatureOp_eq_zero
+    · exact mdiffAt_vectorSpace_iff_differentiableAt.mp
+        (FiberBundle.mdifferentiableAt_extend ..)
+    · exact mdiffAt_vectorSpace_iff_differentiableAt.mp
+        (FiberBundle.mdifferentiableAt_extend ..)
+    · exact ((hZcd.contDiffAt.fderiv_right (m := 1)
+        (by norm_num)).differentiableAt one_ne_zero)
+    · exact (hZcd.contDiffAt).isSymmSndFDerivAt (by simp)
+  rw [hcurv]
+  simp
+
 end CovariantDerivative
