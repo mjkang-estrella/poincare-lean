@@ -110,3 +110,29 @@ theorem chartMetric_nondegenerate_center [FiniteDimensional ℝ E]
       (mem_extChartAt_target (I := I) x₀)) v hv
 
 end CovariantDerivative
+
+namespace CovariantDerivative
+
+/-- On the model space the chart metric is the metric itself. -/
+theorem chartMetric_model_space
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [FiniteDimensional ℝ E]
+    (g : Π y : E, TangentSpace 𝓘(ℝ, E) y →L[ℝ] TangentSpace 𝓘(ℝ, E) y
+      →L[ℝ] ℝ)
+    (x₀ z : E) (v w : E) :
+    chartMetric g x₀ z v w = g z v w := by
+  rw [chartMetric_apply]
+  have hch : extChartAt 𝓘(ℝ, E) x₀ = PartialEquiv.refl E :=
+    extChartAt_model_space_eq_id (𝕜 := ℝ) x₀
+  have hD : mfderivWithin 𝓘(ℝ, E) 𝓘(ℝ, E)
+      ((extChartAt 𝓘(ℝ, E) x₀).symm) (Set.range (𝓘(ℝ, E))) z =
+      ContinuousLinearMap.id ℝ E := by
+    rw [hch]
+    rw [show ((PartialEquiv.refl E).symm : E → E) = id from rfl,
+      (𝓘(ℝ, E)).range_eq_univ, mfderivWithin_univ]
+    exact mfderiv_id
+  rw [hD, hch]
+  simp only [PartialEquiv.refl_symm, PartialEquiv.refl_coe, id_eq]
+  rfl
+
+end CovariantDerivative
