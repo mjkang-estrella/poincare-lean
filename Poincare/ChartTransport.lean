@@ -355,4 +355,73 @@ theorem exists_global_chart_metric [I.Boundaryless]
 
 end Blended
 
+
+section Smoothness
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+  {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
+  {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+  [IsManifold I ∞ M] [I.Boundaryless]
+
+/--
+**Smoothness of the chart metric** (scalar form): if `g` is a `C^m` section
+of the bilinear-form bundle, every scalar evaluation of the chart metric is
+`C^m` on the chart target — the hom-bundle pairing of the inverse-chart
+tangent fields.
+-/
+theorem contMDiffOn_chartMetric_pairing
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (x₀ : M) {m : ℕ∞ω} (hm : m + 1 ≤ (∞ : ℕ∞ω))
+    (hg : ContMDiff I (I.prod 𝓘(ℝ, E →L[ℝ] E →L[ℝ] ℝ)) m
+      (fun y ↦ TotalSpace.mk' (E →L[ℝ] E →L[ℝ] ℝ)
+        (E := fun y ↦ TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+        y (g y)))
+    (v w : E) :
+    ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℝ) m
+      (fun z ↦ chartMetric g x₀ z v w) (extChartAt I x₀).target := by
+  set c := ((extChartAt I x₀).symm : E → M) with hc
+  have hcsm : ContMDiffOn 𝓘(ℝ, E) I m c (extChartAt I x₀).target :=
+    (contMDiffOn_extChartAt_symm x₀).of_le (le_trans le_self_add hm)
+  -- The metric section along the inverse chart.
+  have hϕ : ContMDiffOn 𝓘(ℝ, E) (I.prod 𝓘(ℝ, E →L[ℝ] E →L[ℝ] ℝ)) m
+      (fun z ↦ TotalSpace.mk' (E →L[ℝ] E →L[ℝ] ℝ)
+        (E := fun y ↦ TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+        (c z) (g (c z))) (extChartAt I x₀).target :=
+    hg.comp_contMDiffOn hcsm
+  -- The two tangent fields.
+  have hv := contMDiffOn_inverseChart_tangentMap (I := I) x₀ (m := m) hm v
+  have hw := contMDiffOn_inverseChart_tangentMap (I := I) x₀ (m := m) hm w
+  -- First application: z ↦ g (c z) (D z v).
+  have step1 := ContMDiffOn.clm_bundle_apply
+    (F₁ := E) (E₁ := TangentSpace I)
+    (F₂ := E →L[ℝ] ℝ)
+    (E₂ := fun y ↦ TangentSpace I y →L[ℝ] ℝ)
+    (b := c)
+    (ϕ := fun z ↦ g (c z))
+    (v := fun z ↦ mfderivWithin 𝓘(ℝ, E) I c (extChartAt I x₀).target z v)
+    hϕ hv
+  -- Second application: the scalar pairing.
+  have step2 := ContMDiffOn.clm_bundle_apply
+    (F₁ := E) (E₁ := TangentSpace I)
+    (F₂ := ℝ)
+    (E₂ := fun y ↦ Bundle.Trivial M ℝ y)
+    (b := c)
+    (ϕ := fun z ↦ g (c z)
+      (mfderivWithin 𝓘(ℝ, E) I c (extChartAt I x₀).target z v))
+    (v := fun z ↦ mfderivWithin 𝓘(ℝ, E) I c (extChartAt I x₀).target z w)
+    step1 hw
+  -- Extract the scalar from the trivial-bundle section.
+  intro z₀ hz₀
+  have h := step2 z₀ hz₀
+  rw [contMDiffWithinAt_totalSpace] at h
+  refine h.2.congr_of_mem ?_ hz₀
+  intro z hz
+  -- Identify the trivialized coordinate with the chart-metric evaluation.
+  rw [chartMetric_apply,
+    ← mfderivWithin_extChartAt_symm_target_eq_range x₀ hz]
+  rfl
+
+end Smoothness
+
 end CovariantDerivative
