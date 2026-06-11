@@ -1059,6 +1059,60 @@ theorem leviCivitaCovFun_apply {Y : Π y : M, TangentSpace I y} {x : M}
   rw [dif_pos hY]
   rfl
 
+/--
+**The Levi-Civita connection is a covariant derivative**: the bundled
+function satisfies the additivity and Leibniz axioms.
+-/
+theorem isCovariantDerivativeOn_leviCivitaCovFun
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    (hgnd : ∀ (y : M) (v : TangentSpace I y),
+      (∀ w, g y v w = 0) → v = 0)
+    (hP : ∀ (x : M) (A B : Π y : M, TangentSpace I y),
+      MDiffAt (T% A) x → MDiffAt (T% B) x →
+        MDiffAt (fun y ↦ g y (A y) (B y)) x) :
+    IsCovariantDerivativeOn E (leviCivitaCovFun g hgsymm hgnd hP)
+      Set.univ where
+  add {σ σ'} {x} hσ hσ' _ := by
+    ext v
+    rw [ContinuousLinearMap.add_apply,
+      leviCivitaCovFun_apply g hgsymm hgnd hP
+        (mdifferentiableAt_add_section hσ hσ') v,
+      leviCivitaCovFun_apply g hgsymm hgnd hP hσ v,
+      leviCivitaCovFun_apply g hgsymm hgnd hP hσ' v]
+    exact leviCivitaValueAt_add_section g hgsymm
+      (mdifferentiableAt_extend ..) hσ hσ' (hP x) (metricBilinAt g x)
+      (metricBilinAt_nondegenerate g hgsymm hgnd x) (metricBilinAt_apply g x)
+  leibniz {σ f} {x} hσ hf _ := by
+    ext v
+    rw [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
+      ContinuousLinearMap.smulRight_apply,
+      leviCivitaCovFun_apply g hgsymm hgnd hP (hf.smul_section hσ) v,
+      leviCivitaCovFun_apply g hgsymm hgnd hP hσ v]
+    have h := leviCivitaValueAt_leibniz g hgsymm hf
+      (mdifferentiableAt_extend (σ₀ := v) ..) hσ (hP x) (metricBilinAt g x)
+      (metricBilinAt_nondegenerate g hgsymm hgnd x) (metricBilinAt_apply g x)
+    rw [extend_apply_self] at h
+    exact h
+
+/--
+**The Levi-Civita connection of a symmetric nondegenerate metric**, as a
+bundled Mathlib covariant derivative.  Every theorem of the curvature and
+Ricci theory applies to it; it is torsion-free and metric-compatible at
+every point by construction, and unique among such connections by the
+pointwise fundamental theorem.
+-/
+noncomputable def leviCivitaConnection
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    (hgnd : ∀ (y : M) (v : TangentSpace I y),
+      (∀ w, g y v w = 0) → v = 0)
+    (hP : ∀ (x : M) (A B : Π y : M, TangentSpace I y),
+      MDiffAt (T% A) x → MDiffAt (T% B) x →
+        MDiffAt (fun y ↦ g y (A y) (B y)) x) :
+    CovariantDerivative I E (TangentSpace I : M → Type _) where
+  toFun := leviCivitaCovFun g hgsymm hgnd hP
+  isCovariantDerivativeOnUniv :=
+    isCovariantDerivativeOn_leviCivitaCovFun g hgsymm hgnd hP
+
 end Bundled
 
 end Construction
