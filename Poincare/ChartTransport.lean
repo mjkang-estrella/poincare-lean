@@ -98,6 +98,25 @@ theorem chartMetric_nondegenerate [FiniteDimensional ℝ E]
     _ = e.symm 0 := by rw [this]
     _ = 0 := map_zero _
 
+/-- The chart metric inherits positive-definiteness wherever the chart
+tangent map is invertible. -/
+theorem chartMetric_posDef [FiniteDimensional ℝ E]
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (hgpos : ∀ (y : M) (u : TangentSpace I y), u ≠ 0 → 0 < g y u u)
+    (x₀ : M) {z : E}
+    (hinv : (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+      (Set.range I) z).IsInvertible)
+    {v : E} (hv : v ≠ 0) : 0 < chartMetric g x₀ z v v := by
+  rw [chartMetric_apply]
+  apply hgpos
+  intro hzero
+  apply hv
+  obtain ⟨e, he⟩ := hinv
+  rw [← he] at hzero
+  calc v = e.symm (e v) := (e.symm_apply_apply v).symm
+    _ = e.symm 0 := by rw [show e v = 0 from hzero]
+    _ = 0 := map_zero _
+
 /-- At the centre of the chart the tangent map is invertible, so the chart
 metric is nondegenerate there. -/
 theorem chartMetric_nondegenerate_center [FiniteDimensional ℝ E]
