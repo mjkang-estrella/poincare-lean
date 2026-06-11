@@ -684,3 +684,38 @@ theorem const_metric_static_model_flow
 end Smoothness
 
 end CovariantDerivative
+
+namespace CovariantDerivative
+
+variable {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+  [FiniteDimensional ℝ F]
+
+/--
+The covariant Hessian of a scalar function with respect to the
+Christoffel-form connection: `Hess f (v,w) = D²f(v,w) − Df(Γ(v,w))` — the
+geometric second derivative whose trace is the metric Laplacian on curved
+backgrounds, and the first object of the Bochner-formula layer.
+-/
+def covariantHessian (G : F → F →L[ℝ] F →L[ℝ] ℝ)
+    (b : Π x : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (f : F → ℝ) (x : F) (v w : F) : ℝ :=
+  fderiv ℝ (fderiv ℝ f) x v w
+    - fderiv ℝ f x (christoffelAt G x (b x) (hb x) v w)
+
+/-- **The covariant Hessian is symmetric** — Schwarz symmetry of the flat
+second derivative plus symmetry of the Christoffel corrector. -/
+theorem covariantHessian_symm (G : F → F →L[ℝ] F →L[ℝ] ℝ)
+    (b : Π x : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : F) (p q : F), G y p q = G y q p)
+    {f : F → ℝ} {x : F} (hf : ContDiffAt ℝ 2 f x) (v w : F) :
+    covariantHessian G b hb f x v w = covariantHessian G b hb f x w v := by
+  unfold covariantHessian
+  rw [christoffelAt_symm G (b x) (hb x) (hGd x) hGsymm v w]
+  congr 1
+  have hsymm := hf.isSymmSndFDerivAt (by simp)
+  exact hsymm v w
+
+end CovariantDerivative
