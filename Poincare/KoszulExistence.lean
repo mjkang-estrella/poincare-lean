@@ -993,6 +993,74 @@ noncomputable def leviCivitaDirectionalAt {Y : Π y : M, TangentSpace I y}
       (hP _ _ (mdifferentiableAt_extend ..) hY)]
     ring
 
+section Bundled
+
+variable (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+variable (hgnd : ∀ (y : M) (v : TangentSpace I y),
+  (∀ w, g y v w = 0) → v = 0)
+variable (hP : ∀ (x : M) (A B : Π y : M, TangentSpace I y),
+  MDiffAt (T% A) x → MDiffAt (T% B) x →
+    MDiffAt (fun y ↦ g y (A y) (B y)) x)
+
+/-- The metric as a bilinear form at each point. -/
+noncomputable def metricBilinAt (x : M) :
+    LinearMap.BilinForm ℝ (TangentSpace I x) :=
+  LinearMap.mk₂ ℝ (fun v z ↦ g x v z)
+    (fun a a' n ↦ by simp) (fun c a n ↦ by simp)
+    (fun a n n' ↦ by simp) (fun c a n ↦ by simp)
+
+theorem metricBilinAt_nondegenerate
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    (hgnd : ∀ (y : M) (v : TangentSpace I y),
+      (∀ w, g y v w = 0) → v = 0) (x : M) :
+    (metricBilinAt g x).Nondegenerate := by
+  constructor
+  · intro v hv
+    exact hgnd x v fun z ↦ by simpa [metricBilinAt] using hv z
+  · intro z hz
+    refine hgnd x z fun v ↦ ?_
+    rw [hgsymm x]
+    simpa [metricBilinAt] using hz v
+
+theorem metricBilinAt_apply (x : M) (v w : TangentSpace I x) :
+    metricBilinAt g x v w = g x v w := rfl
+
+/--
+The bundled Levi-Civita covariant derivative function: on fields
+differentiable at `x` it is the constructed value (with the direction
+bundled continuously by finite-dimensionality); elsewhere it is junk.
+-/
+noncomputable def leviCivitaCovFun :
+    (Π y : M, TangentSpace I y) →
+      Π x : M, TangentSpace I x →L[ℝ] TangentSpace I x := fun Y x ↦
+  letI : FiniteDimensional ℝ (TangentSpace I x) := ‹FiniteDimensional ℝ E›
+  letI : IsTopologicalAddGroup (TangentSpace I x) :=
+    inferInstanceAs (IsTopologicalAddGroup E)
+  letI : ContinuousSMul ℝ (TangentSpace I x) :=
+    inferInstanceAs (ContinuousSMul ℝ E)
+  letI : T2Space (TangentSpace I x) := inferInstanceAs (T2Space E)
+  letI := Classical.dec (MDiffAt (T% Y) x)
+  if h : MDiffAt (T% Y) x then
+    LinearMap.toContinuousLinearMap
+      (leviCivitaDirectionalAt g hgsymm h (hP x)
+        (metricBilinAt g x) (metricBilinAt_nondegenerate g hgsymm hgnd x)
+        (metricBilinAt_apply g x))
+  else 0
+
+/-- At differentiable points, the bundled function applies to the
+constructed value. -/
+theorem leviCivitaCovFun_apply {Y : Π y : M, TangentSpace I y} {x : M}
+    (hY : MDiffAt (T% Y) x) (v : TangentSpace I x) :
+    leviCivitaCovFun g hgsymm hgnd hP Y x v =
+      leviCivitaValueAt g (hgsymm x)
+        (mdifferentiableAt_extend (σ₀ := v) ..) hY (hP x)
+        (metricBilinAt g x) (metricBilinAt_nondegenerate g hgsymm hgnd x) := by
+  unfold leviCivitaCovFun
+  rw [dif_pos hY]
+  rfl
+
+end Bundled
+
 end Construction
 
 end CovariantDerivative
