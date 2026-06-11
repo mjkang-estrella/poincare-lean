@@ -475,6 +475,40 @@ theorem contDiff_christoffel_apply_section {k : ℕ∞ω}
     · exact hp3
   exact hinvmap.clm_apply hΦ
 
+
+/--
+**The Levi-Civita connection of a smooth metric is smooth**: the
+Christoffel-form connection of a `C^{k+1}` metric is a `C^k` covariant
+derivative.
+-/
+theorem modelLeviCivita_contMDiff {k : ℕ∞ω}
+    (hGc : ContDiff ℝ (k + 1) G)
+    (b : Π y : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ y, (b y).Nondegenerate)
+    (hbg : ∀ (y : F) (v w : F), b y v w = G y v w) :
+    CovariantDerivative.ContMDiffCovariantDerivative
+      (modelLeviCivita G b hb) k := by
+  constructor
+  constructor
+  intro σ hσ
+  intro x _
+  apply ContMDiffWithinAt.contMDiffAt (s := Set.univ) ?_ Filter.univ_mem
+  rw [contMDiffWithinAt_univ, contMDiffAt_hom_bundle]
+  refine ⟨contMDiffAt_id, ?_⟩
+  have hσcd : ContDiff ℝ (k + 1) σ :=
+    contMDiff_vectorSpace_iff_contDiff.mp (contMDiffOn_univ.mp hσ)
+  have hplain : ContDiff ℝ k (fun y ↦ fderiv ℝ σ y
+      + (LinearMap.toContinuousLinearMap
+        ((christoffelLinear G y (b y) (hb y)).flip (σ y)) : F →L[ℝ] F)) :=
+    (hσcd.fderiv_right (m := k) le_rfl).add
+      (contDiff_christoffel_apply_section G hGc b hb hbg hσcd)
+  have hgoal : ContMDiffAt 𝓘(ℝ, F) 𝓘(ℝ, F →L[ℝ] F) k
+      (fun y ↦ fderiv ℝ σ y + (LinearMap.toContinuousLinearMap
+        ((christoffelLinear G y (b y) (hb y)).flip (σ y)) : F →L[ℝ] F)) x :=
+    (contMDiffAt_iff_contDiffAt).mpr hplain.contDiffAt
+  exact hgoal.congr_of_eventuallyEq (Filter.Eventually.of_forall
+    fun y ↦ inCoordinates_tangent_bundle_core_model_space x y x y _)
+
 end Smoothness
 
 end CovariantDerivative
