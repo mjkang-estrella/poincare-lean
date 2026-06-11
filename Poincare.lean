@@ -11,6 +11,7 @@ import Poincare.EuclideanLeviCivitaCheck
 import Poincare.CurvatureConditions
 import Poincare.ModelChristoffel
 import Poincare.ChartTransport
+import Poincare.MaximumPrinciple
 import Poincare.Statement
 import Poincare.Milestones
 import Poincare.Assembly
