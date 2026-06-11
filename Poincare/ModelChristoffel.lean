@@ -13,6 +13,7 @@ property and symmetry.
 -/
 
 import Poincare.KoszulExistence
+import Poincare.CurvatureConditions
 import Mathlib.Analysis.Calculus.ContDiff.FiniteDimension
 
 noncomputable section
@@ -599,6 +600,37 @@ theorem modelLeviCivita_const_eq_flat (G₀ : F →L[ℝ] F →L[ℝ] ℝ)
       + christoffelAt (fun _ ↦ G₀) x (b x) (hb x) v (σ x) =
     fderiv ℝ σ x v
   rw [christoffelAt_const, add_zero]
+
+
+/--
+**Constant metrics are Ricci-flat** through the Christoffel layer: the
+canonical Ricci form of the Christoffel-form connection of any constant
+metric vanishes (the connection being the flat one).
+-/
+theorem modelLeviCivita_const_ricciBilinearAt_eq_zero
+    {F' : Type*} [NormedAddCommGroup F'] [InnerProductSpace ℝ F']
+    [CompleteSpace F'] [FiniteDimensional ℝ F']
+    (G₀ : F' →L[ℝ] F' →L[ℝ] ℝ)
+    (b : Π y : F', LinearMap.BilinForm ℝ F')
+    (hb : ∀ y, (b y).Nondegenerate)
+    (hbg : ∀ (y : F') (v w : F'), b y v w = G₀ v w) (x : F')
+    (u w : TangentSpace 𝓘(ℝ, F') x) :
+    haveI := modelLeviCivita_contMDiff (fun _ ↦ G₀) (k := 1)
+      contDiff_const b hb (fun y v w' ↦ hbg y v w')
+    ricciBilinearAt (modelLeviCivita (fun _ ↦ G₀) b hb) x u w = 0 := by
+  haveI := modelLeviCivita_contMDiff (fun _ ↦ G₀) (k := 1)
+    contDiff_const b hb (fun y v w' ↦ hbg y v w')
+  have hagree : ∀ (y : F') (Y : Π z : F', TangentSpace 𝓘(ℝ, F') z),
+      MDifferentiableAt 𝓘(ℝ, F') (𝓘(ℝ, F').prod 𝓘(ℝ, F')) (T% Y) y →
+        (modelLeviCivita (fun _ ↦ G₀) b hb) Y y =
+          (flatCovariantDerivative ℝ F') Y y := fun y Y _ ↦
+    congrFun (congrFun (congrArg CovariantDerivative.toFun
+      (modelLeviCivita_const_eq_flat G₀ b hb)) Y) y
+  exact (ricciTraceAt_eq_of_agree (modelLeviCivita (fun _ ↦ G₀) b hb)
+      hagree (FiberBundle.contMDiffAt_extend' (k := 2) 𝓘(ℝ, F') F' w)
+      (derivRegularAt_extend (modelLeviCivita (fun _ ↦ G₀) b hb) w)
+      (flat_derivRegularAt_extend w) u).trans
+    (flat_ricciTraceAt_extend_eq_zero w u _)
 
 end Smoothness
 
