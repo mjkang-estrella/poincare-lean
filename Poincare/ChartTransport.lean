@@ -203,4 +203,25 @@ theorem contMDiffOn_inverseChart_tangentMap
     exact contMDiff_vectorSpace_iff_contDiff.mpr contDiff_const
   exact h.comp hsec (fun z hz ↦ hz)
 
+
+/--
+On the chart target, the inverse-chart derivative within the target agrees
+with the derivative within the model range — the bridge between the
+tangent-field smoothness statement and the chart-metric definition.
+-/
+theorem mfderivWithin_extChartAt_symm_target_eq_range
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [I.Boundaryless]
+    (x₀ : M) {z : E} (hz : z ∈ (extChartAt I x₀).target) :
+    mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (extChartAt I x₀).target z =
+      mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z :=
+  mfderivWithin_subset (extChartAt_target_subset_range x₀)
+    ((isOpen_extChartAt_target x₀).uniqueMDiffOn z hz)
+    ((contMDiffWithinAt_extChartAt_symm_range (n := 1) x₀
+      hz).mdifferentiableWithinAt one_ne_zero)
+
 end CovariantDerivative
