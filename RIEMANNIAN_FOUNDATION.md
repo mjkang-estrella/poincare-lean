@@ -137,7 +137,13 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   `modelLaplacian` (the trace of the Hessian against the inverse metric on
   the model space), linearity, and the anchoring computation
   `modelLaplacian_quadratic` (`Δ` of the metric's quadratic form is `2n`).
-  The operator driving every evolution equation of the flow.
+  The operator driving every evolution equation of the flow; affine
+  functions are harmonic; **the spatial maximum principle**
+  (`modelLaplacian_nonneg_of_isLocalMin`) — at a local minimum the
+  Laplacian is nonnegative — assembled from the 1-d and multivariate
+  second-derivative tests (both new beyond Mathlib, in
+  `MaximumPrinciple.lean`) and trace positivity of PSD forms against
+  positive metrics (`trace_dual_comp_nonneg`, via orthogonal bases).
 
 ## What this layer provides
 
