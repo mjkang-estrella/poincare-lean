@@ -64,3 +64,49 @@ theorem chartMetric_symm [FiniteDimensional ℝ E]
   rw [chartMetric_apply, chartMetric_apply, hgsymm]
 
 end CovariantDerivative
+
+namespace CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
+  {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+  [IsManifold I 1 M]
+
+/-- The chart metric is nondegenerate wherever the chart tangent map is
+invertible. -/
+theorem chartMetric_nondegenerate [FiniteDimensional ℝ E]
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (hgnd : ∀ (y : M) (v : TangentSpace I y), (∀ w, g y v w = 0) → v = 0)
+    (x₀ : M) {z : E}
+    (hinv : (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+      (Set.range I) z).IsInvertible)
+    (v : E) (hv : ∀ w, chartMetric g x₀ z v w = 0) : v = 0 := by
+  obtain ⟨e, he⟩ := hinv
+  have hDv : mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+      (Set.range I) z v = 0 := by
+    apply hgnd ((extChartAt I x₀).symm z)
+    intro t
+    have h := hv (e.symm t)
+    rw [chartMetric_apply] at h
+    rwa [show (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+      (Set.range I) z) (e.symm t) = t from by
+        rw [← he]; exact e.apply_symm_apply t] at h
+  have : e v = 0 := by
+    rw [← he] at hDv
+    exact hDv
+  calc v = e.symm (e v) := (e.symm_apply_apply v).symm
+    _ = e.symm 0 := by rw [this]
+    _ = 0 := map_zero _
+
+/-- At the centre of the chart the tangent map is invertible, so the chart
+metric is nondegenerate there. -/
+theorem chartMetric_nondegenerate_center [FiniteDimensional ℝ E]
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (hgnd : ∀ (y : M) (v : TangentSpace I y), (∀ w, g y v w = 0) → v = 0)
+    (x₀ : M) (v : E)
+    (hv : ∀ w, chartMetric g x₀ (extChartAt I x₀ x₀) v w = 0) : v = 0 :=
+  chartMetric_nondegenerate g hgnd x₀
+    (isInvertible_mfderivWithin_extChartAt_symm
+      (mem_extChartAt_target (I := I) x₀)) v hv
+
+end CovariantDerivative
