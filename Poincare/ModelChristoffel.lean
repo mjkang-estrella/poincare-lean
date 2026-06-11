@@ -545,6 +545,37 @@ theorem modelLeviCivita_ricciBilinearAt_symm
   · intro A B hA hB
     exact metric_pairing_mdiff G hGd x A B hA hB
 
+
+/--
+**The Ricci flow on the model space with Christoffel connections**: a
+time-family of differentiable symmetric metrics is a flow solution as soon
+as the flow equation holds — the Levi-Civita side conditions are discharged
+by the Christoffel-form theorems.
+-/
+theorem isRicciFlowSolutionAt_of_model_metric
+    {Gt : ℝ → F → F →L[ℝ] F →L[ℝ] ℝ}
+    (hGd : ∀ t, Differentiable ℝ (Gt t))
+    (hGsymm : ∀ t (y : F) (p q : F), Gt t y p q = Gt t y q p)
+    (b : ℝ → Π y : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ t y, (b t y).Nondegenerate)
+    (hbg : ∀ t (y : F) (v w : F), b t y v w = Gt t y v w)
+    {t₀ : ℝ} {x : F}
+    (hflow : ∀ {Z : Π y : F, TangentSpace 𝓘(ℝ, F) y}, CMDiff 2 (T% Z) →
+      ∀ (hreg : DerivRegularAt
+          (modelLeviCivita (Gt t₀) (b t₀) (hb t₀)) Z x)
+        (w : TangentSpace 𝓘(ℝ, F) x),
+        deriv (fun t ↦ Gt t x (Z x) w) t₀ =
+          -2 * ricciTraceAt (modelLeviCivita (Gt t₀) (b t₀) (hb t₀))
+            hreg w) :
+    IsRicciFlowSolutionAt (fun t ↦ Gt t)
+      (fun t ↦ modelLeviCivita (Gt t) (b t) (hb t)) t₀ x where
+  leviCivita t :=
+    ⟨modelLeviCivita_metricCompatibleAt (Gt t) (b t) (hb t) (hGd t)
+        (hGsymm t) (hbg t) x,
+      modelLeviCivita_torsionFreeAt (Gt t) (b t) (hb t) (hGd t)
+        (hGsymm t) x⟩
+  flow hZ hreg w := hflow hZ hreg w
+
 end Smoothness
 
 end CovariantDerivative
