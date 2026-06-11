@@ -73,3 +73,80 @@ theorem modelLaplacian_smul (b : LinearMap.BilinForm ℝ E)
     LinearMap.smul_comp, smul_eq_mul]
 
 end RicciFlow
+
+namespace RicciFlow
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The Laplacian of the metric's own quadratic form is twice the
+dimension** — the verification computation anchoring `modelLaplacian`
+(`Δ|x|² = 2n` in the Euclidean case).
+-/
+theorem modelLaplacian_quadratic (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate)
+    (hbs : ∀ v w : E, b v w = b w v) (x : E) :
+    modelLaplacian b hb (fun y ↦ b y y) x =
+      2 * Module.finrank ℝ E := by
+  set bC : E →L[ℝ] E →L[ℝ] ℝ := LinearMap.toContinuousLinearMap
+    ((LinearMap.toContinuousLinearMap :
+      (E →ₗ[ℝ] ℝ) ≃ₗ[ℝ] (E →L[ℝ] ℝ)).toLinearMap ∘ₗ b) with hbC
+  have hbCapp : ∀ v w : E, bC v w = b v w := fun v w ↦ rfl
+  -- First derivative: `D f y = bC y + bC.flip y` (with symmetry, `2 bC y`).
+  have hf1 : ∀ y : E, HasFDerivAt (fun z ↦ b z z)
+      (bC y + bC.flip y) y := by
+    intro y
+    have hc : HasFDerivAt (fun z : E ↦ bC z) bC y := bC.hasFDerivAt
+    have h := hc.clm_apply (hasFDerivAt_id y)
+    have heq : (fun z : E ↦ bC z z) = fun z ↦ b z z := by
+      funext z
+      exact hbCapp z z
+    rw [← heq]
+    convert h using 1
+  -- The first-derivative map is the continuous linear map `bC + bC.flip`,
+  -- so the second derivative is constant equal to it.
+  have hdf : fderiv ℝ (fun z ↦ b z z) = ⇑(bC + bC.flip) := by
+    funext y
+    rw [(hf1 y).fderiv]
+    rfl
+  have hf2 : fderiv ℝ (fderiv ℝ (fun z ↦ b z z)) x = bC + bC.flip := by
+    rw [hdf]
+    exact (bC + bC.flip).fderiv
+  -- Symmetry collapses the flip.
+  have hflip : bC.flip = bC := by
+    ext v w
+    rw [ContinuousLinearMap.flip_apply, hbCapp, hbCapp, hbs]
+  unfold modelLaplacian
+  rw [hf2, hflip]
+  have htwo : bC + bC = (2 : ℝ) • bC := by
+    ext v w
+    simp [two_mul]
+  rw [htwo]
+  -- The remaining composition is twice the identity.
+  have hassemble : (LinearMap.BilinForm.toDual b hb).symm.toLinearMap ∘ₗ
+      (LinearMap.toContinuousLinearMap.symm.toLinearMap.comp
+        (((2 : ℝ) • bC).toLinearMap)) = (2 : ℝ) • LinearMap.id := by
+    apply LinearMap.ext
+    intro v
+    have hbv : LinearMap.toContinuousLinearMap.symm
+        (bC.toLinearMap v) = b v := by
+      have h2 : bC.toLinearMap v = LinearMap.toContinuousLinearMap (b v) :=
+        rfl
+      rw [h2, LinearEquiv.symm_apply_apply]
+    have hΦv : (b v : Module.Dual ℝ E) =
+        LinearMap.BilinForm.toDual b hb v := by
+      apply LinearMap.ext
+      intro w
+      rw [LinearMap.BilinForm.toDual_def]
+    simp only [LinearMap.comp_apply, LinearMap.coe_comp,
+      Function.comp_apply, LinearEquiv.coe_coe, LinearMap.smul_apply,
+      LinearMap.id_apply, ContinuousLinearMap.coe_smul,
+      LinearMap.smul_apply, map_smul]
+    have hpoint : (LinearMap.BilinForm.toDual b hb).symm
+        (LinearMap.toContinuousLinearMap.symm (bC.toLinearMap v)) = v := by
+      rw [hbv, hΦv, LinearEquiv.symm_apply_apply]
+    exact congrArg (fun t ↦ (2 : ℝ) • t) hpoint
+  rw [hassemble, map_smul, LinearMap.trace_id, smul_eq_mul]
+
+end RicciFlow
