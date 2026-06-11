@@ -323,6 +323,36 @@ theorem exists_blending_cutoff [I.Boundaryless] (x₀ : M) :
       (0 : ℝ) < ε / 2)] with z hz
     exact f.one_of_mem_closedBall hz
 
+/--
+**The global chart metric exists**: for any positive-definite symmetric
+metric on `M` and any chart, there is a global metric on the model space —
+symmetric, positive-definite everywhere — agreeing with the chart metric
+near the chart centre. The model-space Levi-Civita theory applies to it
+outright.
+-/
+theorem exists_global_chart_metric [I.Boundaryless]
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ) (hG₀symm : ∀ v w : E, G₀ v w = G₀ w v)
+    (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    (hgpos : ∀ (y : M) (u : TangentSpace I y), u ≠ 0 → 0 < g y u u)
+    (x₀ : M) :
+    ∃ Ghat : E → E →L[ℝ] E →L[ℝ] ℝ,
+      (∀ (z : E) (v w : E), Ghat z v w = Ghat z w v) ∧
+      (∀ (z : E) (v : E), v ≠ 0 → 0 < Ghat z v v) ∧
+      (∀ᶠ z in nhds (extChartAt I x₀ x₀), Ghat z = chartMetric g x₀ z) := by
+  obtain ⟨χ, hχsm, hχ0, hχ1, hχsupp, hχone⟩ := exists_blending_cutoff (I := I) x₀
+  refine ⟨blendedChartMetric χ G₀ g x₀,
+    fun z v w ↦ blendedChartMetric_symm χ G₀ hG₀symm g hgsymm x₀ z v w,
+    fun z v hv ↦ blendedChartMetric_posDef χ G₀ hG₀pos g hgpos x₀
+      (hχ0 z) (hχ1 z)
+      (fun hne ↦ isInvertible_mfderivWithin_extChartAt_symm
+        (I := I) (hχsupp z hne)) hv, ?_⟩
+  filter_upwards [hχone] with z hz
+  ext v w
+  rw [blendedChartMetric_apply, hz]
+  simp
+
 end Blended
 
 end CovariantDerivative
