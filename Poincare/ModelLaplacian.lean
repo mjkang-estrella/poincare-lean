@@ -150,3 +150,24 @@ theorem modelLaplacian_quadratic (b : LinearMap.BilinForm ℝ E)
   rw [hassemble, map_smul, LinearMap.trace_id, smul_eq_mul]
 
 end RicciFlow
+
+namespace RicciFlow
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Affine functions are harmonic**: the Laplacian of `L y + c`
+vanishes. -/
+theorem modelLaplacian_affine (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (L : E →L[ℝ] ℝ) (c : ℝ) (x : E) :
+    modelLaplacian b hb (fun y ↦ L y + c) x = 0 := by
+  unfold modelLaplacian
+  have hdf : fderiv ℝ (fun y ↦ L y + c) = fun _ ↦ L := by
+    funext y
+    rw [fderiv_add_const]
+    exact L.fderiv
+  rw [hdf]
+  rw [show fderiv ℝ (fun _ : E ↦ L) x = 0 from fderiv_const_apply L]
+  simp
+
+end RicciFlow
