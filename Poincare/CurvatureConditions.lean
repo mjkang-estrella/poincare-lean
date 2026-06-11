@@ -127,6 +127,28 @@ theorem ricciTraceAt_eq_of_agree
     houter (extend E v) (mdifferentiableAt_extend ..),
     hagree x Z hZx]
 
+/--
+Connections agreeing on differentiable fields have equal canonical Ricci
+forms.
+-/
+theorem ricciBilinearAt_eq_of_agree [CompleteSpace E]
+    [ContMDiffCovariantDerivative cov' 1]
+    (hagree : ∀ (y : M) (Y : Π z : M, TangentSpace I z),
+      MDiffAt (T% Y) y → cov Y y = cov' Y y)
+    (x : M) (u w : TangentSpace I x) :
+    ricciBilinearAt cov x u w = ricciBilinearAt cov' x u w :=
+  ricciTraceAt_eq_of_agree cov hagree
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E w)
+    (derivRegularAt_extend cov w) (derivRegularAt_extend cov' w) u
+
+/-- Ricci nonnegativity transfers along connection agreement. -/
+theorem HasNonnegRicciAt.of_agree [CompleteSpace E]
+    [ContMDiffCovariantDerivative cov' 1]
+    (hagree : ∀ (y : M) (Y : Π z : M, TangentSpace I z),
+      MDiffAt (T% Y) y → cov Y y = cov' Y y)
+    {x : M} (h : HasNonnegRicciAt cov x) : HasNonnegRicciAt cov' x :=
+  fun u ↦ (ricciBilinearAt_eq_of_agree cov hagree x u u) ▸ h u
+
 end RicciAgree
 
 end CovariantDerivative
