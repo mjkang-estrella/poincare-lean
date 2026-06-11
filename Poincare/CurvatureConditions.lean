@@ -414,4 +414,47 @@ theorem isRicciFlowSolutionAt_const_of_ricciFlat
     rw [deriv_const, hric hZ hreg w]
     ring
 
+
+variable [T2Space M] [IsManifold I ∞ M] [I.Boundaryless]
+
+/--
+Scalar curvature scales inversely with the metric: with respect to `c • b`
+the scalar curvature is `c⁻¹` times that with respect to `b`.
+-/
+theorem scalarCurvatureAt_const_smul
+    {cov : CovariantDerivative I E (TangentSpace I : M → Type _)}
+    [ContMDiffCovariantDerivative cov 1] {x : M}
+    (b : LinearMap.BilinForm ℝ (TangentSpace I x)) (hb : b.Nondegenerate)
+    {c : ℝ} (hc : c ≠ 0) (hb' : (c • b).Nondegenerate) :
+    scalarCurvatureAt cov x (c • b) hb' =
+      c⁻¹ * scalarCurvatureAt cov x b hb := by
+  letI : FiniteDimensional ℝ (TangentSpace I x) := ‹FiniteDimensional ℝ E›
+  have hsymm : ∀ ψ : Module.Dual ℝ (TangentSpace I x),
+      (LinearMap.BilinForm.toDual (c • b) hb').symm ψ =
+        c⁻¹ • (LinearMap.BilinForm.toDual b hb).symm ψ := by
+    intro ψ
+    rw [LinearEquiv.symm_apply_eq]
+    apply LinearMap.ext
+    intro w
+    rw [LinearMap.BilinForm.toDual_def]
+    simp only [LinearMap.smul_apply, smul_eq_mul, map_smul]
+    have hbw : b ((LinearMap.BilinForm.toDual b hb).symm ψ) w = ψ w := by
+      have := LinearEquiv.apply_symm_apply
+        (LinearMap.BilinForm.toDual b hb) ψ
+      have h2 := congrArg (fun L ↦ L w) this
+      simpa [LinearMap.BilinForm.toDual_def] using h2
+    rw [hbw]
+    field_simp
+  have hcomp : (LinearMap.BilinForm.toDual (c • b) hb').symm.toLinearMap ∘ₗ
+      ricciDualAt cov x =
+      c⁻¹ • ((LinearMap.BilinForm.toDual b hb).symm.toLinearMap ∘ₗ
+        ricciDualAt cov x) := by
+    apply LinearMap.ext
+    intro u
+    simp only [LinearMap.comp_apply, LinearEquiv.coe_coe,
+      LinearMap.smul_apply]
+    exact hsymm (ricciDualAt cov x u)
+  unfold scalarCurvatureAt
+  rw [hcomp, map_smul, smul_eq_mul]
+
 end CovariantDerivative
