@@ -53,4 +53,57 @@ theorem leviCivitaConnection_euclidean_eq_flat
     euclideanBundleMetric_pairing_mdiff (flatCovariantDerivative ℝ F)
     (fun y ↦ flat_metricCompatibleAt y) (fun y ↦ flat_torsionFreeAt y) hY
 
+/--
+**The constructed connection on Euclidean space is flat**: its curvature
+operator vanishes on `C²` fields, via the coincidence with the flat
+connection and the model flatness theorem.
+-/
+theorem curvatureOp_leviCivitaConnection_euclidean
+    {X Y Z : Π y : F, TangentSpace 𝓘(ℝ, F) y} {x : F}
+    (hX : MDifferentiableAt 𝓘(ℝ, F) (𝓘(ℝ, F).prod 𝓘(ℝ, F)) (T% X) x)
+    (hY : MDifferentiableAt 𝓘(ℝ, F) (𝓘(ℝ, F).prod 𝓘(ℝ, F)) (T% Y) x)
+    (hZcd : ContDiff ℝ 2 (Z : F → F)) :
+    curvatureOp (leviCivitaConnection (euclideanBundleMetric (F := F))
+        euclideanBundleMetric_symm euclideanBundleMetric_nondegenerate
+        euclideanBundleMetric_pairing_mdiff) X Y Z x = 0 := by
+  set LC := leviCivitaConnection (euclideanBundleMetric (F := F))
+    euclideanBundleMetric_symm euclideanBundleMetric_nondegenerate
+    euclideanBundleMetric_pairing_mdiff with hLC
+  have hZdiff : ∀ y : F, MDifferentiableAt 𝓘(ℝ, F)
+      (𝓘(ℝ, F).prod 𝓘(ℝ, F)) (T% Z) y := fun y ↦
+    mdiffAt_vectorSpace_iff_differentiableAt.mpr
+      (hZcd.differentiable (by norm_num) y)
+  have hcovZ : LC Z = flatCovariantDerivative ℝ F Z :=
+    funext fun y ↦ leviCivitaConnection_euclidean_eq_flat (hZdiff y)
+  have hDZY : MDifferentiableAt 𝓘(ℝ, F) (𝓘(ℝ, F).prod 𝓘(ℝ, F))
+      (T% (fun y ↦ flatCovariantDerivative ℝ F Z y (Y y))) x := by
+    apply mdiffAt_vectorSpace_iff_differentiableAt.mpr
+    apply DifferentiableAt.clm_apply
+    · exact ((hZcd.contDiffAt (x := x)).fderiv_right (m := 1)
+        (by norm_num)).differentiableAt one_ne_zero
+    · exact mdiffAt_vectorSpace_iff_differentiableAt.mp hY
+  have hDZX : MDifferentiableAt 𝓘(ℝ, F) (𝓘(ℝ, F).prod 𝓘(ℝ, F))
+      (T% (fun y ↦ flatCovariantDerivative ℝ F Z y (X y))) x := by
+    apply mdiffAt_vectorSpace_iff_differentiableAt.mpr
+    apply DifferentiableAt.clm_apply
+    · exact ((hZcd.contDiffAt (x := x)).fderiv_right (m := 1)
+        (by norm_num)).differentiableAt one_ne_zero
+    · exact mdiffAt_vectorSpace_iff_differentiableAt.mp hX
+  rw [curvatureOp_apply]
+  rw [show (fun y ↦ LC Z y (Y y)) =
+    fun y ↦ flatCovariantDerivative ℝ F Z y (Y y) from by rw [hcovZ]]
+  rw [show (fun y ↦ LC Z y (X y)) =
+    fun y ↦ flatCovariantDerivative ℝ F Z y (X y) from by rw [hcovZ]]
+  rw [leviCivitaConnection_euclidean_eq_flat hDZY,
+    leviCivitaConnection_euclidean_eq_flat hDZX, hcovZ]
+  have h := flatCovariantDerivative_curvatureOp_eq_zero
+    (V := X) (W := Y) (Z := Z) (x := x)
+    (mdiffAt_vectorSpace_iff_differentiableAt.mp hX)
+    (mdiffAt_vectorSpace_iff_differentiableAt.mp hY)
+    (((hZcd.contDiffAt (x := x)).fderiv_right (m := 1)
+      (by norm_num)).differentiableAt one_ne_zero)
+    ((hZcd.contDiffAt (x := x)).isSymmSndFDerivAt (by simp))
+  rw [curvatureOp_apply] at h
+  exact h
+
 end CovariantDerivative
