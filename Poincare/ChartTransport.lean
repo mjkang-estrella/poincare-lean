@@ -224,4 +224,68 @@ theorem mfderivWithin_extChartAt_symm_target_eq_range
     ((contMDiffWithinAt_extChartAt_symm_range (n := 1) x₀
       hz).mdifferentiableWithinAt one_ne_zero)
 
+
+section Blended
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
+  {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+  [IsManifold I 1 M] [FiniteDimensional ℝ E]
+
+/--
+The blended chart metric: the chart metric glued to a reference inner
+product by a cutoff `χ` supported where the chart tangent map is
+invertible. This globalizes the chart metric over the whole model space,
+where the model-space Levi-Civita theory applies.
+-/
+def blendedChartMetric (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (x₀ : M) (z : E) : E →L[ℝ] E →L[ℝ] ℝ :=
+  χ z • chartMetric g x₀ z + (1 - χ z) • G₀
+
+theorem blendedChartMetric_apply (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (x₀ : M) (z : E) (v w : E) :
+    blendedChartMetric χ G₀ g x₀ z v w =
+      χ z * chartMetric g x₀ z v w + (1 - χ z) * G₀ v w := by
+  simp [blendedChartMetric]
+
+theorem blendedChartMetric_symm (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (hG₀ : ∀ v w : E, G₀ v w = G₀ w v)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    (x₀ : M) (z : E) (v w : E) :
+    blendedChartMetric χ G₀ g x₀ z v w =
+      blendedChartMetric χ G₀ g x₀ z w v := by
+  rw [blendedChartMetric_apply, blendedChartMetric_apply,
+    chartMetric_symm g hgsymm, hG₀]
+
+/--
+**The blended chart metric is positive-definite** wherever the cutoff
+takes values in `[0,1]` and is supported in the invertibility locus.
+-/
+theorem blendedChartMetric_posDef (χ : E → ℝ)
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ) (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (hgpos : ∀ (y : M) (u : TangentSpace I y), u ≠ 0 → 0 < g y u u)
+    (x₀ : M) {z : E} (hχ0 : 0 ≤ χ z) (hχ1 : χ z ≤ 1)
+    (hsupp : χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z).IsInvertible)
+    {v : E} (hv : v ≠ 0) :
+    0 < blendedChartMetric χ G₀ g x₀ z v v := by
+  rw [blendedChartMetric_apply]
+  rcases eq_or_lt_of_le hχ0 with h0 | h0
+  · rw [← h0]
+    have := hG₀pos v hv
+    nlinarith
+  · have hchart := chartMetric_posDef g hgpos x₀ (hsupp (ne_of_gt h0)) hv
+    rcases eq_or_lt_of_le hχ1 with h1 | h1
+    · rw [h1]
+      nlinarith
+    · have := hG₀pos v hv
+      nlinarith
+
+end Blended
+
 end CovariantDerivative
