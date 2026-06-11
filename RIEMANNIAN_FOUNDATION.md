@@ -133,8 +133,7 @@ equation itself) are now stateable as genuine mathematics.
 
 ## The honest remaining road
 
-In order: chart transport of the model-space smoothness theorem to general
-manifolds; parabolic PDE theory on manifolds and short-time existence of the
+In order: parabolic PDE theory on manifolds and short-time existence of the
 flow (DeTurck's trick); Hamilton's curvature evolution equations and
 maximum principles; Perelman's entropy and reduced volume; κ-solutions and
 canonical neighbourhoods; surgery; finite-time extinction; and the
