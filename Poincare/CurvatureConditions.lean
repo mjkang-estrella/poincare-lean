@@ -333,3 +333,50 @@ theorem einstein_scaling_negative_past_extinction
   exact mul_neg_of_neg_of_pos hfac hu
 
 end CovariantDerivative
+
+/-! ## Parabolic rescaling of Ricci flow solutions -/
+
+namespace CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [CompleteSpace E] [FiniteDimensional ℝ E]
+  {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
+  {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+  [IsManifold I 2 M]
+
+/--
+**Parabolic rescaling**: if `g(t)` is a Ricci flow solution then so is
+`c · g(t/c)`, at the rescaled time — the fundamental symmetry behind
+blow-up analysis of singularities.
+-/
+theorem IsRicciFlowSolutionAt.parabolic_rescale
+    {g : ℝ → Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ}
+    {covt : ℝ → CovariantDerivative I E (TangentSpace I : M → Type _)}
+    {t₀ : ℝ} {x : M}
+    (sol : IsRicciFlowSolutionAt g covt t₀ x) {c : ℝ} (hc : c ≠ 0)
+    (hP : ∀ (t : ℝ) (A B : Π y : M, TangentSpace I y),
+      MDiffAt (T% A) x → MDiffAt (T% B) x →
+        MDiffAt (fun y ↦ g t y (A y) (B y)) x) :
+    IsRicciFlowSolutionAt (fun t ↦ fun y ↦ c • g (c⁻¹ * t) y)
+      (fun t ↦ covt (c⁻¹ * t)) (c * t₀) x := by
+  constructor
+  · intro t
+    exact ⟨MetricCompatibleAt.const_smul c
+        (sol.leviCivita (c⁻¹ * t)).1
+        (fun A B hA hB ↦ hP (c⁻¹ * t) A B hA hB),
+      (sol.leviCivita (c⁻¹ * t)).2⟩
+  · intro Z hZ
+    rw [show c⁻¹ * (c * t₀) = t₀ from by field_simp]
+    intro hreg w
+    have hfun : (fun t ↦ ((fun y ↦ c • g (c⁻¹ * t) y) x) (Z x) w) =
+        fun t ↦ c * ((fun s ↦ g s x (Z x) w) (c⁻¹ * t)) := by
+      funext t
+      simp
+    rw [hfun, deriv_const_mul_field,
+      deriv_comp_mul_left (f := fun s ↦ g s x (Z x) w) (c := c⁻¹),
+      show c⁻¹ * (c * t₀) = t₀ from by field_simp, smul_eq_mul,
+      show c * (c⁻¹ * deriv (fun s ↦ g s x (Z x) w) t₀) =
+        deriv (fun s ↦ g s x (Z x) w) t₀ from by field_simp]
+    exact sol.flow hZ hreg w
+
+end CovariantDerivative
