@@ -457,4 +457,59 @@ theorem scalarCurvatureAt_const_smul
   unfold scalarCurvatureAt
   rw [hcomp, map_smul, smul_eq_mul]
 
+
+/--
+The scalar curvature of the shrinking Einstein family at time `t`:
+`Scal(t) = (1 - 2 lam t)⁻¹ * lam * dim`.
+-/
+theorem einstein_scaled_scalarCurvature
+    {cov : CovariantDerivative I E (TangentSpace I : M → Type _)}
+    [ContMDiffCovariantDerivative cov 1] {x : M}
+    {g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ}
+    {lam : ℝ}
+    (b : LinearMap.BilinForm ℝ (TangentSpace I x)) (hb : b.Nondegenerate)
+    (hbg : ∀ v w : TangentSpace I x, b v w = g x v w)
+    (hEin : IsEinsteinAt cov g lam x) {t : ℝ} (ht : 1 - 2 * lam * t ≠ 0)
+    (hb' : ((1 - 2 * lam * t) • b).Nondegenerate) :
+    scalarCurvatureAt cov x ((1 - 2 * lam * t) • b) hb' =
+      (1 - 2 * lam * t)⁻¹ * (lam * Module.finrank ℝ E) := by
+  rw [scalarCurvatureAt_const_smul b hb ht hb',
+    scalarCurvatureAt_of_einstein cov g b hb hbg hEin]
+
+/--
+**Scalar curvature blows up at the extinction time**: for a shrinking
+(`lam > 0`) Einstein family on a nontrivial space, the time-scalar
+`(1 - 2 lam t)⁻¹ lam n` tends to `+∞` as `t` approaches the extinction
+time from below.
+-/
+theorem einstein_scalar_tendsto_atTop [Nontrivial E] {lam : ℝ}
+    (hlam : 0 < lam) :
+    Filter.Tendsto
+      (fun t : ℝ ↦ (1 - 2 * lam * t)⁻¹ * (lam * (Module.finrank ℝ E : ℝ)))
+      (nhdsWithin (einsteinExtinctionTime lam)
+        (Set.Iio (einsteinExtinctionTime lam))) Filter.atTop := by
+  have hn : (0 : ℝ) < lam * (Module.finrank ℝ E : ℝ) := by
+    have : 0 < Module.finrank ℝ E := Module.finrank_pos
+    positivity
+  have h1 : Filter.Tendsto (fun t : ℝ ↦ 1 - 2 * lam * t)
+      (nhdsWithin (einsteinExtinctionTime lam)
+        (Set.Iio (einsteinExtinctionTime lam)))
+      (nhdsWithin 0 (Set.Ioi 0)) := by
+    rw [tendsto_nhdsWithin_iff]
+    constructor
+    · have hc : Filter.Tendsto (fun t : ℝ ↦ 1 - 2 * lam * t)
+          (nhds (einsteinExtinctionTime lam))
+          (nhds (1 - 2 * lam * einsteinExtinctionTime lam)) :=
+        (continuous_const.sub ((continuous_const.mul continuous_id))).tendsto _
+      rw [einstein_scaling_vanishes_at_extinctionTime (ne_of_gt hlam)] at hc
+      exact hc.mono_left nhdsWithin_le_nhds
+    · filter_upwards [self_mem_nhdsWithin] with t ht
+      have : t < einsteinExtinctionTime lam := ht
+      have h2 : 0 < 2 * lam := by linarith
+      have ht2 : t < 1 / (2 * lam) := this
+      have h3 := (lt_div_iff₀ h2).mp ht2
+      simp only [Set.mem_Ioi]
+      nlinarith
+  exact (tendsto_inv_nhdsGT_zero.comp h1).atTop_mul_const hn
+
 end CovariantDerivative
