@@ -158,7 +158,12 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   derivative of the Christoffel connection, symmetric by Schwarz +
   corrector symmetry), `curvedLaplacian` (the Laplace–Beltrami operator,
   trace of the covariant Hessian), and the anchor `curvedLaplacian_const`
-  (= the flat Laplacian on constant metrics).
+  (= the flat Laplacian on constant metrics); `metricGradient` with its
+  defining property; operator linearity and the constant/critical-point
+  anchors; **the curved spatial maximum principle** (the corrector dies at
+  critical points) and **the parabolic maximum principle on curved
+  backgrounds** (`curved_parabolic_min_principle_strict`) — Hamilton's
+  maximum principle in the geometric generality his estimates require.
 
 ## What this layer provides
 
