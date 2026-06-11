@@ -1169,3 +1169,100 @@ theorem curvedLaplacian_mul (G : E → E →L[ℝ] E →L[ℝ] ℝ)
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The Laplacian chain rule**: `Δ(φ∘f) = φ'(f) Δf + φ''(f) |∇f|²` — the
+identity behind every logarithmic-derivative computation in Perelman's
+entropy functionals.
+-/
+theorem modelLaplacian_comp (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f)
+    {φ : ℝ → ℝ} (hφ : ContDiff ℝ 2 φ) (x : E) :
+    modelLaplacian b hb (fun y ↦ φ (f y)) x =
+      deriv φ (f x) * modelLaplacian b hb f x
+        + deriv (deriv φ) (f x)
+          * b (metricGradient b hb f x) (metricGradient b hb f x) := by
+  have hfd : Differentiable ℝ f := hf.differentiable (by norm_num)
+  have hφd : Differentiable ℝ φ := hφ.differentiable (by norm_num)
+  have hf1 : Differentiable ℝ (fderiv ℝ f) :=
+    (hf.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)
+  have hφ1 : Differentiable ℝ (deriv φ) := hφ.differentiable_deriv_two
+  -- The scalar chain identity for first derivatives.
+  have hchain : ∀ (ψ : ℝ → ℝ), Differentiable ℝ ψ → ∀ y : E,
+      fderiv ℝ (fun z ↦ ψ (f z)) y = deriv ψ (f y) • fderiv ℝ f y := by
+    intro ψ hψ y
+    rw [show (fun z ↦ ψ (f z)) = ψ ∘ f from rfl,
+      fderiv_comp y (hψ (f y)) (hfd y)]
+    ext v
+    simp only [ContinuousLinearMap.comp_apply,
+      ContinuousLinearMap.smul_apply, smul_eq_mul]
+    rw [show fderiv ℝ ψ (f y) (fderiv ℝ f y v) =
+      (fderiv ℝ f y v) • deriv ψ (f y) from by
+        rw [← fderiv_deriv]
+        simp [mul_comm]]
+    simp [smul_eq_mul, mul_comm]
+  have hd1 := hchain φ hφd
+  -- Second derivative.
+  have hcdiff : DifferentiableAt ℝ (fun y ↦ deriv φ (f y)) x :=
+    (hφ1 (f x)).comp x (hfd x)
+  have hd2 : fderiv ℝ (fderiv ℝ (fun y ↦ φ (f y))) x =
+      deriv φ (f x) • fderiv ℝ (fderiv ℝ f) x
+        + (deriv (deriv φ) (f x) • fderiv ℝ f x).smulRight
+          (fderiv ℝ f x) := by
+    rw [show fderiv ℝ (fun y ↦ φ (f y)) =
+      fun y ↦ deriv φ (f y) • fderiv ℝ f y from funext hd1]
+    refine Eq.trans (fderiv_smul hcdiff (hf1 x)) ?_
+    congr 1
+    rw [show fderiv ℝ (fun y ↦ deriv φ (f y)) x =
+      deriv (deriv φ) (f x) • fderiv ℝ f x from hchain (deriv φ) hφ1 x]
+  -- Trace the decomposition.
+  unfold modelLaplacian
+  rw [hd2]
+  have hsm : ((deriv (deriv φ) (f x) • fderiv ℝ f x).smulRight
+      (fderiv ℝ f x)) = deriv (deriv φ) (f x) •
+        ((fderiv ℝ f x).smulRight (fderiv ℝ f x)) := by
+    ext v
+    simp [ContinuousLinearMap.smulRight_apply, smul_smul, mul_comm]
+  rw [hsm]
+  simp only [ContinuousLinearMap.coe_add, ContinuousLinearMap.coe_smul,
+    LinearMap.comp_add, LinearMap.add_comp, LinearMap.comp_smul,
+    LinearMap.smul_comp, map_add, map_smul, smul_eq_mul]
+  -- The rank-one trace is the gradient pairing.
+  have hcross : LinearMap.trace ℝ E
+      ((LinearMap.BilinForm.toDual b hb).symm.toLinearMap ∘ₗ
+        (LinearMap.toContinuousLinearMap.symm.toLinearMap.comp
+          (((fderiv ℝ f x).smulRight (fderiv ℝ f x)).toLinearMap))) =
+      fderiv ℝ f x ((LinearMap.BilinForm.toDual b hb).symm
+        (LinearMap.toContinuousLinearMap.symm (fderiv ℝ f x))) := by
+    have hcomp : (LinearMap.BilinForm.toDual b hb).symm.toLinearMap ∘ₗ
+        (LinearMap.toContinuousLinearMap.symm.toLinearMap.comp
+          (((fderiv ℝ f x).smulRight (fderiv ℝ f x)).toLinearMap)) =
+        LinearMap.smulRight ((fderiv ℝ f x : E →ₗ[ℝ] ℝ))
+          ((LinearMap.BilinForm.toDual b hb).symm
+            (LinearMap.toContinuousLinearMap.symm (fderiv ℝ f x))) := by
+      apply LinearMap.ext
+      intro v
+      have h1 : ((fderiv ℝ f x).smulRight (fderiv ℝ f x)).toLinearMap v =
+          fderiv ℝ f x v • fderiv ℝ f x := rfl
+      simp only [LinearMap.comp_apply, LinearMap.coe_comp,
+        Function.comp_apply, LinearEquiv.coe_coe, h1, map_smul,
+        LinearMap.smulRight_apply, ContinuousLinearMap.coe_coe]
+    rw [hcomp, LinearMap.trace_smulRight]
+    rfl
+  rw [hcross]
+  have hpair : fderiv ℝ f x ((LinearMap.BilinForm.toDual b hb).symm
+      (LinearMap.toContinuousLinearMap.symm (fderiv ℝ f x))) =
+      b (metricGradient b hb f x) (metricGradient b hb f x) := by
+    rw [← b_metricGradient b hb f x]
+    rfl
+  rw [hpair]
+
+end RicciFlow
