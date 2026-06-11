@@ -133,6 +133,12 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   scalar (`einstein_scalar_hasDerivAt_riccati`), cross-validating the
   analytic and flow strata.
 
+- `Poincare/ModelLaplacian.lean` — the Laplacian stratum (opened):
+  `modelLaplacian` (the trace of the Hessian against the inverse metric on
+  the model space), linearity, and the anchoring computation
+  `modelLaplacian_quadratic` (`Δ` of the metric's quadratic form is `2n`).
+  The operator driving every evolution equation of the flow.
+
 ## What this layer provides
 
 For any symmetric, nondegenerate, pairing-regular metric on a boundaryless
