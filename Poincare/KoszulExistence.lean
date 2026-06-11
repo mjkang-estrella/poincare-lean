@@ -1227,6 +1227,27 @@ theorem isRicciFlowSolutionAt_of_metric [FiniteDimensional ℝ E]
     (hgnd t) (hP t) x
   flow hZ hreg w := hflow hZ hreg w
 
+/--
+**Bundled uniqueness**: the constructed Levi-Civita connection coincides
+with any torsion-free metric-compatible covariant derivative on fields
+differentiable at the point, as continuous linear maps in the direction.
+-/
+theorem leviCivitaConnection_eq_of_isLeviCivita
+    (cov : CovariantDerivative I E (TangentSpace I : M → Type _))
+    (hc : ∀ y : M, MetricCompatibleAt g cov y)
+    (ht : ∀ y : M, TorsionFreeAt cov y)
+    {Y : Π y : M, TangentSpace I y} {x : M} (hY : MDiffAt (T% Y) x) :
+    leviCivitaConnection g hgsymm hgnd hP Y x = cov Y x := by
+  ext v
+  rw [show leviCivitaConnection g hgsymm hgnd hP Y x v =
+      leviCivitaCovFun g hgsymm hgnd hP Y x v from rfl,
+    leviCivitaCovFun_apply g hgsymm hgnd hP hY v]
+  have h := covDeriv_eq_leviCivitaValueAt g cov hgsymm (hc x) (ht x)
+    (mdifferentiableAt_extend (σ₀ := v) ..) hY (hP x) (metricBilinAt g x)
+    (metricBilinAt_nondegenerate g hgsymm hgnd x) (metricBilinAt_apply g x)
+  rw [extend_apply_self] at h
+  exact h.symm
+
 end MetricFlow
 
 end Bundled
