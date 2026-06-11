@@ -1,0 +1,76 @@
+# The Riemannian Foundation (2026-06-10)
+
+This document records the genuine formalized layer added to this repository,
+replacing reliance on the vacuous interface scaffold documented in
+`INTEGRITY_ASSESSMENT.md`. Everything below is compile-verified
+(toolchain `leanprover/lean4:v4.30.0-rc2`, full build green), with no
+`sorry`, no axioms, and no opaque-`Prop` placeholders.
+
+## Modules (in dependency order)
+
+- `Poincare/RiemannCurvatureOperator.lean` — the Riemann curvature operator
+  `R(X,Y)Z = ∇_X∇_Y Z − ∇_Y∇_X Z − ∇_{[X,Y]}Z` of a covariant derivative on
+  the tangent bundle (absent from Mathlib); antisymmetry; pointwise
+  tensoriality in `(X,Y)` via Leibniz cancellation; the pointwise curvature
+  tensor (`TensorialAt.mkHom₂`); the Ricci trace; regularity discharge for
+  `C¹` connections.
+- `Poincare/FlatModelConnection.lean` — the flat connection on a normed
+  space (first concrete `CovariantDerivative` instance anywhere); flatness
+  of Euclidean space via Schwarz symmetry; torsion-freeness and
+  inner-product compatibility (flat = Levi-Civita of Euclidean space).
+- `Poincare/LeviCivitaUniqueness.lean` — pointwise `MetricCompatibleAt` /
+  `TorsionFreeAt`; uniqueness of the Levi-Civita connection (S₃ argument);
+  the Koszul formula for any compatible torsion-free connection.
+- `Poincare/BianchiIdentity.lean` — the first Bianchi identity (global-C²
+  form), including the cyclic Jacobi identity derived from Mathlib's Leibniz
+  form.
+- `Poincare/RicciFlowEquation.lean` — `IsLeviCivitaAt`; the Ricci flow
+  equation `∂g/∂t = −2 Ric` with genuine content; Euclidean space as a
+  verified static solution; canonical Ricci values of the model vanish.
+- `Poincare/LocalConnectionRegularity.lean` — the local-regularity keystone
+  (bump-function globalization + germ locality): `∇Z` differentiable at `x`
+  for `Z` only `C²` *at* `x`; admissibility of canonical extensions; the
+  canonical Ricci bilinear form; germ locality of curvature.
+- `Poincare/ChartIdentification.lean` — chart formulas for the Lie bracket,
+  `extDerivFun`, and pullbacks; the bracket-derivation identity
+  `df([X,Y]) = X(Yf) − Y(Xf)` in chart and invariant forms (boundaryless
+  manifolds), transferred from the model space through `extChartAt`.
+- `Poincare/CurvatureTensoriality.lean` — full tensoriality of curvature in
+  the field slot (smul/add/finite-sum/value-dependence via local frames);
+  the genuine Ricci tensor (extension-independent, bilinear); localized
+  Bianchi identity; Ricci antisymmetry identity; pair antisymmetry from
+  compatibility; Ricci symmetry (g-skew operators are traceless); pair
+  symmetry `g(R(a,b)c,d) = g(R(c,d)a,b)`; sectional numerator and scalar
+  curvature.
+- `Poincare/KoszulExistence.lean` — the Koszul functional with all six
+  slot-laws (tensorial in direction and test slots, connection laws in the
+  section slot) and value-dependence in both outer slots; the constructed
+  `leviCivitaValueAt` with its defining Koszul property; verified
+  torsion-freeness, metric compatibility, additivity, Leibniz; the pointwise
+  fundamental theorem (`covDeriv_eq_leviCivitaValueAt`); the bundled
+  `leviCivitaConnection : CovariantDerivative` with `IsLeviCivitaAt` at
+  every point; the metric-only Ricci flow formulation.
+
+## What this layer provides
+
+For any symmetric, nondegenerate, pairing-regular metric on a boundaryless
+smooth finite-dimensional real manifold: the canonical Levi-Civita
+connection (existence + uniqueness), the full Riemann curvature tensor with
+all four classical symmetries, the symmetric bilinear Ricci tensor,
+sectional and scalar curvature, and the Ricci flow equation posed purely in
+terms of the metric family. The hypothesis classes of the
+Hamilton–Perelman program (positive scalar/sectional curvature, the flow
+equation itself) are now stateable as genuine mathematics.
+
+## The honest remaining road
+
+In order: smoothness of the constructed connection in the base point
+(`ContMDiffCovariantDerivative` for `leviCivitaConnection` from a smooth
+metric); parabolic PDE theory on manifolds and short-time existence of the
+flow (DeTurck's trick); Hamilton's curvature evolution equations and
+maximum principles; Perelman's entropy and reduced volume; κ-solutions and
+canonical neighbourhoods; surgery; finite-time extinction; and the
+topological endgame to the Poincaré conjecture. This is a multi-year
+research program; no group worldwide has completed it. Future sessions
+should continue from this foundation rather than the legacy interface
+scaffold, whose vacuity is documented in `INTEGRITY_ASSESSMENT.md`.
