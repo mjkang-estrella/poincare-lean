@@ -84,7 +84,15 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   `fderiv_metric_pairing`; verified torsion-freeness and metric
   compatibility; and the identification with the canonical construction —
   the Levi-Civita connection in a form involving exactly one derivative of
-  the metric, the entry point of the smoothness stratum.
+  the metric; the closed form `Γ = G⁻¹ Φ` via operator inversion
+  (`metric_isInvertible`, `christoffelAt_eq_inverse`); smoothness of the
+  corrector (`contDiffAt_christoffelAt`, fixed directions) and along smooth
+  sections (`contDiff_christoffel_apply_section`, by the per-vector
+  evaluation criterion at both levels); and the stratum's first major
+  theorem, `modelLeviCivita_contMDiff` — **the Levi-Civita connection of a
+  `C^{k+1}` metric is a `C^k` covariant derivative** on the model space,
+  putting every instance-gated theorem of the development at the disposal
+  of smooth metrics.
 
 ## What this layer provides
 
@@ -99,10 +107,8 @@ equation itself) are now stateable as genuine mathematics.
 
 ## The honest remaining road
 
-In order: smoothness of `Γ` in the base point (from `G ∈ C^{k+1}`, via
-smoothness of operator inversion on units — the Christoffel form makes
-this a direct formula computation); thence `ContMDiffCovariantDerivative`
-for `leviCivitaConnection` from a smooth metric; parabolic PDE theory on manifolds and short-time existence of the
+In order: chart transport of the model-space smoothness theorem to general
+manifolds; parabolic PDE theory on manifolds and short-time existence of the
 flow (DeTurck's trick); Hamilton's curvature evolution equations and
 maximum principles; Perelman's entropy and reduced volume; κ-solutions and
 canonical neighbourhoods; surgery; finite-time extinction; and the
