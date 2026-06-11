@@ -185,6 +185,57 @@ theorem scalarCurvatureAt_eq_of_agree [CompleteSpace E]
   intro w
   exact ricciBilinearAt_eq_of_agree cov hagree x u w
 
+/-- The curvature operator itself agrees across coincident connections. -/
+theorem curvatureOp_eq_of_agree
+    (hagree : ∀ (y : M) (Y : Π z : M, TangentSpace I z),
+      MDiffAt (T% Y) y → cov Y y = cov' Y y)
+    {Z X Y : Π y : M, TangentSpace I y} {x : M}
+    (hZ : CMDiffAt 2 (T% Z) x)
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x) :
+    curvatureOp cov X Y Z x = curvatureOp cov' X Y Z x := by
+  have hZd : ∀ᶠ y in 𝓝 x, MDiffAt (T% Z) y := by
+    obtain ⟨v', hv', hZv⟩ :=
+      (contMDiffAt_iff_contMDiffOn_nhds (n := 2) (by norm_num)).mp hZ
+    filter_upwards [interior_mem_nhds.mpr hv'] with y hy
+    exact (((hZv.mono interior_subset) y hy).contMDiffAt
+      (isOpen_interior.mem_nhds hy)).mdifferentiableAt two_ne_zero
+  have hZx : MDiffAt (T% Z) x := hZ.mdifferentiableAt two_ne_zero
+  have hinner : ∀ (W : Π y : M, TangentSpace I y),
+      (fun y ↦ cov Z y (W y)) =ᶠ[𝓝 x] fun y ↦ cov' Z y (W y) := by
+    intro W
+    filter_upwards [hZd] with y hy
+    rw [hagree y Z hy]
+  have houter : ∀ (W : Π y : M, TangentSpace I y), MDiffAt (T% W) x →
+      cov (fun y ↦ cov Z y (W y)) x = cov' (fun y ↦ cov' Z y (W y)) x := by
+    intro W hW
+    have hA : MDiffAt (T% (fun y ↦ cov Z y (W y))) x :=
+      mdiffAt_cov_section_of_contMDiffAt cov hZ hW
+    have hA' : MDiffAt (T% (fun y ↦ cov' Z y (W y))) x := by
+      refine hA.congr_of_eventuallyEq ?_
+      filter_upwards [hinner W] with y hy
+      rw [Bundle.TotalSpace.mk_inj]
+      exact hy.symm
+    calc cov (fun y ↦ cov Z y (W y)) x
+        = cov (fun y ↦ cov' Z y (W y)) x :=
+          cov.isCovariantDerivativeOnUniv.congr_of_eventuallyEq hA hA'
+            univ_mem (hinner W)
+      _ = cov' (fun y ↦ cov' Z y (W y)) x := hagree x _ hA'
+  rw [curvatureOp_apply, curvatureOp_apply, houter Y hY, houter X hX,
+    hagree x Z hZx]
+
+/-- The sectional numerator transfers along connection agreement. -/
+theorem sectionalNumeratorAt_eq_of_agree [CompleteSpace E]
+    (hagree : ∀ (y : M) (Y : Π z : M, TangentSpace I z),
+      MDiffAt (T% Y) y → cov Y y = cov' Y y)
+    (x : M)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (u v : TangentSpace I x) :
+    sectionalNumeratorAt cov x g u v = sectionalNumeratorAt cov' x g u v := by
+  unfold sectionalNumeratorAt
+  rw [curvatureOp_eq_of_agree cov hagree
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E v)
+    (mdifferentiableAt_extend ..) (mdifferentiableAt_extend ..)]
+
 end RicciAgree
 
 end CovariantDerivative
