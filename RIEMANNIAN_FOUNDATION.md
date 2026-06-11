@@ -64,7 +64,10 @@ replacing reliance on the vacuous interface scaffold documented in
   Ricci agreement for coincident connections; scale invariance of the
   Levi-Civita connection; time-translation invariance and full parabolic
   rescaling of flow solutions; the fixed-point characterization (static
-  solutions ⟺ Ricci-flat).
+  solutions ⟺ Ricci-flat); the scalar-curvature scaling law and the
+  blow-up of scalar curvature at the Einstein extinction time
+  (`Tendsto … atTop`) — the first formal singularity-formation statement;
+  positive Ricci curvature of shrinking Einstein connections.
 
 Additions to earlier modules: bundled uniqueness
 (`leviCivitaConnection_eq_of_isLeviCivita`), the `IsLeviCivitaAt` and

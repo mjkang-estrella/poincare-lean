@@ -512,4 +512,20 @@ theorem einstein_scalar_tendsto_atTop [Nontrivial E] {lam : ℝ}
       nlinarith
   exact (tendsto_inv_nhdsGT_zero.comp h1).atTop_mul_const hn
 
+
+/--
+A shrinking Einstein connection on a positive-definite metric has positive
+Ricci curvature.
+-/
+theorem IsEinsteinAt.hasPosRicciAt
+    {cov : CovariantDerivative I E (TangentSpace I : M → Type _)}
+    [ContMDiffCovariantDerivative cov 1] {x : M}
+    {g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ}
+    {lam : ℝ} (hEin : IsEinsteinAt cov g lam x) (hlam : 0 < lam)
+    (hgpos : ∀ u : TangentSpace I x, u ≠ 0 → 0 < g x u u) :
+    HasPosRicciAt cov x := by
+  intro u hu
+  rw [hEin u u]
+  exact mul_pos hlam (hgpos u hu)
+
 end CovariantDerivative
