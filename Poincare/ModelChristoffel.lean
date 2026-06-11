@@ -300,4 +300,56 @@ theorem leviCivitaConnection_eq_modelLeviCivita
 
 end Identification
 
+
+section ClosedForm
+
+/-- Nondegeneracy makes the metric, viewed as the musical map into the
+dual, an invertible operator. -/
+theorem metric_isInvertible {x : F} (b : LinearMap.BilinForm ℝ F)
+    (hb : b.Nondegenerate) (hbg : ∀ v w : F, b v w = G x v w) :
+    ContinuousLinearMap.IsInvertible
+      (G x : F →L[ℝ] F →L[ℝ] ℝ) := by
+  refine ⟨((LinearMap.BilinForm.toDual b hb).trans
+    (LinearMap.toContinuousLinearMap :
+      Module.Dual ℝ F ≃ₗ[ℝ] (F →L[ℝ] ℝ))).toContinuousLinearEquiv, ?_⟩
+  ext v w
+  have h1 : (((LinearMap.BilinForm.toDual b hb).trans
+      (LinearMap.toContinuousLinearMap :
+        Module.Dual ℝ F ≃ₗ[ℝ] (F →L[ℝ] ℝ))).toContinuousLinearEquiv v) w =
+      (LinearMap.BilinForm.toDual b hb v) w := by
+    rw [show (((LinearMap.BilinForm.toDual b hb).trans
+      (LinearMap.toContinuousLinearMap :
+        Module.Dual ℝ F ≃ₗ[ℝ] (F →L[ℝ] ℝ))).toContinuousLinearEquiv v) =
+      LinearMap.toContinuousLinearMap (LinearMap.BilinForm.toDual b hb v)
+      from congrFun (LinearEquiv.coe_toContinuousLinearEquiv' _) v]
+    rfl
+  rw [show ((((LinearMap.BilinForm.toDual b hb).trans
+      (LinearMap.toContinuousLinearMap :
+        Module.Dual ℝ F ≃ₗ[ℝ] (F →L[ℝ] ℝ))).toContinuousLinearEquiv :
+      F →L[ℝ] F →L[ℝ] ℝ) v) w = (((LinearMap.BilinForm.toDual b hb).trans
+      (LinearMap.toContinuousLinearMap :
+        Module.Dual ℝ F ≃ₗ[ℝ] (F →L[ℝ] ℝ))).toContinuousLinearEquiv v) w
+      from rfl, h1, LinearMap.BilinForm.toDual_def]
+  exact hbg v w
+
+/--
+**Closed form of the Christoffel corrector**: `Γ(u,v)` is the inverse
+metric applied to the corrector functional — the representation from which
+smoothness in the base point follows by the formula.
+-/
+theorem christoffelAt_eq_inverse {x : F} (b : LinearMap.BilinForm ℝ F)
+    (hb : b.Nondegenerate) (hbg : ∀ v w : F, b v w = G x v w) (u v : F) :
+    christoffelAt G x b hb u v =
+      (G x : F →L[ℝ] F →L[ℝ] ℝ).inverse
+        (LinearMap.toContinuousLinearMap (christoffelFunctional G x u v)) := by
+  have hinv := metric_isInvertible G b hb hbg
+  symm
+  rw [hinv.inverse_apply_eq]
+  ext w
+  rw [show ((G x) (christoffelAt G x b hb u v)) w =
+    b (christoffelAt G x b hb u v) w from (hbg _ _).symm, b_christoffelAt]
+  rfl
+
+end ClosedForm
+
 end CovariantDerivative
