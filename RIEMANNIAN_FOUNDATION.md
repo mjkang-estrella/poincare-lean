@@ -120,6 +120,15 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   stratum: the hom-bundle pairing assembly of `chartMetric` smoothness,
   then the connection correspondence.
 
+- `Poincare/MaximumPrinciple.lean` — the maximum-principle stratum
+  (opened): the scalar ODE comparison backbone — `ode_comparison_nonpos` /
+  `ode_comparison_nonneg` (sign persistence under `u' ≤ C u`, the scalar
+  shadow of curvature-condition preservation), `riccati_lower_bound`
+  (`u' ≥ a u²` forces the hyperbolic lower bound `u₀/(1 − a u₀ t)`), and
+  `riccati_forces_finite_time` (explicit bound `T < 1/(a u₀)` on any
+  interval of validity) — Hamilton's finite-time-singularity mechanism at
+  its analytic core.
+
 ## What this layer provides
 
 For any symmetric, nondegenerate, pairing-regular metric on a boundaryless
