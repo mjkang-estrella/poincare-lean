@@ -127,7 +127,11 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   (`u' ≥ a u²` forces the hyperbolic lower bound `u₀/(1 − a u₀ t)`), and
   `riccati_forces_finite_time` (explicit bound `T < 1/(a u₀)` on any
   interval of validity) — Hamilton's finite-time-singularity mechanism at
-  its analytic core.
+  its analytic core; `riccati_upper_bound` and `riccati_doubling_time`
+  (blow-up control, the canonical-neighbourhood doubling mechanism); and
+  the exact saturation of the Riccati engine by the verified Einstein
+  scalar (`einstein_scalar_hasDerivAt_riccati`), cross-validating the
+  analytic and flow strata.
 
 ## What this layer provides
 
