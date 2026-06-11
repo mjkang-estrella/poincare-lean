@@ -298,3 +298,112 @@ theorem touching_point_nonneg (b : LinearMap.BilinForm ℝ E)
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open Set
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The parabolic maximum principle on a compact domain** (strict
+supersolutions): a quantity strictly positive at time `0`, evolving by a
+strict reaction–diffusion supersolution inequality whose spatial minima
+over the compact `K` are interior, stays strictly positive on `[0, T]`.
+The proof tracks the spatial minimum to its first zero, where the
+left-derivative is nonpositive while the strict supersolution inequality
+and the spatial sign of the Laplacian force it positive.
+-/
+theorem parabolic_min_principle_strict
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v)
+    {u u' : ℝ → E → ℝ} {K : Set E} (hK : IsCompact K) (hKne : K.Nonempty)
+    {T c : ℝ}
+    (hu_cont : Continuous ↿u)
+    (hud : ∀ x ∈ K, ∀ t ∈ Icc (0 : ℝ) T,
+      HasDerivAt (fun s ↦ u s x) (u' t x) t)
+    (hspace : ∀ t ∈ Icc (0 : ℝ) T, ContDiff ℝ 2 (u t))
+    (hsuper : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      modelLaplacian b hb (u t) x + c * u t x < u' t x)
+    (hmin_int : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      IsMinOn (u t) K x → IsLocalMin (u t) x)
+    (h0 : ∀ x ∈ K, 0 < u 0 x) :
+    ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, 0 < u t x := by
+  by_contra hviol
+  push_neg at hviol
+  obtain ⟨t₁, ht₁, x₁, hx₁, hux₁⟩ := hviol
+  -- The evolving spatial minimum.
+  set m : ℝ → ℝ := fun t ↦ sInf (u t '' K) with hm
+  have hmcont : Continuous m := hK.continuous_sInf hu_cont
+  have hattain : ∀ t, ∃ x ∈ K, IsMinOn (u t) K x ∧ m t = u t x := by
+    intro t
+    obtain ⟨x, hxK, hxmin⟩ := hK.exists_isMinOn hKne
+      ((hu_cont.comp (continuous_const.prodMk continuous_id)).continuousOn)
+    refine ⟨x, hxK, hxmin, ?_⟩
+    apply le_antisymm
+    · exact csInf_le ⟨u t x, fun y ⟨z, hz, hzy⟩ ↦ hzy ▸ hxmin hz⟩
+        ⟨x, hxK, rfl⟩
+    · exact le_csInf ((hKne.image (u t))) fun y ⟨z, hz, hzy⟩ ↦
+        hzy ▸ hxmin hz
+  have hmle : ∀ t (x : E), x ∈ K → m t ≤ u t x := by
+    intro t x hx
+    exact csInf_le ⟨m t, fun y ⟨z, hz, hzy⟩ ↦ by
+      obtain ⟨x', hx', hmin', hmx'⟩ := hattain t
+      rw [← hzy, hmx']
+      exact hmin' hz⟩ ⟨x, hx, rfl⟩
+  -- Initial positivity and the violation, at the level of `m`.
+  have hm0 : 0 < m 0 := by
+    obtain ⟨x, hxK, _, hmx⟩ := hattain 0
+    rw [hmx]
+    exact h0 x hxK
+  have hmbad : ∃ t ∈ Icc (0 : ℝ) T, m t ≤ 0 :=
+    ⟨t₁, ht₁, le_trans (hmle t₁ x₁ hx₁) hux₁⟩
+  -- The first crossing of the minimum.
+  obtain ⟨t₀, ht₀, hmt₀, hbefore⟩ :=
+    exists_first_zero (hmcont.continuousOn) hm0 hmbad
+  have ht₀Icc : t₀ ∈ Icc (0 : ℝ) T := ⟨le_of_lt ht₀.1, ht₀.2⟩
+  obtain ⟨x₀, hx₀K, hx₀min, hmx₀⟩ := hattain t₀
+  have hux₀ : u t₀ x₀ = 0 := by rw [← hmx₀, hmt₀]
+  -- Left-nonpositivity of the time derivative at the touching point.
+  have hder := hud x₀ hx₀K t₀ ht₀Icc
+  have hleft : u' t₀ x₀ ≤ 0 := by
+    by_contra hpos
+    push_neg at hpos
+    have hslope := hasDerivAt_iff_tendsto_slope.mp hder
+    have hev : ∀ᶠ s in nhdsWithin t₀ {t₀}ᶜ,
+        0 < slope (fun s ↦ u s x₀) t₀ s :=
+      hslope.eventually (eventually_gt_nhds hpos)
+    have hlt : ∀ᶠ s in nhdsWithin t₀ (Iio t₀),
+        0 < slope (fun s ↦ u s x₀) t₀ s := by
+      apply hev.filter_mono
+      apply nhdsWithin_mono
+      intro s hs
+      exact ne_of_lt hs
+    have hIoo : ∀ᶠ s in nhdsWithin t₀ (Iio t₀), s ∈ Ioo (0 : ℝ) t₀ :=
+      Filter.eventually_of_mem (Ioo_mem_nhdsLT ht₀.1) fun s hs ↦ hs
+    obtain ⟨s, hsl, hsIoo⟩ := (hlt.and hIoo).exists
+    have hneg : u s x₀ < 0 := by
+      have hde : slope (fun s ↦ u s x₀) t₀ s =
+          (u s x₀ - u t₀ x₀) / (s - t₀) := by
+        rw [slope_def_field]
+      rw [hde, hux₀, sub_zero] at hsl
+      have hst : s - t₀ < 0 := by linarith [hsIoo.2]
+      by_contra hge
+      push_neg at hge
+      have : u s x₀ / (s - t₀) ≤ 0 := div_nonpos_of_nonneg_of_nonpos hge
+        (le_of_lt hst)
+      linarith
+    have hmpos := hbefore s ⟨le_of_lt hsIoo.1, hsIoo.2⟩
+    have := hmle s x₀ hx₀K
+    linarith
+  -- The strict supersolution inequality forces positivity instead.
+  have hloc := hmin_int t₀ ht₀Icc x₀ hx₀K hx₀min
+  have hsup := hsuper t₀ ht₀Icc x₀ hx₀K
+  have hlap := modelLaplacian_nonneg_of_isLocalMin b hb hbs hbpos
+    (hspace t₀ ht₀Icc) hloc
+  rw [hux₀] at hsup
+  linarith
+
+end RicciFlow
