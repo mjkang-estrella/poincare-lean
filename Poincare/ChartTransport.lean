@@ -174,4 +174,33 @@ theorem contDiff_chartMetric_iff
   rw [contDiff_clm_apply_iff]
   exact forall_congr' fun v ↦ contDiff_clm_apply_iff
 
+
+/--
+**The inverse-chart tangent field is smooth**: pushing a constant vector
+through the tangent map of the inverse chart gives a `C^m` bundle map on
+the chart target, for every `m`. This is the field whose pairing computes
+the chart metric.
+-/
+theorem contMDiffOn_inverseChart_tangentMap
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I ∞ M] [I.Boundaryless]
+    (x₀ : M) {m : ℕ∞ω} (hm : m + 1 ≤ (∞ : ℕ∞ω)) (v : E) :
+    ContMDiffOn 𝓘(ℝ, E) I.tangent m
+      (fun z ↦ tangentMapWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (extChartAt I x₀).target ⟨z, v⟩)
+      (extChartAt I x₀).target := by
+  have hf : ContMDiffOn 𝓘(ℝ, E) I ∞ ((extChartAt I x₀).symm)
+      (extChartAt I x₀).target := contMDiffOn_extChartAt_symm x₀
+  have hs : UniqueMDiffOn 𝓘(ℝ, E) (extChartAt I x₀).target :=
+    (isOpen_extChartAt_target x₀).uniqueMDiffOn
+  have h := hf.contMDiffOn_tangentMapWithin (m := m) hm hs
+  have hsec : ContMDiffOn 𝓘(ℝ, E) (𝓘(ℝ, E)).tangent m
+      (fun z : E ↦ (⟨z, v⟩ : TangentBundle 𝓘(ℝ, E) E))
+      (extChartAt I x₀).target := by
+    apply ContMDiff.contMDiffOn
+    exact contMDiff_vectorSpace_iff_contDiff.mpr contDiff_const
+  exact h.comp hsec (fun z hz ↦ hz)
+
 end CovariantDerivative
