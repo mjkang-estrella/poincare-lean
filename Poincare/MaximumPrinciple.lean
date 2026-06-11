@@ -435,3 +435,66 @@ theorem hessian_nonneg_of_isLocalMin {f : E → ℝ} (hf : ContDiff ℝ 2 f)
   simpa [hg'', hℓ0] using this
 
 end RicciFlow
+
+namespace RicciFlow
+
+/--
+**The first-crossing time**: a continuous function positive at `0` that
+fails positivity somewhere in `[0, T]` has a first zero, with positivity
+before it — the temporal backbone of every first-violation argument in
+parabolic maximum principles.
+-/
+theorem exists_first_zero {g : ℝ → ℝ} {T : ℝ}
+    (hg : ContinuousOn g (Icc 0 T))
+    (h0 : 0 < g 0) (hbad : ∃ t ∈ Icc (0 : ℝ) T, g t ≤ 0) :
+    ∃ t₀ ∈ Ioc (0 : ℝ) T, g t₀ = 0 ∧ ∀ s ∈ Ico (0 : ℝ) t₀, 0 < g s := by
+  obtain ⟨t₁, ht₁, hgt₁⟩ := hbad
+  have hT0 : (0 : ℝ) ≤ T := ht₁.1.trans ht₁.2
+  set S : Set ℝ := {t ∈ Icc (0 : ℝ) T | g t ≤ 0} with hS
+  have hSne : S.Nonempty := ⟨t₁, ht₁, hgt₁⟩
+  have hSbdd : BddBelow S := ⟨0, fun s hs ↦ hs.1.1⟩
+  set t₀ := sInf S with ht₀
+  have ht₀mem : t₀ ∈ Icc (0 : ℝ) T := by
+    constructor
+    · exact le_csInf hSne fun s hs ↦ hs.1.1
+    · exact (csInf_le hSbdd ⟨ht₁, hgt₁⟩).trans ht₁.2
+  -- `S` is closed, so the infimum is attained: `g t₀ ≤ 0`.
+  have hSclosed : IsClosed S := by
+    have hSeq : S = Icc (0 : ℝ) T ∩ g ⁻¹' (Iic 0) := by
+      ext s
+      simp [hS, Set.mem_sep_iff, Set.mem_inter_iff, Set.mem_preimage]
+    rw [hSeq]
+    exact hg.preimage_isClosed_of_isClosed isClosed_Icc isClosed_Iic
+  have ht₀S : t₀ ∈ S := hSclosed.csInf_mem hSne hSbdd
+  have hgt₀ : g t₀ ≤ 0 := ht₀S.2
+  -- Positivity strictly before the first crossing.
+  have hbefore : ∀ s ∈ Ico (0 : ℝ) t₀, 0 < g s := by
+    intro s hs
+    by_contra hns
+    push_neg at hns
+    have hsmem : s ∈ S := ⟨⟨hs.1, (hs.2.le.trans ht₀mem.2)⟩, hns⟩
+    exact absurd (csInf_le hSbdd hsmem) (not_le.mpr hs.2)
+  -- `t₀ > 0` since `g 0 > 0`.
+  have ht₀pos : 0 < t₀ := by
+    rcases eq_or_lt_of_le ht₀mem.1 with h | h
+    · exfalso
+      rw [← h] at hgt₀
+      linarith
+    · exact h
+  -- `g t₀ ≥ 0` by left-continuity through positive values, hence `= 0`.
+  have hge : 0 ≤ g t₀ := by
+    have hcont : ContinuousWithinAt g (Icc 0 T) t₀ := hg t₀ ht₀mem
+    have hlim : Filter.Tendsto g (nhdsWithin t₀ (Ico 0 t₀))
+        (nhds (g t₀)) := by
+      apply hcont.tendsto.mono_left
+      apply nhdsWithin_mono
+      intro s hs
+      exact ⟨hs.1, hs.2.le.trans ht₀mem.2⟩
+    have hne : (nhdsWithin t₀ (Ico 0 t₀)).NeBot := by
+      rw [nhdsWithin_Ico_eq_nhdsLT ht₀pos]
+      infer_instance
+    exact ge_of_tendsto hlim (Filter.eventually_of_mem self_mem_nhdsWithin
+      fun s hs ↦ le_of_lt (hbefore s hs))
+  exact ⟨t₀, ⟨ht₀pos, ht₀mem.2⟩, le_antisymm hgt₀ hge, hbefore⟩
+
+end RicciFlow
