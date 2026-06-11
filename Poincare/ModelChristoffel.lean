@@ -197,4 +197,68 @@ theorem modelLeviCivita_torsionFreeAt
   rw [hlie]
   abel
 
+
+/-- The trilinear product rule: the derivative of the metric pairing of two
+fields. -/
+theorem fderiv_metric_pairing {x : F} (hGd : DifferentiableAt ℝ G x)
+    {Y Z : F → F} (hY : DifferentiableAt ℝ Y x)
+    (hZ : DifferentiableAt ℝ Z x) (v : F) :
+    fderiv ℝ (fun y ↦ G y (Y y) (Z y)) x v =
+      (fderiv ℝ G x v) (Y x) (Z x) + G x (fderiv ℝ Y x v) (Z x)
+        + G x (Y x) (fderiv ℝ Z x v) := by
+  have hc : DifferentiableAt ℝ (fun y ↦ G y (Y y)) x :=
+    hGd.clm_apply hY
+  rw [show (fun y ↦ G y (Y y) (Z y)) =
+      fun y ↦ ((fun y' ↦ G y' (Y y')) y) (Z y) from rfl,
+    fderiv_clm_apply hc hZ]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_comp',
+    Function.comp_apply, ContinuousLinearMap.flip_apply]
+  rw [show (fun y ↦ G y (Y y)) = fun y ↦ (G y) (Y y) from rfl,
+    fderiv_clm_apply hGd hY]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_comp',
+    Function.comp_apply, ContinuousLinearMap.flip_apply]
+  ring
+
+/--
+**The Christoffel-form connection is metric-compatible**: the derivative of
+the pairing satisfies the Riemannian product rule, with the corrector terms
+supplying exactly the metric derivative by the defining property and the
+derivative symmetry.
+-/
+theorem modelLeviCivita_metricCompatibleAt
+    (b : Π x : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : F) (p q : F), G y p q = G y q p)
+    (hbg : ∀ (x : F) (v w : F), b x v w = G x v w) (x : F) :
+    MetricCompatibleAt G (modelLeviCivita G b hb) x := by
+  intro Y Z hY hZ v
+  have hY' := mdiffAt_vectorSpace_iff_differentiableAt.mp hY
+  have hZ' := mdiffAt_vectorSpace_iff_differentiableAt.mp hZ
+  have h1 : G x (christoffelAt G x (b x) (hb x) v (Y x)) (Z x) =
+      (1 / 2 : ℝ) * ((fderiv ℝ G x v) (Y x) (Z x)
+        + (fderiv ℝ G x (Y x)) v (Z x) - (fderiv ℝ G x (Z x)) v (Y x)) := by
+    rw [← hbg]
+    exact b_christoffelAt G x (b x) (hb x) v (Y x) (Z x)
+  have h2 : G x (Y x) (christoffelAt G x (b x) (hb x) v (Z x)) =
+      (1 / 2 : ℝ) * ((fderiv ℝ G x v) (Z x) (Y x)
+        + (fderiv ℝ G x (Z x)) v (Y x) - (fderiv ℝ G x (Y x)) v (Z x)) := by
+    rw [hGsymm x, ← hbg]
+    exact b_christoffelAt G x (b x) (hb x) v (Z x) (Y x)
+  have hsym := fderiv_metric_symm G (hGd x) hGsymm v (Y x) (Z x)
+  have key : fderiv ℝ (fun y ↦ G y (Y y) (Z y)) x v =
+      G x ((modelLeviCivita G b hb) Y x v) (Z x)
+        + G x (Y x) ((modelLeviCivita G b hb) Z x v) := by
+    rw [fderiv_metric_pairing G (hGd x) hY' hZ' v,
+      show (modelLeviCivita G b hb) Y x v =
+        fderiv ℝ Y x v + christoffelAt G x (b x) (hb x) v (Y x) from rfl,
+      show (modelLeviCivita G b hb) Z x v =
+        fderiv ℝ Z x v + christoffelAt G x (b x) (hb x) v (Z x) from rfl]
+    simp only [map_add, ContinuousLinearMap.add_apply]
+    rw [h1, h2]
+    linarith [hsym]
+  refine Eq.trans ?_ key
+  simp only [extDerivFun, mfderiv_eq_fderiv, ContinuousLinearMap.comp_apply]
+  rfl
+
 end CovariantDerivative
