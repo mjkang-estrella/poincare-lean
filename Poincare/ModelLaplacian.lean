@@ -753,3 +753,56 @@ theorem metricGradient_eq_zero_of_isLocalMin (b : LinearMap.BilinForm ℝ E)
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The curved Laplacian agrees with the flat one at critical points**: the
+corrector term carries a factor of the differential, which vanishes.
+-/
+theorem curvedLaplacian_eq_modelLaplacian_of_critical
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate)
+    {f : E → ℝ} {x : E} (hcrit : fderiv ℝ f x = 0) :
+    curvedLaplacian G b hb f x = modelLaplacian (b x) (hb x) f x := by
+  unfold curvedLaplacian modelLaplacian
+  congr 1
+  apply LinearMap.ext
+  intro v
+  show (LinearMap.BilinForm.toDual (b x) (hb x)).symm _ =
+    (LinearMap.BilinForm.toDual (b x) (hb x)).symm _
+  apply congrArg
+  apply LinearMap.ext
+  intro w
+  simp only [covariantHessianLin, LinearMap.mk₂_apply, covariantHessian,
+    hcrit, ContinuousLinearMap.zero_apply, sub_zero,
+    LinearMap.comp_apply, LinearMap.coe_comp, Function.comp_apply,
+    LinearEquiv.coe_coe]
+  rfl
+
+/--
+**The curved spatial maximum principle**: at a local minimum the
+Laplace–Beltrami operator is nonnegative — the gradient vanishes, the
+corrector dies with it, and the flat spatial maximum principle applies.
+The parabolic comparison machinery extends to curved backgrounds.
+-/
+theorem curvedLaplacian_nonneg_of_isLocalMin
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate) {x : E}
+    (hbs : LinearMap.IsSymm (b x))
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < (b x) v v)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f)
+    (hmin : IsLocalMin f x) :
+    0 ≤ curvedLaplacian G b hb f x := by
+  rw [curvedLaplacian_eq_modelLaplacian_of_critical G b hb
+    (hmin.fderiv_eq_zero)]
+  exact modelLaplacian_nonneg_of_isLocalMin (b x) (hb x) hbs hbpos hf hmin
+
+end RicciFlow
