@@ -75,6 +75,17 @@ metric-only flow wiring in `KoszulExistence.lean`, the `C^k` instance for
 the flat connection in `FlatModelConnection.lean`, and the canonical flat
 Ricci vanishing in `RicciFlowEquation.lean`.
 
+- `Poincare/ModelChristoffel.lean` — the Christoffel program on the model
+  space: the corrector `Γ` (defined via the metric dual of the Koszul
+  corrector functional) with its defining property, symmetry (via the
+  CLM-composition transfer of metric symmetry to the derivative),
+  bilinearity, and packaging as a continuous endomorphism-valued one-form;
+  `modelLeviCivita = flat + Γ` via `addOneForm`; the trilinear product rule
+  `fderiv_metric_pairing`; verified torsion-freeness and metric
+  compatibility; and the identification with the canonical construction —
+  the Levi-Civita connection in a form involving exactly one derivative of
+  the metric, the entry point of the smoothness stratum.
+
 ## What this layer provides
 
 For any symmetric, nondegenerate, pairing-regular metric on a boundaryless
@@ -88,9 +99,10 @@ equation itself) are now stateable as genuine mathematics.
 
 ## The honest remaining road
 
-In order: smoothness of the constructed connection in the base point
-(`ContMDiffCovariantDerivative` for `leviCivitaConnection` from a smooth
-metric); parabolic PDE theory on manifolds and short-time existence of the
+In order: smoothness of `Γ` in the base point (from `G ∈ C^{k+1}`, via
+smoothness of operator inversion on units — the Christoffel form makes
+this a direct formula computation); thence `ContMDiffCovariantDerivative`
+for `leviCivitaConnection` from a smooth metric; parabolic PDE theory on manifolds and short-time existence of the
 flow (DeTurck's trick); Hamilton's curvature evolution equations and
 maximum principles; Perelman's entropy and reduced volume; κ-solutions and
 canonical neighbourhoods; surgery; finite-time extinction; and the
