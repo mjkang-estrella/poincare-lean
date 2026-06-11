@@ -196,3 +196,37 @@ theorem flat_ricciBilinearAt_eq_zero (x : F)
     ricciBilinearAt (flatCovariantDerivative ℝ F) x u w = 0 :=
   flat_ricciTraceAt_extend_eq_zero w u _
 
+
+namespace CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
+  {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+  [IsManifold I 2 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+
+/--
+**Time-translation invariance of the Ricci flow**: shifting a solution in
+time yields a solution.
+-/
+theorem IsRicciFlowSolutionAt.time_shift
+    {g : ℝ → Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ}
+    {cov : ℝ → CovariantDerivative I E (TangentSpace I : M → Type _)}
+    {t₀ : ℝ} {x : M}
+    (sol : IsRicciFlowSolutionAt g cov t₀ x) (s : ℝ) :
+    IsRicciFlowSolutionAt (fun t ↦ g (t + s)) (fun t ↦ cov (t + s))
+      (t₀ - s) x := by
+  have hts : t₀ - s + s = t₀ := by ring
+  constructor
+  · intro t
+    exact sol.leviCivita (t + s)
+  · intro Z hZ
+    rw [hts]
+    intro hreg w
+    have hderiv : deriv (fun t ↦ g (t + s) x (Z x) w) (t₀ - s) =
+        deriv (fun t ↦ g t x (Z x) w) (t₀ - s + s) := by
+      have := deriv_comp_add_const (fun t ↦ g t x (Z x) w) s (t₀ - s)
+      simpa using this
+    rw [hderiv, hts]
+    exact sol.flow hZ hreg w
+
+end CovariantDerivative
