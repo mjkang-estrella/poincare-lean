@@ -801,6 +801,137 @@ theorem covDeriv_eq_leviCivitaValueAt
   rw [extend_apply_self] at *
   linarith [hk]
 
+/-- The Koszul functional vanishes on the zero direction field. -/
+theorem koszulRHS_zero_left {Y Z : Π y : M, TangentSpace I y} {x : M} :
+    koszulRHS g (0 : Π y : M, TangentSpace I y) Y Z x = 0 := by
+  have h0 : ∀ (W : Π y : M, TangentSpace I y),
+      (fun y ↦ g y ((0 : Π y : M, TangentSpace I y) y) (W y)) =
+        fun _ : M ↦ (0 : ℝ) := by
+    intro W
+    funext y
+    simp
+  have hED : extDerivFun (I := I) (fun _ : M ↦ (0 : ℝ)) x = 0 := by
+    unfold extDerivFun
+    rw [(hasMFDerivAt_const (0 : ℝ) x).mfderiv]
+    ext v
+    simp
+  unfold koszulRHS
+  rw [h0 Z, h0 Y, hED]
+  simp [VectorField.mlieBracket_zero_left]
+
+/-- Germ locality of the Koszul functional in the direction field. -/
+theorem koszulRHS_congr_of_eventuallyEq_left
+    {X X' Y Z : Π y : M, TangentSpace I y} {x : M}
+    (hXX' : X =ᶠ[𝓝 x] X') :
+    koszulRHS g X Y Z x = koszulRHS g X' Y Z x := by
+  have hpair : ∀ (W : Π y : M, TangentSpace I y),
+      (fun y ↦ g y (X y) (W y)) =ᶠ[𝓝 x] fun y ↦ g y (X' y) (W y) := by
+    intro W
+    filter_upwards [hXX'] with y hy
+    rw [hy]
+  have hx0 : X x = X' x := hXX'.self_of_nhds
+  unfold koszulRHS
+  rw [extDerivFun_congr' (hpair Z), extDerivFun_congr' (hpair Y), hx0,
+    Filter.EventuallyEq.mlieBracket_vectorField_eq hXX'
+      (Filter.EventuallyEq.rfl (f := Y)),
+    Filter.EventuallyEq.mlieBracket_vectorField_eq hXX'
+      (Filter.EventuallyEq.rfl (f := Z))]
+
+/-- The Koszul functional distributes over finite sums of direction
+fields. -/
+theorem koszulRHS_finsetSum_left {ι : Type*} [DecidableEq ι]
+    {Y Z : Π y : M, TangentSpace I y} {x : M}
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (hY : MDiffAt (T% Y) x) (hZ : MDiffAt (T% Z) x)
+    (s : Finset ι) (Xs : ι → Π y : M, TangentSpace I y)
+    (hXs : ∀ i, MDiffAt (T% (Xs i)) x) :
+    koszulRHS g (fun y ↦ ∑ i ∈ s, Xs i y) Y Z x =
+      ∑ i ∈ s, koszulRHS g (Xs i) Y Z x := by
+  induction s using Finset.induction with
+  | empty => simpa using koszulRHS_zero_left g (Y := Y) (Z := Z)
+  | insert a s ha ih =>
+    have hsum : (fun y ↦ ∑ i ∈ insert a s, Xs i y) =
+        Xs a + fun y ↦ ∑ i ∈ s, Xs i y := by
+      funext y
+      simp [Finset.sum_insert ha]
+    have hsd : MDiffAt (T% (fun y ↦ ∑ i ∈ s, Xs i y)) x :=
+      MDifferentiableAt.sum_section fun i ↦ hXs i
+    rw [hsum, koszulRHS_add_left g (hXs a) hsd
+      (hP _ _ (hXs a) hZ) (hP _ _ hsd hZ)
+      (hP _ _ (hXs a) hY) (hP _ _ hsd hY),
+      Finset.sum_insert ha, ih]
+
+open Trivialization in
+/-- The Koszul functional vanishes when the direction field vanishes at the
+point. -/
+theorem koszulRHS_eq_zero_of_direction_value_eq_zero
+    {D Y Z : Π y : M, TangentSpace I y} {x : M}
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    (hY : MDiffAt (T% Y) x) (hZ : MDiffAt (T% Z) x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (hD : MDiffAt (T% D) x) (hDx : D x = 0) :
+    koszulRHS g D Y Z x = 0 := by
+  classical
+  set e := trivializationAt E (TangentSpace I) x with he
+  set b := Module.finBasis ℝ E with hb
+  have hxe : x ∈ e.baseSet := FiberBundle.mem_baseSet_trivializationAt' x
+  have hev := e.eventually_eq_localFrame_sum_coeff_smul (I := I) b
+    (s := D) hxe
+  have hframe : ∀ i, MDiffAt (T% (e.localFrame b i)) x := fun i ↦
+    (contMDiffAt_localFrame_of_mem (I := I) (n := 1) (e := e) (b := b) i
+      hxe).mdifferentiableAt one_ne_zero
+  have hcoeff : ∀ i, MDiffAt (fun y ↦ e.localFrame_coeff I b i y (D y)) x :=
+    fun i ↦ (mdifferentiableAt_iff_localFrame_coeff (I := I) (e := e)
+      (b := b) hxe).mp hD i
+  set Xs : _ → Π y : M, TangentSpace I y := fun i ↦
+    (fun y ↦ e.localFrame_coeff I b i y (D y)) • e.localFrame b i with hXs
+  have hsummand : ∀ i, MDiffAt (T% (Xs i)) x := fun i ↦
+    (hcoeff i).smul_section (hframe i)
+  have h1 : koszulRHS g D Y Z x =
+      koszulRHS g (fun y ↦ ∑ i, Xs i y) Y Z x := by
+    apply koszulRHS_congr_of_eventuallyEq_left g
+    filter_upwards [hev] with y hy
+    simpa [hXs] using hy
+  rw [h1, koszulRHS_finsetSum_left g hP hY hZ Finset.univ Xs hsummand]
+  have hzero : ∀ i, koszulRHS g (Xs i) Y Z x = 0 := by
+    intro i
+    rw [hXs]
+    rw [koszulRHS_smul_left g hgsymm (hcoeff i) (hframe i) hY hZ
+      (hP _ _ (hframe i) hZ) (hP _ _ (hframe i) hY)]
+    have hc0 : e.localFrame_coeff I b i x (D x) = 0 := by
+      rw [hDx]
+      exact map_zero _
+    rw [hc0, zero_mul]
+  simp [hzero]
+
+/-- The Koszul functional depends only on the value of the direction
+field. -/
+theorem koszulRHS_congr_of_direction_value_eq
+    {X X' Y Z : Π y : M, TangentSpace I y} {x : M}
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    (hY : MDiffAt (T% Y) x) (hZ : MDiffAt (T% Z) x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (hX : MDiffAt (T% X) x) (hX' : MDiffAt (T% X') x)
+    (hXX' : X x = X' x) :
+    koszulRHS g X Y Z x = koszulRHS g X' Y Z x := by
+  have hns : MDiffAt (T% ((-1 : ℝ) • X')) x :=
+    mdifferentiableAt_const.smul_section hX'
+  have hD : MDiffAt (T% (X + (-1 : ℝ) • X')) x :=
+    mdifferentiableAt_add_section hX hns
+  have hDx : (X + (-1 : ℝ) • X') x = 0 := by
+    simp [hXX']
+  have h0 := koszulRHS_eq_zero_of_direction_value_eq_zero g hgsymm hY hZ hP
+    hD hDx
+  rw [koszulRHS_add_left g hX hns (hP _ _ hX hZ) (hP _ _ hns hZ)
+    (hP _ _ hX hY) (hP _ _ hns hY),
+    show ((-1 : ℝ) • X') = (fun _ : M ↦ (-1 : ℝ)) • X' from rfl,
+    koszulRHS_smul_left g hgsymm mdifferentiableAt_const hX' hY hZ
+      (hP _ _ hX' hZ) (hP _ _ hX' hY)] at h0
+  linarith
+
 end Construction
 
 end CovariantDerivative
