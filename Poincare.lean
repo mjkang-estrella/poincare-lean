@@ -8,6 +8,7 @@ import Poincare.ChartIdentification
 import Poincare.CurvatureTensoriality
 import Poincare.KoszulExistence
 import Poincare.EuclideanLeviCivitaCheck
+import Poincare.CurvatureConditions
 import Poincare.Statement
 import Poincare.Milestones
 import Poincare.Assembly
