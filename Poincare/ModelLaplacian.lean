@@ -9,6 +9,7 @@ inverse metric — and verifies it on quadratic forms.
 -/
 
 import Poincare.KoszulExistence
+import Poincare.MaximumPrinciple
 import Mathlib.LinearAlgebra.QuadraticForm.Basic
 
 noncomputable section
@@ -247,5 +248,30 @@ theorem trace_dual_comp_nonneg (b : LinearMap.BilinForm ℝ E)
     linarith
   rw [Matrix.diag_apply, this]
   positivity
+
+end RicciFlow
+
+namespace RicciFlow
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The Laplacian is nonnegative at a local minimum** — the spatial maximum
+principle, fusing the second-derivative test with trace positivity. This
+is the mechanism by which spatial minima of evolving geometric quantities
+obey the scalar ODE comparisons: the heart of the parabolic maximum
+principle.
+-/
+theorem modelLaplacian_nonneg_of_isLocalMin
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) {x₀ : E}
+    (hmin : IsLocalMin f x₀) :
+    0 ≤ modelLaplacian b hb f x₀ :=
+  trace_dual_comp_nonneg b hb hbs hbpos
+    (fderiv ℝ (fderiv ℝ f) x₀)
+    (fun v ↦ hessian_nonneg_of_isLocalMin hf hmin v)
 
 end RicciFlow
