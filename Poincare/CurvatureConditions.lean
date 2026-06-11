@@ -149,6 +149,24 @@ theorem HasNonnegRicciAt.of_agree [CompleteSpace E]
     {x : M} (h : HasNonnegRicciAt cov x) : HasNonnegRicciAt cov' x :=
   fun u ↦ (ricciBilinearAt_eq_of_agree cov hagree x u u) ▸ h u
 
+/-- Ricci positivity transfers along connection agreement. -/
+theorem HasPosRicciAt.of_agree [CompleteSpace E]
+    [ContMDiffCovariantDerivative cov' 1]
+    (hagree : ∀ (y : M) (Y : Π z : M, TangentSpace I z),
+      MDiffAt (T% Y) y → cov Y y = cov' Y y)
+    {x : M} (h : HasPosRicciAt cov x) : HasPosRicciAt cov' x :=
+  fun u hu ↦ (ricciBilinearAt_eq_of_agree cov hagree x u u) ▸ h u hu
+
+/-- The Einstein condition transfers along connection agreement. -/
+theorem IsEinsteinAt.of_agree [CompleteSpace E]
+    [ContMDiffCovariantDerivative cov' 1]
+    {g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ}
+    {lam : ℝ}
+    (hagree : ∀ (y : M) (Y : Π z : M, TangentSpace I z),
+      MDiffAt (T% Y) y → cov Y y = cov' Y y)
+    {x : M} (h : IsEinsteinAt cov g lam x) : IsEinsteinAt cov' g lam x :=
+  fun u w ↦ (ricciBilinearAt_eq_of_agree cov hagree x u w) ▸ h u w
+
 end RicciAgree
 
 end CovariantDerivative
