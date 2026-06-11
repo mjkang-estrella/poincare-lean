@@ -148,7 +148,12 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   **the parabolic maximum principle on compact domains**
   (`parabolic_min_principle_strict`) — strict reaction–diffusion
   supersolutions positive at time zero stay positive, by minimum-tracking
-  through the first zero. The centerpiece of Hamilton's analytic toolkit.
+  through the first zero; the non-strict form (`parabolic_min_principle`,
+  by ε-exponential perturbation); and the flow-shaped corollary
+  `heat_supersolution_nonneg_preserved` — Hamilton's "nonnegative scalar
+  curvature is preserved", modulo the evolution equation (the honest
+  hypothesis awaiting commutation machinery). The centerpiece of
+  Hamilton's analytic toolkit, complete in both variants.
 
 ## What this layer provides
 
@@ -163,7 +168,9 @@ equation itself) are now stateable as genuine mathematics.
 
 ## The honest remaining road
 
-In order: parabolic PDE theory on manifolds and short-time existence of the
+In order: the curvature evolution equations (the commutation machinery of
+second covariant derivatives, discharging the heat-inequality hypotheses
+of the now-proven maximum principle); parabolic PDE theory on manifolds and short-time existence of the
 flow (DeTurck's trick); Hamilton's curvature evolution equations and
 maximum principles; Perelman's entropy and reduced volume; κ-solutions and
 canonical neighbourhoods; surgery; finite-time extinction; and the
