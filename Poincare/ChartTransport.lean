@@ -154,4 +154,24 @@ theorem chartMetric_model_space
   simp only [PartialEquiv.refl_symm, PartialEquiv.refl_coe, id_eq]
   rfl
 
+
+/--
+**Scalar reduction for chart-metric smoothness**: in finite dimensions, the
+chart metric is `C^k` exactly when all its scalar evaluations are — the
+form in which its smoothness will be discharged from chart-transition
+regularity.
+-/
+theorem contDiff_chartMetric_iff
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [FiniteDimensional ℝ E]
+    {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (x₀ : M) {k : ℕ∞ω} :
+    ContDiff ℝ k (chartMetric g x₀) ↔
+      ∀ v w : E, ContDiff ℝ k (fun z ↦ chartMetric g x₀ z v w) := by
+  rw [contDiff_clm_apply_iff]
+  exact forall_congr' fun v ↦ contDiff_clm_apply_iff
+
 end CovariantDerivative
