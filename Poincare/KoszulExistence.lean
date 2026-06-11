@@ -1193,6 +1193,42 @@ theorem leviCivitaConnection_isLeviCivitaAt (x : M) :
   ⟨leviCivitaConnection_metricCompatibleAt g hgsymm hgnd hP x,
     leviCivitaConnection_torsionFreeAt g hgsymm hgnd hP x⟩
 
+section MetricFlow
+
+variable {gt : ℝ → Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ}
+
+/--
+**The metric-only Ricci flow**: a time-family of symmetric nondegenerate
+pairing-regular metrics is a Ricci flow solution at `(t₀, x)` as soon as the
+flow equation holds against the canonical Levi-Civita connections — the
+`leviCivita` side condition is discharged by the construction.
+-/
+theorem isRicciFlowSolutionAt_of_metric [FiniteDimensional ℝ E]
+    (hgsymm : ∀ (t : ℝ) (y : M) (v w : TangentSpace I y),
+      gt t y v w = gt t y w v)
+    (hgnd : ∀ (t : ℝ) (y : M) (v : TangentSpace I y),
+      (∀ w, gt t y v w = 0) → v = 0)
+    (hP : ∀ (t : ℝ) (x : M) (A B : Π y : M, TangentSpace I y),
+      MDiffAt (T% A) x → MDiffAt (T% B) x →
+        MDiffAt (fun y ↦ gt t y (A y) (B y)) x)
+    {t₀ : ℝ} {x : M}
+    (hflow : ∀ {Z : Π y : M, TangentSpace I y}, CMDiff 2 (T% Z) →
+      ∀ (hreg : DerivRegularAt
+          (leviCivitaConnection (gt t₀) (hgsymm t₀) (hgnd t₀) (hP t₀)) Z x)
+        (w : TangentSpace I x),
+        deriv (fun t ↦ gt t x (Z x) w) t₀ =
+          -2 * ricciTraceAt
+            (leviCivitaConnection (gt t₀) (hgsymm t₀) (hgnd t₀) (hP t₀))
+            hreg w) :
+    IsRicciFlowSolutionAt gt
+      (fun t ↦ leviCivitaConnection (gt t) (hgsymm t) (hgnd t) (hP t))
+      t₀ x where
+  leviCivita t := leviCivitaConnection_isLeviCivitaAt (gt t) (hgsymm t)
+    (hgnd t) (hP t) x
+  flow hZ hreg w := hflow hZ hreg w
+
+end MetricFlow
+
 end Bundled
 
 end Construction
