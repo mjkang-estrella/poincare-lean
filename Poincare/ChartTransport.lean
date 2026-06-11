@@ -424,4 +424,104 @@ theorem contMDiffOn_chartMetric_pairing
 
 end Smoothness
 
+
+section ChartConnection
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E] [CompleteSpace E]
+  {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
+  {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+  [IsManifold I 1 M]
+
+/-- The blended chart metric as a family of bilinear forms. -/
+def chartBilin (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (x₀ : M) (z : E) : LinearMap.BilinForm ℝ E :=
+  LinearMap.mk₂ ℝ (fun v w ↦ blendedChartMetric χ G₀ g x₀ z v w)
+    (fun v v' w ↦ by simp)
+    (fun c v w ↦ by simp)
+    (fun v w w' ↦ by simp)
+    (fun c v w ↦ by simp)
+
+theorem chartBilin_nondegenerate (χ : E → ℝ)
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ) (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (hgpos : ∀ (y : M) (u : TangentSpace I y), u ≠ 0 → 0 < g y u u)
+    (x₀ : M) (hχ0 : ∀ z, 0 ≤ χ z) (hχ1 : ∀ z, χ z ≤ 1)
+    (hsupp : ∀ z, χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z).IsInvertible) (z : E) :
+    (chartBilin χ G₀ g x₀ z).Nondegenerate := by
+  constructor
+  · intro v hv
+    exact blendedChartMetric_nondegenerate χ G₀ hG₀pos g hgpos x₀
+      (hχ0 z) (hχ1 z) (hsupp z) v hv
+  · intro w hw
+    by_contra hne
+    have hpos := blendedChartMetric_posDef χ G₀ hG₀pos g hgpos x₀
+      (hχ0 z) (hχ1 z) (hsupp z) hne
+    have := hw w
+    simp only [chartBilin, LinearMap.mk₂_apply] at this
+    rw [this] at hpos
+    exact lt_irrefl 0 hpos
+
+/--
+**The chart Levi-Civita connection**: the Christoffel-form Levi-Civita
+connection of the globalized chart metric — torsion-free and compatible
+with the blended metric by the model-space theorems. This is the
+connection through which the manifold's geometry is computed in the chart.
+-/
+noncomputable def chartLeviCivita (χ : E → ℝ)
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ) (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (hgpos : ∀ (y : M) (u : TangentSpace I y), u ≠ 0 → 0 < g y u u)
+    (x₀ : M) (hχ0 : ∀ z, 0 ≤ χ z) (hχ1 : ∀ z, χ z ≤ 1)
+    (hsupp : ∀ z, χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z).IsInvertible) :
+    CovariantDerivative 𝓘(ℝ, E) E (TangentSpace 𝓘(ℝ, E) : E → Type _) :=
+  modelLeviCivita (blendedChartMetric χ G₀ g x₀)
+    (chartBilin χ G₀ g x₀)
+    (chartBilin_nondegenerate χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1 hsupp)
+
+/-- The chart connection is torsion-free (model-space theorem applied to
+the blended metric). -/
+theorem chartLeviCivita_torsionFreeAt (χ : E → ℝ)
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ) (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (hgpos : ∀ (y : M) (u : TangentSpace I y), u ≠ 0 → 0 < g y u u)
+    (x₀ : M) (hχ0 : ∀ z, 0 ≤ χ z) (hχ1 : ∀ z, χ z ≤ 1)
+    (hsupp : ∀ z, χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z).IsInvertible)
+    (hbl : Differentiable ℝ (blendedChartMetric χ G₀ g x₀))
+    (hG₀symm : ∀ v w : E, G₀ v w = G₀ w v)
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    (z : E) :
+    TorsionFreeAt
+      (chartLeviCivita χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1 hsupp) z :=
+  modelLeviCivita_torsionFreeAt _ _ _ hbl
+    (fun z' v w ↦ blendedChartMetric_symm χ G₀ hG₀symm g hgsymm x₀ z' v w) z
+
+/-- The chart connection is compatible with the blended metric. -/
+theorem chartLeviCivita_metricCompatibleAt (χ : E → ℝ)
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ) (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (hgpos : ∀ (y : M) (u : TangentSpace I y), u ≠ 0 → 0 < g y u u)
+    (x₀ : M) (hχ0 : ∀ z, 0 ≤ χ z) (hχ1 : ∀ z, χ z ≤ 1)
+    (hsupp : ∀ z, χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z).IsInvertible)
+    (hbl : Differentiable ℝ (blendedChartMetric χ G₀ g x₀))
+    (hG₀symm : ∀ v w : E, G₀ v w = G₀ w v)
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    (z : E) :
+    MetricCompatibleAt (blendedChartMetric χ G₀ g x₀)
+      (chartLeviCivita χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1 hsupp) z :=
+  modelLeviCivita_metricCompatibleAt _ _ _ hbl
+    (fun z' v w ↦ blendedChartMetric_symm χ G₀ hG₀symm g hgsymm x₀ z' v w)
+    (fun z' v w ↦ rfl) z
+
+end ChartConnection
+
 end CovariantDerivative
