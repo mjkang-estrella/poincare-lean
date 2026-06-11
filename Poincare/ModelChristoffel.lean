@@ -16,7 +16,8 @@ import Poincare.KoszulExistence
 
 noncomputable section
 
-open CovariantDerivative
+open CovariantDerivative Bundle
+open scoped Manifold ContDiff
 
 namespace CovariantDerivative
 
@@ -92,5 +93,81 @@ theorem christoffelAt_symm {x : F} (b : LinearMap.BilinForm ℝ F)
   rw [b_christoffelAt, b_christoffelAt,
     fderiv_metric_symm G hGd hGsymm w u v]
   ring
+
+
+/-- The Christoffel corrector as a bilinear map. -/
+noncomputable def christoffelLinear (x : F) (b : LinearMap.BilinForm ℝ F)
+    (hb : b.Nondegenerate) : F →ₗ[ℝ] F →ₗ[ℝ] F :=
+  LinearMap.mk₂ ℝ (fun u v ↦ christoffelAt G x b hb u v)
+    (fun u u' v ↦ by
+      apply sub_eq_zero.mp
+      apply hb.1
+      intro w
+      simp only [map_sub, map_add, LinearMap.sub_apply, LinearMap.add_apply]
+      rw [b_christoffelAt, b_christoffelAt, b_christoffelAt]
+      simp only [map_add, ContinuousLinearMap.add_apply]
+      ring)
+    (fun c u v ↦ by
+      apply sub_eq_zero.mp
+      apply hb.1
+      intro w
+      simp only [map_sub, map_smul, LinearMap.sub_apply,
+        LinearMap.smul_apply, smul_eq_mul]
+      rw [b_christoffelAt, b_christoffelAt]
+      simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+      ring)
+    (fun u v v' ↦ by
+      apply sub_eq_zero.mp
+      apply hb.1
+      intro w
+      simp only [map_sub, map_add, LinearMap.sub_apply, LinearMap.add_apply]
+      rw [b_christoffelAt, b_christoffelAt, b_christoffelAt]
+      simp only [map_add, ContinuousLinearMap.add_apply]
+      ring)
+    (fun c u v ↦ by
+      apply sub_eq_zero.mp
+      apply hb.1
+      intro w
+      simp only [map_sub, map_smul, LinearMap.sub_apply,
+        LinearMap.smul_apply, smul_eq_mul]
+      rw [b_christoffelAt, b_christoffelAt]
+      simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+      ring)
+
+/-- The Christoffel corrector as a continuous endomorphism-valued one-form
+(section value first, direction second), ready for `addOneForm`. -/
+noncomputable def christoffelOneForm (b : Π x : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ x, (b x).Nondegenerate) (x : F) :
+    TangentSpace 𝓘(ℝ, F) x →L[ℝ] TangentSpace 𝓘(ℝ, F) x →L[ℝ]
+      TangentSpace 𝓘(ℝ, F) x :=
+  letI : FiniteDimensional ℝ (TangentSpace 𝓘(ℝ, F) x) :=
+    ‹FiniteDimensional ℝ F›
+  LinearMap.toContinuousLinearMap
+    ((LinearMap.toContinuousLinearMap :
+        (F →ₗ[ℝ] F) ≃ₗ[ℝ] (F →L[ℝ] F)).toLinearMap ∘ₗ
+      (christoffelLinear G x (b x) (hb x)).flip)
+
+theorem christoffelOneForm_apply (b : Π x : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ x, (b x).Nondegenerate) (x : F)
+    (s v : TangentSpace 𝓘(ℝ, F) x) :
+    (christoffelOneForm G b hb x : TangentSpace 𝓘(ℝ, F) x →L[ℝ] TangentSpace 𝓘(ℝ, F) x →L[ℝ] TangentSpace 𝓘(ℝ, F) x) s v = christoffelAt G x (b x) (hb x) v s :=
+  rfl
+
+/--
+**The model Levi-Civita connection in Christoffel form**: flat plus the
+Christoffel corrector.
+-/
+noncomputable def modelLeviCivita (b : Π x : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ x, (b x).Nondegenerate) :
+    CovariantDerivative 𝓘(ℝ, F) F (TangentSpace 𝓘(ℝ, F) : F → Type _) :=
+  (flatCovariantDerivative ℝ F).addOneForm (fun x ↦ christoffelOneForm G b hb x)
+
+theorem modelLeviCivita_apply (b : Π x : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (σ : Π y : F, TangentSpace 𝓘(ℝ, F) y) (x : F)
+    (v : TangentSpace 𝓘(ℝ, F) x) :
+    modelLeviCivita G b hb σ x v =
+      fderiv ℝ σ x v + christoffelAt G x (b x) (hb x) v (σ x) :=
+  rfl
 
 end CovariantDerivative
