@@ -15,6 +15,7 @@ and flat Levi-Civita connection is a static Ricci flow (`Ric = 0`).
 
 import Poincare.FlatModelConnection
 import Poincare.LeviCivitaUniqueness
+import Poincare.LocalConnectionRegularity
 
 noncomputable section
 
@@ -184,3 +185,13 @@ theorem flat_ricciTraceAt_extend_eq_zero {x : F}
   apply flat_ricciTraceAt_eq_zero
   rw [extend_model_space w]
   exact contDiff_const
+
+/--
+**The canonical Ricci tensor of Euclidean space vanishes**: with the flat
+connection now known to be `C¹`, its canonical Ricci bilinear form is
+defined and identically zero.
+-/
+theorem flat_ricciBilinearAt_eq_zero (x : F)
+    (u w : TangentSpace 𝓘(ℝ, F) x) :
+    ricciBilinearAt (flatCovariantDerivative ℝ F) x u w = 0 :=
+  flat_ricciTraceAt_extend_eq_zero w u _
