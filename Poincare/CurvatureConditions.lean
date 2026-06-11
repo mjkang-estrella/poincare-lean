@@ -528,4 +528,33 @@ theorem IsEinsteinAt.hasPosRicciAt
   rw [hEin u u]
   exact mul_pos hlam (hgpos u hu)
 
+
+/-- The Einstein condition rescales: `Ric = lam g` gives
+`Ric = (lam/c) (c g)`. -/
+theorem IsEinsteinAt.const_smul
+    {cov : CovariantDerivative I E (TangentSpace I : M → Type _)}
+    [ContMDiffCovariantDerivative cov 1] {x : M}
+    {g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ}
+    {lam : ℝ} (hEin : IsEinsteinAt cov g lam x) {c : ℝ} (hc : c ≠ 0) :
+    IsEinsteinAt cov (fun y ↦ c • g y) (lam / c) x := by
+  intro u w
+  rw [hEin u w]
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  field_simp
+
+/--
+**The Einstein condition propagates along the Einstein flow**: at time `t`
+before extinction, the evolved metric `(1 - 2 lam t) g` is Einstein with
+constant `lam / (1 - 2 lam t)` for the same connection.
+-/
+theorem IsEinsteinAt.flow_evolution
+    {cov : CovariantDerivative I E (TangentSpace I : M → Type _)}
+    [ContMDiffCovariantDerivative cov 1] {x : M}
+    {g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ}
+    {lam : ℝ} (hEin : IsEinsteinAt cov g lam x) {t : ℝ}
+    (ht : 1 - 2 * lam * t ≠ 0) :
+    IsEinsteinAt cov (fun y ↦ (1 - 2 * lam * t) • g y)
+      (lam / (1 - 2 * lam * t)) x :=
+  hEin.const_smul ht
+
 end CovariantDerivative
