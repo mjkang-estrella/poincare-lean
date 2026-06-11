@@ -151,3 +151,69 @@ theorem riccati_lower_bound {u u' : ℝ → ℝ} {a T : ℝ} (ha : 0 ≤ a)
   exact hmul
 
 end RicciFlow
+
+namespace RicciFlow
+
+/--
+**Finite-time singularity**: a quantity satisfying `u' ≥ a u²` (`a > 0`)
+with `u 0 > 0` cannot persist to time `1/(a u 0)`: any interval of
+validity `[0, T]` has `T < 1/(a u 0)`. This is Hamilton's theorem that
+positive scalar curvature forces the Ricci flow to become singular in
+finite time, at its scalar core.
+-/
+theorem riccati_forces_finite_time {u u' : ℝ → ℝ} {a T : ℝ}
+    (ha : 0 < a) (hT0 : 0 ≤ T)
+    (hd : ∀ t ∈ Icc (0 : ℝ) T, HasDerivAt u (u' t) t)
+    (hineq : ∀ t ∈ Icc (0 : ℝ) T, a * u t ^ 2 ≤ u' t)
+    (h0 : 0 < u 0) : T < 1 / (a * u 0) := by
+  have hTmem : T ∈ Icc (0 : ℝ) T := right_mem_Icc.mpr hT0
+  -- Reproduce the persistence and inverse-comparison arguments at `t = T`.
+  have hmono : MonotoneOn u (Icc (0 : ℝ) T) := by
+    apply monotoneOn_of_deriv_nonneg (convex_Icc 0 T)
+    · exact fun s hs ↦ ((hd s hs).continuousAt).continuousWithinAt
+    · intro s hs
+      rw [interior_Icc] at hs
+      exact ((hd s (Ioo_subset_Icc_self hs)).differentiableAt).differentiableWithinAt
+    · intro s hs
+      rw [interior_Icc] at hs
+      have hs' : s ∈ Icc (0 : ℝ) T := Ioo_subset_Icc_self hs
+      rw [(hd s hs').deriv]
+      have := hineq s hs'
+      nlinarith [sq_nonneg (u s)]
+  have h0mem : (0 : ℝ) ∈ Icc (0 : ℝ) T := left_mem_Icc.mpr hT0
+  have hpos : ∀ s ∈ Icc (0 : ℝ) T, 0 < u s := fun s hs ↦
+    lt_of_lt_of_le h0 (hmono h0mem hs hs.1)
+  set w : ℝ → ℝ := fun s ↦ (u s)⁻¹ + a * s with hw
+  have hwd : ∀ s ∈ Icc (0 : ℝ) T,
+      HasDerivAt w (-(u' s) / u s ^ 2 + a) s := by
+    intro s hs
+    have h1 : HasDerivAt (fun s' ↦ (u s')⁻¹) (-(u' s) / u s ^ 2) s := by
+      simpa using (hd s hs).inv (ne_of_gt (hpos s hs))
+    simpa [hw] using h1.add ((hasDerivAt_id s).const_mul a)
+  have hwmono : AntitoneOn w (Icc (0 : ℝ) T) := by
+    apply antitoneOn_of_deriv_nonpos (convex_Icc 0 T)
+    · exact fun s hs ↦ ((hwd s hs).continuousAt).continuousWithinAt
+    · intro s hs
+      rw [interior_Icc] at hs
+      exact ((hwd s (Ioo_subset_Icc_self hs)).differentiableAt).differentiableWithinAt
+    · intro s hs
+      rw [interior_Icc] at hs
+      have hs' : s ∈ Icc (0 : ℝ) T := Ioo_subset_Icc_self hs
+      rw [(hwd s hs').deriv]
+      have hu2 : 0 < u s ^ 2 := pow_pos (hpos s hs') 2
+      have hq : a ≤ u' s / u s ^ 2 :=
+        (le_div_iff₀ hu2).mpr (by linarith [hineq s hs'])
+      rw [neg_div]
+      linarith
+  have hwt : w T ≤ w 0 := hwmono h0mem hTmem hT0
+  simp only [hw, mul_zero, add_zero] at hwt
+  have hut : 0 < u T := hpos T hTmem
+  have hinvT : 0 < (u 0)⁻¹ - a * T := by
+    have h1 : 0 < (u T)⁻¹ := by positivity
+    linarith
+  rw [lt_div_iff₀ (by positivity : 0 < a * u 0)]
+  have := mul_lt_mul_of_pos_left hinvT (show (0:ℝ) < u 0 from h0)
+  rw [mul_sub, mul_inv_cancel₀ (ne_of_gt h0), mul_zero] at this
+  nlinarith
+
+end RicciFlow
