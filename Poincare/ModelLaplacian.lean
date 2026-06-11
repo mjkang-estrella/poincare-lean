@@ -10,6 +10,7 @@ inverse metric — and verifies it on quadratic forms.
 
 import Poincare.KoszulExistence
 import Poincare.MaximumPrinciple
+import Poincare.ModelChristoffel
 import Mathlib.LinearAlgebra.QuadraticForm.Basic
 
 noncomputable section
@@ -564,5 +565,41 @@ theorem heat_supersolution_nonneg_preserved
   intro t ht x hx
   have := hevol t ht x hx
   linarith
+
+end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The curved Laplacian of a constant metric is the flat Laplacian**: the
+Christoffel corrector vanishes and the covariant Hessian collapses to the
+flat second derivative — anchoring the Laplace–Beltrami operator to the
+analytic stratum.
+-/
+theorem curvedLaplacian_const (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate) (f : E → ℝ) (x : E) :
+    curvedLaplacian (fun _ ↦ G₀) b hb f x =
+      modelLaplacian (b x) (hb x) f x := by
+  unfold curvedLaplacian modelLaplacian
+  congr 1
+  apply LinearMap.ext
+  intro v
+  show (LinearMap.BilinForm.toDual (b x) (hb x)).symm _ =
+    (LinearMap.BilinForm.toDual (b x) (hb x)).symm _
+  apply congrArg
+  apply LinearMap.ext
+  intro w
+  have hΓ : christoffelAt (fun _ : E ↦ G₀) x (b x) (hb x) v w = 0 :=
+    christoffelAt_const G₀ x (b x) (hb x) v w
+  simp only [covariantHessianLin, LinearMap.mk₂_apply, covariantHessian,
+    hΓ, map_zero, sub_zero, LinearMap.comp_apply, LinearMap.coe_comp,
+    Function.comp_apply, LinearEquiv.coe_coe]
+  rfl
 
 end RicciFlow
