@@ -719,3 +719,61 @@ theorem covariantHessian_symm (G : F → F →L[ℝ] F →L[ℝ] ℝ)
   exact hsymm v w
 
 end CovariantDerivative
+
+namespace CovariantDerivative
+
+variable {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+  [FiniteDimensional ℝ F]
+
+/-- The covariant Hessian as a linear-map-valued form. -/
+noncomputable def covariantHessianLin (G : F → F →L[ℝ] F →L[ℝ] ℝ)
+    (b : Π x : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (f : F → ℝ) (x : F) : F →ₗ[ℝ] F →ₗ[ℝ] ℝ :=
+  LinearMap.mk₂ ℝ (covariantHessian G b hb f x)
+    (fun v v' w ↦ by
+      unfold covariantHessian
+      have hΓ : christoffelAt G x (b x) (hb x) (v + v') w =
+          christoffelAt G x (b x) (hb x) v w
+            + christoffelAt G x (b x) (hb x) v' w := by
+        exact (christoffelLinear G x (b x) (hb x)).map_add₂ v v' w
+      rw [map_add, ContinuousLinearMap.add_apply, hΓ, map_add]
+      ring)
+    (fun c v w ↦ by
+      unfold covariantHessian
+      have hΓ : christoffelAt G x (b x) (hb x) (c • v) w =
+          c • christoffelAt G x (b x) (hb x) v w := by
+        exact (christoffelLinear G x (b x) (hb x)).map_smul₂ c v w
+      rw [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul, hΓ,
+        map_smul, smul_eq_mul]
+      ring)
+    (fun v w w' ↦ by
+      unfold covariantHessian
+      have hΓ : christoffelAt G x (b x) (hb x) v (w + w') =
+          christoffelAt G x (b x) (hb x) v w
+            + christoffelAt G x (b x) (hb x) v w' := by
+        exact map_add (christoffelLinear G x (b x) (hb x) v) w w'
+      rw [map_add, hΓ, map_add]
+      ring)
+    (fun c v w ↦ by
+      unfold covariantHessian
+      have hΓ : christoffelAt G x (b x) (hb x) v (c • w) =
+          c • christoffelAt G x (b x) (hb x) v w := by
+        exact map_smul (christoffelLinear G x (b x) (hb x) v) c w
+      rw [map_smul, smul_eq_mul, hΓ, map_smul, smul_eq_mul]
+      ring)
+
+/--
+**The curved Laplacian**: the trace of the covariant Hessian against the
+inverse metric — the Laplace–Beltrami operator of the Christoffel-form
+connection on the model space.
+-/
+noncomputable def curvedLaplacian (G : F → F →L[ℝ] F →L[ℝ] ℝ)
+    (b : Π x : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (f : F → ℝ) (x : F) : ℝ :=
+  LinearMap.trace ℝ F
+    ((LinearMap.BilinForm.toDual (b x) (hb x)).symm.toLinearMap ∘ₗ
+      covariantHessianLin G b hb f x)
+
+end CovariantDerivative
