@@ -165,8 +165,10 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   backgrounds** (`curved_parabolic_min_principle_strict`) — Hamilton's
   maximum principle in the geometric generality his estimates require;
   and the Laplacian product rule `Δ(fg) = fΔg + gΔf + 2b(∇f,∇g)` with its
-  square form — the identity of every Bochner formula and
-  integration-by-parts computation in Perelman's functionals.
+  square form, the curved product rule (`curvedLaplacian_mul`, verbatim on
+  any metric), and the Laplacian chain rule
+  (`Δ(φ∘f) = φ'(f)Δf + φ''(f)|∇f|²`) — the three laws of Bochner calculus,
+  the identities of every computation in Perelman's functionals.
 
 ## What this layer provides
 
