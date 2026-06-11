@@ -528,3 +528,41 @@ theorem parabolic_min_principle
   field_simp at this
   linarith
 end RicciFlow
+
+namespace RicciFlow
+
+open Set
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**Preserved nonnegativity in flow form**: any quantity satisfying a
+heat-type evolution inequality `∂R/∂t ≥ ΔR` (as the scalar curvature does
+under the Ricci flow, where `∂R/∂t = ΔR + 2|Ric|² ≥ ΔR`) with nonnegative
+initial data stays nonnegative. Hamilton's "nonnegative scalar curvature
+is preserved", modulo the evolution equation itself.
+-/
+theorem heat_supersolution_nonneg_preserved
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v)
+    {R R' : ℝ → E → ℝ} {K : Set E} (hK : IsCompact K) (hKne : K.Nonempty)
+    {T : ℝ}
+    (hR_cont : Continuous ↿R)
+    (hRd : ∀ x ∈ K, ∀ t ∈ Icc (0 : ℝ) T,
+      HasDerivAt (fun s ↦ R s x) (R' t x) t)
+    (hspace : ∀ t ∈ Icc (0 : ℝ) T, ContDiff ℝ 2 (R t))
+    (hevol : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      modelLaplacian b hb (R t) x ≤ R' t x)
+    (hmin_int : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      IsMinOn (R t) K x → IsLocalMin (R t) x)
+    (h0 : ∀ x ∈ K, 0 ≤ R 0 x) :
+    ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, 0 ≤ R t x := by
+  apply parabolic_min_principle b hb hbs hbpos hK hKne hR_cont hRd hspace
+    (c := 0) ?_ hmin_int h0
+  intro t ht x hx
+  have := hevol t ht x hx
+  linarith
+
+end RicciFlow
