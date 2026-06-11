@@ -932,6 +932,67 @@ theorem koszulRHS_congr_of_direction_value_eq
       (hP _ _ hX' hZ) (hP _ _ hX' hY)] at h0
   linarith
 
+/--
+The Levi-Civita covariant derivative of `Y` at `x` as a linear map in the
+direction: `v ↦ ∇_v Y (x)`, through canonical extensions of the direction.
+-/
+noncomputable def leviCivitaDirectionalAt {Y : Π y : M, TangentSpace I y}
+    {x : M}
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    (hY : MDiffAt (T% Y) x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (b : LinearMap.BilinForm ℝ (TangentSpace I x)) (hb : b.Nondegenerate)
+    (hbg : ∀ v w : TangentSpace I x, b v w = g x v w) :
+    TangentSpace I x →ₗ[ℝ] TangentSpace I x where
+  toFun v := leviCivitaValueAt g (hgsymm x)
+    (mdifferentiableAt_extend (σ₀ := v) ..) hY hP b hb
+  map_add' v v' := by
+    apply sub_eq_zero.mp
+    apply hb.1
+    intro z
+    simp only [map_sub, map_add, LinearMap.sub_apply, LinearMap.add_apply]
+    rw [b_leviCivitaValueAt g (hgsymm x) (mdifferentiableAt_extend ..)
+        hY hP b hb z,
+      b_leviCivitaValueAt g (hgsymm x) (mdifferentiableAt_extend ..)
+        hY hP b hb z,
+      b_leviCivitaValueAt g (hgsymm x) (mdifferentiableAt_extend ..)
+        hY hP b hb z]
+    have hcongr : koszulRHS g (extend E (v + v')) Y (extend E z) x =
+        koszulRHS g (extend E v + extend E v') Y (extend E z) x :=
+      koszulRHS_congr_of_direction_value_eq g hgsymm hY
+        (mdifferentiableAt_extend ..) hP (mdifferentiableAt_extend ..)
+        (mdifferentiableAt_add_section (mdifferentiableAt_extend ..)
+          (mdifferentiableAt_extend ..)) (by simp)
+    rw [hcongr, koszulRHS_add_left g (mdifferentiableAt_extend ..)
+      (mdifferentiableAt_extend ..)
+      (hP _ _ (mdifferentiableAt_extend ..) (mdifferentiableAt_extend ..))
+      (hP _ _ (mdifferentiableAt_extend ..) (mdifferentiableAt_extend ..))
+      (hP _ _ (mdifferentiableAt_extend ..) hY)
+      (hP _ _ (mdifferentiableAt_extend ..) hY)]
+    ring
+  map_smul' c v := by
+    apply sub_eq_zero.mp
+    apply hb.1
+    intro z
+    simp only [map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply,
+      RingHom.id_apply, smul_eq_mul]
+    rw [b_leviCivitaValueAt g (hgsymm x) (mdifferentiableAt_extend ..)
+        hY hP b hb z,
+      b_leviCivitaValueAt g (hgsymm x) (mdifferentiableAt_extend ..)
+        hY hP b hb z]
+    have hcongr : koszulRHS g (extend E (c • v)) Y (extend E z) x =
+        koszulRHS g ((fun _ : M ↦ c) • extend E v) Y (extend E z) x :=
+      koszulRHS_congr_of_direction_value_eq g hgsymm hY
+        (mdifferentiableAt_extend ..) hP (mdifferentiableAt_extend ..)
+        (mdifferentiableAt_const.smul_section (mdifferentiableAt_extend ..))
+        (by simp)
+    rw [hcongr, koszulRHS_smul_left g hgsymm mdifferentiableAt_const
+      (mdifferentiableAt_extend ..) hY (mdifferentiableAt_extend ..)
+      (hP _ _ (mdifferentiableAt_extend ..) (mdifferentiableAt_extend ..))
+      (hP _ _ (mdifferentiableAt_extend ..) hY)]
+    ring
+
 end Construction
 
 end CovariantDerivative
