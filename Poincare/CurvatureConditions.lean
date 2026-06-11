@@ -11,8 +11,8 @@ import Poincare.EuclideanLeviCivitaCheck
 
 noncomputable section
 
-open Bundle CovariantDerivative
-open scoped Manifold ContDiff
+open Bundle CovariantDerivative Filter FiberBundle Set
+open scoped Manifold ContDiff Topology
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
@@ -67,6 +67,67 @@ theorem scalarCurvatureAt_of_einstein {lam : ℝ} {x : M}
   rw [hcomp, map_smul, LinearMap.trace_id, smul_eq_mul]
   have hr : Module.finrank ℝ (TangentSpace I x) = Module.finrank ℝ E := rfl
   rw [hr]
+
+/-! ## Ricci agreement for coincident connections -/
+
+section RicciAgree
+
+variable {cov' : CovariantDerivative I E (TangentSpace I : M → Type _)}
+
+/--
+Two connections that agree on differentiable fields at every point have the
+same curvature on `C²` data, hence the same Ricci trace.
+-/
+theorem ricciTraceAt_eq_of_agree
+    (hagree : ∀ (y : M) (Y : Π z : M, TangentSpace I z),
+      MDiffAt (T% Y) y → cov Y y = cov' Y y)
+    {Z : Π y : M, TangentSpace I y} {x : M} (hZ : CMDiffAt 2 (T% Z) x)
+    (hreg : DerivRegularAt cov Z x) (hreg' : DerivRegularAt cov' Z x)
+    (u : TangentSpace I x) :
+    ricciTraceAt cov hreg u = ricciTraceAt cov' hreg' u := by
+  unfold ricciTraceAt
+  congr 1
+  apply LinearMap.ext
+  intro v
+  rw [curvatureEndAt_apply, curvatureEndAt_apply]
+  unfold curvatureTensorAt
+  rw [TensorialAt.mkHom₂_apply_eq_extend, TensorialAt.mkHom₂_apply_eq_extend]
+  -- Differentiability of Z near x.
+  have hZd : ∀ᶠ y in 𝓝 x, MDiffAt (T% Z) y := by
+    obtain ⟨v', hv', hZv⟩ :=
+      (contMDiffAt_iff_contMDiffOn_nhds (n := 2) (by norm_num)).mp hZ
+    filter_upwards [interior_mem_nhds.mpr hv'] with y hy
+    exact (((hZv.mono interior_subset) y hy).contMDiffAt
+      (isOpen_interior.mem_nhds hy)).mdifferentiableAt two_ne_zero
+  have hZx : MDiffAt (T% Z) x := hZ.mdifferentiableAt two_ne_zero
+  -- The inner sections agree near x.
+  have hinner : ∀ (W : Π y : M, TangentSpace I y),
+      (fun y ↦ cov Z y (W y)) =ᶠ[𝓝 x] fun y ↦ cov' Z y (W y) := by
+    intro W
+    filter_upwards [hZd] with y hy
+    rw [hagree y Z hy]
+  -- Outer derivatives coincide at x.
+  have houter : ∀ (W : Π y : M, TangentSpace I y), MDiffAt (T% W) x →
+      cov (fun y ↦ cov Z y (W y)) x = cov' (fun y ↦ cov' Z y (W y)) x := by
+    intro W hW
+    have hA : MDiffAt (T% (fun y ↦ cov Z y (W y))) x :=
+      mdiffAt_cov_section_of_contMDiffAt cov hZ hW
+    have hA' : MDiffAt (T% (fun y ↦ cov' Z y (W y))) x := by
+      refine hA.congr_of_eventuallyEq ?_
+      filter_upwards [hinner W] with y hy
+      rw [Bundle.TotalSpace.mk_inj]
+      exact hy.symm
+    calc cov (fun y ↦ cov Z y (W y)) x
+        = cov (fun y ↦ cov' Z y (W y)) x :=
+          cov.isCovariantDerivativeOnUniv.congr_of_eventuallyEq hA hA'
+            univ_mem (hinner W)
+      _ = cov' (fun y ↦ cov' Z y (W y)) x := hagree x _ hA'
+  rw [curvatureOp_apply, curvatureOp_apply,
+    houter (extend E u) (mdifferentiableAt_extend ..),
+    houter (extend E v) (mdifferentiableAt_extend ..),
+    hagree x Z hZx]
+
+end RicciAgree
 
 end CovariantDerivative
 
