@@ -1266,3 +1266,23 @@ theorem modelLaplacian_comp (b : LinearMap.BilinForm ℝ E)
   rw [hpair]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The `L²` inequality `Δ(f²) ≥ 2 f Δf` for positive-definite metrics. -/
+theorem modelLaplacian_sq_ge (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (x : E) :
+    2 * f x * modelLaplacian b hb f x ≤
+      modelLaplacian b hb (fun y ↦ f y * f y) x := by
+  rw [modelLaplacian_sq b hb hbs hf x]
+  have := gradient_sq_nonneg b hb hbpos f x
+  linarith
+
+end RicciFlow
