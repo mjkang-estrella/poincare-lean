@@ -275,3 +275,26 @@ theorem modelLaplacian_nonneg_of_isLocalMin
     (fun v ↦ hessian_nonneg_of_isLocalMin hf hmin v)
 
 end RicciFlow
+
+namespace RicciFlow
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**Hamilton's touching-point inequality**: at a spatial local minimum with
+value zero, a reaction–diffusion supersolution has nonnegative time
+derivative — the single inequality at the heart of the parabolic maximum
+principle, glued from the spatial sign of the Laplacian.
+-/
+theorem touching_point_nonneg (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) {x₀ : E}
+    (hmin : IsLocalMin f x₀) (hval : f x₀ = 0) {ut' c : ℝ}
+    (hsuper : modelLaplacian b hb f x₀ + c * f x₀ ≤ ut') : 0 ≤ ut' := by
+  have hlap := modelLaplacian_nonneg_of_isLocalMin b hb hbs hbpos hf hmin
+  rw [hval] at hsuper
+  linarith
+
+end RicciFlow
