@@ -407,3 +407,124 @@ theorem parabolic_min_principle_strict
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open Set
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- Adding a constant does not change the Laplacian. -/
+theorem modelLaplacian_add_const (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (f : E → ℝ) (k : ℝ) (x : E) :
+    modelLaplacian b hb (fun y ↦ f y + k) x = modelLaplacian b hb f x := by
+  unfold modelLaplacian
+  congr 2
+  have : fderiv ℝ (fun y ↦ f y + k) = fderiv ℝ f := by
+    funext y
+    exact fderiv_add_const k
+  rw [this]
+
+/--
+**The parabolic maximum principle** (non-strict form): a quantity
+nonnegative at time `0`, evolving by a reaction–diffusion supersolution
+inequality with interior compact spatial minima, stays nonnegative — by
+`ε`-perturbation with an exponential slack reducing to the strict
+principle.
+-/
+theorem parabolic_min_principle
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v)
+    {u u' : ℝ → E → ℝ} {K : Set E} (hK : IsCompact K) (hKne : K.Nonempty)
+    {T c : ℝ}
+    (hu_cont : Continuous ↿u)
+    (hud : ∀ x ∈ K, ∀ t ∈ Icc (0 : ℝ) T,
+      HasDerivAt (fun s ↦ u s x) (u' t x) t)
+    (hspace : ∀ t ∈ Icc (0 : ℝ) T, ContDiff ℝ 2 (u t))
+    (hsuper : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      modelLaplacian b hb (u t) x + c * u t x ≤ u' t x)
+    (hmin_int : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      IsMinOn (u t) K x → IsLocalMin (u t) x)
+    (h0 : ∀ x ∈ K, 0 ≤ u 0 x) :
+    ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, 0 ≤ u t x := by
+  intro t ht x hx
+  -- It suffices to dominate `-ε e^{Mt}` for every `ε > 0`.
+  set M : ℝ := |c| + 1 with hM
+  by_contra hneg
+  push_neg at hneg
+  set ε : ℝ := -u t x / (2 * Real.exp (M * t)) with hε
+  have hexp : (0 : ℝ) < Real.exp (M * t) := Real.exp_pos _
+  have hεpos : 0 < ε := by
+    rw [hε]
+    apply div_pos (by linarith) (by positivity)
+  -- The perturbed quantity is a strict supersolution, positive at `0`.
+  set v : ℝ → E → ℝ := fun s y ↦ u s y + ε * Real.exp (M * s) with hv
+  set v' : ℝ → E → ℝ := fun s y ↦ u' s y + ε * M * Real.exp (M * s)
+    with hv'
+  have hvpos := parabolic_min_principle_strict b hb hbs hbpos
+    (u := v) (u' := v') hK hKne (T := T) (c := c)
+    (by
+      apply Continuous.add hu_cont
+      exact (continuous_const.mul ((continuous_const.mul
+        continuous_fst).rexp)).comp (continuous_id))
+    (by
+      intro y hy s hs
+      have h1 := hud y hy s hs
+      have h2 : HasDerivAt (fun r ↦ ε * Real.exp (M * r))
+          (ε * M * Real.exp (M * s)) s := by
+        have h3 := (((hasDerivAt_id s).const_mul M).exp).const_mul ε
+        simp only [id_eq] at h3
+        convert h3 using 1
+        ring
+      simpa [hv, hv'] using h1.add h2)
+    (by
+      intro s hs
+      exact (hspace s hs).add contDiff_const)
+    (by
+      intro s hs y hy
+      have hsup := hsuper s hs y hy
+      have hlap : modelLaplacian b hb (v s) y =
+          modelLaplacian b hb (u s) y :=
+        modelLaplacian_add_const b hb (u s) _ y
+      simp only [hv, hv']
+      rw [hlap]
+      have hcM : c < M := by
+        rw [hM]
+        rcases le_or_gt 0 c with h | h
+        · rw [abs_of_nonneg h]; linarith
+        · rw [abs_of_neg h]; linarith
+      have heps : 0 < ε * Real.exp (M * s) := by positivity
+      have hkey : c * (ε * Real.exp (M * s)) <
+          ε * M * Real.exp (M * s) := by
+        have h2 : c * (ε * Real.exp (M * s)) <
+            M * (ε * Real.exp (M * s)) :=
+          mul_lt_mul_of_pos_right hcM heps
+        nlinarith
+      nlinarith)
+    (by
+      intro s hs y hy
+      intro hminv
+      have hminu : IsMinOn (u s) K y := by
+        intro z hz
+        have := hminv hz
+        simp only [hv] at this
+        simpa using this
+      have hloc := hmin_int s hs y hy hminu
+      have : IsLocalMin (fun z ↦ u s z + ε * Real.exp (M * s)) y :=
+        hloc.add isMinFilter_const
+      simpa [hv] using this)
+    (by
+      intro y hy
+      simp only [hv]
+      have := h0 y hy
+      positivity)
+  -- Contradiction at `(t, x)`.
+  have := hvpos t ht x hx
+  simp only [hv] at this
+  rw [hε] at this
+  have hne : Real.exp (M * t) ≠ 0 := ne_of_gt hexp
+  field_simp at this
+  linarith
+end RicciFlow
