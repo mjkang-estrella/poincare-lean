@@ -141,3 +141,30 @@ theorem flatCovariantDerivative_inner_compatible
     real_inner_comm (Z x) (fderiv ℝ Y x v)]
   simp only [flatCovariantDerivative_apply]
   exact add_comm _ _
+
+/-! ## Smoothness of the flat connection -/
+
+open Bundle in
+/--
+The flat connection is a `C^k` covariant derivative for every `k`: applied
+to a `C^(k+1)` field it produces a `C^k` section of the hom-bundle, since
+over the model space the hom-bundle coordinates are trivial and
+`fderiv` of a `C^(k+1)` map is `C^k`.
+-/
+instance flatCovariantDerivative_contMDiff {k : ℕ∞ω} :
+    CovariantDerivative.ContMDiffCovariantDerivative
+      (flatCovariantDerivative 𝕜 E) k where
+  contMDiff := by
+    constructor
+    intro σ hσ
+    intro x _
+    apply ContMDiffWithinAt.contMDiffAt (s := Set.univ) ?_ Filter.univ_mem
+    rw [contMDiffWithinAt_univ, contMDiffAt_hom_bundle]
+    refine ⟨contMDiffAt_id, ?_⟩
+    have hσ' : ContDiff 𝕜 (k + 1) σ :=
+      contMDiff_vectorSpace_iff_contDiff.mp (contMDiffOn_univ.mp hσ)
+    have hgoal : ContMDiffAt 𝓘(𝕜, E) 𝓘(𝕜, E →L[𝕜] E) k
+        (fun x' ↦ fderiv 𝕜 σ x') x :=
+      (contMDiffAt_iff_contDiffAt).mpr (hσ'.contDiffAt.fderiv_right le_rfl)
+    exact hgoal.congr_of_eventuallyEq (Filter.Eventually.of_forall
+      fun x' ↦ inCoordinates_tangent_bundle_core_model_space x x' x x' _)
