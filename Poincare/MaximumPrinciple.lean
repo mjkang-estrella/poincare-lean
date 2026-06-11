@@ -327,3 +327,60 @@ theorem riccati_doubling_time {u u' : ℝ → ℝ} {a T : ℝ} (ha : 0 < a)
         linarith
     _ = 2 * u 0 := by ring
 end RicciFlow
+
+namespace RicciFlow
+
+/--
+**The second-derivative test (necessity)**: at a local minimum of a twice
+differentiable function the second derivative is nonnegative — the 1-d
+heart of "the Laplacian is nonnegative at a spatial minimum", which is the
+pointwise mechanism of the parabolic maximum principle. Not in Mathlib.
+-/
+theorem secondDeriv_nonneg_of_isLocalMin {g g' g'' : ℝ → ℝ}
+    (hd1 : ∀ t, HasDerivAt g (g' t) t)
+    (hd2 : ∀ t, HasDerivAt g' (g'' t) t)
+    (hcont : Continuous g'')
+    (hmin : IsLocalMin g 0) : 0 ≤ g'' 0 := by
+  by_contra hneg
+  push_neg at hneg
+  -- `g''` is negative on a ball around `0`.
+  obtain ⟨δ, hδ, hball⟩ := Metric.eventually_nhds_iff.mp
+    (hcont.continuousAt.eventually_lt continuousAt_const hneg)
+  -- `g' 0 = 0` at the local minimum.
+  have hg'0 : g' 0 = 0 := by
+    have := hmin.deriv_eq_zero
+    rwa [(hd1 0).deriv] at this
+  -- `g'` is strictly decreasing on `(-δ, δ)`, so `g' < 0` to the right.
+  have hanti : StrictAntiOn g' (Set.Ioo (-δ) δ) := by
+    apply strictAntiOn_of_deriv_neg (convex_Ioo _ _)
+    · exact fun s _ ↦ ((hd2 s).continuousAt).continuousWithinAt
+    · intro s hs
+      rw [interior_Ioo] at hs
+      rw [(hd2 s).deriv]
+      apply hball
+      rw [Real.dist_eq, abs_lt]
+      exact ⟨by linarith [hs.1], by linarith [hs.2]⟩
+  -- Hence `g` is strictly decreasing on `[0, δ)`.
+  have hganti : StrictAntiOn g (Set.Ico 0 δ) := by
+    apply strictAntiOn_of_deriv_neg (convex_Ico _ _)
+    · exact fun s _ ↦ ((hd1 s).continuousAt).continuousWithinAt
+    · intro s hs
+      rw [interior_Ico] at hs
+      rw [(hd1 s).deriv]
+      have h0mem : (0 : ℝ) ∈ Set.Ioo (-δ) δ := by constructor <;> linarith
+      have hsmem : s ∈ Set.Ioo (-δ) δ := ⟨by linarith [hs.1], hs.2⟩
+      have := hanti h0mem hsmem hs.1
+      rwa [hg'0] at this
+  -- Contradiction with the local minimum.
+  obtain ⟨ε, hε, hloc⟩ := Metric.eventually_nhds_iff.mp hmin
+  set t := min (δ / 2) (ε / 2) with htdef
+  have htpos : 0 < t := by positivity
+  have ht1 : t < δ := lt_of_le_of_lt (min_le_left _ _) (by linarith)
+  have ht2 : dist t 0 < ε := by
+    rw [Real.dist_eq, sub_zero, abs_of_pos htpos]
+    exact lt_of_le_of_lt (min_le_right _ _) (by linarith)
+  have hlt : g t < g 0 :=
+    hganti (left_mem_Ico.mpr hδ) ⟨le_of_lt htpos, ht1⟩ htpos
+  exact absurd (hloc ht2) (not_le.mpr hlt)
+
+end RicciFlow
