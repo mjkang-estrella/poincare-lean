@@ -286,6 +286,22 @@ theorem blendedChartMetric_posDef (χ : E → ℝ)
     · have := hG₀pos v hv
       nlinarith
 
+/-- Positive-definiteness gives nondegeneracy of the blended metric. -/
+theorem blendedChartMetric_nondegenerate (χ : E → ℝ)
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ) (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (hgpos : ∀ (y : M) (u : TangentSpace I y), u ≠ 0 → 0 < g y u u)
+    (x₀ : M) {z : E} (hχ0 : 0 ≤ χ z) (hχ1 : χ z ≤ 1)
+    (hsupp : χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z).IsInvertible)
+    (v : E) (hv : ∀ w, blendedChartMetric χ G₀ g x₀ z v w = 0) : v = 0 := by
+  by_contra hne
+  have hpos := blendedChartMetric_posDef χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1
+    hsupp hne
+  rw [hv v] at hpos
+  exact lt_irrefl 0 hpos
+
 end Blended
 
 end CovariantDerivative
