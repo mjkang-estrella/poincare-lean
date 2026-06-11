@@ -305,4 +305,96 @@ theorem koszulRHS_congr_of_value_eq
 
 end ValueDependence
 
+section Construction
+
+open FiberBundle
+
+variable [FiniteDimensional ℝ E] [T2Space M]
+variable (g)
+
+/--
+The pointwise Koszul functional: the Koszul right-hand side as a linear
+functional on the tangent space at `x`, through canonical extensions.
+-/
+noncomputable def koszulFunctionalAt {X Y : Π y : M, TangentSpace I y}
+    {x : M}
+    (hgsymm : ∀ v w : TangentSpace I x, g x v w = g x w v)
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x) :
+    TangentSpace I x →ₗ[ℝ] ℝ where
+  toFun z := koszulRHS g X Y (extend E z) x
+  map_add' z z' := by
+    have h1 : koszulRHS g X Y (extend E (z + z')) x =
+        koszulRHS g X Y (extend E z + extend E z') x :=
+      koszulRHS_congr_of_value_eq hgsymm hX hY hP
+        (mdifferentiableAt_extend ..)
+        (mdifferentiableAt_add_section (mdifferentiableAt_extend ..)
+          (mdifferentiableAt_extend ..))
+        (by simp)
+    rw [h1, koszulRHS_add_right (mdifferentiableAt_extend ..)
+      (mdifferentiableAt_extend ..)
+      (hP _ _ hY (mdifferentiableAt_extend ..))
+      (hP _ _ hY (mdifferentiableAt_extend ..))
+      (hP _ _ hX (mdifferentiableAt_extend ..))
+      (hP _ _ hX (mdifferentiableAt_extend ..))]
+  map_smul' c z := by
+    have h1 : koszulRHS g X Y (extend E (c • z)) x =
+        koszulRHS g X Y ((fun _ : M ↦ c) • extend E z) x :=
+      koszulRHS_congr_of_value_eq hgsymm hX hY hP
+        (mdifferentiableAt_extend ..)
+        (mdifferentiableAt_const.smul_section (mdifferentiableAt_extend ..))
+        (by simp)
+    rw [h1, koszulRHS_smul_right hgsymm mdifferentiableAt_const hX hY
+      (mdifferentiableAt_extend ..)
+      (hP _ _ hY (mdifferentiableAt_extend ..))
+      (hP _ _ hX (mdifferentiableAt_extend ..))]
+    simp
+
+/--
+The Levi-Civita candidate value `∇_X Y (x)`: the metric dual of half the
+Koszul functional.
+-/
+noncomputable def leviCivitaValueAt {X Y : Π y : M, TangentSpace I y}
+    {x : M}
+    (hgsymm : ∀ v w : TangentSpace I x, g x v w = g x w v)
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (b : LinearMap.BilinForm ℝ (TangentSpace I x)) (hb : b.Nondegenerate) :
+    TangentSpace I x :=
+  letI : FiniteDimensional ℝ (TangentSpace I x) := ‹FiniteDimensional ℝ E›
+  (LinearMap.BilinForm.toDual b hb).symm
+    ((1 / 2 : ℝ) • koszulFunctionalAt g hgsymm hX hY hP)
+
+/--
+**The defining property of the Levi-Civita value**: it satisfies the Koszul
+formula against every tangent vector.
+-/
+theorem b_leviCivitaValueAt {X Y : Π y : M, TangentSpace I y} {x : M}
+    (hgsymm : ∀ v w : TangentSpace I x, g x v w = g x w v)
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (b : LinearMap.BilinForm ℝ (TangentSpace I x)) (hb : b.Nondegenerate)
+    (z : TangentSpace I x) :
+    b (leviCivitaValueAt g hgsymm hX hY hP b hb) z =
+      (1 / 2 : ℝ) * koszulRHS g X Y (extend E z) x := by
+  letI : FiniteDimensional ℝ (TangentSpace I x) := ‹FiniteDimensional ℝ E›
+  unfold leviCivitaValueAt
+  have h := LinearEquiv.apply_symm_apply (LinearMap.BilinForm.toDual b hb)
+    ((1 / 2 : ℝ) • koszulFunctionalAt g hgsymm hX hY hP)
+  have h2 := congrArg (fun ψ ↦ ψ z) h
+  simp only at h2
+  rw [show (LinearMap.BilinForm.toDual b hb)
+      ((LinearMap.BilinForm.toDual b hb).symm
+        ((1 / 2 : ℝ) • koszulFunctionalAt g hgsymm hX hY hP)) z =
+      b ((LinearMap.BilinForm.toDual b hb).symm
+        ((1 / 2 : ℝ) • koszulFunctionalAt g hgsymm hX hY hP)) z from
+    (LinearMap.BilinForm.toDual_def hb)] at h2
+  rw [h2]
+  simp [koszulFunctionalAt]
+
+end Construction
+
 end CovariantDerivative
