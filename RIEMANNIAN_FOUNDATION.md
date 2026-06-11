@@ -105,6 +105,15 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   complete static-solution family of the model flow
   (`const_metric_static_model_flow`).
 
+- `Poincare/ChartTransport.lean` — the chart-transport stratum (opened):
+  `chartMetric`, the pullback of a manifold metric through the tangent map
+  of the inverse chart (built at the `LinearMap` level — `mk₂` over the
+  tangent fibre + `compl₁₂` — since abstract tangent spaces carry no norm);
+  its application formula, inherited symmetry, and nondegeneracy wherever
+  the chart tangent map is invertible (with the centre-point corollary).
+  Remaining in this stratum: smoothness of `chartMetric` from a smooth
+  metric, then the connection correspondence.
+
 ## What this layer provides
 
 For any symmetric, nondegenerate, pairing-regular metric on a boundaryless
