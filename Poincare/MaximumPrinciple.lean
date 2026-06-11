@@ -217,3 +217,29 @@ theorem riccati_forces_finite_time {u u' : ℝ → ℝ} {a T : ℝ}
   nlinarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+/--
+**The Einstein scalar saturates the Riccati engine**: the verified
+Einstein-flow scalar curvature `λn/(1 − 2λt)` satisfies the Riccati ODE
+`u' = (2/n) u²` exactly — Hamilton's comparison is tight on the verified
+solution, cross-validating the flow stratum against the maximum-principle
+stratum.
+-/
+theorem einstein_scalar_hasDerivAt_riccati {lam n t : ℝ} (hn : n ≠ 0)
+    (ht : 1 - 2 * lam * t ≠ 0) :
+    HasDerivAt (fun s ↦ lam * n / (1 - 2 * lam * s))
+      ((2 / n) * (lam * n / (1 - 2 * lam * t)) ^ 2) t := by
+  have hf : HasDerivAt (fun s ↦ 1 - 2 * lam * s) (-(2 * lam)) t := by
+    simpa using ((hasDerivAt_id t).const_mul (2 * lam)).const_sub 1
+  have hinv : HasDerivAt (fun s ↦ (1 - 2 * lam * s)⁻¹)
+      (2 * lam / (1 - 2 * lam * t) ^ 2) t := by
+    have h2 := hf.inv ht
+    convert h2 using 1
+    rw [neg_neg]
+  have := hinv.const_mul (lam * n)
+  convert this using 1
+  field_simp
+
+end RicciFlow
