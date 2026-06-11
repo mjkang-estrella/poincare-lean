@@ -509,6 +509,42 @@ theorem modelLeviCivita_contMDiff {k : ℕ∞ω}
   exact hgoal.congr_of_eventuallyEq (Filter.Eventually.of_forall
     fun y ↦ inCoordinates_tangent_bundle_core_model_space x y x y _)
 
+
+/--
+**The Ricci tensor of a smooth metric is symmetric** (model space): the
+canonical Ricci bilinear form of the Christoffel-form connection of a `C²`
+symmetric nondegenerate metric is symmetric — the full chain from metric to
+connection to curvature to Ricci, concretely instantiated.
+-/
+theorem modelLeviCivita_ricciBilinearAt_symm
+    (hGc : ContDiff ℝ 2 G)
+    (b : Π y : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ y, (b y).Nondegenerate)
+    (hbg : ∀ (y : F) (v w : F), b y v w = G y v w)
+    (hGsymm : ∀ (y : F) (p q : F), G y p q = G y q p)
+    (hGnd : ∀ (y : F) (v : F), (∀ w, G y v w = 0) → v = 0) (x : F)
+    (u w : TangentSpace 𝓘(ℝ, F) x) :
+    haveI := modelLeviCivita_contMDiff G (k := 1)
+      (by exact_mod_cast hGc) b hb hbg
+    ricciBilinearAt (modelLeviCivita G b hb) x u w =
+      ricciBilinearAt (modelLeviCivita G b hb) x w u := by
+  haveI := modelLeviCivita_contMDiff G (k := 1)
+    (by exact_mod_cast hGc) b hb hbg
+  have hGd : Differentiable ℝ G := hGc.differentiable (by norm_num)
+  apply ricciBilinearAt_symm
+  · exact fun y ↦ modelLeviCivita_torsionFreeAt G b hb hGd hGsymm y
+  · exact fun y ↦ modelLeviCivita_metricCompatibleAt G b hb hGd hGsymm
+      hbg y
+  · exact fun v' w' ↦ hGsymm x v' w'
+  · exact fun v' hv' ↦ hGnd x v' hv'
+  · intro A B hA hB
+    have hA' := contMDiffAt_vectorSpace_iff_contDiffAt.mp hA
+    have hB' := contMDiffAt_vectorSpace_iff_contDiffAt.mp hB
+    exact (contMDiffAt_iff_contDiffAt).mpr
+      (((hGc.contDiffAt).clm_apply hA').clm_apply hB')
+  · intro A B hA hB
+    exact metric_pairing_mdiff G hGd x A B hA hB
+
 end Smoothness
 
 end CovariantDerivative
