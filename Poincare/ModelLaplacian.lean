@@ -1286,3 +1286,38 @@ theorem modelLaplacian_sq_ge (b : LinearMap.BilinForm ℝ E)
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The square form of the curved product rule. -/
+theorem curvedLaplacian_sq (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate) {x : E}
+    (hbs : LinearMap.IsSymm (b x))
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) :
+    curvedLaplacian G b hb (fun y ↦ f y * f y) x =
+      2 * f x * curvedLaplacian G b hb f x
+        + 2 * (b x) (metricGradient (b x) (hb x) f x)
+            (metricGradient (b x) (hb x) f x) := by
+  rw [curvedLaplacian_mul G b hb hbs hf hf]
+  ring
+
+/-- The `L²` inequality for the Laplace–Beltrami operator. -/
+theorem curvedLaplacian_sq_ge (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate) {x : E}
+    (hbs : LinearMap.IsSymm (b x))
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < (b x) v v)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) :
+    2 * f x * curvedLaplacian G b hb f x ≤
+      curvedLaplacian G b hb (fun y ↦ f y * f y) x := by
+  rw [curvedLaplacian_sq G b hb hbs hf]
+  have := gradient_sq_nonneg (b x) (hb x) hbpos f x
+  linarith
+
+end RicciFlow
