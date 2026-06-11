@@ -576,6 +576,30 @@ theorem isRicciFlowSolutionAt_of_model_metric
         (hGsymm t) x⟩
   flow hZ hreg w := hflow hZ hreg w
 
+
+/-- The Christoffel corrector of a constant metric vanishes. -/
+theorem christoffelAt_const (G₀ : F →L[ℝ] F →L[ℝ] ℝ) (x : F)
+    (b : LinearMap.BilinForm ℝ F) (hb : b.Nondegenerate) (u v : F) :
+    christoffelAt (fun _ ↦ G₀) x b hb u v = 0 := by
+  have hfun : christoffelFunctional (fun _ : F ↦ G₀) x u v = 0 := by
+    apply LinearMap.ext
+    intro w
+    simp [christoffelFunctional, fderiv_const]
+  unfold christoffelAt
+  rw [hfun, map_zero]
+
+/-- **The Levi-Civita connection of a constant metric is the flat
+connection.** -/
+theorem modelLeviCivita_const_eq_flat (G₀ : F →L[ℝ] F →L[ℝ] ℝ)
+    (b : Π y : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ y, (b y).Nondegenerate) :
+    modelLeviCivita (fun _ ↦ G₀) b hb = flatCovariantDerivative ℝ F := by
+  ext σ x v
+  show fderiv ℝ σ x v
+      + christoffelAt (fun _ ↦ G₀) x (b x) (hb x) v (σ x) =
+    fderiv ℝ σ x v
+  rw [christoffelAt_const, add_zero]
+
 end Smoothness
 
 end CovariantDerivative
