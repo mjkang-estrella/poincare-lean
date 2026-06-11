@@ -1010,3 +1010,33 @@ theorem modelLaplacian_mul (b : LinearMap.BilinForm ℝ E)
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- `Δ(f²) = 2 f Δf + 2 |∇f|²` — the square form of the product rule. -/
+theorem modelLaplacian_sq (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (x : E) :
+    modelLaplacian b hb (fun y ↦ f y * f y) x =
+      2 * f x * modelLaplacian b hb f x
+        + 2 * b (metricGradient b hb f x) (metricGradient b hb f x) := by
+  rw [modelLaplacian_mul b hb hbs hf hf x]
+  ring
+
+/-- The gradient's squared length is nonnegative for a positive-definite
+metric. -/
+theorem gradient_sq_nonneg (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v) (f : E → ℝ) (x : E) :
+    0 ≤ b (metricGradient b hb f x) (metricGradient b hb f x) := by
+  by_cases hzero : metricGradient b hb f x = 0
+  · rw [hzero]
+    simp
+  · exact le_of_lt (hbpos _ hzero)
+
+end RicciFlow
