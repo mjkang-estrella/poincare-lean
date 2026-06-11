@@ -111,8 +111,14 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   tangent fibre + `compl₁₂` — since abstract tangent spaces carry no norm);
   its application formula, inherited symmetry, and nondegeneracy wherever
   the chart tangent map is invertible (with the centre-point corollary).
-  Remaining in this stratum: smoothness of `chartMetric` from a smooth
-  metric, then the connection correspondence.
+  positive-definiteness inheritance; the model-space anchoring
+  (`chartMetric_model_space`); the scalar-reduction principle
+  (`contDiff_chartMetric_iff`); the inverse-chart tangent-field smoothness
+  (`contMDiffOn_inverseChart_tangentMap`); the target/range derivative
+  bridge; and the globalized `blendedChartMetric` (cutoff-glued, with
+  symmetry, positive-definiteness, and nondegeneracy). Remaining in this
+  stratum: the hom-bundle pairing assembly of `chartMetric` smoothness,
+  then the connection correspondence.
 
 ## What this layer provides
 
