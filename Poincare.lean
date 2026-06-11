@@ -10,6 +10,7 @@ import Poincare.KoszulExistence
 import Poincare.EuclideanLeviCivitaCheck
 import Poincare.CurvatureConditions
 import Poincare.ModelChristoffel
+import Poincare.ChartTransport
 import Poincare.Statement
 import Poincare.Milestones
 import Poincare.Assembly
