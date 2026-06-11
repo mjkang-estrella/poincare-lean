@@ -690,3 +690,30 @@ theorem curvedLaplacian_smul (G : E → E →L[ℝ] E →L[ℝ] ℝ)
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- Constant functions are harmonic for the curved Laplacian. -/
+theorem curvedLaplacian_const_fn (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate) (k : ℝ) (x : E) :
+    curvedLaplacian G b hb (fun _ ↦ k) x = 0 := by
+  unfold curvedLaplacian
+  have hzero : covariantHessianLin G b hb (fun _ ↦ k) x = 0 := by
+    apply LinearMap.ext
+    intro v
+    apply LinearMap.ext
+    intro w
+    simp only [covariantHessianLin, LinearMap.mk₂_apply, covariantHessian,
+      LinearMap.zero_apply]
+    rw [fderiv_fun_const]
+    simp [fderiv_zero]
+  rw [hzero]
+  simp
+
+end RicciFlow
