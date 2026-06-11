@@ -12,6 +12,7 @@ import Poincare.KoszulExistence
 import Poincare.MaximumPrinciple
 import Poincare.ModelChristoffel
 import Mathlib.LinearAlgebra.QuadraticForm.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 
 noncomputable section
 
@@ -1439,5 +1440,32 @@ theorem modelLaplacian_comp_at (b : LinearMap.BilinForm ℝ E)
     rw [← b_metricGradient b hb f x]
     rfl
   rw [hpair]
+
+end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The logarithmic Laplacian identity**:
+`Δ(log f) = Δf/f − |∇f|²/f²` for positive `f` — the identity in which
+Perelman's `𝓕`-functional and the conjugate heat equation are computed.
+-/
+theorem modelLaplacian_log (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) {x : E} (hpos : 0 < f x) :
+    modelLaplacian b hb (fun y ↦ Real.log (f y)) x =
+      modelLaplacian b hb f x / f x
+        - b (metricGradient b hb f x) (metricGradient b hb f x)
+          / (f x) ^ 2 := by
+  rw [modelLaplacian_comp_at b hb hf
+    ((Real.contDiffAt_log (n := 2)).mpr (ne_of_gt hpos))]
+  rw [Real.deriv_log, Real.deriv_log', deriv_inv]
+  field_simp
+  ring
 
 end RicciFlow
