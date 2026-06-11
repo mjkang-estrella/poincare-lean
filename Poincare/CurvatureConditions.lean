@@ -167,6 +167,24 @@ theorem IsEinsteinAt.of_agree [CompleteSpace E]
     {x : M} (h : IsEinsteinAt cov g lam x) : IsEinsteinAt cov' g lam x :=
   fun u w ↦ (ricciBilinearAt_eq_of_agree cov hagree x u w) ▸ h u w
 
+/-- Scalar curvature transfers along connection agreement. -/
+theorem scalarCurvatureAt_eq_of_agree [CompleteSpace E]
+    [ContMDiffCovariantDerivative cov' 1]
+    (hagree : ∀ (y : M) (Y : Π z : M, TangentSpace I z),
+      MDiffAt (T% Y) y → cov Y y = cov' Y y)
+    (x : M) (b : LinearMap.BilinForm ℝ (TangentSpace I x))
+    (hb : b.Nondegenerate) :
+    scalarCurvatureAt cov x b hb = scalarCurvatureAt cov' x b hb := by
+  unfold scalarCurvatureAt
+  congr 1
+  apply LinearMap.ext
+  intro u
+  simp only [LinearMap.comp_apply]
+  congr 1
+  apply LinearMap.ext
+  intro w
+  exact ricciBilinearAt_eq_of_agree cov hagree x u w
+
 end RicciAgree
 
 end CovariantDerivative
