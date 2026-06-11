@@ -195,3 +195,4 @@ theorem flat_ricciBilinearAt_eq_zero (x : F)
     (u w : TangentSpace 𝓘(ℝ, F) x) :
     ricciBilinearAt (flatCovariantDerivative ℝ F) x u w = 0 :=
   flat_ricciTraceAt_extend_eq_zero w u _
+
