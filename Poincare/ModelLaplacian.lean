@@ -9,6 +9,7 @@ inverse metric — and verifies it on quadratic forms.
 -/
 
 import Poincare.KoszulExistence
+import Mathlib.LinearAlgebra.QuadraticForm.Basic
 
 noncomputable section
 
@@ -169,5 +170,82 @@ theorem modelLaplacian_affine (b : LinearMap.BilinForm ℝ E)
   rw [hdf]
   rw [show fderiv ℝ (fun _ : E ↦ L) x = 0 from fderiv_const_apply L]
   simp
+
+end RicciFlow
+
+namespace RicciFlow
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**Trace positivity**: the trace of a positive-semidefinite form against a
+positive-definite metric is nonnegative — computed in a `b`-orthogonal
+basis, where each diagonal coefficient is `H(vᵢ,vᵢ)/b(vᵢ,vᵢ) ≥ 0`.
+-/
+theorem trace_dual_comp_nonneg (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v)
+    (H : E →L[ℝ] E →L[ℝ] ℝ) (hH : ∀ v : E, 0 ≤ H v v) :
+    0 ≤ LinearMap.trace ℝ E
+      ((LinearMap.BilinForm.toDual b hb).symm.toLinearMap ∘ₗ
+        (LinearMap.toContinuousLinearMap.symm.toLinearMap.comp
+          (H.toLinearMap))) := by
+  obtain ⟨v, hortho⟩ := LinearMap.BilinForm.exists_orthogonal_basis (B := b) hbs
+  set L : E →ₗ[ℝ] E :=
+    (LinearMap.BilinForm.toDual b hb).symm.toLinearMap ∘ₗ
+      (LinearMap.toContinuousLinearMap.symm.toLinearMap.comp
+        (H.toLinearMap)) with hL
+  -- The key pairing identity: `b (L w) u = H w u`.
+  have hpair : ∀ w u : E, b (L w) u = H w u := by
+    intro w u
+    have h1 : LinearMap.toContinuousLinearMap.symm (H.toLinearMap w) =
+        ((H w : E →L[ℝ] ℝ) : E →ₗ[ℝ] ℝ) := by
+      apply (LinearEquiv.symm_apply_eq _).mpr
+      rfl
+    have h2 : b ((LinearMap.BilinForm.toDual b hb).symm
+        ((H w : E →L[ℝ] ℝ) : E →ₗ[ℝ] ℝ)) u =
+        (((H w : E →L[ℝ] ℝ) : E →ₗ[ℝ] ℝ)) u := by
+      have := LinearEquiv.apply_symm_apply
+        (LinearMap.BilinForm.toDual b hb)
+        (((H w : E →L[ℝ] ℝ) : E →ₗ[ℝ] ℝ))
+      have h3 := congrArg (fun ψ ↦ ψ u) this
+      simpa [LinearMap.BilinForm.toDual_def] using h3
+    simp only [hL, LinearMap.comp_apply, LinearMap.coe_comp,
+      Function.comp_apply, LinearEquiv.coe_coe, h1]
+    exact h2
+  -- Trace as the sum of diagonal coefficients in the orthogonal basis.
+  rw [LinearMap.trace_eq_matrix_trace ℝ v, Matrix.trace]
+  apply Finset.sum_nonneg
+  intro i _
+  -- The diagonal entry is `H vᵢ vᵢ / b vᵢ vᵢ`.
+  have hvi : v i ≠ 0 := v.ne_zero i
+  have hbvi : 0 < b (v i) (v i) := hbpos (v i) hvi
+  -- Extract the coefficient by pairing with `v i`.
+  have hexpand : b (L (v i)) (v i) =
+      (LinearMap.toMatrix v v L i i) * b (v i) (v i) := by
+    conv_lhs => rw [← v.sum_repr (L (v i))]
+    have hsum : b (∑ j, v.repr (L (v i)) j • v j) (v i) =
+        ∑ j, v.repr (L (v i)) j * b (v j) (v i) := by
+      rw [map_sum, LinearMap.sum_apply]
+      apply Finset.sum_congr rfl
+      intro j _
+      simp [smul_eq_mul]
+    rw [hsum]
+    rw [Finset.sum_eq_single i]
+    · rw [LinearMap.toMatrix_apply]
+    · intro j _ hji
+      rw [hortho hji]
+      ring
+    · intro hi
+      exact absurd (Finset.mem_univ i) hi
+  have hHvi := hH (v i)
+  rw [hpair] at hexpand
+  have : LinearMap.toMatrix v v L i i =
+      H (v i) (v i) / b (v i) (v i) := by
+    field_simp at hexpand ⊢
+    linarith
+  rw [Matrix.diag_apply, this]
+  positivity
 
 end RicciFlow
