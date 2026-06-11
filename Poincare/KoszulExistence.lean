@@ -706,6 +706,64 @@ theorem koszulRHS_add_left {X X' Y Z : Π y : M, TangentSpace I y} {x : M}
   rw [e1, e2, e3, e4, e5, e6]
   ring
 
+/--
+**Additivity of the constructed connection in the section slot.**
+-/
+theorem leviCivitaValueAt_add_section {X Y Y' : Π y : M, TangentSpace I y}
+    {x : M}
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x)
+    (hY' : MDiffAt (T% Y') x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (b : LinearMap.BilinForm ℝ (TangentSpace I x)) (hb : b.Nondegenerate)
+    (hbg : ∀ v w : TangentSpace I x, b v w = g x v w) :
+    leviCivitaValueAt g (hgsymm x) hX
+        (mdifferentiableAt_add_section hY hY') hP b hb =
+      leviCivitaValueAt g (hgsymm x) hX hY hP b hb
+        + leviCivitaValueAt g (hgsymm x) hX hY' hP b hb := by
+  apply sub_eq_zero.mp
+  apply hb.1
+  intro z
+  simp only [map_sub, map_add, LinearMap.sub_apply, LinearMap.add_apply]
+  rw [b_leviCivitaValueAt g (hgsymm x) hX
+      (mdifferentiableAt_add_section hY hY') hP b hb z,
+    b_leviCivitaValueAt g (hgsymm x) hX hY hP b hb z,
+    b_leviCivitaValueAt g (hgsymm x) hX hY' hP b hb z,
+    koszulRHS_add_middle g (X := X) (Y := Y) (Y' := Y') (Z := extend E z)
+      hY hY' (mdifferentiableAt_extend ..)
+      (hP _ _ hY (mdifferentiableAt_extend ..))
+      (hP _ _ hY' (mdifferentiableAt_extend ..))
+      (hP _ _ hX hY) (hP _ _ hX hY')]
+  ring
+
+/--
+**The Leibniz law of the constructed connection.**
+-/
+theorem leviCivitaValueAt_leibniz {X Y : Π y : M, TangentSpace I y} {x : M}
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    {f : M → ℝ} (hf : MDiffAt f x)
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (b : LinearMap.BilinForm ℝ (TangentSpace I x)) (hb : b.Nondegenerate)
+    (hbg : ∀ v w : TangentSpace I x, b v w = g x v w) :
+    leviCivitaValueAt g (hgsymm x) hX (hf.smul_section hY) hP b hb =
+      f x • leviCivitaValueAt g (hgsymm x) hX hY hP b hb
+        + extDerivFun f x (X x) • Y x := by
+  apply sub_eq_zero.mp
+  apply hb.1
+  intro z
+  simp only [map_sub, map_add, map_smul, LinearMap.sub_apply,
+    LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul]
+  rw [b_leviCivitaValueAt g (hgsymm x) hX (hf.smul_section hY) hP b hb z,
+    b_leviCivitaValueAt g (hgsymm x) hX hY hP b hb z,
+    koszulRHS_smul_middle g (X := X) (Y := Y) (Z := extend E z) hgsymm hf
+      hY (mdifferentiableAt_extend ..)
+      (hP _ _ hY (mdifferentiableAt_extend ..)) (hP _ _ hX hY),
+    hbg (Y x) z, extend_apply_self]
+  ring
+
 end Construction
 
 end CovariantDerivative
