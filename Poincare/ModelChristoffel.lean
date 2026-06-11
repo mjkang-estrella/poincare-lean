@@ -261,4 +261,43 @@ theorem modelLeviCivita_metricCompatibleAt
   simp only [extDerivFun, mfderiv_eq_fderiv, ContinuousLinearMap.comp_apply]
   rfl
 
+
+section Identification
+
+variable [CompleteSpace F]
+
+/-- Pairing differentiability for a differentiable metric. -/
+theorem metric_pairing_mdiff (hGd : Differentiable ℝ G) (x : F)
+    (A B : Π y : F, TangentSpace 𝓘(ℝ, F) y)
+    (hA : MDiffAt (T% A) x) (hB : MDiffAt (T% B) x) :
+    MDiffAt (fun y ↦ G y (A y) (B y)) x := by
+  have hA' := mdiffAt_vectorSpace_iff_differentiableAt.mp hA
+  have hB' := mdiffAt_vectorSpace_iff_differentiableAt.mp hB
+  exact mdifferentiableAt_iff_differentiableAt.mpr
+    (((hGd x).clm_apply hA').clm_apply hB')
+
+/--
+**The Christoffel identification**: on the model space, the canonical
+Levi-Civita connection of a differentiable symmetric nondegenerate metric
+is `flat + Γ` on differentiable fields.  The connection is thereby exhibited
+in a form involving exactly one derivative of the metric.
+-/
+theorem leviCivitaConnection_eq_modelLeviCivita
+    (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : F) (p q : F), G y p q = G y q p)
+    (hGnd : ∀ (y : F) (v : F), (∀ w, G y v w = 0) → v = 0)
+    (b : Π x : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (hbg : ∀ (x : F) (v w : F), b x v w = G x v w)
+    {Y : Π y : F, TangentSpace 𝓘(ℝ, F) y} {x : F}
+    (hY : MDiffAt (T% Y) x) :
+    leviCivitaConnection G hGsymm hGnd (metric_pairing_mdiff G hGd) Y x =
+      modelLeviCivita G b hb Y x :=
+  leviCivitaConnection_eq_of_isLeviCivita G hGsymm hGnd
+    (metric_pairing_mdiff G hGd) (modelLeviCivita G b hb)
+    (fun y ↦ modelLeviCivita_metricCompatibleAt G b hb hGd hGsymm hbg y)
+    (fun y ↦ modelLeviCivita_torsionFreeAt G b hb hGd hGsymm y) hY
+
+end Identification
+
 end CovariantDerivative
