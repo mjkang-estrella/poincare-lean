@@ -92,7 +92,13 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   theorem, `modelLeviCivita_contMDiff` — **the Levi-Civita connection of a
   `C^{k+1}` metric is a `C^k` covariant derivative** on the model space,
   putting every instance-gated theorem of the development at the disposal
-  of smooth metrics.
+  of smooth metrics; the concrete Ricci symmetry for `C²` metrics; the
+  model-space Ricci flow as an honest PDE
+  (`isRicciFlowSolutionAt_of_model_metric`); the consistency triangle
+  (constant metrics have vanishing corrector, `modelLeviCivita` of a
+  constant metric *is* the flat connection, and is Ricci-flat); and the
+  complete static-solution family of the model flow
+  (`const_metric_static_model_flow`).
 
 ## What this layer provides
 
