@@ -764,6 +764,43 @@ theorem leviCivitaValueAt_leibniz {X Y : Π y : M, TangentSpace I y} {x : M}
     hbg (Y x) z, extend_apply_self]
   ring
 
+/--
+**The pointwise fundamental theorem of Riemannian geometry**: the values of
+any torsion-free metric-compatible connection coincide with the constructed
+Levi-Civita values.  Together with the verified properties of the
+construction, this is existence and uniqueness in one statement.
+-/
+theorem covDeriv_eq_leviCivitaValueAt
+    (cov : CovariantDerivative I E (TangentSpace I : M → Type _))
+    {X Y : Π y : M, TangentSpace I y} {x : M}
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    (hc : MetricCompatibleAt g cov x) (ht : TorsionFreeAt cov x)
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (b : LinearMap.BilinForm ℝ (TangentSpace I x)) (hb : b.Nondegenerate)
+    (hbg : ∀ v w : TangentSpace I x, b v w = g x v w) :
+    cov Y x (X x) = leviCivitaValueAt g (hgsymm x) hX hY hP b hb := by
+  apply sub_eq_zero.mp
+  apply hb.1
+  intro z
+  simp only [map_sub, LinearMap.sub_apply]
+  rw [hbg (cov Y x (X x)) z,
+    b_leviCivitaValueAt g (hgsymm x) hX hY hP b hb z]
+  have hk := koszul_formula (g := g) (cov := cov) (hgsymm x) hc ht
+    hX hY (mdifferentiableAt_extend (σ₀ := z) ..)
+  rw [extend_apply_self] at hk
+  have hkdef : koszulRHS g X Y (extend E z) x =
+      extDerivFun (fun y ↦ g y (Y y) (extend E z y)) x (X x)
+        + extDerivFun (fun y ↦ g y (X y) (extend E z y)) x (Y x)
+        - extDerivFun (fun y ↦ g y (X y) (Y y)) x (extend E z x)
+        + g x (mlieBracket I X Y x) (extend E z x)
+        - g x (mlieBracket I X (extend E z) x) (Y x)
+        - g x (mlieBracket I Y (extend E z) x) (X x) := rfl
+  rw [hkdef]
+  rw [extend_apply_self] at *
+  linarith [hk]
+
 end Construction
 
 end CovariantDerivative
