@@ -717,3 +717,39 @@ theorem curvedLaplacian_const_fn (G : E → E →L[ℝ] E →L[ℝ] ℝ)
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The metric gradient: the dual of the differential. -/
+noncomputable def metricGradient (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (f : E → ℝ) (x : E) : E :=
+  (LinearMap.BilinForm.toDual b hb).symm
+    (LinearMap.toContinuousLinearMap.symm (fderiv ℝ f x))
+
+/-- **Defining property of the gradient**: `b (∇f) v = Df(v)`. -/
+theorem b_metricGradient (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (f : E → ℝ) (x : E) (v : E) :
+    b (metricGradient b hb f x) v = fderiv ℝ f x v := by
+  unfold metricGradient
+  have h := LinearEquiv.apply_symm_apply
+    (LinearMap.BilinForm.toDual b hb)
+    (LinearMap.toContinuousLinearMap.symm (fderiv ℝ f x))
+  have h2 := congrArg (fun ψ ↦ ψ v) h
+  simpa [LinearMap.BilinForm.toDual_def] using h2
+
+/-- The gradient vanishes exactly where the differential does; in
+particular it vanishes at local extrema of differentiable functions. -/
+theorem metricGradient_eq_zero_of_isLocalMin (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) {f : E → ℝ} {x : E}
+    (hf : DifferentiableAt ℝ f x) (hmin : IsLocalMin f x) :
+    metricGradient b hb f x = 0 := by
+  unfold metricGradient
+  rw [hmin.fderiv_eq_zero]
+  simp
+
+end RicciFlow
