@@ -13,6 +13,7 @@ property and symmetry.
 -/
 
 import Poincare.KoszulExistence
+import Mathlib.Analysis.Calculus.ContDiff.FiniteDimension
 
 noncomputable section
 
@@ -406,6 +407,72 @@ theorem contDiffAt_christoffelAt {k : ℕ∞ω} {x : F}
         (((hdf.clm_apply contDiff_const).clm_apply
           contDiff_const).contDiffAt)
     · exact (contDiff_const.clm_comp hdf).contDiffAt
+  exact hinvmap.clm_apply hΦ
+
+
+/--
+Smoothness of the corrector applied to a smooth section: for a `C^{k+1}`
+metric and `C^{k+1}` field, the corrector family at the section is `C^k`.
+-/
+theorem contDiff_christoffel_apply_section {k : ℕ∞ω}
+    (hGc : ContDiff ℝ (k + 1) G)
+    (b : Π y : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ y, (b y).Nondegenerate)
+    (hbg : ∀ (y : F) (v w : F), b y v w = G y v w)
+    {σ : F → F} (hσ : ContDiff ℝ (k + 1) σ) :
+    ContDiff ℝ k (fun y ↦
+      (LinearMap.toContinuousLinearMap
+        ((christoffelLinear G y (b y) (hb y)).flip (σ y)) :
+          F →L[ℝ] F)) := by
+  rw [contDiff_clm_apply_iff]
+  intro v
+  have hfun : (fun y ↦ (LinearMap.toContinuousLinearMap
+      ((christoffelLinear G y (b y) (hb y)).flip (σ y)) : F →L[ℝ] F) v) =
+      fun y ↦ (G y : F →L[ℝ] F →L[ℝ] ℝ).inverse
+        (LinearMap.toContinuousLinearMap
+          (christoffelFunctional G y v (σ y))) := by
+    funext y
+    exact christoffelAt_eq_inverse G (b y) (hb y) (hbg y) v (σ y)
+  rw [hfun]
+  have hσ' : ContDiff ℝ k σ := hσ.of_le le_self_add
+  have hG1 : ContDiff ℝ k G := hGc.of_le le_self_add
+  have hdf := hGc.fderiv_right (m := k) le_rfl
+  have hinvmap : ContDiff ℝ k
+      (fun y ↦ (G y : F →L[ℝ] F →L[ℝ] ℝ).inverse) := by
+    rw [contDiff_iff_contDiffAt]
+    intro y
+    exact ((metric_isInvertible G (b y) (hb y)
+      (hbg y)).contDiffAt_map_inverse).comp y hG1.contDiffAt
+  -- The third derivative piece via the evaluation criterion.
+  have hp3 : ContDiff ℝ k (fun y ↦
+      (((fderiv ℝ G y).flip v).flip (σ y) : F →L[ℝ] ℝ)) := by
+    rw [contDiff_clm_apply_iff]
+    intro w
+    have heq : (fun y ↦ (((fderiv ℝ G y).flip v).flip (σ y)
+        : F →L[ℝ] ℝ) w) = fun y ↦ ((fderiv ℝ G y) w) v (σ y) := by
+      funext y
+      simp [ContinuousLinearMap.flip_apply]
+    rw [heq]
+    exact ((hdf.clm_apply contDiff_const).clm_apply
+      contDiff_const).clm_apply hσ'
+  have hΦeq : (fun y ↦ LinearMap.toContinuousLinearMap
+      (christoffelFunctional G y v (σ y))) =
+      fun y ↦ (1 / 2 : ℝ) • (((fderiv ℝ G y) v) (σ y)
+        + ((fderiv ℝ G y) (σ y)) v
+        - (((fderiv ℝ G y).flip v).flip (σ y))) := by
+    funext y
+    ext w
+    simp [christoffelFunctional, ContinuousLinearMap.smul_apply,
+      ContinuousLinearMap.sub_apply, ContinuousLinearMap.add_apply,
+      ContinuousLinearMap.flip_apply, smul_eq_mul]
+  have hΦ : ContDiff ℝ k (fun y ↦ LinearMap.toContinuousLinearMap
+      (christoffelFunctional G y v (σ y))) := by
+    rw [hΦeq]
+    apply ContDiff.const_smul
+    apply ContDiff.sub
+    · exact ((hdf.clm_apply contDiff_const).clm_apply hσ').add
+        ((hdf.clm_apply hσ').clm_apply contDiff_const)
+    · exact hp3
   exact hinvmap.clm_apply hΦ
 
 end Smoothness
