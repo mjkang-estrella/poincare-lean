@@ -492,6 +492,114 @@ theorem leviCivitaValueAt_compat {X Y Z : Π y : M, TangentSpace I y} {x : M}
     (x := x) hgsymm
   linarith
 
+/-- Middle-slot additivity of the Koszul functional. -/
+theorem koszulRHS_add_middle {X Y Y' Z : Π y : M, TangentSpace I y} {x : M}
+    (hY : MDiffAt (T% Y) x) (hY' : MDiffAt (T% Y') x)
+    (hZ : MDiffAt (T% Z) x)
+    (hPYZ : MDiffAt (fun y ↦ g y (Y y) (Z y)) x)
+    (hPY'Z : MDiffAt (fun y ↦ g y (Y' y) (Z y)) x)
+    (hPXY : MDiffAt (fun y ↦ g y (X y) (Y y)) x)
+    (hPXY' : MDiffAt (fun y ↦ g y (X y) (Y' y)) x) :
+    koszulRHS g X (Y + Y') Z x =
+      koszulRHS g X Y Z x + koszulRHS g X Y' Z x := by
+  have hf1 : (fun y ↦ g y ((Y + Y') y) (Z y)) =
+      (fun y ↦ g y (Y y) (Z y)) + fun y ↦ g y (Y' y) (Z y) := by
+    funext y
+    simp
+  have hf2 : (fun y ↦ g y (X y) ((Y + Y') y)) =
+      (fun y ↦ g y (X y) (Y y)) + fun y ↦ g y (X y) (Y' y) := by
+    funext y
+    simp
+  have e1 : extDerivFun (fun y ↦ g y ((Y + Y') y) (Z y)) x (X x) =
+      extDerivFun (fun y ↦ g y (Y y) (Z y)) x (X x)
+        + extDerivFun (fun y ↦ g y (Y' y) (Z y)) x (X x) := by
+    rw [hf1, extDerivFun_add hPYZ hPY'Z]
+    simp
+  have e2 : extDerivFun (fun y ↦ g y (X y) (Z y)) x ((Y + Y') x) =
+      extDerivFun (fun y ↦ g y (X y) (Z y)) x (Y x)
+        + extDerivFun (fun y ↦ g y (X y) (Z y)) x (Y' x) := by
+    have h : (Y + Y') x = Y x + Y' x := rfl
+    rw [h, map_add]
+  have e3 : extDerivFun (fun y ↦ g y (X y) ((Y + Y') y)) x (Z x) =
+      extDerivFun (fun y ↦ g y (X y) (Y y)) x (Z x)
+        + extDerivFun (fun y ↦ g y (X y) (Y' y)) x (Z x) := by
+    rw [hf2, extDerivFun_add hPXY hPXY']
+    simp
+  have e4 : g x (mlieBracket I X (Y + Y') x) (Z x) =
+      g x (mlieBracket I X Y x) (Z x)
+        + g x (mlieBracket I X Y' x) (Z x) := by
+    rw [mlieBracket_add_right hY hY']
+    simp
+  have e5 : g x (mlieBracket I X Z x) ((Y + Y') x) =
+      g x (mlieBracket I X Z x) (Y x)
+        + g x (mlieBracket I X Z x) (Y' x) := by
+    have h : (Y + Y') x = Y x + Y' x := rfl
+    rw [h, map_add]
+  have e6 : g x (mlieBracket I (Y + Y') Z x) (X x) =
+      g x (mlieBracket I Y Z x) (X x)
+        + g x (mlieBracket I Y' Z x) (X x) := by
+    rw [mlieBracket_add_left hY hY']
+    simp
+  unfold koszulRHS
+  rw [e1, e2, e3, e4, e5, e6]
+  ring
+
+/-- The Leibniz law of the Koszul functional in the middle slot. -/
+theorem koszulRHS_smul_middle {X Y Z : Π y : M, TangentSpace I y} {x : M}
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    {f : M → ℝ} (hf : MDiffAt f x)
+    (hY : MDiffAt (T% Y) x) (hZ : MDiffAt (T% Z) x)
+    (hPYZ : MDiffAt (fun y ↦ g y (Y y) (Z y)) x)
+    (hPXY : MDiffAt (fun y ↦ g y (X y) (Y y)) x) :
+    koszulRHS g X (f • Y) Z x =
+      f x * koszulRHS g X Y Z x
+        + 2 * extDerivFun f x (X x) * g x (Y x) (Z x) := by
+  have hf1 : (fun y ↦ g y ((f • Y) y) (Z y)) =
+      f * fun y ↦ g y (Y y) (Z y) := by
+    funext y
+    simp [smul_eq_mul]
+  have hf2 : (fun y ↦ g y (X y) ((f • Y) y)) =
+      f * fun y ↦ g y (X y) (Y y) := by
+    funext y
+    simp [smul_eq_mul]
+  have e1 : extDerivFun (fun y ↦ g y ((f • Y) y) (Z y)) x (X x) =
+      f x * extDerivFun (fun y ↦ g y (Y y) (Z y)) x (X x)
+        + extDerivFun f x (X x) * g x (Y x) (Z x) := by
+    rw [hf1, extDerivFun_mul hf hPYZ]
+  have e2 : extDerivFun (fun y ↦ g y (X y) (Z y)) x ((f • Y) x) =
+      f x * extDerivFun (fun y ↦ g y (X y) (Z y)) x (Y x) := by
+    have h : (f • Y) x = f x • Y x := rfl
+    rw [h, map_smul]
+    simp
+  have e3 : extDerivFun (fun y ↦ g y (X y) ((f • Y) y)) x (Z x) =
+      f x * extDerivFun (fun y ↦ g y (X y) (Y y)) x (Z x)
+        + extDerivFun f x (Z x) * g x (X x) (Y x) := by
+    rw [hf2, extDerivFun_mul hf hPXY]
+  have e4 : g x (mlieBracket I X (f • Y) x) (Z x) =
+      extDerivFun f x (X x) * g x (Y x) (Z x)
+        + f x * g x (mlieBracket I X Y x) (Z x) := by
+    rw [mlieBracket_smul_right hf hY]
+    simp only [map_add, map_smul, ContinuousLinearMap.add_apply,
+      ContinuousLinearMap.smul_apply, smul_eq_mul]
+    rfl
+  have e5 : g x (mlieBracket I X Z x) ((f • Y) x) =
+      f x * g x (mlieBracket I X Z x) (Y x) := by
+    have h : (f • Y) x = f x • Y x := rfl
+    rw [h, map_smul]
+    simp
+  have e6 : g x (mlieBracket I (f • Y) Z x) (X x) =
+      - extDerivFun f x (Z x) * g x (Y x) (X x)
+        + f x * g x (mlieBracket I Y Z x) (X x) := by
+    rw [mlieBracket_smul_left hf hY]
+    simp only [map_add, map_smul, map_neg, ContinuousLinearMap.add_apply,
+      ContinuousLinearMap.smul_apply, ContinuousLinearMap.neg_apply,
+      smul_eq_mul, neg_mul]
+    rfl
+  unfold koszulRHS
+  rw [e1, e2, e3, e4, e5, e6]
+  linear_combination
+    extDerivFun (I := I) f x (Z x) * hgsymm x (Y x) (X x)
+
 end Construction
 
 end CovariantDerivative
