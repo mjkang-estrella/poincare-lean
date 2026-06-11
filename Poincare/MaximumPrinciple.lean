@@ -384,3 +384,54 @@ theorem secondDeriv_nonneg_of_isLocalMin {g g' g'' : ℝ → ℝ}
   exact absurd (hloc ht2) (not_le.mpr hlt)
 
 end RicciFlow
+
+namespace RicciFlow
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+
+/--
+**The multivariate second-derivative test**: at a local minimum of a `C²`
+function the Hessian is positive semidefinite — by restriction to lines
+and the 1-d test. Not in Mathlib.
+-/
+theorem hessian_nonneg_of_isLocalMin {f : E → ℝ} (hf : ContDiff ℝ 2 f)
+    {x₀ : E} (hmin : IsLocalMin f x₀) (v : E) :
+    0 ≤ fderiv ℝ (fderiv ℝ f) x₀ v v := by
+  set ℓ : ℝ → E := fun t ↦ x₀ + t • v with hℓ
+  have hℓd : ∀ t : ℝ, HasDerivAt ℓ v t := by
+    intro t
+    simpa [hℓ] using ((hasDerivAt_id t).smul_const v).const_add x₀
+  have hℓ0 : ℓ 0 = x₀ := by simp [hℓ]
+  have hℓcont : Continuous ℓ := by
+    continuity
+  -- The restricted function and its two derivatives.
+  set g : ℝ → ℝ := fun t ↦ f (ℓ t) with hg
+  set g' : ℝ → ℝ := fun t ↦ fderiv ℝ f (ℓ t) v with hg'
+  set g'' : ℝ → ℝ := fun t ↦ fderiv ℝ (fderiv ℝ f) (ℓ t) v v with hg''
+  have hd1 : ∀ t, HasDerivAt g (g' t) t := by
+    intro t
+    exact (((hf.differentiable (by norm_num)) (ℓ t)).hasFDerivAt).comp_hasDerivAt
+      t (hℓd t)
+  have hdf : Differentiable ℝ (fderiv ℝ f) :=
+    (hf.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)
+  have hd2 : ∀ t, HasDerivAt g' (g'' t) t := by
+    intro t
+    have h1 : HasDerivAt (fun s ↦ fderiv ℝ f (ℓ s))
+        (fderiv ℝ (fderiv ℝ f) (ℓ t) v) t :=
+      ((hdf (ℓ t)).hasFDerivAt).comp_hasDerivAt t (hℓd t)
+    have h2 := (ContinuousLinearMap.apply ℝ ℝ v).hasFDerivAt.comp_hasDerivAt
+      t h1
+    simpa [hg', ContinuousLinearMap.apply_apply] using h2
+  have hcont : Continuous g'' := by
+    have h2 : Continuous (fderiv ℝ (fderiv ℝ f)) :=
+      ((hf.fderiv_right (m := 1) (by norm_num))).continuous_fderiv
+        (by norm_num)
+    exact ((h2.comp hℓcont).clm_apply continuous_const).clm_apply
+      continuous_const
+  have hgmin : IsLocalMin g 0 := by
+    have hm : IsLocalMin f (ℓ 0) := by rwa [hℓ0]
+    exact hm.comp_continuous hℓcont.continuousAt
+  have := secondDeriv_nonneg_of_isLocalMin hd1 hd2 hcont hgmin
+  simpa [hg'', hℓ0] using this
+
+end RicciFlow
