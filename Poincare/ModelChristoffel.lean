@@ -352,4 +352,62 @@ theorem christoffelAt_eq_inverse {x : F} (b : LinearMap.BilinForm ℝ F)
 
 end ClosedForm
 
+
+section Smoothness
+
+variable [CompleteSpace F]
+
+/--
+**Smoothness of the Christoffel corrector**: if the metric is `C^{k+1}`,
+the corrector (at fixed directions) is `C^k` in the base point — by the
+closed form, as the composition of operator-inversion smoothness with the
+smoothness of the metric and its derivative.
+-/
+theorem contDiffAt_christoffelAt {k : ℕ∞ω} {x : F}
+    (hGc : ContDiff ℝ (k + 1) G)
+    (b : Π y : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ y, (b y).Nondegenerate)
+    (hbg : ∀ (y : F) (v w : F), b y v w = G y v w) (u v : F) :
+    ContDiffAt ℝ k (fun y ↦ christoffelAt G y (b y) (hb y) u v) x := by
+  have hfun : (fun y ↦ christoffelAt G y (b y) (hb y) u v) =
+      fun y ↦ (G y : F →L[ℝ] F →L[ℝ] ℝ).inverse
+        (LinearMap.toContinuousLinearMap
+          (christoffelFunctional G y u v)) := by
+    funext y
+    exact christoffelAt_eq_inverse G (b y) (hb y) (hbg y) u v
+  rw [hfun]
+  have hG1 : ContDiff ℝ k G := hGc.of_le (by
+    exact le_self_add)
+  have hdf := hGc.fderiv_right (m := k) le_rfl
+  -- Smoothness of the inverse-metric family.
+  have hinvmap : ContDiffAt ℝ k
+      (fun y ↦ (G y : F →L[ℝ] F →L[ℝ] ℝ).inverse) x := by
+    exact ((metric_isInvertible G (b x) (hb x)
+      (hbg x)).contDiffAt_map_inverse).comp x hG1.contDiffAt
+  -- Smoothness of the corrector functional as a CLM-valued map.
+  have hΦeq : (fun y ↦ LinearMap.toContinuousLinearMap
+      (christoffelFunctional G y u v)) =
+      fun y ↦ (1 / 2 : ℝ) • (((fderiv ℝ G y) u) v + ((fderiv ℝ G y) v) u
+        - ((ContinuousLinearMap.apply ℝ ℝ v).comp
+            ((ContinuousLinearMap.apply ℝ (F →L[ℝ] ℝ) u))).comp
+          (fderiv ℝ G y)) := by
+    funext y
+    ext w
+    simp [christoffelFunctional, ContinuousLinearMap.smul_apply,
+      ContinuousLinearMap.sub_apply, ContinuousLinearMap.add_apply,
+      smul_eq_mul, mul_comm]
+  have hΦ : ContDiffAt ℝ k (fun y ↦ LinearMap.toContinuousLinearMap
+      (christoffelFunctional G y u v)) x := by
+    rw [hΦeq]
+    apply ContDiffAt.const_smul
+    apply ContDiffAt.sub
+    · exact ((hdf.clm_apply contDiff_const).clm_apply
+        contDiff_const).contDiffAt.add
+        (((hdf.clm_apply contDiff_const).clm_apply
+          contDiff_const).contDiffAt)
+    · exact (contDiff_const.clm_comp hdf).contDiffAt
+  exact hinvmap.clm_apply hΦ
+
+end Smoothness
+
 end CovariantDerivative
