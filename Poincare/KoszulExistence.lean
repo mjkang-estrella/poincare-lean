@@ -441,6 +441,57 @@ theorem leviCivitaValueAt_torsionFree {X Y : Π y : M, TangentSpace I y}
   rw [extend_apply_self] at hsw
   linarith
 
+/--
+The Koszul sum identity: symmetrizing the Koszul functional over the last
+two fields gives twice the derivative of the pairing.
+-/
+theorem koszulRHS_add_swap_last {X Y Z : Π y : M, TangentSpace I y} {x : M}
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v) :
+    koszulRHS g X Y Z x + koszulRHS g X Z Y x =
+      2 * extDerivFun (fun y ↦ g y (Y y) (Z y)) x (X x) := by
+  have hfun : (fun y ↦ g y (Z y) (Y y)) = fun y ↦ g y (Y y) (Z y) := by
+    funext y
+    exact hgsymm y (Z y) (Y y)
+  have hbr : g x (mlieBracket I Z Y x) (X x) =
+      - g x (mlieBracket I Y Z x) (X x) := by
+    rw [mlieBracket_swap_apply]
+    simp
+  unfold koszulRHS
+  rw [hfun, hbr]
+  ring
+
+/--
+**Metric compatibility of the Levi-Civita candidate**: the derivative of the
+pairing along `X` is the Riemannian product rule with the constructed
+values.
+-/
+theorem leviCivitaValueAt_compat {X Y Z : Π y : M, TangentSpace I y} {x : M}
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x) (hZ : MDiffAt (T% Z) x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (b : LinearMap.BilinForm ℝ (TangentSpace I x)) (hb : b.Nondegenerate)
+    (hbg : ∀ v w : TangentSpace I x, b v w = g x v w) :
+    extDerivFun (fun y ↦ g y (Y y) (Z y)) x (X x) =
+      g x (leviCivitaValueAt g (hgsymm x) hX hY hP b hb) (Z x)
+        + g x (Y x) (leviCivitaValueAt g (hgsymm x) hX hZ hP b hb) := by
+  have h1 : g x (leviCivitaValueAt g (hgsymm x) hX hY hP b hb) (Z x) =
+      (1 / 2 : ℝ) * koszulRHS g X Y Z x := by
+    rw [← hbg, b_leviCivitaValueAt g (hgsymm x) hX hY hP b hb (Z x)]
+    congr 1
+    exact koszulRHS_congr_of_value_eq (hgsymm x) hX hY hP
+      (mdifferentiableAt_extend ..) hZ (by simp)
+  have h2 : g x (Y x) (leviCivitaValueAt g (hgsymm x) hX hZ hP b hb) =
+      (1 / 2 : ℝ) * koszulRHS g X Z Y x := by
+    rw [hgsymm x (Y x) _, ← hbg,
+      b_leviCivitaValueAt g (hgsymm x) hX hZ hP b hb (Y x)]
+    congr 1
+    exact koszulRHS_congr_of_value_eq (hgsymm x) hX hZ hP
+      (mdifferentiableAt_extend ..) hY (by simp)
+  have hsum := koszulRHS_add_swap_last (g := g) (X := X) (Y := Y) (Z := Z)
+    (x := x) hgsymm
+  linarith
+
 end Construction
 
 end CovariantDerivative
