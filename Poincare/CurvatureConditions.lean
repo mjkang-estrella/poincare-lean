@@ -160,3 +160,51 @@ theorem einstein_isRicciFlowSolutionAt (lam : ℝ) {x : M}
     ring
 
 end CovariantDerivative
+
+/-! ## Extinction time of the shrinking Einstein family -/
+
+namespace CovariantDerivative
+
+/-- The extinction time of the Einstein scaling family `(1 - 2 lam t) g₀`. -/
+noncomputable def einsteinExtinctionTime (lam : ℝ) : ℝ := 1 / (2 * lam)
+
+theorem einstein_scaling_vanishes_at_extinctionTime {lam : ℝ}
+    (hlam : lam ≠ 0) :
+    1 - 2 * lam * einsteinExtinctionTime lam = 0 := by
+  unfold einsteinExtinctionTime
+  field_simp
+  ring
+
+/-- At the extinction time, the scaled Einstein metric vanishes
+identically. -/
+theorem einstein_scaling_metric_extinct
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    (g₀ : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    {lam : ℝ} (hlam : lam ≠ 0) (x : M) (u w : TangentSpace I x) :
+    ((1 - 2 * lam * einsteinExtinctionTime lam) • g₀ x) u w = 0 := by
+  rw [einstein_scaling_vanishes_at_extinctionTime hlam]
+  simp
+
+/-- Past the extinction time of a shrinking (`lam > 0`) Einstein family,
+the scaled form is negative on directions of positive length: the metric
+property is destroyed in finite time. -/
+theorem einstein_scaling_negative_past_extinction
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    (g₀ : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    {lam t : ℝ} (hlam : 0 < lam)
+    (ht : einsteinExtinctionTime lam < t)
+    (x : M) {u : TangentSpace I x} (hu : 0 < g₀ x u u) :
+    ((1 - 2 * lam * t) • g₀ x) u u < 0 := by
+  have hfac : 1 - 2 * lam * t < 0 := by
+    have h2 : 0 < 2 * lam := by linarith
+    have ht' : 1 / (2 * lam) < t := ht
+    have := (div_lt_iff₀ h2).mp ht'
+    nlinarith
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  exact mul_neg_of_neg_of_pos hfac hu
+
+end CovariantDerivative
