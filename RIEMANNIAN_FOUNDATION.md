@@ -143,7 +143,12 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   Laplacian is nonnegative — assembled from the 1-d and multivariate
   second-derivative tests (both new beyond Mathlib, in
   `MaximumPrinciple.lean`) and trace positivity of PSD forms against
-  positive metrics (`trace_dual_comp_nonneg`, via orthogonal bases).
+  positive metrics (`trace_dual_comp_nonneg`, via orthogonal bases);
+  Hamilton's touching-point inequality; the first-crossing-time lemma; and
+  **the parabolic maximum principle on compact domains**
+  (`parabolic_min_principle_strict`) — strict reaction–diffusion
+  supersolutions positive at time zero stay positive, by minimum-tracking
+  through the first zero. The centerpiece of Hamilton's analytic toolkit.
 
 ## What this layer provides
 
