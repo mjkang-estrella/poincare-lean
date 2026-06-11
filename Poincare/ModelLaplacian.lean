@@ -647,3 +647,46 @@ theorem curvedLaplacian_add (G : E → E →L[ℝ] E →L[ℝ] ℝ)
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The curved Laplacian is homogeneous on `C²` functions. -/
+theorem curvedLaplacian_smul (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate)
+    {f : E → ℝ} {x : E} (c : ℝ) (hf : ContDiff ℝ 2 f) :
+    curvedLaplacian G b hb (fun y ↦ c * f y) x =
+      c * curvedLaplacian G b hb f x := by
+  unfold curvedLaplacian
+  rw [← smul_eq_mul, ← map_smul, ← LinearMap.comp_smul]
+  congr 2
+  apply LinearMap.ext
+  intro v
+  apply LinearMap.ext
+  intro w
+  have hdf : fderiv ℝ (fun y ↦ c * f y) = fun y ↦ c • fderiv ℝ f y := by
+    funext y
+    exact fderiv_const_mul ((hf.differentiable (by norm_num)) y) c
+  have hd2 : fderiv ℝ (fderiv ℝ (fun y ↦ c * f y)) x =
+      c • fderiv ℝ (fderiv ℝ f) x := by
+    rw [hdf]
+    rw [show (fun y ↦ c • fderiv ℝ f y) = fun y ↦ c • (fderiv ℝ f) y
+      from rfl]
+    exact fderiv_const_smul
+      (((hf.fderiv_right (m := 1) (by norm_num)).differentiable
+        (by norm_num)) x) c
+  simp only [covariantHessianLin, LinearMap.mk₂_apply, covariantHessian,
+    LinearMap.smul_apply, hd2, ContinuousLinearMap.smul_apply,
+    smul_eq_mul]
+  have hdfx : fderiv ℝ (fun y ↦ c * f y) x = c • fderiv ℝ f x := by
+    rw [hdf]
+  rw [hdfx]
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  ring
+
+end RicciFlow
