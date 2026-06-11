@@ -302,6 +302,27 @@ theorem blendedChartMetric_nondegenerate (χ : E → ℝ)
   rw [hv v] at hpos
   exact lt_irrefl 0 hpos
 
+/--
+**A blending cutoff exists**: a smooth `[0,1]`-valued function supported in
+the chart target and identically `1` near the chart centre — the cutoff
+with which `blendedChartMetric` satisfies all its hypotheses.
+-/
+theorem exists_blending_cutoff [I.Boundaryless] (x₀ : M) :
+    ∃ χ : E → ℝ, ContDiff ℝ ∞ χ ∧ (∀ z, 0 ≤ χ z) ∧ (∀ z, χ z ≤ 1) ∧
+      (∀ z, χ z ≠ 0 → z ∈ (extChartAt I x₀).target) ∧
+      (∀ᶠ z in nhds (extChartAt I x₀ x₀), χ z = 1) := by
+  obtain ⟨ε, hε, hball⟩ := Metric.isOpen_iff.mp
+    (isOpen_extChartAt_target x₀) (extChartAt I x₀ x₀)
+    (mem_extChartAt_target x₀)
+  let f : ContDiffBump (extChartAt I x₀ x₀) :=
+    ⟨ε / 2, ε, by positivity, by linarith⟩
+  refine ⟨f, f.contDiff, fun z ↦ f.nonneg, fun z ↦ f.le_one,
+    fun z hz ↦ ?_, ?_⟩
+  · exact hball (f.support_eq ▸ Function.mem_support.mpr hz)
+  · filter_upwards [Metric.closedBall_mem_nhds _ (by positivity :
+      (0 : ℝ) < ε / 2)] with z hz
+    exact f.one_of_mem_closedBall hz
+
 end Blended
 
 end CovariantDerivative
