@@ -581,6 +581,54 @@ theorem contDiff_blendedChartMetric_scalar
     rw [blendedChartMetric_apply, hz]
     ring
 
+/-- The blended chart metric is `C^m` as a bilinear-form-valued map. -/
+theorem contDiff_blendedChartMetric
+    (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (x₀ : M) {m : ℕ∞ω} (hm : m + 1 ≤ (∞ : ℕ∞ω))
+    (hχ : ContDiff ℝ ∞ χ)
+    (htsupp : tsupport χ ⊆ (extChartAt I x₀).target)
+    (hg : ContMDiff I (I.prod 𝓘(ℝ, E →L[ℝ] E →L[ℝ] ℝ)) m
+      (fun y ↦ TotalSpace.mk' (E →L[ℝ] E →L[ℝ] ℝ)
+        (E := fun y ↦ TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+        y (g y))) :
+    ContDiff ℝ m (blendedChartMetric χ G₀ g x₀) := by
+  rw [contDiff_clm_apply_iff]
+  intro v
+  rw [contDiff_clm_apply_iff]
+  intro w
+  exact contDiff_blendedChartMetric_scalar χ G₀ g x₀ hm hχ htsupp hg v w
+
+/--
+**The chart Levi-Civita connection of a smooth metric is smooth**: the
+final assembly of the chart-transport stratum. Every chart of a smooth
+Riemannian manifold carries a `C^k` torsion-free metric-compatible
+connection, constructed from the metric alone.
+-/
+theorem chartLeviCivita_contMDiff [CompleteSpace E]
+    (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (hgpos : ∀ (y : M) (u : TangentSpace I y), u ≠ 0 → 0 < g y u u)
+    (x₀ : M) (hχ0 : ∀ z, 0 ≤ χ z) (hχ1 : ∀ z, χ z ≤ 1)
+    (hsupp : ∀ z, χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z).IsInvertible)
+    {k : ℕ∞ω} (hk : k + 1 + 1 ≤ (∞ : ℕ∞ω))
+    (hχ : ContDiff ℝ ∞ χ)
+    (htsupp : tsupport χ ⊆ (extChartAt I x₀).target)
+    (hg : ContMDiff I (I.prod 𝓘(ℝ, E →L[ℝ] E →L[ℝ] ℝ)) (k + 1)
+      (fun y ↦ TotalSpace.mk' (E →L[ℝ] E →L[ℝ] ℝ)
+        (E := fun y ↦ TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+        y (g y))) :
+    CovariantDerivative.ContMDiffCovariantDerivative
+      (chartLeviCivita χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1 hsupp) k :=
+  modelLeviCivita_contMDiff (blendedChartMetric χ G₀ g x₀)
+    (contDiff_blendedChartMetric χ G₀ g x₀ hk hχ htsupp hg)
+    (chartBilin χ G₀ g x₀)
+    (chartBilin_nondegenerate χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1 hsupp)
+    (fun z v w ↦ rfl)
+
 end BlendedSmooth
 
 end CovariantDerivative
