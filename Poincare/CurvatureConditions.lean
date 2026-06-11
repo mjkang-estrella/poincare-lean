@@ -38,6 +38,36 @@ def HasNonnegRicciAt (x : M) : Prop :=
 def HasPosRicciAt (x : M) : Prop :=
   ∀ u : TangentSpace I x, u ≠ 0 → 0 < ricciBilinearAt cov x u u
 
+/--
+**Scalar curvature of an Einstein connection**: if `Ric = lam g` at `x`,
+the scalar curvature with respect to the matching bilinear form is
+`lam * dim`.
+-/
+theorem scalarCurvatureAt_of_einstein {lam : ℝ} {x : M}
+    (b : LinearMap.BilinForm ℝ (TangentSpace I x)) (hb : b.Nondegenerate)
+    (hbg : ∀ v w : TangentSpace I x, b v w = g x v w)
+    (hEin : IsEinsteinAt cov g lam x) :
+    scalarCurvatureAt cov x b hb = lam * Module.finrank ℝ E := by
+  letI : FiniteDimensional ℝ (TangentSpace I x) := ‹FiniteDimensional ℝ E›
+  have hcomp : (LinearMap.BilinForm.toDual b hb).symm.toLinearMap ∘ₗ
+      ricciDualAt cov x = lam • LinearMap.id := by
+    apply LinearMap.ext
+    intro u
+    have hdual : ricciDualAt cov x u =
+        lam • (LinearMap.BilinForm.toDual b hb) u := by
+      apply LinearMap.ext
+      intro w
+      simp only [ricciDualAt, LinearMap.coe_mk, AddHom.coe_mk,
+        LinearMap.smul_apply, smul_eq_mul]
+      rw [hEin u w, ← hbg]
+      rw [LinearMap.BilinForm.toDual_def]
+    simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, hdual, map_smul,
+      LinearEquiv.symm_apply_apply, LinearMap.smul_apply, LinearMap.id_apply]
+  unfold scalarCurvatureAt
+  rw [hcomp, map_smul, LinearMap.trace_id, smul_eq_mul]
+  have hr : Module.finrank ℝ (TangentSpace I x) = Module.finrank ℝ E := rfl
+  rw [hr]
+
 end CovariantDerivative
 
 namespace CovariantDerivative
