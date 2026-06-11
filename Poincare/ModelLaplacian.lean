@@ -603,3 +603,47 @@ theorem curvedLaplacian_const (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The curved Laplacian is additive on `C²` functions. -/
+theorem curvedLaplacian_add (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate)
+    {f g : E → ℝ} {x : E}
+    (hf : ContDiff ℝ 2 f) (hg : ContDiff ℝ 2 g) :
+    curvedLaplacian G b hb (f + g) x =
+      curvedLaplacian G b hb f x + curvedLaplacian G b hb g x := by
+  unfold curvedLaplacian
+  rw [← map_add, ← LinearMap.comp_add]
+  congr 2
+  apply LinearMap.ext
+  intro v
+  apply LinearMap.ext
+  intro w
+  have hdf : fderiv ℝ (f + g) = fun y ↦ fderiv ℝ f y + fderiv ℝ g y := by
+    funext y
+    exact fderiv_add ((hf.differentiable (by norm_num)) y)
+      ((hg.differentiable (by norm_num)) y)
+  have hd2 : fderiv ℝ (fderiv ℝ (f + g)) x =
+      fderiv ℝ (fderiv ℝ f) x + fderiv ℝ (fderiv ℝ g) x := by
+    rw [hdf]
+    exact fderiv_add
+      (((hf.fderiv_right (m := 1) (by norm_num)).differentiable
+        (by norm_num)) x)
+      (((hg.fderiv_right (m := 1) (by norm_num)).differentiable
+        (by norm_num)) x)
+  simp only [covariantHessianLin, LinearMap.mk₂_apply, covariantHessian,
+    LinearMap.add_apply, hd2, ContinuousLinearMap.add_apply]
+  have hdfx : fderiv ℝ (f + g) x = fderiv ℝ f x + fderiv ℝ g x := by
+    rw [hdf]
+  rw [hdfx]
+  simp only [ContinuousLinearMap.add_apply]
+  ring
+
+end RicciFlow
