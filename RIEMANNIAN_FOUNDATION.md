@@ -53,8 +53,9 @@ replacing reliance on the vacuous interface scaffold documented in
 
 - `Poincare/EuclideanLeviCivitaCheck.lean` — end-to-end model validation:
   the constructed Levi-Civita connection of the Euclidean metric *is* the
-  flat connection (by bundled uniqueness), and its curvature vanishes on
-  `C²` fields through the whole pipeline.
+  flat connection (by bundled uniqueness), its curvature vanishes on
+  `C²` fields through the whole pipeline, and the sectional numerator
+  vanishes on all planes.
 - `Poincare/CurvatureConditions.lean` — `IsEinsteinAt`, `HasNonnegRicciAt`,
   `HasPosRicciAt` against the genuine Ricci tensor; Euclidean space is
   Ricci-flat; scalar curvature of Einstein connections is `lam * dim`;
