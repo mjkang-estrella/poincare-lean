@@ -161,6 +161,70 @@ theorem einstein_isRicciFlowSolutionAt (lam : ℝ) {x : M}
 
 end CovariantDerivative
 
+/-! ## Scale invariance of the Levi-Civita connection -/
+
+section ScaleInvariance
+
+variable [FiniteDimensional ℝ E] [T2Space M] [IsManifold I ∞ M]
+  [I.Boundaryless]
+variable {g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ}
+theorem scaled_symm
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    (c : ℝ) (y : M) (v w : TangentSpace I y) :
+    (c • g y) v w = (c • g y) w v := by
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  rw [hgsymm y v w]
+
+theorem scaled_nondegenerate
+    (hgnd : ∀ (y : M) (v : TangentSpace I y), (∀ w, g y v w = 0) → v = 0)
+    {c : ℝ} (hc : c ≠ 0) (y : M)
+    (v : TangentSpace I y) (hv : ∀ w, (c • g y) v w = 0) : v = 0 := by
+  refine hgnd y v fun w ↦ ?_
+  have h := hv w
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul] at h
+  exact (mul_eq_zero.mp h).resolve_left hc
+
+theorem scaled_pairing_mdiff
+    (hP : ∀ (x : M) (A B : Π y : M, TangentSpace I y),
+      MDiffAt (T% A) x → MDiffAt (T% B) x →
+        MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (c : ℝ) (x : M)
+    (A B : Π y : M, TangentSpace I y)
+    (hA : MDiffAt (T% A) x) (hB : MDiffAt (T% B) x) :
+    MDiffAt (fun y ↦ (c • g y) (A y) (B y)) x := by
+  have h : (fun y ↦ (c • g y) (A y) (B y)) =
+      fun y ↦ c * g y (A y) (B y) := by
+    funext y
+    simp
+  rw [h]
+  exact (hP x A B hA hB).const_smul c
+
+/--
+**Scale invariance of the Levi-Civita connection**: the canonical connection
+of `c • g` agrees with that of `g` on differentiable fields, for `c ≠ 0`.
+-/
+theorem leviCivitaConnection_const_smul
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    (hgnd : ∀ (y : M) (v : TangentSpace I y), (∀ w, g y v w = 0) → v = 0)
+    (hP : ∀ (x : M) (A B : Π y : M, TangentSpace I y),
+      MDiffAt (T% A) x → MDiffAt (T% B) x →
+        MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    {c : ℝ} (hc : c ≠ 0)
+    {Y : Π y : M, TangentSpace I y} {x : M} (hY : MDiffAt (T% Y) x) :
+    leviCivitaConnection (fun y ↦ c • g y) (scaled_symm hgsymm c)
+        (scaled_nondegenerate hgnd hc) (scaled_pairing_mdiff hP c) Y x =
+      leviCivitaConnection g hgsymm hgnd hP Y x :=
+  leviCivitaConnection_eq_of_isLeviCivita (fun y ↦ c • g y)
+    (scaled_symm hgsymm c) (scaled_nondegenerate hgnd hc)
+    (scaled_pairing_mdiff hP c)
+    (leviCivitaConnection g hgsymm hgnd hP)
+    (fun y ↦ MetricCompatibleAt.const_smul c
+      (leviCivitaConnection_metricCompatibleAt g hgsymm hgnd hP y)
+      (hP y))
+    (fun y ↦ leviCivitaConnection_torsionFreeAt g hgsymm hgnd hP y) hY
+
+end ScaleInvariance
+
 /-! ## Extinction time of the shrinking Einstein family -/
 
 namespace CovariantDerivative
