@@ -379,4 +379,39 @@ theorem IsRicciFlowSolutionAt.parabolic_rescale
         deriv (fun s ↦ g s x (Z x) w) t₀ from by field_simp]
     exact sol.flow hZ hreg w
 
+
+/--
+**Static solutions are Ricci-flat**: a time-constant Ricci flow solution
+has vanishing Ricci trace on `C²` admissible fields.
+-/
+theorem ricciTraceAt_eq_zero_of_static
+    {g₀ : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ}
+    {cov : CovariantDerivative I E (TangentSpace I : M → Type _)}
+    {t₀ : ℝ} {x : M}
+    (sol : IsRicciFlowSolutionAt (fun _ ↦ g₀) (fun _ ↦ cov) t₀ x)
+    {Z : Π y : M, TangentSpace I y} (hZ : CMDiff 2 (T% Z))
+    (hreg : DerivRegularAt cov Z x) (w : TangentSpace I x) :
+    ricciTraceAt cov hreg w = 0 := by
+  have h := sol.flow hZ hreg w
+  rw [deriv_const] at h
+  linarith
+
+/--
+**Ricci-flat connections give static solutions**: a Levi-Civita connection
+with vanishing Ricci trace makes the constant family a Ricci flow solution.
+-/
+theorem isRicciFlowSolutionAt_const_of_ricciFlat
+    {g₀ : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ}
+    {cov : CovariantDerivative I E (TangentSpace I : M → Type _)} {x : M}
+    (hLC : IsLeviCivitaAt g₀ cov x)
+    (hric : ∀ {Z : Π y : M, TangentSpace I y}, CMDiff 2 (T% Z) →
+      ∀ (hreg : DerivRegularAt cov Z x) (w : TangentSpace I x),
+        ricciTraceAt cov hreg w = 0)
+    (t₀ : ℝ) :
+    IsRicciFlowSolutionAt (fun _ ↦ g₀) (fun _ ↦ cov) t₀ x where
+  leviCivita _ := hLC
+  flow hZ hreg w := by
+    rw [deriv_const, hric hZ hreg w]
+    ring
+
 end CovariantDerivative
