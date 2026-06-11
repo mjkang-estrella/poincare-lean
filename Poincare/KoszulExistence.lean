@@ -395,6 +395,52 @@ theorem b_leviCivitaValueAt {X Y : Π y : M, TangentSpace I y} {x : M}
   rw [h2]
   simp [koszulFunctionalAt]
 
+/--
+The Koszul swap identity: antisymmetrizing the Koszul functional in `(X,Y)`
+leaves exactly twice the bracket pairing.
+-/
+theorem koszulRHS_sub_swap {X Y Z : Π y : M, TangentSpace I y} {x : M}
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v) :
+    koszulRHS g X Y Z x - koszulRHS g Y X Z x =
+      2 * g x (mlieBracket I X Y x) (Z x) := by
+  have hfun : (fun y ↦ g y (Y y) (X y)) = fun y ↦ g y (X y) (Y y) := by
+    funext y
+    exact hgsymm y (Y y) (X y)
+  have hbr : g x (mlieBracket I Y X x) (Z x) =
+      - g x (mlieBracket I X Y x) (Z x) := by
+    rw [mlieBracket_swap_apply]
+    simp
+  unfold koszulRHS
+  rw [hfun, hbr]
+  ring
+
+/--
+**Torsion-freeness of the Levi-Civita candidate**: the symmetry defect of
+the constructed value is the Lie bracket.
+-/
+theorem leviCivitaValueAt_torsionFree {X Y : Π y : M, TangentSpace I y}
+    {x : M}
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x)
+    (hP : ∀ (A B : Π y : M, TangentSpace I y), MDiffAt (T% A) x →
+      MDiffAt (T% B) x → MDiffAt (fun y ↦ g y (A y) (B y)) x)
+    (b : LinearMap.BilinForm ℝ (TangentSpace I x)) (hb : b.Nondegenerate)
+    (hbg : ∀ v w : TangentSpace I x, b v w = g x v w) :
+    leviCivitaValueAt g (hgsymm x) hX hY hP b hb
+      - leviCivitaValueAt g (hgsymm x) hY hX hP b hb
+      = mlieBracket I X Y x := by
+  apply sub_eq_zero.mp
+  apply hb.1
+  intro z
+  simp only [map_sub, LinearMap.sub_apply]
+  rw [b_leviCivitaValueAt g (hgsymm x) hX hY hP b hb z,
+    b_leviCivitaValueAt g (hgsymm x) hY hX hP b hb z,
+    hbg (mlieBracket I X Y x) z]
+  have hsw := koszulRHS_sub_swap (g := g) (X := X) (Y := Y)
+    (Z := extend E z) (x := x) hgsymm
+  rw [extend_apply_self] at hsw
+  linarith
+
 end Construction
 
 end CovariantDerivative
