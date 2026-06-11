@@ -170,4 +170,31 @@ theorem modelLeviCivita_apply (b : Π x : F, LinearMap.BilinForm ℝ F)
       fderiv ℝ σ x v + christoffelAt G x (b x) (hb x) v (σ x) :=
   rfl
 
+
+/--
+**The Christoffel-form connection is torsion-free**: the corrector's
+symmetry cancels in the torsion, leaving the flat torsion, which is the
+bracket.
+-/
+theorem modelLeviCivita_torsionFreeAt
+    (b : Π x : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : F) (p q : F), G y p q = G y q p) (x : F) :
+    TorsionFreeAt (modelLeviCivita G b hb) x := by
+  intro X Y hX hY
+  rw [show (modelLeviCivita G b hb) Y x (X x) =
+      fderiv ℝ Y x (X x) + christoffelAt G x (b x) (hb x) (X x) (Y x) from
+      rfl,
+    show (modelLeviCivita G b hb) X x (Y x) =
+      fderiv ℝ X x (Y x) + christoffelAt G x (b x) (hb x) (Y x) (X x) from
+      rfl,
+    mlieBracket_vectorSpace_eq,
+    christoffelAt_symm G (b x) (hb x) (hGd x) hGsymm
+      (X x) (Y x)]
+  have hlie : VectorField.lieBracket ℝ X Y x =
+      fderiv ℝ Y x (X x) - fderiv ℝ X x (Y x) := rfl
+  rw [hlie]
+  abel
+
 end CovariantDerivative
