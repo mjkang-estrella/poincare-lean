@@ -191,9 +191,12 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   identity; plus the soliton trace identity `R + Δf = nλ`
   (`isGradientSolitonAt_trace`, via the `E`-typed trace bridge
   `scalarCurvatureAt_eq_trace_E`), flat scalar-flatness, and the
-  three-strata Gaussian cross-check. Next mountain: the curved Ricci
-  identity `∇²_{v,w} − ∇²_{w,v} = R(v,w)·`, the engine of the evolution
-  equations.
+  three-strata Gaussian cross-check. **The curved Ricci identity is
+  proved** (`ricci_identity` + `curvatureOp_modelLeviCivita_extend` in
+  `ModelChristoffel.lean`): commuting covariant derivatives costs exactly
+  one curvature term — the engine of the evolution equations, with
+  `extend_model_space'` generalized to normed model spaces (the hidden
+  `InnerProductSpace` instance-search was the melter of prior attempts).
 
 ## What this layer provides
 
