@@ -5308,3 +5308,57 @@ theorem coord_first_bianchi
   abel
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The contracted first Bianchi identity**: the antisymmetric part of
+the coordinate Ricci form is the trace of the curvature operator on the
+plane — `Ric(u,w) − Ric(w,u) = −tr R(u,w)`. Ricci symmetry reduces to
+the vanishing of the curvature trace.
+-/
+theorem coordRicci_antisymm_part
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hΓsymm : ∀ (y : E) (a b : E),
+      christoffelClosedOp G y a b = christoffelClosedOp G y b a)
+    (u w : E) :
+    coordRicci G x u w - coordRicci G x w u
+      = -LinearMap.trace ℝ E
+          ((coordCurvatureOp G x u w : E →L[ℝ] E) : E →ₗ[ℝ] E) := by
+  set bE := Module.finBasis ℝ E with hbE
+  have htr : LinearMap.trace ℝ E
+      ((coordCurvatureOp G x u w : E →L[ℝ] E) : E →ₗ[ℝ] E)
+      = ∑ j, bE.coord j (coordCurvatureOp G x u w (bE j)) := by
+    rw [LinearMap.trace_eq_matrix_trace ℝ bE, Matrix.trace]
+    apply Finset.sum_congr rfl
+    intro j _
+    rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+    rfl
+  unfold coordRicci
+  rw [htr, ← Finset.sum_sub_distrib, ← Finset.sum_neg_distrib]
+  apply Finset.sum_congr rfl
+  intro j _
+  have h := coord_first_bianchi hdiff hΓsymm (bE j) u w
+  have hanti : coordCurvatureOp G x w (bE j)
+      = -coordCurvatureOp G x (bE j) w :=
+    coordCurvatureOp_antisymm G x w (bE j)
+  have h4 : bE.coord j (coordCurvatureOp G x (bE j) u w)
+      + bE.coord j (coordCurvatureOp G x u w (bE j))
+      + bE.coord j (coordCurvatureOp G x w (bE j) u) = 0 := by
+    have := congrArg (fun z ↦ bE.coord j z) h
+    simpa [map_add] using this
+  have h5 : bE.coord j (coordCurvatureOp G x w (bE j) u)
+      = - bE.coord j (coordCurvatureOp G x (bE j) w u) := by
+    rw [hanti]
+    simp
+  rw [h5] at h4
+  linarith
+
+end RicciFlow
