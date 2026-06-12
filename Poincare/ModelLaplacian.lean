@@ -2460,3 +2460,69 @@ theorem hasDerivAt_christoffelFunctional
   convert hsum using 1
 
 end RicciFlow
+
+namespace RicciFlow
+
+open ContinuousLinearMap
+
+/--
+**The derivative of the operator inverse**: along a differentiable path of
+invertible operators, `d(A⁻¹) = −A⁻¹ A' A⁻¹` — obtained by
+differentiating `A⁻¹ ∘ A = id` and solving with the inverse identities.
+The formula behind `∂(g⁻¹)/∂t = 2 g⁻¹ Ric g⁻¹` in the evolution equations.
+-/
+theorem hasDerivAt_clm_inverse
+    {M N : Type*} [NormedAddCommGroup M] [NormedSpace ℝ M]
+    [NormedAddCommGroup N] [NormedSpace ℝ N] [CompleteSpace M]
+    {A : ℝ → M →L[ℝ] N} {A' : M →L[ℝ] N} {t₀ : ℝ}
+    (hd : HasDerivAt A A' t₀)
+    (hev : ∀ᶠ t in nhds t₀, (A t).IsInvertible) :
+    HasDerivAt (fun t ↦ (A t).inverse)
+      (-((A t₀).inverse.comp (A'.comp (A t₀).inverse))) t₀ := by
+  have hinv : (A t₀).IsInvertible := hev.self_of_nhds
+  -- Differentiability of the inverse path.
+  have hBdiff : DifferentiableAt ℝ (fun t ↦ (A t).inverse) t₀ :=
+    ((hinv.contDiffAt_map_inverse (n := 1)).differentiableAt
+      one_ne_zero).comp t₀ hd.differentiableAt
+  set B' := deriv (fun t ↦ (A t).inverse) t₀ with hB'
+  have hB : HasDerivAt (fun t ↦ (A t).inverse) B' t₀ :=
+    hBdiff.hasDerivAt
+  -- The composite is eventually the identity.
+  have hid : (fun t ↦ ((A t).inverse).comp (A t)) =ᶠ[nhds t₀]
+      fun _ ↦ ContinuousLinearMap.id ℝ M := by
+    filter_upwards [hev] with t ht
+    obtain ⟨e, he⟩ := ht
+    rw [← he, inverse_equiv]
+    ext m
+    simp
+  -- Differentiate both sides.
+  have hcomp : HasDerivAt (fun t ↦ ((A t).inverse).comp (A t))
+      (B'.comp (A t₀) + ((A t₀).inverse).comp A') t₀ :=
+    hB.clm_comp hd
+  have hzero : B'.comp (A t₀) + ((A t₀).inverse).comp A' = 0 := by
+    have hconst : HasDerivAt
+        (fun _ : ℝ ↦ ContinuousLinearMap.id ℝ M) 0 t₀ :=
+      hasDerivAt_const t₀ _
+    have hcomp' : HasDerivAt (fun _ : ℝ ↦ ContinuousLinearMap.id ℝ M)
+        (B'.comp (A t₀) + ((A t₀).inverse).comp A') t₀ :=
+      hcomp.congr_of_eventuallyEq hid.symm
+    exact (hcomp'.unique hconst)
+  -- Solve for `B'` with the inverse identities.
+  obtain ⟨e, he⟩ := hinv
+  have hBA : B'.comp (A t₀) = -(((A t₀).inverse).comp A') := by
+    linear_combination (norm := abel) hzero
+  have hsolve : B' = -(((A t₀).inverse).comp (A'.comp (A t₀).inverse)) := by
+    have h1 := congrArg (fun L ↦ L.comp ((A t₀).inverse)) hBA
+    simp only at h1
+    rw [ContinuousLinearMap.comp_assoc] at h1
+    have hAinv : (A t₀).comp ((A t₀).inverse) =
+        ContinuousLinearMap.id ℝ N := by
+      rw [← he, inverse_equiv]
+      ext n
+      simp
+    rw [hAinv, ContinuousLinearMap.comp_id] at h1
+    rw [h1, ContinuousLinearMap.neg_comp, ContinuousLinearMap.comp_assoc]
+  rw [← hsolve]
+  exact hB
+
+end RicciFlow
