@@ -5949,3 +5949,45 @@ theorem sndFDeriv_christoffelClosedOp_slot_symm
   rw [hfe]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**THE SECOND BIANCHI IDENTITY IN COORDINATES**: the cyclic sum of the
+covariant curvature derivative vanishes —
+`∇_v R(u,w) + ∇_u R(w,v) + ∇_w R(v,u) = 0`. The second derivatives of
+the Christoffel families cancel by Schwarz symmetry, the cubic
+Christoffel terms cancel cyclically, and every mixed term cancels in
+pairs under torsion symmetry.
+-/
+theorem coord_second_bianchi
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ p : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y p) x)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hsymΓ : ∀ p : E, IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) x)
+    (hΓsymm : ∀ (y : E) (a b : E),
+      christoffelClosedOp G y a b = christoffelClosedOp G y b a)
+    (u v w : E) :
+    covCurvDeriv G x v u w + covCurvDeriv G x u w v
+      + covCurvDeriv G x w v u = 0 := by
+  unfold covCurvDeriv
+  rw [fderiv_coordCurvatureOp_family hdiffΓ hdd u w v,
+    fderiv_coordCurvatureOp_family hdiffΓ hdd w v u,
+    fderiv_coordCurvatureOp_family hdiffΓ hdd v u w]
+  unfold coordCurvatureOp
+  rw [hΓsymm x v u, hΓsymm x w v, hΓsymm x w u]
+  rw [(hsymΓ w) v u, (hsymΓ u) v w, (hsymΓ v) u w]
+  simp only [ContinuousLinearMap.comp_add, ContinuousLinearMap.add_comp,
+    ContinuousLinearMap.comp_sub, ContinuousLinearMap.sub_comp,
+    ContinuousLinearMap.comp_assoc]
+  abel
+
+end RicciFlow
