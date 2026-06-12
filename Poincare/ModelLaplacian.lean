@@ -6751,3 +6751,42 @@ theorem curvDivergence_contraction_eq_ricciDivergence
   exact Finset.sum_congr rfl fun j _ ↦ (hcoord j _).symm
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**THE TWICE-CONTRACTED BIANCHI IDENTITY**: `2 · div Ric(w) = ∇_w(tr Ric)`
+— the classical identity behind Hamilton's evolution equation, from the
+raw double contraction and the middle-term identification.
+-/
+theorem coord_twice_contracted_bianchi
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hsymΓ : ∀ p : E, IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) x)
+    (w : E) :
+    2 * ricciDivergence G x w = scalarContractionDeriv G x w := by
+  have hGd : ∀ y : E, DifferentiableAt ℝ G y := fun y ↦
+    (hGC2.differentiable (by norm_num)).differentiableAt
+  have hΓsymm : ∀ (y : E) (a b : E),
+      christoffelClosedOp G y a b = christoffelClosedOp G y b a :=
+    fun y a b ↦ christoffelClosedOp_symm (hGd y) hGsymm a b
+  have hraw := coord_twice_contracted_bianchi_raw
+    (fun p ↦ hdiffΓ x p) hdd hsymΓ hΓsymm (x := x) w
+  have hmid := curvDivergence_contraction_eq_ricciDivergence
+    hGC2 hGsymm hinv hdiffΓ hdd w
+  rw [hmid] at hraw
+  linarith
+
+end RicciFlow
