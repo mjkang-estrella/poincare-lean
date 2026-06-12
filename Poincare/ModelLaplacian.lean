@@ -2373,3 +2373,55 @@ theorem christoffelFunctional_add_apply
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The corrector functional is homogeneous in the metric — the scalar
+twin of the `δΓ`-linearity. -/
+theorem christoffelFunctional_smul_apply
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ)
+    (hG : DifferentiableAt ℝ G x) (u v w : E) :
+    christoffelFunctional (fun y ↦ c • G y) x u v w =
+      c * christoffelFunctional G x u v w := by
+  have hterm : ∀ p q r : E,
+      (fderiv ℝ (fun y ↦ c • G y) x p) q r =
+        c * (fderiv ℝ G x p) q r := by
+    intro p q r
+    set L : (E →L[ℝ] E →L[ℝ] ℝ) →L[ℝ] ℝ :=
+      (ContinuousLinearMap.apply ℝ ℝ r).comp
+        (ContinuousLinearMap.apply ℝ (E →L[ℝ] ℝ) q) with hL
+    have happly : ∀ (H : E → E →L[ℝ] E →L[ℝ] ℝ),
+        DifferentiableAt ℝ H x →
+        fderiv ℝ (fun y ↦ L (H y)) x = L.comp (fderiv ℝ H x) := by
+      intro H hH
+      rw [show (fun y ↦ L (H y)) = L ∘ H from rfl,
+        fderiv_comp x L.differentiableAt hH, L.fderiv]
+    have hdsmul : DifferentiableAt ℝ (fun y ↦ c • G y) x :=
+      DifferentiableAt.const_smul (𝕜 := ℝ) (E := E)
+        (F := E →L[ℝ] E →L[ℝ] ℝ) hG c
+    have hkey := happly (fun y ↦ c • G y) hdsmul
+    have hsmul_fn : (fun y ↦ L ((fun y' ↦ c • G y') y)) =
+        fun y ↦ c * L (G y) := by
+      funext y
+      rw [show L (c • G y) = c • L (G y) from map_smul L c (G y)]
+      simp [smul_eq_mul]
+    rw [hsmul_fn] at hkey
+    have hd2 : fderiv ℝ (fun y ↦ c * L (G y)) x =
+        c • L.comp (fderiv ℝ G x) := by
+      rw [fderiv_const_mul (a := fun y ↦ L (G y))
+        (L.differentiableAt.comp x hG) c, happly G hG]
+    rw [hd2] at hkey
+    have := congrFun (congrArg DFunLike.coe hkey.symm) p
+    simp only [ContinuousLinearMap.smul_apply,
+      ContinuousLinearMap.comp_apply, hL, smul_eq_mul] at this
+    simpa using this
+  simp only [christoffelFunctional, LinearMap.coe_mk, AddHom.coe_mk]
+  rw [hterm u v w, hterm v u w, hterm w u v]
+  ring
+
+end RicciFlow
