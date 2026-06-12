@@ -1494,3 +1494,46 @@ theorem modelLaplacian_exp (b : LinearMap.BilinForm ℝ E)
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The heat equation `∂u/∂t = Δu` at a point of space-time. -/
+def IsHeatSolutionAt (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (u : ℝ → E → ℝ) (t : ℝ) (x : E) : Prop :=
+  HasDerivAt (fun s ↦ u s x) (modelLaplacian b hb (u t) x) t
+
+/--
+**The fundamental quadratic solution**: `u(t,x) = b(x,x) + 2nt` solves the
+heat equation exactly — the canonical anchor of the heat stratum, with
+`Δ` of the quadratic form supplying the constant source.
+-/
+theorem quadratic_heat_solution (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (hbs : ∀ v w : E, b v w = b w v)
+    (t : ℝ) (x : E) :
+    IsHeatSolutionAt b hb
+      (fun s y ↦ b y y + 2 * Module.finrank ℝ E * s) t x := by
+  unfold IsHeatSolutionAt
+  have hlap : modelLaplacian b hb
+      (fun y ↦ b y y + 2 * Module.finrank ℝ E * t) x =
+      2 * Module.finrank ℝ E := by
+    have hshift : modelLaplacian b hb
+        (fun y ↦ b y y + 2 * Module.finrank ℝ E * t) x =
+        modelLaplacian b hb (fun y ↦ b y y) x := by
+      unfold modelLaplacian
+      congr 2
+      have : fderiv ℝ (fun y ↦ b y y + 2 * Module.finrank ℝ E * t) =
+          fderiv ℝ (fun y ↦ b y y) := by
+        funext y
+        exact fderiv_add_const _
+      rw [this]
+    rw [hshift, modelLaplacian_quadratic b hb hbs x]
+  rw [hlap]
+  simpa using ((hasDerivAt_id t).const_mul
+    (2 * (Module.finrank ℝ E : ℝ))).const_add (b x x)
+
+end RicciFlow
