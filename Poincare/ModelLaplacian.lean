@@ -2259,3 +2259,27 @@ theorem covariantSecondDerivative_const (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The Ricci identity on constant metrics**: second covariant derivatives
+commute — `∇²_{v,w}X = ∇²_{w,v}X` — consistent with vanishing curvature.
+The curved version of this asymmetry equals `R(v,w)X`: the next mountain.
+-/
+theorem covariantSecondDerivative_comm_const (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate)
+    {X : E → E} (hX : ContDiff ℝ 2 X) (x v w : E) :
+    covariantSecondDerivative (fun _ ↦ G₀) b hb X x v w =
+      covariantSecondDerivative (fun _ ↦ G₀) b hb X x w v := by
+  rw [covariantSecondDerivative_const G₀ b hb hX x v w,
+    covariantSecondDerivative_const G₀ b hb hX x w v,
+    flat_second_derivative_commutes hX x v w]
+
+end RicciFlow

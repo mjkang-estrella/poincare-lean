@@ -184,6 +184,17 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   `affine_isGradientSoliton`) — the formal vocabulary of Perelman's
   singularity-model classification, opened with verified instances.
 
+- The commutation stratum (opened, in `ModelLaplacian.lean`):
+  `flat_second_derivative_commutes`, `covariantSecondDerivative` (the
+  `∇²_{v,w}X` of the Christoffel connection, whose antisymmetrization is
+  the curvature) with its flat anchor and the constant-metric Ricci
+  identity; plus the soliton trace identity `R + Δf = nλ`
+  (`isGradientSolitonAt_trace`, via the `E`-typed trace bridge
+  `scalarCurvatureAt_eq_trace_E`), flat scalar-flatness, and the
+  three-strata Gaussian cross-check. Next mountain: the curved Ricci
+  identity `∇²_{v,w} − ∇²_{w,v} = R(v,w)·`, the engine of the evolution
+  equations.
+
 ## What this layer provides
 
 For any symmetric, nondegenerate, pairing-regular metric on a boundaryless
