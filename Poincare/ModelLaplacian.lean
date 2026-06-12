@@ -2672,3 +2672,40 @@ theorem hasDerivAt_christoffel_flow'
   hasDerivAt_christoffel_flow u v hdG hev hmix
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The corrector functional is symmetric in its two directions, for a
+differentiable symmetric metric. -/
+theorem christoffelFunctional_symm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (u v : E) :
+    christoffelFunctional G x u v = christoffelFunctional G x v u := by
+  apply LinearMap.ext
+  intro w
+  show (1 / 2 : ℝ) * ((fderiv ℝ G x u) v w + (fderiv ℝ G x v) u w
+      - (fderiv ℝ G x w) u v) = (1 / 2 : ℝ) *
+    ((fderiv ℝ G x v) u w + (fderiv ℝ G x u) v w
+      - (fderiv ℝ G x w) v u)
+  rw [fderiv_metric_symm G hGd hGsymm w u v]
+  ring
+
+/-- **`δΓ` is symmetric** — the variation of a torsion-free connection is
+a symmetric 2-tensor, as Hamilton's evolution equations require. -/
+theorem christoffelDeriv_symm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x) (hHd : DifferentiableAt ℝ H x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p) (u v : E) :
+    christoffelDeriv G H x u v = christoffelDeriv G H x v u := by
+  unfold christoffelDeriv
+  rw [christoffelFunctional_symm hGd hGsymm u v,
+    christoffelFunctional_symm hHd hHsymm u v]
+
+end RicciFlow
