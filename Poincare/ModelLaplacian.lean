@@ -2155,3 +2155,36 @@ theorem flat_scalarCurvatureAt_eq_zero
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+open scoped Manifold in
+/--
+**The Gaussian trace cross-check**: deriving the Gaussian's Laplacian from
+the soliton trace identity (rather than direct computation) — four
+theorems (soliton instance, trace identity, flat scalar-flatness, and the
+direct computation) confirm each other across three strata.
+-/
+theorem gaussian_curvedLaplacian_via_soliton
+    {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    [FiniteDimensional ℝ E] [CompleteSpace E]
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (b₀ : LinearMap.BilinForm ℝ E) (hb₀ : b₀.Nondegenerate)
+    (hbs : ∀ v w : E, b₀ v w = b₀ w v)
+    {τ : ℝ} (hτ : τ ≠ 0) (x : E) :
+    curvedLaplacian (fun _ ↦ G₀) (fun _ ↦ b₀) (fun _ ↦ hb₀)
+      (fun y ↦ (1 / (4 * τ)) * b₀ y y) x =
+      Module.finrank ℝ E / (2 * τ) := by
+  have h := isGradientSolitonAt_trace (flatCovariantDerivative ℝ E)
+    (fun _ ↦ G₀) (fun _ ↦ b₀) (fun _ ↦ hb₀)
+    (gaussian_isGradientSoliton G₀ b₀ hb₀ hbs hτ x)
+  have hscal : scalarCurvatureAt (flatCovariantDerivative ℝ E) x
+      ((fun _ : E ↦ b₀) x) ((fun _ : E ↦ hb₀) x) = 0 :=
+    flat_scalarCurvatureAt_eq_zero x b₀ hb₀
+  rw [hscal, zero_add] at h
+  rw [h]
+  field_simp
+
+end RicciFlow
