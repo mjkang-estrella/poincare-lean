@@ -6166,3 +6166,101 @@ theorem coord_twice_contracted_bianchi_raw
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- Product rule for the pairing of a metric family against a
+differentiable operator family: `y ↦ G_y(V_y(a), b)`. -/
+theorem hasFDerivAt_g_op_family
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {V : E → E →L[ℝ] E} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hV : DifferentiableAt ℝ V x) (a b : E) :
+    HasFDerivAt (fun y ↦ G y (V y a) b)
+      ((ContinuousLinearMap.apply ℝ ℝ b).comp
+        ((G x).comp ((ContinuousLinearMap.apply ℝ E a).comp
+            (fderiv ℝ V x))
+          + (fderiv ℝ G x).flip (V x a))) x := by
+  have hVa : HasFDerivAt (fun y ↦ V y a)
+      ((ContinuousLinearMap.apply ℝ E a).comp (fderiv ℝ V x)) x :=
+    (ContinuousLinearMap.apply ℝ E a).hasFDerivAt.comp x hV.hasFDerivAt
+  have hA : HasFDerivAt (fun y ↦ (G y) (V y a))
+      ((G x).comp ((ContinuousLinearMap.apply ℝ E a).comp
+          (fderiv ℝ V x))
+        + (fderiv ℝ G x).flip (V x a)) x :=
+    hGd.hasFDerivAt.clm_apply hVa
+  exact (ContinuousLinearMap.apply ℝ ℝ b).hasFDerivAt.comp x hA
+
+/--
+**PAIR SYMMETRY OF THE COVARIANT CURVATURE DERIVATIVE**:
+`⟨(∇_vR)(u,w)a, b⟩ = ⟨(∇_vR)(a,b)u, w⟩` — differentiating the pointwise
+pair symmetry, the metric-compatibility corrections match in pairs
+through the pointwise pair symmetry itself.
+-/
+theorem covCurvDeriv_pair_symm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (v u w a b : E) :
+    G x (covCurvDeriv G x v u w a) b
+      = G x (covCurvDeriv G x v a b u) w := by
+  have hGd : ∀ y : E, DifferentiableAt ℝ G y := fun y ↦
+    (hGC2.differentiable (by norm_num)).differentiableAt
+  -- Pointwise pair symmetry, at every point.
+  have hps : ∀ (y : E) (p q r s : E),
+      G y (coordCurvatureOp G y p q r) s
+        = G y (coordCurvatureOp G y r s p) q := by
+    intro y p q r s
+    exact coordCurvature_pair_symm hGC2 hGsymm hinv
+      (fun m ↦ hdiffΓ y m) p q r s
+  -- Differentiability of the curvature families at x (and everywhere
+  -- needed).
+  have hRfam : ∀ p q : E, DifferentiableAt ℝ
+      (fun y ↦ coordCurvatureOp G y p q) x :=
+    fun p q ↦ differentiableAt_coordCurvatureOp_family hdiffΓ hdd p q
+  -- Derivatives of the two pairing fields.
+  have hL := hasFDerivAt_g_op_family (hGd x) (hRfam u w) a b
+  have hR := hasFDerivAt_g_op_family (hGd x) (hRfam a b) u w
+  have hP : (fun y ↦ G y (coordCurvatureOp G y u w a) b)
+      = fun y ↦ G y (coordCurvatureOp G y a b u) w := by
+    funext y
+    exact hps y u w a b
+  rw [hP] at hL
+  have huniq := hL.unique hR
+  have hEq := congrArg (fun (Φ : E →L[ℝ] ℝ) ↦ Φ v) huniq
+  simp only [ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.add_apply, ContinuousLinearMap.apply_apply,
+    ContinuousLinearMap.flip_apply] at hEq
+  -- Metric compatibility for the metric-derivative terms.
+  have hDG : ∀ (p r : E), (fderiv ℝ G x v) p r
+      = G x (christoffelClosedOp G x v p) r
+        + G x p (christoffelClosedOp G x v r) :=
+    fun p r ↦ coord_metric_compatible (hGd x) hGsymm (hinv x) v p r
+  rw [hDG (coordCurvatureOp G x u w a) b,
+    hDG (coordCurvatureOp G x a b u) w] at hEq
+  -- Expand the goal through the covariant-derivative definition.
+  unfold covCurvDeriv
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.sub_apply,
+    ContinuousLinearMap.comp_apply, map_add, map_sub]
+  -- Pair-symmetry instances matching the correction terms.
+  have ps1 := hps x u w (christoffelClosedOp G x v a) b
+  have ps2 := hps x (christoffelClosedOp G x v u) w a b
+  have ps3 := hps x u (christoffelClosedOp G x v w) a b
+  have ps4 := hps x u w a (christoffelClosedOp G x v b)
+  -- Symmetry conversions for second-slot Christoffel pairings.
+  have sy1 := hGsymm x (coordCurvatureOp G x u w a)
+    (christoffelClosedOp G x v b)
+  have sy2 := hGsymm x (coordCurvatureOp G x a b u)
+    (christoffelClosedOp G x v w)
+  linarith
+
+end RicciFlow
