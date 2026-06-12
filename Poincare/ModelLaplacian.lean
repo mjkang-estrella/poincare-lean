@@ -3839,3 +3839,27 @@ theorem hamilton_singularity_of_evolution_eq
       field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The derivative of a trace-path**: the trace is continuous-linear in
+finite dimension, so it commutes with time differentiation — the rule by
+which `∂R/∂t` is computed from `∂(Ric♯)/∂t` along the flow.
+-/
+theorem hasDerivAt_trace {A : ℝ → E →L[ℝ] E} {A' : E →L[ℝ] E} {t₀ : ℝ}
+    (hd : HasDerivAt A A' t₀) :
+    HasDerivAt (fun t ↦ LinearMap.trace ℝ E (A t : E →ₗ[ℝ] E))
+      (LinearMap.trace ℝ E (A' : E →ₗ[ℝ] E)) t₀ := by
+  set trC : (E →L[ℝ] E) →L[ℝ] ℝ :=
+    LinearMap.toContinuousLinearMap
+      ((LinearMap.trace ℝ E) ∘ₗ
+        (ContinuousLinearMap.coeLM ℝ :
+          (E →L[ℝ] E) →ₗ[ℝ] (E →ₗ[ℝ] E))) with htrC
+  have h := (trC.hasFDerivAt.comp_hasDerivAt t₀ hd)
+  simpa [htrC] using h
+
+end RicciFlow
