@@ -2746,3 +2746,40 @@ theorem christoffelDeriv_const_base (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The paired linearized Christoffel symbols**: at a flat background,
+`b(δΓ(u,v), w) = Φ_H(u,v)(w)` — the symbol of DeTurck's linearized
+operator in its metric pairing.
+-/
+theorem b_christoffelDeriv_const_base (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (hbg : ∀ v w : E, b v w = G₀ v w)
+    (H : E → E →L[ℝ] E →L[ℝ] ℝ) (x u v w : E) :
+    b (christoffelDeriv (fun _ ↦ G₀) H x u v) w =
+      christoffelFunctional H x u v w := by
+  rw [christoffelDeriv_const_base G₀ H x u v]
+  have hinv := metric_isInvertible (fun _ : E ↦ G₀) (x := x) b hb hbg
+  obtain ⟨e, he⟩ := hinv
+  have he' : (e : E →L[ℝ] E →L[ℝ] ℝ) = G₀ := he
+  rw [← he', ContinuousLinearMap.inverse_equiv]
+  -- Pair through the dual identity.
+  have hkey : ∀ ρ : E →L[ℝ] ℝ, b (e.symm ρ) w = ρ w := by
+    intro ρ
+    have happ : e (e.symm ρ) = ρ := e.apply_symm_apply ρ
+    have hb_eq : (e (e.symm ρ) : E →L[ℝ] ℝ) w = G₀ (e.symm ρ) w := by
+      rw [show (e (e.symm ρ) : E →L[ℝ] ℝ) =
+        (e : E →L[ℝ] E →L[ℝ] ℝ) (e.symm ρ) from rfl, he']
+    rw [happ] at hb_eq
+    rw [hbg]
+    exact hb_eq.symm
+  exact hkey _
+
+end RicciFlow
