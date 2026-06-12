@@ -2425,3 +2425,38 @@ theorem christoffelFunctional_smul_apply
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The time-derivative of the corrector functional**: along a metric flow
+`t ↦ Gₜ`, if the mixed space–time derivatives commute (the three slot
+hypotheses), the corrector functional differentiates to the functional of
+`∂G/∂t` — the `δΓ` variation formula at the functional level.
+-/
+theorem hasDerivAt_christoffelFunctional
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ} {H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    {x : E} {t₀ : ℝ} (u v w : E)
+    (h1 : HasDerivAt (fun t ↦ (fderiv ℝ (Gt t) x u) v w)
+      ((fderiv ℝ H x u) v w) t₀)
+    (h2 : HasDerivAt (fun t ↦ (fderiv ℝ (Gt t) x v) u w)
+      ((fderiv ℝ H x v) u w) t₀)
+    (h3 : HasDerivAt (fun t ↦ (fderiv ℝ (Gt t) x w) u v)
+      ((fderiv ℝ H x w) u v) t₀) :
+    HasDerivAt (fun t ↦ christoffelFunctional (Gt t) x u v w)
+      (christoffelFunctional H x u v w) t₀ := by
+  have hsum := ((h1.add h2).sub h3).const_mul (1 / 2 : ℝ)
+  have heq : (fun t ↦ christoffelFunctional (Gt t) x u v w) =
+      fun t ↦ (1 / 2 : ℝ) * ((fderiv ℝ (Gt t) x u) v w
+        + (fderiv ℝ (Gt t) x v) u w - (fderiv ℝ (Gt t) x w) u v) := by
+    funext t
+    rfl
+  rw [heq]
+  convert hsum using 1
+
+end RicciFlow
