@@ -1469,3 +1469,28 @@ theorem modelLaplacian_log (b : LinearMap.BilinForm ℝ E)
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The exponential Laplacian identity**:
+`Δ(e^f) = e^f (Δf + |∇f|²)` — the conjugate-heat-equation side of the
+logarithmic identity.
+-/
+theorem modelLaplacian_exp (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (x : E) :
+    modelLaplacian b hb (fun y ↦ Real.exp (f y)) x =
+      Real.exp (f x) * (modelLaplacian b hb f x
+        + b (metricGradient b hb f x) (metricGradient b hb f x)) := by
+  rw [modelLaplacian_comp b hb hf (Real.contDiff_exp.of_le le_top) x]
+  rw [Real.deriv_exp]
+  rw [Real.deriv_exp]
+  ring
+
+end RicciFlow
