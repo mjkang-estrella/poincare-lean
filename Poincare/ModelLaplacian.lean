@@ -1696,3 +1696,43 @@ theorem modelLaplacian_exp_neg (b : LinearMap.BilinForm ℝ E)
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E] [CompleteSpace E]
+
+open scoped Manifold in
+/--
+**Perelman's `𝓕`-density**: the pointwise integrand
+`(R + |∇f|²) e^{−f}` of the `𝓕`-functional, defined against the genuine
+scalar curvature of a connection on the model space — the first object of
+the entropy stratum.
+-/
+noncomputable def perelmanFDensity
+    (cov : CovariantDerivative 𝓘(ℝ, E) E (TangentSpace 𝓘(ℝ, E) : E → Type _))
+    [CovariantDerivative.ContMDiffCovariantDerivative cov 1]
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (f : E → ℝ) (x : E) : ℝ :=
+  (scalarCurvatureAt cov x b hb
+    + b (metricGradient b hb f x) (metricGradient b hb f x))
+    * Real.exp (-f x)
+
+open scoped Manifold in
+/-- The `𝓕`-density is nonnegative wherever the scalar curvature is. -/
+theorem perelmanFDensity_nonneg
+    (cov : CovariantDerivative 𝓘(ℝ, E) E (TangentSpace 𝓘(ℝ, E) : E → Type _))
+    [CovariantDerivative.ContMDiffCovariantDerivative cov 1]
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v)
+    (f : E → ℝ) {x : E}
+    (hscal : 0 ≤ scalarCurvatureAt cov x b hb) :
+    0 ≤ perelmanFDensity cov b hb f x := by
+  unfold perelmanFDensity
+  have hgrad := gradient_sq_nonneg b hb hbpos f x
+  have hexp : (0 : ℝ) < Real.exp (-f x) := Real.exp_pos _
+  positivity
+
+end RicciFlow
