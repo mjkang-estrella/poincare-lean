@@ -4246,3 +4246,112 @@ theorem curvature_quadratic_operator_form
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The `DΓ`-half of the curvature variation**: from directionwise
+`∂t∂x`-commutation hypotheses on the Christoffel operator family
+(`hmix2`), the spatial gradient of the operator family differentiates in
+time to the spatial gradient of the `δΓ`-operator family — as
+CLM-valued paths, by basis reconstruction.
+-/
+theorem hasDerivAt_christoffelOpGrad
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ} {H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    {x : E} {t₀ : ℝ} (u : E)
+    (hmix2 : ∀ v : E,
+      HasDerivAt
+        (fun t ↦ fderiv ℝ (fun y ↦ christoffelClosedOp (Gt t) y u) x v)
+        (fderiv ℝ (fun y ↦ christoffelDerivOp (Gt t₀) H y u) x v) t₀) :
+    HasDerivAt
+      (fun t ↦ fderiv ℝ (fun y ↦ christoffelClosedOp (Gt t) y u) x)
+      (fderiv ℝ (fun y ↦ christoffelDerivOp (Gt t₀) H y u) x) t₀ :=
+  hasDerivAt_clm_of_forall_apply' hmix2
+
+/--
+The `DΓ`-half applied: the directional spatial derivative of the
+Christoffel operator family, evaluated on a fixed vector, differentiates
+in time to the corresponding `δΓ`-gradient value.
+-/
+theorem hasDerivAt_christoffelOpGrad_apply
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ} {H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    {x : E} {t₀ : ℝ} (u : E)
+    (hmix2 : ∀ v : E,
+      HasDerivAt
+        (fun t ↦ fderiv ℝ (fun y ↦ christoffelClosedOp (Gt t) y u) x v)
+        (fderiv ℝ (fun y ↦ christoffelDerivOp (Gt t₀) H y u) x v) t₀)
+    (v z : E) :
+    HasDerivAt
+      (fun t ↦ fderiv ℝ (fun y ↦ christoffelClosedOp (Gt t) y u) x v z)
+      (fderiv ℝ (fun y ↦ christoffelDerivOp (Gt t₀) H y u) x v z) t₀ := by
+  have h := hmix2 v
+  exact (ContinuousLinearMap.apply ℝ E z).hasFDerivAt.comp_hasDerivAt t₀ h
+
+end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The coordinate curvature operator of a metric: the `DΓ`-difference
+plus the `ΓΓ`-commutator, as an endomorphism. -/
+noncomputable def coordCurvatureOp (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x u w : E) : E →L[ℝ] E :=
+  fderiv ℝ (fun y ↦ christoffelClosedOp G y w) x u
+    - fderiv ℝ (fun y ↦ christoffelClosedOp G y u) x w
+    + (christoffelClosedOp G x u).comp (christoffelClosedOp G x w)
+    - (christoffelClosedOp G x w).comp (christoffelClosedOp G x u)
+
+/-- **The named `δRm`**: the variation of the coordinate curvature
+operator at a metric `G` in the direction `H` — the `δΓ`-gradient
+difference plus the mixed `δΓ·Γ + Γ·δΓ` commutator terms. -/
+noncomputable def curvatureDerivOp (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x u w : E) : E →L[ℝ] E :=
+  fderiv ℝ (fun y ↦ christoffelDerivOp G H y w) x u
+    - fderiv ℝ (fun y ↦ christoffelDerivOp G H y u) x w
+    + ((christoffelDerivOp G H x u).comp (christoffelClosedOp G x w)
+      + (christoffelClosedOp G x u).comp (christoffelDerivOp G H x w))
+    - ((christoffelDerivOp G H x w).comp (christoffelClosedOp G x u)
+      + (christoffelClosedOp G x w).comp (christoffelDerivOp G H x u))
+
+/--
+**THE CURVATURE VARIATION ASSEMBLED**: along a metric flow, the
+coordinate curvature operator differentiates in time to `δRm` — the
+`DΓ`-half (by basis reconstruction from the `∂t∂x`-commutation
+hypotheses) plus the `ΓΓ`-half (by the operator product rule).
+-/
+theorem hasDerivAt_coordCurvatureOp
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ} {H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    {x : E} {t₀ : ℝ} (u w : E)
+    (hdG : HasDerivAt (fun t ↦ Gt t x) (H x) t₀)
+    (hev : ∀ᶠ t in nhds t₀, (Gt t x).IsInvertible)
+    (hmix : ∀ p q r : E,
+      HasDerivAt (fun t ↦ (fderiv ℝ (Gt t) x p) q r)
+        ((fderiv ℝ H x p) q r) t₀)
+    (hmix2 : ∀ p v : E,
+      HasDerivAt
+        (fun t ↦ fderiv ℝ (fun y ↦ christoffelClosedOp (Gt t) y p) x v)
+        (fderiv ℝ (fun y ↦ christoffelDerivOp (Gt t₀) H y p) x v) t₀) :
+    HasDerivAt (fun t ↦ coordCurvatureOp (Gt t) x u w)
+      (curvatureDerivOp (Gt t₀) H x u w) t₀ := by
+  have hDw : HasDerivAt
+      (fun t ↦ fderiv ℝ (fun y ↦ christoffelClosedOp (Gt t) y w) x u)
+      (fderiv ℝ (fun y ↦ christoffelDerivOp (Gt t₀) H y w) x u) t₀ :=
+    hmix2 w u
+  have hDu : HasDerivAt
+      (fun t ↦ fderiv ℝ (fun y ↦ christoffelClosedOp (Gt t) y u) x w)
+      (fderiv ℝ (fun y ↦ christoffelDerivOp (Gt t₀) H y u) x w) t₀ :=
+    hmix2 u w
+  have hCuw := hasDerivAt_christoffelClosedOp_comp u w hdG hev hmix
+  have hCwu := hasDerivAt_christoffelClosedOp_comp w u hdG hev hmix
+  exact ((hDw.sub hDu).add hCuw).sub hCwu
+
+end RicciFlow
