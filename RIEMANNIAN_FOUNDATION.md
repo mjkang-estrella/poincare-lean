@@ -174,8 +174,11 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   with its fundamental quadratic solution and the maximum principle wired
   end-to-end; the metric divergence with `div∘grad = Δ`; the
   conjugate-heat weight identity `Δ(e^{−f}) = e^{−f}(|∇f|²−Δf)`; and the
-  entropy stratum's first object, `perelmanFDensity` — the `𝓕`-integrand
-  built entirely from the session's verified curvature and gradient.
+  entropy stratum: `perelmanFDensity` and `perelmanWDensity` (both
+  integrands from verified components), and the Gaussian shrinking soliton
+  in full — gradient `x/2τ`, Laplacian `n/2τ`, and the soliton equation
+  `Hess(b(x,x)/4τ) = b/2τ` (with flat Ricci-flatness, exactly
+  `Ric + Hess f = g/2τ`): the model self-similar singularity, verified.
 
 ## What this layer provides
 
