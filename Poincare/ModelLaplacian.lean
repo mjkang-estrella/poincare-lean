@@ -3915,3 +3915,37 @@ theorem christoffelDeriv_zero_direction
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`δΓ` is additive in the variation direction** — the connection's
+response is linear in the metric's variation. -/
+theorem christoffelDeriv_add_direction
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    {H₁ H₂ : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hH₁ : DifferentiableAt ℝ H₁ x) (hH₂ : DifferentiableAt ℝ H₂ x)
+    (u v : E) :
+    christoffelDeriv G (fun y ↦ H₁ y + H₂ y) x u v =
+      christoffelDeriv G H₁ x u v + christoffelDeriv G H₂ x u v := by
+  unfold christoffelDeriv
+  have hΦ : LinearMap.toContinuousLinearMap
+      (christoffelFunctional (fun y ↦ H₁ y + H₂ y) x u v) =
+      LinearMap.toContinuousLinearMap
+        (christoffelFunctional H₁ x u v)
+      + LinearMap.toContinuousLinearMap
+        (christoffelFunctional H₂ x u v) := by
+    ext w
+    have h := christoffelFunctional_add_apply hH₁ hH₂ u v w
+    simpa using h
+  rw [hΦ]
+  simp only [ContinuousLinearMap.add_comp, ContinuousLinearMap.comp_add,
+    neg_add, ContinuousLinearMap.add_apply, map_add,
+    ContinuousLinearMap.neg_apply]
+  abel
+
+end RicciFlow
