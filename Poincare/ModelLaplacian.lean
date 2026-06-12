@@ -2618,3 +2618,24 @@ theorem hasDerivAt_christoffel_flow
   exact hInv.clm_apply hΦ
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The corrector functional scales with the metric (CLM-valued form). -/
+theorem christoffelFunctional_smul_clm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ)
+    (hG : DifferentiableAt ℝ G x) (u v : E) :
+    LinearMap.toContinuousLinearMap
+        (christoffelFunctional (fun y ↦ c • G y) x u v) =
+      c • LinearMap.toContinuousLinearMap
+        (christoffelFunctional G x u v) := by
+  ext w
+  have h := christoffelFunctional_smul_apply c hG u v w
+  simpa [smul_eq_mul] using h
+
+end RicciFlow
