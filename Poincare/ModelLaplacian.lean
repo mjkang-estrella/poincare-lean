@@ -4095,3 +4095,54 @@ theorem christoffelDerivOp_apply (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
     christoffelDerivOp G H x u v = christoffelDeriv G H x u v := rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The closed-form Christoffel operator: the second slot of
+`Γ = G⁻¹Φ_G` as a continuous endomorphism. -/
+noncomputable def christoffelClosedOp (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x u : E) : E →L[ℝ] E :=
+  LinearMap.toContinuousLinearMap
+    { toFun := fun v ↦ (G x).inverse (LinearMap.toContinuousLinearMap
+        (christoffelFunctional G x u v))
+      map_add' := fun v₁ v₂ ↦ by
+        rw [christoffelFunctional_add_snd G x u v₁ v₂]
+        simp [map_add]
+      map_smul' := fun c v ↦ by
+        rw [christoffelFunctional_smul_snd G x u c v]
+        simp [map_smul] }
+
+@[simp]
+theorem christoffelClosedOp_apply (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x u v : E) :
+    christoffelClosedOp G x u v = (G x).inverse
+      (LinearMap.toContinuousLinearMap
+        (christoffelFunctional G x u v)) := rfl
+
+/--
+**The Christoffel operator path differentiates to the `δΓ`-operator**:
+along a metric flow, `t ↦ Γₜ(u,·)` has derivative `δΓ(u,·)` as
+endomorphism-valued paths — the gateway to `∂t` of the `ΓΓ`-terms of the
+curvature.
+-/
+theorem hasDerivAt_christoffelClosedOp
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ} {H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    {x : E} {t₀ : ℝ} (u : E)
+    (hdG : HasDerivAt (fun t ↦ Gt t x) (H x) t₀)
+    (hev : ∀ᶠ t in nhds t₀, (Gt t x).IsInvertible)
+    (hmix : ∀ p q r : E,
+      HasDerivAt (fun t ↦ (fderiv ℝ (Gt t) x p) q r)
+        ((fderiv ℝ H x p) q r) t₀) :
+    HasDerivAt (fun t ↦ christoffelClosedOp (Gt t) x u)
+      (christoffelDerivOp (Gt t₀) H x u) t₀ := by
+  apply hasDerivAt_clm_of_forall_apply'
+  intro v
+  have h := hasDerivAt_christoffel_flow' u v hdG hev hmix
+  simpa using h
+
+end RicciFlow
