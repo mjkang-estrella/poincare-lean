@@ -2639,3 +2639,36 @@ theorem christoffelFunctional_smul_clm
   simpa [smul_eq_mul] using h
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The named `δΓ`**: the variation of the Christoffel symbols at a
+metric `G` in the direction `H` — the value the flow-derivative takes. -/
+noncomputable def christoffelDeriv (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x u v : E) : E :=
+  (-((G x).inverse.comp ((H x).comp (G x).inverse)))
+      (LinearMap.toContinuousLinearMap (christoffelFunctional G x u v))
+    + (G x).inverse (LinearMap.toContinuousLinearMap
+      (christoffelFunctional H x u v))
+
+/-- The flow-derivative of the closed-form corrector is the named `δΓ`. -/
+theorem hasDerivAt_christoffel_flow'
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ} {H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    {x : E} {t₀ : ℝ} (u v : E)
+    (hdG : HasDerivAt (fun t ↦ Gt t x) (H x) t₀)
+    (hev : ∀ᶠ t in nhds t₀, (Gt t x).IsInvertible)
+    (hmix : ∀ p q r : E,
+      HasDerivAt (fun t ↦ (fderiv ℝ (Gt t) x p) q r)
+        ((fderiv ℝ H x p) q r) t₀) :
+    HasDerivAt (fun t ↦ (Gt t x).inverse
+        (LinearMap.toContinuousLinearMap
+          (christoffelFunctional (Gt t) x u v)))
+      (christoffelDeriv (Gt t₀) H x u v) t₀ :=
+  hasDerivAt_christoffel_flow u v hdG hev hmix
+
+end RicciFlow
