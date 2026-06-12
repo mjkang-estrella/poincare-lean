@@ -3949,3 +3949,52 @@ theorem christoffelDeriv_add_direction
   abel
 
 end RicciFlow
+
+namespace RicciFlow
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**Derivative reconstruction for operator-valued paths**: an
+`(E →L F)`-valued path whose every evaluation differentiates has a
+derivative — basis reconstruction with `smulRight`-tensors. The general
+form needed for differentiating the second-slot Christoffel maps.
+-/
+theorem hasDerivAt_clm_of_forall_apply'
+    {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    {φ : ℝ → E →L[ℝ] F} {ψ : E →L[ℝ] F} {t₀ : ℝ}
+    (h : ∀ w : E, HasDerivAt (fun t ↦ φ t w) (ψ w) t₀) :
+    HasDerivAt φ ψ t₀ := by
+  set bE := Module.finBasis ℝ E with hbE
+  set coordC : (Fin (Module.finrank ℝ E)) → (E →L[ℝ] ℝ) :=
+    fun i ↦ LinearMap.toContinuousLinearMap (bE.coord i) with hcoord
+  have hrepr : ∀ ρ : E →L[ℝ] F,
+      ρ = ∑ i, (coordC i).smulRight (ρ (bE i)) := by
+    intro ρ
+    ext w
+    have hw := bE.sum_repr w
+    conv_lhs => rw [← hw]
+    rw [map_sum]
+    simp only [ContinuousLinearMap.coe_sum', Finset.sum_apply,
+      ContinuousLinearMap.smulRight_apply, map_smul]
+    apply Finset.sum_congr rfl
+    intro i _
+    rw [show (coordC i) w = bE.coord i w from rfl,
+      Module.Basis.coord_apply]
+  have hsum : HasDerivAt (fun t ↦ ∑ i, (coordC i).smulRight (φ t (bE i)))
+      (∑ i, (coordC i).smulRight (ψ (bE i))) t₀ := by
+    apply HasDerivAt.fun_sum
+    intro i _
+    have hpath := h (bE i)
+    have hsm := (ContinuousLinearMap.smulRightL ℝ E F
+      (coordC i)).hasFDerivAt.comp_hasDerivAt t₀ hpath
+    simpa using hsm
+  have hfun : (fun t ↦ φ t) = fun t ↦ ∑ i,
+      (coordC i).smulRight (φ t (bE i)) := by
+    funext t
+    exact hrepr (φ t)
+  rw [show φ = fun t ↦ φ t from rfl, hfun, hrepr ψ]
+  exact hsum
+
+end RicciFlow
