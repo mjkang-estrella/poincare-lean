@@ -2188,3 +2188,21 @@ theorem gaussian_curvedLaplacian_via_soliton
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+/--
+**The flat Ricci identity**: second derivatives of vector fields commute
+on Euclidean space — `∇²_{v,w}X = ∇²_{w,v}X`, consistent with the proven
+vanishing of the flat curvature (`R(v,w)X = 0`). The entry point of the
+commutation stratum: on curved backgrounds this asymmetry IS the curvature,
+which is what turns Laplacians of curvature quantities into the evolution
+equations.
+-/
+theorem flat_second_derivative_commutes
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {X : E → E} (hX : ContDiff ℝ 2 X) (x v w : E) :
+    fderiv ℝ (fderiv ℝ X) x v w = fderiv ℝ (fderiv ℝ X) x w v :=
+  (hX.contDiffAt.isSymmSndFDerivAt (by simp)) v w
+
+end RicciFlow
