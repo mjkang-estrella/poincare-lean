@@ -153,7 +153,15 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   `heat_supersolution_nonneg_preserved` — Hamilton's "nonnegative scalar
   curvature is preserved", modulo the evolution equation (the honest
   hypothesis awaiting commutation machinery). The centerpiece of
-  Hamilton's analytic toolkit, complete in both variants. The Bochner
+  Hamilton's analytic toolkit, complete in both variants, extended to
+  **variable coefficients** (strict and non-strict), and culminating in
+  **Hamilton's scalar comparison** (`hamilton_scalar_lower_bound`: `R`
+  stays above the exact Riccati barrier under the evolution inequality)
+  and **Hamilton's finite-time singularity theorem**
+  (`hamilton_finite_time_singularity`: bounded solutions cannot persist to
+  `1/(a m₀)`) — formal modulo the single hypothesis of the curvature
+  evolution equation, with the trace Cauchy–Schwarz
+  (`trace_sq_le_card_mul_trace_comp_self`) supplying `R² ≤ n|Ric|²`. The Bochner
   layer joins the strata: `covariantHessian` (the geometric second
   derivative of the Christoffel connection, symmetric by Schwarz +
   corrector symmetry), `curvedLaplacian` (the Laplace–Beltrami operator,
