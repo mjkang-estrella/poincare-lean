@@ -2904,3 +2904,90 @@ theorem covariantHessian_comp (G : E → E →L[ℝ] E →L[ℝ] ℝ)
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The differential of the gradient-square**:
+`d|∇f|²(v) = 2·Hess f(v, ∇f)` (constant metric) — the first component of
+the Bochner formula `Δ|∇f|² = 2|Hess f|² + 2⟨∇f, ∇Δf⟩ + 2Ric(∇f,∇f)`.
+-/
+theorem fderiv_gradient_sq (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (x v : E) :
+    fderiv ℝ (fun y ↦ b (metricGradient b hb f y)
+        (metricGradient b hb f y)) x v =
+      2 * fderiv ℝ (fderiv ℝ f) x v (metricGradient b hb f x) := by
+  have hf1 : Differentiable ℝ (fderiv ℝ f) :=
+    (hf.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)
+  -- The gradient path is a fixed CLM applied to `Df`.
+  set Lc : (E →L[ℝ] ℝ) →L[ℝ] E := LinearMap.toContinuousLinearMap
+    ((LinearMap.BilinForm.toDual b hb).symm.toLinearMap ∘ₗ
+      (LinearMap.toContinuousLinearMap.symm :
+        (E →L[ℝ] ℝ) ≃ₗ[ℝ] (E →ₗ[ℝ] ℝ)).toLinearMap) with hLc
+  have hgrad : (fun y ↦ metricGradient b hb f y) =
+      fun y ↦ Lc (fderiv ℝ f y) := rfl
+  have hgd : DifferentiableAt ℝ (fun y ↦ metricGradient b hb f y) x := by
+    rw [hgrad]
+    exact (Lc.differentiableAt).comp x (hf1 x)
+  have hdgrad : fderiv ℝ (fun y ↦ metricGradient b hb f y) x =
+      Lc.comp (fderiv ℝ (fderiv ℝ f) x) := by
+    rw [hgrad]
+    exact (Lc.hasFDerivAt.comp x (hf1 x).hasFDerivAt).fderiv
+  -- The pairing of `Lc ψ` against anything is `ψ`-evaluation.
+  have hpair : ∀ (ψ : E →L[ℝ] ℝ) (u : E), b (Lc ψ) u = ψ u := by
+    intro ψ u
+    have h := congrArg (fun ρ : Module.Dual ℝ E ↦ ρ u)
+      (LinearEquiv.apply_symm_apply (LinearMap.BilinForm.toDual b hb)
+        (LinearMap.toContinuousLinearMap.symm ψ))
+    simp only [LinearMap.BilinForm.toDual_def] at h
+    exact h
+  -- Differentiate the diagonal pairing.
+  have hquad : fderiv ℝ (fun y ↦ b (metricGradient b hb f y)
+      (metricGradient b hb f y)) x v =
+      b (metricGradient b hb f x)
+        (fderiv ℝ (fun y ↦ metricGradient b hb f y) x v)
+      + b (fderiv ℝ (fun y ↦ metricGradient b hb f y) x v)
+        (metricGradient b hb f x) := by
+    set bC : E →L[ℝ] E →L[ℝ] ℝ := LinearMap.toContinuousLinearMap
+      ((LinearMap.toContinuousLinearMap :
+        (E →ₗ[ℝ] ℝ) ≃ₗ[ℝ] (E →L[ℝ] ℝ)).toLinearMap ∘ₗ b) with hbC
+    have hfn : (fun y ↦ b (metricGradient b hb f y)
+        (metricGradient b hb f y)) =
+        fun y ↦ bC (metricGradient b hb f y)
+          (metricGradient b hb f y) := rfl
+    rw [hfn]
+    have hcl : DifferentiableAt ℝ
+        (fun y ↦ bC (metricGradient b hb f y)) x :=
+      (bC.differentiableAt).comp x hgd
+    have h := (fderiv_clm_apply hcl hgd)
+    have h2 := congrFun (congrArg DFunLike.coe h) v
+    simp only [ContinuousLinearMap.add_apply,
+      ContinuousLinearMap.comp_apply, ContinuousLinearMap.flip_apply]
+      at h2
+    rw [h2]
+    have hdc : fderiv ℝ (fun y ↦ bC (metricGradient b hb f y)) x =
+        bC.comp (fderiv ℝ (fun y ↦ metricGradient b hb f y) x) :=
+      (bC.hasFDerivAt.comp x hgd.hasFDerivAt).fderiv
+    rw [hdc]
+    rfl
+  rw [hquad, hdgrad]
+  -- Collapse both terms with the pairing identity and symmetry.
+  have hsy := hbs.eq (metricGradient b hb f x)
+    (Lc.comp (fderiv ℝ (fderiv ℝ f) x) v)
+  simp only [RingHom.id_apply] at hsy
+  rw [hsy]
+  rw [show b (Lc.comp (fderiv ℝ (fderiv ℝ f) x) v)
+      (metricGradient b hb f x) =
+    (fderiv ℝ (fderiv ℝ f) x v) (metricGradient b hb f x) from by
+      rw [show (Lc.comp (fderiv ℝ (fderiv ℝ f) x)) v =
+        Lc ((fderiv ℝ (fderiv ℝ f) x) v) from rfl]
+      exact hpair _ _]
+  ring
+
+end RicciFlow
