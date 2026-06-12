@@ -4146,3 +4146,34 @@ theorem hasDerivAt_christoffelClosedOp
   simpa using h
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**`∂t` of the `ΓΓ`-terms**: the composition of Christoffel operator paths
+differentiates by the product rule into the mixed `δΓ·Γ + Γ·δΓ` terms —
+the quadratic half of the curvature variation, closed.
+-/
+theorem hasDerivAt_christoffelClosedOp_comp
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ} {H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    {x : E} {t₀ : ℝ} (u w : E)
+    (hdG : HasDerivAt (fun t ↦ Gt t x) (H x) t₀)
+    (hev : ∀ᶠ t in nhds t₀, (Gt t x).IsInvertible)
+    (hmix : ∀ p q r : E,
+      HasDerivAt (fun t ↦ (fderiv ℝ (Gt t) x p) q r)
+        ((fderiv ℝ H x p) q r) t₀) :
+    HasDerivAt (fun t ↦ (christoffelClosedOp (Gt t) x u).comp
+        (christoffelClosedOp (Gt t) x w))
+      ((christoffelDerivOp (Gt t₀) H x u).comp
+          (christoffelClosedOp (Gt t₀) x w)
+        + (christoffelClosedOp (Gt t₀) x u).comp
+          (christoffelDerivOp (Gt t₀) H x w)) t₀ :=
+  (hasDerivAt_christoffelClosedOp u hdG hev hmix).clm_comp
+    (hasDerivAt_christoffelClosedOp w hdG hev hmix)
+
+end RicciFlow
