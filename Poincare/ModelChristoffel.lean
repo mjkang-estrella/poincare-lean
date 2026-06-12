@@ -777,3 +777,91 @@ noncomputable def curvedLaplacian (G : F → F →L[ℝ] F →L[ℝ] ℝ)
       covariantHessianLin G b hb f x)
 
 end CovariantDerivative
+
+namespace CovariantDerivative
+
+open FiberBundle
+
+variable {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+  [FiniteDimensional ℝ F] [CompleteSpace F]
+
+/-- `extend_model_space`, generalized to any normed model space. -/
+theorem extend_model_space'
+    {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    {x : F} (w : TangentSpace 𝓘(ℝ, F) x) :
+    FiberBundle.extend F w = fun _ ↦ (w : F) := by
+  funext x'
+  simp only [FiberBundle.extend]
+  rw [← Trivialization.symmL_apply ℝ, TangentBundle.symmL_model_space]
+  simp
+  rfl
+
+/--
+**The curvature of the Christoffel-form connection, in coordinates**: on
+constant directions the bracket vanishes and `R(v,w)X` expands into the
+flat-plus-corrector second derivatives — the formula from which every
+coordinate computation of curvature (and every evolution equation)
+proceeds.
+-/
+theorem curvatureOp_modelLeviCivita_extend
+    (G : F → F →L[ℝ] F →L[ℝ] ℝ)
+    (b : Π x : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (X : F → F) {x : F} (v w : TangentSpace 𝓘(ℝ, F) x) :
+    curvatureOp (modelLeviCivita G b hb)
+      (extend F v) (extend F w) X x =
+      (fderiv ℝ (fun y ↦ fderiv ℝ X y w
+          + christoffelAt G y (b y) (hb y) w (X y)) x) v
+        + christoffelAt G x (b x) (hb x) v
+          (fderiv ℝ X x w + christoffelAt G x (b x) (hb x) w (X x))
+        - ((fderiv ℝ (fun y ↦ fderiv ℝ X y v
+            + christoffelAt G y (b y) (hb y) v (X y)) x) w
+          + christoffelAt G x (b x) (hb x) w
+            (fderiv ℝ X x v + christoffelAt G x (b x) (hb x) v (X x))) := by
+  set Zv : Π y : F, TangentSpace 𝓘(ℝ, F) y := extend F v with hZv
+  set Zw : Π y : F, TangentSpace 𝓘(ℝ, F) y := extend F w with hZw
+  have hZv' : (Zv : F → F) = fun _ ↦ (v : F) := by
+    rw [hZv, extend_model_space' v]
+  have hZw' : (Zw : F → F) = fun _ ↦ (w : F) := by
+    rw [hZw, extend_model_space' w]
+  have hbracket : VectorField.mlieBracket 𝓘(ℝ, F) Zv Zw x = 0 := by
+    rw [mlieBracket_vectorSpace_eq]
+    show fderiv ℝ (Zw : F → F) x (Zv x) -
+      fderiv ℝ (Zv : F → F) x (Zw x) = 0
+    rw [hZv', hZw', fderiv_fun_const, fderiv_fun_const]
+    simp
+  rw [curvatureOp_apply, hbracket, map_zero, sub_zero]
+  have hinner_w : (fun y ↦ (modelLeviCivita G b hb) X y (Zw y)) =
+      fun y ↦ fderiv ℝ X y w
+        + christoffelAt G y (b y) (hb y) w (X y) := by
+    funext y
+    rw [show (Zw y : F) = (w : F) from congrFun hZw' y]
+    rfl
+  have hinner_v : (fun y ↦ (modelLeviCivita G b hb) X y (Zv y)) =
+      fun y ↦ fderiv ℝ X y v
+        + christoffelAt G y (b y) (hb y) v (X y) := by
+    funext y
+    rw [show (Zv y : F) = (v : F) from congrFun hZv' y]
+    rfl
+  rw [hinner_w, hinner_v]
+  rw [show (modelLeviCivita G b hb)
+      (fun y ↦ fderiv ℝ X y w + christoffelAt G y (b y) (hb y) w (X y))
+      x (Zv x) =
+    (fderiv ℝ (fun y ↦ fderiv ℝ X y w
+        + christoffelAt G y (b y) (hb y) w (X y)) x) v
+      + christoffelAt G x (b x) (hb x) v
+        (fderiv ℝ X x w + christoffelAt G x (b x) (hb x) w (X x)) from by
+    rw [show (Zv x : F) = (v : F) from congrFun hZv' x]
+    rfl]
+  rw [show (modelLeviCivita G b hb)
+      (fun y ↦ fderiv ℝ X y v + christoffelAt G y (b y) (hb y) v (X y))
+      x (Zw x) =
+    (fderiv ℝ (fun y ↦ fderiv ℝ X y v
+        + christoffelAt G y (b y) (hb y) v (X y)) x) w
+      + christoffelAt G x (b x) (hb x) w
+        (fderiv ℝ X x v + christoffelAt G x (b x) (hb x) v (X x)) from by
+    rw [show (Zw x : F) = (w : F) from congrFun hZw' x]
+    rfl]
+  rfl
+
+end CovariantDerivative
