@@ -6515,3 +6515,106 @@ theorem covCurvDeriv_applied_skew
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**THE FIRST BIANCHI IDENTITY FOR THE COVARIANT CURVATURE DERIVATIVE**:
+`(∇_vR)(u,w)a + (∇_vR)(w,a)u + (∇_vR)(a,u)w = 0` — differentiating the
+pointwise cyclic identity, the Christoffel corrections cancel through
+three instances of the pointwise identity itself.
+-/
+theorem covCurvDeriv_first_bianchi
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hΓsymm : ∀ (y : E) (a b : E),
+      christoffelClosedOp G y a b = christoffelClosedOp G y b a)
+    (v u w a : E) :
+    covCurvDeriv G x v u w a + covCurvDeriv G x v w a u
+      + covCurvDeriv G x v a u w = 0 := by
+  have hRfam : ∀ p q : E, DifferentiableAt ℝ
+      (fun y ↦ coordCurvatureOp G y p q) x :=
+    fun p q ↦ differentiableAt_coordCurvatureOp_family hdiffΓ hdd p q
+  -- Vector-valued curvature families and their derivatives.
+  have hV : ∀ p q r : E, HasFDerivAt
+      (fun y ↦ coordCurvatureOp G y p q r)
+      ((ContinuousLinearMap.apply ℝ E r).comp
+        (fderiv ℝ (fun y ↦ coordCurvatureOp G y p q) x)) x :=
+    fun p q r ↦ (ContinuousLinearMap.apply ℝ E r).hasFDerivAt.comp x
+      (hRfam p q).hasFDerivAt
+  have hs := ((hV u w a).add (hV w a u)).add (hV a u w)
+  have hfun : (((fun y ↦ coordCurvatureOp G y u w a)
+        + fun y ↦ coordCurvatureOp G y w a u)
+        + fun y ↦ coordCurvatureOp G y a u w)
+      = fun _ : E ↦ (0 : E) := by
+    funext y
+    simp only [Pi.add_apply]
+    exact coord_first_bianchi (fun p ↦ hdiffΓ y p) hΓsymm u w a
+  rw [hfun] at hs
+  have huniq := hs.unique (hasFDerivAt_const (0 : E) x)
+  have hD := congrArg (fun (Φ : E →L[ℝ] E) ↦ Φ v) huniq
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.apply_apply, ContinuousLinearMap.zero_apply] at hD
+  -- The three pointwise Bianchi instances absorbing the corrections.
+  have hB1 := coord_first_bianchi (fun p ↦ hdiffΓ x p) hΓsymm u w
+    (christoffelClosedOp G x v a)
+  have hB2 := coord_first_bianchi (fun p ↦ hdiffΓ x p) hΓsymm w a
+    (christoffelClosedOp G x v u)
+  have hB3 := coord_first_bianchi (fun p ↦ hdiffΓ x p) hΓsymm a u
+    (christoffelClosedOp G x v w)
+  -- The Christoffel action on the pointwise identity.
+  have hΓ0 : christoffelClosedOp G x v (coordCurvatureOp G x u w a)
+      + christoffelClosedOp G x v (coordCurvatureOp G x w a u)
+      + christoffelClosedOp G x v (coordCurvatureOp G x a u w) = 0 := by
+    have hc := coord_first_bianchi (fun p ↦ hdiffΓ x p) hΓsymm u w a
+    have h0 : christoffelFunctional G x v 0 = (0 : E →ₗ[ℝ] ℝ) := by
+      have := christoffelFunctional_smul_snd G x v 0 0
+      simpa using this
+    have := congrArg (fun m ↦ christoffelClosedOp G x v m) hc
+    simpa [map_add, h0] using this
+  unfold covCurvDeriv
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.sub_apply,
+    ContinuousLinearMap.comp_apply]
+  have hgoal : (fderiv ℝ (fun y ↦ coordCurvatureOp G y u w) x v) a
+      + christoffelClosedOp G x v (coordCurvatureOp G x u w a)
+      - coordCurvatureOp G x u w (christoffelClosedOp G x v a)
+      - coordCurvatureOp G x (christoffelClosedOp G x v u) w a
+      - coordCurvatureOp G x u (christoffelClosedOp G x v w) a
+      + ((fderiv ℝ (fun y ↦ coordCurvatureOp G y w a) x v) u
+      + christoffelClosedOp G x v (coordCurvatureOp G x w a u)
+      - coordCurvatureOp G x w a (christoffelClosedOp G x v u)
+      - coordCurvatureOp G x (christoffelClosedOp G x v w) a u
+      - coordCurvatureOp G x w (christoffelClosedOp G x v a) u)
+      + ((fderiv ℝ (fun y ↦ coordCurvatureOp G y a u) x v) w
+      + christoffelClosedOp G x v (coordCurvatureOp G x a u w)
+      - coordCurvatureOp G x a u (christoffelClosedOp G x v w)
+      - coordCurvatureOp G x (christoffelClosedOp G x v a) u w
+      - coordCurvatureOp G x a (christoffelClosedOp G x v u) w)
+      = (((fderiv ℝ (fun y ↦ coordCurvatureOp G y u w) x v) a
+          + (fderiv ℝ (fun y ↦ coordCurvatureOp G y w a) x v) u)
+          + (fderiv ℝ (fun y ↦ coordCurvatureOp G y a u) x v) w)
+        + (christoffelClosedOp G x v (coordCurvatureOp G x u w a)
+          + christoffelClosedOp G x v (coordCurvatureOp G x w a u)
+          + christoffelClosedOp G x v (coordCurvatureOp G x a u w))
+        - (coordCurvatureOp G x u w (christoffelClosedOp G x v a)
+          + coordCurvatureOp G x w (christoffelClosedOp G x v a) u
+          + coordCurvatureOp G x (christoffelClosedOp G x v a) u w)
+        - (coordCurvatureOp G x w a (christoffelClosedOp G x v u)
+          + coordCurvatureOp G x a (christoffelClosedOp G x v u) w
+          + coordCurvatureOp G x (christoffelClosedOp G x v u) w a)
+        - (coordCurvatureOp G x a u (christoffelClosedOp G x v w)
+          + coordCurvatureOp G x u (christoffelClosedOp G x v w) a
+          + coordCurvatureOp G x (christoffelClosedOp G x v w) a u) := by
+    abel
+  rw [hgoal, hD, hΓ0, hB1, hB2, hB3]
+  simp
+
+end RicciFlow
