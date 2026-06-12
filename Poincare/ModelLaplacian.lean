@@ -4518,3 +4518,65 @@ theorem coordRicci_add_fst
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The coordinate curvature operator is homogeneous in its second slot. -/
+theorem coordCurvatureOp_smul_snd
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (v : E) (c : ℝ) (w : E) :
+    coordCurvatureOp G x v (c • w) = c • coordCurvatureOp G x v w := by
+  unfold coordCurvatureOp
+  have hfam : (fun y ↦ christoffelClosedOp G y (c • w)) =
+      fun y ↦ c • christoffelClosedOp G y w := by
+    funext y
+    exact christoffelClosedOp_smul_fst G y c w
+  rw [hfam, fderiv_fun_const_smul (hdiff w) c]
+  rw [christoffelClosedOp_smul_fst G x c w]
+  simp only [ContinuousLinearMap.smul_apply, map_smul,
+    ContinuousLinearMap.comp_smul, ContinuousLinearMap.smul_comp]
+  module
+
+/-- The coordinate Ricci form is homogeneous in its first slot. -/
+theorem coordRicci_smul_fst
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (c : ℝ) (u w : E) :
+    coordRicci G x (c • u) w = c • coordRicci G x u w := by
+  unfold coordRicci
+  rw [Finset.smul_sum]
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [coordCurvatureOp_smul_snd G hdiff _ c u]
+  simp
+
+/-- **The coordinate Ricci form packaged as a functional in its first
+slot** — the continuous-linear shape against which the inverse metric
+raises an index. -/
+noncomputable def coordRicciCLM (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E)
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (w : E) : E →L[ℝ] ℝ :=
+  LinearMap.toContinuousLinearMap
+    { toFun := fun u ↦ coordRicci G x u w
+      map_add' := fun u₁ u₂ ↦ coordRicci_add_fst G hdiff u₁ u₂ w
+      map_smul' := fun c u ↦ by
+        simp only [RingHom.id_apply]
+        exact coordRicci_smul_fst G hdiff c u w }
+
+@[simp]
+theorem coordRicciCLM_apply (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E)
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (w u : E) :
+    coordRicciCLM G x hdiff w u = coordRicci G x u w := rfl
+
+end RicciFlow
