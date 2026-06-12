@@ -5734,3 +5734,56 @@ theorem differentiableAt_coordCurvatureOp_family
   exact ((h1.sub h2).add h3).sub h4
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant derivative of the curvature in coordinates**:
+`∇_v R(u,w)` — the flat derivative of the operator family corrected by
+the Christoffel action on the endomorphism part and on both plane
+slots. The object whose cyclic sum is the second Bianchi identity. -/
+noncomputable def covCurvDeriv (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x v u w : E) : E →L[ℝ] E :=
+  fderiv ℝ (fun y ↦ coordCurvatureOp G y u w) x v
+    + (christoffelClosedOp G x v).comp (coordCurvatureOp G x u w)
+    - (coordCurvatureOp G x u w).comp (christoffelClosedOp G x v)
+    - coordCurvatureOp G x (christoffelClosedOp G x v u) w
+    - coordCurvatureOp G x u (christoffelClosedOp G x v w)
+
+/-- The covariant curvature derivative is antisymmetric in the plane. -/
+theorem covCurvDeriv_antisymm (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x v u w : E) :
+    covCurvDeriv G x v u w = -covCurvDeriv G x v w u := by
+  unfold covCurvDeriv
+  have hfam : (fun y ↦ coordCurvatureOp G y u w)
+      = fun y ↦ -coordCurvatureOp G y w u := by
+    funext y
+    exact coordCurvatureOp_antisymm G y u w
+  rw [hfam, fderiv_fun_neg]
+  rw [coordCurvatureOp_antisymm G x u w,
+    coordCurvatureOp_antisymm G x (christoffelClosedOp G x v u) w,
+    coordCurvatureOp_antisymm G x u (christoffelClosedOp G x v w)]
+  simp only [ContinuousLinearMap.neg_apply, ContinuousLinearMap.comp_neg,
+    ContinuousLinearMap.neg_comp]
+  abel
+
+/-- The covariant curvature derivative vanishes for constant metrics. -/
+theorem covCurvDeriv_const_eq_zero (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (x v u w : E) :
+    covCurvDeriv (fun _ : E ↦ G₀) x v u w = 0 := by
+  unfold covCurvDeriv
+  have hfam : (fun y : E ↦ coordCurvatureOp (fun _ : E ↦ G₀) y u w)
+      = fun _ : E ↦ 0 := by
+    funext y
+    exact coordCurvatureOp_const_eq_zero G₀ y u w
+  rw [hfam, fderiv_fun_const]
+  rw [coordCurvatureOp_const_eq_zero, coordCurvatureOp_const_eq_zero,
+    coordCurvatureOp_const_eq_zero,
+    christoffelClosedOp_const_eq_zero]
+  simp
+
+end RicciFlow
