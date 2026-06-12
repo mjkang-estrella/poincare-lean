@@ -2313,3 +2313,63 @@ theorem covariantSecondDerivative_antisymm
   abel
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The corrector functional is additive in the metric** (scalar form) — the
+linearity underlying the variation formula `δΓ` for metric flows. (The
+nested-CLM `DifferentiableAt.add` gremlin is resolved by pinning the
+codomain explicitly.)
+-/
+theorem christoffelFunctional_add_apply
+    {G₁ G₂ : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hG₁ : DifferentiableAt ℝ G₁ x) (hG₂ : DifferentiableAt ℝ G₂ x)
+    (u v w : E) :
+    christoffelFunctional (fun y ↦ G₁ y + G₂ y) x u v w =
+      christoffelFunctional G₁ x u v w
+        + christoffelFunctional G₂ x u v w := by
+  have hdsum : DifferentiableAt ℝ (fun y ↦ G₁ y + G₂ y) x :=
+    DifferentiableAt.add (𝕜 := ℝ) (E := E)
+      (F := E →L[ℝ] E →L[ℝ] ℝ) hG₁ hG₂
+  -- Scalar derivative additivity through evaluation functionals.
+  have hterm : ∀ p q r : E,
+      (fderiv ℝ (fun y ↦ G₁ y + G₂ y) x p) q r =
+        (fderiv ℝ G₁ x p) q r + (fderiv ℝ G₂ x p) q r := by
+    intro p q r
+    set L : (E →L[ℝ] E →L[ℝ] ℝ) →L[ℝ] ℝ :=
+      (ContinuousLinearMap.apply ℝ ℝ r).comp
+        (ContinuousLinearMap.apply ℝ (E →L[ℝ] ℝ) q) with hL
+    have happly : ∀ (G : E → E →L[ℝ] E →L[ℝ] ℝ),
+        DifferentiableAt ℝ G x →
+        fderiv ℝ (fun y ↦ L (G y)) x = L.comp (fderiv ℝ G x) := by
+      intro G hG
+      rw [show (fun y ↦ L (G y)) = L ∘ G from rfl,
+        fderiv_comp x L.differentiableAt hG, L.fderiv]
+    have hkey := happly (fun y ↦ G₁ y + G₂ y) hdsum
+    have hsum_fn : (fun y ↦ L ((fun y' ↦ G₁ y' + G₂ y') y)) =
+        fun y ↦ L (G₁ y) + L (G₂ y) := by
+      funext y
+      rw [map_add]
+    rw [hsum_fn] at hkey
+    have hd2 : fderiv ℝ (fun y ↦ L (G₁ y) + L (G₂ y)) x =
+        L.comp (fderiv ℝ G₁ x) + L.comp (fderiv ℝ G₂ x) := by
+      rw [fderiv_fun_add (f := fun y ↦ L (G₁ y)) (g := fun y ↦ L (G₂ y))
+        (L.differentiableAt.comp x hG₁) (L.differentiableAt.comp x hG₂)]
+      rw [happly G₁ hG₁, happly G₂ hG₂]
+    rw [hd2] at hkey
+    have := congrFun (congrArg DFunLike.coe hkey.symm) p
+    simp only [ContinuousLinearMap.add_apply,
+      ContinuousLinearMap.comp_apply, hL] at this
+    simpa using this
+  simp only [christoffelFunctional, LinearMap.coe_mk, AddHom.coe_mk,
+    LinearMap.add_apply]
+  rw [hterm u v w, hterm v u w, hterm w u v]
+  ring
+
+end RicciFlow
