@@ -1537,3 +1537,36 @@ theorem quadratic_heat_solution (b : LinearMap.BilinForm ℝ E)
     (2 * (Module.finrank ℝ E : ℝ))).const_add (b x x)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative Set
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**Heat solutions preserve nonnegativity**: a solution of the heat equation
+with nonnegative initial data on a compact domain stays nonnegative — the
+maximum principle applied to the equation itself.
+-/
+theorem heat_solution_nonneg_preserved (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v)
+    {u : ℝ → E → ℝ} {K : Set E} (hK : IsCompact K) (hKne : K.Nonempty)
+    {T : ℝ}
+    (hu_cont : Continuous ↿u)
+    (hheat : ∀ x ∈ K, ∀ t ∈ Icc (0 : ℝ) T, IsHeatSolutionAt b hb u t x)
+    (hspace : ∀ t ∈ Icc (0 : ℝ) T, ContDiff ℝ 2 (u t))
+    (hmin_int : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      IsMinOn (u t) K x → IsLocalMin (u t) x)
+    (h0 : ∀ x ∈ K, 0 ≤ u 0 x) :
+    ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, 0 ≤ u t x :=
+  heat_supersolution_nonneg_preserved b hb hbs hbpos hK hKne hu_cont
+    (R' := fun t x ↦ modelLaplacian b hb (u t) x)
+    (fun x hx t ht ↦ hheat x hx t ht)
+    hspace
+    (fun t ht x hx ↦ le_refl _)
+    hmin_int h0
+
+end RicciFlow
