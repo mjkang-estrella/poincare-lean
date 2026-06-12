@@ -4779,3 +4779,103 @@ theorem coordScalar_const_eq_zero
   exact coordRicci_const_eq_zero G₀ x _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The coordinate Ricci form is additive in its second slot. -/
+theorem coordRicci_add_snd (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x u w₁ w₂ : E) :
+    coordRicci G x u (w₁ + w₂) =
+      coordRicci G x u w₁ + coordRicci G x u w₂ := by
+  unfold coordRicci
+  rw [← Finset.sum_add_distrib]
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [map_add, map_add]
+
+/-- The coordinate Ricci form is homogeneous in its second slot. -/
+theorem coordRicci_smul_snd (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E)
+    (c : ℝ) (u w : E) :
+    coordRicci G x u (c • w) = c • coordRicci G x u w := by
+  unfold coordRicci
+  rw [Finset.smul_sum]
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [map_smul, map_smul]
+
+/-- **The coordinate Ricci form as a bilinear CLM** — the tensor shape
+of `Ric`, the direction field of the Ricci flow. -/
+noncomputable def coordRicciForm (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E)
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x) :
+    E →L[ℝ] E →L[ℝ] ℝ :=
+  LinearMap.toContinuousLinearMap
+    { toFun := fun u ↦ coordRicciCLM G x hdiff u
+      map_add' := fun u₁ u₂ ↦ by
+        ext w
+        show coordRicci G x w (u₁ + u₂) = _
+        rw [coordRicci_add_snd]
+        rfl
+      map_smul' := fun c u ↦ by
+        ext w
+        show coordRicci G x w (c • u) = _
+        rw [coordRicci_smul_snd]
+        rfl }
+
+@[simp]
+theorem coordRicciForm_apply (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E)
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u w : E) :
+    coordRicciForm G x hdiff u w = coordRicci G x w u := rfl
+
+/-- **The coordinate `|Ric|²`**: the double-raised contraction
+`Σⱼ Ric(♯Ric(♯bʲ,·), bⱼ) = Ricᵢⱼ Ric^{ij}`. -/
+noncomputable def coordRicciNormSq (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E)
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x) : ℝ :=
+  ∑ j, coordRicci G x
+    ((G x).inverse (coordRicciForm G x hdiff
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord j)))))
+    ((Module.finBasis ℝ E) j)
+
+/--
+**THE `2|Ric|²`-HALF OF HAMILTON'S IDENTITY**: in the Ricci-flow
+direction `H = −2·Ric`, the inverse-metric variation term of
+`∂R/∂t` evaluates to `+2|Ric|²` in coordinates.
+-/
+theorem inverseVariation_ricci_direction
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E)
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x) :
+    ∑ j, coordRicci G x
+        ((-((G x).inverse.comp
+            ((((-2 : ℝ) • coordRicciForm G x hdiff)).comp
+              (G x).inverse)))
+          (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j)
+      = 2 * coordRicciNormSq G x hdiff := by
+  unfold coordRicciNormSq
+  rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro j _
+  set ρ := LinearMap.toContinuousLinearMap
+    ((Module.finBasis ℝ E).coord j)
+  have harg : (-((G x).inverse.comp
+      ((((-2 : ℝ) • coordRicciForm G x hdiff)).comp (G x).inverse))) ρ
+      = (2 : ℝ) • (G x).inverse (coordRicciForm G x hdiff
+        ((G x).inverse ρ)) := by
+    simp only [ContinuousLinearMap.neg_apply,
+      ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply,
+      map_smul]
+    module
+  rw [harg, coordRicci_smul_fst G hdiff 2]
+  simp [smul_eq_mul]
+
+end RicciFlow
