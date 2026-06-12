@@ -1570,3 +1570,39 @@ theorem heat_solution_nonneg_preserved (b : LinearMap.BilinForm ℝ E)
     hmin_int h0
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The metric divergence of a vector field: the trace of its covariant
+derivative `∇X = DX + Γ(·, X)`. -/
+noncomputable def modelDivergence (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (X : E → E) (x : E) : ℝ :=
+  LinearMap.trace ℝ E
+    ((fderiv ℝ X x).toLinearMap
+      + (christoffelLinear G x (b x) (hb x)).flip (X x))
+
+/-- The divergence of the identity field on a constant metric is the
+dimension. -/
+theorem modelDivergence_id_const (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate) (x : E) :
+    modelDivergence (fun _ ↦ G₀) b hb (fun y ↦ y) x =
+      Module.finrank ℝ E := by
+  unfold modelDivergence
+  have hΓ : (christoffelLinear (fun _ : E ↦ G₀) x (b x) (hb x)).flip x =
+      0 := by
+    apply LinearMap.ext
+    intro v
+    simp only [LinearMap.flip_apply, LinearMap.zero_apply]
+    exact christoffelAt_const G₀ x (b x) (hb x) v x
+  rw [hΓ, add_zero, fderiv_id']
+  simp [LinearMap.trace_id]
+
+end RicciFlow
