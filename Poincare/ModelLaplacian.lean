@@ -1953,3 +1953,34 @@ theorem gaussian_soliton_hessian (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The trivial steady soliton**: affine potentials on a constant metric
+have vanishing covariant Hessian — with flat Ricci-flatness, the steady
+gradient-soliton equation `Ric + Hess f = 0` holds. The Gaussian
+(shrinking) and affine (steady) examples bracket the soliton taxonomy.
+-/
+theorem affine_steady_soliton (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (L : E →L[ℝ] ℝ) (c : ℝ) (x v w : E) :
+    covariantHessian (fun _ ↦ G₀) (fun _ ↦ b) (fun _ ↦ hb)
+      (fun y ↦ L y + c) x v w = 0 := by
+  unfold covariantHessian
+  rw [show christoffelAt (fun _ : E ↦ G₀) x ((fun _ : E ↦ b) x)
+      ((fun _ : E ↦ hb) x) v w = 0 from
+    christoffelAt_const G₀ x b hb v w, map_zero, sub_zero]
+  have hdf : fderiv ℝ (fun y ↦ L y + c) = fun _ ↦ (L : E →L[ℝ] ℝ) := by
+    funext y
+    rw [fderiv_add_const]
+    exact L.fderiv
+  rw [hdf, fderiv_fun_const]
+  simp
+
+end RicciFlow
