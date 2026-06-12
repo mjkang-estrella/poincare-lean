@@ -1736,3 +1736,45 @@ theorem perelmanFDensity_nonneg
   positivity
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E] [CompleteSpace E]
+
+open scoped Manifold in
+/--
+**Perelman's `𝒲`-density**: the pointwise integrand
+`[τ(R + |∇f|²) + f − n] (4πτ)^{−n/2} e^{−f}` of the `𝒲`-entropy — the
+scale-sensitive refinement of the `𝓕`-density.
+-/
+noncomputable def perelmanWDensity
+    (cov : CovariantDerivative 𝓘(ℝ, E) E (TangentSpace 𝓘(ℝ, E) : E → Type _))
+    [CovariantDerivative.ContMDiffCovariantDerivative cov 1]
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (f : E → ℝ) (τ : ℝ) (x : E) : ℝ :=
+  (τ * (scalarCurvatureAt cov x b hb
+      + b (metricGradient b hb f x) (metricGradient b hb f x))
+    + f x - Module.finrank ℝ E)
+    * ((4 * Real.pi * τ) ^ (-(Module.finrank ℝ E : ℝ) / 2)
+      * Real.exp (-f x))
+
+open scoped Manifold in
+/-- The `𝒲`-density refines the `𝓕`-density: at `τ = 1` the curvature
+part of `𝒲` is the `𝓕`-density rescaled by the normalization. -/
+theorem perelmanWDensity_tau_one
+    (cov : CovariantDerivative 𝓘(ℝ, E) E (TangentSpace 𝓘(ℝ, E) : E → Type _))
+    [CovariantDerivative.ContMDiffCovariantDerivative cov 1]
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (f : E → ℝ) (x : E) :
+    perelmanWDensity cov b hb f 1 x =
+      (4 * Real.pi) ^ (-(Module.finrank ℝ E : ℝ) / 2)
+        * (perelmanFDensity cov b hb f x
+          + (f x - Module.finrank ℝ E) * Real.exp (-f x)) := by
+  unfold perelmanWDensity perelmanFDensity
+  rw [mul_one]
+  ring
+
+end RicciFlow
