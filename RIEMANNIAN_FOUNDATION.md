@@ -178,7 +178,11 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   integrands from verified components), and the Gaussian shrinking soliton
   in full — gradient `x/2τ`, Laplacian `n/2τ`, and the soliton equation
   `Hess(b(x,x)/4τ) = b/2τ` (with flat Ricci-flatness, exactly
-  `Ric + Hess f = g/2τ`): the model self-similar singularity, verified.
+  `Ric + Hess f = g/2τ`): the model self-similar singularity, verified;
+  and the bundled soliton language `IsGradientSolitonAt` with both
+  canonical inhabitants (`gaussian_isGradientSoliton`,
+  `affine_isGradientSoliton`) — the formal vocabulary of Perelman's
+  singularity-model classification, opened with verified instances.
 
 ## What this layer provides
 
