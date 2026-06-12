@@ -6045,3 +6045,64 @@ theorem coord_first_contracted_bianchi
   simpa [map_add, map_sub, map_neg] using happ
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**PAIR SYMMETRY OF THE LOWERED CURVATURE**: `⟨R(u,w)a, b⟩ = ⟨R(a,b)u, w⟩`
+— the classical diamond argument from plane antisymmetry, pairing
+skew-symmetry, and the first Bianchi identity.
+-/
+theorem coordCurvature_pair_symm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ p : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y p) x)
+    (u w a b : E) :
+    G x (coordCurvatureOp G x u w a) b
+      = G x (coordCurvatureOp G x a b u) w := by
+  have hGd : ∀ y : E, DifferentiableAt ℝ G y := fun y ↦
+    (hGC2.differentiable (by norm_num)).differentiableAt
+  have hΓsymm : ∀ (y : E) (p q : E),
+      christoffelClosedOp G y p q = christoffelClosedOp G y q p :=
+    fun y p q ↦ christoffelClosedOp_symm (hGd y) hGsymm p q
+  have hA1 : ∀ p q r s : E, G x (coordCurvatureOp G x p q r) s
+      = -G x (coordCurvatureOp G x q p r) s := by
+    intro p q r s
+    rw [coordCurvatureOp_antisymm G x p q]
+    simp
+  have hA2 : ∀ p q r s : E, G x (coordCurvatureOp G x p q r) s
+      = -G x (coordCurvatureOp G x p q s) r := by
+    intro p q r s
+    have h := coordCurvatureOp_skew hGC2 hGsymm hinv hdiffΓ p q r s
+    have hsw := hGsymm x r (coordCurvatureOp G x p q s)
+    linarith
+  have hcyc : ∀ p q r s : E, G x (coordCurvatureOp G x p q r) s
+      + G x (coordCurvatureOp G x q r p) s
+      + G x (coordCurvatureOp G x r p q) s = 0 := by
+    intro p q r s
+    have h := coord_first_bianchi hdiffΓ hΓsymm p q r
+    have happ := congrArg (fun e ↦ G x e s) h
+    simpa [map_add] using happ
+  have B1 := hcyc u w a b
+  have B2 := hcyc w a b u
+  have B3 := hcyc a b u w
+  have B4 := hcyc b u w a
+  have f1 := hA1 a u w b
+  have f2 := hA2 w a b u
+  have f3 := hA2 a b w u
+  have f4 := hA2 b w a u
+  have f5 := hA2 b u a w
+  have f6 := hA2 u a b w
+  have f7 := hA2 u w b a
+  have f8 := hA1 w b u a
+  linarith
+
+end RicciFlow
