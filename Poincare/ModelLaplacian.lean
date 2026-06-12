@@ -3083,3 +3083,87 @@ noncomputable def hessianNormSq (b : LinearMap.BilinForm ℝ E)
     (hessianOperator b hb f x ∘ₗ hessianOperator b hb f x)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The pairing identity of the `(1,1)`-Hessian:
+`b(Hess♯ v, w) = Hess(v,w)`. -/
+theorem b_hessianOperator (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (f : E → ℝ) (x v w : E) :
+    b (hessianOperator b hb f x v) w =
+      fderiv ℝ (fderiv ℝ f) x v w := by
+  have h := congrArg (fun ρ : Module.Dual ℝ E ↦ ρ w)
+    (LinearEquiv.apply_symm_apply (LinearMap.BilinForm.toDual b hb)
+      (LinearMap.toContinuousLinearMap.symm
+        ((fderiv ℝ (fderiv ℝ f) x) v)))
+  simp only [LinearMap.BilinForm.toDual_def] at h
+  exact h
+
+/--
+**`|Hess f|² ≥ 0`**: the trace of the squared `(1,1)`-Hessian is
+nonnegative for a positive-definite metric — by self-adjointness (Schwarz)
+in a `b`-orthogonal basis. The sign that makes the Bochner formula yield
+gradient estimates.
+-/
+theorem hessianNormSq_nonneg (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (x : E) :
+    0 ≤ hessianNormSq b hb f x := by
+  obtain ⟨v, hortho⟩ := LinearMap.BilinForm.exists_orthogonal_basis
+    (B := b) hbs
+  set A := hessianOperator b hb f x with hA
+  -- Self-adjointness from Schwarz symmetry.
+  have hselfadj : ∀ p q : E, b (A p) q = b p (A q) := by
+    intro p q
+    rw [b_hessianOperator]
+    have hsy := hbs.eq p (A q)
+    simp only [RingHom.id_apply] at hsy
+    rw [hsy, b_hessianOperator]
+    exact (hf.contDiffAt.isSymmSndFDerivAt (by simp)) p q
+  unfold hessianNormSq
+  rw [← hA, LinearMap.trace_eq_matrix_trace ℝ v, Matrix.trace]
+  apply Finset.sum_nonneg
+  intro i _
+  have hvi : v i ≠ 0 := v.ne_zero i
+  have hbvi : 0 < b (v i) (v i) := hbpos (v i) hvi
+  -- The diagonal entry of `A²` is `b(A vᵢ, A vᵢ)/b(vᵢ,vᵢ) ≥ 0`.
+  have hexpand : b ((A ∘ₗ A) (v i)) (v i) =
+      (LinearMap.toMatrix v v (A ∘ₗ A) i i) * b (v i) (v i) := by
+    conv_lhs => rw [← v.sum_repr ((A ∘ₗ A) (v i))]
+    have hsum : b (∑ j, v.repr ((A ∘ₗ A) (v i)) j • v j) (v i) =
+        ∑ j, v.repr ((A ∘ₗ A) (v i)) j * b (v j) (v i) := by
+      rw [map_sum, LinearMap.sum_apply]
+      apply Finset.sum_congr rfl
+      intro j _
+      simp [smul_eq_mul]
+    rw [hsum]
+    rw [Finset.sum_eq_single i]
+    · rw [LinearMap.toMatrix_apply]
+    · intro j _ hji
+      rw [hortho hji]
+      ring_nf
+    · intro hi
+      exact absurd (Finset.mem_univ i) hi
+  have hAA : b ((A ∘ₗ A) (v i)) (v i) = b (A (v i)) (A (v i)) := by
+    rw [show (A ∘ₗ A) (v i) = A (A (v i)) from rfl]
+    rw [hselfadj (A (v i)) (v i)]
+  have hAvnn : 0 ≤ b (A (v i)) (A (v i)) := by
+    by_cases hz : A (v i) = 0
+    · rw [hz]
+      simp
+    · exact le_of_lt (hbpos _ hz)
+  have := hexpand.symm.trans hAA
+  have hdiag : LinearMap.toMatrix v v (A ∘ₗ A) i i =
+      b (A (v i)) (A (v i)) / b (v i) (v i) := by
+    field_simp at this ⊢
+    linarith
+  rw [Matrix.diag_apply, hdiag]
+  positivity
+
+end RicciFlow
