@@ -5410,3 +5410,59 @@ theorem coord_metric_compatible
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- Product rule for the pairing `y ↦ G_y(Γ_y(u,a), b)`: the derivative
+splits into the metric-derivative and Christoffel-derivative terms. -/
+theorem hasFDerivAt_g_christoffel_left
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hdiffΓ : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u a b : E) :
+    HasFDerivAt (fun y ↦ G y (christoffelClosedOp G y u a) b)
+      ((ContinuousLinearMap.apply ℝ ℝ b).comp
+        ((G x).comp ((ContinuousLinearMap.apply ℝ E a).comp
+            (fderiv ℝ (fun y ↦ christoffelClosedOp G y u) x))
+          + (fderiv ℝ G x).flip (christoffelClosedOp G x u a))) x := by
+  have hVa : HasFDerivAt (fun y ↦ christoffelClosedOp G y u a)
+      ((ContinuousLinearMap.apply ℝ E a).comp
+        (fderiv ℝ (fun y ↦ christoffelClosedOp G y u) x)) x :=
+    (ContinuousLinearMap.apply ℝ E a).hasFDerivAt.comp x
+      (hdiffΓ u).hasFDerivAt
+  have hA : HasFDerivAt (fun y ↦ (G y) (christoffelClosedOp G y u a))
+      ((G x).comp ((ContinuousLinearMap.apply ℝ E a).comp
+          (fderiv ℝ (fun y ↦ christoffelClosedOp G y u) x))
+        + (fderiv ℝ G x).flip (christoffelClosedOp G x u a)) x :=
+    hGd.hasFDerivAt.clm_apply hVa
+  exact (ContinuousLinearMap.apply ℝ ℝ b).hasFDerivAt.comp x hA
+
+/-- Product rule for the pairing `y ↦ G_y(a, Γ_y(u,b))`. -/
+theorem hasFDerivAt_g_christoffel_right
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hdiffΓ : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u a b : E) :
+    HasFDerivAt (fun y ↦ G y a (christoffelClosedOp G y u b))
+      ((G x a).comp ((ContinuousLinearMap.apply ℝ E b).comp
+          (fderiv ℝ (fun y ↦ christoffelClosedOp G y u) x))
+        + ((fderiv ℝ G x).flip a).flip
+          (christoffelClosedOp G x u b)) x := by
+  have hVb : HasFDerivAt (fun y ↦ christoffelClosedOp G y u b)
+      ((ContinuousLinearMap.apply ℝ E b).comp
+        (fderiv ℝ (fun y ↦ christoffelClosedOp G y u) x)) x :=
+    (ContinuousLinearMap.apply ℝ E b).hasFDerivAt.comp x
+      (hdiffΓ u).hasFDerivAt
+  have hGa : HasFDerivAt (fun y ↦ (G y) a)
+      ((fderiv ℝ G x).flip a) x := by
+    simpa using hGd.hasFDerivAt.clm_apply (hasFDerivAt_const a x)
+  exact hGa.clm_apply hVb
+
+end RicciFlow
