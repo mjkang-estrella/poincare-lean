@@ -170,7 +170,12 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   (`Δ(φ∘f) = φ'(f)Δf + φ''(f)|∇f|²`, global and local forms) and its
   dividends `Δ(log f) = Δf/f − |∇f|²/f²`, `Δ(e^f) = e^f(Δf + |∇f|²)`,
   and the L² inequalities — the complete functional calculus of
-  Perelman's 𝓕/𝒲 computations.
+  Perelman's 𝓕/𝒲 computations; the heat equation (`IsHeatSolutionAt`)
+  with its fundamental quadratic solution and the maximum principle wired
+  end-to-end; the metric divergence with `div∘grad = Δ`; the
+  conjugate-heat weight identity `Δ(e^{−f}) = e^{−f}(|∇f|²−Δf)`; and the
+  entropy stratum's first object, `perelmanFDensity` — the `𝓕`-integrand
+  built entirely from the session's verified curvature and gradient.
 
 ## What this layer provides
 
