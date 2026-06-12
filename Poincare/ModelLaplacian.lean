@@ -2122,3 +2122,36 @@ theorem isGradientSolitonAt_trace
   rw [hcomp, map_smul, LinearMap.trace_id, smul_eq_mul]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+open scoped Manifold in
+/-- **Euclidean space has zero scalar curvature** — the Ricci form
+vanishes, so its trace does. -/
+theorem flat_scalarCurvatureAt_eq_zero
+    {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    [FiniteDimensional ℝ E] [CompleteSpace E]
+    (x : E) (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate) :
+    scalarCurvatureAt (flatCovariantDerivative ℝ E) x b hb = 0 := by
+  rw [scalarCurvatureAt_eq_trace_E]
+  have hzero : ((LinearMap.BilinForm.toDual b hb).symm.toLinearMap ∘ₗ
+      ricciDualAt (flatCovariantDerivative ℝ E) x : E →ₗ[ℝ] E) = 0 := by
+    apply LinearMap.ext
+    intro v
+    have hv : ricciDualAt (flatCovariantDerivative ℝ E) x v = 0 := by
+      apply LinearMap.ext
+      intro w
+      rw [show ((ricciDualAt (flatCovariantDerivative ℝ E) x) v) w =
+        ricciBilinearAt (flatCovariantDerivative ℝ E) x v w from rfl,
+        flat_ricciBilinearAt_eq_zero x v w]
+      simp
+    show (LinearMap.BilinForm.toDual b hb).symm
+      (ricciDualAt (flatCovariantDerivative ℝ E) x v) = 0
+    rw [hv]
+    exact map_zero _
+  rw [hzero]
+  simp
+
+end RicciFlow
