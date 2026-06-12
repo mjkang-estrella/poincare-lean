@@ -3769,3 +3769,73 @@ theorem hamilton_finite_time_singularity
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative Set
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**Hamilton's singularity theorem from the evolution equation**: if the
+scalar curvature evolves by `∂R/∂t = ΔR + 2·tr(Rc²)` with `Rc` the
+`b`-self-adjoint Ricci endomorphism of trace `R`, then the trace
+Cauchy–Schwarz turns the equation into the Riccati supersolution and the
+flow cannot persist to `n/(2 m₀)` — the geometric form, with the
+evolution data as the only hypotheses.
+-/
+theorem hamilton_singularity_of_evolution_eq
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v)
+    [Nontrivial E]
+    {R R' : ℝ → E → ℝ} {Rc : ℝ → E → (E →ₗ[ℝ] E)} {K : Set E}
+    (hK : IsCompact K) (hKne : K.Nonempty) {T m₀ B : ℝ}
+    (hm₀ : 0 < m₀) (hT0 : 0 ≤ T)
+    (hR_cont : Continuous ↿R)
+    (hRd : ∀ x ∈ K, ∀ t ∈ Icc (0 : ℝ) T,
+      HasDerivAt (fun s ↦ R s x) (R' t x) t)
+    (hspace : ∀ t ∈ Icc (0 : ℝ) T, ContDiff ℝ 2 (R t))
+    (hsa : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, ∀ p q : E,
+      b (Rc t x p) q = b p (Rc t x q))
+    (htr : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      LinearMap.trace ℝ E (Rc t x) = R t x)
+    (hevol : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      R' t x = modelLaplacian b hb (R t) x
+        + 2 * LinearMap.trace ℝ E (Rc t x ∘ₗ Rc t x))
+    (hmin_int : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      IsMinOn (R t) K x → IsLocalMin (R t) x)
+    (hRB : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, R t x ≤ B)
+    (h0 : ∀ x ∈ K, m₀ ≤ R 0 x) :
+    T < (Module.finrank ℝ E : ℝ) / (2 * m₀) := by
+  have hn : 0 < (Module.finrank ℝ E : ℝ) := by
+    have := Module.finrank_pos (R := ℝ) (M := E)
+    exact_mod_cast this
+  set a : ℝ := 2 / (Module.finrank ℝ E : ℝ) with ha'
+  have ha : 0 < a := by positivity
+  -- The equation plus trace-CS gives the Riccati supersolution.
+  have hineq : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      modelLaplacian b hb (R t) x + a * (R t x) ^ 2 ≤ R' t x := by
+    intro t ht x hx
+    have hcs := trace_sq_le_card_mul_trace_comp_self b hbs hbpos
+      (Rc t x) (hsa t ht x hx)
+    rw [htr t ht x hx] at hcs
+    rw [hevol t ht x hx, ha']
+    have h2 : (R t x) ^ 2 / (Module.finrank ℝ E : ℝ) ≤
+        LinearMap.trace ℝ E (Rc t x ∘ₗ Rc t x) := by
+      rw [div_le_iff₀ hn]
+      linarith [hcs]
+    have h3 : 2 / (Module.finrank ℝ E : ℝ) * (R t x) ^ 2 =
+        2 * ((R t x) ^ 2 / (Module.finrank ℝ E : ℝ)) := by
+      ring
+    rw [h3]
+    linarith
+  have := hamilton_finite_time_singularity b hb hbs hbpos hK hKne
+    ha hm₀ hT0 hR_cont hRd hspace hineq hmin_int hRB h0
+  calc T < 1 / (a * m₀) := this
+    _ = (Module.finrank ℝ E : ℝ) / (2 * m₀) := by
+      rw [ha']
+      field_simp
+
+end RicciFlow
