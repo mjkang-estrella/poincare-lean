@@ -2206,3 +2206,56 @@ theorem flat_second_derivative_commutes
   (hX.contDiffAt.isSymmSndFDerivAt (by simp)) v w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+The second covariant derivative of a vector field for the Christoffel-form
+connection: `∇²_{v,w} X = ∇_v(∇_w X) − ∇_{Γ(v,w)} X`, written out in flat
++ corrector terms. Its antisymmetrization is the curvature — the object of
+the Ricci identity.
+-/
+noncomputable def covariantSecondDerivative
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (X : E → E) (x v w : E) : E :=
+  fderiv ℝ (fun y ↦ fderiv ℝ X y w
+      + christoffelAt G y (b y) (hb y) w (X y)) x v
+    + christoffelAt G x (b x) (hb x) v
+      (fderiv ℝ X x w + christoffelAt G x (b x) (hb x) w (X x))
+    - (fderiv ℝ X x (christoffelAt G x (b x) (hb x) v w)
+      + christoffelAt G x (b x) (hb x)
+        (christoffelAt G x (b x) (hb x) v w) (X x))
+
+/--
+**The flat anchor**: on a constant metric the second covariant derivative
+is the flat second derivative — every corrector term dies.
+-/
+theorem covariantSecondDerivative_const (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate)
+    {X : E → E} (hX : ContDiff ℝ 2 X) (x v w : E) :
+    covariantSecondDerivative (fun _ ↦ G₀) b hb X x v w =
+      fderiv ℝ (fderiv ℝ X) x v w := by
+  unfold covariantSecondDerivative
+  have hΓ : ∀ (y u z : E), christoffelAt (fun _ : E ↦ G₀) y (b y) (hb y)
+      u z = 0 := fun y u z ↦ christoffelAt_const G₀ y (b y) (hb y) u z
+  simp only [hΓ, add_zero, map_zero, zero_add, sub_zero]
+  -- The inner function is evaluation of the derivative at `w`.
+  have hf1 : Differentiable ℝ (fderiv ℝ X) :=
+    (hX.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)
+  have happ : fderiv ℝ (fun y ↦ fderiv ℝ X y w) x =
+      (ContinuousLinearMap.apply ℝ E w).comp
+        (fderiv ℝ (fderiv ℝ X) x) :=
+    ((ContinuousLinearMap.apply ℝ E w).hasFDerivAt.comp x
+      (hf1 x).hasFDerivAt).fderiv
+  rw [happ]
+  rfl
+
+end RicciFlow
