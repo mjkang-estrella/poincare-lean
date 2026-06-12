@@ -3863,3 +3863,37 @@ theorem hasDerivAt_trace {A : ℝ → E →L[ℝ] E} {A' : E →L[ℝ] E} {t₀ 
   simpa [htrC] using h
 
 end RicciFlow
+
+namespace RicciFlow
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The derivative of `tr(A²)`**: `d/dt tr(A²) = 2 tr(A′A)` by the operator
+product rule and trace cyclicity — the rule for `∂|Ric|²/∂t` in the
+evolution equation.
+-/
+theorem hasDerivAt_trace_sq {A : ℝ → E →L[ℝ] E} {A' : E →L[ℝ] E}
+    {t₀ : ℝ} (hd : HasDerivAt A A' t₀) :
+    HasDerivAt (fun t ↦ LinearMap.trace ℝ E
+        ((A t).comp (A t) : E →ₗ[ℝ] E))
+      (2 * LinearMap.trace ℝ E ((A'.comp (A t₀)) : E →ₗ[ℝ] E)) t₀ := by
+  have hcomp : HasDerivAt (fun t ↦ (A t).comp (A t))
+      (A'.comp (A t₀) + (A t₀).comp A') t₀ := hd.clm_comp hd
+  have h := hasDerivAt_trace hcomp
+  convert h using 1
+  rw [show ((A'.comp (A t₀) + (A t₀).comp A' : E →L[ℝ] E) :
+    E →ₗ[ℝ] E) = (A'.comp (A t₀) : E →ₗ[ℝ] E)
+      + ((A t₀).comp A' : E →ₗ[ℝ] E) from rfl, map_add]
+  have hcyc : LinearMap.trace ℝ E (((A t₀).comp A' : E →ₗ[ℝ] E)) =
+      LinearMap.trace ℝ E ((A'.comp (A t₀) : E →ₗ[ℝ] E)) := by
+    rw [show (((A t₀).comp A' : E →L[ℝ] E) : E →ₗ[ℝ] E) =
+      ((A t₀ : E →ₗ[ℝ] E)) ∘ₗ ((A' : E →ₗ[ℝ] E)) from rfl,
+      show ((A'.comp (A t₀) : E →L[ℝ] E) : E →ₗ[ℝ] E) =
+      ((A' : E →ₗ[ℝ] E)) ∘ₗ ((A t₀ : E →ₗ[ℝ] E)) from rfl]
+    exact LinearMap.trace_comp_comm' _ _
+  rw [hcyc]
+  ring
+
+end RicciFlow
