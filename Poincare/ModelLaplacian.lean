@@ -2029,3 +2029,25 @@ theorem gaussian_isGradientSoliton
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+open scoped Manifold in
+/-- **The affine potential is a steady gradient soliton** (`λ = 0`). -/
+theorem affine_isGradientSoliton
+    {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    [FiniteDimensional ℝ E] [CompleteSpace E]
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (b₀ : LinearMap.BilinForm ℝ E) (hb₀ : b₀.Nondegenerate)
+    (L : E →L[ℝ] ℝ) (c : ℝ) (x : E) :
+    IsGradientSolitonAt (flatCovariantDerivative ℝ E)
+      (fun _ ↦ G₀) (fun _ ↦ b₀) (fun _ ↦ hb₀)
+      (fun y ↦ L y + c) 0 x := by
+  intro v w
+  rw [flat_ricciBilinearAt_eq_zero x v w,
+    affine_steady_soliton G₀ b₀ hb₀ L c x v w]
+  ring
+
+end RicciFlow
