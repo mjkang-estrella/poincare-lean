@@ -5362,3 +5362,51 @@ theorem coordRicci_antisymm_part
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric pairs the Christoffel operator back to the corrector
+functional**: `G(Γ(u,v), ·) = Φ_G(u,v)` under invertibility. -/
+theorem g_christoffelClosedOp
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hinv : (G x).IsInvertible)
+    (u v : E) :
+    G x (christoffelClosedOp G x u v)
+      = LinearMap.toContinuousLinearMap
+        (christoffelFunctional G x u v) := by
+  rw [christoffelClosedOp_apply]
+  exact (hinv.inverse_apply_eq.mp rfl).symm
+
+/--
+**METRIC COMPATIBILITY OF THE COORDINATE LEVI-CIVITA CONNECTION**:
+the derivative of the metric is recovered from the Christoffel
+operator — `D_u G(a,b) = G(Γ(u,a),b) + G(a,Γ(u,b))`. The defining
+property of the Levi-Civita corrector, verified for the closed form.
+-/
+theorem coord_metric_compatible
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : (G x).IsInvertible) (u a b : E) :
+    (fderiv ℝ G x u) a b
+      = G x (christoffelClosedOp G x u a) b
+        + G x a (christoffelClosedOp G x u b) := by
+  have h1 : G x (christoffelClosedOp G x u a) b
+      = (1 / 2 : ℝ) * ((fderiv ℝ G x u) a b + (fderiv ℝ G x a) u b
+        - (fderiv ℝ G x b) u a) := by
+    rw [g_christoffelClosedOp G hinv u a]
+    rfl
+  have h2 : G x a (christoffelClosedOp G x u b)
+      = (1 / 2 : ℝ) * ((fderiv ℝ G x u) b a + (fderiv ℝ G x b) u a
+        - (fderiv ℝ G x a) u b) := by
+    rw [hGsymm x a (christoffelClosedOp G x u b),
+      g_christoffelClosedOp G hinv u b]
+    rfl
+  rw [h1, h2, fderiv_metric_symm G hGd hGsymm u b a]
+  ring
+
+end RicciFlow
