@@ -4069,3 +4069,29 @@ theorem christoffelDeriv_smul_snd
   simp only [map_smul, ContinuousLinearMap.neg_apply, smul_add, smul_neg]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ`-operator**: the variation's second slot as a continuous
+endomorphism — the form entering the operator-path differentiation of the
+curvature. -/
+noncomputable def christoffelDerivOp (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x u : E) : E →L[ℝ] E :=
+  LinearMap.toContinuousLinearMap
+    { toFun := fun v ↦ christoffelDeriv G H x u v
+      map_add' := fun v₁ v₂ ↦ christoffelDeriv_add_snd G H x u v₁ v₂
+      map_smul' := fun c v ↦ by
+        simp only [RingHom.id_apply]
+        exact christoffelDeriv_smul_snd G H x u c v }
+
+@[simp]
+theorem christoffelDerivOp_apply (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x u v : E) :
+    christoffelDerivOp G H x u v = christoffelDeriv G H x u v := rfl
+
+end RicciFlow
