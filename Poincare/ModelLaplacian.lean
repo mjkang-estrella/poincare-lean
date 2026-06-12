@@ -2844,3 +2844,63 @@ theorem covariantHessian_mul (G : E → E →L[ℝ] E →L[ℝ] ℝ)
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The covariant Hessian chain rule**:
+`Hess(φ∘f) = φ'(f)·Hess f + φ''(f)·df⊗df` on any metric background — the
+tensorial form behind every soliton-potential computation.
+-/
+theorem covariantHessian_comp (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f)
+    {φ : ℝ → ℝ} (hφ : ContDiff ℝ 2 φ) (x v w : E) :
+    covariantHessian G b hb (fun y ↦ φ (f y)) x v w =
+      deriv φ (f x) * covariantHessian G b hb f x v w
+        + deriv (deriv φ) (f x) * (fderiv ℝ f x v * fderiv ℝ f x w) := by
+  have hfd : Differentiable ℝ f := hf.differentiable (by norm_num)
+  have hφd : Differentiable ℝ φ := hφ.differentiable (by norm_num)
+  have hf1 : Differentiable ℝ (fderiv ℝ f) :=
+    (hf.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)
+  have hφ1 : Differentiable ℝ (deriv φ) := hφ.differentiable_deriv_two
+  have hchain : ∀ (ψ : ℝ → ℝ), Differentiable ℝ ψ → ∀ y : E,
+      fderiv ℝ (fun z ↦ ψ (f z)) y = deriv ψ (f y) • fderiv ℝ f y := by
+    intro ψ hψ y
+    rw [show (fun z ↦ ψ (f z)) = ψ ∘ f from rfl,
+      fderiv_comp y (hψ (f y)) (hfd y)]
+    ext u
+    simp only [ContinuousLinearMap.comp_apply,
+      ContinuousLinearMap.smul_apply, smul_eq_mul]
+    rw [show fderiv ℝ ψ (f y) (fderiv ℝ f y u) =
+      (fderiv ℝ f y u) • deriv ψ (f y) from by
+        rw [← fderiv_deriv]
+        simp [mul_comm]]
+    simp [smul_eq_mul, mul_comm]
+  have hcdiff : DifferentiableAt ℝ (fun y ↦ deriv φ (f y)) x :=
+    (hφ1 (f x)).comp x (hfd x)
+  have hd2 : fderiv ℝ (fderiv ℝ (fun y ↦ φ (f y))) x =
+      deriv φ (f x) • fderiv ℝ (fderiv ℝ f) x
+        + (deriv (deriv φ) (f x) • fderiv ℝ f x).smulRight
+          (fderiv ℝ f x) := by
+    rw [show fderiv ℝ (fun y ↦ φ (f y)) =
+      fun y ↦ deriv φ (f y) • fderiv ℝ f y from funext (hchain φ hφd)]
+    refine Eq.trans (fderiv_smul hcdiff (hf1 x)) ?_
+    have hfc : fderiv ℝ (fun z ↦ deriv φ (f z)) x =
+        deriv (deriv φ) (f x) • fderiv ℝ f x := hchain (deriv φ) hφ1 x
+    rw [hfc]
+  have hd1 : fderiv ℝ (fun y ↦ φ (f y)) x =
+      deriv φ (f x) • fderiv ℝ f x := hchain φ hφd x
+  unfold covariantHessian
+  rw [hd2, hd1]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
+    ContinuousLinearMap.smulRight_apply, smul_eq_mul]
+  ring
+
+end RicciFlow
