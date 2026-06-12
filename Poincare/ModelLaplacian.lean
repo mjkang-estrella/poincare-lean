@@ -4580,3 +4580,137 @@ theorem coordRicciCLM_apply (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E)
     coordRicciCLM G x hdiff w u = coordRicci G x u w := rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`δRic` is additive in its first slot** along a flow — by uniqueness
+of derivatives, from the tensoriality of the Ricci form. -/
+theorem ricciDeriv_add_fst
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ} {H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    {x : E} {t₀ : ℝ} (u₁ u₂ w : E)
+    (hdG : HasDerivAt (fun t ↦ Gt t x) (H x) t₀)
+    (hev : ∀ᶠ t in nhds t₀, (Gt t x).IsInvertible)
+    (hmix : ∀ p q r : E,
+      HasDerivAt (fun t ↦ (fderiv ℝ (Gt t) x p) q r)
+        ((fderiv ℝ H x p) q r) t₀)
+    (hmix2 : ∀ p v : E,
+      HasDerivAt
+        (fun t ↦ fderiv ℝ (fun y ↦ christoffelClosedOp (Gt t) y p) x v)
+        (fderiv ℝ (fun y ↦ christoffelDerivOp (Gt t₀) H y p) x v) t₀)
+    (hd2 : ∀ t : ℝ, ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp (Gt t) y u) x) :
+    ricciDeriv (Gt t₀) H x (u₁ + u₂) w =
+      ricciDeriv (Gt t₀) H x u₁ w + ricciDeriv (Gt t₀) H x u₂ w := by
+  have h1 := hasDerivAt_coordRicci u₁ w hdG hev hmix hmix2
+  have h2 := hasDerivAt_coordRicci u₂ w hdG hev hmix hmix2
+  have h12 := h1.add h2
+  have h3 := hasDerivAt_coordRicci (u₁ + u₂) w hdG hev hmix hmix2
+  have hpath : (fun t ↦ coordRicci (Gt t) x (u₁ + u₂) w) =
+      fun t ↦ coordRicci (Gt t) x u₁ w + coordRicci (Gt t) x u₂ w := by
+    funext t
+    exact coordRicci_add_fst (Gt t) (hd2 t) u₁ u₂ w
+  rw [hpath] at h3
+  exact h3.unique h12
+
+/-- **`δRic` is homogeneous in its first slot** along a flow. -/
+theorem ricciDeriv_smul_fst
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ} {H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    {x : E} {t₀ : ℝ} (c : ℝ) (u w : E)
+    (hdG : HasDerivAt (fun t ↦ Gt t x) (H x) t₀)
+    (hev : ∀ᶠ t in nhds t₀, (Gt t x).IsInvertible)
+    (hmix : ∀ p q r : E,
+      HasDerivAt (fun t ↦ (fderiv ℝ (Gt t) x p) q r)
+        ((fderiv ℝ H x p) q r) t₀)
+    (hmix2 : ∀ p v : E,
+      HasDerivAt
+        (fun t ↦ fderiv ℝ (fun y ↦ christoffelClosedOp (Gt t) y p) x v)
+        (fderiv ℝ (fun y ↦ christoffelDerivOp (Gt t₀) H y p) x v) t₀)
+    (hd2 : ∀ t : ℝ, ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp (Gt t) y u) x) :
+    ricciDeriv (Gt t₀) H x (c • u) w =
+      c • ricciDeriv (Gt t₀) H x u w := by
+  have h1 := hasDerivAt_coordRicci u w hdG hev hmix hmix2
+  have h2 := h1.const_smul c
+  have h3 := hasDerivAt_coordRicci (c • u) w hdG hev hmix hmix2
+  have hpath : (fun t ↦ coordRicci (Gt t) x (c • u) w) =
+      fun t ↦ c • coordRicci (Gt t) x u w := by
+    funext t
+    exact coordRicci_smul_fst (Gt t) (hd2 t) c u w
+  rw [hpath] at h3
+  exact h3.unique h2
+
+/-- **The coordinate scalar curvature**: the inverse-metric contraction
+`R = Σⱼ Ric(♯bʲ, bⱼ)` of the coordinate Ricci form. -/
+noncomputable def coordScalar (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E) : ℝ :=
+  ∑ j, coordRicci G x
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord j)))
+    ((Module.finBasis ℝ E) j)
+
+/--
+**THE TIME-DERIVATIVE OF THE SCALAR CURVATURE ALONG A FLOW**: the
+coordinate scalar curvature differentiates to the contracted `δRic`
+plus the inverse-metric variation term — `∂R/∂t = Σⱼ [δRic(♯bʲ,bⱼ) −
+Ric((G⁻¹HG⁻¹)bʲ, bⱼ)]`. The structural evolution equation of `R`.
+-/
+theorem hasDerivAt_coordScalar
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ} {H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    {x : E} {t₀ : ℝ}
+    (hdG : HasDerivAt (fun t ↦ Gt t x) (H x) t₀)
+    (hev : ∀ᶠ t in nhds t₀, (Gt t x).IsInvertible)
+    (hmix : ∀ p q r : E,
+      HasDerivAt (fun t ↦ (fderiv ℝ (Gt t) x p) q r)
+        ((fderiv ℝ H x p) q r) t₀)
+    (hmix2 : ∀ p v : E,
+      HasDerivAt
+        (fun t ↦ fderiv ℝ (fun y ↦ christoffelClosedOp (Gt t) y p) x v)
+        (fderiv ℝ (fun y ↦ christoffelDerivOp (Gt t₀) H y p) x v) t₀)
+    (hd2 : ∀ t : ℝ, ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp (Gt t) y u) x) :
+    HasDerivAt (fun t ↦ coordScalar (Gt t) x)
+      (∑ j, (ricciDeriv (Gt t₀) H x
+          ((Gt t₀ x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) j)
+        + coordRicci (Gt t₀) x
+          ((-((Gt t₀ x).inverse.comp ((H x).comp (Gt t₀ x).inverse)))
+            (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) j))) t₀ := by
+  apply HasDerivAt.fun_sum
+  intro j _
+  set bE := Module.finBasis ℝ E
+  set ρ : E →L[ℝ] ℝ :=
+    LinearMap.toContinuousLinearMap (bE.coord j) with hρ
+  -- The Ricci form as a CLM-valued path in time.
+  set A : ℝ → E →L[ℝ] ℝ :=
+    fun t ↦ coordRicciCLM (Gt t) x (hd2 t) (bE j) with hA
+  set ψ : E →L[ℝ] ℝ := LinearMap.toContinuousLinearMap
+    { toFun := fun u ↦ ricciDeriv (Gt t₀) H x u (bE j)
+      map_add' := fun u₁ u₂ ↦
+        ricciDeriv_add_fst u₁ u₂ (bE j) hdG hev hmix hmix2 hd2
+      map_smul' := fun c u ↦ by
+        simp only [RingHom.id_apply]
+        exact ricciDeriv_smul_fst c u (bE j) hdG hev hmix hmix2 hd2 }
+    with hψ
+  have hAderiv : HasDerivAt A ψ t₀ := by
+    apply hasDerivAt_clm_of_forall_apply
+    intro u
+    exact hasDerivAt_coordRicci u (bE j) hdG hev hmix hmix2
+  -- The raised-index path in time.
+  have hInv : HasDerivAt (fun t ↦ (Gt t x).inverse)
+      (-((Gt t₀ x).inverse.comp ((H x).comp (Gt t₀ x).inverse))) t₀ :=
+    hasDerivAt_clm_inverse hdG hev
+  have hv : HasDerivAt (fun t ↦ (Gt t x).inverse ρ)
+      ((-((Gt t₀ x).inverse.comp ((H x).comp (Gt t₀ x).inverse))) ρ)
+      t₀ := by
+    simpa using hInv.clm_apply (hasDerivAt_const t₀ ρ)
+  have h := hAderiv.clm_apply hv
+  exact h
+
+end RicciFlow
