@@ -3167,3 +3167,56 @@ theorem hessianNormSq_nonneg (b : LinearMap.BilinForm ℝ E)
   positivity
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Cauchy–Schwarz for a positive-definite form**:
+`b(u,w)² ≤ b(u,u)·b(w,w)` — by the discriminant of the quadratic
+`t ↦ b(u − tw, u − tw)`. -/
+theorem bilin_cauchy_schwarz (b : LinearMap.BilinForm ℝ E)
+    (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v) (u w : E) :
+    b u w ^ 2 ≤ b u u * b w w := by
+  by_cases hw : w = 0
+  · simp [hw]
+  · have hww : 0 < b w w := hbpos w hw
+    set t := b u w / b w w with ht
+    have hquad : 0 ≤ b (u - t • w) (u - t • w) := by
+      by_cases hz : u - t • w = 0
+      · rw [hz]
+        simp
+      · exact le_of_lt (hbpos _ hz)
+    have hexpand : b (u - t • w) (u - t • w) =
+        b u u - 2 * t * b u w + t ^ 2 * b w w := by
+      have hsy := hbs.eq w u
+      simp only [RingHom.id_apply] at hsy
+      simp only [map_sub, map_smul, LinearMap.sub_apply,
+        LinearMap.smul_apply, smul_eq_mul]
+      rw [← hsy]
+      ring
+    rw [hexpand, ht] at hquad
+    -- `0 ≤ buu − 2(buw²/bww) + (buw²/bww) = buu − buw²/bww`.
+    have hkey : b u w ^ 2 / b w w ≤ b u u := by
+      have hq2 : 0 ≤ (b u u - 2 * (b u w / b w w) * b u w
+          + (b u w / b w w) ^ 2 * b w w) * b w w :=
+        mul_nonneg hquad (le_of_lt hww)
+      have hq3 : 0 ≤ b u u * b w w - b u w ^ 2 := by
+        have hexp : (b u u - 2 * (b u w / b w w) * b u w
+            + (b u w / b w w) ^ 2 * b w w) * b w w =
+            b u u * b w w - b u w ^ 2 := by
+          field_simp
+          ring
+        linarith [hexp ▸ hq2]
+      rw [div_le_iff₀ hww]
+      linarith
+    calc b u w ^ 2 = (b u w ^ 2 / b w w) * b w w := by
+          field_simp
+      _ ≤ b u u * b w w := by
+          apply mul_le_mul_of_nonneg_right hkey (le_of_lt hww)
+
+end RicciFlow
