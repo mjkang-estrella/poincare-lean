@@ -6790,3 +6790,72 @@ theorem coord_twice_contracted_bianchi
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant derivative of a 2-tensor family in coordinates**:
+`(∇_v H)(p,q) = D_v H(p,q) − H(Γ(v,p), q) − H(p, Γ(v,q))`. -/
+noncomputable def covTensor2Deriv (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x v p q : E) : ℝ :=
+  (fderiv ℝ H x v) p q
+    - H x (christoffelClosedOp G x v p) q
+    - H x p (christoffelClosedOp G x v q)
+
+/--
+**`δΓ` IN COVARIANT FORM**: the variation of the Christoffel symbols is
+the classical half-sum of covariant derivatives of the variation tensor
+— `G(δΓ(u,v), w) = ½[(∇_uH)(v,w) + (∇_vH)(u,w) − (∇_wH)(u,v)]`. The
+Christoffel corrections regroup through torsion symmetry and the
+symmetry of `H`.
+-/
+theorem g_christoffelDeriv
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : (G x).IsInvertible)
+    (hHsymm : ∀ p q : E, H x p q = H x q p)
+    (u v w : E) :
+    G x (christoffelDeriv G H x u v) w
+      = (1 / 2 : ℝ) * (covTensor2Deriv G H x u v w
+        + covTensor2Deriv G H x v u w
+        - covTensor2Deriv G H x w u v) := by
+  have hGiG : ∀ f : E →L[ℝ] ℝ, G x ((G x).inverse f) = f :=
+    fun f ↦ (hinv.inverse_apply_eq.mp rfl).symm
+  -- Pair the variation with the metric.
+  have hpair : G x (christoffelDeriv G H x u v) w
+      = LinearMap.toContinuousLinearMap
+          (christoffelFunctional H x u v) w
+        - H x (christoffelClosedOp G x u v) w := by
+    unfold christoffelDeriv
+    rw [map_add]
+    simp only [ContinuousLinearMap.neg_apply, ContinuousLinearMap.comp_apply,
+      map_neg, hGiG]
+    have hop : (G x).inverse (LinearMap.toContinuousLinearMap
+        (christoffelFunctional G x u v)) = christoffelClosedOp G x u v :=
+      (christoffelClosedOp_apply G x u v).symm
+    rw [hop]
+    simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.neg_apply]
+    ring
+  rw [hpair]
+  -- Expand the corrector functional and the covariant derivatives.
+  show (1 / 2 : ℝ) * ((fderiv ℝ H x u) v w + (fderiv ℝ H x v) u w
+      - (fderiv ℝ H x w) u v) - H x (christoffelClosedOp G x u v) w = _
+  unfold covTensor2Deriv
+  have hΓuv := christoffelClosedOp_symm hGd hGsymm u v
+  have hΓuw := christoffelClosedOp_symm hGd hGsymm u w
+  have hΓvw := christoffelClosedOp_symm hGd hGsymm v w
+  have hs1 := hHsymm v (christoffelClosedOp G x u w)
+  have hs2 := hHsymm u (christoffelClosedOp G x v w)
+  rw [hΓuv] at *
+  linarith [hHsymm (christoffelClosedOp G x w u) v,
+    hHsymm (christoffelClosedOp G x w v) u,
+    congrArg (fun m ↦ H x m w) hΓuv,
+    congrArg (fun m ↦ H x v m) hΓuw.symm,
+    congrArg (fun m ↦ H x u m) hΓvw.symm]
+
+end RicciFlow
