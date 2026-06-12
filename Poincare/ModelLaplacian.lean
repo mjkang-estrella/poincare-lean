@@ -2573,3 +2573,48 @@ theorem hasDerivAt_clm_of_forall_apply
   exact hsum
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The variation of the Christoffel symbols along a metric flow** (`δΓ`):
+the closed-form corrector `Γₜ = Gₜ⁻¹ Φₜ` differentiates by the product
+rule into the inverse-derivative and functional-derivative terms —
+`∂Γ/∂t = G⁻¹ Φ_{∂G} − G⁻¹ (∂G) G⁻¹ Φ_G`. The variation of the connection:
+the direct precursor of the curvature evolution equation.
+-/
+theorem hasDerivAt_christoffel_flow
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ} {H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    {x : E} {t₀ : ℝ} (u v : E)
+    (hdG : HasDerivAt (fun t ↦ Gt t x) (H x) t₀)
+    (hev : ∀ᶠ t in nhds t₀, (Gt t x).IsInvertible)
+    (hmix : ∀ p q r : E,
+      HasDerivAt (fun t ↦ (fderiv ℝ (Gt t) x p) q r)
+        ((fderiv ℝ H x p) q r) t₀) :
+    HasDerivAt (fun t ↦ (Gt t x).inverse
+        (LinearMap.toContinuousLinearMap
+          (christoffelFunctional (Gt t) x u v)))
+      ((-((Gt t₀ x).inverse.comp ((H x).comp (Gt t₀ x).inverse)))
+          (LinearMap.toContinuousLinearMap
+            (christoffelFunctional (Gt t₀) x u v))
+        + (Gt t₀ x).inverse (LinearMap.toContinuousLinearMap
+          (christoffelFunctional H x u v))) t₀ := by
+  have hΦ : HasDerivAt (fun t ↦ LinearMap.toContinuousLinearMap
+      (christoffelFunctional (Gt t) x u v))
+      (LinearMap.toContinuousLinearMap
+        (christoffelFunctional H x u v)) t₀ := by
+    apply hasDerivAt_clm_of_forall_apply
+    intro w
+    exact hasDerivAt_christoffelFunctional u v w
+      (hmix u v w) (hmix v u w) (hmix w u v)
+  have hInv : HasDerivAt (fun t ↦ (Gt t x).inverse)
+      (-((Gt t₀ x).inverse.comp ((H x).comp (Gt t₀ x).inverse))) t₀ :=
+    hasDerivAt_clm_inverse hdG hev
+  exact hInv.clm_apply hΦ
+
+end RicciFlow
