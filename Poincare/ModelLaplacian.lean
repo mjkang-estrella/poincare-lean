@@ -2051,3 +2051,74 @@ theorem affine_isGradientSoliton
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+open scoped Manifold in
+/-- The scalar curvature on the model space as an `E`-typed trace — the
+instance bridge between the curvature and Bochner strata. -/
+theorem scalarCurvatureAt_eq_trace_E
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [FiniteDimensional ℝ E] [CompleteSpace E]
+    (cov : CovariantDerivative 𝓘(ℝ, E) E (TangentSpace 𝓘(ℝ, E) : E → Type _))
+    [CovariantDerivative.ContMDiffCovariantDerivative cov 1]
+    (x : E) (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate) :
+    scalarCurvatureAt cov x b hb = LinearMap.trace ℝ E
+      (((LinearMap.BilinForm.toDual b hb).symm.toLinearMap ∘ₗ
+        ricciDualAt cov x : E →ₗ[ℝ] E)) := rfl
+
+open scoped Manifold in
+/--
+**The soliton trace identity**: tracing `Ric + Hess f = λ b` gives
+`R + Δf = nλ` — the first structural consequence of the soliton equation.
+-/
+theorem isGradientSolitonAt_trace
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [FiniteDimensional ℝ E] [CompleteSpace E]
+    (cov : CovariantDerivative 𝓘(ℝ, E) E (TangentSpace 𝓘(ℝ, E) : E → Type _))
+    [CovariantDerivative.ContMDiffCovariantDerivative cov 1]
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate)
+    {f : E → ℝ} {lam : ℝ} {x : E}
+    (hsol : IsGradientSolitonAt cov G b hb f lam x) :
+    scalarCurvatureAt cov x (b x) (hb x) + curvedLaplacian G b hb f x =
+      lam * Module.finrank ℝ E := by
+  rw [scalarCurvatureAt_eq_trace_E cov x (b x) (hb x)]
+  unfold curvedLaplacian
+  rw [← map_add]
+  have hcomp : (((LinearMap.BilinForm.toDual (b x) (hb x)).symm.toLinearMap
+        ∘ₗ ricciDualAt cov x : E →ₗ[ℝ] E))
+      + ((LinearMap.BilinForm.toDual (b x) (hb x)).symm.toLinearMap ∘ₗ
+        covariantHessianLin G b hb f x) = lam • LinearMap.id := by
+    apply LinearMap.ext
+    intro v
+    apply (LinearMap.BilinForm.toDual (b x) (hb x)).injective
+    rw [LinearMap.add_apply, map_add]
+    have h1 : (LinearMap.BilinForm.toDual (b x) (hb x))
+        ((((LinearMap.BilinForm.toDual (b x) (hb x)).symm.toLinearMap
+          ∘ₗ ricciDualAt cov x : E →ₗ[ℝ] E)) v) = ricciDualAt cov x v :=
+      LinearEquiv.apply_symm_apply _ _
+    have h2 : (LinearMap.BilinForm.toDual (b x) (hb x))
+        (((LinearMap.BilinForm.toDual (b x) (hb x)).symm.toLinearMap ∘ₗ
+          covariantHessianLin G b hb f x) v) =
+        covariantHessianLin G b hb f x v :=
+      LinearEquiv.apply_symm_apply _ _
+    rw [h1, h2]
+    apply LinearMap.ext
+    intro w
+    have hval : ricciBilinearAt cov x v w
+        + covariantHessian G b hb f x v w = lam * (b x) v w := hsol v w
+    have hgoal : (ricciDualAt cov x v) w
+        + (covariantHessianLin G b hb f x v) w = lam * (b x) v w := hval
+    rw [show ((LinearMap.BilinForm.toDual (b x) (hb x))
+        ((lam • LinearMap.id : E →ₗ[ℝ] E) v)) w = lam * (b x) v w from by
+      simp only [LinearMap.smul_apply, LinearMap.id_apply, map_smul,
+        smul_eq_mul]
+      rw [LinearMap.BilinForm.toDual_def]]
+    exact hgoal
+  rw [hcomp, map_smul, LinearMap.trace_id, smul_eq_mul]
+
+end RicciFlow
