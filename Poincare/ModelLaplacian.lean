@@ -5678,3 +5678,59 @@ theorem hamilton_ricci_flow_singularity'
     hdG hmix hmix2 hH hBianchi hR_cont hspace hsa hmin_int hRB h0
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Generic evaluation-commutation**: for any differentiable
+CLM-valued family, applying the spatial derivative commutes with
+evaluation at a fixed vector. -/
+theorem fderiv_clm_family_apply
+    {F V : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    [NormedAddCommGroup V] [NormedSpace ℝ V]
+    {Φ : E → F →L[ℝ] V} {x : E}
+    (hΦ : DifferentiableAt ℝ Φ x) (v : E) (c : F) :
+    (fderiv ℝ Φ x v) c = fderiv ℝ (fun y ↦ Φ y c) x v := by
+  have h := (ContinuousLinearMap.apply ℝ V c).hasFDerivAt.comp x
+    hΦ.hasFDerivAt
+  have hfd : fderiv ℝ (fun y ↦ Φ y c) x
+      = (ContinuousLinearMap.apply ℝ V c).comp (fderiv ℝ Φ x) :=
+    h.fderiv
+  rw [hfd]
+  rfl
+
+/-- **Differentiability of the curvature family**: with differentiable
+Christoffel families and differentiable family gradients, the
+coordinate curvature operator is a differentiable operator family. -/
+theorem differentiableAt_coordCurvatureOp_family
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (u w : E) :
+    DifferentiableAt ℝ (fun y ↦ coordCurvatureOp G y u w) x := by
+  unfold coordCurvatureOp
+  have h1 : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z w) y u) x := by
+    have := DifferentiableAt.clm_apply (𝕜 := ℝ) (G := E)
+      (H := E →L[ℝ] E) (hdd w) (differentiableAt_const u)
+    exact this
+  have h2 : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z u) y w) x := by
+    have := DifferentiableAt.clm_apply (𝕜 := ℝ) (G := E)
+      (H := E →L[ℝ] E) (hdd u) (differentiableAt_const w)
+    exact this
+  have h3 : DifferentiableAt ℝ (fun y ↦
+      (christoffelClosedOp G y u).comp (christoffelClosedOp G y w)) x :=
+    (hdiffΓ x u).clm_comp (hdiffΓ x w)
+  have h4 : DifferentiableAt ℝ (fun y ↦
+      (christoffelClosedOp G y w).comp (christoffelClosedOp G y u)) x :=
+    (hdiffΓ x w).clm_comp (hdiffΓ x u)
+  exact ((h1.sub h2).add h3).sub h4
+
+end RicciFlow
