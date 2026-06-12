@@ -4879,3 +4879,58 @@ theorem inverseVariation_ricci_direction
   simp [smul_eq_mul]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**HAMILTON'S SCALAR EVOLUTION EQUATION, modulo contracted Bianchi**:
+along a Ricci flow (`H = −2·Ric` at the point), given the contracted
+second Bianchi identity for the flow (`hBianchi`: the trace of `δRic`
+is the Laplacian of `R`), the scalar curvature satisfies
+`∂R/∂t = ΔR + 2|Ric|²`. The structural derivative, the
+inverse-variation evaluation, and the Bianchi input compose into the
+equation that drives the finite-time singularity theorem.
+-/
+theorem hamilton_scalar_evolution_of_bianchi
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ} {H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    {x : E} {t₀ : ℝ}
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (hdG : HasDerivAt (fun t ↦ Gt t x) (H x) t₀)
+    (hev : ∀ᶠ t in nhds t₀, (Gt t x).IsInvertible)
+    (hmix : ∀ p q r : E,
+      HasDerivAt (fun t ↦ (fderiv ℝ (Gt t) x p) q r)
+        ((fderiv ℝ H x p) q r) t₀)
+    (hmix2 : ∀ p v : E,
+      HasDerivAt
+        (fun t ↦ fderiv ℝ (fun y ↦ christoffelClosedOp (Gt t) y p) x v)
+        (fderiv ℝ (fun y ↦ christoffelDerivOp (Gt t₀) H y p) x v) t₀)
+    (hd2 : ∀ t : ℝ, ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp (Gt t) y u) x)
+    (hH : H x = (-2 : ℝ) • coordRicciForm (Gt t₀) x (hd2 t₀))
+    (hBianchi : ∑ j, ricciDeriv (Gt t₀) H x
+        ((Gt t₀ x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j)
+      = modelLaplacian b hb (fun y ↦ coordScalar (Gt t₀) y) x) :
+    HasDerivAt (fun t ↦ coordScalar (Gt t) x)
+      (modelLaplacian b hb (fun y ↦ coordScalar (Gt t₀) y) x
+        + 2 * coordRicciNormSq (Gt t₀) x (hd2 t₀)) t₀ := by
+  have h := hasDerivAt_coordScalar hdG hev hmix hmix2 hd2
+  rw [Finset.sum_add_distrib, hBianchi] at h
+  have hvar : ∑ j, coordRicci (Gt t₀) x
+      ((-((Gt t₀ x).inverse.comp ((H x).comp (Gt t₀ x).inverse)))
+        (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+      ((Module.finBasis ℝ E) j)
+      = 2 * coordRicciNormSq (Gt t₀) x (hd2 t₀) := by
+    rw [hH]
+    exact inverseVariation_ricci_direction (Gt t₀) x (hd2 t₀)
+  rw [hvar] at h
+  exact h
+
+end RicciFlow
