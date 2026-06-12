@@ -865,3 +865,36 @@ theorem curvatureOp_modelLeviCivita_extend
   rfl
 
 end CovariantDerivative
+
+namespace CovariantDerivative
+
+open FiberBundle
+
+variable {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+  [FiniteDimensional ℝ F] [CompleteSpace F]
+
+/--
+**The Ricci identity**: the antisymmetrized second covariant derivative is
+the curvature — `∇_v∇_w X − ∇_w∇_v X − ∇_{[v,w]}X = R(v,w)X`, here with
+constant directions (vanishing bracket) on the model space. Commuting
+covariant derivatives costs exactly one curvature term: the mechanism of
+every evolution equation of the Ricci flow.
+-/
+theorem ricci_identity
+    (G : F → F →L[ℝ] F →L[ℝ] ℝ)
+    (b : Π x : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (X : F → F) {x : F} (v w : TangentSpace 𝓘(ℝ, F) x) :
+    ((fderiv ℝ (fun y ↦ fderiv ℝ X y w
+        + christoffelAt G y (b y) (hb y) w (X y)) x) v
+      + christoffelAt G x (b x) (hb x) v
+        (fderiv ℝ X x w + christoffelAt G x (b x) (hb x) w (X x)))
+    - ((fderiv ℝ (fun y ↦ fderiv ℝ X y v
+        + christoffelAt G y (b y) (hb y) v (X y)) x) w
+      + christoffelAt G x (b x) (hb x) w
+        (fderiv ℝ X x v + christoffelAt G x (b x) (hb x) v (X x))) =
+    curvatureOp (modelLeviCivita G b hb)
+      (extend F v) (extend F w) X x :=
+  (curvatureOp_modelLeviCivita_extend G b hb X v w).symm
+
+end CovariantDerivative
