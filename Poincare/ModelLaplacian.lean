@@ -4355,3 +4355,54 @@ theorem hasDerivAt_coordCurvatureOp
   exact ((hDw.sub hDu).add hCuw).sub hCwu
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The coordinate Ricci form of a metric: the basis-trace contraction
+`Ric(u,w) = Σᵢ ⟨bⁱ, Rm(bᵢ,u)w⟩` of the coordinate curvature operator. -/
+noncomputable def coordRicci (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x u w : E) :
+    ℝ :=
+  ∑ i, (Module.finBasis ℝ E).coord i
+    (coordCurvatureOp G x ((Module.finBasis ℝ E) i) u w)
+
+/-- **The named `δRic`**: the basis-trace contraction of `δRm` — the
+variation of the coordinate Ricci form along a metric flow. -/
+noncomputable def ricciDeriv (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x u w : E) : ℝ :=
+  ∑ i, (Module.finBasis ℝ E).coord i
+    (curvatureDerivOp G H x ((Module.finBasis ℝ E) i) u w)
+
+/--
+**`δRic` by contraction**: along a metric flow, the coordinate Ricci
+form differentiates in time to the basis-trace contraction of `δRm` —
+the variation passes through the trace.
+-/
+theorem hasDerivAt_coordRicci
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ} {H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    {x : E} {t₀ : ℝ} (u w : E)
+    (hdG : HasDerivAt (fun t ↦ Gt t x) (H x) t₀)
+    (hev : ∀ᶠ t in nhds t₀, (Gt t x).IsInvertible)
+    (hmix : ∀ p q r : E,
+      HasDerivAt (fun t ↦ (fderiv ℝ (Gt t) x p) q r)
+        ((fderiv ℝ H x p) q r) t₀)
+    (hmix2 : ∀ p v : E,
+      HasDerivAt
+        (fun t ↦ fderiv ℝ (fun y ↦ christoffelClosedOp (Gt t) y p) x v)
+        (fderiv ℝ (fun y ↦ christoffelDerivOp (Gt t₀) H y p) x v) t₀) :
+    HasDerivAt (fun t ↦ coordRicci (Gt t) x u w)
+      (ricciDeriv (Gt t₀) H x u w) t₀ := by
+  apply HasDerivAt.fun_sum
+  intro i _
+  have hRm := hasDerivAt_coordCurvatureOp
+    ((Module.finBasis ℝ E) i) u hdG hev hmix hmix2
+  have happ := (ContinuousLinearMap.apply ℝ E w).hasFDerivAt.comp_hasDerivAt
+    t₀ hRm
+  exact (LinearMap.toContinuousLinearMap
+    ((Module.finBasis ℝ E).coord i)).hasFDerivAt.comp_hasDerivAt t₀ happ
+
+end RicciFlow
