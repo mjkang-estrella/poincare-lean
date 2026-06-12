@@ -3897,3 +3897,21 @@ theorem hasDerivAt_trace_sq {A : ℝ → E →L[ℝ] E} {A' : E →L[ℝ] E}
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`δΓ` vanishes in the zero direction** — the variation anchor: a
+static metric has static Christoffel symbols. -/
+theorem christoffelDeriv_zero_direction
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x u v : E) :
+    christoffelDeriv G (fun _ ↦ 0) x u v = 0 := by
+  unfold christoffelDeriv
+  rw [christoffelFunctional_const (0 : E →L[ℝ] E →L[ℝ] ℝ) x u v]
+  simp
+
+end RicciFlow
