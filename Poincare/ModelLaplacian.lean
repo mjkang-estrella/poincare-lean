@@ -4216,3 +4216,33 @@ theorem christoffelClosedOp_eq_christoffelAt
   exact (christoffelAt_eq_inverse G b hb hbg u v).symm
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The curvature's quadratic part in operator language**: the
+`Γ(v, ∇_w X)`-terms of the coordinate formula split into the operator
+applied to the flat derivative plus the operator composition applied to
+the field — the form whose time-derivative the `ΓΓ`-rule computes.
+-/
+theorem curvature_quadratic_operator_form
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (hbg : ∀ v w : E, b v w = G x v w)
+    (X : E → E) (v w : E) :
+    christoffelAt G x b hb v (fderiv ℝ X x w
+        + christoffelAt G x b hb w (X x)) =
+      christoffelClosedOp G x v (fderiv ℝ X x w)
+        + ((christoffelClosedOp G x v).comp
+            (christoffelClosedOp G x w)) (X x) := by
+  rw [← christoffelClosedOp_eq_christoffelAt G b hb hbg,
+    ← christoffelClosedOp_eq_christoffelAt G b hb hbg]
+  rw [map_add]
+  rfl
+
+end RicciFlow
