@@ -3051,3 +3051,35 @@ theorem metricGradient_gradient_sq (b : LinearMap.BilinForm ℝ E)
   exact sub_eq_zero.mp (hb.1 _ hzero)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The `(1,1)`-Hessian: the Hessian with one index raised — the
+endomorphism whose trace is the Laplacian and whose square's trace is
+`|Hess f|²`. -/
+noncomputable def hessianOperator (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (f : E → ℝ) (x : E) : E →ₗ[ℝ] E :=
+  (LinearMap.BilinForm.toDual b hb).symm.toLinearMap ∘ₗ
+    (LinearMap.toContinuousLinearMap.symm.toLinearMap.comp
+      ((fderiv ℝ (fderiv ℝ f) x).toLinearMap))
+
+/-- The Laplacian is the trace of the `(1,1)`-Hessian. -/
+theorem modelLaplacian_eq_trace_hessianOperator
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (f : E → ℝ) (x : E) :
+    modelLaplacian b hb f x =
+      LinearMap.trace ℝ E (hessianOperator b hb f x) := rfl
+
+/-- **`|Hess f|²`**: the squared norm of the Hessian — the trace of the
+squared `(1,1)`-Hessian, the positive term of the Bochner formula. -/
+noncomputable def hessianNormSq (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (f : E → ℝ) (x : E) : ℝ :=
+  LinearMap.trace ℝ E
+    (hessianOperator b hb f x ∘ₗ hessianOperator b hb f x)
+
+end RicciFlow
