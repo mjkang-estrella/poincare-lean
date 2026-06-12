@@ -1825,3 +1825,66 @@ theorem metricGradient_quadratic (b : LinearMap.BilinForm ℝ E)
   exact sub_eq_zero.mp (hb.1 _ hzero)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The gradient is homogeneous. -/
+theorem metricGradient_const_mul (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) {f : E → ℝ} (hf : Differentiable ℝ f)
+    (c : ℝ) (x : E) :
+    metricGradient b hb (fun y ↦ c * f y) x =
+      c • metricGradient b hb f x := by
+  unfold metricGradient
+  rw [fderiv_const_mul (hf x) c]
+  simp [map_smul]
+
+/-- **The Gaussian soliton's gradient**: `∇(b(x,x)/4τ) = x/(2τ)`. -/
+theorem gaussian_gradient (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (hbs : ∀ v w : E, b v w = b w v)
+    {τ : ℝ} (hτ : τ ≠ 0) (x : E) :
+    metricGradient b hb (fun y ↦ (1 / (4 * τ)) * b y y) x =
+      (1 / (2 * τ)) • x := by
+  have hq : Differentiable ℝ (fun y : E ↦ b y y) := by
+    intro y
+    set bC : E →L[ℝ] E →L[ℝ] ℝ := LinearMap.toContinuousLinearMap
+      ((LinearMap.toContinuousLinearMap :
+        (E →ₗ[ℝ] ℝ) ≃ₗ[ℝ] (E →L[ℝ] ℝ)).toLinearMap ∘ₗ b) with hbC
+    have hc : HasFDerivAt (fun z : E ↦ bC z) bC y := bC.hasFDerivAt
+    have h := hc.clm_apply (hasFDerivAt_id y)
+    have heq : (fun z : E ↦ bC z z) = fun z ↦ b z z := by
+      funext z
+      rfl
+    rw [← heq]
+    exact h.differentiableAt
+  rw [metricGradient_const_mul b hb hq _ x,
+    metricGradient_quadratic b hb hbs x, smul_smul]
+  congr 1
+  field_simp
+  ring
+
+/-- **The Gaussian soliton's Laplacian**: `Δ(b(x,x)/4τ) = n/(2τ)`. -/
+theorem gaussian_laplacian (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (hbs : ∀ v w : E, b v w = b w v)
+    {τ : ℝ} (hτ : τ ≠ 0) (x : E) :
+    modelLaplacian b hb (fun y ↦ (1 / (4 * τ)) * b y y) x =
+      Module.finrank ℝ E / (2 * τ) := by
+  have hq2 : ContDiff ℝ 2 (fun y : E ↦ b y y) := by
+    set bC : E →L[ℝ] E →L[ℝ] ℝ := LinearMap.toContinuousLinearMap
+      ((LinearMap.toContinuousLinearMap :
+        (E →ₗ[ℝ] ℝ) ≃ₗ[ℝ] (E →L[ℝ] ℝ)).toLinearMap ∘ₗ b) with hbC
+    have heq : (fun z : E ↦ bC z z) = fun z ↦ b z z := by
+      funext z
+      rfl
+    rw [← heq]
+    exact (bC.contDiff.clm_apply contDiff_id)
+  rw [modelLaplacian_smul b hb _ hq2,
+    modelLaplacian_quadratic b hb hbs x]
+  field_simp
+  ring
+
+end RicciFlow
