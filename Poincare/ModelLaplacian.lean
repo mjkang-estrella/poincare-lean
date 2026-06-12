@@ -5466,3 +5466,85 @@ theorem hasFDerivAt_g_christoffel_right
   exact hGa.clm_apply hVb
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**G-SKEW-SYMMETRY OF THE COORDINATE CURVATURE OPERATOR**: for a `C²`
+symmetric invertible metric, `G(R(u,w)a, b) + G(a, R(u,w)b) = 0` — the
+curvature acts skew-adjointly. Differentiating metric compatibility a
+second time, Schwarz symmetry kills the second-derivative terms and the
+mixed Christoffel terms cancel in pairs.
+-/
+theorem coordCurvatureOp_skew
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u w a b : E) :
+    G x (coordCurvatureOp G x u w a) b
+      + G x a (coordCurvatureOp G x u w b) = 0 := by
+  have hGd : ∀ y : E, DifferentiableAt ℝ G y := fun y ↦
+    (hGC2.differentiable (by norm_num)).differentiableAt
+  have hd2G : DifferentiableAt ℝ (fderiv ℝ G) x :=
+    ((hGC2.contDiffAt).fderiv_right (m := 1)
+      (by norm_num)).differentiableAt one_ne_zero
+  -- The compatibility identity as a function identity.
+  have F1 : ∀ p : E, (fun y ↦ (fderiv ℝ G y) p a b)
+      = fun y ↦ G y (christoffelClosedOp G y p a) b
+        + G y a (christoffelClosedOp G y p b) := by
+    intro p
+    funext y
+    exact coord_metric_compatible (hGd y) hGsymm (hinv y) p a b
+  -- Equate the two derivatives.
+  have hEq : ∀ p q : E, (fderiv ℝ (fderiv ℝ G) x q) p a b
+      = (G x ((fderiv ℝ (fun y ↦ christoffelClosedOp G y p) x q) a) b
+          + (fderiv ℝ G x q) (christoffelClosedOp G x p a) b)
+        + (G x a ((fderiv ℝ (fun y ↦ christoffelClosedOp G y p) x q) b)
+          + (fderiv ℝ G x q) a (christoffelClosedOp G x p b)) := by
+    intro p q
+    have hL := hasFDerivAt_g_christoffel_left (hGd x) hdiffΓ p a b
+    have hR := hasFDerivAt_g_christoffel_right (hGd x) hdiffΓ p a b
+    have hsum := hL.add hR
+    have h1 := HasFDerivAt.clm_apply (𝕜 := ℝ) (G := E)
+      (H := E →L[ℝ] E →L[ℝ] ℝ) hd2G.hasFDerivAt (hasFDerivAt_const p x)
+    have h2 := HasFDerivAt.clm_apply (𝕜 := ℝ) (G := E)
+      (H := E →L[ℝ] ℝ) h1 (hasFDerivAt_const a x)
+    have h3 := HasFDerivAt.clm_apply (𝕜 := ℝ) (G := E)
+      (H := ℝ) h2 (hasFDerivAt_const b x)
+    rw [F1 p] at h3
+    have huniq := h3.unique hsum
+    have happ := congrArg (fun (Φ : E →L[ℝ] ℝ) ↦ Φ q) huniq
+    simpa using happ
+  -- Schwarz symmetry.
+  have hsymm2 : IsSymmSndFDerivAt ℝ G x :=
+    (hGC2.contDiffAt).isSymmSndFDerivAt (by norm_num)
+  have hsch : (fderiv ℝ (fderiv ℝ G) x w) u a b
+      = (fderiv ℝ (fderiv ℝ G) x u) w a b := by
+    rw [hsymm2 w u]
+  -- Expand the metric-derivative terms by compatibility at `x`.
+  have hDG : ∀ (q p r : E), (fderiv ℝ G x q) p r
+      = G x (christoffelClosedOp G x q p) r
+        + G x p (christoffelClosedOp G x q r) :=
+    fun q p r ↦ coord_metric_compatible (hGd x) hGsymm (hinv x) q p r
+  -- Assemble.
+  have h1 := hEq u w
+  have h2 := hEq w u
+  rw [hsch] at h1
+  unfold coordCurvatureOp
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.sub_apply,
+    ContinuousLinearMap.comp_apply, map_add, map_sub]
+  rw [hDG w (christoffelClosedOp G x u a) b,
+    hDG w a (christoffelClosedOp G x u b)] at h1
+  rw [hDG u (christoffelClosedOp G x w a) b,
+    hDG u a (christoffelClosedOp G x w b)] at h2
+  linarith [h1, h2]
+
+end RicciFlow
