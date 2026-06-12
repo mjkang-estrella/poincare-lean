@@ -6335,3 +6335,102 @@ theorem covCurvDeriv_smul_snd
   module
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- Coordinates against a symmetric invertible metric are raised
+pairings: `bʲ(m) = G(m, ♯bʲ)`. -/
+theorem coord_eq_g_raised
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    (hinv : (G x).IsInvertible)
+    (hGsymm : ∀ p q : E, G x p q = G x q p)
+    (j : Fin (Module.finrank ℝ E)) (m : E) :
+    (Module.finBasis ℝ E).coord j m
+      = G x m ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord j))) := by
+  set ρ := LinearMap.toContinuousLinearMap
+    ((Module.finBasis ℝ E).coord j) with hρ
+  have h2 : G x ((G x).inverse ρ) = ρ :=
+    (hinv.inverse_apply_eq.mp rfl).symm
+  rw [hGsymm m ((G x).inverse ρ), h2]
+  rfl
+
+/-- The raised-basis coefficient matrix is symmetric. -/
+theorem coord_raised_symm
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    (hinv : (G x).IsInvertible)
+    (hGsymm : ∀ p q : E, G x p q = G x q p)
+    (i k : Fin (Module.finrank ℝ E)) :
+    (Module.finBasis ℝ E).coord i
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord k)))
+      = (Module.finBasis ℝ E).coord k
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))) := by
+  rw [coord_eq_g_raised G hinv hGsymm i,
+    coord_eq_g_raised G hinv hGsymm k]
+  exact hGsymm _ _
+
+/--
+**The raised-contraction swap**: for any slotwise-linear scalar form,
+contracting the raised index in the first slot equals contracting it in
+the second — `Σₖ F(♯bᵏ, bₖ) = Σₖ F(bₖ, ♯bᵏ)`.
+-/
+theorem sum_raised_contraction_swap
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    (hinv : (G x).IsInvertible)
+    (hGsymm : ∀ p q : E, G x p q = G x q p)
+    (F : E → E → ℝ)
+    (hadd1 : ∀ p₁ p₂ q, F (p₁ + p₂) q = F p₁ q + F p₂ q)
+    (hsmul1 : ∀ (c : ℝ) p q, F (c • p) q = c • F p q)
+    (hadd2 : ∀ p q₁ q₂, F p (q₁ + q₂) = F p q₁ + F p q₂)
+    (hsmul2 : ∀ (c : ℝ) p q, F p (c • q) = c • F p q) :
+    ∑ k, F ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord k))) ((Module.finBasis ℝ E) k)
+      = ∑ k, F ((Module.finBasis ℝ E) k)
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord k))) := by
+  set bE := Module.finBasis ℝ E with hbE
+  set s : Fin (Module.finrank ℝ E) → E := fun k ↦
+    (G x).inverse (LinearMap.toContinuousLinearMap (bE.coord k))
+    with hs
+  -- Expand the raised vectors in the basis.
+  have hrepr : ∀ k, s k = ∑ i, bE.coord i (s k) • bE i := by
+    intro k
+    exact (bE.sum_repr (s k)).symm
+  have hexp1 : ∀ k, F (s k) (bE k)
+      = ∑ i, bE.coord i (s k) • F (bE i) (bE k) := by
+    intro k
+    conv_lhs => rw [hrepr k]
+    set L : E →ₗ[ℝ] ℝ :=
+      IsLinearMap.mk' (fun p ↦ F p (bE k))
+        ⟨fun p₁ p₂ ↦ hadd1 p₁ p₂ (bE k),
+         fun c p ↦ hsmul1 c p (bE k)⟩ with hL
+    have := map_sum L (fun i ↦ bE.coord i (s k) • bE i) Finset.univ
+    simp only [map_smul] at this
+    exact this
+  have hexp2 : ∀ k, F (bE k) (s k)
+      = ∑ i, bE.coord i (s k) • F (bE k) (bE i) := by
+    intro k
+    conv_lhs => rw [hrepr k]
+    set L : E →ₗ[ℝ] ℝ :=
+      IsLinearMap.mk' (fun q ↦ F (bE k) q)
+        ⟨fun q₁ q₂ ↦ hadd2 (bE k) q₁ q₂,
+         fun c q ↦ hsmul2 c (bE k) q⟩ with hL
+    have := map_sum L (fun i ↦ bE.coord i (s k) • bE i) Finset.univ
+    simp only [map_smul] at this
+    exact this
+  rw [Finset.sum_congr rfl (fun k _ ↦ hexp1 k),
+    Finset.sum_congr rfl (fun k _ ↦ hexp2 k), Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro i _
+  apply Finset.sum_congr rfl
+  intro k _
+  rw [coord_raised_symm G hinv hGsymm i k]
+
+end RicciFlow
