@@ -2283,3 +2283,33 @@ theorem covariantSecondDerivative_comm_const (G₀ : E →L[ℝ] E →L[ℝ] ℝ
     flat_second_derivative_commutes hX x v w]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative FiberBundle
+
+open scoped Manifold in
+/--
+**The Ricci identity in `∇²`-form**: the antisymmetrized second covariant
+derivative equals the curvature — the `∇_{Γ(v,w)}`-terms cancel by
+corrector symmetry against the coordinate formula.
+-/
+theorem covariantSecondDerivative_antisymm
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [FiniteDimensional ℝ E] [CompleteSpace E]
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (X : E → E) {x : E} (v w : TangentSpace 𝓘(ℝ, E) x) :
+    covariantSecondDerivative G b hb X x v w
+      - covariantSecondDerivative G b hb X x w v =
+      curvatureOp (modelLeviCivita G b hb)
+        (extend E v) (extend E w) X x := by
+  rw [← ricci_identity G b hb X v w]
+  unfold covariantSecondDerivative
+  rw [christoffelAt_symm G (b x) (hb x) (hGd x) hGsymm w v]
+  abel
+
+end RicciFlow
