@@ -1984,3 +1984,48 @@ theorem affine_steady_soliton (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+open scoped Manifold in
+/--
+**The gradient-soliton equation** at a point: `Ric + Hess f = λ b`,
+stated against the genuine Ricci form of a connection and the covariant
+Hessian of the Christoffel data.
+-/
+def IsGradientSolitonAt
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [FiniteDimensional ℝ E] [CompleteSpace E]
+    (cov : CovariantDerivative 𝓘(ℝ, E) E (TangentSpace 𝓘(ℝ, E) : E → Type _))
+    [CovariantDerivative.ContMDiffCovariantDerivative cov 1]
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (f : E → ℝ) (lam : ℝ) (x : E) : Prop :=
+  ∀ v w : E, ricciBilinearAt cov x v w
+    + covariantHessian G b hb f x v w = lam * (b x) v w
+
+open scoped Manifold in
+/--
+**The Gaussian is a shrinking gradient soliton**: on Euclidean space with
+the flat connection, the potential `b(x,x)/4τ` satisfies
+`Ric + Hess f = (1/2τ) b` exactly.
+-/
+theorem gaussian_isGradientSoliton
+    {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    [FiniteDimensional ℝ E] [CompleteSpace E]
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (b₀ : LinearMap.BilinForm ℝ E) (hb₀ : b₀.Nondegenerate)
+    (hbs : ∀ v w : E, b₀ v w = b₀ w v)
+    {τ : ℝ} (hτ : τ ≠ 0) (x : E) :
+    IsGradientSolitonAt (flatCovariantDerivative ℝ E)
+      (fun _ ↦ G₀) (fun _ ↦ b₀) (fun _ ↦ hb₀)
+      (fun y ↦ (1 / (4 * τ)) * b₀ y y) (1 / (2 * τ)) x := by
+  intro v w
+  rw [flat_ricciBilinearAt_eq_zero x v w,
+    gaussian_soliton_hessian G₀ b₀ hb₀ hbs hτ x v w]
+  ring
+
+end RicciFlow
