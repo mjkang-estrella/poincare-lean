@@ -5991,3 +5991,57 @@ theorem coord_second_bianchi
   abel
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant Ricci derivative in coordinates**: the basis-trace
+contraction of the covariant curvature derivative — `∇_v Ric(u,w)`. -/
+noncomputable def covRicciDeriv (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x v u w : E) : ℝ :=
+  ∑ j, (Module.finBasis ℝ E).coord j
+    ((covCurvDeriv G x v ((Module.finBasis ℝ E) j) u) w)
+
+/-- **The curvature divergence in coordinates**: the contraction of the
+covariant curvature derivative over the differentiation slot. -/
+noncomputable def curvDivergence (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x u w z : E) : ℝ :=
+  ∑ j, (Module.finBasis ℝ E).coord j
+    ((covCurvDeriv G x ((Module.finBasis ℝ E) j) u w) z)
+
+/--
+**THE FIRST CONTRACTED BIANCHI IDENTITY**: contracting the second
+Bianchi identity once — `∇_v Ric(w,z) − ∇_w Ric(v,z) + div R(w,v)z = 0`.
+-/
+theorem coord_first_contracted_bianchi
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ p : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y p) x)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hsymΓ : ∀ p : E, IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) x)
+    (hΓsymm : ∀ (y : E) (a b : E),
+      christoffelClosedOp G y a b = christoffelClosedOp G y b a)
+    (v w z : E) :
+    covRicciDeriv G x v w z + curvDivergence G x w v z
+      - covRicciDeriv G x w v z = 0 := by
+  unfold covRicciDeriv curvDivergence
+  rw [← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]
+  apply Finset.sum_eq_zero
+  intro j _
+  set bj := (Module.finBasis ℝ E) j
+  have hB := coord_second_bianchi hdiffΓ hdd hsymΓ hΓsymm bj v w
+  have hanti : covCurvDeriv G x w v bj = -covCurvDeriv G x w bj v :=
+    covCurvDeriv_antisymm G x w v bj
+  rw [hanti] at hB
+  -- hB : cCD x v bj w + cCD x bj w v + (−cCD x w bj v) = 0
+  have happ := congrArg (fun (A : E →L[ℝ] E) ↦
+    (Module.finBasis ℝ E).coord j (A z)) hB
+  simpa [map_add, map_sub, map_neg] using happ
+
+end RicciFlow
