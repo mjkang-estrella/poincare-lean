@@ -4406,3 +4406,115 @@ theorem hasDerivAt_coordRicci
     ((Module.finBasis ℝ E).coord i)).hasFDerivAt.comp_hasDerivAt t₀ happ
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The corrector functional is additive in its first direction. -/
+theorem christoffelFunctional_add_fst
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x u₁ u₂ v : E) :
+    christoffelFunctional G x (u₁ + u₂) v =
+      christoffelFunctional G x u₁ v + christoffelFunctional G x u₂ v := by
+  apply LinearMap.ext
+  intro w
+  show (1 / 2 : ℝ) * ((fderiv ℝ G x (u₁ + u₂)) v w
+      + (fderiv ℝ G x v) (u₁ + u₂) w - (fderiv ℝ G x w) (u₁ + u₂) v) = _
+  simp only [map_add, ContinuousLinearMap.add_apply, LinearMap.add_apply]
+  show _ = (1 / 2 : ℝ) * ((fderiv ℝ G x u₁) v w
+      + (fderiv ℝ G x v) u₁ w - (fderiv ℝ G x w) u₁ v)
+    + (1 / 2 : ℝ) * ((fderiv ℝ G x u₂) v w
+      + (fderiv ℝ G x v) u₂ w - (fderiv ℝ G x w) u₂ v)
+  ring
+
+/-- The corrector functional is homogeneous in its first direction. -/
+theorem christoffelFunctional_smul_fst
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E) (c : ℝ) (u v : E) :
+    christoffelFunctional G x (c • u) v =
+      c • christoffelFunctional G x u v := by
+  apply LinearMap.ext
+  intro w
+  show (1 / 2 : ℝ) * ((fderiv ℝ G x (c • u)) v w
+      + (fderiv ℝ G x v) (c • u) w - (fderiv ℝ G x w) (c • u) v) = _
+  simp only [map_smul, ContinuousLinearMap.smul_apply,
+    LinearMap.smul_apply, smul_eq_mul]
+  show _ = c * ((1 / 2 : ℝ) * ((fderiv ℝ G x u) v w
+      + (fderiv ℝ G x v) u w - (fderiv ℝ G x w) u v))
+  ring
+
+/-- **The Christoffel operator is additive in its direction slot.** -/
+theorem christoffelClosedOp_add_fst
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x u₁ u₂ : E) :
+    christoffelClosedOp G x (u₁ + u₂) =
+      christoffelClosedOp G x u₁ + christoffelClosedOp G x u₂ := by
+  ext v
+  simp only [christoffelClosedOp_apply, ContinuousLinearMap.add_apply]
+  rw [show LinearMap.toContinuousLinearMap
+      (christoffelFunctional G x (u₁ + u₂) v) =
+    LinearMap.toContinuousLinearMap (christoffelFunctional G x u₁ v)
+      + LinearMap.toContinuousLinearMap (christoffelFunctional G x u₂ v)
+    from by rw [christoffelFunctional_add_fst]; rfl]
+  exact map_add _ _ _
+
+/-- **The Christoffel operator is homogeneous in its direction slot.** -/
+theorem christoffelClosedOp_smul_fst
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E) (c : ℝ) (u : E) :
+    christoffelClosedOp G x (c • u) = c • christoffelClosedOp G x u := by
+  ext v
+  simp only [christoffelClosedOp_apply, ContinuousLinearMap.smul_apply]
+  rw [show LinearMap.toContinuousLinearMap
+      (christoffelFunctional G x (c • u) v) =
+    c • LinearMap.toContinuousLinearMap (christoffelFunctional G x u v)
+    from by rw [christoffelFunctional_smul_fst]; rfl]
+  exact map_smul _ _ _
+
+end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The coordinate curvature operator is additive in its second
+slot**, given differentiability of the Christoffel operator families —
+the tensoriality input for contracting the second slot. -/
+theorem coordCurvatureOp_add_snd
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (v w₁ w₂ : E) :
+    coordCurvatureOp G x v (w₁ + w₂) =
+      coordCurvatureOp G x v w₁ + coordCurvatureOp G x v w₂ := by
+  unfold coordCurvatureOp
+  have hfam : (fun y ↦ christoffelClosedOp G y (w₁ + w₂)) =
+      fun y ↦ christoffelClosedOp G y w₁ + christoffelClosedOp G y w₂ := by
+    funext y
+    exact christoffelClosedOp_add_fst G y w₁ w₂
+  rw [hfam, fderiv_fun_add (hdiff w₁) (hdiff w₂)]
+  rw [christoffelClosedOp_add_fst G x w₁ w₂]
+  simp only [ContinuousLinearMap.add_apply, map_add,
+    ContinuousLinearMap.comp_add, ContinuousLinearMap.add_comp]
+  abel
+
+/-- **The coordinate Ricci form is additive in its first slot** — the
+contraction inherits tensoriality from the curvature operator. -/
+theorem coordRicci_add_fst
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u₁ u₂ w : E) :
+    coordRicci G x (u₁ + u₂) w =
+      coordRicci G x u₁ w + coordRicci G x u₂ w := by
+  unfold coordRicci
+  rw [← Finset.sum_add_distrib]
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [coordCurvatureOp_add_snd G hdiff _ u₁ u₂]
+  simp
+
+end RicciFlow
