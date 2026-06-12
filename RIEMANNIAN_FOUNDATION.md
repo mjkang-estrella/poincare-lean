@@ -167,8 +167,10 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   and the Laplacian product rule `Δ(fg) = fΔg + gΔf + 2b(∇f,∇g)` with its
   square form, the curved product rule (`curvedLaplacian_mul`, verbatim on
   any metric), and the Laplacian chain rule
-  (`Δ(φ∘f) = φ'(f)Δf + φ''(f)|∇f|²`) — the three laws of Bochner calculus,
-  the identities of every computation in Perelman's functionals.
+  (`Δ(φ∘f) = φ'(f)Δf + φ''(f)|∇f|²`, global and local forms) and its
+  dividends `Δ(log f) = Δf/f − |∇f|²/f²`, `Δ(e^f) = e^f(Δf + |∇f|²)`,
+  and the L² inequalities — the complete functional calculus of
+  Perelman's 𝓕/𝒲 computations.
 
 ## What this layer provides
 
