@@ -6434,3 +6434,84 @@ theorem sum_raised_contraction_swap
   rw [coord_raised_symm G hinv hGsymm i k]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The covariant curvature derivative is additive in its
+differentiation slot. -/
+theorem covCurvDeriv_add_fst
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ p : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y p) x)
+    (v₁ v₂ u w : E) :
+    covCurvDeriv G x (v₁ + v₂) u w
+      = covCurvDeriv G x v₁ u w + covCurvDeriv G x v₂ u w := by
+  unfold covCurvDeriv
+  rw [map_add, christoffelClosedOp_add_fst G x v₁ v₂]
+  simp only [ContinuousLinearMap.add_apply]
+  rw [coordCurvatureOp_add_snd G hdiffΓ u
+    (christoffelClosedOp G x v₁ w) (christoffelClosedOp G x v₂ w)]
+  have h3 : coordCurvatureOp G x (christoffelClosedOp G x v₁ u
+        + christoffelClosedOp G x v₂ u) w
+      = coordCurvatureOp G x (christoffelClosedOp G x v₁ u) w
+        + coordCurvatureOp G x (christoffelClosedOp G x v₂ u) w := by
+    rw [coordCurvatureOp_antisymm G x _ w,
+      coordCurvatureOp_add_snd G hdiffΓ w _ _,
+      coordCurvatureOp_antisymm G x w (christoffelClosedOp G x v₁ u),
+      coordCurvatureOp_antisymm G x w (christoffelClosedOp G x v₂ u)]
+    abel
+  rw [h3]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.add_comp,
+    ContinuousLinearMap.comp_add]
+  abel
+
+/-- The covariant curvature derivative is homogeneous in its
+differentiation slot. -/
+theorem covCurvDeriv_smul_fst
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ p : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y p) x)
+    (c : ℝ) (v u w : E) :
+    covCurvDeriv G x (c • v) u w = c • covCurvDeriv G x v u w := by
+  unfold covCurvDeriv
+  rw [map_smul, christoffelClosedOp_smul_fst G x c v]
+  simp only [ContinuousLinearMap.smul_apply]
+  rw [coordCurvatureOp_smul_snd G hdiffΓ u c
+    (christoffelClosedOp G x v w)]
+  have h3 : coordCurvatureOp G x (c • christoffelClosedOp G x v u) w
+      = c • coordCurvatureOp G x (christoffelClosedOp G x v u) w := by
+    rw [coordCurvatureOp_antisymm G x _ w,
+      coordCurvatureOp_smul_snd G hdiffΓ w c _,
+      coordCurvatureOp_antisymm G x w (christoffelClosedOp G x v u)]
+    module
+  rw [h3]
+  simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.smul_comp,
+    ContinuousLinearMap.comp_smul]
+  module
+
+/-- **Applied skew-symmetry of the covariant curvature derivative**:
+`⟨(∇_vR)(u,w)a, b⟩ = −⟨(∇_vR)(u,w)b, a⟩`, from pair symmetry and plane
+antisymmetry. -/
+theorem covCurvDeriv_applied_skew
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (v u w a b : E) :
+    G x (covCurvDeriv G x v u w a) b
+      = -G x (covCurvDeriv G x v u w b) a := by
+  rw [covCurvDeriv_pair_symm hGC2 hGsymm hinv hdiffΓ hdd v u w a b,
+    covCurvDeriv_pair_symm hGC2 hGsymm hinv hdiffΓ hdd v u w b a]
+  rw [covCurvDeriv_antisymm G x v a b]
+  simp
+
+end RicciFlow
