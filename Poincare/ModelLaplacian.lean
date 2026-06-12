@@ -6618,3 +6618,136 @@ theorem covCurvDeriv_first_bianchi
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**THE MIDDLE TERM OF THE TWICE-CONTRACTED BIANCHI IS THE RICCI
+DIVERGENCE**: `Σₖ div R(w, ♯bᵏ)bₖ = div Ric(w)` — by pair symmetry, the
+raised-contraction swaps, the first Bianchi identity for `∇R`, plane
+antisymmetry, and the vanishing of the skew trace.
+-/
+theorem curvDivergence_contraction_eq_ricciDivergence
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (w : E) :
+    ∑ k, curvDivergence G x w
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord k)))
+        ((Module.finBasis ℝ E) k)
+      = ricciDivergence G x w := by
+  have hGd : ∀ y : E, DifferentiableAt ℝ G y := fun y ↦
+    (hGC2.differentiable (by norm_num)).differentiableAt
+  have hΓsymm : ∀ (y : E) (a b : E),
+      christoffelClosedOp G y a b = christoffelClosedOp G y b a :=
+    fun y a b ↦ christoffelClosedOp_symm (hGd y) hGsymm a b
+  set bE := Module.finBasis ℝ E with hbE
+  set S : Fin (Module.finrank ℝ E) → E := fun k ↦
+    (G x).inverse (LinearMap.toContinuousLinearMap (bE.coord k))
+    with hS
+  have hcoord : ∀ (j : Fin (Module.finrank ℝ E)) (m : E),
+      bE.coord j m = G x m (S j) :=
+    fun j m ↦ coord_eq_g_raised G (hinv x) (hGsymm x) j m
+  -- Generic: the skew trace vanishes.
+  have hskewtrace : ∀ M : E →L[ℝ] E,
+      (∀ p q : E, G x (M p) q = -G x (M q) p) →
+      ∑ j, G x (M (bE j)) (S j) = 0 := by
+    intro M hMskew
+    have hsw := sum_raised_contraction_swap G (hinv x) (hGsymm x)
+      (fun p q ↦ G x (M p) q)
+      (fun p₁ p₂ q ↦ by dsimp only; rw [map_add]; simp)
+      (fun c p q ↦ by dsimp only; rw [map_smul]; simp)
+      (fun p q₁ q₂ ↦ by dsimp only; simp)
+      (fun c p q ↦ by dsimp only; simp)
+    have hneg : ∑ j, G x (M (S j)) (bE j)
+        = -∑ j, G x (M (bE j)) (S j) := by
+      rw [← Finset.sum_neg_distrib]
+      exact Finset.sum_congr rfl fun j _ ↦ by
+        rw [hMskew (S j) (bE j)]
+    rw [hneg] at hsw
+    linarith
+  -- Unfold both sides to pairing form.
+  unfold curvDivergence ricciDivergence covRicciDeriv
+  -- Step A1–A2: pair symmetry then the (1,3)-slot swap, per k.
+  have hstep : ∀ k, ∑ j, bE.coord j
+      ((covCurvDeriv G x (bE j) w (S k)) (bE k))
+      = ∑ j, G x ((covCurvDeriv G x (S j) (bE k) (bE j)) w) (S k) := by
+    intro k
+    have h1 : ∀ j, bE.coord j
+        ((covCurvDeriv G x (bE j) w (S k)) (bE k))
+        = G x ((covCurvDeriv G x (bE j) (bE k) (S j)) w) (S k) := by
+      intro j
+      rw [hcoord j]
+      exact covCurvDeriv_pair_symm hGC2 hGsymm hinv hdiffΓ hdd
+        (bE j) w (S k) (bE k) (S j)
+    rw [Finset.sum_congr rfl fun j _ ↦ h1 j]
+    exact sum_raised_contraction_swap G (hinv x) (hGsymm x)
+      (fun p q ↦ G x ((covCurvDeriv G x q (bE k) p) w) (S k))
+      (fun p₁ p₂ q ↦ by
+        dsimp only
+        rw [covCurvDeriv_add_snd hdiffΓ hdd q (bE k) p₁ p₂]
+        simp [map_add])
+      (fun c p q ↦ by
+        dsimp only
+        rw [covCurvDeriv_smul_snd hdiffΓ hdd q (bE k) c p]
+        simp)
+      (fun p q₁ q₂ ↦ by
+        dsimp only
+        rw [covCurvDeriv_add_fst (fun m ↦ hdiffΓ x m) q₁ q₂ (bE k) p]
+        simp [map_add])
+      (fun c p q ↦ by
+        dsimp only
+        rw [covCurvDeriv_smul_fst (fun m ↦ hdiffΓ x m) c q (bE k) p]
+        simp)
+  rw [Finset.sum_congr rfl fun k _ ↦ hstep k]
+  -- Step A3: rename the indices.
+  rw [Finset.sum_comm]
+  -- Steps A4–A6: first Bianchi, plane antisymmetry, skew trace.
+  apply Finset.sum_congr rfl
+  intro k _
+  have hFB : ∀ j, (covCurvDeriv G x (S k) (bE j) (bE k)) w
+      = -(covCurvDeriv G x (S k) (bE k) w) (bE j)
+        - (covCurvDeriv G x (S k) w (bE j)) (bE k) := by
+    intro j
+    have h := covCurvDeriv_first_bianchi hdiffΓ hdd hΓsymm
+      (S k) (bE j) (bE k) w
+    have h' : covCurvDeriv G x (S k) (bE j) (bE k) w
+        + covCurvDeriv G x (S k) (bE k) w (bE j)
+        + covCurvDeriv G x (S k) w (bE j) (bE k) = 0 := h
+    linear_combination (norm := module) h'
+  have hPA : ∀ j, (covCurvDeriv G x (S k) w (bE j)) (bE k)
+      = -(covCurvDeriv G x (S k) (bE j) w) (bE k) := by
+    intro j
+    rw [covCurvDeriv_antisymm G x (S k) w (bE j)]
+    simp
+  have hterm : ∀ j, G x ((covCurvDeriv G x (S k) (bE j) (bE k)) w)
+      (S j)
+      = -G x ((covCurvDeriv G x (S k) (bE k) w) (bE j)) (S j)
+        + G x ((covCurvDeriv G x (S k) (bE j) w) (bE k)) (S j) := by
+    intro j
+    rw [hFB j, hPA j]
+    simp [map_add, map_sub]
+  rw [Finset.sum_congr rfl fun j _ ↦ hterm j, Finset.sum_add_distrib]
+  -- The skew-trace sum vanishes.
+  have hzero : ∑ j, -G x ((covCurvDeriv G x (S k) (bE k) w) (bE j))
+      (S j) = 0 := by
+    have := hskewtrace (covCurvDeriv G x (S k) (bE k) w)
+      (fun p q ↦ covCurvDeriv_applied_skew hGC2 hGsymm hinv hdiffΓ hdd
+        (S k) (bE k) w p q)
+    rw [Finset.sum_neg_distrib, this, neg_zero]
+  rw [hzero, zero_add]
+  -- The remaining sum is the Ricci-divergence summand.
+  exact Finset.sum_congr rfl fun j _ ↦ (hcoord j _).symm
+
+end RicciFlow
