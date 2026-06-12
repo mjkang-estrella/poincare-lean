@@ -5006,3 +5006,102 @@ theorem trace_coordRicciEndo (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E)
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The raised-index contraction is the trace**: for an invertible metric,
+`Σⱼ G(f(♯bʲ))(bⱼ) = tr f` — the trace of the conjugation `♭∘f∘♯`
+computed in the dual basis, collapsed by trace-commutation.
+-/
+theorem sum_g_raised_eq_trace
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E) (hinv : (G x).IsInvertible)
+    (f : E →ₗ[ℝ] E) :
+    ∑ j, G x (f ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord j))))
+      ((Module.finBasis ℝ E) j)
+      = LinearMap.trace ℝ E f := by
+  set bE := Module.finBasis ℝ E with hbE
+  -- The lowering and raising maps, as plain linear maps.
+  set flat : E →ₗ[ℝ] (E →L[ℝ] ℝ) := (G x).toLinearMap with hflat
+  set sharp : (E →L[ℝ] ℝ) →ₗ[ℝ] E := ((G x).inverse).toLinearMap
+    with hsharp
+  have hid : sharp ∘ₗ flat = LinearMap.id := by
+    apply LinearMap.ext
+    intro u
+    exact hinv.inverse_apply_eq.mpr rfl
+  -- The conjugated endomorphism on the dual.
+  set D : (E →L[ℝ] ℝ) →ₗ[ℝ] (E →L[ℝ] ℝ) := flat ∘ₗ f ∘ₗ sharp with hD
+  -- Its trace equals the trace of `f` by commutation and `♯∘♭ = id`.
+  have htrD : LinearMap.trace ℝ (E →L[ℝ] ℝ) D = LinearMap.trace ℝ E f := by
+    rw [hD, LinearMap.trace_comp_comm', LinearMap.comp_assoc, hid,
+      LinearMap.comp_id]
+  -- Compute the trace of `D` in the dual basis.
+  set bD : Module.Basis (Fin (Module.finrank ℝ E)) ℝ (E →L[ℝ] ℝ) :=
+    bE.dualBasis.map LinearMap.toContinuousLinearMap with hbD
+  rw [← htrD, LinearMap.trace_eq_matrix_trace ℝ bD, Matrix.trace]
+  apply Finset.sum_congr rfl
+  intro j _
+  rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+  have hbDj : bD j = LinearMap.toContinuousLinearMap (bE.coord j) := by
+    rw [hbD, Module.Basis.map_apply]
+    congr 1
+    exact congrFun bE.coe_dualBasis j
+  have hrepr : ∀ lam : E →L[ℝ] ℝ, bD.repr lam j = lam (bE j) := by
+    intro lam
+    rw [hbD, Module.Basis.map_repr]
+    show bE.dualBasis.repr (LinearMap.toContinuousLinearMap.symm lam) j = _
+    rw [Module.Basis.dualBasis_repr]
+    rfl
+  rw [hrepr, hbDj]
+  rfl
+
+end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**`|Ric|²` IS THE TRACE OF `Rc²`**: for an invertible metric with
+symmetric Ricci form, the coordinate `|Ric|²` equals
+`tr(Rc ∘ Rc)` — exactly the quadratic term demanded by the evolution
+hypothesis of the finite-time singularity theorem.
+-/
+theorem coordRicciNormSq_eq_trace
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E)
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hinv : (G x).IsInvertible)
+    (hRicSymm : ∀ u w : E, coordRicci G x u w = coordRicci G x w u) :
+    coordRicciNormSq G x hdiff =
+      LinearMap.trace ℝ E
+        (coordRicciEndo G x hdiff ∘ₗ coordRicciEndo G x hdiff) := by
+  rw [← sum_g_raised_eq_trace G x hinv]
+  unfold coordRicciNormSq
+  apply Finset.sum_congr rfl
+  intro j _
+  set ρ := LinearMap.toContinuousLinearMap
+    ((Module.finBasis ℝ E).coord j) with hρ
+  set v := (G x).inverse ρ with hv
+  -- The summand is `Ric(Rc v, bⱼ)`; flip by symmetry and pair back.
+  have h1 : (G x).inverse (coordRicciForm G x hdiff v) =
+      coordRicciEndo G x hdiff v := rfl
+  rw [h1]
+  rw [hRicSymm (coordRicciEndo G x hdiff v) ((Module.finBasis ℝ E) j)]
+  have h2 : coordRicci G x ((Module.finBasis ℝ E) j)
+      (coordRicciEndo G x hdiff v) =
+      coordRicciForm G x hdiff (coordRicciEndo G x hdiff v)
+        ((Module.finBasis ℝ E) j) := rfl
+  rw [h2, ← g_coordRicciEndo G x hdiff hinv]
+  rfl
+
+end RicciFlow
