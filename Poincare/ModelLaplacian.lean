@@ -5105,3 +5105,133 @@ theorem coordRicciNormSq_eq_trace
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The Ricci endomorphism is self-adjoint** with respect to a symmetric
+invertible metric with symmetric Ricci form — the self-adjointness
+hypothesis of the finite-time singularity theorem, discharged in
+coordinates.
+-/
+theorem coordRicciEndo_selfAdjoint
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E)
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hinv : (G x).IsInvertible)
+    (hGsymm : ∀ v w : E, G x v w = G x w v)
+    (hRicSymm : ∀ u w : E, coordRicci G x u w = coordRicci G x w u)
+    (p q : E) :
+    G x (coordRicciEndo G x hdiff p) q
+      = G x p (coordRicciEndo G x hdiff q) := by
+  have h1 : G x (coordRicciEndo G x hdiff p) q =
+      coordRicci G x q p := by
+    rw [g_coordRicciEndo G x hdiff hinv]
+    rfl
+  have h2 : G x p (coordRicciEndo G x hdiff q) =
+      coordRicci G x p q := by
+    rw [hGsymm, g_coordRicciEndo G x hdiff hinv]
+    rfl
+  rw [h1, h2, hRicSymm]
+
+end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+open Set in
+/--
+**THE CONDITIONAL RICCI-FLOW SINGULARITY THEOREM**: a Ricci flow of
+coordinate metrics (`∂G/∂t = −2 Ric` with the standard regularity and
+symmetry data, the contracted Bianchi identity, and the model
+compatibility hypotheses) whose initial scalar curvature is bounded
+below by `m₀ > 0` on a compact set attaining interior minima cannot
+extend past `n/(2m₀)`: every hypothesis of the finite-time singularity
+theorem is discharged by the variation machinery — the derivative of
+`R` by the assembled `δΓ→δRm→δRic→∂R/∂t` chain with the Bianchi input,
+the trace identity by `trace_coordRicciEndo`, and the quadratic term by
+`coordRicciNormSq_eq_trace`.
+-/
+theorem hamilton_ricci_flow_singularity
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v)
+    [Nontrivial E]
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ}
+    {H : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ}
+    {K : Set E} (hK : IsCompact K) (hKne : K.Nonempty)
+    {T m₀ B : ℝ} (hm₀ : 0 < m₀) (hT0 : 0 ≤ T)
+    (hd2 : ∀ (t : ℝ) (x : E) (u : E),
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp (Gt t) y u) x)
+    (hinv : ∀ (t : ℝ) (x : E), (Gt t x).IsInvertible)
+    (hGsymm : ∀ (t : ℝ) (x : E) (v w : E), Gt t x v w = Gt t x w v)
+    (hRicSymm : ∀ (t : ℝ) (x : E) (u w : E),
+      coordRicci (Gt t) x u w = coordRicci (Gt t) x w u)
+    (hdG : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      HasDerivAt (fun s ↦ Gt s x) (H t x) t)
+    (hmix : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, ∀ p q r : E,
+      HasDerivAt (fun s ↦ (fderiv ℝ (Gt s) x p) q r)
+        ((fderiv ℝ (H t) x p) q r) t)
+    (hmix2 : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, ∀ p v : E,
+      HasDerivAt
+        (fun s ↦ fderiv ℝ (fun y ↦ christoffelClosedOp (Gt s) y p) x v)
+        (fderiv ℝ (fun y ↦ christoffelDerivOp (Gt t) (H t) y p) x v) t)
+    (hH : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      H t x = (-2 : ℝ) • coordRicciForm (Gt t) x (hd2 t x))
+    (hBianchi : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      ∑ j, ricciDeriv (Gt t) (H t) x
+          ((Gt t x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) j)
+        = modelLaplacian b hb (fun y ↦ coordScalar (Gt t) y) x)
+    (hR_cont : Continuous ↿(fun t x ↦ coordScalar (Gt t) x))
+    (hspace : ∀ t ∈ Icc (0 : ℝ) T,
+      ContDiff ℝ 2 (fun x ↦ coordScalar (Gt t) x))
+    (hsa : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, ∀ p q : E,
+      b (coordRicciEndo (Gt t) x (hd2 t x) p) q
+        = b p (coordRicciEndo (Gt t) x (hd2 t x) q))
+    (hmin_int : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      IsMinOn (fun y ↦ coordScalar (Gt t) y) K x →
+        IsLocalMin (fun y ↦ coordScalar (Gt t) y) x)
+    (hRB : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, coordScalar (Gt t) x ≤ B)
+    (h0 : ∀ x ∈ K, m₀ ≤ coordScalar (Gt 0) x) :
+    T < (Module.finrank ℝ E : ℝ) / (2 * m₀) := by
+  apply hamilton_singularity_of_evolution_eq b hb hbs hbpos hK hKne
+    hm₀ hT0
+    (R := fun t x ↦ coordScalar (Gt t) x)
+    (R' := fun t x ↦
+      modelLaplacian b hb (fun y ↦ coordScalar (Gt t) y) x
+        + 2 * LinearMap.trace ℝ E
+          (coordRicciEndo (Gt t) x (hd2 t x)
+            ∘ₗ coordRicciEndo (Gt t) x (hd2 t x)))
+    (Rc := fun t x ↦ coordRicciEndo (Gt t) x (hd2 t x))
+    hR_cont ?_ hspace hsa ?_ ?_ hmin_int hRB h0
+  · -- the time derivative, from the assembled variation machinery
+    intro x hx t ht
+    have h := hamilton_scalar_evolution_of_bianchi
+      (Gt := Gt) (H := H t) (x := x) (t₀ := t) b hb
+      (hdG t ht x hx)
+      (Filter.Eventually.of_forall fun s ↦ hinv s x)
+      (hmix t ht x hx) (hmix2 t ht x hx)
+      (fun s u ↦ hd2 s x u)
+      (hH t ht x hx) (hBianchi t ht x hx)
+    rwa [coordRicciNormSq_eq_trace (Gt t) x (hd2 t x) (hinv t x)
+      (hRicSymm t x)] at h
+  · -- the trace identity
+    intro t ht x hx
+    exact trace_coordRicciEndo (Gt t) x (hd2 t x) (hinv t x)
+      (hGsymm t x)
+  · -- the evolution equation, by definition of `R'`
+    intro t ht x hx
+    rfl
+
+end RicciFlow
