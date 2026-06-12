@@ -4035,3 +4035,37 @@ theorem christoffelDeriv_add_snd
   abel
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The corrector functional is homogeneous in its second direction. -/
+theorem christoffelFunctional_smul_snd
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x u : E) (c : ℝ) (v : E) :
+    christoffelFunctional G x u (c • v) =
+      c • christoffelFunctional G x u v := by
+  apply LinearMap.ext
+  intro w
+  show (1 / 2 : ℝ) * ((fderiv ℝ G x u) (c • v) w
+      + (fderiv ℝ G x (c • v)) u w - (fderiv ℝ G x w) u (c • v)) = _
+  simp only [map_smul, ContinuousLinearMap.smul_apply,
+    LinearMap.smul_apply, smul_eq_mul]
+  show _ = c * ((1 / 2 : ℝ) * ((fderiv ℝ G x u) v w
+      + (fderiv ℝ G x v) u w - (fderiv ℝ G x w) u v))
+  ring
+
+/-- **`δΓ` is homogeneous in its second slot** — bilinearity complete. -/
+theorem christoffelDeriv_smul_snd
+    (G H : E → E →L[ℝ] E →L[ℝ] ℝ) (x u : E) (c : ℝ) (v : E) :
+    christoffelDeriv G H x u (c • v) =
+      c • christoffelDeriv G H x u v := by
+  unfold christoffelDeriv
+  rw [christoffelFunctional_smul_snd G x u c v,
+    christoffelFunctional_smul_snd H x u c v]
+  simp only [map_smul, ContinuousLinearMap.neg_apply, smul_add, smul_neg]
+
+end RicciFlow
