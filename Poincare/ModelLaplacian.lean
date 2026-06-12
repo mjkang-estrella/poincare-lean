@@ -6859,3 +6859,42 @@ theorem g_christoffelDeriv
     congrArg (fun m ↦ H x u m) hΓvw.symm]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant derivative of the Christoffel variation**:
+`(∇_v δΓ)(p, z)` — the flat derivative of the `δΓ`-operator family
+corrected by the Christoffel action on the value and both slots. -/
+noncomputable def covDeltaGammaDeriv (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x v p z : E) : E :=
+  (fderiv ℝ (fun y ↦ christoffelDerivOp G H y p) x v) z
+    + christoffelClosedOp G x v (christoffelDerivOp G H x p z)
+    - christoffelDerivOp G H x (christoffelClosedOp G x v p) z
+    - christoffelDerivOp G H x p (christoffelClosedOp G x v z)
+
+/--
+**`δRm` IS THE ANTISYMMETRIZED COVARIANT DERIVATIVE OF `δΓ`** (the
+Lichnerowicz form): `δRm(u,w)z = (∇_u δΓ)(w,z) − (∇_w δΓ)(u,z)` — the
+slot corrections cancel through torsion symmetry, and the commutator
+terms are exactly the Christoffel actions.
+-/
+theorem curvatureDerivOp_eq_covDeltaGamma
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hΓsymm : ∀ a b : E,
+      christoffelClosedOp G x a b = christoffelClosedOp G x b a)
+    (u w z : E) :
+    curvatureDerivOp G H x u w z
+      = covDeltaGammaDeriv G H x u w z
+        - covDeltaGammaDeriv G H x w u z := by
+  unfold covDeltaGammaDeriv curvatureDerivOp
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.sub_apply,
+    ContinuousLinearMap.comp_apply]
+  rw [hΓsymm u w]
+  abel
+
+end RicciFlow
