@@ -5878,3 +5878,74 @@ theorem fderiv_coordCurvatureOp_family
   rw [e1, e2]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Slot symmetry of the Christoffel gradient**: differentiating the
+torsion symmetry, the family index and the applied vector of the
+Christoffel gradient commute. -/
+theorem fderiv_christoffelClosedOp_slot_symm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ p : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y p) x)
+    (hΓsymm : ∀ (y : E) (a b : E),
+      christoffelClosedOp G y a b = christoffelClosedOp G y b a)
+    (p q v : E) :
+    (fderiv ℝ (fun y ↦ christoffelClosedOp G y p) x v) q
+      = (fderiv ℝ (fun y ↦ christoffelClosedOp G y q) x v) p := by
+  rw [fderiv_clm_family_apply (hdiffΓ p) v q,
+    fderiv_clm_family_apply (hdiffΓ q) v p]
+  have hfe : (fun y ↦ christoffelClosedOp G y p q)
+      = fun y ↦ christoffelClosedOp G y q p :=
+    funext fun y ↦ hΓsymm y p q
+  rw [hfe]
+
+/-- **Slot symmetry of the second Christoffel gradient**: the family
+index and the applied vector commute through two derivatives. -/
+theorem sndFDeriv_christoffelClosedOp_slot_symm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hΓsymm : ∀ (y : E) (a b : E),
+      christoffelClosedOp G y a b = christoffelClosedOp G y b a)
+    (p q a v : E) :
+    (fderiv ℝ (fderiv ℝ (fun z ↦ christoffelClosedOp G z p)) x a v) q
+      = (fderiv ℝ (fderiv ℝ (fun z ↦ christoffelClosedOp G z q)) x a v)
+        p := by
+  have hΦp : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y v) x :=
+    DifferentiableAt.clm_apply (𝕜 := ℝ) (G := E) (H := E →L[ℝ] E)
+      (hdd p) (differentiableAt_const v)
+  have hΦq : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z q) y v) x :=
+    DifferentiableAt.clm_apply (𝕜 := ℝ) (G := E) (H := E →L[ℝ] E)
+      (hdd q) (differentiableAt_const v)
+  have e1 : (fderiv ℝ (fderiv ℝ (fun z ↦ christoffelClosedOp G z p))
+      x a v) q
+      = fderiv ℝ (fun y ↦ (fderiv ℝ
+          (fun z ↦ christoffelClosedOp G z p) y v) q) x a := by
+    rw [fderiv_clm_family_apply (hdd p) a v]
+    rw [fderiv_clm_family_apply hΦp a q]
+  have e2 : (fderiv ℝ (fderiv ℝ (fun z ↦ christoffelClosedOp G z q))
+      x a v) p
+      = fderiv ℝ (fun y ↦ (fderiv ℝ
+          (fun z ↦ christoffelClosedOp G z q) y v) p) x a := by
+    rw [fderiv_clm_family_apply (hdd q) a v]
+    rw [fderiv_clm_family_apply hΦq a p]
+  rw [e1, e2]
+  have hfe : (fun y ↦ (fderiv ℝ
+        (fun z ↦ christoffelClosedOp G z p) y v) q)
+      = fun y ↦ (fderiv ℝ
+        (fun z ↦ christoffelClosedOp G z q) y v) p :=
+    funext fun y ↦ fderiv_christoffelClosedOp_slot_symm
+      (fun r ↦ hdiffΓ y r) hΓsymm p q v
+  rw [hfe]
+
+end RicciFlow
