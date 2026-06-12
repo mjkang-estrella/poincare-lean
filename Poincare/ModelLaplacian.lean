@@ -2709,3 +2709,40 @@ theorem christoffelDeriv_symm
     christoffelFunctional_symm hHd hHsymm u v]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The corrector functional of a constant metric vanishes. -/
+theorem christoffelFunctional_const (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (x u v : E) :
+    christoffelFunctional (fun _ : E ↦ G₀) x u v = 0 := by
+  apply LinearMap.ext
+  intro w
+  show (1 / 2 : ℝ) * ((fderiv ℝ (fun _ : E ↦ G₀) x u) v w
+      + (fderiv ℝ (fun _ : E ↦ G₀) x v) u w
+      - (fderiv ℝ (fun _ : E ↦ G₀) x w) u v) = 0
+  rw [fderiv_fun_const]
+  simp
+
+/--
+**`δΓ` at a flat background**: varying from a constant metric, the
+quadratic term dies and `δΓ = G₀⁻¹ Φ_H` — the linearized Christoffel
+symbols, the operator at the heart of DeTurck's linearization of the
+Ricci flow.
+-/
+theorem christoffelDeriv_const_base (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (H : E → E →L[ℝ] E →L[ℝ] ℝ) (x u v : E) :
+    christoffelDeriv (fun _ ↦ G₀) H x u v =
+      ContinuousLinearMap.inverse G₀
+        (LinearMap.toContinuousLinearMap
+          (christoffelFunctional H x u v)) := by
+  unfold christoffelDeriv
+  rw [christoffelFunctional_const G₀ x u v]
+  simp
+
+end RicciFlow
