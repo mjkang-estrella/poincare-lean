@@ -1606,3 +1606,50 @@ theorem modelDivergence_id_const (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
   simp [LinearMap.trace_id]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**`div ∘ grad = Δ`** (constant metrics): the divergence of the gradient is
+the Laplacian — the defining cross-check tying the four Bochner operators
+together.
+-/
+theorem modelDivergence_gradient_const (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (b₀ : LinearMap.BilinForm ℝ E) (hb₀ : b₀.Nondegenerate)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (x : E) :
+    modelDivergence (fun _ ↦ G₀) (fun _ ↦ b₀) (fun _ ↦ hb₀)
+      (fun y ↦ metricGradient b₀ hb₀ f y) x =
+      modelLaplacian b₀ hb₀ f x := by
+  have hf1 : Differentiable ℝ (fderiv ℝ f) :=
+    (hf.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)
+  -- The gradient is a fixed continuous linear map applied to `Df`.
+  set Lc : (E →L[ℝ] ℝ) →L[ℝ] E := LinearMap.toContinuousLinearMap
+    ((LinearMap.BilinForm.toDual b₀ hb₀).symm.toLinearMap ∘ₗ
+      (LinearMap.toContinuousLinearMap.symm :
+        (E →L[ℝ] ℝ) ≃ₗ[ℝ] (E →ₗ[ℝ] ℝ)).toLinearMap) with hLc
+  have hgrad : (fun y ↦ metricGradient b₀ hb₀ f y) =
+      fun y ↦ Lc (fderiv ℝ f y) := rfl
+  unfold modelDivergence
+  rw [hgrad]
+  -- The corrector term vanishes for a constant metric.
+  rw [show (christoffelLinear (fun _ : E ↦ G₀) x ((fun _ : E ↦ b₀) x)
+      ((fun _ : E ↦ hb₀) x)).flip ((fun y ↦ Lc (fderiv ℝ f y)) x) = 0
+    from by
+      apply LinearMap.ext
+      intro v
+      simp only [LinearMap.flip_apply, LinearMap.zero_apply]
+      exact christoffelAt_const G₀ x b₀ hb₀ v _, add_zero]
+  -- The derivative of `Lc ∘ Df` is `Lc ∘ D²f`.
+  have hd : fderiv ℝ (fun y ↦ Lc (fderiv ℝ f y)) x =
+      Lc.comp (fderiv ℝ (fderiv ℝ f) x) :=
+    (Lc.hasFDerivAt.comp x (hf1 x).hasFDerivAt).fderiv
+  rw [hd]
+  unfold modelLaplacian
+  rfl
+
+end RicciFlow
