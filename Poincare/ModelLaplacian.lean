@@ -1888,3 +1888,68 @@ theorem gaussian_laplacian (b : LinearMap.BilinForm ℝ E)
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The Gaussian soliton equation**: `Hess(b(x,x)/4τ) = b/(2τ)` on a
+constant metric. With the flat connection Ricci-flat, this is exactly the
+shrinking gradient-soliton equation `Ric + Hess f = g/(2τ)` — the model
+self-similar singularity of the Ricci flow, verified pointwise.
+-/
+theorem gaussian_soliton_hessian (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (hbs : ∀ v w : E, b v w = b w v)
+    {τ : ℝ} (hτ : τ ≠ 0) (x v w : E) :
+    covariantHessian (fun _ ↦ G₀) (fun _ ↦ b) (fun _ ↦ hb)
+      (fun y ↦ (1 / (4 * τ)) * b y y) x v w =
+      (1 / (2 * τ)) * b v w := by
+  unfold covariantHessian
+  -- The corrector dies on the constant metric.
+  rw [show christoffelAt (fun _ : E ↦ G₀) x ((fun _ : E ↦ b) x)
+      ((fun _ : E ↦ hb) x) v w = 0 from
+    christoffelAt_const G₀ x b hb v w, map_zero, sub_zero]
+  -- The Hessian of the scaled quadratic form.
+  set bC : E →L[ℝ] E →L[ℝ] ℝ := LinearMap.toContinuousLinearMap
+    ((LinearMap.toContinuousLinearMap :
+      (E →ₗ[ℝ] ℝ) ≃ₗ[ℝ] (E →L[ℝ] ℝ)).toLinearMap ∘ₗ b) with hbC
+  have hf1 : ∀ y : E, HasFDerivAt (fun z ↦ (1 / (4 * τ)) * b z z)
+      ((1 / (4 * τ)) • (bC y + bC.flip y)) y := by
+    intro y
+    have hc : HasFDerivAt (fun z : E ↦ bC z) bC y := bC.hasFDerivAt
+    have h := (hc.clm_apply (hasFDerivAt_id y)).const_mul (1 / (4 * τ))
+    have heq : (fun z : E ↦ (1 / (4 * τ)) * bC z z) =
+        fun z ↦ (1 / (4 * τ)) * b z z := by
+      funext z
+      rfl
+    rw [← heq]
+    convert h using 1
+  have hdf : fderiv ℝ (fun z ↦ (1 / (4 * τ)) * b z z) =
+      fun y ↦ (1 / (4 * τ)) • (bC y + bC.flip y) :=
+    funext fun y ↦ (hf1 y).fderiv
+  have hd2 : fderiv ℝ (fderiv ℝ (fun z ↦ (1 / (4 * τ)) * b z z)) x =
+      (1 / (4 * τ)) • (bC + bC.flip) := by
+    rw [hdf]
+    have hlin : HasFDerivAt
+        (fun y : E ↦ (1 / (4 * τ)) • (bC y + bC.flip y))
+        ((1 / (4 * τ)) • (bC + bC.flip)) x := by
+      have h1 : HasFDerivAt (fun y : E ↦ bC y + bC.flip y)
+          (bC + bC.flip) x := by
+        simpa using bC.hasFDerivAt.add bC.flip.hasFDerivAt
+      exact h1.const_smul (1 / (4 * τ))
+    exact hlin.fderiv
+  rw [hd2]
+  have h1 : bC v w = b v w := rfl
+  have h2 : bC.flip v w = b w v := rfl
+  simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply,
+    h1, h2, ContinuousLinearMap.flip_apply, smul_eq_mul]
+  rw [hbs w v]
+  field_simp
+  ring
+
+end RicciFlow
