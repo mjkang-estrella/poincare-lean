@@ -2526,3 +2526,50 @@ theorem hasDerivAt_clm_inverse
   exact hB
 
 end RicciFlow
+
+namespace RicciFlow
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**Derivative reconstruction for functional-valued paths**: in finite
+dimension, a path of functionals whose every evaluation differentiates has
+a derivative — reconstructed through a basis. The bridge from the scalar
+`δΓ`-derivatives to the vector-level variation of the connection.
+-/
+theorem hasDerivAt_clm_of_forall_apply
+    {φ : ℝ → E →L[ℝ] ℝ} {ψ : E →L[ℝ] ℝ} {t₀ : ℝ}
+    (h : ∀ w : E, HasDerivAt (fun t ↦ φ t w) (ψ w) t₀) :
+    HasDerivAt φ ψ t₀ := by
+  set bE := Module.finBasis ℝ E with hbE
+  set coordC : (Fin (Module.finrank ℝ E)) → (E →L[ℝ] ℝ) :=
+    fun i ↦ LinearMap.toContinuousLinearMap (bE.coord i) with hcoord
+  -- Reconstruction: every functional is the coordinate sum.
+  have hrepr : ∀ ρ : E →L[ℝ] ℝ,
+      ρ = ∑ i, ρ (bE i) • coordC i := by
+    intro ρ
+    ext w
+    have hw := bE.sum_repr w
+    conv_lhs => rw [← hw]
+    rw [map_sum]
+    simp only [ContinuousLinearMap.coe_sum', Finset.sum_apply,
+      ContinuousLinearMap.smul_apply, smul_eq_mul, map_smul]
+    apply Finset.sum_congr rfl
+    intro i _
+    rw [show (coordC i) w = bE.coord i w from rfl,
+      Module.Basis.coord_apply]
+    ring
+  -- Differentiate the coordinate sum.
+  have hsum : HasDerivAt (fun t ↦ ∑ i, φ t (bE i) • coordC i)
+      (∑ i, ψ (bE i) • coordC i) t₀ := by
+    apply HasDerivAt.fun_sum
+    intro i _
+    exact (h (bE i)).smul_const (coordC i)
+  have hfun : (fun t ↦ φ t) = fun t ↦ ∑ i, φ t (bE i) • coordC i := by
+    funext t
+    exact hrepr (φ t)
+  rw [show φ = fun t ↦ φ t from rfl, hfun, hrepr ψ]
+  exact hsum
+
+end RicciFlow
