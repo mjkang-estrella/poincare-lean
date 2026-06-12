@@ -4934,3 +4934,75 @@ theorem hamilton_scalar_evolution_of_bianchi
   exact h
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci endomorphism**: the index-raised Ricci form `♯∘Ric♭` —
+the operator shape demanded by the singularity theorem's hypotheses. -/
+noncomputable def coordRicciEndo (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E)
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x) :
+    E →ₗ[ℝ] E where
+  toFun u := (G x).inverse (coordRicciForm G x hdiff u)
+  map_add' u v := by rw [map_add, map_add]
+  map_smul' c u := by rw [map_smul, map_smul]; rfl
+
+@[simp]
+theorem coordRicciEndo_apply (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E)
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u : E) :
+    coordRicciEndo G x hdiff u =
+      (G x).inverse (coordRicciForm G x hdiff u) := rfl
+
+/-- **The metric pairs the Ricci endomorphism back to the Ricci form**:
+`G(Rc u, ·) = Ric(·, u)` under invertibility. -/
+theorem g_coordRicciEndo (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E)
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hinv : (G x).IsInvertible) (u : E) :
+    G x (coordRicciEndo G x hdiff u) = coordRicciForm G x hdiff u := by
+  rw [coordRicciEndo_apply]
+  exact (hinv.inverse_apply_eq.mp rfl).symm
+
+/--
+**THE SCALAR IS THE TRACE OF THE RICCI ENDOMORPHISM**: for a symmetric
+invertible metric, `tr(Rc) = R` in coordinates — exactly the trace
+hypothesis demanded by the finite-time singularity theorem.
+-/
+theorem trace_coordRicciEndo (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E)
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hinv : (G x).IsInvertible)
+    (hGsymm : ∀ v w : E, G x v w = G x w v) :
+    LinearMap.trace ℝ E (coordRicciEndo G x hdiff) = coordScalar G x := by
+  set bE := Module.finBasis ℝ E with hbE
+  rw [LinearMap.trace_eq_matrix_trace ℝ bE, Matrix.trace]
+  unfold coordScalar
+  apply Finset.sum_congr rfl
+  intro j _
+  rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+  set ρ := LinearMap.toContinuousLinearMap (bE.coord j) with hρ
+  -- `coordⱼ(Rc bⱼ) = G(Rc bⱼ)(♯ρʲ)` by symmetry and the inverse identity.
+  have hpair : ∀ v : E, bE.coord j v = G x v ((G x).inverse ρ) := by
+    intro v
+    have h1 : G x v ((G x).inverse ρ) = G x ((G x).inverse ρ) v :=
+      hGsymm v _
+    have h2 : G x ((G x).inverse ρ) = ρ :=
+      (hinv.inverse_apply_eq.mp rfl).symm
+    rw [h1, h2]
+    rfl
+  rw [show bE.repr (coordRicciEndo G x hdiff (bE j)) j =
+    bE.coord j (coordRicciEndo G x hdiff (bE j)) from rfl]
+  rw [hpair, ← ContinuousLinearMap.comp_apply]
+  rw [show (G x) (coordRicciEndo G x hdiff (bE j)) =
+    coordRicciForm G x hdiff (bE j) from
+    g_coordRicciEndo G x hdiff hinv (bE j)]
+  rfl
+
+end RicciFlow
