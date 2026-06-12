@@ -1653,3 +1653,46 @@ theorem modelDivergence_gradient_const (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The gradient is odd. -/
+theorem metricGradient_neg (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) {f : E → ℝ} (hf : Differentiable ℝ f)
+    (x : E) :
+    metricGradient b hb (fun y ↦ -f y) x = -metricGradient b hb f x := by
+  unfold metricGradient
+  rw [show fderiv ℝ (fun y ↦ -f y) x = -fderiv ℝ f x from
+    fderiv_neg (f := f)]
+  simp
+
+/--
+**The conjugate-heat weight identity**:
+`Δ(e^{−f}) = e^{−f}(|∇f|² − Δf)` — the pointwise identity of the weight
+`e^{−f}` in Perelman's `𝓕`-functional and conjugate heat equation.
+-/
+theorem modelLaplacian_exp_neg (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (x : E) :
+    modelLaplacian b hb (fun y ↦ Real.exp (-f y)) x =
+      Real.exp (-f x) *
+        (b (metricGradient b hb f x) (metricGradient b hb f x)
+          - modelLaplacian b hb f x) := by
+  have hnf : ContDiff ℝ 2 (fun y ↦ -f y) := hf.neg
+  have h := modelLaplacian_exp b hb hnf x
+  rw [h, metricGradient_neg b hb (hf.differentiable (by norm_num)) x]
+  have hsm : modelLaplacian b hb (fun y ↦ -f y) x =
+      -modelLaplacian b hb f x := by
+    have := modelLaplacian_smul b hb (-1 : ℝ) hf (x := x)
+    simp only [neg_one_mul] at this
+    rw [this]
+  rw [hsm]
+  simp only [map_neg, LinearMap.neg_apply, neg_neg]
+  ring
+
+end RicciFlow
