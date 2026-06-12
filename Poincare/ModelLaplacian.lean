@@ -6264,3 +6264,74 @@ theorem covCurvDeriv_pair_symm
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The covariant curvature derivative is additive in its second plane
+slot. -/
+theorem covCurvDeriv_add_snd
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (v u w₁ w₂ : E) :
+    covCurvDeriv G x v u (w₁ + w₂)
+      = covCurvDeriv G x v u w₁ + covCurvDeriv G x v u w₂ := by
+  unfold covCurvDeriv
+  have hfam : (fun y ↦ coordCurvatureOp G y u (w₁ + w₂))
+      = fun y ↦ coordCurvatureOp G y u w₁
+        + coordCurvatureOp G y u w₂ := by
+    funext y
+    exact coordCurvatureOp_add_snd G (fun p ↦ hdiffΓ y p) u w₁ w₂
+  rw [hfam, fderiv_fun_add
+    (differentiableAt_coordCurvatureOp_family hdiffΓ hdd u w₁)
+    (differentiableAt_coordCurvatureOp_family hdiffΓ hdd u w₂)]
+  rw [coordCurvatureOp_add_snd G (fun p ↦ hdiffΓ x p) u w₁ w₂,
+    map_add, coordCurvatureOp_add_snd G (fun p ↦ hdiffΓ x p) u
+      (christoffelClosedOp G x v w₁) (christoffelClosedOp G x v w₂)]
+  have hslot : coordCurvatureOp G x (christoffelClosedOp G x v u)
+      (w₁ + w₂)
+      = coordCurvatureOp G x (christoffelClosedOp G x v u) w₁
+        + coordCurvatureOp G x (christoffelClosedOp G x v u) w₂ :=
+    coordCurvatureOp_add_snd G (fun p ↦ hdiffΓ x p) _ w₁ w₂
+  rw [hslot]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_add,
+    ContinuousLinearMap.add_comp]
+  abel
+
+/-- The covariant curvature derivative is homogeneous in its second
+plane slot. -/
+theorem covCurvDeriv_smul_snd
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (v u : E) (c : ℝ) (w : E) :
+    covCurvDeriv G x v u (c • w) = c • covCurvDeriv G x v u w := by
+  unfold covCurvDeriv
+  have hfam : (fun y ↦ coordCurvatureOp G y u (c • w))
+      = fun y ↦ c • coordCurvatureOp G y u w := by
+    funext y
+    exact coordCurvatureOp_smul_snd G (fun p ↦ hdiffΓ y p) u c w
+  rw [hfam, fderiv_fun_const_smul
+    (differentiableAt_coordCurvatureOp_family hdiffΓ hdd u w) c]
+  rw [coordCurvatureOp_smul_snd G (fun p ↦ hdiffΓ x p) u c w,
+    map_smul, coordCurvatureOp_smul_snd G (fun p ↦ hdiffΓ x p) u c
+      (christoffelClosedOp G x v w)]
+  have hslot : coordCurvatureOp G x (christoffelClosedOp G x v u)
+      (c • w)
+      = c • coordCurvatureOp G x (christoffelClosedOp G x v u) w :=
+    coordCurvatureOp_smul_snd G (fun p ↦ hdiffΓ x p) _ c w
+  rw [hslot]
+  simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_smul,
+    ContinuousLinearMap.smul_comp]
+  module
+
+end RicciFlow
