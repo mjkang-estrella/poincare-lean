@@ -5612,3 +5612,69 @@ theorem coordRicci_symm
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+open Set in
+/--
+**The conditional Ricci-flow singularity theorem, with Ricci symmetry
+derived**: for a family of `C²` symmetric invertible metrics, the
+Ricci-symmetry input is supplied by `coordRicci_symm` — the named
+geometric hypotheses shrink to the contracted second Bianchi identity
+and the model regularity data.
+-/
+theorem hamilton_ricci_flow_singularity'
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v)
+    [Nontrivial E]
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ}
+    {H : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ}
+    {K : Set E} (hK : IsCompact K) (hKne : K.Nonempty)
+    {T m₀ B : ℝ} (hm₀ : 0 < m₀) (hT0 : 0 ≤ T)
+    (hGC2 : ∀ t : ℝ, ContDiff ℝ 2 (Gt t))
+    (hd2 : ∀ (t : ℝ) (x : E) (u : E),
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp (Gt t) y u) x)
+    (hinv : ∀ (t : ℝ) (x : E), (Gt t x).IsInvertible)
+    (hGsymm : ∀ (t : ℝ) (x : E) (v w : E), Gt t x v w = Gt t x w v)
+    (hdG : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      HasDerivAt (fun s ↦ Gt s x) (H t x) t)
+    (hmix : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, ∀ p q r : E,
+      HasDerivAt (fun s ↦ (fderiv ℝ (Gt s) x p) q r)
+        ((fderiv ℝ (H t) x p) q r) t)
+    (hmix2 : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, ∀ p v : E,
+      HasDerivAt
+        (fun s ↦ fderiv ℝ (fun y ↦ christoffelClosedOp (Gt s) y p) x v)
+        (fderiv ℝ (fun y ↦ christoffelDerivOp (Gt t) (H t) y p) x v) t)
+    (hH : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      H t x = (-2 : ℝ) • coordRicciForm (Gt t) x (hd2 t x))
+    (hBianchi : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      ∑ j, ricciDeriv (Gt t) (H t) x
+          ((Gt t x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) j)
+        = modelLaplacian b hb (fun y ↦ coordScalar (Gt t) y) x)
+    (hR_cont : Continuous ↿(fun t x ↦ coordScalar (Gt t) x))
+    (hspace : ∀ t ∈ Icc (0 : ℝ) T,
+      ContDiff ℝ 2 (fun x ↦ coordScalar (Gt t) x))
+    (hsa : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, ∀ p q : E,
+      b (coordRicciEndo (Gt t) x (hd2 t x) p) q
+        = b p (coordRicciEndo (Gt t) x (hd2 t x) q))
+    (hmin_int : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      IsMinOn (fun y ↦ coordScalar (Gt t) y) K x →
+        IsLocalMin (fun y ↦ coordScalar (Gt t) y) x)
+    (hRB : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, coordScalar (Gt t) x ≤ B)
+    (h0 : ∀ x ∈ K, m₀ ≤ coordScalar (Gt 0) x) :
+    T < (Module.finrank ℝ E : ℝ) / (2 * m₀) :=
+  hamilton_ricci_flow_singularity b hb hbs hbpos hK hKne hm₀ hT0
+    hd2 hinv hGsymm
+    (fun t x u w ↦ coordRicci_symm (hGC2 t) (hGsymm t) (hinv t)
+      (fun p ↦ hd2 t x p) u w)
+    hdG hmix hmix2 hH hBianchi hR_cont hspace hsa hmin_int hRB h0
+
+end RicciFlow
