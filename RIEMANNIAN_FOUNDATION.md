@@ -202,8 +202,11 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   finite-dimensional reconstruction, `hasDerivAt_christoffel_flow`
   (`∂Γ/∂t = G⁻¹Φ_{∂G} − G⁻¹(∂G)G⁻¹Φ_G`), the named `christoffelDeriv`
   with symmetry, and the flat-background linearization
-  `christoffelDeriv_const_base = G₀⁻¹Φ_H` — the opening object of the
-  DeTurck stratum.
+  `christoffelDeriv_const_base = G₀⁻¹Φ_H` and its pairing form
+  `b(δΓ(u,v),w) = Φ_H(u,v)(w)` — the opening objects of the DeTurck
+  stratum. (The conformal-variation symbol is shelved: nested-CLM scalar
+  actions hit instance-path mismatches in this Mathlib snapshot; three
+  routes recorded in project memory.)
 
 ## What this layer provides
 
