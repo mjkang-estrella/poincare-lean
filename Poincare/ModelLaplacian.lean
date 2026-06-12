@@ -5787,3 +5787,94 @@ theorem covCurvDeriv_const_eq_zero (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- Product rule for the Christoffel composition family. -/
+theorem fderiv_christoffelClosedOp_comp_apply
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ p : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y p) x)
+    (u w v : E) :
+    fderiv ℝ (fun y ↦ (christoffelClosedOp G y u).comp
+        (christoffelClosedOp G y w)) x v
+      = (christoffelClosedOp G x u).comp
+          ((fderiv ℝ (fun y ↦ christoffelClosedOp G y w) x) v)
+        + ((fderiv ℝ (fun y ↦ christoffelClosedOp G y u) x) v).comp
+          (christoffelClosedOp G x w) := by
+  have h := fderiv_clm_comp (hdiffΓ u) (hdiffΓ w)
+  rw [show fderiv ℝ (fun y ↦ (christoffelClosedOp G y u).comp
+      (christoffelClosedOp G y w)) x v
+    = (fderiv ℝ (fun y ↦ (christoffelClosedOp G y u).comp
+        (christoffelClosedOp G y w)) x) v from rfl, h]
+  simp
+
+/--
+**The derivative of the curvature family**: the spatial derivative of
+`y ↦ R_y(u,w)` splits into the second derivatives of the Christoffel
+families and the Christoffel-gradient cross terms — the expansion that
+feeds the second Bianchi cancellation.
+-/
+theorem fderiv_coordCurvatureOp_family
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ p : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y p) x)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (u w v : E) :
+    fderiv ℝ (fun y ↦ coordCurvatureOp G y u w) x v
+      = (fderiv ℝ (fderiv ℝ (fun z ↦ christoffelClosedOp G z w)) x v) u
+        - (fderiv ℝ (fderiv ℝ (fun z ↦ christoffelClosedOp G z u)) x v) w
+        + ((christoffelClosedOp G x u).comp
+            ((fderiv ℝ (fun y ↦ christoffelClosedOp G y w) x) v)
+          + ((fderiv ℝ (fun y ↦ christoffelClosedOp G y u) x) v).comp
+            (christoffelClosedOp G x w))
+        - ((christoffelClosedOp G x w).comp
+            ((fderiv ℝ (fun y ↦ christoffelClosedOp G y u) x) v)
+          + ((fderiv ℝ (fun y ↦ christoffelClosedOp G y w) x) v).comp
+            (christoffelClosedOp G x u)) := by
+  have h1 : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z w) y u) x :=
+    DifferentiableAt.clm_apply (𝕜 := ℝ) (G := E) (H := E →L[ℝ] E)
+      (hdd w) (differentiableAt_const u)
+  have h2 : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z u) y w) x :=
+    DifferentiableAt.clm_apply (𝕜 := ℝ) (G := E) (H := E →L[ℝ] E)
+      (hdd u) (differentiableAt_const w)
+  have h3 : DifferentiableAt ℝ (fun y ↦
+      (christoffelClosedOp G y u).comp (christoffelClosedOp G y w)) x :=
+    (hdiffΓ u).clm_comp (hdiffΓ w)
+  have h4 : DifferentiableAt ℝ (fun y ↦
+      (christoffelClosedOp G y w).comp (christoffelClosedOp G y u)) x :=
+    (hdiffΓ w).clm_comp (hdiffΓ u)
+  have hF : HasFDerivAt (fun y ↦ coordCurvatureOp G y u w)
+      ((((fderiv ℝ (fun y ↦ fderiv ℝ
+            (fun z ↦ christoffelClosedOp G z w) y u) x)
+          - fderiv ℝ (fun y ↦ fderiv ℝ
+            (fun z ↦ christoffelClosedOp G z u) y w) x)
+        + fderiv ℝ (fun y ↦ (christoffelClosedOp G y u).comp
+            (christoffelClosedOp G y w)) x)
+        - fderiv ℝ (fun y ↦ (christoffelClosedOp G y w).comp
+            (christoffelClosedOp G y u)) x) x :=
+    ((h1.hasFDerivAt.sub h2.hasFDerivAt).add h3.hasFDerivAt).sub
+      h4.hasFDerivAt
+  rw [hF.fderiv]
+  simp only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.add_apply]
+  rw [fderiv_christoffelClosedOp_comp_apply hdiffΓ u w v,
+    fderiv_christoffelClosedOp_comp_apply hdiffΓ w u v]
+  have e1 : fderiv ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z w) y u) x v
+      = (fderiv ℝ (fderiv ℝ (fun z ↦ christoffelClosedOp G z w)) x v)
+        u := (fderiv_clm_family_apply (hdd w) v u).symm
+  have e2 : fderiv ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z u) y w) x v
+      = (fderiv ℝ (fderiv ℝ (fun z ↦ christoffelClosedOp G z u)) x v)
+        w := (fderiv_clm_family_apply (hdd u) v w).symm
+  rw [e1, e2]
+
+end RicciFlow
