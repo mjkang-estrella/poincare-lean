@@ -4177,3 +4177,22 @@ theorem hasDerivAt_christoffelClosedOp_comp
     (hasDerivAt_christoffelClosedOp w hdG hev hmix)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The `δΓ`-operator inherits the slot symmetry. -/
+theorem christoffelDerivOp_symm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x) (hHd : DifferentiableAt ℝ H x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p) (u v : E) :
+    christoffelDerivOp G H x u v = christoffelDerivOp G H x v u := by
+  rw [christoffelDerivOp_apply, christoffelDerivOp_apply]
+  exact christoffelDeriv_symm hGd hHd hGsymm hHsymm u v
+
+end RicciFlow
