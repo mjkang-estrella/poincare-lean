@@ -2783,3 +2783,64 @@ theorem b_christoffelDeriv_const_base (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
   exact hkey _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The covariant Hessian product rule**:
+`Hess(fg) = f·Hess g + g·Hess f + df⊗dg + dg⊗df` — the corrector
+distributes through the differential, so the classical formula holds on
+any metric background.
+-/
+theorem covariantHessian_mul (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate)
+    {f g : E → ℝ} (hf : ContDiff ℝ 2 f) (hg : ContDiff ℝ 2 g)
+    (x v w : E) :
+    covariantHessian G b hb (fun y ↦ f y * g y) x v w =
+      f x * covariantHessian G b hb g x v w
+        + g x * covariantHessian G b hb f x v w
+        + fderiv ℝ f x v * fderiv ℝ g x w
+        + fderiv ℝ g x v * fderiv ℝ f x w := by
+  have hfd : Differentiable ℝ f := hf.differentiable (by norm_num)
+  have hgd : Differentiable ℝ g := hg.differentiable (by norm_num)
+  have hf1 : Differentiable ℝ (fderiv ℝ f) :=
+    (hf.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)
+  have hg1 : Differentiable ℝ (fderiv ℝ g) :=
+    (hg.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)
+  have hA : fderiv ℝ (fun y ↦ f y • fderiv ℝ g y) x =
+      f x • fderiv ℝ (fderiv ℝ g) x
+        + (fderiv ℝ f x).smulRight (fderiv ℝ g x) :=
+    fderiv_smul (hfd x) (hg1 x)
+  have hB : fderiv ℝ (fun y ↦ g y • fderiv ℝ f y) x =
+      g x • fderiv ℝ (fderiv ℝ f) x
+        + (fderiv ℝ g x).smulRight (fderiv ℝ f x) :=
+    fderiv_smul (hgd x) (hf1 x)
+  have hd2 : fderiv ℝ (fderiv ℝ (fun y ↦ f y * g y)) x =
+      (f x • fderiv ℝ (fderiv ℝ g) x
+        + (fderiv ℝ f x).smulRight (fderiv ℝ g x))
+      + (g x • fderiv ℝ (fderiv ℝ f) x
+        + (fderiv ℝ g x).smulRight (fderiv ℝ f x)) := by
+    rw [show fderiv ℝ (fun y ↦ f y * g y) =
+      fun y ↦ f y • fderiv ℝ g y + g y • fderiv ℝ f y from
+      funext fun y ↦ fderiv_mul (hfd y) (hgd y)]
+    refine Eq.trans ((((hfd x).smul (hg1 x)).hasFDerivAt.add
+      ((hgd x).smul (hf1 x)).hasFDerivAt).fderiv) ?_
+    rw [show fderiv ℝ (f • fderiv ℝ g) x =
+      fderiv ℝ (fun y ↦ f y • fderiv ℝ g y) x from rfl,
+      show fderiv ℝ (g • fderiv ℝ f) x =
+      fderiv ℝ (fun y ↦ g y • fderiv ℝ f y) x from rfl, hA, hB]
+  have hdmul : fderiv ℝ (fun y ↦ f y * g y) x =
+      f x • fderiv ℝ g x + g x • fderiv ℝ f x := fderiv_mul (hfd x) (hgd x)
+  unfold covariantHessian
+  rw [hd2, hdmul]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
+    ContinuousLinearMap.smulRight_apply, smul_eq_mul]
+  ring
+
+end RicciFlow
