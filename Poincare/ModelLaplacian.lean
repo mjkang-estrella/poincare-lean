@@ -5548,3 +5548,67 @@ theorem coordCurvatureOp_skew
   linarith [h1, h2]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**SYMMETRY OF THE COORDINATE RICCI FORM**: for a `C²` symmetric
+invertible metric, `Ric(u,w) = Ric(w,u)` — the curvature trace vanishes
+by skew-adjointness, so the contracted first Bianchi identity closes
+the antisymmetric part. The Ricci-symmetry hypothesis of the
+singularity machinery, discharged.
+-/
+theorem coordRicci_symm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u w : E) :
+    coordRicci G x u w = coordRicci G x w u := by
+  have hGd : ∀ y : E, DifferentiableAt ℝ G y := fun y ↦
+    (hGC2.differentiable (by norm_num)).differentiableAt
+  have hΓsymm : ∀ (y : E) (a b : E),
+      christoffelClosedOp G y a b = christoffelClosedOp G y b a :=
+    fun y a b ↦ christoffelClosedOp_symm (hGd y) hGsymm a b
+  -- The metric as a bilinear form, nondegenerate by invertibility.
+  set bx : LinearMap.BilinForm ℝ E :=
+    LinearMap.mk₂ ℝ (fun v w ↦ G x v w)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp) with hbx
+  have hzero : ∀ v : E, (∀ z : E, G x v z = 0) → v = 0 := by
+    intro v hv
+    have hGv : G x v = 0 := by
+      ext z
+      exact hv z
+    have hvid := (hinv x).inverse_apply_eq.mpr (rfl :
+      G x v = (G x) v)
+    rw [hGv] at hvid
+    rw [← hvid]
+    simp
+  have hbnd : bx.Nondegenerate := by
+    constructor
+    · refine fun v hv ↦ hzero v fun z ↦ hv z
+    · refine fun v hv ↦ hzero v fun z ↦ ?_
+      rw [hGsymm x v z]
+      exact hv z
+  -- The curvature trace vanishes by skew-adjointness.
+  have htr0 : LinearMap.trace ℝ E
+      ((coordCurvatureOp G x u w : E →L[ℝ] E) : E →ₗ[ℝ] E) = 0 := by
+    apply trace_eq_zero_of_skew bx hbnd
+    intro v z
+    have hsk := coordCurvatureOp_skew hGC2 hGsymm hinv hdiffΓ u w v z
+    show G x (coordCurvatureOp G x u w v) z
+      = - (G x v (coordCurvatureOp G x u w z))
+    linarith
+  have hanti := coordRicci_antisymm_part hdiffΓ hΓsymm u w
+  rw [htr0] at hanti
+  linarith
+
+end RicciFlow
