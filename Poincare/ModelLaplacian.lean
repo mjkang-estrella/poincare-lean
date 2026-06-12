@@ -3998,3 +3998,40 @@ theorem hasDerivAt_clm_of_forall_apply'
   exact hsum
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The corrector functional is additive in its second direction. -/
+theorem christoffelFunctional_add_snd
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x u v₁ v₂ : E) :
+    christoffelFunctional G x u (v₁ + v₂) =
+      christoffelFunctional G x u v₁ + christoffelFunctional G x u v₂ := by
+  apply LinearMap.ext
+  intro w
+  show (1 / 2 : ℝ) * ((fderiv ℝ G x u) (v₁ + v₂) w
+      + (fderiv ℝ G x (v₁ + v₂)) u w - (fderiv ℝ G x w) u (v₁ + v₂)) = _
+  simp only [map_add, ContinuousLinearMap.add_apply, LinearMap.add_apply]
+  show _ = (1 / 2 : ℝ) * ((fderiv ℝ G x u) v₁ w
+      + (fderiv ℝ G x v₁) u w - (fderiv ℝ G x w) u v₁)
+    + (1 / 2 : ℝ) * ((fderiv ℝ G x u) v₂ w
+      + (fderiv ℝ G x v₂) u w - (fderiv ℝ G x w) u v₂)
+  ring
+
+/-- **`δΓ` is additive in its second slot** — with first-slot symmetry,
+`δΓ` is a genuine symmetric bilinear tensor-valued variation. -/
+theorem christoffelDeriv_add_snd
+    (G H : E → E →L[ℝ] E →L[ℝ] ℝ) (x u v₁ v₂ : E) :
+    christoffelDeriv G H x u (v₁ + v₂) =
+      christoffelDeriv G H x u v₁ + christoffelDeriv G H x u v₂ := by
+  unfold christoffelDeriv
+  rw [christoffelFunctional_add_snd G x u v₁ v₂,
+    christoffelFunctional_add_snd H x u v₁ v₂]
+  simp only [map_add, ContinuousLinearMap.neg_apply]
+  abel
+
+end RicciFlow
