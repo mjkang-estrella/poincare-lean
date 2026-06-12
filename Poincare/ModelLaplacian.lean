@@ -13,6 +13,7 @@ import Poincare.MaximumPrinciple
 import Poincare.ModelChristoffel
 import Mathlib.LinearAlgebra.QuadraticForm.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Deriv
+import Mathlib.Algebra.Order.Chebyshev
 
 noncomputable section
 
@@ -3218,5 +3219,102 @@ theorem bilin_cauchy_schwarz (b : LinearMap.BilinForm ℝ E)
           field_simp
       _ ≤ b u u * b w w := by
           apply mul_le_mul_of_nonneg_right hkey (le_of_lt hww)
+
+end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**The trace Cauchy–Schwarz inequality**: for a `b`-self-adjoint operator,
+`(tr A)² ≤ n · tr(A²)` — applied to the Hessian this is
+`(Δf)² ≤ n|Hess f|²`, and applied to the Ricci endomorphism it is
+`R² ≤ n|Ric|²`: the inequality that turns the scalar-curvature evolution
+into the Riccati supersolution behind finite-time singularities.
+-/
+theorem trace_sq_le_card_mul_trace_comp_self
+    (b : LinearMap.BilinForm ℝ E) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v)
+    (A : E →ₗ[ℝ] E) (hsa : ∀ p q : E, b (A p) q = b p (A q)) :
+    (LinearMap.trace ℝ E A) ^ 2 ≤
+      Module.finrank ℝ E * LinearMap.trace ℝ E (A ∘ₗ A) := by
+  obtain ⟨v, hortho⟩ := LinearMap.BilinForm.exists_orthogonal_basis
+    (B := b) hbs
+  -- Diagonal extraction in the orthogonal basis.
+  have hdiag : ∀ (B : E →ₗ[ℝ] E) (i : Fin (Module.finrank ℝ E)),
+      LinearMap.toMatrix v v B i i =
+        b (B (v i)) (v i) / b (v i) (v i) := by
+    intro B i
+    have hvi : v i ≠ 0 := v.ne_zero i
+    have hbvi : 0 < b (v i) (v i) := hbpos (v i) hvi
+    have hexpand : b (B (v i)) (v i) =
+        (LinearMap.toMatrix v v B i i) * b (v i) (v i) := by
+      conv_lhs => rw [← v.sum_repr (B (v i))]
+      have hsum : b (∑ j, v.repr (B (v i)) j • v j) (v i) =
+          ∑ j, v.repr (B (v i)) j * b (v j) (v i) := by
+        rw [map_sum, LinearMap.sum_apply]
+        apply Finset.sum_congr rfl
+        intro j _
+        simp [smul_eq_mul]
+      rw [hsum]
+      rw [Finset.sum_eq_single i]
+      · rw [LinearMap.toMatrix_apply]
+      · intro j _ hji
+        rw [hortho hji]
+        ring_nf
+      · intro hi
+        exact absurd (Finset.mem_univ i) hi
+    rw [eq_div_iff (ne_of_gt hbvi)]
+    linarith [hexpand]
+  -- Pointwise: `dᵢ² ≤ eᵢ` by Cauchy–Schwarz.
+  have hpt : ∀ i, (LinearMap.toMatrix v v A i i) ^ 2 ≤
+      LinearMap.toMatrix v v (A ∘ₗ A) i i := by
+    intro i
+    have hvi : v i ≠ 0 := v.ne_zero i
+    have hbvi : 0 < b (v i) (v i) := hbpos (v i) hvi
+    rw [hdiag A i, hdiag (A ∘ₗ A) i]
+    have hAA : b ((A ∘ₗ A) (v i)) (v i) = b (A (v i)) (A (v i)) := by
+      rw [show (A ∘ₗ A) (v i) = A (A (v i)) from rfl,
+        hsa (A (v i)) (v i)]
+    rw [hAA]
+    -- Cauchy–Schwarz on the numerator.
+    have hcs := bilin_cauchy_schwarz b hbs hbpos (A (v i)) (v i)
+    rw [div_pow]
+    rw [div_le_div_iff₀ (by positivity) hbvi]
+    have hsy := hbs.eq (A (v i)) (v i)
+    simp only [RingHom.id_apply] at hsy
+    calc b (A (v i)) (v i) ^ 2 * b (v i) (v i)
+        ≤ (b (A (v i)) (A (v i)) * b (v i) (v i)) * b (v i) (v i) := by
+          nlinarith [hcs, sq_nonneg (b (A (v i)) (v i))]
+      _ = b (A (v i)) (A (v i)) * b (v i) (v i) ^ 2 := by ring
+  -- Sum and apply the scalar Chebyshev bound.
+  rw [LinearMap.trace_eq_matrix_trace ℝ v A,
+    LinearMap.trace_eq_matrix_trace ℝ v (A ∘ₗ A), Matrix.trace,
+    Matrix.trace]
+  calc (∑ i, (LinearMap.toMatrix v v A).diag i) ^ 2
+      ≤ (Finset.univ.card : ℝ) *
+        ∑ i, ((LinearMap.toMatrix v v A).diag i) ^ 2 := by
+        have hcheb : (∑ i : Fin (Module.finrank ℝ E),
+            (LinearMap.toMatrix v v A).diag i) ^ 2 ≤
+            ((Finset.univ : Finset (Fin (Module.finrank ℝ E))).card : ℝ)
+              * ∑ i : Fin (Module.finrank ℝ E),
+                ((LinearMap.toMatrix v v A).diag i) ^ 2 := by
+          exact sq_sum_le_card_mul_sum_sq
+        exact hcheb
+    _ ≤ Module.finrank ℝ E *
+        ∑ i, (LinearMap.toMatrix v v (A ∘ₗ A)).diag i := by
+        have hcard : (((Finset.univ :
+              Finset (Fin (Module.finrank ℝ E))).card : ℕ) : ℝ) =
+            (Module.finrank ℝ E : ℝ) := by
+          simp
+        rw [hcard]
+        apply mul_le_mul_of_nonneg_left ?_ (by positivity)
+        apply Finset.sum_le_sum
+        intro i _
+        exact hpt i
 
 end RicciFlow
