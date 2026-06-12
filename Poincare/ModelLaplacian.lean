@@ -4714,3 +4714,68 @@ theorem hasDerivAt_coordScalar
   exact h
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The corrector functional of a constant metric vanishes. -/
+theorem christoffelFunctional_const_eq_zero
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ) (x u v : E) :
+    christoffelFunctional (fun _ : E ↦ G₀) x u v = 0 := by
+  apply LinearMap.ext
+  intro w
+  show (1 / 2 : ℝ) * ((fderiv ℝ (fun _ : E ↦ G₀) x u) v w
+      + (fderiv ℝ (fun _ : E ↦ G₀) x v) u w
+      - (fderiv ℝ (fun _ : E ↦ G₀) x w) u v) = 0
+  rw [fderiv_fun_const]
+  simp
+
+/-- The Christoffel operator of a constant metric vanishes. -/
+theorem christoffelClosedOp_const_eq_zero
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ) (x u : E) :
+    christoffelClosedOp (fun _ : E ↦ G₀) x u = 0 := by
+  ext v
+  rw [christoffelClosedOp_apply,
+    christoffelFunctional_const_eq_zero G₀ x u v]
+  simp [map_zero]
+
+/-- The coordinate curvature operator of a constant metric vanishes. -/
+theorem coordCurvatureOp_const_eq_zero
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ) (x u w : E) :
+    coordCurvatureOp (fun _ : E ↦ G₀) x u w = 0 := by
+  unfold coordCurvatureOp
+  have hfam : ∀ p : E, (fun y : E ↦
+      christoffelClosedOp (fun _ : E ↦ G₀) y p) = fun _ : E ↦ 0 := by
+    intro p
+    funext y
+    exact christoffelClosedOp_const_eq_zero G₀ y p
+  rw [hfam u, hfam w, fderiv_fun_const,
+    christoffelClosedOp_const_eq_zero G₀ x u,
+    christoffelClosedOp_const_eq_zero G₀ x w]
+  simp
+
+/-- The coordinate Ricci form of a constant metric vanishes. -/
+theorem coordRicci_const_eq_zero
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ) (x u w : E) :
+    coordRicci (fun _ : E ↦ G₀) x u w = 0 := by
+  unfold coordRicci
+  apply Finset.sum_eq_zero
+  intro i _
+  rw [coordCurvatureOp_const_eq_zero]
+  simp
+
+/-- **The flat anchor**: the coordinate scalar curvature of a constant
+metric vanishes — the contraction chain computes correctly on the model. -/
+theorem coordScalar_const_eq_zero
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ) (x : E) :
+    coordScalar (fun _ : E ↦ G₀) x = 0 := by
+  unfold coordScalar
+  apply Finset.sum_eq_zero
+  intro j _
+  exact coordRicci_const_eq_zero G₀ x _ _
+
+end RicciFlow
