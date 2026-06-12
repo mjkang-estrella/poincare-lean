@@ -5235,3 +5235,76 @@ theorem hamilton_ricci_flow_singularity
     rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Torsion symmetry of the Christoffel operator**: for a
+differentiable symmetric metric, `Γ(u,v) = Γ(v,u)`. -/
+theorem christoffelClosedOp_symm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (u v : E) :
+    christoffelClosedOp G x u v = christoffelClosedOp G x v u := by
+  rw [christoffelClosedOp_apply, christoffelClosedOp_apply,
+    christoffelFunctional_symm hGd hGsymm u v]
+
+/-- The coordinate curvature operator is antisymmetric in its plane. -/
+theorem coordCurvatureOp_antisymm
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x u w : E) :
+    coordCurvatureOp G x u w = -coordCurvatureOp G x w u := by
+  unfold coordCurvatureOp
+  abel
+
+/-- Applying the spatial derivative of the operator family commutes
+with evaluation: `[D_b Γ(a,·)] c = D_b [Γ(a,c)]`. -/
+theorem fderiv_christoffelClosedOp_apply
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (a b c : E) :
+    (fderiv ℝ (fun y ↦ christoffelClosedOp G y a) x b) c
+      = fderiv ℝ (fun y ↦ christoffelClosedOp G y a c) x b := by
+  have h := (ContinuousLinearMap.apply ℝ E c).hasFDerivAt.comp x
+    (hdiff a).hasFDerivAt
+  have hfd : fderiv ℝ (fun y ↦ christoffelClosedOp G y a c) x
+      = (ContinuousLinearMap.apply ℝ E c).comp
+        (fderiv ℝ (fun y ↦ christoffelClosedOp G y a) x) :=
+    h.fderiv
+  rw [hfd]
+  rfl
+
+/--
+**THE FIRST BIANCHI IDENTITY IN COORDINATES**: for a torsion-symmetric
+Christoffel family, the cyclic sum of the coordinate curvature
+operator vanishes — `R(u,w)v + R(w,v)u + R(v,u)w = 0`.
+-/
+theorem coord_first_bianchi
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hΓsymm : ∀ (y : E) (a b : E),
+      christoffelClosedOp G y a b = christoffelClosedOp G y b a)
+    (u w v : E) :
+    coordCurvatureOp G x u w v + coordCurvatureOp G x w v u
+      + coordCurvatureOp G x v u w = 0 := by
+  have happ := fderiv_christoffelClosedOp_apply hdiff
+  have hfam : ∀ a c : E, (fun y ↦ christoffelClosedOp G y a c)
+      = fun y ↦ christoffelClosedOp G y c a := by
+    intro a c
+    funext y
+    exact hΓsymm y a c
+  unfold coordCurvatureOp
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.sub_apply,
+    ContinuousLinearMap.comp_apply]
+  rw [happ u w v, happ w u v, happ w v u, happ v w u, happ v u w,
+    happ u v w]
+  rw [hfam w v, hfam u v, hfam u w]
+  rw [hΓsymm x w v, hΓsymm x u v, hΓsymm x u w]
+  abel
+
+end RicciFlow
