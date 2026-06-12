@@ -2991,3 +2991,63 @@ theorem fderiv_gradient_sq (b : LinearMap.BilinForm ℝ E)
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The musical isomorphism `♯`: functionals to vectors through the
+metric. -/
+noncomputable def sharp (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (ψ : E →L[ℝ] ℝ) : E :=
+  (LinearMap.BilinForm.toDual b hb).symm
+    (LinearMap.toContinuousLinearMap.symm ψ)
+
+/-- The defining property of `♯`: `b(ψ♯, v) = ψ(v)`. -/
+theorem b_sharp (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (ψ : E →L[ℝ] ℝ) (v : E) : b (sharp b hb ψ) v = ψ v := by
+  have h := congrArg (fun ρ : Module.Dual ℝ E ↦ ρ v)
+    (LinearEquiv.apply_symm_apply (LinearMap.BilinForm.toDual b hb)
+      (LinearMap.toContinuousLinearMap.symm ψ))
+  simp only [LinearMap.BilinForm.toDual_def] at h
+  exact h
+
+/-- The gradient is the sharp of the differential. -/
+theorem metricGradient_eq_sharp (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (f : E → ℝ) (x : E) :
+    metricGradient b hb f x = sharp b hb (fderiv ℝ f x) := rfl
+
+/--
+**The gradient of the gradient-square**: `∇|∇f|² = 2·(Hess f(·,∇f))♯` —
+the vector form of the first Bochner component.
+-/
+theorem metricGradient_gradient_sq (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (x : E) :
+    metricGradient b hb (fun y ↦ b (metricGradient b hb f y)
+        (metricGradient b hb f y)) x =
+      (2 : ℝ) • sharp b hb
+        ((fderiv ℝ (fderiv ℝ f) x).flip (metricGradient b hb f x)) := by
+  -- Identify through nondegeneracy.
+  have hkey : ∀ v : E,
+      b (metricGradient b hb (fun y ↦ b (metricGradient b hb f y)
+        (metricGradient b hb f y)) x) v =
+      b ((2 : ℝ) • sharp b hb
+        ((fderiv ℝ (fderiv ℝ f) x).flip (metricGradient b hb f x))) v := by
+    intro v
+    rw [b_metricGradient, fderiv_gradient_sq b hb hbs hf x v]
+    rw [map_smul, LinearMap.smul_apply, b_sharp, smul_eq_mul,
+      ContinuousLinearMap.flip_apply]
+  have hzero : ∀ v : E,
+      b (metricGradient b hb (fun y ↦ b (metricGradient b hb f y)
+          (metricGradient b hb f y)) x
+        - (2 : ℝ) • sharp b hb ((fderiv ℝ (fderiv ℝ f) x).flip
+          (metricGradient b hb f x))) v = 0 := by
+    intro v
+    rw [map_sub, LinearMap.sub_apply, hkey v, sub_self]
+  exact sub_eq_zero.mp (hb.1 _ hzero)
+
+end RicciFlow
