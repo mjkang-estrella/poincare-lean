@@ -196,7 +196,14 @@ Ricci vanishing in `RicciFlowEquation.lean`.
   `ModelChristoffel.lean`): commuting covariant derivatives costs exactly
   one curvature term — the engine of the evolution equations, with
   `extend_model_space'` generalized to normed model spaces (the hidden
-  `InnerProductSpace` instance-search was the melter of prior attempts).
+  `InnerProductSpace` instance-search was the melter of prior attempts);
+  and the **`δΓ` variation theory** — `hasDerivAt_clm_inverse`
+  (`d(A⁻¹) = −A⁻¹A′A⁻¹`), the functional slot-derivatives and
+  finite-dimensional reconstruction, `hasDerivAt_christoffel_flow`
+  (`∂Γ/∂t = G⁻¹Φ_{∂G} − G⁻¹(∂G)G⁻¹Φ_G`), the named `christoffelDeriv`
+  with symmetry, and the flat-background linearization
+  `christoffelDeriv_const_base = G₀⁻¹Φ_H` — the opening object of the
+  DeTurck stratum.
 
 ## What this layer provides
 
