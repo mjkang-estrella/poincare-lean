@@ -4196,3 +4196,23 @@ theorem christoffelDerivOp_symm
   exact christoffelDeriv_symm hGd hHd hGsymm hHsymm u v
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The operator–witness bridge**: the closed-form Christoffel operator
+agrees with the witness-based corrector — the identification through which
+the variation theorems plug into the coordinate curvature formula. -/
+theorem christoffelClosedOp_eq_christoffelAt
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (hbg : ∀ v w : E, b v w = G x v w) (u v : E) :
+    christoffelClosedOp G x u v = christoffelAt G x b hb u v := by
+  rw [christoffelClosedOp_apply]
+  exact (christoffelAt_eq_inverse G b hb hbg u v).symm
+
+end RicciFlow
