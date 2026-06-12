@@ -1778,3 +1778,50 @@ theorem perelmanWDensity_tau_one
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The gradient of the quadratic form is `2x`** — the computation
+behind the Gaussian shrinking soliton's potential. -/
+theorem metricGradient_quadratic (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (hbs : ∀ v w : E, b v w = b w v) (x : E) :
+    metricGradient b hb (fun y ↦ b y y) x = (2 : ℝ) • x := by
+  -- Identify through the defining property and nondegeneracy.
+  have hkey : ∀ v : E, b (metricGradient b hb (fun y ↦ b y y) x) v =
+      b ((2 : ℝ) • x) v := by
+    intro v
+    rw [b_metricGradient]
+    -- The derivative of the quadratic form.
+    set bC : E →L[ℝ] E →L[ℝ] ℝ := LinearMap.toContinuousLinearMap
+      ((LinearMap.toContinuousLinearMap :
+        (E →ₗ[ℝ] ℝ) ≃ₗ[ℝ] (E →L[ℝ] ℝ)).toLinearMap ∘ₗ b) with hbC
+    have hf1 : HasFDerivAt (fun z ↦ b z z) (bC x + bC.flip x) x := by
+      have hc : HasFDerivAt (fun z : E ↦ bC z) bC x := bC.hasFDerivAt
+      have h := hc.clm_apply (hasFDerivAt_id x)
+      have heq : (fun z : E ↦ bC z z) = fun z ↦ b z z := by
+        funext z
+        rfl
+      rw [← heq]
+      convert h using 1
+    rw [hf1.fderiv]
+    have h1 : bC x v = b x v := rfl
+    have h2 : bC.flip x v = b v x := rfl
+    simp only [ContinuousLinearMap.add_apply, h1, h2,
+      ContinuousLinearMap.flip_apply]
+    rw [hbs v x]
+    rw [show b ((2 : ℝ) • x) v = 2 * b x v from by
+      rw [map_smul]
+      simp [smul_eq_mul]]
+    ring
+  have hzero : ∀ v : E,
+      b (metricGradient b hb (fun y ↦ b y y) x - (2 : ℝ) • x) v = 0 := by
+    intro v
+    rw [map_sub, LinearMap.sub_apply, hkey v, sub_self]
+  exact sub_eq_zero.mp (hb.1 _ hzero)
+
+end RicciFlow
