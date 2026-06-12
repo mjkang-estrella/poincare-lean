@@ -6106,3 +6106,63 @@ theorem coordCurvature_pair_symm
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci divergence in coordinates**: `div Ric(u) =
+Σₖ ∇_{♯bᵏ} Ric(u, bₖ)` — the raised contraction of the covariant Ricci
+derivative over its differentiation slot. -/
+noncomputable def ricciDivergence (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x u : E) : ℝ :=
+  ∑ k, covRicciDeriv G x
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord k)))
+    u ((Module.finBasis ℝ E) k)
+
+/-- **The contracted scalar derivative**: `Σₖ ∇_w Ric(♯bᵏ, bₖ)` — the
+covariant derivative of the scalar contraction in direction `w`. -/
+noncomputable def scalarContractionDeriv (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x w : E) : ℝ :=
+  ∑ k, covRicciDeriv G x w
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord k)))
+    ((Module.finBasis ℝ E) k)
+
+/--
+**THE TWICE-CONTRACTED BIANCHI IDENTITY, raw form**: contracting the
+first contracted Bianchi identity against the inverse metric —
+`div Ric(w) + Σₖ div R(w, ♯bᵏ)bₖ = ∇_w(tr Ric)`.
+-/
+theorem coord_twice_contracted_bianchi_raw
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ p : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y p) x)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hsymΓ : ∀ p : E, IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) x)
+    (hΓsymm : ∀ (y : E) (a b : E),
+      christoffelClosedOp G y a b = christoffelClosedOp G y b a)
+    (w : E) :
+    ricciDivergence G x w
+      + ∑ k, curvDivergence G x w
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord k)))
+          ((Module.finBasis ℝ E) k)
+      = scalarContractionDeriv G x w := by
+  unfold ricciDivergence scalarContractionDeriv
+  rw [← Finset.sum_add_distrib, ← sub_eq_zero, ← Finset.sum_sub_distrib]
+  apply Finset.sum_eq_zero
+  intro k _
+  have h := coord_first_contracted_bianchi hdiffΓ hdd hsymΓ hΓsymm
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord k)))
+    w ((Module.finBasis ℝ E) k)
+  linarith
+
+end RicciFlow
