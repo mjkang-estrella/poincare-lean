@@ -10213,3 +10213,59 @@ theorem deltaGammaTraceForm_apply (G H : E → E →L[ℝ] E →L[ℝ] ℝ) (y w
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`fderiv` commutes with the `δΓ`-trace contraction**: the spatial
+derivative of `y ↦ τ_y(w)` is the basis-trace of the spatial derivative
+of the `δΓ`-family — the fixed coordinate functionals and evaluation map
+pass through the Fréchet derivative. The `δΓ` analogue of
+`fderiv_coordRicci_eq`. -/
+theorem fderiv_deltaGammaTraceForm_apply_eq
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (u w : E) :
+    (fderiv ℝ (fun y ↦ deltaGammaTraceForm G H y w) x u)
+      = ∑ i, (Module.finBasis ℝ E).coord i
+          ((fderiv ℝ (fun y ↦ christoffelDerivOp G H y
+            ((Module.finBasis ℝ E) i)) x u) w) := by
+  have hfield : (fun y ↦ deltaGammaTraceForm G H y w)
+      = fun y ↦ ∑ i, (Module.finBasis ℝ E).coord i
+          (christoffelDerivOp G H y ((Module.finBasis ℝ E) i) w) := by
+    funext y
+    exact deltaGammaTraceForm_apply G H y w
+  rw [hfield]
+  have hfd : ∀ i : Fin (Module.finrank ℝ E), HasFDerivAt
+      (fun y ↦ (Module.finBasis ℝ E).coord i
+        (christoffelDerivOp G H y ((Module.finBasis ℝ E) i) w))
+      ((LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)).comp
+        ((ContinuousLinearMap.apply ℝ E w).comp
+          (fderiv ℝ (fun y ↦ christoffelDerivOp G H y
+            ((Module.finBasis ℝ E) i)) x))) x := by
+    intro i
+    have hR := (hVd ((Module.finBasis ℝ E) i)).hasFDerivAt
+    have hRw := (ContinuousLinearMap.apply ℝ E w).hasFDerivAt.comp x hR
+    exact (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i)).hasFDerivAt.comp x hRw
+  have key : HasFDerivAt
+      (fun y ↦ ∑ i, (Module.finBasis ℝ E).coord i
+        (christoffelDerivOp G H y ((Module.finBasis ℝ E) i) w))
+      (∑ i, (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)).comp
+        ((ContinuousLinearMap.apply ℝ E w).comp
+          (fderiv ℝ (fun y ↦ christoffelDerivOp G H y
+            ((Module.finBasis ℝ E) i)) x))) x :=
+    HasFDerivAt.fun_sum fun i _ ↦ hfd i
+  rw [key.fderiv, ContinuousLinearMap.sum_apply]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply]
+  rfl
+
+end RicciFlow
