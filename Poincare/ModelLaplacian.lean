@@ -8632,3 +8632,39 @@ theorem deltaGammaContractionDeriv_eq_g_pairing
     (covDeltaGammaDeriv G H x u ((Module.finBasis ℝ E) i) w)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant derivative of a symmetric 2-tensor is symmetric in its
+tensor slots**: `(∇_v H)(p,q) = (∇_v H)(q,p)` when `H` is symmetric. The
+flat second derivative inherits symmetry through the differentiable
+symmetry of `H`, and the Christoffel corrections swap. -/
+theorem covTensor2Deriv_symm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (v p q : E) :
+    covTensor2Deriv G H x v p q = covTensor2Deriv G H x v q p := by
+  have hfd : (fderiv ℝ H x v) p q = (fderiv ℝ H x v) q p := by
+    have e1 : (fderiv ℝ H x v) p q = fderiv ℝ (fun y ↦ H y p q) x v := by
+      rw [fderiv_clm_family_apply hHd v p,
+        fderiv_clm_family_apply
+          (hHd.clm_apply (differentiableAt_const p)) v q]
+    have e2 : (fderiv ℝ H x v) q p = fderiv ℝ (fun y ↦ H y q p) x v := by
+      rw [fderiv_clm_family_apply hHd v q,
+        fderiv_clm_family_apply
+          (hHd.clm_apply (differentiableAt_const q)) v p]
+    have hfun : (fun y ↦ H y p q) = (fun y ↦ H y q p) := by
+      funext y; exact hHsymm y p q
+    rw [e1, e2, hfun]
+  unfold covTensor2Deriv
+  rw [hfd, hHsymm x (christoffelClosedOp G x v p) q,
+    hHsymm x p (christoffelClosedOp G x v q)]
+  ring
+
+end RicciFlow
