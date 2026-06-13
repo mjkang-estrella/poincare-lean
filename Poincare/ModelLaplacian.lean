@@ -8388,3 +8388,33 @@ theorem g_covDeltaGammaDeriv_sndDeriv_form
     fderiv_covTensor2Deriv_eq]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of the Ricci form is the scalar curvature**:
+`Σⱼ Ric(♯bʲ, bⱼ) = R` — contracting the Ricci form against the inverse
+metric recovers `coordScalar`. The `tr_g Ric = R` identity, the precursor
+to `tr_g H = −2R` for the Ricci-flow direction. -/
+theorem coordRicciForm_metric_trace
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x) :
+    (∑ j, coordRicciForm G x hdiff
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+      = coordScalar G x := by
+  unfold coordScalar
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [coordRicciForm_apply]
+  exact coordRicci_symm hGC2 hGsymm hinv hdiff _ _
+
+end RicciFlow
