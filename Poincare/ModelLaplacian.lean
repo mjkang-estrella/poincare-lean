@@ -7234,4 +7234,42 @@ theorem curvedLaplacian_eq_raised_sum
   unfold curvedLaplacian
   rfl
 
+/--
+**THE CURVED LAPLACIAN IN EXPLICIT COORDINATE FORM**: against the metric
+the Laplace–Beltrami operator is the basis-raised sum of the flat
+second derivative minus the Christoffel correction —
+`Δ_g f = Σⱼ [D²f(♯bʲ, bⱼ) − Df(Γ(♯bʲ, bⱼ))]`. This is the precise shape
+the variation-of-Ricci side must match.
+-/
+theorem curvedLaplacian_eq_raised_hessian_sum
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (f : E → ℝ) :
+    curvedLaplacian G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x
+      = ∑ j, ((fderiv ℝ (fderiv ℝ f) x
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j)))
+            ((Module.finBasis ℝ E) j))
+          - (fderiv ℝ f x) (christoffelClosedOp G x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j)))
+              ((Module.finBasis ℝ E) j))) := by
+  rw [curvedLaplacian_eq_raised_sum G hGsymm hinv f]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [show christoffelClosedOp G x
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord j)))
+      ((Module.finBasis ℝ E) j)
+      = christoffelAt G x (metricBilin (G x))
+          (metricBilin_nondeg (hGsymm x) (hinv x))
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) j)
+    from christoffelClosedOp_eq_christoffelAt G (metricBilin (G x))
+      (metricBilin_nondeg (hGsymm x) (hinv x))
+      (fun v w ↦ metricBilin_apply (G x) v w) _ _]
+  rfl
+
 end RicciFlow
