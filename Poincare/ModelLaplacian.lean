@@ -10144,3 +10144,44 @@ theorem deltaGamma_trace_slot_cancel
   exact LinearMap.trace_comp_comm' _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ`-trace derivative is the covariant derivative of the
+`δΓ`-trace one-form**: `deltaGammaContractionDeriv u w = Σᵢ ⟨bⁱ,
+(∂_u δΓ-family)(bᵢ,w)⟩ − Σᵢ ⟨bⁱ, δΓ(bᵢ, Γ_u w)⟩`. The two interior
+Christoffel-correction terms of `∇δΓ` cancel by trace cyclicity
+(`deltaGamma_trace_slot_cancel`), leaving the spatial derivative of the
+`δΓ`-trace minus the lone connection term acting on the free slot `w`. -/
+theorem deltaGammaContractionDeriv_slot_cancelled
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x) (hHd : DifferentiableAt ℝ H x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (u w : E) :
+    deltaGammaContractionDeriv G H x u w
+      = (∑ i, (Module.finBasis ℝ E).coord i
+          ((fderiv ℝ (fun y ↦ christoffelDerivOp G H y ((Module.finBasis ℝ E) i))
+            x u) w))
+        - ∑ i, (Module.finBasis ℝ E).coord i
+            (christoffelDerivOp G H x ((Module.finBasis ℝ E) i)
+              (christoffelClosedOp G x u w)) := by
+  have key : (∑ i, (Module.finBasis ℝ E).coord i
+        (christoffelClosedOp G x u
+          (christoffelDerivOp G H x ((Module.finBasis ℝ E) i) w)))
+      = ∑ i, (Module.finBasis ℝ E).coord i
+          (christoffelDerivOp G H x
+            (christoffelClosedOp G x u ((Module.finBasis ℝ E) i)) w) := by
+    simp only [christoffelDerivOp_apply]
+    exact deltaGamma_trace_slot_cancel hGd hHd hGsymm hHsymm u w
+  unfold deltaGammaContractionDeriv covDeltaGammaDeriv
+  simp only [map_add, map_sub]
+  rw [Finset.sum_sub_distrib, Finset.sum_sub_distrib, Finset.sum_add_distrib, key]
+  ring
+
+end RicciFlow
