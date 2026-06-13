@@ -8299,3 +8299,43 @@ theorem fderiv_lichnerowicz_sum
     ContinuousLinearMap.add_apply, smul_eq_mul]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`G(∇δΓ,w)` as half-sum of `∇H`-derivatives**: combining the
+metric-paired Lichnerowicz form with the derivative-distribution, the
+metric pairing of the covariant Christoffel-variation derivative is the
+half-sum of the three directional derivatives of the covariant
+`H`-derivative, minus the three Christoffel corrections. One rewrite away
+from the second-covariant-derivative `∇²H` form. -/
+theorem g_covDeltaGammaDeriv_fderiv_form
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {p : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hVd : DifferentiableAt ℝ (fun y ↦ christoffelDerivOp G H y p) x)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (v z w : E) :
+    G x (covDeltaGammaDeriv G H x v p z) w
+      = (1 / 2 : ℝ) * ((fderiv ℝ (fun y ↦ covTensor2Deriv G H y p z w) x) v
+          + (fderiv ℝ (fun y ↦ covTensor2Deriv G H y z p w) x) v
+          - (fderiv ℝ (fun y ↦ covTensor2Deriv G H y w p z) x) v)
+        - G x (christoffelDerivOp G H x
+            (christoffelClosedOp G x v p) z) w
+        - G x (christoffelDerivOp G H x p
+            (christoffelClosedOp G x v z)) w
+        - G x (christoffelDerivOp G H x p z)
+            (christoffelClosedOp G x v w) := by
+  rw [g_covDeltaGammaDeriv_lichnerowicz hGd hGsymm hinv hHsymm hVd v z w,
+    fderiv_lichnerowicz_sum hHd hH2 hΓd v p z w]
+
+end RicciFlow
