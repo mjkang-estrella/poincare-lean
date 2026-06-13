@@ -8260,3 +8260,42 @@ theorem fderiv_covTensor2Deriv_eq
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Distributing the derivative of the Lichnerowicz `½∇H`-sum**: the
+directional derivative of the half-sum of covariant `H`-derivatives is the
+half-sum of their directional derivatives — `fderiv`-linearity, the step
+that lets each term become a second covariant derivative `∇²H`. -/
+theorem fderiv_lichnerowicz_sum
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (v p z w : E) :
+    (fderiv ℝ (fun y ↦ (1 / 2 : ℝ) * (covTensor2Deriv G H y p z w
+        + covTensor2Deriv G H y z p w
+        - covTensor2Deriv G H y w p z)) x) v
+      = (1 / 2 : ℝ) * ((fderiv ℝ (fun y ↦ covTensor2Deriv G H y p z w) x) v
+          + (fderiv ℝ (fun y ↦ covTensor2Deriv G H y z p w) x) v
+          - (fderiv ℝ (fun y ↦ covTensor2Deriv G H y w p z) x) v) := by
+  have d1 := (differentiableAt_covTensor2Deriv_family hHd hH2 hΓd p z w).hasFDerivAt
+  have d2 := (differentiableAt_covTensor2Deriv_family hHd hH2 hΓd z p w).hasFDerivAt
+  have d3 := (differentiableAt_covTensor2Deriv_family hHd hH2 hΓd w p z).hasFDerivAt
+  have hfd : HasFDerivAt (fun y ↦ (1 / 2 : ℝ) * (covTensor2Deriv G H y p z w
+        + covTensor2Deriv G H y z p w - covTensor2Deriv G H y w p z))
+      ((1 / 2 : ℝ) • ((fderiv ℝ (fun y ↦ covTensor2Deriv G H y p z w) x
+          + fderiv ℝ (fun y ↦ covTensor2Deriv G H y z p w) x)
+        - fderiv ℝ (fun y ↦ covTensor2Deriv G H y w p z) x)) x :=
+    ((d1.add d2).sub d3).const_mul (1 / 2 : ℝ)
+  rw [hfd.fderiv]
+  simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply,
+    ContinuousLinearMap.add_apply, smul_eq_mul]
+
+end RicciFlow
