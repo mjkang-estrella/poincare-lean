@@ -9850,3 +9850,21 @@ theorem curved_hamilton_singularity_of_evolution_eq_tv
       field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The metric bilinear form is symmetric when the metric is. -/
+theorem metricBilin_isSymm {m : E →L[ℝ] E →L[ℝ] ℝ}
+    (hsymm : ∀ v w : E, m v w = m w v) :
+    LinearMap.IsSymm (metricBilin m) := by
+  rw [← LinearMap.BilinForm.isSymm_iff, LinearMap.BilinForm.isSymm_def]
+  intro v w
+  simp only [metricBilin_apply]
+  exact hsymm v w
+
+end RicciFlow
