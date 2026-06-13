@@ -8118,3 +8118,42 @@ theorem hamilton_scalar_evolution_of_bianchi_curved
   exact h
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**THE METRIC-PAIRED LICHNEROWICZ FORM OF `∇δΓ`**: pairing the covariant
+derivative of the Christoffel variation against the metric gives the
+directional derivative of the Lichnerowicz half-sum of covariant
+derivatives of `H`, minus the three lower-slot Christoffel corrections.
+This combines metric compatibility for `∇δΓ` with the `δΓ = ½∇H` formula,
+turning `G(∇δΓ, ·)` into the derivative of second covariant derivatives of
+`H` — the entry point to contracting `δRic` into the scalar Laplacian.
+-/
+theorem g_covDeltaGammaDeriv_lichnerowicz
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {p : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hVd : DifferentiableAt ℝ (fun y ↦ christoffelDerivOp G H y p) x)
+    (v z w : E) :
+    G x (covDeltaGammaDeriv G H x v p z) w
+      = (fderiv ℝ (fun y ↦ (1 / 2 : ℝ) * (covTensor2Deriv G H y p z w
+          + covTensor2Deriv G H y z p w
+          - covTensor2Deriv G H y w p z)) x) v
+        - G x (christoffelDerivOp G H x
+            (christoffelClosedOp G x v p) z) w
+        - G x (christoffelDerivOp G H x p
+            (christoffelClosedOp G x v z)) w
+        - G x (christoffelDerivOp G H x p z)
+            (christoffelClosedOp G x v w) := by
+  rw [g_covDeltaGammaDeriv (hGd x) hGsymm (hinv x) hVd v z w,
+    g_christoffelDerivOp_pairing_eq hGd hGsymm hinv hHsymm p z w]
+
+end RicciFlow
