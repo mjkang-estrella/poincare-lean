@@ -8448,3 +8448,36 @@ theorem metricTrace_smul_coordRicciForm
   simp [ContinuousLinearMap.smul_apply, smul_eq_mul]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant derivative of a 1-form**: `(∇_v α)(w) = D_v(α(w)) −
+α(Γ(v,w))` — the flat derivative of the covector field corrected by the
+Christoffel action on the test slot. The object whose metric trace is the
+divergence of `α`. -/
+noncomputable def covTensor1Deriv (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (α : E → E →L[ℝ] ℝ) (x v w : E) : ℝ :=
+  (fderiv ℝ α x v) w - α x (christoffelClosedOp G x v w)
+
+/-- The covariant 1-form derivative vanishes on constant data. -/
+theorem covTensor1Deriv_const_eq_zero (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (α₀ : E →L[ℝ] ℝ) (x v w : E) :
+    covTensor1Deriv (fun _ : E ↦ G₀) (fun _ : E ↦ α₀) x v w = 0 := by
+  unfold covTensor1Deriv
+  simp [fderiv_fun_const, christoffelClosedOp_const_eq_zero]
+
+/-- The covariant 1-form derivative is additive in its test slot. -/
+theorem covTensor1Deriv_add_test (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (α : E → E →L[ℝ] ℝ) (x v w₁ w₂ : E) :
+    covTensor1Deriv G α x v (w₁ + w₂)
+      = covTensor1Deriv G α x v w₁ + covTensor1Deriv G α x v w₂ := by
+  unfold covTensor1Deriv
+  simp only [map_add]
+  ring
+
+end RicciFlow
