@@ -8418,3 +8418,33 @@ theorem coordRicciForm_metric_trace
   exact coordRicci_symm hGC2 hGsymm hinv hdiff _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of a scalar multiple of the Ricci form**:
+`Σⱼ (c·Ric)(♯bʲ, bⱼ) = c·R`. For the Ricci-flow direction `H = −2 Ric`
+this gives `tr_g H = −2R`, the trace data of the variation tensor that
+enters the scalar evolution. -/
+theorem metricTrace_smul_coordRicciForm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (c : ℝ) :
+    (∑ j, (c • coordRicciForm G x hdiff)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+      = c * coordScalar G x := by
+  rw [← coordRicciForm_metric_trace hGC2 hGsymm hinv hdiff, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  simp [ContinuousLinearMap.smul_apply, smul_eq_mul]
+
+end RicciFlow
