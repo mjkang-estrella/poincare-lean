@@ -7634,4 +7634,34 @@ theorem coordRicci_eq_sum_first_slot
   refine Finset.sum_congr rfl fun i _ ↦ ?_
   rw [map_smul, coordRicciCLM_apply, smul_eq_mul, Module.Basis.coord_apply]
 
+/-- **Frozen-base-point derivative of the Ricci form over the basis**:
+with the first slot a fixed vector `c`, the spatial derivative of
+`y ↦ Ric_y(c, bk)` expands over the basis as
+`Σᵢ ⟨bⁱ, c⟩ · D Ric_y(bᵢ, bk)`. The fixed first-slot vector pulls out
+through the (linear) first slot, leaving the basis-component derivatives. -/
+theorem fderiv_coordRicci_first_slot_const
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (c bk w : E) :
+    (fderiv ℝ (fun y ↦ coordRicci G y c bk) x) w
+      = ∑ i, (Module.finBasis ℝ E).coord i c
+          * (fderiv ℝ (fun y ↦ coordRicci G y
+              ((Module.finBasis ℝ E) i) bk) x) w := by
+  have hfun : (fun y ↦ coordRicci G y c bk)
+      = fun y ↦ ∑ i, (Module.finBasis ℝ E).coord i c
+          * coordRicci G y ((Module.finBasis ℝ E) i) bk := by
+    funext y
+    exact coordRicci_eq_sum_first_slot (fun u ↦ hdiffΓ y u) c bk
+  rw [hfun, fderiv_fun_sum fun i _ ↦
+    (differentiableAt_coordRicci_family hdiffΓ hdd ((Module.finBasis ℝ E) i)
+      bk).const_mul ((Module.finBasis ℝ E).coord i c),
+    ContinuousLinearMap.sum_apply]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [fderiv_const_mul
+    (differentiableAt_coordRicci_family hdiffΓ hdd ((Module.finBasis ℝ E) i) bk),
+    ContinuousLinearMap.smul_apply, smul_eq_mul]
+
 end RicciFlow
