@@ -8157,3 +8157,44 @@ theorem g_covDeltaGammaDeriv_lichnerowicz
     g_christoffelDerivOp_pairing_eq hGd hGsymm hinv hHsymm p z w]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant 2-tensor derivative is spatially differentiable**:
+`y ↦ (∇_v H)(p,q)` differentiates at `x` given that `H` is twice
+differentiable and the Christoffel families differentiate. The
+prerequisite for forming the second covariant derivative `∇²H`. -/
+theorem differentiableAt_covTensor2Deriv_family
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (v p q : E) :
+    DifferentiableAt ℝ (fun y ↦ covTensor2Deriv G H y v p q) x := by
+  unfold covTensor2Deriv
+  -- The flat second-derivative term.
+  have ht1 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ H y v) p q) x :=
+    (((hH2.clm_apply (differentiableAt_const v)).clm_apply
+      (differentiableAt_const p)).clm_apply (differentiableAt_const q))
+  -- The two Christoffel-correction terms.
+  have hVp : DifferentiableAt ℝ
+      (fun y ↦ christoffelClosedOp G y v p) x :=
+    (hΓd v).clm_apply (differentiableAt_const p)
+  have hVq : DifferentiableAt ℝ
+      (fun y ↦ christoffelClosedOp G y v q) x :=
+    (hΓd v).clm_apply (differentiableAt_const q)
+  have ht2 : DifferentiableAt ℝ
+      (fun y ↦ H y (christoffelClosedOp G y v p) q) x :=
+    (hHd.clm_apply hVp).clm_apply (differentiableAt_const q)
+  have ht3 : DifferentiableAt ℝ
+      (fun y ↦ H y p (christoffelClosedOp G y v q)) x :=
+    (hHd.clm_apply (differentiableAt_const p)).clm_apply hVq
+  exact (ht1.sub ht2).sub ht3
+
+end RicciFlow
