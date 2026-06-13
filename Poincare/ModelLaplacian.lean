@@ -7976,4 +7976,87 @@ theorem ricciDivergence_eq_half_fderiv_scalar
   rw [h2] at h1
   linarith
 
+/-- The Ricci divergence is additive in its argument. -/
+theorem ricciDivergence_add
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (u₁ u₂ : E) :
+    ricciDivergence G x (u₁ + u₂)
+      = ricciDivergence G x u₁ + ricciDivergence G x u₂ := by
+  unfold ricciDivergence
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun k _ ↦ ?_
+  unfold covRicciDeriv
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [covCurvDeriv_add_snd hdiffΓ hdd _ _ u₁ u₂,
+    ContinuousLinearMap.add_apply, map_add]
+
+/-- The Ricci divergence is homogeneous in its argument. -/
+theorem ricciDivergence_smul
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (c : ℝ) (u : E) :
+    ricciDivergence G x (c • u) = c • ricciDivergence G x u := by
+  unfold ricciDivergence
+  rw [Finset.smul_sum]
+  refine Finset.sum_congr rfl fun k _ ↦ ?_
+  unfold covRicciDeriv
+  rw [Finset.smul_sum]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [covCurvDeriv_smul_snd hdiffΓ hdd _ _ c u,
+    ContinuousLinearMap.smul_apply, map_smul]
+
+/-- **The Ricci divergence as a covector**: the `1`-form `u ↦ div Ric(u)`,
+packaged as a continuous linear functional. -/
+noncomputable def ricciDivergenceForm (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x) :
+    E →L[ℝ] ℝ :=
+  LinearMap.toContinuousLinearMap
+    { toFun := fun u ↦ ricciDivergence G x u
+      map_add' := fun u₁ u₂ ↦ ricciDivergence_add hdiffΓ hdd u₁ u₂
+      map_smul' := fun c u ↦ by
+        simp only [RingHom.id_apply]
+        exact ricciDivergence_smul hdiffΓ hdd c u }
+
+@[simp] theorem ricciDivergenceForm_apply (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x) (u : E) :
+    ricciDivergenceForm G x hdiffΓ hdd u = ricciDivergence G x u := rfl
+
+/--
+**THE CONTRACTED BIANCHI IDENTITY IN GRADIENT FORM**: the differential of
+the scalar curvature is twice the Ricci-divergence covector —
+`d R = 2 · div Ric`. This is the form of the twice-contracted Bianchi
+identity that drives the gradient flow of scalar curvature.
+-/
+theorem fderiv_coordScalar_eq_two_ricciDivergenceForm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hsymΓ : ∀ p : E, IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) x) :
+    fderiv ℝ (fun y ↦ coordScalar G y) x
+      = (2 : ℝ) • ricciDivergenceForm G x hdiffΓ hdd := by
+  ext w
+  rw [ContinuousLinearMap.smul_apply, ricciDivergenceForm_apply, smul_eq_mul,
+    ricciDivergence_eq_half_fderiv_scalar hGC2 hGsymm hinv hdiffΓ hdd hsymΓ w]
+  ring
+
 end RicciFlow
