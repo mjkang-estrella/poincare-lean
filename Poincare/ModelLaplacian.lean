@@ -7368,4 +7368,27 @@ theorem g_inverse_raise_metric_compat
     coord_metric_compatible hGd hGsymm hinv v ((G x).inverse φ) z]
   ring
 
+/-- **The coordinate Ricci form is spatially differentiable**: with both
+plane arguments fixed, `y ↦ Ric_y(u,w)` differentiates at `x` — the
+basis-trace contraction of the differentiable curvature family. This is
+the prerequisite for differentiating the scalar curvature in space. -/
+theorem differentiableAt_coordRicci_family
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (u w : E) :
+    DifferentiableAt ℝ (fun y ↦ coordRicci G y u w) x := by
+  unfold coordRicci
+  apply DifferentiableAt.fun_sum
+  intro i _
+  have hfam := differentiableAt_coordCurvatureOp_family hdiffΓ hdd
+    ((Module.finBasis ℝ E) i) u
+  have happ : DifferentiableAt ℝ
+      (fun y ↦ (coordCurvatureOp G y ((Module.finBasis ℝ E) i) u) w) x :=
+    hfam.clm_apply (differentiableAt_const w)
+  exact (LinearMap.toContinuousLinearMap
+    ((Module.finBasis ℝ E).coord i)).differentiableAt.comp x happ
+
 end RicciFlow
