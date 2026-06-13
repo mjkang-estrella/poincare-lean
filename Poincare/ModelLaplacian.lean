@@ -6993,3 +6993,54 @@ theorem ricciDeriv_raised_trace_eq
   exact ricciDeriv_eq_deltaGamma_contractions hΓsymm _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**METRIC COMPATIBILITY FOR THE `δΓ` COVARIANT DERIVATIVE**: pairing the
+covariant derivative of the Christoffel variation against the metric is
+the covariant derivative of the pairing — the directional derivative of
+`y ↦ G_y(δΓ_y(p,z), w)` minus the three lower-slot Christoffel
+corrections. Because `∇G = 0`, the metric passes through the covariant
+derivative, turning `G(∇δΓ, ·)` into the genuine `(0,4)`-tensor
+derivative of `G(δΓ, ·)`.
+-/
+theorem g_covDeltaGammaDeriv
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {p : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : (G x).IsInvertible)
+    (hVd : DifferentiableAt ℝ (fun y ↦ christoffelDerivOp G H y p) x)
+    (v z w : E) :
+    G x (covDeltaGammaDeriv G H x v p z) w
+      = (fderiv ℝ (fun y ↦ G y (christoffelDerivOp G H y p z) w) x) v
+        - G x (christoffelDerivOp G H x
+            (christoffelClosedOp G x v p) z) w
+        - G x (christoffelDerivOp G H x p
+            (christoffelClosedOp G x v z)) w
+        - G x (christoffelDerivOp G H x p z)
+            (christoffelClosedOp G x v w) := by
+  -- The product rule for the metric pairing of the `δΓ`-vector field.
+  have hfd : HasFDerivAt
+      (fun y ↦ G y (christoffelDerivOp G H y p z) w) _ x :=
+    hasFDerivAt_g_op_family hGd hVd z w
+  have hDv := congrArg (fun (Φ : E →L[ℝ] ℝ) ↦ Φ v) hfd.fderiv
+  simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.add_apply,
+    ContinuousLinearMap.apply_apply, ContinuousLinearMap.flip_apply] at hDv
+  -- Metric compatibility: the metric-derivative term is the two
+  -- Christoffel actions on the value and the test vector.
+  have hmc := coord_metric_compatible hGd hGsymm hinv v
+    (christoffelDerivOp G H x p z) w
+  -- Distribute `G x (·) w` through the covariant-derivative sum.
+  unfold covDeltaGammaDeriv
+  simp only [map_add, map_sub, ContinuousLinearMap.add_apply,
+    ContinuousLinearMap.sub_apply]
+  rw [hDv, hmc]
+  ring
+
+end RicciFlow
