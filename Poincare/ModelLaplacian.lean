@@ -8536,3 +8536,23 @@ theorem metricTrace_covTensor1Deriv_fderiv
   exact covTensor1Deriv_fderiv_eq_covariantHessian hGsymm hinv f _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The covariant 1-form derivative is homogeneous in the 1-form. -/
+theorem covTensor1Deriv_smul (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (α : E → E →L[ℝ] ℝ) {x : E} (hα : DifferentiableAt ℝ α x)
+    (c : ℝ) (v w : E) :
+    covTensor1Deriv G (fun y ↦ c • α y) x v w
+      = c * covTensor1Deriv G α x v w := by
+  unfold covTensor1Deriv
+  rw [fderiv_fun_const_smul hα c]
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  ring
+
+end RicciFlow
