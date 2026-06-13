@@ -10359,3 +10359,35 @@ theorem deltaGammaContractionDerivTrace_eq_div
   exact deltaGammaContractionDeriv_eq_covTensor1Deriv hGd hHd hGsymm hHsymm hVd _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ`-trace one-form is half the `∇H`-trace**: `τ_x(w) = ½ Σᵢ
+(∇_w H)(bᵢ, ♯bⁱ)` — pointwise, the trace one-form is half the metric
+trace of the covariant `w`-derivative of `H`. Combines the trace-form
+evaluation, the raised-coordinate identity, and the contracted
+Christoffel-variation. The bridge that, once the metric trace commutes
+with `∇`, makes `τ = ½ d(tr_g H)`. -/
+theorem deltaGammaTraceForm_apply_eq_half_covTensor2
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : (G x).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (w : E) :
+    deltaGammaTraceForm G H x w
+      = (1 / 2 : ℝ) * ∑ i, covTensor2Deriv G H x w ((Module.finBasis ℝ E) i)
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i))) := by
+  rw [deltaGammaTraceForm_apply,
+    ← deltaGamma_firstSlot_trace_eq hGd hGsymm hinv hHd hHsymm w]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [christoffelDerivOp_apply, coord_eq_g_raised G hinv (hGsymm x) i]
+
+end RicciFlow
