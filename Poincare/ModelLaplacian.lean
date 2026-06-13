@@ -8668,3 +8668,26 @@ theorem covTensor2Deriv_symm
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Adding a spatial constant does not change the curved Laplacian**:
+`Δ_g(f + k) = Δ_g f`. The curved analog of `modelLaplacian_add_const`,
+needed for the ε-exponential perturbation in the curved parabolic
+maximum principle. -/
+theorem curvedLaplacian_add_const (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate)
+    {f : E → ℝ} {x : E} (hf : ContDiff ℝ 2 f) (k : ℝ) :
+    curvedLaplacian G b hb (fun y ↦ f y + k) x
+      = curvedLaplacian G b hb f x := by
+  rw [show (fun y ↦ f y + k) = f + (fun _ : E ↦ k) from rfl,
+    curvedLaplacian_add G b hb hf contDiff_const,
+    curvedLaplacian_const_fn, add_zero]
+
+end RicciFlow
