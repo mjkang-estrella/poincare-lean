@@ -9868,3 +9868,105 @@ theorem metricBilin_isSymm {m : E →L[ℝ] E →L[ℝ] ℝ}
   exact hsymm v w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative Set
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**THE GEOMETRICALLY-CORRECT RICCI-FLOW FINITE-TIME SINGULARITY THEOREM**:
+a coordinate Ricci flow `∂g/∂t = −2 Ric` with positive minimum scalar
+curvature `m₀` on a compact domain develops a singularity by `T <
+n/(2 m₀)` — using the genuine Laplace–Beltrami operator of the evolving
+metric (not the bare model Laplacian), conditional on the contracted
+Bianchi identity. The full curved chain — evolution equation, trace
+bridges, and the time-varying curved Riccati/parabolic machinery — wired
+end to end. -/
+theorem curved_hamilton_ricci_flow_singularity
+    [Nontrivial E]
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ}
+    {H : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ}
+    {K : Set E} (hK : IsCompact K) (hKne : K.Nonempty)
+    {T m₀ B : ℝ} (hm₀ : 0 < m₀) (hT0 : 0 ≤ T)
+    (hd2 : ∀ (t : ℝ) (x : E) (u : E),
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp (Gt t) y u) x)
+    (hinv : ∀ (t : ℝ) (x : E), (Gt t x).IsInvertible)
+    (hGsymm : ∀ (t : ℝ) (x : E) (v w : E), Gt t x v w = Gt t x w v)
+    (hGpos : ∀ (t : ℝ) (x : E) (v : E), v ≠ 0 → 0 < Gt t x v v)
+    (hRicSymm : ∀ (t : ℝ) (x : E) (u w : E),
+      coordRicci (Gt t) x u w = coordRicci (Gt t) x w u)
+    (hdG : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      HasDerivAt (fun s ↦ Gt s x) (H t x) t)
+    (hmix : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, ∀ p q r : E,
+      HasDerivAt (fun s ↦ (fderiv ℝ (Gt s) x p) q r)
+        ((fderiv ℝ (H t) x p) q r) t)
+    (hmix2 : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, ∀ p v : E,
+      HasDerivAt
+        (fun s ↦ fderiv ℝ (fun y ↦ christoffelClosedOp (Gt s) y p) x v)
+        (fderiv ℝ (fun y ↦ christoffelDerivOp (Gt t) (H t) y p) x v) t)
+    (hH : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      H t x = (-2 : ℝ) • coordRicciForm (Gt t) x (hd2 t x))
+    (hBianchi : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      ∑ j, ricciDeriv (Gt t) (H t) x
+          ((Gt t x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) j)
+        = curvedLaplacian (Gt t) (fun y ↦ metricBilin (Gt t y))
+            (fun y ↦ metricBilin_nondeg (hGsymm t y) (hinv t y))
+            (fun y ↦ coordScalar (Gt t) y) x)
+    (hR_cont : Continuous ↿(fun t x ↦ coordScalar (Gt t) x))
+    (hspace : ∀ t ∈ Icc (0 : ℝ) T,
+      ContDiff ℝ 2 (fun x ↦ coordScalar (Gt t) x))
+    (hmin_int : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      IsMinOn (fun y ↦ coordScalar (Gt t) y) K x →
+        IsLocalMin (fun y ↦ coordScalar (Gt t) y) x)
+    (hRB : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, coordScalar (Gt t) x ≤ B)
+    (h0 : ∀ x ∈ K, m₀ ≤ coordScalar (Gt 0) x) :
+    T < (Module.finrank ℝ E : ℝ) / (2 * m₀) := by
+  apply curved_hamilton_singularity_of_evolution_eq_tv Gt
+    (fun t y ↦ metricBilin (Gt t y))
+    (fun t y ↦ metricBilin_nondeg (hGsymm t y) (hinv t y))
+    (fun t y ↦ metricBilin_isSymm (hGsymm t y))
+    (fun t y v hv ↦ by
+      simp only [metricBilin_apply]; exact hGpos t y v hv)
+    hK hKne hm₀ hT0
+    (R := fun t x ↦ coordScalar (Gt t) x)
+    (R' := fun t x ↦
+      curvedLaplacian (Gt t) (fun y ↦ metricBilin (Gt t y))
+          (fun y ↦ metricBilin_nondeg (hGsymm t y) (hinv t y))
+          (fun y ↦ coordScalar (Gt t) y) x
+        + 2 * LinearMap.trace ℝ E
+          (coordRicciEndo (Gt t) x (hd2 t x)
+            ∘ₗ coordRicciEndo (Gt t) x (hd2 t x)))
+    (Rc := fun t x ↦ coordRicciEndo (Gt t) x (hd2 t x))
+    hR_cont ?_ hspace ?_ ?_ ?_ hmin_int hRB h0
+  · -- the time derivative, from the curved variation machinery
+    intro x hx t ht
+    have h := hamilton_scalar_evolution_of_bianchi_curved
+      (Gt := Gt) (H := H t) (x := x) (t₀ := t)
+      (hdG t ht x hx)
+      (Filter.Eventually.of_forall fun s ↦ hinv s x)
+      (hmix t ht x hx) (hmix2 t ht x hx)
+      (fun s u ↦ hd2 s x u)
+      (hH t ht x hx)
+      (fun y ↦ metricBilin_nondeg (hGsymm t y) (hinv t y))
+      (hBianchi t ht x hx)
+    rwa [coordRicciNormSq_eq_trace (Gt t) x (hd2 t x) (hinv t x)
+      (hRicSymm t x)] at h
+  · -- self-adjointness of the Ricci endomorphism w.r.t. the metric
+    intro t ht x hx p q
+    simp only [metricBilin_apply]
+    exact coordRicciEndo_selfAdjoint (Gt t) x (hd2 t x) (hinv t x)
+      (hGsymm t x) (hRicSymm t x) p q
+  · -- the trace identity
+    intro t ht x hx
+    exact trace_coordRicciEndo (Gt t) x (hd2 t x) (hinv t x)
+      (hGsymm t x)
+  · -- the evolution equation, by definition of `R'`
+    intro t ht x hx
+    rfl
+
+end RicciFlow
