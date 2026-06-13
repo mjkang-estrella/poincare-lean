@@ -7391,4 +7391,14 @@ theorem differentiableAt_coordRicci_family
   exact (LinearMap.toContinuousLinearMap
     ((Module.finBasis ℝ E).coord i)).differentiableAt.comp x happ
 
+/-- **The basis-trace formula**: contracting an endomorphism against the
+basis and its dual gives the trace — `Σⱼ ⟨bʲ, Φ bⱼ⟩ = tr Φ`. The
+coordinate realisation of the trace through the chosen basis. -/
+theorem sum_coord_eq_trace (Φ : E →ₗ[ℝ] E) :
+    ∑ j, (Module.finBasis ℝ E).coord j (Φ ((Module.finBasis ℝ E) j))
+      = LinearMap.trace ℝ E Φ := by
+  rw [LinearMap.trace_eq_matrix_trace ℝ (Module.finBasis ℝ E) Φ, Matrix.trace]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [Matrix.diag_apply, LinearMap.toMatrix_apply, Module.Basis.coord_apply]
+
 end RicciFlow
