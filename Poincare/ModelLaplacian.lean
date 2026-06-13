@@ -7401,4 +7401,30 @@ theorem sum_coord_eq_trace (Φ : E →ₗ[ℝ] E) :
   refine Finset.sum_congr rfl fun j _ ↦ ?_
   rw [Matrix.diag_apply, LinearMap.toMatrix_apply, Module.Basis.coord_apply]
 
+/-- The coordinate curvature operator is additive in its first plane
+slot — by antisymmetry and second-slot additivity. -/
+theorem coordCurvatureOp_add_fst
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (v₁ v₂ w : E) :
+    coordCurvatureOp G x (v₁ + v₂) w
+      = coordCurvatureOp G x v₁ w + coordCurvatureOp G x v₂ w := by
+  rw [coordCurvatureOp_antisymm G x (v₁ + v₂) w,
+    coordCurvatureOp_add_snd G hdiff w v₁ v₂,
+    coordCurvatureOp_antisymm G x w v₁, coordCurvatureOp_antisymm G x w v₂]
+  abel
+
+/-- The coordinate curvature operator is homogeneous in its first plane
+slot. -/
+theorem coordCurvatureOp_smul_fst
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (c : ℝ) (v w : E) :
+    coordCurvatureOp G x (c • v) w = c • coordCurvatureOp G x v w := by
+  rw [coordCurvatureOp_antisymm G x (c • v) w,
+    coordCurvatureOp_smul_snd G hdiff w c v,
+    coordCurvatureOp_antisymm G x w v, smul_neg, neg_neg]
+
 end RicciFlow
