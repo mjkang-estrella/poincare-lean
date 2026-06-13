@@ -7273,3 +7273,65 @@ theorem curvedLaplacian_eq_raised_hessian_sum
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**THE SPATIAL DERIVATIVE OF THE RAISED INDEX**: differentiating the
+inverse-metric raising `y ↦ (G y)⁻¹ φ` of a fixed covector along a
+direction `v` gives `−(G x)⁻¹((D_v G)((G x)⁻¹ φ))` — the spatial analog
+of the flow-time inverse-derivative formula, obtained by differentiating
+the pairing identity `G_y((G y)⁻¹ φ) = φ`. This is the term whose
+metric-compatibility cancellation against the Christoffel correction
+yields `∇R = dR`.
+-/
+theorem hasFDerivAt_inverse_raise
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hG : DifferentiableAt ℝ G x)
+    (hev : ∀ᶠ y in nhds x, (G y).IsInvertible)
+    (φ : E →L[ℝ] ℝ) :
+    HasFDerivAt (fun y ↦ (G y).inverse φ)
+      (-(((G x).inverse).comp
+          ((fderiv ℝ G x).flip ((G x).inverse φ)))) x := by
+  have hinv : (G x).IsInvertible := hev.self_of_nhds
+  -- Differentiability of the operator-inverse path, then the raised path.
+  have hInvDiff : DifferentiableAt ℝ (fun y ↦ (G y).inverse) x :=
+    ((hinv.contDiffAt_map_inverse (n := 1)).differentiableAt
+      one_ne_zero).comp x hG
+  have hψ : DifferentiableAt ℝ (fun y ↦ (G y).inverse φ) x :=
+    hInvDiff.clm_apply (differentiableAt_const φ)
+  set B' : E →L[ℝ] E := fderiv ℝ (fun y ↦ (G y).inverse φ) x with hB'
+  have hB : HasFDerivAt (fun y ↦ (G y).inverse φ) B' x := hψ.hasFDerivAt
+  -- The pairing `G_y ((G y)⁻¹ φ)` is eventually `φ`.
+  have hid : (fun y ↦ (G y) ((G y).inverse φ)) =ᶠ[nhds x] fun _ ↦ φ := by
+    filter_upwards [hev] with y hy
+    obtain ⟨e, he⟩ := hy
+    rw [← he, ContinuousLinearMap.inverse_equiv]
+    exact e.apply_symm_apply φ
+  -- Differentiate the pairing by the product rule.
+  have hpair : HasFDerivAt (fun y ↦ (G y) ((G y).inverse φ))
+      ((G x).comp B' + (fderiv ℝ G x).flip ((G x).inverse φ)) x :=
+    hG.hasFDerivAt.clm_apply hB
+  -- Being eventually constant forces the derivative to vanish.
+  have hzero : (G x).comp B' + (fderiv ℝ G x).flip ((G x).inverse φ) = 0 :=
+    hpair.unique ((hasFDerivAt_const φ x).congr_of_eventuallyEq hid)
+  -- Solve for `B'`.
+  have hBA : (G x).comp B' = -((fderiv ℝ G x).flip ((G x).inverse φ)) := by
+    linear_combination (norm := abel) hzero
+  have h1 := congrArg (fun L ↦ ((G x).inverse).comp L) hBA
+  simp only at h1
+  rw [← ContinuousLinearMap.comp_assoc] at h1
+  have hinvG : ((G x).inverse).comp (G x) = ContinuousLinearMap.id ℝ E := by
+    obtain ⟨e, he⟩ := hinv
+    rw [← he, ContinuousLinearMap.inverse_equiv]
+    ext m; simp
+  rw [hinvG, ContinuousLinearMap.id_comp, ContinuousLinearMap.comp_neg] at h1
+  rw [← h1]
+  exact hB
+
+end RicciFlow
