@@ -9970,3 +9970,40 @@ theorem curved_hamilton_ricci_flow_singularity
     rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The first-slot trace of `δΓ`, paired with the metric, in `∇H`
+terms**: `Σᵢ G(δΓ(bᵢ,w), ♯bⁱ) = ½ Σᵢ [(∇_{bᵢ}H)(w,♯bⁱ) + (∇_w H)(bᵢ,♯bⁱ)
+− (∇_{♯bⁱ}H)(bᵢ,w)]`. The contracted Lichnerowicz half-sum, the first step
+toward identifying the `δΓ`-trace with the gradient of `tr H`. -/
+theorem deltaGamma_firstSlot_pairing_sum
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : (G x).IsInvertible)
+    (hHsymm : ∀ p q : E, H x p q = H x q p)
+    (w : E) :
+    (∑ i, G x (christoffelDeriv G H x ((Module.finBasis ℝ E) i) w)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))))
+      = ∑ i, (1 / 2 : ℝ) *
+          (covTensor2Deriv G H x ((Module.finBasis ℝ E) i) w
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))
+            + covTensor2Deriv G H x w ((Module.finBasis ℝ E) i)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))
+            - covTensor2Deriv G H x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))
+              ((Module.finBasis ℝ E) i) w) := by
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact g_christoffelDeriv hGd hGsymm hinv hHsymm _ _ _
+
+end RicciFlow
