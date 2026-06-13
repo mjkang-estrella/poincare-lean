@@ -7664,4 +7664,70 @@ theorem fderiv_coordRicci_first_slot_const
     (differentiableAt_coordRicci_family hdiffΓ hdd ((Module.finBasis ℝ E) i) bk),
     ContinuousLinearMap.smul_apply, smul_eq_mul]
 
+/--
+**THE PRODUCT RULE FOR THE RAISED RICCI FORM**: differentiating
+`y ↦ Ric_y((G y)⁻¹ρ, bk)` splits into the frozen-index derivative plus
+the Ricci form evaluated on the derivative of the raised index —
+`D[Ric((G·)⁻¹ρ, bk)] = D[Ric((G x)⁻¹ρ, bk)]_frozen + Ric(D((G·)⁻¹ρ), bk)`.
+This is the chain rule that exposes the inverse-metric variation term,
+which metric compatibility then cancels against the Christoffel
+corrections.
+-/
+theorem fderiv_coordRicci_raised_eq
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hGd : DifferentiableAt ℝ G x)
+    (ρ : E →L[ℝ] ℝ) (bk w : E) :
+    (fderiv ℝ (fun y ↦ coordRicci G y ((G y).inverse ρ) bk) x) w
+      = (fderiv ℝ (fun y ↦ coordRicci G y ((G x).inverse ρ) bk) x) w
+        + coordRicci G x
+            ((-(((G x).inverse).comp
+              ((fderiv ℝ G x).flip ((G x).inverse ρ)))) w) bk := by
+  set bE := Module.finBasis ℝ E with hbE
+  set V' : E →L[ℝ] E :=
+    -(((G x).inverse).comp ((fderiv ℝ G x).flip ((G x).inverse ρ))) with hV'
+  have hVfd : HasFDerivAt (fun y ↦ (G y).inverse ρ) V' x :=
+    hasFDerivAt_inverse_raise hGd (Filter.Eventually.of_forall hinv) ρ
+  have hmul : ∀ i : Fin (Module.finrank ℝ E),
+      HasFDerivAt
+        (fun y ↦ bE.coord i ((G y).inverse ρ) * coordRicci G y (bE i) bk)
+        (bE.coord i ((G x).inverse ρ)
+            • (fderiv ℝ (fun y ↦ coordRicci G y (bE i) bk) x)
+          + coordRicci G x (bE i) bk
+            • (LinearMap.toContinuousLinearMap (bE.coord i)).comp V') x := by
+    intro i
+    have hg : HasFDerivAt (fun y ↦ bE.coord i ((G y).inverse ρ))
+        ((LinearMap.toContinuousLinearMap (bE.coord i)).comp V') x :=
+      (LinearMap.toContinuousLinearMap (bE.coord i)).hasFDerivAt.comp x hVfd
+    have hh : HasFDerivAt (fun y ↦ coordRicci G y (bE i) bk)
+        (fderiv ℝ (fun y ↦ coordRicci G y (bE i) bk) x) x :=
+      (differentiableAt_coordRicci_family hdiffΓ hdd (bE i) bk).hasFDerivAt
+    exact hg.mul hh
+  have hsum : HasFDerivAt (fun y ↦ coordRicci G y ((G y).inverse ρ) bk)
+      (∑ i, (bE.coord i ((G x).inverse ρ)
+            • (fderiv ℝ (fun y ↦ coordRicci G y (bE i) bk) x)
+          + coordRicci G x (bE i) bk
+            • (LinearMap.toContinuousLinearMap (bE.coord i)).comp V')) x := by
+    have hfun : (fun y ↦ coordRicci G y ((G y).inverse ρ) bk)
+        = fun y ↦ ∑ i, bE.coord i ((G y).inverse ρ)
+            * coordRicci G y (bE i) bk := by
+      funext y
+      exact coordRicci_eq_sum_first_slot (fun u ↦ hdiffΓ y u) _ bk
+    rw [hfun]
+    exact HasFDerivAt.fun_sum fun i _ ↦ hmul i
+  rw [hsum.fderiv, ContinuousLinearMap.sum_apply,
+    fderiv_coordRicci_first_slot_const hdiffΓ hdd ((G x).inverse ρ) bk w,
+    coordRicci_eq_sum_first_slot (fun u ↦ hdiffΓ x u) (V' w) bk,
+    ← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
+    smul_eq_mul]
+  rw [show ((LinearMap.toContinuousLinearMap (bE.coord i)).comp V') w
+      = bE.coord i (V' w) from rfl]
+  ring
+
 end RicciFlow
