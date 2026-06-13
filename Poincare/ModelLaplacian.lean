@@ -7730,4 +7730,121 @@ theorem fderiv_coordRicci_raised_eq
       = bE.coord i (V' w) from rfl]
   ring
 
+/--
+**THE INVERSE-METRIC-DERIVATIVE TRACE IS TWICE THE CHRISTOFFEL-CORRECTION
+TRACE**: `Σₖ Ric(D_w ♯bᵏ, bₖ) = −2 Σₖ Ric(Γ_w ♯bᵏ, bₖ)`. Metric
+compatibility splits the raised-index derivative into two Christoffel
+pieces; one is the correction trace directly, the other becomes it after
+swapping the contraction order and applying metric and Ricci symmetry.
+The third ingredient of the `∇R = dR` cancellation.
+-/
+theorem coordRicci_inverse_raise_trace
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (w : E) :
+    (∑ k, coordRicci G x
+        ((-(((G x).inverse).comp
+          ((fderiv ℝ G x).flip ((G x).inverse
+            (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k)))))) w)
+        ((Module.finBasis ℝ E) k))
+      = -2 * ∑ k, coordRicci G x
+          (christoffelClosedOp G x w
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k))))
+          ((Module.finBasis ℝ E) k) := by
+  have hGd : DifferentiableAt ℝ G x :=
+    (hGC2.differentiable (by norm_num)).differentiableAt
+  -- Coordinate of the raised-index derivative, by metric compatibility.
+  have hDcoord : ∀ i k : Fin (Module.finrank ℝ E),
+      (Module.finBasis ℝ E).coord i
+        ((-(((G x).inverse).comp
+          ((fderiv ℝ G x).flip ((G x).inverse
+            (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k)))))) w)
+      = -((Module.finBasis ℝ E).coord i
+            (christoffelClosedOp G x w
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord k)))))
+        - G x ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord k)))
+            (christoffelClosedOp G x w
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))) := by
+    intro i k
+    rw [coord_eq_g_raised G (hinv x) (hGsymm x) i,
+      g_inverse_raise_metric_compat hGd hGsymm (hinv x)
+        (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord k)) w
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))),
+      coord_eq_g_raised G (hinv x) (hGsymm x) i
+        (christoffelClosedOp G x w
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord k))))]
+  -- Expand the trace into a double sum and substitute the coordinate.
+  have hexp : ∀ k : Fin (Module.finrank ℝ E),
+      coordRicci G x
+        ((-(((G x).inverse).comp
+          ((fderiv ℝ G x).flip ((G x).inverse
+            (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k)))))) w)
+        ((Module.finBasis ℝ E) k)
+      = -coordRicci G x
+          (christoffelClosedOp G x w
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k))))
+          ((Module.finBasis ℝ E) k)
+        - ∑ i, G x ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k)))
+              (christoffelClosedOp G x w
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i))))
+            * coordRicci G x ((Module.finBasis ℝ E) i)
+                ((Module.finBasis ℝ E) k) := by
+    intro k
+    rw [coordRicci_eq_sum_first_slot hdiffΓ _ ((Module.finBasis ℝ E) k),
+      coordRicci_eq_sum_first_slot hdiffΓ
+        (christoffelClosedOp G x w
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord k)))) ((Module.finBasis ℝ E) k),
+      ← Finset.sum_neg_distrib, ← Finset.sum_sub_distrib]
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    rw [hDcoord i k]
+    ring
+  rw [Finset.sum_congr rfl fun k _ ↦ hexp k, Finset.sum_sub_distrib,
+    Finset.sum_neg_distrib]
+  -- The double sum equals the correction trace `T1`.
+  have hS2 : (∑ k, ∑ i,
+        G x ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord k)))
+          (christoffelClosedOp G x w
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i))))
+        * coordRicci G x ((Module.finBasis ℝ E) i)
+            ((Module.finBasis ℝ E) k))
+      = ∑ k, coordRicci G x
+          (christoffelClosedOp G x w
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k))))
+          ((Module.finBasis ℝ E) k) := by
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    rw [coordRicci_eq_sum_first_slot hdiffΓ
+      (christoffelClosedOp G x w
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))) ((Module.finBasis ℝ E) i)]
+    refine Finset.sum_congr rfl fun k _ ↦ ?_
+    rw [hGsymm x, coord_eq_g_raised G (hinv x) (hGsymm x) k
+        (christoffelClosedOp G x w
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i)))),
+      coordRicci_symm hGC2 hGsymm hinv hdiffΓ ((Module.finBasis ℝ E) i)
+        ((Module.finBasis ℝ E) k)]
+  rw [hS2]
+  ring
+
 end RicciFlow
