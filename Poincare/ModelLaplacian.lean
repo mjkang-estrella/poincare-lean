@@ -7076,3 +7076,34 @@ theorem g_christoffelDerivOp_pairing_eq
   exact g_christoffelDeriv (hGd y) hGsymm (hinv y) (hHsymm y) p z w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The covariant 2-tensor derivative is additive in its differentiation
+direction. -/
+theorem covTensor2Deriv_add_dir
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (v₁ v₂ p q : E) :
+    covTensor2Deriv G H x (v₁ + v₂) p q
+      = covTensor2Deriv G H x v₁ p q + covTensor2Deriv G H x v₂ p q := by
+  unfold covTensor2Deriv
+  simp only [christoffelClosedOp_add_fst, map_add,
+    ContinuousLinearMap.add_apply]
+  ring
+
+/-- The covariant 2-tensor derivative is homogeneous in its
+differentiation direction. -/
+theorem covTensor2Deriv_smul_dir
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ) (v p q : E) :
+    covTensor2Deriv G H x (c • v) p q
+      = c * covTensor2Deriv G H x v p q := by
+  unfold covTensor2Deriv
+  simp only [christoffelClosedOp_smul_fst, map_smul,
+    ContinuousLinearMap.smul_apply, smul_eq_mul]
+  ring
+
+end RicciFlow
