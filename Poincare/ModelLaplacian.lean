@@ -8339,3 +8339,52 @@ theorem g_covDeltaGammaDeriv_fderiv_form
     fderiv_lichnerowicz_sum hHd hH2 hΓd v p z w]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`G(∇δΓ,w)` IN SECOND-COVARIANT-DERIVATIVE FORM**: the metric pairing
+of the covariant Christoffel-variation derivative is the Lichnerowicz
+half-sum of second covariant derivatives `∇²H`, plus the lower-slot
+Christoffel corrections of `∇H`, minus the value-slot corrections of `δΓ`.
+The closed Bochner form, ready for the basis contraction. -/
+theorem g_covDeltaGammaDeriv_sndDeriv_form
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {p : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hVd : DifferentiableAt ℝ (fun y ↦ christoffelDerivOp G H y p) x)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (v z w : E) :
+    G x (covDeltaGammaDeriv G H x v p z) w
+      = (1 / 2 : ℝ) * ((covTensor2SndDeriv G H x v p z w
+            + covTensor2Deriv G H x (christoffelClosedOp G x v p) z w
+            + covTensor2Deriv G H x p (christoffelClosedOp G x v z) w
+            + covTensor2Deriv G H x p z (christoffelClosedOp G x v w))
+          + (covTensor2SndDeriv G H x v z p w
+            + covTensor2Deriv G H x (christoffelClosedOp G x v z) p w
+            + covTensor2Deriv G H x z (christoffelClosedOp G x v p) w
+            + covTensor2Deriv G H x z p (christoffelClosedOp G x v w))
+          - (covTensor2SndDeriv G H x v w p z
+            + covTensor2Deriv G H x (christoffelClosedOp G x v w) p z
+            + covTensor2Deriv G H x w (christoffelClosedOp G x v p) z
+            + covTensor2Deriv G H x w p (christoffelClosedOp G x v z)))
+        - G x (christoffelDerivOp G H x
+            (christoffelClosedOp G x v p) z) w
+        - G x (christoffelDerivOp G H x p
+            (christoffelClosedOp G x v z)) w
+        - G x (christoffelDerivOp G H x p z)
+            (christoffelClosedOp G x v w) := by
+  rw [g_covDeltaGammaDeriv_fderiv_form hGd hGsymm hinv hHsymm hVd hHd hH2
+      hΓd v z w, fderiv_covTensor2Deriv_eq, fderiv_covTensor2Deriv_eq,
+    fderiv_covTensor2Deriv_eq]
+
+end RicciFlow
