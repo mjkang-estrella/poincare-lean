@@ -8481,3 +8481,30 @@ theorem covTensor1Deriv_add_test (G : E → E →L[ℝ] E →L[ℝ] ℝ)
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant derivative of the differential is the covariant
+Hessian**: `(∇_v df)(w) = Hess f(v,w)`. Identifies the abstract 1-form
+covariant derivative applied to `df` with the metric covariant Hessian,
+so the metric trace of `∇dR` is the curved Laplacian — the bridge from
+`div Ric` to `Δ_g R`. -/
+theorem covTensor1Deriv_fderiv_eq_covariantHessian
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (f : E → ℝ) (v w : E) :
+    covTensor1Deriv G (fun y ↦ fderiv ℝ f y) x v w
+      = covariantHessian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x v w := by
+  unfold covTensor1Deriv covariantHessian
+  rw [christoffelClosedOp_eq_christoffelAt G (metricBilin (G x))
+    (metricBilin_nondeg (hGsymm x) (hinv x))
+    (fun a b ↦ metricBilin_apply (G x) a b)]
+
+end RicciFlow
