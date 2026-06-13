@@ -8556,3 +8556,37 @@ theorem covTensor1Deriv_smul (G : E → E →L[ℝ] E →L[ℝ] ℝ)
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`div div Ric = ½ Δ_g R`, analytic form**: since `div Ric = ½ dR`,
+the divergence of the Ricci-divergence one-form is half the Laplacian of
+the scalar curvature. Stated as the metric trace of `∇(½ dR)` being
+`½ Δ_g R` — the input the contracted Lichnerowicz formula needs from the
+`H = −2Ric` direction. -/
+theorem metricTrace_covTensor1Deriv_half_grad
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hR2 : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (coordScalar G) y) x) :
+    (∑ j, covTensor1Deriv G
+        (fun y ↦ (1 / 2 : ℝ) • fderiv ℝ (coordScalar G) y) x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+      = (1 / 2 : ℝ) * curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+          (coordScalar G) x := by
+  rw [← metricTrace_covTensor1Deriv_fderiv hGsymm hinv (coordScalar G),
+    Finset.mul_sum]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  exact covTensor1Deriv_smul G (fun y ↦ fderiv ℝ (coordScalar G) y)
+    hR2 (1 / 2) _ _
+
+end RicciFlow
