@@ -10053,3 +10053,38 @@ theorem covTensor2Deriv_trace_swap
       dsimp only; rw [covTensor2Deriv_smul_left, smul_eq_mul])).symm
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric-paired `δΓ` first-slot trace is half the `∇_w H` trace**:
+`Σᵢ G(δΓ(bᵢ,w), ♯bⁱ) = ½ Σᵢ (∇_w H)(bᵢ, ♯bⁱ)` — the outer Lichnerowicz
+terms cancel, leaving half the middle trace. This is the coordinate
+realisation of `δΓ^k_{kw} = ½ ∇_w(tr H)`, the contracted Christoffel
+variation. -/
+theorem deltaGamma_firstSlot_trace_eq
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : (G x).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (w : E) :
+    (∑ i, G x (christoffelDeriv G H x ((Module.finBasis ℝ E) i) w)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))))
+      = (1 / 2 : ℝ) * ∑ i, covTensor2Deriv G H x w
+          ((Module.finBasis ℝ E) i)
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i))) := by
+  rw [deltaGamma_firstSlot_pairing_sum hGd hGsymm hinv
+      (fun p q ↦ hHsymm x p q) w, ← Finset.mul_sum,
+    Finset.sum_sub_distrib, Finset.sum_add_distrib,
+    covTensor2Deriv_trace_swap hHd hHsymm (hGsymm x) hinv w]
+  ring
+
+end RicciFlow
