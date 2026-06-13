@@ -7877,4 +7877,76 @@ theorem differentiableAt_coordRicci_raised
   · exact differentiableAt_coordRicci_family hdiffΓ hdd
       ((Module.finBasis ℝ E) i) bk
 
+/--
+**`∇R = dR`: THE COVARIANT SCALAR-CURVATURE DERIVATIVE IS THE DIFFERENTIAL**:
+the metric-trace of the covariant Ricci derivative equals the ordinary
+derivative of the scalar curvature — `scalarContractionDeriv = d(coordScalar)`.
+The covariant derivative commutes with the metric trace: the
+inverse-metric-variation term from differentiating the raised index
+cancels the Christoffel corrections of the Ricci covariant derivative.
+This is the boss brick of the Bianchi bridge.
+-/
+theorem scalarContractionDeriv_eq_fderiv_coordScalar
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (w : E) :
+    scalarContractionDeriv G x w
+      = (fderiv ℝ (fun y ↦ coordScalar G y) x) w := by
+  have hGd : DifferentiableAt ℝ G x :=
+    (hGC2.differentiable (by norm_num)).differentiableAt
+  have hdiffΓx : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x :=
+    fun u ↦ hdiffΓ x u
+  -- Express the contracted Ricci divergence through the tensor derivative.
+  have hSC : scalarContractionDeriv G x w
+      = ∑ k, ((fderiv ℝ (fun y ↦ coordRicci G y
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord k)))
+              ((Module.finBasis ℝ E) k)) x) w
+          - coordRicci G x (christoffelClosedOp G x w
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord k))))
+              ((Module.finBasis ℝ E) k)
+          - coordRicci G x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord k)))
+              (christoffelClosedOp G x w ((Module.finBasis ℝ E) k))) := by
+    unfold scalarContractionDeriv
+    exact Finset.sum_congr rfl fun k _ ↦
+      covRicciDeriv_eq_tensor_deriv hdiffΓ hdd w _ _
+  -- Differentiate the scalar curvature through the raised contraction.
+  have hFC : (fderiv ℝ (fun y ↦ coordScalar G y) x) w
+      = ∑ k, ((fderiv ℝ (fun y ↦ coordRicci G y
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord k)))
+              ((Module.finBasis ℝ E) k)) x) w
+          + coordRicci G x
+              ((-(((G x).inverse).comp
+                ((fderiv ℝ G x).flip ((G x).inverse
+                  (LinearMap.toContinuousLinearMap
+                    ((Module.finBasis ℝ E).coord k)))))) w)
+              ((Module.finBasis ℝ E) k)) := by
+    rw [show (fun y ↦ coordScalar G y)
+        = fun y ↦ ∑ k, coordRicci G y
+            ((G y).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k)))
+            ((Module.finBasis ℝ E) k) from rfl,
+      fderiv_fun_sum fun k _ ↦ differentiableAt_coordRicci_raised hdiffΓ hdd
+        hinv hGd (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord k)) ((Module.finBasis ℝ E) k),
+      ContinuousLinearMap.sum_apply]
+    exact Finset.sum_congr rfl fun k _ ↦
+      fderiv_coordRicci_raised_eq hdiffΓ hdd hinv hGd _ _ w
+  rw [hSC, hFC, Finset.sum_sub_distrib, Finset.sum_sub_distrib,
+    Finset.sum_add_distrib]
+  have h1 := coordRicci_christoffel_correction_symm hGC2 hGsymm hinv hdiffΓx w
+  have h2 := coordRicci_inverse_raise_trace hGC2 hGsymm hinv hdiffΓx w
+  linarith [h1, h2]
+
 end RicciFlow
