@@ -7146,4 +7146,36 @@ theorem covTensor2Deriv_smul_right
   simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
   ring
 
+/-- **The metric as a bilinear form**: the underlying `BilinForm` of a
+continuous metric tensor `m : E →L E →L ℝ`, the form the curved Laplacian
+raises indices against. This adapter lets the metric family `Gt t` serve
+as the index-raising data `b` of `curvedLaplacian`, so the genuine
+Laplace–Beltrami operator of the flow can be named. -/
+noncomputable def metricBilin (m : E →L[ℝ] E →L[ℝ] ℝ) :
+    LinearMap.BilinForm ℝ E :=
+  LinearMap.mk₂ ℝ (fun v w ↦ m v w)
+    (fun a b c ↦ by simp) (fun c a b ↦ by simp)
+    (fun a b c ↦ by simp) (fun c a b ↦ by simp)
+
+@[simp] theorem metricBilin_apply (m : E →L[ℝ] E →L[ℝ] ℝ) (v w : E) :
+    metricBilin m v w = m v w := rfl
+
+/-- **The metric bilinear form is nondegenerate** whenever the metric is
+invertible — the index-raising data the curved Laplacian requires. -/
+theorem metricBilin_nondeg {m : E →L[ℝ] E →L[ℝ] ℝ}
+    (hsymm : ∀ v w : E, m v w = m w v) (hinv : m.IsInvertible) :
+    (metricBilin m).Nondegenerate := by
+  have hzero : ∀ v : E, (∀ z : E, m v z = 0) → v = 0 := by
+    intro v hv
+    have hmv : m v = 0 := by ext z; exact hv z
+    have hvid := hinv.inverse_apply_eq.mpr (rfl : m v = m v)
+    rw [hmv] at hvid
+    rw [← hvid]; simp
+  constructor
+  · exact fun v hv ↦ hzero v fun z ↦ by
+      simpa using hv z
+  · refine fun v hv ↦ hzero v fun z ↦ ?_
+    rw [hsymm v z]
+    simpa using hv z
+
 end RicciFlow
