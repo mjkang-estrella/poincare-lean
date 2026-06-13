@@ -7334,4 +7334,38 @@ theorem hasFDerivAt_inverse_raise
   rw [← h1]
   exact hB
 
+/-- **The metric pairing of the raised-index derivative collapses**:
+pairing `G_x` against the spatial derivative of `(G·)⁻¹ φ` recovers
+minus the metric-derivative covector, the lowering identity
+`G_x((G x)⁻¹ ·) = ·` undoing the raise. -/
+theorem g_inverse_raise_fderiv
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hinv : (G x).IsInvertible) (φ : E →L[ℝ] ℝ) (v z : E) :
+    G x ((-(((G x).inverse).comp
+          ((fderiv ℝ G x).flip ((G x).inverse φ)))) v) z
+      = -((fderiv ℝ G x v) ((G x).inverse φ) z) := by
+  have hGiG : ∀ ξ : E →L[ℝ] ℝ, G x ((G x).inverse ξ) = ξ :=
+    fun ξ ↦ (hinv.inverse_apply_eq.mp rfl).symm
+  simp only [ContinuousLinearMap.neg_apply, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.flip_apply, map_neg]
+  rw [hGiG]
+
+/-- **METRIC COMPATIBILITY FOR THE RAISED-INDEX DERIVATIVE**: the spatial
+derivative of `(G·)⁻¹ φ`, paired with the metric, is minus the two
+Christoffel actions — `∇G = 0` realised on the raised index. This is the
+correction term that cancels against the Christoffel piece of the Ricci
+covariant derivative to yield `∇R = dR`. -/
+theorem g_inverse_raise_metric_compat
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : (G x).IsInvertible) (φ : E →L[ℝ] ℝ) (v z : E) :
+    G x ((-(((G x).inverse).comp
+          ((fderiv ℝ G x).flip ((G x).inverse φ)))) v) z
+      = -(G x (christoffelClosedOp G x v ((G x).inverse φ)) z)
+        - G x ((G x).inverse φ) (christoffelClosedOp G x v z) := by
+  rw [g_inverse_raise_fderiv hinv φ v z,
+    coord_metric_compatible hGd hGsymm hinv v ((G x).inverse φ) z]
+  ring
+
 end RicciFlow
