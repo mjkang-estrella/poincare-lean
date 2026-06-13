@@ -10417,3 +10417,26 @@ theorem metricTrace_coordRicciForm_eq_coordScalar
   rw [coordRicciForm_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **First-slot basis expansion of a `(0,2)`-tensor**: `T(v,w) = Σᵢ
+⟨bⁱ, v⟩ · T(bᵢ, w)` — pure bilinearity of the continuous bilinear form
+over the finite basis. The general-tensor analogue of
+`coordRicci_eq_sum_first_slot`, the foundation for differentiating a
+raised metric trace `Σᵢ H(bᵢ, ♯bⁱ)` of an arbitrary symmetric tensor. -/
+theorem tensor_eq_sum_first_slot (T : E →L[ℝ] E →L[ℝ] ℝ) (v w : E) :
+    T v w
+      = ∑ i, (Module.finBasis ℝ E).coord i v * T ((Module.finBasis ℝ E) i) w := by
+  conv_lhs => rw [← (Module.finBasis ℝ E).sum_repr v]
+  rw [map_sum, ContinuousLinearMap.sum_apply]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul,
+    Module.Basis.coord_apply]
+
+end RicciFlow
