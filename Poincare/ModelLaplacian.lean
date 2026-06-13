@@ -7106,4 +7106,44 @@ theorem covTensor2Deriv_smul_dir
     ContinuousLinearMap.smul_apply, smul_eq_mul]
   ring
 
+/-- The covariant 2-tensor derivative is additive in its first tensor
+slot. -/
+theorem covTensor2Deriv_add_left
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (v p₁ p₂ q : E) :
+    covTensor2Deriv G H x v (p₁ + p₂) q
+      = covTensor2Deriv G H x v p₁ q + covTensor2Deriv G H x v p₂ q := by
+  unfold covTensor2Deriv
+  simp only [map_add, ContinuousLinearMap.add_apply]
+  ring
+
+/-- The covariant 2-tensor derivative is additive in its second tensor
+slot. -/
+theorem covTensor2Deriv_add_right
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (v p q₁ q₂ : E) :
+    covTensor2Deriv G H x v p (q₁ + q₂)
+      = covTensor2Deriv G H x v p q₁ + covTensor2Deriv G H x v p q₂ := by
+  unfold covTensor2Deriv
+  simp only [map_add, ContinuousLinearMap.add_apply]
+  ring
+
+/-- The covariant 2-tensor derivative is homogeneous in its first tensor
+slot. -/
+theorem covTensor2Deriv_smul_left
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ) (v p q : E) :
+    covTensor2Deriv G H x v (c • p) q
+      = c * covTensor2Deriv G H x v p q := by
+  unfold covTensor2Deriv
+  simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+  ring
+
+/-- The covariant 2-tensor derivative is homogeneous in its second tensor
+slot. -/
+theorem covTensor2Deriv_smul_right
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ) (v p q : E) :
+    covTensor2Deriv G H x v p (c • q)
+      = c * covTensor2Deriv G H x v p q := by
+  unfold covTensor2Deriv
+  simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+  ring
+
 end RicciFlow
