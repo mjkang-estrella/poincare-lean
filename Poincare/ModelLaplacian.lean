@@ -7847,4 +7847,34 @@ theorem coordRicci_inverse_raise_trace
   rw [hS2]
   ring
 
+/-- **The raised Ricci form is spatially differentiable**: with the
+inverse metric raising one slot, `y ↦ Ric_y((G y)⁻¹ρ, bk)` differentiates
+at `x` — basis expansion plus the differentiability of the components and
+the raised index. -/
+theorem differentiableAt_coordRicci_raised
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hGd : DifferentiableAt ℝ G x)
+    (ρ : E →L[ℝ] ℝ) (bk : E) :
+    DifferentiableAt ℝ (fun y ↦ coordRicci G y ((G y).inverse ρ) bk) x := by
+  have hfun : (fun y ↦ coordRicci G y ((G y).inverse ρ) bk)
+      = fun y ↦ ∑ i, (Module.finBasis ℝ E).coord i ((G y).inverse ρ)
+          * coordRicci G y ((Module.finBasis ℝ E) i) bk := by
+    funext y
+    exact coordRicci_eq_sum_first_slot (fun u ↦ hdiffΓ y u) _ bk
+  rw [hfun]
+  apply DifferentiableAt.fun_sum
+  intro i _
+  apply DifferentiableAt.mul
+  · exact (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i)).differentiableAt.comp x
+      (hasFDerivAt_inverse_raise hGd
+        (Filter.Eventually.of_forall hinv) ρ).differentiableAt
+  · exact differentiableAt_coordRicci_family hdiffΓ hdd
+      ((Module.finBasis ℝ E) i) bk
+
 end RicciFlow
