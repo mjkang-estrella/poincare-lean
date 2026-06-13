@@ -7572,4 +7572,49 @@ theorem covRicciDeriv_eq_tensor_deriv
     hcr u (christoffelClosedOp G x v w)]
   abel
 
+/--
+**SYMMETRY OF THE RICCI CHRISTOFFEL-CORRECTION TRACES**: the two
+correction traces of the covariant Ricci divergence coincide —
+`Σₖ Ric(Γ_w ♯bᵏ, bₖ) = Σₖ Ric(♯bᵏ, Γ_w bₖ)`. Raised-contraction swap
+moves the raised index across the contraction, and Ricci symmetry
+restores the slot order. Half of the metric-trace cancellation that
+turns `∇R` into `dR`.
+-/
+theorem coordRicci_christoffel_correction_symm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (w : E) :
+    (∑ k, coordRicci G x
+        (christoffelClosedOp G x w
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord k))))
+        ((Module.finBasis ℝ E) k))
+      = ∑ k, coordRicci G x
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord k)))
+          (christoffelClosedOp G x w ((Module.finBasis ℝ E) k)) := by
+  have hswap := sum_raised_contraction_swap G (hinv x) (hGsymm x)
+    (fun a b ↦ coordRicci G x a (christoffelClosedOp G x w b))
+    (fun a₁ a₂ b ↦ coordRicci_add_fst G hdiffΓ a₁ a₂ _)
+    (fun c a b ↦ coordRicci_smul_fst G hdiffΓ c a _)
+    (fun a b₁ b₂ ↦ by dsimp only; rw [map_add, coordRicci_add_snd])
+    (fun c a b ↦ by dsimp only; rw [map_smul, coordRicci_smul_snd])
+  have hsymm_sum : (∑ k, coordRicci G x
+        (christoffelClosedOp G x w
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord k))))
+        ((Module.finBasis ℝ E) k))
+      = ∑ k, coordRicci G x ((Module.finBasis ℝ E) k)
+          (christoffelClosedOp G x w
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k)))) :=
+    Finset.sum_congr rfl fun k _ ↦
+      coordRicci_symm hGC2 hGsymm hinv hdiffΓ _ _
+  rw [hsymm_sum]
+  exact hswap.symm
+
 end RicciFlow
