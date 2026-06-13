@@ -10185,3 +10185,31 @@ theorem deltaGammaContractionDeriv_slot_cancelled
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ`-trace one-form**: `τ_y(w) = Σᵢ ⟨bⁱ, δΓ_y(bᵢ, w)⟩` — the
+first-slot trace of the Christoffel variation, bundled as a continuous
+linear functional field so its covariant derivative is `covTensor1Deriv`.
+-/
+noncomputable def deltaGammaTraceForm (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (y : E) : E →L[ℝ] ℝ :=
+  ∑ i, (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)).comp
+    (christoffelDerivOp G H y ((Module.finBasis ℝ E) i))
+
+/-- Evaluation of the `δΓ`-trace one-form unfolds to the basis trace. -/
+theorem deltaGammaTraceForm_apply (G H : E → E →L[ℝ] E →L[ℝ] ℝ) (y w : E) :
+    deltaGammaTraceForm G H y w
+      = ∑ i, (Module.finBasis ℝ E).coord i
+          (christoffelDerivOp G H y ((Module.finBasis ℝ E) i) w) := by
+  unfold deltaGammaTraceForm
+  rw [ContinuousLinearMap.sum_apply]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rfl
+
+end RicciFlow
