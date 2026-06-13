@@ -6898,3 +6898,48 @@ theorem curvatureDerivOp_eq_covDeltaGamma
   abel
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The divergence of the Christoffel variation**: `div δΓ(u,w) =
+Σᵢ ⟨bⁱ, (∇_{bᵢ}δΓ)(u,w)⟩` — the basis-trace contraction of `∇δΓ`
+pairing the differentiation slot with the value coordinate. -/
+noncomputable def deltaGammaDivergence (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x u w : E) : ℝ :=
+  ∑ i, (Module.finBasis ℝ E).coord i
+    (covDeltaGammaDeriv G H x ((Module.finBasis ℝ E) i) u w)
+
+/-- **The trace-derivative of the Christoffel variation**:
+`Σᵢ ⟨bⁱ, (∇_u δΓ)(bᵢ,w)⟩` — the covariant `u`-derivative of the
+first-slot trace contraction of `δΓ`. -/
+noncomputable def deltaGammaContractionDeriv
+    (G H : E → E →L[ℝ] E →L[ℝ] ℝ) (x u w : E) : ℝ :=
+  ∑ i, (Module.finBasis ℝ E).coord i
+    (covDeltaGammaDeriv G H x u ((Module.finBasis ℝ E) i) w)
+
+/--
+**THE CONTRACTED LICHNEROWICZ FORMULA**: the variation of the Ricci
+form is the divergence of the Christoffel variation minus the
+covariant derivative of its trace —
+`δRic(u,w) = div δΓ(u,w) − ∇_u(tr δΓ)(w)`.
+-/
+theorem ricciDeriv_eq_deltaGamma_contractions
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hΓsymm : ∀ a b : E,
+      christoffelClosedOp G x a b = christoffelClosedOp G x b a)
+    (u w : E) :
+    ricciDeriv G H x u w
+      = deltaGammaDivergence G H x u w
+        - deltaGammaContractionDeriv G H x u w := by
+  unfold ricciDeriv deltaGammaDivergence deltaGammaContractionDeriv
+  rw [← Finset.sum_sub_distrib]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [curvatureDerivOp_eq_covDeltaGamma hΓsymm
+    ((Module.finBasis ℝ E) i) u w, map_sub]
+
+end RicciFlow
