@@ -10391,3 +10391,29 @@ theorem deltaGammaTraceForm_apply_eq_half_covTensor2
   rw [christoffelDerivOp_apply, coord_eq_g_raised G hinv (hGsymm x) i]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of the Ricci form is the scalar curvature**:
+`Σᵢ Ric♭(bᵢ, ♯bⁱ) = R`. The Ricci form is the flipped Ricci tensor, so its
+raised trace is exactly `coordScalar`. The field-level identification
+`tr_g (Ric♭) = R` that turns the trace of the Ricci-flow direction into
+the scalar curvature. -/
+theorem metricTrace_coordRicciForm_eq_coordScalar
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x) :
+    (∑ i, coordRicciForm G x hdiff ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))))
+      = coordScalar G x := by
+  unfold coordScalar
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [coordRicciForm_apply]
+
+end RicciFlow
