@@ -8198,3 +8198,42 @@ theorem differentiableAt_covTensor2Deriv_family
   exact (ht1.sub ht2).sub ht3
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The covariant 2-tensor derivative vanishes on constant data. -/
+theorem covTensor2Deriv_const_eq_zero (G₀ H₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (x v p q : E) :
+    covTensor2Deriv (fun _ : E ↦ G₀) (fun _ : E ↦ H₀) x v p q = 0 := by
+  unfold covTensor2Deriv
+  simp [christoffelClosedOp_const_eq_zero, fderiv_fun_const]
+
+/-- **The second covariant derivative of a 2-tensor**: `(∇²H)(v';v,p,q)` —
+the covariant derivative of the `(0,3)`-tensor `∇H` in direction `v'`,
+correcting the differentiation direction and both tensor slots. The object
+whose basis traces are `div div H` and `Δ tr H`. -/
+noncomputable def covTensor2SndDeriv (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x v' v p q : E) : ℝ :=
+  (fderiv ℝ (fun y ↦ covTensor2Deriv G H y v p q) x) v'
+    - covTensor2Deriv G H x (christoffelClosedOp G x v' v) p q
+    - covTensor2Deriv G H x v (christoffelClosedOp G x v' p) q
+    - covTensor2Deriv G H x v p (christoffelClosedOp G x v' q)
+
+/-- The second covariant derivative vanishes on constant data. -/
+theorem covTensor2SndDeriv_const_eq_zero (G₀ H₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (x v' v p q : E) :
+    covTensor2SndDeriv (fun _ : E ↦ G₀) (fun _ : E ↦ H₀) x v' v p q = 0 := by
+  unfold covTensor2SndDeriv
+  have hf : (fun y ↦ covTensor2Deriv (fun _ : E ↦ G₀) (fun _ : E ↦ H₀)
+      y v p q) = fun _ ↦ (0 : ℝ) := by
+    funext y
+    exact covTensor2Deriv_const_eq_zero G₀ H₀ y v p q
+  rw [hf, fderiv_fun_const]
+  simp [covTensor2Deriv_const_eq_zero]
+
+end RicciFlow
