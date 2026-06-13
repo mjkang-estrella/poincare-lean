@@ -7178,4 +7178,60 @@ theorem metricBilin_nondeg {m : E →L[ℝ] E →L[ℝ] ℝ}
     rw [hsymm v z]
     simpa using hv z
 
+/--
+**THE CURVED LAPLACIAN IS THE METRIC-RAISED TRACE OF THE COVARIANT
+HESSIAN**: against the metric family `y ↦ metricBilin (G y)`, the
+Laplace–Beltrami operator is the basis-raised contraction
+`Δ_g f = Σⱼ Hess f(♯bʲ, bⱼ)`. This converts the abstract trace defining
+`curvedLaplacian` into the concrete basis contraction produced by the
+Bianchi machinery — the shape needed to identify it with the Ricci
+variation.
+-/
+theorem curvedLaplacian_eq_raised_sum
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (f : E → ℝ) :
+    curvedLaplacian G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x
+      = ∑ j, covariantHessian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) j) := by
+  set bb : E → LinearMap.BilinForm ℝ E := fun y ↦ metricBilin (G y) with hbb
+  set hbnd : ∀ y, (bb y).Nondegenerate :=
+    fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y) with hhb
+  set Bsharp : E →ₗ[ℝ] E :=
+    (LinearMap.BilinForm.toDual (bb x) (hbnd x)).symm.toLinearMap ∘ₗ
+      covariantHessianLin G bb hbnd f x with hBsharp
+  -- The pairing identity: raising the covariant Hessian and pairing back
+  -- with the metric recovers the covariant Hessian.
+  have hpair : ∀ v w : E,
+      G x (Bsharp v) w = covariantHessian G bb hbnd f x v w := by
+    intro v w
+    have heq : (LinearMap.BilinForm.toDual (bb x) (hbnd x)) (Bsharp v)
+        = covariantHessianLin G bb hbnd f x v := by
+      rw [hBsharp]
+      simp only [LinearMap.coe_comp, Function.comp_apply,
+        LinearEquiv.coe_coe]
+      exact LinearEquiv.apply_symm_apply _ _
+    have h2 := congrArg (fun ψ ↦ ψ w) heq
+    simp only [LinearMap.BilinForm.toDual_def] at h2
+    have h3 : covariantHessianLin G bb hbnd f x v w
+        = covariantHessian G bb hbnd f x v w := by
+      simp only [covariantHessianLin, LinearMap.mk₂_apply]
+    rw [h3] at h2
+    exact h2
+  have key : (∑ j, covariantHessian G bb hbnd f x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+      = LinearMap.trace ℝ E Bsharp := by
+    rw [← sum_g_raised_eq_trace G x (hinv x) Bsharp]
+    exact Finset.sum_congr rfl fun j _ ↦ (hpair _ _).symm
+  rw [key]
+  unfold curvedLaplacian
+  rfl
+
 end RicciFlow
