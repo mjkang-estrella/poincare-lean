@@ -9779,3 +9779,74 @@ theorem curved_hamilton_finite_time_singularity_tv
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative Set
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**HAMILTON'S SINGULARITY THEOREM, TIME-VARYING CURVED EVOLUTION**: if the
+scalar curvature evolves by `∂R/∂t = Δ_{g(t)} R + 2·tr(Rc²)` with the
+evolving Laplace–Beltrami operator and `Rc` the metric-self-adjoint Ricci
+endomorphism of trace `R`, then the flow cannot persist to `n/(2 m₀)`.
+The geometrically-faithful singularity theorem for the genuine,
+time-varying metric of Ricci flow. -/
+theorem curved_hamilton_singularity_of_evolution_eq_tv
+    (Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ)
+    (bf : ℝ → (Π x : E, LinearMap.BilinForm ℝ E))
+    (hbf : ∀ t x, (bf t x).Nondegenerate)
+    (hbfs : ∀ t x, LinearMap.IsSymm (bf t x))
+    (hbfpos : ∀ t x (v : E), v ≠ 0 → 0 < (bf t x) v v)
+    [Nontrivial E]
+    {R R' : ℝ → E → ℝ} {Rc : ℝ → E → (E →ₗ[ℝ] E)} {K : Set E}
+    (hK : IsCompact K) (hKne : K.Nonempty) {T m₀ B : ℝ}
+    (hm₀ : 0 < m₀) (hT0 : 0 ≤ T)
+    (hR_cont : Continuous ↿R)
+    (hRd : ∀ x ∈ K, ∀ t ∈ Icc (0 : ℝ) T,
+      HasDerivAt (fun s ↦ R s x) (R' t x) t)
+    (hspace : ∀ t ∈ Icc (0 : ℝ) T, ContDiff ℝ 2 (R t))
+    (hsa : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, ∀ p q : E,
+      (bf t x) (Rc t x p) q = (bf t x) p (Rc t x q))
+    (htr : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      LinearMap.trace ℝ E (Rc t x) = R t x)
+    (hevol : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      R' t x = curvedLaplacian (Gt t) (bf t) (hbf t) (R t) x
+        + 2 * LinearMap.trace ℝ E (Rc t x ∘ₗ Rc t x))
+    (hmin_int : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      IsMinOn (R t) K x → IsLocalMin (R t) x)
+    (hRB : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, R t x ≤ B)
+    (h0 : ∀ x ∈ K, m₀ ≤ R 0 x) :
+    T < (Module.finrank ℝ E : ℝ) / (2 * m₀) := by
+  have hn : 0 < (Module.finrank ℝ E : ℝ) := by
+    have := Module.finrank_pos (R := ℝ) (M := E)
+    exact_mod_cast this
+  set a : ℝ := 2 / (Module.finrank ℝ E : ℝ) with ha'
+  have ha : 0 < a := by positivity
+  have hineq : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      curvedLaplacian (Gt t) (bf t) (hbf t) (R t) x + a * (R t x) ^ 2
+        ≤ R' t x := by
+    intro t ht x hx
+    have hcs := trace_sq_le_card_mul_trace_comp_self (bf t x) (hbfs t x)
+      (hbfpos t x) (Rc t x) (hsa t ht x hx)
+    rw [htr t ht x hx] at hcs
+    rw [hevol t ht x hx, ha']
+    have h2 : (R t x) ^ 2 / (Module.finrank ℝ E : ℝ) ≤
+        LinearMap.trace ℝ E (Rc t x ∘ₗ Rc t x) := by
+      rw [div_le_iff₀ hn]
+      linarith [hcs]
+    have h3 : 2 / (Module.finrank ℝ E : ℝ) * (R t x) ^ 2 =
+        2 * ((R t x) ^ 2 / (Module.finrank ℝ E : ℝ)) := by
+      ring
+    rw [h3]
+    linarith
+  have := curved_hamilton_finite_time_singularity_tv Gt bf hbf hbfs hbfpos
+    hK hKne ha hm₀ hT0 hR_cont hRd hspace hineq hmin_int hRB h0
+  calc T < 1 / (a * m₀) := this
+    _ = (Module.finrank ℝ E : ℝ) / (2 * m₀) := by
+      rw [ha']
+      field_simp
+
+end RicciFlow
