@@ -10330,3 +10330,32 @@ theorem deltaGammaContractionDeriv_eq_covTensor1Deriv
     deltaGammaTraceForm_apply G H x (christoffelClosedOp G x u w)]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The raised `δΓ`-trace derivative is the metric divergence of the
+`δΓ`-trace one-form**: `deltaGammaContractionDerivTrace = Σⱼ (∇_{♯bʲ} τ)(bⱼ)
+= div τ`. The raised trace of the contracted Lichnerowicz subtrahend is a
+genuine covariant divergence, ready for identification with `½ Δ(tr H)`. -/
+theorem deltaGammaContractionDerivTrace_eq_div
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x) (hHd : DifferentiableAt ℝ H x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x) :
+    deltaGammaContractionDerivTrace G H x
+      = ∑ j, covTensor1Deriv G (deltaGammaTraceForm G H) x
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) j) := by
+  unfold deltaGammaContractionDerivTrace
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  exact deltaGammaContractionDeriv_eq_covTensor1Deriv hGd hHd hGsymm hHsymm hVd _ _
+
+end RicciFlow
