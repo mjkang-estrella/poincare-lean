@@ -7044,3 +7044,35 @@ theorem g_covDeltaGammaDeriv
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**THE `δΓ` PAIRING AS A FUNCTION OF THE BASE POINT**: at every point the
+metric pairing `G_y(δΓ_y(p,z), w)` equals the Lichnerowicz half-sum of
+covariant derivatives of the variation tensor `H`. This is
+`g_christoffelDeriv` promoted to a functional identity over the base
+point, the form ready to be differentiated along a flow direction to
+produce second covariant derivatives of `H`.
+-/
+theorem g_christoffelDerivOp_pairing_eq
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (p z w : E) :
+    (fun y ↦ G y (christoffelDerivOp G H y p z) w)
+      = fun y ↦ (1 / 2 : ℝ) * (covTensor2Deriv G H y p z w
+        + covTensor2Deriv G H y z p w
+        - covTensor2Deriv G H y w p z) := by
+  funext y
+  rw [christoffelDerivOp_apply]
+  exact g_christoffelDeriv (hGd y) hGsymm (hinv y) (hHsymm y) p z w
+
+end RicciFlow
