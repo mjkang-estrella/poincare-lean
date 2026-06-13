@@ -10088,3 +10088,59 @@ theorem deltaGamma_firstSlot_trace_eq
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The trace-slot Christoffel corrections of `∇δΓ` cancel**:
+`Σᵢ ⟨bⁱ, Γ_u(δΓ(bᵢ,w))⟩ = Σᵢ ⟨bⁱ, δΓ(Γ_u bᵢ, w)⟩` — the corrections from
+the Christoffel action on the output and on the traced input are
+`tr(Γ_u ∘ δΓ(·,w))` and `tr(δΓ(·,w) ∘ Γ_u)`, equal by trace cyclicity
+(using `δΓ` symmetry to view `δΓ(·,w)` as the operator `δΓ(w,·)`). The
+`δΓ` analogue of the Ricci trace-slot cancellation. -/
+theorem deltaGamma_trace_slot_cancel
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x) (hHd : DifferentiableAt ℝ H x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (u w : E) :
+    (∑ i, (Module.finBasis ℝ E).coord i
+        (christoffelClosedOp G x u
+          (christoffelDeriv G H x ((Module.finBasis ℝ E) i) w)))
+      = ∑ i, (Module.finBasis ℝ E).coord i
+          (christoffelDeriv G H x
+            (christoffelClosedOp G x u ((Module.finBasis ℝ E) i)) w) := by
+  set Ψ : E →ₗ[ℝ] E :=
+    { toFun := fun p ↦ christoffelDeriv G H x p w
+      map_add' := fun p₁ p₂ ↦ by
+        rw [christoffelDeriv_symm hGd hHd hGsymm hHsymm (p₁ + p₂) w,
+          christoffelDeriv_add_snd,
+          christoffelDeriv_symm hGd hHd hGsymm hHsymm w p₁,
+          christoffelDeriv_symm hGd hHd hGsymm hHsymm w p₂]
+      map_smul' := fun c p ↦ by
+        simp only [RingHom.id_apply]
+        rw [christoffelDeriv_symm hGd hHd hGsymm hHsymm (c • p) w,
+          christoffelDeriv_smul_snd,
+          christoffelDeriv_symm hGd hHd hGsymm hHsymm w p] } with hΨ
+  have hL : (∑ i, (Module.finBasis ℝ E).coord i
+        (christoffelClosedOp G x u
+          (christoffelDeriv G H x ((Module.finBasis ℝ E) i) w)))
+      = LinearMap.trace ℝ E
+        ((christoffelClosedOp G x u).toLinearMap ∘ₗ Ψ) := by
+    rw [← sum_coord_eq_trace ((christoffelClosedOp G x u).toLinearMap ∘ₗ Ψ)]
+    rfl
+  have hR : (∑ i, (Module.finBasis ℝ E).coord i
+        (christoffelDeriv G H x
+          (christoffelClosedOp G x u ((Module.finBasis ℝ E) i)) w))
+      = LinearMap.trace ℝ E
+        (Ψ ∘ₗ (christoffelClosedOp G x u).toLinearMap) := by
+    rw [← sum_coord_eq_trace (Ψ ∘ₗ (christoffelClosedOp G x u).toLinearMap)]
+    rfl
+  rw [hL, hR]
+  exact LinearMap.trace_comp_comm' _ _
+
+end RicciFlow
