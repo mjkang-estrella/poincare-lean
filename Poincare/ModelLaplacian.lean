@@ -9007,3 +9007,163 @@ theorem curved_parabolic_min_principle_var
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative Set
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**HAMILTON'S SCALAR COMPARISON, CURVED FORM**: a quantity evolving by
+`∂R/∂t ≥ Δ_g R + aR²` with `R(0) ≥ m₀ > 0` stays above the exact Riccati
+barrier `m₀/(1 − a m₀ t)` — the nonlinear comparison with the genuine
+Laplace–Beltrami operator, driven by the curved variable-coefficient
+parabolic minimum principle. -/
+theorem curved_hamilton_scalar_lower_bound
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (hbs : ∀ x, LinearMap.IsSymm (b x))
+    (hbpos : ∀ x (v : E), v ≠ 0 → 0 < (b x) v v)
+    {R R' : ℝ → E → ℝ} {K : Set E}
+    (hK : IsCompact K) (hKne : K.Nonempty) {T a m₀ B : ℝ}
+    (ha : 0 < a) (hm₀ : 0 < m₀) (hT0 : 0 ≤ T) (hT : a * m₀ * T < 1)
+    (hR_cont : Continuous ↿R)
+    (hRd : ∀ x ∈ K, ∀ t ∈ Icc (0 : ℝ) T,
+      HasDerivAt (fun s ↦ R s x) (R' t x) t)
+    (hspace : ∀ t ∈ Icc (0 : ℝ) T, ContDiff ℝ 2 (R t))
+    (hevol : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      curvedLaplacian G b hb (R t) x + a * (R t x) ^ 2 ≤ R' t x)
+    (hmin_int : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      IsMinOn (R t) K x → IsLocalMin (R t) x)
+    (hRB : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, R t x ≤ B)
+    (h0 : ∀ x ∈ K, m₀ ≤ R 0 x) :
+    ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      m₀ / (1 - a * m₀ * t) ≤ R t x := by
+  set δ : ℝ := (1 - a * m₀ * T) / 2 with hδ
+  have hδpos : 0 < δ := by rw [hδ]; linarith
+  set φ : ℝ → ℝ := fun t ↦ m₀ / max (1 - a * m₀ * t) δ with hφ
+  have hφeq : ∀ t ∈ Icc (0 : ℝ) T,
+      φ t = m₀ / (1 - a * m₀ * t) := by
+    intro t ht
+    rw [hφ]
+    simp only
+    congr 1
+    apply max_eq_left
+    have h1 : a * m₀ * t ≤ a * m₀ * T := by
+      apply mul_le_mul_of_nonneg_left ht.2 (by positivity)
+    rw [hδ]
+    linarith
+  have hden : ∀ t ∈ Icc (0 : ℝ) T, 0 < 1 - a * m₀ * t := by
+    intro t ht
+    have h1 : a * m₀ * t ≤ a * m₀ * T := by
+      apply mul_le_mul_of_nonneg_left ht.2 (by positivity)
+    linarith
+  have hφd : ∀ t ∈ Icc (0 : ℝ) T,
+      HasDerivAt φ (a * (φ t) ^ 2) t := by
+    intro t ht
+    have hd := hden t ht
+    have hf : HasDerivAt (fun s ↦ 1 - a * m₀ * s) (-(a * m₀)) t := by
+      simpa using ((hasDerivAt_id t).const_mul (a * m₀)).const_sub 1
+    have hinv : HasDerivAt (fun s ↦ (1 - a * m₀ * s)⁻¹)
+        (a * m₀ / (1 - a * m₀ * t) ^ 2) t := by
+      have h2 := hf.inv (ne_of_gt hd)
+      convert h2 using 1
+      field_simp
+    have hexact := hinv.const_mul m₀
+    have hopen : ∀ᶠ s in nhds t, φ s = m₀ * (1 - a * m₀ * s)⁻¹ := by
+      have hcont : Continuous (fun s ↦ 1 - a * m₀ * s) := by
+        continuity
+      have hδlt : δ < 1 - a * m₀ * t := by
+        have h1 : a * m₀ * t ≤ a * m₀ * T := by
+          apply mul_le_mul_of_nonneg_left ht.2 (by positivity)
+        rw [hδ]
+        linarith
+      have hev : ∀ᶠ s in nhds t, δ < 1 - a * m₀ * s :=
+        hcont.continuousAt.eventually_const_lt hδlt
+      filter_upwards [hev] with s hs
+      rw [hφ]
+      simp only
+      rw [max_eq_left (le_of_lt hs), div_eq_mul_inv]
+    have hres : HasDerivAt φ (m₀ * (a * m₀ / (1 - a * m₀ * t) ^ 2)) t :=
+      hexact.congr_of_eventuallyEq hopen
+    convert hres using 1
+    rw [hφeq t ht]
+    field_simp
+  have hφmono : ∀ t ∈ Icc (0 : ℝ) T, φ t ≤ φ T := by
+    intro t ht
+    rw [hφeq t ht, hφeq T ⟨hT0, le_refl T⟩]
+    apply div_le_div_of_nonneg_left (le_of_lt hm₀) (hden T ⟨hT0, le_refl T⟩)
+    have : a * m₀ * t ≤ a * m₀ * T := by
+      apply mul_le_mul_of_nonneg_left ht.2 (by positivity)
+    linarith
+  have hφpos : ∀ t ∈ Icc (0 : ℝ) T, 0 < φ t := by
+    intro t ht
+    rw [hφeq t ht]
+    exact div_pos hm₀ (hden t ht)
+  have hkey := curved_parabolic_min_principle_var G b hb hbs hbpos
+    (u := fun t x ↦ R t x - φ t)
+    (u' := fun t x ↦ R' t x - a * (φ t) ^ 2)
+    (c := fun t x ↦ a * (R t x + φ t))
+    hK hKne (T := T) (M := a * (B + φ T))
+    (by
+      intro t ht x hx
+      have h1 := hRB t ht x hx
+      have h2 := hφmono t ht
+      nlinarith)
+    (by
+      apply hR_cont.sub
+      have hφcont : Continuous φ := by
+        rw [hφ]
+        apply Continuous.div continuous_const
+        · exact (Continuous.max (by continuity) continuous_const)
+        · intro s
+          have : δ ≤ max (1 - a * m₀ * s) δ := le_max_right _ _
+          intro hzero
+          rw [hzero] at this
+          linarith
+      exact hφcont.comp continuous_fst)
+    (by
+      intro x hx t ht
+      exact (hRd x hx t ht).sub (hφd t ht))
+    (by
+      intro t ht
+      exact (hspace t ht).sub contDiff_const)
+    (by
+      intro t ht x hx
+      have hev := hevol t ht x hx
+      have hlap : curvedLaplacian G b hb (fun y ↦ R t y - φ t) x =
+          curvedLaplacian G b hb (R t) x := by
+        rw [show (fun y ↦ R t y - φ t) = fun y ↦ R t y + (-(φ t))
+          from by funext y; ring]
+        exact curvedLaplacian_add_const G b hb (hspace t ht) _
+      rw [hlap]
+      nlinarith [hev])
+    (by
+      intro t ht x hx hmin
+      have hminR : IsMinOn (R t) K x := by
+        intro z hz
+        have := hmin hz
+        simpa using this
+      have hloc := hmin_int t ht x hx hminR
+      have : IsLocalMin (fun z ↦ R t z + (-(φ t))) x :=
+        hloc.add isMinFilter_const
+      simpa [sub_eq_add_neg] using this)
+    (by
+      intro x hx
+      have h00 := h0 x hx
+      have hφ0 : φ 0 = m₀ := by
+        rw [hφeq 0 ⟨le_refl 0, hT0⟩]
+        simp
+      simp only
+      rw [hφ0]
+      linarith)
+  intro t ht x hx
+  have hfin := hkey t ht x hx
+  simp only at hfin
+  rw [← hφeq t ht]
+  linarith
+
+end RicciFlow
