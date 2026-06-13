@@ -7472,4 +7472,45 @@ theorem coordRicci_trace_slot_cancel
   rw [hL, hR]
   exact LinearMap.trace_comp_comm' _ _
 
+/-- **`fderiv` COMMUTES WITH THE RICCI TRACE CONTRACTION**: the spatial
+derivative of `y ↦ Ric_y(u,w)` is the basis-trace contraction of the
+spatial derivative of the curvature family — the fixed contraction maps
+pass through the Fréchet derivative. -/
+theorem fderiv_coordRicci_eq
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (v u w : E) :
+    (fderiv ℝ (fun y ↦ coordRicci G y u w) x) v
+      = ∑ j, (Module.finBasis ℝ E).coord j
+          ((fderiv ℝ (fun y ↦ coordCurvatureOp G y
+            ((Module.finBasis ℝ E) j) u) x v) w) := by
+  have hfd : ∀ j : Fin (Module.finrank ℝ E), HasFDerivAt
+      (fun y ↦ (Module.finBasis ℝ E).coord j
+        ((coordCurvatureOp G y ((Module.finBasis ℝ E) j) u) w))
+      ((LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)).comp
+        ((ContinuousLinearMap.apply ℝ E w).comp
+          (fderiv ℝ (fun y ↦ coordCurvatureOp G y
+            ((Module.finBasis ℝ E) j) u) x))) x := by
+    intro j
+    have hR := (differentiableAt_coordCurvatureOp_family hdiffΓ hdd
+      ((Module.finBasis ℝ E) j) u).hasFDerivAt
+    have hRw := (ContinuousLinearMap.apply ℝ E w).hasFDerivAt.comp x hR
+    exact (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord j)).hasFDerivAt.comp x hRw
+  have key : HasFDerivAt (fun y ↦ coordRicci G y u w)
+      (∑ j, (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)).comp
+        ((ContinuousLinearMap.apply ℝ E w).comp
+          (fderiv ℝ (fun y ↦ coordCurvatureOp G y
+            ((Module.finBasis ℝ E) j) u) x))) x :=
+    HasFDerivAt.fun_sum fun j _ ↦ hfd j
+  rw [key.fderiv, ContinuousLinearMap.sum_apply]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply]
+  rfl
+
 end RicciFlow
