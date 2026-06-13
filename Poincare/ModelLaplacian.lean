@@ -6943,3 +6943,53 @@ theorem ricciDeriv_eq_deltaGamma_contractions
     ((Module.finBasis ℝ E) i) u w, map_sub]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The raised divergence of `δΓ`**: `Σⱼ div δΓ(♯bʲ, bⱼ)` — the
+metric trace of the `δΓ`-divergence, the leading term of the raised
+Ricci variation that drives the scalar evolution. -/
+noncomputable def deltaGammaDivergenceTrace (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x : E) : ℝ :=
+  ∑ j, deltaGammaDivergence G H x
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord j)))
+    ((Module.finBasis ℝ E) j)
+
+/-- **The raised trace-derivative of `δΓ`**: `Σⱼ ∇_{♯bʲ}(tr δΓ)(bⱼ)` —
+the metric trace of the covariant `δΓ`-trace derivative. -/
+noncomputable def deltaGammaContractionDerivTrace
+    (G H : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E) : ℝ :=
+  ∑ j, deltaGammaContractionDeriv G H x
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord j)))
+    ((Module.finBasis ℝ E) j)
+
+/--
+**THE RAISED CONTRACTED LICHNEROWICZ IDENTITY**: the `hBianchi`
+left-hand side — the raised metric trace of the Ricci variation —
+splits as the raised `δΓ`-divergence minus the raised `δΓ`-trace
+derivative. This is the exact term whose identification with the
+scalar Laplacian closes the Hamilton evolution equation.
+-/
+theorem ricciDeriv_raised_trace_eq
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hΓsymm : ∀ a b : E,
+      christoffelClosedOp G x a b = christoffelClosedOp G x b a) :
+    ∑ j, ricciDeriv G H x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j)
+      = deltaGammaDivergenceTrace G H x
+        - deltaGammaContractionDerivTrace G H x := by
+  unfold deltaGammaDivergenceTrace deltaGammaContractionDerivTrace
+  rw [← Finset.sum_sub_distrib]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  exact ricciDeriv_eq_deltaGamma_contractions hΓsymm _ _
+
+end RicciFlow
