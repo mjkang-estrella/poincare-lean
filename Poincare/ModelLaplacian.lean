@@ -8691,3 +8691,114 @@ theorem curvedLaplacian_add_const (G : E → E →L[ℝ] E →L[ℝ] ℝ)
     curvedLaplacian_const_fn, add_zero]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative Set
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**THE CURVED PARABOLIC MINIMUM PRINCIPLE (non-strict)**: a curved
+heat supersolution `∂u/∂t ≥ Δ_g u + c·u` with nonnegative initial data
+stays nonnegative — the genuine Laplace–Beltrami version, obtained from
+the strict curved principle by the ε-exponential perturbation (which,
+being spatially constant, leaves `Δ_g` unchanged). The geometrically
+faithful comparison engine for the curved scalar-curvature evolution.
+-/
+theorem curved_parabolic_min_principle
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (hbs : ∀ x, LinearMap.IsSymm (b x))
+    (hbpos : ∀ x (v : E), v ≠ 0 → 0 < (b x) v v)
+    {u u' : ℝ → E → ℝ} {K : Set E} (hK : IsCompact K) (hKne : K.Nonempty)
+    {T c : ℝ}
+    (hu_cont : Continuous ↿u)
+    (hud : ∀ x ∈ K, ∀ t ∈ Icc (0 : ℝ) T,
+      HasDerivAt (fun s ↦ u s x) (u' t x) t)
+    (hspace : ∀ t ∈ Icc (0 : ℝ) T, ContDiff ℝ 2 (u t))
+    (hsuper : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      curvedLaplacian G b hb (u t) x + c * u t x ≤ u' t x)
+    (hmin_int : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      IsMinOn (u t) K x → IsLocalMin (u t) x)
+    (h0 : ∀ x ∈ K, 0 ≤ u 0 x) :
+    ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, 0 ≤ u t x := by
+  intro t ht x hx
+  set M : ℝ := |c| + 1 with hM
+  by_contra hneg
+  push_neg at hneg
+  set ε : ℝ := -u t x / (2 * Real.exp (M * t)) with hε
+  have hexp : (0 : ℝ) < Real.exp (M * t) := Real.exp_pos _
+  have hεpos : 0 < ε := by
+    rw [hε]
+    apply div_pos (by linarith) (by positivity)
+  set v : ℝ → E → ℝ := fun s y ↦ u s y + ε * Real.exp (M * s) with hv
+  set v' : ℝ → E → ℝ := fun s y ↦ u' s y + ε * M * Real.exp (M * s)
+    with hv'
+  have hvpos := curved_parabolic_min_principle_strict G b hb hbs hbpos
+    (u := v) (u' := v') hK hKne (T := T) (c := c)
+    (by
+      apply Continuous.add hu_cont
+      exact (continuous_const.mul ((continuous_const.mul
+        continuous_fst).rexp)).comp (continuous_id))
+    (by
+      intro y hy s hs
+      have h1 := hud y hy s hs
+      have h2 : HasDerivAt (fun r ↦ ε * Real.exp (M * r))
+          (ε * M * Real.exp (M * s)) s := by
+        have h3 := (((hasDerivAt_id s).const_mul M).exp).const_mul ε
+        simp only [id_eq] at h3
+        convert h3 using 1
+        ring
+      simpa [hv, hv'] using h1.add h2)
+    (by
+      intro s hs
+      exact (hspace s hs).add contDiff_const)
+    (by
+      intro s hs y hy
+      have hsup := hsuper s hs y hy
+      have hlap : curvedLaplacian G b hb (v s) y =
+          curvedLaplacian G b hb (u s) y :=
+        curvedLaplacian_add_const G b hb (hspace s hs) _
+      simp only [hv, hv']
+      rw [hlap]
+      have hcM : c < M := by
+        rw [hM]
+        rcases le_or_gt 0 c with h | h
+        · rw [abs_of_nonneg h]; linarith
+        · rw [abs_of_neg h]; linarith
+      have heps : 0 < ε * Real.exp (M * s) := by positivity
+      have hkey : c * (ε * Real.exp (M * s)) <
+          ε * M * Real.exp (M * s) := by
+        have h2 : c * (ε * Real.exp (M * s)) <
+            M * (ε * Real.exp (M * s)) :=
+          mul_lt_mul_of_pos_right hcM heps
+        nlinarith
+      nlinarith)
+    (by
+      intro s hs y hy
+      intro hminv
+      have hminu : IsMinOn (u s) K y := by
+        intro z hz
+        have := hminv hz
+        simp only [hv] at this
+        simpa using this
+      have hloc := hmin_int s hs y hy hminu
+      have : IsLocalMin (fun z ↦ u s z + ε * Real.exp (M * s)) y :=
+        hloc.add isMinFilter_const
+      simpa [hv] using this)
+    (by
+      intro y hy
+      simp only [hv]
+      have := h0 y hy
+      positivity)
+  have := hvpos t ht x hx
+  simp only [hv] at this
+  rw [hε] at this
+  have hne : Real.exp (M * t) ≠ 0 := ne_of_gt hexp
+  field_simp at this
+  linarith
+
+end RicciFlow
