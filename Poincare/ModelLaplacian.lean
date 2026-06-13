@@ -7949,4 +7949,31 @@ theorem scalarContractionDeriv_eq_fderiv_coordScalar
   have h2 := coordRicci_inverse_raise_trace hGC2 hGsymm hinv hdiffΓx w
   linarith [h1, h2]
 
+/--
+**THE TWICE-CONTRACTED BIANCHI IDENTITY IN ANALYTIC FORM**: the Ricci
+divergence is half the differential of the scalar curvature —
+`div Ric(w) = ½ d R(w)`. Combining the covariant twice-contracted Bianchi
+identity `2 div Ric = ∇(tr Ric)` with `∇R = dR`, this is the classical
+`div Ric = ½ ∇R` ready to feed the scalar-curvature evolution equation.
+-/
+theorem ricciDivergence_eq_half_fderiv_scalar
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hsymΓ : ∀ p : E, IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) x)
+    (w : E) :
+    ricciDivergence G x w
+      = (1 / 2 : ℝ) * (fderiv ℝ (fun y ↦ coordScalar G y) x) w := by
+  have h1 := coord_twice_contracted_bianchi hGC2 hGsymm hinv hdiffΓ hdd hsymΓ w
+  have h2 := scalarContractionDeriv_eq_fderiv_coordScalar hGC2 hGsymm hinv
+    hdiffΓ hdd w
+  rw [h2] at h1
+  linarith
+
 end RicciFlow
