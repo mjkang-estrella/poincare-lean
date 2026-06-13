@@ -7427,4 +7427,49 @@ theorem coordCurvatureOp_smul_fst
     coordCurvatureOp_smul_snd G hdiff w c v,
     coordCurvatureOp_antisymm G x w v, smul_neg, neg_neg]
 
+/--
+**THE TRACE-SLOT CHRISTOFFEL CORRECTIONS CANCEL**: in the covariant
+derivative of the Ricci contraction, the correction from the Christoffel
+action on the curvature output and the correction from its action on the
+traced input are `tr(Γ_v ∘ Ψ)` and `tr(Ψ ∘ Γ_v)` for the curvature-trace
+endomorphism `Ψ(p) = R(p,u)w` — equal by trace cyclicity. This is the
+metric-naturality of the trace that makes `∇` commute with contraction.
+-/
+theorem coordRicci_trace_slot_cancel
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (v u w : E) :
+    (∑ j, (Module.finBasis ℝ E).coord j
+        (christoffelClosedOp G x v
+          ((coordCurvatureOp G x ((Module.finBasis ℝ E) j) u) w)))
+      = ∑ j, (Module.finBasis ℝ E).coord j
+        ((coordCurvatureOp G x (christoffelClosedOp G x v
+          ((Module.finBasis ℝ E) j)) u) w) := by
+  set Ψ : E →ₗ[ℝ] E :=
+    { toFun := fun p ↦ (coordCurvatureOp G x p u) w
+      map_add' := fun p₁ p₂ ↦ by
+        rw [coordCurvatureOp_add_fst G hdiff p₁ p₂ u,
+          ContinuousLinearMap.add_apply]
+      map_smul' := fun c p ↦ by
+        simp only [RingHom.id_apply]
+        rw [coordCurvatureOp_smul_fst G hdiff c p u,
+          ContinuousLinearMap.smul_apply] } with hΨ
+  have hL : (∑ j, (Module.finBasis ℝ E).coord j
+        (christoffelClosedOp G x v
+          ((coordCurvatureOp G x ((Module.finBasis ℝ E) j) u) w)))
+      = LinearMap.trace ℝ E
+        ((christoffelClosedOp G x v).toLinearMap ∘ₗ Ψ) := by
+    rw [← sum_coord_eq_trace ((christoffelClosedOp G x v).toLinearMap ∘ₗ Ψ)]
+    rfl
+  have hR : (∑ j, (Module.finBasis ℝ E).coord j
+        ((coordCurvatureOp G x (christoffelClosedOp G x v
+          ((Module.finBasis ℝ E) j)) u) w))
+      = LinearMap.trace ℝ E
+        (Ψ ∘ₗ (christoffelClosedOp G x v).toLinearMap) := by
+    rw [← sum_coord_eq_trace (Ψ ∘ₗ (christoffelClosedOp G x v).toLinearMap)]
+    rfl
+  rw [hL, hR]
+  exact LinearMap.trace_comp_comm' _ _
+
 end RicciFlow
