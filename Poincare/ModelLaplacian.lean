@@ -10292,3 +10292,41 @@ theorem deltaGammaTraceForm_differentiableAt
   exact (differentiableAt_const _).clm_comp (hVd ((Module.finBasis ℝ E) i))
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ`-trace derivative is the covariant derivative of the
+`δΓ`-trace one-form**: `deltaGammaContractionDeriv u w = (∇_u τ)(w)` where
+`τ` is `deltaGammaTraceForm`. Combines the slot-cancelled form, the
+`fderiv` eval-commutation (`fderiv_clm_apply`), and the trace-form apply
+lemma. This is the `δΓ` analogue of `covRicciDeriv_eq_tensor_deriv`, and
+the bridge that turns `deltaGammaContractionDerivTrace` into a metric
+divergence. -/
+theorem deltaGammaContractionDeriv_eq_covTensor1Deriv
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x) (hHd : DifferentiableAt ℝ H x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (u w : E) :
+    deltaGammaContractionDeriv G H x u w
+      = covTensor1Deriv G (deltaGammaTraceForm G H) x u w := by
+  have heval : (fderiv ℝ (fun y ↦ deltaGammaTraceForm G H y w) x) u
+      = (fderiv ℝ (deltaGammaTraceForm G H) x u) w := by
+    rw [fderiv_clm_apply (deltaGammaTraceForm_differentiableAt hVd)
+      (differentiableAt_const w)]
+    simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply,
+      fderiv_fun_const, Pi.zero_apply, ContinuousLinearMap.zero_apply,
+      map_zero, ContinuousLinearMap.flip_apply, zero_add]
+  rw [deltaGammaContractionDeriv_slot_cancelled hGd hHd hGsymm hHsymm u w]
+  unfold covTensor1Deriv
+  rw [← heval, fderiv_deltaGammaTraceForm_apply_eq hVd u w,
+    deltaGammaTraceForm_apply G H x (christoffelClosedOp G x u w)]
+
+end RicciFlow
