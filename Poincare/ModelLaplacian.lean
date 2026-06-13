@@ -10269,3 +10269,26 @@ theorem fderiv_deltaGammaTraceForm_apply_eq
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ`-trace one-form is differentiable** wherever the `δΓ`-family
+is — each summand is a fixed coordinate functional composed with the
+differentiable `δΓ`-operator family. Supplies the hypothesis for the
+eval-commutation of its covariant derivative. -/
+theorem deltaGammaTraceForm_differentiableAt
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x) :
+    DifferentiableAt ℝ (deltaGammaTraceForm G H) x := by
+  unfold deltaGammaTraceForm
+  apply DifferentiableAt.fun_sum
+  intro i _
+  exact (differentiableAt_const _).clm_comp (hVd ((Module.finBasis ℝ E) i))
+
+end RicciFlow
