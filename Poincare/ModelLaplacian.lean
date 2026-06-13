@@ -8508,3 +8508,31 @@ theorem covTensor1Deriv_fderiv_eq_covariantHessian
     (fun a b ↦ metricBilin_apply (G x) a b)]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The divergence of a gradient is the curved Laplacian**: `div(df) =
+Δ_g f` — the metric trace of the covariant derivative of the differential
+is the Laplace–Beltrami operator. The second-divergence identity that,
+applied to `R`, gives `div div Ric = ½ Δ_g R`. -/
+theorem metricTrace_covTensor1Deriv_fderiv
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (f : E → ℝ) :
+    (∑ j, covTensor1Deriv G (fun y ↦ fderiv ℝ f y) x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+      = curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x := by
+  rw [curvedLaplacian_eq_raised_sum G hGsymm hinv f]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  exact covTensor1Deriv_fderiv_eq_covariantHessian hGsymm hinv f _ _
+
+end RicciFlow
