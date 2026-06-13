@@ -8237,3 +8237,26 @@ theorem covTensor2SndDeriv_const_eq_zero (G₀ H₀ : E →L[ℝ] E →L[ℝ] �
   simp [covTensor2Deriv_const_eq_zero]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The flat derivative of `∇H` is `∇²H` plus Christoffel corrections**:
+`D_{v'}(∇H)(v,p,q) = (∇²H)(v';v,p,q) + (∇H)(Γ_{v'}v,p,q) + (∇H)(v,Γ_{v'}p,q)
++ (∇H)(v,p,Γ_{v'}q)`. Rearranges the second-covariant-derivative
+definition, the form used to substitute into the Lichnerowicz pairing. -/
+theorem fderiv_covTensor2Deriv_eq
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (v' v p q : E) :
+    (fderiv ℝ (fun y ↦ covTensor2Deriv G H y v p q) x) v'
+      = covTensor2SndDeriv G H x v' v p q
+        + covTensor2Deriv G H x (christoffelClosedOp G x v' v) p q
+        + covTensor2Deriv G H x v (christoffelClosedOp G x v' p) q
+        + covTensor2Deriv G H x v p (christoffelClosedOp G x v' q) := by
+  unfold covTensor2SndDeriv
+  ring
+
+end RicciFlow
