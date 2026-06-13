@@ -7513,4 +7513,63 @@ theorem fderiv_coordRicci_eq
   simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply]
   rfl
 
+/--
+**THE COVARIANT RICCI DERIVATIVE IS THE `(0,2)`-TENSOR DERIVATIVE**: the
+curvature-defined `covRicciDeriv` equals the genuine covariant derivative
+of the Ricci form — `∇_v Ric(u,w) = D_v Ric(u,w) − Ric(Γ_v u, w) −
+Ric(u, Γ_v w)`. The trace-slot Christoffel corrections of the curvature
+derivative cancel by trace cyclicity, leaving exactly the tensor
+covariant derivative. This is the structural identity that yields
+`∇R = dR` for the scalar curvature.
+-/
+theorem covRicciDeriv_eq_tensor_deriv
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (v u w : E) :
+    covRicciDeriv G x v u w
+      = (fderiv ℝ (fun y ↦ coordRicci G y u w) x) v
+        - coordRicci G x (christoffelClosedOp G x v u) w
+        - coordRicci G x u (christoffelClosedOp G x v w) := by
+  have hdiff : ∀ p : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y p) x :=
+    fun p ↦ hdiffΓ x p
+  have hcr : ∀ a b : E, coordRicci G x a b
+      = ∑ j, (Module.finBasis ℝ E).coord j
+          ((coordCurvatureOp G x ((Module.finBasis ℝ E) j) a) b) :=
+    fun a b ↦ rfl
+  -- Decompose each basis summand of `covRicciDeriv`.
+  have hterm : ∀ j : Fin (Module.finrank ℝ E),
+      (Module.finBasis ℝ E).coord j
+          ((covCurvDeriv G x v ((Module.finBasis ℝ E) j) u) w)
+        = (Module.finBasis ℝ E).coord j
+            ((fderiv ℝ (fun y ↦ coordCurvatureOp G y
+              ((Module.finBasis ℝ E) j) u) x v) w)
+          + (Module.finBasis ℝ E).coord j
+              (christoffelClosedOp G x v
+                ((coordCurvatureOp G x ((Module.finBasis ℝ E) j) u) w))
+          - (Module.finBasis ℝ E).coord j
+              ((coordCurvatureOp G x ((Module.finBasis ℝ E) j) u)
+                (christoffelClosedOp G x v w))
+          - (Module.finBasis ℝ E).coord j
+              ((coordCurvatureOp G x (christoffelClosedOp G x v
+                ((Module.finBasis ℝ E) j)) u) w)
+          - (Module.finBasis ℝ E).coord j
+              ((coordCurvatureOp G x ((Module.finBasis ℝ E) j)
+                (christoffelClosedOp G x v u)) w) := by
+    intro j
+    unfold covCurvDeriv
+    simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.sub_apply,
+      ContinuousLinearMap.comp_apply, map_add, map_sub]
+  unfold covRicciDeriv
+  rw [Finset.sum_congr rfl (fun j _ ↦ hterm j)]
+  simp only [Finset.sum_sub_distrib, Finset.sum_add_distrib]
+  rw [← fderiv_coordRicci_eq hdiffΓ hdd v u w,
+    coordRicci_trace_slot_cancel G hdiff v u w,
+    hcr (christoffelClosedOp G x v u) w,
+    hcr u (christoffelClosedOp G x v w)]
+  abel
+
 end RicciFlow
