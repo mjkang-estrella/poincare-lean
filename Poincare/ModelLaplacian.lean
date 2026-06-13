@@ -9167,3 +9167,88 @@ theorem curved_hamilton_scalar_lower_bound
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative Set
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**HAMILTON'S FINITE-TIME SINGULARITY, CURVED FORM**: a bounded quantity
+evolving by `∂R/∂t ≥ Δ_g R + aR²` with initial minimum `m₀ > 0` on a
+compact domain cannot persist to `1/(a m₀)` — the curved Riccati barrier
+outruns any bound. The genuine Laplace–Beltrami version. -/
+theorem curved_hamilton_finite_time_singularity
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (hbs : ∀ x, LinearMap.IsSymm (b x))
+    (hbpos : ∀ x (v : E), v ≠ 0 → 0 < (b x) v v)
+    {R R' : ℝ → E → ℝ} {K : Set E}
+    (hK : IsCompact K) (hKne : K.Nonempty) {T a m₀ B : ℝ}
+    (ha : 0 < a) (hm₀ : 0 < m₀) (hT0 : 0 ≤ T)
+    (hR_cont : Continuous ↿R)
+    (hRd : ∀ x ∈ K, ∀ t ∈ Icc (0 : ℝ) T,
+      HasDerivAt (fun s ↦ R s x) (R' t x) t)
+    (hspace : ∀ t ∈ Icc (0 : ℝ) T, ContDiff ℝ 2 (R t))
+    (hevol : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      curvedLaplacian G b hb (R t) x + a * (R t x) ^ 2 ≤ R' t x)
+    (hmin_int : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      IsMinOn (R t) K x → IsLocalMin (R t) x)
+    (hRB : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, R t x ≤ B)
+    (h0 : ∀ x ∈ K, m₀ ≤ R 0 x) :
+    T < 1 / (a * m₀) := by
+  by_contra hge
+  push_neg at hge
+  set B' : ℝ := max B m₀ with hB'
+  have hB'pos : 0 < B' := lt_of_lt_of_le hm₀ (le_max_right B m₀)
+  set t₁ : ℝ := (1 - m₀ / (2 * B')) / (a * m₀) with ht₁
+  have hm2B : m₀ / (2 * B') ≤ 1 / 2 := by
+    rw [div_le_div_iff₀ (by positivity) (by norm_num)]
+    have : m₀ ≤ B' := le_max_right B m₀
+    linarith
+  have hm2Bpos : 0 < m₀ / (2 * B') := by positivity
+  have ht₁0 : 0 ≤ t₁ := by
+    rw [ht₁]
+    apply div_nonneg _ (by positivity)
+    linarith
+  have ht₁T : t₁ ≤ T := by
+    rw [ht₁]
+    calc (1 - m₀ / (2 * B')) / (a * m₀) ≤ 1 / (a * m₀) := by
+          gcongr
+          linarith
+      _ ≤ T := hge
+  have hsub : Icc (0 : ℝ) t₁ ⊆ Icc (0 : ℝ) T := by
+    intro s hs
+    exact ⟨hs.1, hs.2.trans ht₁T⟩
+  have hbar : a * m₀ * t₁ < 1 := by
+    rw [ht₁]
+    have hne : a * m₀ ≠ 0 := by positivity
+    field_simp
+    linarith
+  have hcomp := curved_hamilton_scalar_lower_bound G b hb hbs hbpos
+    (R := R) (R' := R') hK hKne (T := t₁) (a := a) (m₀ := m₀) (B := B)
+    ha hm₀ ht₁0 hbar hR_cont
+    (fun x hx t ht ↦ hRd x hx t (hsub ht))
+    (fun t ht ↦ hspace t (hsub ht))
+    (fun t ht x hx ↦ hevol t (hsub ht) x hx)
+    (fun t ht x hx ↦ hmin_int t (hsub ht) x hx)
+    (fun t ht x hx ↦ hRB t (hsub ht) x hx)
+    h0
+  obtain ⟨x₀, hx₀⟩ := hKne
+  have hval := hcomp t₁ ⟨ht₁0, le_refl t₁⟩ x₀ hx₀
+  have hφt₁ : m₀ / (1 - a * m₀ * t₁) = 2 * B' := by
+    rw [ht₁]
+    have hne : a * m₀ ≠ 0 := by positivity
+    have hBne : (2 * B') ≠ 0 := by positivity
+    field_simp
+    rw [show (2 * B' - (2 * B' - m₀)) = m₀ from by ring,
+      div_self (ne_of_gt hm₀)]
+  rw [hφt₁] at hval
+  have hRb := hRB t₁ ⟨ht₁0, ht₁T⟩ x₀ hx₀
+  have hBB' : B ≤ B' := le_max_left B m₀
+  linarith
+
+end RicciFlow
