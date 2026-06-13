@@ -7617,4 +7617,21 @@ theorem coordRicci_christoffel_correction_symm
   rw [hsymm_sum]
   exact hswap.symm
 
+/-- **Basis expansion of the Ricci form's first slot**: `Ric(v,w) =
+Σᵢ ⟨bⁱ, v⟩ Ric(bᵢ, w)`. The first slot is linear, so the Ricci form is
+recovered from its components against the basis. -/
+theorem coordRicci_eq_sum_first_slot
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (v w : E) :
+    coordRicci G x v w
+      = ∑ i, (Module.finBasis ℝ E).coord i v
+          * coordRicci G x ((Module.finBasis ℝ E) i) w := by
+  rw [(coordRicciCLM_apply G x hdiff w v).symm]
+  conv_lhs => rw [← (Module.finBasis ℝ E).sum_repr v]
+  rw [map_sum]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [map_smul, coordRicciCLM_apply, smul_eq_mul, Module.Basis.coord_apply]
+
 end RicciFlow
