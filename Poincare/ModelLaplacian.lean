@@ -8590,3 +8590,45 @@ theorem metricTrace_covTensor1Deriv_half_grad
     hR2 (1 / 2) _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ`-divergence as a metric pairing**: `div δΓ(u,w) =
+Σᵢ G(∇_{bᵢ}δΓ(u,w), ♯bⁱ)` — the basis-trace contraction rewritten as the
+metric pairing against the raised basis, the entry point for the closed
+Bochner form of `∇δΓ`. -/
+theorem deltaGammaDivergence_eq_g_pairing
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ p q : E, G x p q = G x q p)
+    (hinv : (G x).IsInvertible) (u w : E) :
+    deltaGammaDivergence G H x u w
+      = ∑ i, G x (covDeltaGammaDeriv G H x ((Module.finBasis ℝ E) i) u w)
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i))) := by
+  unfold deltaGammaDivergence
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact coord_eq_g_raised G hinv hGsymm i
+    (covDeltaGammaDeriv G H x ((Module.finBasis ℝ E) i) u w)
+
+/-- **The `δΓ`-trace derivative as a metric pairing**:
+`Σᵢ G(∇_u δΓ(bᵢ,w), ♯bⁱ)` — the trace-derivative contraction in
+metric-pairing form. -/
+theorem deltaGammaContractionDeriv_eq_g_pairing
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ p q : E, G x p q = G x q p)
+    (hinv : (G x).IsInvertible) (u w : E) :
+    deltaGammaContractionDeriv G H x u w
+      = ∑ i, G x (covDeltaGammaDeriv G H x u ((Module.finBasis ℝ E) i) w)
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i))) := by
+  unfold deltaGammaContractionDeriv
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact coord_eq_g_raised G hinv hGsymm i
+    (covDeltaGammaDeriv G H x u ((Module.finBasis ℝ E) i) w)
+
+end RicciFlow
