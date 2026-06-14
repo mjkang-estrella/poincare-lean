@@ -10588,3 +10588,52 @@ theorem fderiv_H_raised_eq
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Christoffel-correction trace is symmetric for any symmetric tensor**:
+`Σₖ H(Γ_w ♯bᵏ, bₖ) = Σₖ H(♯bᵏ, Γ_w bₖ)`. The general-tensor analogue of
+`coordRicci_christoffel_correction_symm`, via the raised-contraction swap
+and the symmetry of `H`. -/
+theorem H_christoffel_correction_symm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hinv : (G x).IsInvertible)
+    (hGsymm : ∀ p q : E, G x p q = G x q p)
+    (hHsymm : ∀ p q : E, H x p q = H x q p)
+    (w : E) :
+    (∑ k, H x
+        (christoffelClosedOp G x w
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord k))))
+        ((Module.finBasis ℝ E) k))
+      = ∑ k, H x
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord k)))
+          (christoffelClosedOp G x w ((Module.finBasis ℝ E) k)) := by
+  have hswap := sum_raised_contraction_swap G hinv hGsymm
+    (fun a b ↦ H x a (christoffelClosedOp G x w b))
+    (fun a₁ a₂ b ↦ by simp only [map_add, ContinuousLinearMap.add_apply])
+    (fun c a b ↦ by
+      simp only [map_smul, ContinuousLinearMap.smul_apply, RingHom.id_apply])
+    (fun a b₁ b₂ ↦ by simp only [map_add, ContinuousLinearMap.add_apply])
+    (fun c a b ↦ by
+      simp only [map_smul, ContinuousLinearMap.smul_apply, RingHom.id_apply])
+  have hsymm_sum : (∑ k, H x
+        (christoffelClosedOp G x w
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord k))))
+        ((Module.finBasis ℝ E) k))
+      = ∑ k, H x ((Module.finBasis ℝ E) k)
+          (christoffelClosedOp G x w
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k)))) :=
+    Finset.sum_congr rfl fun k _ ↦ hHsymm _ _
+  rw [hsymm_sum]
+  exact hswap.symm
+
+end RicciFlow
