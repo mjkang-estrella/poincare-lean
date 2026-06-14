@@ -10440,3 +10440,39 @@ theorem tensor_eq_sum_first_slot (T : E →L[ℝ] E →L[ℝ] ℝ) (v w : E) :
     Module.Basis.coord_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of an arbitrary `(0,2)`-tensor field**: `tr_g H (y)
+= Σᵢ H_y(bᵢ, ♯bⁱ)`. A scalar field — differentiating it is free of the
+iterated-CLM instance diamond that blocks tensor-field-level scaling, so
+this is the carrier for the general metric-trace commutation. -/
+noncomputable def tensorMetricTrace (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (y : E) : ℝ :=
+  ∑ i, H y ((Module.finBasis ℝ E) i)
+    ((G y).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i)))
+
+/-- **The metric trace of a differentiable tensor is differentiable**:
+each summand is the differentiable tensor applied to the differentiable
+raised basis vector (`hasFDerivAt_inverse_raise`), combined by
+`clm_apply` — no tensor-field addition, hence diamond-free. -/
+theorem differentiableAt_tensorMetricTrace
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hGd : DifferentiableAt ℝ G x) :
+    DifferentiableAt ℝ (tensorMetricTrace G H) x := by
+  unfold tensorMetricTrace
+  apply DifferentiableAt.fun_sum
+  intro i _
+  exact (hHd.clm_apply (differentiableAt_const _)).clm_apply
+    (hasFDerivAt_inverse_raise hGd
+      (Filter.Eventually.of_forall hinv) _).differentiableAt
+
+end RicciFlow
