@@ -10933,3 +10933,38 @@ theorem deltaGammaTraceForm_eq_half_smul_fderiv_field
     (hGd y) hGsymm hinv (hHd y) hHsymm w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The raised `δΓ`-trace derivative is half the curved Laplacian of the
+metric trace**: `deltaGammaContractionDerivTrace = ½ Δ_g(tr_g H)`. The
+contracted-Lichnerowicz subtrahend is half the Laplace–Beltrami operator
+applied to `tr_g H`: the divergence of the half-gradient one-form `τ`. -/
+theorem deltaGammaContractionDerivTrace_eq_half_curvedLaplacian
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hT2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x) :
+    deltaGammaContractionDerivTrace G H x
+      = (1 / 2 : ℝ) * curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+          (tensorMetricTrace G H) x := by
+  rw [deltaGammaContractionDerivTrace_eq_div (hGd x) (hHd x) hGsymm hHsymm hVd,
+    deltaGammaTraceForm_eq_half_smul_fderiv_field hGd hGsymm hinv hHd hHsymm,
+    ← metricTrace_covTensor1Deriv_fderiv hGsymm hinv (tensorMetricTrace G H),
+    Finset.mul_sum]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  exact covTensor1Deriv_smul G (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y)
+    hT2 (1 / 2) _ _
+
+end RicciFlow
