@@ -10878,3 +10878,30 @@ theorem fderiv_tensorMetricTrace_eq
   exact covTensor2Deriv_symm hHd hHsymm w _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ`-trace one-form is half the differential of the metric trace**:
+`τ_x(w) = ½ d(tr_g H)_x(w)`. Combines the pointwise `τ = ½ ∇H`-trace identity
+with the metric-trace commutation `d(tr_g H) = ∇H`-trace. This is the
+field-level realisation `τ = ½ d(tr_g H)` that turns the contracted
+Lichnerowicz subtrahend `div τ` into `½ Δ_g(tr_g H)`. -/
+theorem deltaGammaTraceForm_eq_half_fderiv_tensorMetricTrace
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (w : E) :
+    deltaGammaTraceForm G H x w
+      = (1 / 2 : ℝ) * (fderiv ℝ (tensorMetricTrace G H) x) w := by
+  rw [deltaGammaTraceForm_apply_eq_half_covTensor2 hGd hGsymm (hinv x) hHd hHsymm w,
+    fderiv_tensorMetricTrace_eq hGd hGsymm hinv hHd hHsymm w]
+
+end RicciFlow
