@@ -10753,3 +10753,85 @@ theorem H_inverse_raise_trace
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace commutes with the spatial derivative (first-slot
+orientation)**: `fderiv (Σᵢ H(♯bⁱ, bᵢ)) (w) = Σᵢ (∇_w H)(♯bⁱ, bᵢ)` for any
+symmetric differentiable tensor `H`. The general-tensor analogue of
+`scalarContractionDeriv_eq_fderiv_coordScalar`: the inverse-metric-variation
+term from differentiating the raised index cancels the Christoffel
+corrections of the covariant derivative (`linarith` over the
+correction-symmetry and inverse-raise-trace identities). -/
+theorem fderiv_tensorMetricTrace_eq_first_slot
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (w : E) :
+    (fderiv ℝ (fun y ↦ ∑ i, H y
+        ((G y).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))
+        ((Module.finBasis ℝ E) i)) x) w
+      = ∑ i, covTensor2Deriv G H x w
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i)))
+          ((Module.finBasis ℝ E) i) := by
+  have hLHS : (fderiv ℝ (fun y ↦ ∑ i, H y
+        ((G y).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))
+        ((Module.finBasis ℝ E) i)) x) w
+      = ∑ k, ((fderiv ℝ (fun y ↦ H y
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord k)))
+              ((Module.finBasis ℝ E) k)) x) w
+          + H x ((-(((G x).inverse).comp
+                ((fderiv ℝ G x).flip ((G x).inverse
+                  (LinearMap.toContinuousLinearMap
+                    ((Module.finBasis ℝ E).coord k)))))) w)
+              ((Module.finBasis ℝ E) k)) := by
+    rw [fderiv_fun_sum fun k _ ↦ differentiableAt_H_raised hHd hinv hGd
+        (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord k))
+        ((Module.finBasis ℝ E) k),
+      ContinuousLinearMap.sum_apply]
+    exact Finset.sum_congr rfl fun k _ ↦
+      fderiv_H_raised_eq hHd hinv hGd _ _ w
+  have hRHS : (∑ i, covTensor2Deriv G H x w
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))
+        ((Module.finBasis ℝ E) i))
+      = ∑ k, ((fderiv ℝ (fun y ↦ H y
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord k)))
+              ((Module.finBasis ℝ E) k)) x) w
+          - H x (christoffelClosedOp G x w
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord k))))
+              ((Module.finBasis ℝ E) k)
+          - H x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord k)))
+              (christoffelClosedOp G x w ((Module.finBasis ℝ E) k))) := by
+    refine Finset.sum_congr rfl fun k _ ↦ ?_
+    unfold covTensor2Deriv
+    rw [fderiv_clm_family_apply hHd w
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord k))),
+      fderiv_clm_family_apply
+        (hHd.clm_apply (differentiableAt_const
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord k))))) w ((Module.finBasis ℝ E) k)]
+  rw [hLHS, hRHS, Finset.sum_add_distrib, Finset.sum_sub_distrib,
+    Finset.sum_sub_distrib]
+  have h1 := H_christoffel_correction_symm (hinv x) (hGsymm x) (hHsymm x) w
+  have h2 := H_inverse_raise_trace hGd hGsymm (hinv x) (hHsymm x) w
+  linarith [h1, h2]
+
+end RicciFlow
