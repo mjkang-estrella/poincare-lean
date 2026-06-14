@@ -10476,3 +10476,115 @@ theorem differentiableAt_tensorMetricTrace
       (Filter.Eventually.of_forall hinv) _).differentiableAt
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The components of a differentiable tensor field are differentiable. -/
+theorem differentiableAt_H_family
+    {H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x) (u w : E) :
+    DifferentiableAt ℝ (fun y ↦ H y u w) x :=
+  (hHd.clm_apply (differentiableAt_const u)).clm_apply (differentiableAt_const w)
+
+/-- The raised-index tensor component is differentiable. -/
+theorem differentiableAt_H_raised
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hGd : DifferentiableAt ℝ G x)
+    (ρ : E →L[ℝ] ℝ) (bk : E) :
+    DifferentiableAt ℝ (fun y ↦ H y ((G y).inverse ρ) bk) x := by
+  have hfun : (fun y ↦ H y ((G y).inverse ρ) bk)
+      = fun y ↦ ∑ i, (Module.finBasis ℝ E).coord i ((G y).inverse ρ)
+          * H y ((Module.finBasis ℝ E) i) bk := by
+    funext y
+    exact tensor_eq_sum_first_slot (H y) _ bk
+  rw [hfun]
+  apply DifferentiableAt.fun_sum
+  intro i _
+  apply DifferentiableAt.mul
+  · exact (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i)).differentiableAt.comp x
+      (hasFDerivAt_inverse_raise hGd
+        (Filter.Eventually.of_forall hinv) ρ).differentiableAt
+  · exact differentiableAt_H_family hHd ((Module.finBasis ℝ E) i) bk
+
+/-- Frozen-base-point derivative of a tensor component with a fixed first slot. -/
+theorem fderiv_H_first_slot_const
+    {H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x)
+    (c bk w : E) :
+    (fderiv ℝ (fun y ↦ H y c bk) x) w
+      = ∑ i, (Module.finBasis ℝ E).coord i c
+          * (fderiv ℝ (fun y ↦ H y ((Module.finBasis ℝ E) i) bk) x) w := by
+  have hfun : (fun y ↦ H y c bk)
+      = fun y ↦ ∑ i, (Module.finBasis ℝ E).coord i c
+          * H y ((Module.finBasis ℝ E) i) bk := by
+    funext y
+    exact tensor_eq_sum_first_slot (H y) c bk
+  rw [hfun, fderiv_fun_sum fun i _ ↦
+    (differentiableAt_H_family hHd ((Module.finBasis ℝ E) i) bk).const_mul
+      ((Module.finBasis ℝ E).coord i c),
+    ContinuousLinearMap.sum_apply]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [fderiv_const_mul (differentiableAt_H_family hHd ((Module.finBasis ℝ E) i) bk),
+    ContinuousLinearMap.smul_apply, smul_eq_mul]
+
+/-- The product-rule expansion of the raised-index tensor derivative. -/
+theorem fderiv_H_raised_eq
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hGd : DifferentiableAt ℝ G x)
+    (ρ : E →L[ℝ] ℝ) (bk w : E) :
+    (fderiv ℝ (fun y ↦ H y ((G y).inverse ρ) bk) x) w
+      = (fderiv ℝ (fun y ↦ H y ((G x).inverse ρ) bk) x) w
+        + H x ((-(((G x).inverse).comp
+              ((fderiv ℝ G x).flip ((G x).inverse ρ)))) w) bk := by
+  set bE := Module.finBasis ℝ E with hbE
+  set V' : E →L[ℝ] E :=
+    -(((G x).inverse).comp ((fderiv ℝ G x).flip ((G x).inverse ρ))) with hV'
+  have hVfd : HasFDerivAt (fun y ↦ (G y).inverse ρ) V' x :=
+    hasFDerivAt_inverse_raise hGd (Filter.Eventually.of_forall hinv) ρ
+  have hmul : ∀ i : Fin (Module.finrank ℝ E),
+      HasFDerivAt
+        (fun y ↦ bE.coord i ((G y).inverse ρ) * H y (bE i) bk)
+        (bE.coord i ((G x).inverse ρ)
+            • (fderiv ℝ (fun y ↦ H y (bE i) bk) x)
+          + H x (bE i) bk
+            • (LinearMap.toContinuousLinearMap (bE.coord i)).comp V') x := by
+    intro i
+    have hg : HasFDerivAt (fun y ↦ bE.coord i ((G y).inverse ρ))
+        ((LinearMap.toContinuousLinearMap (bE.coord i)).comp V') x :=
+      (LinearMap.toContinuousLinearMap (bE.coord i)).hasFDerivAt.comp x hVfd
+    have hh : HasFDerivAt (fun y ↦ H y (bE i) bk)
+        (fderiv ℝ (fun y ↦ H y (bE i) bk) x) x :=
+      (differentiableAt_H_family hHd (bE i) bk).hasFDerivAt
+    exact hg.mul hh
+  have hsum : HasFDerivAt (fun y ↦ H y ((G y).inverse ρ) bk)
+      (∑ i, (bE.coord i ((G x).inverse ρ)
+            • (fderiv ℝ (fun y ↦ H y (bE i) bk) x)
+          + H x (bE i) bk
+            • (LinearMap.toContinuousLinearMap (bE.coord i)).comp V')) x := by
+    have hfun : (fun y ↦ H y ((G y).inverse ρ) bk)
+        = fun y ↦ ∑ i, bE.coord i ((G y).inverse ρ) * H y (bE i) bk := by
+      funext y
+      exact tensor_eq_sum_first_slot (H y) _ bk
+    rw [hfun]
+    exact HasFDerivAt.fun_sum fun i _ ↦ hmul i
+  rw [hsum.fderiv, ContinuousLinearMap.sum_apply,
+    fderiv_H_first_slot_const hHd ((G x).inverse ρ) bk w,
+    tensor_eq_sum_first_slot (H x) (V' w) bk,
+    ← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]
+  rw [show ((LinearMap.toContinuousLinearMap (bE.coord i)).comp V') w
+      = bE.coord i (V' w) from rfl]
+  ring
+
+end RicciFlow
