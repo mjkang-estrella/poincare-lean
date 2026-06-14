@@ -11018,3 +11018,31 @@ theorem covDeltaGammaDeriv_symm
   abel
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ`-divergence is symmetric**: `div δΓ(u,w) = div δΓ(w,u)`. The
+divergence pairs `∇δΓ` against the metric, and `∇δΓ` is symmetric in its
+tensor slots, so the divergence inherits the symmetry. -/
+theorem deltaGammaDivergence_symm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hinv : (G x).IsInvertible)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (u w : E) :
+    deltaGammaDivergence G H x u w = deltaGammaDivergence G H x w u := by
+  rw [deltaGammaDivergence_eq_g_pairing (hGsymm x) hinv u w,
+    deltaGammaDivergence_eq_g_pairing (hGsymm x) hinv w u]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [covDeltaGammaDeriv_symm hGd hHd hGsymm hHsymm hVd]
+
+end RicciFlow
