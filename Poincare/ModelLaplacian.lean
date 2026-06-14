@@ -10905,3 +10905,31 @@ theorem deltaGammaTraceForm_eq_half_fderiv_tensorMetricTrace
     fderiv_tensorMetricTrace_eq hGd hGsymm hinv hHd hHsymm w]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ`-trace one-form is the half-gradient of the metric trace, as a
+field**: `τ = ½ • d(tr_g H)`. The field-level (continuous-linear-map valued)
+form of `deltaGammaTraceForm_eq_half_fderiv_tensorMetricTrace`, ready to feed
+the covariant divergence. -/
+theorem deltaGammaTraceForm_eq_half_smul_fderiv_field
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a) :
+    deltaGammaTraceForm G H
+      = fun y ↦ (1 / 2 : ℝ) • fderiv ℝ (tensorMetricTrace G H) y := by
+  funext y
+  ext w
+  rw [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  exact deltaGammaTraceForm_eq_half_fderiv_tensorMetricTrace
+    (hGd y) hGsymm hinv (hHd y) hHsymm w
+
+end RicciFlow
