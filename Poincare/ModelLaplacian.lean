@@ -10968,3 +10968,53 @@ theorem deltaGammaContractionDerivTrace_eq_half_curvedLaplacian
     hT2 (1 / 2) _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant derivative of `δΓ` is symmetric in its tensor slots**:
+`(∇_v δΓ)(p,z) = (∇_v δΓ)(z,p)`. The Christoffel variation `δΓ` is symmetric,
+and that symmetry passes through the covariant derivative: the differentiated
+family term swaps by the field-symmetry of `δΓ`, and the connection
+corrections regroup by `δΓ` symmetry. Infrastructure for the
+`deltaGammaDivergence` contraction. -/
+theorem covDeltaGammaDeriv_symm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (v p z : E) :
+    covDeltaGammaDeriv G H x v p z = covDeltaGammaDeriv G H x v z p := by
+  have hsym : ∀ a b : E,
+      christoffelDerivOp G H x a b = christoffelDerivOp G H x b a := by
+    intro a b
+    rw [christoffelDerivOp_apply, christoffelDerivOp_apply]
+    exact christoffelDeriv_symm (hGd x) (hHd x) hGsymm hHsymm a b
+  have hterm1 : (fderiv ℝ (fun y ↦ christoffelDerivOp G H y p) x v) z
+      = (fderiv ℝ (fun y ↦ christoffelDerivOp G H y z) x v) p := by
+    have e1 : (fderiv ℝ (fun y ↦ christoffelDerivOp G H y p) x v) z
+        = fderiv ℝ (fun y ↦ christoffelDerivOp G H y p z) x v :=
+      fderiv_clm_family_apply (hVd p) v z
+    have e2 : (fderiv ℝ (fun y ↦ christoffelDerivOp G H y z) x v) p
+        = fderiv ℝ (fun y ↦ christoffelDerivOp G H y z p) x v :=
+      fderiv_clm_family_apply (hVd z) v p
+    rw [e1, e2]
+    have hfun : (fun y ↦ christoffelDerivOp G H y p z)
+        = (fun y ↦ christoffelDerivOp G H y z p) := by
+      funext y
+      rw [christoffelDerivOp_apply, christoffelDerivOp_apply]
+      exact christoffelDeriv_symm (hGd y) (hHd y) hGsymm hHsymm p z
+    rw [hfun]
+  unfold covDeltaGammaDeriv
+  rw [hterm1, hsym p z, hsym (christoffelClosedOp G x v p) z,
+    hsym p (christoffelClosedOp G x v z)]
+  abel
+
+end RicciFlow
