@@ -10637,3 +10637,119 @@ theorem H_christoffel_correction_symm
   exact hswap.symm
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The inverse-metric-derivative trace is twice the Christoffel-correction
+trace, for any symmetric tensor**: `Σₖ H(D_w ♯bᵏ, bₖ) = −2 Σₖ H(Γ_w ♯bᵏ, bₖ)`.
+The general-tensor analogue of `coordRicci_inverse_raise_trace`: metric
+compatibility splits the raised-index derivative into two Christoffel pieces,
+which coincide after a contraction swap using `H` symmetry. -/
+theorem H_inverse_raise_trace
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : (G x).IsInvertible)
+    (hHsymm : ∀ p q : E, H x p q = H x q p)
+    (w : E) :
+    (∑ k, H x
+        ((-(((G x).inverse).comp
+          ((fderiv ℝ G x).flip ((G x).inverse
+            (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k)))))) w)
+        ((Module.finBasis ℝ E) k))
+      = -2 * ∑ k, H x
+          (christoffelClosedOp G x w
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k))))
+          ((Module.finBasis ℝ E) k) := by
+  have hDcoord : ∀ i k : Fin (Module.finrank ℝ E),
+      (Module.finBasis ℝ E).coord i
+        ((-(((G x).inverse).comp
+          ((fderiv ℝ G x).flip ((G x).inverse
+            (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k)))))) w)
+      = -((Module.finBasis ℝ E).coord i
+            (christoffelClosedOp G x w
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord k)))))
+        - G x ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord k)))
+            (christoffelClosedOp G x w
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))) := by
+    intro i k
+    rw [coord_eq_g_raised G hinv (hGsymm x) i,
+      g_inverse_raise_metric_compat hGd hGsymm hinv
+        (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord k)) w
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))),
+      coord_eq_g_raised G hinv (hGsymm x) i
+        (christoffelClosedOp G x w
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord k))))]
+  have hexp : ∀ k : Fin (Module.finrank ℝ E),
+      H x
+        ((-(((G x).inverse).comp
+          ((fderiv ℝ G x).flip ((G x).inverse
+            (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k)))))) w)
+        ((Module.finBasis ℝ E) k)
+      = -H x
+          (christoffelClosedOp G x w
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k))))
+          ((Module.finBasis ℝ E) k)
+        - ∑ i, G x ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k)))
+              (christoffelClosedOp G x w
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i))))
+            * H x ((Module.finBasis ℝ E) i)
+                ((Module.finBasis ℝ E) k) := by
+    intro k
+    rw [tensor_eq_sum_first_slot (H x) _ ((Module.finBasis ℝ E) k),
+      tensor_eq_sum_first_slot (H x)
+        (christoffelClosedOp G x w
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord k)))) ((Module.finBasis ℝ E) k),
+      ← Finset.sum_neg_distrib, ← Finset.sum_sub_distrib]
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    rw [hDcoord i k]
+    ring
+  rw [Finset.sum_congr rfl fun k _ ↦ hexp k, Finset.sum_sub_distrib,
+    Finset.sum_neg_distrib]
+  have hS2 : (∑ k, ∑ i,
+        G x ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord k)))
+          (christoffelClosedOp G x w
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i))))
+        * H x ((Module.finBasis ℝ E) i)
+            ((Module.finBasis ℝ E) k))
+      = ∑ k, H x
+          (christoffelClosedOp G x w
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k))))
+          ((Module.finBasis ℝ E) k) := by
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    rw [tensor_eq_sum_first_slot (H x)
+      (christoffelClosedOp G x w
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))) ((Module.finBasis ℝ E) i)]
+    refine Finset.sum_congr rfl fun k _ ↦ ?_
+    rw [hGsymm x, coord_eq_g_raised G hinv (hGsymm x) k
+        (christoffelClosedOp G x w
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i)))),
+      hHsymm ((Module.finBasis ℝ E) i) ((Module.finBasis ℝ E) k)]
+  rw [hS2]
+  ring
+
+end RicciFlow
