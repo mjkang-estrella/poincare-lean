@@ -10835,3 +10835,46 @@ theorem fderiv_tensorMetricTrace_eq_first_slot
   linarith [h1, h2]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **THE METRIC TRACE COMMUTES WITH THE SPATIAL DERIVATIVE**: for any
+symmetric differentiable tensor field `H`,
+`fderiv (tr_g H) (w) = Σᵢ (∇_w H)(bᵢ, ♯bⁱ)` — the spatial derivative of the
+metric trace is the metric trace of the covariant derivative. The
+diamond-free general-tensor commutation (carrier of the contracted
+Lichnerowicz `div τ = ½ Δ_g(tr_g H)`), matching the orientation of the
+`δΓ`-trace one-form `deltaGammaTraceForm`. -/
+theorem fderiv_tensorMetricTrace_eq
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (w : E) :
+    (fderiv ℝ (tensorMetricTrace G H) x) w
+      = ∑ i, covTensor2Deriv G H x w ((Module.finBasis ℝ E) i)
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i))) := by
+  have hfield : (tensorMetricTrace G H)
+      = fun y ↦ ∑ i, H y
+          ((G y).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i)))
+          ((Module.finBasis ℝ E) i) := by
+    funext y
+    unfold tensorMetricTrace
+    exact Finset.sum_congr rfl fun i _ ↦
+      hHsymm y ((Module.finBasis ℝ E) i)
+        ((G y).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))
+  rw [hfield, fderiv_tensorMetricTrace_eq_first_slot hGd hGsymm hinv hHd hHsymm w]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact covTensor2Deriv_symm hHd hHsymm w _ _
+
+end RicciFlow
