@@ -13767,3 +13767,33 @@ theorem deltaGammaDivergenceTrace_sndDeriv
     g_christoffelDeriv (hGd x) hGsymm (hinv x) (fun p q ↦ hHsymm x p q)]
   ring
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of `∇H` over its tensor slots is `d(tr_g H)`**:
+`Σⱼ (∇_v H)(♯bʲ, bⱼ) = (D_v (tr_g H))`. The slot-trace orientation of
+`fderiv_tensorMetricTrace_eq`, via `covTensor2Deriv_symm`. The 1st-order
+trace-commute, building block for the `−½T3 = −½curvedLap` sub-identity. -/
+theorem sum_covTensor2Deriv_Hslot_trace
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (v : E) :
+    (∑ j, covTensor2Deriv G H x v
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+      = (fderiv ℝ (tensorMetricTrace G H) x) v := by
+  rw [fderiv_tensorMetricTrace_eq hGd hGsymm hinv hHd hHsymm v]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  exact covTensor2Deriv_symm hHd hHsymm v _ _
+
+end RicciFlow
