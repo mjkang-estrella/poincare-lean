@@ -11486,3 +11486,27 @@ theorem tensorDoubleDivergence_eq (G H : E → E →L[ℝ] E →L[ℝ] ℝ) (x :
           ((Module.finBasis ℝ E) j) := rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant 1-form derivative distributes over differences of form
+fields**: `∇(α − β) = ∇α − ∇β` for differentiable one-form fields. The
+field-level linearity that lets the divergence distribute over the inner-trace
+decomposition `div H − ½ d(tr_g H)`. -/
+theorem covTensor1Deriv_sub (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (α β : E → E →L[ℝ] ℝ) {x : E}
+    (hα : DifferentiableAt ℝ α x) (hβ : DifferentiableAt ℝ β x)
+    (v w : E) :
+    covTensor1Deriv G (fun y ↦ α y - β y) x v w
+      = covTensor1Deriv G α x v w - covTensor1Deriv G β x v w := by
+  unfold covTensor1Deriv
+  rw [fderiv_fun_sub hα hβ]
+  simp only [ContinuousLinearMap.sub_apply, Pi.sub_apply]
+  ring
+
+end RicciFlow
