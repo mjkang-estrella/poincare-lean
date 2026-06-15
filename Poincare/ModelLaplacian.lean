@@ -18517,3 +18517,68 @@ theorem covTensor2SndDeriv_comm_of_flat
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz curvature term**: the metric trace of the coordinate curvature operator
+acting on both slots of `H`, `Σᵢ [H((Rm bᵢ ♯bⁱ) p, q) + H(p, (Rm bᵢ ♯bⁱ) q)]`. This is the
+`Rm·H` part of the Lichnerowicz Laplacian `Δ_L H = Δ_∇ H + (curvature)` (roadmap item 3). -/
+noncomputable def lichnerowiczCurvature (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x p q : E) : ℝ :=
+  ∑ i, (H x ((coordCurvatureOp G x ((Module.finBasis ℝ E) i)
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i)))) p) q
+        + H x p ((coordCurvatureOp G x ((Module.finBasis ℝ E) i)
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i)))) q))
+
+/-- **The Weitzenböck identity (named form)**: the transposed rough Laplacian equals the standard
+rough Laplacian plus the Lichnerowicz curvature term,
+`Σᵢ ∇²H(♯bⁱ, bᵢ) = Δ_∇ H + curvature`. The clean named form of the contracted curvature
+commutation, the structural heart of the Lichnerowicz Laplacian (roadmap item 3). -/
+theorem connectionLaplacian_transpose_eq_add_curvature
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (p q : E)
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hHC2 : ContDiffAt ℝ 2 H x)
+    (hH : DifferentiableAt ℝ H x)
+    (hpure1 : ∀ i, DifferentiableAt ℝ (fun y ↦ (fderiv ℝ H y
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord i)))) p q) x)
+    (hpure2 : ∀ i, DifferentiableAt ℝ
+      (fun y ↦ (fderiv ℝ H y ((Module.finBasis ℝ E) i)) p q) x)
+    (hc1 : ∀ i, DifferentiableAt ℝ (fun y ↦ H y (christoffelClosedOp G y
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord i))) p) q) x)
+    (hc1' : ∀ i, DifferentiableAt ℝ
+      (fun y ↦ H y (christoffelClosedOp G y ((Module.finBasis ℝ E) i) p) q) x)
+    (hc2 : ∀ i, DifferentiableAt ℝ (fun y ↦ H y p (christoffelClosedOp G y
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord i))) q)) x)
+    (hc2' : ∀ i, DifferentiableAt ℝ
+      (fun y ↦ H y p (christoffelClosedOp G y ((Module.finBasis ℝ E) i) q)) x)
+    (hΓ : ∀ i, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord i)))) x)
+    (hΓ' : ∀ i, DifferentiableAt ℝ
+      (fun y ↦ christoffelClosedOp G y ((Module.finBasis ℝ E) i)) x) :
+    (∑ i, covTensor2SndDeriv G H x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))
+        ((Module.finBasis ℝ E) i) p q)
+      = connectionLaplacian G H x p q + lichnerowiczCurvature G H x p q := by
+  unfold connectionLaplacian lichnerowiczCurvature
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl (fun i _ ↦ ?_)
+  have h := covTensor2SndDeriv_ricci_identity ((Module.finBasis ℝ E) i)
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i))) p q hGd hGsymm hHC2
+    (hpure1 i) (hpure2 i) (hc1 i) (hc1' i) (hc2 i) (hc2' i) hH (hΓ i) (hΓ' i)
+  linarith [h]
+
+end RicciFlow
