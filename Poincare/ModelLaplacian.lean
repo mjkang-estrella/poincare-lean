@@ -14285,3 +14285,81 @@ theorem fderiv2_tensorMetricTrace_sum_merged
     ((Module.finBasis ℝ E) j)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Raised-index operator-slot trace swap**: for a bilinear `F` and an operator
+`Φ`, moving `Φ` from the lowered basis slot to the raised dual slot leaves the trace
+invariant — `Σⱼ F(♯bʲ, Φbⱼ) = Σⱼ F(♯(bʲ∘Φ), bⱼ)`. Both sides basis-expand to the
+same double sum `Σⱼ Σ_c ⟨bᶜ, Φbⱼ⟩ F(♯bʲ, b_c)` (the right side via `Finset.sum_comm`);
+inverse-metric symmetry is implicit in the shared raise `♯`. The trace identity that
+cancels the two H-slot Christoffel terms of the 2nd-order trace-commute. -/
+theorem sum_raised_op_slot_swap
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (Φ : E →L[ℝ] E)
+    (F : E → E → ℝ)
+    (hadd1 : ∀ p₁ p₂ q, F (p₁ + p₂) q = F p₁ q + F p₂ q)
+    (hsmul1 : ∀ (c : ℝ) p q, F (c • p) q = c • F p q)
+    (hadd2 : ∀ p q₁ q₂, F p (q₁ + q₂) = F p q₁ + F p q₂)
+    (hsmul2 : ∀ (c : ℝ) p q, F p (c • q) = c • F p q) :
+    (∑ j, F ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord j))) (Φ ((Module.finBasis ℝ E) j)))
+      = ∑ j, F ((G x).inverse ((LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)).comp Φ)) ((Module.finBasis ℝ E) j) := by
+  set bE := Module.finBasis ℝ E with hbE
+  set s : Fin (Module.finrank ℝ E) → E := fun j ↦
+    (G x).inverse (LinearMap.toContinuousLinearMap (bE.coord j)) with hs
+  -- LHS summand expansion.
+  have hL : ∀ j, F (s j) (Φ (bE j))
+      = ∑ c, bE.coord c (Φ (bE j)) • F (s j) (bE c) := by
+    intro j
+    have hrepr : Φ (bE j) = ∑ c, bE.coord c (Φ (bE j)) • bE c :=
+      (bE.sum_repr (Φ (bE j))).symm
+    conv_lhs => rw [hrepr]
+    set L : E →ₗ[ℝ] ℝ :=
+      IsLinearMap.mk' (fun q ↦ F (s j) q)
+        ⟨fun q₁ q₂ ↦ hadd2 (s j) q₁ q₂, fun c q ↦ hsmul2 c (s j) q⟩ with hL'
+    have := map_sum L (fun c ↦ bE.coord c (Φ (bE j)) • bE c) Finset.univ
+    simp only [map_smul] at this
+    exact this
+  -- RHS summand expansion.
+  have hsrepr : ∀ j, (G x).inverse ((LinearMap.toContinuousLinearMap
+        (bE.coord j)).comp Φ) = ∑ k, bE.coord j (Φ (bE k)) • s k := by
+    intro j
+    set ψ : E →L[ℝ] ℝ :=
+      (LinearMap.toContinuousLinearMap (bE.coord j)).comp Φ with hψ
+    have hcov : ψ = ∑ k, (ψ (bE k)) •
+        LinearMap.toContinuousLinearMap (bE.coord k) := by
+      ext z
+      simp only [ContinuousLinearMap.coe_sum', Finset.sum_apply,
+        ContinuousLinearMap.smul_apply, LinearMap.coe_toContinuousLinearMap',
+        smul_eq_mul]
+      conv_lhs => rw [← bE.sum_repr z]
+      rw [map_sum]
+      refine Finset.sum_congr rfl fun k _ ↦ ?_
+      rw [map_smul, smul_eq_mul, Module.Basis.coord_apply, mul_comm]
+    rw [hcov, map_sum]
+    refine Finset.sum_congr rfl fun k _ ↦ ?_
+    rw [map_smul]
+    simp only [hs, hψ, ContinuousLinearMap.comp_apply,
+      LinearMap.coe_toContinuousLinearMap']
+  have hR : ∀ j, F ((G x).inverse ((LinearMap.toContinuousLinearMap
+        (bE.coord j)).comp Φ)) (bE j)
+      = ∑ k, bE.coord j (Φ (bE k)) • F (s k) (bE j) := by
+    intro j
+    rw [hsrepr j]
+    set L : E →ₗ[ℝ] ℝ :=
+      IsLinearMap.mk' (fun p ↦ F p (bE j))
+        ⟨fun p₁ p₂ ↦ hadd1 p₁ p₂ (bE j), fun c p ↦ hsmul1 c p (bE j)⟩ with hL'
+    have := map_sum L (fun k ↦ bE.coord j (Φ (bE k)) • s k) Finset.univ
+    simp only [map_smul] at this
+    exact this
+  rw [Finset.sum_congr rfl fun j _ ↦ hL j,
+    Finset.sum_congr rfl fun j _ ↦ hR j, Finset.sum_comm]
+
+end RicciFlow
