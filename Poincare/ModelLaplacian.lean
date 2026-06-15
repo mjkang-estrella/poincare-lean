@@ -13135,3 +13135,52 @@ theorem curvatureDerivOp_double_trace_eq_ricciDeriv
       ((Module.finBasis ℝ E) j))).symm
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `L4` slot term raise swap**: `Σⱼ Σᵢ G(δΓ(♯bʲ, Γ_{bᵢ}bⱼ), ♯bⁱ) =
+Σⱼ Σᵢ G(δΓ(♯bʲ, Γ_{♯bⁱ}bⱼ), bᵢ)` — moving the raise from the pairing index to the
+Christoffel direction via `sum_raised_contraction_swap`, with the `Γ` first-slot
+linearity and the `δΓ`-operator's second-slot linearity. Reformulates `L4` toward
+the `rem` term for the final curvature-relation matching. -/
+theorem sum_L4_swap
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hinv : (G x).IsInvertible)
+    (hGsymm : ∀ p q : E, G x p q = G x q p) :
+    (∑ j, ∑ i, G x (christoffelDerivOp G H x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        (christoffelClosedOp G x ((Module.finBasis ℝ E) i)
+          ((Module.finBasis ℝ E) j)))
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))))
+      = ∑ j, ∑ i, G x (christoffelDerivOp G H x
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)))
+          (christoffelClosedOp G x
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i)))
+            ((Module.finBasis ℝ E) j)))
+          ((Module.finBasis ℝ E) i) := by
+  refine Finset.sum_congr rfl fun j _ ↦ (sum_raised_contraction_swap G hinv hGsymm
+    (fun a b ↦ G x (christoffelDerivOp G H x
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord j)))
+      (christoffelClosedOp G x a ((Module.finBasis ℝ E) j))) b)
+    (fun a₁ a₂ b ↦ by
+      dsimp only
+      rw [christoffelClosedOp_add_fst G x a₁ a₂]
+      simp only [ContinuousLinearMap.add_apply, map_add])
+    (fun c a b ↦ by
+      dsimp only
+      rw [christoffelClosedOp_smul_fst G x c a]
+      simp only [ContinuousLinearMap.smul_apply, map_smul, smul_eq_mul])
+    (fun a b₁ b₂ ↦ by dsimp only; simp only [map_add])
+    (fun c a b ↦ by dsimp only; simp only [map_smul, smul_eq_mul])).symm
+
+end RicciFlow
