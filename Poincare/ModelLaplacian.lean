@@ -18604,3 +18604,26 @@ theorem lichnerowiczCurvature_symm
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz curvature term is additive in the tensor**:
+`lichnerowiczCurvature G (H₁+H₂) = lichnerowiczCurvature G H₁ + lichnerowiczCurvature G H₂`.
+Linearity in `H` — needed since the curvature variation `δRic = −½Δ_L H + …` is linear in the
+metric variation `H` (roadmap item 3). -/
+theorem lichnerowiczCurvature_add
+    {G H₁ H₂ : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (p q : E) :
+    lichnerowiczCurvature G (fun y ↦ H₁ y + H₂ y) x p q
+      = lichnerowiczCurvature G H₁ x p q + lichnerowiczCurvature G H₂ x p q := by
+  unfold lichnerowiczCurvature
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl (fun i _ ↦ ?_)
+  simp only [ContinuousLinearMap.add_apply]
+  ring
+
+end RicciFlow
