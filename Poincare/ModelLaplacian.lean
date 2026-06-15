@@ -12042,3 +12042,36 @@ theorem divergence_deltaGammaInnerTraceCLM_eq'
     (differentiableAt_tensorDivCLM hGd hGsymm hinv (hHd x) hH2 hΓd) hT2
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Product rule for the `δΓ`-vector with a raised index**: the base-point
+derivative of `y ↦ δΓ_y(p, (G y)⁻¹ φ)` splits into the `δΓ`-derivative term and
+the inverse-metric-derivative term, `δΓ_x(p, ∂((G·)⁻¹φ)) + (∂δΓ)(p,(G x)⁻¹φ)`.
+The `clm_apply` product rule applied to the Christoffel-variation operator and
+the raised covector. The first concrete term of the commutation's `fderiv`
+expansion, isolating the inverse-metric-derivative correction. -/
+theorem fderiv_deltaGamma_raised_vector
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {p : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hev : ∀ᶠ y in nhds x, (G y).IsInvertible)
+    (hVd : DifferentiableAt ℝ (fun y ↦ christoffelDerivOp G H y p) x)
+    (φ : E →L[ℝ] ℝ) (v : E) :
+    (fderiv ℝ (fun y ↦ christoffelDerivOp G H y p ((G y).inverse φ)) x) v
+      = (christoffelDerivOp G H x p)
+          ((fderiv ℝ (fun y ↦ (G y).inverse φ) x) v)
+        + ((fderiv ℝ (fun y ↦ christoffelDerivOp G H y p) x) v)
+          ((G x).inverse φ) := by
+  have hu : DifferentiableAt ℝ (fun y ↦ (G y).inverse φ) x :=
+    differentiableAt_inverse_raise hGd hev φ
+  have h := hVd.hasFDerivAt.clm_apply hu.hasFDerivAt
+  rw [h.fderiv]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.flip_apply]
+
+end RicciFlow
