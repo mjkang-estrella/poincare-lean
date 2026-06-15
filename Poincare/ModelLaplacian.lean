@@ -15986,3 +15986,24 @@ theorem tensorDoubleDivergence_neg_two_coordRicciForm
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci-flow trace identity as a field**: `tr_g(−2 Ric) = (fun y ↦ −2·R(y))`.
+The `funext` lift of `tensorMetricTrace_neg_two_coordRicciForm`, providing the `htr`
+hypothesis of `ricciDeriv_raised_trace_lichnerowicz_smul` (`c = −2`, `φ = coordScalar`). -/
+theorem tensorMetricTrace_neg_two_coordRicciForm_field
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ}
+    (hdiff : ∀ (y : E) (u : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z u) y) :
+    tensorMetricTrace G (fun y ↦ (-2 : ℝ) • coordRicciForm G y (hdiff y))
+      = fun y ↦ (-2 : ℝ) * coordScalar G y := by
+  funext y
+  exact tensorMetricTrace_neg_two_coordRicciForm hdiff
+
+end RicciFlow
