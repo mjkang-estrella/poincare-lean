@@ -16358,3 +16358,79 @@ theorem ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian_family
     (hHd t) (hH2 t x) (hVd t x) (hφ t)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative Set
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **THE RICCI-FLOW FINITE-TIME SINGULARITY THEOREM, with the Bianchi identity
+DISCHARGED**: a coordinate Ricci flow `∂g/∂t = −2 Ric` with positive minimum scalar
+curvature `m₀` on a compact domain develops a singularity by `T < n/(2 m₀)` — and the
+contracted Bianchi identity, previously an explicit hypothesis, is now supplied internally
+by `ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian_family`. The remaining hypotheses are
+the flow's geometric/analytic regularity (positive-definiteness, mixed derivatives,
+continuity, minimum-attainment), at the level the curved parabolic machinery requires. -/
+theorem curved_hamilton_ricci_flow_singularity_bianchi_free
+    [Nontrivial E]
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ}
+    {K : Set E} (hK : IsCompact K) (hKne : K.Nonempty)
+    {T m₀ B : ℝ} (hm₀ : 0 < m₀) (hT0 : 0 ≤ T)
+    (hd2 : ∀ (t : ℝ) (x : E) (u : E),
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp (Gt t) y u) x)
+    (hinv : ∀ (t : ℝ) (x : E), (Gt t x).IsInvertible)
+    (hGsymm : ∀ (t : ℝ) (x : E) (v w : E), Gt t x v w = Gt t x w v)
+    (hGpos : ∀ (t : ℝ) (x : E) (v : E), v ≠ 0 → 0 < Gt t x v v)
+    (hRicSymm : ∀ (t : ℝ) (x : E) (u w : E),
+      coordRicci (Gt t) x u w = coordRicci (Gt t) x w u)
+    (hdG : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      HasDerivAt (fun s ↦ Gt s x)
+        ((-2 : ℝ) • coordRicciForm (Gt t) x (hd2 t x)) t)
+    (hmix : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, ∀ p q r : E,
+      HasDerivAt (fun s ↦ (fderiv ℝ (Gt s) x p) q r)
+        ((fderiv ℝ (fun y ↦ (-2 : ℝ) • coordRicciForm (Gt t) y (hd2 t y)) x p)
+          q r) t)
+    (hmix2 : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, ∀ p v : E,
+      HasDerivAt
+        (fun s ↦ fderiv ℝ (fun y ↦ christoffelClosedOp (Gt s) y p) x v)
+        (fderiv ℝ (fun y ↦ christoffelDerivOp (Gt t)
+          (fun z ↦ (-2 : ℝ) • coordRicciForm (Gt t) z (hd2 t z)) y p) x v) t)
+    (hR_cont : Continuous ↿(fun t x ↦ coordScalar (Gt t) x))
+    (hspace : ∀ t ∈ Icc (0 : ℝ) T,
+      ContDiff ℝ 2 (fun x ↦ coordScalar (Gt t) x))
+    (hmin_int : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      IsMinOn (fun y ↦ coordScalar (Gt t) y) K x →
+        IsLocalMin (fun y ↦ coordScalar (Gt t) y) x)
+    (hRB : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, coordScalar (Gt t) x ≤ B)
+    (h0 : ∀ x ∈ K, m₀ ≤ coordScalar (Gt 0) x)
+    (hGd : ∀ (t : ℝ) (y : E), DifferentiableAt ℝ (Gt t) y)
+    (hGC2 : ∀ t : ℝ, ContDiff ℝ 2 (Gt t))
+    (hdd : ∀ (t : ℝ) (y : E) (p : E), DifferentiableAt ℝ
+      (fun z ↦ fderiv ℝ (fun z' ↦ christoffelClosedOp (Gt t) z' p) z) y)
+    (hsymΓ : ∀ (t : ℝ) (y : E) (p : E), IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp (Gt t) z p) y)
+    (hKd : ∀ (t : ℝ) (y : E),
+      DifferentiableAt ℝ (fun z ↦ coordRicciForm (Gt t) z (hd2 t z)) y)
+    (hdivd : ∀ (t : ℝ) (x : E), DifferentiableAt ℝ
+      (tensorDivCLM (Gt t) (fun z ↦ coordRicciForm (Gt t) z (hd2 t z))) x)
+    (hHd : ∀ (t : ℝ) (y : E), DifferentiableAt ℝ
+      (fun z ↦ (-2 : ℝ) • coordRicciForm (Gt t) z (hd2 t z)) y)
+    (hH2 : ∀ (t : ℝ) (x : E), DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ
+        (fun z ↦ (-2 : ℝ) • coordRicciForm (Gt t) z (hd2 t z)) y) x)
+    (hVd : ∀ (t : ℝ) (x : E) (p : E), DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp (Gt t)
+        (fun z ↦ (-2 : ℝ) • coordRicciForm (Gt t) z (hd2 t z)) y p) x)
+    (hφ : ∀ t : ℝ, ContDiff ℝ 2 (fun z ↦ coordScalar (Gt t) z)) :
+    T < (Module.finrank ℝ E : ℝ) / (2 * m₀) :=
+  curved_hamilton_ricci_flow_singularity
+    (H := fun t y ↦ (-2 : ℝ) • coordRicciForm (Gt t) y (hd2 t y))
+    hK hKne hm₀ hT0 hd2 hinv hGsymm hGpos hRicSymm hdG hmix hmix2
+    (fun _ _ _ _ ↦ rfl)
+    (ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian_family hd2 hGd hGC2 hGsymm
+      hinv hdd hsymΓ hKd hdivd hHd hH2 hVd hφ)
+    hR_cont hspace hmin_int hRB h0
+
+end RicciFlow
