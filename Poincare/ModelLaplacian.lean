@@ -20988,3 +20988,20 @@ theorem round_sphere_extinction_eq_bound
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The shrinking Einstein soliton contracts monotonically**: for `c > 0`, the homothety factor
+`1 − 2ct` is strictly decreasing in `t`, so the round-sphere metric `g(t) = (1−2ct)g(0)` shrinks
+monotonically toward extinction at `1/(2c)` (roadmap item 3). -/
+theorem einstein_homothety_decreasing
+    (c t₁ t₂ : ℝ) (hc : 0 < c) (ht : t₁ < t₂) :
+    1 - 2 * c * t₂ < 1 - 2 * c * t₁ := by
+  nlinarith [hc, ht]
+
+end RicciFlow
