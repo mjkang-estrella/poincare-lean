@@ -18914,3 +18914,22 @@ theorem neg_half_connectionLaplacian_neg_two
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz curvature term vanishes on the zero tensor**:
+`lichnerowiczCurvature G 0 x p q = 0`. Together with additivity and homogeneity this confirms
+`H ↦ lichnerowiczCurvature G H x p q` is a genuine linear functional (no constant part)
+(roadmap item 3). -/
+theorem lichnerowiczCurvature_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (p q : E) :
+    lichnerowiczCurvature G (fun _ ↦ 0) x p q = 0 := by
+  unfold lichnerowiczCurvature
+  simp
+
+end RicciFlow
