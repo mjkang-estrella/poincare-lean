@@ -17419,3 +17419,35 @@ theorem ricciDeriv_neg_two_isSymm
     (fun a b ↦ christoffelClosedOp_symm (hGd x) hGsymm a b) hf u w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The connection (rough) Laplacian of a `(0,2)`-tensor**: `Δ_∇ H(p,q) =
+Σᵢ (∇²H)(bᵢ;♯bⁱ,p,q)` — the metric trace of the second covariant derivative over its two
+derivative directions. The `C`-block of the untraced Ricci variation's Bochner form; the
+leading term of the Lichnerowicz Laplacian (roadmap item 3). -/
+noncomputable def connectionLaplacian (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x p q : E) : ℝ :=
+  ∑ i, covTensor2SndDeriv G H x ((Module.finBasis ℝ E) i)
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i))) p q
+
+/-- **The connection Laplacian is symmetric in its tensor slots**:
+`Δ_∇ H(p,q) = Δ_∇ H(q,p)` for symmetric `H`, since `∇²H` is symmetric in its tensor slots
+(`covTensor2SndDeriv_symm`). -/
+theorem connectionLaplacian_symm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (p q : E) :
+    connectionLaplacian G H x p q = connectionLaplacian G H x q p := by
+  unfold connectionLaplacian
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact covTensor2SndDeriv_symm hHd hHsymm _ _ p q
+
+end RicciFlow
