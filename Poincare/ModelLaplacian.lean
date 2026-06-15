@@ -20405,3 +20405,32 @@ theorem ricciNormSq_ge_scalar_sq_div
   nlinarith [h]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of the metric is the dimension**: `tr_g(g) = dim E`, since each diagonal term
+`g(bᵢ, ♯bⁱ) = bⁱ(bᵢ) = 1`. The fundamental normalization `g^{ij}g_{ij} = n` (roadmap item 3). -/
+theorem tensorMetricTrace_metric
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ v w : E, G x v w = G x w v)
+    (hinv : (G x).IsInvertible) :
+    tensorMetricTrace G G x = (Module.finrank ℝ E : ℝ) := by
+  have hGiG : ∀ f : E →L[ℝ] ℝ, G x ((G x).inverse f) = f :=
+    fun f ↦ (hinv.inverse_apply_eq.mp rfl).symm
+  unfold tensorMetricTrace
+  have hterm : ∀ i, G x ((Module.finBasis ℝ E) i)
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord i))) = 1 := by
+    intro i
+    rw [hGsymm, hGiG]
+    simp [LinearMap.coe_toContinuousLinearMap', Module.Basis.coord_apply,
+      Module.Basis.repr_self, Finsupp.single_eq_same]
+  rw [Finset.sum_congr rfl (fun i _ ↦ hterm i), Finset.sum_const, Finset.card_univ,
+    Fintype.card_fin, nsmul_eq_mul, mul_one]
+
+end RicciFlow
