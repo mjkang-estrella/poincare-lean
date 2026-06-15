@@ -19247,3 +19247,26 @@ theorem ricciActionOnTensor_add_left
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci action is additive in its second slot**:
+`(Ric · H)(p, q₁+q₂) = (Ric · H)(p,q₁) + (Ric · H)(p,q₂)`. With `ricciActionOnTensor_add_left` this
+establishes full bilinearity of the `Ric·H` term in `(p,q)` (roadmap item 3). -/
+theorem ricciActionOnTensor_add_right
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (p q₁ q₂ : E) :
+    ricciActionOnTensor G H x p (q₁ + q₂)
+      = ricciActionOnTensor G H x p q₁ + ricciActionOnTensor G H x p q₂ := by
+  unfold ricciActionOnTensor
+  rw [ricciSharp_add hdiff q₁ q₂]
+  simp only [map_add, ContinuousLinearMap.add_apply]
+  ring
+
+end RicciFlow
