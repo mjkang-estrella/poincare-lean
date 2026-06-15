@@ -21596,3 +21596,27 @@ theorem traceless_ricci_zero_iff
   sub_eq_zero
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The pinching gap (Einstein deficit) is nonnegative**: `0 ≤ n·|Ric|² − R²`, the trace
+Cauchy–Schwarz deficit. It measures the deviation from Einstein (zero exactly on Einstein metrics by
+`einstein_pinching_equality`) and drives the rounding under normalized Ricci flow (roadmap item 3). -/
+theorem pinching_gap_nonneg
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v) :
+    0 ≤ (Module.finrank ℝ E : ℝ) * coordRicciNormSq G x hdiff
+      - (coordScalar G x) ^ 2 := by
+  have h := coordScalar_sq_le_finrank_mul_ricciNormSq hGC2 hGsymm hinv hdiff hGpos
+  linarith
+
+end RicciFlow
