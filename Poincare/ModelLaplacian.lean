@@ -21371,3 +21371,22 @@ theorem round_sphere_ricci_const
   rw [coordRicci_smul_metric (1 - 2 * c₀ * t) hGd hinv hfac, hEin p q]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The scalar curvature is monotonically increasing along the shrinking round sphere**:
+`R(t) = R₀/(1−2ct)` is increasing in `t` on `[0, 1/(2c))` for `R₀, c > 0`. The curvature monotonically
+concentrates as the sphere collapses, blowing up at the singularity `1/(2c)` (roadmap item 3). -/
+theorem round_sphere_scalar_monotone
+    (R₀ c t₁ t₂ : ℝ) (hR : 0 < R₀) (hc : 0 < c) (ht₁ : 0 ≤ t₁)
+    (h : t₁ < t₂) (ht₂ : t₂ < 1 / (2 * c)) :
+    R₀ / (1 - 2 * c * t₁) ≤ R₀ / (1 - 2 * c * t₂) := by
+  have hp2 : 0 < 1 - 2 * c * t₂ := einstein_homothety_pos c t₂ hc ht₂
+  gcongr
+
+end RicciFlow
