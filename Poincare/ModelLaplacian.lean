@@ -22044,3 +22044,29 @@ theorem einstein_lichnerowiczLaplacian_metric_trace
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz trace source is positive on the round sphere**: for a positively-curved
+Einstein metric `Ric = c·g` with `c > 0`, `Σᵢ Δ_L g(bᵢ, ♯bⁱ) = 2cn > 0`. The strictly positive
+scalar-curvature production is precisely what forces the round sphere's curvature to blow up in
+finite time rather than decay (roadmap item 3). -/
+theorem einstein_lichnerowiczLaplacian_metric_trace_pos
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hc : 0 < c) (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    0 < ∑ i, lichnerowiczLaplacian G G x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) := by
+  rw [einstein_lichnerowiczLaplacian_metric_trace hGC2 hGsymm hinv hdiff hEin]
+  positivity
+
+end RicciFlow
