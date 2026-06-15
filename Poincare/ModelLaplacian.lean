@@ -11930,3 +11930,49 @@ theorem differentiableAt_tensorDivCLM
   exact differentiableAt_tensorDivOneForm hGd hGsymm hinv hHd hH2 hΓd w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The bundled inner `δΓ`-trace field is differentiable**:
+`DifferentiableAt ℝ (deltaGammaInnerTraceCLM G H) x`. Each summand
+`y ↦ G_y(δΓ_y(bᵢ, ♯bⁱ), w)` factors as `G_y` applied to the `δΓ`-vector
+`(christoffelDerivOp G H y bᵢ)(♯bⁱ)` — differentiable by `hVd` (Christoffel
+variation) composed with `differentiableAt_inverse_raise` (raised index) — then
+lifted to the CLM field by `differentiableAt_clm_dual_of_apply`. The
+differentiability that lets the commutation take `fderiv` of the inner-trace
+field via `fderiv_clm_family_apply`. -/
+theorem differentiableAt_deltaGammaInnerTraceCLM
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x) :
+    DifferentiableAt ℝ (deltaGammaInnerTraceCLM G H) x := by
+  apply differentiableAt_clm_dual_of_apply
+  intro w
+  have hfun : (fun y ↦ deltaGammaInnerTraceCLM G H y w)
+      = fun y ↦ ∑ i, G y (christoffelDeriv G H y ((Module.finBasis ℝ E) i)
+          ((G y).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i)))) w := by
+    funext y
+    rw [deltaGammaInnerTraceCLM_apply]
+  rw [hfun]
+  apply DifferentiableAt.fun_sum
+  intro i _
+  have hVraise : DifferentiableAt ℝ (fun y ↦ (G y).inverse
+      (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) x :=
+    differentiableAt_inverse_raise (hGd x) (Filter.Eventually.of_forall hinv) _
+  have hV : DifferentiableAt ℝ (fun y ↦ christoffelDeriv G H y
+      ((Module.finBasis ℝ E) i)
+      ((G y).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord i)))) x := by
+    have hcomp := (hVd ((Module.finBasis ℝ E) i)).clm_apply hVraise
+    simpa only [christoffelDerivOp_apply] using hcomp
+  exact ((hGd x).clm_apply hV).clm_apply (differentiableAt_const w)
+
+end RicciFlow
