@@ -18675,3 +18675,26 @@ theorem lichnerowiczCurvature_flat
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz curvature term is additive in its first slot**:
+`lichnerowiczCurvature G H x (p₁+p₂) q = lichnerowiczCurvature G H x p₁ q + lichnerowiczCurvature G H x p₂ q`,
+using linearity of the curvature operator and of `H`. Confirms it is a genuine bilinear form in
+`(p,q)` — tensorial, as the curvature term of `δRic` must be (roadmap item 3). -/
+theorem lichnerowiczCurvature_add_left
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (p₁ p₂ q : E) :
+    lichnerowiczCurvature G H x (p₁ + p₂) q
+      = lichnerowiczCurvature G H x p₁ q + lichnerowiczCurvature G H x p₂ q := by
+  unfold lichnerowiczCurvature
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl (fun i _ ↦ ?_)
+  simp only [map_add, ContinuousLinearMap.add_apply]
+  ring
+
+end RicciFlow
