@@ -15112,3 +15112,61 @@ theorem covTensor2SndDeriv_smul_v'
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Outer/`q`-slot raise-swap on the `div div H` `∇²H` block**:
+`Σⱼ Σᵢ (∇²H)(♯bʲ;♯bⁱ,bᵢ,bⱼ) = Σⱼ Σᵢ (∇²H)(bⱼ;♯bⁱ,bᵢ,♯bʲ)`. Moving the `j`-raise from
+the outer derivative direction to the `q` tensor slot, by `sum_raised_contraction_swap`
+on the bilinear `(a,b) ↦ Σᵢ (∇²H)(a;♯bⁱ,bᵢ,b)` (bilinear via the outer/`q`-slot
+bilinearity suite). The first reconciliation swap matching `div div H` to `½(T1+T2)`. -/
+theorem sum_sum_covTensor2SndDeriv_outer_q_swap
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x) :
+    (∑ j, ∑ i, covTensor2SndDeriv G H x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))
+        ((Module.finBasis ℝ E) i) ((Module.finBasis ℝ E) j))
+      = ∑ j, ∑ i, covTensor2SndDeriv G H x ((Module.finBasis ℝ E) j)
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i)))
+          ((Module.finBasis ℝ E) i)
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j))) :=
+  sum_raised_contraction_swap G (hinv x) (hGsymm x)
+    (fun a b ↦ ∑ i, covTensor2SndDeriv G H x a
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord i)))
+      ((Module.finBasis ℝ E) i) b)
+    (fun a₁ a₂ b ↦ by
+      dsimp only
+      rw [← Finset.sum_add_distrib]
+      exact Finset.sum_congr rfl fun i _ ↦ covTensor2SndDeriv_add_v' a₁ a₂ _ _ b)
+    (fun c a b ↦ by
+      dsimp only
+      rw [Finset.smul_sum]
+      refine Finset.sum_congr rfl fun i _ ↦ ?_
+      rw [covTensor2SndDeriv_smul_v', smul_eq_mul])
+    (fun a b₁ b₂ ↦ by
+      dsimp only
+      rw [← Finset.sum_add_distrib]
+      exact Finset.sum_congr rfl fun i _ ↦
+        covTensor2SndDeriv_add_q hHd hH2 hΓd a _ _ b₁ b₂)
+    (fun c a b ↦ by
+      dsimp only
+      rw [Finset.smul_sum]
+      refine Finset.sum_congr rfl fun i _ ↦ ?_
+      rw [covTensor2SndDeriv_smul_q hHd hH2 hΓd, smul_eq_mul])
+
+end RicciFlow
