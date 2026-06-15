@@ -15442,3 +15442,52 @@ theorem tensorDoubleDivergence_eq_sum_sum_T2
     Finset.sum_comm]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **THE KEYSTONE — the trace of the `δΓ`-divergence is `div div H − ½ Δ_g(tr_g H)`**:
+`deltaGammaDivergenceTrace G H x = div div H − ½ Δ_g(tr_g H)`. From
+`deltaGammaDivergenceTrace_sndDeriv` (`= ½ Σⱼ Σᵢ (T1+T2−T3)`), with sub-identity (a)
+(`Σⱼ Σᵢ T2 = div div H`, `T1=T2`) and sub-identity (b) (`Σ Σ T3 = Δ_g(tr_g H)`). This
+is the second-order heart of the contracted Lichnerowicz identity driving Hamilton's
+scalar curvature evolution. -/
+theorem deltaGammaDivergenceTrace_keystone
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (hTr2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x) :
+    deltaGammaDivergenceTrace G H x
+      = tensorDoubleDivergence G H x
+        - (1 / 2 : ℝ) * curvedLaplacian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+            (tensorMetricTrace G H) x := by
+  have hC : (∑ j, ∑ i, covTensor2SndDeriv G H x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j))) ((Module.finBasis ℝ E) j))
+      = curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+          (tensorMetricTrace G H) x := by
+    rw [Finset.sum_comm]
+    exact sum_sum_covTensor2SndDeriv_eq_curvedLap hGd hGsymm hinv hHd hH2 hΓd
+      hHsymm hTr2
+  rw [deltaGammaDivergenceTrace_sndDeriv hGd hGsymm hinv hHsymm (hHd x) hH2 hΓd hVd,
+    tensorDoubleDivergence_eq_sum_sum_T2 hGd hGsymm hinv (hHd x) hH2 hΓd, ← hC]
+  simp only [← Finset.mul_sum, Finset.sum_add_distrib, Finset.sum_sub_distrib]
+  rw [sum_sum_T1_eq_T2 hGsymm hinv (hHd x) hH2 hΓd]
+  ring
+
+end RicciFlow
