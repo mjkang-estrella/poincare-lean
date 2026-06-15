@@ -12473,3 +12473,29 @@ theorem divergence_deltaGammaInnerTraceCLM_covDeltaGamma_form
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **General metric pairing of `covDeltaGammaDeriv`**: distributing `G(·,w)`
+through the covariant-derivative definition for arbitrary arguments gives the
+flat-derivative term plus the three Christoffel-connection terms. The general
+form (both tensor slots free) used to expand both legs of the commutation's trace
+reconciliation into primitive `∂δΓ`/Christoffel terms for matching. -/
+theorem g_covDeltaGammaDeriv_distrib
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (v p z w : E) :
+    G x (covDeltaGammaDeriv G H x v p z) w
+      = G x ((fderiv ℝ (fun y ↦ christoffelDerivOp G H y p) x v) z) w
+        + G x (christoffelClosedOp G x v
+            (christoffelDerivOp G H x p z)) w
+        - G x (christoffelDerivOp G H x (christoffelClosedOp G x v p) z) w
+        - G x (christoffelDerivOp G H x p (christoffelClosedOp G x v z)) w := by
+  unfold covDeltaGammaDeriv
+  simp only [map_add, map_sub, ContinuousLinearMap.add_apply,
+    ContinuousLinearMap.sub_apply]
+
+end RicciFlow
