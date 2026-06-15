@@ -14630,3 +14630,72 @@ theorem fderiv_tensorDivOneForm_sum
   rw [ContinuousLinearMap.sum_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Product-rule split of the varying-raise derivative-direction**: differentiating
+`y ↦ (∇_{♯ʸφ} H)_y(p,q)` (the varying raised derivative-direction `♯ʸφ = (G y)⁻¹ φ`)
+splits into the frozen-raise term plus the `∂♯` term `(∇_{∂_{v'}♯φ} H)_x(p,q)`. The
+derivative-direction analogue of `fderiv_covTensor2Deriv_Hslot_split`: the `∇_v H`
+direction slot is bundled as an explicit dual-valued CLM field `B` (reconstructed
+from the dir-slot linearity) and split by `fderiv_clm_apply`. The product rule for
+the outer-divergence raise in `div div H`. -/
+theorem fderiv_covTensor2Deriv_dir_split
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (v' p q : E) (φ : E →L[ℝ] ℝ) :
+    (fderiv ℝ (fun y ↦ covTensor2Deriv G H y ((G y).inverse φ) p q) x) v'
+      = (fderiv ℝ (fun y ↦ covTensor2Deriv G H y ((G x).inverse φ) p q) x) v'
+        + covTensor2Deriv G H x
+            ((fderiv ℝ (fun y ↦ (G y).inverse φ) x) v') p q := by
+  set bE := Module.finBasis ℝ E with hbE
+  set B : E → (E →L[ℝ] ℝ) := fun y ↦ ∑ k,
+    (covTensor2Deriv G H y (bE k) p q) •
+      LinearMap.toContinuousLinearMap (bE.coord k) with hBdef
+  have hBapp : ∀ (y w : E), B y w = covTensor2Deriv G H y w p q := by
+    intro y w
+    rw [hBdef]
+    simp only [ContinuousLinearMap.coe_sum', Finset.sum_apply,
+      ContinuousLinearMap.smul_apply, LinearMap.coe_toContinuousLinearMap',
+      smul_eq_mul]
+    set L : E →ₗ[ℝ] ℝ := IsLinearMap.mk' (fun w ↦ covTensor2Deriv G H y w p q)
+      ⟨fun w₁ w₂ ↦ covTensor2Deriv_add_dir w₁ w₂ p q,
+       fun c w ↦ covTensor2Deriv_smul_dir c w p q⟩ with hL
+    have hexp : covTensor2Deriv G H y w p q
+        = ∑ k, bE.coord k w • covTensor2Deriv G H y (bE k) p q := by
+      conv_lhs => rw [← bE.sum_repr w]
+      have := map_sum L (fun k ↦ bE.coord k w • bE k) Finset.univ
+      simp only [map_smul] at this
+      exact this
+    rw [hexp]
+    refine Finset.sum_congr rfl fun k _ ↦ ?_
+    rw [smul_eq_mul, mul_comm]
+  have hBd : DifferentiableAt ℝ B x := by
+    rw [hBdef]
+    apply DifferentiableAt.fun_sum
+    intro k _
+    exact (differentiableAt_covTensor2Deriv_family hHd hH2 hΓd (bE k) p q).smul_const _
+  have hpd : DifferentiableAt ℝ (fun y ↦ (G y).inverse φ) x :=
+    differentiableAt_inverse_raise (hGd x) (Filter.Eventually.of_forall hinv) φ
+  have hLHS : (fun y ↦ covTensor2Deriv G H y ((G y).inverse φ) p q)
+      = fun y ↦ B y ((G y).inverse φ) := by
+    funext y; exact (hBapp y _).symm
+  rw [hLHS, fderiv_clm_apply hBd hpd, ContinuousLinearMap.add_apply,
+    ContinuousLinearMap.comp_apply, ContinuousLinearMap.flip_apply,
+    hBapp x ((fderiv ℝ (fun y ↦ (G y).inverse φ) x) v'), add_comm]
+  congr 1
+  rw [fderiv_clm_family_apply hBd v' ((G x).inverse φ)]
+  apply congrArg (fun f ↦ (fderiv ℝ f x) v')
+  funext y
+  exact hBapp y ((G x).inverse φ)
+
+end RicciFlow
