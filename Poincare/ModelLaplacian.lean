@@ -16927,3 +16927,38 @@ theorem ricciDeriv_eq_div_sub_half_smul_covariantHessian
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant Hessian is additive in the scalar**:
+`Hess_g(f+g)(v,w) = Hess_g(f)(v,w) + Hess_g(g)(v,w)` for `C²` scalars `f`, `g`. The flat
+second-derivative and Christoffel-correction terms each split by `fderiv_fun_add`. Together
+with `covariantHessian_smul`, the full linearity of the covariant Hessian (roadmap item 3). -/
+theorem covariantHessian_add
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate) {f g : E → ℝ} {x : E}
+    (hf : ContDiff ℝ 2 f) (hg : ContDiff ℝ 2 g) (v w : E) :
+    covariantHessian G b hb (fun y ↦ f y + g y) x v w
+      = covariantHessian G b hb f x v w + covariantHessian G b hb g x v w := by
+  unfold covariantHessian
+  have hfd : ∀ y, DifferentiableAt ℝ f y :=
+    fun y ↦ (hf.differentiable (by norm_num)).differentiableAt
+  have hgd : ∀ y, DifferentiableAt ℝ g y :=
+    fun y ↦ (hg.differentiable (by norm_num)).differentiableAt
+  have hf2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ f y) x :=
+    differentiableAt_fderiv_of_contDiff_two hf
+  have hg2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ g y) x :=
+    differentiableAt_fderiv_of_contDiff_two hg
+  have hgrad : fderiv ℝ (fun z ↦ f z + g z)
+      = fun y ↦ fderiv ℝ f y + fderiv ℝ g y := by
+    funext y; exact fderiv_fun_add (hfd y) (hgd y)
+  rw [hgrad, fderiv_fun_add hf2 hg2, ContinuousLinearMap.add_apply,
+    ContinuousLinearMap.add_apply, ContinuousLinearMap.add_apply]
+  ring
+
+end RicciFlow
