@@ -18036,3 +18036,43 @@ theorem fderiv_covTensor2Deriv_flat_split
   simp only [ContinuousLinearMap.sub_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The antisymmetrised flat derivative reduces to the Christoffel corrections**: after
+splitting both orientations into their three blocks and cancelling the pure-`H` block by
+Clairaut, the antisymmetrised flat derivative of `∇H` is exactly the negated antisymmetric
+difference of the two `H·Γ` correction derivatives —
+`D_{v'}(∇H)(v,·) − D_v(∇H)(v',·) = −[corr₁(v') − corr₁(v)] − [corr₂(v') − corr₂(v)]`.
+The flat second derivatives are gone; only `H·Γ` terms remain, ready to regroup into curvature
+(roadmap item 3, curvature-commutation frontier). -/
+theorem fderiv_covTensor2Deriv_flat_antisymm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (v' v p q : E)
+    (hHC2 : ContDiffAt ℝ 2 H x)
+    (hpure1 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ H y v) p q) x)
+    (hpure2 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ H y v') p q) x)
+    (hc1 : DifferentiableAt ℝ
+      (fun y ↦ H y (christoffelClosedOp G y v p) q) x)
+    (hc1' : DifferentiableAt ℝ
+      (fun y ↦ H y (christoffelClosedOp G y v' p) q) x)
+    (hc2 : DifferentiableAt ℝ
+      (fun y ↦ H y p (christoffelClosedOp G y v q)) x)
+    (hc2' : DifferentiableAt ℝ
+      (fun y ↦ H y p (christoffelClosedOp G y v' q)) x) :
+    (fderiv ℝ (fun y ↦ covTensor2Deriv G H y v p q) x) v'
+      - (fderiv ℝ (fun y ↦ covTensor2Deriv G H y v' p q) x) v
+      = -((fderiv ℝ (fun y ↦ H y (christoffelClosedOp G y v p) q) x) v'
+          - (fderiv ℝ (fun y ↦ H y (christoffelClosedOp G y v' p) q) x) v)
+        - ((fderiv ℝ (fun y ↦ H y p (christoffelClosedOp G y v q)) x) v'
+          - (fderiv ℝ (fun y ↦ H y p (christoffelClosedOp G y v' q)) x) v) := by
+  rw [fderiv_covTensor2Deriv_flat_split v' v p q hpure1 hc1 hc2,
+    fderiv_covTensor2Deriv_flat_split v v' p q hpure2 hc1' hc2']
+  have hpb := fderiv_covTensor2Deriv_pure_block_antisymm hHC2 v' v p q
+  linarith [hpb]
+
+end RicciFlow
