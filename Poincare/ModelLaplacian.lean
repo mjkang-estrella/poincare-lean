@@ -17650,3 +17650,25 @@ theorem connectionLaplacian_neg_two_coordRicciForm
   connectionLaplacian_smul_field hKd hRic2 hΓd (-2) p q
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The connection Laplacian symmetry as a field identity**:
+`(fun y ↦ Δ_∇ H_y(p,q)) = (fun y ↦ Δ_∇ H_y(q,p))`, the `funext` lift of
+`connectionLaplacian_symm` for differentiating the symmetric rough Laplacian field. -/
+theorem connectionLaplacian_symm_field
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (p q : E) :
+    (fun y ↦ connectionLaplacian G H y p q)
+      = fun y ↦ connectionLaplacian G H y q p := by
+  funext y
+  exact connectionLaplacian_symm hHd hHsymm p q
+
+end RicciFlow
