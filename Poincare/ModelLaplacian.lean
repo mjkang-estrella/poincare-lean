@@ -17957,3 +17957,48 @@ theorem fderiv_tensor_corr_field
   simp [ContinuousLinearMap.flip_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Differentiation commutes with evaluation of a tensor at one fixed slot**:
+`(fderiv ℝ (fun y ↦ H y p) x) v = (fderiv ℝ H x v) p`, the one-form-valued single-evaluation
+bridge (evaluation at fixed `p` is continuous-linear). Used to clean the leading-slot derivative in
+the 3rd-slot Christoffel correction (roadmap item 3). -/
+theorem fderiv_tensor_eval1_apply
+    {H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hH : DifferentiableAt ℝ H x) (v p : E) :
+    (fderiv ℝ (fun y ↦ H y p) x) v = (fderiv ℝ H x v) p := by
+  set L : (E →L[ℝ] E →L[ℝ] ℝ) →L[ℝ] (E →L[ℝ] ℝ) :=
+    ContinuousLinearMap.apply ℝ (E →L[ℝ] ℝ) p with hLdef
+  have hcomp : (fun y ↦ H y p) = ⇑L ∘ H := by
+    funext z
+    simp only [hLdef, Function.comp_apply, ContinuousLinearMap.apply_apply]
+  rw [hcomp, fderiv_comp x L.differentiableAt hH, L.fderiv]
+  simp only [hLdef, ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply]
+
+/-- **Product rule for a 3rd-slot Christoffel-correction term**:
+`D_v(y ↦ H y p (K y)) = H x p (D_v K) + (D_v H) p (K x)`, the Leibniz expansion of the scalar
+field `y ↦ H y p (K y)` (the last tensor slot fed the `y`-dependent vector `K y`), via
+`HasFDerivAt.clm_apply` and the single-evaluation bridge. The companion of `fderiv_tensor_corr_field`
+for the other surviving Christoffel correction in the `(0,2)`-tensor Ricci identity (item 3). -/
+theorem fderiv_tensor_corr_field'
+    {H : E → E →L[ℝ] E →L[ℝ] ℝ} {K : E → E} {x : E}
+    (hH : DifferentiableAt ℝ H x) (hK : DifferentiableAt ℝ K x) (v p : E) :
+    (fderiv ℝ (fun y ↦ H y p (K y)) x) v
+      = H x p (fderiv ℝ K x v) + (fderiv ℝ H x v) p (K x) := by
+  have hHp : DifferentiableAt ℝ (fun y ↦ H y p) x :=
+    hH.clm_apply (differentiableAt_const p)
+  have hB : HasFDerivAt (fun y ↦ (H y p) (K y))
+      ((H x p).comp (fderiv ℝ K x) + (fderiv ℝ (fun y ↦ H y p) x).flip (K x)) x :=
+    hHp.hasFDerivAt.clm_apply hK.hasFDerivAt
+  rw [hB.fderiv]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.flip_apply]
+  rw [fderiv_tensor_eval1_apply hH v p]
+
+end RicciFlow
