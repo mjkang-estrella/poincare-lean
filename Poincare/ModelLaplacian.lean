@@ -18161,3 +18161,31 @@ theorem fderiv_christoffel_eval_apply
   simp only [hLdef, ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The antisymmetric Christoffel derivative is the curvature minus the `Γ∘Γ` commutator**:
+`D_{v'}Γ_v p − D_v Γ_{v'} p = (Rm G x v' v) p − (Γ_{v'}∘Γ_v) p + (Γ_v∘Γ_{v'}) p`, unfolding
+`coordCurvatureOp` and applying the operator evaluation bridge. The `Γ∘Γ` commutator is exactly
+what the surviving slot corrections of `covTensor2SndDeriv_antisymm` supply, so this is the bridge
+from the `H·∂Γ` terms to genuine curvature (roadmap item 3, curvature-commutation frontier). -/
+theorem christoffel_antisymm_deriv_eq_curvature
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {v' v : E}
+    (hΓ : DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v) x)
+    (hΓ' : DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v') x) (p : E) :
+    fderiv ℝ (fun y ↦ christoffelClosedOp G y v p) x v'
+      - fderiv ℝ (fun y ↦ christoffelClosedOp G y v' p) x v
+    = (coordCurvatureOp G x v' v) p
+      - (christoffelClosedOp G x v').comp (christoffelClosedOp G x v) p
+      + (christoffelClosedOp G x v).comp (christoffelClosedOp G x v') p := by
+  rw [fderiv_christoffel_eval_apply hΓ v' p, fderiv_christoffel_eval_apply hΓ' v p]
+  simp only [coordCurvatureOp, ContinuousLinearMap.sub_apply,
+    ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply]
+  abel
+
+end RicciFlow
