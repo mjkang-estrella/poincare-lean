@@ -17781,3 +17781,34 @@ theorem sum_connectionLaplacian_coordRicciForm
       hHsymm hTr2, hfield]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The antisymmetrised second covariant derivative**: commuting the two outer
+derivatives of `∇²H` leaves the difference of the flat mixed derivatives and the
+two tensor-slot Christoffel corrections — the leading `(v', v)`-slot correction
+cancels by Christoffel symmetry `Γ_{v'}v = Γ_v v'`. This isolates exactly the data
+that the `(0,2)`-tensor Ricci identity converts into curvature acting on `H`'s slots
+(roadmap item 3, curvature-commutation frontier). -/
+theorem covTensor2SndDeriv_antisymm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (v' v p q : E) :
+    covTensor2SndDeriv G H x v' v p q - covTensor2SndDeriv G H x v v' p q
+      = ((fderiv ℝ (fun y ↦ covTensor2Deriv G H y v p q) x) v'
+          - (fderiv ℝ (fun y ↦ covTensor2Deriv G H y v' p q) x) v)
+        - (covTensor2Deriv G H x v (christoffelClosedOp G x v' p) q
+          - covTensor2Deriv G H x v' (christoffelClosedOp G x v p) q)
+        - (covTensor2Deriv G H x v p (christoffelClosedOp G x v' q)
+          - covTensor2Deriv G H x v' p (christoffelClosedOp G x v q)) := by
+  unfold covTensor2SndDeriv
+  rw [christoffelClosedOp_symm hGd hGsymm v' v]
+  ring
+
+end RicciFlow
