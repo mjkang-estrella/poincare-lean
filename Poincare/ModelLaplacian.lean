@@ -19203,3 +19203,24 @@ theorem ricciSharp_add
   rw [coordRicci_add_fst G hdiff, add_smul]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci endomorphism is homogeneous**: `Ric^♯(c • p) = c • Ric^♯ p`, from homogeneity of the
+Ricci tensor in its first slot. With `ricciSharp_add`, `Ric^♯` is `ℝ`-linear (roadmap item 3). -/
+theorem ricciSharp_smul
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (c : ℝ) (p : E) :
+    ricciSharp G x (c • p) = c • ricciSharp G x p := by
+  unfold ricciSharp
+  rw [Finset.smul_sum]
+  refine Finset.sum_congr rfl (fun j _ ↦ ?_)
+  rw [coordRicci_smul_fst G hdiff, smul_assoc]
+
+end RicciFlow
