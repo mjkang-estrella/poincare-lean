@@ -12819,3 +12819,49 @@ theorem sum_christoffel_pairing_swap
     (fun c a b ↦ by dsimp only; simp only [map_smul, smul_eq_mul])).symm
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `L2`/`R2` Christoffel-pairing terms match under the double trace**:
+`Σⱼ Σᵢ G(Γ_{bᵢ}δΓ(♯bʲ,bⱼ), ♯bⁱ) = Σⱼ Σᵢ G(Γ_{♯bʲ}δΓ(bᵢ,♯bⁱ), bⱼ)`. The inner raise
+swap, the `Finset.sum_comm` reindex, and the `δΓ` slot symmetry reconcile the LHS
+Christoffel term with the RHS one — the first complete term-pair match of the
+commutation. -/
+theorem sum_L2_eq_sum_R2
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hinv : (G x).IsInvertible)
+    (hGsymm : ∀ p q : E, G x p q = G x q p)
+    (hGd : DifferentiableAt ℝ G x)
+    (hHd : DifferentiableAt ℝ H x)
+    (hGsymm' : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hHsymm' : ∀ (y : E) (p q : E), H y p q = H y q p) :
+    (∑ j, ∑ i, G x (christoffelClosedOp G x ((Module.finBasis ℝ E) i)
+        (christoffelDerivOp G H x
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) j)))
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))))
+      = ∑ j, ∑ i, G x (christoffelClosedOp G x
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)))
+          (christoffelDerivOp G H x ((Module.finBasis ℝ E) i)
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i)))))
+          ((Module.finBasis ℝ E) j) := by
+  rw [Finset.sum_congr rfl fun j _ ↦ sum_christoffel_pairing_swap hinv hGsymm
+      (christoffelDerivOp G H x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j)),
+    Finset.sum_comm]
+  refine Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [christoffelDerivOp_apply, christoffelDerivOp_apply,
+    christoffelDeriv_symm hGd hHd hGsymm' hHsymm']
+
+end RicciFlow
