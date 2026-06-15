@@ -12998,3 +12998,42 @@ theorem sum_L1_fderiv_form
     ((Module.finBasis ℝ E) j)]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The flat `R1` term with the derivative moved inside**: the RHS flat
+`δΓ`-operator-derivative term equals `Σⱼ Σᵢ G(∂_{♯bʲ}(δΓ_·(bᵢ,♯bⁱ)), bⱼ)`. The
+companion of `sum_L1_fderiv_form`; with both flat terms in second-derivative form,
+their difference `Σ[L1−R1]` is the flat `∂²δΓ` antisymmetrization that the
+curvature relation matches against the slot terms `Σ[L4−rem]`. -/
+theorem sum_R1_fderiv_form
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x) :
+    (∑ j, ∑ i, G x ((fderiv ℝ (fun y ↦ christoffelDerivOp G H y
+          ((Module.finBasis ℝ E) i))
+          x ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j))))
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))))
+        ((Module.finBasis ℝ E) j))
+      = ∑ j, ∑ i, G x (fderiv ℝ (fun y ↦ christoffelDerivOp G H y
+            ((Module.finBasis ℝ E) i)
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i))))
+          x ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j))))
+          ((Module.finBasis ℝ E) j) := by
+  refine Finset.sum_congr rfl fun j _ ↦ Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [fderiv_clm_family_apply (hVd _)
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord j)))
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i)))]
+
+end RicciFlow
