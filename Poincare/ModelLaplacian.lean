@@ -20912,3 +20912,23 @@ theorem einstein_traceless_ricci
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Einstein metrics are homothetic Ricci solitons**: the Ricci-flow direction `∂g/∂t = −2 Ric`
+is `−2c·g`, a scalar multiple of the metric, when `Ric = c·g`. So an Einstein metric evolves under
+Ricci flow purely by homothety `g(t) = (1 − 2ct)·g(0)` — the round sphere (`c > 0`) shrinks
+self-similarly to a point in finite time, the model singularity of the Poincaré program
+(roadmap item 3). -/
+theorem einstein_ricci_flow_homothetic
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q) (p q : E) :
+    (-2 : ℝ) * coordRicci G x p q = (-2 * c) * G x p q := by
+  rw [hEin p q]; ring
+
+end RicciFlow
