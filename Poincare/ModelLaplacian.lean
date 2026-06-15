@@ -13627,3 +13627,32 @@ theorem koszul_term3_lift
   rw [fderiv_covTensor2Deriv_eq]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The second covariant derivative is symmetric in its tensor slots**:
+`covTensor2SndDeriv v' v p q = covTensor2SndDeriv v' v q p` for symmetric `H`. The
+flat second-derivative term and the three Christoffel corrections each swap by
+`covTensor2Deriv_symm`. Used in the ∇²H matching of the keystone. -/
+theorem covTensor2SndDeriv_symm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (v' v p q : E) :
+    covTensor2SndDeriv G H x v' v p q = covTensor2SndDeriv G H x v' v q p := by
+  unfold covTensor2SndDeriv
+  have hfun : (fun y ↦ covTensor2Deriv G H y v p q)
+      = fun y ↦ covTensor2Deriv G H y v q p := by
+    funext y
+    exact covTensor2Deriv_symm (hHd y) hHsymm v p q
+  rw [hfun, covTensor2Deriv_symm (hHd x) hHsymm (christoffelClosedOp G x v' v) p q,
+    covTensor2Deriv_symm (hHd x) hHsymm v (christoffelClosedOp G x v' p) q,
+    covTensor2Deriv_symm (hHd x) hHsymm v p (christoffelClosedOp G x v' q)]
+  ring
+
+end RicciFlow
