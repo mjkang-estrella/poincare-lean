@@ -17672,3 +17672,27 @@ theorem connectionLaplacian_symm_field
   exact connectionLaplacian_symm hHd hHsymm p q
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The connection Laplacian `H`-homogeneity as a field identity**:
+`(fun y ↦ Δ_∇(c·H)_y(p,q)) = (fun y ↦ c · Δ_∇ H_y(p,q))`, the `funext` lift of
+`connectionLaplacian_smul_field` (roadmap item 3). -/
+theorem connectionLaplacian_smul_field_lift
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hH2 : ∀ z : E, DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) z)
+    (hΓd : ∀ (z : E) (a : E),
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) z)
+    (c : ℝ) (p q : E) :
+    (fun y ↦ connectionLaplacian G (fun z ↦ c • H z) y p q)
+      = fun y ↦ c * connectionLaplacian G H y p q := by
+  funext y
+  exact connectionLaplacian_smul_field hHd (hH2 y) (fun a ↦ hΓd y a) c p q
+
+end RicciFlow
