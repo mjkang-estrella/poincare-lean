@@ -16467,3 +16467,35 @@ theorem deltaGammaDivergence_eq_g_paired
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ`-trace-derivative in metric-paired form**: `∇_u(tr δΓ)(w) =
+Σᵢ G(∇_u δΓ(·,bᵢ)(w)... )` — the companion of `deltaGammaDivergence_eq_g_paired` for the
+second term of the untraced contracted Lichnerowicz formula `δRic = div δΓ − ∇(tr δΓ)`.
+Together they reduce the full untraced Ricci variation to metric pairings, ready for the
+`∇²H` Bochner expansion (roadmap item 3). -/
+theorem deltaGammaContractionDeriv_eq_g_paired
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (u w : E) :
+    deltaGammaContractionDeriv G H x u w
+      = ∑ i, G x (covDeltaGammaDeriv G H x u ((Module.finBasis ℝ E) i) w)
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i))) := by
+  have hGiG : ∀ f : E →L[ℝ] ℝ, G x ((G x).inverse f) = f :=
+    fun f ↦ (((hinv x).inverse_apply_eq).mp rfl).symm
+  unfold deltaGammaContractionDeriv
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [hGsymm x (covDeltaGammaDeriv G H x u ((Module.finBasis ℝ E) i) w)
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i))), hGiG]
+  rfl
+
+end RicciFlow
