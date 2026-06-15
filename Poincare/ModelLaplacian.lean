@@ -11976,3 +11976,31 @@ theorem differentiableAt_deltaGammaInnerTraceCLM
   exact ((hGd x).clm_apply hV).clm_apply (differentiableAt_const w)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The inner-trace field derivative reduces to a scalar-field derivative**:
+`(D_v (δΓ-inner-trace))(w) = D_v (y ↦ (δΓ-inner-trace)_y(w))`. Moving the
+base-point derivative inside the evaluation via `fderiv_clm_family_apply`, now
+that the inner-trace field is known differentiable. This converts the
+commutation's hard `fderiv` term into a scalar-field derivative of
+`Σᵢ G_y(δΓ_y(bᵢ,♯bⁱ), w)`, ready for the product-rule / inverse-metric-derivative
+expansion that matches `deltaGammaDivergenceTrace`. -/
+theorem fderiv_deltaGammaInnerTraceCLM_apply
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (v w : E) :
+    (fderiv ℝ (deltaGammaInnerTraceCLM G H) x v) w
+      = fderiv ℝ (fun y ↦ deltaGammaInnerTraceCLM G H y w) x v :=
+  fderiv_clm_family_apply
+    (differentiableAt_deltaGammaInnerTraceCLM hGd hinv hVd) v w
+
+end RicciFlow
