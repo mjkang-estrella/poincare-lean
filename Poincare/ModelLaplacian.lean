@@ -14058,3 +14058,39 @@ theorem fderiv_covTensor2Deriv_Hslot_split
   exact hBapp y ((G x).inverse φ)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The varying-raise H-slot derivative as `∇²H` plus connection corrections plus
+`∂♯`**: combining the product-rule split with `fderiv_covTensor2Deriv_eq` expands
+`fderiv(y ↦ (∇_v H)_y(♯ʸφ, q))` into the second covariant derivative
+`(∇²H)(v';v,♯ˣφ,q)`, the three frozen-raise Christoffel corrections, and the `∂♯`
+metric-derivative term `(∇_v H)_x(∂_{v'}♯φ, q)`. The fully expanded summand of the
+trace-commute; the H-slot correction `(∇_v H)(Γ_{v'}♯ˣφ, q)` and the `∂♯` term
+combine by metric compatibility into the raised covariant derivative of `φ`. -/
+theorem fderiv_covTensor2Deriv_varying_raise_eq
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (v v' : E) (φ : E →L[ℝ] ℝ) (q : E) :
+    (fderiv ℝ (fun y ↦ covTensor2Deriv G H y v ((G y).inverse φ) q) x) v'
+      = covTensor2SndDeriv G H x v' v ((G x).inverse φ) q
+        + covTensor2Deriv G H x (christoffelClosedOp G x v' v) ((G x).inverse φ) q
+        + covTensor2Deriv G H x v
+            (christoffelClosedOp G x v' ((G x).inverse φ)) q
+        + covTensor2Deriv G H x v ((G x).inverse φ)
+            (christoffelClosedOp G x v' q)
+        + covTensor2Deriv G H x v
+            ((fderiv ℝ (fun y ↦ (G y).inverse φ) x) v') q := by
+  rw [fderiv_covTensor2Deriv_Hslot_split hGd hinv hHd hH2 hΓd v v' φ q,
+    fderiv_covTensor2Deriv_eq v' v ((G x).inverse φ) q]
+
+end RicciFlow
