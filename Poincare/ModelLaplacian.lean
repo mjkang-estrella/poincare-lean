@@ -20797,3 +20797,28 @@ theorem constCurvatureForm_double_antisymm
     constCurvatureForm_antisymm_right κ w u a b, neg_neg]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The space-form Ricci is symmetric**: the metric trace of the constant-curvature tensor is
+symmetric in `(u,w)`, since `Ric = (1−n)κ·g` and the metric is symmetric — as a Ricci tensor must be
+(roadmap item 3). -/
+theorem constCurvatureForm_ricci_symm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ v w : E, G x v w = G x w v)
+    (hinv : ∀ y : E, (G y).IsInvertible) (κ : ℝ) (u w : E) :
+    ∑ i, constCurvatureForm G x κ ((Module.finBasis ℝ E) i) u w
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))
+      = ∑ i, constCurvatureForm G x κ ((Module.finBasis ℝ E) i) w u
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i))) := by
+  rw [constCurvatureForm_ricci_trace hGsymm hinv κ u w,
+    constCurvatureForm_ricci_trace hGsymm hinv κ w u, hGsymm w u]
+
+end RicciFlow
