@@ -20078,3 +20078,26 @@ theorem coordRicci_eq_riemann_trace'
       ((Module.finBasis ℝ E).coord i)))
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The sectional numerator in swapped form**: `K₀(u,w) = Rm(w,u,u,w)`, the equivalent expression
+obtained by flipping both pairs — confirming `K₀` is the curvature of the plane regardless of how the
+spanning vectors are presented (roadmap item 3). -/
+theorem sectionalNum_eq_swap
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u w : E) :
+    sectionalNum G x u w = coordRiemann G x w u u w := by
+  unfold sectionalNum
+  exact coordRiemann_double_antisymm hGC2 hGsymm hinv hdiff u w w u
+
+end RicciFlow
