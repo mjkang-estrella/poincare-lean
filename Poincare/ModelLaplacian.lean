@@ -19935,3 +19935,47 @@ theorem coordRiemann_add_slot2
     ContinuousLinearMap.add_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Riemann is homogeneous in its first slot**: `Rm(c•u,w,a,b) = c·Rm(u,w,a,b)` (item 3). -/
+theorem coordRiemann_smul_slot1
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (c : ℝ) (u w a b : E) :
+    coordRiemann G x (c • u) w a b = c • coordRiemann G x u w a b := by
+  unfold coordRiemann
+  rw [coordCurvatureOp_smul_fst G hdiff, ContinuousLinearMap.smul_apply, map_smul,
+    ContinuousLinearMap.smul_apply]
+
+/-- **Riemann is homogeneous in its second slot**: `Rm(u,c•w,a,b) = c·Rm(u,w,a,b)` (item 3). -/
+theorem coordRiemann_smul_slot2
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (c : ℝ) (u w a b : E) :
+    coordRiemann G x u (c • w) a b = c • coordRiemann G x u w a b := by
+  unfold coordRiemann
+  rw [coordCurvatureOp_smul_snd G hdiff, ContinuousLinearMap.smul_apply, map_smul,
+    ContinuousLinearMap.smul_apply]
+
+/-- **Riemann is homogeneous in its third slot**: `Rm(u,w,c•a,b) = c·Rm(u,w,a,b)` (item 3). -/
+theorem coordRiemann_smul_slot3
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ) (u w a b : E) :
+    coordRiemann G x u w (c • a) b = c • coordRiemann G x u w a b := by
+  unfold coordRiemann
+  rw [map_smul, map_smul, ContinuousLinearMap.smul_apply]
+
+/-- **Riemann is homogeneous in its fourth slot**: `Rm(u,w,a,c•b) = c·Rm(u,w,a,b)`. With the other
+slots, `coordRiemann` is a fully `ℝ`-multilinear `(0,4)` tensor (roadmap item 3). -/
+theorem coordRiemann_smul_slot4
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ) (u w a b : E) :
+    coordRiemann G x u w a (c • b) = c • coordRiemann G x u w a b := by
+  unfold coordRiemann
+  rw [map_smul]
+
+end RicciFlow
