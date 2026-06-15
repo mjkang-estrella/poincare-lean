@@ -20530,3 +20530,39 @@ theorem constCurvatureForm_first_bianchi
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The constant-curvature tensor vanishes on a repeated first pair**: `κForm(u,u,a,b) = 0`
+(roadmap item 3). -/
+theorem constCurvatureForm_self_left
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (κ : ℝ) (u a b : E) :
+    constCurvatureForm G x κ u u a b = 0 := by
+  unfold constCurvatureForm; ring
+
+/-- **The constant-curvature tensor vanishes on a repeated last pair**: `κForm(u,w,a,a) = 0`
+(roadmap item 3). -/
+theorem constCurvatureForm_self_right
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (κ : ℝ) (u w a : E) :
+    constCurvatureForm G x κ u w a a = 0 := by
+  unfold constCurvatureForm; ring
+
+/-- **The sectional numerator of the constant-curvature tensor**:
+`κForm(u,w,w,u) = κ·(g(u,w)² − g(u,u)g(w,w))`, i.e. `−κ` times the Gram determinant — so the
+sectional curvature of a `κ`-space form is the constant `κ` (up to the sign convention)
+(roadmap item 3). -/
+theorem constCurvatureForm_sectional
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ v w : E, G x v w = G x w v) (κ : ℝ) (u w : E) :
+    constCurvatureForm G x κ u w w u
+      = κ * (G x u w ^ 2 - G x u u * G x w w) := by
+  unfold constCurvatureForm
+  rw [hGsymm w u]
+  ring
+
+end RicciFlow
