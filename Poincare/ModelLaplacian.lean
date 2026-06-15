@@ -21943,3 +21943,22 @@ theorem tensorMetricTrace_add (G H K : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E
   simp only [ContinuousLinearMap.add_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of a conformal scaling is `c·n`**: `tr_g(c·g) = c · dim E`, by
+`tensorMetricTrace_smul` and `tensorMetricTrace_metric`. The trace of a pure conformal variation
+`H = c·g` is `c·n`, so the conformal part carries all of the first-order volume change while the
+traceless part `Ric̊` carries none (roadmap item 3). -/
+theorem tensorMetricTrace_smul_metric
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ)
+    (hGsymm : ∀ v w : E, G x v w = G x w v) (hinv : (G x).IsInvertible) :
+    tensorMetricTrace G (fun y ↦ c • G y) x = c * (Module.finrank ℝ E : ℝ) := by
+  rw [tensorMetricTrace_smul, tensorMetricTrace_metric hGsymm hinv]
+
+end RicciFlow
