@@ -13825,3 +13825,36 @@ theorem fderiv_tensorDivCLM_apply
     (differentiableAt_tensorDivCLM hGd hGsymm hinv hHd hH2 hΓd) v w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`curvedLap(tr_g H)` in covariant-Hessian-trace form**: unfolding the
+covariant divergence of the gradient, `curvedLap(tr H) = Σⱼ [(D²(tr H))(♯bʲ)(bⱼ) −
+(D(tr H))(Γ_{♯bʲ}bⱼ)]`. The clean scalar-Hessian side of the `−½T3 = −½curvedLap`
+sub-identity, to be matched against the `H`-slot trace of `∇²H`. -/
+theorem curvedLap_tensorMetricTrace_hessian_form
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible) :
+    curvedLaplacian G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+        (tensorMetricTrace G H) x
+      = ∑ j, ((fderiv ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j))))
+          ((Module.finBasis ℝ E) j)
+        - (fderiv ℝ (tensorMetricTrace G H) x)
+            (christoffelClosedOp G x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j)))
+              ((Module.finBasis ℝ E) j))) := by
+  rw [← metricTrace_covTensor1Deriv_fderiv hGsymm hinv (tensorMetricTrace G H)]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rfl
+
+end RicciFlow
