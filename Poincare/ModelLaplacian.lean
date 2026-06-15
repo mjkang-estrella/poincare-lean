@@ -11896,3 +11896,37 @@ theorem differentiableAt_clm_dual_of_apply
   exact (h (b k)).smul_const (LinearMap.toContinuousLinearMap (b.coord k))
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The bundled tensor divergence one-form field is differentiable**:
+`DifferentiableAt ℝ (tensorDivCLM G H) x` from standard data (G differentiable
+and invertible, H of class C²). The pointwise differentiability
+`differentiableAt_tensorDivOneForm` lifted to the CLM field via
+`differentiableAt_clm_dual_of_apply`. This DISCHARGES the `hDivd` hypothesis of
+`divergence_innerTrace_field_eq` / `divergence_deltaGammaInnerTraceCLM_eq` — the
+keystone's differentiability prerequisite is now provable, not assumed. -/
+theorem differentiableAt_tensorDivCLM
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x) :
+    DifferentiableAt ℝ (tensorDivCLM G H) x := by
+  apply differentiableAt_clm_dual_of_apply
+  intro w
+  have hfun : (fun y ↦ tensorDivCLM G H y w)
+      = (fun y ↦ tensorDivOneForm G H y w) := by
+    funext y
+    rw [tensorDivCLM_apply]
+  rw [hfun]
+  exact differentiableAt_tensorDivOneForm hGd hGsymm hinv hHd hH2 hΓd w
+
+end RicciFlow
