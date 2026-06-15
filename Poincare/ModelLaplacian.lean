@@ -17562,3 +17562,37 @@ theorem connectionLaplacian_smul_right
   exact covTensor2SndDeriv_smul_q hHd hH2 hΓd c _ _ p q
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The second covariant derivative is homogeneous in the tensor field**:
+`∇²(c·H)(v';v,p,q) = c · ∇²H(v';v,p,q)`. The flat term scales by `covTensor2Deriv_smul_field`
+(field identity) and `fderiv_const_mul` (scalar route, bypassing the CLM instance diamond);
+the three Christoffel corrections scale by `covTensor2Deriv_smul_field`. Propagates `c`
+through `∇²H` and hence the connection Laplacian (roadmap item 3). -/
+theorem covTensor2SndDeriv_smul_field
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (c : ℝ) (v' v p q : E) :
+    covTensor2SndDeriv G (fun y ↦ c • H y) x v' v p q
+      = c * covTensor2SndDeriv G H x v' v p q := by
+  unfold covTensor2SndDeriv
+  have hfield : (fun y ↦ covTensor2Deriv G (fun z ↦ c • H z) y v p q)
+      = fun y ↦ c * covTensor2Deriv G H y v p q := by
+    funext y; exact covTensor2Deriv_smul_field (hHd y) c v p q
+  rw [hfield, fderiv_const_mul
+      (differentiableAt_covTensor2Deriv_family (hHd x) hH2 hΓd v p q) c,
+    ContinuousLinearMap.smul_apply, smul_eq_mul,
+    covTensor2Deriv_smul_field (hHd x) c (christoffelClosedOp G x v' v) p q,
+    covTensor2Deriv_smul_field (hHd x) c v (christoffelClosedOp G x v' p) q,
+    covTensor2Deriv_smul_field (hHd x) c v p (christoffelClosedOp G x v' q)]
+  ring
+
+end RicciFlow
