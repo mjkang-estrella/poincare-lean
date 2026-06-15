@@ -17867,3 +17867,28 @@ theorem fderiv_tensor_eval_apply
   simp only [hLdef, ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Differentiation commutes with evaluation of a one-form field**:
+`D_{v'}(y ↦ φ_y v) = (D_{v'}φ) v`, i.e. `(fderiv ℝ (fun y ↦ φ y v) x) v' = (fderiv ℝ φ x v') v`,
+since evaluation at fixed `v` is the continuous-linear map `apply v`. The 1-level (dual-valued)
+companion of `fderiv_tensor_eval_apply`, used to expose the symmetric second `fderiv` of a scalar
+field (roadmap item 3, curvature-commutation frontier). -/
+theorem fderiv_dual_eval_apply
+    {φ : E → E →L[ℝ] ℝ} {x : E}
+    (hφ : DifferentiableAt ℝ φ x) (v' v : E) :
+    (fderiv ℝ (fun y ↦ φ y v) x) v' = (fderiv ℝ φ x v') v := by
+  set L : (E →L[ℝ] ℝ) →L[ℝ] ℝ := ContinuousLinearMap.apply ℝ ℝ v with hLdef
+  have hcomp : (fun y ↦ φ y v) = ⇑L ∘ φ := by
+    funext y
+    simp only [hLdef, Function.comp_apply, ContinuousLinearMap.apply_apply]
+  rw [hcomp, fderiv_comp x L.differentiableAt hφ, L.fderiv]
+  simp only [hLdef, ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply]
+
+end RicciFlow
