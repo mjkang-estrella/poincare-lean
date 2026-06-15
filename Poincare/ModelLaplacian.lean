@@ -12115,3 +12115,37 @@ theorem fderiv_g_deltaGamma_summand
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The full three-term summand expansion**: substituting the `δΓ`-vector
+product rule into the paired-summand product rule expresses the base-point
+derivative of `y ↦ G_y(δΓ_y(bᵢ,(G y)⁻¹φ),w)` as the metric-derivative term, the
+inverse-metric-derivative term `G(δΓ(bᵢ,∂♯),w)`, and the `δΓ`-derivative term
+`G((∂δΓ)(bᵢ,♯),w)`. The complete Leibniz expansion each summand of the
+commutation's `fderiv` term contributes; the inverse-metric-derivative middle
+term is the one that cancels Christoffel corrections by `∇g = 0`. -/
+theorem fderiv_g_deltaGamma_summand_expand
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {bi : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hev : ∀ᶠ y in nhds x, (G y).IsInvertible)
+    (hVd : DifferentiableAt ℝ (fun y ↦ christoffelDerivOp G H y bi) x)
+    (φ : E →L[ℝ] ℝ) (w v : E) :
+    (fderiv ℝ (fun y ↦ G y
+        (christoffelDerivOp G H y bi ((G y).inverse φ)) w) x) v
+      = (fderiv ℝ G x v)
+          (christoffelDerivOp G H x bi ((G x).inverse φ)) w
+        + G x (christoffelDerivOp G H x bi
+            ((fderiv ℝ (fun y ↦ (G y).inverse φ) x) v)) w
+        + G x (((fderiv ℝ (fun y ↦ christoffelDerivOp G H y bi) x) v)
+            ((G x).inverse φ)) w := by
+  rw [fderiv_g_deltaGamma_summand hGd hev hVd φ w v,
+    fderiv_deltaGamma_raised_vector hGd hev hVd φ v, map_add,
+    ContinuousLinearMap.add_apply, add_assoc]
+
+end RicciFlow
