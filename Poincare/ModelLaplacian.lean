@@ -20297,3 +20297,23 @@ theorem coordRicciNormSq_nonneg
   nlinarith [h, sq_nonneg (coordScalar G x), hn]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Ricci-flat implies `|Ric|² = 0`**: if the Ricci tensor vanishes identically, so does
+`coordRicciNormSq` — the reaction term in Hamilton's evolution vanishes exactly on Ricci-flat metrics
+(roadmap item 3). -/
+theorem coordRicciNormSq_eq_zero_of_ricci_flat
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hRic : ∀ p w : E, coordRicci G x p w = 0) :
+    coordRicciNormSq G x hdiff = 0 := by
+  unfold coordRicciNormSq
+  exact Finset.sum_eq_zero (fun j _ ↦ hRic _ _)
+
+end RicciFlow
