@@ -15086,3 +15086,29 @@ theorem covTensor2SndDeriv_smul_p
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The second covariant derivative is homogeneous in its outer direction**:
+`covTensor2SndDeriv (c•v') v p q = c * covTensor2SndDeriv v' v p q`. The flat term is
+`fderiv`-linear in the direction; the three Christoffel corrections via
+`christoffelClosedOp` first-slot homogeneity and `covTensor2Deriv` slot homogeneity.
+The companion of `covTensor2SndDeriv_add_v'` for the outer raise-swap in
+`½(T1+T2) = div div H` — sub-identity (a). -/
+theorem covTensor2SndDeriv_smul_v'
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ) (v' v p q : E) :
+    covTensor2SndDeriv G H x (c • v') v p q
+      = c * covTensor2SndDeriv G H x v' v p q := by
+  unfold covTensor2SndDeriv
+  rw [christoffelClosedOp_smul_fst G x c v']
+  simp only [ContinuousLinearMap.smul_apply, map_smul, ContinuousLinearMap.coe_smul',
+    Pi.smul_apply, covTensor2Deriv_smul_dir, covTensor2Deriv_smul_left,
+    covTensor2Deriv_smul_right, smul_eq_mul]
+  ring
+
+end RicciFlow
