@@ -13998,3 +13998,63 @@ theorem fderiv_tr_eq_sum_basepoint_deriv
   rw [ContinuousLinearMap.sum_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Product-rule split of the varying-raise H-slot derivative**: differentiating
+`y ↦ (∇_v H)_y(♯ʸφ, q)` (with `♯ʸφ = (G y)⁻¹ φ` the varying raised covector)
+splits into the *frozen-raise* term — the basepoint derivative with the raise held
+at `x` — plus the `∂♯` term `(∇_v H)_x(∂_{v'}♯φ, q)`. Proved by bundling the
+`H`-slot of `∇_v H` as an explicit dual-valued CLM field `B` (whose pointwise
+action is `covTensor2Deriv`) and applying `fderiv_clm_apply` to `y ↦ B y (♯ʸφ)`.
+The frozen term carries the `H`-slot trace of `∇²H`; the `∂♯` term is the
+metric-derivative correction the connection terms absorb. -/
+theorem fderiv_covTensor2Deriv_Hslot_split
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (v v' : E) (φ : E →L[ℝ] ℝ) (q : E) :
+    (fderiv ℝ (fun y ↦ covTensor2Deriv G H y v ((G y).inverse φ) q) x) v'
+      = (fderiv ℝ (fun y ↦ covTensor2Deriv G H y v ((G x).inverse φ) q) x) v'
+        + covTensor2Deriv G H x v
+            ((fderiv ℝ (fun y ↦ (G y).inverse φ) x) v') q := by
+  set B : E → (E →L[ℝ] ℝ) := fun y ↦
+    (fderiv ℝ H y v).flip q
+      - ((H y).flip q).comp (christoffelClosedOp G y v)
+      - (H y).flip (christoffelClosedOp G y v q) with hBdef
+  have hBapp : ∀ (y w : E), B y w = covTensor2Deriv G H y v w q := by
+    intro y w
+    simp only [hBdef, ContinuousLinearMap.sub_apply,
+      ContinuousLinearMap.flip_apply, ContinuousLinearMap.comp_apply]
+    unfold covTensor2Deriv
+    ring
+  have hBd : DifferentiableAt ℝ B x := by
+    apply differentiableAt_clm_dual_of_apply
+    intro w
+    have hfun : (fun y ↦ B y w) = fun y ↦ covTensor2Deriv G H y v w q := by
+      funext y; exact hBapp y w
+    rw [hfun]
+    exact differentiableAt_covTensor2Deriv_family hHd hH2 hΓd v w q
+  have hpd : DifferentiableAt ℝ (fun y ↦ (G y).inverse φ) x :=
+    differentiableAt_inverse_raise (hGd x) (Filter.Eventually.of_forall hinv) φ
+  have hLHS : (fun y ↦ covTensor2Deriv G H y v ((G y).inverse φ) q)
+      = fun y ↦ B y ((G y).inverse φ) := by
+    funext y; exact (hBapp y _).symm
+  rw [hLHS, fderiv_clm_apply hBd hpd, ContinuousLinearMap.add_apply,
+    ContinuousLinearMap.comp_apply, ContinuousLinearMap.flip_apply,
+    hBapp x ((fderiv ℝ (fun y ↦ (G y).inverse φ) x) v'), add_comm]
+  congr 1
+  rw [fderiv_clm_family_apply hBd v' ((G x).inverse φ)]
+  apply congrArg (fun f ↦ (fderiv ℝ f x) v')
+  funext y
+  exact hBapp y ((G x).inverse φ)
+
+end RicciFlow
