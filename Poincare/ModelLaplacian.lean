@@ -16620,3 +16620,38 @@ theorem deltaGammaContractionDeriv_fderiv_form
       ((Module.finBasis ℝ E).coord i)))
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ`-trace-derivative is half the covariant Hessian of `tr_g H`**:
+`∇_u(tr δΓ)(w) = ½ (∇²(tr_g H))(u,w)`. Combining `deltaGammaContractionDeriv_eq_covTensor1Deriv`
+(the trace term is the covariant derivative of the `δΓ`-trace one-form) with
+`deltaGammaTraceForm = ½ d(tr_g H)` and `covTensor1Deriv_smul`. This collapses the second
+term of the untraced Ricci variation to a clean scalar Hessian — the untraced analogue of
+the scalar `−½ Δ_g(tr_g H)` reduction (roadmap item 3). -/
+theorem deltaGammaContractionDeriv_eq_half_hessian
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (hTr2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x)
+    (u w : E) :
+    deltaGammaContractionDeriv G H x u w
+      = (1 / 2 : ℝ) * covTensor1Deriv G
+          (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x u w := by
+  rw [deltaGammaContractionDeriv_eq_covTensor1Deriv (hGd x) (hHd x) hGsymm hHsymm
+      hVd u w,
+    deltaGammaTraceForm_eq_half_smul_fderiv_field hGd hGsymm hinv hHd hHsymm,
+    covTensor1Deriv_smul G (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) hTr2
+      (1 / 2) u w]
+
+end RicciFlow
