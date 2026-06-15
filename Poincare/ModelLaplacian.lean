@@ -11046,3 +11046,49 @@ theorem deltaGammaDivergence_symm
   rw [covDeltaGammaDeriv_symm hGd hHd hGsymm hHsymm hVd]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**THE LINEARIZED SCALAR CURVATURE, EVOLUTION FORM**: the raised metric
+trace of the Ricci variation splits as the raised `δΓ`-divergence minus
+*half the curved Laplacian of the metric trace of `H`* —
+`Σⱼ δRic(♯bʲ, bⱼ) = div div δΓ − ½ Δ_g(tr_g H)`.
+
+This is the contracted Lichnerowicz identity (`ricciDeriv_raised_trace_eq`)
+with its second term resolved into the Laplace–Beltrami operator via
+`deltaGammaContractionDerivTrace_eq_half_curvedLaplacian`. It is the exact
+leading-order shape consumed by Hamilton's scalar evolution equation: under
+the Ricci flow `∂g/∂t = −2 Ric` (so `H = −2 Ric`, `tr_g H = −2R`) the
+`−½ Δ_g(tr_g H)` term contributes `ΔR`, and the raised double-divergence is
+discharged by the contracted second Bianchi identity. -/
+theorem ricciDeriv_raised_trace_eq_divTrace_sub_half_curvedLaplacian
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hT2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (hΓsymm : ∀ a b : E,
+      christoffelClosedOp G x a b = christoffelClosedOp G x b a) :
+    ∑ j, ricciDeriv G H x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j)
+      = deltaGammaDivergenceTrace G H x
+        - (1 / 2 : ℝ) * curvedLaplacian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+            (tensorMetricTrace G H) x := by
+  rw [ricciDeriv_raised_trace_eq hΓsymm,
+    deltaGammaContractionDerivTrace_eq_half_curvedLaplacian hGd hGsymm hinv
+      hHd hHsymm hT2 hVd]
+
+end RicciFlow
