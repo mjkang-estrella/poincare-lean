@@ -16305,3 +16305,56 @@ theorem hamilton_scalar_evolution_ricci_flow
     (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) hBianchi
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The twice-contracted Bianchi identity, family form** (discharges the `hBianchi`
+hypothesis of the singularity-time bound): for a flow `Gt`, at every time and point the
+raised Ricci-variation trace equals the curved Laplacian of the scalar curvature. The
+`∀ t ∈ [0,T], ∀ x ∈ K` lift of `ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian'`,
+applied with `G = Gt t`. -/
+theorem ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian_family
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ} {T : ℝ} {K : Set E}
+    (hdiffΓ : ∀ (t : ℝ) (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp (Gt t) z p) y)
+    (hGd : ∀ (t : ℝ) (y : E), DifferentiableAt ℝ (Gt t) y)
+    (hGC2 : ∀ t : ℝ, ContDiff ℝ 2 (Gt t))
+    (hGsymm : ∀ (t : ℝ) (y : E) (p q : E), Gt t y p q = Gt t y q p)
+    (hinv : ∀ (t : ℝ) (y : E), (Gt t y).IsInvertible)
+    (hdd : ∀ (t : ℝ) (y : E) (p : E), DifferentiableAt ℝ
+      (fun z ↦ fderiv ℝ (fun z' ↦ christoffelClosedOp (Gt t) z' p) z) y)
+    (hsymΓ : ∀ (t : ℝ) (y : E) (p : E), IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp (Gt t) z p) y)
+    (hKd : ∀ (t : ℝ) (y : E),
+      DifferentiableAt ℝ (fun z ↦ coordRicciForm (Gt t) z (hdiffΓ t z)) y)
+    (hdivd : ∀ (t : ℝ) (x : E), DifferentiableAt ℝ
+      (tensorDivCLM (Gt t) (fun z ↦ coordRicciForm (Gt t) z (hdiffΓ t z))) x)
+    (hHd : ∀ (t : ℝ) (y : E), DifferentiableAt ℝ
+      (fun z ↦ (-2 : ℝ) • coordRicciForm (Gt t) z (hdiffΓ t z)) y)
+    (hH2 : ∀ (t : ℝ) (x : E), DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ
+        (fun z ↦ (-2 : ℝ) • coordRicciForm (Gt t) z (hdiffΓ t z)) y) x)
+    (hVd : ∀ (t : ℝ) (x : E) (p : E), DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp (Gt t)
+        (fun z ↦ (-2 : ℝ) • coordRicciForm (Gt t) z (hdiffΓ t z)) y p) x)
+    (hφ : ∀ t : ℝ, ContDiff ℝ 2 (fun z ↦ coordScalar (Gt t) z)) :
+    ∀ t ∈ Set.Icc (0 : ℝ) T, ∀ x ∈ K,
+      ∑ j, ricciDeriv (Gt t)
+          (fun y ↦ (-2 : ℝ) • coordRicciForm (Gt t) y (hdiffΓ t y)) x
+          ((Gt t x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) j)
+        = curvedLaplacian (Gt t) (fun y ↦ metricBilin (Gt t y))
+            (fun y ↦ metricBilin_nondeg (hGsymm t y) (hinv t y))
+            (fun y ↦ coordScalar (Gt t) y) x := by
+  intro t _ x _
+  exact ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian' (hGd t) (hGC2 t)
+    (hGsymm t) (hinv t) (hdiffΓ t) (hdd t) (hsymΓ t) (hKd t) (hdivd t x)
+    (hHd t) (hH2 t x) (hVd t x) (hφ t)
+
+end RicciFlow
