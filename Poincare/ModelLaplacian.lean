@@ -12718,3 +12718,64 @@ theorem inverse_fderiv_metric_covector
   rw [fderiv_metric_compatible_covector hGd hGsymm hinv u a, map_add, hgi]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The commutation RHS with `T2'` in Christoffel form**: applying the raised
+metric-derivative split, the inverse-metric term separates into a genuine
+Christoffel slot correction `−G(δΓ(bᵢ, Γ_{♯bʲ}♯bⁱ), bⱼ)` and a raised-remainder
+term. The RHS is now entirely in Christoffel/flat-derivative primitives, the form
+on which the trace swaps (`sum_raised_contraction_swap`) and curvature cancellation
+act to match the LHS. -/
+theorem divergence_deltaGammaInnerTraceCLM_christoffel
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x) :
+    (∑ j, covTensor1Deriv G (deltaGammaInnerTraceCLM G H) x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+      = ∑ j, ∑ i, (G x ((fderiv ℝ (fun y ↦ christoffelDerivOp G H y
+              ((Module.finBasis ℝ E) i))
+              x ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j))))
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i)))) ((Module.finBasis ℝ E) j)
+          + G x (christoffelClosedOp G x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j)))
+              (christoffelDerivOp G H x ((Module.finBasis ℝ E) i)
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i))))) ((Module.finBasis ℝ E) j)
+          - G x (christoffelDerivOp G H x ((Module.finBasis ℝ E) i)
+              (christoffelClosedOp G x
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord j)))
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i))))) ((Module.finBasis ℝ E) j)
+          - G x (christoffelDerivOp G H x ((Module.finBasis ℝ E) i)
+              ((G x).inverse ((G x ((G x).inverse
+                (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)))).comp
+                (christoffelClosedOp G x
+                  ((G x).inverse (LinearMap.toContinuousLinearMap
+                    ((Module.finBasis ℝ E).coord j))))))) ((Module.finBasis ℝ E) j)) := by
+  rw [divergence_deltaGammaInnerTraceCLM_explicit hGd hGsymm hinv hVd]
+  refine Finset.sum_congr rfl fun j _ ↦ Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [inverse_fderiv_metric_covector (hGd x) hGsymm (hinv x)
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord j)))
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i)))]
+  simp only [map_add, ContinuousLinearMap.add_apply]
+  ring
+
+end RicciFlow
