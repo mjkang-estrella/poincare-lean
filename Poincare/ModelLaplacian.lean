@@ -21440,3 +21440,28 @@ theorem round_sphere_scalar_pos_along_flow
   positivity
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The scalar-curvature evolution rate of the round sphere**:
+`d/dt [R₀/(1−2ct)] = R₀·2c/(1−2ct)²`, the explicit time derivative. It is positive (for `R₀,c > 0`,
+`t < 1/(2c)`) and itself blows up — the curvature accelerates as the round sphere collapses
+(roadmap item 3). -/
+theorem round_sphere_scalar_hasDerivAt
+    (R₀ c t : ℝ) (hfac : 1 - 2 * c * t ≠ 0) :
+    HasDerivAt (fun s ↦ R₀ / (1 - 2 * c * s))
+      (R₀ * (2 * c) / (1 - 2 * c * t) ^ 2) t := by
+  have h1 : HasDerivAt (fun s ↦ 1 - 2 * c * s) (-(2 * c)) t := by
+    simpa using (hasDerivAt_const t (1 : ℝ)).sub ((hasDerivAt_id t).const_mul (2 * c))
+  have heq : (fun s ↦ R₀ / (1 - 2 * c * s)) = (fun s ↦ R₀ * (1 - 2 * c * s)⁻¹) := by
+    funext s; rw [div_eq_mul_inv]
+  rw [heq]
+  convert (h1.inv hfac).const_mul R₀ using 1
+  field_simp
+
+end RicciFlow
