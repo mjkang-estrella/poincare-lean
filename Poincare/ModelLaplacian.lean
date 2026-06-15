@@ -12075,3 +12075,43 @@ theorem fderiv_deltaGamma_raised_vector
     ContinuousLinearMap.flip_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Product rule for the paired `δΓ`-summand**: the base-point derivative of
+`y ↦ G_y(δΓ_y(bᵢ, (G y)⁻¹φ), w)` splits into the metric-derivative term and the
+`G`-paired `δΓ`-vector-derivative term, `(∂_v G)(δΓ_x(bᵢ,♯φ),w) + G_x(∂_v δΓ-vector, w)`.
+Combined with `fderiv_deltaGamma_raised_vector` this fully expands each summand of
+the commutation's `fderiv` term into the metric-derivative, `δΓ`-derivative, and
+inverse-metric-derivative pieces. -/
+theorem fderiv_g_deltaGamma_summand
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {bi : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hev : ∀ᶠ y in nhds x, (G y).IsInvertible)
+    (hVd : DifferentiableAt ℝ (fun y ↦ christoffelDerivOp G H y bi) x)
+    (φ : E →L[ℝ] ℝ) (w v : E) :
+    (fderiv ℝ (fun y ↦ G y
+        (christoffelDerivOp G H y bi ((G y).inverse φ)) w) x) v
+      = (fderiv ℝ G x v)
+          (christoffelDerivOp G H x bi ((G x).inverse φ)) w
+        + G x ((fderiv ℝ (fun y ↦
+            christoffelDerivOp G H y bi ((G y).inverse φ)) x) v) w := by
+  have hW : DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y bi ((G y).inverse φ)) x :=
+    hVd.clm_apply (differentiableAt_inverse_raise hGd hev φ)
+  have hP : DifferentiableAt ℝ
+      (fun y ↦ (G y) (christoffelDerivOp G H y bi ((G y).inverse φ))) x :=
+    hGd.clm_apply hW
+  rw [← fderiv_clm_family_apply hP v w]
+  have h := hGd.hasFDerivAt.clm_apply hW.hasFDerivAt
+  rw [h.fderiv]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.flip_apply]
+  ring
+
+end RicciFlow
