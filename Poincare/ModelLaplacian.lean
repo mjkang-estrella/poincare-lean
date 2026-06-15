@@ -16533,3 +16533,46 @@ theorem ricciDeriv_eq_g_paired
     ← Finset.sum_sub_distrib]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ`-divergence in `fderiv`-of-pairing form**: substituting the metric-paired
+covariant `δΓ`-derivative `g_covDeltaGammaDeriv` into the divergence,
+`div δΓ(u,w) = Σᵢ [ D_{bᵢ}(G(δΓ(u,w), ♯bⁱ)) − three Christoffel corrections ]`. The
+first concrete expansion of the untraced Ricci variation's divergence term toward the
+`∇²H` Bochner form (roadmap item 3). -/
+theorem deltaGammaDivergence_fderiv_form
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {u : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hVd : DifferentiableAt ℝ (fun y ↦ christoffelDerivOp G H y u) x)
+    (w : E) :
+    deltaGammaDivergence G H x u w
+      = ∑ i, ((fderiv ℝ (fun y ↦ G y (christoffelDerivOp G H y u w)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))) x) ((Module.finBasis ℝ E) i)
+            - G x (christoffelDerivOp G H x
+                (christoffelClosedOp G x ((Module.finBasis ℝ E) i) u) w)
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)))
+            - G x (christoffelDerivOp G H x u
+                (christoffelClosedOp G x ((Module.finBasis ℝ E) i) w))
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)))
+            - G x (christoffelDerivOp G H x u w)
+                (christoffelClosedOp G x ((Module.finBasis ℝ E) i)
+                  ((G x).inverse (LinearMap.toContinuousLinearMap
+                    ((Module.finBasis ℝ E).coord i))))) := by
+  rw [deltaGammaDivergence_eq_g_paired hGsymm hinv]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact g_covDeltaGammaDeriv hGd hGsymm (hinv x) hVd ((Module.finBasis ℝ E) i) w
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i)))
+
+end RicciFlow
