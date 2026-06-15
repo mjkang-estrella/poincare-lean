@@ -18698,3 +18698,25 @@ theorem lichnerowiczCurvature_add_left
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz curvature term is additive in its second slot**:
+`lichnerowiczCurvature G H x p (q₁+q₂) = lichnerowiczCurvature G H x p q₁ + lichnerowiczCurvature G H x p q₂`.
+With `lichnerowiczCurvature_add_left` this establishes full bilinearity in `(p,q)` (roadmap item 3). -/
+theorem lichnerowiczCurvature_add_right
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (p q₁ q₂ : E) :
+    lichnerowiczCurvature G H x p (q₁ + q₂)
+      = lichnerowiczCurvature G H x p q₁ + lichnerowiczCurvature G H x p q₂ := by
+  unfold lichnerowiczCurvature
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl (fun i _ ↦ ?_)
+  simp only [map_add, ContinuousLinearMap.add_apply]
+  ring
+
+end RicciFlow
