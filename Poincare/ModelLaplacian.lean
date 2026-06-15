@@ -20129,3 +20129,49 @@ theorem coordRicciEndo_self_adjoint
     coordRicciForm_apply, coordRicci_symm hGC2 hGsymm hinv hdiff q p]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curvature-pinching inequality `R² ≤ n |Ric|²`**:
+`(coordScalar G x)² ≤ (dim) · tr(Rc ∘ Rc)`, the trace Cauchy–Schwarz inequality applied to the
+`g`-self-adjoint Ricci endomorphism. The estimate that turns the scalar-curvature evolution into the
+Riccati supersolution behind finite-time singularities (roadmap item 3). -/
+theorem coordScalar_sq_le_finrank_mul_ricci_traceSq
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v) :
+    (coordScalar G x) ^ 2
+      ≤ Module.finrank ℝ E
+        * LinearMap.trace ℝ E
+            (coordRicciEndo G x hdiff ∘ₗ coordRicciEndo G x hdiff) := by
+  set bx : LinearMap.BilinForm ℝ E :=
+    LinearMap.mk₂ ℝ (fun v w ↦ G x v w)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp) with hbx
+  have hbs : LinearMap.IsSymm bx := by
+    rw [LinearMap.isSymm_def]
+    intro p q
+    simp only [hbx, LinearMap.mk₂_apply, RingHom.id_apply]
+    exact hGsymm x p q
+  have hbpos : ∀ v : E, v ≠ 0 → 0 < bx v v := by
+    intro v hv
+    simp only [hbx, LinearMap.mk₂_apply]
+    exact hGpos v hv
+  have hsa : ∀ p q : E,
+      bx (coordRicciEndo G x hdiff p) q = bx p (coordRicciEndo G x hdiff q) := by
+    intro p q
+    simp only [hbx, LinearMap.mk₂_apply]
+    exact coordRicciEndo_self_adjoint hGC2 hGsymm hinv hdiff p q
+  have h := trace_sq_le_card_mul_trace_comp_self bx hbs hbpos
+    (coordRicciEndo G x hdiff) hsa
+  rwa [trace_coordRicciEndo G x hdiff (hinv x) (hGsymm x)] at h
+
+end RicciFlow
