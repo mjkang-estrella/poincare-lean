@@ -18933,3 +18933,29 @@ theorem lichnerowiczCurvature_zero
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The rough Laplacian negates with the tensor**:
+`Δ_∇(−H)(p,q) = −Δ_∇ H(p,q)`, the `c = −1` case of `connectionLaplacian_smul_field`. The sign rule
+used when moving between `H` and `−H` (e.g. the Ricci-flow direction) in the extracted `δRic`
+(roadmap item 3). -/
+theorem connectionLaplacian_neg
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (p q : E) :
+    connectionLaplacian G (fun y ↦ -H y) x p q
+      = -connectionLaplacian G H x p q := by
+  have h := connectionLaplacian_smul_field hHd hH2 hΓd (-1) p q
+  rw [show (fun y ↦ -H y) = (fun y ↦ (-1 : ℝ) • H y) from by
+    funext y; exact (neg_one_smul ℝ (H y)).symm, h]
+  ring
+
+end RicciFlow
