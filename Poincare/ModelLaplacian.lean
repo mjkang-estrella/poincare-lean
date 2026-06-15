@@ -11456,3 +11456,33 @@ theorem tensorDivCLM_apply (G H : E → E →L[ℝ] E →L[ℝ] ℝ) (x w : E) :
     tensorDivCLM G H x w = tensorDivOneForm G H x w := rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The double divergence of a 2-tensor**: `div div H =
+Σⱼ (∇_{♯bʲ}(div H))(bⱼ)` — the metric-trace covariant derivative of the
+tensor divergence one-form `tensorDivCLM`. This is the leading second-order
+term of the linearized scalar curvature: the contracted Lichnerowicz
+identity reads `Σⱼ δRic(♯bʲ,bⱼ) = div div H − Δ_g(tr_g H)`, and under the
+Ricci flow direction `H = −2 Ric` the twice-contracted Bianchi identity
+forces `div div H = −Δ_g R`, delivering Hamilton's `∂R/∂t = ΔR + 2|Ric|²`. -/
+noncomputable def tensorDoubleDivergence (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x : E) : ℝ :=
+  ∑ j, covTensor1Deriv G (tensorDivCLM G H) x
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord j)))
+    ((Module.finBasis ℝ E) j)
+
+theorem tensorDoubleDivergence_eq (G H : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E) :
+    tensorDoubleDivergence G H x
+      = ∑ j, covTensor1Deriv G (tensorDivCLM G H) x
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) j) := rfl
+
+end RicciFlow
