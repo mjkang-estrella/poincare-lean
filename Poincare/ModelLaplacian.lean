@@ -11248,4 +11248,56 @@ theorem deltaGammaDivergenceTrace_eq_fderiv_form
   refine Finset.sum_congr rfl fun j _ ↦ Finset.sum_congr rfl fun i _ ↦ ?_
   exact g_covDeltaGammaDeriv (hGd x) hGsymm hinv (hVd _) _ _ _
 
+/--
+**THE RAISED `δΓ`-TRACE DERIVATIVE IN BASE-POINT-DERIVATIVE FORM**: the
+companion of `deltaGammaDivergenceTrace_eq_fderiv_form` for the trace term,
+with the *raised* differentiation slot `♯bʲ`. Both halves of the contracted
+Lichnerowicz split now sit in base-point-derivative form, so subtracting
+them isolates exactly the contraction whose Koszul expansion yields the
+clean `div div H − Δ_g(tr_g H)` linearized scalar curvature. -/
+theorem deltaGammaContractionDerivTrace_eq_fderiv_form
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : (G x).IsInvertible)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x) :
+    deltaGammaContractionDerivTrace G H x
+      = ∑ j, ∑ i,
+          ((fderiv ℝ (fun y ↦ G y (christoffelDerivOp G H y
+                ((Module.finBasis ℝ E) i)
+                ((Module.finBasis ℝ E) j))
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)))) x)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j)))
+            - G x (christoffelDerivOp G H x
+                (christoffelClosedOp G x
+                  ((G x).inverse (LinearMap.toContinuousLinearMap
+                    ((Module.finBasis ℝ E).coord j)))
+                  ((Module.finBasis ℝ E) i))
+                ((Module.finBasis ℝ E) j))
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)))
+            - G x (christoffelDerivOp G H x
+                ((Module.finBasis ℝ E) i)
+                (christoffelClosedOp G x
+                  ((G x).inverse (LinearMap.toContinuousLinearMap
+                    ((Module.finBasis ℝ E).coord j)))
+                  ((Module.finBasis ℝ E) j)))
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)))
+            - G x (christoffelDerivOp G H x
+                ((Module.finBasis ℝ E) i)
+                ((Module.finBasis ℝ E) j))
+                (christoffelClosedOp G x
+                  ((G x).inverse (LinearMap.toContinuousLinearMap
+                    ((Module.finBasis ℝ E).coord j)))
+                  ((G x).inverse (LinearMap.toContinuousLinearMap
+                    ((Module.finBasis ℝ E).coord i))))) := by
+  rw [deltaGammaContractionDerivTrace_eq_double_g_pairing
+    (fun p q ↦ hGsymm x p q) hinv]
+  refine Finset.sum_congr rfl fun j _ ↦ Finset.sum_congr rfl fun i _ ↦ ?_
+  exact g_covDeltaGammaDeriv (hGd x) hGsymm hinv (hVd _) _ _ _
+
 end RicciFlow
