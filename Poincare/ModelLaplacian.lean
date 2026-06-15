@@ -13482,3 +13482,54 @@ theorem deltaGammaDivergenceTrace_koszul_distributed
   rw [fderiv_lichnerowicz_sum hHd hH2 hΓd]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **First Koszul term lifted to ∇²H**: the base-point derivative of the first
+`∇H` trace is its second covariant derivative plus three `∇H`-Christoffel
+corrections (`fderiv_covTensor2Deriv_eq`). One of the three lifts assembling
+`deltaGammaDivergenceTrace` into full `∇²H` (`covTensor2SndDeriv`) form. -/
+theorem koszul_term1_lift
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} :
+    (∑ j, ∑ i, (fderiv ℝ (fun y ↦ covTensor2Deriv G H y
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))) x)
+        ((Module.finBasis ℝ E) i))
+      = ∑ j, ∑ i, (covTensor2SndDeriv G H x ((Module.finBasis ℝ E) i)
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j)))
+            ((Module.finBasis ℝ E) j)
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i)))
+          + covTensor2Deriv G H x (christoffelClosedOp G x ((Module.finBasis ℝ E) i)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j))))
+              ((Module.finBasis ℝ E) j)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))
+          + covTensor2Deriv G H x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j)))
+              (christoffelClosedOp G x ((Module.finBasis ℝ E) i)
+                ((Module.finBasis ℝ E) j))
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))
+          + covTensor2Deriv G H x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j)))
+              ((Module.finBasis ℝ E) j)
+              (christoffelClosedOp G x ((Module.finBasis ℝ E) i)
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i))))) := by
+  refine Finset.sum_congr rfl fun j _ ↦ Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [fderiv_covTensor2Deriv_eq]
+
+end RicciFlow
