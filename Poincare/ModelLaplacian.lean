@@ -19600,3 +19600,41 @@ theorem ricci_flow_eq_neg_lichnerowiczLaplacian_metric
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `(0,4)` Riemann curvature tensor**: `Rm(u,w,a,b) = g(R(u,w)a, b)`, the fully-lowered
+coordinate curvature (roadmap item 3). -/
+noncomputable def coordRiemann (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x u w a b : E) : ℝ :=
+  G x (coordCurvatureOp G x u w a) b
+
+/-- **Riemann is antisymmetric in its first pair**: `Rm(u,w,a,b) = −Rm(w,u,a,b)`, from antisymmetry
+of the curvature operator in its plane (roadmap item 3). -/
+theorem coordRiemann_antisymm_pair_left
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (u w a b : E) :
+    coordRiemann G x u w a b = -coordRiemann G x w u a b := by
+  unfold coordRiemann
+  rw [coordCurvatureOp_antisymm, ContinuousLinearMap.neg_apply, map_neg,
+    ContinuousLinearMap.neg_apply]
+
+/-- **Riemann is antisymmetric in its last pair**: `Rm(u,w,a,b) = −Rm(u,w,b,a)`, the `g`-skew-adjoint
+property of the curvature operator (roadmap item 3). -/
+theorem coordRiemann_antisymm_pair_right
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u w a b : E) :
+    coordRiemann G x u w a b = -coordRiemann G x u w b a := by
+  unfold coordRiemann
+  have h := coordCurvatureOp_skew hGC2 hGsymm hinv hdiff u w a b
+  rw [hGsymm x a (coordCurvatureOp G x u w b)] at h
+  linarith [h]
+
+end RicciFlow
