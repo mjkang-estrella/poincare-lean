@@ -11510,3 +11510,47 @@ theorem covTensor1Deriv_sub (G : E → E →L[ℝ] E →L[ℝ] ℝ)
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **THE KEYSTONE RIGHT-HAND SIDE ASSEMBLES**: the metric-trace covariant
+divergence of the inner-trace one-form field `div H − ½ d(tr_g H)` is exactly
+`div div H − ½ Δ_g(tr_g H)`. The divergence distributes over the difference
+(`covTensor1Deriv_sub`), recognizing the first term as `tensorDoubleDivergence`
+(by definition) and the second as half the Laplace–Beltrami operator on the
+trace (`metricTrace_covTensor1Deriv_fderiv`, `covTensor1Deriv_smul`). Combined
+with the inner-trace identity `deltaGamma_innerTrace_eq`, only the connection
+of this field's divergence to `deltaGammaDivergenceTrace` remains. -/
+theorem divergence_innerTrace_field_eq
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hDivd : DifferentiableAt ℝ (tensorDivCLM G H) x)
+    (hT2 : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x) :
+    (∑ j, covTensor1Deriv G
+        (fun y ↦ tensorDivCLM G H y
+          - (1 / 2 : ℝ) • fderiv ℝ (tensorMetricTrace G H) y) x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+      = tensorDoubleDivergence G H x
+        - (1 / 2 : ℝ) * curvedLaplacian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+            (tensorMetricTrace G H) x := by
+  unfold tensorDoubleDivergence
+  rw [← metricTrace_covTensor1Deriv_fderiv hGsymm hinv (tensorMetricTrace G H),
+    Finset.mul_sum, ← Finset.sum_sub_distrib]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [covTensor1Deriv_sub G (tensorDivCLM G H)
+      (fun y ↦ (1 / 2 : ℝ) • fderiv ℝ (tensorMetricTrace G H) y)
+      hDivd (hT2.const_smul (1 / 2 : ℝ)) _ _,
+    covTensor1Deriv_smul G (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y)
+      hT2 (1 / 2 : ℝ) _ _]
+
+end RicciFlow
