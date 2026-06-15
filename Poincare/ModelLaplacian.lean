@@ -15534,3 +15534,44 @@ theorem ricciDeriv_raised_trace_contracted_lichnerowicz
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The contracted Lichnerowicz identity in scalar-multiple-trace form**: when
+`tr_g H = c·φ` for a `C²` scalar field `φ`, `Σⱼ δRic(♯bʲ,bⱼ) = div div H − c·Δ_g φ`.
+The Ricci-flow-ready specialization of the unconditional contracted Lichnerowicz
+identity: under `H = −2 Ric`, `tr_g H = −2R` (`c = −2`, `φ = R`), giving
+`Σⱼ δRic(♯bʲ,bⱼ) = div div H + 2 Δ_g R`, so the twice-contracted Bianchi identity
+`div div H = −Δ_g R` discharges the `hBianchi` hypothesis of Hamilton's evolution. -/
+theorem ricciDeriv_raised_trace_lichnerowicz_smul
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {φ : E → ℝ} {c : ℝ}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (hTr2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x)
+    (hφ : ContDiff ℝ 2 φ)
+    (htr : tensorMetricTrace G H = fun y ↦ c * φ y) :
+    ∑ j, ricciDeriv G H x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j)
+      = tensorDoubleDivergence G H x
+        - c * curvedLaplacian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) φ x := by
+  rw [ricciDeriv_raised_trace_contracted_lichnerowicz hGd hGsymm hinv hHd hHsymm
+      hH2 hΓd hVd hTr2, htr,
+    curvedLaplacian_smul G (fun y ↦ metricBilin (G y))
+      (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) c hφ]
+
+end RicciFlow
