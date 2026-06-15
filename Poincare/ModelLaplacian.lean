@@ -12004,3 +12004,41 @@ theorem fderiv_deltaGammaInnerTraceCLM_apply
     (differentiableAt_deltaGammaInnerTraceCLM hGd hinv hVd) v w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The keystone right-hand side from standard data** (no `hDivd`): the
+covariant divergence of the bundled inner-trace field equals
+`div div H − ½ Δ_g(tr_g H)`, with the divergence-field differentiability
+discharged internally via `differentiableAt_tensorDivCLM`. The hypotheses are now
+purely the standard analytic data (G differentiable + symmetric + invertible,
+H symmetric of class C², trace of class C²) — the keystone RHS no longer carries
+the bundled-differentiability assumption. -/
+theorem divergence_deltaGammaInnerTraceCLM_eq'
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hT2 : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x) :
+    (∑ j, covTensor1Deriv G (deltaGammaInnerTraceCLM G H) x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+      = tensorDoubleDivergence G H x
+        - (1 / 2 : ℝ) * curvedLaplacian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+            (tensorMetricTrace G H) x :=
+  divergence_deltaGammaInnerTraceCLM_eq hGd hGsymm hinv hHd hHsymm
+    (differentiableAt_tensorDivCLM hGd hGsymm hinv (hHd x) hH2 hΓd) hT2
+
+end RicciFlow
