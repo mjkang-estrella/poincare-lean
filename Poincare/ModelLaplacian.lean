@@ -17326,3 +17326,58 @@ theorem deltaGammaDivergence_sndDeriv_bochner_form
     fderiv_covTensor2Deriv_eq]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The untraced Ricci variation fully in `∇²H` Bochner / Hessian form**: combining the
+`∇²H` Bochner expansion of `div δΓ` with the trace-term collapse,
+`δRic(u,w) = Σᵢ [½((∇²H)-blocks + corrections] − ½ Hess_g(tr_g H)(u,w)`. The complete
+second-order form of the untraced Ricci variation; the remaining content is the untraced
+trace-commute identifying the `Σᵢ ∇²H` blocks with the rough Laplacian plus curvature
+(roadmap item 3). -/
+theorem ricciDeriv_sndDeriv_bochner_form
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {u : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (hTr2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x)
+    (hΓsymm : ∀ a b : E,
+      christoffelClosedOp G x a b = christoffelClosedOp G x b a)
+    (w : E) :
+    ricciDeriv G H x u w
+      = (∑ i, ((1 / 2 : ℝ) *
+            ((covTensor2SndDeriv G H x ((Module.finBasis ℝ E) i) u w ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+              + covTensor2Deriv G H x (christoffelClosedOp G x ((Module.finBasis ℝ E) i) u) w ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+              + covTensor2Deriv G H x u (christoffelClosedOp G x ((Module.finBasis ℝ E) i) w) ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+              + covTensor2Deriv G H x u w (christoffelClosedOp G x ((Module.finBasis ℝ E) i) ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))))
+              + (covTensor2SndDeriv G H x ((Module.finBasis ℝ E) i) w u ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+              + covTensor2Deriv G H x (christoffelClosedOp G x ((Module.finBasis ℝ E) i) w) u ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+              + covTensor2Deriv G H x w (christoffelClosedOp G x ((Module.finBasis ℝ E) i) u) ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+              + covTensor2Deriv G H x w u (christoffelClosedOp G x ((Module.finBasis ℝ E) i) ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))))
+              - (covTensor2SndDeriv G H x ((Module.finBasis ℝ E) i) ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) u w
+              + covTensor2Deriv G H x (christoffelClosedOp G x ((Module.finBasis ℝ E) i) ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))) u w
+              + covTensor2Deriv G H x ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) (christoffelClosedOp G x ((Module.finBasis ℝ E) i) u) w
+              + covTensor2Deriv G H x ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) u (christoffelClosedOp G x ((Module.finBasis ℝ E) i) w)))
+          - G x (christoffelDerivOp G H x (christoffelClosedOp G x ((Module.finBasis ℝ E) i) u) w) ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+          - G x (christoffelDerivOp G H x u (christoffelClosedOp G x ((Module.finBasis ℝ E) i) w)) ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+          - G x (christoffelDerivOp G H x u w) (christoffelClosedOp G x ((Module.finBasis ℝ E) i) ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))))))
+        - (1 / 2 : ℝ) * covariantHessian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+          (tensorMetricTrace G H) x u w := by
+  rw [ricciDeriv_eq_div_sub_half_covariantHessian hGd hGsymm hinv hHd hHsymm hVd
+      hTr2 hΓsymm u w,
+    deltaGammaDivergence_sndDeriv_bochner_form hGd hGsymm hinv hHsymm (hHd x) hH2
+      hΓd (hVd u) w]
+
+end RicciFlow
