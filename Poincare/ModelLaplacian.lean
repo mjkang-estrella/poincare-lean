@@ -11603,3 +11603,57 @@ theorem ricciDeriv_raised_trace_eq_doubleDiv_sub_curvedLaplacian
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The inner `δΓ`-trace one-form, bundled as a field**: at each basepoint
+`y`, `w ↦ Σᵢ G_y(δΓ_y(bᵢ, ♯bⁱ), w)`, the metric pairing of the two-slot trace
+of the Christoffel variation. Linear in `w` by bilinearity of `G_y`. As a field
+of `y` this is the one-form whose covariant divergence connects to
+`deltaGammaDivergenceTrace`. -/
+noncomputable def deltaGammaInnerTraceCLM (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (y : E) : E →L[ℝ] ℝ :=
+  LinearMap.toContinuousLinearMap
+    { toFun := fun w ↦ ∑ i, G y (christoffelDeriv G H y
+        ((Module.finBasis ℝ E) i)
+        ((G y).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))) w
+      map_add' := fun w₁ w₂ ↦ by
+        rw [← Finset.sum_add_distrib]
+        exact Finset.sum_congr rfl fun i _ ↦ map_add _ _ _
+      map_smul' := fun c w ↦ by
+        simp only [RingHom.id_apply, map_smul, smul_eq_mul, Finset.mul_sum] }
+
+@[simp]
+theorem deltaGammaInnerTraceCLM_apply (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (y w : E) :
+    deltaGammaInnerTraceCLM G H y w
+      = ∑ i, G y (christoffelDeriv G H y ((Module.finBasis ℝ E) i)
+          ((G y).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i)))) w := rfl
+
+/-- **The inner-trace field equals `div H − ½ d(tr_g H)`**: promoting the
+pointwise inner-trace identity `deltaGamma_innerTrace_eq` to an equality of
+one-form fields. This packages the curvature-free heart so its covariant
+divergence — the keystone left-hand side — can be taken. -/
+theorem deltaGammaInnerTraceCLM_eq {G H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a) :
+    deltaGammaInnerTraceCLM G H
+      = fun y ↦ tensorDivCLM G H y
+          - (1 / 2 : ℝ) • fderiv ℝ (tensorMetricTrace G H) y := by
+  funext y
+  ext w
+  simp only [deltaGammaInnerTraceCLM_apply, ContinuousLinearMap.sub_apply,
+    ContinuousLinearMap.smul_apply, tensorDivCLM_apply, smul_eq_mul]
+  exact deltaGamma_innerTrace_eq (hGd y) hGsymm hinv (hHd y) hHsymm w
+
+end RicciFlow
