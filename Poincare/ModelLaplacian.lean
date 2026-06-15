@@ -22017,3 +22017,30 @@ theorem neg_lichnerowiczLaplacian_metric_trace
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz trace for an Einstein metric is `2cn`**: if `Ric = c·g` then
+`Σᵢ Δ_L g(bᵢ, ♯bⁱ) = 2·c·dim E`, since the trace is `2R` and `R = c·n` for an Einstein metric.
+On the round sphere this is `2c·n > 0`, the positive scalar-curvature source that drives the
+finite-time collapse (roadmap item 3). -/
+theorem einstein_lichnerowiczLaplacian_metric_trace
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q) :
+    ∑ i, lichnerowiczLaplacian G G x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+      = 2 * c * (Module.finrank ℝ E : ℝ) := by
+  rw [lichnerowiczLaplacian_metric_trace hGC2 hGsymm hinv hdiff,
+    coordScalar_of_einstein hGsymm hinv hdiff hEin]
+  ring
+
+end RicciFlow
