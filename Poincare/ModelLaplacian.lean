@@ -20932,3 +20932,23 @@ theorem einstein_ricci_flow_homothetic
   rw [hEin p q]; ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The shrinking Einstein soliton stays positive until extinction**: for `c > 0` and
+`0 ≤ t < 1/(2c)`, the homothety factor `1 − 2ct > 0`, so the round-sphere metric `g(t) = (1−2ct)g(0)`
+remains positive-definite up to the extinction time `1/(2c)`, where it shrinks to a point — the model
+finite-time singularity (roadmap item 3). -/
+theorem einstein_homothety_pos
+    (c t : ℝ) (hc : 0 < c) (htT : t < 1 / (2 * c)) :
+    0 < 1 - 2 * c * t := by
+  have h2c : 0 < 2 * c := by linarith
+  rw [lt_div_iff₀ h2c] at htT
+  nlinarith [htT]
+
+end RicciFlow
