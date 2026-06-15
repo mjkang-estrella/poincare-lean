@@ -16843,3 +16843,48 @@ theorem deltaGammaContractionDeriv_symm
       (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) hGd hGsymm hf u w]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant Hessian is homogeneous in the scalar**:
+`Hess_g(c·f)(v,w) = c · Hess_g(f)(v,w)` for a `C²` scalar `f`. The flat second-derivative
+term scales via `fderiv_clm_family_apply` + `fderiv_const_mul` (the scalar route, bypassing
+the CLM-valued `fderiv_const_smul` instance diamond); the Christoffel-correction term scales
+directly. Fills the `covariantHessian` linearity gap, enabling the scalar-multiple
+specialization of the untraced Lichnerowicz formula (roadmap item 3). -/
+theorem covariantHessian_smul
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate) (c : ℝ) {f : E → ℝ} {x : E}
+    (hf : ContDiff ℝ 2 f) (v w : E) :
+    covariantHessian G b hb (fun y ↦ c * f y) x v w
+      = c * covariantHessian G b hb f x v w := by
+  unfold covariantHessian
+  have hcf : ContDiff ℝ 2 (fun y ↦ c * f y) := contDiff_const.mul hf
+  have hfd : ∀ y, DifferentiableAt ℝ f y :=
+    fun y ↦ (hf.differentiable (by norm_num)).differentiableAt
+  have hcf2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (fun z ↦ c * f z) y) x :=
+    differentiableAt_fderiv_of_contDiff_two hcf
+  have hf2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ f y) x :=
+    differentiableAt_fderiv_of_contDiff_two hf
+  have ht1 : fderiv ℝ (fderiv ℝ (fun z ↦ c * f z)) x v w
+      = c * fderiv ℝ (fderiv ℝ f) x v w := by
+    rw [fderiv_clm_family_apply hcf2 v w]
+    have he : (fun y ↦ fderiv ℝ (fun z ↦ c * f z) y w)
+        = fun y ↦ c * fderiv ℝ f y w := by
+      funext y
+      rw [fderiv_const_mul (hfd y) c, ContinuousLinearMap.smul_apply, smul_eq_mul]
+    rw [he, fderiv_const_mul (hf2.clm_apply (differentiableAt_const w)) c,
+      ContinuousLinearMap.smul_apply, smul_eq_mul,
+      ← fderiv_clm_family_apply hf2 v w]
+  have ht2 : fderiv ℝ (fun z ↦ c * f z) x
+        (christoffelAt G x (b x) (hb x) v w)
+      = c * fderiv ℝ f x (christoffelAt G x (b x) (hb x) v w) := by
+    rw [fderiv_const_mul (hfd x) c, ContinuousLinearMap.smul_apply, smul_eq_mul]
+  rw [ht1, ht2]; ring
+
+end RicciFlow
