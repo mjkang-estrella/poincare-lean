@@ -16576,3 +16576,47 @@ theorem deltaGammaDivergence_fderiv_form
       ((Module.finBasis ℝ E).coord i)))
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ`-trace-derivative in `fderiv`-of-pairing form**: the companion of
+`deltaGammaDivergence_fderiv_form` for the second term of the untraced Ricci variation,
+`∇_u(tr δΓ)(w) = Σᵢ [ D_u(G(δΓ(bᵢ,w), ♯bⁱ)) − three Christoffel corrections ]`. Both
+divergence and trace terms of `δRic` are now in `fderiv`-of-pairing form (roadmap item 3). -/
+theorem deltaGammaContractionDeriv_fderiv_form
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {u : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (w : E) :
+    deltaGammaContractionDeriv G H x u w
+      = ∑ i, ((fderiv ℝ (fun y ↦ G y
+              (christoffelDerivOp G H y ((Module.finBasis ℝ E) i) w)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))) x) u
+            - G x (christoffelDerivOp G H x
+                (christoffelClosedOp G x u ((Module.finBasis ℝ E) i)) w)
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)))
+            - G x (christoffelDerivOp G H x ((Module.finBasis ℝ E) i)
+                (christoffelClosedOp G x u w))
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)))
+            - G x (christoffelDerivOp G H x ((Module.finBasis ℝ E) i) w)
+                (christoffelClosedOp G x u
+                  ((G x).inverse (LinearMap.toContinuousLinearMap
+                    ((Module.finBasis ℝ E).coord i))))) := by
+  rw [deltaGammaContractionDeriv_eq_g_paired hGsymm hinv]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact g_covDeltaGammaDeriv hGd hGsymm (hinv x) (hVd ((Module.finBasis ℝ E) i)) u w
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i)))
+
+end RicciFlow
