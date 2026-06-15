@@ -19510,3 +19510,28 @@ theorem lichnerowiczLaplacian_metric
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz Laplacian negates with the tensor**:
+`Δ_L(−H) = −Δ_L H`, the `c = −1` case of `lichnerowiczLaplacian_smul`. With homogeneity and
+zero-vanishing this characterizes `Δ_L` as `ℝ`-linear on its differentiable arguments (item 3). -/
+theorem lichnerowiczLaplacian_neg
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (p q : E) :
+    lichnerowiczLaplacian G (fun y ↦ -H y) x p q
+      = -lichnerowiczLaplacian G H x p q := by
+  have h := lichnerowiczLaplacian_smul hHd hH2 hΓd (-1) p q
+  rw [show (fun y ↦ -H y) = (fun y ↦ (-1 : ℝ) • H y) from by
+    funext y; exact (neg_one_smul ℝ (H y)).symm, h]
+  ring
+
+end RicciFlow
