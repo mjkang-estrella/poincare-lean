@@ -13579,3 +13579,51 @@ theorem koszul_term2_lift
   rw [fderiv_covTensor2Deriv_eq]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Third Koszul term lifted to ∇²H** (via `fderiv_covTensor2Deriv_eq`). -/
+theorem koszul_term3_lift
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} :
+    (∑ j, ∑ i, (fderiv ℝ (fun y ↦ covTensor2Deriv G H y
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j)) x)
+        ((Module.finBasis ℝ E) i))
+      = ∑ j, ∑ i, (covTensor2SndDeriv G H x ((Module.finBasis ℝ E) i)
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i)))
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j)))
+            ((Module.finBasis ℝ E) j)
+          + covTensor2Deriv G H x (christoffelClosedOp G x ((Module.finBasis ℝ E) i)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i))))
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j)))
+              ((Module.finBasis ℝ E) j)
+          + covTensor2Deriv G H x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))
+              (christoffelClosedOp G x ((Module.finBasis ℝ E) i)
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord j))))
+              ((Module.finBasis ℝ E) j)
+          + covTensor2Deriv G H x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j)))
+              (christoffelClosedOp G x ((Module.finBasis ℝ E) i)
+                ((Module.finBasis ℝ E) j))) := by
+  refine Finset.sum_congr rfl fun j _ ↦ Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [fderiv_covTensor2Deriv_eq]
+
+end RicciFlow
