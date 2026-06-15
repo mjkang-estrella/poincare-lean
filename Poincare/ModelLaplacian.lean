@@ -19182,3 +19182,24 @@ theorem lichnerowiczLaplacian_zero
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci endomorphism is additive**: `Ric^♯(p₁+p₂) = Ric^♯ p₁ + Ric^♯ p₂`, from additivity of
+the Ricci tensor in its first slot. Confirms `ricciSharp` is a genuine linear endomorphism (item 3). -/
+theorem ricciSharp_add
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (p₁ p₂ : E) :
+    ricciSharp G x (p₁ + p₂) = ricciSharp G x p₁ + ricciSharp G x p₂ := by
+  unfold ricciSharp
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl (fun j _ ↦ ?_)
+  rw [coordRicci_add_fst G hdiff, add_smul]
+
+end RicciFlow
