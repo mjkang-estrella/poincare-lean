@@ -19008,3 +19008,32 @@ theorem lichnerowiczCurvature_neg
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The rough Laplacian vanishes on the zero tensor**: `Δ_∇ 0 x p q = 0`, since the covariant
+derivative of the zero field is zero. The operator has no constant part — consistent with its
+`ℝ`-linearity in `H` (roadmap item 3). -/
+theorem connectionLaplacian_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (p q : E) :
+    connectionLaplacian G (fun _ ↦ 0) x p q = 0 := by
+  have hz : ∀ (y v a b : E),
+      covTensor2Deriv G (fun _ ↦ (0 : E →L[ℝ] E →L[ℝ] ℝ)) y v a b = 0 := by
+    intro y v a b
+    simp [covTensor2Deriv]
+  unfold connectionLaplacian
+  refine Finset.sum_eq_zero (fun i _ ↦ ?_)
+  unfold covTensor2SndDeriv
+  have hfun : (fun y ↦ covTensor2Deriv G (fun _ ↦ (0 : E →L[ℝ] E →L[ℝ] ℝ)) y
+      ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+      p q) = fun _ ↦ (0 : ℝ) := by
+    funext y; exact hz _ _ _ _
+  rw [hfun]
+  simp [hz]
+
+end RicciFlow
