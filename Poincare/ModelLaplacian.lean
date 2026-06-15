@@ -20724,3 +20724,28 @@ theorem coordRicciNormSq_of_einstein
     map_smul, LinearMap.trace_id, smul_eq_mul]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Einstein metrics saturate the pinching inequality**:
+`R² = n·|Ric|²` when `Ric = c·g`, the equality case of `R² ≤ n|Ric|²`. Combined with the strict
+inequality off the Einstein locus, this is the rigidity underlying Hamilton's rounding theorem
+(roadmap item 3). -/
+theorem einstein_pinching_equality
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q) :
+    (coordScalar G x) ^ 2
+      = (Module.finrank ℝ E : ℝ) * coordRicciNormSq G x hdiff := by
+  rw [coordScalar_of_einstein hGsymm hinv hdiff hEin,
+    coordRicciNormSq_of_einstein hGsymm hinv hdiff hEin]
+  ring
+
+end RicciFlow
