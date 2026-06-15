@@ -19324,3 +19324,28 @@ theorem coordRicci_contraction
     _ = coordRicci G x p w := rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric pairs the Ricci endomorphism back to the Ricci form**:
+`g(Ric^♯ p, w) = R(p, w)`. This is the defining property of `ricciSharp` — it is the genuine metric
+dual of the Ricci one-form `R(p, ·)`, validating the basis definition (roadmap item 3). -/
+theorem g_ricciSharp
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hinv : (G x).IsInvertible) (p w : E) :
+    G x (ricciSharp G x p) w = coordRicci G x p w := by
+  have hGiG : ∀ f : E →L[ℝ] ℝ, G x ((G x).inverse f) = f :=
+    fun f ↦ (hinv.inverse_apply_eq.mp rfl).symm
+  unfold ricciSharp
+  rw [map_sum, ContinuousLinearMap.sum_apply]
+  simp only [map_smul, ContinuousLinearMap.smul_apply, hGiG,
+    LinearMap.coe_toContinuousLinearMap', smul_eq_mul]
+  rw [← coordRicci_contraction p w]
+  exact Finset.sum_congr rfl (fun j _ ↦ by rw [smul_eq_mul, mul_comm])
+
+end RicciFlow
