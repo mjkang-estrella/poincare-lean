@@ -11755,3 +11755,32 @@ theorem differentiableAt_inverse_raise
   (hasFDerivAt_inverse_raise hG hev φ).differentiableAt
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Christoffel operator with a varying direction is differentiable**:
+`y ↦ Γ_{v(y)} p` is differentiable when `v` is. By torsion symmetry
+`Γ_{v(y)} p = Γ_p (v(y))`, so it factors as the fixed-direction differentiable
+operator `y ↦ Γ_p` applied to the differentiable field `v`. The link that lets
+the varying raised index `♯bⁱ = (G y)⁻¹ bⁱ` pass through the Christoffel
+corrections of the inner `δΓ`-trace field. -/
+theorem differentiableAt_christoffelClosedOp_dir
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    {v : E → E} (hv : DifferentiableAt ℝ v x) (p : E) :
+    DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y (v y) p) x := by
+  have hsymm_fun : (fun y ↦ christoffelClosedOp G y (v y) p)
+      = (fun y ↦ christoffelClosedOp G y p (v y)) := by
+    funext y
+    exact christoffelClosedOp_symm (hGd y) hGsymm (v y) p
+  rw [hsymm_fun]
+  exact (hΓd p).clm_apply hv
+
+end RicciFlow
