@@ -13266,3 +13266,39 @@ theorem covDeltaGammaDeriv_smul_v
     christoffelDeriv_smul_fst hGd hHd hGsymm hHsymm, smul_sub, smul_add, smul_eq_mul]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ` operator is additive in its first slot** (operator level):
+`christoffelDerivOp (u₁+u₂) = christoffelDerivOp u₁ + christoffelDerivOp u₂`. The
+`ext` lift of `christoffelDeriv_add_fst`. -/
+theorem christoffelDerivOp_add_fst
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x) (hHd : DifferentiableAt ℝ H x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (u₁ u₂ : E) :
+    christoffelDerivOp G H x (u₁ + u₂)
+      = christoffelDerivOp G H x u₁ + christoffelDerivOp G H x u₂ := by
+  ext v
+  simp only [christoffelDerivOp_apply, ContinuousLinearMap.add_apply]
+  exact christoffelDeriv_add_fst hGd hHd hGsymm hHsymm u₁ u₂ v
+
+/-- **The `δΓ` operator is homogeneous in its first slot** (operator level). -/
+theorem christoffelDerivOp_smul_fst
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x) (hHd : DifferentiableAt ℝ H x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (c : ℝ) (u : E) :
+    christoffelDerivOp G H x (c • u) = c • christoffelDerivOp G H x u := by
+  ext v
+  simp only [christoffelDerivOp_apply, ContinuousLinearMap.smul_apply]
+  exact christoffelDeriv_smul_fst hGd hHd hGsymm hHsymm c u v
+
+end RicciFlow
