@@ -17525,3 +17525,40 @@ theorem connectionLaplacian_add_right
   exact covTensor2SndDeriv_add_q hHd hH2 hΓd _ _ p q₁ q₂
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The connection Laplacian is homogeneous in its first tensor slot**:
+`Δ_∇ H(c•p, q) = c · Δ_∇ H(p,q)`, termwise from `covTensor2SndDeriv_smul_p`. -/
+theorem connectionLaplacian_smul_left
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (c : ℝ) (p q : E) :
+    connectionLaplacian G H x (c • p) q = c * connectionLaplacian G H x p q := by
+  unfold connectionLaplacian
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact covTensor2SndDeriv_smul_p hHd hH2 hΓd c _ _ p q
+
+/-- **The connection Laplacian is homogeneous in its second tensor slot**:
+`Δ_∇ H(p, c•q) = c · Δ_∇ H(p,q)`, termwise from `covTensor2SndDeriv_smul_q`. -/
+theorem connectionLaplacian_smul_right
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (c : ℝ) (p q : E) :
+    connectionLaplacian G H x p (c • q) = c * connectionLaplacian G H x p q := by
+  unfold connectionLaplacian
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact covTensor2SndDeriv_smul_q hHd hH2 hΓd c _ _ p q
+
+end RicciFlow
