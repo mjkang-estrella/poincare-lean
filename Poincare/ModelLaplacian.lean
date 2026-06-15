@@ -20597,3 +20597,47 @@ theorem metric_basis_contraction
     _ = G x w b := rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Space forms are Einstein**: the metric trace of the constant-curvature tensor over its first
+and last slots is `(1 − n)·κ·g(u,w)`, i.e. `Ric = (1−n)κ·g`. A constant-curvature metric is Einstein,
+the model geometry of the Poincaré target (roadmap item 3). -/
+theorem constCurvatureForm_ricci_trace
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ v w : E, G x v w = G x w v)
+    (hinv : ∀ y : E, (G y).IsInvertible) (κ : ℝ) (u w : E) :
+    ∑ i, constCurvatureForm G x κ ((Module.finBasis ℝ E) i) u w
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))
+      = (1 - (Module.finrank ℝ E : ℝ)) * κ * G x u w := by
+  have hGiG : ∀ f : E →L[ℝ] ℝ, G x ((G x).inverse f) = f :=
+    fun f ↦ (hinv x).inverse_apply_eq.mp rfl |>.symm
+  have key : ∀ i, constCurvatureForm G x κ ((Module.finBasis ℝ E) i) u w
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))
+      = κ * ((Module.finBasis ℝ E).coord i u
+            • G x ((Module.finBasis ℝ E) i) w)
+        - κ * (G x ((Module.finBasis ℝ E) i)
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i))) * G x u w) := by
+    intro i
+    unfold constCurvatureForm
+    rw [hGsymm u ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i))), hGiG]
+    simp only [LinearMap.coe_toContinuousLinearMap', smul_eq_mul]
+    ring
+  rw [Finset.sum_congr rfl (fun i _ ↦ key i), Finset.sum_sub_distrib,
+    ← Finset.mul_sum, ← Finset.mul_sum, metric_basis_contraction u w, ← Finset.sum_mul]
+  rw [show (∑ i, G x ((Module.finBasis ℝ E) i)
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord i)))) = tensorMetricTrace G G x from rfl,
+    tensorMetricTrace_metric hGsymm (hinv x)]
+  ring
+
+end RicciFlow
