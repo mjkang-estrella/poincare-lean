@@ -19292,3 +19292,35 @@ theorem ricciActionOnTensor_smul_left
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Basis contraction of the Ricci tensor in its second slot**:
+`Σⱼ (bⱼ-coordinate of w) · R(p, bⱼ) = R(p, w)`, the expansion of `R(p, ·)` over the basis using its
+linearity in the second slot. The bookkeeping behind raising the Ricci index (roadmap item 3). -/
+theorem coordRicci_contraction
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (p w : E) :
+    ∑ j, (Module.finBasis ℝ E).coord j w • coordRicci G x p ((Module.finBasis ℝ E) j)
+      = coordRicci G x p w := by
+  let L : E →ₗ[ℝ] ℝ :=
+    { toFun := fun z ↦ coordRicci G x p z
+      map_add' := coordRicci_add_snd G x p
+      map_smul' := fun c z ↦ by simpa using coordRicci_smul_snd G x c p z }
+  have hrepr : ∑ j, (Module.finBasis ℝ E).coord j w • (Module.finBasis ℝ E) j = w :=
+    (Module.finBasis ℝ E).sum_repr w
+  calc ∑ j, (Module.finBasis ℝ E).coord j w
+          • coordRicci G x p ((Module.finBasis ℝ E) j)
+      = ∑ j, L ((Module.finBasis ℝ E).coord j w • (Module.finBasis ℝ E) j) := by
+        refine Finset.sum_congr rfl (fun j _ ↦ ?_)
+        rw [map_smul]; rfl
+    _ = L (∑ j, (Module.finBasis ℝ E).coord j w • (Module.finBasis ℝ E) j) :=
+        (map_sum L _ _).symm
+    _ = L w := by rw [hrepr]
+    _ = coordRicci G x p w := rfl
+
+end RicciFlow
