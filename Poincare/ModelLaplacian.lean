@@ -11141,3 +11141,37 @@ theorem ricciDeriv_raised_trace_eq_divTrace_sub_half_smul
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**THE RAISED `δΓ`-DIVERGENCE AS A DOUBLE METRIC CONTRACTION**: the raised
+trace of the `δΓ`-divergence is the full double basis pairing
+`Σⱼ Σᵢ G(∇_{bᵢ} δΓ(♯bʲ, bⱼ), ♯bⁱ)` — one contraction over the
+differentiation slot `bᵢ ↔ ♯bⁱ` (forming the divergence) and one over the
+tensor slot `♯bʲ ↔ bⱼ` (the metric trace). This is the entry form into
+which the second-covariant-derivative Bochner expansion
+(`g_covDeltaGammaDeriv_sndDeriv_form`) substitutes, opening the keystone
+identification of `deltaGammaDivergenceTrace` with the double divergence
+of `H`. -/
+theorem deltaGammaDivergenceTrace_eq_double_g_pairing
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ p q : E, G x p q = G x q p)
+    (hinv : (G x).IsInvertible) :
+    deltaGammaDivergenceTrace G H x
+      = ∑ j, ∑ i, G x (covDeltaGammaDeriv G H x ((Module.finBasis ℝ E) i)
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j)))
+            ((Module.finBasis ℝ E) j))
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i))) := by
+  unfold deltaGammaDivergenceTrace
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  exact deltaGammaDivergence_eq_g_pairing hGsymm hinv _ _
+
+end RicciFlow
