@@ -20175,3 +20175,22 @@ theorem coordScalar_sq_le_finrank_mul_ricci_traceSq
   rwa [trace_coordRicciEndo G x hdiff (hinv x) (hGsymm x)] at h
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Riemann tensor vanishes for a flat (constant) metric**:
+`Rm = 0` when `G` is constant, since the curvature operator vanishes — flat space has zero curvature
+(roadmap item 3). -/
+theorem coordRiemann_const_eq_zero
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ) (x u w a b : E) :
+    coordRiemann (fun _ : E ↦ G₀) x u w a b = 0 := by
+  unfold coordRiemann
+  rw [coordCurvatureOp_const_eq_zero]
+  simp
+
+end RicciFlow
