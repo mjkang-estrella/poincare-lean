@@ -20273,3 +20273,27 @@ theorem riccati_reaction_bound
   nlinarith [h]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`|Ric|²` is nonnegative**: `0 ≤ coordRicciNormSq G x hdiff`, since `R² ≤ n·|Ric|²` with
+`R² ≥ 0` and `n > 0`. The squared Ricci norm in Hamilton's evolution is a genuine nonnegative
+reaction term (roadmap item 3). -/
+theorem coordRicciNormSq_nonneg
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    0 ≤ coordRicciNormSq G x hdiff := by
+  have h := coordScalar_sq_le_finrank_mul_ricciNormSq hGC2 hGsymm hinv hdiff hGpos
+  nlinarith [h, sq_nonneg (coordScalar G x), hn]
+
+end RicciFlow
