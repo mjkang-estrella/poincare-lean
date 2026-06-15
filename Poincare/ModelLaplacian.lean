@@ -20509,3 +20509,24 @@ theorem constCurvatureForm_block_symm
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The constant-curvature tensor satisfies the first Bianchi identity**:
+`κForm(u,w,a,b) + κForm(w,a,u,b) + κForm(a,u,w,b) = 0`, by symmetry of the metric. Confirms it is a
+valid algebraic curvature tensor — the curvature of a genuine space form (roadmap item 3). -/
+theorem constCurvatureForm_first_bianchi
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ v w : E, G x v w = G x w v) (κ : ℝ) (u w a b : E) :
+    constCurvatureForm G x κ u w a b + constCurvatureForm G x κ w a u b
+      + constCurvatureForm G x κ a u w b = 0 := by
+  unfold constCurvatureForm
+  rw [hGsymm a u, hGsymm w u, hGsymm a w]
+  ring
+
+end RicciFlow
