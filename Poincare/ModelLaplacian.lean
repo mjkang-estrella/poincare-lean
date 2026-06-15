@@ -15600,3 +15600,23 @@ theorem tensorMetricTrace_coordRicciForm
   rw [coordRicciForm_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace is homogeneous in the tensor field**:
+`tr_g(c·H) = c · tr_g H`. Combined with `tensorMetricTrace_coordRicciForm` this gives
+`tr_g(−2 Ric) = −2R`, the `htr` hypothesis of the contracted Lichnerowicz scalar
+form under the Ricci-flow direction `H = −2 Ric`. -/
+theorem tensorMetricTrace_smul (G H : E → E →L[ℝ] E →L[ℝ] ℝ) (c : ℝ) (x : E) :
+    tensorMetricTrace G (fun y ↦ c • H y) x = c * tensorMetricTrace G H x := by
+  unfold tensorMetricTrace
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+
+end RicciFlow
