@@ -18582,3 +18582,25 @@ theorem connectionLaplacian_transpose_eq_add_curvature
   linarith [h]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz curvature term is symmetric for a symmetric tensor**:
+`lichnerowiczCurvature G H x p q = lichnerowiczCurvature G H x q p` whenever `H` is slot-symmetric.
+Consistency check: the Lichnerowicz Laplacian preserves symmetric `(0,2)`-tensors, as it must to act
+on metrics/Ricci along the flow (roadmap item 3). -/
+theorem lichnerowiczCurvature_symm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHsymm : ∀ a b : E, H x a b = H x b a) (p q : E) :
+    lichnerowiczCurvature G H x p q = lichnerowiczCurvature G H x q p := by
+  unfold lichnerowiczCurvature
+  refine Finset.sum_congr rfl (fun i _ ↦ ?_)
+  rw [hHsymm _ q, hHsymm p _]
+  ring
+
+end RicciFlow
