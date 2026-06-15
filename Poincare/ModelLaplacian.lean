@@ -15491,3 +15491,46 @@ theorem deltaGammaDivergenceTrace_keystone
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **THE CONTRACTED LICHNEROWICZ IDENTITY** (unconditional second-order form):
+`Σⱼ δRic(♯bʲ, bⱼ) = div div H − Δ_g(tr_g H)`. Substituting the keystone
+`deltaGammaDivergenceTrace = div div H − ½ Δ_g(tr_g H)` into the raised Ricci-variation
+trace `Σⱼ δRic(♯bʲ,bⱼ) = deltaGammaDivergenceTrace − ½ Δ_g(tr_g H)` collapses the two
+half-Laplacians into one. The clean second-order identity underlying the scalar-curvature
+evolution: under `H = −2 Ric` (so `tr_g H = −2R`) the right side becomes
+`div div H + 2Δ_g R`, and the twice-contracted Bianchi identity (`div div H = −Δ_g R`)
+delivers Hamilton's `∂R/∂t = Δ_g R + 2|Ric|²`. -/
+theorem ricciDeriv_raised_trace_contracted_lichnerowicz
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (hTr2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x) :
+    ∑ j, ricciDeriv G H x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j)
+      = tensorDoubleDivergence G H x
+        - curvedLaplacian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+            (tensorMetricTrace G H) x := by
+  rw [ricciDeriv_raised_trace_eq_divTrace_sub_half_curvedLaplacian hGd hGsymm hinv
+      hHd hHsymm hTr2 hVd
+      (fun a b ↦ christoffelClosedOp_symm (hGd x) hGsymm a b),
+    deltaGammaDivergenceTrace_keystone hGd hGsymm hinv hHsymm hHd hH2 hΓd hVd hTr2]
+  ring
+
+end RicciFlow
