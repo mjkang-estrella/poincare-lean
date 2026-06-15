@@ -16007,3 +16007,65 @@ theorem tensorMetricTrace_neg_two_coordRicciForm_field
   exact tensorMetricTrace_neg_two_coordRicciForm hdiff
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **THE TWICE-CONTRACTED BIANCHI IDENTITY for the Ricci-flow variation (`hBianchi`)**:
+`Σⱼ δRic(♯bʲ, bⱼ) = Δ_g R` for `H = −2 Ric`. From the contracted Lichnerowicz identity
+`Σⱼ δRic(♯bʲ,bⱼ) = div div H − (−2)Δ_g R` (with `tr_g(−2Ric) = −2R`) and the curvature
+double divergence `div div(−2Ric) = −Δ_g R`, the two Laplacians combine to `+Δ_g R`. This
+is exactly the `hBianchi` hypothesis of `hamilton_scalar_evolution_of_bianchi_curved`,
+discharged from the second-order Bianchi machinery (modulo the variation's regularity). -/
+theorem ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ (y : E) (p : E), DifferentiableAt ℝ
+      (fun z ↦ fderiv ℝ (fun z' ↦ christoffelClosedOp G z' p) z) y)
+    (hsymΓ : ∀ (y : E) (p : E), IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) y)
+    (hKd : ∀ y : E,
+      DifferentiableAt ℝ (fun z ↦ coordRicciForm G z (hdiffΓ z)) y)
+    (hRd2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (fun z ↦ coordScalar G z) y) x)
+    (hdivd : DifferentiableAt ℝ
+      (tensorDivCLM G (fun z ↦ coordRicciForm G z (hdiffΓ z))) x)
+    (hHd : ∀ y : E, DifferentiableAt ℝ
+      (fun z ↦ (-2 : ℝ) • coordRicciForm G z (hdiffΓ z)) y)
+    (hHsymm : ∀ (y : E) (a b : E),
+      ((-2 : ℝ) • coordRicciForm G y (hdiffΓ y)) a b
+        = ((-2 : ℝ) • coordRicciForm G y (hdiffΓ y)) b a)
+    (hH2 : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ (-2 : ℝ) • coordRicciForm G z (hdiffΓ z)) y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G
+        (fun z ↦ (-2 : ℝ) • coordRicciForm G z (hdiffΓ z)) y p) x)
+    (hTr2 : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (tensorMetricTrace G
+        (fun z ↦ (-2 : ℝ) • coordRicciForm G z (hdiffΓ z))) y) x)
+    (hφ : ContDiff ℝ 2 (fun z ↦ coordScalar G z)) :
+    ∑ j, ricciDeriv G (fun y ↦ (-2 : ℝ) • coordRicciForm G y (hdiffΓ y)) x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j)
+      = curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+          (fun z ↦ coordScalar G z) x := by
+  rw [ricciDeriv_raised_trace_lichnerowicz_smul (c := -2)
+      (φ := fun z ↦ coordScalar G z) hGd hGsymm hinv
+      hHd hHsymm hH2 hΓd hVd hTr2 hφ
+      (tensorMetricTrace_neg_two_coordRicciForm_field hdiffΓ),
+    tensorDoubleDivergence_neg_two_coordRicciForm hGC2 hGsymm hinv hdiffΓ hdd
+      hsymΓ hKd hRd2 hdivd]
+  ring
+
+end RicciFlow
