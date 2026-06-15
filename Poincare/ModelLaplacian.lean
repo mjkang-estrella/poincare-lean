@@ -18651,3 +18651,27 @@ theorem lichnerowiczCurvature_smul
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz curvature term vanishes for a flat metric**: if the coordinate curvature
+operator vanishes on every basis plane `(bᵢ, ♯bⁱ)`, then `lichnerowiczCurvature G H x p q = 0`.
+Consistency: on a flat background the rough Laplacian and its transpose agree (no Weitzenböck
+defect), so `Δ_∇ H` is the genuine Laplacian there (roadmap item 3). -/
+theorem lichnerowiczCurvature_flat
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (p q : E)
+    (hflat : ∀ i, coordCurvatureOp G x ((Module.finBasis ℝ E) i)
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord i))) = 0) :
+    lichnerowiczCurvature G H x p q = 0 := by
+  unfold lichnerowiczCurvature
+  refine Finset.sum_eq_zero (fun i _ ↦ ?_)
+  rw [hflat i]
+  simp
+
+end RicciFlow
