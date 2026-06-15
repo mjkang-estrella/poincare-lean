@@ -13797,3 +13797,31 @@ theorem sum_covTensor2Deriv_Hslot_trace
   exact covTensor2Deriv_symm hHd hHsymm v _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The tensor-divergence field derivative reduces to a scalar-field derivative**:
+`(D_v (div H))(w) = D_v (y ↦ (div H)_y(w))`, via `fderiv_clm_family_apply` and the
+proved differentiability of `tensorDivCLM`. The RHS analogue of
+`fderiv_deltaGammaInnerTraceCLM_apply`, for expanding `tensorDoubleDivergence` into
+`∇²H` form. -/
+theorem fderiv_tensorDivCLM_apply
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (v w : E) :
+    (fderiv ℝ (tensorDivCLM G H) x v) w
+      = fderiv ℝ (fun y ↦ tensorDivCLM G H y w) x v :=
+  fderiv_clm_family_apply
+    (differentiableAt_tensorDivCLM hGd hGsymm hinv hHd hH2 hΓd) v w
+
+end RicciFlow
