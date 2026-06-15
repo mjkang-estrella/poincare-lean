@@ -19270,3 +19270,25 @@ theorem ricciActionOnTensor_add_right
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci action is homogeneous in its first slot**:
+`(Ric · H)(c • p, q) = c · (Ric · H)(p,q)`, from homogeneity of `Ric^♯` and `H`. With the additivity
+lemmas this makes the `Ric·H` term a fully `ℝ`-bilinear form in `(p,q)` (roadmap item 3). -/
+theorem ricciActionOnTensor_smul_left
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (c : ℝ) (p q : E) :
+    ricciActionOnTensor G H x (c • p) q = c * ricciActionOnTensor G H x p q := by
+  unfold ricciActionOnTensor
+  rw [ricciSharp_smul hdiff c p]
+  simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+  ring
+
+end RicciFlow
