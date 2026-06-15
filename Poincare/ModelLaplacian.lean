@@ -21200,3 +21200,26 @@ theorem coordCurvatureOp_smul_metric
   rw [hfield w, hfield u, hpt u, hpt w]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci tensor is invariant under constant metric scaling**:
+`coordRicci (c·g) = coordRicci g` for `c ≠ 0`, since the curvature operator is scale-invariant and
+Ricci is its trace. **This validates the round sphere as a genuine Ricci-flow solution**: along
+`g(t) = (1−2ct)g(0)`, `Ric(g(t)) = Ric(g(0)) = c·g(0)`, so `∂g/∂t = −2c·g(0) = −2 Ric(g(t))` — the
+homothety solves the Ricci flow exactly (roadmap item 3). -/
+theorem coordRicci_smul_metric
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ)
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hinv : ∀ y : E, (G y).IsInvertible) (hc : c ≠ 0) (u w : E) :
+    coordRicci (fun y ↦ c • G y) x u w = coordRicci G x u w := by
+  unfold coordRicci
+  refine Finset.sum_congr rfl (fun i _ ↦ ?_)
+  rw [coordCurvatureOp_smul_metric c hGd hinv hc]
+
+end RicciFlow
