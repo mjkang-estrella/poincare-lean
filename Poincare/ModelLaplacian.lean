@@ -12662,3 +12662,29 @@ theorem divergence_deltaGammaInnerTraceCLM_explicit
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Metric compatibility at covector level**: the metric-derivative covector
+`(D_u G)(a)` equals `G(Γ_u a, ·) + G(a, Γ_u ·)` as a continuous linear functional —
+the `ContinuousLinearMap.ext` lift of `coord_metric_compatible`. Used to convert
+the inverse-metric `(D_{♯bʲ}G)(♯bⁱ)` covector of the commutation's `T2'` term into
+Christoffel form for the trace matching. -/
+theorem fderiv_metric_compatible_covector
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : (G x).IsInvertible) (u a : E) :
+    (fderiv ℝ G x u) a
+      = G x (christoffelClosedOp G x u a)
+        + (G x a).comp (christoffelClosedOp G x u) := by
+  ext b
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply]
+  exact coord_metric_compatible hGd hGsymm hinv u a b
+
+end RicciFlow
