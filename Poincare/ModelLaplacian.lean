@@ -19796,3 +19796,38 @@ theorem coordRiemann_first_bianchi
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Riemann block symmetry**: `Rm(u,w,a,b) = Rm(a,b,u,w)`. The pair-interchange symmetry,
+derived from the two pair antisymmetries and the first Bianchi identity by the classical four-term
+combination (roadmap item 3). -/
+theorem coordRiemann_block_symm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ v : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v) x)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u w a b : E) :
+    coordRiemann G x u w a b = coordRiemann G x a b u w := by
+  have B : ∀ p q r s : E, coordRiemann G x p q r s + coordRiemann G x q r p s
+      + coordRiemann G x r p q s = 0 :=
+    fun p q r s ↦ coordRiemann_first_bianchi hGd hGsymm hΓd p q r s
+  have hL : ∀ p q r s : E, coordRiemann G x p q r s = -coordRiemann G x q p r s :=
+    fun p q r s ↦ coordRiemann_antisymm_pair_left p q r s
+  have hR : ∀ p q r s : E, coordRiemann G x p q r s = -coordRiemann G x p q s r :=
+    fun p q r s ↦ coordRiemann_antisymm_pair_right hGC2 hGsymm hinv hdiff p q r s
+  linarith [B u w a b, B w a b u, B a b u w, B b u w a,
+    hR u w a b, hR w a u b, hR a u w b, hR w a b u, hR a b w u, hR b w a u,
+    hR a b u w, hR b u a w, hR u a b w, hR b u w a, hR u w b a, hR w b u a,
+    hL u w a b, hL w a u b, hL a u w b, hL w a b u, hL a b w u, hL b w a u,
+    hL a b u w, hL b u a w, hL u a b w, hL b u w a, hL u w b a, hL w b u a]
+
+end RicciFlow
