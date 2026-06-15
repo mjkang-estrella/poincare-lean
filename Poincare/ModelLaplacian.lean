@@ -20334,3 +20334,29 @@ theorem sectionalNum_const_eq_zero
   exact coordRiemann_const_eq_zero G₀ x u w w u
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Scalar lower bound forces `|Ric|²` lower bound**: if `m₀ ≤ R` with `m₀ ≥ 0`, then
+`m₀²/n ≤ |Ric|²`, from `R² ≤ n|Ric|²` and `R ≥ m₀ ≥ 0`. The positive-curvature feedback that keeps
+`|Ric|²` (hence `∂R/∂t`) bounded below, driving the Riccati blow-up (roadmap item 3). -/
+theorem ricciNormSq_ge_of_scalar_ge
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {m₀ : ℝ}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ))
+    (hm₀ : 0 ≤ m₀) (hm : m₀ ≤ coordScalar G x) :
+    m₀ ^ 2 / (Module.finrank ℝ E : ℝ) ≤ coordRicciNormSq G x hdiff := by
+  have h := coordScalar_sq_le_finrank_mul_ricciNormSq hGC2 hGsymm hinv hdiff hGpos
+  rw [div_le_iff₀ hn]
+  nlinarith [h, hm, hm₀, mul_nonneg hm₀ hm₀]
+
+end RicciFlow
