@@ -15238,3 +15238,35 @@ theorem sum_sum_divdiv_corrections_cancel
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The second covariant derivative is homogeneous in its inner direction**:
+`covTensor2SndDeriv v' (c•v) p q = c * covTensor2SndDeriv v' v p q`. Companion of
+`covTensor2SndDeriv_add_v`: flat term via `fderiv_const_mul`, Christoffel corrections
+via connection and slot homogeneity. Supplies inner-direction bilinearity for the
+inner/`p`-slot raise-swap in `½(T1+T2) = div div H` — sub-identity (a). -/
+theorem covTensor2SndDeriv_smul_v
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (c : ℝ) (v' v p q : E) :
+    covTensor2SndDeriv G H x v' (c • v) p q
+      = c * covTensor2SndDeriv G H x v' v p q := by
+  unfold covTensor2SndDeriv
+  have hsplit : (fun y ↦ covTensor2Deriv G H y (c • v) p q)
+      = fun y ↦ c * covTensor2Deriv G H y v p q := by
+    funext y; rw [covTensor2Deriv_smul_dir]
+  rw [hsplit, fderiv_const_mul
+    (differentiableAt_covTensor2Deriv_family hHd hH2 hΓd v p q) c]
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul, map_smul,
+    covTensor2Deriv_smul_dir]
+  ring
+
+end RicciFlow
