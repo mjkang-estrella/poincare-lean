@@ -18720,3 +18720,26 @@ theorem lichnerowiczCurvature_add_right
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The rough-plus-curvature Laplacian is symmetric for a symmetric tensor**:
+`Δ_∇ H(p,q) + lichnerowiczCurvature G H x p q = Δ_∇ H(q,p) + lichnerowiczCurvature G H x q p`.
+By the Weitzenböck identity this is the transposed rough Laplacian `Σᵢ ∇²H(♯bⁱ, bᵢ)`, so the
+second covariant derivative trace in either ordering yields a symmetric `(0,2)`-form on a symmetric
+tensor — a prerequisite for it to act on the metric/Ricci along the flow (roadmap item 3). -/
+theorem connectionLaplacian_add_lichnerowiczCurvature_symm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a) (p q : E) :
+    connectionLaplacian G H x p q + lichnerowiczCurvature G H x p q
+      = connectionLaplacian G H x q p + lichnerowiczCurvature G H x q p := by
+  rw [connectionLaplacian_symm hHd hHsymm p q,
+    lichnerowiczCurvature_symm (hHsymm x) p q]
+
+end RicciFlow
