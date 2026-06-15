@@ -21028,3 +21028,23 @@ theorem einstein_scalar_pos
   positivity
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **A space form has constant sectional curvature `κ`**: the normalized sectional curvature of the
+constant-curvature tensor is `κ` for any plane (independent `u,w`), `κForm(u,w,w,u)/(g(u,w)²−g(u,u)g(w,w)) = κ`.
+The defining property: a `κ`-space form has sectional curvature `κ` on every plane — the round sphere
+is the `κ > 0` case (roadmap item 3). -/
+theorem constCurvatureForm_normalized_sectional
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ v w : E, G x v w = G x w v) (κ : ℝ) (u w : E)
+    (hX : G x u w ^ 2 - G x u u * G x w w ≠ 0) :
+    constCurvatureForm G x κ u w w u / (G x u w ^ 2 - G x u u * G x w w) = κ := by
+  rw [constCurvatureForm_sectional hGsymm, mul_div_assoc, div_self hX, mul_one]
+
+end RicciFlow
