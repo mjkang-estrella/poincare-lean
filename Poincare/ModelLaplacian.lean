@@ -17892,3 +17892,42 @@ theorem fderiv_dual_eval_apply
   simp only [hLdef, ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The pure second-derivative block of the antisymmetrised `∇²H` vanishes**: the flat
+mixed derivatives of `H` itself commute (Clairaut), so
+`D_{v'}((D_v H)(p,q)) − D_v((D_{v'} H)(p,q)) = 0` whenever `H ∈ C²` at `x`. Proved on the
+scalar field `g := z ↦ H z p q` (diamond-free): the two evaluation bridges expose the symmetric
+second `fderiv` of `g`, and `ContDiffAt.isSymmSndFDerivAt` closes it. The first genuine reduction
+inside the `(0,2)`-tensor Ricci identity — only the Christoffel terms survive, and those assemble
+into curvature (roadmap item 3, curvature-commutation frontier). -/
+theorem fderiv_covTensor2Deriv_pure_block_antisymm
+    {H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHC2 : ContDiffAt ℝ 2 H x) (v' v p q : E) :
+    (fderiv ℝ (fun y ↦ (fderiv ℝ H y v) p q) x) v'
+      - (fderiv ℝ (fun y ↦ (fderiv ℝ H y v') p q) x) v = 0 := by
+  have hgC2 : ContDiffAt ℝ 2 (fun z ↦ H z p q) x := contDiffAt_tensor_eval hHC2 p q
+  have hHnear : ∀ᶠ y in nhds x, DifferentiableAt ℝ H y :=
+    (hHC2.eventually (by simp)).mono fun y hy ↦ hy.differentiableAt (by norm_num)
+  have hφd : DifferentiableAt ℝ (fderiv ℝ (fun z ↦ H z p q)) x :=
+    (hgC2.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)
+  have hsymm : IsSymmSndFDerivAt ℝ (fun z ↦ H z p q) x :=
+    hgC2.isSymmSndFDerivAt (by simp)
+  have heq1 : (fun y ↦ (fderiv ℝ H y v) p q)
+      =ᶠ[nhds x] (fun y ↦ (fderiv ℝ (fun z ↦ H z p q) y) v) :=
+    hHnear.mono fun y hy ↦ (fderiv_tensor_eval_apply hy v p q).symm
+  have heq2 : (fun y ↦ (fderiv ℝ H y v') p q)
+      =ᶠ[nhds x] (fun y ↦ (fderiv ℝ (fun z ↦ H z p q) y) v') :=
+    hHnear.mono fun y hy ↦ (fderiv_tensor_eval_apply hy v' p q).symm
+  rw [heq1.fderiv_eq, heq2.fderiv_eq,
+    fderiv_dual_eval_apply hφd v' v, fderiv_dual_eval_apply hφd v v',
+    hsymm v' v]
+  ring
+
+end RicciFlow
