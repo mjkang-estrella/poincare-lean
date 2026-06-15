@@ -17839,3 +17839,31 @@ theorem contDiffAt_tensor_eval
   exact L.contDiff.comp_contDiffAt x hHC2
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Differentiation commutes with scalar evaluation of a tensor**:
+`D_v(z ↦ H z p q) = (D_v H)(p,q)`, i.e. `(fderiv ℝ (fun z ↦ H z p q) y) v = (fderiv ℝ H y v) p q`,
+since evaluation at fixed `p, q` is the continuous-linear map `L = (·) p q`. This is the
+diamond-free bridge that lets the Clairaut step run on the scalar field `z ↦ H z p q` instead of
+on the 3-level CLM-valued `fderiv H` (roadmap item 3, curvature-commutation frontier). -/
+theorem fderiv_tensor_eval_apply
+    {H : E → E →L[ℝ] E →L[ℝ] ℝ} {y : E}
+    (hH : DifferentiableAt ℝ H y) (v p q : E) :
+    (fderiv ℝ (fun z ↦ H z p q) y) v = (fderiv ℝ H y v) p q := by
+  set L : (E →L[ℝ] E →L[ℝ] ℝ) →L[ℝ] ℝ :=
+    (ContinuousLinearMap.apply ℝ ℝ q).comp
+      (ContinuousLinearMap.apply ℝ (E →L[ℝ] ℝ) p) with hLdef
+  have hcomp : (fun z ↦ H z p q) = ⇑L ∘ H := by
+    funext z
+    simp only [hLdef, Function.comp_apply, ContinuousLinearMap.comp_apply,
+      ContinuousLinearMap.apply_apply]
+  rw [hcomp, fderiv_comp y L.differentiableAt hH, L.fderiv]
+  simp only [hLdef, ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply]
+
+end RicciFlow
