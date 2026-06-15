@@ -21694,3 +21694,40 @@ theorem round_sphere_ricci_scalar_ratio_const
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The traceless-Ricci norm equals the pinching gap over `n`**: `|Ric|² − R²/n = (n·|Ric|² − R²)/n`,
+the Pythagorean splitting `|Ric|² = |Ric̊|² + R²/n` where `|Ric̊|² := |Ric|² − R²/n` is the squared norm
+of the traceless part. Combined with `pinching_gap_nonneg` this exhibits the gap as `n·|Ric̊|² ≥ 0`
+(roadmap item 3). -/
+theorem tracelessRicciNormSq_eq_gap_div
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0) :
+    coordRicciNormSq G x hdiff - (coordScalar G x) ^ 2 / (Module.finrank ℝ E : ℝ)
+      = ((Module.finrank ℝ E : ℝ) * coordRicciNormSq G x hdiff - (coordScalar G x) ^ 2)
+        / (Module.finrank ℝ E : ℝ) := by
+  field_simp
+
+/-- **The traceless-Ricci norm is nonnegative**: `|Ric|² − R²/n ≥ 0`, the Pythagorean form of the
+pinching inequality `R² ≤ n|Ric|²`. The squared norm of the traceless Ricci tensor is genuinely a
+square (roadmap item 3). -/
+theorem tracelessRicciNormSq_nonneg
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    0 ≤ coordRicciNormSq G x hdiff - (coordScalar G x) ^ 2 / (Module.finrank ℝ E : ℝ) := by
+  have h := ricciNormSq_ge_scalar_sq_div hGC2 hGsymm hinv hdiff hGpos hn
+  linarith
+
+end RicciFlow
