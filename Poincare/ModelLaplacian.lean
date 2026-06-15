@@ -21465,3 +21465,22 @@ theorem round_sphere_scalar_hasDerivAt
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round sphere saturates the Riccati ODE**: with `R(t) = R₀/(1−2ct)` and the Einstein
+relation `R₀ = c·n`, the evolution rate equals `(2/n)·R²` exactly — `∂R/∂t = ΔR + (2/n)R²` holds with
+equality (since `ΔR = 0` for the spatially-constant `R`). This is the equality case of the Riccati
+supersolution, consistent with the round sphere saturating the pinching `R² = n|Ric|²` (roadmap item 3). -/
+theorem round_sphere_riccati
+    (c n t : ℝ) (hfac : 1 - 2 * c * t ≠ 0) (hn : n ≠ 0) :
+    (c * n) * (2 * c) / (1 - 2 * c * t) ^ 2
+      = (2 / n) * ((c * n) / (1 - 2 * c * t)) ^ 2 := by
+  field_simp
+
+end RicciFlow
