@@ -19446,3 +19446,39 @@ theorem covTensor2Deriv_metric_eq_zero
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The second covariant derivative of the metric vanishes**:
+`covTensor2SndDeriv G G x v' v p q = 0`, since `∇g = 0` identically (the first derivative is the zero
+field) (roadmap item 3). -/
+theorem covTensor2SndDeriv_metric_eq_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible) (v' v p q : E) :
+    covTensor2SndDeriv G G x v' v p q = 0 := by
+  unfold covTensor2SndDeriv
+  have hfun : (fun y ↦ covTensor2Deriv G G y v p q) = fun _ ↦ (0 : ℝ) :=
+    funext fun y ↦ covTensor2Deriv_metric_eq_zero (hGd y) hGsymm (hinv y) v p q
+  rw [hfun]
+  simp [covTensor2Deriv_metric_eq_zero (hGd x) hGsymm (hinv x)]
+
+/-- **The rough Laplacian of the metric vanishes** (`Δ_∇ g = 0`): the trace of the (vanishing)
+second covariant derivative of the parallel metric (roadmap item 3). -/
+theorem connectionLaplacian_metric_eq_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible) (p q : E) :
+    connectionLaplacian G G x p q = 0 := by
+  unfold connectionLaplacian
+  exact Finset.sum_eq_zero
+    (fun i _ ↦ covTensor2SndDeriv_metric_eq_zero hGd hGsymm hinv _ _ p q)
+
+end RicciFlow
