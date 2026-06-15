@@ -11860,3 +11860,39 @@ theorem differentiableAt_tensorDivOneForm
     ((Module.finBasis ℝ E) i) w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Pointwise differentiability lifts to a dual-valued field**: a field
+`f : E → (E →L[ℝ] ℝ)` is differentiable at `x` whenever each evaluation
+`y ↦ f y w` is. Reconstruct the covector via the dual basis
+`f y = Σₖ (f y bₖ)·(coord k)` and differentiate the finite sum termwise. The
+finite-dimensional lifting that turns the pointwise divergence-one-form
+differentiability into the bundled `tensorDivCLM` field differentiability. -/
+theorem differentiableAt_clm_dual_of_apply
+    {f : E → (E →L[ℝ] ℝ)} {x : E}
+    (h : ∀ w : E, DifferentiableAt ℝ (fun y ↦ f y w) x) :
+    DifferentiableAt ℝ f x := by
+  set b := Module.finBasis ℝ E with hb
+  have hrecon : f = fun y ↦ ∑ k, (f y (b k)) •
+      (LinearMap.toContinuousLinearMap (b.coord k)) := by
+    funext y
+    ext z
+    simp only [ContinuousLinearMap.coe_sum', Finset.sum_apply,
+      ContinuousLinearMap.smul_apply, LinearMap.coe_toContinuousLinearMap',
+      smul_eq_mul]
+    conv_lhs => rw [← b.sum_repr z]
+    rw [map_sum]
+    refine Finset.sum_congr rfl fun k _ ↦ ?_
+    rw [map_smul, smul_eq_mul, Module.Basis.coord_apply, mul_comm]
+  rw [hrecon]
+  apply DifferentiableAt.fun_sum
+  intro k _
+  exact (h (b k)).smul_const (LinearMap.toContinuousLinearMap (b.coord k))
+
+end RicciFlow
