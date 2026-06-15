@@ -18293,3 +18293,44 @@ theorem fderiv_covTensor2Deriv_flat_antisymm_curvature
     fderiv_corr2_antisymm_curvature p q hH hΓ hΓ']
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **THE `(0,2)`-TENSOR RICCI IDENTITY**: the antisymmetrised second covariant derivative of a
+`(0,2)`-tensor `H` is curvature acting on its two slots —
+`(∇²H)(v',v,p,q) − (∇²H)(v,v',p,q) = −H((Rm v' v) p, q) − H(p, (Rm v' v) q)`. After the pure-`H`
+block cancels by Clairaut, the flat second derivatives vanish, and the `Γ∘Γ` commutators and
+`∂H·Γ` terms from the curvature-form flat derivative cancel exactly against the `p,q`-slot
+corrections — leaving only `H` applied to the coordinate curvature operator. The curvature
+commutation that drives every evolution equation of the Ricci flow at the tensor level
+(roadmap item 3). -/
+theorem covTensor2SndDeriv_ricci_identity
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (v' v p q : E)
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hHC2 : ContDiffAt ℝ 2 H x)
+    (hpure1 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ H y v) p q) x)
+    (hpure2 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ H y v') p q) x)
+    (hc1 : DifferentiableAt ℝ (fun y ↦ H y (christoffelClosedOp G y v p) q) x)
+    (hc1' : DifferentiableAt ℝ (fun y ↦ H y (christoffelClosedOp G y v' p) q) x)
+    (hc2 : DifferentiableAt ℝ (fun y ↦ H y p (christoffelClosedOp G y v q)) x)
+    (hc2' : DifferentiableAt ℝ (fun y ↦ H y p (christoffelClosedOp G y v' q)) x)
+    (hH : DifferentiableAt ℝ H x)
+    (hΓ : DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v) x)
+    (hΓ' : DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v') x) :
+    covTensor2SndDeriv G H x v' v p q - covTensor2SndDeriv G H x v v' p q
+      = -H x ((coordCurvatureOp G x v' v) p) q
+        - H x p ((coordCurvatureOp G x v' v) q) := by
+  rw [covTensor2SndDeriv_antisymm hGd hGsymm v' v p q,
+    fderiv_covTensor2Deriv_flat_antisymm_curvature v' v p q hHC2 hpure1 hpure2
+      hc1 hc1' hc2 hc2' hH hΓ hΓ']
+  simp only [covTensor2Deriv, ContinuousLinearMap.comp_apply, map_sub, map_add,
+    ContinuousLinearMap.sub_apply, ContinuousLinearMap.add_apply]
+  abel
+
+end RicciFlow
