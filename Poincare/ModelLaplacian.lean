@@ -15620,3 +15620,26 @@ theorem tensorMetricTrace_smul (G H : E → E →L[ℝ] E →L[ℝ] ℝ) (c : �
   simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci-flow trace identity `tr_g(−2 Ric) = −2R`**: composing
+`tensorMetricTrace_smul` and `tensorMetricTrace_coordRicciForm`, the metric trace of
+the Ricci-flow variation `H = −2 Ric` is `−2` times the scalar curvature. Exactly the
+`htr` hypothesis of `ricciDeriv_raised_trace_lichnerowicz_smul` (with `c = −2`,
+`φ = coordScalar`), feeding Hamilton's `+Δ_g R` via the contracted Lichnerowicz identity. -/
+theorem tensorMetricTrace_neg_two_coordRicciForm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ (y : E) (u : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z u) y) :
+    tensorMetricTrace G (fun y ↦ (-2 : ℝ) • coordRicciForm G y (hdiff y)) x
+      = (-2 : ℝ) * coordScalar G x := by
+  rw [tensorMetricTrace_smul G (fun y ↦ coordRicciForm G y (hdiff y)) (-2) x,
+    tensorMetricTrace_coordRicciForm hdiff]
+
+end RicciFlow
