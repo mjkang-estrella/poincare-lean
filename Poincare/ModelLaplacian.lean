@@ -12340,3 +12340,69 @@ theorem fderiv_g_deltaGamma_summand_as_covDeltaGamma
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The summed inner-trace derivative in covariant-derivative form**: summing
+the per-summand decomposition, the base-point derivative of the inner `δΓ`-trace
+is `Σᵢ G(covDeltaGammaDeriv x v bᵢ ♯bⁱ, w)` plus the summed leftover Christoffel
+terms. This is the `fderiv` term of the commutation in the form directly
+comparable to `deltaGammaDivergenceTrace`'s `covDeltaGammaDeriv` contraction. -/
+theorem fderiv_deltaGammaInnerTrace_summed_covDeltaGamma
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : (G x).IsInvertible)
+    (hev : ∀ᶠ y in nhds x, (G y).IsInvertible)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (w v : E) :
+    fderiv ℝ (fun y ↦ deltaGammaInnerTraceCLM G H y w) x v
+      = ∑ i, (G x (covDeltaGammaDeriv G H x v ((Module.finBasis ℝ E) i)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))) w
+          + G x (christoffelDerivOp G H x ((Module.finBasis ℝ E) i)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i))))
+              (christoffelClosedOp G x v w)
+          + G x (christoffelDerivOp G H x ((Module.finBasis ℝ E) i)
+              ((fderiv ℝ (fun y ↦ (G y).inverse
+                (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i))) x) v)) w
+          + G x (christoffelDerivOp G H x
+              (christoffelClosedOp G x v ((Module.finBasis ℝ E) i))
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))) w
+          + G x (christoffelDerivOp G H x ((Module.finBasis ℝ E) i)
+              (christoffelClosedOp G x v
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i))))) w) := by
+  have hsummand : ∀ i : Fin (Module.finrank ℝ E),
+      DifferentiableAt ℝ (fun y ↦ G y
+        (christoffelDerivOp G H y ((Module.finBasis ℝ E) i)
+          ((G y).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i)))) w) x := by
+    intro i
+    have hW : DifferentiableAt ℝ (fun y ↦ christoffelDerivOp G H y
+        ((Module.finBasis ℝ E) i)
+        ((G y).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))) x :=
+      (hVd _).clm_apply (differentiableAt_inverse_raise hGd hev _)
+    exact ((hGd.clm_apply hW).clm_apply (differentiableAt_const w))
+  have hfun : (fun y ↦ deltaGammaInnerTraceCLM G H y w)
+      = fun y ↦ ∑ i, G y (christoffelDerivOp G H y ((Module.finBasis ℝ E) i)
+          ((G y).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i)))) w := by
+    funext y
+    rw [deltaGammaInnerTraceCLM_apply]
+    simp only [christoffelDerivOp_apply]
+  rw [hfun, fderiv_fun_sum fun i _ ↦ hsummand i, ContinuousLinearMap.sum_apply]
+  exact Finset.sum_congr rfl fun i _ ↦
+    fderiv_g_deltaGamma_summand_as_covDeltaGamma hGd hGsymm hinv hev (hVd _) _ w v
+
+end RicciFlow
