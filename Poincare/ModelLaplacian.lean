@@ -20219,3 +20219,30 @@ theorem coordRicciEndo_comp_self_adjoint
     coordRicciEndo_self_adjoint hGC2 hGsymm hinv hdiff p (coordRicciEndo G x hdiff q)]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curvature-pinching inequality `R² ≤ n |Ric|²`** in the `coordRicciNormSq` form:
+`(coordScalar G x)² ≤ (dim) · |Ric|²`, with `|Ric|² = coordRicciNormSq` exactly the quadratic term in
+Hamilton's scalar evolution `∂R/∂t = ΔR + 2|Ric|²`. Combining the trace-form pinching with
+`coordRicciNormSq = tr(Rc∘Rc)`, this is the Riccati-supersolution input `∂R/∂t ≥ ΔR + (2/n)R²` behind
+the finite-time singularity theorem (roadmap item 3). -/
+theorem coordScalar_sq_le_finrank_mul_ricciNormSq
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v) :
+    (coordScalar G x) ^ 2
+      ≤ Module.finrank ℝ E * coordRicciNormSq G x hdiff := by
+  rw [coordRicciNormSq_eq_trace G x hdiff (hinv x)
+    (fun u w ↦ coordRicci_symm hGC2 hGsymm hinv hdiff u w)]
+  exact coordScalar_sq_le_finrank_mul_ricci_traceSq hGC2 hGsymm hinv hdiff hGpos
+
+end RicciFlow
