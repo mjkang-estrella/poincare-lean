@@ -21330,3 +21330,23 @@ theorem einstein_smul_metric
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The scalar curvature increases along the shrinking round sphere**: with `R(t) = R₀/(1−2ct)`
+(from `R(c·g) = c⁻¹R(g)` and the homothety), for `R₀ > 0`, `c > 0`, `0 ≤ t < 1/(2c)`, one has
+`R₀ ≤ R(t)` — the curvature concentrates and blows up as the sphere collapses, the hallmark of a
+finite-time Ricci-flow singularity (roadmap item 3). -/
+theorem round_sphere_scalar_increasing
+    (R₀ c t : ℝ) (hR : 0 < R₀) (hc : 0 < c) (ht : 0 ≤ t) (htT : t < 1 / (2 * c)) :
+    R₀ ≤ R₀ / (1 - 2 * c * t) := by
+  have hpos : 0 < 1 - 2 * c * t := einstein_homothety_pos c t hc htT
+  rw [le_div_iff₀ hpos]
+  nlinarith [mul_nonneg (mul_nonneg hc.le ht) hR.le]
+
+end RicciFlow
