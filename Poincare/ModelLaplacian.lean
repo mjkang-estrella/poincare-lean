@@ -17486,3 +17486,42 @@ theorem sum_connectionLaplacian_eq_curvedLaplacian
     hHsymm hTr2
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The connection Laplacian is additive in its first tensor slot**:
+`Δ_∇ H(p₁+p₂, q) = Δ_∇ H(p₁,q) + Δ_∇ H(p₂,q)`, termwise from `covTensor2SndDeriv_add_p`. -/
+theorem connectionLaplacian_add_left
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (p₁ p₂ q : E) :
+    connectionLaplacian G H x (p₁ + p₂) q
+      = connectionLaplacian G H x p₁ q + connectionLaplacian G H x p₂ q := by
+  unfold connectionLaplacian
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact covTensor2SndDeriv_add_p hHd hH2 hΓd _ _ p₁ p₂ q
+
+/-- **The connection Laplacian is additive in its second tensor slot**:
+`Δ_∇ H(p, q₁+q₂) = Δ_∇ H(p,q₁) + Δ_∇ H(p,q₂)`, termwise from `covTensor2SndDeriv_add_q`. -/
+theorem connectionLaplacian_add_right
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (p q₁ q₂ : E) :
+    connectionLaplacian G H x p (q₁ + q₂)
+      = connectionLaplacian G H x p q₁ + connectionLaplacian G H x p q₂ := by
+  unfold connectionLaplacian
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact covTensor2SndDeriv_add_q hHd hH2 hΓd _ _ p q₁ q₂
+
+end RicciFlow
