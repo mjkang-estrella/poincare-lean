@@ -21108,3 +21108,26 @@ theorem constCurvatureForm_smul_curvature
   unfold constCurvatureForm; ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The inverse of a scaled operator**: `(c • A)⁻¹ = c⁻¹ • A⁻¹` for an invertible `A` and `c ≠ 0`.
+The algebraic fact behind the scale-invariance of the Levi-Civita connection (the metric inverse
+scales by `c⁻¹`, cancelling the `c` in `∂(cg)`) (roadmap item 3). -/
+theorem inverse_smul_eq
+    {A : E →L[ℝ] E} (hA : A.IsInvertible) {c : ℝ} (hc : c ≠ 0) :
+    (c • A).inverse = c⁻¹ • A.inverse := by
+  apply ContinuousLinearMap.inverse_eq
+  · ext v
+    simp [ContinuousLinearMap.smul_apply, map_smul, smul_smul, mul_inv_cancel₀ hc,
+      inv_mul_cancel₀ hc, one_smul, hA.self_apply_inverse]
+  · ext v
+    simp [ContinuousLinearMap.smul_apply, map_smul, smul_smul, mul_inv_cancel₀ hc,
+      inv_mul_cancel₀ hc, one_smul, hA.inverse_apply_self]
+
+end RicciFlow
