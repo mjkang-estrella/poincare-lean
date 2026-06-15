@@ -19371,3 +19371,31 @@ theorem ricciActionOnTensor_smul_right
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The basis Ricci endomorphism agrees with the inverse-form one**:
+`ricciSharp G x p = coordRicciEndo G x hdiff p`. The basis-sum definition coincides with the existing
+`(G x)⁻¹ ∘ Ric(p,·)` definition, by the metric-pairing validation and the symmetry of `Ric`
+(roadmap item 3). -/
+theorem ricciSharp_eq_coordRicciEndo
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (p : E) :
+    ricciSharp G x p = coordRicciEndo G x hdiff p := by
+  rw [coordRicciEndo_apply]
+  symm
+  rw [(hinv x).inverse_apply_eq]
+  ext w
+  rw [coordRicciForm_apply, g_ricciSharp (hinv x)]
+  exact coordRicci_symm hGC2 hGsymm hinv hdiff w p
+
+end RicciFlow
