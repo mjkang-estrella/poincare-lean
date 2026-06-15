@@ -13214,3 +13214,30 @@ theorem covDeltaGammaDeriv_smul_z
   simp only [map_smul, ContinuousLinearMap.smul_apply, smul_sub, smul_add]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`∇δΓ` is additive in its differentiation slot**:
+`covDeltaGammaDeriv (v₁+v₂) p z = covDeltaGammaDeriv v₁ p z + covDeltaGammaDeriv v₂ p z`.
+The flat-derivative term is linear in the direction (the `fderiv` is a CLM), and the
+three Christoffel corrections by `christoffelClosedOp` direction additivity. -/
+theorem covDeltaGammaDeriv_add_v
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x) (hHd : DifferentiableAt ℝ H x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (v₁ v₂ p z : E) :
+    covDeltaGammaDeriv G H x (v₁ + v₂) p z
+      = covDeltaGammaDeriv G H x v₁ p z + covDeltaGammaDeriv G H x v₂ p z := by
+  unfold covDeltaGammaDeriv
+  rw [christoffelClosedOp_add_fst G x v₁ v₂]
+  simp only [map_add, ContinuousLinearMap.add_apply, christoffelDerivOp_apply,
+    christoffelDeriv_add_fst hGd hHd hGsymm hHsymm]
+  abel
+
+end RicciFlow
