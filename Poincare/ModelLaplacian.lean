@@ -14566,3 +14566,30 @@ theorem sum_sum_covTensor2SndDeriv_eq_curvedLap
       ((Module.finBasis ℝ E).coord i)))]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The double divergence in covariant-derivative form**: unfolding the covariant
+one-form derivative, `divdiv H = Σⱼ [(D(div H)_x ♯bʲ) bⱼ − (div H)_x(Γ_{♯bʲ}bⱼ)]`.
+The `div div H` analogue of `curvedLap`'s Hessian form — the explicit shape whose
+basis traces expand (via the varying raise `♯ʸ` in both the outer divergence and the
+inner one) into the `∇²H` blocks `T1`,`T2` of sub-identity (a). -/
+theorem tensorDoubleDivergence_covTensor1Deriv_form
+    (G H : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E) :
+    tensorDoubleDivergence G H x
+      = ∑ j, ((fderiv ℝ (tensorDivCLM G H) x
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j)))) ((Module.finBasis ℝ E) j)
+          - tensorDivCLM G H x (christoffelClosedOp G x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j))) ((Module.finBasis ℝ E) j))) := by
+  rw [tensorDoubleDivergence_eq]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rfl
+
+end RicciFlow
