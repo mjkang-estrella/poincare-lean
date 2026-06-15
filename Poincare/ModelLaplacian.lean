@@ -21350,3 +21350,24 @@ theorem round_sphere_scalar_increasing
   nlinarith [mul_nonneg (mul_nonneg hc.le ht) hR.le]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci tensor is constant along the self-similar flow**: for an Einstein metric `Ric = c₀·g`,
+the Ricci of the shrinking metric `(1−2c₀t)·g` is still `c₀·g(0)`, independent of `t`. So
+`∂g/∂t = −2 Ric = −2c₀·g(0)` is constant and `g(t) = (1−2c₀t)g(0)` evolves linearly — the exact
+self-similar (soliton) structure of the round-sphere Ricci flow (roadmap item 3). -/
+theorem round_sphere_ricci_const
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c₀ : ℝ} (t : ℝ)
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hinv : ∀ y : E, (G y).IsInvertible) (hfac : 1 - 2 * c₀ * t ≠ 0)
+    (hEin : ∀ p q : E, coordRicci G x p q = c₀ * G x p q) (p q : E) :
+    coordRicci (fun y ↦ (1 - 2 * c₀ * t) • G y) x p q = c₀ * G x p q := by
+  rw [coordRicci_smul_metric (1 - 2 * c₀ * t) hGd hinv hfac, hEin p q]
+
+end RicciFlow
