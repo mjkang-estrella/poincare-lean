@@ -17931,3 +17931,29 @@ theorem fderiv_covTensor2Deriv_pure_block_antisymm
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Product rule for a Christoffel-correction term**:
+`D_v(y ↦ H y (K y) q) = H x (D_v K) q + (D_v H)(K x) q`, the Leibniz expansion of the scalar
+field `y ↦ H y (K y) q` (one tensor slot fed the `y`-dependent vector `K y`), via
+`HasFDerivAt.clm_apply` and the dual evaluation bridge. The differentiation rule for the surviving
+Christoffel corrections in the `(0,2)`-tensor Ricci identity (roadmap item 3). -/
+theorem fderiv_tensor_corr_field
+    {H : E → E →L[ℝ] E →L[ℝ] ℝ} {K : E → E} {x : E}
+    (hH : DifferentiableAt ℝ H x) (hK : DifferentiableAt ℝ K x) (v q : E) :
+    (fderiv ℝ (fun y ↦ H y (K y) q) x) v
+      = H x (fderiv ℝ K x v) q + (fderiv ℝ H x v) (K x) q := by
+  have hB : HasFDerivAt (fun y ↦ H y (K y))
+      ((H x).comp (fderiv ℝ K x) + (fderiv ℝ H x).flip (K x)) x :=
+    hH.hasFDerivAt.clm_apply hK.hasFDerivAt
+  have hBd : DifferentiableAt ℝ (fun y ↦ H y (K y)) x := hB.differentiableAt
+  rw [fderiv_dual_eval_apply hBd v q, hB.fderiv]
+  simp [ContinuousLinearMap.flip_apply]
+
+end RicciFlow
