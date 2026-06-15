@@ -11174,4 +11174,28 @@ theorem deltaGammaDivergenceTrace_eq_double_g_pairing
   refine Finset.sum_congr rfl fun j _ ↦ ?_
   exact deltaGammaDivergence_eq_g_pairing hGsymm hinv _ _
 
+/--
+**THE RAISED `δΓ`-TRACE DERIVATIVE AS A DOUBLE METRIC CONTRACTION**: the
+companion to `deltaGammaDivergenceTrace_eq_double_g_pairing` for the trace
+term — `Σⱼ Σᵢ G(∇_{♯bʲ} δΓ(bᵢ, bⱼ), ♯bⁱ)`, here the differentiation slot is
+the *raised* index `♯bʲ` and the inner trace runs over the first tensor
+slot `bᵢ ↔ ♯bⁱ`. With both halves of the contracted Lichnerowicz split now
+in matched double-pairing form, the keystone reduces to term-by-term
+recognition under the second-derivative Bochner expansion. -/
+theorem deltaGammaContractionDerivTrace_eq_double_g_pairing
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ p q : E, G x p q = G x q p)
+    (hinv : (G x).IsInvertible) :
+    deltaGammaContractionDerivTrace G H x
+      = ∑ j, ∑ i, G x (covDeltaGammaDeriv G H x
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j)))
+            ((Module.finBasis ℝ E) i)
+            ((Module.finBasis ℝ E) j))
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i))) := by
+  unfold deltaGammaContractionDerivTrace
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  exact deltaGammaContractionDeriv_eq_g_pairing hGsymm hinv _ _
+
 end RicciFlow
