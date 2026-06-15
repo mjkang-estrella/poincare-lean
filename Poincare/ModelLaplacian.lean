@@ -21638,3 +21638,20 @@ theorem round_sphere_pinching_gap_zero
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Extinction time × initial scalar curvature is `n/2`**: `T·R₀ = n/2` for the round sphere
+(`T = 1/(2c)`, `R₀ = c·n`). A dimension-only universal constant independent of the radius — the
+scale-invariant content of the round-sphere singularity (roadmap item 3). -/
+theorem round_sphere_extinction_times_scalar
+    (c n : ℝ) (hc : c ≠ 0) :
+    (1 / (2 * c)) * (c * n) = n / 2 := by
+  field_simp
+
+end RicciFlow
