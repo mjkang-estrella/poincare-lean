@@ -21422,3 +21422,21 @@ theorem round_sphere_scalar_blowup
   exact houter.comp hinner
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Positive scalar curvature is preserved along the shrinking round sphere**:
+`R(t) = R₀/(1−2ct) > 0` for `R₀ > 0`, `c > 0`, `t < 1/(2c)`. The positive-curvature condition
+(Hamilton's hypothesis) is maintained throughout the flow up to the singularity (roadmap item 3). -/
+theorem round_sphere_scalar_pos_along_flow
+    (R₀ c t : ℝ) (hR : 0 < R₀) (hc : 0 < c) (htT : t < 1 / (2 * c)) :
+    0 < R₀ / (1 - 2 * c * t) := by
+  have hpos : 0 < 1 - 2 * c * t := einstein_homothety_pos c t hc htT
+  positivity
+
+end RicciFlow
