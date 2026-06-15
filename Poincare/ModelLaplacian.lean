@@ -18890,3 +18890,27 @@ theorem ricciDeriv_extract_connectionLaplacian
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci-flow normalization of the rough-Laplacian coefficient**: in the Ricci-flow direction
+`H = −2 K` the `−½ Δ_∇` term of the extracted `δRic` becomes `+Δ_∇ K`, i.e.
+`−½ Δ_∇(−2 K)(u,w) = Δ_∇ K(u,w)`. So `∂Ric/∂t` carries the rough Laplacian `+Δ_∇ Ric` — the diffusion
+term of Hamilton's tensor Ricci evolution (roadmap item 3). -/
+theorem neg_half_connectionLaplacian_neg_two
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (u w : E) :
+    -(1 / 2 : ℝ) * connectionLaplacian G (fun y ↦ (-2 : ℝ) • H y) x u w
+      = connectionLaplacian G H x u w := by
+  rw [connectionLaplacian_smul_field hHd hH2 hΓd (-2) u w]
+  ring
+
+end RicciFlow
