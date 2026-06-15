@@ -21676,3 +21676,21 @@ theorem round_sphere_ricci_flow_neg_def
   nlinarith [mul_pos hc (hGpos v hv)]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `|Ric|²/R² = 1/n` ratio is preserved along the flow**: for the round sphere
+`|Ric|²(t)/R(t)² = 1/n` for all `t`, since both `R` and `|Ric|²` shrink by the same homothety powers.
+The Einstein normalization is exactly maintained throughout the shrinking flow (roadmap item 3). -/
+theorem round_sphere_ricci_scalar_ratio_const
+    (R₀ n c t : ℝ) (hfac : 1 - 2 * c * t ≠ 0) (hR0 : R₀ ≠ 0) (hn : n ≠ 0) :
+    (R₀ ^ 2 / n / (1 - 2 * c * t) ^ 2) / (R₀ / (1 - 2 * c * t)) ^ 2 = 1 / n := by
+  rw [div_pow]
+  field_simp
+
+end RicciFlow
