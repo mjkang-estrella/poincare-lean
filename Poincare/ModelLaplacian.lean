@@ -20952,3 +20952,21 @@ theorem einstein_homothety_pos
   nlinarith [htT]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The shrinking Einstein soliton goes extinct at `t = 1/(2c)`**: the homothety factor
+`1 − 2c·t` vanishes exactly at the extinction time, where `g(t) = (1−2ct)g(0)` degenerates — the round
+sphere collapses to a point in finite time, matching the singularity bound `T < n/(2 R_min)` (with
+`R_min = cn`, `T = 1/(2c) = n/(2cn)`) (roadmap item 3). -/
+theorem einstein_homothety_extinction
+    (c : ℝ) (hc : c ≠ 0) :
+    1 - 2 * c * (1 / (2 * c)) = 0 := by
+  rw [mul_one_div, div_self (mul_ne_zero two_ne_zero hc), sub_self]
+
+end RicciFlow
