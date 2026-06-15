@@ -19853,3 +19853,33 @@ theorem coordRiemann_double_antisymm
     coordRiemann_antisymm_pair_right hGC2 hGsymm hinv hdiff w u a b, neg_neg]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The sectional curvature numerator**: `K₀(u,w) = Rm(u,w,w,u)`, the numerator of the sectional
+curvature of the plane spanned by `u, w` (roadmap item 3). -/
+noncomputable def sectionalNum (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x u w : E) : ℝ :=
+  coordRiemann G x u w w u
+
+/-- **The sectional curvature numerator is symmetric in the plane**:
+`K₀(u,w) = K₀(w,u)`, by the Riemann block symmetry — the sectional curvature depends only on the
+plane, not the order of the spanning vectors (roadmap item 3). -/
+theorem sectionalNum_symm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ v : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v) x)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u w : E) :
+    sectionalNum G x u w = sectionalNum G x w u := by
+  unfold sectionalNum
+  exact coordRiemann_block_symm hGd hGC2 hGsymm hinv hΓd hdiff u w w u
+
+end RicciFlow
