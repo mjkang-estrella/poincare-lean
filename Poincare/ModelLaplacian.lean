@@ -20317,3 +20317,20 @@ theorem coordRicciNormSq_eq_zero_of_ricci_flat
   exact Finset.sum_eq_zero (fun j _ ↦ hRic _ _)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Flat space has zero sectional curvature**: `K₀ = 0` for a constant metric, since the Riemann
+tensor vanishes (roadmap item 3). -/
+theorem sectionalNum_const_eq_zero
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ) (x u w : E) :
+    sectionalNum (fun _ : E ↦ G₀) x u w = 0 := by
+  unfold sectionalNum
+  exact coordRiemann_const_eq_zero G₀ x u w w u
+
+end RicciFlow
