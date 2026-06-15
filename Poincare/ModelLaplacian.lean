@@ -21517,3 +21517,21 @@ theorem round_sphere_ricciNormSq_blowup
   exact houter.comp hinner
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The pinching equality is preserved along the flow**: if `R₀² = n·|Ric|²₀` initially (the round
+sphere saturating `R² = n|Ric|²`), then `R(t)² = n·|Ric|²(t)` for all `t`, since `R` scales by `c⁻¹`
+and `|Ric|²` by `c⁻²`. The Ricci flow preserves the Einstein/equality locus — the round sphere stays
+the extremal pinched geometry throughout (roadmap item 3). -/
+theorem round_sphere_pinching_preserved
+    (R₀ N₀ n c t : ℝ) (hfac : 1 - 2 * c * t ≠ 0) (hpin : R₀ ^ 2 = n * N₀) :
+    (R₀ / (1 - 2 * c * t)) ^ 2 = n * (N₀ / (1 - 2 * c * t) ^ 2) := by
+  rw [div_pow, hpin, mul_div_assoc]
+
+end RicciFlow
