@@ -21170,3 +21170,33 @@ theorem christoffelClosedOp_smul_metric
   simp [map_smul, smul_smul, mul_inv_cancel₀ hc, one_smul]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curvature operator is invariant under constant metric scaling**:
+`coordCurvatureOp (c·g) = coordCurvatureOp g` for `c ≠ 0`, since the Christoffel symbols are
+scale-invariant and curvature is built from them. So the Riemann curvature of a self-similarly
+shrinking round sphere is unchanged in shape along the flow (roadmap item 3). -/
+theorem coordCurvatureOp_smul_metric
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ)
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hinv : ∀ y : E, (G y).IsInvertible) (hc : c ≠ 0) (u w : E) :
+    coordCurvatureOp (fun y ↦ c • G y) x u w = coordCurvatureOp G x u w := by
+  have hfield : ∀ p : E,
+      (fun y ↦ christoffelClosedOp (fun z ↦ c • G z) y p)
+        = (fun y ↦ christoffelClosedOp G y p) := by
+    intro p; funext y; ext v
+    exact christoffelClosedOp_smul_metric c (hGd y) (hinv y) hc p v
+  have hpt : ∀ p : E,
+      christoffelClosedOp (fun y ↦ c • G y) x p = christoffelClosedOp G x p := by
+    intro p; ext v
+    exact christoffelClosedOp_smul_metric c (hGd x) (hinv x) hc p v
+  unfold coordCurvatureOp
+  rw [hfield w, hfield u, hpt u, hpt w]
+
+end RicciFlow
