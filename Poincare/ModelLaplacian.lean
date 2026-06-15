@@ -17812,3 +17812,30 @@ theorem covTensor2SndDeriv_antisymm
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Scalar evaluation of a `C²` tensor is `C²`**: if `H` is twice continuously
+differentiable at `x`, so is the scalar field `z ↦ H z p q`, since evaluation at fixed
+`p, q` is a continuous-linear map. The smoothness input for the Clairaut symmetry step in
+the `(0,2)`-tensor Ricci identity (roadmap item 3, curvature-commutation frontier). -/
+theorem contDiffAt_tensor_eval
+    {H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHC2 : ContDiffAt ℝ 2 H x) (p q : E) :
+    ContDiffAt ℝ 2 (fun z ↦ H z p q) x := by
+  set L : (E →L[ℝ] E →L[ℝ] ℝ) →L[ℝ] ℝ :=
+    (ContinuousLinearMap.apply ℝ ℝ q).comp
+      (ContinuousLinearMap.apply ℝ (E →L[ℝ] ℝ) p) with hLdef
+  have hcomp : (fun z ↦ H z p q) = ⇑L ∘ H := by
+    funext z
+    simp only [hLdef, Function.comp_apply, ContinuousLinearMap.comp_apply,
+      ContinuousLinearMap.apply_apply]
+  rw [hcomp]
+  exact L.contDiff.comp_contDiffAt x hHC2
+
+end RicciFlow
