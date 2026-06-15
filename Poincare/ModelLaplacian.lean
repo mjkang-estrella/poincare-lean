@@ -13681,3 +13681,36 @@ theorem covTensor2SndDeriv_add_v'
   abel
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The second covariant derivative is additive in its inner direction**:
+`covTensor2SndDeriv v' (v₁+v₂) p q = covTensor2SndDeriv v' v₁ p q + covTensor2SndDeriv v' v₂ p q`.
+The flat term splits via `covTensor2Deriv` direction additivity and `fderiv_fun_add`;
+the corrections via `covTensor2Deriv` direction/slot linearity. -/
+theorem covTensor2SndDeriv_add_v
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (v' v₁ v₂ p q : E) :
+    covTensor2SndDeriv G H x v' (v₁ + v₂) p q
+      = covTensor2SndDeriv G H x v' v₁ p q
+        + covTensor2SndDeriv G H x v' v₂ p q := by
+  unfold covTensor2SndDeriv
+  have hfun : (fun y ↦ covTensor2Deriv G H y (v₁ + v₂) p q)
+      = fun y ↦ covTensor2Deriv G H y v₁ p q + covTensor2Deriv G H y v₂ p q := by
+    funext y
+    exact covTensor2Deriv_add_dir v₁ v₂ p q
+  rw [hfun, fderiv_fun_add
+      (differentiableAt_covTensor2Deriv_family hHd hH2 hΓd v₁ p q)
+      (differentiableAt_covTensor2Deriv_family hHd hH2 hΓd v₂ p q)]
+  simp only [ContinuousLinearMap.add_apply, map_add, covTensor2Deriv_add_dir]
+  abel
+
+end RicciFlow
