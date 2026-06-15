@@ -13241,3 +13241,28 @@ theorem covDeltaGammaDeriv_add_v
   abel
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`∇δΓ` is homogeneous in its differentiation slot**:
+`covDeltaGammaDeriv (c•v) p z = c • covDeltaGammaDeriv v p z`. Companion to
+`covDeltaGammaDeriv_add_v`, completing the differentiation-slot linearity. -/
+theorem covDeltaGammaDeriv_smul_v
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x) (hHd : DifferentiableAt ℝ H x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (c : ℝ) (v p z : E) :
+    covDeltaGammaDeriv G H x (c • v) p z
+      = c • covDeltaGammaDeriv G H x v p z := by
+  unfold covDeltaGammaDeriv
+  rw [christoffelClosedOp_smul_fst G x c v]
+  simp only [map_smul, ContinuousLinearMap.smul_apply, christoffelDerivOp_apply,
+    christoffelDeriv_smul_fst hGd hHd hGsymm hHsymm, smul_sub, smul_add, smul_eq_mul]
+
+end RicciFlow
