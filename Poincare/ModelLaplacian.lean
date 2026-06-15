@@ -17451,3 +17451,38 @@ theorem connectionLaplacian_symm
   exact covTensor2SndDeriv_symm hHd hHsymm _ _ p q
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of the connection Laplacian is the curved Laplacian of the trace**:
+`Σⱼ Δ_∇ H(♯bʲ, bⱼ) = Δ_g(tr_g H)`. Tracing the rough Laplacian over its tensor slots reduces
+(by `sum_sum_covTensor2SndDeriv_eq_curvedLap`) to the curved Laplacian of `tr_g H`. The
+connection Laplacian's trace is the scalar Laplacian — item 3 ↔ item 1 consistency. -/
+theorem sum_connectionLaplacian_eq_curvedLaplacian
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (hTr2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x) :
+    (∑ j, connectionLaplacian G H x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+      = curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+          (tensorMetricTrace G H) x := by
+  unfold connectionLaplacian
+  rw [Finset.sum_comm]
+  exact sum_sum_covTensor2SndDeriv_eq_curvedLap hGd hGsymm hinv hHd hH2 hΓd
+    hHsymm hTr2
+
+end RicciFlow
