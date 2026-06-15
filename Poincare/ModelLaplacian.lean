@@ -17062,3 +17062,70 @@ theorem deltaGammaDivergence_lichnerowicz_form
       ((Module.finBasis ℝ E).coord i)))
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ`-divergence with the Lichnerowicz `fderiv` distributed**: pulling the constant
+`½` and the sum/difference through the basepoint derivative, each `∇H` derivative ready for
+the `fderiv_covTensor2Deriv_eq` `∇²H` substitution (roadmap item 3). -/
+theorem deltaGammaDivergence_lichnerowicz_split
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {u : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hVd : DifferentiableAt ℝ (fun y ↦ christoffelDerivOp G H y u) x)
+    (w : E) :
+    deltaGammaDivergence G H x u w
+      = ∑ i, ((1 / 2 : ℝ) *
+            ((fderiv ℝ (fun y ↦ covTensor2Deriv G H y u w
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)))) x) ((Module.finBasis ℝ E) i)
+              + (fderiv ℝ (fun y ↦ covTensor2Deriv G H y w u
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)))) x) ((Module.finBasis ℝ E) i)
+              - (fderiv ℝ (fun y ↦ covTensor2Deriv G H y
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i))) u w) x) ((Module.finBasis ℝ E) i))
+          - G x (christoffelDerivOp G H x
+              (christoffelClosedOp G x ((Module.finBasis ℝ E) i) u) w)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))
+          - G x (christoffelDerivOp G H x u
+              (christoffelClosedOp G x ((Module.finBasis ℝ E) i) w))
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))
+          - G x (christoffelDerivOp G H x u w)
+              (christoffelClosedOp G x ((Module.finBasis ℝ E) i)
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i))))) := by
+  rw [deltaGammaDivergence_lichnerowicz_form hGd hGsymm hinv hHsymm hVd w]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  set ρ := (G x).inverse (LinearMap.toContinuousLinearMap
+    ((Module.finBasis ℝ E).coord i)) with hρ
+  have hA : DifferentiableAt ℝ (fun y ↦ covTensor2Deriv G H y u w ρ) x :=
+    differentiableAt_covTensor2Deriv_family hHd hH2 hΓd u w ρ
+  have hB : DifferentiableAt ℝ (fun y ↦ covTensor2Deriv G H y w u ρ) x :=
+    differentiableAt_covTensor2Deriv_family hHd hH2 hΓd w u ρ
+  have hC : DifferentiableAt ℝ (fun y ↦ covTensor2Deriv G H y ρ u w) x :=
+    differentiableAt_covTensor2Deriv_family hHd hH2 hΓd ρ u w
+  have hAB : DifferentiableAt ℝ
+      (fun y ↦ covTensor2Deriv G H y u w ρ + covTensor2Deriv G H y w u ρ) x :=
+    hA.add hB
+  have hABC : DifferentiableAt ℝ
+      (fun y ↦ covTensor2Deriv G H y u w ρ + covTensor2Deriv G H y w u ρ
+        - covTensor2Deriv G H y ρ u w) x := hAB.sub hC
+  rw [fderiv_const_mul hABC (1 / 2),
+    ContinuousLinearMap.smul_apply, smul_eq_mul,
+    fderiv_fun_sub hAB hC, ContinuousLinearMap.sub_apply,
+    fderiv_fun_add hA hB, ContinuousLinearMap.add_apply]
+
+end RicciFlow
