@@ -21390,3 +21390,35 @@ theorem round_sphere_scalar_monotone
   gcongr
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative Filter Topology
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The scalar curvature blows up at the singularity**: along the shrinking round sphere,
+`R(t) = R₀/(1−2ct) → +∞` as `t → (1/(2c))⁻`. The curvature becomes unbounded in finite time — the
+defining feature of the finite-time Ricci-flow singularity that the Poincaré program must analyze via
+surgery (roadmap item 3). -/
+theorem round_sphere_scalar_blowup
+    (R₀ c : ℝ) (hR : 0 < R₀) (hc : 0 < c) :
+    Tendsto (fun t ↦ R₀ / (1 - 2 * c * t)) (𝓝[<] (1 / (2 * c))) atTop := by
+  have hval : (1 : ℝ) - 2 * c * (1 / (2 * c)) = 0 := by
+    rw [mul_one_div, div_self (by positivity : (0:ℝ) < 2 * c).ne', sub_self]
+  have hcont : Tendsto (fun t : ℝ ↦ 1 - 2 * c * t) (𝓝[<] (1 / (2 * c))) (𝓝 0) := by
+    rw [← hval]
+    exact ((continuous_const.sub (continuous_const.mul continuous_id)).tendsto
+      _).mono_left nhdsWithin_le_nhds
+  have hpos : ∀ᶠ t in 𝓝[<] (1 / (2 * c)), 1 - 2 * c * t ∈ Set.Ioi (0 : ℝ) := by
+    filter_upwards [self_mem_nhdsWithin] with t ht
+    exact einstein_homothety_pos c t hc ht
+  have hinner : Tendsto (fun t ↦ 1 - 2 * c * t) (𝓝[<] (1 / (2 * c))) (𝓝[>] 0) :=
+    tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ hcont hpos
+  have houter : Tendsto (fun s ↦ R₀ / s) (𝓝[>] (0 : ℝ)) atTop := by
+    simp_rw [div_eq_mul_inv]
+    exact Tendsto.const_mul_atTop hR tendsto_inv_nhdsGT_zero
+  exact houter.comp hinner
+
+end RicciFlow
