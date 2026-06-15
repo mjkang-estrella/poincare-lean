@@ -13858,3 +13858,32 @@ theorem curvedLap_tensorMetricTrace_hessian_form
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `H`-slot metric trace of `∇H`, as a field, is `d(tr_g H)`**:
+`(fun y ↦ Σⱼ (∇_v H)_y(♯bʲ, bⱼ)) = (fun y ↦ (D(tr_g H))_y v)`. The field-level
+(`funext`) form of `sum_covTensor2Deriv_Hslot_trace`, needed to relate the second
+derivative of `tr_g H` to `∇²H` in the trace-commute. -/
+theorem sum_covTensor2Deriv_Hslot_trace_field
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (v : E) :
+    (fun y ↦ ∑ j, covTensor2Deriv G H y v
+        ((G y).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+      = fun y ↦ (fderiv ℝ (tensorMetricTrace G H) y) v := by
+  funext y
+  exact sum_covTensor2Deriv_Hslot_trace (hGd y) hGsymm hinv (hHd y) hHsymm v
+
+end RicciFlow
