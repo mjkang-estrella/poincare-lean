@@ -20467,3 +20467,45 @@ theorem coordScalar_of_einstein
   rw [hendo, map_smul, LinearMap.trace_id, smul_eq_mul]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The constant-curvature `(0,4)` tensor**: `κ·(g(u,a)g(w,b) − g(u,b)g(w,a))`, the Riemann tensor
+of a space form of sectional curvature `κ` (e.g. the round sphere with `κ > 0`, the Poincaré target)
+(roadmap item 3). -/
+noncomputable def constCurvatureForm (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E)
+    (κ : ℝ) (u w a b : E) : ℝ :=
+  κ * (G x u a * G x w b - G x u b * G x w a)
+
+/-- **The constant-curvature tensor is antisymmetric in its first pair**:
+`κForm(u,w,a,b) = −κForm(w,u,a,b)`, a Riemann symmetry it shares (roadmap item 3). -/
+theorem constCurvatureForm_antisymm_left
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (κ : ℝ) (u w a b : E) :
+    constCurvatureForm G x κ u w a b = -constCurvatureForm G x κ w u a b := by
+  unfold constCurvatureForm
+  ring
+
+/-- **The constant-curvature tensor is antisymmetric in its last pair**:
+`κForm(u,w,a,b) = −κForm(u,w,b,a)` (roadmap item 3). -/
+theorem constCurvatureForm_antisymm_right
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (κ : ℝ) (u w a b : E) :
+    constCurvatureForm G x κ u w a b = -constCurvatureForm G x κ u w b a := by
+  unfold constCurvatureForm
+  ring
+
+/-- **The constant-curvature tensor has the block symmetry**:
+`κForm(u,w,a,b) = κForm(a,b,u,w)`, using symmetry of the metric (roadmap item 3). -/
+theorem constCurvatureForm_block_symm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ v w : E, G x v w = G x w v) (κ : ℝ) (u w a b : E) :
+    constCurvatureForm G x κ u w a b = constCurvatureForm G x κ a b u w := by
+  unfold constCurvatureForm
+  rw [hGsymm u a, hGsymm w b, hGsymm u b, hGsymm w a]
+  ring
+
+end RicciFlow
