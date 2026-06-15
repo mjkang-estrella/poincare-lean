@@ -15736,3 +15736,37 @@ theorem tensorDivOneForm_coordRicciForm_field
   exact tensorDivOneForm_coordRicciForm hdiffΓ (hdd y) (hKd y) w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The tensor divergence of Ricci is half the scalar-curvature gradient**:
+`(div Ric)(w) = ½ (dR)(w)`. Composing the divergence bridge
+`tensorDivOneForm_coordRicciForm` (`div Ric = ricciDivergence`) with the
+twice-contracted Bianchi identity in gradient form
+`ricciDivergence_eq_half_fderiv_scalar` (`ricciDivergence = ½ dR`). The contracted
+Bianchi identity expressed through the abstract `(0,2)`-tensor divergence machinery —
+the entry to `tensorDoubleDivergence(Ric) = ½ Δ_g R`. -/
+theorem tensorDivOneForm_coordRicciForm_eq_half_grad
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hsymΓ : ∀ p : E, IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) x)
+    (hKd : DifferentiableAt ℝ (fun y ↦ coordRicciForm G y (hdiffΓ y)) x)
+    (w : E) :
+    tensorDivOneForm G (fun y ↦ coordRicciForm G y (hdiffΓ y)) x w
+      = (1 / 2 : ℝ) * (fderiv ℝ (fun y ↦ coordScalar G y) x) w := by
+  rw [tensorDivOneForm_coordRicciForm hdiffΓ hdd hKd w,
+    ricciDivergence_eq_half_fderiv_scalar hGC2 hGsymm hinv hdiffΓ hdd hsymΓ w]
+
+end RicciFlow
