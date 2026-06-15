@@ -16186,3 +16186,30 @@ theorem ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian'
     (differentiableAt_fderiv_tensorMetricTrace_neg_two_coordRicciForm hdiffΓ hφ) hφ
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci divergence form is differentiable** (discharges `hdivd`): the bundled
+divergence one-form `tensorDivCLM G (Ric)` is differentiable at `x` whenever the Ricci
+field and its gradient are, by `differentiableAt_tensorDivCLM`. Reduces the `hdivd`
+hypothesis of the `hBianchi` identity to the Ricci field's first and second
+differentiability. -/
+theorem differentiableAt_tensorDivCLM_coordRicciForm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hKx : DifferentiableAt ℝ (fun z ↦ coordRicciForm G z (hdiffΓ z)) x)
+    (hRic2 : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ coordRicciForm G z (hdiffΓ z)) y) x) :
+    DifferentiableAt ℝ (tensorDivCLM G (fun z ↦ coordRicciForm G z (hdiffΓ z))) x :=
+  differentiableAt_tensorDivCLM hGd hGsymm hinv hKx hRic2 (fun a ↦ hdiffΓ x a)
+
+end RicciFlow
