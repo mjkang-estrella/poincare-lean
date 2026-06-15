@@ -11733,3 +11733,25 @@ theorem divergence_deltaGammaInnerTraceCLM_unfold {G H : E → E →L[ℝ] E →
   rw [deltaGammaInnerTraceCLM_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The raised-covector field is differentiable**: `y ↦ (G y)⁻¹ φ` is
+differentiable wherever `G` is differentiable and invertible — the immediate
+differentiability consequence of `hasFDerivAt_inverse_raise`. The building block
+for differentiating the varying raised index `♯bⁱ = (G y)⁻¹ bⁱ` inside the inner
+`δΓ`-trace field, the prerequisite the keystone commutation needs. -/
+theorem differentiableAt_inverse_raise
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hG : DifferentiableAt ℝ G x)
+    (hev : ∀ᶠ y in nhds x, (G y).IsInvertible)
+    (φ : E →L[ℝ] ℝ) :
+    DifferentiableAt ℝ (fun y ↦ (G y).inverse φ) x :=
+  (hasFDerivAt_inverse_raise hG hev φ).differentiableAt
+
+end RicciFlow
