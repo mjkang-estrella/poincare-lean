@@ -16112,3 +16112,26 @@ theorem differentiableAt_fderiv_of_contDiff_two
     (by norm_num)).differentiableAt
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of `−2 Ric` has differentiable gradient field**: discharges the
+`hTr2` hypothesis of the `hBianchi` identity. Via the field trace identity
+`tr_g(−2 Ric) = −2R` and the `C²`-gradient lemma applied to the scalar `−2R`. -/
+theorem differentiableAt_fderiv_tensorMetricTrace_neg_two_coordRicciForm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ (y : E) (u : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z u) y)
+    (hφ : ContDiff ℝ 2 (fun z ↦ coordScalar G z)) :
+    DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (tensorMetricTrace G
+        (fun z ↦ (-2 : ℝ) • coordRicciForm G z (hdiff z))) y) x := by
+  rw [tensorMetricTrace_neg_two_coordRicciForm_field hdiff]
+  exact differentiableAt_fderiv_of_contDiff_two (hφ.const_smul (-2 : ℝ))
+
+end RicciFlow
