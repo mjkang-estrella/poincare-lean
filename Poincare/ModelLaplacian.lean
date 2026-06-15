@@ -15055,3 +15055,34 @@ theorem covTensor2SndDeriv_smul_q
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The second covariant derivative is homogeneous in its first tensor slot**:
+`covTensor2SndDeriv v' v (c•p) q = c * covTensor2SndDeriv v' v p q`. Completes the
+H-slot bilinearity suite (`add_p`, `add_q`, `smul_p`, `smul_q`) for the
+`½(T1+T2) = div div H` trace swaps — sub-identity (a). -/
+theorem covTensor2SndDeriv_smul_p
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (c : ℝ) (v' v p q : E) :
+    covTensor2SndDeriv G H x v' v (c • p) q
+      = c * covTensor2SndDeriv G H x v' v p q := by
+  unfold covTensor2SndDeriv
+  have hsplit : (fun y ↦ covTensor2Deriv G H y v (c • p) q)
+      = fun y ↦ c * covTensor2Deriv G H y v p q := by
+    funext y; rw [covTensor2Deriv_smul_left]
+  rw [hsplit, fderiv_const_mul
+    (differentiableAt_covTensor2Deriv_family hHd hH2 hΓd v p q) c]
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul, map_smul,
+    covTensor2Deriv_smul_left]
+  ring
+
+end RicciFlow
