@@ -14953,3 +14953,39 @@ theorem tensorDoubleDivergence_merged
   linarith [hmerge]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The second covariant derivative is additive in its second tensor slot**:
+`covTensor2SndDeriv v' v p (q₁+q₂) = covTensor2SndDeriv v' v p q₁
++ covTensor2SndDeriv v' v p q₂`. The flat term splits via `fderiv_fun_add` over the
+family differentiability; the Christoffel corrections via slot additivity and the
+connection's linearity. A bilinearity building block for the trace swaps reconciling
+`½(T1+T2)` with `div div H` in sub-identity (a). -/
+theorem covTensor2SndDeriv_add_q
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (v' v p q₁ q₂ : E) :
+    covTensor2SndDeriv G H x v' v p (q₁ + q₂)
+      = covTensor2SndDeriv G H x v' v p q₁
+        + covTensor2SndDeriv G H x v' v p q₂ := by
+  unfold covTensor2SndDeriv
+  have hsplit : (fun y ↦ covTensor2Deriv G H y v p (q₁ + q₂))
+      = fun y ↦ covTensor2Deriv G H y v p q₁ + covTensor2Deriv G H y v p q₂ := by
+    funext y; exact covTensor2Deriv_add_right v p q₁ q₂
+  rw [hsplit, fderiv_fun_add
+    (differentiableAt_covTensor2Deriv_family hHd hH2 hΓd v p q₁)
+    (differentiableAt_covTensor2Deriv_family hHd hH2 hΓd v p q₂)]
+  simp only [ContinuousLinearMap.add_apply]
+  rw [covTensor2Deriv_add_right, covTensor2Deriv_add_right,
+    map_add, covTensor2Deriv_add_right]
+  ring
+
+end RicciFlow
