@@ -19901,3 +19901,37 @@ theorem sectionalNum_self_eq_zero
   exact coordRiemann_self_pair_left u u u
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Riemann is additive in its first slot**:
+`Rm(u₁+u₂,w,a,b) = Rm(u₁,w,a,b) + Rm(u₂,w,a,b)` (roadmap item 3). -/
+theorem coordRiemann_add_slot1
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u₁ u₂ w a b : E) :
+    coordRiemann G x (u₁ + u₂) w a b
+      = coordRiemann G x u₁ w a b + coordRiemann G x u₂ w a b := by
+  unfold coordRiemann
+  rw [coordCurvatureOp_add_fst G hdiff, ContinuousLinearMap.add_apply, map_add,
+    ContinuousLinearMap.add_apply]
+
+/-- **Riemann is additive in its second slot**:
+`Rm(u,w₁+w₂,a,b) = Rm(u,w₁,a,b) + Rm(u,w₂,a,b)`. With the other three this makes `coordRiemann` a
+fully additive `(0,4)` tensor (roadmap item 3). -/
+theorem coordRiemann_add_slot2
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u w₁ w₂ a b : E) :
+    coordRiemann G x u (w₁ + w₂) a b
+      = coordRiemann G x u w₁ a b + coordRiemann G x u w₂ a b := by
+  unfold coordRiemann
+  rw [coordCurvatureOp_add_snd G hdiff, ContinuousLinearMap.add_apply, map_add,
+    ContinuousLinearMap.add_apply]
+
+end RicciFlow
