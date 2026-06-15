@@ -15806,3 +15806,49 @@ theorem tensorDivCLM_coordRicciForm_eq_half_grad_field
   simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The double divergence of the Ricci tensor is half the Laplacian of the scalar
+curvature**: `div div Ric = ½ Δ_g R`. Rewriting the inner divergence as the half-gradient
+field `½·dR` (`tensorDivCLM_coordRicciForm_eq_half_grad_field`), the scalar `½` factors out
+of each covariant one-form derivative (`covTensor1Deriv_smul`), and the resulting raised
+trace of the Hessian of `R` is `Δ_g R` (`metricTrace_covTensor1Deriv_fderiv`). The
+second-order contracted Bianchi identity through the `(0,2)`-tensor divergence machinery. -/
+theorem tensorDoubleDivergence_coordRicciForm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ (y : E) (p : E), DifferentiableAt ℝ
+      (fun z ↦ fderiv ℝ (fun z' ↦ christoffelClosedOp G z' p) z) y)
+    (hsymΓ : ∀ (y : E) (p : E), IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) y)
+    (hKd : ∀ y : E,
+      DifferentiableAt ℝ (fun z ↦ coordRicciForm G z (hdiffΓ z)) y)
+    (hRd2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (fun z ↦ coordScalar G z) y) x) :
+    tensorDoubleDivergence G (fun y ↦ coordRicciForm G y (hdiffΓ y)) x
+      = (1 / 2 : ℝ) * curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+          (fun z ↦ coordScalar G z) x := by
+  unfold tensorDoubleDivergence
+  rw [show tensorDivCLM G (fun y ↦ coordRicciForm G y (hdiffΓ y))
+        = (fun y ↦ (1 / 2 : ℝ) • fderiv ℝ (fun z ↦ coordScalar G z) y) from
+      tensorDivCLM_coordRicciForm_eq_half_grad_field hGC2 hGsymm hinv hdiffΓ hdd
+        hsymΓ hKd,
+    ← metricTrace_covTensor1Deriv_fderiv hGsymm hinv (fun z ↦ coordScalar G z),
+    Finset.mul_sum]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  exact covTensor1Deriv_smul G (fun y ↦ fderiv ℝ (fun z ↦ coordScalar G z) y)
+    hRd2 (1 / 2)
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord j))) ((Module.finBasis ℝ E) j)
+
+end RicciFlow
