@@ -16691,3 +16691,53 @@ theorem ricciDeriv_eq_div_sub_half_hessian
       hTr2 u w]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The untraced Ricci variation, fully in `fderiv`/Hessian form**: assembling the
+divergence `fderiv` expansion with the simplified trace term,
+`δRic(u,w) = Σᵢ [ D_{bᵢ}(G(δΓ(u,w),♯bⁱ)) − three Christoffel corrections ]
+− ½ (∇²(tr_g H))(u,w)`. The fully reduced untraced contracted Lichnerowicz formula whose
+`fderiv`-of-pairing term remains for the metric-compatibility `∂♯` split toward the `∇²H`
+Bochner form (roadmap item 3). -/
+theorem ricciDeriv_fderiv_hessian_form
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {u : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (hTr2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x)
+    (hΓsymm : ∀ a b : E,
+      christoffelClosedOp G x a b = christoffelClosedOp G x b a)
+    (w : E) :
+    ricciDeriv G H x u w
+      = (∑ i, ((fderiv ℝ (fun y ↦ G y (christoffelDerivOp G H y u w)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))) x) ((Module.finBasis ℝ E) i)
+            - G x (christoffelDerivOp G H x
+                (christoffelClosedOp G x ((Module.finBasis ℝ E) i) u) w)
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)))
+            - G x (christoffelDerivOp G H x u
+                (christoffelClosedOp G x ((Module.finBasis ℝ E) i) w))
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)))
+            - G x (christoffelDerivOp G H x u w)
+                (christoffelClosedOp G x ((Module.finBasis ℝ E) i)
+                  ((G x).inverse (LinearMap.toContinuousLinearMap
+                    ((Module.finBasis ℝ E).coord i))))))
+        - (1 / 2 : ℝ) * covTensor1Deriv G
+            (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x u w := by
+  rw [ricciDeriv_eq_div_sub_half_hessian hGd hGsymm hinv hHd hHsymm hVd hTr2
+      hΓsymm u w,
+    deltaGammaDivergence_fderiv_form (hGd x) hGsymm hinv (hVd u) w]
+
+end RicciFlow
