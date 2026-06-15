@@ -18002,3 +18002,37 @@ theorem fderiv_tensor_corr_field'
   rw [fderiv_tensor_eval1_apply hH v p]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The flat derivative of `∇H` splits into its three blocks**: differentiating
+`covTensor2Deriv G H y v p q = (D_v H)(p,q) − H(Γ_v p, q) − H(p, Γ_v q)` in direction `v'`
+distributes over the subtraction —
+`D_{v'}(∇H)(v,p,q) = D_{v'}((D_v H)(p,q)) − D_{v'}(H(Γ_v p, q)) − D_{v'}(H(p, Γ_v q))`. The
+bookkeeping step that feeds the pure-block Clairaut cancellation and the two correction product
+rules into the `(0,2)`-tensor Ricci identity (roadmap item 3). -/
+theorem fderiv_covTensor2Deriv_flat_split
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (v' v p q : E)
+    (hpure : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ H y v) p q) x)
+    (hc1 : DifferentiableAt ℝ
+      (fun y ↦ H y (christoffelClosedOp G y v p) q) x)
+    (hc2 : DifferentiableAt ℝ
+      (fun y ↦ H y p (christoffelClosedOp G y v q)) x) :
+    (fderiv ℝ (fun y ↦ covTensor2Deriv G H y v p q) x) v'
+      = (fderiv ℝ (fun y ↦ (fderiv ℝ H y v) p q) x) v'
+        - (fderiv ℝ (fun y ↦ H y (christoffelClosedOp G y v p) q) x) v'
+        - (fderiv ℝ (fun y ↦ H y p (christoffelClosedOp G y v q)) x) v' := by
+  have hd : HasFDerivAt (fun y ↦ covTensor2Deriv G H y v p q)
+      ((fderiv ℝ (fun y ↦ (fderiv ℝ H y v) p q) x
+          - fderiv ℝ (fun y ↦ H y (christoffelClosedOp G y v p) q) x)
+        - fderiv ℝ (fun y ↦ H y p (christoffelClosedOp G y v q)) x) x :=
+    (hpure.hasFDerivAt.sub hc1.hasFDerivAt).sub hc2.hasFDerivAt
+  rw [hd.fderiv]
+  simp only [ContinuousLinearMap.sub_apply]
+
+end RicciFlow
