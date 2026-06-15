@@ -18787,3 +18787,51 @@ theorem lichnerowiczCurvature_smul_right
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The rough Laplacian extracted from `div δΓ`**: the Bochner C-block's leading second
+covariant derivative sums to the connection Laplacian, so
+`deltaGammaDivergence G H x u w = −½ Δ_∇ H(u,w) + (divergence + correction terms)`. The first
+explicit appearance of the rough Laplacian `Δ_∇ H` inside the untraced Ricci variation
+(roadmap item 3). -/
+theorem deltaGammaDivergence_extract_connectionLaplacian
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {u : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hVd : DifferentiableAt ℝ (fun y ↦ christoffelDerivOp G H y u) x)
+    (w : E) :
+    deltaGammaDivergence G H x u w
+      = -(1 / 2 : ℝ) * connectionLaplacian G H x u w
+        + (∑ i, ((1 / 2 : ℝ) *
+            ((covTensor2SndDeriv G H x ((Module.finBasis ℝ E) i) u w ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+              + covTensor2Deriv G H x (christoffelClosedOp G x ((Module.finBasis ℝ E) i) u) w ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+              + covTensor2Deriv G H x u (christoffelClosedOp G x ((Module.finBasis ℝ E) i) w) ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+              + covTensor2Deriv G H x u w (christoffelClosedOp G x ((Module.finBasis ℝ E) i) ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))))
+              + (covTensor2SndDeriv G H x ((Module.finBasis ℝ E) i) w u ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+              + covTensor2Deriv G H x (christoffelClosedOp G x ((Module.finBasis ℝ E) i) w) u ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+              + covTensor2Deriv G H x w (christoffelClosedOp G x ((Module.finBasis ℝ E) i) u) ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+              + covTensor2Deriv G H x w u (christoffelClosedOp G x ((Module.finBasis ℝ E) i) ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))))
+              - (covTensor2Deriv G H x (christoffelClosedOp G x ((Module.finBasis ℝ E) i) ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))) u w
+              + covTensor2Deriv G H x ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) (christoffelClosedOp G x ((Module.finBasis ℝ E) i) u) w
+              + covTensor2Deriv G H x ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) u (christoffelClosedOp G x ((Module.finBasis ℝ E) i) w)))
+          - G x (christoffelDerivOp G H x (christoffelClosedOp G x ((Module.finBasis ℝ E) i) u) w) ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+          - G x (christoffelDerivOp G H x u (christoffelClosedOp G x ((Module.finBasis ℝ E) i) w)) ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+          - G x (christoffelDerivOp G H x u w) (christoffelClosedOp G x ((Module.finBasis ℝ E) i) ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))))) := by
+  rw [deltaGammaDivergence_sndDeriv_bochner_form hGd hGsymm hinv hHsymm hHd hH2 hΓd hVd w]
+  unfold connectionLaplacian
+  rw [Finset.mul_sum, ← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  ring
+
+end RicciFlow
