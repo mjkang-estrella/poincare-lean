@@ -18959,3 +18959,30 @@ theorem connectionLaplacian_neg
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The transposed rough Laplacian is homogeneous in the tensor**:
+`(Δ_∇ + lichnerowiczCurvature)(c • H) = c · (Δ_∇ + lichnerowiczCurvature)(H)`. Both the rough
+Laplacian and its Weitzenböck curvature correction scale by `c`, so the transposed rough Laplacian
+`Σᵢ ∇²H(♯bⁱ, bᵢ)` is `ℝ`-homogeneous in `H` — as the linear operator acting in `δRic` must be
+(roadmap item 3). -/
+theorem connectionLaplacian_add_lichnerowiczCurvature_smul
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (c : ℝ) (p q : E) :
+    connectionLaplacian G (fun y ↦ c • H y) x p q
+        + lichnerowiczCurvature G (fun y ↦ c • H y) x p q
+      = c * (connectionLaplacian G H x p q + lichnerowiczCurvature G H x p q) := by
+  rw [connectionLaplacian_smul_field hHd hH2 hΓd c p q,
+    lichnerowiczCurvature_smul c p q]
+  ring
+
+end RicciFlow
