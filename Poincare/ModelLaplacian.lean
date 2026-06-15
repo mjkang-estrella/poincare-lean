@@ -13916,3 +13916,45 @@ theorem fderiv_sum_covTensor2Deriv_Hslot_trace_eq
   rw [sum_covTensor2Deriv_Hslot_trace_field hGd hGsymm hinv hHd hHsymm v]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant 2-tensor derivative with a varying first H-slot is
+differentiable**: `y ↦ (∇_v H)_y(p(y), q)` is differentiable when `p` is. The
+H-slot analogue of `differentiableAt_covTensor2Deriv_dir`: the flat second
+derivative passes `p(y)` through `clm_apply`, the first Christoffel correction
+through the fixed-direction closed operator `y ↦ Γ_v` applied to `p(y)`, and the
+second correction carries `p(y)` directly. The link for differentiating the metric
+trace of `∇H`, whose first H-slot is the varying raised index `♯ʸbʲ`. -/
+theorem differentiableAt_covTensor2Deriv_Hslot
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (v : E) {p : E → E} (hp : DifferentiableAt ℝ p x) (q : E) :
+    DifferentiableAt ℝ (fun y ↦ covTensor2Deriv G H y v (p y) q) x := by
+  unfold covTensor2Deriv
+  have ht1 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ H y (v)) (p y) q) x :=
+    ((hH2.clm_apply (differentiableAt_const v)).clm_apply hp).clm_apply
+      (differentiableAt_const q)
+  have hVp : DifferentiableAt ℝ
+      (fun y ↦ christoffelClosedOp G y v (p y)) x :=
+    (hΓd v).clm_apply hp
+  have ht2 : DifferentiableAt ℝ
+      (fun y ↦ H y (christoffelClosedOp G y v (p y)) q) x :=
+    (hHd.clm_apply hVp).clm_apply (differentiableAt_const q)
+  have hVq : DifferentiableAt ℝ
+      (fun y ↦ christoffelClosedOp G y v q) x :=
+    (hΓd v).clm_apply (differentiableAt_const q)
+  have ht3 : DifferentiableAt ℝ
+      (fun y ↦ H y (p y) (christoffelClosedOp G y v q)) x :=
+    (hHd.clm_apply hp).clm_apply hVq
+  exact (ht1.sub ht2).sub ht3
+
+end RicciFlow
