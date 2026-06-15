@@ -19069,3 +19069,34 @@ theorem ricciActionOnTensor_add
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci action is homogeneous in the tensor**:
+`(Ric · (c • H))(p,q) = c · (Ric · H)(p,q)`. With `ricciActionOnTensor_add` this gives `ℝ`-linearity
+in `H` (roadmap item 3). -/
+theorem ricciActionOnTensor_smul
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ) (p q : E) :
+    ricciActionOnTensor G (fun y ↦ c • H y) x p q
+      = c * ricciActionOnTensor G H x p q := by
+  unfold ricciActionOnTensor
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  ring
+
+/-- **The Ricci action is symmetric for a symmetric tensor**:
+`(Ric · H)(p,q) = (Ric · H)(q,p)` whenever `H` is slot-symmetric — so it preserves symmetric
+`(0,2)`-tensors, as the Lichnerowicz Laplacian must along the flow (roadmap item 3). -/
+theorem ricciActionOnTensor_symm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHsymm : ∀ a b : E, H x a b = H x b a) (p q : E) :
+    ricciActionOnTensor G H x p q = ricciActionOnTensor G H x q p := by
+  unfold ricciActionOnTensor
+  rw [hHsymm (ricciSharp G x p) q, hHsymm p (ricciSharp G x q)]
+  ring
+
+end RicciFlow
