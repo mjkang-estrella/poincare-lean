@@ -19831,3 +19831,25 @@ theorem coordRiemann_block_symm
     hL a b u w, hL b u a w, hL u a b w, hL b u w a, hL u w b a, hL w b u a]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Flipping both Riemann pairs is a symmetry**: `Rm(u,w,a,b) = Rm(w,u,b,a)`, the composite of the
+two pair antisymmetries (two sign flips cancel) (roadmap item 3). -/
+theorem coordRiemann_double_antisymm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u w a b : E) :
+    coordRiemann G x u w a b = coordRiemann G x w u b a := by
+  rw [coordRiemann_antisymm_pair_left u w a b,
+    coordRiemann_antisymm_pair_right hGC2 hGsymm hinv hdiff w u a b, neg_neg]
+
+end RicciFlow
