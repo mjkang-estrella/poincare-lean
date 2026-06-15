@@ -17201,3 +17201,56 @@ theorem sum_ricciDeriv_raised_eq_divTrace_sub_half_curvedLaplacian'
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The `δΓ`-divergence is symmetric: `div δΓ(u,w) = div δΓ(w,u)`, since the covariant
+`δΓ`-derivative is symmetric in its tensor slots (`covDeltaGammaDeriv_symm`). -/
+theorem deltaGammaDivergence_isSymm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (u w : E) :
+    deltaGammaDivergence G H x u w = deltaGammaDivergence G H x w u := by
+  unfold deltaGammaDivergence
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [covDeltaGammaDeriv_symm hGd hHd hGsymm hHsymm hVd
+    ((Module.finBasis ℝ E) i) u w]
+
+/-- **The untraced Ricci variation is a symmetric tensor**: `δRic(u,w) = δRic(w,u)`. Both
+terms of `δRic = div δΓ − ½ Hess_g(tr_g H)` are symmetric (`deltaGammaDivergence_isSymm`,
+`covariantHessian_symm`). The linearization of the Ricci tensor is symmetric, as it must be —
+a structural validation of the untraced Ricci variation (roadmap item 3). -/
+theorem ricciDeriv_isSymm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (hTr2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x)
+    (hΓsymm : ∀ a b : E,
+      christoffelClosedOp G x a b = christoffelClosedOp G x b a)
+    (hf : ContDiffAt ℝ 2 (tensorMetricTrace G H) x)
+    (u w : E) :
+    ricciDeriv G H x u w = ricciDeriv G H x w u := by
+  rw [ricciDeriv_eq_div_sub_half_covariantHessian hGd hGsymm hinv hHd hHsymm hVd
+      hTr2 hΓsymm u w,
+    ricciDeriv_eq_div_sub_half_covariantHessian hGd hGsymm hinv hHd hHsymm hVd
+      hTr2 hΓsymm w u,
+    deltaGammaDivergence_isSymm hGd hHd hGsymm hHsymm hVd u w,
+    covariantHessian_symm G (fun y ↦ metricBilin (G y))
+      (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) hGd hGsymm hf u w]
+
+end RicciFlow
