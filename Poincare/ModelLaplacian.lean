@@ -20749,3 +20749,33 @@ theorem einstein_pinching_equality
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The constant-curvature tensor is additive in its first slot**:
+`κForm(u₁+u₂,w,a,b) = κForm(u₁,w,a,b) + κForm(u₂,w,a,b)`, from linearity of the metric. Confirms it is
+a genuine multilinear `(0,4)` tensor (roadmap item 3). -/
+theorem constCurvatureForm_add_slot1
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (κ : ℝ) (u₁ u₂ w a b : E) :
+    constCurvatureForm G x κ (u₁ + u₂) w a b
+      = constCurvatureForm G x κ u₁ w a b + constCurvatureForm G x κ u₂ w a b := by
+  unfold constCurvatureForm
+  simp only [map_add, ContinuousLinearMap.add_apply]
+  ring
+
+/-- **The constant-curvature tensor is homogeneous in its first slot**:
+`κForm(c•u,w,a,b) = c·κForm(u,w,a,b)` (roadmap item 3). -/
+theorem constCurvatureForm_smul_slot1
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (κ c : ℝ) (u w a b : E) :
+    constCurvatureForm G x κ (c • u) w a b
+      = c * constCurvatureForm G x κ u w a b := by
+  unfold constCurvatureForm
+  simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+  ring
+
+end RicciFlow
