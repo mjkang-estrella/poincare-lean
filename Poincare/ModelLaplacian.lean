@@ -20360,3 +20360,22 @@ theorem ricciNormSq_ge_of_scalar_ge
   nlinarith [h, hm, hm₀, mul_nonneg hm₀ hm₀]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Riemann negates in its first slot**: `Rm(-u,w,a,b) = -Rm(u,w,a,b)`, the `c = -1` case of
+first-slot homogeneity (roadmap item 3). -/
+theorem coordRiemann_neg_slot1
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u w a b : E) :
+    coordRiemann G x (-u) w a b = -coordRiemann G x u w a b := by
+  have h := coordRiemann_smul_slot1 hdiff (-1) u w a b
+  simpa using h
+
+end RicciFlow
