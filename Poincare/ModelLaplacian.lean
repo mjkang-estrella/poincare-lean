@@ -21246,3 +21246,24 @@ theorem coordRiemann_smul_metric
   simp [ContinuousLinearMap.smul_apply, smul_eq_mul]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The sectional curvature numerator scales by `c`**: `K₀(c·g) = c·K₀(g)` for `c ≠ 0`. Since the
+metric (the denominator `g(u,u)g(w,w) − g(u,w)²`) scales by `c²`, the normalized sectional curvature
+`K = K₀/(g∧g)` scales by `c⁻¹` — exactly the curvature blow-up of the shrinking round sphere
+(roadmap item 3). -/
+theorem sectionalNum_smul_metric
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ)
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hinv : ∀ y : E, (G y).IsInvertible) (hc : c ≠ 0) (u w : E) :
+    sectionalNum (fun y ↦ c • G y) x u w = c * sectionalNum G x u w := by
+  unfold sectionalNum
+  exact coordRiemann_smul_metric c hGd hinv hc u w w u
+
+end RicciFlow
