@@ -12270,3 +12270,34 @@ theorem fderiv_g_deltaGamma_summand_christoffel
       (christoffelDerivOp G H x bi ((G x).inverse φ)) w]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric pairing of `covDeltaGammaDeriv`, raised-slot form**: distributing
+`G(·,w)` through the covariant-derivative definition gives the flat-derivative
+term plus the three Christoffel-connection terms, all paired with `w`. With the
+second tensor slot the raised index `(G x)⁻¹φ`, this is exactly the combination
+the Christoffel-form summand must reproduce — matching `T3 + Γ_v δΓ` against the
+flat and `Γ_v(δΓ)` terms, and the `Γ_v` slot corrections against the assembly. -/
+theorem g_covDeltaGammaDeriv_raised_form
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {bi : E}
+    (φ : E →L[ℝ] ℝ) (w v : E) :
+    G x (covDeltaGammaDeriv G H x v bi ((G x).inverse φ)) w
+      = G x ((fderiv ℝ (fun y ↦ christoffelDerivOp G H y bi) x v)
+            ((G x).inverse φ)) w
+        + G x (christoffelClosedOp G x v
+            (christoffelDerivOp G H x bi ((G x).inverse φ))) w
+        - G x (christoffelDerivOp G H x (christoffelClosedOp G x v bi)
+            ((G x).inverse φ)) w
+        - G x (christoffelDerivOp G H x bi
+            (christoffelClosedOp G x v ((G x).inverse φ))) w := by
+  unfold covDeltaGammaDeriv
+  simp only [map_add, map_sub, ContinuousLinearMap.add_apply,
+    ContinuousLinearMap.sub_apply]
+
+end RicciFlow
