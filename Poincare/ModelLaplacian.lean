@@ -13656,3 +13656,28 @@ theorem covTensor2SndDeriv_symm
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The second covariant derivative is additive in its outer direction**:
+`covTensor2SndDeriv (v'₁+v'₂) v p q = covTensor2SndDeriv v'₁ v p q + covTensor2SndDeriv v'₂ v p q`.
+The flat term is `fderiv`-linear in the direction; the three Christoffel
+corrections split via `christoffelClosedOp` direction additivity and
+`covTensor2Deriv` slot linearity. -/
+theorem covTensor2SndDeriv_add_v'
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (v'₁ v'₂ v p q : E) :
+    covTensor2SndDeriv G H x (v'₁ + v'₂) v p q
+      = covTensor2SndDeriv G H x v'₁ v p q
+        + covTensor2SndDeriv G H x v'₂ v p q := by
+  unfold covTensor2SndDeriv
+  rw [christoffelClosedOp_add_fst G x v'₁ v'₂]
+  simp only [ContinuousLinearMap.add_apply, map_add, covTensor2Deriv_add_dir,
+    covTensor2Deriv_add_left, covTensor2Deriv_add_right]
+  abel
+
+end RicciFlow
