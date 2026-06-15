@@ -21559,3 +21559,22 @@ theorem einstein_normalized_ricci_flow_stationary
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The normalized Ricci-flow direction is `−2·(traceless Ricci)`**:
+`−2 Ric + (2R/n)·g = −2·(Ric − (R/n)·g)`. So the normalized flow is driven precisely by the traceless
+Ricci tensor and is stationary exactly on Einstein metrics (where the traceless Ricci vanishes) — the
+mechanism by which it rounds metrics toward the Einstein/space-form fixed point (roadmap item 3). -/
+theorem normalized_ricci_flow_eq_traceless
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {n : ℝ} (p q : E) :
+    (-2 : ℝ) * coordRicci G x p q + (2 * coordScalar G x / n) * G x p q
+      = -2 * (coordRicci G x p q - (coordScalar G x / n) * G x p q) := by
+  ring
+
+end RicciFlow
