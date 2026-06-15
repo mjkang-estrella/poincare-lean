@@ -15891,3 +15891,26 @@ theorem covTensor2Deriv_smul_field
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The tensor divergence one-form is homogeneous in the tensor field**:
+`(div (c·H))(w) = c·(div H)(w)`. Termwise from `covTensor2Deriv_smul_field`. -/
+theorem tensorDivOneForm_smul_field
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x) (c : ℝ) (w : E) :
+    tensorDivOneForm G (fun y ↦ c • H y) x w
+      = c * tensorDivOneForm G H x w := by
+  unfold tensorDivOneForm
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact covTensor2Deriv_smul_field hHd c
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i))) ((Module.finBasis ℝ E) i) w
+
+end RicciFlow
