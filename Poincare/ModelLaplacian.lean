@@ -19771,3 +19771,28 @@ theorem coordCurvatureOp_first_bianchi
   abel
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The first Bianchi identity, lowered `(0,4)` form**:
+`Rm(u,w,a,b) + Rm(w,a,u,b) + Rm(a,u,w,b) = 0`, the cyclic sum over the first three slots, from the
+operator first Bianchi identity and linearity of `g` (roadmap item 3). -/
+theorem coordRiemann_first_bianchi
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hΓd : ∀ v : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v) x)
+    (u w a b : E) :
+    coordRiemann G x u w a b + coordRiemann G x w a u b
+      + coordRiemann G x a u w b = 0 := by
+  unfold coordRiemann
+  rw [← ContinuousLinearMap.add_apply, ← ContinuousLinearMap.add_apply,
+    ← map_add, ← map_add, coordCurvatureOp_first_bianchi hGd hGsymm hΓd]
+  simp
+
+end RicciFlow
