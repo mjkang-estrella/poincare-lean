@@ -19100,3 +19100,35 @@ theorem ricciActionOnTensor_symm
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz Laplacian** of a `(0,2)`-tensor `H`:
+`Δ_L H = Δ_∇ H − 2·(curvature term) + Ric·H + H·Ric`, assembled from the rough Laplacian, the
+Lichnerowicz curvature term, and the Ricci action. The operator governing the linearised Ricci-flow
+/ DeTurck flow; the structural target `δRic = −½ Δ_L H + ∇(div + trace)` (roadmap item 3). -/
+noncomputable def lichnerowiczLaplacian (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x p q : E) : ℝ :=
+  connectionLaplacian G H x p q
+    - 2 * lichnerowiczCurvature G H x p q
+    + ricciActionOnTensor G H x p q
+
+/-- **The Lichnerowicz Laplacian preserves symmetric tensors**:
+`Δ_L H(p,q) = Δ_L H(q,p)` whenever `H` is slot-symmetric, since each of its three pieces is. Essential
+for `Δ_L` to act on the metric and Ricci tensor along the flow (roadmap item 3). -/
+theorem lichnerowiczLaplacian_symm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a) (p q : E) :
+    lichnerowiczLaplacian G H x p q = lichnerowiczLaplacian G H x q p := by
+  unfold lichnerowiczLaplacian
+  rw [connectionLaplacian_symm hHd hHsymm p q,
+    lichnerowiczCurvature_symm (hHsymm x) p q,
+    ricciActionOnTensor_symm (hHsymm x) p q]
+
+end RicciFlow
