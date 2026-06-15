@@ -16962,3 +16962,50 @@ theorem covariantHessian_add
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The untraced Ricci variation under the Ricci-flow direction**:
+`δRic(u,w) = div δΓ(u,w) + Hess_g R(u,w)` for `H = −2 Ric` (so `tr_g H = −2R`, `c = −2`,
+`φ = R`). The untraced analogue of the scalar `Σⱼ δRic(♯bʲ,bⱼ) = div div H + 2Δ_g R`
+mechanism: the `−(c/2)Hess` term becomes `+Hess R`. The `div δΓ` term remains for the `∇²H`
+Bochner expansion (roadmap item 3). -/
+theorem ricciDeriv_neg_two_eq_div_add_covariantHessian
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hHd : ∀ y : E, DifferentiableAt ℝ
+      (fun z ↦ (-2 : ℝ) • coordRicciForm G z (hdiffΓ z)) y)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G
+        (fun z ↦ (-2 : ℝ) • coordRicciForm G z (hdiffΓ z)) y p) x)
+    (hTr2 : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (tensorMetricTrace G
+        (fun z ↦ (-2 : ℝ) • coordRicciForm G z (hdiffΓ z))) y) x)
+    (hΓsymm : ∀ a b : E,
+      christoffelClosedOp G x a b = christoffelClosedOp G x b a)
+    (hφ : ContDiff ℝ 2 (fun z ↦ coordScalar G z))
+    (u w : E) :
+    ricciDeriv G (fun y ↦ (-2 : ℝ) • coordRicciForm G y (hdiffΓ y)) x u w
+      = deltaGammaDivergence G
+            (fun y ↦ (-2 : ℝ) • coordRicciForm G y (hdiffΓ y)) x u w
+        + covariantHessian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+            (fun z ↦ coordScalar G z) x u w := by
+  rw [ricciDeriv_eq_div_sub_half_smul_covariantHessian (c := -2)
+      (φ := fun z ↦ coordScalar G z) hGd hGsymm hinv hHd
+      (fun y a b ↦ neg_two_coordRicciForm_symm hGC2 hGsymm hinv hdiffΓ a b)
+      hVd hTr2 hΓsymm hφ
+      (tensorMetricTrace_neg_two_coordRicciForm_field hdiffΓ) u w]
+  ring
+
+end RicciFlow
