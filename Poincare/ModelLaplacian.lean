@@ -21756,3 +21756,25 @@ theorem einstein_tracelessRicciNormSq_eq_zero
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The pinching gap is `n` times the traceless-Ricci norm**: `n·|Ric|² − R² = n·(|Ric|² − R²/n)`.
+This identifies the gap in `pinching_gap_nonneg` with `n·|Ric̊|²`, so the pinching inequality
+`R² ≤ n|Ric|²` is precisely the statement that the traceless Ricci tensor has nonnegative squared
+norm — and Einstein rigidity is its equality case (roadmap item 3). -/
+theorem pinching_gap_eq_n_mul_tracelessNormSq
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0) :
+    (Module.finrank ℝ E : ℝ) * coordRicciNormSq G x hdiff - (coordScalar G x) ^ 2
+      = (Module.finrank ℝ E : ℝ)
+        * (coordRicciNormSq G x hdiff - (coordScalar G x) ^ 2 / (Module.finrank ℝ E : ℝ)) := by
+  field_simp
+
+end RicciFlow
