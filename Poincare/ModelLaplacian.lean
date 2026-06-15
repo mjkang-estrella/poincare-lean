@@ -13098,3 +13098,40 @@ theorem deltaGammaDivergenceTrace_curvature_split
     map_add, ContinuousLinearMap.add_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δRm` double trace is the Ricci-variation trace**:
+`Σⱼ Σᵢ G(δRm(bᵢ,♯bʲ)bⱼ, ♯bⁱ) = Σⱼ ricciDeriv(♯bʲ, bⱼ)`. The inner pairing
+`G(δRm(bᵢ,♯bʲ)bⱼ, ♯bⁱ) = coord_i(δRm(bᵢ,♯bʲ)bⱼ)` (by `coord_eq_g_raised`), whose
+`i`-sum is exactly `ricciDeriv(♯bʲ,bⱼ)` by definition. Identifies the curvature term
+of `deltaGammaDivergenceTrace_curvature_split` as the raised Ricci variation. -/
+theorem curvatureDerivOp_double_trace_eq_ricciDeriv
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hinv : (G x).IsInvertible)
+    (hGsymm : ∀ p q : E, G x p q = G x q p) :
+    (∑ j, ∑ i, G x (curvatureDerivOp G H x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))))
+      = ∑ j, ricciDeriv G H x
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) j) := by
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  unfold ricciDeriv
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact (coord_eq_g_raised G hinv hGsymm i
+    (curvatureDerivOp G H x ((Module.finBasis ℝ E) i)
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord j)))
+      ((Module.finBasis ℝ E) j))).symm
+
+end RicciFlow
