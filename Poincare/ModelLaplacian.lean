@@ -20566,3 +20566,34 @@ theorem constCurvatureForm_sectional
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Basis contraction of the metric in its first slot**:
+`Σᵢ (bⁱ-coordinate of w)·g(bᵢ, b) = g(w, b)`, expanding `g(·,b)` over the basis. The bookkeeping for
+tracing curvature against the metric (roadmap item 3). -/
+theorem metric_basis_contraction
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (w b : E) :
+    ∑ i, (Module.finBasis ℝ E).coord i w • G x ((Module.finBasis ℝ E) i) b
+      = G x w b := by
+  let L : E →ₗ[ℝ] ℝ :=
+    { toFun := fun v ↦ G x v b
+      map_add' := fun v₁ v₂ ↦ by simp
+      map_smul' := fun c v ↦ by simp }
+  have hrepr : ∑ i, (Module.finBasis ℝ E).coord i w • (Module.finBasis ℝ E) i = w :=
+    (Module.finBasis ℝ E).sum_repr w
+  calc ∑ i, (Module.finBasis ℝ E).coord i w • G x ((Module.finBasis ℝ E) i) b
+      = ∑ i, L ((Module.finBasis ℝ E).coord i w • (Module.finBasis ℝ E) i) := by
+        refine Finset.sum_congr rfl (fun i _ ↦ ?_)
+        rw [map_smul]; rfl
+    _ = L (∑ i, (Module.finBasis ℝ E).coord i w • (Module.finBasis ℝ E) i) :=
+        (map_sum L _ _).symm
+    _ = L w := by rw [hrepr]
+    _ = G x w b := rfl
+
+end RicciFlow
