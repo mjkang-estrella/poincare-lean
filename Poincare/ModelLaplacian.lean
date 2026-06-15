@@ -12499,3 +12499,58 @@ theorem g_covDeltaGammaDeriv_distrib
     ContinuousLinearMap.sub_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The commutation RHS simplified**: expanding the `covDeltaGammaDeriv` core,
+its two slot-correction terms cancel the residual `C1, C2` corrections exactly,
+leaving the bundled inner-trace divergence as
+`Σⱼ Σᵢ [G((∂_{♯bʲ}δΓ(bᵢ,·))(♯bⁱ), bⱼ) + G(Γ_{♯bʲ}δΓ(bᵢ,♯bⁱ), bⱼ) + G(δΓ(bᵢ,∂♯bⁱ), bⱼ)]`
+— the flat `δΓ`-derivative, the `Γ`-pairing, and the inverse-metric term. Three
+clean terms, no leftover Christoffel slot corrections. -/
+theorem divergence_deltaGammaInnerTraceCLM_simplified
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x) :
+    (∑ j, covTensor1Deriv G (deltaGammaInnerTraceCLM G H) x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+      = ∑ j, ∑ i, (G x ((fderiv ℝ (fun y ↦ christoffelDerivOp G H y
+              ((Module.finBasis ℝ E) i))
+              x ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j))))
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i)))) ((Module.finBasis ℝ E) j)
+          + G x (christoffelClosedOp G x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j)))
+              (christoffelDerivOp G H x ((Module.finBasis ℝ E) i)
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i))))) ((Module.finBasis ℝ E) j)
+          + G x (christoffelDerivOp G H x ((Module.finBasis ℝ E) i)
+              ((fderiv ℝ (fun y ↦ (G y).inverse
+                (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i))) x)
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord j))))) ((Module.finBasis ℝ E) j)) := by
+  rw [divergence_deltaGammaInnerTraceCLM_covDeltaGamma_form hGd hGsymm hinv hVd]
+  refine Finset.sum_congr rfl fun j _ ↦ Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [g_covDeltaGammaDeriv_distrib
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord j)))
+    ((Module.finBasis ℝ E) i)
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i)))
+    ((Module.finBasis ℝ E) j)]
+  ring
+
+end RicciFlow
