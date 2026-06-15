@@ -20045,3 +20045,36 @@ theorem sectionalNum_smul_right
   rw [coordRiemann_smul_slot2 hdiff, coordRiemann_smul_slot3, smul_smul, ← sq]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Ricci as the trace of Riemann over the other pair**:
+`R(u,w) = Σᵢ Rm(w, ♯bⁱ, bᵢ, u)`, obtained from `coordRicci_eq_riemann_trace` by the block symmetry —
+the Ricci tensor is the trace of Riemann over either contracted pair (roadmap item 3). -/
+theorem coordRicci_eq_riemann_trace'
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ v : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v) x)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u w : E) :
+    coordRicci G x u w
+      = ∑ i, coordRiemann G x w
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i)))
+          ((Module.finBasis ℝ E) i) u := by
+  rw [coordRicci_eq_riemann_trace hGsymm (hinv x) u w]
+  refine Finset.sum_congr rfl (fun i _ ↦ ?_)
+  exact coordRiemann_block_symm hGd hGC2 hGsymm hinv hΓd hdiff
+    ((Module.finBasis ℝ E) i) u w
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i)))
+
+end RicciFlow
