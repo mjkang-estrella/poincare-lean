@@ -19883,3 +19883,21 @@ theorem sectionalNum_symm
   exact coordRiemann_block_symm hGd hGC2 hGsymm hinv hΓd hdiff u w w u
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The sectional curvature numerator vanishes on a degenerate plane**:
+`K₀(u,u) = 0`, since `Rm(u,u,u,u) = 0` (a plane needs two independent vectors)
+(roadmap item 3). -/
+theorem sectionalNum_self_eq_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (u : E) :
+    sectionalNum G x u u = 0 := by
+  unfold sectionalNum
+  exact coordRiemann_self_pair_left u u u
+
+end RicciFlow
