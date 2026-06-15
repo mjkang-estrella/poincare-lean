@@ -18743,3 +18743,25 @@ theorem connectionLaplacian_add_lichnerowiczCurvature_symm
     lichnerowiczCurvature_symm (hHsymm x) p q]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz curvature term is homogeneous in its first slot**:
+`lichnerowiczCurvature G H x (c • p) q = c · lichnerowiczCurvature G H x p q`, using `ℝ`-linearity of
+the curvature operator and of `H`. With `lichnerowiczCurvature_add_left/_add_right` this completes
+its structure as a genuine `ℝ`-bilinear form in `(p,q)` (roadmap item 3). -/
+theorem lichnerowiczCurvature_smul_left
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ) (p q : E) :
+    lichnerowiczCurvature G H x (c • p) q = c * lichnerowiczCurvature G H x p q := by
+  unfold lichnerowiczCurvature
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun i _ ↦ ?_)
+  simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+  ring
+
+end RicciFlow
