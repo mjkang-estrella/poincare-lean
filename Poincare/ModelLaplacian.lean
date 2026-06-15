@@ -19535,3 +19535,45 @@ theorem lichnerowiczLaplacian_neg
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz curvature term vanishes on the metric**:
+`lichnerowiczCurvature G G x p q = 0`, because the coordinate curvature operator is `g`-skew-adjoint
+(`g(R a, b) + g(a, R b) = 0`), so each summand cancels (roadmap item 3). -/
+theorem lichnerowiczCurvature_metric_eq_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (p q : E) :
+    lichnerowiczCurvature G G x p q = 0 := by
+  unfold lichnerowiczCurvature
+  refine Finset.sum_eq_zero (fun i _ ↦ ?_)
+  exact coordCurvatureOp_skew hGC2 hGsymm hinv hdiff ((Module.finBasis ℝ E) i)
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i))) p q
+
+/-- **The static Lichnerowicz Laplacian of the metric is twice the Ricci tensor**:
+`Δ_L g (p,q) = 2 · R(p,q)`. The classical identity `Δ_L g = 2 Ric`: the curvature term vanishes by
+skew-adjointness, the rough Laplacian kills the parallel metric, and `Ric·g = 2 Ric`
+(roadmap item 3). -/
+theorem lichnerowiczLaplacian_metric_eq_two_ricci
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (p q : E) :
+    lichnerowiczLaplacian G G x p q = 2 * coordRicci G x p q := by
+  rw [lichnerowiczLaplacian_metric hGC2 hGsymm hinv hdiff p q,
+    lichnerowiczCurvature_metric_eq_zero hGC2 hGsymm hinv hdiff p q]
+  ring
+
+end RicciFlow
