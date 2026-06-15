@@ -15170,3 +15170,71 @@ theorem sum_sum_covTensor2SndDeriv_outer_q_swap
       rw [covTensor2SndDeriv_smul_q hHd hH2 hΓd, smul_eq_mul])
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `div div H` connection corrections cancel**: `Σⱼ Σᵢ [ (∇H)(♯bⁱ,Γ_{♯bʲ}bᵢ,bⱼ)
++ (∇H)(♯(−bⁱ∘Γ_{♯bʲ}),bᵢ,bⱼ) ] = 0`. For each `j`, the raised-index operator-slot
+swap (`sum_raised_op_slot_swap` with `Φ = Γ_{♯bʲ}`, `F = (∇_·H)(·,bⱼ)`) sends the
+first sum to minus the second. The vanishing of the non-`∇²H` part of `div div H`,
+reducing it to its pure `∇²H` block — sub-identity (a). -/
+theorem sum_sum_divdiv_corrections_cancel
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible) :
+    (∑ j, ∑ i,
+        (covTensor2Deriv G H x
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i)))
+            (christoffelClosedOp G x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j)))
+              ((Module.finBasis ℝ E) i)) ((Module.finBasis ℝ E) j)
+          + covTensor2Deriv G H x
+              ((G x).inverse (-((LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)).comp
+                (christoffelClosedOp G x
+                  ((G x).inverse (LinearMap.toContinuousLinearMap
+                    ((Module.finBasis ℝ E).coord j)))))))
+              ((Module.finBasis ℝ E) i) ((Module.finBasis ℝ E) j)))
+      = 0 := by
+  refine Finset.sum_eq_zero fun j _ ↦ ?_
+  rw [Finset.sum_add_distrib]
+  have hswap := sum_raised_op_slot_swap (G := G) (x := x)
+    (christoffelClosedOp G x ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord j))))
+    (fun a b ↦ covTensor2Deriv G H x a b ((Module.finBasis ℝ E) j))
+    (fun a₁ a₂ b ↦ by dsimp only; rw [covTensor2Deriv_add_dir])
+    (fun c a b ↦ by dsimp only; rw [covTensor2Deriv_smul_dir, smul_eq_mul])
+    (fun a b₁ b₂ ↦ by dsimp only; rw [covTensor2Deriv_add_left])
+    (fun c a b ↦ by dsimp only; rw [covTensor2Deriv_smul_left, smul_eq_mul])
+  have htm : ∀ i, covTensor2Deriv G H x
+        ((G x).inverse (-((LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)).comp
+          (christoffelClosedOp G x
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j)))))))
+        ((Module.finBasis ℝ E) i) ((Module.finBasis ℝ E) j)
+      = -covTensor2Deriv G H x
+          ((G x).inverse ((LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i)).comp
+            (christoffelClosedOp G x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j))))))
+          ((Module.finBasis ℝ E) i) ((Module.finBasis ℝ E) j) := by
+    intro i
+    rw [map_neg, ← neg_one_smul ℝ ((G x).inverse
+      ((LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)).comp
+        (christoffelClosedOp G x ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))))), covTensor2Deriv_smul_dir]
+    ring
+  dsimp only at hswap
+  rw [Finset.sum_congr rfl fun i _ ↦ htm i, hswap, ← Finset.sum_add_distrib]
+  simp
+
+end RicciFlow
