@@ -15914,3 +15914,36 @@ theorem tensorDivOneForm_smul_field
       ((Module.finBasis ℝ E).coord i))) ((Module.finBasis ℝ E) i) w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The double divergence is homogeneous in the tensor field**:
+`div div (c·H) = c · div div H`. The inner divergence field scales by
+`tensorDivOneForm_smul_field` (lifted to a CLM-field identity), then the scalar `c`
+factors out of each covariant one-form derivative by `covTensor1Deriv_smul`. With
+`tensorDoubleDivergence(Ric) = ½ Δ_g R` this gives `tensorDoubleDivergence(−2 Ric) = −Δ_g R`. -/
+theorem tensorDoubleDivergence_smul_field
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hdivd : DifferentiableAt ℝ (tensorDivCLM G H) x) (c : ℝ) :
+    tensorDoubleDivergence G (fun y ↦ c • H y) x
+      = c * tensorDoubleDivergence G H x := by
+  have hfield : tensorDivCLM G (fun y ↦ c • H y)
+      = fun y ↦ c • tensorDivCLM G H y := by
+    funext y
+    ext w
+    rw [ContinuousLinearMap.smul_apply, tensorDivCLM_apply, tensorDivCLM_apply,
+      tensorDivOneForm_smul_field (hHd y) c w, smul_eq_mul]
+  unfold tensorDoubleDivergence
+  rw [hfield, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  exact covTensor1Deriv_smul G (tensorDivCLM G H) hdivd c
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord j))) ((Module.finBasis ℝ E) j)
+
+end RicciFlow
