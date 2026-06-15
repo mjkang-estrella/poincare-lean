@@ -12865,3 +12865,38 @@ theorem sum_L2_eq_sum_R2
     christoffelDeriv_symm hGd hHd hGsymm' hHsymm']
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`δΓ` is additive in its first (direction) slot** — from second-slot
+additivity via symmetry. Needed for the bilinearity of the slot-term trace swaps. -/
+theorem christoffelDeriv_add_fst
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x) (hHd : DifferentiableAt ℝ H x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (u₁ u₂ v : E) :
+    christoffelDeriv G H x (u₁ + u₂) v
+      = christoffelDeriv G H x u₁ v + christoffelDeriv G H x u₂ v := by
+  rw [christoffelDeriv_symm hGd hHd hGsymm hHsymm (u₁ + u₂) v,
+    christoffelDeriv_add_snd, christoffelDeriv_symm hGd hHd hGsymm hHsymm v u₁,
+    christoffelDeriv_symm hGd hHd hGsymm hHsymm v u₂]
+
+/-- **`δΓ` is homogeneous in its first (direction) slot** — from second-slot
+homogeneity via symmetry. -/
+theorem christoffelDeriv_smul_fst
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x) (hHd : DifferentiableAt ℝ H x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (c : ℝ) (u v : E) :
+    christoffelDeriv G H x (c • u) v = c • christoffelDeriv G H x u v := by
+  rw [christoffelDeriv_symm hGd hHd hGsymm hHsymm (c • u) v,
+    christoffelDeriv_smul_snd, christoffelDeriv_symm hGd hHd hGsymm hHsymm v u]
+
+end RicciFlow
