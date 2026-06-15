@@ -14192,3 +14192,48 @@ theorem christoffel_inverse_raise_merge
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The trace-commute summand with the H-slot corrections merged**: applying the
+metric-compatibility merge to the expanded summand collapses the raised-index
+Christoffel correction and the `∂♯` term into one covariant term
+`(∇_v H)_x(♯(−φ∘Γ_{v'}), q)`, leaving
+`fderiv(y ↦ (∇_v H)_y(♯ʸφ, q)) = (∇²H)(v';v,♯ˣφ,q) + (∇_v H)(Γ_{v'}v,♯ˣφ,q)
++ (∇_v H)(v,♯ˣφ,Γ_{v'}q) + (∇_v H)(v,♯(−φ∘Γ_{v'}),q)`. The `∂♯`-free trace-commute
+summand whose basis trace yields the covariant Hessian of `tr_g H`. -/
+theorem fderiv_covTensor2Deriv_varying_raise_merged
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (v v' : E) (φ : E →L[ℝ] ℝ) (q : E) :
+    (fderiv ℝ (fun y ↦ covTensor2Deriv G H y v ((G y).inverse φ) q) x) v'
+      = covTensor2SndDeriv G H x v' v ((G x).inverse φ) q
+        + covTensor2Deriv G H x (christoffelClosedOp G x v' v) ((G x).inverse φ) q
+        + covTensor2Deriv G H x v ((G x).inverse φ)
+            (christoffelClosedOp G x v' q)
+        + covTensor2Deriv G H x v
+            ((G x).inverse (-(φ.comp (christoffelClosedOp G x v')))) q := by
+  have hmerge :
+      covTensor2Deriv G H x v
+          (christoffelClosedOp G x v' ((G x).inverse φ)) q
+        + covTensor2Deriv G H x v
+            ((fderiv ℝ (fun y ↦ (G y).inverse φ) x) v') q
+        = covTensor2Deriv G H x v
+            ((G x).inverse (-(φ.comp (christoffelClosedOp G x v')))) q := by
+    rw [← covTensor2Deriv_add_left,
+      christoffel_inverse_raise_merge (hGd x) hGsymm
+        (Filter.Eventually.of_forall hinv) φ v']
+  rw [fderiv_covTensor2Deriv_varying_raise_eq hGd hinv hHd hH2 hΓd v v' φ q]
+  linarith [hmerge]
+
+end RicciFlow
