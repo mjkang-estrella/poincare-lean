@@ -13037,3 +13037,64 @@ theorem sum_R1_fderiv_form
       ((Module.finBasis ℝ E).coord i)))]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curvature split of `deltaGammaDivergenceTrace`**: aligning the
+differentiation direction with the second covDeltaGamma argument via
+`curvatureDerivOp_eq_covDeltaGamma`,
+`deltaGammaDivergenceTrace = Σⱼ Σᵢ G(∇_{♯bʲ}δΓ(bᵢ,bⱼ), ♯bⁱ) + Σⱼ Σᵢ G(δRm(bᵢ,♯bʲ)bⱼ, ♯bⁱ)`.
+The first sum now differentiates in `♯bʲ` (matching the RHS), and the second is the
+`δRm` (curvature-variation) double trace that the remaining correction terms must
+absorb. Reduces the commutation to a curvature-contraction identity. -/
+theorem deltaGammaDivergenceTrace_curvature_split
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ p q : E, G x p q = G x q p)
+    (hinv : (G x).IsInvertible)
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm' : ∀ (y : E) (p q : E), G y p q = G y q p) :
+    deltaGammaDivergenceTrace G H x
+      = (∑ j, ∑ i, G x (covDeltaGammaDeriv G H x
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j)))
+            ((Module.finBasis ℝ E) i)
+            ((Module.finBasis ℝ E) j))
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i))))
+        + ∑ j, ∑ i, G x (curvatureDerivOp G H x
+            ((Module.finBasis ℝ E) i)
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j)))
+            ((Module.finBasis ℝ E) j))
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i))) := by
+  have hΓsymm : ∀ a b : E,
+      christoffelClosedOp G x a b = christoffelClosedOp G x b a :=
+    fun a b ↦ christoffelClosedOp_symm hGd hGsymm' a b
+  rw [deltaGammaDivergenceTrace_eq_double_g_pairing hGsymm hinv,
+    ← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [show covDeltaGammaDeriv G H x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j)
+      = covDeltaGammaDeriv G H x
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) i)
+          ((Module.finBasis ℝ E) j)
+        + curvatureDerivOp G H x ((Module.finBasis ℝ E) i)
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j)))
+            ((Module.finBasis ℝ E) j)
+      from by rw [curvatureDerivOp_eq_covDeltaGamma hΓsymm]; abel,
+    map_add, ContinuousLinearMap.add_apply]
+
+end RicciFlow
