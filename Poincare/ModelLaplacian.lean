@@ -11554,3 +11554,52 @@ theorem divergence_innerTrace_field_eq
       hT2 (1 / 2 : ℝ) _ _]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **THE CONTRACTED LICHNEROWICZ IDENTITY IN FINAL FORM** (modulo the
+divergence keystone): the raised metric trace of the Ricci variation is the
+double divergence of `H` minus the curved Laplacian of its trace —
+`Σⱼ δRic(♯bʲ,bⱼ) = div div H − Δ_g(tr_g H)`. This is the classical linearized
+scalar curvature `g^{ij}δR_{ij} = ∇^i∇^j h_{ij} − Δ(tr h)`. It follows from the
+evolution-form identity
+`ricciDeriv_raised_trace_eq_divTrace_sub_half_curvedLaplacian` once the keystone
+`hKey` (`deltaGammaDivergenceTrace = div div H − ½Δ_g(tr_g H)`, the curvature-free
+identity whose heart `deltaGamma_innerTrace_eq` and RHS `divergence_innerTrace_field_eq`
+are already proven) is supplied. Under `H = −2 Ric` with the twice-contracted
+Bianchi identity this delivers Hamilton's `∂R/∂t = ΔR + 2|Ric|²`. -/
+theorem ricciDeriv_raised_trace_eq_doubleDiv_sub_curvedLaplacian
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hT2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (hΓsymm : ∀ a b : E,
+      christoffelClosedOp G x a b = christoffelClosedOp G x b a)
+    (hKey : deltaGammaDivergenceTrace G H x
+      = tensorDoubleDivergence G H x
+        - (1 / 2 : ℝ) * curvedLaplacian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+            (tensorMetricTrace G H) x) :
+    ∑ j, ricciDeriv G H x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j)
+      = tensorDoubleDivergence G H x
+        - curvedLaplacian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+            (tensorMetricTrace G H) x := by
+  rw [ricciDeriv_raised_trace_eq_divTrace_sub_half_curvedLaplacian hGd hGsymm
+      hinv hHd hHsymm hT2 hVd hΓsymm, hKey]
+  ring
+
+end RicciFlow
