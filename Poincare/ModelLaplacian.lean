@@ -21048,3 +21048,21 @@ theorem constCurvatureForm_normalized_sectional
   rw [constCurvatureForm_sectional hGsymm, mul_div_assoc, div_self hX, mul_one]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Higher-curvature round spheres collapse faster**: the extinction time `1/(2c)` is strictly
+decreasing in the Einstein constant `c`, so a more positively curved round sphere reaches its
+finite-time singularity sooner — consistent with the curvature blowing up at the singularity
+(roadmap item 3). -/
+theorem einstein_extinction_time_antitone
+    (c₁ c₂ : ℝ) (hc₁ : 0 < c₁) (h : c₁ < c₂) :
+    1 / (2 * c₂) < 1 / (2 * c₁) := by
+  exact one_div_lt_one_div_of_lt (by linarith) (by linarith)
+
+end RicciFlow
