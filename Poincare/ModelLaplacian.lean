@@ -19732,3 +19732,42 @@ theorem coordRiemann_add_slot4
   rw [map_add]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The first (algebraic) Bianchi identity**:
+`R(u,w)a + R(w,a)u + R(a,u)w = 0`. The cyclic sum of the coordinate curvature operator vanishes:
+both the `∂Γ` part (via the evaluation bridge and Christoffel symmetry of the field) and the `Γ∘Γ`
+part (via pointwise Christoffel symmetry) cancel cyclically (roadmap item 3). -/
+theorem coordCurvatureOp_first_bianchi
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hΓd : ∀ v : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v) x)
+    (u w a : E) :
+    coordCurvatureOp G x u w a + coordCurvatureOp G x w a u
+      + coordCurvatureOp G x a u w = 0 := by
+  have hsym : ∀ p q : E,
+      (fun y ↦ christoffelClosedOp G y p q) = (fun y ↦ christoffelClosedOp G y q p) :=
+    fun p q ↦ funext fun y ↦ christoffelClosedOp_symm (hGd y) hGsymm p q
+  have hsymx : ∀ p q : E,
+      christoffelClosedOp G x p q = christoffelClosedOp G x q p :=
+    fun p q ↦ christoffelClosedOp_symm (hGd x) hGsymm p q
+  unfold coordCurvatureOp
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.sub_apply,
+    ContinuousLinearMap.comp_apply]
+  rw [← fderiv_christoffel_eval_apply (hΓd w) u a,
+    ← fderiv_christoffel_eval_apply (hΓd u) w a,
+    ← fderiv_christoffel_eval_apply (hΓd a) w u,
+    ← fderiv_christoffel_eval_apply (hΓd w) a u,
+    ← fderiv_christoffel_eval_apply (hΓd u) a w,
+    ← fderiv_christoffel_eval_apply (hΓd a) u w,
+    hsym w a, hsym u a, hsym w u, hsymx w a, hsymx u a, hsymx w u]
+  abel
+
+end RicciFlow
