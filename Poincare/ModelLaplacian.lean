@@ -20101,3 +20101,31 @@ theorem sectionalNum_eq_swap
   exact coordRiemann_double_antisymm hGC2 hGsymm hinv hdiff u w w u
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci endomorphism is `g`-self-adjoint**:
+`g(Rc p, q) = g(p, Rc q)`, since both equal the symmetric Ricci tensor `R(p,q) = R(q,p)`. The
+self-adjointness hypothesis needed to apply the trace Cauchy–Schwarz inequality `R² ≤ n|Ric|²`
+to the Ricci endomorphism (roadmap item 3). -/
+theorem coordRicciEndo_self_adjoint
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (p q : E) :
+    G x (coordRicciEndo G x hdiff p) q = G x p (coordRicciEndo G x hdiff q) := by
+  rw [show G x (coordRicciEndo G x hdiff p) q = coordRicciForm G x hdiff p q from by
+      rw [g_coordRicciEndo G x hdiff (hinv x)],
+    coordRicciForm_apply, hGsymm x p (coordRicciEndo G x hdiff q),
+    show G x (coordRicciEndo G x hdiff q) p = coordRicciForm G x hdiff q p from by
+      rw [g_coordRicciEndo G x hdiff (hinv x)],
+    coordRicciForm_apply, coordRicci_symm hGC2 hGsymm hinv hdiff q p]
+
+end RicciFlow
