@@ -14734,3 +14734,54 @@ theorem fderiv_covTensor2Deriv_dir_varying_raise_eq
     fderiv_covTensor2Deriv_eq v' ((G x).inverse φ) p q]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The basepoint-derivative of the divergence one-form, fully expanded**:
+`(D(fun y ↦ (div H)_y w))_x v' = Σᵢ [ (∇²H)(v';♯bⁱ,bᵢ,w) + three Christoffel
+corrections + the ∂♯ term ]`. Combines the `fderiv`-pull through the contraction sum
+with the derivative-direction varying-raise expansion. The `∇²H` term is the `T1`/`T2`
+block of `div div H`; the corrections and `∂♯` will be reconciled by metric
+compatibility, as in sub-identity (b). -/
+theorem fderiv_tensorDivOneForm_sum_expand
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (w v' : E) :
+    (fderiv ℝ (fun y ↦ tensorDivOneForm G H y w) x) v'
+      = ∑ i,
+          (covTensor2SndDeriv G H x v'
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i))) ((Module.finBasis ℝ E) i) w
+            + covTensor2Deriv G H x (christoffelClosedOp G x v'
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)))) ((Module.finBasis ℝ E) i) w
+            + covTensor2Deriv G H x
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)))
+                (christoffelClosedOp G x v' ((Module.finBasis ℝ E) i)) w
+            + covTensor2Deriv G H x
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i))) ((Module.finBasis ℝ E) i)
+                (christoffelClosedOp G x v' w)
+            + covTensor2Deriv G H x
+                ((fderiv ℝ (fun y ↦ (G y).inverse
+                  (LinearMap.toContinuousLinearMap
+                    ((Module.finBasis ℝ E).coord i))) x) v')
+                ((Module.finBasis ℝ E) i) w) := by
+  rw [fderiv_tensorDivOneForm_sum hGd hGsymm hinv hHd hH2 hΓd w v']
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact fderiv_covTensor2Deriv_dir_varying_raise_eq hGd hinv hHd hH2 hΓd v'
+    ((Module.finBasis ℝ E) i) w
+    (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))
+
+end RicciFlow
