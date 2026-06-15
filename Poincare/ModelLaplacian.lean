@@ -18189,3 +18189,34 @@ theorem christoffel_antisymm_deriv_eq_curvature
   abel
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The 2nd-slot correction difference in curvature form**: substituting the curvature
+identification into the correction expansion,
+`corr₁(v') − corr₁(v) = H x ((Rm v' v) p − Γ_{v'}∘Γ_v p + Γ_v∘Γ_{v'} p) q + [∂H·Γ antisym]`.
+The `H` applied to a genuine curvature vector (plus the `Γ∘Γ` commutator that the slot corrections
+will cancel), and the surviving `∂H·Γ` antisymmetric pair (roadmap item 3). -/
+theorem fderiv_corr1_antisymm_curvature
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {v' v : E} (p q : E)
+    (hH : DifferentiableAt ℝ H x)
+    (hΓ : DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v) x)
+    (hΓ' : DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v') x) :
+    (fderiv ℝ (fun y ↦ H y (christoffelClosedOp G y v p) q) x) v'
+      - (fderiv ℝ (fun y ↦ H y (christoffelClosedOp G y v' p) q) x) v
+    = H x ((coordCurvatureOp G x v' v) p
+            - (christoffelClosedOp G x v').comp (christoffelClosedOp G x v) p
+            + (christoffelClosedOp G x v).comp (christoffelClosedOp G x v') p) q
+      + ((fderiv ℝ H x v') (christoffelClosedOp G x v p) q
+         - (fderiv ℝ H x v) (christoffelClosedOp G x v' p) q) := by
+  rw [fderiv_corr1_antisymm_expand v' v p q hH
+      (hΓ.clm_apply (differentiableAt_const p))
+      (hΓ'.clm_apply (differentiableAt_const p)),
+    christoffel_antisymm_deriv_eq_curvature hΓ hΓ' p]
+
+end RicciFlow
