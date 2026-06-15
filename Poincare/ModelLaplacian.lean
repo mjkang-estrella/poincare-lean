@@ -12232,3 +12232,41 @@ theorem fderiv_inverse_raise_apply
     ContinuousLinearMap.flip_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The summand expansion in Christoffel form**: applying metric compatibility
+to the metric-derivative term, the base-point derivative of
+`y ↦ G_y(δΓ_y(bᵢ,(G y)⁻¹φ),w)` becomes four Christoffel-form pieces — two from
+`coord_metric_compatible` (`G(Γ_v δΓ,w) + G(δΓ,Γ_v w)`), the inverse-metric
+term, and the `δΓ`-derivative term. The first three (`Γ_v δΓ`, the inverse-metric
+correction, `Γ_v w` correction) are exactly the connection pieces of
+`covDeltaGammaDeriv`; this is the shape that assembles the commutation. -/
+theorem fderiv_g_deltaGamma_summand_christoffel
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {bi : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : (G x).IsInvertible)
+    (hev : ∀ᶠ y in nhds x, (G y).IsInvertible)
+    (hVd : DifferentiableAt ℝ (fun y ↦ christoffelDerivOp G H y bi) x)
+    (φ : E →L[ℝ] ℝ) (w v : E) :
+    (fderiv ℝ (fun y ↦ G y
+        (christoffelDerivOp G H y bi ((G y).inverse φ)) w) x) v
+      = G x (christoffelClosedOp G x v
+            (christoffelDerivOp G H x bi ((G x).inverse φ))) w
+        + G x (christoffelDerivOp G H x bi ((G x).inverse φ))
+            (christoffelClosedOp G x v w)
+        + G x (christoffelDerivOp G H x bi
+            ((fderiv ℝ (fun y ↦ (G y).inverse φ) x) v)) w
+        + G x (((fderiv ℝ (fun y ↦ christoffelDerivOp G H y bi) x) v)
+            ((G x).inverse φ)) w := by
+  rw [fderiv_g_deltaGamma_summand_expand hGd hev hVd φ w v,
+    coord_metric_compatible hGd hGsymm hinv v
+      (christoffelDerivOp G H x bi ((G x).inverse φ)) w]
+
+end RicciFlow
