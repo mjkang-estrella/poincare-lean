@@ -14439,3 +14439,44 @@ theorem sum_covTensor2SndDeriv_Hslot_trace
   linarith [hT2, hT34]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The double-trace of `∇²H` as a Hessian trace of `tr_g H`**: summing the
+2nd-order trace-commute over the Laplacian index `i` (at `v'=bᵢ, v=♯bⁱ`),
+`Σᵢ Σⱼ (∇²H)(bᵢ;♯bⁱ,♯bʲ,bⱼ) = Σᵢ [D²(tr_g H)(bᵢ,♯bⁱ) − D(tr_g H)(Γ_{bᵢ}♯bⁱ)]`.
+The left side is the `Σᵢ Σⱼ T3` block of `deltaGammaDivergenceTrace_sndDeriv`; the
+right side is the basis trace of the covariant Hessian of `tr_g H`, matching
+`curvedLap(tr_g H)` up to the raised-contraction swap. -/
+theorem sum_sum_covTensor2SndDeriv_laplacian_trace
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p) :
+    (∑ i, ∑ j, covTensor2SndDeriv G H x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j))) ((Module.finBasis ℝ E) j))
+      = ∑ i, ((fderiv ℝ (fun y ↦ (fderiv ℝ (tensorMetricTrace G H) y)
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i)))) x) ((Module.finBasis ℝ E) i)
+          - (fderiv ℝ (tensorMetricTrace G H) x)
+              (christoffelClosedOp G x ((Module.finBasis ℝ E) i)
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i))))) := by
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact sum_covTensor2SndDeriv_Hslot_trace hGd hGsymm hinv hHd hH2 hΓd hHsymm
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i))) ((Module.finBasis ℝ E) i)
+
+end RicciFlow
