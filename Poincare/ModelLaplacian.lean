@@ -21223,3 +21223,26 @@ theorem coordRicci_smul_metric
   rw [coordCurvatureOp_smul_metric c hGd hinv hc]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `(0,4)` Riemann tensor scales by `c` under metric scaling**:
+`Rm(c·g) = c·Rm(g)` for `c ≠ 0`, since the curvature operator is scale-invariant and `Rm = g(R·,·)`
+carries one metric factor. So sectional curvature `K = Rm/(g∧g)` scales by `c⁻¹` — the curvature blows
+up as the round sphere `g(t) = (1−2ct)g(0)` shrinks (roadmap item 3). -/
+theorem coordRiemann_smul_metric
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ)
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hinv : ∀ y : E, (G y).IsInvertible) (hc : c ≠ 0) (u w a b : E) :
+    coordRiemann (fun y ↦ c • G y) x u w a b
+      = c * coordRiemann G x u w a b := by
+  unfold coordRiemann
+  rw [coordCurvatureOp_smul_metric c hGd hinv hc]
+  simp [ContinuousLinearMap.smul_apply, smul_eq_mul]
+
+end RicciFlow
