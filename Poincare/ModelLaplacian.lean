@@ -20194,3 +20194,28 @@ theorem coordRiemann_const_eq_zero
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The squared Ricci endomorphism is `g`-self-adjoint**:
+`g((Rc∘Rc) p, q) = g(p, (Rc∘Rc) q)`, by applying the self-adjointness of `Rc` twice. Hence
+`tr(Rc∘Rc) = |Ric|²` is a sum of squared eigenvalues and is `≥ 0` (roadmap item 3). -/
+theorem coordRicciEndo_comp_self_adjoint
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (p q : E) :
+    G x ((coordRicciEndo G x hdiff ∘ₗ coordRicciEndo G x hdiff) p) q
+      = G x p ((coordRicciEndo G x hdiff ∘ₗ coordRicciEndo G x hdiff) q) := by
+  simp only [LinearMap.comp_apply]
+  rw [coordRicciEndo_self_adjoint hGC2 hGsymm hinv hdiff (coordRicciEndo G x hdiff p) q,
+    coordRicciEndo_self_adjoint hGC2 hGsymm hinv hdiff p (coordRicciEndo G x hdiff q)]
+
+end RicciFlow
