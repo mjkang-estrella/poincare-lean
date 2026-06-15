@@ -21655,3 +21655,24 @@ theorem round_sphere_extinction_times_scalar
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci-flow direction is negative-definite for the round sphere**:
+`(−2 Ric)(v,v) = −2c·g(v,v) < 0` for `v ≠ 0`, `c > 0`. The positively-curved round sphere contracts
+in every direction under `∂g/∂t = −2 Ric` — uniform shrinking toward the singularity (roadmap item 3). -/
+theorem round_sphere_ricci_flow_neg_def
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ} (hc : 0 < c)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (v : E) (hv : v ≠ 0) :
+    (-2 : ℝ) * coordRicci G x v v < 0 := by
+  rw [hEin v v]
+  nlinarith [mul_pos hc (hGpos v hv)]
+
+end RicciFlow
