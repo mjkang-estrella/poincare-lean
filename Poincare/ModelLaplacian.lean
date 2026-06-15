@@ -19224,3 +19224,26 @@ theorem ricciSharp_smul
   rw [coordRicci_smul_fst G hdiff, smul_assoc]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci action is additive in its first slot**:
+`(Ric · H)(p₁+p₂, q) = (Ric · H)(p₁,q) + (Ric · H)(p₂,q)`, using linearity of `Ric^♯` and of `H`.
+A genuine bilinear form in `(p,q)`, as the Lichnerowicz `Ric·H` term must be (roadmap item 3). -/
+theorem ricciActionOnTensor_add_left
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (p₁ p₂ q : E) :
+    ricciActionOnTensor G H x (p₁ + p₂) q
+      = ricciActionOnTensor G H x p₁ q + ricciActionOnTensor G H x p₂ q := by
+  unfold ricciActionOnTensor
+  rw [ricciSharp_add hdiff p₁ p₂]
+  simp only [map_add, ContinuousLinearMap.add_apply]
+  ring
+
+end RicciFlow
