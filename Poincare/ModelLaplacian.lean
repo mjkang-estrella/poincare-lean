@@ -20822,3 +20822,37 @@ theorem constCurvatureForm_ricci_symm
     constCurvatureForm_ricci_trace hGsymm hinv κ w u, hGsymm w u]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The constant-curvature tensor is additive in its second slot** (roadmap item 3). -/
+theorem constCurvatureForm_add_slot2
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (κ : ℝ) (u w₁ w₂ a b : E) :
+    constCurvatureForm G x κ u (w₁ + w₂) a b
+      = constCurvatureForm G x κ u w₁ a b + constCurvatureForm G x κ u w₂ a b := by
+  unfold constCurvatureForm
+  simp only [map_add, ContinuousLinearMap.add_apply]; ring
+
+/-- **The constant-curvature tensor is additive in its third slot** (roadmap item 3). -/
+theorem constCurvatureForm_add_slot3
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (κ : ℝ) (u w a₁ a₂ b : E) :
+    constCurvatureForm G x κ u w (a₁ + a₂) b
+      = constCurvatureForm G x κ u w a₁ b + constCurvatureForm G x κ u w a₂ b := by
+  unfold constCurvatureForm
+  simp only [map_add, ContinuousLinearMap.add_apply]; ring
+
+/-- **The constant-curvature tensor is additive in its fourth slot**. With the others, `κForm` is a
+fully additive (multilinear) `(0,4)` tensor (roadmap item 3). -/
+theorem constCurvatureForm_add_slot4
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (κ : ℝ) (u w a b₁ b₂ : E) :
+    constCurvatureForm G x κ u w a (b₁ + b₂)
+      = constCurvatureForm G x κ u w a b₁ + constCurvatureForm G x κ u w a b₂ := by
+  unfold constCurvatureForm
+  simp only [map_add, ContinuousLinearMap.add_apply]; ring
+
+end RicciFlow
