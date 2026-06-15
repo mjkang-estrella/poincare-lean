@@ -17160,3 +17160,44 @@ theorem sum_covariantHessian_eq_curvedLaplacian
   exact (covTensor1Deriv_fderiv_eq_covariantHessian hGsymm hinv f _ _).symm
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Tracing the untraced Ricci variation recovers the scalar contracted Lichnerowicz
+identity**: `Σⱼ δRic(♯bʲ, bⱼ) = deltaGammaDivergenceTrace − ½ Δ_g(tr_g H)`. Summing the named
+untraced formula `δRic = div δΓ − ½ Hess_g(tr_g H)` over the raised basis: the `div δΓ` trace
+is `deltaGammaDivergenceTrace` by definition, and the Hessian trace is `Δ_g(tr_g H)` by
+`sum_covariantHessian_eq_curvedLaplacian`. The item-3 ↔ item-1 consistency check. -/
+theorem sum_ricciDeriv_raised_eq_divTrace_sub_half_curvedLaplacian'
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (hTr2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x)
+    (hΓsymm : ∀ a b : E,
+      christoffelClosedOp G x a b = christoffelClosedOp G x b a) :
+    (∑ j, ricciDeriv G H x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+      = deltaGammaDivergenceTrace G H x
+        - (1 / 2 : ℝ) * curvedLaplacian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+            (tensorMetricTrace G H) x := by
+  rw [Finset.sum_congr rfl (fun j _ ↦
+      ricciDeriv_eq_div_sub_half_covariantHessian hGd hGsymm hinv hHd hHsymm hVd
+        hTr2 hΓsymm _ _),
+    Finset.sum_sub_distrib, ← Finset.mul_sum,
+    sum_covariantHessian_eq_curvedLaplacian hGsymm hinv]
+  rfl
+
+end RicciFlow
