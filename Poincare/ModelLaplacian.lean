@@ -17129,3 +17129,34 @@ theorem deltaGammaDivergence_lichnerowicz_split
     fderiv_fun_add hA hB, ContinuousLinearMap.add_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of the covariant Hessian is the curved Laplacian**:
+`Σⱼ Hess_g(f)(♯bʲ, bⱼ) = Δ_g f`. Since `Hess_g(f) = ∇(df)` (`covTensor1Deriv` of the
+gradient) and the raised contraction of that is the curved Laplacian
+(`metricTrace_covTensor1Deriv_fderiv`). The bridge that, applied to `tr_g H`, makes the
+metric trace of the untraced Ricci variation recover the scalar contracted Lichnerowicz
+identity (roadmap item 3 ↔ item 1 consistency). -/
+theorem sum_covariantHessian_eq_curvedLaplacian
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (f : E → ℝ) :
+    (∑ j, covariantHessian G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+      = curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x := by
+  rw [← metricTrace_covTensor1Deriv_fderiv hGsymm hinv f]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  exact (covTensor1Deriv_fderiv_eq_covariantHessian hGsymm hinv f _ _).symm
+
+end RicciFlow
