@@ -11694,3 +11694,42 @@ theorem divergence_deltaGammaInnerTraceCLM_eq {G H : E → E →L[ℝ] E →L[�
   exact divergence_innerTrace_field_eq hGsymm hinv hDivd hT2
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Decomposition of the keystone-RHS commutation target**: the covariant
+divergence of the bundled inner-trace field splits into the base-point
+derivative term and the algebraic Christoffel-correction term —
+`Σⱼ ∇_{♯bʲ}(δΓ-inner-trace)(bⱼ) = Σⱼ (D(δΓ-inner-trace)_{♯bʲ})(bⱼ)
+− Σⱼ Σᵢ G(δΓ(bᵢ,♯bⁱ), Γ_{♯bʲ}bⱼ)`. Unfolding `covTensor1Deriv` and the bundled
+field; isolates the single remaining hard piece (the base-point derivative term,
+which differentiates `G_y`, `δΓ_y`, and the varying raised index) that must match
+`deltaGammaDivergenceTrace`. -/
+theorem divergence_deltaGammaInnerTraceCLM_unfold {G H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    {x : E} :
+    (∑ j, covTensor1Deriv G (deltaGammaInnerTraceCLM G H) x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+      = (∑ j, (fderiv ℝ (deltaGammaInnerTraceCLM G H) x
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j))))
+            ((Module.finBasis ℝ E) j))
+        - ∑ j, ∑ i, G x (christoffelDeriv G H x ((Module.finBasis ℝ E) i)
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i))))
+            (christoffelClosedOp G x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j)))
+              ((Module.finBasis ℝ E) j)) := by
+  rw [← Finset.sum_sub_distrib]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  unfold covTensor1Deriv
+  rw [deltaGammaInnerTraceCLM_apply]
+
+end RicciFlow
