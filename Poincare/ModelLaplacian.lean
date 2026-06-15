@@ -21484,3 +21484,36 @@ theorem round_sphere_riccati
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative Filter Topology
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci norm blows up at the singularity**: along the shrinking round sphere, `|Ric|²` scales
+by `c⁻²` (the inverse metric appears twice), so `|Ric|²(t) = N₀/(1−2ct)² → +∞` as `t → (1/(2c))⁻`. The
+Ricci curvature — not just the scalar — becomes unbounded in finite time (roadmap item 3). -/
+theorem round_sphere_ricciNormSq_blowup
+    (N₀ c : ℝ) (hN : 0 < N₀) (hc : 0 < c) :
+    Tendsto (fun t ↦ N₀ / (1 - 2 * c * t) ^ 2) (𝓝[<] (1 / (2 * c))) atTop := by
+  have hval : (1 : ℝ) - 2 * c * (1 / (2 * c)) = 0 := by
+    rw [mul_one_div, div_self (by positivity : (0:ℝ) < 2 * c).ne', sub_self]
+  have hlin : Tendsto (fun t : ℝ ↦ 1 - 2 * c * t) (𝓝[<] (1 / (2 * c))) (𝓝 0) := by
+    rw [← hval]
+    exact ((continuous_const.sub (continuous_const.mul continuous_id)).tendsto
+      _).mono_left nhdsWithin_le_nhds
+  have hcont : Tendsto (fun t ↦ (1 - 2 * c * t) ^ 2) (𝓝[<] (1 / (2 * c))) (𝓝 0) := by
+    simpa using hlin.pow 2
+  have hpos : ∀ᶠ t in 𝓝[<] (1 / (2 * c)), (1 - 2 * c * t) ^ 2 ∈ Set.Ioi (0 : ℝ) := by
+    filter_upwards [self_mem_nhdsWithin] with t ht
+    exact Set.mem_Ioi.mpr (pow_pos (einstein_homothety_pos c t hc ht) 2)
+  have hinner : Tendsto (fun t ↦ (1 - 2 * c * t) ^ 2) (𝓝[<] (1 / (2 * c))) (𝓝[>] 0) :=
+    tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ hcont hpos
+  have houter : Tendsto (fun s ↦ N₀ / s) (𝓝[>] (0 : ℝ)) atTop := by
+    simp_rw [div_eq_mul_inv]
+    exact Tendsto.const_mul_atTop hN tendsto_inv_nhdsGT_zero
+  exact houter.comp hinner
+
+end RicciFlow
