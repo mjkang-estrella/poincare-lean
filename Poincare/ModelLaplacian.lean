@@ -15770,3 +15770,39 @@ theorem tensorDivOneForm_coordRicciForm_eq_half_grad
     ricciDivergence_eq_half_fderiv_scalar hGC2 hGsymm hinv hdiffΓ hdd hsymΓ w]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci divergence one-form field is half the scalar-curvature gradient field**:
+`(fun y ↦ (div Ric)_y) = (fun y ↦ ½·(dR)_y)`. The `funext`/`ext` lift of
+`tensorDivOneForm_coordRicciForm_eq_half_grad`, packaging the contracted Bianchi
+identity `div Ric = ½ dR` as a CLM-field equality so its covariant derivative
+(`tensorDoubleDivergence`) can be taken. -/
+theorem tensorDivCLM_coordRicciForm_eq_half_grad_field
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ (y : E) (p : E), DifferentiableAt ℝ
+      (fun z ↦ fderiv ℝ (fun z' ↦ christoffelClosedOp G z' p) z) y)
+    (hsymΓ : ∀ (y : E) (p : E), IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) y)
+    (hKd : ∀ y : E,
+      DifferentiableAt ℝ (fun z ↦ coordRicciForm G z (hdiffΓ z)) y) :
+    (fun y ↦ tensorDivCLM G (fun z ↦ coordRicciForm G z (hdiffΓ z)) y)
+      = fun y ↦ (1 / 2 : ℝ) • fderiv ℝ (fun z ↦ coordScalar G z) y := by
+  funext y
+  ext w
+  rw [tensorDivCLM_apply,
+    tensorDivOneForm_coordRicciForm_eq_half_grad hGC2 hGsymm hinv hdiffΓ
+      (hdd y) (hsymΓ y) (hKd y) w]
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+
+end RicciFlow
