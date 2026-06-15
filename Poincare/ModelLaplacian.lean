@@ -14879,3 +14879,77 @@ theorem tensorDoubleDivergence_sndDeriv_form
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`div div H` in `∂♯`-free merged form**: the derivative-direction Christoffel
+correction and the `∂♯` term merge by `christoffel_inverse_raise_merge`, giving
+`divdiv H = Σⱼ Σᵢ [ (∇²H)(♯bʲ;♯bⁱ,bᵢ,bⱼ) + (∇H)(♯bⁱ,Γ_{♯bʲ}bᵢ,bⱼ)
++ (∇H)(♯(−bⁱ∘Γ_{♯bʲ}),bᵢ,bⱼ) ]`. The metric-derivative term fully absorbed, leaving
+the `∇²H` block (`½(T1+T2)`) and two connection corrections — sub-identity (a). -/
+theorem tensorDoubleDivergence_merged
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x) :
+    tensorDoubleDivergence G H x
+      = ∑ j, ∑ i,
+          (covTensor2SndDeriv G H x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j)))
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))
+              ((Module.finBasis ℝ E) i) ((Module.finBasis ℝ E) j)
+            + covTensor2Deriv G H x
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)))
+                (christoffelClosedOp G x
+                  ((G x).inverse (LinearMap.toContinuousLinearMap
+                    ((Module.finBasis ℝ E).coord j)))
+                  ((Module.finBasis ℝ E) i)) ((Module.finBasis ℝ E) j)
+            + covTensor2Deriv G H x
+                ((G x).inverse (-((LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)).comp
+                  (christoffelClosedOp G x
+                    ((G x).inverse (LinearMap.toContinuousLinearMap
+                      ((Module.finBasis ℝ E).coord j)))))))
+                ((Module.finBasis ℝ E) i) ((Module.finBasis ℝ E) j)) := by
+  rw [tensorDoubleDivergence_sndDeriv_form hGd hGsymm hinv hHd hH2 hΓd]
+  refine Finset.sum_congr rfl fun j _ ↦ Finset.sum_congr rfl fun i _ ↦ ?_
+  have hmerge :
+      covTensor2Deriv G H x (christoffelClosedOp G x
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j)))
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i))))
+            ((Module.finBasis ℝ E) i) ((Module.finBasis ℝ E) j)
+        + covTensor2Deriv G H x
+            ((fderiv ℝ (fun y ↦ (G y).inverse
+              (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i))) x)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j))))
+            ((Module.finBasis ℝ E) i) ((Module.finBasis ℝ E) j)
+        = covTensor2Deriv G H x
+            ((G x).inverse (-((LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i)).comp
+              (christoffelClosedOp G x
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord j)))))))
+            ((Module.finBasis ℝ E) i) ((Module.finBasis ℝ E) j) := by
+    rw [← covTensor2Deriv_add_dir, christoffel_inverse_raise_merge (hGd x) hGsymm
+      (Filter.Eventually.of_forall hinv)
+      (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord j)))]
+  linarith [hmerge]
+
+end RicciFlow
