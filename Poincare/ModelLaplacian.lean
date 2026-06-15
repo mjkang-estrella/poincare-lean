@@ -21620,3 +21620,21 @@ theorem pinching_gap_nonneg
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round sphere's pinching gap stays zero along the flow**: if `R₀² = n·|Ric|²₀`, then
+`n·|Ric|²(t) − R(t)² = 0` for all `t` — the Einstein deficit remains zero, so the round sphere stays
+exactly Einstein (and a fixed point of the normalized flow) throughout (roadmap item 3). -/
+theorem round_sphere_pinching_gap_zero
+    (R₀ N₀ n c t : ℝ) (hfac : 1 - 2 * c * t ≠ 0) (hpin : R₀ ^ 2 = n * N₀) :
+    n * (N₀ / (1 - 2 * c * t) ^ 2) - (R₀ / (1 - 2 * c * t)) ^ 2 = 0 := by
+  rw [← round_sphere_pinching_preserved R₀ N₀ n c t hfac hpin]
+  ring
+
+end RicciFlow
