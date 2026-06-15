@@ -14524,3 +14524,45 @@ theorem sum_hessian_trace_raise_swap
     (fun c p q ↦ by dsimp only; rw [map_smul])).symm
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The double-trace of `∇²H` is the curved Laplacian of `tr_g H`**:
+`Σᵢ Σⱼ (∇²H)(bᵢ;♯bⁱ,♯bʲ,bⱼ) = Δ_g(tr_g H)`. Assembled from the Laplacian-trace sum
+of the 2nd-order trace-commute, the Hessian-`D²` raise-swap, and the Christoffel
+symmetry of the connection term, matched against `curvedLap`'s Hessian form. This is
+the `Σᵢ Σⱼ T3` block of `deltaGammaDivergenceTrace_sndDeriv`, completing the
+identification `−½ Σ Σ T3 = −½ Δ_g(tr_g H)` of sub-identity (b). -/
+theorem sum_sum_covTensor2SndDeriv_eq_curvedLap
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (hTr2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x) :
+    (∑ i, ∑ j, covTensor2SndDeriv G H x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j))) ((Module.finBasis ℝ E) j))
+      = curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+          (tensorMetricTrace G H) x := by
+  rw [sum_sum_covTensor2SndDeriv_laplacian_trace hGd hGsymm hinv hHd hH2 hΓd hHsymm,
+    Finset.sum_sub_distrib, sum_hessian_trace_raise_swap hGsymm hinv hTr2,
+    curvedLap_tensorMetricTrace_hessian_form hGsymm hinv, Finset.sum_sub_distrib]
+  congr 1
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [christoffelClosedOp_symm (hGd x) hGsymm ((Module.finBasis ℝ E) i)
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i)))]
+
+end RicciFlow
