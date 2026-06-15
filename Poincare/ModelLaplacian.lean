@@ -21921,3 +21921,25 @@ theorem normalized_ricci_flow_direction_traceFree
   rw [tensorMetricTrace_smul, tracelessRicci_metricTrace_zero hdiff hGsymm hinv hn, mul_zero]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace is additive over tensor-field addition**:
+`tr_g(H + K) = tr_g H + tr_g K`, the companion of `tensorMetricTrace_sub`. Each summand
+`(H + K)(bᵢ, ♯bⁱ)` splits by `add_apply` against the fixed raised coframe. Together with
+`tensorMetricTrace_smul` this completes the `ℝ`-linearity of the metric-trace contraction on
+tensor fields (roadmap item 3). -/
+theorem tensorMetricTrace_add (G H K : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E) :
+    tensorMetricTrace G (fun y ↦ H y + K y) x
+      = tensorMetricTrace G H x + tensorMetricTrace G K x := by
+  unfold tensorMetricTrace
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  simp only [ContinuousLinearMap.add_apply]
+
+end RicciFlow
