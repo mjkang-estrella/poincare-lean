@@ -20379,3 +20379,29 @@ theorem coordRiemann_neg_slot1
   simpa using h
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`|Ric|² ≥ R²/n`**: the curvature-pinching inequality as a direct lower bound on the squared
+Ricci norm, `(coordScalar G x)²/n ≤ coordRicciNormSq G x hdiff`. The trace Cauchy–Schwarz lower bound
+on the Ricci-flow reaction term (roadmap item 3). -/
+theorem ricciNormSq_ge_scalar_sq_div
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    (coordScalar G x) ^ 2 / (Module.finrank ℝ E : ℝ)
+      ≤ coordRicciNormSq G x hdiff := by
+  rw [div_le_iff₀ hn]
+  have h := coordScalar_sq_le_finrank_mul_ricciNormSq hGC2 hGsymm hinv hdiff hGpos
+  nlinarith [h]
+
+end RicciFlow
