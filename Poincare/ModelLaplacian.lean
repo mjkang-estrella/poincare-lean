@@ -18105,3 +18105,32 @@ theorem fderiv_corr1_antisymm_expand
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Expansion of the 3rd-slot correction difference**: the companion of
+`fderiv_corr1_antisymm_expand` for the last tensor slot,
+`corr₂(v') − corr₂(v) = H x p (D_{v'}Γ_v q − D_v Γ_{v'} q) + [(D_{v'}H)(p, Γ_v q) − (D_v H)(p, Γ_{v'} q)]`,
+via the 3rd-slot product rule and linearity of `H x p` in the last slot
+(roadmap item 3, curvature-commutation frontier). -/
+theorem fderiv_corr2_antisymm_expand
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (v' v p q : E)
+    (hH : DifferentiableAt ℝ H x)
+    (hΓ : DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v q) x)
+    (hΓ' : DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v' q) x) :
+    (fderiv ℝ (fun y ↦ H y p (christoffelClosedOp G y v q)) x) v'
+      - (fderiv ℝ (fun y ↦ H y p (christoffelClosedOp G y v' q)) x) v
+    = H x p (fderiv ℝ (fun y ↦ christoffelClosedOp G y v q) x v'
+            - fderiv ℝ (fun y ↦ christoffelClosedOp G y v' q) x v)
+      + ((fderiv ℝ H x v') p (christoffelClosedOp G x v q)
+         - (fderiv ℝ H x v) p (christoffelClosedOp G x v' q)) := by
+  rw [fderiv_tensor_corr_field' hH hΓ v' p, fderiv_tensor_corr_field' hH hΓ' v p,
+    map_sub]
+  ring
+
+end RicciFlow
