@@ -19424,3 +19424,25 @@ theorem ricciActionOnTensor_metric
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric is parallel** (`∇g = 0`): the covariant derivative of the metric vanishes,
+`covTensor2Deriv G G x u a b = 0`, by metric compatibility of the Levi-Civita connection. The
+foundational fact that the Levi-Civita connection preserves the metric (roadmap item 3). -/
+theorem covTensor2Deriv_metric_eq_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : (G x).IsInvertible) (u a b : E) :
+    covTensor2Deriv G G x u a b = 0 := by
+  unfold covTensor2Deriv
+  rw [coord_metric_compatible hGd hGsymm hinv u a b]
+  ring
+
+end RicciFlow
