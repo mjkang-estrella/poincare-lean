@@ -18484,3 +18484,36 @@ theorem connectionLaplacian_transpose
   linarith [h]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Flatness makes the second covariant derivatives commute**: when the coordinate curvature
+operator vanishes on the `(v', v)`-plane, the antisymmetrised second covariant derivative is zero,
+i.e. `(∇²H)(v',v,p,q) = (∇²H)(v,v',p,q)`. The geometric content of the `(0,2)`-tensor Ricci
+identity: curvature is the precise obstruction to commuting covariant derivatives (roadmap item 3). -/
+theorem covTensor2SndDeriv_comm_of_flat
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (v' v p q : E)
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hHC2 : ContDiffAt ℝ 2 H x)
+    (hpure1 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ H y v) p q) x)
+    (hpure2 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ H y v') p q) x)
+    (hc1 : DifferentiableAt ℝ (fun y ↦ H y (christoffelClosedOp G y v p) q) x)
+    (hc1' : DifferentiableAt ℝ (fun y ↦ H y (christoffelClosedOp G y v' p) q) x)
+    (hc2 : DifferentiableAt ℝ (fun y ↦ H y p (christoffelClosedOp G y v q)) x)
+    (hc2' : DifferentiableAt ℝ (fun y ↦ H y p (christoffelClosedOp G y v' q)) x)
+    (hH : DifferentiableAt ℝ H x)
+    (hΓ : DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v) x)
+    (hΓ' : DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v') x)
+    (hflat : coordCurvatureOp G x v' v = 0) :
+    covTensor2SndDeriv G H x v' v p q = covTensor2SndDeriv G H x v v' p q := by
+  rw [covTensor2SndDeriv_comm v' v p q hGd hGsymm hHC2 hpure1 hpure2
+    hc1 hc1' hc2 hc2' hH hΓ hΓ', hflat]
+  simp
+
+end RicciFlow
