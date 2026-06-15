@@ -21844,3 +21844,33 @@ theorem einstein_const_eq_scalar_div
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The traceless Ricci tensor is genuinely trace-free**: the `(0,2)`-field
+`Ric̊ := Ric − (R/n)·g` has zero metric trace, `tr_g(Ric̊) = 0`, since `tr_g(Ric) = R` and
+`tr_g(g) = n` give `R − (R/n)·n = 0`. This is the defining property of the traceless part appearing
+in the Pythagorean decomposition `|Ric|² = |Ric̊|² + R²/n` (roadmap item 3). -/
+theorem tracelessRicci_metricTrace_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ (y : E) (u : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z u) y)
+    (hGsymm : ∀ v w : E, G x v w = G x w v) (hinv : (G x).IsInvertible)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0) :
+    tensorMetricTrace G
+      (fun y ↦ coordRicciForm G y (hdiff y)
+        - (coordScalar G y / (Module.finrank ℝ E : ℝ)) • G y) x = 0 := by
+  have h1 : tensorMetricTrace G (fun y ↦ coordRicciForm G y (hdiff y)) x = coordScalar G x :=
+    tensorMetricTrace_coordRicciForm hdiff
+  have h2 : tensorMetricTrace G G x = (Module.finrank ℝ E : ℝ) :=
+    tensorMetricTrace_metric hGsymm hinv
+  unfold tensorMetricTrace at *
+  simp only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]
+  rw [Finset.sum_sub_distrib, h1, ← Finset.mul_sum, h2, div_mul_cancel₀ _ hn, sub_self]
+
+end RicciFlow
