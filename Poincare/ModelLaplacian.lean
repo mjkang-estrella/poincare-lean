@@ -15709,3 +15709,30 @@ theorem tensorDivOneForm_coordRicciForm
       ((Module.finBasis ℝ E).coord i))) ((Module.finBasis ℝ E) i) w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The divergence bridge as a field identity**: `(fun y ↦ (div Ric)_y w)
+= (fun y ↦ ricciDivergence G y w)`. The `funext` lift of
+`tensorDivOneForm_coordRicciForm`, needed to differentiate the Ricci divergence
+one-form for the second divergence `tensorDoubleDivergence(Ric)`. -/
+theorem tensorDivOneForm_coordRicciForm_field
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ (y : E) (p : E), DifferentiableAt ℝ
+      (fun z ↦ fderiv ℝ (fun z' ↦ christoffelClosedOp G z' p) z) y)
+    (hKd : ∀ y : E,
+      DifferentiableAt ℝ (fun z ↦ coordRicciForm G z (hdiffΓ z)) y)
+    (w : E) :
+    (fun y ↦ tensorDivOneForm G (fun z ↦ coordRicciForm G z (hdiffΓ z)) y w)
+      = fun y ↦ ricciDivergence G y w := by
+  funext y
+  exact tensorDivOneForm_coordRicciForm hdiffΓ (hdd y) (hKd y) w
+
+end RicciFlow
