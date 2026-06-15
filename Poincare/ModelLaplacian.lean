@@ -14699,3 +14699,38 @@ theorem fderiv_covTensor2Deriv_dir_split
   exact hBapp y ((G x).inverse φ)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The varying-raise derivative-direction derivative as `∇²H` + corrections + `∂♯`**:
+combining the derivative-direction split with `fderiv_covTensor2Deriv_eq` expands
+`fderiv(y ↦ (∇_{♯ʸφ} H)_y(p,q))` into `(∇²H)(v';♯ˣφ,p,q)`, the three frozen-raise
+Christoffel corrections, and the `∂♯` term `(∇_{∂_{v'}♯φ} H)_x(p,q)`. The fully
+expanded summand of the outer divergence in `div div H` — sub-identity (a). -/
+theorem fderiv_covTensor2Deriv_dir_varying_raise_eq
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (v' p q : E) (φ : E →L[ℝ] ℝ) :
+    (fderiv ℝ (fun y ↦ covTensor2Deriv G H y ((G y).inverse φ) p q) x) v'
+      = covTensor2SndDeriv G H x v' ((G x).inverse φ) p q
+        + covTensor2Deriv G H x
+            (christoffelClosedOp G x v' ((G x).inverse φ)) p q
+        + covTensor2Deriv G H x ((G x).inverse φ)
+            (christoffelClosedOp G x v' p) q
+        + covTensor2Deriv G H x ((G x).inverse φ) p
+            (christoffelClosedOp G x v' q)
+        + covTensor2Deriv G H x
+            ((fderiv ℝ (fun y ↦ (G y).inverse φ) x) v') p q := by
+  rw [fderiv_covTensor2Deriv_dir_split hGd hinv hHd hH2 hΓd v' p q φ,
+    fderiv_covTensor2Deriv_eq v' ((G x).inverse φ) p q]
+
+end RicciFlow
