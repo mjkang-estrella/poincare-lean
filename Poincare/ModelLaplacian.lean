@@ -15947,3 +15947,42 @@ theorem tensorDoubleDivergence_smul_field
       ((Module.finBasis ℝ E).coord j))) ((Module.finBasis ℝ E) j)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The double divergence of the Ricci-flow variation is minus the Laplacian of the
+scalar curvature**: `div div (−2 Ric) = −Δ_g R`. Combining the field homogeneity
+`tensorDoubleDivergence_smul_field` (`c = −2`) with `tensorDoubleDivergence_coordRicciForm`
+(`div div Ric = ½ Δ_g R`). The `div div H` side of Hamilton's scalar evolution under the
+Ricci-flow direction `H = −2 Ric`. -/
+theorem tensorDoubleDivergence_neg_two_coordRicciForm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ (y : E) (p : E), DifferentiableAt ℝ
+      (fun z ↦ fderiv ℝ (fun z' ↦ christoffelClosedOp G z' p) z) y)
+    (hsymΓ : ∀ (y : E) (p : E), IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) y)
+    (hKd : ∀ y : E,
+      DifferentiableAt ℝ (fun z ↦ coordRicciForm G z (hdiffΓ z)) y)
+    (hRd2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (fun z ↦ coordScalar G z) y) x)
+    (hdivd : DifferentiableAt ℝ
+      (tensorDivCLM G (fun z ↦ coordRicciForm G z (hdiffΓ z))) x) :
+    tensorDoubleDivergence G
+        (fun y ↦ (-2 : ℝ) • coordRicciForm G y (hdiffΓ y)) x
+      = (-1 : ℝ) * curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+          (fun z ↦ coordScalar G z) x := by
+  rw [tensorDoubleDivergence_smul_field hKd hdivd (-2),
+    tensorDoubleDivergence_coordRicciForm hGC2 hGsymm hinv hdiffΓ hdd hsymΓ hKd hRd2]
+  ring
+
+end RicciFlow
