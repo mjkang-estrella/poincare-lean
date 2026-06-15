@@ -17254,3 +17254,29 @@ theorem ricciDeriv_isSymm
       (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) hGd hGsymm hf u w]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ`-divergence symmetry as a field identity**: `(fun y ↦ div δΓ_y(u,w))
+= (fun y ↦ div δΓ_y(w,u))`. The `funext` lift of `deltaGammaDivergence_isSymm`, for
+differentiating the symmetric `div δΓ` field toward the Bochner form (roadmap item 3). -/
+theorem deltaGammaDivergence_isSymm_field
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hVd : ∀ (z : E) (p : E), DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) z)
+    (u w : E) :
+    (fun y ↦ deltaGammaDivergence G H y u w)
+      = fun y ↦ deltaGammaDivergence G H y w u := by
+  funext y
+  exact deltaGammaDivergence_isSymm hGd hHd hGsymm hHsymm (fun p ↦ hVd y p) u w
+
+end RicciFlow
