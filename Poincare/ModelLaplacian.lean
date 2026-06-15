@@ -19037,3 +19037,35 @@ theorem connectionLaplacian_zero
   simp [hz]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci endomorphism (raised Ricci)**: `Ric^♯ p = Σⱼ R(p, bⱼ) ♯bʲ`, the metric dual of the
+Ricci one-form `R(p, ·)`. Characterised by `g(Ric^♯ p, bₖ) = R(p, bₖ)` (roadmap item 3). -/
+noncomputable def ricciSharp (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x p : E) : E :=
+  ∑ j, coordRicci G x p ((Module.finBasis ℝ E) j) •
+    ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+
+/-- **The Ricci action on a `(0,2)`-tensor**: `(Ric · H)(p,q) = H(Ric^♯ p, q) + H(p, Ric^♯ q)`, the
+`Ric·H + H·Ric` term of the Lichnerowicz Laplacian `Δ_L H = Δ_∇ H + (curvature) − Ric·H − H·Ric`
+(roadmap item 3). -/
+noncomputable def ricciActionOnTensor (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x p q : E) : ℝ :=
+  H x (ricciSharp G x p) q + H x p (ricciSharp G x q)
+
+/-- **The Ricci action is additive in the tensor**:
+`(Ric · (H₁+H₂))(p,q) = (Ric · H₁)(p,q) + (Ric · H₂)(p,q)` (roadmap item 3). -/
+theorem ricciActionOnTensor_add
+    {G H₁ H₂ : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (p q : E) :
+    ricciActionOnTensor G (fun y ↦ H₁ y + H₂ y) x p q
+      = ricciActionOnTensor G H₁ x p q + ricciActionOnTensor G H₂ x p q := by
+  unfold ricciActionOnTensor
+  simp only [ContinuousLinearMap.add_apply]
+  ring
+
+end RicciFlow
