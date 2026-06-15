@@ -21306,3 +21306,27 @@ theorem coordScalar_smul_metric
     coordRicci_smul_metric c hGd hinv hc, smul_eq_mul]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Scaling preserves the Einstein condition**: if `Ric = c₀·g` then `Ric(c·g) = (c₀/c)·(c·g)`, so
+`c·g` is Einstein with constant `c₀/c`. The homothety keeps the round sphere Einstein, just rescaling
+the constant — consistent with `R(c·g) = c⁻¹·R(g)` (roadmap item 3). -/
+theorem einstein_smul_metric
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c₀ : ℝ} (c : ℝ)
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hinv : ∀ y : E, (G y).IsInvertible) (hc : c ≠ 0)
+    (hEin : ∀ p q : E, coordRicci G x p q = c₀ * G x p q) (p q : E) :
+    coordRicci (fun y ↦ c • G y) x p q
+      = (c₀ / c) * ((fun y ↦ c • G y) x p q) := by
+  rw [coordRicci_smul_metric c hGd hinv hc, hEin p q]
+  show c₀ * G x p q = c₀ / c * ((c • G x) p q)
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  field_simp
+
+end RicciFlow
