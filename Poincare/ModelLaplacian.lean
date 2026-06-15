@@ -14363,3 +14363,79 @@ theorem sum_raised_op_slot_swap
     Finset.sum_congr rfl fun j _ ↦ hR j, Finset.sum_comm]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The 2nd-order trace-commute**: the `H`-slot trace of `∇²H` equals the
+covariant Hessian of `tr_g H` —
+`Σⱼ (∇²H)(v';v,♯bʲ,bⱼ) = D²(tr_g H)(v',v) − D(tr_g H)(Γ_{v'}v)`. From the
+`∂♯`-free summed expansion: the `∇²H` term is isolated, the derivative-direction
+correction sums to `D(tr_g H)(Γ_{v'}v)` by the building block, and the two H-slot
+Christoffel corrections cancel by `sum_raised_op_slot_swap`. The metric trace
+commutes with the second covariant derivative — the heart of sub-identity (b). -/
+theorem sum_covTensor2SndDeriv_Hslot_trace
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (v v' : E) :
+    (∑ j, covTensor2SndDeriv G H x v' v
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j))) ((Module.finBasis ℝ E) j))
+      = (fderiv ℝ (fun y ↦ (fderiv ℝ (tensorMetricTrace G H) y) v) x) v'
+        - (fderiv ℝ (tensorMetricTrace G H) x)
+            (christoffelClosedOp G x v' v) := by
+  have hexpand := fderiv2_tensorMetricTrace_sum_merged hGd hGsymm hinv hHd hH2 hΓd
+    hHsymm v v'
+  simp only [Finset.sum_add_distrib] at hexpand
+  -- Term 2: derivative-direction Christoffel correction sums to D(tr)(Γv'v).
+  have hT2 : (∑ j, covTensor2Deriv G H x (christoffelClosedOp G x v' v)
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord j))) ((Module.finBasis ℝ E) j))
+      = (fderiv ℝ (tensorMetricTrace G H) x) (christoffelClosedOp G x v' v) :=
+    sum_covTensor2Deriv_Hslot_trace (hGd x) hGsymm hinv (hHd x) hHsymm _
+  -- Terms 3 and 4: the two H-slot Christoffel corrections cancel.
+  have hswap := sum_raised_op_slot_swap (G := G) (x := x)
+    (christoffelClosedOp G x v')
+    (fun p q ↦ covTensor2Deriv G H x v p q)
+    (fun p₁ p₂ q ↦ covTensor2Deriv_add_left v p₁ p₂ q)
+    (fun c p q ↦ by dsimp only; rw [covTensor2Deriv_smul_left, smul_eq_mul])
+    (fun p q₁ q₂ ↦ covTensor2Deriv_add_right v p q₁ q₂)
+    (fun c p q ↦ by dsimp only; rw [covTensor2Deriv_smul_right, smul_eq_mul])
+  have hT4 : ∀ j, covTensor2Deriv G H x v
+        ((G x).inverse (-((LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)).comp (christoffelClosedOp G x v'))))
+          ((Module.finBasis ℝ E) j)
+      = -covTensor2Deriv G H x v
+          ((G x).inverse ((LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)).comp (christoffelClosedOp G x v')))
+            ((Module.finBasis ℝ E) j) := by
+    intro j
+    rw [map_neg, ← neg_one_smul ℝ ((G x).inverse
+      ((LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)).comp
+        (christoffelClosedOp G x v'))), covTensor2Deriv_smul_left]
+    ring
+  have hT34 : (∑ j, covTensor2Deriv G H x v
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+          (christoffelClosedOp G x v' ((Module.finBasis ℝ E) j)))
+      + (∑ j, covTensor2Deriv G H x v
+          ((G x).inverse (-((LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)).comp (christoffelClosedOp G x v'))))
+            ((Module.finBasis ℝ E) j))
+      = 0 := by
+    rw [Finset.sum_congr rfl fun j _ ↦ hT4 j, hswap, ← Finset.sum_add_distrib]
+    simp
+  rw [hexpand]
+  linarith [hT2, hT34]
+
+end RicciFlow
