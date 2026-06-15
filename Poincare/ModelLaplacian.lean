@@ -20678,3 +20678,49 @@ theorem constCurvatureForm_scalar_trace
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci endomorphism of an Einstein metric is `c·id`**:
+`coordRicciEndo G x hdiff = c • id` when `Ric = c·g` (roadmap item 3). -/
+theorem coordRicciEndo_of_einstein
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q) :
+    coordRicciEndo G x hdiff = c • LinearMap.id := by
+  apply LinearMap.ext
+  intro u
+  rw [coordRicciEndo_apply]
+  have hform : coordRicciForm G x hdiff u = c • (G x u) := by
+    ext w
+    rw [coordRicciForm_apply, hEin w u, hGsymm x w u]
+    simp
+  rw [hform, map_smul,
+    show (G x).inverse (G x u) = u from (hinv x).inverse_apply_eq.mpr rfl]
+  simp
+
+/-- **Einstein metrics achieve the pinching equality**: `|Ric|² = c²·n` when `Ric = c·g`, so
+`R² = (cn)² = n·(c²n) = n|Ric|²` — the Cauchy–Schwarz equality case is exactly the Einstein condition
+(roadmap item 3). -/
+theorem coordRicciNormSq_of_einstein
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q) :
+    coordRicciNormSq G x hdiff = c ^ 2 * (Module.finrank ℝ E : ℝ) := by
+  rw [coordRicciNormSq_eq_trace G x hdiff (hinv x)
+      (fun u w ↦ by rw [hEin u w, hEin w u, hGsymm x w u]),
+    coordRicciEndo_of_einstein hGsymm hinv hdiff hEin,
+    show (c • LinearMap.id) ∘ₗ (c • LinearMap.id (R := ℝ) (M := E))
+        = (c ^ 2) • LinearMap.id from by ext u; simp [smul_smul, sq],
+    map_smul, LinearMap.trace_id, smul_eq_mul]
+
+end RicciFlow
