@@ -14593,3 +14593,40 @@ theorem tensorDoubleDivergence_covTensor1Deriv_form
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The basepoint-derivative of the divergence one-form, pulled through the sum**:
+`(D(fun y ↦ (div H)_y w))_x v' = Σᵢ (D(fun y ↦ (∇_{♯ʸbⁱ} H)_y(bᵢ,w)))_x v'`. Pulls
+`fderiv` through the divergence's contraction sum (each summand differentiable by
+`differentiableAt_covTensor2Deriv_dir`, the derivative-direction carrying the varying
+raise `♯ʸbⁱ`). The first step expanding `div div H` into `∇²H`: each summand splits
+off the `∂♯` of the varying derivative-direction raise. -/
+theorem fderiv_tensorDivOneForm_sum
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (w v' : E) :
+    (fderiv ℝ (fun y ↦ tensorDivOneForm G H y w) x) v'
+      = ∑ i, (fderiv ℝ (fun y ↦ covTensor2Deriv G H y
+          ((G y).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i)))
+          ((Module.finBasis ℝ E) i) w) x) v' := by
+  unfold tensorDivOneForm
+  rw [fderiv_fun_sum (fun i _ ↦ differentiableAt_covTensor2Deriv_dir hGd hGsymm
+    hHd hH2 hΓd (differentiableAt_inverse_raise (hGd x)
+      (Filter.Eventually.of_forall hinv)
+      (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+    ((Module.finBasis ℝ E) i) w)]
+  rw [ContinuousLinearMap.sum_apply]
+
+end RicciFlow
