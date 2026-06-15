@@ -16774,3 +16774,39 @@ theorem deltaGammaContractionDeriv_eq_half_covariantHessian
       (tensorMetricTrace G H) u w]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The untraced contracted Lichnerowicz formula in named-Hessian form**:
+`δRic(u,w) = div δΓ(u,w) − ½ Hess_g(tr_g H)(u,w)`. The clean named-`covariantHessian` form
+of the untraced Ricci variation, combining the contracted Lichnerowicz formula with the
+trace-term collapse. The direct untraced analogue of the scalar contracted Lichnerowicz
+identity (roadmap item 3). -/
+theorem ricciDeriv_eq_div_sub_half_covariantHessian
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (hTr2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x)
+    (hΓsymm : ∀ a b : E,
+      christoffelClosedOp G x a b = christoffelClosedOp G x b a)
+    (u w : E) :
+    ricciDeriv G H x u w
+      = deltaGammaDivergence G H x u w
+        - (1 / 2 : ℝ) * covariantHessian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+            (tensorMetricTrace G H) x u w := by
+  rw [ricciDeriv_eq_deltaGamma_contractions hΓsymm,
+    deltaGammaContractionDeriv_eq_half_covariantHessian hGd hGsymm hinv hHd hHsymm
+      hVd hTr2 u w]
+
+end RicciFlow
