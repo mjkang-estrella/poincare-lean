@@ -21090,3 +21090,21 @@ theorem constCurvatureForm_add_curvature
   unfold constCurvatureForm; ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The constant-curvature tensor is homogeneous in the curvature parameter**:
+`(d·κ)Form = d·(κForm)`. With additivity, `κ ↦ κForm` is `ℝ`-linear — the space of constant-curvature
+tensors is one-dimensional, parameterized by `κ` (roadmap item 3). -/
+theorem constCurvatureForm_smul_curvature
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (d κ : ℝ) (u w a b : E) :
+    constCurvatureForm G x (d * κ) u w a b
+      = d * constCurvatureForm G x κ u w a b := by
+  unfold constCurvatureForm; ring
+
+end RicciFlow
