@@ -12961,3 +12961,40 @@ theorem sum_L3_eq_sum_C2
     christoffelClosedOp_symm hGd hGsymm']
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The flat `L1` term with the derivative moved inside**: the flat
+`δΓ`-operator-derivative term equals the metric pairing of the base-point
+derivative of the `δΓ`-vector field, `Σⱼ Σᵢ G(∂_{bᵢ}(δΓ_·(♯bʲ,bⱼ)), ♯bⁱ)`. Moving
+the `fderiv` inside the evaluation (`fderiv_clm_family_apply`) puts `L1` in the
+form on which the second-derivative symmetry / curvature analysis acts to match
+`R1`. -/
+theorem sum_L1_fderiv_form
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x) :
+    (∑ j, ∑ i, G x ((fderiv ℝ (fun y ↦ christoffelDerivOp G H y
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j))))
+          x ((Module.finBasis ℝ E) i))
+        ((Module.finBasis ℝ E) j))
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))))
+      = ∑ j, ∑ i, G x (fderiv ℝ (fun y ↦ christoffelDerivOp G H y
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j)))
+            ((Module.finBasis ℝ E) j))
+          x ((Module.finBasis ℝ E) i))
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i))) := by
+  refine Finset.sum_congr rfl fun j _ ↦ Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [fderiv_clm_family_apply (hVd _) ((Module.finBasis ℝ E) i)
+    ((Module.finBasis ℝ E) j)]
+
+end RicciFlow
