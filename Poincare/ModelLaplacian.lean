@@ -21991,3 +21991,29 @@ theorem lichnerowiczLaplacian_metric_trace
     coordRicci_symm hGC2 hGsymm hinv hdiff]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of `−Δ_L g` is `−2R`**: `Σᵢ (−Δ_L g)(bᵢ, ♯bⁱ) = −2·R`, the negation of
+`lichnerowiczLaplacian_metric_trace`. Since the Ricci-flow direction is `∂g/∂t = −Δ_L g` (equal to
+`−2 Ric`), its metric trace is `−2R` — exactly the `htr` source term feeding `+Δ_g R` into Hamilton's
+scalar-curvature evolution via the contracted Lichnerowicz identity (roadmap item 3). -/
+theorem neg_lichnerowiczLaplacian_metric_trace
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x) :
+    ∑ i, -lichnerowiczLaplacian G G x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+      = -2 * coordScalar G x := by
+  rw [Finset.sum_neg_distrib,
+    lichnerowiczLaplacian_metric_trace hGC2 hGsymm hinv hdiff]
+  ring
+
+end RicciFlow
