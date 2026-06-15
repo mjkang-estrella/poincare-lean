@@ -19157,3 +19157,28 @@ theorem lichnerowiczLaplacian_smul
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci action vanishes on the zero tensor**: `(Ric · 0)(p,q) = 0` (roadmap item 3). -/
+theorem ricciActionOnTensor_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (p q : E) :
+    ricciActionOnTensor G (fun _ ↦ 0) x p q = 0 := by
+  unfold ricciActionOnTensor
+  simp
+
+/-- **The Lichnerowicz Laplacian vanishes on the zero tensor**: `Δ_L 0 x p q = 0`, since all three
+constituents do. With homogeneity this confirms `Δ_L` has no constant part (roadmap item 3). -/
+theorem lichnerowiczLaplacian_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (p q : E) :
+    lichnerowiczLaplacian G (fun _ ↦ 0) x p q = 0 := by
+  unfold lichnerowiczLaplacian
+  rw [connectionLaplacian_zero, lichnerowiczCurvature_zero, ricciActionOnTensor_zero]
+  ring
+
+end RicciFlow
