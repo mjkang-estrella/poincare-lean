@@ -17596,3 +17596,28 @@ theorem covTensor2SndDeriv_smul_field
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The connection Laplacian is homogeneous in the tensor field**:
+`Δ_∇(c·H)(p,q) = c · Δ_∇ H(p,q)`, termwise from `covTensor2SndDeriv_smul_field`. Gives
+`Δ_∇(−2 Ric) = −2 Δ_∇ Ric` under the Ricci-flow direction (roadmap item 3). -/
+theorem connectionLaplacian_smul_field
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (c : ℝ) (p q : E) :
+    connectionLaplacian G (fun y ↦ c • H y) x p q
+      = c * connectionLaplacian G H x p q := by
+  unfold connectionLaplacian
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact covTensor2SndDeriv_smul_field hHd hH2 hΓd c _ _ p q
+
+end RicciFlow
