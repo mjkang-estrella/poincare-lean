@@ -14147,3 +14147,48 @@ theorem fderiv2_tensorMetricTrace_sum_expand
     ((Module.finBasis ℝ E) j)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The raised-index Christoffel correction merges with `∂♯`**: the connection
+action on the raised covector plus the metric-derivative `∂♯` term equals the
+raise of the lowered covariant derivative of the (constant) covector `φ`:
+`Γ_{v'}(♯φ) + ∂_{v'}♯φ = ♯(−φ∘Γ_{v'})`. This is `∇g = 0` on the raised index, the
+metric-compatibility identity that collapses the two H-slot correction terms of the
+trace-commute into a single covariant-derivative term. -/
+theorem christoffel_inverse_raise_merge
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hev : ∀ᶠ y in nhds x, (G y).IsInvertible)
+    (φ : E →L[ℝ] ℝ) (v' : E) :
+    christoffelClosedOp G x v' ((G x).inverse φ)
+        + (fderiv ℝ (fun y ↦ (G y).inverse φ) x) v'
+      = (G x).inverse (-(φ.comp (christoffelClosedOp G x v'))) := by
+  have hinv : (G x).IsInvertible := hev.self_of_nhds
+  obtain ⟨e, he⟩ := id hinv
+  have hfd : (fderiv ℝ (fun y ↦ (G y).inverse φ) x) v'
+      = (-(((G x).inverse).comp
+          ((fderiv ℝ G x).flip ((G x).inverse φ)))) v' := by
+    rw [(hasFDerivAt_inverse_raise hGd hev φ).fderiv]
+  rw [hfd]
+  have hleft : ∀ a : E, (G x).inverse ((G x) a) = a := by
+    intro a
+    rw [← he, ContinuousLinearMap.inverse_equiv]; exact e.symm_apply_apply a
+  have hGiG : (G x) ((G x).inverse φ) = φ := by
+    rw [← he, ContinuousLinearMap.inverse_equiv]; exact e.apply_symm_apply φ
+  rw [← hleft (christoffelClosedOp G x v' ((G x).inverse φ)
+      + (-(((G x).inverse).comp ((fderiv ℝ G x).flip ((G x).inverse φ)))) v')]
+  congr 1
+  ext z
+  simp only [map_add, ContinuousLinearMap.add_apply]
+  rw [g_inverse_raise_metric_compat hGd hGsymm hinv φ v' z, hGiG,
+    ContinuousLinearMap.neg_apply, ContinuousLinearMap.comp_apply]
+  ring
+
+end RicciFlow
