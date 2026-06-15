@@ -12900,3 +12900,64 @@ theorem christoffelDeriv_smul_fst
     christoffelDeriv_smul_snd, christoffelDeriv_symm hGd hHd hGsymm hHsymm v u]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `L3`/`C2'` slot-correction terms match under the double trace**:
+`Σⱼ Σᵢ G(δΓ(Γ_{bᵢ}♯bʲ, bⱼ), ♯bⁱ) = Σⱼ Σᵢ G(δΓ(bᵢ, Γ_{♯bʲ}♯bⁱ), bⱼ)`. The inner raise
+swap (with `δΓ`/`Γ` first-slot linearity), `Finset.sum_comm`, `δΓ` slot symmetry,
+and `Γ` symmetry reconcile them. The second clean term-pair match; isolates the
+remaining identity to `Σ[L1−R1]=Σ[L4−rem]`, the genuine curvature relation. -/
+theorem sum_L3_eq_sum_C2
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hinv : (G x).IsInvertible)
+    (hGsymm : ∀ p q : E, G x p q = G x q p)
+    (hGd : DifferentiableAt ℝ G x)
+    (hHd : DifferentiableAt ℝ H x)
+    (hGsymm' : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hHsymm' : ∀ (y : E) (p q : E), H y p q = H y q p) :
+    (∑ j, ∑ i, G x (christoffelDerivOp G H x
+        (christoffelClosedOp G x ((Module.finBasis ℝ E) i)
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j))))
+        ((Module.finBasis ℝ E) j))
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))))
+      = ∑ j, ∑ i, G x (christoffelDerivOp G H x ((Module.finBasis ℝ E) i)
+          (christoffelClosedOp G x
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j)))
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i)))))
+          ((Module.finBasis ℝ E) j) := by
+  rw [Finset.sum_congr rfl fun j _ ↦ (sum_raised_contraction_swap G hinv hGsymm
+      (fun a b ↦ G x (christoffelDerivOp G H x
+        (christoffelClosedOp G x a
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j))))
+        ((Module.finBasis ℝ E) j)) b)
+      (fun a₁ a₂ b ↦ by
+        dsimp only
+        rw [christoffelClosedOp_add_fst G x a₁ a₂]
+        simp only [ContinuousLinearMap.add_apply, christoffelDerivOp_apply,
+          christoffelDeriv_add_fst hGd hHd hGsymm' hHsymm', map_add])
+      (fun c a b ↦ by
+        dsimp only
+        rw [christoffelClosedOp_smul_fst G x c a]
+        simp only [ContinuousLinearMap.smul_apply, christoffelDerivOp_apply,
+          christoffelDeriv_smul_fst hGd hHd hGsymm' hHsymm', map_smul,
+          smul_eq_mul])
+      (fun a b₁ b₂ ↦ by dsimp only; simp only [map_add])
+      (fun c a b ↦ by dsimp only; simp only [map_smul, smul_eq_mul])).symm,
+    Finset.sum_comm]
+  refine Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [christoffelDerivOp_apply, christoffelDerivOp_apply,
+    christoffelDeriv_symm hGd hHd hGsymm' hHsymm',
+    christoffelClosedOp_symm hGd hGsymm']
+
+end RicciFlow
