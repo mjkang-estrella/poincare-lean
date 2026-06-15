@@ -12207,3 +12207,28 @@ theorem fderiv_deltaGammaInnerTrace_summed
     fderiv_g_deltaGamma_summand_expand hGd hev (hVd _) _ w v
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The inverse-metric derivative, applied form**: the spatial derivative of the
+raised covector field is `∂_v((G·)⁻¹ φ) = −(G x)⁻¹((D_v G)((G x)⁻¹ φ))`. The
+applied value of `hasFDerivAt_inverse_raise`, the explicit `d(G⁻¹)=−G⁻¹(dG)G⁻¹`
+term that enters the commutation's middle (inverse-metric-derivative) summand and
+cancels Christoffel corrections by metric compatibility. -/
+theorem fderiv_inverse_raise_apply
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hev : ∀ᶠ y in nhds x, (G y).IsInvertible)
+    (φ : E →L[ℝ] ℝ) (v : E) :
+    (fderiv ℝ (fun y ↦ (G y).inverse φ) x) v
+      = -((G x).inverse ((fderiv ℝ G x v) ((G x).inverse φ))) := by
+  rw [(hasFDerivAt_inverse_raise hGd hev φ).fderiv]
+  simp only [ContinuousLinearMap.neg_apply, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.flip_apply]
+
+end RicciFlow
