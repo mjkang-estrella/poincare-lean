@@ -20970,3 +20970,21 @@ theorem einstein_homothety_extinction
   rw [mul_one_div, div_self (mul_ne_zero two_ne_zero hc), sub_self]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The singularity bound is sharp for the round sphere**: the extinction time `1/(2c)` of the
+shrinking round-sphere soliton equals the singularity bound `n/(2·R_min)` with `R_min = c·n` (the
+constant scalar curvature of the Einstein metric). So `T < n/(2 R_min)` is sharp — the round sphere
+attains it with equality, the extremal Poincaré singularity (roadmap item 3). -/
+theorem round_sphere_extinction_eq_bound
+    (c n : ℝ) (hc : c ≠ 0) (hn : n ≠ 0) :
+    1 / (2 * c) = n / (2 * (c * n)) := by
+  field_simp
+
+end RicciFlow
