@@ -19703,3 +19703,32 @@ theorem coordRiemann_self_pair_right
   linarith [h]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Riemann is additive in its third slot**:
+`Rm(u,w,a₁+a₂,b) = Rm(u,w,a₁,b) + Rm(u,w,a₂,b)`, from linearity of the curvature operator and `g`
+(roadmap item 3). -/
+theorem coordRiemann_add_slot3
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (u w a₁ a₂ b : E) :
+    coordRiemann G x u w (a₁ + a₂) b
+      = coordRiemann G x u w a₁ b + coordRiemann G x u w a₂ b := by
+  unfold coordRiemann
+  rw [map_add, map_add, ContinuousLinearMap.add_apply]
+
+/-- **Riemann is additive in its fourth slot**:
+`Rm(u,w,a,b₁+b₂) = Rm(u,w,a,b₁) + Rm(u,w,a,b₂)`, from linearity of `g` in its second argument
+(roadmap item 3). -/
+theorem coordRiemann_add_slot4
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (u w a b₁ b₂ : E) :
+    coordRiemann G x u w a (b₁ + b₂)
+      = coordRiemann G x u w a b₁ + coordRiemann G x u w a b₂ := by
+  unfold coordRiemann
+  rw [map_add]
+
+end RicciFlow
