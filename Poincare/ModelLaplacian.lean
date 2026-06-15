@@ -11827,3 +11827,36 @@ theorem differentiableAt_covTensor2Deriv_dir
   exact (ht1.sub ht2).sub ht3
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The tensor divergence one-form is differentiable at each argument**:
+`y ↦ (div H)_y(w)` is differentiable. A finite sum (`DifferentiableAt.fun_sum`)
+of varying-slot covariant 2-tensor derivatives, each differentiable by
+`differentiableAt_covTensor2Deriv_dir` with the raised index supplied by
+`differentiableAt_inverse_raise`. The pointwise differentiability of the
+divergence one-form, en route to the bundled `tensorDivCLM` field. -/
+theorem differentiableAt_tensorDivOneForm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (w : E) :
+    DifferentiableAt ℝ (fun y ↦ tensorDivOneForm G H y w) x := by
+  unfold tensorDivOneForm
+  apply DifferentiableAt.fun_sum
+  intro i _
+  exact differentiableAt_covTensor2Deriv_dir hGd hGsymm hHd hH2 hΓd
+    (differentiableAt_inverse_raise (hGd x) (Filter.Eventually.of_forall hinv)
+      (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+    ((Module.finBasis ℝ E) i) w
+
+end RicciFlow
