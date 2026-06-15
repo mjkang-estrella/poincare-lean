@@ -11092,3 +11092,52 @@ theorem ricciDeriv_raised_trace_eq_divTrace_sub_half_curvedLaplacian
       hHd hHsymm hT2 hVd]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/--
+**THE TRACE SUBSTITUTION INTO THE SCALAR EVOLUTION**: when the metric
+trace of the variation tensor is a scalar multiple of a `C²` field,
+`tr_g H = c·φ`, the raised Ricci variation reads
+`Σⱼ δRic(♯bʲ, bⱼ) = div div δΓ − (c/2)·Δ_g φ`.
+
+This is the mechanism by which the Ricci-flow trace identity
+`tr_g(−2 Ric) = −2R` (`c = −2`, `φ = R`) feeds Hamilton's `+ΔR`: the
+`−(c/2)·Δ_g φ` term becomes `+Δ_g R`, leaving the linearized contracted
+Bianchi defect `div div δΓ` as the sole remaining obstruction. It
+specialises `ricciDeriv_raised_trace_eq_divTrace_sub_half_curvedLaplacian`
+through the linearity of the Laplace–Beltrami operator
+(`curvedLaplacian_smul`). -/
+theorem ricciDeriv_raised_trace_eq_divTrace_sub_half_smul
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {φ : E → ℝ} {c : ℝ}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hT2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (hΓsymm : ∀ a b : E,
+      christoffelClosedOp G x a b = christoffelClosedOp G x b a)
+    (hφ : ContDiff ℝ 2 φ)
+    (htr : tensorMetricTrace G H = fun y ↦ c * φ y) :
+    ∑ j, ricciDeriv G H x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j)
+      = deltaGammaDivergenceTrace G H x
+        - (c / 2) * curvedLaplacian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) φ x := by
+  rw [ricciDeriv_raised_trace_eq_divTrace_sub_half_curvedLaplacian hGd hGsymm
+      hinv hHd hHsymm hT2 hVd hΓsymm, htr,
+    curvedLaplacian_smul G (fun y ↦ metricBilin (G y))
+      (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) c hφ]
+  ring
+
+end RicciFlow
