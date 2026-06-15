@@ -12301,3 +12301,42 @@ theorem g_covDeltaGammaDeriv_raised_form
     ContinuousLinearMap.sub_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The summand as covariant derivative plus leftover**: combining the
+Christoffel-form summand with the `covDeltaGammaDeriv` pairing, the base-point
+derivative of `y ↦ G_y(δΓ_y(bᵢ,(G y)⁻¹φ),w)` is exactly
+`G(covDeltaGammaDeriv x v bᵢ ♯φ, w)` plus four leftover Christoffel terms
+(`δΓ`-value correction, inverse-metric correction, and the two slot corrections
+that the covariant derivative subtracted). The leftover is what cancels under the
+`i,j` double trace against the algebraic Γ-correction; this isolates it cleanly. -/
+theorem fderiv_g_deltaGamma_summand_as_covDeltaGamma
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {bi : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : (G x).IsInvertible)
+    (hev : ∀ᶠ y in nhds x, (G y).IsInvertible)
+    (hVd : DifferentiableAt ℝ (fun y ↦ christoffelDerivOp G H y bi) x)
+    (φ : E →L[ℝ] ℝ) (w v : E) :
+    (fderiv ℝ (fun y ↦ G y
+        (christoffelDerivOp G H y bi ((G y).inverse φ)) w) x) v
+      = G x (covDeltaGammaDeriv G H x v bi ((G x).inverse φ)) w
+        + G x (christoffelDerivOp G H x bi ((G x).inverse φ))
+            (christoffelClosedOp G x v w)
+        + G x (christoffelDerivOp G H x bi
+            ((fderiv ℝ (fun y ↦ (G y).inverse φ) x) v)) w
+        + G x (christoffelDerivOp G H x (christoffelClosedOp G x v bi)
+            ((G x).inverse φ)) w
+        + G x (christoffelDerivOp G H x bi
+            (christoffelClosedOp G x v ((G x).inverse φ))) w := by
+  rw [fderiv_g_deltaGamma_summand_christoffel hGd hGsymm hinv hev hVd φ w v,
+    g_covDeltaGammaDeriv_raised_form φ w v]
+  ring
+
+end RicciFlow
