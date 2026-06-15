@@ -20779,3 +20779,21 @@ theorem constCurvatureForm_smul_slot1
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The constant-curvature tensor: flipping both pairs**: `κForm(u,w,a,b) = κForm(w,u,b,a)`, the
+composite of the two pair antisymmetries — completing the algebraic curvature symmetries shared by
+the space-form tensor (roadmap item 3). -/
+theorem constCurvatureForm_double_antisymm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (κ : ℝ) (u w a b : E) :
+    constCurvatureForm G x κ u w a b = constCurvatureForm G x κ w u b a := by
+  rw [constCurvatureForm_antisymm_left κ u w a b,
+    constCurvatureForm_antisymm_right κ w u a b, neg_neg]
+
+end RicciFlow
