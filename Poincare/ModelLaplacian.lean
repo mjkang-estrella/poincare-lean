@@ -19399,3 +19399,28 @@ theorem ricciSharp_eq_coordRicciEndo
   exact coordRicci_symm hGC2 hGsymm hinv hdiff w p
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci action on the metric is twice the Ricci tensor**:
+`(Ric · g)(p,q) = 2 · R(p,q)`, since `g(Ric^♯ p, q) = R(p,q)` in each slot. The expected normalization
+`Ric·g + g·Ric = 2 Ric`, a correctness check on the Ricci-action term (roadmap item 3). -/
+theorem ricciActionOnTensor_metric
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (p q : E) :
+    ricciActionOnTensor G G x p q = 2 * coordRicci G x p q := by
+  unfold ricciActionOnTensor
+  rw [hGsymm x p (ricciSharp G x q), g_ricciSharp (hinv x) p q,
+    g_ricciSharp (hinv x) q p, coordRicci_symm hGC2 hGsymm hinv hdiff q p]
+  ring
+
+end RicciFlow
