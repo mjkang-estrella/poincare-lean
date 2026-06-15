@@ -16810,3 +16810,36 @@ theorem ricciDeriv_eq_div_sub_half_covariantHessian
       hVd hTr2 u w]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ`-trace-derivative is symmetric**: `∇_u(tr δΓ)(w) = ∇_w(tr δΓ)(u)`, since it
+equals `½ Hess_g(tr_g H)` and the covariant Hessian of a `C²` scalar is symmetric
+(`covariantHessian_symm`: Schwarz + torsion-freeness). The trace part of the untraced Ricci
+variation is symmetric (roadmap item 3). -/
+theorem deltaGammaContractionDeriv_symm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (hTr2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x)
+    (hf : ContDiffAt ℝ 2 (tensorMetricTrace G H) x)
+    (u w : E) :
+    deltaGammaContractionDeriv G H x u w = deltaGammaContractionDeriv G H x w u := by
+  rw [deltaGammaContractionDeriv_eq_half_covariantHessian hGd hGsymm hinv hHd
+      hHsymm hVd hTr2 u w,
+    deltaGammaContractionDeriv_eq_half_covariantHessian hGd hGsymm hinv hHd
+      hHsymm hVd hTr2 w u,
+    covariantHessian_symm G (fun y ↦ metricBilin (G y))
+      (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) hGd hGsymm hf u w]
+
+end RicciFlow
