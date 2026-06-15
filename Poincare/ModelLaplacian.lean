@@ -21731,3 +21731,28 @@ theorem tracelessRicciNormSq_nonneg
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Einstein metrics have vanishing traceless-Ricci norm**: `|Ric|² − R²/n = 0` when `Ric = c·g`,
+since `|Ric|² = c²n` and `R²/n = (cn)²/n = c²n`. The traceless part `Ric̊ = Ric − (R/n)g` vanishes
+exactly on the Einstein locus — the rigidity case of `tracelessRicciNormSq_nonneg` (roadmap item 3). -/
+theorem einstein_tracelessRicciNormSq_eq_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0) :
+    coordRicciNormSq G x hdiff - (coordScalar G x) ^ 2 / (Module.finrank ℝ E : ℝ) = 0 := by
+  rw [coordRicciNormSq_of_einstein hGsymm hinv hdiff hEin,
+    coordScalar_of_einstein hGsymm hinv hdiff hEin]
+  field_simp
+  ring
+
+end RicciFlow
