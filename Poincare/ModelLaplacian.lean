@@ -13958,3 +13958,43 @@ theorem differentiableAt_covTensor2Deriv_Hslot
   exact (ht1.sub ht2).sub ht3
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The trace-commute pivot, with the basepoint-derivative pulled through the
+sum**: `(D(tr_g H))²` applied to `(v', v)` equals the termwise sum
+`Σⱼ (D(fun y ↦ (∇_v H)_y(♯ʸbʲ, bⱼ)))_x v'`. Combines `fderiv_fun_sum` (each
+summand differentiable by `differentiableAt_covTensor2Deriv_Hslot` with the raise
+supplied by `differentiableAt_inverse_raise`) with `fderiv_sum_covTensor2Deriv_Hslot_trace_eq`.
+The next expansion of each summand splits off the `∂♯` of the varying raise from
+the `H`-slot trace of `∇²H`. -/
+theorem fderiv_tr_eq_sum_basepoint_deriv
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (v v' : E) :
+    (fderiv ℝ (fun y ↦ (fderiv ℝ (tensorMetricTrace G H) y) v) x) v'
+      = ∑ j, (fderiv ℝ (fun y ↦ covTensor2Deriv G H y v
+          ((G y).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) j)) x) v' := by
+  rw [← fderiv_sum_covTensor2Deriv_Hslot_trace_eq hGd hGsymm hinv hHd hHsymm x v v']
+  rw [fderiv_fun_sum (fun j _ ↦
+    differentiableAt_covTensor2Deriv_Hslot hGsymm (hHd x) hH2 hΓd v
+      (differentiableAt_inverse_raise (hGd x)
+        (Filter.Eventually.of_forall hinv)
+        (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+      ((Module.finBasis ℝ E) j))]
+  rw [ContinuousLinearMap.sum_apply]
+
+end RicciFlow
