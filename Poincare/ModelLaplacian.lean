@@ -21778,3 +21778,25 @@ theorem pinching_gap_eq_n_mul_tracelessNormSq
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Traceless-Ricci norm vanishes iff the pinching is saturated**: `|Ric|² − R²/n = 0 ↔ R² = n|Ric|²`.
+The traceless Ricci tensor vanishes exactly when the Cauchy–Schwarz pinching inequality holds with
+equality — the analytic characterization of the Einstein locus underlying Hamilton's rounding
+(roadmap item 3). -/
+theorem tracelessRicciNormSq_eq_zero_iff_saturated
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0) :
+    coordRicciNormSq G x hdiff - (coordScalar G x) ^ 2 / (Module.finrank ℝ E : ℝ) = 0
+      ↔ (coordScalar G x) ^ 2 = (Module.finrank ℝ E : ℝ) * coordRicciNormSq G x hdiff := by
+  rw [sub_eq_zero, eq_div_iff hn]
+  exact ⟨fun h ↦ by linarith, fun h ↦ by linarith⟩
+
+end RicciFlow
