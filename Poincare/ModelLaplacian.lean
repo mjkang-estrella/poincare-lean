@@ -15575,3 +15575,28 @@ theorem ricciDeriv_raised_trace_lichnerowicz_smul
       (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) c hφ]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of the Ricci tensor is the scalar curvature**:
+`tr_g(Ric) = R`. With the Ricci tensor packaged as the `(0,2)`-field
+`y ↦ coordRicciForm G y`, its metric trace `Σᵢ Ric(bᵢ,♯bⁱ)` is exactly
+`coordScalar G x = Σⱼ Ric(♯bʲ,bⱼ)` by `coordRicciForm_apply` and the slot relabel.
+The trace bridge `tr_g(−2 Ric) = −2R` (the `htr` hypothesis of the contracted
+Lichnerowicz scalar-multiple form) under the Ricci-flow direction `H = −2 Ric`. -/
+theorem tensorMetricTrace_coordRicciForm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ (y : E) (u : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z u) y) :
+    tensorMetricTrace G (fun y ↦ coordRicciForm G y (hdiff y)) x
+      = coordScalar G x := by
+  unfold tensorMetricTrace coordScalar
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [coordRicciForm_apply]
+
+end RicciFlow
