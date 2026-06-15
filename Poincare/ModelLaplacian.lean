@@ -21896,3 +21896,28 @@ theorem tensorMetricTrace_sub (G H K : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E
   simp only [ContinuousLinearMap.sub_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The normalized Ricci-flow direction is trace-free**: the volume-normalized variation
+`−2·Ric̊ = −2(Ric − (R/n)g)` has zero metric trace, `tr_g(−2 Ric̊) = 0`. Since the first-order
+volume change under `∂g/∂t = H` is `½ tr_g H`, the trace-free direction preserves volume to first
+order — exactly why the normalized flow `∂g/∂t = −2(Ric − (R/n)g)` keeps the total volume fixed
+(roadmap item 3). -/
+theorem normalized_ricci_flow_direction_traceFree
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ (y : E) (u : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z u) y)
+    (hGsymm : ∀ v w : E, G x v w = G x w v) (hinv : (G x).IsInvertible)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0) :
+    tensorMetricTrace G
+      (fun y ↦ (-2 : ℝ) • (coordRicciForm G y (hdiff y)
+        - (coordScalar G y / (Module.finrank ℝ E : ℝ)) • G y)) x = 0 := by
+  rw [tensorMetricTrace_smul, tracelessRicci_metricTrace_zero hdiff hGsymm hinv hn, mul_zero]
+
+end RicciFlow
