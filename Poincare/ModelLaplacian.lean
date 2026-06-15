@@ -16094,3 +16094,21 @@ theorem neg_two_coordRicciForm_symm
   rw [coordRicci_symm hGC2 hGsymm hinv (hdiffΓ y) b a]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **A `C²` scalar has differentiable gradient field**: if `f` is `C²` then
+`y ↦ (df)_y` is differentiable at every point. Discharges the second-derivative
+regularity `hRd2`/`hTr2` from the `C²` hypothesis (`hφ`) in the `hBianchi` identity. -/
+theorem differentiableAt_fderiv_of_contDiff_two
+    {f : E → ℝ} {x : E} (hf : ContDiff ℝ 2 f) :
+    DifferentiableAt ℝ (fun y ↦ fderiv ℝ f y) x :=
+  ((hf.fderiv_right (m := 1) (by norm_num)).differentiable
+    (by norm_num)).differentiableAt
+
+end RicciFlow
