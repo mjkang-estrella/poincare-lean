@@ -11347,3 +11347,69 @@ theorem tensorDivOneForm_eq_first_slot_raised
   exact covTensor2Deriv_symm hHd hHsymm _ _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **THE INNER `δΓ` DOUBLE-TRACE IDENTITY** (curvature-free heart of the
+linearized scalar curvature): contracting the Christoffel variation over
+both lower slots against the metric,
+`Σᵢ G(δΓ(bᵢ, ♯bⁱ), w) = (div H)(w) − ½ ∇_w(tr_g H)`. The Koszul half-sum
+`g_christoffelDeriv` splits each pairing into three `∇H` traces; two of them
+are the tensor divergence (`tensorDivOneForm`, in its raised and lowered
+orientations) and the third is the spatial derivative of the metric trace
+(`fderiv_tensorMetricTrace_eq`). This is the exact identity whose divergence
+gives `div div H − ½ Δ_g(tr_g H)` — the keystone of Hamilton's scalar
+evolution equation, established without any curvature term. -/
+theorem deltaGamma_innerTrace_eq
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (w : E) :
+    (∑ i, G x (christoffelDeriv G H x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))) w)
+      = tensorDivOneForm G H x w
+        - (1 / 2 : ℝ) * (fderiv ℝ (tensorMetricTrace G H) x) w := by
+  have hkoszul : ∀ i : Fin (Module.finrank ℝ E),
+      G x (christoffelDeriv G H x ((Module.finBasis ℝ E) i)
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i)))) w
+        = (1 / 2 : ℝ) *
+          (covTensor2Deriv G H x ((Module.finBasis ℝ E) i)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i))) w
+            + covTensor2Deriv G H x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i))) ((Module.finBasis ℝ E) i) w
+            - covTensor2Deriv G H x w ((Module.finBasis ℝ E) i)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))) := by
+    intro i
+    exact g_christoffelDeriv hGd hGsymm (hinv x) (fun p q ↦ hHsymm x p q) _ _ _
+  have hA : (∑ i, covTensor2Deriv G H x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))) w)
+      = tensorDivOneForm G H x w :=
+    (tensorDivOneForm_eq_first_slot_raised hHd hHsymm (hGsymm x) (hinv x) w).symm
+  have hB : (∑ i, covTensor2Deriv G H x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))) ((Module.finBasis ℝ E) i) w)
+      = tensorDivOneForm G H x w := rfl
+  have hC : (∑ i, covTensor2Deriv G H x w ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))))
+      = (fderiv ℝ (tensorMetricTrace G H) x) w :=
+    (fderiv_tensorMetricTrace_eq hGd hGsymm hinv hHd hHsymm w).symm
+  rw [Finset.sum_congr rfl (fun i _ ↦ hkoszul i), ← Finset.mul_sum,
+    Finset.sum_sub_distrib, Finset.sum_add_distrib, hA, hB, hC]
+  ring
+
+end RicciFlow
