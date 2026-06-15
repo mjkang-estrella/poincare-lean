@@ -14094,3 +14094,56 @@ theorem fderiv_covTensor2Deriv_varying_raise_eq
     fderiv_covTensor2Deriv_eq v' v ((G x).inverse φ) q]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The second derivative of `tr_g H`, fully expanded over the trace sum**:
+`D²(tr_g H)(v',v) = Σⱼ [ (∇²H)(v';v,♯bʲ,bⱼ) + three Christoffel corrections
++ the ∂♯ metric-derivative term ]`. Combines the trace-commute pivot
+`fderiv_tr_eq_sum_basepoint_deriv` with the per-summand expansion
+`fderiv_covTensor2Deriv_varying_raise_eq`. The working identity whose `∇²H` term
+sums to the `H`-slot Laplacian trace and whose H-slot correction merges with `∂♯`
+by metric compatibility — sub-identity (b) in fully expanded form. -/
+theorem fderiv2_tensorMetricTrace_sum_expand
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (v v' : E) :
+    (fderiv ℝ (fun y ↦ (fderiv ℝ (tensorMetricTrace G H) y) v) x) v'
+      = ∑ j,
+          (covTensor2SndDeriv G H x v' v
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j))) ((Module.finBasis ℝ E) j)
+            + covTensor2Deriv G H x (christoffelClosedOp G x v' v)
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord j))) ((Module.finBasis ℝ E) j)
+            + covTensor2Deriv G H x v
+                (christoffelClosedOp G x v'
+                  ((G x).inverse (LinearMap.toContinuousLinearMap
+                    ((Module.finBasis ℝ E).coord j)))) ((Module.finBasis ℝ E) j)
+            + covTensor2Deriv G H x v
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord j)))
+                (christoffelClosedOp G x v' ((Module.finBasis ℝ E) j))
+            + covTensor2Deriv G H x v
+                ((fderiv ℝ (fun y ↦ (G y).inverse
+                  (LinearMap.toContinuousLinearMap
+                    ((Module.finBasis ℝ E).coord j))) x) v')
+                ((Module.finBasis ℝ E) j)) := by
+  rw [fderiv_tr_eq_sum_basepoint_deriv hGd hGsymm hinv hHd hH2 hΓd hHsymm v v']
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  exact fderiv_covTensor2Deriv_varying_raise_eq hGd hinv (hHd x) hH2 hΓd v v'
+    (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j))
+    ((Module.finBasis ℝ E) j)
+
+end RicciFlow
