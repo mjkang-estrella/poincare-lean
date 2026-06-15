@@ -12688,3 +12688,33 @@ theorem fderiv_metric_compatible_covector
   exact coord_metric_compatible hGd hGsymm hinv u a b
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The raised metric-derivative splits off a Christoffel term**:
+`(G x)⁻¹((D_u G)(a)) = Γ_u a + (G x)⁻¹((G x a) ∘ Γ_u)`. Raising the covector
+metric-compatibility identity and using `(G x)⁻¹(G x v) = v`, the leading piece is
+the genuine Christoffel `Γ_u a` and the remainder is the raised slot-derivative.
+This puts the commutation's `T2'` inverse-metric term `δΓ(bᵢ, (G x)⁻¹((D_{♯bʲ}G)(♯bⁱ)))`
+into `δΓ(bᵢ, Γ_{♯bʲ}♯bⁱ) + …` form, matching the LHS slot corrections. -/
+theorem inverse_fderiv_metric_covector
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : (G x).IsInvertible) (u a : E) :
+    (G x).inverse ((fderiv ℝ G x u) a)
+      = christoffelClosedOp G x u a
+        + (G x).inverse ((G x a).comp (christoffelClosedOp G x u)) := by
+  have hgi : ∀ v : E, (G x).inverse (G x v) = v := by
+    intro v
+    obtain ⟨e, he⟩ := hinv
+    rw [← he, ContinuousLinearMap.inverse_equiv]
+    exact e.symm_apply_apply v
+  rw [fderiv_metric_compatible_covector hGd hGsymm hinv u a, map_add, hgi]
+
+end RicciFlow
