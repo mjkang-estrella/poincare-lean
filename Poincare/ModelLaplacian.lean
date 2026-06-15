@@ -21131,3 +21131,42 @@ theorem inverse_smul_eq
       inv_mul_cancel₀ hc, one_smul, hA.inverse_apply_self]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The inverse of a scaled operator (general types)**: `(c • A)⁻¹ = c⁻¹ • A⁻¹` for invertible
+`A : M →L M₂` and `c ≠ 0` (roadmap item 3). -/
+theorem inverse_smul_eq'
+    {M M₂ : Type*} [NormedAddCommGroup M] [NormedSpace ℝ M]
+    [NormedAddCommGroup M₂] [NormedSpace ℝ M₂]
+    {A : M →L[ℝ] M₂} (hA : A.IsInvertible) {c : ℝ} (hc : c ≠ 0) :
+    (c • A).inverse = c⁻¹ • A.inverse := by
+  apply ContinuousLinearMap.inverse_eq
+  · ext v
+    simp [ContinuousLinearMap.smul_apply, map_smul, smul_smul, mul_inv_cancel₀ hc,
+      inv_mul_cancel₀ hc, one_smul, hA.self_apply_inverse]
+  · ext v
+    simp [ContinuousLinearMap.smul_apply, map_smul, smul_smul, mul_inv_cancel₀ hc,
+      inv_mul_cancel₀ hc, one_smul, hA.inverse_apply_self]
+
+/-- **The Levi-Civita connection is invariant under constant metric scaling**:
+`christoffelClosedOp (c·g) = christoffelClosedOp g` for `c ≠ 0`. The Christoffel symbols (`g⁻¹·∂g`)
+are scale-invariant: the `c⁻¹` from the inverse metric cancels the `c` from `∂(cg)`. Hence Ricci is
+scale-invariant, so the homothety `g(t) = (1−2ct)g(0)` is a genuine self-similar Ricci-flow solution —
+the round sphere shrinks to a point preserving its shape (roadmap item 3). -/
+theorem christoffelClosedOp_smul_metric
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ)
+    (hG : DifferentiableAt ℝ G x) (hinv : (G x).IsInvertible) (hc : c ≠ 0)
+    (u v : E) :
+    christoffelClosedOp (fun y ↦ c • G y) x u v
+      = christoffelClosedOp G x u v := by
+  rw [christoffelClosedOp_apply, christoffelClosedOp_apply,
+    christoffelFunctional_smul_clm c hG u v, inverse_smul_eq' (A := G x) (c := c) hinv hc]
+  simp [map_smul, smul_smul, mul_inv_cancel₀ hc, one_smul]
+
+end RicciFlow
