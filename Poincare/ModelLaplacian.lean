@@ -21005,3 +21005,26 @@ theorem einstein_homothety_decreasing
   nlinarith [hc, ht]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **A positive Einstein constant gives positive scalar curvature**: if `Ric = c·g` with `c > 0`,
+then `R = c·n > 0`. The round sphere has positive scalar curvature — exactly the hypothesis `R_min > 0`
+of the finite-time singularity theorem (roadmap item 3). -/
+theorem einstein_scalar_pos
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hc : 0 < c) (hn : 0 < (Module.finrank ℝ E : ℝ))
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q) :
+    0 < coordScalar G x := by
+  rw [coordScalar_of_einstein hGsymm hinv hdiff hEin]
+  positivity
+
+end RicciFlow
