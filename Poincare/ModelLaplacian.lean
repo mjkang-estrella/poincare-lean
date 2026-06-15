@@ -13184,3 +13184,33 @@ theorem sum_L4_swap
     (fun c a b ↦ by dsimp only; simp only [map_smul, smul_eq_mul])).symm
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`∇δΓ` is additive in its second tensor slot**:
+`covDeltaGammaDeriv v p (z₁+z₂) = covDeltaGammaDeriv v p z₁ + covDeltaGammaDeriv v p z₂`.
+Each of the four defining terms (flat derivative and three Christoffel corrections)
+is built from continuous-linear maps in `z`. Infrastructure for the covariant-level
+trace swaps of the keystone matching. -/
+theorem covDeltaGammaDeriv_add_z
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (v p z₁ z₂ : E) :
+    covDeltaGammaDeriv G H x v p (z₁ + z₂)
+      = covDeltaGammaDeriv G H x v p z₁ + covDeltaGammaDeriv G H x v p z₂ := by
+  unfold covDeltaGammaDeriv
+  simp only [map_add, ContinuousLinearMap.add_apply]
+  abel
+
+/-- **`∇δΓ` is homogeneous in its second tensor slot**. -/
+theorem covDeltaGammaDeriv_smul_z
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ) (v p z : E) :
+    covDeltaGammaDeriv G H x v p (c • z)
+      = c • covDeltaGammaDeriv G H x v p z := by
+  unfold covDeltaGammaDeriv
+  simp only [map_smul, ContinuousLinearMap.smul_apply, smul_sub, smul_add]
+
+end RicciFlow
