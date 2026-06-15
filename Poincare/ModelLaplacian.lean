@@ -18334,3 +18334,38 @@ theorem covTensor2SndDeriv_ricci_identity
   abel
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant-derivative commutator form**: solving the `(0,2)`-tensor Ricci identity for the
+first ordering, `(∇²H)(v',v,p,q) = (∇²H)(v,v',p,q) − H((Rm v' v) p, q) − H(p, (Rm v' v) q)`. The
+explicit cost of reordering the two outer covariant derivatives is exactly one curvature term on
+each tensor slot — the form used directly in every Ricci-flow evolution computation (item 3). -/
+theorem covTensor2SndDeriv_comm
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (v' v p q : E)
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hHC2 : ContDiffAt ℝ 2 H x)
+    (hpure1 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ H y v) p q) x)
+    (hpure2 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ H y v') p q) x)
+    (hc1 : DifferentiableAt ℝ (fun y ↦ H y (christoffelClosedOp G y v p) q) x)
+    (hc1' : DifferentiableAt ℝ (fun y ↦ H y (christoffelClosedOp G y v' p) q) x)
+    (hc2 : DifferentiableAt ℝ (fun y ↦ H y p (christoffelClosedOp G y v q)) x)
+    (hc2' : DifferentiableAt ℝ (fun y ↦ H y p (christoffelClosedOp G y v' q)) x)
+    (hH : DifferentiableAt ℝ H x)
+    (hΓ : DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v) x)
+    (hΓ' : DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v') x) :
+    covTensor2SndDeriv G H x v' v p q
+      = covTensor2SndDeriv G H x v v' p q
+        - H x ((coordCurvatureOp G x v' v) p) q
+        - H x p ((coordCurvatureOp G x v' v) q) := by
+  have h := covTensor2SndDeriv_ricci_identity v' v p q hGd hGsymm hHC2
+    hpure1 hpure2 hc1 hc1' hc2 hc2' hH hΓ hΓ'
+  linarith [h]
+
+end RicciFlow
