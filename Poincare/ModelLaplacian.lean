@@ -18134,3 +18134,30 @@ theorem fderiv_corr2_antisymm_expand
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Differentiation commutes with evaluation of the Christoffel operator**:
+`(fderiv ℝ (fun y ↦ Γ_y(v) p) x) v' = (fderiv ℝ (fun y ↦ Γ_y(v)) x v') p`, the operator-valued
+(`E →L[ℝ] E`) evaluation bridge — evaluation at fixed `p` is continuous-linear. This converts the
+antisymmetric Christoffel-derivative terms of the tensor Ricci identity into the operator form used
+by `coordCurvatureOp` (roadmap item 3, curvature-commutation frontier). -/
+theorem fderiv_christoffel_eval_apply
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {v : E}
+    (hΓ : DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v) x) (v' p : E) :
+    (fderiv ℝ (fun y ↦ christoffelClosedOp G y v p) x) v'
+      = (fderiv ℝ (fun y ↦ christoffelClosedOp G y v) x v') p := by
+  set L : (E →L[ℝ] E) →L[ℝ] E := ContinuousLinearMap.apply ℝ E p with hLdef
+  have hcomp : (fun y ↦ christoffelClosedOp G y v p)
+      = ⇑L ∘ (fun y ↦ christoffelClosedOp G y v) := by
+    funext z
+    simp only [hLdef, Function.comp_apply, ContinuousLinearMap.apply_apply]
+  rw [hcomp, fderiv_comp x L.differentiableAt hΓ, L.fderiv]
+  simp only [hLdef, ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply]
+
+end RicciFlow
