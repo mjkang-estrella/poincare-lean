@@ -16888,3 +16888,42 @@ theorem covariantHessian_smul
   rw [ht1, ht2]; ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The untraced Lichnerowicz formula, scalar-multiple form**: when `tr_g H = c·φ` for a
+`C²` scalar `φ`, `δRic(u,w) = div δΓ(u,w) − (c/2) Hess_g(φ)(u,w)`. Specializing the named
+untraced Lichnerowicz formula through `covariantHessian_smul`. Under the Ricci-flow direction
+`H = −2 Ric` (`tr_g H = −2R`, `c = −2`, `φ = R`) this is `δRic = div δΓ + Hess_g R` — the
+untraced analogue of the scalar `+Δ_g R` mechanism (roadmap item 3). -/
+theorem ricciDeriv_eq_div_sub_half_smul_covariantHessian
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {φ : E → ℝ} {c : ℝ}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (hTr2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x)
+    (hΓsymm : ∀ a b : E,
+      christoffelClosedOp G x a b = christoffelClosedOp G x b a)
+    (hφ : ContDiff ℝ 2 φ)
+    (htr : tensorMetricTrace G H = fun y ↦ c * φ y)
+    (u w : E) :
+    ricciDeriv G H x u w
+      = deltaGammaDivergence G H x u w
+        - (c / 2) * covariantHessian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) φ x u w := by
+  rw [ricciDeriv_eq_div_sub_half_covariantHessian hGd hGsymm hinv hHd hHsymm hVd
+      hTr2 hΓsymm u w, htr,
+    covariantHessian_smul G (fun y ↦ metricBilin (G y))
+      (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) c hφ u w]
+  ring
+
+end RicciFlow
