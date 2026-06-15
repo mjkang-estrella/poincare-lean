@@ -16499,3 +16499,37 @@ theorem deltaGammaContractionDeriv_eq_g_paired
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The untraced Ricci variation in metric-paired form**: `δRic(u,w) =
+Σᵢ [ G(∇_{bᵢ}δΓ(u,w), ♯bⁱ) − G(∇_u δΓ(bᵢ,w), ♯bⁱ) ]`, combining the contracted
+Lichnerowicz formula `δRic = div δΓ − ∇(tr δΓ)` with the metric-paired forms of both
+contractions. The full untraced Ricci variation reduced to metric pairings of `∇δΓ` —
+the direct entry to the `∇²H` Bochner expansion of Hamilton's curvature evolution
+(roadmap item 3). -/
+theorem ricciDeriv_eq_g_paired
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓsymm : ∀ a b : E,
+      christoffelClosedOp G x a b = christoffelClosedOp G x b a)
+    (u w : E) :
+    ricciDeriv G H x u w
+      = ∑ i, (G x (covDeltaGammaDeriv G H x ((Module.finBasis ℝ E) i) u w)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))
+            - G x (covDeltaGammaDeriv G H x u ((Module.finBasis ℝ E) i) w)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))) := by
+  rw [ricciDeriv_eq_deltaGamma_contractions hΓsymm,
+    deltaGammaDivergence_eq_g_paired hGsymm hinv,
+    deltaGammaContractionDeriv_eq_g_paired hGsymm hinv,
+    ← Finset.sum_sub_distrib]
+
+end RicciFlow
