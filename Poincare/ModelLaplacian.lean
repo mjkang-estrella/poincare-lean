@@ -21267,3 +21267,42 @@ theorem sectionalNum_smul_metric
   exact coordRiemann_smul_metric c hGd hinv hc u w w u
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The scalar curvature scales by `c⁻¹` under metric scaling**:
+`R(c·g) = c⁻¹·R(g)` for `c ≠ 0`, since `R = g^{ij}R_{ij}` with `R_{ij}` scale-invariant and `g^{ij}`
+scaling by `c⁻¹`. So along the shrinking round sphere `g(t) = (1−2ct)g(0)`, the scalar curvature
+`R(t) = R(0)/(1−2ct) → ∞` as `t → 1/(2c)` — the explicit curvature blow-up at the finite-time
+singularity (roadmap item 3). -/
+theorem coordScalar_smul_metric
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ)
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hinv : ∀ y : E, (G y).IsInvertible) (hc : c ≠ 0)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x) :
+    coordScalar (fun y ↦ c • G y) x = c⁻¹ * coordScalar G x := by
+  have hdiff' : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp (fun z ↦ c • G z) y u) x := by
+    intro u
+    have hfeq : (fun y ↦ christoffelClosedOp (fun z ↦ c • G z) y u)
+        = (fun y ↦ christoffelClosedOp G y u) := by
+      funext y; ext v; exact christoffelClosedOp_smul_metric c (hGd y) (hinv y) hc u v
+    rw [hfeq]; exact hdiff u
+  unfold coordScalar
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun j _ ↦ ?_)
+  have hsharp : ((fun y ↦ c • G y) x).inverse
+      (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j))
+      = c⁻¹ • (G x).inverse
+        (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)) := by
+    rw [show (fun y ↦ c • G y) x = c • G x from rfl,
+      inverse_smul_eq' (A := G x) (c := c) (hinv x) hc]; rfl
+  rw [hsharp, coordRicci_smul_fst (fun y ↦ c • G y) hdiff' c⁻¹ _ _,
+    coordRicci_smul_metric c hGd hinv hc, smul_eq_mul]
+
+end RicciFlow
