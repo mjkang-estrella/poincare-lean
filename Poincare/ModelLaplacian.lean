@@ -21578,3 +21578,21 @@ theorem normalized_ricci_flow_eq_traceless
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The traceless Ricci vanishes iff the metric is Einstein**:
+`Ric − (R/n)·g = 0 ↔ Ric = (R/n)·g`. The traceless Ricci tensor is the exact obstruction to being
+Einstein; its vanishing is the normalized-flow fixed-point condition (roadmap item 3). -/
+theorem traceless_ricci_zero_iff
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {n : ℝ} (p q : E) :
+    coordRicci G x p q - (coordScalar G x / n) * G x p q = 0
+      ↔ coordRicci G x p q = (coordScalar G x / n) * G x p q :=
+  sub_eq_zero
+
+end RicciFlow
