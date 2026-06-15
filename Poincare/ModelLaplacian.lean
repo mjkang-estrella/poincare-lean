@@ -15362,3 +15362,83 @@ theorem sum_sum_T1_eq_T2
       dsimp only; rw [covTensor2SndDeriv_smul_p hHd hH2 hΓd, smul_eq_mul])
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`div div H` equals the `T2` block**: chaining the `∂♯`-free merged form, the
+vanishing of the connection corrections, the outer/`q` and inner/`p` raise-swaps, and
+an index relabel, `divdiv H = Σⱼ Σᵢ (∇²H)(bᵢ;bⱼ,♯bʲ,♯bⁱ) = Σⱼ Σᵢ T2`. With
+`sum_sum_T1_eq_T2` this gives `½ Σⱼ Σᵢ (T1+T2) = div div H` — sub-identity (a). -/
+theorem tensorDoubleDivergence_eq_sum_sum_T2
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x) :
+    tensorDoubleDivergence G H x
+      = ∑ j, ∑ i, covTensor2SndDeriv G H x ((Module.finBasis ℝ E) i)
+          ((Module.finBasis ℝ E) j)
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)))
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i))) := by
+  rw [tensorDoubleDivergence_merged hGd hGsymm hinv hHd hH2 hΓd]
+  have key : (∑ j, ∑ i,
+        (covTensor2SndDeriv G H x
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j)))
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i)))
+            ((Module.finBasis ℝ E) i) ((Module.finBasis ℝ E) j)
+          + covTensor2Deriv G H x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))
+              (christoffelClosedOp G x
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord j)))
+                ((Module.finBasis ℝ E) i)) ((Module.finBasis ℝ E) j)
+          + covTensor2Deriv G H x
+              ((G x).inverse (-((LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)).comp
+                (christoffelClosedOp G x
+                  ((G x).inverse (LinearMap.toContinuousLinearMap
+                    ((Module.finBasis ℝ E).coord j)))))))
+              ((Module.finBasis ℝ E) i) ((Module.finBasis ℝ E) j)))
+      = (∑ j, ∑ i, covTensor2SndDeriv G H x
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j)))
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i)))
+            ((Module.finBasis ℝ E) i) ((Module.finBasis ℝ E) j))
+        + (∑ j, ∑ i,
+            (covTensor2Deriv G H x
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)))
+                (christoffelClosedOp G x
+                  ((G x).inverse (LinearMap.toContinuousLinearMap
+                    ((Module.finBasis ℝ E).coord j)))
+                  ((Module.finBasis ℝ E) i)) ((Module.finBasis ℝ E) j)
+              + covTensor2Deriv G H x
+                  ((G x).inverse (-((LinearMap.toContinuousLinearMap
+                    ((Module.finBasis ℝ E).coord i)).comp
+                    (christoffelClosedOp G x
+                      ((G x).inverse (LinearMap.toContinuousLinearMap
+                        ((Module.finBasis ℝ E).coord j)))))))
+                  ((Module.finBasis ℝ E) i) ((Module.finBasis ℝ E) j))) := by
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl fun j _ ↦ ?_
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl fun i _ ↦ by ring
+  rw [key, sum_sum_divdiv_corrections_cancel hGsymm hinv, add_zero,
+    sum_sum_covTensor2SndDeriv_outer_q_swap hGsymm hinv hHd hH2 hΓd,
+    sum_sum_covTensor2SndDeriv_inner_p_swap hGsymm hinv hHd hH2 hΓd,
+    Finset.sum_comm]
+
+end RicciFlow
