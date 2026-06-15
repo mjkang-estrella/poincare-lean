@@ -17696,3 +17696,45 @@ theorem connectionLaplacian_smul_field_lift
   exact connectionLaplacian_smul_field hHd (hH2 y) (fun a ↦ hΓd y a) c p q
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The rough Laplacian trace under the Ricci-flow direction is `−2 Δ_g R`**:
+`Σⱼ Δ_∇(−2 Ric)(♯bʲ, bⱼ) = −2 Δ_g R`. Combining the connection-Laplacian trace identity
+(`= Δ_g(tr_g H)`) with `tr_g(−2 Ric) = −2R` and `curvedLaplacian_smul`. The metric trace of
+the Ricci-flow rough Laplacian is `−2` times the scalar Laplacian of `R` (roadmap item 3). -/
+theorem sum_connectionLaplacian_neg_two_coordRicciForm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hHd : ∀ y : E, DifferentiableAt ℝ
+      (fun z ↦ (-2 : ℝ) • coordRicciForm G z (hdiffΓ z)) y)
+    (hH2 : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ (-2 : ℝ) • coordRicciForm G z (hdiffΓ z)) y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hφ : ContDiff ℝ 2 (fun z ↦ coordScalar G z)) :
+    (∑ j, connectionLaplacian G
+        (fun y ↦ (-2 : ℝ) • coordRicciForm G y (hdiffΓ y)) x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+      = (-2 : ℝ) * curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+          (fun z ↦ coordScalar G z) x := by
+  rw [sum_connectionLaplacian_eq_curvedLaplacian hGd hGsymm hinv hHd hH2 hΓd
+      (fun y a b ↦ neg_two_coordRicciForm_symm hGC2 hGsymm hinv hdiffΓ a b)
+      (differentiableAt_fderiv_tensorMetricTrace_neg_two_coordRicciForm hdiffΓ hφ),
+    tensorMetricTrace_neg_two_coordRicciForm_field hdiffΓ,
+    curvedLaplacian_smul G (fun y ↦ metricBilin (G y))
+      (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (-2) hφ]
+
+end RicciFlow
