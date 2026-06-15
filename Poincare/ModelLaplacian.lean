@@ -16213,3 +16213,25 @@ theorem differentiableAt_tensorDivCLM_coordRicciForm
   differentiableAt_tensorDivCLM hGd hGsymm hinv hKx hRic2 (fun a ↦ hdiffΓ x a)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci form is independent of its differentiability proof**: `coordRicciForm G x`
+gives the same `(0,2)`-tensor for any two differentiability witnesses, since its value
+`coordRicci G x w u` does not depend on the witness. Needed to match the abstract
+variation `H` of `hamilton_scalar_evolution_of_bianchi_curved` (whose `hH` uses one
+witness) with the Ricci-field `hBianchi` (which uses another). -/
+theorem coordRicciForm_proof_irrel
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff₁ hdiff₂ : ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x) :
+    coordRicciForm G x hdiff₁ = coordRicciForm G x hdiff₂ := by
+  ext u w
+  simp only [coordRicciForm_apply]
+
+end RicciFlow
