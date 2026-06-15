@@ -20246,3 +20246,30 @@ theorem coordScalar_sq_le_finrank_mul_ricciNormSq
   exact coordScalar_sq_le_finrank_mul_ricci_traceSq hGC2 hGsymm hinv hdiff hGpos
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Riccati reaction-term lower bound**:
+`(2/n)·R² ≤ 2·|Ric|²`, the rearranged curvature pinching. Substituted into Hamilton's
+`∂R/∂t = ΔR + 2|Ric|²` it gives the Riccati supersolution `∂R/∂t ≥ ΔR + (2/n)R²`, whose ODE
+comparison `R(t) ≥ R_min/(1 − (2/n)R_min t)` forces a finite-time singularity (roadmap item 3). -/
+theorem riccati_reaction_bound
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    (2 / (Module.finrank ℝ E : ℝ)) * (coordScalar G x) ^ 2
+      ≤ 2 * coordRicciNormSq G x hdiff := by
+  have h := coordScalar_sq_le_finrank_mul_ricciNormSq hGC2 hGsymm hinv hdiff hGpos
+  rw [div_mul_eq_mul_div, div_le_iff₀ hn]
+  nlinarith [h]
+
+end RicciFlow
