@@ -21066,3 +21066,27 @@ theorem einstein_extinction_time_antitone
   exact one_div_lt_one_div_of_lt (by linarith) (by linarith)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Flat space forms have zero curvature tensor**: `0Form = 0` (the `κ = 0` space form is flat)
+(roadmap item 3). -/
+theorem constCurvatureForm_zero_curvature
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (u w a b : E) :
+    constCurvatureForm G x 0 u w a b = 0 := by
+  unfold constCurvatureForm; ring
+
+/-- **The constant-curvature tensor is additive in the curvature parameter**:
+`(κ₁+κ₂)Form = κ₁Form + κ₂Form` (roadmap item 3). -/
+theorem constCurvatureForm_add_curvature
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (κ₁ κ₂ : ℝ) (u w a b : E) :
+    constCurvatureForm G x (κ₁ + κ₂) u w a b
+      = constCurvatureForm G x κ₁ u w a b + constCurvatureForm G x κ₂ u w a b := by
+  unfold constCurvatureForm; ring
+
+end RicciFlow
