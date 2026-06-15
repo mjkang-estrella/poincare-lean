@@ -18765,3 +18765,25 @@ theorem lichnerowiczCurvature_smul_left
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz curvature term is homogeneous in its second slot**:
+`lichnerowiczCurvature G H x p (c • q) = c · lichnerowiczCurvature G H x p q`. Together with the
+additivity and first-slot homogeneity lemmas, `lichnerowiczCurvature G H x` is a fully `ℝ`-bilinear
+form on `(p,q)` (roadmap item 3). -/
+theorem lichnerowiczCurvature_smul_right
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ) (p q : E) :
+    lichnerowiczCurvature G H x p (c • q) = c * lichnerowiczCurvature G H x p q := by
+  unfold lichnerowiczCurvature
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun i _ ↦ ?_)
+  simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+  ring
+
+end RicciFlow
