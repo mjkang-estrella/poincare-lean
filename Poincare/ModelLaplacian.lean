@@ -15643,3 +15643,40 @@ theorem tensorMetricTrace_neg_two_coordRicciForm
     tensorMetricTrace_coordRicciForm hdiff]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The field covariant derivative of the Ricci tensor is the intrinsic one**:
+`(∇_v Ric)(p,q)` computed as a `(0,2)`-tensor field via `covTensor2Deriv` equals the
+curvature-defined `covRicciDeriv G x v q p`. Unfolding `covTensor2Deriv`, the flat term
+`(D K_v) p q` becomes `D(fun y ↦ Ric_y(q,p)) v` by `fderiv_clm_family_apply` (twice), the
+two slot Christoffel corrections become `Ric` corrections by `coordRicciForm_apply`, and
+these match `covRicciDeriv_eq_tensor_deriv` up to reordering. The bridge from the abstract
+`(0,2)`-tensor divergence to the intrinsic Ricci divergence. -/
+theorem covTensor2Deriv_coordRicciForm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hKd : DifferentiableAt ℝ (fun y ↦ coordRicciForm G y (hdiffΓ y)) x)
+    (v p q : E) :
+    covTensor2Deriv G (fun y ↦ coordRicciForm G y (hdiffΓ y)) x v p q
+      = covRicciDeriv G x v q p := by
+  rw [covRicciDeriv_eq_tensor_deriv hdiffΓ hdd v q p]
+  unfold covTensor2Deriv
+  rw [fderiv_clm_family_apply hKd v p,
+    fderiv_clm_family_apply (hKd.clm_apply (differentiableAt_const p)) v q,
+    coordRicciForm_apply, coordRicciForm_apply]
+  have hfe : (fun y ↦ coordRicciForm G y (hdiffΓ y) p q)
+      = fun y ↦ coordRicci G y q p := by
+    funext y; rw [coordRicciForm_apply]
+  rw [hfe]
+  abel
+
+end RicciFlow
