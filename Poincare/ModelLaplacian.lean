@@ -13714,3 +13714,56 @@ theorem covTensor2SndDeriv_add_v
   abel
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`deltaGammaDivergenceTrace` as a pure second-covariant-derivative sum**: the
+Christoffel corrections from the Koszul lift cancel the `δΓ`-correction terms
+(expanded via `g_christoffelDeriv`) exactly, leaving
+`deltaGammaDivergenceTrace = Σⱼ Σᵢ ½(∇²H[bᵢ,♯bʲ;bⱼ,♯bⁱ] + ∇²H[bᵢ,bⱼ;♯bʲ,♯bⁱ] − ∇²H[bᵢ,♯bⁱ;♯bʲ,bⱼ])`.
+The corrections-cancellation sub-identity of the keystone, leaving only the three
+`covTensor2SndDeriv` terms to match `div div H − ½Δ_g(tr H)`. -/
+theorem deltaGammaDivergenceTrace_sndDeriv
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x) :
+    deltaGammaDivergenceTrace G H x
+      = ∑ j, ∑ i, (1 / 2 : ℝ) *
+          (covTensor2SndDeriv G H x ((Module.finBasis ℝ E) i)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j)))
+              ((Module.finBasis ℝ E) j)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))
+            + covTensor2SndDeriv G H x ((Module.finBasis ℝ E) i)
+              ((Module.finBasis ℝ E) j)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j)))
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))
+            - covTensor2SndDeriv G H x ((Module.finBasis ℝ E) i)
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord i)))
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j)))
+              ((Module.finBasis ℝ E) j)) := by
+  rw [deltaGammaDivergenceTrace_koszul_distributed hGd hGsymm hinv hHsymm hHd hH2
+    hΓd hVd]
+  refine Finset.sum_congr rfl fun j _ ↦ Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [fderiv_covTensor2Deriv_eq, fderiv_covTensor2Deriv_eq, fderiv_covTensor2Deriv_eq]
+  simp only [christoffelDerivOp_apply,
+    g_christoffelDeriv (hGd x) hGsymm (hinv x) (fun p q ↦ hHsymm x p q)]
+  ring
+end RicciFlow
