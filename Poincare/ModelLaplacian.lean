@@ -20887,3 +20887,28 @@ theorem constCurvatureForm_smul_slot4
   simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]; ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Einstein metrics have vanishing traceless Ricci**:
+`Ric(p,q) − (R/n)·g(p,q) = 0` when `Ric = c·g`, since `R = c·n`. The traceless Ricci tensor — the
+obstruction to being Einstein — vanishes exactly on Einstein metrics (roadmap item 3). -/
+theorem einstein_traceless_ricci
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q) (p q : E) :
+    coordRicci G x p q
+      - (coordScalar G x / (Module.finrank ℝ E : ℝ)) * G x p q = 0 := by
+  rw [hEin p q, coordScalar_of_einstein hGsymm hinv hdiff hEin]
+  field_simp
+  ring
+
+end RicciFlow
