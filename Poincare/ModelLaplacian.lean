@@ -19979,3 +19979,28 @@ theorem coordRiemann_smul_slot4
   rw [map_smul]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Block symmetry combined with last-pair antisymmetry**:
+`Rm(u,w,a,b) = −Rm(a,b,w,u)`, from the block symmetry followed by the last-pair antisymmetry
+(roadmap item 3). -/
+theorem coordRiemann_block_antisymm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ v : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v) x)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u w a b : E) :
+    coordRiemann G x u w a b = -coordRiemann G x a b w u := by
+  rw [coordRiemann_block_symm hGd hGC2 hGsymm hinv hΓd hdiff u w a b]
+  exact coordRiemann_antisymm_pair_right hGC2 hGsymm hinv hdiff a b u w
+
+end RicciFlow
