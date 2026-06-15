@@ -21821,3 +21821,26 @@ theorem round_sphere_tracelessRicciNormSq_zero
   nlinarith [hpin]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Einstein constant is the normalized scalar curvature**: if `Ric = c·g` then `c = R/n`,
+since `R = c·n`. The Einstein factor is intrinsically determined by the scalar curvature and the
+dimension — the relation defining the normalized Ricci flow's reference value (roadmap item 3). -/
+theorem einstein_const_eq_scalar_div
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0) :
+    c = coordScalar G x / (Module.finrank ℝ E : ℝ) := by
+  rw [coordScalar_of_einstein hGsymm hinv hdiff hEin]
+  field_simp
+
+end RicciFlow
