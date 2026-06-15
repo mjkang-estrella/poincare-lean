@@ -17738,3 +17738,46 @@ theorem sum_connectionLaplacian_neg_two_coordRicciForm
       (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (-2) hφ]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The rough Laplacian trace of Ricci is the scalar Laplacian of `R`**:
+`Σⱼ Δ_∇(Ric)(♯bʲ, bⱼ) = Δ_g R`. The fundamental (unscaled) form of the connection-Laplacian
+trace identity specialised to the Ricci tensor, using `tr_g(Ric) = R` as a field equality
+(roadmap item 3). -/
+theorem sum_connectionLaplacian_coordRicciForm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ (y : E) (u : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z u) y)
+    (hHd : ∀ y : E, DifferentiableAt ℝ
+      (fun z ↦ coordRicciForm G z (hdiff z)) y)
+    (hH2 : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ coordRicciForm G z (hdiff z)) y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hHsymm : ∀ (y : E) (p q : E),
+      coordRicciForm G y (hdiff y) p q = coordRicciForm G y (hdiff y) q p)
+    (hTr2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ
+      (tensorMetricTrace G (fun z ↦ coordRicciForm G z (hdiff z))) y) x) :
+    (∑ j, connectionLaplacian G
+        (fun y ↦ coordRicciForm G y (hdiff y)) x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+      = curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+          (fun z ↦ coordScalar G z) x := by
+  have hfield : (tensorMetricTrace G (fun z ↦ coordRicciForm G z (hdiff z)))
+      = fun y ↦ coordScalar G y :=
+    funext fun y ↦ tensorMetricTrace_coordRicciForm hdiff
+  rw [sum_connectionLaplacian_eq_curvedLaplacian hGd hGsymm hinv hHd hH2 hΓd
+      hHsymm hTr2, hfield]
+
+end RicciFlow
