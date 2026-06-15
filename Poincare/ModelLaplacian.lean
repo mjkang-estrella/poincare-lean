@@ -15852,3 +15852,42 @@ theorem tensorDoubleDivergence_coordRicciForm
       ((Module.finBasis ℝ E).coord j))) ((Module.finBasis ℝ E) j)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant 2-tensor derivative is homogeneous in the tensor field**:
+`∇(c·H)(v,p,q) = c·∇H(v,p,q)`. The flat term is reduced to the scalar field
+`y ↦ H_y(p,q)` by `fderiv_clm_family_apply` (twice each way), where the constant `c`
+factors out by `fderiv_const_mul`; the two Christoffel corrections scale by
+`ContinuousLinearMap.smul_apply`. (The CLM-valued `fderiv_const_smul` instance path
+fails, so the scalar route is used.) Propagates `c` through the divergence. -/
+theorem covTensor2Deriv_smul_field
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x) (c : ℝ) (v p q : E) :
+    covTensor2Deriv G (fun y ↦ c • H y) x v p q
+      = c * covTensor2Deriv G H x v p q := by
+  unfold covTensor2Deriv
+  have hA : (fderiv ℝ (fun y ↦ c • H y) x v) p q
+      = c * ((fderiv ℝ H x v) p q) := by
+    rw [fderiv_clm_family_apply (hHd.const_smul c) v p,
+      fderiv_clm_family_apply
+        ((hHd.const_smul c).clm_apply (differentiableAt_const p)) v q]
+    have he : (fun y ↦ (c • H y) p q) = fun y ↦ c * (H y p q) := by
+      funext y
+      simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+    rw [he, fderiv_const_mul
+      ((hHd.clm_apply (differentiableAt_const p)).clm_apply
+        (differentiableAt_const q)) c,
+      ContinuousLinearMap.smul_apply, smul_eq_mul,
+      fderiv_clm_family_apply hHd v p,
+      fderiv_clm_family_apply (hHd.clm_apply (differentiableAt_const p)) v q]
+  rw [hA]
+  simp only [ContinuousLinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]
+  ring
+
+end RicciFlow
