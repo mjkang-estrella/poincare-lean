@@ -16069,3 +16069,28 @@ theorem ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci-flow variation `−2 Ric` is a symmetric tensor**: `(−2 Ric)(a,b) =
+(−2 Ric)(b,a)`, from the symmetry of the Ricci tensor (`coordRicci_symm`). Discharges
+the `hHsymm` hypothesis of the `hBianchi` identity for `H = −2 Ric`. -/
+theorem neg_two_coordRicciForm_symm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {y : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (z : E) (p q : E), G z p q = G z q p)
+    (hinv : ∀ z : E, (G z).IsInvertible)
+    (hdiffΓ : ∀ (z : E) (p : E),
+      DifferentiableAt ℝ (fun w ↦ christoffelClosedOp G w p) z)
+    (a b : E) :
+    ((-2 : ℝ) • coordRicciForm G y (hdiffΓ y)) a b
+      = ((-2 : ℝ) • coordRicciForm G y (hdiffΓ y)) b a := by
+  simp only [ContinuousLinearMap.smul_apply, coordRicciForm_apply, smul_eq_mul]
+  rw [coordRicci_symm hGC2 hGsymm hinv (hdiffΓ y) b a]
+
+end RicciFlow
