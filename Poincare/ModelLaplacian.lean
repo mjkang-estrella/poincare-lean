@@ -13302,3 +13302,38 @@ theorem christoffelDerivOp_smul_fst
   exact christoffelDeriv_smul_fst hGd hHd hGsymm hHsymm c u v
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`∇δΓ` is additive in its first tensor slot**:
+`covDeltaGammaDeriv v (p₁+p₂) z = covDeltaGammaDeriv v p₁ z + covDeltaGammaDeriv v p₂ z`.
+The flat-derivative term splits via the operator first-slot additivity and
+`fderiv_fun_add`; the Christoffel corrections via `christoffelDeriv` first-slot
+linearity. Completes the full tensorial multilinearity of `covDeltaGammaDeriv`. -/
+theorem covDeltaGammaDeriv_add_p
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G H y p) x)
+    (v p₁ p₂ z : E) :
+    covDeltaGammaDeriv G H x v (p₁ + p₂) z
+      = covDeltaGammaDeriv G H x v p₁ z + covDeltaGammaDeriv G H x v p₂ z := by
+  unfold covDeltaGammaDeriv
+  have hfield : (fun y ↦ christoffelDerivOp G H y (p₁ + p₂))
+      = fun y ↦ christoffelDerivOp G H y p₁ + christoffelDerivOp G H y p₂ := by
+    funext y
+    exact christoffelDerivOp_add_fst (hGd y) (hHd y) hGsymm hHsymm p₁ p₂
+  rw [hfield, fderiv_fun_add (hVd p₁) (hVd p₂)]
+  simp only [ContinuousLinearMap.add_apply, map_add, christoffelDerivOp_apply,
+    christoffelDeriv_add_fst (hGd x) (hHd x) hGsymm hHsymm]
+  abel
+
+end RicciFlow
