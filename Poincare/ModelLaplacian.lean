@@ -18250,3 +18250,46 @@ theorem fderiv_corr2_antisymm_curvature
     christoffel_antisymm_deriv_eq_curvature hΓ hΓ' q]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The antisymmetrised flat derivative of `∇H` in full curvature form**: combining the
+flat-derivative reduction with both correction differences cast into curvature form,
+`D_{v'}(∇H)(v,·) − D_v(∇H)(v',·)` equals the negated sum of the two `H·(Rm − Γ∘Γ) + ∂H·Γ`
+blocks. The `Γ∘Γ` and `∂H·Γ` pieces here are exactly those that the `p,q`-slot corrections of
+`covTensor2SndDeriv_antisymm` will cancel (roadmap item 3, curvature-commutation frontier). -/
+theorem fderiv_covTensor2Deriv_flat_antisymm_curvature
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (v' v p q : E)
+    (hHC2 : ContDiffAt ℝ 2 H x)
+    (hpure1 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ H y v) p q) x)
+    (hpure2 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ H y v') p q) x)
+    (hc1 : DifferentiableAt ℝ (fun y ↦ H y (christoffelClosedOp G y v p) q) x)
+    (hc1' : DifferentiableAt ℝ (fun y ↦ H y (christoffelClosedOp G y v' p) q) x)
+    (hc2 : DifferentiableAt ℝ (fun y ↦ H y p (christoffelClosedOp G y v q)) x)
+    (hc2' : DifferentiableAt ℝ (fun y ↦ H y p (christoffelClosedOp G y v' q)) x)
+    (hH : DifferentiableAt ℝ H x)
+    (hΓ : DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v) x)
+    (hΓ' : DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y v') x) :
+    (fderiv ℝ (fun y ↦ covTensor2Deriv G H y v p q) x) v'
+      - (fderiv ℝ (fun y ↦ covTensor2Deriv G H y v' p q) x) v
+    = -(H x ((coordCurvatureOp G x v' v) p
+              - (christoffelClosedOp G x v').comp (christoffelClosedOp G x v) p
+              + (christoffelClosedOp G x v).comp (christoffelClosedOp G x v') p) q
+        + ((fderiv ℝ H x v') (christoffelClosedOp G x v p) q
+           - (fderiv ℝ H x v) (christoffelClosedOp G x v' p) q))
+      - (H x p ((coordCurvatureOp G x v' v) q
+              - (christoffelClosedOp G x v').comp (christoffelClosedOp G x v) q
+              + (christoffelClosedOp G x v).comp (christoffelClosedOp G x v') q)
+        + ((fderiv ℝ H x v') p (christoffelClosedOp G x v q)
+           - (fderiv ℝ H x v) p (christoffelClosedOp G x v' q))) := by
+  rw [fderiv_covTensor2Deriv_flat_antisymm v' v p q hHC2 hpure1 hpure2
+      hc1 hc1' hc2 hc2',
+    fderiv_corr1_antisymm_curvature p q hH hΓ hΓ',
+    fderiv_corr2_antisymm_curvature p q hH hΓ hΓ']
+
+end RicciFlow
