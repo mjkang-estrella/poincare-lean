@@ -13887,3 +13887,32 @@ theorem sum_covTensor2Deriv_Hslot_trace_field
   exact sum_covTensor2Deriv_Hslot_trace (hGd y) hGsymm hinv (hHd y) hHsymm v
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The second derivative of `tr_g H` is the basepoint-derivative of the metric
+trace of `∇H`**: differentiating the field identity `sum_covTensor2Deriv_Hslot_trace_field`
+gives `(D(fun y ↦ Σⱼ (∇_v H)_y(♯ʸbʲ, bⱼ)))_x v' = (D(fun y ↦ (D(tr_g H))_y v))_x v'`.
+The right side is the flat second derivative of the scalar `tr_g H`; the left side
+will expand (via the `∂♯` of the varying raise) into the `H`-slot trace of `∇²H`. -/
+theorem fderiv_sum_covTensor2Deriv_Hslot_trace_eq
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (p q : E), H y p q = H y q p)
+    (x v v' : E) :
+    (fderiv ℝ (fun y ↦ ∑ j, covTensor2Deriv G H y v
+        ((G y).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j)) x) v'
+      = (fderiv ℝ (fun y ↦ (fderiv ℝ (tensorMetricTrace G H) y) v) x) v' := by
+  rw [sum_covTensor2Deriv_Hslot_trace_field hGd hGsymm hinv hHd hHsymm v]
+
+end RicciFlow
