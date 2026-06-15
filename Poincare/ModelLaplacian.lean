@@ -11784,3 +11784,46 @@ theorem differentiableAt_christoffelClosedOp_dir
   exact (hΓd p).clm_apply hv
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant 2-tensor derivative with a varying derivative-direction is
+differentiable**: `y ↦ (∇_{v(y)} H)(p,q)` is differentiable when `v` is. The
+varying-direction analogue of `differentiableAt_covTensor2Deriv_family`: the flat
+second-derivative term passes `v(y)` through `clm_apply`, and the two Christoffel
+corrections through `differentiableAt_christoffelClosedOp_dir`. The link for
+differentiating the inner `δΓ`-trace field, whose derivative slot is the varying
+raised index `♯bⁱ`. -/
+theorem differentiableAt_covTensor2Deriv_dir
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    {v : E → E} (hv : DifferentiableAt ℝ v x) (p q : E) :
+    DifferentiableAt ℝ (fun y ↦ covTensor2Deriv G H y (v y) p q) x := by
+  unfold covTensor2Deriv
+  have ht1 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ H y (v y)) p q) x :=
+    ((hH2.clm_apply hv).clm_apply (differentiableAt_const p)).clm_apply
+      (differentiableAt_const q)
+  have hVp : DifferentiableAt ℝ
+      (fun y ↦ christoffelClosedOp G y (v y) p) x :=
+    differentiableAt_christoffelClosedOp_dir hGd hGsymm hΓd hv p
+  have hVq : DifferentiableAt ℝ
+      (fun y ↦ christoffelClosedOp G y (v y) q) x :=
+    differentiableAt_christoffelClosedOp_dir hGd hGsymm hΓd hv q
+  have ht2 : DifferentiableAt ℝ
+      (fun y ↦ H y (christoffelClosedOp G y (v y) p) q) x :=
+    (hHd.clm_apply hVp).clm_apply (differentiableAt_const q)
+  have ht3 : DifferentiableAt ℝ
+      (fun y ↦ H y p (christoffelClosedOp G y (v y) q)) x :=
+    (hHd.clm_apply (differentiableAt_const p)).clm_apply hVq
+  exact (ht1.sub ht2).sub ht3
+
+end RicciFlow
