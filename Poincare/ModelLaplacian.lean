@@ -18986,3 +18986,25 @@ theorem connectionLaplacian_add_lichnerowiczCurvature_smul
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz curvature term negates with the tensor**:
+`lichnerowiczCurvature G (−H) x p q = −lichnerowiczCurvature G H x p q`, the `c = −1` case of
+`lichnerowiczCurvature_smul`. With additivity, homogeneity and vanishing on `0`, this completes the
+characterization of `H ↦ lichnerowiczCurvature G H x p q` as an `ℝ`-linear functional (item 3). -/
+theorem lichnerowiczCurvature_neg
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (p q : E) :
+    lichnerowiczCurvature G (fun y ↦ -H y) x p q
+      = -lichnerowiczCurvature G H x p q := by
+  have h := lichnerowiczCurvature_smul (G := G) (H := H) (x := x) (-1) p q
+  rw [show (fun y ↦ -H y) = (fun y ↦ (-1 : ℝ) • H y) from by
+    funext y; exact (neg_one_smul ℝ (H y)).symm, h]
+  ring
+
+end RicciFlow
