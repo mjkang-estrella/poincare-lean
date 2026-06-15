@@ -12779,3 +12779,43 @@ theorem divergence_deltaGammaInnerTraceCLM_christoffel
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The raised Christoffel-pairing trace swap**: for a fixed vector `V`,
+`Σᵢ G(Γ_{bᵢ}V, ♯bⁱ) = Σᵢ G(Γ_{♯bⁱ}V, bᵢ)` — the metric trace of the Christoffel
+action is invariant under raising/lowering the contracted index, by
+`sum_raised_contraction_swap` with the direction-linearity of `christoffelClosedOp`.
+One of the trace swaps that reconciles the commutation's `L`-terms (diff `bᵢ`,
+pairing `♯bⁱ`) with the `R`-terms (diff `♯bʲ`). -/
+theorem sum_christoffel_pairing_swap
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hinv : (G x).IsInvertible)
+    (hGsymm : ∀ p q : E, G x p q = G x q p)
+    (V : E) :
+    (∑ i, G x (christoffelClosedOp G x ((Module.finBasis ℝ E) i) V)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))))
+      = ∑ i, G x (christoffelClosedOp G x
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i))) V)
+          ((Module.finBasis ℝ E) i) :=
+  (sum_raised_contraction_swap G hinv hGsymm
+    (fun a b ↦ G x (christoffelClosedOp G x a V) b)
+    (fun a₁ a₂ b ↦ by
+      dsimp only
+      rw [christoffelClosedOp_add_fst G x a₁ a₂]
+      simp only [ContinuousLinearMap.add_apply, map_add])
+    (fun c a b ↦ by
+      dsimp only
+      rw [christoffelClosedOp_smul_fst G x c a]
+      simp only [ContinuousLinearMap.smul_apply, map_smul, smul_eq_mul])
+    (fun a b₁ b₂ ↦ by dsimp only; simp only [map_add])
+    (fun c a b ↦ by dsimp only; simp only [map_smul, smul_eq_mul])).symm
+
+end RicciFlow
