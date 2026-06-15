@@ -19638,3 +19638,32 @@ theorem coordRiemann_antisymm_pair_right
   linarith [h]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Ricci is the metric trace of Riemann**:
+`R(u,w) = Σᵢ Rm(bᵢ, u, w, ♯bⁱ)`, the standard contraction of the `(0,4)` Riemann tensor over its
+first and last slots with the metric. Connects `coordRiemann` to `coordRicci` (roadmap item 3). -/
+theorem coordRicci_eq_riemann_trace
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : (G x).IsInvertible) (u w : E) :
+    coordRicci G x u w
+      = ∑ i, coordRiemann G x ((Module.finBasis ℝ E) i) u w
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i))) := by
+  have hGiG : ∀ f : E →L[ℝ] ℝ, G x ((G x).inverse f) = f :=
+    fun f ↦ (hinv.inverse_apply_eq.mp rfl).symm
+  unfold coordRicci coordRiemann
+  refine Finset.sum_congr rfl (fun i _ ↦ ?_)
+  rw [hGsymm x (coordCurvatureOp G x ((Module.finBasis ℝ E) i) u w)
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord i))),
+    hGiG, LinearMap.coe_toContinuousLinearMap']
+
+end RicciFlow
