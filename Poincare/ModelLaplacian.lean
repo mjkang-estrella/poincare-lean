@@ -18369,3 +18369,63 @@ theorem covTensor2SndDeriv_comm
   linarith [h]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The connection-Laplacian commutator (contracted Ricci identity)**: tracing the `(0,2)`-tensor
+Ricci identity over the metric basis, the rough Laplacian `Δ_∇ H` (ordering `∇²H(bᵢ, ♯bⁱ)`) differs
+from the transposed ordering `∇²H(♯bⁱ, bᵢ)` by exactly the metric trace of the curvature acting on
+`H`'s two slots. The contracted curvature commutation feeding the Lichnerowicz Laplacian
+`Δ_L H = Δ_∇ H + curvature` (roadmap item 3). -/
+theorem connectionLaplacian_sub_transpose_eq_curvature
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (p q : E)
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hHC2 : ContDiffAt ℝ 2 H x)
+    (hH : DifferentiableAt ℝ H x)
+    (hpure1 : ∀ i, DifferentiableAt ℝ (fun y ↦ (fderiv ℝ H y
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord i)))) p q) x)
+    (hpure2 : ∀ i, DifferentiableAt ℝ
+      (fun y ↦ (fderiv ℝ H y ((Module.finBasis ℝ E) i)) p q) x)
+    (hc1 : ∀ i, DifferentiableAt ℝ (fun y ↦ H y (christoffelClosedOp G y
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord i))) p) q) x)
+    (hc1' : ∀ i, DifferentiableAt ℝ
+      (fun y ↦ H y (christoffelClosedOp G y ((Module.finBasis ℝ E) i) p) q) x)
+    (hc2 : ∀ i, DifferentiableAt ℝ (fun y ↦ H y p (christoffelClosedOp G y
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord i))) q)) x)
+    (hc2' : ∀ i, DifferentiableAt ℝ
+      (fun y ↦ H y p (christoffelClosedOp G y ((Module.finBasis ℝ E) i) q)) x)
+    (hΓ : ∀ i, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord i)))) x)
+    (hΓ' : ∀ i, DifferentiableAt ℝ
+      (fun y ↦ christoffelClosedOp G y ((Module.finBasis ℝ E) i)) x) :
+    connectionLaplacian G H x p q
+      - ∑ i, covTensor2SndDeriv G H x
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i)))
+          ((Module.finBasis ℝ E) i) p q
+    = ∑ i, -(H x ((coordCurvatureOp G x ((Module.finBasis ℝ E) i)
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)))) p) q
+            + H x p ((coordCurvatureOp G x ((Module.finBasis ℝ E) i)
+                ((G x).inverse (LinearMap.toContinuousLinearMap
+                  ((Module.finBasis ℝ E).coord i)))) q)) := by
+  unfold connectionLaplacian
+  rw [← Finset.sum_sub_distrib]
+  refine Finset.sum_congr rfl (fun i _ ↦ ?_)
+  have h := covTensor2SndDeriv_ricci_identity ((Module.finBasis ℝ E) i)
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i))) p q hGd hGsymm hHC2
+    (hpure1 i) (hpure2 i) (hc1 i) (hc1' i) (hc2 i) (hc2' i) hH (hΓ i) (hΓ' i)
+  linarith [h]
+
+end RicciFlow
