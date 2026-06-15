@@ -18627,3 +18627,27 @@ theorem lichnerowiczCurvature_add
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz curvature term is homogeneous in the tensor**:
+`lichnerowiczCurvature G (c • H) = c · lichnerowiczCurvature G H`. With
+`lichnerowiczCurvature_add` this gives full `ℝ`-linearity in `H`, matching the linearity of
+`δRic` in the metric variation; in particular the Ricci-flow direction `H = −2 Ric` scales the
+curvature term by `−2` (roadmap item 3). -/
+theorem lichnerowiczCurvature_smul
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (c : ℝ) (p q : E) :
+    lichnerowiczCurvature G (fun y ↦ c • H y) x p q
+      = c * lichnerowiczCurvature G H x p q := by
+  unfold lichnerowiczCurvature
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun i _ ↦ ?_)
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  ring
+
+end RicciFlow
