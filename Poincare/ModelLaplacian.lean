@@ -20024,3 +20024,24 @@ theorem sectionalNum_smul_left
   rw [coordRiemann_smul_slot1 hdiff, coordRiemann_smul_slot4, smul_smul, ← sq]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The sectional numerator is degree-2 homogeneous in its second vector**:
+`K₀(u, c•w) = c² · K₀(u,w)`. With `sectionalNum_smul_left`, `K₀` is bi-quadratic, so the normalized
+sectional curvature `K₀(u,w)/(|u|²|w|² − ⟨u,w⟩²)` is invariant under scaling either vector
+(roadmap item 3). -/
+theorem sectionalNum_smul_right
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (c : ℝ) (u w : E) :
+    sectionalNum G x u (c • w) = (c ^ 2) • sectionalNum G x u w := by
+  unfold sectionalNum
+  rw [coordRiemann_smul_slot2 hdiff, coordRiemann_smul_slot3, smul_smul, ← sq]
+
+end RicciFlow
