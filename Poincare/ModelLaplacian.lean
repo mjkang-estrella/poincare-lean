@@ -21962,3 +21962,32 @@ theorem tensorMetricTrace_smul_metric
   rw [tensorMetricTrace_smul, tensorMetricTrace_metric hGsymm hinv]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of the Lichnerowicz Laplacian of the metric is `2R`**:
+`tr_g(Δ_L g) = 2·R`, since `Δ_L g = 2 Ric` (pointwise) and `tr_g(Ric) = R`. Contracting the static
+Lichnerowicz Laplacian of `g` against the metric recovers twice the scalar curvature — the trace
+identity behind Hamilton's `∂R/∂t = Δ_g R + 2|Ric|²` (the `tr_g(−Δ_L g) = −2R` source term), with the
+slot swap handled by `coordRicci_symm` (roadmap item 3). -/
+theorem lichnerowiczLaplacian_metric_trace
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x) :
+    ∑ i, lichnerowiczLaplacian G G x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+      = 2 * coordScalar G x := by
+  unfold coordScalar
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [lichnerowiczLaplacian_metric_eq_two_ricci hGC2 hGsymm hinv hdiff,
+    coordRicci_symm hGC2 hGsymm hinv hdiff]
+
+end RicciFlow
