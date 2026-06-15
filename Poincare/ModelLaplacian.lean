@@ -21535,3 +21535,27 @@ theorem round_sphere_pinching_preserved
   rw [div_pow, hpin, mul_div_assoc]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Einstein metrics are stationary under the normalized Ricci flow**: the normalized direction
+`−2 Ric + (2R/n)·g` vanishes for `Ric = c·g` with `R = c·n`. Unlike the unnormalized flow (which
+shrinks the round sphere to a point), the volume-normalized flow `∂g/∂t = −2 Ric + (2R̄/n)g` fixes
+Einstein metrics — the round sphere is its stable fixed point, the convergence target of Hamilton's
+rounding theorem and the Poincaré program (roadmap item 3). -/
+theorem einstein_normalized_ricci_flow_stationary
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c n : ℝ} (hn : n ≠ 0)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hsc : coordScalar G x = c * n) (p q : E) :
+    (-2 : ℝ) * coordRicci G x p q
+      + (2 * coordScalar G x / n) * G x p q = 0 := by
+  rw [hEin p q, hsc]
+  field_simp
+  ring
+
+end RicciFlow
