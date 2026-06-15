@@ -17621,3 +17621,32 @@ theorem connectionLaplacian_smul_field
   exact covTensor2SndDeriv_smul_field hHd hH2 hΓd c _ _ p q
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The connection Laplacian under the Ricci-flow direction**:
+`Δ_∇(−2 Ric)(p,q) = −2 · Δ_∇ Ric(p,q)`. The Ricci-flow specialization of
+`connectionLaplacian_smul_field` (`H = Ric`, `c = −2`) — the rough Laplacian of the
+Ricci-flow variation is `−2` times the rough Laplacian of Ricci (roadmap item 3). -/
+theorem connectionLaplacian_neg_two_coordRicciForm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hKd : ∀ y : E,
+      DifferentiableAt ℝ (fun z ↦ coordRicciForm G z (hdiffΓ z)) y)
+    (hRic2 : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ coordRicciForm G z (hdiffΓ z)) y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (p q : E) :
+    connectionLaplacian G
+        (fun y ↦ (-2 : ℝ) • coordRicciForm G y (hdiffΓ y)) x p q
+      = (-2 : ℝ) * connectionLaplacian G
+          (fun y ↦ coordRicciForm G y (hdiffΓ y)) x p q :=
+  connectionLaplacian_smul_field hKd hRic2 hΓd (-2) p q
+
+end RicciFlow
