@@ -19667,3 +19667,39 @@ theorem coordRicci_eq_riemann_trace
     hGiG, LinearMap.coe_toContinuousLinearMap']
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Riemann vanishes on a repeated first pair**: `Rm(u,u,a,b) = 0`, since the curvature operator on
+a degenerate plane is zero (`R(u,u) = −R(u,u)`) (roadmap item 3). -/
+theorem coordRiemann_self_pair_left
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (u a b : E) :
+    coordRiemann G x u u a b = 0 := by
+  have hRz : coordCurvatureOp G x u u = 0 := by
+    have h := coordCurvatureOp_antisymm G x u u
+    have h2 : (2 : ℝ) • coordCurvatureOp G x u u = 0 := by
+      rw [two_smul]; nth_rewrite 1 [h]; exact neg_add_cancel _
+    exact (smul_eq_zero.mp h2).resolve_left (by norm_num)
+  unfold coordRiemann
+  rw [hRz]
+  simp
+
+/-- **Riemann vanishes on a repeated last pair**: `Rm(u,w,a,a) = 0`, by antisymmetry in the last
+pair (`g`-skew-adjointness) (roadmap item 3). -/
+theorem coordRiemann_self_pair_right
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u w a : E) :
+    coordRiemann G x u w a a = 0 := by
+  have h := coordRiemann_antisymm_pair_right hGC2 hGsymm hinv hdiff u w a a
+  linarith [h]
+
+end RicciFlow
