@@ -21874,3 +21874,25 @@ theorem tracelessRicci_metricTrace_zero
   rw [Finset.sum_sub_distrib, h1, ← Finset.mul_sum, h2, div_mul_cancel₀ _ hn, sub_self]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace is additive over tensor-field subtraction**:
+`tr_g(H − K) = tr_g H − tr_g K`. Each summand `(H − K)(bᵢ, ♯bⁱ)` splits by `sub_apply`, with no
+metric-field addition (the trace is taken slot-wise against the fixed raised coframe), so the
+diamond-free structure is preserved. Combined with `tensorMetricTrace_smul`, the metric trace is
+`ℝ`-linear in the tensor field — the contraction underlying `tr_g(Ric̊) = 0` (roadmap item 3). -/
+theorem tensorMetricTrace_sub (G H K : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E) :
+    tensorMetricTrace G (fun y ↦ H y - K y) x
+      = tensorMetricTrace G H x - tensorMetricTrace G K x := by
+  unfold tensorMetricTrace
+  rw [← Finset.sum_sub_distrib]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  simp only [ContinuousLinearMap.sub_apply]
+
+end RicciFlow
