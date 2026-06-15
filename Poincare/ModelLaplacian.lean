@@ -11413,3 +11413,46 @@ theorem deltaGamma_innerTrace_eq
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- The tensor divergence one-form is additive in its argument. -/
+theorem tensorDivOneForm_add {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (w₁ w₂ : E) :
+    tensorDivOneForm G H x (w₁ + w₂)
+      = tensorDivOneForm G H x w₁ + tensorDivOneForm G H x w₂ := by
+  unfold tensorDivOneForm
+  rw [← Finset.sum_add_distrib]
+  exact Finset.sum_congr rfl fun i _ ↦ covTensor2Deriv_add_right _ _ _ _
+
+/-- The tensor divergence one-form is homogeneous in its argument. -/
+theorem tensorDivOneForm_smul {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (c : ℝ) (w : E) :
+    tensorDivOneForm G H x (c • w) = c * tensorDivOneForm G H x w := by
+  unfold tensorDivOneForm
+  rw [Finset.mul_sum]
+  exact Finset.sum_congr rfl fun i _ ↦ covTensor2Deriv_smul_right _ _ _ _
+
+/-- **The tensor divergence one-form packaged as a continuous linear map**:
+`(div H)_x : E →L[ℝ] ℝ`, `w ↦ Σᵢ (∇_{♯bⁱ}H)(bᵢ,w)`. As a field of the
+basepoint `x` this is the covariant object whose own metric-trace covariant
+derivative is the double divergence `div div H`. -/
+noncomputable def tensorDivCLM (G H : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E) :
+    E →L[ℝ] ℝ :=
+  LinearMap.toContinuousLinearMap
+    { toFun := fun w ↦ tensorDivOneForm G H x w
+      map_add' := fun w₁ w₂ ↦ tensorDivOneForm_add w₁ w₂
+      map_smul' := fun c w ↦ by
+        simp only [RingHom.id_apply, smul_eq_mul]
+        exact tensorDivOneForm_smul c w }
+
+@[simp]
+theorem tensorDivCLM_apply (G H : E → E →L[ℝ] E →L[ℝ] ℝ) (x w : E) :
+    tensorDivCLM G H x w = tensorDivOneForm G H x w := rfl
+
+end RicciFlow
