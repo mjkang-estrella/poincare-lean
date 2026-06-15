@@ -11301,3 +11301,49 @@ theorem deltaGammaContractionDerivTrace_eq_fderiv_form
   exact g_covDeltaGammaDeriv (hGd x) hGsymm hinv (hVd _) _ _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant divergence one-form of a 2-tensor**: `(div H)(w) =
+Σᵢ (∇_{♯bⁱ} H)(bᵢ, w)` — the metric trace of the covariant derivative of
+`H` over the derivative index and the first tensor slot. This is the genuine
+divergence of `H` (independent of the chosen basis), the object whose further
+divergence is the `div div H` leading term of the linearized scalar curvature. -/
+noncomputable def tensorDivOneForm (G H : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (x w : E) : ℝ :=
+  ∑ i, covTensor2Deriv G H x
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i)))
+    ((Module.finBasis ℝ E) i) w
+
+/-- **Orientation invariance of the tensor divergence**: for a symmetric
+differentiable `H`, contracting the derivative index against the first tensor
+slot, the second tensor slot, or in either raised/lowered order all give the
+same one-form — `(div H)(w) = Σᵢ (∇_{bᵢ} H)(♯bⁱ, w)`. The metric-trace swap
+(`covTensor2Deriv_trace_swap`) exchanges the derivative and contraction
+indices, and tensor-slot symmetry (`covTensor2Deriv_symm`) reorders the
+remaining slots. The well-definedness the divergence needs before its second
+contraction. -/
+theorem tensorDivOneForm_eq_first_slot_raised
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hHd : DifferentiableAt ℝ H x)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hGsymm : ∀ p q : E, G x p q = G x q p)
+    (hinv : (G x).IsInvertible)
+    (w : E) :
+    tensorDivOneForm G H x w
+      = ∑ i, covTensor2Deriv G H x ((Module.finBasis ℝ E) i)
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i)))
+          w := by
+  unfold tensorDivOneForm
+  rw [← covTensor2Deriv_trace_swap hHd hHsymm hGsymm hinv w]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact covTensor2Deriv_symm hHd hHsymm _ _ _
+
+end RicciFlow
