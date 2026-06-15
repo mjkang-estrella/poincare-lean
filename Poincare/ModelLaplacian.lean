@@ -19577,3 +19577,26 @@ theorem lichnerowiczLaplacian_metric_eq_two_ricci
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Ricci flow is minus the Lichnerowicz Laplacian of the metric**:
+`−2 · R(p,q) = −Δ_L g (p,q)`. The Ricci-flow direction `∂g/∂t = −2 Ric` equals `−Δ_L g`, since the
+static Lichnerowicz Laplacian of the metric is `2 Ric` (roadmap item 3). -/
+theorem ricci_flow_eq_neg_lichnerowiczLaplacian_metric
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (p q : E) :
+    (-2 : ℝ) * coordRicci G x p q = -lichnerowiczLaplacian G G x p q := by
+  rw [lichnerowiczLaplacian_metric_eq_two_ricci hGC2 hGsymm hinv hdiff p q]
+  ring
+
+end RicciFlow
