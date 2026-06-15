@@ -20434,3 +20434,36 @@ theorem tensorMetricTrace_metric
     Fintype.card_fin, nsmul_eq_mul, mul_one]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Einstein metrics have scalar curvature `c·n`**: if `Ric = c·g` (Einstein), then
+`coordScalar G x = c · dim E`, since the Ricci endomorphism is `c · id` and `tr(id) = n`. The trace
+relation `R = c·n` for an Einstein metric (roadmap item 3). -/
+theorem coordScalar_of_einstein
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q) :
+    coordScalar G x = c * (Module.finrank ℝ E : ℝ) := by
+  rw [← trace_coordRicciEndo G x hdiff (hinv x) (hGsymm x)]
+  have hendo : coordRicciEndo G x hdiff = c • LinearMap.id := by
+    apply LinearMap.ext
+    intro u
+    rw [coordRicciEndo_apply]
+    have hform : coordRicciForm G x hdiff u = c • (G x u) := by
+      ext w
+      rw [coordRicciForm_apply, hEin w u, hGsymm x w u]
+      simp
+    rw [hform, map_smul,
+      show (G x).inverse (G x u) = u from (hinv x).inverse_apply_eq.mpr rfl]
+    simp
+  rw [hendo, map_smul, LinearMap.trace_id, smul_eq_mul]
+
+end RicciFlow
