@@ -20856,3 +20856,34 @@ theorem constCurvatureForm_add_slot4
   simp only [map_add, ContinuousLinearMap.add_apply]; ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **κForm homogeneous in slot 2** (roadmap item 3). -/
+theorem constCurvatureForm_smul_slot2
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (κ c : ℝ) (u w a b : E) :
+    constCurvatureForm G x κ u (c • w) a b = c * constCurvatureForm G x κ u w a b := by
+  unfold constCurvatureForm
+  simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]; ring
+
+/-- **κForm homogeneous in slot 3** (roadmap item 3). -/
+theorem constCurvatureForm_smul_slot3
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (κ c : ℝ) (u w a b : E) :
+    constCurvatureForm G x κ u w (c • a) b = c * constCurvatureForm G x κ u w a b := by
+  unfold constCurvatureForm
+  simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]; ring
+
+/-- **κForm homogeneous in slot 4**. With the additivities, `κForm` is a fully `ℝ`-multilinear
+`(0,4)` tensor — a valid algebraic curvature tensor in every respect (roadmap item 3). -/
+theorem constCurvatureForm_smul_slot4
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (κ c : ℝ) (u w a b : E) :
+    constCurvatureForm G x κ u w a (c • b) = c * constCurvatureForm G x κ u w a b := by
+  unfold constCurvatureForm
+  simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]; ring
+
+end RicciFlow
