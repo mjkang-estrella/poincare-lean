@@ -14785,3 +14785,38 @@ theorem fderiv_tensorDivOneForm_sum_expand
     (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The double divergence with the inner divergence as a one-form field**: pushing
+`fderiv_tensorDivCLM_apply` through, `divdiv H = Σⱼ [(D(fun y ↦ (div H)_y bⱼ))_x ♯bʲ
+− (div H)_x(Γ_{♯bʲ}bⱼ)]`. Replaces the bundled `tensorDivCLM` with the explicit
+`tensorDivOneForm`, so the basepoint-derivative can be expanded via
+`fderiv_tensorDivOneForm_sum_expand` — the working form of `div div H`. -/
+theorem tensorDoubleDivergence_oneForm_form
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : DifferentiableAt ℝ H x)
+    (hH2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x) :
+    tensorDoubleDivergence G H x
+      = ∑ j, ((fderiv ℝ (fun y ↦ tensorDivOneForm G H y
+              ((Module.finBasis ℝ E) j)) x)
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord j)))
+          - tensorDivOneForm G H x (christoffelClosedOp G x
+              ((G x).inverse (LinearMap.toContinuousLinearMap
+                ((Module.finBasis ℝ E).coord j))) ((Module.finBasis ℝ E) j))) := by
+  rw [tensorDoubleDivergence_covTensor1Deriv_form]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [fderiv_tensorDivCLM_apply hGd hGsymm hinv hHd hH2 hΓd]
+  simp only [tensorDivCLM_apply]
+
+end RicciFlow
