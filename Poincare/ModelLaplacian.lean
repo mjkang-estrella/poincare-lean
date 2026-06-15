@@ -17381,3 +17381,41 @@ theorem ricciDeriv_sndDeriv_bochner_form
       hΓd (hVd u) w]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci variation under the Ricci-flow direction is symmetric**:
+`δRic(u,w) = δRic(w,u)` for `H = −2 Ric`, since `−2 Ric` is a symmetric tensor and `tr_g(−2Ric)
+= −2R` is `C²`. The Ricci-flow time-derivative of the Ricci tensor is symmetric (roadmap item 3). -/
+theorem ricciDeriv_neg_two_isSymm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hHd : ∀ y : E, DifferentiableAt ℝ
+      (fun z ↦ (-2 : ℝ) • coordRicciForm G z (hdiffΓ z)) y)
+    (hVd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ christoffelDerivOp G
+        (fun z ↦ (-2 : ℝ) • coordRicciForm G z (hdiffΓ z)) y p) x)
+    (hφ : ContDiff ℝ 2 (fun z ↦ coordScalar G z))
+    (u w : E) :
+    ricciDeriv G (fun y ↦ (-2 : ℝ) • coordRicciForm G y (hdiffΓ y)) x u w
+      = ricciDeriv G (fun y ↦ (-2 : ℝ) • coordRicciForm G y (hdiffΓ y)) x w u := by
+  have hf : ContDiffAt ℝ 2 (tensorMetricTrace G
+      (fun z ↦ (-2 : ℝ) • coordRicciForm G z (hdiffΓ z))) x := by
+    rw [tensorMetricTrace_neg_two_coordRicciForm_field hdiffΓ]
+    exact (contDiff_const.mul hφ).contDiffAt
+  exact ricciDeriv_isSymm hGd hGsymm hinv hHd
+    (fun y a b ↦ neg_two_coordRicciForm_symm hGC2 hGsymm hinv hdiffΓ a b) hVd
+    (differentiableAt_fderiv_tensorMetricTrace_neg_two_coordRicciForm hdiffΓ hφ)
+    (fun a b ↦ christoffelClosedOp_symm (hGd x) hGsymm a b) hf u w
+
+end RicciFlow
