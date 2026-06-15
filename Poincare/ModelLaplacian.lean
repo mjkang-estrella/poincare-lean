@@ -16434,3 +16434,36 @@ theorem curved_hamilton_ricci_flow_singularity_bianchi_free
     hR_cont hspace hmin_int hRB h0
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ`-divergence in metric-paired form**: the flat coordinate divergence
+`Σᵢ ⟨bⁱ, ∇_{bᵢ}δΓ(u,w)⟩` equals the metric pairing `Σᵢ G(∇_{bᵢ}δΓ(u,w), ♯bⁱ)`, since
+`bⁱ(V) = G(V, ♯bⁱ)` by metric symmetry and the raise-lower identity. The entry form
+into which the untraced second-derivative Bochner expansion
+`g_covDeltaGammaDeriv_sndDeriv_form` substitutes — the opening of the *untraced* Ricci
+variation (Hamilton's full curvature evolution, roadmap item 3). -/
+theorem deltaGammaDivergence_eq_g_paired
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (u w : E) :
+    deltaGammaDivergence G H x u w
+      = ∑ i, G x (covDeltaGammaDeriv G H x ((Module.finBasis ℝ E) i) u w)
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord i))) := by
+  have hGiG : ∀ f : E →L[ℝ] ℝ, G x ((G x).inverse f) = f :=
+    fun f ↦ (((hinv x).inverse_apply_eq).mp rfl).symm
+  unfold deltaGammaDivergence
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [hGsymm x (covDeltaGammaDeriv G H x ((Module.finBasis ℝ E) i) u w)
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i))), hGiG]
+  rfl
+
+end RicciFlow
