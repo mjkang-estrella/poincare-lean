@@ -21800,3 +21800,24 @@ theorem tracelessRicciNormSq_eq_zero_iff_saturated
   exact ⟨fun h ↦ by linarith, fun h ↦ by linarith⟩
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round sphere keeps vanishing traceless-Ricci norm along the flow**: with
+`|Ric|²(t) = N₀/(1−2ct)²`, `R(t) = R₀/(1−2ct)`, and the Einstein relation `R₀² = n·N₀`, the traceless
+norm `|Ric|²(t) − R(t)²/n = 0` for all `t`. The round sphere stays exactly Einstein throughout the
+shrinking flow — no rounding needed, it is already round (roadmap item 3). -/
+theorem round_sphere_tracelessRicciNormSq_zero
+    (R₀ N₀ n c t : ℝ) (hfac : 1 - 2 * c * t ≠ 0) (hn : n ≠ 0) (hpin : R₀ ^ 2 = n * N₀) :
+    N₀ / (1 - 2 * c * t) ^ 2 - (R₀ / (1 - 2 * c * t)) ^ 2 / n = 0 := by
+  have hf : (1 - 2 * c * t) ^ 2 ≠ 0 := pow_ne_zero 2 hfac
+  rw [div_pow]
+  field_simp
+  nlinarith [hpin]
+
+end RicciFlow
