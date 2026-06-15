@@ -15680,3 +15680,32 @@ theorem covTensor2Deriv_coordRicciForm
   abel
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The tensor divergence of the Ricci field is the Ricci divergence**:
+`(div Ric)(w) = Σᵢ (∇_{♯bⁱ} Ric)(bᵢ, w) = ricciDivergence G x w`. Summing the per-point
+field-to-intrinsic bridge `covTensor2Deriv_coordRicciForm` over the contraction index.
+The divergence-level bridge from `tensorDivOneForm` to the curvature `ricciDivergence`. -/
+theorem tensorDivOneForm_coordRicciForm
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hKd : DifferentiableAt ℝ (fun y ↦ coordRicciForm G y (hdiffΓ y)) x)
+    (w : E) :
+    tensorDivOneForm G (fun y ↦ coordRicciForm G y (hdiffΓ y)) x w
+      = ricciDivergence G x w := by
+  unfold tensorDivOneForm ricciDivergence
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact covTensor2Deriv_coordRicciForm hdiffΓ hdd hKd
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i))) ((Module.finBasis ℝ E) i) w
+
+end RicciFlow
