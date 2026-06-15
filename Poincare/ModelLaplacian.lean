@@ -14480,3 +14480,47 @@ theorem sum_sum_covTensor2SndDeriv_laplacian_trace
       ((Module.finBasis ℝ E).coord i))) ((Module.finBasis ℝ E) i)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Hessian-trace `D²(tr_g H)` part is raise-swap invariant**: with `tr_g H`
+twice differentiable at `x`, `Σᵢ (D(fun y ↦ (D tr_g H)_y ♯bⁱ))_x bᵢ
+= Σⱼ (D²(tr_g H)_x ♯bʲ) bⱼ`. The left summand (from the trace-commute) converts via
+`fderiv_clm_family_apply` to `(D²(tr_g H)_x bᵢ)(♯bⁱ)`, then `sum_raised_contraction_swap`
+on the bilinear `(p,q) ↦ (D²(tr_g H)_x p) q` swaps the raised index. Matches the
+`D²` term of `curvedLap(tr_g H)`'s Hessian form. -/
+theorem sum_hessian_trace_raise_swap
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hTr2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x) :
+    (∑ i, (fderiv ℝ (fun y ↦ (fderiv ℝ (tensorMetricTrace G H) y)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))) x) ((Module.finBasis ℝ E) i))
+      = ∑ j, (fderiv ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x
+          ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord j)))) ((Module.finBasis ℝ E) j) := by
+  have hconv : ∀ i, (fderiv ℝ (fun y ↦ (fderiv ℝ (tensorMetricTrace G H) y)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))) x) ((Module.finBasis ℝ E) i)
+      = (fderiv ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x
+          ((Module.finBasis ℝ E) i)) ((G x).inverse
+            (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) := by
+    intro i
+    exact (fderiv_clm_family_apply hTr2 ((Module.finBasis ℝ E) i)
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord i)))).symm
+  rw [Finset.sum_congr rfl fun i _ ↦ hconv i]
+  exact (sum_raised_contraction_swap G (hinv x) (hGsymm x)
+    (fun p q ↦ (fderiv ℝ (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x p) q)
+    (fun p₁ p₂ q ↦ by dsimp only; rw [map_add, ContinuousLinearMap.add_apply])
+    (fun c p q ↦ by dsimp only; rw [map_smul, ContinuousLinearMap.smul_apply])
+    (fun p q₁ q₂ ↦ by dsimp only; rw [map_add])
+    (fun c p q ↦ by dsimp only; rw [map_smul])).symm
+
+end RicciFlow
