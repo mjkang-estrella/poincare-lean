@@ -20004,3 +20004,23 @@ theorem coordRiemann_block_antisymm
   exact coordRiemann_antisymm_pair_right hGC2 hGsymm hinv hdiff a b u w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The sectional numerator is degree-2 homogeneous in its first vector**:
+`K₀(c•u, w) = c² · K₀(u,w)`, since `Rm` is linear in both slots holding `u` (slots 1 and 4). The
+quadratic-form scaling that makes the normalized sectional curvature `c`-invariant (roadmap item 3). -/
+theorem sectionalNum_smul_left
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (c : ℝ) (u w : E) :
+    sectionalNum G x (c • u) w = (c ^ 2) • sectionalNum G x u w := by
+  unfold sectionalNum
+  rw [coordRiemann_smul_slot1 hdiff, coordRiemann_smul_slot4, smul_smul, ← sq]
+
+end RicciFlow
