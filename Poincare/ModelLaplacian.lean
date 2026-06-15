@@ -20641,3 +20641,40 @@ theorem constCurvatureForm_ricci_trace
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The scalar curvature of a space form is `n(1−n)κ`**: the double metric trace of the
+constant-curvature tensor is `n·(1−n)·κ`, the constant scalar curvature `R = n(n−1)·(−κ)` of a
+`κ`-space form (roadmap item 3). -/
+theorem constCurvatureForm_scalar_trace
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ v w : E, G x v w = G x w v)
+    (hinv : ∀ y : E, (G y).IsInvertible) (κ : ℝ) :
+    ∑ j, (∑ i, constCurvatureForm G x κ ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))))
+      = (Module.finrank ℝ E : ℝ) * ((1 - (Module.finrank ℝ E : ℝ)) * κ) := by
+  rw [Finset.sum_congr rfl (fun j _ ↦ constCurvatureForm_ricci_trace hGsymm hinv κ
+      ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord j)))
+      ((Module.finBasis ℝ E) j))]
+  rw [Finset.sum_congr rfl (fun j _ ↦ by
+    rw [hGsymm ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord j))) ((Module.finBasis ℝ E) j)]),
+    ← Finset.mul_sum,
+    show (∑ j, G x ((Module.finBasis ℝ E) j)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))) = tensorMetricTrace G G x from rfl,
+    tensorMetricTrace_metric hGsymm (hinv x)]
+  ring
+
+end RicciFlow
