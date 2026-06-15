@@ -19482,3 +19482,31 @@ theorem connectionLaplacian_metric_eq_zero
     (fun i _ ↦ covTensor2SndDeriv_metric_eq_zero hGd hGsymm hinv _ _ p q)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz Laplacian on the metric**:
+`Δ_L g (p,q) = −2 · (curvature term)(g)(p,q) + 2 · R(p,q)`, since `Δ_∇ g = 0` and `Ric·g = 2 Ric`.
+The static-metric value of `Δ_L`, isolating the curvature obstruction (roadmap item 3). -/
+theorem lichnerowiczLaplacian_metric
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (p q : E) :
+    lichnerowiczLaplacian G G x p q
+      = -2 * lichnerowiczCurvature G G x p q + 2 * coordRicci G x p q := by
+  have hGd : ∀ y : E, DifferentiableAt ℝ G y := fun y ↦
+    (hGC2.differentiable (by norm_num)).differentiableAt
+  unfold lichnerowiczLaplacian
+  rw [connectionLaplacian_metric_eq_zero hGd hGsymm hinv p q,
+    ricciActionOnTensor_metric hGC2 hGsymm hinv hdiff p q]
+  ring
+
+end RicciFlow
