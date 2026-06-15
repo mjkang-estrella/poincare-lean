@@ -11657,3 +11657,40 @@ theorem deltaGammaInnerTraceCLM_eq {G H : E → E →L[ℝ] E →L[ℝ] ℝ}
   exact deltaGamma_innerTrace_eq (hGd y) hGsymm hinv (hHd y) hHsymm w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **THE DIVERGENCE OF THE BUNDLED INNER-TRACE FIELD IS THE KEYSTONE RHS**:
+`Σⱼ (∇_{♯bʲ}(δΓ-inner-trace))(bⱼ) = div div H − ½ Δ_g(tr_g H)`. Combines the
+field equality `deltaGammaInnerTraceCLM_eq` (inner trace = `div H − ½d(tr H)`)
+with the RHS assembly `divergence_innerTrace_field_eq`. With this, the entire
+keystone collapses to the single PURE commutation
+`deltaGammaDivergenceTrace = Σⱼ covTensor1Deriv G (deltaGammaInnerTraceCLM G H) x ♯bʲ bⱼ`:
+once the divergence-trace order is exchanged, this lemma finishes it. -/
+theorem divergence_deltaGammaInnerTraceCLM_eq {G H : E → E →L[ℝ] E →L[ℝ] ℝ}
+    {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHd : ∀ y : E, DifferentiableAt ℝ H y)
+    (hHsymm : ∀ (y : E) (a b : E), H y a b = H y b a)
+    (hDivd : DifferentiableAt ℝ (tensorDivCLM G H) x)
+    (hT2 : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (tensorMetricTrace G H) y) x) :
+    (∑ j, covTensor1Deriv G (deltaGammaInnerTraceCLM G H) x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j))
+      = tensorDoubleDivergence G H x
+        - (1 / 2 : ℝ) * curvedLaplacian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+            (tensorMetricTrace G H) x := by
+  rw [deltaGammaInnerTraceCLM_eq hGd hGsymm hinv hHd hHsymm]
+  exact divergence_innerTrace_field_eq hGsymm hinv hDivd hT2
+
+end RicciFlow
