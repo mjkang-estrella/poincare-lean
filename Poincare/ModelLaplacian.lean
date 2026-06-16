@@ -23654,3 +23654,25 @@ theorem round_sphere_3d_ricciNormSq_pos
   positivity
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere scalar curvature doubles at a quarter of the extinction time**: at
+`t = 1/(4c) = T/2`, `R(t) = R₀/(1−2c·T/2) = R₀/(1/2) = 2R₀`. Half-way to extinction (in time), the
+scalar curvature has exactly doubled — a concrete checkpoint of the `R(t) = R₀/(1−2ct)` blow-up
+profile (roadmap item 3). -/
+theorem round_sphere_scalar_doubles
+    {R₀ c : ℝ} (hc : c ≠ 0) :
+    R₀ / (1 - 2 * c * (1 / (4 * c))) = 2 * R₀ := by
+  have hnum : (1:ℝ) - 2 * c * (1 / (4 * c)) = 1 / 2 := by
+    field_simp
+    ring
+  rw [hnum]
+  ring
+
+end RicciFlow
