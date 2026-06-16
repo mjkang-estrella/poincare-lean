@@ -25658,3 +25658,22 @@ theorem round_sphere_ricci_over_scalar
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere reciprocal Ricci norm is the squared affine factor**:
+`(N₀/(1−2ct)²)⁻¹ = (1−2ct)²/N₀`. The reciprocal of the squared Ricci norm `|Ric|²(t)⁻¹` equals the
+*square* of the affine homothety factor over `N₀` — so `1/|Ric|²` collapses to zero quadratically
+(like `(T−t)²`) at the extinction time, one power faster than `1/R`'s linear collapse, the dual of the
+Type-I `1/(T−t)²` blow-up of `|Ric|²` (roadmap item 5). -/
+theorem round_sphere_inv_ricciNormSq_sq
+    {N₀ c t : ℝ} :
+    (N₀ / (1 - 2 * c * t) ^ 2)⁻¹ = (1 - 2 * c * t) ^ 2 / N₀ :=
+  inv_div _ _
+
+end RicciFlow
