@@ -22689,3 +22689,25 @@ theorem ricci_flat_flow_static
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Ricci-flat metrics saturate the pinching inequality trivially**: if `Ric = 0` then both
+`|Ric|² = 0` and `R = 0`, so the pinching gap `n·|Ric|² − R² = 0`. The Ricci-flat case sits at the
+degenerate boundary of `R² ≤ n|Ric|²` (both sides zero) — a fixed point with vanishing traceless
+Ricci, complementing the Einstein saturation at positive curvature (roadmap item 3). -/
+theorem ricci_flat_pinching_gap_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hflat : ∀ p q : E, coordRicci G x p q = 0) :
+    (Module.finrank ℝ E : ℝ) * coordRicciNormSq G x hdiff - (coordScalar G x) ^ 2 = 0 := by
+  rw [coordRicciNormSq_eq_zero_of_ricci_flat hdiff hflat,
+    coordScalar_eq_zero_of_ricci_flat hflat]
+  ring
+
+end RicciFlow
