@@ -23857,3 +23857,26 @@ theorem ricciNormSq_pos_of_scalar_pos
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Riccati reaction bound is saturated iff traceless Ricci vanishes**:
+`2|Ric|² = 2R²/n ↔ |Ric|² − R²/n = 0`. The scalar-evolution reaction term `2|Ric|²` attains its lower
+bound `2R²/n` exactly when the traceless Ricci tensor vanishes, i.e. on the Einstein locus. Off the
+Einstein locus the reaction strictly exceeds the Riccati bound, so the scalar curvature minimum grows
+even faster than the comparison ODE predicts (roadmap item 3). -/
+theorem reaction_eq_riccati_iff_traceless_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x) :
+    2 * coordRicciNormSq G x hdiff = 2 * ((coordScalar G x) ^ 2 / (Module.finrank ℝ E : ℝ))
+      ↔ coordRicciNormSq G x hdiff - (coordScalar G x) ^ 2 / (Module.finrank ℝ E : ℝ) = 0 := by
+  constructor
+  · intro h; linarith
+  · intro h; linarith
+
+end RicciFlow
