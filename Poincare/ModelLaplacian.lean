@@ -24405,3 +24405,24 @@ theorem curvDivergence_antisymm_first_two
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Parallel Ricci implies divergence-free Ricci**: if `∇ Ric = 0` in every slot, then
+`div Ric(u) = 0`, since the Ricci divergence is a metric trace of the covariant Ricci derivative. A
+covariantly-constant Ricci tensor is automatically divergence-free — and by the contracted Bianchi
+`div Ric = ½ dR`, also has constant scalar curvature. Ricci-parallel manifolds are the rigid
+constant-scalar-curvature fixed structures of the Ricci flow (roadmap item 3). -/
+theorem ricciDivergence_eq_zero_of_ricci_parallel
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hpar : ∀ a b c : E, covRicciDeriv G x a b c = 0) (u : E) :
+    ricciDivergence G x u = 0 := by
+  unfold ricciDivergence
+  exact Finset.sum_eq_zero fun k _ ↦ hpar _ _ _
+
+end RicciFlow
