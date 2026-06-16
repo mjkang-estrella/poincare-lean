@@ -23694,3 +23694,29 @@ theorem tensorMetricTrace_zero (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E) :
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The scalar-evolution reaction term dominates `2R²/n`**: `2·(R²/n) ≤ 2·|Ric|²`, from the pinching
+`R² ≤ n|Ric|²`. In Hamilton's scalar evolution `∂R/∂t = Δ_g R + 2|Ric|²`, the reaction term `2|Ric|²`
+is bounded below by `2R²/n`, so the spatial minimum `R_min` satisfies `dR_min/dt ≥ (2/n)R_min²` — the
+Riccati lower bound forcing `R_min` to become positive and blow up in finite time, the engine of
+Hamilton's finite-time-singularity theorem (roadmap item 3). -/
+theorem two_ricciNormSq_ge_two_scalar_sq_div
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    2 * ((coordScalar G x) ^ 2 / (Module.finrank ℝ E : ℝ)) ≤ 2 * coordRicciNormSq G x hdiff := by
+  have h := ricciNormSq_ge_scalar_sq_div hGC2 hGsymm hinv hdiff hGpos hn
+  linarith
+
+end RicciFlow
