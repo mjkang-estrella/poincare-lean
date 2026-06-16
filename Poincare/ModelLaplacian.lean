@@ -24021,3 +24021,27 @@ theorem coordRicciEndo_einstein_sq_apply
     coordRicciEndo_einstein_apply hGsymm hinv hdiff hEin hn, smul_smul, sq]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The hyperbolic Einstein Ricci eigenvalue `R/n` is negative for `c < 0`**: the single Ricci
+eigenvalue `R/n` of a negatively-curved Einstein metric equals `c < 0`. The hyperbolic space form has
+negative-definite Ricci operator with the single negative eigenvalue `R/n = c` — uniform negative Ricci
+curvature, the spectral companion to the round sphere's positive eigenvalue (roadmap item 3). -/
+theorem coordRicciEndo_einstein_eigenvalue_neg
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0) (hc : c < 0) :
+    coordScalar G x / (Module.finrank ℝ E : ℝ) < 0 := by
+  rw [← einstein_const_eq_scalar_div hGsymm hinv hdiff hEin hn]
+  exact hc
+
+end RicciFlow
