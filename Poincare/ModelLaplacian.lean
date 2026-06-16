@@ -25698,3 +25698,60 @@ theorem round_sphere_inv_ricciNormSq_zero_at_extinction
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Kulkarni–Nomizu product of two `(0,2)`-tensors**: `(h ⊘ k)(u,w,a,b) =
+h(u,a)k(w,b) + h(w,b)k(u,a) − h(u,b)k(w,a) − h(w,a)k(u,b)`. The canonical way to build a `(0,4)`-tensor
+with the algebraic symmetries of a curvature tensor out of two symmetric bilinear forms. The building
+block of the Ricci/Weyl decomposition of the Riemann tensor `Rm = W + (Schouten ⊘ g)` (roadmap item 3). -/
+noncomputable def kulkarniNomizu (h k : E → E →L[ℝ] E →L[ℝ] ℝ) (x u w a b : E) : ℝ :=
+  h x u a * k x w b + h x w b * k x u a - h x u b * k x w a - h x w a * k x u b
+
+/-- **The Kulkarni–Nomizu product is symmetric in its two tensor arguments**: `h ⊘ k = k ⊘ h`. -/
+theorem kulkarniNomizu_comm (h k : E → E →L[ℝ] E →L[ℝ] ℝ) (x u w a b : E) :
+    kulkarniNomizu h k x u w a b = kulkarniNomizu k h x u w a b := by
+  unfold kulkarniNomizu
+  ring
+
+/-- **The Kulkarni–Nomizu product is antisymmetric in its first pair**:
+`(h ⊘ k)(u,w,a,b) = −(h ⊘ k)(w,u,a,b)`, with no symmetry hypothesis on `h, k`. -/
+theorem kulkarniNomizu_antisymm_left (h k : E → E →L[ℝ] E →L[ℝ] ℝ) (x u w a b : E) :
+    kulkarniNomizu h k x u w a b = -kulkarniNomizu h k x w u a b := by
+  unfold kulkarniNomizu
+  ring
+
+/-- **The Kulkarni–Nomizu product is antisymmetric in its second pair**:
+`(h ⊘ k)(u,w,a,b) = −(h ⊘ k)(u,w,b,a)`, with no symmetry hypothesis on `h, k`. -/
+theorem kulkarniNomizu_antisymm_right (h k : E → E →L[ℝ] E →L[ℝ] ℝ) (x u w a b : E) :
+    kulkarniNomizu h k x u w a b = -kulkarniNomizu h k x u w b a := by
+  unfold kulkarniNomizu
+  ring
+
+/-- **The Kulkarni–Nomizu product has curvature block symmetry**: for symmetric `h, k`,
+`(h ⊘ k)(u,w,a,b) = (h ⊘ k)(a,b,u,w)` — the pair-swap symmetry of a curvature tensor. -/
+theorem kulkarniNomizu_block_symm
+    {h k : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hsymm : ∀ p q : E, h x p q = h x q p) (ksymm : ∀ p q : E, k x p q = k x q p)
+    (u w a b : E) :
+    kulkarniNomizu h k x u w a b = kulkarniNomizu h k x a b u w := by
+  unfold kulkarniNomizu
+  rw [hsymm a u, hsymm b w, hsymm a w, hsymm b u, ksymm b w, ksymm a u, ksymm b u, ksymm a w]
+  ring
+
+/-- **The space form is the metric Kulkarni–Nomizu square**:
+`constCurvatureForm G x κ = (κ/2)·(g ⊘ g)`. The constant-curvature model tensor is exactly `κ/2` times
+the Kulkarni–Nomizu product of the metric with itself — exhibiting space forms as the pure "scalar
+part" of the curvature decomposition, with zero Weyl and Ricci-traceless parts (roadmap item 3). -/
+theorem constCurvatureForm_eq_half_kulkarniNomizu
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E) (κ : ℝ) (u w a b : E) :
+    constCurvatureForm G x κ u w a b = (κ / 2) * kulkarniNomizu G G x u w a b := by
+  unfold constCurvatureForm kulkarniNomizu
+  ring
+
+end RicciFlow
