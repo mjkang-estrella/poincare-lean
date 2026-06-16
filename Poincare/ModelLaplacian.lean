@@ -25822,3 +25822,86 @@ theorem kulkarniNomizu_smul_right (h k : E → E →L[ℝ] E →L[ℝ] ℝ) (c :
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric (Ricci) trace of `KN(h, g)` is the Schouten inversion `(2−n)·h − tr_g(h)·g`**:
+contracting the Kulkarni–Nomizu product of a symmetric `(0,2)`-tensor `h` with the metric over its
+first and last slots gives `Σᵢ (h ⊘ g)(bᵢ, u, w, ♯bⁱ) = (2−n)·h(u,w) − tr_g(h)·g(u,w)`. This is the
+algebraic engine that *inverts* the curvature decomposition: it shows how the Ricci contraction acts
+on the `KN(·, g)` building block, the identity behind the Schouten tensor and the Ricci/Weyl
+decomposition `Rm = W + (Schouten ⊘ g)` (roadmap item 3). Cross-checked against the metric self-trace
+(`h = g` gives `(2−2n)g`, matching `constCurvatureForm_ricci_trace` via the `κ/2` factor). -/
+theorem kulkarniNomizu_metric_ricci_trace
+    {h G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hsymm : ∀ p q : E, h x p q = h x q p)
+    (hGsymm : ∀ p q : E, G x p q = G x q p)
+    (hinv : ∀ y : E, (G y).IsInvertible) (u w : E) :
+    ∑ i, kulkarniNomizu h G x ((Module.finBasis ℝ E) i) u w
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+      = (2 - (Module.finrank ℝ E : ℝ)) * h x u w - (tensorMetricTrace G h x) * G x u w := by
+  have hGiG : ∀ f : E →L[ℝ] ℝ, G x ((G x).inverse f) = f :=
+    fun f ↦ (hinv x).inverse_apply_eq.mp rfl |>.symm
+  -- per-summand rewrite: convert the slot-(1,4) KN summand into (coord•h) + B - C - D
+  have key : ∀ i, kulkarniNomizu h G x ((Module.finBasis ℝ E) i) u w
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+      = ((Module.finBasis ℝ E).coord i u • h x ((Module.finBasis ℝ E) i) w)
+        + h x u ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+            * G x ((Module.finBasis ℝ E) i) w
+        - h x ((Module.finBasis ℝ E) i)
+            ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+            * G x u w
+        - h x u w * G x ((Module.finBasis ℝ E) i)
+            ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) := by
+    intro i
+    unfold kulkarniNomizu
+    rw [hGsymm u ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))),
+      hGiG]
+    simp only [LinearMap.coe_toContinuousLinearMap', smul_eq_mul]
+    ring
+  -- the swap term B sums to h x u w
+  have hS2 : (∑ i, h x u ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i))) * G x ((Module.finBasis ℝ E) i) w) = h x u w := by
+    have hsw := sum_raised_contraction_swap G (hinv x) hGsymm
+      (fun p q => h x u p * G x q w)
+      (fun p₁ p₂ q => by simp only [map_add]; ring)
+      (fun c p q => by simp only [map_smul, smul_eq_mul]; ring)
+      (fun p q₁ q₂ => by simp only [map_add, ContinuousLinearMap.add_apply]; ring)
+      (fun c p q => by simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]; ring)
+    have hterm : ∀ i, h x u ((Module.finBasis ℝ E) i) * G x ((G x).inverse
+          (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) w
+        = (Module.finBasis ℝ E).coord i w • h x ((Module.finBasis ℝ E) i) u := by
+      intro i
+      rw [hGiG]
+      simp only [LinearMap.coe_toContinuousLinearMap', smul_eq_mul]
+      rw [hsymm u ((Module.finBasis ℝ E) i)]
+      ring
+    calc (∑ i, h x u ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord i))) * G x ((Module.finBasis ℝ E) i) w)
+        = ∑ i, h x u ((Module.finBasis ℝ E) i) * G x ((G x).inverse
+            (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) w := hsw
+      _ = ∑ i, (Module.finBasis ℝ E).coord i w • h x ((Module.finBasis ℝ E) i) u :=
+            Finset.sum_congr rfl (fun i _ => hterm i)
+      _ = h x w u := metric_basis_contraction w u
+      _ = h x u w := hsymm w u
+  -- the C and D sums fold to the metric traces
+  have hC : (∑ i, h x ((Module.finBasis ℝ E) i) ((G x).inverse
+        (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) * G x u w)
+      = tensorMetricTrace G h x * G x u w := by
+    rw [← Finset.sum_mul]; rfl
+  have hD : (∑ i, h x u w * G x ((Module.finBasis ℝ E) i) ((G x).inverse
+        (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))))
+      = h x u w * tensorMetricTrace G G x := by
+    rw [← Finset.mul_sum]; rfl
+  rw [Finset.sum_congr rfl (fun i _ ↦ key i),
+    Finset.sum_sub_distrib, Finset.sum_sub_distrib, Finset.sum_add_distrib,
+    metric_basis_contraction u w, hS2, hC, hD,
+    tensorMetricTrace_metric hGsymm (hinv x)]
+  ring
+
+end RicciFlow
