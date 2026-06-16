@@ -22400,3 +22400,20 @@ theorem constCurvatureForm_sectional_isotropic
     constCurvatureForm_sectional_orthonormal hGsymm κ u' w' huw' hu' hw']
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Space-form Ricci constant is `(n−1)` times the sectional curvature**: the Einstein constant
+`(1−n)κ` equals `(n−1)·(−κ)`, i.e. `c = (n−1)·K` where `K = −κ` is the geometric sectional curvature.
+The classical relation `Ric = (n−1)K·g` for constant-curvature spaces — each Ricci eigenvalue is the
+sum of the `n−1` sectional curvatures through that direction (roadmap item 3). -/
+theorem constCurvatureForm_ricci_const_eq_sectional (κ : ℝ) :
+    (1 - (Module.finrank ℝ E : ℝ)) * κ = ((Module.finrank ℝ E : ℝ) - 1) * (-κ) := by
+  ring
+
+end RicciFlow
