@@ -22621,3 +22621,31 @@ theorem einstein_tensor_divergence_free_apply
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The directional contracted Bianchi identity**: `(dR)(w) = 2·div Ric(w)` for every direction `w`,
+the pointwise form of `dR = 2 div Ric`. The rate of change of scalar curvature along `w` is twice the
+Ricci divergence in that direction — the scalar transport law underlying Hamilton's evolution equation
+(roadmap item 3). -/
+theorem fderiv_coordScalar_apply_eq_two_ricciDivergence
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hsymΓ : ∀ p : E, IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) x) (w : E) :
+    (fderiv ℝ (fun y ↦ coordScalar G y) x) w = 2 * ricciDivergence G x w := by
+  rw [ricciDivergence_eq_half_fderiv_scalar hGC2 hGsymm hinv hdiffΓ hdd hsymΓ w]
+  ring
+
+end RicciFlow
