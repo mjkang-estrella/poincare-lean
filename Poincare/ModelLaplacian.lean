@@ -25617,3 +25617,25 @@ theorem covTensor2Deriv_zero
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The second covariant tensor derivative of the zero tensor vanishes**: `(∇²0)(v',v,p,q) = 0`.
+The field `y ↦ ∇0(v,p,q)` is identically `0` (by `covTensor2Deriv_zero`), so its `fderiv` is `0`, and
+the three Christoffel correction terms are `∇0 = 0`. The nullity building block for the rough
+Laplacian's linearity, alongside `covTensor2SndDeriv_add_field` and `_sub_field` (roadmap item 3). -/
+theorem covTensor2SndDeriv_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (v' v p q : E) :
+    covTensor2SndDeriv G (fun _ ↦ 0) x v' v p q = 0 := by
+  unfold covTensor2SndDeriv
+  have hfield : (fun y ↦ covTensor2Deriv G (fun _ ↦ 0) y v p q) = fun _ ↦ (0 : ℝ) := by
+    funext y; exact covTensor2Deriv_zero v p q
+  rw [hfield]
+  simp [covTensor2Deriv_zero]
+
+end RicciFlow
