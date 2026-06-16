@@ -23432,3 +23432,26 @@ theorem round_sphere_3d_pinching
   rw [einstein_pinching_equality hGsymm hinv hdiff hEin, hfr]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Einstein 3-sphere has `|Ric|² = 3c²`**: in dimension `3`, `Ric = c·g` gives
+`|Ric|² = c²·3`. Specializing `coordRicciNormSq_of_einstein` to the Poincaré dimension: the round `S³`
+has Ricci norm `3c²`, consistent with `R = 3c` via the saturated pinching `R² = 9c² = 3·(3c²)`
+(roadmap item 3). -/
+theorem round_sphere_3d_ricciNormSq
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hfr : (Module.finrank ℝ E : ℝ) = 3) :
+    coordRicciNormSq G x hdiff = c ^ 2 * 3 := by
+  rw [coordRicciNormSq_of_einstein hGsymm hinv hdiff hEin, hfr]
+
+end RicciFlow
