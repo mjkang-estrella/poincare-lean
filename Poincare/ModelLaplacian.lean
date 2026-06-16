@@ -23088,3 +23088,24 @@ theorem einstein_ricci_orthonormal
   rw [hEin u u, hu, mul_one]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round sphere has positive Ricci curvature in every unit direction**: if `Ric = c·g` with
+`c > 0` and `g(u,u) = 1`, then `Ric(u,u) = c > 0`. Every unit direction has strictly positive Ricci
+curvature — the positive-Ricci condition that, by Hamilton's theorem, forces a closed 3-manifold to
+become round under the normalized flow (roadmap item 3). -/
+theorem einstein_ricci_orthonormal_pos
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hc : 0 < c) (u : E) (hu : G x u u = 1) :
+    0 < coordRicci G x u u := by
+  rw [einstein_ricci_orthonormal hEin u hu]
+  exact hc
+
+end RicciFlow
