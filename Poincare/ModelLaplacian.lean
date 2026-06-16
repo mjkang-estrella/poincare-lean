@@ -22093,3 +22093,31 @@ theorem connectionLaplacian_metric_trace_eq_zero
   exact connectionLaplacian_metric_eq_zero hGd hGsymm hinv _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of the Ricci action on the metric is `2R`**: `Σᵢ (Ric·g)(bᵢ, ♯bⁱ) = 2·R`,
+since `Ric·g = 2 Ric` pointwise (`ricciActionOnTensor_metric`) and `tr_g(Ric) = R`. Together with
+`connectionLaplacian_metric_trace_eq_zero` and `lichnerowiczCurvature` vanishing on `g`, this confirms
+the full `tr_g(Δ_L g) = 2R` arises entirely from the Ricci-action term (roadmap item 3). -/
+theorem ricciActionOnTensor_metric_trace
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x) :
+    ∑ i, ricciActionOnTensor G G x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+      = 2 * coordScalar G x := by
+  unfold coordScalar
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [ricciActionOnTensor_metric hGC2 hGsymm hinv hdiff,
+    coordRicci_symm hGC2 hGsymm hinv hdiff]
+
+end RicciFlow
