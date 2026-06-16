@@ -26478,3 +26478,32 @@ theorem fderiv_hessianOperator_apply
   rw [hpair]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The gradient field is differentiable**: for `f ∈ C²`, the metric gradient `∇f` is a differentiable
+vector field. In the flat model `∇f = Lc ∘ Df` is a fixed continuous-linear raise of the (differentiable)
+differential, so it is differentiable, with derivative the raised Hessian
+(`fderiv_metricGradient_eq_hessianOperator`). This smoothness of `∇f` is what licenses differentiating it
+a second time in the Bochner assembly — taking `∇(∇f) = Hess♯` and then `∇(Hess♯)` to expose the third
+derivative (roadmap item 3). -/
+theorem differentiable_metricGradient
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) :
+    Differentiable ℝ (metricGradient b hb f) := by
+  have hf1 : Differentiable ℝ (fderiv ℝ f) :=
+    (hf.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)
+  set Lc : (E →L[ℝ] ℝ) →L[ℝ] E := LinearMap.toContinuousLinearMap
+    ((LinearMap.BilinForm.toDual b hb).symm.toLinearMap ∘ₗ
+      (LinearMap.toContinuousLinearMap.symm :
+        (E →L[ℝ] ℝ) ≃ₗ[ℝ] (E →ₗ[ℝ] ℝ)).toLinearMap) with hLc
+  have hgrad : (metricGradient b hb f) = fun y ↦ Lc (fderiv ℝ f y) := rfl
+  rw [hgrad]
+  exact Lc.differentiable.comp hf1
+
+end RicciFlow
