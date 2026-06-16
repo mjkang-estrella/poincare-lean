@@ -23262,3 +23262,22 @@ theorem normalized_flow_fixed_iff_einstein
     ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The normalized Einstein constant recovers the scalar under trace**: `(R/n)·n = R`. The Einstein
+constant of a normalized-flow fixed point is `c = R/n` (`normalized_flow_fixed_iff_einstein`), and
+`c·n = R` recovers the scalar curvature — the consistency `coordScalar_of_einstein` demands of the
+self-consistent Einstein constant `R/n` (roadmap item 3). -/
+theorem normalized_einstein_const_trace_consistent
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0) :
+    coordScalar G x / (Module.finrank ℝ E : ℝ) * (Module.finrank ℝ E : ℝ) = coordScalar G x := by
+  field_simp
+
+end RicciFlow
