@@ -22172,3 +22172,28 @@ theorem lichnerowiczLaplacian_metric_trace_decompose
   rw [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.mul_sum]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of the half-Lichnerowicz Laplacian of the metric is `R`**:
+`Σᵢ ½·Δ_L g(bᵢ, ♯bⁱ) = R`, since `tr_g(Δ_L g) = 2R`. The operator `½Δ_L` (whose value on the metric
+is `Ric`) traces to exactly the scalar curvature — the normalization under which the linearized Ricci
+flow `½Δ_L` reproduces `Ric` and its trace `R` (roadmap item 3). -/
+theorem half_lichnerowiczLaplacian_metric_trace
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x) :
+    ∑ i, (1 / 2 : ℝ) * lichnerowiczLaplacian G G x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+      = coordScalar G x := by
+  rw [← Finset.mul_sum, lichnerowiczLaplacian_metric_trace hGC2 hGsymm hinv hdiff]
+  ring
+
+end RicciFlow
