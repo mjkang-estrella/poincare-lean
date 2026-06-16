@@ -24709,3 +24709,20 @@ theorem round_sphere_scalar_rate_pos
     (pow_pos (round_sphere_exists_on_interval hc ht) 2)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere scalar curvature at time zero is `R₀`**: `R(0) = R₀`, since the homothety
+factor `1 − 2c·0 = 1`. The initial condition of the self-similar profile `R(t) = R₀/(1−2ct)`: at the
+start of the flow the scalar curvature is exactly its initial value `R₀`, from which it strictly
+increases to the finite-time singularity (roadmap item 3). -/
+theorem round_sphere_scalar_at_zero (R₀ c : ℝ) :
+    R₀ / (1 - 2 * c * 0) = R₀ := by
+  norm_num
+
+end RicciFlow
