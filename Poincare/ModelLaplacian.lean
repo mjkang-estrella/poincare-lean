@@ -24456,3 +24456,28 @@ theorem fderiv_coordScalar_eq_zero_of_ricci_parallel
     (fun w ↦ ricciDivergence_eq_zero_of_ricci_parallel hpar w)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci-divergence 1-form vanishes for parallel Ricci**: if `∇ Ric = 0` then the covector
+`u ↦ div Ric(u)` is the zero functional. The packaged covariant statement of
+`ricciDivergence_eq_zero_of_ricci_parallel`: a Ricci-parallel metric has identically-vanishing Ricci
+divergence as a `1`-form, hence (with the contracted Bianchi) closed scalar differential (roadmap item 3). -/
+theorem ricciDivergenceForm_eq_zero_of_ricci_parallel
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hpar : ∀ a b c : E, covRicciDeriv G x a b c = 0) :
+    ricciDivergenceForm G x hdiffΓ hdd = 0 := by
+  ext w
+  simp only [ricciDivergenceForm_apply, ContinuousLinearMap.zero_apply]
+  exact ricciDivergence_eq_zero_of_ricci_parallel hpar w
+
+end RicciFlow
