@@ -23325,3 +23325,23 @@ theorem round_sphere_ricciNormSq_type_one
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere scalar ratio between two times is the inverse factor ratio**:
+`R(t₂)/R(t₁) = (1−2ct₁)/(1−2ct₂)`. Since `R(t) = R₀/(1−2ct)`, the ratio of scalar curvatures at two
+times is exactly the reciprocal ratio of the homothety factors — the metric scale shrinks in inverse
+proportion to the curvature growth, the self-similarity of the shrinking soliton (roadmap item 3). -/
+theorem round_sphere_scalar_ratio_times
+    {R₀ c t₁ t₂ : ℝ} (hR : R₀ ≠ 0)
+    (h1 : 1 - 2 * c * t₁ ≠ 0) (h2 : 1 - 2 * c * t₂ ≠ 0) :
+    (R₀ / (1 - 2 * c * t₂)) / (R₀ / (1 - 2 * c * t₁))
+      = (1 - 2 * c * t₁) / (1 - 2 * c * t₂) := by
+  field_simp
+
+end RicciFlow
