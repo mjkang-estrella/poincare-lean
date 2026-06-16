@@ -22897,3 +22897,21 @@ theorem round_sphere_ancient
   nlinarith [mul_nonneg hc.le (neg_nonneg.mpr ht)]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The shrinking homothety factor decreases monotonically**: for `c > 0`, the factor `1 − 2ct` is
+nonincreasing in `t`, so the round-sphere metric `g(t) = (1−2ct)g(0)` contracts monotonically toward
+extinction. The exact time-mirror of `einstein_homothety_increasing_of_neg`: positive curvature shrinks
+where negative curvature expands (roadmap item 3). -/
+theorem round_sphere_homothety_decreasing
+    {c : ℝ} (hc : 0 < c) {t₁ t₂ : ℝ} (h : t₁ ≤ t₂) :
+    1 - 2 * c * t₂ ≤ 1 - 2 * c * t₁ := by
+  nlinarith [mul_nonneg hc.le (sub_nonneg.mpr h)]
+
+end RicciFlow
