@@ -22336,3 +22336,24 @@ theorem constCurvatureForm_extinction_times_scalar
     (Module.finrank ℝ E : ℝ) hc
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The space-form sectional curvature on an orthonormal 2-plane is `−κ`**: for `g`-orthonormal
+`u, w` (`g(u,w)=0`, `g(u,u)=g(w,w)=1`), `Rm(u,w,w,u) = κ(g(u,w)² − g(u,u)g(w,w)) = −κ`. So the
+geometric sectional curvature of a `κ`-space form is the constant `−κ`, positive exactly when `κ < 0`
+— the round-sphere sign convention made explicit (roadmap item 3). -/
+theorem constCurvatureForm_sectional_orthonormal
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ v w : E, G x v w = G x w v) (κ : ℝ) (u w : E)
+    (huw : G x u w = 0) (hu : G x u u = 1) (hw : G x w w = 1) :
+    constCurvatureForm G x κ u w w u = -κ := by
+  rw [constCurvatureForm_sectional hGsymm, huw, hu, hw]
+  ring
+
+end RicciFlow
