@@ -22766,3 +22766,29 @@ theorem hyperbolic_scalar_neg
   div_neg_of_neg_of_pos hR (einstein_homothety_pos_of_neg hc ht)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative Filter Topology
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The hyperbolic scalar curvature decays to zero**: for `c < 0`, the evolving scalar
+`R(t) = R₀/(1−2ct) → 0` as `t → ∞`, since the homothety factor `1 − 2ct → +∞`. The expanding
+hyperbolic space form flattens asymptotically — its curvature dilutes to zero as the metric grows
+without bound, the long-time behavior opposite to the round sphere's finite-time blow-up (roadmap item 3). -/
+theorem hyperbolic_scalar_tendsto_zero
+    (R₀ : ℝ) {c : ℝ} (hc : c < 0) :
+    Tendsto (fun t ↦ R₀ / (1 - 2 * c * t)) atTop (𝓝 0) := by
+  have hslope : (0:ℝ) < -2 * c := by linarith
+  have hlin : Tendsto (fun t : ℝ ↦ -2 * c * t) atTop atTop :=
+    Tendsto.const_mul_atTop hslope tendsto_id
+  have hdenom : Tendsto (fun t : ℝ ↦ 1 - 2 * c * t) atTop atTop := by
+    have heq : (fun t : ℝ ↦ 1 - 2 * c * t) = (fun t ↦ 1 + -2 * c * t) := by
+      ext t; ring
+    rw [heq]
+    exact tendsto_atTop_add_const_left _ 1 hlin
+  exact Tendsto.div_atTop tendsto_const_nhds hdenom
+
+end RicciFlow
