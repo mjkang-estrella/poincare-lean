@@ -22649,3 +22649,23 @@ theorem fderiv_coordScalar_apply_eq_two_ricciDivergence
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Ricci-flat implies scalar-flat**: if `Ric = 0` at `x` then `R = 0` there, since the scalar
+curvature is a metric trace of the Ricci tensor `R = Σⱼ Ric(♯bʲ, bⱼ)`. A Ricci-flat metric has
+vanishing scalar curvature — together with `coordRicciNormSq_eq_zero_of_ricci_flat` this makes the
+flat/Ricci-flat case a complete static fixed point of the Ricci flow (roadmap item 3). -/
+theorem coordScalar_eq_zero_of_ricci_flat
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hflat : ∀ p q : E, coordRicci G x p q = 0) :
+    coordScalar G x = 0 := by
+  unfold coordScalar
+  exact Finset.sum_eq_zero fun j _ ↦ hflat _ _
+
+end RicciFlow
