@@ -26435,3 +26435,46 @@ theorem fderiv_metricGradient_eq_hessianOperator
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The derivative of the Hessian operator recovers the third derivative**:
+`b((∂_w Hess♯)·v, u) = D³f(w, v, u)`. Differentiating the raised Hessian field `y ↦ Hess♯_y v` (a fixed
+continuous-linear raise of the second derivative) in direction `w` and pairing against `u` returns the
+third derivative `fderiv³ f x w v u`. This is the second analytic↔algebraic bridge for the Bochner
+assembly: it exposes the third-derivative tensor inside the second differential of `|∇f|²`, where the
+outer-two symmetry `D³f(w,v,·) = D³f(v,w,·)` (Schwarz on `∇f`) then converts the off-diagonal trace term
+into `b(∇f, ∇Δf)` (roadmap item 3). -/
+theorem fderiv_hessianOperator_apply
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) (x v w u : E) :
+    b (fderiv ℝ (fun y ↦ hessianOperator b hb f y v) x w) u
+      = fderiv ℝ (fderiv ℝ (fderiv ℝ f)) x w v u := by
+  set Lc : (E →L[ℝ] ℝ) →L[ℝ] E := LinearMap.toContinuousLinearMap
+    ((LinearMap.BilinForm.toDual b hb).symm.toLinearMap ∘ₗ
+      (LinearMap.toContinuousLinearMap.symm :
+        (E →L[ℝ] ℝ) ≃ₗ[ℝ] (E →ₗ[ℝ] ℝ)).toLinearMap) with hLc
+  have hpair : ∀ (ψ : E →L[ℝ] ℝ) (z : E), b (Lc ψ) z = ψ z := by
+    intro ψ z
+    have h := congrArg (fun ρ : Module.Dual ℝ E ↦ ρ z)
+      (LinearEquiv.apply_symm_apply (LinearMap.BilinForm.toDual b hb)
+        (LinearMap.toContinuousLinearMap.symm ψ))
+    simp only [LinearMap.BilinForm.toDual_def] at h
+    exact h
+  have hB : Differentiable ℝ (fderiv ℝ (fderiv ℝ f)) :=
+    ((hf.fderiv_right (m := 2) (by norm_num)).fderiv_right (m := 1)
+      (by norm_num)).differentiable (by norm_num)
+  have hHd : HasFDerivAt (fun y ↦ hessianOperator b hb f y v) _ x :=
+    Lc.hasFDerivAt.comp x ((hB x).hasFDerivAt.clm_apply (hasFDerivAt_const v x))
+  rw [hHd.fderiv]
+  simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.add_apply,
+    ContinuousLinearMap.comp_zero, ContinuousLinearMap.flip_apply,
+    ContinuousLinearMap.zero_apply, map_zero, add_zero, zero_add]
+  rw [hpair]
+
+end RicciFlow
