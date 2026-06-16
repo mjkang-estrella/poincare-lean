@@ -25060,3 +25060,27 @@ theorem lichnerowiczLaplacian_add
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz Laplacian of the doubled metric is twice that of the metric**:
+`Δ_L(g + g)(p,q) = 2·Δ_L g(p,q)`. A direct application of `lichnerowiczLaplacian_add` to `H₁ = H₂ = g`
+— since `Δ_L g = 2 Ric`, this gives `Δ_L(2g) = 4 Ric`, the linearity of the Lichnerowicz operator
+exercised on the metric tensor itself (roadmap item 3). -/
+theorem lichnerowiczLaplacian_two_metric
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hG2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ G y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (p q : E) :
+    lichnerowiczLaplacian G (fun y ↦ G y + G y) x p q
+      = 2 * lichnerowiczLaplacian G G x p q := by
+  rw [lichnerowiczLaplacian_add hGd hGd hG2 hG2 hΓd p q]
+  ring
+
+end RicciFlow
