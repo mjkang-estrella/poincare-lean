@@ -24760,3 +24760,30 @@ theorem round_sphere_ricciNormSq_rate_at_zero (N₀ c : ℝ) :
   norm_num
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere scalar second derivative**: `d/dt[2cR₀/(1−2ct)²] = 8c²R₀/(1−2ct)³`. The scalar
+curvature's acceleration `∂²R/∂t²` is `8c²R₀/(1−2ct)³`, strictly positive for `c > 0` on the existence
+interval — the scalar curvature is a *convex* increasing function of time, so its blow-up toward the
+finite-time singularity accelerates (roadmap item 3). -/
+theorem round_sphere_scalar_second_deriv
+    {R₀ c t : ℝ} (hfac : 1 - 2 * c * t ≠ 0) :
+    HasDerivAt (fun s ↦ 2 * c * R₀ / (1 - 2 * c * s) ^ 2)
+      (8 * c ^ 2 * R₀ / (1 - 2 * c * t) ^ 3) t := by
+  have hu : HasDerivAt (fun s : ℝ ↦ 1 - 2 * c * s) (-(2 * c)) t := by
+    simpa using (((hasDerivAt_id t).const_mul (2 * c)).const_sub 1)
+  have hden : HasDerivAt (fun s : ℝ ↦ (1 - 2 * c * s) ^ 2)
+      (2 * (1 - 2 * c * t) ^ (2 - 1) * -(2 * c)) t := hu.pow 2
+  have hne : (1 - 2 * c * t) ^ 2 ≠ 0 := pow_ne_zero 2 hfac
+  have hquot := (hasDerivAt_const t (2 * c * R₀)).div hden hne
+  convert hquot using 1
+  rw [div_eq_div_iff (pow_ne_zero 3 hfac) (pow_ne_zero 2 hne)]
+  ring
+
+end RicciFlow
