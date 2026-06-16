@@ -25112,3 +25112,43 @@ theorem lichnerowiczLaplacian_two_metric_eq_four_ricci
   ring
 
 end RicciFlow
+
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant tensor derivative is subtractive in the tensor field**:
+`(∇(H₁−H₂))(v,p,q) = (∇H₁)(v,p,q) − (∇H₂)(v,p,q)`. Built directly from `covTensor2Deriv_add_field`
+applied to `H₁` and `−H₂`, with `covTensor2Deriv` unfolded and `ContinuousLinearMap.sub_apply`/
+`fderiv` handled by the `(0,2)`-tensor structure. Completes the additive/subtractive linearity of the
+first covariant derivative in the tensor (roadmap item 3). -/
+theorem covTensor2Deriv_sub_field
+    {G H₁ H₂ : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hH1 : DifferentiableAt ℝ H₁ x) (hH2 : DifferentiableAt ℝ H₂ x) (v p q : E) :
+    covTensor2Deriv G (fun y ↦ H₁ y - H₂ y) x v p q
+      = covTensor2Deriv G H₁ x v p q - covTensor2Deriv G H₂ x v p q := by
+  have hA : (fderiv ℝ (fun y ↦ H₁ y - H₂ y) x v) p q
+      = (fderiv ℝ H₁ x v) p q - (fderiv ℝ H₂ x v) p q := by
+    rw [fderiv_clm_family_apply (hH1.sub hH2) v p,
+      fderiv_clm_family_apply ((hH1.sub hH2).clm_apply (differentiableAt_const p)) v q]
+    have he : (fun y ↦ (H₁ y - H₂ y) p q) = fun y ↦ (H₁ y p q) - (H₂ y p q) := by
+      funext y
+      simp only [ContinuousLinearMap.sub_apply]
+    rw [he, fderiv_fun_sub
+        ((hH1.clm_apply (differentiableAt_const p)).clm_apply (differentiableAt_const q))
+        ((hH2.clm_apply (differentiableAt_const p)).clm_apply (differentiableAt_const q)),
+      ContinuousLinearMap.sub_apply,
+      fderiv_clm_family_apply hH1 v p,
+      fderiv_clm_family_apply (hH1.clm_apply (differentiableAt_const p)) v q,
+      fderiv_clm_family_apply hH2 v p,
+      fderiv_clm_family_apply (hH2.clm_apply (differentiableAt_const p)) v q]
+  unfold covTensor2Deriv
+  rw [hA]
+  simp only [ContinuousLinearMap.sub_apply, Pi.sub_apply]
+  ring
+
+end RicciFlow
