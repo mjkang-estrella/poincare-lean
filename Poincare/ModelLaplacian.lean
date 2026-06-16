@@ -22223,3 +22223,30 @@ theorem einstein_half_lichnerowiczLaplacian_metric_trace
     coordScalar_of_einstein hGsymm hinv hdiff hEin]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The space-form scalar curvature in standard form `R = −n(n−1)κ`**: the double metric trace
+`n·(1−n)·κ` of the constant-curvature tensor equals `−n(n−1)·κ`. With the model's sign convention a
+positive sphere corresponds to `κ < 0`, giving `R = n(n−1)|κ| > 0` — the constant scalar curvature of
+a round space form (roadmap item 3). -/
+theorem constCurvatureForm_scalar_trace_standard
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ v w : E, G x v w = G x w v)
+    (hinv : ∀ y : E, (G y).IsInvertible) (κ : ℝ) :
+    ∑ j, (∑ i, constCurvatureForm G x κ ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))))
+      = -((Module.finrank ℝ E : ℝ) * ((Module.finrank ℝ E : ℝ) - 1) * κ) := by
+  rw [constCurvatureForm_scalar_trace hGsymm hinv κ]
+  ring
+
+end RicciFlow
