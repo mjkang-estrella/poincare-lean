@@ -24232,3 +24232,21 @@ theorem round_sphere_exists_on_interval
   nlinarith [h]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere scalar curvature is positive on its whole existence interval**: for `c > 0`,
+`R₀ > 0`, and any `t < 1/(2c)`, the scalar `R(t) = R₀/(1−2ct) > 0`. The shrinking round sphere has
+strictly positive scalar curvature throughout `(−∞, T)` — positivity is preserved for the entire life
+of the ancient shrinking κ-solution, never crossing zero before the singularity (roadmap item 5). -/
+theorem round_sphere_scalar_pos_on_interval
+    {R₀ c t : ℝ} (hR : 0 < R₀) (hc : 0 < c) (ht : t < 1 / (2 * c)) :
+    0 < R₀ / (1 - 2 * c * t) :=
+  div_pos hR (round_sphere_exists_on_interval hc ht)
+
+end RicciFlow
