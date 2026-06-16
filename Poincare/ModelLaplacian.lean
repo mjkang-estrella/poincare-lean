@@ -22121,3 +22121,28 @@ theorem ricciActionOnTensor_metric_trace
     coordRicci_symm hGC2 hGsymm hinv hdiff]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of the Lichnerowicz curvature term on the metric vanishes**:
+`Σᵢ (Rm·g)(bᵢ, ♯bⁱ) = 0`, since `Rm·g = 0` pointwise (`lichnerowiczCurvature_metric_eq_zero`). The
+last of the three `Δ_L g = Δ_∇ g − 2 Rm·g + Ric·g` terms whose trace must be accounted: only the
+Ricci-action term survives, giving the clean term-by-term confirmation `tr_g(Δ_L g) = 0 − 0 + 2R = 2R`
+(roadmap item 3). -/
+theorem lichnerowiczCurvature_metric_trace_eq_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x) :
+    ∑ i, lichnerowiczCurvature G G x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) = 0 := by
+  refine Finset.sum_eq_zero fun i _ ↦ ?_
+  exact lichnerowiczCurvature_metric_eq_zero hGC2 hGsymm hinv hdiff _ _
+
+end RicciFlow
