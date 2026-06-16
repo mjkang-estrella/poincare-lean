@@ -26237,3 +26237,54 @@ theorem dim3_kulkarniNomizu_schouten_eq
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Schouten–Weyl decomposition is metric-trace-free in dimension 3**:
+`Σᵢ [Rm + KN(P, g)](bᵢ, u, w, ♯bⁱ) = 0`, with `P = schoutenForm` the genuine Schouten tensor. This is
+the geometric synthesis: the `(0,4)` curvature combination `Rm + P ⊘ g` — the Weyl part of `Rm` written
+via the actual Schouten tensor — has vanishing metric contraction over slots `(1,4)`. It chains
+`dim3_kulkarniNomizu_schouten_eq` (the Schouten wedge equals the explicit `KN(Ric,g) − (R/4)KN(g,g)`)
+into `dim3_weyl_candidate_metric_trace_zero` (that explicit combination is trace-free). Since the Weyl
+tensor's representation space is `0`-dimensional in `n=3`, this trace-free remainder is forced to vanish
+identically — the curvature-algebra expression of Hamilton's fact that a 3-manifold's full Riemann
+tensor is determined by its Ricci tensor (roadmap item 3). -/
+theorem dim3_schouten_weyl_metric_trace_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ (y u : E), DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z u) y)
+    (hfr : (Module.finrank ℝ E : ℝ) = 3) (u w : E) :
+    ∑ i, (coordRiemann G x ((Module.finBasis ℝ E) i) u w
+            ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+          + kulkarniNomizu (fun y ↦ schoutenForm G y (hdiff y)) G x
+              ((Module.finBasis ℝ E) i) u w
+              ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))))
+      = 0 := by
+  have key : ∀ i : Fin (Module.finrank ℝ E),
+      coordRiemann G x ((Module.finBasis ℝ E) i) u w
+          ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+        + kulkarniNomizu (fun y ↦ schoutenForm G y (hdiff y)) G x
+            ((Module.finBasis ℝ E) i) u w
+            ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+      = coordRiemann G x ((Module.finBasis ℝ E) i) u w
+            ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+        + kulkarniNomizu (fun y ↦ coordRicciForm G y (hdiff y)) G x
+            ((Module.finBasis ℝ E) i) u w
+            ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+        - (coordScalar G x / 4) * kulkarniNomizu G G x
+            ((Module.finBasis ℝ E) i) u w
+            ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) := by
+    intro i
+    rw [dim3_kulkarniNomizu_schouten_eq hdiff hfr]
+    ring
+  rw [Finset.sum_congr rfl (fun i _ ↦ key i)]
+  exact dim3_weyl_candidate_metric_trace_zero hGC2 hGsymm hinv hdiff hfr u w
+
+end RicciFlow
