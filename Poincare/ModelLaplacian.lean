@@ -22278,3 +22278,22 @@ theorem constCurvatureForm_scalar_trace_pos
     (by linarith : (0:ℝ) < (Module.finrank ℝ E : ℝ) - 1)]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round space form has positive Einstein constant**: the space-form Ricci tensor is
+`Ric = (1−n)κ·g` (`constCurvatureForm_ricci_trace`), and in dimension `n ≥ 2` with the model's
+positive-sphere sign `κ < 0` the constant `(1−n)κ > 0`. So the round sphere has positive-definite
+Ricci curvature `Ric = c·g` with `c > 0` — the hypothesis driving the shrinking homothety
+`g(t) = (1−2ct)g(0)` to finite-time extinction (roadmap item 3). -/
+theorem constCurvatureForm_ricci_const_pos
+    {κ : ℝ} (hκ : κ < 0) (hn : 2 ≤ (Module.finrank ℝ E : ℝ)) :
+    0 < (1 - (Module.finrank ℝ E : ℝ)) * κ := by
+  nlinarith [hκ, hn]
+
+end RicciFlow
