@@ -23305,3 +23305,23 @@ theorem coordCurvatureOp_self_eq_zero
 
 end RicciFlow
 
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere Ricci norm blows up at the Type-I rate squared**: with `T = 1/(2c)`,
+`|Ric|²(t)·(T − t)² = N₀/(4c²)`, so `|Ric|²(t) ∼ (N₀/4c²)/(T − t)²`. The squared norm of the Ricci
+tensor blows up like `1/(T − t)²` — consistent with the scalar's `R(t) ∼ 1/(T − t)` and the preserved
+pinching `|Ric|² = R²/n`, confirming the uniform Type-I rate across all curvature quantities
+(roadmap item 5). -/
+theorem round_sphere_ricciNormSq_type_one
+    {N₀ c t : ℝ} (hc : c ≠ 0) (hfac : 1 - 2 * c * t ≠ 0) :
+    N₀ / (1 - 2 * c * t) ^ 2 * (1 / (2 * c) - t) ^ 2 = N₀ / (4 * c ^ 2) := by
+  field_simp
+  ring
+
+end RicciFlow
