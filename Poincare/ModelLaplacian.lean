@@ -24726,3 +24726,20 @@ theorem round_sphere_scalar_at_zero (R₀ c : ℝ) :
   norm_num
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere Ricci norm at time zero is `N₀`**: `|Ric|²(0) = N₀`, since `(1 − 2c·0)² = 1`.
+The initial condition of the self-similar Ricci-norm profile `|Ric|²(t) = N₀/(1−2ct)²`: at the start of
+the flow the squared Ricci norm is exactly `N₀`, the companion to `R(0) = R₀`, with `R₀² = n·N₀` the
+Einstein pinching among them (roadmap item 3). -/
+theorem round_sphere_ricciNormSq_at_zero (N₀ c : ℝ) :
+    N₀ / (1 - 2 * c * 0) ^ 2 = N₀ := by
+  norm_num
+
+end RicciFlow
