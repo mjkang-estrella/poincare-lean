@@ -23235,3 +23235,30 @@ theorem normalized_flow_fixed_imp_einstein
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Normalized-flow stationarity ⟺ Einstein**: the metric is a fixed point of the volume-normalized
+Ricci flow (`−2·(Ric − (R/n)g) = 0` in every slot) if and only if `Ric = (R/n)·g`, i.e. it is Einstein
+with constant `R/n`. The stationary points of the normalized Ricci flow are exactly the Einstein
+metrics — the variational characterization of the flow's fixed points, with the round sphere the
+positive-curvature representative (roadmap item 3). -/
+theorem normalized_flow_fixed_iff_einstein
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} :
+    (∀ p q : E, (-2 : ℝ) * (coordRicci G x p q
+        - (coordScalar G x / (Module.finrank ℝ E : ℝ)) * G x p q) = 0)
+      ↔ (∀ p q : E, coordRicci G x p q
+        = (coordScalar G x / (Module.finrank ℝ E : ℝ)) * G x p q) := by
+  constructor
+  · intro h p q
+    exact normalized_flow_fixed_imp_einstein h p q
+  · intro h p q
+    rw [h p q]
+    ring
+
+end RicciFlow
