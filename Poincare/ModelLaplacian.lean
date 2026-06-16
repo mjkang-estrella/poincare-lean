@@ -24426,3 +24426,33 @@ theorem ricciDivergence_eq_zero_of_ricci_parallel
   exact Finset.sum_eq_zero fun k _ ↦ hpar _ _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Parallel Ricci implies critical scalar curvature**: if `∇ Ric = 0` then `dR = 0`. Chaining
+`parallel Ricci ⇒ div Ric = 0` with the twice-contracted Bianchi `dR = 2 div Ric`, a Ricci-parallel
+metric has covariantly-constant — hence (locally) constant — scalar curvature. This is the
+Schur-type rigidity: covariantly-constant Ricci forces constant scalar curvature, characterizing the
+locally symmetric fixed structures of the flow (roadmap item 3). -/
+theorem fderiv_coordScalar_eq_zero_of_ricci_parallel
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hsymΓ : ∀ p : E, IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) x)
+    (hpar : ∀ a b c : E, covRicciDeriv G x a b c = 0) :
+    fderiv ℝ (fun y ↦ coordScalar G y) x = 0 :=
+  fderiv_coordScalar_eq_zero_of_ricciDivergence_zero hGC2 hGsymm hinv hdiffΓ hdd hsymΓ
+    (fun w ↦ ricciDivergence_eq_zero_of_ricci_parallel hpar w)
+
+end RicciFlow
