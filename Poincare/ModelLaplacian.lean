@@ -24531,3 +24531,24 @@ theorem round_sphere_scalar_triples
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere scalar reaches `k·R₀` at `t = (1−1/k)·T`**: `R((k−1)/(2kc)) = k·R₀` for `k ≠ 0`.
+The general blow-up checkpoint: the scalar curvature has grown by any factor `k` exactly at the time
+`(k−1)/(2kc) = (1 − 1/k)·T`, approaching the extinction time `T = 1/(2c)` as `k → ∞`. This subsumes
+the doubling (`k = 2`, `t = T/2`) and tripling (`k = 3`, `t = 2T/3`) checkpoints (roadmap item 3). -/
+theorem round_sphere_scalar_kfold
+    {R₀ c k : ℝ} (hc : c ≠ 0) (hk : k ≠ 0) :
+    R₀ / (1 - 2 * c * ((k - 1) / (2 * k * c))) = k * R₀ := by
+  have hnum : (1:ℝ) - 2 * c * ((k - 1) / (2 * k * c)) = 1 / k := by
+    field_simp
+    ring
+  rw [hnum, div_div_eq_mul_div, div_one, mul_comm]
+
+end RicciFlow
