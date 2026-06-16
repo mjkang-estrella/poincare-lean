@@ -23305,21 +23305,3 @@ theorem coordCurvatureOp_self_eq_zero
 
 end RicciFlow
 
-namespace RicciFlow
-
-open CovariantDerivative
-
-variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-  [FiniteDimensional ℝ E]
-
-/-- **The `(0,4)` Riemann tensor on a degenerate plane vanishes**: `Rm(u,u,a,b) = 0`, since the
-curvature operator `R(u,u) = 0`. The fully-lowered Riemann tensor is zero whenever its first two
-(plane) slots coincide — the `(0,4)` shadow of `coordCurvatureOp_self_eq_zero` (roadmap item 3). -/
-theorem coordRiemann_self_pair_left_eq_zero
-    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x u a b : E) :
-    coordRiemann G x u u a b = 0 := by
-  unfold coordRiemann
-  rw [coordCurvatureOp_self_eq_zero]
-  simp
-
-end RicciFlow
