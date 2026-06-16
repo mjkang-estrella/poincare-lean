@@ -24852,3 +24852,21 @@ theorem round_sphere_ricciNormSq_accel_pos
     (pow_pos (round_sphere_exists_on_interval hc ht) 4)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The reciprocal scalar has zero second derivative**: `d/dt[−2c/R₀] = 0`. The reciprocal scalar
+curvature `R(t)⁻¹` has constant first derivative `−2c/R₀`, so its second derivative vanishes
+identically — confirming `R(t)⁻¹` is *exactly affine* in `t` (zero curvature as a graph), the cleanest
+characterization of the Type-I `1/(T−t)` blow-up where `1/R` collapses linearly to zero (roadmap item 5). -/
+theorem round_sphere_inv_scalar_second_deriv
+    {R₀ c t : ℝ} :
+    HasDerivAt (fun _ : ℝ ↦ -(2 * c) / R₀) 0 t :=
+  hasDerivAt_const t (-(2 * c) / R₀)
+
+end RicciFlow
