@@ -24376,3 +24376,32 @@ theorem curvDivergence_eq_zero_of_ricci_parallel
   rw [curvDivergence_eq_ricci_deriv_diff hdiffΓ hdd hsymΓ hΓsymm v w z, hpar, hpar, sub_zero]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curvature divergence is antisymmetric in its first two slots**:
+`div R(w,v)z = −div R(v,w)z`. Via the solved first contracted Bianchi `div R = ∇Ric − ∇Ric`, swapping
+the two plane indices negates the difference of Ricci derivatives — the divergence of the Riemann
+tensor inherits the plane-antisymmetry of curvature itself (roadmap item 3). -/
+theorem curvDivergence_antisymm_first_two
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ p : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y p) x)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hsymΓ : ∀ p : E, IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) x)
+    (hΓsymm : ∀ (y : E) (a b : E),
+      christoffelClosedOp G y a b = christoffelClosedOp G y b a)
+    (v w z : E) :
+    curvDivergence G x w v z = -curvDivergence G x v w z := by
+  rw [curvDivergence_eq_ricci_deriv_diff hdiffΓ hdd hsymΓ hΓsymm v w z,
+    curvDivergence_eq_ricci_deriv_diff hdiffΓ hdd hsymΓ hΓsymm w v z]
+  ring
+
+end RicciFlow
