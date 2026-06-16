@@ -26400,3 +26400,38 @@ theorem hessianOperator_selfAdjoint (b : LinearMap.BilinForm ℝ E)
   exact (hf.contDiffAt.isSymmSndFDerivAt (by simp)) v w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The derivative of the gradient field is the raised Hessian operator**: `∇(∇f) = Hess♯`, i.e.
+`fderiv (∇f) x v = hessianOperator b hb f x v`. In the flat (fixed-form) model the gradient is a fixed
+continuous-linear raise `Lc` applied to `Df`, so by the chain rule its derivative is `Lc ∘ (D²f)` —
+which is definitionally the `(1,1)`-Hessian endomorphism `Hess♯`. This is the bridge that ties the
+*analytic* gradient-of-gradient to the *algebraic* Hessian operator (`hessianOperator`), the missing
+link the Bochner–Weitzenböck identity `½Δ|∇f|² = |Hess f|² + b(∇f, ∇Δf)` is assembled from: it lets the
+second differential of `|∇f|²` be read as a trace of `Hess♯` (roadmap item 3). -/
+theorem fderiv_metricGradient_eq_hessianOperator
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (x v : E) :
+    fderiv ℝ (fun y ↦ metricGradient b hb f y) x v = hessianOperator b hb f x v := by
+  have hf1 : Differentiable ℝ (fderiv ℝ f) :=
+    (hf.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)
+  set Lc : (E →L[ℝ] ℝ) →L[ℝ] E := LinearMap.toContinuousLinearMap
+    ((LinearMap.BilinForm.toDual b hb).symm.toLinearMap ∘ₗ
+      (LinearMap.toContinuousLinearMap.symm :
+        (E →L[ℝ] ℝ) ≃ₗ[ℝ] (E →ₗ[ℝ] ℝ)).toLinearMap) with hLc
+  have hgrad : (fun y ↦ metricGradient b hb f y) =
+      fun y ↦ Lc (fderiv ℝ f y) := rfl
+  have hdgrad : fderiv ℝ (fun y ↦ metricGradient b hb f y) x =
+      Lc.comp (fderiv ℝ (fderiv ℝ f) x) := by
+    rw [hgrad]
+    exact (Lc.hasFDerivAt.comp x (hf1 x).hasFDerivAt).fderiv
+  rw [hdgrad]
+  rfl
+
+end RicciFlow
