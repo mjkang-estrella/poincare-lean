@@ -24347,3 +24347,32 @@ theorem curvDivergence_eq_ricci_deriv_diff
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Parallel Ricci implies divergence-free Riemann**: if the Ricci tensor is parallel
+(`∇ Ric = 0` in every slot), then the curvature divergence vanishes, `div R(w,v)z = 0`. By the solved
+first contracted Bianchi `div R = ∇Ric − ∇Ric`, a covariantly-constant Ricci tensor forces the Riemann
+tensor to be divergence-free — the local rigidity of symmetric spaces and Ricci-parallel manifolds,
+which are static under the Ricci flow (roadmap item 3). -/
+theorem curvDivergence_eq_zero_of_ricci_parallel
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ p : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y p) x)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hsymΓ : ∀ p : E, IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) x)
+    (hΓsymm : ∀ (y : E) (a b : E),
+      christoffelClosedOp G y a b = christoffelClosedOp G y b a)
+    (hpar : ∀ a b c : E, covRicciDeriv G x a b c = 0)
+    (v w z : E) :
+    curvDivergence G x w v z = 0 := by
+  rw [curvDivergence_eq_ricci_deriv_diff hdiffΓ hdd hsymΓ hΓsymm v w z, hpar, hpar, sub_zero]
+
+end RicciFlow
