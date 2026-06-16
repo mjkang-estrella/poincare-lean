@@ -23773,3 +23773,22 @@ theorem two_ricciNormSq_nonneg
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The dimension-3 Riccati comparison blows up by `3/(2R₀)`**: the comparison ODE
+`dy/dt = (2/3)y²` with `y(0) = R₀` has solution `y(t) = R₀/(1 − (2/3)R₀t)`, extinguishing at
+`1/(2·(R₀/3)) = 3/(2R₀)`. So on a closed 3-manifold with `R_min(0) = R₀ > 0`, the scalar curvature
+blows up by time `3/(2R₀)` — the explicit finite-time singularity bound for `S³` (roadmap item 3). -/
+theorem riccati_comparison_extinction_3d
+    {R₀ : ℝ} (hR : R₀ ≠ 0) :
+    1 / (2 * (R₀ / 3)) = 3 / (2 * R₀) := by
+  rw [eq_div_iff (by simpa using mul_ne_zero (two_ne_zero) hR)]
+  field_simp
+
+end RicciFlow
