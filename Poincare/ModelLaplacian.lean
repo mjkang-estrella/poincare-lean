@@ -23491,3 +23491,22 @@ theorem constCurvatureForm_3d_ricci_const_eq_two_sectional
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **In dimension 3 a space form has scalar curvature `R = 6K`**: `R = −n(n−1)κ` specializes at
+`n = 3` to `−3·2·κ = −6κ = 6·(−κ) = 6K`, where `K = −κ` is the sectional curvature. A 3-dimensional
+constant-curvature space has scalar curvature `6K` — consistent with `Ric = 2K·g` and `R = tr_g Ric =
+3·2K = 6K`, the round-`S³` curvature normalization (roadmap item 3). -/
+theorem constCurvatureForm_3d_scalar_eq_six_sectional
+    (κ : ℝ) (hfr : (Module.finrank ℝ E : ℝ) = 3) :
+    -((Module.finrank ℝ E : ℝ) * ((Module.finrank ℝ E : ℝ) - 1) * κ) = 6 * (-κ) := by
+  rw [hfr]
+  ring
+
+end RicciFlow
