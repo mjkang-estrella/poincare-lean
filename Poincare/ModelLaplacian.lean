@@ -23368,3 +23368,21 @@ theorem round_sphere_factor_zero_iff
     rw [mul_one_div, div_self (mul_ne_zero two_ne_zero hc), sub_self]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round 3-sphere satisfies `T·R₀ = 3/2`**: in the Poincaré dimension `n = 3`, the
+extinction-time × initial-scalar product `(1/(2c))·(c·3) = 3/2`. The round 3-sphere `S³` — the
+manifold of the Poincaré conjecture itself — collapses with the universal dimension constant `n/2 = 3/2`
+(roadmap item 3, dimension of the Poincaré target). -/
+theorem round_sphere_3d_extinction_times_scalar
+    {c : ℝ} (hc : c ≠ 0) :
+    1 / (2 * c) * (c * 3) = 3 / 2 :=
+  round_sphere_extinction_times_scalar c 3 hc
+
+end RicciFlow
