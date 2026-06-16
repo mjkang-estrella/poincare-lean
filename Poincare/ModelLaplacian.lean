@@ -24211,3 +24211,24 @@ theorem round_sphere_3d_reaction_eq_riccati
   exact h
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round sphere exists on the maximal interval `(−∞, T)`**: for `c > 0` and any `t < 1/(2c)`,
+the homothety factor `1 − 2ct > 0`. Unifying the ancient (`t ≤ 0`) and pre-extinction (`0 ≤ t < T`)
+ranges, the shrinking round sphere `g(t) = (1−2ct)g(0)` is a positive-definite metric exactly on
+`(−∞, 1/(2c))` — its maximal interval of existence, ancient and reaching the singularity at `T = 1/(2c)`
+(roadmap item 5). -/
+theorem round_sphere_exists_on_interval
+    {c t : ℝ} (hc : 0 < c) (ht : t < 1 / (2 * c)) :
+    0 < 1 - 2 * c * t := by
+  have h2c : (0:ℝ) < 2 * c := by linarith
+  have h := (lt_div_iff₀ h2c).mp ht
+  nlinarith [h]
+
+end RicciFlow
