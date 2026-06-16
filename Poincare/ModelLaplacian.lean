@@ -23947,3 +23947,28 @@ theorem coordRicciEndo_of_einstein_normalized
     ← einstein_const_eq_scalar_div hGsymm hinv hdiff hEin hn]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Every vector is a Ricci eigenvector with eigenvalue `R/n` on an Einstein metric**:
+`Ric♯(v) = (R/n)·v` for all `v`, when `Ric = c·g`. The raised Ricci endomorphism acts as the single
+scalar `R/n` on the whole tangent space — the round sphere has a totally degenerate Ricci spectrum
+`{R/n}` with multiplicity `n`, the isotropy that makes it the rigid fixed point of the normalized flow
+(roadmap item 3). -/
+theorem coordRicciEndo_einstein_apply
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0) (v : E) :
+    coordRicciEndo G x hdiff v = (coordScalar G x / (Module.finrank ℝ E : ℝ)) • v := by
+  rw [coordRicciEndo_of_einstein_normalized hGsymm hinv hdiff hEin hn]
+  simp
+
+end RicciFlow
