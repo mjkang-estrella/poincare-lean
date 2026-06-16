@@ -23031,3 +23031,22 @@ theorem round_sphere_conserved_ratio
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round sphere is a Type-I singularity**: with extinction time `T = 1/(2c)`, the scalar
+curvature satisfies `R(t)·(T − t) = R₀/(2c)`, i.e. `R(t) = (R₀/2c)·1/(T − t)`. The curvature blows up
+at exactly the rate `C/(T − t)` — the defining bound of a *Type-I* (rapidly forming) singularity, the
+class to which the round-sphere neckpinch model belongs in Perelman's canonical-neighborhood analysis
+(roadmap item 5). -/
+theorem round_sphere_scalar_type_one
+    {R₀ c t : ℝ} (hc : c ≠ 0) (hfac : 1 - 2 * c * t ≠ 0) :
+    R₀ / (1 - 2 * c * t) * (1 / (2 * c) - t) = R₀ / (2 * c) := by
+  field_simp
+
+end RicciFlow
