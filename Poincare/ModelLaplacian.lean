@@ -24090,3 +24090,27 @@ theorem coordRicciNormSq_einstein_eq_scalar_sq_div
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Einstein 3-sphere has `|Ric|² = R²/3`**: in dimension 3 the saturated pinching reads
+`|Ric|² = R²/3`. The round `S³` Ricci norm is exactly the normalized scalar `R²/3` — the equality case
+of `R² ≤ 3|Ric|²` in the Poincaré dimension, with the traceless Ricci entirely absent (roadmap item 3). -/
+theorem round_sphere_3d_ricci_eq_scalar_sq_div
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hfr : (Module.finrank ℝ E : ℝ) = 3) :
+    coordRicciNormSq G x hdiff = (coordScalar G x) ^ 2 / 3 := by
+  have h := coordRicciNormSq_einstein_eq_scalar_sq_div hGsymm hinv hdiff hEin (by rw [hfr]; norm_num)
+  rw [hfr] at h
+  exact h
+
+end RicciFlow
