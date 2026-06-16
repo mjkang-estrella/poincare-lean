@@ -25576,3 +25576,25 @@ theorem tensorDivOneForm_neg_two_ricci
   tensorDivOneForm_smul_field hKd (-2) w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The tensor divergence one-form of the zero tensor vanishes**: `(div 0)(w) = 0`. Each summand is
+the covariant derivative of the zero tensor, which is zero (the `fderiv` of a constant is `0` and the
+Christoffel correction terms vanish on `0`). Completes the `ℝ`-linear structure of the tensor
+divergence with additivity, subtractivity, homogeneity, and now nullity (roadmap item 3). -/
+theorem tensorDivOneForm_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (w : E) :
+    tensorDivOneForm G (fun _ ↦ 0) x w = 0 := by
+  unfold tensorDivOneForm
+  apply Finset.sum_eq_zero
+  intro i _
+  unfold covTensor2Deriv
+  simp
+
+end RicciFlow
