@@ -23109,3 +23109,25 @@ theorem einstein_ricci_orthonormal_pos
   exact hc
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **A positively-curved Einstein metric has positive-definite Ricci**: if `Ric = c·g` with `c > 0`
+and `g` is positive-definite, then `Ric(v,v) = c·g(v,v) > 0` for every `v ≠ 0`. The Ricci tensor of the
+round sphere is a positive-definite quadratic form — uniformly positive Ricci curvature in *every*
+direction (not merely unit ones), the hypothesis of Hamilton's 1982 rounding theorem (roadmap item 3). -/
+theorem einstein_ricci_pos_def
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hc : 0 < c) (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (v : E) (hv : v ≠ 0) :
+    0 < coordRicci G x v v := by
+  rw [hEin v v]
+  exact mul_pos hc (hGpos v hv)
+
+end RicciFlow
