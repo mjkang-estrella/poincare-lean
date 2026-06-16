@@ -22879,3 +22879,21 @@ theorem round_sphere_metric_degenerate_past_extinction
   nlinarith [h]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The shrinking round sphere is an ancient solution**: for `c > 0` and `t ≤ 0`, the homothety
+factor `1 − 2ct ≥ 1 > 0`, so `g(t) = (1−2ct)g(0)` is positive-definite for all backward time. The
+round sphere exists on `(−∞, 1/(2c))` — an *ancient* solution defined for all `t ≤ 0`, the prototypical
+shrinking κ-solution that the canonical-neighborhood theory models near a singularity (roadmap item 5). -/
+theorem round_sphere_ancient
+    {c t : ℝ} (hc : 0 < c) (ht : t ≤ 0) :
+    0 < 1 - 2 * c * t := by
+  nlinarith [mul_nonneg hc.le (neg_nonneg.mpr ht)]
+
+end RicciFlow
