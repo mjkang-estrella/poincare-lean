@@ -23901,3 +23901,25 @@ theorem reaction_gt_riccati_of_traceless_pos
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The pinching gap is positive iff the traceless Ricci is nonzero**:
+`0 < n|Ric|² − R² ↔ 0 < |Ric|² − R²/n`. Since the gap equals `n·|Ric̊|²` with `n > 0`, the
+Cauchy–Schwarz pinching is strict exactly when the metric is non-Einstein. This is the dichotomy
+underlying Hamilton's rounding: strict pinching off the Einstein locus, equality precisely on it
+(roadmap item 3). -/
+theorem pinching_gap_pos_iff_traceless_pos
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    0 < (Module.finrank ℝ E : ℝ) * coordRicciNormSq G x hdiff - (coordScalar G x) ^ 2
+      ↔ 0 < coordRicciNormSq G x hdiff - (coordScalar G x) ^ 2 / (Module.finrank ℝ E : ℝ) := by
+  rw [pinching_gap_eq_n_mul_tracelessNormSq hdiff hn.ne', mul_pos_iff_of_pos_left hn]
+
+end RicciFlow
