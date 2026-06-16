@@ -22417,3 +22417,27 @@ theorem constCurvatureForm_ricci_const_eq_sectional (κ : ℝ) :
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **An Einstein metric with nonzero constant has positive Ricci norm**: if `Ric = c·g` with `c ≠ 0`
+and `n > 0`, then `|Ric|² = c²·n > 0`. The round sphere (`c > 0`) has strictly positive `|Ric|²`,
+confirming it is genuinely curved (non-Ricci-flat) and so develops a finite-time singularity rather
+than persisting as a static solution (roadmap item 3). -/
+theorem coordRicciNormSq_of_einstein_pos
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hc : c ≠ 0) (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    0 < coordRicciNormSq G x hdiff := by
+  rw [coordRicciNormSq_of_einstein hGsymm hinv hdiff hEin]
+  positivity
+
+end RicciFlow
