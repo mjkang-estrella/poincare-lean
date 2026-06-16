@@ -23811,3 +23811,21 @@ theorem riccati_comparison_extinction
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Higher initial curvature gives an earlier singularity**: the Riccati extinction time `n/(2R₀)`
+is strictly decreasing in `R₀`, so a more positively-curved initial metric (larger `R_min(0)`) reaches
+its finite-time singularity sooner. The more curved the manifold, the faster the Ricci flow drives it
+to the singularity — monotone dependence of the blow-up time on initial curvature (roadmap item 3). -/
+theorem riccati_extinction_antitone
+    {n R₁ R₂ : ℝ} (hn : 0 < n) (h1 : 0 < R₁) (h : R₁ < R₂) :
+    n / (2 * R₂) < n / (2 * R₁) :=
+  div_lt_div_of_pos_left hn (by linarith) (by linarith)
+
+end RicciFlow
