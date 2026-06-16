@@ -24317,3 +24317,33 @@ theorem covCurvDeriv_second_bianchi_solved
   exact eq_neg_of_add_eq_zero_left h
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curvature divergence equals a difference of Ricci derivatives**:
+`div R(w,v)z = ∇_w Ric(v,z) − ∇_v Ric(w,z)`, the solved form of the first contracted Bianchi identity.
+The divergence of the Riemann tensor over its differentiated slot is exactly the antisymmetrized
+covariant derivative of the Ricci tensor — the identity `∇^i R_{ijkl} = ∇_k R_{jl} − ∇_l R_{jk}` that,
+contracted once more, yields `div Ric = ½ dR` and underlies the evolution of curvature under the Ricci
+flow (roadmap item 3). -/
+theorem curvDivergence_eq_ricci_deriv_diff
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ p : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y p) x)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hsymΓ : ∀ p : E, IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) x)
+    (hΓsymm : ∀ (y : E) (a b : E),
+      christoffelClosedOp G y a b = christoffelClosedOp G y b a)
+    (v w z : E) :
+    curvDivergence G x w v z = covRicciDeriv G x w v z - covRicciDeriv G x v w z := by
+  have h := coord_first_contracted_bianchi hdiffΓ hdd hsymΓ hΓsymm v w z
+  linarith
+
+end RicciFlow
