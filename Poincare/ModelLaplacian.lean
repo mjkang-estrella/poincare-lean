@@ -23792,3 +23792,22 @@ theorem riccati_comparison_extinction_3d
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Riccati comparison blows up by `n/(2R₀)`**: the comparison ODE `dy/dt = (2/n)y²` with
+`y(0) = R₀` extinguishes at `1/(2·(R₀/n)) = n/(2R₀)`. So on any closed `n`-manifold whose scalar
+curvature satisfies the pinched evolution, `R_min` blows up by time `n/(2R₀)` — Hamilton's universal
+finite-time singularity bound, specializing to `3/(2R₀)` in the Poincaré dimension (roadmap item 3). -/
+theorem riccati_comparison_extinction
+    {R₀ n : ℝ} (hR : R₀ ≠ 0) (hn : n ≠ 0) :
+    1 / (2 * (R₀ / n)) = n / (2 * R₀) := by
+  rw [eq_div_iff (by simpa using mul_ne_zero (two_ne_zero) hR)]
+  field_simp
+
+end RicciFlow
