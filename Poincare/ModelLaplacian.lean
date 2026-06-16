@@ -25931,3 +25931,41 @@ theorem kulkarniNomizu_metric_self_trace
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **In dimension 3 the metric trace of `KN(Ric, g)` recovers `−(Ric + R·g)`**:
+`Σᵢ (Ric ⊘ g)(bᵢ, u, w, ♯bⁱ) = −Ric(u,w) − R·g(u,w)` when `finrank = 3`. The Schouten inversion
+`(2−n)·Ric − tr_g(Ric)·g` specializes at `n = 3` (so `2−n = −1`) with `tr_g(Ric) = R`, giving the
+explicit link between the Kulkarni–Nomizu building block and the `(Ricci, scalar)` curvature data —
+the algebraic content behind dim-3 Weyl vanishing `Rm = Schouten ⊘ g` toward Hamilton's 1982 rounding
+theorem (roadmap item 3, Poincaré dimension). -/
+theorem dim3_kulkarniNomizu_ricci_trace
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff' : ∀ (y u : E), DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z u) y)
+    (hfr : (Module.finrank ℝ E : ℝ) = 3) (u w : E) :
+    ∑ i, kulkarniNomizu (fun y ↦ coordRicciForm G y (hdiff' y)) G x
+        ((Module.finBasis ℝ E) i) u w
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+      = - coordRicci G x u w - coordScalar G x * G x u w := by
+  have hsymm : ∀ p q : E,
+      coordRicciForm G x (hdiff' x) p q = coordRicciForm G x (hdiff' x) q p := by
+    intro p q
+    simp only [coordRicciForm_apply]
+    exact coordRicci_symm hGC2 hGsymm hinv (hdiff' x) q p
+  rw [kulkarniNomizu_metric_ricci_trace (h := fun y ↦ coordRicciForm G y (hdiff' y))
+      hsymm (hGsymm x) hinv u w,
+    tensorMetricTrace_coordRicciForm hdiff', hfr]
+  simp only [coordRicciForm_apply]
+  rw [coordRicci_symm hGC2 hGsymm hinv (hdiff' x) w u]
+  ring
+
+end RicciFlow
