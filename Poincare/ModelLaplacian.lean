@@ -25677,3 +25677,24 @@ theorem round_sphere_inv_ricciNormSq_sq
   inv_div _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere reciprocal Ricci norm vanishes at the extinction time**:
+at `t = 1/(2c)`, `(1−2ct)²/N₀ = 0`. The squared affine factor `(1−2ct)²` hits zero at the extinction
+time `T = 1/(2c)`, so `1/|Ric|²` reaches `0` exactly there — the Ricci curvature blows up to `+∞` at the
+sharply-determined singularity time, matching the scalar's reciprocal collapse (roadmap item 5). -/
+theorem round_sphere_inv_ricciNormSq_zero_at_extinction
+    {N₀ c : ℝ} (hc : c ≠ 0) :
+    (1 - 2 * c * (1 / (2 * c))) ^ 2 / N₀ = 0 := by
+  have h : (1:ℝ) - 2 * c * (1 / (2 * c)) = 0 := by
+    rw [mul_one_div, div_self (mul_ne_zero two_ne_zero hc), sub_self]
+  rw [h]
+  simp
+
+end RicciFlow
