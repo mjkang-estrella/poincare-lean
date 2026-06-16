@@ -23281,3 +23281,26 @@ theorem normalized_einstein_const_trace_consistent
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curvature operator on a degenerate plane vanishes**: `R(u,u) = 0`, since `R(u,w) = −R(w,u)`
+forces `R(u,u) = −R(u,u)`. The Riemann curvature operator of a degenerate (zero-area) `2`-plane is
+zero — the diagonal of the plane-antisymmetry, a basic consistency of the curvature `2`-form
+(roadmap item 3). -/
+theorem coordCurvatureOp_self_eq_zero
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x u : E) :
+    coordCurvatureOp G x u u = 0 := by
+  have h := coordCurvatureOp_antisymm G x u u
+  have h2 : (2 : ℝ) • coordCurvatureOp G x u u = 0 := by
+    rw [two_smul]; nth_rewrite 2 [h]; rw [add_neg_cancel]
+  rcases smul_eq_zero.mp h2 with h3 | h3
+  · norm_num at h3
+  · exact h3
+
+end RicciFlow
