@@ -22197,3 +22197,29 @@ theorem half_lichnerowiczLaplacian_metric_trace
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The half-Lichnerowicz trace for an Einstein metric is `cn`**: if `Ric = c·g` then
+`Σᵢ ½·Δ_L g(bᵢ, ♯bⁱ) = c·dim E`, since `tr_g(½Δ_L g) = R` and `R = c·n`. On the round sphere
+(`c > 0`) this is the positive constant `cn` against which the normalized flow measures the
+Einstein-stationary reference (roadmap item 3). -/
+theorem einstein_half_lichnerowiczLaplacian_metric_trace
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q) :
+    ∑ i, (1 / 2 : ℝ) * lichnerowiczLaplacian G G x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+      = c * (Module.finrank ℝ E : ℝ) := by
+  rw [half_lichnerowiczLaplacian_metric_trace hGC2 hGsymm hinv hdiff,
+    coordScalar_of_einstein hGsymm hinv hdiff hEin]
+
+end RicciFlow
