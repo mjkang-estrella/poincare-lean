@@ -25375,3 +25375,27 @@ theorem connectionLaplacian_two_metric_eq_zero
     connectionLaplacian_metric_eq_zero hGd hGsymm hinv p q, add_zero]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci action on the doubled metric is `4 Ric`**: `(Ric·(g + g))(p,q) = 4·Ric(p,q)`, from
+`ricciActionOnTensor_add` and `Ric·g = 2 Ric`. With `connectionLaplacian_two_metric_eq_zero` and the
+Lichnerowicz curvature vanishing on `g`, this is the term-by-term account of `Δ_L(g+g) = 0 − 0 + 4Ric =
+4 Ric` (roadmap item 3). -/
+theorem ricciActionOnTensor_two_metric
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (p q : E) :
+    ricciActionOnTensor G (fun y ↦ G y + G y) x p q = 4 * coordRicci G x p q := by
+  rw [ricciActionOnTensor_add p q, ricciActionOnTensor_metric hGC2 hGsymm hinv hdiff p q]
+  ring
+
+end RicciFlow
