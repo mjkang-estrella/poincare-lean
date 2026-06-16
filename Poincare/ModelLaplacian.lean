@@ -22070,3 +22070,26 @@ theorem einstein_lichnerowiczLaplacian_metric_trace_pos
   positivity
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of the connection Laplacian of the metric vanishes**:
+`Σᵢ Δ_∇ g(bᵢ, ♯bⁱ) = 0`, since `Δ_∇ g = 0` pointwise (metric compatibility of the Levi-Civita
+connection). Decomposing `Δ_L g = Δ_∇ g − 2 Rm·g + Ric·g`, the rough-Laplacian part contributes
+nothing to the trace `2R`, so the entire scalar source comes from the curvature terms (roadmap item 3). -/
+theorem connectionLaplacian_metric_trace_eq_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible) :
+    ∑ i, connectionLaplacian G G x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) = 0 := by
+  refine Finset.sum_eq_zero fun i _ ↦ ?_
+  exact connectionLaplacian_metric_eq_zero hGd hGsymm hinv _ _
+
+end RicciFlow
