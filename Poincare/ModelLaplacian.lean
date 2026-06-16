@@ -24163,3 +24163,26 @@ theorem einstein_scalar_ne_iff_const_ne
   rw [coordScalar_of_einstein hGsymm hinv hdiff hEin, mul_ne_zero_iff, and_iff_left hn]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round sphere saturates the Riccati reaction bound exactly**: for an Einstein metric,
+`2|Ric|² = 2R²/n`. The scalar-evolution reaction term equals its lower bound exactly on the Einstein
+locus, so the round sphere's scalar minimum evolves by the exact Riccati ODE `∂R/∂t = (2/n)R²` with no
+surplus — the self-similar solution that the comparison principle is calibrated against (roadmap item 3). -/
+theorem round_sphere_reaction_eq_riccati
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0) :
+    2 * coordRicciNormSq G x hdiff = 2 * ((coordScalar G x) ^ 2 / (Module.finrank ℝ E : ℝ)) := by
+  rw [coordRicciNormSq_einstein_eq_scalar_sq_div hGsymm hinv hdiff hEin hn]
+
+end RicciFlow
