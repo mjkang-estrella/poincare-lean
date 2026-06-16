@@ -26208,3 +26208,32 @@ theorem schoutenForm_metricTrace
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **In dimension 3 the Schouten Kulkarni–Nomizu term is the explicit trace-free combination**:
+`KN(P, g) = KN(Ric, g) − (R/4)·KN(g, g)`, where `P = Ric − (R/4)g` is the Schouten tensor (in `n=3`,
+`1/(n−2)=1` and `R/(2(n−1)) = R/4`). By left-bilinearity of the Kulkarni–Nomizu product, wedging the
+Schouten tensor with the metric distributes into the Ricci and scalar pieces. Combined with
+`dim3_weyl_candidate_metric_trace_zero`, this shows the genuine geometric decomposition `Rm + P ⊘ g` is
+the trace-free Weyl part with `P` the *actual* Schouten tensor (`schoutenForm`), not merely an ad-hoc
+combination (roadmap item 3). -/
+theorem dim3_kulkarniNomizu_schouten_eq
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ (y : E) (u : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z u) y)
+    (hfr : (Module.finrank ℝ E : ℝ) = 3) (p q r s : E) :
+    kulkarniNomizu (fun y ↦ schoutenForm G y (hdiff y)) G x p q r s
+      = kulkarniNomizu (fun y ↦ coordRicciForm G y (hdiff y)) G x p q r s
+        - (coordScalar G x / 4) * kulkarniNomizu G G x p q r s := by
+  unfold kulkarniNomizu schoutenForm
+  simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply, smul_eq_mul]
+  rw [hfr]
+  ring
+
+end RicciFlow
