@@ -24912,3 +24912,22 @@ theorem round_sphere_pinching_ratio_eq_inv_dim
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Einstein pinching solved for the Ricci-norm constant**: from `R₀² = n·N₀` (with `n ≠ 0`),
+`N₀ = R₀²/n`. The initial Ricci-norm constant of the round sphere is determined by the initial scalar
+and the dimension as `N₀ = R₀²/n` — the explicit form of the saturated pinching at the start of the
+flow (roadmap item 3). -/
+theorem round_sphere_N0_eq
+    {R₀ N₀ n : ℝ} (hn : n ≠ 0) (hpin : R₀ ^ 2 = n * N₀) :
+    N₀ = R₀ ^ 2 / n := by
+  rw [eq_div_iff hn]
+  linarith [hpin]
+
+end RicciFlow
