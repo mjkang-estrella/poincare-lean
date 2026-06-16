@@ -23510,3 +23510,21 @@ theorem constCurvatureForm_3d_scalar_eq_six_sectional
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round 3-sphere has conserved-invariant ratio `R₀²/N₀ = 3`**: from the `n = 3` pinching
+`R₀² = 3·N₀`, the ratio of the conserved scalar invariant squared to the conserved Ricci invariant is
+`3`. The two self-similarity constants of the shrinking `S³` are linked by exactly the dimension `3`
+— the Poincaré-dimension value of the universal ratio `R₀²/N₀ = n` (roadmap item 3). -/
+theorem round_sphere_3d_conserved_ratio
+    {R₀ N₀ : ℝ} (hN : N₀ ≠ 0) (hpin : R₀ ^ 2 = 3 * N₀) :
+    R₀ ^ 2 / N₀ = 3 :=
+  round_sphere_conserved_ratio hN hpin
+
+end RicciFlow
