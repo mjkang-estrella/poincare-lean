@@ -24622,3 +24622,25 @@ theorem round_sphere_kfold_time_tendsto_extinction
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere Ricci norm reaches `k²·N₀` at the `k`-fold scalar checkpoint**:
+`|Ric|²((k−1)/(2kc)) = k²·N₀`. At the time the scalar curvature has grown by a factor `k`, the Ricci
+norm-squared has grown by `k²` — since `|Ric|²` scales by the inverse square of the homothety factor
+(two Ricci indices) while `R` scales by its inverse (one index). The full curvature blows up quadratically
+faster than the scalar along the same self-similar profile (roadmap item 3). -/
+theorem round_sphere_ricciNormSq_kfold
+    {N₀ c k : ℝ} (hc : c ≠ 0) (hk : k ≠ 0) :
+    N₀ / (1 - 2 * c * ((k - 1) / (2 * k * c))) ^ 2 = k ^ 2 * N₀ := by
+  have hnum : (1:ℝ) - 2 * c * ((k - 1) / (2 * k * c)) = 1 / k := by
+    field_simp
+    ring
+  rw [hnum, div_pow, one_pow, div_div_eq_mul_div, div_one, mul_comm]
+
+end RicciFlow
