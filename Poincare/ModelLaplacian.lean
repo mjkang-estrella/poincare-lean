@@ -22915,3 +22915,23 @@ theorem round_sphere_homothety_decreasing
   nlinarith [mul_nonneg hc.le (sub_nonneg.mpr h)]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The ancient round sphere has bounded scalar curvature backward in time**: for `c > 0`, `R₀ > 0`,
+and `t ≤ 0`, the scalar `R(t) = R₀/(1−2ct) ≤ R₀`, since the homothety factor is `≥ 1`. The shrinking
+soliton has uniformly bounded (in fact decreasing) curvature into the infinite past — the *bounded
+curvature* hypothesis in the definition of a κ-solution (roadmap item 5). -/
+theorem round_sphere_ancient_scalar_bounded
+    {R₀ c t : ℝ} (hR : 0 < R₀) (hc : 0 < c) (ht : t ≤ 0) :
+    R₀ / (1 - 2 * c * t) ≤ R₀ := by
+  have h1 : (1:ℝ) ≤ 1 - 2 * c * t := by
+    nlinarith [mul_nonneg hc.le (neg_nonneg.mpr ht)]
+  exact div_le_self hR.le h1
+
+end RicciFlow
