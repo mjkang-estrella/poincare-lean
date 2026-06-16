@@ -23131,3 +23131,21 @@ theorem einstein_ricci_pos_def
   exact mul_pos hc (hGpos v hv)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The reciprocal scalar curvature is linear in time**: `R(t)⁻¹ = (1−2ct)/R₀`, an affine function
+of `t` reaching `0` at the extinction time `T = 1/(2c)`. The reciprocal of the curvature decreases
+linearly to zero — the cleanest signature of the round sphere's Type-I singularity, where `R(t)` blows
+up exactly like `1/(T−t)` (roadmap item 5). -/
+theorem round_sphere_inv_scalar_linear
+    {R₀ c t : ℝ} :
+    (R₀ / (1 - 2 * c * t))⁻¹ = (1 - 2 * c * t) / R₀ :=
+  inv_div _ _
+
+end RicciFlow
