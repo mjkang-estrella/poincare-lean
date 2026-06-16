@@ -24509,3 +24509,25 @@ theorem curvDivergence_self_eq_zero
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere scalar curvature triples at `t = 1/(3c) = 2T/3`**: `R(1/(3c)) = 3R₀`. At two
+thirds of the way to extinction (in time), the scalar curvature has tripled — another concrete
+checkpoint of the `R(t) = R₀/(1−2ct)` blow-up profile, consistent with doubling at `T/2` and the
+divergence `R → ∞` as `t → T` (roadmap item 3). -/
+theorem round_sphere_scalar_triples
+    {R₀ c : ℝ} (hc : c ≠ 0) :
+    R₀ / (1 - 2 * c * (1 / (3 * c))) = 3 * R₀ := by
+  have hnum : (1:ℝ) - 2 * c * (1 / (3 * c)) = 1 / 3 := by
+    field_simp
+    ring
+  rw [hnum]
+  ring
+
+end RicciFlow
