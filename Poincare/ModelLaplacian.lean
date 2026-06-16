@@ -23605,3 +23605,28 @@ theorem round_sphere_3d_normalized_flow_fixed
   exact h
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The positively-curved Einstein 3-sphere has positive scalar curvature**: for `c > 0` in
+dimension 3, `R = 3c > 0`. The round `S³` with positive Einstein constant has strictly positive scalar
+curvature — the positive-curvature hypothesis under which the (normalized) Ricci flow on a closed
+3-manifold converges to the round sphere, the heart of Hamilton's route to the Poincaré conjecture
+(roadmap item 3). -/
+theorem round_sphere_3d_scalar_pos
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hfr : (Module.finrank ℝ E : ℝ) = 3) (hc : 0 < c) :
+    0 < coordScalar G x := by
+  rw [round_sphere_3d_scalar hGsymm hinv hdiff hEin hfr]
+  positivity
+
+end RicciFlow
