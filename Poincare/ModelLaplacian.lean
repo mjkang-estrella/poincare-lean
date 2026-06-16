@@ -24870,3 +24870,22 @@ theorem round_sphere_inv_scalar_second_deriv
   hasDerivAt_const t (-(2 * c) / R₀)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The pinching ratio `|Ric|²/R² = N₀/R₀²` is preserved in time**: along the round-sphere flow,
+`(N₀/(1−2ct)²)/(R₀/(1−2ct))² = N₀/R₀²`, a constant independent of `t`. Both `|Ric|²` and `R²` scale by
+the same homothety power `(1−2ct)⁻²`, so their ratio is frozen at its initial value `N₀/R₀² = 1/n` —
+the pinching is exactly preserved along the self-similar flow (roadmap item 3). -/
+theorem round_sphere_pinching_ratio_const
+    {N₀ R₀ c t : ℝ} (hfac : 1 - 2 * c * t ≠ 0) (hR : R₀ ≠ 0) :
+    (N₀ / (1 - 2 * c * t) ^ 2) / (R₀ / (1 - 2 * c * t)) ^ 2 = N₀ / R₀ ^ 2 := by
+  rw [div_pow]
+  field_simp
+
+end RicciFlow
