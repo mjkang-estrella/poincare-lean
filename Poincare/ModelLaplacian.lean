@@ -24268,3 +24268,22 @@ theorem round_sphere_ricciNormSq_pos_on_interval
   div_pos hN (pow_pos (round_sphere_exists_on_interval hc ht) 2)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere reciprocal scalar is positive on its existence interval**: for `c > 0`,
+`R₀ > 0`, and any `t < 1/(2c)`, `R(t)⁻¹ > 0`. Since the scalar curvature is positive throughout
+`(−∞, T)`, its reciprocal `R(t)⁻¹ = (1−2ct)/R₀` is a positive, affine, strictly-decreasing function
+hitting zero exactly at the extinction time `T` — the linear Type-I collapse confined to the existence
+interval (roadmap item 5). -/
+theorem round_sphere_inv_scalar_pos_on_interval
+    {R₀ c t : ℝ} (hR : 0 < R₀) (hc : 0 < c) (ht : t < 1 / (2 * c)) :
+    0 < (R₀ / (1 - 2 * c * t))⁻¹ :=
+  inv_pos.mpr (round_sphere_scalar_pos_on_interval hR hc ht)
+
+end RicciFlow
