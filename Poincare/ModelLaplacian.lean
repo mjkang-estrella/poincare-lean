@@ -23880,3 +23880,24 @@ theorem reaction_eq_riccati_iff_traceless_zero
   · intro h; linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Off the Einstein locus the reaction strictly exceeds the Riccati bound**: if the traceless Ricci
+is nonzero, `|Ric|² − R²/n > 0`, then `2R²/n < 2|Ric|²` strictly. Where the metric deviates from
+Einstein, the scalar-evolution reaction term beats the comparison ODE strictly — so a non-Einstein
+positively-curved metric drives its scalar minimum up faster than the round sphere's exact Riccati
+rate, the surplus that pushes the flow *toward* the Einstein (round) state (roadmap item 3). -/
+theorem reaction_gt_riccati_of_traceless_pos
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (h : 0 < coordRicciNormSq G x hdiff - (coordScalar G x) ^ 2 / (Module.finrank ℝ E : ℝ)) :
+    2 * ((coordScalar G x) ^ 2 / (Module.finrank ℝ E : ℝ)) < 2 * coordRicciNormSq G x hdiff := by
+  linarith
+
+end RicciFlow
