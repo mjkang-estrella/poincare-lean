@@ -26000,3 +26000,45 @@ theorem coordRicci_eq_riemann_inner_trace
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of Riemann over its first antisymmetric pair vanishes**:
+`Σᵢ Rm(bᵢ, ♯bⁱ, a, b) = 0`. Contracting the `(0,4)` curvature tensor over its antisymmetric first pair
+(slots 1,2) gives zero — the trace equals its own negative (swap the dummy via
+`sum_raised_contraction_swap`, then `Rm(♯bⁱ,bᵢ,·) = −Rm(bᵢ,♯bⁱ,·)`), forcing it to `0`. This is the
+precise algebraic reason the "wrong" curvature contractions vanish, leaving Ricci as the unique
+nonzero single metric trace of Riemann (roadmap item 3). -/
+theorem coordRiemann_first_pair_metric_trace_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (a b : E) :
+    ∑ i, coordRiemann G x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) a b = 0 := by
+  have hswap : (∑ i, coordRiemann G x ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))) ((Module.finBasis ℝ E) i) a b)
+      = ∑ i, coordRiemann G x ((Module.finBasis ℝ E) i) ((G x).inverse
+          (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) a b :=
+    sum_raised_contraction_swap G (hinv x) (hGsymm x)
+      (fun p q => coordRiemann G x p q a b)
+      (fun p₁ p₂ q => coordRiemann_add_slot1 hdiff p₁ p₂ q a b)
+      (fun c p q => coordRiemann_smul_slot1 hdiff c p q a b)
+      (fun p q₁ q₂ => coordRiemann_add_slot2 hdiff p q₁ q₂ a b)
+      (fun c p q => coordRiemann_smul_slot2 hdiff c p q a b)
+  have hanti : (∑ i, coordRiemann G x ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i))) ((Module.finBasis ℝ E) i) a b)
+      = -(∑ i, coordRiemann G x ((Module.finBasis ℝ E) i) ((G x).inverse
+          (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) a b) := by
+    rw [← Finset.sum_neg_distrib]
+    refine Finset.sum_congr rfl (fun i _ ↦ ?_)
+    exact coordRiemann_antisymm_pair_left _ _ a b
+  linarith [hswap, hanti]
+
+end RicciFlow
