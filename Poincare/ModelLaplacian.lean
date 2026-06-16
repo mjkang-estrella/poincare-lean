@@ -25639,3 +25639,22 @@ theorem covTensor2SndDeriv_zero
   simp [covTensor2Deriv_zero]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere `|Ric|²/R` ratio blows up like the homothety factor inverse**:
+`(N₀/(1−2ct)²)/(R₀/(1−2ct)) = (N₀/R₀)/(1−2ct)`. The quotient `|Ric|²/R` equals the constant `N₀/R₀`
+times the inverse homothety factor — so it diverges at the same `1/(T−t)` Type-I rate as the scalar
+itself, the squared Ricci norm outpacing the scalar by exactly one factor (roadmap item 3). -/
+theorem round_sphere_ricci_over_scalar
+    {N₀ R₀ c t : ℝ} (hfac : 1 - 2 * c * t ≠ 0) (hR : R₀ ≠ 0) :
+    (N₀ / (1 - 2 * c * t) ^ 2) / (R₀ / (1 - 2 * c * t)) = (N₀ / R₀) / (1 - 2 * c * t) := by
+  rw [sq]
+  field_simp
+
+end RicciFlow
