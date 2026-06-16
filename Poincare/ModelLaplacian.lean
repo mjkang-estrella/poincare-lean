@@ -25533,3 +25533,23 @@ theorem tensorDivOneForm_sub_field
       ((Module.finBasis ℝ E).coord i))) ((Module.finBasis ℝ E) i) w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The tensor divergence of the doubled metric is twice that of the metric**:
+`(div(g + g))(w) = 2·(div g)(w)`. A direct application of `tensorDivOneForm_add_field` to
+`H₁ = H₂ = g` — and since metric compatibility gives `div g = 0` (the metric is divergence-free), this
+shows `div(2g) = 0`, consistent with the Levi-Civita connection's `∇g = 0` (roadmap item 3). -/
+theorem tensorDivOneForm_two_metric
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x) (w : E) :
+    tensorDivOneForm G (fun y ↦ G y + G y) x w = 2 * tensorDivOneForm G G x w := by
+  rw [tensorDivOneForm_add_field hGd hGd w]
+  ring
+
+end RicciFlow
