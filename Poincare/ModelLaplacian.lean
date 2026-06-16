@@ -24833,3 +24833,22 @@ theorem round_sphere_ricciNormSq_second_deriv
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere Ricci-norm blow-up is strictly convex**: for `c > 0`, `N₀ > 0`, and
+`t < 1/(2c)`, the acceleration `24c²N₀/(1−2ct)⁴ > 0`. The squared Ricci norm is a strictly convex
+function of time on `(−∞, T)` — accelerating curvature concentration in the full Ricci tensor, the
+companion to the scalar's convex blow-up (roadmap item 3). -/
+theorem round_sphere_ricciNormSq_accel_pos
+    {N₀ c t : ℝ} (hN : 0 < N₀) (hc : 0 < c) (ht : t < 1 / (2 * c)) :
+    0 < 24 * c ^ 2 * N₀ / (1 - 2 * c * t) ^ 4 :=
+  div_pos (mul_pos (mul_pos (by norm_num) (pow_pos hc 2)) hN)
+    (pow_pos (round_sphere_exists_on_interval hc ht) 4)
+
+end RicciFlow
