@@ -25443,3 +25443,21 @@ theorem tensorMetricTrace_two_metric
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of `g − g` vanishes**: `tr_g(g − g) = 0`, from `tensorMetricTrace_sub`. A
+consistency application of the metric-trace subtractivity: the trace of the zero tensor variation
+`g − g = 0` is zero, matching `tensorMetricTrace_zero` (roadmap item 3). -/
+theorem tensorMetricTrace_metric_sub_self
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} :
+    tensorMetricTrace G (fun y ↦ G y - G y) x = 0 := by
+  rw [tensorMetricTrace_sub]
+  ring
+
+end RicciFlow
