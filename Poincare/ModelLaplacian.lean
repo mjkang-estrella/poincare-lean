@@ -25553,3 +25553,26 @@ theorem tensorDivOneForm_two_metric
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The divergence of the Ricci-flow direction scales by `−2`**:
+`(div(−2 Ric))(w) = −2·(div Ric)(w)`. The `H = Ric`, `c = −2` specialization of
+`tensorDivOneForm_smul_field`: the divergence of the Ricci-flow variation `H = −2 Ric` is `−2` times
+the Ricci divergence — feeding `div(−2 Ric) = −dR` (since `div Ric = ½ dR`) into the evolution of the
+scalar curvature under the flow (roadmap item 3). -/
+theorem tensorDivOneForm_neg_two_ricci
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hKd : DifferentiableAt ℝ (fun z ↦ coordRicciForm G z (hdiffΓ z)) x) (w : E) :
+    tensorDivOneForm G (fun y ↦ (-2 : ℝ) • coordRicciForm G y (hdiffΓ y)) x w
+      = (-2 : ℝ) * tensorDivOneForm G (fun y ↦ coordRicciForm G y (hdiffΓ y)) x w :=
+  tensorDivOneForm_smul_field hKd (-2) w
+
+end RicciFlow
