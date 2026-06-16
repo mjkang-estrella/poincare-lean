@@ -25423,3 +25423,23 @@ theorem lichnerowiczCurvature_two_metric_eq_zero
     lichnerowiczCurvature_metric_eq_zero hGC2 hGsymm hinv hdiff p q, add_zero]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of the doubled metric is `2n`**: `tr_g(g + g) = 2·dim E`, from
+`tensorMetricTrace_add` and `tr_g(g) = n`. The metric trace of `2g` is `2n`, consistent with
+`tr_g(c·g) = c·n` — the additivity and homogeneity of the metric-trace contraction agreeing on the
+doubled metric (roadmap item 3). -/
+theorem tensorMetricTrace_two_metric
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ v w : E, G x v w = G x w v) (hinv : (G x).IsInvertible) :
+    tensorMetricTrace G (fun y ↦ G y + G y) x = 2 * (Module.finrank ℝ E : ℝ) := by
+  rw [tensorMetricTrace_add, tensorMetricTrace_metric hGsymm hinv]
+  ring
+
+end RicciFlow
