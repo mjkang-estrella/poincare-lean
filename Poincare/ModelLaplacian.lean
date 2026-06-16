@@ -26042,3 +26042,34 @@ theorem coordRiemann_first_pair_metric_trace_zero
   linarith [hswap, hanti]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of Riemann over its last antisymmetric pair vanishes**:
+`Σᵢ Rm(a, b, bᵢ, ♯bⁱ) = 0`. The contraction over the antisymmetric last pair (slots 3,4) is zero, by
+block symmetry `Rm(a,b,bᵢ,♯bⁱ) = Rm(bᵢ,♯bⁱ,a,b)` reducing it to the first-pair trace. Together with
+`coordRiemann_first_pair_metric_trace_zero` and the two trace orientations giving Ricci
+(`coordRicci_eq_riemann_trace`, `coordRicci_eq_riemann_inner_trace`), this exhausts the single metric
+contractions of Riemann: the two antisymmetric-pair traces vanish, the two mixed traces give `±Ricci`
+— the full trace algebra (roadmap item 3). -/
+theorem coordRiemann_last_pair_metric_trace_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (a b : E) :
+    ∑ i, coordRiemann G x a b ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) = 0 := by
+  rw [Finset.sum_congr rfl (fun i _ ↦ coordRiemann_block_symm hGd hGC2 hGsymm hinv hdiff hdiff a b
+    ((Module.finBasis ℝ E) i)
+    ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))))]
+  exact coordRiemann_first_pair_metric_trace_zero hGsymm hinv hdiff a b
+
+end RicciFlow
