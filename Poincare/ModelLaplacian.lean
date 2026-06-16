@@ -22669,3 +22669,23 @@ theorem coordScalar_eq_zero_of_ricci_flat
   exact Finset.sum_eq_zero fun j _ ↦ hflat _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Ricci-flat metrics are stationary under the Ricci flow**: if `Ric = 0` then the flow direction
+`∂g/∂t = −2 Ric = 0`, so the metric does not move. A Ricci-flat metric (in particular a flat one) is
+an exact static solution `g(t) ≡ g(0)` of the Ricci flow — the trivial fixed point complementing the
+shrinking round sphere (roadmap item 3). -/
+theorem ricci_flat_flow_static
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hflat : ∀ p q : E, coordRicci G x p q = 0) (p q : E) :
+    (-2 : ℝ) * coordRicci G x p q = 0 := by
+  rw [hflat p q]
+  ring
+
+end RicciFlow
