@@ -22297,3 +22297,21 @@ theorem constCurvatureForm_ricci_const_pos
   nlinarith [hκ, hn]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round space form has positive extinction time**: with Einstein constant `c = (1−n)κ > 0`
+(for `κ < 0`, `n ≥ 2`), the homothety `g(t) = (1−2ct)g(0)` reaches the singularity at the strictly
+positive extinction time `T = 1/(2c) = 1/(2(1−n)κ) > 0`. The round space form collapses to a point in
+finite forward time — the model finite-time singularity of the Poincaré program (roadmap item 3). -/
+theorem constCurvatureForm_extinction_pos
+    {κ : ℝ} (hκ : κ < 0) (hn : 2 ≤ (Module.finrank ℝ E : ℝ)) :
+    0 < 1 / (2 * ((1 - (Module.finrank ℝ E : ℝ)) * κ)) :=
+  div_pos one_pos (by linarith [constCurvatureForm_ricci_const_pos (E := E) hκ hn])
+
+end RicciFlow
