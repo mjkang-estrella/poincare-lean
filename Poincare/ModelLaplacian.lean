@@ -23068,3 +23068,23 @@ theorem round_sphere_type_one_constant_eq
   rw [mul_comm c n, mul_div_mul_right _ _ hc]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Einstein Ricci curvature in a unit direction is the constant `c`**: if `Ric = c·g` and
+`g(u,u) = 1`, then `Ric(u,u) = c`. Each Ricci eigenvalue of an Einstein metric equals the Einstein
+constant; on the round sphere (`c > 0`) every unit direction sees the same positive Ricci curvature `c`
+— the uniform positive curvature driving isotropic shrinking (roadmap item 3). -/
+theorem einstein_ricci_orthonormal
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (u : E) (hu : G x u u = 1) :
+    coordRicci G x u u = c := by
+  rw [hEin u u, hu, mul_one]
+
+end RicciFlow
