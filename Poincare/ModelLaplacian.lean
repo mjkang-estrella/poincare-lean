@@ -22792,3 +22792,31 @@ theorem hyperbolic_scalar_tendsto_zero
   exact Tendsto.div_atTop tendsto_const_nhds hdenom
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative Filter Topology
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The hyperbolic Ricci norm decays to zero**: for `c < 0`, the evolving `|Ric|²(t) = N₀/(1−2ct)² → 0`
+as `t → ∞`, since the squared homothety factor `(1−2ct)² → +∞`. The expanding hyperbolic space form's
+full curvature (not just the scalar) dilutes to zero — confirming the long-time flattening of the
+negatively-curved fixed point (roadmap item 3). -/
+theorem hyperbolic_ricciNormSq_tendsto_zero
+    (N₀ : ℝ) {c : ℝ} (hc : c < 0) :
+    Tendsto (fun t ↦ N₀ / (1 - 2 * c * t) ^ 2) atTop (𝓝 0) := by
+  have hslope : (0:ℝ) < -2 * c := by linarith
+  have hdenom : Tendsto (fun t : ℝ ↦ 1 - 2 * c * t) atTop atTop := by
+    have heq : (fun t : ℝ ↦ 1 - 2 * c * t) = (fun t ↦ 1 + -2 * c * t) := by ext t; ring
+    rw [heq]
+    exact tendsto_atTop_add_const_left _ 1 (Tendsto.const_mul_atTop hslope tendsto_id)
+  have hsq : Tendsto (fun t : ℝ ↦ (1 - 2 * c * t) ^ 2) atTop atTop := by
+    have heq2 : (fun t : ℝ ↦ (1 - 2 * c * t) ^ 2)
+        = (fun t ↦ (1 - 2 * c * t) * (1 - 2 * c * t)) := by ext t; ring
+    rw [heq2]
+    exact hdenom.atTop_mul_atTop₀ hdenom
+  exact Tendsto.div_atTop tendsto_const_nhds hsq
+
+end RicciFlow
