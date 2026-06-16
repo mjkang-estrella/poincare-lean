@@ -24114,3 +24114,29 @@ theorem round_sphere_3d_ricci_eq_scalar_sq_div
   exact h
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **An Einstein metric has positive Ricci norm iff its scalar curvature is nonzero**:
+`0 < |Ric|² ↔ R ≠ 0`, since `|Ric|² = R²/n`. An Einstein metric is genuinely curved (nonzero `|Ric|²`)
+exactly when its scalar curvature is nonzero — separating the round sphere/hyperbolic space (`R ≠ 0`,
+curved) from flat space (`R = 0`, Ricci-flat) among the Einstein fixed points (roadmap item 3). -/
+theorem coordRicciNormSq_einstein_pos_iff_scalar_ne
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    0 < coordRicciNormSq G x hdiff ↔ coordScalar G x ≠ 0 := by
+  rw [coordRicciNormSq_einstein_eq_scalar_sq_div hGsymm hinv hdiff hEin hn.ne']
+  constructor
+  · intro h hR0; rw [hR0] at h; simp at h
+  · intro h; positivity
+
+end RicciFlow
