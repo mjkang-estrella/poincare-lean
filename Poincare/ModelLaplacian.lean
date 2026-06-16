@@ -26162,3 +26162,49 @@ theorem dim3_weyl_candidate_metric_trace_zero
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Schouten tensor** `P = (1/(n−2))·(Ric − (R/(2(n−1)))·g)` as a `(0,2)` tensor field. This is
+the unique trace-adjustment of the Ricci tensor for which the curvature splits as `Rm = W + P ⊘ g`
+(Weyl plus Kulkarni–Nomizu with the Schouten tensor). It packages the Ricci and scalar curvature into
+the exact combination whose Kulkarni–Nomizu wedge with the metric reproduces the trace part of
+Riemann, leaving the totally trace-free Weyl tensor (roadmap item 3). -/
+noncomputable def schoutenForm (G : E → E →L[ℝ] E →L[ℝ] ℝ) (y : E)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z u) y) :
+    E →L[ℝ] E →L[ℝ] ℝ :=
+  (1 / ((Module.finrank ℝ E : ℝ) - 2)) •
+    (coordRicciForm G y hdiff
+      - (coordScalar G y / (2 * ((Module.finrank ℝ E : ℝ) - 1))) • G y)
+
+/-- **The Schouten tensor's metric trace is `R/(2(n−1))`**. Contracting `P = (1/(n−2))(Ric − (R/(2(n−1)))g)`
+against the inverse metric gives `(1/(n−2))(R − (R/(2(n−1)))·n) = R/(2(n−1))`, using `tr_g(Ric) = R`
+(`tensorMetricTrace_coordRicciForm`) and `tr_g(g) = n` (`tensorMetricTrace_metric`). This `R/(2(n−1))`
+normalization is exactly what makes the Schouten tensor the correct trace part: in `Rm = W + P ⊘ g`,
+the metric trace of `P ⊘ g` reproduces `Ric`, forcing `tr_g P = R/(2(n−1))` (roadmap item 3). -/
+theorem schoutenForm_metricTrace
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiff : ∀ (y : E) (u : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z u) y)
+    (hGsymm : ∀ v w : E, G x v w = G x w v) (hinv : (G x).IsInvertible)
+    (hn2 : (Module.finrank ℝ E : ℝ) - 2 ≠ 0)
+    (hn1 : (Module.finrank ℝ E : ℝ) - 1 ≠ 0) :
+    tensorMetricTrace G (fun y ↦ schoutenForm G y (hdiff y)) x
+      = coordScalar G x / (2 * ((Module.finrank ℝ E : ℝ) - 1)) := by
+  have h2n1 : (2 : ℝ) * ((Module.finrank ℝ E : ℝ) - 1) ≠ 0 := mul_ne_zero two_ne_zero hn1
+  have h1 : tensorMetricTrace G (fun y ↦ coordRicciForm G y (hdiff y)) x = coordScalar G x :=
+    tensorMetricTrace_coordRicciForm hdiff
+  have h2 : tensorMetricTrace G G x = (Module.finrank ℝ E : ℝ) :=
+    tensorMetricTrace_metric hGsymm hinv
+  unfold schoutenForm tensorMetricTrace at *
+  simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply, smul_eq_mul]
+  rw [← Finset.mul_sum, Finset.sum_sub_distrib, h1, ← Finset.mul_sum, h2]
+  field_simp
+  ring
+
+end RicciFlow
