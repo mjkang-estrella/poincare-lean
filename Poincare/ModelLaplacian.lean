@@ -24889,3 +24889,26 @@ theorem round_sphere_pinching_ratio_const
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The pinching ratio equals `1/n`**: from the Einstein relation `R₀² = n·N₀` (with `R₀ ≠ 0`), the
+preserved pinching ratio `N₀/R₀² = 1/n`. The round sphere's frozen ratio `|Ric|²/R²` is exactly the
+reciprocal dimension `1/n` — the saturated Cauchy–Schwarz value, confirming `round_sphere_pinching_ratio_const`
+takes the dimension-only value `1/n` (roadmap item 3). -/
+theorem round_sphere_pinching_ratio_eq_inv_dim
+    {N₀ R₀ n : ℝ} (hR : R₀ ≠ 0) (hpin : R₀ ^ 2 = n * N₀) :
+    N₀ / R₀ ^ 2 = 1 / n := by
+  have hR2 : R₀ ^ 2 ≠ 0 := pow_ne_zero 2 hR
+  rw [hpin] at hR2
+  have hn : n ≠ 0 := left_ne_zero_of_mul hR2
+  have hN : N₀ ≠ 0 := right_ne_zero_of_mul hR2
+  rw [hpin]
+  field_simp
+
+end RicciFlow
