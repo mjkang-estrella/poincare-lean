@@ -23149,3 +23149,22 @@ theorem round_sphere_inv_scalar_linear
   inv_div _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The reciprocal scalar curvature has constant derivative `−2c/R₀`**: `d/dt[(1−2ct)/R₀] = −2c/R₀`.
+The reciprocal `R(t)⁻¹` decreases at the constant rate `−2c/R₀`, confirming it is exactly affine in `t`
+— the linear collapse of `1/R` that pins the Type-I blow-up `R(t) ∼ 1/(T−t)` (roadmap item 5). -/
+theorem round_sphere_inv_scalar_hasDerivAt
+    {R₀ c t : ℝ} :
+    HasDerivAt (fun s ↦ (1 - 2 * c * s) / R₀) (-(2 * c) / R₀) t := by
+  have h : HasDerivAt (fun s : ℝ ↦ 1 - 2 * c * s) (-(2 * c)) t := by
+    simpa using (((hasDerivAt_id t).const_mul (2 * c)).const_sub 1)
+  simpa using h.div_const R₀
+
+end RicciFlow
