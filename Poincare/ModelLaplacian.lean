@@ -26375,3 +26375,28 @@ theorem riccati_barrier_blowup
   exact houter.comp hinner
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `(1,1)`-Hessian operator is self-adjoint** with respect to the metric:
+`b(Hess♯ v, w) = b(v, Hess♯ w)`. This is the metric self-adjointness of the Hessian endomorphism,
+equivalent to the symmetry of the Hessian bilinear form `∇²f(v,w) = ∇²f(w,v)` (Schwarz / equality of
+mixed second derivatives, `isSymmSndFDerivAt`). Exposed as standalone infrastructure: it is the
+spectral input behind `hessianNormSq_nonneg` (real eigenvalues / orthogonal diagonalizability of the
+Hessian) and the symmetry needed for the Bochner–Weitzenböck identity (roadmap item 3). -/
+theorem hessianOperator_selfAdjoint (b : LinearMap.BilinForm ℝ E)
+    (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (x v w : E) :
+    b (hessianOperator b hb f x v) w = b v (hessianOperator b hb f x w) := by
+  rw [b_hessianOperator]
+  have hsy := hbs.eq v (hessianOperator b hb f x w)
+  simp only [RingHom.id_apply] at hsy
+  rw [hsy, b_hessianOperator]
+  exact (hf.contDiffAt.isSymmSndFDerivAt (by simp)) v w
+
+end RicciFlow
