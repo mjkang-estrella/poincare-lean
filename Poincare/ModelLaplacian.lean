@@ -25293,3 +25293,31 @@ theorem lichnerowiczLaplacian_metric_sub_self
   rw [lichnerowiczLaplacian_sub hGd hGd hG2 hG2 hΓd p q, sub_self]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz Laplacian of the negated metric is `−2 Ric`**: `Δ_L(−g)(p,q) = −2·Ric(p,q)`.
+From `lichnerowiczLaplacian_neg` and `Δ_L g = 2 Ric`. The negated metric variation produces minus twice
+the Ricci tensor — consistent with the operator linearity and the Ricci-flow sign convention
+(roadmap item 3). -/
+theorem lichnerowiczLaplacian_neg_metric
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hG2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ G y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (p q : E) :
+    lichnerowiczLaplacian G (fun y ↦ -G y) x p q = -2 * coordRicci G x p q := by
+  rw [lichnerowiczLaplacian_neg hGd hG2 hΓd p q,
+    lichnerowiczLaplacian_metric_eq_two_ricci hGC2 hGsymm hinv hdiff p q]
+  ring
+
+end RicciFlow
