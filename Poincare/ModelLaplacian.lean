@@ -24552,3 +24552,26 @@ theorem round_sphere_scalar_kfold
   rw [hnum, div_div_eq_mul_div, div_one, mul_comm]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Every `k`-fold blow-up checkpoint precedes extinction**: for `c > 0` and `k > 1`, the time
+`(k−1)/(2kc)` at which the scalar reaches `k·R₀` is strictly less than the extinction time `1/(2c)`.
+All the finite blow-up checkpoints `R = k·R₀` occur strictly inside the existence interval `(−∞, T)`,
+accumulating at `T` as `k → ∞` — the curvature never reaching `∞` before the singularity time
+(roadmap item 3). -/
+theorem round_sphere_kfold_time_lt_extinction
+    {c k : ℝ} (hc : 0 < c) (hk : 1 < k) :
+    (k - 1) / (2 * k * c) < 1 / (2 * c) := by
+  have hk0 : (0:ℝ) < k := by linarith
+  have h1 : (0:ℝ) < 2 * c := by linarith
+  have h2 : (0:ℝ) < 2 * k * c := by nlinarith [mul_pos hk0 hc]
+  rw [div_lt_div_iff₀ h2 h1]
+  nlinarith [hc]
+
+end RicciFlow
