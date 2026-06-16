@@ -22974,3 +22974,21 @@ theorem round_sphere_kappa_solution_model
     round_sphere_ancient_scalar_bounded hR hc ht⟩
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere scalar × homothety factor is conserved**: `R(t)·(1−2ct) = R₀` for all `t` with
+`1 − 2ct ≠ 0`. Since `R(t) = R₀/(1−2ct)`, the product of the scalar curvature with the metric scale
+factor is the constant `R₀` — the conserved quantity expressing the self-similarity of the shrinking
+soliton (the scalar grows exactly as fast as the metric shrinks) (roadmap item 3). -/
+theorem round_sphere_scalar_factor_const
+    {R₀ c t : ℝ} (hfac : 1 - 2 * c * t ≠ 0) :
+    R₀ / (1 - 2 * c * t) * (1 - 2 * c * t) = R₀ :=
+  div_mul_cancel₀ R₀ hfac
+
+end RicciFlow
