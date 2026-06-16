@@ -22146,3 +22146,29 @@ theorem lichnerowiczCurvature_metric_trace_eq_zero
   exact lichnerowiczCurvature_metric_eq_zero hGC2 hGsymm hinv hdiff _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz metric trace splits term-by-term**: contracting
+`Δ_L g = Δ_∇ g − 2 Rm·g + Ric·g` against the metric distributes over the sum,
+`Σᵢ Δ_L g(bᵢ, ♯bⁱ) = Σᵢ Δ_∇ g − 2 Σᵢ Rm·g + Σᵢ Ric·g`. Combined with the three vanishing/identity
+trace lemmas this gives `0 − 2·0 + 2R = 2R` as a fully decomposed derivation (roadmap item 3). -/
+theorem lichnerowiczLaplacian_metric_trace_decompose
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} :
+    ∑ i, lichnerowiczLaplacian G G x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+      = (∑ i, connectionLaplacian G G x ((Module.finBasis ℝ E) i)
+            ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))))
+        - 2 * (∑ i, lichnerowiczCurvature G G x ((Module.finBasis ℝ E) i)
+            ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))))
+        + (∑ i, ricciActionOnTensor G G x ((Module.finBasis ℝ E) i)
+            ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))) := by
+  unfold lichnerowiczLaplacian
+  rw [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.mul_sum]
+
+end RicciFlow
