@@ -26507,3 +26507,51 @@ theorem differentiable_metricGradient
   exact Lc.differentiable.comp hf1
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The second differential of `|∇f|²`**:
+`∂²(|∇f|²)(w, v) = 2·D³f(w, v, ∇f) + 2·b(Hess♯ v, Hess♯ w)`. Differentiating the first Bochner component
+`∂(|∇f|²)(v) = 2·D²f(v, ∇f)` (`fderiv_gradient_sq`) once more in direction `w` splits, by the product
+rule, into a third-derivative term `2·D³f(w,v,∇f)` (from differentiating the second derivative, via
+`fderiv_hessianOperator_apply`) and a Hessian-squared term `2·b(Hess♯ v, Hess♯ w)` (from differentiating
+the gradient, via `fderiv_metricGradient_eq_hessianOperator`). This is the full `(0,2)` Hessian of the
+gradient-norm; tracing it over a metric basis yields `Δ|∇f|²`, whose two pieces are `2|Hess f|²` and
+`2 b(∇f, ∇Δf)` — the Bochner identity (roadmap item 3). -/
+theorem fderiv_fderiv_gradient_sq
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (hbs : LinearMap.IsSymm b) {f : E → ℝ} (hf : ContDiff ℝ 3 f) (x v w : E) :
+    fderiv ℝ (fun y ↦ fderiv ℝ (fun z ↦ b (metricGradient b hb f z)
+        (metricGradient b hb f z)) y v) x w
+      = 2 * fderiv ℝ (fderiv ℝ (fderiv ℝ f)) x w v (metricGradient b hb f x)
+        + 2 * b (hessianOperator b hb f x v) (hessianOperator b hb f x w) := by
+  have hf2 : ContDiff ℝ 2 f := hf.of_le (by norm_num)
+  have hB : Differentiable ℝ (fderiv ℝ (fderiv ℝ f)) :=
+    ((hf.fderiv_right (m := 2) (by norm_num)).fderiv_right (m := 1)
+      (by norm_num)).differentiable (by norm_num)
+  have hfe : (fun y ↦ fderiv ℝ (fun z ↦ b (metricGradient b hb f z)
+        (metricGradient b hb f z)) y v)
+      = (fun y ↦ 2 * (fderiv ℝ (fderiv ℝ f) y v) (metricGradient b hb f y)) := by
+    funext y
+    exact fderiv_gradient_sq b hb hbs hf2 y v
+  rw [hfe]
+  have hmul : HasFDerivAt
+      (fun y ↦ 2 * (fderiv ℝ (fderiv ℝ f) y v) (metricGradient b hb f y)) _ x :=
+    (((hB x).hasFDerivAt.clm_apply (hasFDerivAt_const v x)).clm_apply
+      (differentiable_metricGradient b hb hf2 x).hasFDerivAt).const_mul 2
+  rw [hmul.fderiv]
+  simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply,
+    ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_zero,
+    ContinuousLinearMap.flip_apply, ContinuousLinearMap.zero_apply,
+    map_zero, add_zero, zero_add, smul_eq_mul]
+  rw [show fderiv ℝ (metricGradient b hb f) x w = hessianOperator b hb f x w from
+      fderiv_metricGradient_eq_hessianOperator b hb hf2 x w,
+    ← b_hessianOperator b hb f x v (hessianOperator b hb f x w)]
+  ring
+
+end RicciFlow
