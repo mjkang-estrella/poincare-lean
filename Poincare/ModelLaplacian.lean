@@ -24481,3 +24481,31 @@ theorem ricciDivergenceForm_eq_zero_of_ricci_parallel
   exact ricciDivergence_eq_zero_of_ricci_parallel hpar w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curvature divergence vanishes on a degenerate plane**: `div R(w,w)z = 0`, since the
+divergence is antisymmetric in its first two slots and `div R(w,w)z = −div R(w,w)z`. The divergence of
+the Riemann tensor over a degenerate (repeated-index) plane is zero — the diagonal consistency of the
+divergence's plane-antisymmetry (roadmap item 3). -/
+theorem curvDivergence_self_eq_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ p : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y p) x)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hsymΓ : ∀ p : E, IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) x)
+    (hΓsymm : ∀ (y : E) (a b : E),
+      christoffelClosedOp G y a b = christoffelClosedOp G y b a)
+    (w z : E) :
+    curvDivergence G x w w z = 0 := by
+  have h := curvDivergence_antisymm_first_two hdiffΓ hdd hsymΓ hΓsymm w w z
+  linarith
+
+end RicciFlow
