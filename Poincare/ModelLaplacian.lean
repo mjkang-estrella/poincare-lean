@@ -22859,3 +22859,23 @@ theorem hyperbolic_metric_pos_def
   mul_pos (einstein_homothety_pos_of_neg hc ht) hgv
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round sphere degenerates past the extinction time**: for `c > 0` and `t > 1/(2c)`, the
+homothety factor `1 − 2ct < 0`, so `g(t) = (1−2ct)g(0)` is no longer positive-definite. The shrinking
+round sphere exists only on `[0, 1/(2c))` and ceases to be a Riemannian metric beyond extinction — the
+solution is NOT immortal, in sharp contrast to the expanding hyperbolic case (roadmap item 3). -/
+theorem round_sphere_metric_degenerate_past_extinction
+    {c t : ℝ} (hc : 0 < c) (ht : 1 / (2 * c) < t) :
+    1 - 2 * c * t < 0 := by
+  have h2c : (0:ℝ) < 2 * c := by linarith
+  have h := (div_lt_iff₀ h2c).mp ht
+  nlinarith [h]
+
+end RicciFlow
