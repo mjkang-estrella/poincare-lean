@@ -24644,3 +24644,30 @@ theorem round_sphere_ricciNormSq_kfold
   rw [hnum, div_pow, one_pow, div_div_eq_mul_div, div_one, mul_comm]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere Ricci-norm evolution rate**: `d/dt[N₀/(1−2ct)²] = 4cN₀/(1−2ct)³`. The squared
+Ricci norm `|Ric|²(t) = N₀/(1−2ct)²` evolves at rate `4cN₀/(1−2ct)³`, which (using `|Ric|² = R²/n`,
+`R = R₀/(1−2ct)`) is the round-sphere realization of Hamilton's reaction-dominated `|Ric|²` evolution —
+blowing up one power faster than the scalar's Riccati rate (roadmap item 3). -/
+theorem round_sphere_ricciNormSq_hasDerivAt
+    {N₀ c t : ℝ} (hfac : 1 - 2 * c * t ≠ 0) :
+    HasDerivAt (fun s ↦ N₀ / (1 - 2 * c * s) ^ 2)
+      (4 * c * N₀ / (1 - 2 * c * t) ^ 3) t := by
+  have hu : HasDerivAt (fun s : ℝ ↦ 1 - 2 * c * s) (-(2 * c)) t := by
+    simpa using (((hasDerivAt_id t).const_mul (2 * c)).const_sub 1)
+  have hden : HasDerivAt (fun s : ℝ ↦ (1 - 2 * c * s) ^ 2)
+      (2 * (1 - 2 * c * t) ^ (2 - 1) * -(2 * c)) t := hu.pow 2
+  have hne : (1 - 2 * c * t) ^ 2 ≠ 0 := pow_ne_zero 2 hfac
+  have hquot := (hasDerivAt_const t N₀).div hden hne
+  convert hquot using 1
+  rw [div_eq_div_iff (pow_ne_zero 3 hfac) (pow_ne_zero 2 hne)]
+  ring
+
+end RicciFlow
