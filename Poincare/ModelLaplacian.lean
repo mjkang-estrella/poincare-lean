@@ -25399,3 +25399,27 @@ theorem ricciActionOnTensor_two_metric
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz curvature on the doubled metric vanishes**: `(Rm·(g + g))(p,q) = 0`, from
+`lichnerowiczCurvature_add` and `Rm·g = 0`. The third term of the `Δ_L(g+g)` decomposition: with
+`connectionLaplacian_two_metric_eq_zero` (`= 0`) and `ricciActionOnTensor_two_metric` (`= 4 Ric`), this
+gives the fully decomposed `Δ_L(g+g) = 0 − 2·0 + 4 Ric = 4 Ric` (roadmap item 3). -/
+theorem lichnerowiczCurvature_two_metric_eq_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (p q : E) :
+    lichnerowiczCurvature G (fun y ↦ G y + G y) x p q = 0 := by
+  rw [lichnerowiczCurvature_add p q,
+    lichnerowiczCurvature_metric_eq_zero hGC2 hGsymm hinv hdiff p q, add_zero]
+
+end RicciFlow
