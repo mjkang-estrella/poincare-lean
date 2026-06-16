@@ -24743,3 +24743,20 @@ theorem round_sphere_ricciNormSq_at_zero (N₀ c : ℝ) :
   norm_num
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere Ricci-norm evolution rate at time zero is `4cN₀`**: at `t = 0` the rate
+`4cN₀/(1−2c·0)³ = 4cN₀`. The initial rate of growth of the squared Ricci norm is `4cN₀`, twice (in the
+`c`-coefficient sense) the scalar's initial Riccati rate `2cR₀` — the quadratic-versus-linear contrast
+between the Ricci-norm and scalar self-similar blow-up profiles at the start of the flow (roadmap item 3). -/
+theorem round_sphere_ricciNormSq_rate_at_zero (N₀ c : ℝ) :
+    4 * c * N₀ / (1 - 2 * c * 0) ^ 3 = 4 * c * N₀ := by
+  norm_num
+
+end RicciFlow
