@@ -23472,3 +23472,22 @@ theorem round_sphere_3d_type_one_constant
   round_sphere_type_one_constant_eq hc
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **In dimension 3 a space form has `Ric = 2K·g`**: the Einstein constant `(1−n)κ` specializes at
+`n = 3` to `(1−3)κ = −2κ = 2·(−κ) = 2K`, where `K = −κ` is the sectional curvature. So a 3-dimensional
+constant-curvature space has Ricci tensor `2K·g` — each Ricci eigenvalue is the sum of the `n−1 = 2`
+sectional curvatures through that direction, the `S³` relation behind `R = 6K` (roadmap item 3). -/
+theorem constCurvatureForm_3d_ricci_const_eq_two_sectional
+    (κ : ℝ) (hfr : (Module.finrank ℝ E : ℝ) = 3) :
+    (1 - (Module.finrank ℝ E : ℝ)) * κ = 2 * (-κ) := by
+  rw [hfr]
+  ring
+
+end RicciFlow
