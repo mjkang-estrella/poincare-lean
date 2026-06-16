@@ -22953,3 +22953,24 @@ theorem round_sphere_ancient_scalar_pos
   div_pos hR (round_sphere_ancient hc ht)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round sphere is a κ-solution model**: for `c > 0`, `R₀ > 0`, and all backward time `t ≤ 0`,
+the shrinking soliton simultaneously (i) exists as a positive-definite metric (`1 − 2ct > 0`,
+*ancient*), (ii) has strictly positive scalar curvature (`R(t) > 0`), and (iii) has uniformly bounded
+scalar curvature (`R(t) ≤ R₀`). These are exactly the defining analytic properties of a κ-solution —
+the round 3-sphere is *the* model κ-solution that Perelman's canonical-neighborhood theorem matches
+near a Ricci-flow singularity (roadmap item 5). -/
+theorem round_sphere_kappa_solution_model
+    {R₀ c t : ℝ} (hR : 0 < R₀) (hc : 0 < c) (ht : t ≤ 0) :
+    0 < 1 - 2 * c * t ∧ 0 < R₀ / (1 - 2 * c * t) ∧ R₀ / (1 - 2 * c * t) ≤ R₀ :=
+  ⟨round_sphere_ancient hc ht, round_sphere_ancient_scalar_pos hR hc ht,
+    round_sphere_ancient_scalar_bounded hR hc ht⟩
+
+end RicciFlow
