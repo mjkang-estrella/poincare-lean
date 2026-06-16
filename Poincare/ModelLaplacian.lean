@@ -25779,3 +25779,46 @@ theorem kulkarniNomizu_first_bianchi
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Kulkarni–Nomizu product is additive in its first argument**:
+`((h₁+h₂) ⊘ k) = (h₁ ⊘ k) + (h₂ ⊘ k)`. -/
+theorem kulkarniNomizu_add_left (h₁ h₂ k : E → E →L[ℝ] E →L[ℝ] ℝ) (x u w a b : E) :
+    kulkarniNomizu (fun y ↦ h₁ y + h₂ y) k x u w a b
+      = kulkarniNomizu h₁ k x u w a b + kulkarniNomizu h₂ k x u w a b := by
+  unfold kulkarniNomizu
+  simp only [ContinuousLinearMap.add_apply]
+  ring
+
+/-- **The Kulkarni–Nomizu product is additive in its second argument**:
+`(h ⊘ (k₁+k₂)) = (h ⊘ k₁) + (h ⊘ k₂)`. -/
+theorem kulkarniNomizu_add_right (h k₁ k₂ : E → E →L[ℝ] E →L[ℝ] ℝ) (x u w a b : E) :
+    kulkarniNomizu h (fun y ↦ k₁ y + k₂ y) x u w a b
+      = kulkarniNomizu h k₁ x u w a b + kulkarniNomizu h k₂ x u w a b := by
+  unfold kulkarniNomizu
+  simp only [ContinuousLinearMap.add_apply]
+  ring
+
+/-- **The Kulkarni–Nomizu product is homogeneous in its first argument**:
+`((c•h) ⊘ k) = c·(h ⊘ k)`. -/
+theorem kulkarniNomizu_smul_left (h k : E → E →L[ℝ] E →L[ℝ] ℝ) (c : ℝ) (x u w a b : E) :
+    kulkarniNomizu (fun y ↦ c • h y) k x u w a b = c * kulkarniNomizu h k x u w a b := by
+  unfold kulkarniNomizu
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  ring
+
+/-- **The Kulkarni–Nomizu product is homogeneous in its second argument**:
+`(h ⊘ (c•k)) = c·(h ⊘ k)`. -/
+theorem kulkarniNomizu_smul_right (h k : E → E →L[ℝ] E →L[ℝ] ℝ) (c : ℝ) (x u w a b : E) :
+    kulkarniNomizu h (fun y ↦ c • k y) x u w a b = c * kulkarniNomizu h k x u w a b := by
+  unfold kulkarniNomizu
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  ring
+
+end RicciFlow
