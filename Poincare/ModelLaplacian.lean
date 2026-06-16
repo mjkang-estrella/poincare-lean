@@ -23386,3 +23386,26 @@ theorem round_sphere_3d_extinction_times_scalar
   round_sphere_extinction_times_scalar c 3 hc
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Einstein 3-sphere has scalar curvature `3c`**: in a 3-dimensional space (`finrank = 3`), an
+Einstein metric `Ric = c·g` has `R = 3c`. Specializing `coordScalar_of_einstein` to the Poincaré
+dimension: the round `S³` has scalar curvature exactly three times its Einstein constant, the value
+feeding the `3/2` extinction relation (roadmap item 3, Poincaré dimension). -/
+theorem round_sphere_3d_scalar
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hfr : (Module.finrank ℝ E : ℝ) = 3) :
+    coordScalar G x = c * 3 := by
+  rw [coordScalar_of_einstein hGsymm hinv hdiff hEin, hfr]
+
+end RicciFlow
