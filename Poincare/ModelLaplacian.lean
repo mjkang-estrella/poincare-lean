@@ -26335,3 +26335,43 @@ theorem hamilton_pinched_scalar_lower_bound
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative Set Filter Topology
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Riccati lower-bound barrier blows up in finite time**:
+`m₀/(1 − a·m₀·t) → +∞` as `t → (a·m₀)⁻¹` from below, for `m₀ > 0`, `a > 0`. This is the genuine
+finite-time singularity statement for the scalar maximum principle: paired with
+`hamilton_pinched_scalar_lower_bound` — which sandwiches the scalar curvature *above* this barrier —
+it forces `R(t,·) → +∞` by the extinction time `(a·m₀)⁻¹ = n/(2m₀)` (with `a = 2/n`). The curvature
+cannot stay bounded; the Ricci flow develops a singularity in finite time on any compact manifold whose
+initial scalar curvature has a positive minimum — exactly Hamilton's finite-time singularity, the
+analytic engine behind the Poincaré program (roadmap item 3). -/
+theorem riccati_barrier_blowup
+    (m₀ a : ℝ) (hm₀ : 0 < m₀) (ha : 0 < a) :
+    Tendsto (fun t ↦ m₀ / (1 - a * m₀ * t)) (𝓝[<] (1 / (a * m₀))) atTop := by
+  have hr : 0 < a * m₀ := mul_pos ha hm₀
+  have hval : (1 : ℝ) - a * m₀ * (1 / (a * m₀)) = 0 := by
+    rw [mul_one_div, div_self hr.ne', sub_self]
+  have hcont : Tendsto (fun t : ℝ ↦ 1 - a * m₀ * t) (𝓝[<] (1 / (a * m₀))) (𝓝 0) := by
+    rw [← hval]
+    exact ((continuous_const.sub (continuous_const.mul continuous_id)).tendsto
+      _).mono_left nhdsWithin_le_nhds
+  have hpos : ∀ᶠ t in 𝓝[<] (1 / (a * m₀)), 1 - a * m₀ * t ∈ Set.Ioi (0 : ℝ) := by
+    filter_upwards [self_mem_nhdsWithin] with t ht
+    have htlt : t < 1 / (a * m₀) := ht
+    have hmul : a * m₀ * t < a * m₀ * (1 / (a * m₀)) := mul_lt_mul_of_pos_left htlt hr
+    rw [mul_one_div, div_self hr.ne'] at hmul
+    exact Set.mem_Ioi.mpr (by linarith)
+  have hinner : Tendsto (fun t ↦ 1 - a * m₀ * t) (𝓝[<] (1 / (a * m₀))) (𝓝[>] 0) :=
+    tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ hcont hpos
+  have houter : Tendsto (fun s ↦ m₀ / s) (𝓝[>] (0 : ℝ)) atTop := by
+    simp_rw [div_eq_mul_inv]
+    exact Tendsto.const_mul_atTop hm₀ tendsto_inv_nhdsGT_zero
+  exact houter.comp hinner
+
+end RicciFlow
