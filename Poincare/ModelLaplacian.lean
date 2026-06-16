@@ -23748,3 +23748,28 @@ theorem two_ricciNormSq_ge_two_scalar_sq_div_3d
   exact h
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The scalar-evolution reaction term is nonnegative**: `0 ≤ 2|Ric|²`. The reaction term in
+`∂R/∂t = Δ_g R + 2|Ric|²` is never negative, so by the weak maximum principle the spatial minimum of
+the scalar curvature `R_min(t)` is nondecreasing along the Ricci flow — the baseline monotonicity that
+the Riccati bound `2|Ric|² ≥ 2R²/n` then upgrades to finite-time blow-up (roadmap item 3). -/
+theorem two_ricciNormSq_nonneg
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    0 ≤ 2 * coordRicciNormSq G x hdiff := by
+  have h := coordRicciNormSq_nonneg hGC2 hGsymm hinv hdiff hGpos hn
+  linarith
+
+end RicciFlow
