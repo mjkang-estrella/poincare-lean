@@ -25272,3 +25272,24 @@ theorem lichnerowiczLaplacian_sub
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz Laplacian of `g − g` vanishes**: `Δ_L(g − g)(p,q) = 0`. A direct application of
+`lichnerowiczLaplacian_sub` to `H₁ = H₂ = g`, confirming the new subtractive linearity is consistent
+(the Lichnerowicz Laplacian of the zero variation `g − g = 0` is zero) (roadmap item 3). -/
+theorem lichnerowiczLaplacian_metric_sub_self
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hG2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ G y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (p q : E) :
+    lichnerowiczLaplacian G (fun y ↦ G y - G y) x p q = 0 := by
+  rw [lichnerowiczLaplacian_sub hGd hGd hG2 hG2 hΓd p q, sub_self]
+
+end RicciFlow
