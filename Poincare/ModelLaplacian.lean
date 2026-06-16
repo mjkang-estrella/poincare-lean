@@ -22711,3 +22711,21 @@ theorem ricci_flat_pinching_gap_zero
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Negatively-curved Einstein metrics expand forever**: for `c < 0` (the hyperbolic space form,
+`Ric = c·g` with `c < 0`) and `t ≥ 0`, the homothety factor `1 − 2ct ≥ 1 > 0`. The metric
+`g(t) = (1−2ct)g(0)` stays positive-definite and grows for all forward time — no finite-time
+singularity, the expanding fixed point complementing the shrinking round sphere (roadmap item 3). -/
+theorem einstein_homothety_pos_of_neg
+    {c : ℝ} (hc : c < 0) {t : ℝ} (ht : 0 ≤ t) :
+    0 < 1 - 2 * c * t := by
+  nlinarith [mul_nonneg (neg_nonneg.mpr hc.le) ht]
+
+end RicciFlow
