@@ -26288,3 +26288,50 @@ theorem dim3_schouten_weyl_metric_trace_zero
   exact dim3_weyl_candidate_metric_trace_zero hGC2 hGsymm hinv hdiff hfr u w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative Set
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Hamilton's pinched scalar evolution forces finite-time blow-up of the curvature minimum**.
+If the scalar curvature evolves by the genuine Ricci-flow reaction `R' ≥ Δ_g R + 2Q` (with `Q = |Ric|²`)
+and satisfies the pinching bound `a·R² ≤ 2Q` pointwise on a compact `K` (which holds with `a = 2/n` by
+`R² ≤ n|Ric|²`), then the scalar minimum obeys the Riccati lower bound `m₀/(1 − a·m₀·t) ≤ R(t,·)`,
+diverging as `t → (a·m₀)⁻¹`. This is the capstone of the scalar maximum-principle arc: it replaces the
+abstract reaction `a·R²` of `curved_hamilton_scalar_lower_bound` with the *actual* Hamilton reaction
+`2|Ric|²`, using pinching to recover the comparison ODE. The mechanism is dimension-agnostic (any `a > 0`);
+in `n = 3`, `a = 2/3` gives blow-up time `3/(2m₀)` — the finite-time singularity that, after Perelman's
+surgery, drives a positively-curved 3-manifold to extinction (roadmap item 3). -/
+theorem hamilton_pinched_scalar_lower_bound
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (hbs : ∀ x, LinearMap.IsSymm (b x))
+    (hbpos : ∀ x (v : E), v ≠ 0 → 0 < (b x) v v)
+    {R R' Q : ℝ → E → ℝ} {K : Set E}
+    (hK : IsCompact K) (hKne : K.Nonempty) {T a m₀ B : ℝ}
+    (ha : 0 < a) (hm₀ : 0 < m₀) (hT0 : 0 ≤ T) (hT : a * m₀ * T < 1)
+    (hR_cont : Continuous ↿R)
+    (hRd : ∀ x ∈ K, ∀ t ∈ Icc (0 : ℝ) T,
+      HasDerivAt (fun s ↦ R s x) (R' t x) t)
+    (hspace : ∀ t ∈ Icc (0 : ℝ) T, ContDiff ℝ 2 (R t))
+    (hpinch : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, a * (R t x) ^ 2 ≤ 2 * Q t x)
+    (hevol : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      curvedLaplacian G b hb (R t) x + 2 * Q t x ≤ R' t x)
+    (hmin_int : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      IsMinOn (R t) K x → IsLocalMin (R t) x)
+    (hRB : ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K, R t x ≤ B)
+    (h0 : ∀ x ∈ K, m₀ ≤ R 0 x) :
+    ∀ t ∈ Icc (0 : ℝ) T, ∀ x ∈ K,
+      m₀ / (1 - a * m₀ * t) ≤ R t x := by
+  apply curved_hamilton_scalar_lower_bound G b hb hbs hbpos hK hKne ha hm₀ hT0 hT
+    hR_cont hRd hspace ?_ hmin_int hRB h0
+  intro t ht x hx
+  have hp := hpinch t ht x hx
+  have he := hevol t ht x hx
+  linarith
+
+end RicciFlow
