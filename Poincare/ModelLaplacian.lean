@@ -25755,3 +25755,27 @@ theorem constCurvatureForm_eq_half_kulkarniNomizu
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Kulkarni–Nomizu product satisfies the first Bianchi identity**: for symmetric `h, k`,
+`(h ⊘ k)(u,w,a,b) + (h ⊘ k)(w,a,u,b) + (h ⊘ k)(a,u,w,b) = 0`. Together with the pair antisymmetries and
+block symmetry, this confirms `h ⊘ k` has the full algebraic symmetry type of a Riemann curvature
+tensor — so the Ricci/Weyl decomposition `Rm = W + (Schouten ⊘ g)` lands in the right symmetry class
+(roadmap item 3). -/
+theorem kulkarniNomizu_first_bianchi
+    {h k : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hsymm : ∀ p q : E, h x p q = h x q p) (ksymm : ∀ p q : E, k x p q = k x q p)
+    (u w a b : E) :
+    kulkarniNomizu h k x u w a b + kulkarniNomizu h k x w a u b
+      + kulkarniNomizu h k x a u w b = 0 := by
+  unfold kulkarniNomizu
+  rw [hsymm w u, ksymm w u, hsymm a u, ksymm a u, hsymm a w, ksymm a w]
+  ring
+
+end RicciFlow
