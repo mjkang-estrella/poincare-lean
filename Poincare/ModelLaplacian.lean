@@ -25321,3 +25321,32 @@ theorem lichnerowiczLaplacian_neg_metric
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz Laplacian of the Ricci-flow direction scales by `−2`**:
+`Δ_L(−2 Ric)(p,q) = −2·Δ_L(Ric)(p,q)`. The `H = Ric`, `c = −2` specialization of
+`lichnerowiczLaplacian_smul`: the Lichnerowicz Laplacian of the Ricci-flow variation `H = −2 Ric` is
+`−2` times that of the Ricci tensor — the operator linearity applied to the actual flow direction
+`∂g/∂t = −2 Ric` (roadmap item 3). -/
+theorem lichnerowiczLaplacian_neg_two_ricci
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hKd : ∀ y : E, DifferentiableAt ℝ (fun z ↦ coordRicciForm G z (hdiffΓ z)) y)
+    (hRic2 : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ coordRicciForm G z (hdiffΓ z)) y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (p q : E) :
+    lichnerowiczLaplacian G
+        (fun y ↦ (-2 : ℝ) • coordRicciForm G y (hdiffΓ y)) x p q
+      = (-2 : ℝ) * lichnerowiczLaplacian G
+          (fun y ↦ coordRicciForm G y (hdiffΓ y)) x p q :=
+  lichnerowiczLaplacian_smul hKd hRic2 hΓd (-2) p q
+
+end RicciFlow
