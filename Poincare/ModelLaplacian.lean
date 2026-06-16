@@ -25969,3 +25969,34 @@ theorem dim3_kulkarniNomizu_ricci_trace
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Ricci is also the inner-slot metric trace of Riemann**:
+`R(u,w) = Σᵢ Rm(u, bᵢ, ♯bⁱ, w)`, the contraction of the `(0,4)` Riemann tensor over its *middle* slots
+(2,3) with the free indices on the outer slots (1,4) — complementing `coordRicci_eq_riemann_trace`
+(`R(u,w) = Σᵢ Rm(bᵢ, u, w, ♯bⁱ)`, the outer-slot trace). Both traces give the same Ricci tensor, via the
+two pair antisymmetries (the two sign flips cancel). Part of the trace algebra pinning down Ricci as
+*the* essential single contraction of Riemann (roadmap item 3). -/
+theorem coordRicci_eq_riemann_inner_trace
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (u w : E) :
+    coordRicci G x u w
+      = ∑ i, coordRiemann G x u ((Module.finBasis ℝ E) i)
+          ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))) w := by
+  rw [coordRicci_eq_riemann_trace hGsymm (hinv x) u w]
+  refine Finset.sum_congr rfl (fun i _ ↦ ?_)
+  rw [coordRiemann_antisymm_pair_left,
+    coordRiemann_antisymm_pair_right hGC2 hGsymm hinv hdiff]
+  ring
+
+end RicciFlow
