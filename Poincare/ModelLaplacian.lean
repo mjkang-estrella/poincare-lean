@@ -24597,3 +24597,28 @@ theorem round_sphere_kfold_time_mono
   nlinarith [mul_pos hc (show (0:ℝ) < k₂ - k₁ by linarith)]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative Filter Topology
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `k`-fold checkpoint times converge to the extinction time**: for `c > 0`,
+`(k−1)/(2kc) → 1/(2c)` as `k → ∞`. The times at which the scalar curvature reaches `k·R₀` converge to
+the extinction time `T = 1/(2c)` — confirming the blow-up `R → ∞` happens exactly at `T`: every finite
+multiple of the initial curvature is attained before `T`, and the attainment times exhaust `(0, T)`
+(roadmap item 5). -/
+theorem round_sphere_kfold_time_tendsto_extinction
+    {c : ℝ} (hc : 0 < c) :
+    Tendsto (fun k : ℝ ↦ (k - 1) / (2 * k * c)) atTop (𝓝 (1 / (2 * c))) := by
+  have h0 : Tendsto (fun k : ℝ ↦ 1 / (2 * c) * (1 / k)) atTop (𝓝 0) := by
+    simpa [one_div] using (tendsto_inv_atTop_zero.const_mul (1 / (2 * c)))
+  have key : Tendsto (fun k : ℝ ↦ 1 / (2 * c) - 1 / (2 * c) * (1 / k)) atTop (𝓝 (1 / (2 * c))) := by
+    simpa using (tendsto_const_nhds.sub h0)
+  refine key.congr' ?_
+  filter_upwards [eventually_ne_atTop 0] with k hk
+  field_simp
+
+end RicciFlow
