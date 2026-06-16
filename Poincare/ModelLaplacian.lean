@@ -23580,3 +23580,28 @@ theorem round_sphere_3d_lichnerowicz_trace
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Einstein 3-sphere is a fixed point of the normalized flow**: in dimension 3 the
+volume-normalized direction `−2·(Ric − (R/3)g) = 0` when `Ric = c·g`. The round `S³` is stationary
+under the normalized Ricci flow with reference value `R/3` — the genuine fixed point that Hamilton's
+theorem identifies as the limit of any positive-Ricci metric on a closed 3-manifold (roadmap item 3). -/
+theorem round_sphere_3d_normalized_flow_fixed
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hfr : (Module.finrank ℝ E : ℝ) = 3) (p q : E) :
+    (-2 : ℝ) * (coordRicci G x p q - (coordScalar G x / 3) * G x p q) = 0 := by
+  have h := einstein_normalized_flow_fixed hGsymm hinv hdiff (by rw [hfr]; norm_num) hEin p q
+  rw [hfr] at h
+  exact h
+
+end RicciFlow
