@@ -22378,3 +22378,25 @@ theorem constCurvatureForm_sectional_orthonormal_pos
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The space form is isotropic**: any two `g`-orthonormal 2-planes have equal sectional curvature
+`Rm(u,w,w,u) = −κ = Rm(u',w',w',u')`. The sectional curvature of a `κ`-space form is independent of
+the chosen plane — perfect (trivially `1`-pinched) curvature, the rigidity that Hamilton's flow drives
+a positively-curved manifold toward (roadmap item 3). -/
+theorem constCurvatureForm_sectional_isotropic
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ v w : E, G x v w = G x w v) (κ : ℝ) (u w u' w' : E)
+    (huw : G x u w = 0) (hu : G x u u = 1) (hw : G x w w = 1)
+    (huw' : G x u' w' = 0) (hu' : G x u' u' = 1) (hw' : G x w' w' = 1) :
+    constCurvatureForm G x κ u w w u = constCurvatureForm G x κ u' w' w' u' := by
+  rw [constCurvatureForm_sectional_orthonormal hGsymm κ u w huw hu hw,
+    constCurvatureForm_sectional_orthonormal hGsymm κ u' w' huw' hu' hw']
+
+end RicciFlow
