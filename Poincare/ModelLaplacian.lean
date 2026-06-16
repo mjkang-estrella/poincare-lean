@@ -25152,3 +25152,123 @@ theorem covTensor2Deriv_sub_field
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The second covariant tensor derivative is subtractive in the tensor field**:
+`(∇²(H₁−H₂)) = (∇²H₁) − (∇²H₂)`. The subtractive companion of `covTensor2SndDeriv_add_field`, via
+`covTensor2Deriv_sub_field` and `fderiv_fun_sub` (roadmap item 3). -/
+theorem covTensor2SndDeriv_sub_field
+    {G H₁ H₂ : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hH1d : ∀ y : E, DifferentiableAt ℝ H₁ y) (hH2d : ∀ y : E, DifferentiableAt ℝ H₂ y)
+    (hH12 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H₁ y) x)
+    (hH22 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H₂ y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (v' v p q : E) :
+    covTensor2SndDeriv G (fun y ↦ H₁ y - H₂ y) x v' v p q
+      = covTensor2SndDeriv G H₁ x v' v p q - covTensor2SndDeriv G H₂ x v' v p q := by
+  unfold covTensor2SndDeriv
+  have hfield : (fun y ↦ covTensor2Deriv G (fun z ↦ H₁ z - H₂ z) y v p q)
+      = fun y ↦ covTensor2Deriv G H₁ y v p q - covTensor2Deriv G H₂ y v p q := by
+    funext y; exact covTensor2Deriv_sub_field (hH1d y) (hH2d y) v p q
+  rw [hfield, fderiv_fun_sub
+      (differentiableAt_covTensor2Deriv_family (hH1d x) hH12 hΓd v p q)
+      (differentiableAt_covTensor2Deriv_family (hH2d x) hH22 hΓd v p q),
+    ContinuousLinearMap.sub_apply,
+    covTensor2Deriv_sub_field (hH1d x) (hH2d x) (christoffelClosedOp G x v' v) p q,
+    covTensor2Deriv_sub_field (hH1d x) (hH2d x) v (christoffelClosedOp G x v' p) q,
+    covTensor2Deriv_sub_field (hH1d x) (hH2d x) v p (christoffelClosedOp G x v' q)]
+  ring
+
+end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The connection Laplacian is subtractive in the tensor field**:
+`Δ_∇(H₁−H₂)(p,q) = Δ_∇ H₁(p,q) − Δ_∇ H₂(p,q)`, termwise from `covTensor2SndDeriv_sub_field`
+(roadmap item 3). -/
+theorem connectionLaplacian_sub_field
+    {G H₁ H₂ : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hH1d : ∀ y : E, DifferentiableAt ℝ H₁ y) (hH2d : ∀ y : E, DifferentiableAt ℝ H₂ y)
+    (hH12 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H₁ y) x)
+    (hH22 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H₂ y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (p q : E) :
+    connectionLaplacian G (fun y ↦ H₁ y - H₂ y) x p q
+      = connectionLaplacian G H₁ x p q - connectionLaplacian G H₂ x p q := by
+  unfold connectionLaplacian
+  rw [← Finset.sum_sub_distrib]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact covTensor2SndDeriv_sub_field hH1d hH2d hH12 hH22 hΓd _ _ p q
+
+end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz curvature term is subtractive in the tensor**:
+`lichnerowiczCurvature G (H₁−H₂) = lichnerowiczCurvature G H₁ − lichnerowiczCurvature G H₂`
+(roadmap item 3). -/
+theorem lichnerowiczCurvature_sub
+    {G H₁ H₂ : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (p q : E) :
+    lichnerowiczCurvature G (fun y ↦ H₁ y - H₂ y) x p q
+      = lichnerowiczCurvature G H₁ x p q - lichnerowiczCurvature G H₂ x p q := by
+  unfold lichnerowiczCurvature
+  rw [← Finset.sum_sub_distrib]
+  refine Finset.sum_congr rfl (fun i _ ↦ ?_)
+  simp only [ContinuousLinearMap.sub_apply]
+  ring
+
+/-- **The Ricci action is subtractive in the tensor**:
+`(Ric · (H₁−H₂))(p,q) = (Ric · H₁)(p,q) − (Ric · H₂)(p,q)` (roadmap item 3). -/
+theorem ricciActionOnTensor_sub
+    {G H₁ H₂ : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (p q : E) :
+    ricciActionOnTensor G (fun y ↦ H₁ y - H₂ y) x p q
+      = ricciActionOnTensor G H₁ x p q - ricciActionOnTensor G H₂ x p q := by
+  unfold ricciActionOnTensor
+  simp only [ContinuousLinearMap.sub_apply]
+  ring
+
+end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz Laplacian is subtractive in the tensor field**:
+`Δ_L(H₁ − H₂)(p,q) = Δ_L H₁(p,q) − Δ_L H₂(p,q)`. Combining subtractivity of all three constituents.
+With `lichnerowiczLaplacian_add` and `_smul` this completes the full `ℝ`-linear structure of `Δ_L`
+on the tensor variation — needed to compare two flow directions, e.g. the traceless and full Ricci
+directions whose difference is the conformal part (roadmap item 3). -/
+theorem lichnerowiczLaplacian_sub
+    {G H₁ H₂ : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hH1d : ∀ y : E, DifferentiableAt ℝ H₁ y) (hH2d : ∀ y : E, DifferentiableAt ℝ H₂ y)
+    (hH12 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H₁ y) x)
+    (hH22 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ H₂ y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (p q : E) :
+    lichnerowiczLaplacian G (fun y ↦ H₁ y - H₂ y) x p q
+      = lichnerowiczLaplacian G H₁ x p q - lichnerowiczLaplacian G H₂ x p q := by
+  unfold lichnerowiczLaplacian
+  rw [connectionLaplacian_sub_field hH1d hH2d hH12 hH22 hΓd p q,
+    lichnerowiczCurvature_sub p q, ricciActionOnTensor_sub p q]
+  ring
+
+end RicciFlow
