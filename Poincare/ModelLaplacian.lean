@@ -22729,3 +22729,21 @@ theorem einstein_homothety_pos_of_neg
   nlinarith [mul_nonneg (neg_nonneg.mpr hc.le) ht]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The hyperbolic homothety factor increases monotonically**: for `c < 0`, the factor `1 − 2ct` is
+nondecreasing in `t`, so the expanding Einstein metric `g(t) = (1−2ct)g(0)` grows monotonically. The
+negatively-curved space form spreads out under the Ricci flow, the opposite behavior to the shrinking
+round sphere (roadmap item 3). -/
+theorem einstein_homothety_increasing_of_neg
+    {c : ℝ} (hc : c < 0) {t₁ t₂ : ℝ} (h : t₁ ≤ t₂) :
+    1 - 2 * c * t₁ ≤ 1 - 2 * c * t₂ := by
+  nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ -2 * c) (by linarith : (0:ℝ) ≤ t₂ - t₁)]
+
+end RicciFlow
