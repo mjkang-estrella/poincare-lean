@@ -23553,3 +23553,30 @@ theorem round_sphere_3d_traceless_zero
   exact h
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Einstein 3-sphere Lichnerowicz trace is `6c`**: in dimension 3, `Σᵢ Δ_L g(bᵢ, ♯bⁱ) = 2cn = 6c`
+for `Ric = c·g`. Since `tr_g(Δ_L g) = 2R` and `R = 3c` on `S³`, the trace is `6c` — the positive
+scalar-curvature production (for `c > 0`) driving the round 3-sphere's finite-time collapse, in the
+Poincaré dimension (roadmap item 3). -/
+theorem round_sphere_3d_lichnerowicz_trace
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hfr : (Module.finrank ℝ E : ℝ) = 3) :
+    ∑ i, lichnerowiczLaplacian G G x ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+      = 6 * c := by
+  rw [einstein_lichnerowiczLaplacian_metric_trace hGC2 hGsymm hinv hdiff hEin, hfr]
+  ring
+
+end RicciFlow
