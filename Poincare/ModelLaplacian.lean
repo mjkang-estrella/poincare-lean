@@ -23972,3 +23972,27 @@ theorem coordRicciEndo_einstein_apply
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Einstein Ricci eigenvalue `R/n` is positive for `c > 0`**: the single Ricci eigenvalue
+`R/n` of a positively-curved Einstein metric (`Ric = c·g`, `c > 0`) equals `c > 0`. The round sphere's
+Ricci operator is positive-definite with the single positive eigenvalue `R/n = c` — uniform positive
+Ricci curvature, the hypothesis of Hamilton's rounding theorem (roadmap item 3). -/
+theorem coordRicciEndo_einstein_eigenvalue_pos
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0) (hc : 0 < c) :
+    0 < coordScalar G x / (Module.finrank ℝ E : ℝ) := by
+  rw [← einstein_const_eq_scalar_div hGsymm hinv hdiff hEin hn]
+  exact hc
+
+end RicciFlow
