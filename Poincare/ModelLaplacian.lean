@@ -23528,3 +23528,28 @@ theorem round_sphere_3d_conserved_ratio
   round_sphere_conserved_ratio hN hpin
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Einstein 3-sphere has vanishing traceless Ricci `|Ric|² − R²/3 = 0`**: in dimension 3 the
+traceless-Ricci squared norm `|Ric̊|² = |Ric|² − R²/3` vanishes for an Einstein metric. The round `S³`
+has Ricci tensor purely in its trace part — exactly the rigidity `Ric = (R/3)g` that Hamilton's
+3-dimensional rounding theorem drives a positive-Ricci `S³` toward (roadmap item 3). -/
+theorem round_sphere_3d_traceless_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hfr : (Module.finrank ℝ E : ℝ) = 3) :
+    coordRicciNormSq G x hdiff - (coordScalar G x) ^ 2 / 3 = 0 := by
+  have h := einstein_tracelessRicciNormSq_eq_zero hGsymm hinv hdiff hEin (by rw [hfr]; norm_num)
+  rw [hfr] at h
+  exact h
+
+end RicciFlow
