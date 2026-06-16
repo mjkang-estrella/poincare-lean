@@ -23168,3 +23168,23 @@ theorem round_sphere_inv_scalar_hasDerivAt
   simpa using h.div_const R₀
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The reciprocal scalar curvature vanishes exactly at the extinction time**: at `t = T = 1/(2c)`,
+`(1−2ct)/R₀ = 0`. The affine reciprocal `R(t)⁻¹` hits zero precisely at the extinction time, so the
+scalar curvature `R(t) → ∞` there — the Type-I singularity occurs at exactly `T = 1/(2c)`, the
+endpoint of the linear collapse of `1/R` (roadmap item 5). -/
+theorem round_sphere_inv_scalar_zero_at_extinction
+    {R₀ c : ℝ} (hc : c ≠ 0) :
+    (1 - 2 * c * (1 / (2 * c))) / R₀ = 0 := by
+  have hnum : (1:ℝ) - 2 * c * (1 / (2 * c)) = 0 := by
+    rw [mul_one_div, div_self (mul_ne_zero two_ne_zero hc), sub_self]
+  rw [hnum, zero_div]
+
+end RicciFlow
