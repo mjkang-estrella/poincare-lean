@@ -24186,3 +24186,28 @@ theorem round_sphere_reaction_eq_riccati
   rw [coordRicciNormSq_einstein_eq_scalar_sq_div hGsymm hinv hdiff hEin hn]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Einstein 3-sphere saturates the `(2/3)R²` Riccati reaction**: `2|Ric|² = 2R²/3` in
+dimension 3. The round `S³`'s scalar minimum evolves by the exact Riccati ODE `∂R/∂t = (2/3)R²` —
+the dimension-3 self-similar rate that the comparison bound `2|Ric|² ≥ 2R²/3` is calibrated against,
+giving the sharp finite-time extinction `3/(2R₀)` (roadmap item 3). -/
+theorem round_sphere_3d_reaction_eq_riccati
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hfr : (Module.finrank ℝ E : ℝ) = 3) :
+    2 * coordRicciNormSq G x hdiff = 2 * ((coordScalar G x) ^ 2 / 3) := by
+  have h := round_sphere_reaction_eq_riccati hGsymm hinv hdiff hEin (by rw [hfr]; norm_num)
+  rw [hfr] at h
+  exact h
+
+end RicciFlow
