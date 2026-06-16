@@ -23720,3 +23720,31 @@ theorem two_ricciNormSq_ge_two_scalar_sq_div
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The dimension-3 scalar-evolution reaction bound `2|Ric|² ≥ 2R²/3`**: in dimension 3 the reaction
+term in `∂R/∂t = Δ_g R + 2|Ric|²` dominates `2R²/3`, so the spatial minimum obeys
+`dR_min/dt ≥ (2/3)R_min²`. On a closed 3-manifold this Riccati inequality forces `R_min` to become
+positive and blow up by time `≤ 3/(2 R_min(0))` — the quantitative finite-time singularity in the
+Poincaré dimension (roadmap item 3). -/
+theorem two_ricciNormSq_ge_two_scalar_sq_div_3d
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hfr : (Module.finrank ℝ E : ℝ) = 3) :
+    2 * ((coordScalar G x) ^ 2 / 3) ≤ 2 * coordRicciNormSq G x hdiff := by
+  have h := two_ricciNormSq_ge_two_scalar_sq_div hGC2 hGsymm hinv hdiff hGpos
+    (by rw [hfr]; norm_num)
+  rw [hfr] at h
+  exact h
+
+end RicciFlow
