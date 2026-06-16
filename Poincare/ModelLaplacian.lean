@@ -22560,3 +22560,36 @@ theorem fderiv_coordScalar_eq_zero_of_ricciDivergence_zero
   simp [ricciDivergenceForm_apply, hdivzero w]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Divergence-free Ricci ⟺ critical scalar curvature**: `(∀ w, div Ric(w) = 0) ↔ dR = 0` at `x`,
+the two equivalent faces of the twice-contracted Bianchi identity `dR = 2 div Ric`. A metric has
+divergence-free Ricci tensor exactly when its scalar curvature is critical — the local rigidity that
+makes constant-scalar-curvature and Einstein metrics the natural fixed points of the Ricci flow
+(roadmap item 3). -/
+theorem ricciDivergence_zero_iff_scalar_const
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hsymΓ : ∀ p : E, IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) x) :
+    (∀ w : E, ricciDivergence G x w = 0)
+      ↔ fderiv ℝ (fun y ↦ coordScalar G y) x = 0 := by
+  constructor
+  · intro h
+    exact fderiv_coordScalar_eq_zero_of_ricciDivergence_zero hGC2 hGsymm hinv hdiffΓ hdd hsymΓ h
+  · intro h w
+    exact ricciDivergence_eq_zero_of_scalar_const hGC2 hGsymm hinv hdiffΓ hdd hsymΓ h w
+
+end RicciFlow
