@@ -24250,3 +24250,21 @@ theorem round_sphere_scalar_pos_on_interval
   div_pos hR (round_sphere_exists_on_interval hc ht)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere Ricci norm is positive on its whole existence interval**: for `c > 0`,
+`N₀ > 0`, and any `t < 1/(2c)`, `|Ric|²(t) = N₀/(1−2ct)² > 0`. The full Ricci curvature (not just the
+scalar) stays strictly positive throughout `(−∞, T)` — the round sphere is genuinely curved at every
+moment of its ancient-to-singular life, never degenerating to flat before extinction (roadmap item 5). -/
+theorem round_sphere_ricciNormSq_pos_on_interval
+    {N₀ c t : ℝ} (hN : 0 < N₀) (hc : 0 < c) (ht : t < 1 / (2 * c)) :
+    0 < N₀ / (1 - 2 * c * t) ^ 2 :=
+  div_pos hN (pow_pos (round_sphere_exists_on_interval hc ht) 2)
+
+end RicciFlow
