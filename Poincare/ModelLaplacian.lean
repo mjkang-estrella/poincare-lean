@@ -25905,3 +25905,29 @@ theorem kulkarniNomizu_metric_ricci_trace
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric self-trace of `g ⊘ g` is `(2−2n)·g`**: `Σᵢ (g ⊘ g)(bᵢ, u, w, ♯bⁱ) = (2−2n)·g(u,w)`.
+The `h = g` special case of the Schouten inversion `kulkarniNomizu_metric_ricci_trace` (using
+`tr_g(g) = n`). Via `constCurvatureForm = (κ/2)(g ⊘ g)` this recovers `constCurvatureForm_ricci_trace`
+(`Ric = (1−n)κ g`), confirming the KN-decomposition engine is consistent with the space-form Ricci
+trace (roadmap item 3). -/
+theorem kulkarniNomizu_metric_self_trace
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ p q : E, G x p q = G x q p)
+    (hinv : ∀ y : E, (G y).IsInvertible) (u w : E) :
+    ∑ i, kulkarniNomizu G G x ((Module.finBasis ℝ E) i) u w
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+      = (2 - 2 * (Module.finrank ℝ E : ℝ)) * G x u w := by
+  rw [kulkarniNomizu_metric_ricci_trace hGsymm hGsymm hinv u w,
+    show tensorMetricTrace G G x = (Module.finrank ℝ E : ℝ) from
+      tensorMetricTrace_metric hGsymm (hinv x)]
+  ring
+
+end RicciFlow
