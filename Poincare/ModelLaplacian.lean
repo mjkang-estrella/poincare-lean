@@ -22530,3 +22530,33 @@ theorem einstein_tensor_divergence_free
   norm_num
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Divergence-free Ricci forces critical scalar curvature**: if `div Ric = 0` at `x`, then
+`dR = 0` there, by the gradient-form Bianchi identity `dR = 2 div Ric`. The exact converse of
+`ricciDivergence_eq_zero_of_scalar_const`: vanishing Ricci divergence and critical scalar curvature
+are equivalent — the two faces of the contracted Bianchi conservation law (roadmap item 3). -/
+theorem fderiv_coordScalar_eq_zero_of_ricciDivergence_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hsymΓ : ∀ p : E, IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) x)
+    (hdivzero : ∀ w : E, ricciDivergence G x w = 0) :
+    fderiv ℝ (fun y ↦ coordScalar G y) x = 0 := by
+  rw [fderiv_coordScalar_eq_two_ricciDivergenceForm hGC2 hGsymm hinv hdiffΓ hdd hsymΓ]
+  ext w
+  simp [ricciDivergenceForm_apply, hdivzero w]
+
+end RicciFlow
