@@ -24575,3 +24575,25 @@ theorem round_sphere_kfold_time_lt_extinction
   nlinarith [hc]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `k`-fold checkpoint times increase monotonically in `k`**: for `c > 0` and `0 < k₁ < k₂`,
+the checkpoint time `(k₁−1)/(2k₁c) < (k₂−1)/(2k₂c)`. Higher blow-up factors are reached strictly later
+in time, so the checkpoint times `(1−1/k)·T` march monotonically toward the extinction time `T` as the
+factor `k` increases — the orderly approach of the curvature to its finite-time singularity
+(roadmap item 3). -/
+theorem round_sphere_kfold_time_mono
+    {c k₁ k₂ : ℝ} (hc : 0 < c) (h1 : 0 < k₁) (h : k₁ < k₂) :
+    (k₁ - 1) / (2 * k₁ * c) < (k₂ - 1) / (2 * k₂ * c) := by
+  have hk1 : (0:ℝ) < 2 * k₁ * c := by nlinarith [mul_pos h1 hc]
+  have hk2 : (0:ℝ) < 2 * k₂ * c := by nlinarith [mul_pos (show (0:ℝ) < k₂ by linarith) hc]
+  rw [div_lt_div_iff₀ hk1 hk2]
+  nlinarith [mul_pos hc (show (0:ℝ) < k₂ - k₁ by linarith)]
+
+end RicciFlow
