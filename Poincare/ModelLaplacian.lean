@@ -25482,3 +25482,29 @@ theorem tensorMetricTrace_two_metric_eq_smul
   rw [tensorMetricTrace_two_metric hGsymm hinv, tensorMetricTrace_smul_metric 2 hGsymm hinv]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The tensor divergence one-form is additive in the tensor field**:
+`(div(H₁+H₂))(w) = (div H₁)(w) + (div H₂)(w)`. Termwise from the new `covTensor2Deriv_add_field`, the
+additive companion of `tensorDivOneForm_smul_field` — extending the `ℝ`-linearity of the tensor
+divergence to sums, the contraction underlying the contracted Bianchi and the divergence terms in
+Hamilton's evolution equations (roadmap item 3). -/
+theorem tensorDivOneForm_add_field
+    {G H₁ H₂ : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hH1 : DifferentiableAt ℝ H₁ x) (hH2 : DifferentiableAt ℝ H₂ x) (w : E) :
+    tensorDivOneForm G (fun y ↦ H₁ y + H₂ y) x w
+      = tensorDivOneForm G H₁ x w + tensorDivOneForm G H₂ x w := by
+  unfold tensorDivOneForm
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact covTensor2Deriv_add_field hH1 hH2
+    ((G x).inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i))) ((Module.finBasis ℝ E) i) w
+
+end RicciFlow
