@@ -24806,3 +24806,30 @@ theorem round_sphere_scalar_accel_pos
     (pow_pos (round_sphere_exists_on_interval hc ht) 3)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere Ricci-norm second derivative**: `d/dt[4cN₀/(1−2ct)³] = 24c²N₀/(1−2ct)⁴`. The
+squared Ricci norm's acceleration `∂²|Ric|²/∂t²` is `24c²N₀/(1−2ct)⁴`, strictly positive for `c > 0` —
+so `|Ric|²` is also a strictly convex function of time, blowing up even faster (`1/(T−t)²`) and more
+convexly than the scalar curvature (roadmap item 3). -/
+theorem round_sphere_ricciNormSq_second_deriv
+    {N₀ c t : ℝ} (hfac : 1 - 2 * c * t ≠ 0) :
+    HasDerivAt (fun s ↦ 4 * c * N₀ / (1 - 2 * c * s) ^ 3)
+      (24 * c ^ 2 * N₀ / (1 - 2 * c * t) ^ 4) t := by
+  have hu : HasDerivAt (fun s : ℝ ↦ 1 - 2 * c * s) (-(2 * c)) t := by
+    simpa using (((hasDerivAt_id t).const_mul (2 * c)).const_sub 1)
+  have hden : HasDerivAt (fun s : ℝ ↦ (1 - 2 * c * s) ^ 3)
+      (3 * (1 - 2 * c * t) ^ (3 - 1) * -(2 * c)) t := hu.pow 3
+  have hne : (1 - 2 * c * t) ^ 3 ≠ 0 := pow_ne_zero 3 hfac
+  have hquot := (hasDerivAt_const t (4 * c * N₀)).div hden hne
+  convert hquot using 1
+  rw [div_eq_div_iff (pow_ne_zero 4 hfac) (pow_ne_zero 2 hne)]
+  ring
+
+end RicciFlow
