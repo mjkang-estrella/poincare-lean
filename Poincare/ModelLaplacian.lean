@@ -25461,3 +25461,24 @@ theorem tensorMetricTrace_metric_sub_self
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Additive and scalar-multiple doublings agree under the metric trace**:
+`tr_g(g + g) = tr_g(2·g)`. Both equal `2n` (via `tensorMetricTrace_two_metric` and
+`tensorMetricTrace_smul_metric`), confirming the additivity and homogeneity of the metric-trace
+contraction are mutually consistent on the metric — `g + g` and `2·g` have the same trace
+(roadmap item 3). -/
+theorem tensorMetricTrace_two_metric_eq_smul
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ v w : E, G x v w = G x w v) (hinv : (G x).IsInvertible) :
+    tensorMetricTrace G (fun y ↦ G y + G y) x
+      = tensorMetricTrace G (fun y ↦ (2 : ℝ) • G y) x := by
+  rw [tensorMetricTrace_two_metric hGsymm hinv, tensorMetricTrace_smul_metric 2 hGsymm hinv]
+
+end RicciFlow
