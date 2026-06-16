@@ -22315,3 +22315,24 @@ theorem constCurvatureForm_extinction_pos
   div_pos one_pos (by linarith [constCurvatureForm_ricci_const_pos (E := E) hκ hn])
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The space-form extinction time × scalar curvature is `n/2`**: with Einstein constant
+`c = (1−n)κ` (so `R = c·n`, `T = 1/(2c)`), the product `T·R = (1/(2c))·(cn) = n/2`. The same
+dimension-only universal constant as the round sphere, now realized by the constant-curvature space
+form — the scale-invariant content of its finite-time singularity (roadmap item 3). -/
+theorem constCurvatureForm_extinction_times_scalar
+    {κ : ℝ} (hc : (1 - (Module.finrank ℝ E : ℝ)) * κ ≠ 0) :
+    (1 / (2 * ((1 - (Module.finrank ℝ E : ℝ)) * κ)))
+        * (((1 - (Module.finrank ℝ E : ℝ)) * κ) * (Module.finrank ℝ E : ℝ))
+      = (Module.finrank ℝ E : ℝ) / 2 :=
+  round_sphere_extinction_times_scalar ((1 - (Module.finrank ℝ E : ℝ)) * κ)
+    (Module.finrank ℝ E : ℝ) hc
+
+end RicciFlow
