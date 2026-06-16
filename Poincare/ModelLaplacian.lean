@@ -24065,3 +24065,28 @@ theorem coordRicciEndo_ricci_flat_eigenvalue_zero
   rw [coordScalar_eq_zero_of_ricci_flat hflat, zero_div]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **An Einstein metric has `|Ric|² = R²/n`**: if `Ric = c·g` then `|Ric|² = R²/n` exactly, the
+explicit saturated form of the pinching inequality. The round sphere's Ricci norm equals the
+normalized scalar `R²/n` with no traceless surplus — `|Ric|² = tr(Ric♯²) = n·(R/n)²`, the squared-
+spectrum identity reading off equality in Cauchy–Schwarz (roadmap item 3). -/
+theorem coordRicciNormSq_einstein_eq_scalar_sq_div
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0) :
+    coordRicciNormSq G x hdiff = (coordScalar G x) ^ 2 / (Module.finrank ℝ E : ℝ) := by
+  rw [coordRicciNormSq_of_einstein hGsymm hinv hdiff hEin,
+    coordScalar_of_einstein hGsymm hinv hdiff hEin]
+  field_simp
+
+end RicciFlow
