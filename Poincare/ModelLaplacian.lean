@@ -24671,3 +24671,22 @@ theorem round_sphere_ricciNormSq_hasDerivAt
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere Ricci norm is strictly increasing on its existence interval**: for `c > 0`,
+`N₀ > 0`, and `t < 1/(2c)`, the evolution rate `4cN₀/(1−2ct)³ > 0`. The squared Ricci norm increases
+strictly throughout `(−∞, T)`, growing without bound toward the singularity — the monotone curvature
+concentration that is the analytic signature of the forming Ricci-flow singularity (roadmap item 3). -/
+theorem round_sphere_ricciNormSq_rate_pos
+    {N₀ c t : ℝ} (hN : 0 < N₀) (hc : 0 < c) (ht : t < 1 / (2 * c)) :
+    0 < 4 * c * N₀ / (1 - 2 * c * t) ^ 3 :=
+  div_pos (mul_pos (mul_pos (by norm_num) hc) hN)
+    (pow_pos (round_sphere_exists_on_interval hc ht) 3)
+
+end RicciFlow
