@@ -23213,3 +23213,25 @@ theorem einstein_normalized_flow_fixed
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **A normalized-flow fixed point is Einstein**: if the normalized flow direction
+`−2·(Ric − (R/n)g) = 0` in every slot, then `Ric = (R/n)·g`, i.e. the metric is Einstein with constant
+`c = R/n`. The exact converse of `einstein_normalized_flow_fixed`: the stationary points of the
+volume-normalized Ricci flow are precisely the Einstein metrics (roadmap item 3). -/
+theorem normalized_flow_fixed_imp_einstein
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hfix : ∀ p q : E, (-2 : ℝ) * (coordRicci G x p q
+        - (coordScalar G x / (Module.finrank ℝ E : ℝ)) * G x p q) = 0)
+    (p q : E) :
+    coordRicci G x p q = (coordScalar G x / (Module.finrank ℝ E : ℝ)) * G x p q := by
+  have h := hfix p q
+  linarith
+
+end RicciFlow
