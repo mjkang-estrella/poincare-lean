@@ -23011,3 +23011,23 @@ theorem round_sphere_ricciNormSq_factor_const
   div_mul_cancel₀ N₀ (pow_ne_zero 2 hfac)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The ratio of the two conserved invariants is the dimension**: from the Einstein pinching
+`R₀² = n·N₀`, the conserved scalar invariant squared over the conserved Ricci invariant is
+`R₀²/N₀ = n`. The two self-similarity constants of the shrinking soliton are not independent — their
+ratio is precisely the dimension, the same `n` appearing in the pinching saturation and the extinction
+relation `T·R₀ = n/2` (roadmap item 3). -/
+theorem round_sphere_conserved_ratio
+    {R₀ N₀ n : ℝ} (hN : N₀ ≠ 0) (hpin : R₀ ^ 2 = n * N₀) :
+    R₀ ^ 2 / N₀ = n := by
+  rw [hpin]
+  field_simp
+
+end RicciFlow
