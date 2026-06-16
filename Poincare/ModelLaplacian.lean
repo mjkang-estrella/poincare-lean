@@ -24140,3 +24140,26 @@ theorem coordRicciNormSq_einstein_pos_iff_scalar_ne
   · intro h; positivity
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Einstein scalar is nonzero iff the Einstein constant is nonzero**: `R ≠ 0 ↔ c ≠ 0`, since
+`R = c·n` with `n ≠ 0`. The scalar curvature of an Einstein metric vanishes exactly when the Einstein
+constant does — so the flat/Ricci-flat case (`c = 0`) is precisely the `R = 0` case, and any curved
+Einstein metric (`c ≠ 0`) has nonzero scalar curvature (roadmap item 3). -/
+theorem einstein_scalar_ne_iff_const_ne
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0) :
+    coordScalar G x ≠ 0 ↔ c ≠ 0 := by
+  rw [coordScalar_of_einstein hGsymm hinv hdiff hEin, mul_ne_zero_iff, and_iff_left hn]
+
+end RicciFlow
