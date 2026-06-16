@@ -24690,3 +24690,22 @@ theorem round_sphere_ricciNormSq_rate_pos
     (pow_pos (round_sphere_exists_on_interval hc ht) 3)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere scalar evolution rate is positive on its existence interval**: for `c > 0`,
+`R₀ > 0`, and `t < 1/(2c)`, the scalar rate `2cR₀/(1−2ct)² > 0`. The scalar curvature increases
+strictly throughout `(−∞, T)` — the companion to the Ricci-norm increase, both monotonically
+concentrating curvature toward the finite-time singularity (roadmap item 3). -/
+theorem round_sphere_scalar_rate_pos
+    {R₀ c t : ℝ} (hR : 0 < R₀) (hc : 0 < c) (ht : t < 1 / (2 * c)) :
+    0 < 2 * c * R₀ / (1 - 2 * c * t) ^ 2 :=
+  div_pos (mul_pos (mul_pos (by norm_num) hc) hR)
+    (pow_pos (round_sphere_exists_on_interval hc ht) 2)
+
+end RicciFlow
