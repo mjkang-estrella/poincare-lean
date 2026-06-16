@@ -23630,3 +23630,27 @@ theorem round_sphere_3d_scalar_pos
   positivity
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Einstein 3-sphere has positive Ricci norm `|Ric|² = 3c² > 0`**: in dimension 3 with `c ≠ 0`,
+`|Ric|² = 3c² > 0`. The round `S³` is genuinely curved (non-Ricci-flat), so it cannot persist as a
+static solution and must develop a finite-time singularity under the Ricci flow — confirming `S³` is
+not a fixed point of the unnormalized flow (roadmap item 3). -/
+theorem round_sphere_3d_ricciNormSq_pos
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hfr : (Module.finrank ℝ E : ℝ) = 3) (hc : c ≠ 0) :
+    0 < coordRicciNormSq G x hdiff := by
+  rw [round_sphere_3d_ricciNormSq hGsymm hinv hdiff hEin hfr]
+  positivity
+
+end RicciFlow
