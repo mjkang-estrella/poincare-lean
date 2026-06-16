@@ -26119,3 +26119,46 @@ theorem kulkarniNomizu_tracelessRicci_metric_trace
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The dimension-3 trace-free Weyl candidate** has vanishing metric trace.
+In `n = 3`, the explicit `(0,4)` combination `Rm + (Ric ⊘ g) − (R/4)·(g ⊘ g)` has zero metric
+contraction over slots `(1,4)`:
+`Σᵢ [Rm + KN(Ric,g) − (R/4)·KN(g,g)](bᵢ,u,w,♯bⁱ) = 0`.
+This assembles the whole decomposition engine — `coordRicci_eq_riemann_trace` (tr Rm = Ric),
+`dim3_kulkarniNomizu_ricci_trace` (tr KN(Ric,g) = −Ric − R·g in `n=3`), and
+`kulkarniNomizu_metric_self_trace` (tr KN(g,g) = (2−2n)g = −4g) — into the *defining property* of the
+Weyl tensor: total trace-freedom. The cancellation `Ric + (−Ric − R·g) − (R/4)(−4g) = 0` is exact. In
+`n = 3` the Weyl tensor with this symmetry type is forced to vanish identically (its representation space
+is `0`-dimensional), so this trace-free combination is the obstruction whose vanishing *is* Hamilton's
+fact that a 3-manifold's curvature is fully determined by its Ricci tensor (roadmap item 3, the curvature
+half of the dimension-3 pinching program). -/
+theorem dim3_weyl_candidate_metric_trace_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ (y u : E), DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z u) y)
+    (hfr : (Module.finrank ℝ E : ℝ) = 3) (u w : E) :
+    ∑ i, (coordRiemann G x ((Module.finBasis ℝ E) i) u w
+            ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+          + kulkarniNomizu (fun y ↦ coordRicciForm G y (hdiff y)) G x
+              ((Module.finBasis ℝ E) i) u w
+              ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+          - (coordScalar G x / 4) * kulkarniNomizu G G x
+              ((Module.finBasis ℝ E) i) u w
+              ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))))
+      = 0 := by
+  rw [Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.mul_sum,
+    ← coordRicci_eq_riemann_trace hGsymm (hinv x) u w,
+    dim3_kulkarniNomizu_ricci_trace hGC2 hGsymm hinv hdiff hfr u w,
+    kulkarniNomizu_metric_self_trace (hGsymm x) hinv u w, hfr]
+  ring
+
+end RicciFlow
