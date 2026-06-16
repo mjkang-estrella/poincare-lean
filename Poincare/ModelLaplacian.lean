@@ -23455,3 +23455,20 @@ theorem round_sphere_3d_ricciNormSq
   rw [coordRicciNormSq_of_einstein hGsymm hinv hdiff hEin, hfr]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round 3-sphere has Type-I blow-up constant `3/2`**: with `R₀ = 3c` (dimension 3), the Type-I
+rate constant `R₀/(2c) = 3c/(2c) = 3/2`. The scalar curvature of `S³` blows up as `R(t) ≈ (3/2)/(T−t)`
+— the canonical neckpinch/round-sphere Type-I rate in the Poincaré dimension (roadmap item 5). -/
+theorem round_sphere_3d_type_one_constant
+    {c : ℝ} (hc : c ≠ 0) :
+    c * 3 / (2 * c) = 3 / 2 :=
+  round_sphere_type_one_constant_eq hc
+
+end RicciFlow
