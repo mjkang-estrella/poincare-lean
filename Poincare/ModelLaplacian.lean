@@ -23409,3 +23409,26 @@ theorem round_sphere_3d_scalar
   rw [coordScalar_of_einstein hGsymm hinv hdiff hEin, hfr]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Einstein 3-sphere saturates the pinching `R² = 3|Ric|²`**: in dimension `3`, an Einstein
+metric satisfies `R² = 3·|Ric|²`, the `n = 3` case of the Cauchy–Schwarz pinching equality. The round
+`S³` sits exactly on the pinching boundary — the rigidity that, in Hamilton's 3-dimensional theorem,
+characterizes the round sphere as the unique attractor of positive-Ricci flows (roadmap item 3). -/
+theorem round_sphere_3d_pinching
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hfr : (Module.finrank ℝ E : ℝ) = 3) :
+    (coordScalar G x) ^ 2 = 3 * coordRicciNormSq G x hdiff := by
+  rw [einstein_pinching_equality hGsymm hinv hdiff hEin, hfr]
+
+end RicciFlow
