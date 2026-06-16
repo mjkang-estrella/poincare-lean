@@ -22250,3 +22250,31 @@ theorem constCurvatureForm_scalar_trace_standard
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round space form has positive scalar curvature**: in dimension `n ≥ 2` with the model's
+positive-sphere sign `κ < 0`, the constant scalar curvature `R = −n(n−1)κ` is strictly positive.
+This is the curvature positivity that makes the round sphere a shrinking (not expanding) Ricci-flow
+singularity model (roadmap item 3). -/
+theorem constCurvatureForm_scalar_trace_pos
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ v w : E, G x v w = G x w v)
+    (hinv : ∀ y : E, (G y).IsInvertible) {κ : ℝ} (hκ : κ < 0)
+    (hn : 2 ≤ (Module.finrank ℝ E : ℝ)) :
+    0 < ∑ j, (∑ i, constCurvatureForm G x κ ((Module.finBasis ℝ E) i)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j)
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord i)))) := by
+  rw [constCurvatureForm_scalar_trace_standard hGsymm hinv κ]
+  nlinarith [hκ, hn, mul_pos (by linarith : (0:ℝ) < (Module.finrank ℝ E : ℝ))
+    (by linarith : (0:ℝ) < (Module.finrank ℝ E : ℝ) - 1)]
+
+end RicciFlow
