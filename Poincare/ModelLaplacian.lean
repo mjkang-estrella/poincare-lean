@@ -24287,3 +24287,33 @@ theorem round_sphere_inv_scalar_pos_on_interval
   inv_pos.mpr (round_sphere_scalar_pos_on_interval hR hc ht)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The second Bianchi identity, solved for one cyclic term**:
+`∇_v R(u,w) = −(∇_u R(w,v) + ∇_w R(v,u))`. Rearranging the cyclic second Bianchi identity
+`∇_v R(u,w) + ∇_u R(w,v) + ∇_w R(v,u) = 0`, any one covariant curvature derivative is the negated sum
+of the other two — the form used when eliminating a derivative term in deriving the contracted Bianchi
+and the evolution of curvature (roadmap item 3). -/
+theorem covCurvDeriv_second_bianchi_solved
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ p : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y p) x)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hsymΓ : ∀ p : E, IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) x)
+    (hΓsymm : ∀ (y : E) (a b : E),
+      christoffelClosedOp G y a b = christoffelClosedOp G y b a)
+    (u v w : E) :
+    covCurvDeriv G x v u w = -(covCurvDeriv G x u w v + covCurvDeriv G x w v u) := by
+  have h := coord_second_bianchi hdiffΓ hdd hsymΓ hΓsymm u v w
+  rw [add_assoc] at h
+  exact eq_neg_of_add_eq_zero_left h
+
+end RicciFlow
