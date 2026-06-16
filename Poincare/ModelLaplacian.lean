@@ -23829,3 +23829,31 @@ theorem riccati_extinction_antitone
   div_lt_div_of_pos_left hn (by linarith) (by linarith)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Positive scalar curvature forces positive Ricci norm**: if `R > 0` then `|Ric|² ≥ R²/n > 0`, by
+the pinching inequality. A metric with strictly positive scalar curvature is genuinely curved
+(non-Ricci-flat), so the reaction term `2|Ric|²` in Hamilton's scalar evolution is strictly positive
+wherever `R > 0` — the mechanism by which positive scalar curvature is preserved and amplified along
+the Ricci flow (roadmap item 3). -/
+theorem ricciNormSq_pos_of_scalar_pos
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) (hRpos : 0 < coordScalar G x) :
+    0 < coordRicciNormSq G x hdiff := by
+  have h := ricciNormSq_ge_scalar_sq_div hGC2 hGsymm hinv hdiff hGpos hn
+  have hpos : 0 < (coordScalar G x) ^ 2 / (Module.finrank ℝ E : ℝ) :=
+    div_pos (pow_pos hRpos 2) hn
+  linarith
+
+end RicciFlow
