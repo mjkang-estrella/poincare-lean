@@ -24045,3 +24045,23 @@ theorem coordRicciEndo_einstein_eigenvalue_neg
   exact hc
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci-flat eigenvalue is zero**: if `Ric = 0` then the normalized Ricci eigenvalue
+`R/n = 0`, since `R = 0`. Completing the spectral trichotomy of Einstein fixed points by Ricci
+eigenvalue sign: positive (`c > 0`, round sphere, shrinks), zero (`c = 0`, Ricci-flat, static),
+negative (`c < 0`, hyperbolic, expands) — the three regimes of the Ricci flow's Einstein attractors
+(roadmap item 3). -/
+theorem coordRicciEndo_ricci_flat_eigenvalue_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hflat : ∀ p q : E, coordRicci G x p q = 0) :
+    coordScalar G x / (Module.finrank ℝ E : ℝ) = 0 := by
+  rw [coordScalar_eq_zero_of_ricci_flat hflat, zero_div]
+
+end RicciFlow
