@@ -24787,3 +24787,22 @@ theorem round_sphere_scalar_second_deriv
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere scalar blow-up is strictly convex**: for `c > 0`, `R₀ > 0`, and `t < 1/(2c)`,
+the acceleration `8c²R₀/(1−2ct)³ > 0`. The scalar curvature is a strictly convex function of time on
+its existence interval `(−∞, T)` — not merely increasing but accelerating, the hallmark of the
+super-linear `1/(T−t)` finite-time blow-up (roadmap item 3). -/
+theorem round_sphere_scalar_accel_pos
+    {R₀ c t : ℝ} (hR : 0 < R₀) (hc : 0 < c) (ht : t < 1 / (2 * c)) :
+    0 < 8 * c ^ 2 * R₀ / (1 - 2 * c * t) ^ 3 :=
+  div_pos (mul_pos (mul_pos (by norm_num) (pow_pos hc 2)) hR)
+    (pow_pos (round_sphere_exists_on_interval hc ht) 3)
+
+end RicciFlow
