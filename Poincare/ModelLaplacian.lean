@@ -26073,3 +26073,49 @@ theorem coordRiemann_last_pair_metric_trace_zero
   exact coordRiemann_first_pair_metric_trace_zero hGsymm hinv hdiff a b
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The traceless-Ricci Kulkarni–Nomizu term contributes purely `(2−n)·Ric̊`** (no scalar part).
+For the traceless Ricci field `Ric̊ = Ric − (R/n)·g`, the metric contraction of `Ric̊ ⊘ g` over slots
+`(1,4)` is `(2−n)·Ric̊`: the `tr_g(h)·g` term of the general Kulkarni–Nomizu trace
+(`kulkarniNomizu_metric_ricci_trace`) drops out because `tr_g(Ric̊) = 0`
+(`tracelessRicci_metricTrace_zero`). This is exactly the defining property that makes
+`(1/(n−2))·(Ric̊ ⊘ g)` the *pure traceless-Ricci part* of the Ricci decomposition
+`Rm = W + (1/(n−2))Ric̊ ⊘ g + (R/(2n(n−1)))g ⊘ g`: it carries the traceless Ricci information with no
+scalar contamination, so its trace returns `(2−n)·Ric̊` — the wedge with `g` rescales but never mixes in
+the scalar curvature (engine toward the dim-3 `Rm = Schouten ⊘ g` decomposition, roadmap item 3). -/
+theorem kulkarniNomizu_tracelessRicci_metric_trace
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ (y : E) (u : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z u) y)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0) (u w : E) :
+    ∑ i, kulkarniNomizu
+        (fun y ↦ coordRicciForm G y (hdiff y) - (coordScalar G y / (Module.finrank ℝ E : ℝ)) • G y)
+        G x ((Module.finBasis ℝ E) i) u w
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+      = (2 - (Module.finrank ℝ E : ℝ))
+        * ((coordRicciForm G x (hdiff x)
+            - (coordScalar G x / (Module.finrank ℝ E : ℝ)) • G x) u w) := by
+  have hsymm : ∀ p q : E,
+      (fun y ↦ coordRicciForm G y (hdiff y)
+          - (coordScalar G y / (Module.finrank ℝ E : ℝ)) • G y) x p q
+      = (fun y ↦ coordRicciForm G y (hdiff y)
+          - (coordScalar G y / (Module.finrank ℝ E : ℝ)) • G y) x q p := by
+    intro p q
+    simp only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, smul_eq_mul,
+      coordRicciForm_apply]
+    rw [coordRicci_symm hGC2 hGsymm hinv (hdiff x) q p, hGsymm x p q]
+  rw [kulkarniNomizu_metric_ricci_trace hsymm (fun p q => hGsymm x p q) hinv u w,
+    tracelessRicci_metricTrace_zero hdiff (fun v w => hGsymm x v w) (hinv x) hn]
+  ring
+
+end RicciFlow
