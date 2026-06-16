@@ -23923,3 +23923,27 @@ theorem pinching_gap_pos_iff_traceless_pos
   rw [pinching_gap_eq_n_mul_tracelessNormSq hdiff hn.ne', mul_pos_iff_of_pos_left hn]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci endomorphism of an Einstein metric is `(R/n)·id`**: if `Ric = c·g` then the raised
+Ricci endomorphism is `(R/n)·id`, since the Einstein constant is `c = R/n`. The Ricci operator of an
+Einstein metric is a scalar multiple of the identity with eigenvalue exactly the normalized scalar
+curvature `R/n` — the diagonal, isotropic curvature operator of the round sphere (roadmap item 3). -/
+theorem coordRicciEndo_of_einstein_normalized
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0) :
+    coordRicciEndo G x hdiff = (coordScalar G x / (Module.finrank ℝ E : ℝ)) • LinearMap.id := by
+  rw [coordRicciEndo_of_einstein hGsymm hinv hdiff hEin,
+    ← einstein_const_eq_scalar_div hGsymm hinv hdiff hEin hn]
+
+end RicciFlow
