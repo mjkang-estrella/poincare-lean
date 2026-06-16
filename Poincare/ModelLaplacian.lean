@@ -23188,3 +23188,28 @@ theorem round_sphere_inv_scalar_zero_at_extinction
   rw [hnum, zero_div]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Einstein metrics are fixed points of the normalized Ricci flow**: the normalized flow direction
+`−2·(Ric − (R/n)g) = 0` when `Ric = c·g`, since the traceless Ricci tensor `Ric̊ = Ric − (R/n)g`
+vanishes on the Einstein locus. An Einstein metric does not move under the volume-normalized flow —
+it is a genuine stationary point, the target geometry of Hamilton's rounding theorem (roadmap item 3). -/
+theorem einstein_normalized_flow_fixed
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q) (p q : E) :
+    (-2 : ℝ) * (coordRicci G x p q
+        - (coordScalar G x / (Module.finrank ℝ E : ℝ)) * G x p q) = 0 := by
+  rw [einstein_traceless_ricci hGsymm hinv hdiff hn hEin p q]
+  ring
+
+end RicciFlow
