@@ -22841,3 +22841,21 @@ theorem einstein_homothety_tendsto_atTop_of_neg
   exact tendsto_atTop_add_const_left _ 1 (Tendsto.const_mul_atTop hslope tendsto_id)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The expanding metric stays positive-definite for all forward time**: for `c < 0`, `t ≥ 0`, and a
+direction with `g(0)(v,v) > 0`, the evolved value `g(t)(v,v) = (1−2ct)·g(0)(v,v) > 0`. The hyperbolic
+homothety `g(t) = (1−2ct)g(0)` is a genuine Riemannian metric for all `t ≥ 0` — the expanding solution
+exists for all forward time (immortal), unlike the round sphere's finite-time extinction (roadmap item 3). -/
+theorem hyperbolic_metric_pos_def
+    {c : ℝ} (hc : c < 0) {t : ℝ} (ht : 0 ≤ t) {gv : ℝ} (hgv : 0 < gv) :
+    0 < (1 - 2 * c * t) * gv :=
+  mul_pos (einstein_homothety_pos_of_neg hc ht) hgv
+
+end RicciFlow
