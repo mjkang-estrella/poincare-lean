@@ -25350,3 +25350,28 @@ theorem lichnerowiczLaplacian_neg_two_ricci
   lichnerowiczLaplacian_smul hKd hRic2 hΓd (-2) p q
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The connection Laplacian of the doubled metric vanishes**: `Δ_∇(g + g)(p,q) = 0`. Applying the
+new field-additivity `connectionLaplacian_add_field` to `H₁ = H₂ = g` and the metric compatibility
+`Δ_∇ g = 0`: the rough Laplacian of any constant multiple of the metric vanishes, since `∇g = 0`
+(roadmap item 3). -/
+theorem connectionLaplacian_two_metric_eq_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hG2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ G y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (p q : E) :
+    connectionLaplacian G (fun y ↦ G y + G y) x p q = 0 := by
+  rw [connectionLaplacian_add_field hGd hGd hG2 hG2 hΓd p q,
+    connectionLaplacian_metric_eq_zero hGd hGsymm hinv p q, add_zero]
+
+end RicciFlow
