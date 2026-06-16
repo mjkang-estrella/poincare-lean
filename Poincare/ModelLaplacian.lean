@@ -23996,3 +23996,28 @@ theorem coordRicciEndo_einstein_eigenvalue_pos
   exact hc
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Einstein Ricci endomorphism squares to `(R/n)²·id`**: `Ric♯(Ric♯ v) = (R/n)²·v` for all `v`,
+when `Ric = c·g`. Iterating the eigenvalue relation, the square of the Ricci operator acts as the
+scalar `(R/n)²` — consistent with `|Ric|² = tr(Ric♯²) = n·(R/n)² = R²/n`, the saturated pinching of the
+round sphere read off from the squared spectrum (roadmap item 3). -/
+theorem coordRicciEndo_einstein_sq_apply
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {c : ℝ}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hEin : ∀ p q : E, coordRicci G x p q = c * G x p q)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0) (v : E) :
+    coordRicciEndo G x hdiff (coordRicciEndo G x hdiff v)
+      = ((coordScalar G x / (Module.finrank ℝ E : ℝ)) ^ 2) • v := by
+  rw [coordRicciEndo_einstein_apply hGsymm hinv hdiff hEin hn,
+    coordRicciEndo_einstein_apply hGsymm hinv hdiff hEin hn, smul_smul, sq]
+
+end RicciFlow
