@@ -22747,3 +22747,22 @@ theorem einstein_homothety_increasing_of_neg
   nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ -2 * c) (by linarith : (0:ℝ) ≤ t₂ - t₁)]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The hyperbolic scalar curvature stays negative along the flow**: for an initially
+negatively-curved Einstein metric (`R₀ < 0`, `c < 0`), the evolving scalar `R(t) = R₀/(1−2ct) < 0`
+for all `t ≥ 0`, since the homothety factor is positive. The expanding hyperbolic space form keeps
+negative scalar curvature forever — never reaching the positive-curvature regime of the round-sphere
+singularity (roadmap item 3). -/
+theorem hyperbolic_scalar_neg
+    {R₀ c t : ℝ} (hR : R₀ < 0) (hc : c < 0) (ht : 0 ≤ t) :
+    R₀ / (1 - 2 * c * t) < 0 :=
+  div_neg_of_neg_of_pos hR (einstein_homothety_pos_of_neg hc ht)
+
+end RicciFlow
