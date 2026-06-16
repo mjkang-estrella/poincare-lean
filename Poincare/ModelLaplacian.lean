@@ -23345,3 +23345,26 @@ theorem round_sphere_scalar_ratio_times
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The extinction time is the unique zero of the homothety factor**: for `c ≠ 0`,
+`1 − 2ct = 0 ↔ t = 1/(2c)`. The shrinking round sphere `g(t) = (1−2ct)g(0)` degenerates at exactly one
+time `T = 1/(2c)` — the singularity is reached at a single, sharply-determined extinction time
+(roadmap item 3). -/
+theorem round_sphere_factor_zero_iff
+    {c t : ℝ} (hc : c ≠ 0) :
+    1 - 2 * c * t = 0 ↔ t = 1 / (2 * c) := by
+  constructor
+  · intro h
+    rw [eq_div_iff (mul_ne_zero two_ne_zero hc)]
+    linear_combination -h
+  · rintro rfl
+    rw [mul_one_div, div_self (mul_ne_zero two_ne_zero hc), sub_self]
+
+end RicciFlow
