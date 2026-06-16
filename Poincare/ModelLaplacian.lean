@@ -23676,3 +23676,21 @@ theorem round_sphere_scalar_doubles
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of the zero tensor is zero**: `tr_g(0) = 0`. Completing the `ℝ`-linear structure
+of the metric-trace contraction alongside `tensorMetricTrace_add`, `_sub`, and `_smul`: the metric
+trace is a genuine linear functional on `(0,2)`-tensor fields, vanishing on the zero tensor
+(roadmap item 3). -/
+theorem tensorMetricTrace_zero (G : E → E →L[ℝ] E →L[ℝ] ℝ) (x : E) :
+    tensorMetricTrace G (fun _ ↦ 0) x = 0 := by
+  unfold tensorMetricTrace
+  simp
+
+end RicciFlow
