@@ -22992,3 +22992,22 @@ theorem round_sphere_scalar_factor_const
   div_mul_cancel₀ R₀ hfac
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere Ricci norm × squared homothety factor is conserved**:
+`|Ric|²(t)·(1−2ct)² = N₀` for `1 − 2ct ≠ 0`. Since `|Ric|²(t) = N₀/(1−2ct)²` scales by the inverse
+square of the metric factor (one inverse power per Ricci index), the product with `(1−2ct)²` is the
+constant `N₀` — the second conserved self-similarity quantity, dimensionally consistent with the
+scalar conservation `R·(1−2ct) = R₀` (roadmap item 3). -/
+theorem round_sphere_ricciNormSq_factor_const
+    {N₀ c t : ℝ} (hfac : 1 - 2 * c * t ≠ 0) :
+    N₀ / (1 - 2 * c * t) ^ 2 * (1 - 2 * c * t) ^ 2 = N₀ :=
+  div_mul_cancel₀ N₀ (pow_ne_zero 2 hfac)
+
+end RicciFlow
