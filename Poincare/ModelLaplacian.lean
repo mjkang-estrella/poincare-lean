@@ -22499,3 +22499,34 @@ theorem ricciDivergenceForm_eq_zero_of_scalar_const
   exact ricciDivergence_eq_zero_of_scalar_const hGC2 hGsymm hinv hdiffΓ hdd hsymΓ hconst w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Einstein tensor is divergence-free (covector form)**: `div Ric − ½ dR = 0`, the
+twice-contracted Bianchi identity rearranged. Since the Einstein tensor is `Ric − ½R g` and `∇g = 0`,
+its divergence is `div Ric − ½ dR`, which vanishes identically. This is the fundamental conservation
+law `∇^i(R_{ij} − ½R g_{ij}) = 0` — divergence-freeness of the Einstein tensor, the contracted Bianchi
+identity at the heart of both general relativity and the structure of the Ricci flow (roadmap item 3). -/
+theorem einstein_tensor_divergence_free
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x)
+    (hsymΓ : ∀ p : E, IsSymmSndFDerivAt ℝ
+      (fun z ↦ christoffelClosedOp G z p) x) :
+    ricciDivergenceForm G x hdiffΓ hdd
+        - (1 / 2 : ℝ) • fderiv ℝ (fun y ↦ coordScalar G y) x = 0 := by
+  rw [fderiv_coordScalar_eq_two_ricciDivergenceForm hGC2 hGsymm hinv hdiffΓ hdd hsymΓ,
+    smul_smul]
+  norm_num
+
+end RicciFlow
