@@ -25084,3 +25084,31 @@ theorem lichnerowiczLaplacian_two_metric
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Lichnerowicz Laplacian of the doubled metric is `4 Ric`**: `Δ_L(g + g)(p,q) = 4·Ric(p,q)`.
+Combining `lichnerowiczLaplacian_two_metric` (`Δ_L(g+g) = 2 Δ_L g`) with `Δ_L g = 2 Ric`. The concrete
+value confirms the new field-additivity is consistent with the established `Δ_L g = 2 Ric`: doubling
+the metric quadruples (via `2 × 2`) the Ricci output (roadmap item 3). -/
+theorem lichnerowiczLaplacian_two_metric_eq_four_ricci
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hG2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ G y) x)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (p q : E) :
+    lichnerowiczLaplacian G (fun y ↦ G y + G y) x p q = 4 * coordRicci G x p q := by
+  rw [lichnerowiczLaplacian_two_metric hGd hG2 hΓd p q,
+    lichnerowiczLaplacian_metric_eq_two_ricci hGC2 hGsymm hinv hdiff p q]
+  ring
+
+end RicciFlow
