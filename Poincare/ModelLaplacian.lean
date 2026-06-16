@@ -22357,3 +22357,24 @@ theorem constCurvatureForm_sectional_orthonormal
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round sphere has positive sectional curvature**: for the positive-sphere sign `κ < 0` and a
+`g`-orthonormal 2-plane, `Rm(u,w,w,u) = −κ > 0`. The round sphere has strictly positive sectional
+curvature on every 2-plane — the defining geometric feature of the space form whose Ricci flow models
+the Poincaré singularity (roadmap item 3). -/
+theorem constCurvatureForm_sectional_orthonormal_pos
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ v w : E, G x v w = G x w v) {κ : ℝ} (hκ : κ < 0) (u w : E)
+    (huw : G x u w = 0) (hu : G x u u = 1) (hw : G x w w = 1) :
+    0 < constCurvatureForm G x κ u w w u := by
+  rw [constCurvatureForm_sectional_orthonormal hGsymm κ u w huw hu hw]
+  linarith
+
+end RicciFlow
