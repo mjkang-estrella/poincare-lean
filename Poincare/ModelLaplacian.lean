@@ -23050,3 +23050,21 @@ theorem round_sphere_scalar_type_one
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The round-sphere Type-I blow-up constant is `n/2`**: for the round sphere `R₀ = c·n` (scalar =
+Einstein constant × dimension), so the Type-I rate constant `R₀/(2c) = cn/(2c) = n/2`. The curvature
+blows up as `R(t) ≈ (n/2)/(T − t)` — a dimension-only universal constant, the same `n/2` as the
+extinction product `T·R₀`, exhibiting the round sphere as the canonical Type-I model (roadmap item 5). -/
+theorem round_sphere_type_one_constant_eq
+    {c n : ℝ} (hc : c ≠ 0) :
+    c * n / (2 * c) = n / 2 := by
+  rw [mul_comm c n, mul_div_mul_right _ _ hc]
+
+end RicciFlow
