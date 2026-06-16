@@ -22935,3 +22935,21 @@ theorem round_sphere_ancient_scalar_bounded
   exact div_le_self hR.le h1
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The ancient round sphere has positive scalar curvature backward in time**: for `c > 0`,
+`R₀ > 0`, and `t ≤ 0`, the scalar `R(t) = R₀/(1−2ct) > 0`. Combined with the upper bound `R(t) ≤ R₀`,
+the ancient shrinking soliton has scalar curvature in `(0, R₀]` for all `t ≤ 0` — the strictly positive,
+uniformly bounded curvature characterizing the 3-sphere κ-solution (roadmap item 5). -/
+theorem round_sphere_ancient_scalar_pos
+    {R₀ c t : ℝ} (hR : 0 < R₀) (hc : 0 < c) (ht : t ≤ 0) :
+    0 < R₀ / (1 - 2 * c * t) :=
+  div_pos hR (round_sphere_ancient hc ht)
+
+end RicciFlow
