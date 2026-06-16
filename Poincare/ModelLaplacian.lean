@@ -22820,3 +22820,24 @@ theorem hyperbolic_ricciNormSq_tendsto_zero
   exact Tendsto.div_atTop tendsto_const_nhds hsq
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative Filter Topology
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The expanding homothety factor tends to infinity**: for `c < 0`, `1 − 2ct → +∞` as `t → ∞`.
+The reusable kernel behind the hyperbolic decay results: the metric `g(t) = (1−2ct)g(0)` grows without
+bound, so every curvature quantity scaling by an inverse power of the factor decays to zero
+(roadmap item 3). -/
+theorem einstein_homothety_tendsto_atTop_of_neg
+    {c : ℝ} (hc : c < 0) :
+    Tendsto (fun t : ℝ ↦ 1 - 2 * c * t) atTop atTop := by
+  have hslope : (0:ℝ) < -2 * c := by linarith
+  have heq : (fun t : ℝ ↦ 1 - 2 * c * t) = (fun t ↦ 1 + -2 * c * t) := by ext t; ring
+  rw [heq]
+  exact tendsto_atTop_add_const_left _ 1 (Tendsto.const_mul_atTop hslope tendsto_id)
+
+end RicciFlow
