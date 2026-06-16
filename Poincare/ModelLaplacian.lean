@@ -25598,3 +25598,22 @@ theorem tensorDivOneForm_zero
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant tensor derivative of the zero tensor vanishes**:
+`(∇0)(v,p,q) = 0`. The `fderiv` of the constant zero tensor is `0` and the two Christoffel correction
+terms vanish on `0`. The reusable nullity building block for the `ℝ`-linearity of the covariant
+derivative, alongside `covTensor2Deriv_add_field`, `_sub_field`, and `_smul_field` (roadmap item 3). -/
+theorem covTensor2Deriv_zero
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (v p q : E) :
+    covTensor2Deriv G (fun _ ↦ 0) x v p q = 0 := by
+  unfold covTensor2Deriv
+  simp
+
+end RicciFlow
