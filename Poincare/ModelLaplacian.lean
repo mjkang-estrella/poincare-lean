@@ -27568,3 +27568,37 @@ theorem g_coordGradient_pair
     g_coordGradient G hinv g y (coordGradient G f y)]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The derivative of the metric-paired gradient is the Hessian**:
+`∂_v(G(∇_G f, w)) = D²f(v,w)`. Since the curved gradient satisfies `G(∇_G f, w) = df(w)`
+(`g_coordGradient`) at every point, differentiating the scalar field `y ↦ G_y(∇_G f(y), w)` in direction
+`v` is just differentiating `y ↦ df(y)·w` — which yields the second derivative `D²f(v,w)` (the `w`-fixed
+evaluation passes through the derivative). This is the key compatibility step toward the gradient–Hessian
+relation `G(∇_v ∇_G f, w) = ∇²f(v,w)`: combined with the product rule and metric compatibility
+(`coord_metric_compatible`), it shows the covariant derivative of the curved gradient is the covariant
+Hessian — the bridge from `∇_G f` to `∇²f` in the curved Bochner identity (roadmap item 3). -/
+theorem fderiv_g_coordGradient_eq_fderiv_fderiv
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (x v w : E) :
+    fderiv ℝ (fun y ↦ G y (coordGradient G f y) w) x v
+      = fderiv ℝ (fderiv ℝ f) x v w := by
+  have hffd : Differentiable ℝ (fderiv ℝ f) :=
+    (hf.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)
+  have hfe : (fun y ↦ G y (coordGradient G f y) w) = fun y ↦ fderiv ℝ f y w := by
+    funext y
+    exact g_coordGradient G hinv f y w
+  rw [hfe]
+  have happ : fderiv ℝ (fun y ↦ fderiv ℝ f y w) x
+      = (ContinuousLinearMap.apply ℝ ℝ w).comp (fderiv ℝ (fderiv ℝ f) x) :=
+    ((ContinuousLinearMap.apply ℝ ℝ w).hasFDerivAt.comp x (hffd x).hasFDerivAt).fderiv
+  rw [happ]
+  rfl
+
+end RicciFlow
