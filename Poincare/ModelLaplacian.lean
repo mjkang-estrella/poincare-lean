@@ -28175,3 +28175,49 @@ theorem fderiv_fderiv_apply_real
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The iterated covariant derivative equals the second covariant derivative plus the Γ-corrector**:
+`∇_v(∇_w X) = ∇²_{v,w}X + ∇_{Γ(v,w)}X`. The naive iterate `∇_v(∇_w X) = ∂_v(∇_w X) + Γ(v)·(∇_w X)` differs
+from the *tensorial* second covariant derivative `∇²_{v,w}X` (`covariantSecondDerivative`) exactly by the
+covariant derivative of `X` along `Γ(v,w)` — this is the defining property of `∇²` (it subtracts the
+`∇_{Γ(v,w)}` term to be tensorial). Proof: unfold `covariantSecondDerivative`, convert its `christoffelAt`
+correctors to `christoffelClosedOp` (`metricBilin_apply` is `rfl`), and rearrange (`abel`). This is the
+identity that cancels the scalar Hessian's Christoffel corrector in the covariant-Leibniz expansion of
+`Δ_g|∇f|²_G`, leaving the tensorial `2 G(∇²_{v,w}∇_G f, ∇_G f)` (roadmap item 3). -/
+theorem covariantSecondDerivative_iterated
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (X : E → E) (v w : E) :
+    fderiv ℝ (fun y ↦ fderiv ℝ X y w + christoffelClosedOp G y w (X y)) x v
+        + christoffelClosedOp G x v (fderiv ℝ X x w + christoffelClosedOp G x w (X x))
+      = covariantSecondDerivative G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) X x v w
+        + (fderiv ℝ X x (christoffelClosedOp G x v w)
+          + christoffelClosedOp G x (christoffelClosedOp G x v w) (X x)) := by
+  unfold covariantSecondDerivative
+  have hlam : (fun y ↦ fderiv ℝ X y w
+        + christoffelAt G y (metricBilin (G y)) (metricBilin_nondeg (hGsymm y) (hinv y)) w (X y))
+      = fun y ↦ fderiv ℝ X y w + christoffelClosedOp G y w (X y) := by
+    funext y
+    rw [← christoffelClosedOp_eq_christoffelAt G (metricBilin (G y))
+      (metricBilin_nondeg (hGsymm y) (hinv y)) (fun p q ↦ rfl) w (X y)]
+  rw [hlam,
+    ← christoffelClosedOp_eq_christoffelAt G (metricBilin (G x))
+      (metricBilin_nondeg (hGsymm x) (hinv x)) (fun p q ↦ rfl) w (X x),
+    ← christoffelClosedOp_eq_christoffelAt G (metricBilin (G x))
+      (metricBilin_nondeg (hGsymm x) (hinv x)) (fun p q ↦ rfl) v w,
+    ← christoffelClosedOp_eq_christoffelAt G (metricBilin (G x))
+      (metricBilin_nondeg (hGsymm x) (hinv x)) (fun p q ↦ rfl) v
+      (fderiv ℝ X x w + christoffelClosedOp G x w (X x)),
+    ← christoffelClosedOp_eq_christoffelAt G (metricBilin (G x))
+      (metricBilin_nondeg (hGsymm x) (hinv x)) (fun p q ↦ rfl) (christoffelClosedOp G x v w) (X x)]
+  abel
+
+end RicciFlow
