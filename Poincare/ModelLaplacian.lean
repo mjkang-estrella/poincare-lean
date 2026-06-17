@@ -29568,3 +29568,31 @@ theorem contDiffAt_coordCurvatureOp_family
   exact ((h1.sub h2).add h3).sub h4
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci tensor is `C²`** (from `G ∈ C⁴`): `y ↦ Ric(u,w)(y) = coordRicci G y u w` is twice
+continuously differentiable, as the basis-trace `Σᵢ ⟨bⁱ, R(bᵢ,u)w⟩` of the `C²` curvature operator
+(`contDiffAt_coordCurvatureOp_family`). The `ContDiff` analogue of `differentiableAt_coordRicci_family`. This
+is the curvature-`C²` fact that upgrades the Ricci field to `C²`, discharging the Ricci second-derivative
+hypotheses (`hRic2`, `hH2`, and the scalar `hφ`) of the scalar-curvature evolution. -/
+theorem contDiffAt_coordRicci_family
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (hG : ContDiff ℝ 4 G)
+    (hinv : ∀ y : E, (G y).IsInvertible) (u w : E) :
+    ContDiffAt ℝ 2 (fun y ↦ coordRicci G y u w) x := by
+  unfold coordRicci
+  apply ContDiffAt.sum
+  intro i _
+  have hfam := contDiffAt_coordCurvatureOp_family (x := x) hG hinv ((Module.finBasis ℝ E) i) u
+  have happ : ContDiffAt ℝ 2
+      (fun y ↦ (coordCurvatureOp G y ((Module.finBasis ℝ E) i) u) w) x :=
+    hfam.clm_apply contDiffAt_const
+  exact ((LinearMap.toContinuousLinearMap
+    ((Module.finBasis ℝ E).coord i)).contDiff.contDiffAt).comp x happ
+
+end RicciFlow
