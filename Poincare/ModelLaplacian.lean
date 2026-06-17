@@ -30144,3 +30144,46 @@ theorem curvedLaplacian_coordGradNormSq_bochner_refined
   linarith [hkey]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The refined Bochner inequality for eigenfunctions** (pointwise Lichnerowicz–Obata integrand):
+if `Δ_g f = −λ f` on a Riemannian metric, then
+`½ Δ_g|∇f|² ≥ (λ²/n) f² − λ|∇f|²_G + Ric(∇f, ∇f)`. Substitutes `|∇²f|² ≥ (Δf)²/n = λ²f²/n`
+(`curvedLaplacian_sq_le_finrank_mul_coordCovariantHessNormSq` with `Δf = −λf`) into the eigenfunction
+Bochner identity `½Δ_g|∇f|² = |∇²f|² − λ|∇f|² + Ric`
+(`curvedLaplacian_coordGradNormSq_bochner_eigenfunction`). Integrated against `f` (or `1`) over a closed
+manifold with `Ric ≥ k g`, this is exactly the Lichnerowicz–Obata eigenvalue bound `λ ≥ n/(n−1)·k` — the
+model curvature-spectrum inequality (roadmap item 3). -/
+theorem curvedLaplacian_coordGradNormSq_bochner_eigenfunction_refined
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) (lam : ℝ)
+    (heig : curvedLaplacian G (fun y ↦ metricBilin (G y))
+      (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f = fun y ↦ -lam * f y) :
+    2 * (-lam * coordGradNormSq G f x
+            + coordRicci G x (coordGradient G f x) (coordGradient G f x))
+        + 2 / (Module.finrank ℝ E : ℝ) * lam ^ 2 * (f x) ^ 2
+      ≤ curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradNormSq G f) x := by
+  have heigx : curvedLaplacian G (fun y ↦ metricBilin (G y))
+      (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x = -lam * f x := congrFun heig x
+  have hΓdg : ∀ (y a : E), DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z a) y :=
+    fun y a ↦ differentiableAt_christoffelClosedOp (x := y) G (hG.of_le (by norm_num)) hinv a
+  rw [curvedLaplacian_coordGradNormSq_bochner_eigenfunction G hG hGsymm hinv hΓdg hf lam heig]
+  have h := curvedLaplacian_sq_le_finrank_mul_coordCovariantHessNormSq G
+    (hG.differentiable (by norm_num)) hGsymm hinv (hf.of_le (by norm_num)) hGpos
+  rw [heigx] at h
+  have hkey : 2 / (Module.finrank ℝ E : ℝ) * lam ^ 2 * (f x) ^ 2
+      ≤ 2 * coordCovariantHessNormSq G f x := by
+    rw [div_mul_eq_mul_div, div_mul_eq_mul_div, div_le_iff₀ hn]
+    nlinarith [h]
+  linarith [hkey]
+
+end RicciFlow
