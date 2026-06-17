@@ -29750,3 +29750,47 @@ theorem differentiableAt_christoffelFunctionalCLM
   exact ((t1.add t2).sub t3).const_mul (1 / 2 : ℝ)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `δΓ` operator of `−2·Ric` is differentiable** (discharges `hVd`): `y ↦ δΓ_{−2Ric}(·)(y)
+= christoffelDerivOp G (−2 Ric) y p` is differentiable at `x`. Lift through `differentiableAt_clm_of_apply`;
+each `christoffelDeriv = −(G⁻¹∘H∘G⁻¹)(M_G) + G⁻¹(M_H)` is assembled from the differentiable inverse metric
+`G⁻¹`, the differentiable field `H = −2 Ric` (`Ric ∈ C²`), and the differentiable Christoffel functionals
+`M_G`, `M_H` (`differentiableAt_christoffelFunctionalCLM`, using `∂G` from `G ∈ C²` and `∂H = ∂Ric` from
+`Ric ∈ C²`). This is the last regularity hypothesis of the curved Hamilton scalar-curvature evolution. -/
+theorem differentiableAt_christoffelDerivOp_neg_two_coordRicciForm_field
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (hG : ContDiff ℝ 4 G)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y) (p : E) :
+    DifferentiableAt ℝ (fun y ↦ christoffelDerivOp G
+      (fun z ↦ (-2 : ℝ) • coordRicciForm G z (hdiffΓ z)) y p) x := by
+  set H : E → E →L[ℝ] E →L[ℝ] ℝ :=
+    fun z ↦ (-2 : ℝ) • coordRicciForm G z (hdiffΓ z) with hHdef
+  have hHC2 : ContDiffAt ℝ 2 H x :=
+    (contDiffAt_coordRicciForm_field hG hinv hdiffΓ).const_smul (-2 : ℝ)
+  have hInvDiff : DifferentiableAt ℝ (fun y ↦ (G y).inverse) x :=
+    (((hinv x).contDiffAt_map_inverse (n := 1)).differentiableAt one_ne_zero).comp x
+      ((hG.differentiable (by norm_num)).differentiableAt)
+  have hGd2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ G y) x :=
+    ((hG.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)).differentiableAt
+  have hHd : DifferentiableAt ℝ (fun y ↦ H y) x := hHC2.differentiableAt (by norm_num)
+  have hHd2 := (hHC2.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)
+  apply differentiableAt_clm_of_apply
+  intro v
+  simp_rw [christoffelDerivOp_apply]
+  unfold christoffelDeriv
+  have hMG := differentiableAt_christoffelFunctionalCLM hGd2 p v
+  have hMH := differentiableAt_christoffelFunctionalCLM hHd2 p v
+  have hop : DifferentiableAt ℝ
+      (fun y ↦ -((G y).inverse.comp ((H y).comp (G y).inverse))) x :=
+    (hInvDiff.clm_comp (hHd.clm_comp hInvDiff)).neg
+  exact (hop.clm_apply hMG).add (hInvDiff.clm_apply hMH)
+
+end RicciFlow
