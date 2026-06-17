@@ -28863,3 +28863,43 @@ theorem covariantHessianForm_eq_covariantHessian (G : E → E →L[ℝ] E →L[�
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The CLM-valued Hessian field is symmetric**: `covariantHessianForm G f x v w = covariantHessianForm
+G f x w v`, inherited from `covariantHessian_symm` through the component identity. -/
+theorem covariantHessianForm_symm (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiffAt ℝ 2 f x) (v w : E) :
+    covariantHessianForm G f x v w = covariantHessianForm G f x w v := by
+  rw [covariantHessianForm_eq_covariantHessian G hGsymm hinv f x v w,
+    covariantHessianForm_eq_covariantHessian G hGsymm hinv f x w v,
+    covariantHessian_symm G (fun y ↦ metricBilin (G y))
+      (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) hGd hGsymm hf v w]
+
+/-- **The metric trace of the Hessian field is the curved Laplacian**:
+`tr_g (∇²f) = Δf`. By `tensorMetricTrace` the trace is `Σᵢ ∇²f(bᵢ, ♯bⁱ)`; the Hessian field is symmetric
+(`covariantHessianForm_symm`) so each summand is `∇²f(♯bⁱ, bᵢ) = D²f(♯bⁱ,bᵢ) − df(Γ(♯bⁱ,bᵢ))`, which is
+exactly the raised-Hessian summand of `curvedLaplacian` (`curvedLaplacian_eq_raised_hessian_sum`). This
+identifies `tensorMetricTrace G (covariantHessianForm G f)` with the curved Laplacian, so the general-tensor
+transport identity `Σⱼ (∇_v H)(♯bʲ,bⱼ) = ∂_v(tr_g H)` becomes `Σⱼ ∇³f(v,♯bʲ,bⱼ) = ∂_v(Δf)` once `∇H = ∇³f`
+is established — the curved Bochner transport term (roadmap item 3). -/
+theorem tensorMetricTrace_covariantHessianForm (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    (hGd : Differentiable ℝ G) (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible) {f : E → ℝ} (hf : ContDiffAt ℝ 2 f x) :
+    tensorMetricTrace G (covariantHessianForm G f) x
+      = curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x := by
+  rw [curvedLaplacian_eq_raised_hessian_sum G hGsymm hinv f]
+  unfold tensorMetricTrace
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [covariantHessianForm_symm G hGd hGsymm hinv hf ((Module.finBasis ℝ E) i)
+      ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))),
+    covariantHessianForm_apply]
+
+end RicciFlow
