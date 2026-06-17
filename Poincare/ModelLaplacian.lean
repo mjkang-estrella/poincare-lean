@@ -29490,3 +29490,43 @@ theorem isSymmSndFDerivAt_christoffelClosedOp
   (contDiffAt_christoffelClosedOp G hG hinv p).isSymmSndFDerivAt (by norm_num)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Christoffel field is `C³`** (from `G ∈ C⁴`): the order-`3` analogue of
+`contDiffAt_christoffelClosedOp`. Same lift through `contDiffAt_clm_of_apply` with the inverse metric `C³`
+(`IsInvertible.contDiffAt_map_inverse (n := 3)`) and the Christoffel functional `C³` (its scalar components
+are slots of `D G`, `C³` since `G ∈ C⁴`). Supplies the curvature regularity (`∂Γ ∈ C²`) needed to make the
+Ricci tensor and scalar curvature `C²` — the remaining `C⁴`-level regularity of the scalar-curvature
+evolution. -/
+theorem contDiffAt_christoffelClosedOp_three
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 4 G)
+    (hinv : ∀ y : E, (G y).IsInvertible) (p : E) :
+    ContDiffAt ℝ 3 (fun y ↦ christoffelClosedOp G y p) x := by
+  have hInvCD : ContDiffAt ℝ 3 (fun y ↦ (G y).inverse) x :=
+    ((hinv x).contDiffAt_map_inverse (n := 3)).comp x (hG.of_le (by norm_num)).contDiffAt
+  have hdG3cd := (hG.fderiv_right (m := 3) (by norm_num)).contDiffAt (x := x)
+  apply contDiffAt_clm_of_apply
+  intro v
+  simp_rw [christoffelClosedOp_apply]
+  refine hInvCD.clm_apply ?_
+  apply contDiffAt_clm_of_apply
+  intro w
+  have hfun : (fun y ↦ (LinearMap.toContinuousLinearMap (christoffelFunctional G y p v)) w)
+      = fun y ↦ (1 / 2 : ℝ) * ((fderiv ℝ G y p) v w + (fderiv ℝ G y v) p w
+        - (fderiv ℝ G y w) p v) := rfl
+  rw [hfun]
+  have t1 : ContDiffAt ℝ 3 (fun y ↦ (fderiv ℝ G y p) v w) x :=
+    ((hdG3cd.clm_apply contDiffAt_const).clm_apply contDiffAt_const).clm_apply contDiffAt_const
+  have t2 : ContDiffAt ℝ 3 (fun y ↦ (fderiv ℝ G y v) p w) x :=
+    ((hdG3cd.clm_apply contDiffAt_const).clm_apply contDiffAt_const).clm_apply contDiffAt_const
+  have t3 : ContDiffAt ℝ 3 (fun y ↦ (fderiv ℝ G y w) p v) x :=
+    ((hdG3cd.clm_apply contDiffAt_const).clm_apply contDiffAt_const).clm_apply contDiffAt_const
+  exact contDiffAt_const.mul ((t1.add t2).sub t3)
+
+end RicciFlow
