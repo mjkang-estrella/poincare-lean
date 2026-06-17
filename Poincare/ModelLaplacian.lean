@@ -29060,3 +29060,37 @@ theorem curvedLaplacian_coordGradNormSq_bochner
     sum_G_covariantSecondDerivative_gradient_eq_transport_ricci G hG hGsymm hinv hΓd hf hHd]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **THE CURVED BOCHNER IDENTITY, gradient-pairing form**:
+`Δ_g|∇f|²_G = 2(G(∇f, ∇Δf) + Ric(∇f,∇f)) + 2|∇²f|²_g`, i.e. classically
+`½ Δ_g|∇f|² = |∇²f|² + ⟨∇f, ∇(Δf)⟩_g + Ric(∇f, ∇f)`. The transport term `∂_{∇f}(Δf)` of
+`curvedLaplacian_coordGradNormSq_bochner` is rewritten as the metric pairing `G(∇f, ∇Δf)` of the curved
+gradients of `f` and of its Laplacian (`g_coordGradient_pair`). This is the exact coordinate-model
+counterpart of the classical Riemannian Bochner–Weitzenböck formula, with the cross term in inner-product
+form — the shape used directly in gradient estimates and the maximum principle for Ricci flow
+(roadmap item 3). -/
+theorem curvedLaplacian_coordGradNormSq_bochner_gradient
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f)
+    (hHd : ∀ y, DifferentiableAt ℝ (covariantHessianForm G f) y) :
+    curvedLaplacian G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradNormSq G f) x
+      = 2 * (G x (coordGradient G f x)
+              (coordGradient G (curvedLaplacian G (fun y ↦ metricBilin (G y))
+                (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f) x)
+            + coordRicci G x (coordGradient G f x) (coordGradient G f x))
+        + 2 * coordCovariantHessNormSq G f x := by
+  rw [curvedLaplacian_coordGradNormSq_bochner G hG hGsymm hinv hΓd hf hHd,
+    ← g_coordGradient_pair G hinv hGsymm f (curvedLaplacian G (fun y ↦ metricBilin (G y))
+      (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f) x]
+
+end RicciFlow
