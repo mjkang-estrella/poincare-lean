@@ -27695,3 +27695,30 @@ theorem g_covariantDeriv_coordGradient_eq_covariantHessian
   linarith [hkey]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved gradient field is differentiable**: for `f ∈ C²` and an invertible, differentiable metric
+`G`, the curved gradient `∇_G f = G⁻¹·df` is differentiable at `x`. It is the inverse-metric field
+`y ↦ (G y)⁻¹` (differentiable by smoothness of operator inversion, `contDiffAt_map_inverse`, composed with
+`G`) applied to the differential field `df` (differentiable since `f ∈ C²`), so the composite is
+differentiable by the continuous-linear product rule (`clm_apply`). This discharges the differentiability
+hypothesis of the gradient–Hessian relation (`g_covariantDeriv_coordGradient_eq_covariantHessian`),
+making the covariant derivative of the curved gradient unconditionally available for the curved Bochner
+identity (roadmap item 3). -/
+theorem differentiableAt_coordGradient
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : DifferentiableAt ℝ G x)
+    (hinv : (G x).IsInvertible) {f : E → ℝ} (hf : ContDiff ℝ 2 f) :
+    DifferentiableAt ℝ (coordGradient G f) x := by
+  have hInvDiff : DifferentiableAt ℝ (fun y ↦ (G y).inverse) x :=
+    ((hinv.contDiffAt_map_inverse (n := 1)).differentiableAt one_ne_zero).comp x hGd
+  have hdfd : DifferentiableAt ℝ (fderiv ℝ f) x :=
+    (hf.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num) x
+  exact hInvDiff.clm_apply hdfd
+
+end RicciFlow
