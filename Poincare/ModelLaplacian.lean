@@ -29317,3 +29317,35 @@ theorem differentiableAt_christoffelClosedOp
   exact ((t1.add t2).sub t3).const_mul (1 / 2 : ℝ)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **THE CURVED BOCHNER IDENTITY — fully unconditional**: for `G ∈ C³` symmetric and everywhere invertible
+and `f ∈ C³`,
+`Δ_g|∇f|²_G = 2(G(∇f, ∇Δf) + Ric(∇f,∇f)) + 2|∇²f|²_g`,
+i.e. `½ Δ_g|∇f|² = |∇²f|² + ⟨∇f, ∇Δf⟩_g + Ric(∇f, ∇f)`. Every regularity side-condition is now discharged: the
+Christoffel-differentiability is `differentiableAt_christoffelClosedOp` (from `G ∈ C²`), which in turn
+discharges the CLM-Hessian-field differentiability. This is the genuine curved Riemannian
+Bochner–Weitzenböck formula in the coordinate model, resting on nothing but the smoothness and
+nondegeneracy of the metric and function — the analytic engine of the maximum principle and gradient
+estimates for Ricci flow (roadmap item 3). -/
+theorem curvedLaplacian_coordGradNormSq_bochner_gradient_unconditional
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) :
+    curvedLaplacian G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradNormSq G f) x
+      = 2 * (G x (coordGradient G f x)
+              (coordGradient G (curvedLaplacian G (fun y ↦ metricBilin (G y))
+                (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f) x)
+            + coordRicci G x (coordGradient G f x) (coordGradient G f x))
+        + 2 * coordCovariantHessNormSq G f x :=
+  curvedLaplacian_coordGradNormSq_bochner_gradient_of_christoffelDiff G hG hGsymm hinv
+    (fun y a ↦ differentiableAt_christoffelClosedOp G (hG.of_le (by norm_num)) hinv a) hf
+
+end RicciFlow
