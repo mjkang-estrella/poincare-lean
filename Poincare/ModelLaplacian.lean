@@ -27369,3 +27369,49 @@ theorem fderiv_covariant_inner_expand
   abel
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Full expansion of the covariant second derivative** (Levi-Civita coordinate form):
+`∇²_{v,w}X = D²X(v,w) + (∂_vΓ(w))·X + Γ(w)·∂_vX + Γ(v)·∂_wX + (Γ(v)∘Γ(w))·X − ∂X(Γ(v,w)) − Γ(Γ(v,w))·X`,
+all Christoffel symbols written via `christoffelClosedOp`. Combines the inner expansion
+(`fderiv_covariant_inner_expand`) for the `∂_v` of the `w`-covariant derivative, the quadratic form
+(`curvature_quadratic_operator_form`) for the `Γ(v)·(∇_wX)` term, and the `christoffelAt =
+christoffelClosedOp` conversion (clean since `metricBilin_apply` is `rfl`). Antisymmetrizing in `(v,w)`
+the `D²X` cancels (Schwarz), the `Γ·∂X` terms cancel pairwise, and the corrector `Γ(v,w)`-terms cancel
+(Christoffel symmetry), leaving `coordCurvatureOp` — the curvature bridge (roadmap item 3). -/
+theorem covariantSecondDerivative_expand
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible) {X : E → E} (hX : ContDiff ℝ 2 X) {x : E}
+    (hΓd : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x) (v w : E) :
+    covariantSecondDerivative G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) X x v w
+      = fderiv ℝ (fderiv ℝ X) x v w
+        + (fderiv ℝ (fun y ↦ christoffelClosedOp G y w) x v) (X x)
+        + christoffelClosedOp G x w (fderiv ℝ X x v)
+        + (christoffelClosedOp G x v (fderiv ℝ X x w)
+          + (christoffelClosedOp G x v).comp (christoffelClosedOp G x w) (X x))
+        - (fderiv ℝ X x (christoffelClosedOp G x v w)
+          + christoffelClosedOp G x (christoffelClosedOp G x v w) (X x)) := by
+  unfold covariantSecondDerivative
+  have hlam : (fun y ↦ fderiv ℝ X y w
+        + christoffelAt G y (metricBilin (G y)) (metricBilin_nondeg (hGsymm y) (hinv y)) w (X y))
+      = fun y ↦ fderiv ℝ X y w + christoffelClosedOp G y w (X y) := by
+    funext y
+    rw [← christoffelClosedOp_eq_christoffelAt G (metricBilin (G y))
+      (metricBilin_nondeg (hGsymm y) (hinv y)) (fun p q ↦ rfl) w (X y)]
+  rw [hlam, fderiv_covariant_inner_expand G hX (hΓd w) v,
+    curvature_quadratic_operator_form G (metricBilin (G x))
+      (metricBilin_nondeg (hGsymm x) (hinv x)) (fun p q ↦ rfl) X v w,
+    ← christoffelClosedOp_eq_christoffelAt G (metricBilin (G x))
+      (metricBilin_nondeg (hGsymm x) (hinv x)) (fun p q ↦ rfl) v w,
+    ← christoffelClosedOp_eq_christoffelAt G (metricBilin (G x))
+      (metricBilin_nondeg (hGsymm x) (hinv x)) (fun p q ↦ rfl)
+      (christoffelClosedOp G x v w) (X x)]
+
+end RicciFlow
