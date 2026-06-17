@@ -27039,3 +27039,34 @@ theorem laplacian_sq_le_finrank_mul_hessianNormSq
   exact trace_sq_le_card_mul_trace_comp_self b hbs hbpos (hessianOperator b hb f x) hsa
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The refined (trace) Bochner inequality**: `(Δf)²/n + b(∇f, ∇Δf) ≤ ½Δ|∇f|²`. Combining the Bochner
+identity with the Hessian trace Cauchy–Schwarz `|Hess f|² ≥ (Δf)²/n` replaces the Hessian-norm term by the
+sharp lower bound `(Δf)²/n`. This is the form behind Li–Yau gradient estimates and the Lichnerowicz–Obata
+eigenvalue bound: the `(Δf)²/n` term is what couples the Laplacian to its own gradient. The curved analogue
+adds `Ric(∇f,∇f)`, turning a Ricci lower bound into a quantitative gradient/eigenvalue estimate
+(roadmap item 3). -/
+theorem bochner_inequality_refined
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ w : E, w ≠ 0 → 0 < b w w) {f : E → ℝ} (hf : ContDiff ℝ 3 f) (x : E)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    (modelLaplacian b hb f x) ^ 2 / (Module.finrank ℝ E : ℝ)
+        + b (metricGradient b hb f x) (metricGradient b hb (modelLaplacian b hb f) x)
+      ≤ (1 / 2) * modelLaplacian b hb
+          (fun z ↦ b (metricGradient b hb f z) (metricGradient b hb f z)) x := by
+  rw [bochner_flat b hb hbs hbpos hf x]
+  have hcs := laplacian_sq_le_finrank_mul_hessianNormSq b hb hbs hbpos (hf.of_le (by norm_num)) x
+  have hdiv : (modelLaplacian b hb f x) ^ 2 / (Module.finrank ℝ E : ℝ)
+      ≤ hessianNormSq b hb f x := by
+    rw [div_le_iff₀ hn, mul_comm]
+    exact hcs
+  linarith [hdiv]
+
+end RicciFlow
