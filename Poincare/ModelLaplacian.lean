@@ -28028,3 +28028,29 @@ theorem differentiableAt_christoffel_coordGradient
   exact differentiableAt_christoffelClosedOp_dir hGd hGsymm hΓd hXd w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The flat derivative of the gradient field is differentiable**:
+`y ↦ ∂(∇_G f)(y)·w` is differentiable at `x`. The gradient field is `C²` (`contDiffAt_coordGradient_two`),
+so its differential `∂(∇_G f)` is `C¹` (`ContDiffAt.fderiv_right`) hence differentiable, and evaluating at
+the fixed `w` (`clm_apply`) preserves differentiability. Together with
+`differentiableAt_christoffel_coordGradient` this gives the differentiability of the full covariant
+derivative field `∇_w∇_G f = ∂_w∇_G f + Γ(w)·∇_G f` — the regularity needed to differentiate the first
+Bochner component a second time and reach the covariant-Leibniz expansion of `Δ_g|∇f|²_G`
+(roadmap item 3). -/
+theorem differentiableAt_fderiv_coordGradient
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G) (hinv : (G x).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) (w : E) :
+    DifferentiableAt ℝ (fun y ↦ fderiv ℝ (coordGradient G f) y w) x := by
+  have hfdX : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (coordGradient G f) y) x :=
+    ((contDiffAt_coordGradient_two G hG hinv hf).fderiv_right (m := 1)
+      (by norm_num)).differentiableAt (by norm_num)
+  exact hfdX.clm_apply (differentiableAt_const w)
+
+end RicciFlow
