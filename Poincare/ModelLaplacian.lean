@@ -27247,3 +27247,33 @@ theorem covariantHessian_const (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
   rw [christoffelAt_const G₀ x (b x) (hb x) v w, map_zero, sub_zero]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved Laplacian on a constant metric is the flat Hessian trace**:
+`Δ_{G₀}f = Σⱼ D²f(♯bʲ, bⱼ)` (metric trace of the ordinary Hessian against the inverse of the constant
+metric `G₀`). The curved Laplacian is the metric trace of the covariant Hessian
+(`sum_covariantHessian_eq_curvedLaplacian`); on a constant metric the covariant Hessian is the flat
+second derivative (`covariantHessian_const`), so the curved trace collapses to the flat metric contraction.
+This shows the curved Laplacian agrees with the flat `modelLaplacian` of the constant metric — the second
+consistency bridge confirming the curved Bochner stratum reduces to `bochner_flat` on a flat background
+(roadmap item 3). -/
+theorem curvedLaplacian_const_eq_flat_hessian_trace
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ) (hG₀symm : ∀ p q : E, G₀ p q = G₀ q p)
+    (hG₀inv : G₀.IsInvertible) (f : E → ℝ) (x : E) :
+    curvedLaplacian (fun _ ↦ G₀) (fun _ ↦ metricBilin G₀)
+        (fun _ ↦ metricBilin_nondeg hG₀symm hG₀inv) f x
+      = ∑ j, fderiv ℝ (fderiv ℝ f) x
+          (G₀.inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) j) := by
+  rw [← sum_covariantHessian_eq_curvedLaplacian (G := fun _ ↦ G₀) (x := x)
+    (fun _ ↦ hG₀symm) (fun _ ↦ hG₀inv) f]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  exact covariantHessian_const G₀ _ _ f x _ _
+
+end RicciFlow
