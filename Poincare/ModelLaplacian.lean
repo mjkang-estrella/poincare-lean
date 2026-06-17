@@ -29690,3 +29690,26 @@ theorem contDiff_coordScalar
     (contDiffAt_coordRicciForm_field hG hinv hdiffΓ)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `−2·Ric` field's derivative is differentiable** (discharges `hH2`): `y ↦ ∂(−2 Ric)(y)` is
+differentiable at `x`. Since `∂(−2 F) = −2 ∂F` (`fderiv_const_smul`, `F = Ric` differentiable at each
+point), this is the `−2`-scaling of `differentiableAt_fderiv_coordRicciForm_field`. -/
+theorem differentiableAt_fderiv_neg_two_coordRicciForm_field
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (hG : ContDiff ℝ 4 G)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y) :
+    DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ (-2 : ℝ) • coordRicciForm G z (hdiffΓ z)) y) x := by
+  have hC2 : ContDiffAt ℝ 2 (fun z ↦ (-2 : ℝ) • coordRicciForm G z (hdiffΓ z)) x :=
+    (contDiffAt_coordRicciForm_field hG hinv hdiffΓ).const_smul (-2 : ℝ)
+  exact (hC2.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)
+
+end RicciFlow
