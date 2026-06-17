@@ -28619,3 +28619,33 @@ theorem coordThirdDeriv_symm_last
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The second covariant derivative pairing is symmetric in its last two slots**:
+`G(∇²_{u,v}∇_G f, w) = G(∇²_{u,w}∇_G f, v)`. Both sides equal the third covariant derivative
+(`g_covariantSecondDerivative_coordGradient_eq`), which is symmetric in its last two slots
+(`coordThirdDeriv_symm_last`). This is the symmetry of `∇³f` in the original Hessian slots, transported to
+the metric pairing of the second covariant derivative of the gradient. It lets the rough-Laplacian trace
+`Σⱼ G(∇²_{♯bʲ,bⱼ}∇_G f, ∇_G f)` swap the contracted slot `bⱼ` with the gradient slot `∇_G f`, turning it
+into the gradient-of-Laplacian trace before the Ricci-identity commutation of the first slot — the
+Weitzenböck step toward `G(∇f,∇Δf) + Ric(∇f,∇f)` (roadmap item 3). -/
+theorem g_covariantSecondDerivative_coordGradient_symm_last
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) (u v w : E) :
+    G x (covariantSecondDerivative G (fun z ↦ metricBilin (G z))
+        (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) (coordGradient G f) x u v) w
+      = G x (covariantSecondDerivative G (fun z ↦ metricBilin (G z))
+          (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) (coordGradient G f) x u w) v := by
+  rw [g_covariantSecondDerivative_coordGradient_eq G hG hGsymm hinv hΓd hf u v w,
+    g_covariantSecondDerivative_coordGradient_eq G hG hGsymm hinv hΓd hf u w v,
+    coordThirdDeriv_symm_last G hG hGsymm hinv (hf.of_le (by norm_num)) u v w]
+
+end RicciFlow
