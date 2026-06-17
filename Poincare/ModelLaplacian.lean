@@ -26764,3 +26764,35 @@ theorem modelLaplacian_eq_orthoBasis_sum
   exact hexpand.symm
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Evaluation commutes with the outer differentiation of the third derivative**:
+`∂_a (D²f(·)(p,q)) = D³f(a,p,q)`. Differentiating the scalar Hessian-component function
+`y ↦ D²f(y)(p,q)` in direction `a` recovers the third derivative `fderiv³ f x a p q`. The two inner
+evaluations `(p,q)` are fixed continuous-linear projections, so the derivative passes through them (the
+evaluation-commutes-with-`fderiv` identity, via a double `clm_apply`). This is the reusable bridge that
+lets the metric-basis Laplacian sum `Σᵢ D²f(bᵢ,bᵢ)/b(bᵢ,bᵢ)` be differentiated term by term into
+`Σᵢ D³f(a,bᵢ,bᵢ)/b(bᵢ,bᵢ)` — the third-derivative contraction of the Bochner transport term
+(roadmap item 3). -/
+theorem fderiv_fderiv_fderiv_apply
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) (x a p q : E) :
+    fderiv ℝ (fun y ↦ fderiv ℝ (fderiv ℝ f) y p q) x a
+      = fderiv ℝ (fderiv ℝ (fderiv ℝ f)) x a p q := by
+  have hB : Differentiable ℝ (fderiv ℝ (fderiv ℝ f)) :=
+    ((hf.fderiv_right (m := 2) (by norm_num)).fderiv_right (m := 1)
+      (by norm_num)).differentiable (by norm_num)
+  have hev : HasFDerivAt (fun y ↦ fderiv ℝ (fderiv ℝ f) y p q) _ x :=
+    ((hB x).hasFDerivAt.clm_apply (hasFDerivAt_const p x)).clm_apply
+      (hasFDerivAt_const q x)
+  rw [hev.fderiv]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.comp_zero, ContinuousLinearMap.flip_apply,
+    ContinuousLinearMap.zero_apply, map_zero, add_zero, zero_add]
+
+end RicciFlow
