@@ -30898,3 +30898,36 @@ theorem coordScalar_sq_eq_finrank_mul_ricciNormSq_of_einstein
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The traceless Ricci norm is the pinching gap**: `|Ric|² − R²/n = tr(Rc̊²)`, where
+`Rc̊ = Rc − (R/n)·id` is the trace-free Ricci operator. Specializing `trace_traceless_sq` to the Ricci
+operator (`trace Rc = R`, `tr(Rc²) = |Ric|²`), the defect in the Cauchy–Schwarz `R² ≤ n|Ric|²` is exactly the
+squared norm of the trace-free Ricci tensor `|Ric̊|² = tr(Rc̊²) ≥ 0`, vanishing iff the metric is Einstein.
+This is the precise form of the Ricci pinching used in the differentiable sphere theorem and in Hamilton's
+3-manifold curvature-pinching estimates (roadmap item 3). -/
+theorem ricciNormSq_sub_scalar_sq_div_eq_traceless_trace
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0) :
+    coordRicciNormSq G x hdiff - (coordScalar G x) ^ 2 / (Module.finrank ℝ E : ℝ)
+      = LinearMap.trace ℝ E
+          ((coordRicciEndo G x hdiff
+              - (coordScalar G x / (Module.finrank ℝ E : ℝ)) • LinearMap.id)
+            ∘ₗ (coordRicciEndo G x hdiff
+              - (coordScalar G x / (Module.finrank ℝ E : ℝ)) • LinearMap.id)) := by
+  have hRicSymm : ∀ u w : E, coordRicci G x u w = coordRicci G x w u :=
+    fun u w ↦ coordRicci_symm hGC2 hGsymm hinv hdiff u w
+  have h := trace_traceless_sq (coordRicciEndo G x hdiff) hn
+  rw [trace_coordRicciEndo G x hdiff (hinv x) (hGsymm x),
+    ← coordRicciNormSq_eq_trace G x hdiff (hinv x) hRicSymm] at h
+  exact h.symm
+
+end RicciFlow
