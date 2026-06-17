@@ -30554,3 +30554,23 @@ theorem all_eq_of_sq_sum_eq_card_mul_sum_sq
   linarith [h3]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **An operator scalar on a basis is a scalar multiple of the identity**: if `A vᵢ = c·vᵢ` for every
+basis vector, then `A = c·id`. The final assembly step of the trace-form Cauchy–Schwarz equality case
+(Obata): once all eigenvalues are shown equal to `c = tr A/n` with each `A vᵢ ∥ vᵢ`, the operator is
+`c·id`, i.e. the Hessian is `(Δf/n)·g`. -/
+theorem eq_smul_id_of_basis_apply
+    {ι : Type*} [Fintype ι] (v : Module.Basis ι ℝ E) (A : E →ₗ[ℝ] E) (c : ℝ)
+    (h : ∀ i, A (v i) = c • v i) : A = c • LinearMap.id := by
+  refine v.ext fun i ↦ ?_
+  rw [h i]
+  simp
+
+end RicciFlow
