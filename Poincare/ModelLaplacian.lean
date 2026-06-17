@@ -30337,3 +30337,75 @@ theorem trace_comp_self_nonneg
   nlinarith [h, sq_nonneg (LinearMap.trace ℝ E A), hn]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Trace-form rigidity / equality case**: a self-adjoint operator with `tr(A∘A) = 0` is zero.
+In a `b`-orthogonal basis, `tr(A∘A) = Σᵢ b(A vᵢ, A vᵢ)/b(vᵢ,vᵢ)` is a sum of nonnegative terms (`b`
+positive-definite); vanishing of the sum forces each `b(A vᵢ, A vᵢ) = 0`, hence `A vᵢ = 0`, hence `A = 0`.
+This is the rigidity behind the equality case of the trace Cauchy–Schwarz: for the curved Hessian it gives
+`|∇²f|² = 0 ⟹ ∇²f♯ = 0` (the gradient is parallel), the Obata/Bochner equality case (roadmap item 3). -/
+theorem eq_zero_of_trace_comp_self_eq_zero
+    (b : LinearMap.BilinForm ℝ E) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v) (A : E →ₗ[ℝ] E)
+    (hsa : ∀ p q : E, b (A p) q = b p (A q))
+    (h0 : LinearMap.trace ℝ E (A ∘ₗ A) = 0) :
+    A = 0 := by
+  obtain ⟨v, hortho⟩ := LinearMap.BilinForm.exists_orthogonal_basis (B := b) hbs
+  have hdiag : ∀ (B : E →ₗ[ℝ] E) (i : Fin (Module.finrank ℝ E)),
+      LinearMap.toMatrix v v B i i = b (B (v i)) (v i) / b (v i) (v i) := by
+    intro B i
+    have hvi : v i ≠ 0 := v.ne_zero i
+    have hbvi : 0 < b (v i) (v i) := hbpos (v i) hvi
+    have hexpand : b (B (v i)) (v i) =
+        (LinearMap.toMatrix v v B i i) * b (v i) (v i) := by
+      conv_lhs => rw [← v.sum_repr (B (v i))]
+      have hsum : b (∑ j, v.repr (B (v i)) j • v j) (v i) =
+          ∑ j, v.repr (B (v i)) j * b (v j) (v i) := by
+        rw [map_sum, LinearMap.sum_apply]
+        apply Finset.sum_congr rfl
+        intro j _
+        simp [smul_eq_mul]
+      rw [hsum, Finset.sum_eq_single i]
+      · rw [LinearMap.toMatrix_apply]
+      · intro j _ hji
+        rw [hortho hji]
+        ring_nf
+      · intro hi
+        exact absurd (Finset.mem_univ i) hi
+    rw [eq_div_iff (ne_of_gt hbvi)]
+    linarith [hexpand]
+  have htr : LinearMap.trace ℝ E (A ∘ₗ A)
+      = ∑ i, b (A (v i)) (A (v i)) / b (v i) (v i) := by
+    rw [LinearMap.trace_eq_matrix_trace ℝ v (A ∘ₗ A), Matrix.trace]
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    rw [Matrix.diag_apply, hdiag (A ∘ₗ A) i,
+      show (A ∘ₗ A) (v i) = A (A (v i)) from rfl, hsa (A (v i)) (v i)]
+  rw [htr] at h0
+  have hnonneg : ∀ i ∈ Finset.univ, 0 ≤ b (A (v i)) (A (v i)) / b (v i) (v i) := by
+    intro i _
+    apply div_nonneg
+    · rcases eq_or_ne (A (v i)) 0 with h | h
+      · rw [h]; simp
+      · exact le_of_lt (hbpos _ h)
+    · exact le_of_lt (hbpos (v i) (v.ne_zero i))
+  have heach := (Finset.sum_eq_zero_iff_of_nonneg hnonneg).mp h0
+  have hAvi : ∀ i, A (v i) = 0 := by
+    intro i
+    have hi := heach i (Finset.mem_univ i)
+    rw [div_eq_zero_iff] at hi
+    rcases hi with hi | hi
+    · by_contra hne
+      exact absurd hi (ne_of_gt (hbpos _ hne))
+    · exact absurd hi (ne_of_gt (hbpos (v i) (v.ne_zero i)))
+  ext w
+  conv_lhs => rw [← v.sum_repr w]
+  rw [map_sum]
+  simp only [map_smul, hAvi, smul_zero, Finset.sum_const_zero, LinearMap.zero_apply]
+
+end RicciFlow
