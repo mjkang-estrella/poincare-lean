@@ -28351,3 +28351,37 @@ theorem sum_hessNorm_eq_two_coordCovariantHessNormSq
   rw [coordCovariantHessNormSq, Finset.mul_sum]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved Bochner reduction**:
+`Δ_g|∇f|²_G = 2·Σⱼ G(∇²_{♯bʲ,bⱼ}∇_G f, ∇_G f) + 2|∇²f|²_g`. Splitting the two-term covariant-Leibniz trace
+(`curvedLaplacian_coordGradNormSq_eq`) and naming the Hessian-norm half (`coordCovariantHessNormSq`,
+`sum_hessNorm_eq_two_coordCovariantHessNormSq`), the curved Laplacian of the gradient-norm is exactly twice
+the rough-Laplacian-of-the-gradient pairing plus twice the covariant Hessian norm. This isolates the entire
+remaining content of the curved Bochner–Weitzenböck identity in the single term
+`Σⱼ G(∇²_{♯bʲ,bⱼ}∇_G f, ∇_G f)`, which the curvature commutation (third covariant derivative + the contracted
+Ricci identity `sum_g_covariantSecondDerivative_antisymm_eq_coordRicci`) converts into
+`G(∇f,∇Δf) + Ric(∇f,∇f)` — completing `½Δ_g|∇f|² = |∇²f|² + G(∇f,∇Δf) + Ric(∇f,∇f)` (roadmap item 3). -/
+theorem curvedLaplacian_coordGradNormSq_eq_two
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) :
+    curvedLaplacian G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradNormSq G f) x
+      = 2 * (∑ j, G x (covariantSecondDerivative G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradient G f) x
+            ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+            ((Module.finBasis ℝ E) j))
+          (coordGradient G f x))
+        + 2 * coordCovariantHessNormSq G f x := by
+  rw [curvedLaplacian_coordGradNormSq_eq G hG hGsymm hinv hΓd hf, Finset.sum_add_distrib,
+    sum_hessNorm_eq_two_coordCovariantHessNormSq, ← Finset.mul_sum]
+
+end RicciFlow
