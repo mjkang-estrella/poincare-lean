@@ -27415,3 +27415,41 @@ theorem covariantSecondDerivative_expand
       (christoffelClosedOp G x v w) (X x)]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci identity in coordinate form**: the antisymmetrized second covariant derivative of a
+vector field equals the coordinate curvature operator applied to it,
+`∇²_{v,w}X - ∇²_{w,v}X = coordCurvatureOp(G,x,v,w)·X(x)`. Subtracting the full expansions
+(`covariantSecondDerivative_expand`): the second-derivative terms cancel by Schwarz
+(`flat_second_derivative_commutes`), the mixed `Γ·∂X` transport terms cancel pairwise, and the corrector
+`Γ(v,w)`-terms cancel by Christoffel symmetry (`christoffelClosedOp_symm`), leaving exactly the `∂Γ` and
+`Γ∘Γ` terms of `coordCurvatureOp`. With `covariantSecondDerivative_antisymm` this identifies the manifold
+curvature operator `curvatureOp(modelLeviCivita)` with `coordCurvatureOp` — the bridge that carries the
+abstract Ricci identity into the `coordRiemann`/`coordRicci` calculus (full symmetries, Bianchi, Ricci
+trace), unlocking the `Ric(∇f,∇f)` term of the curved Bochner identity (roadmap item 3). -/
+theorem covariantSecondDerivative_antisymm_eq_coordCurvatureOp
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible) {X : E → E} (hX : ContDiff ℝ 2 X)
+    (hΓd : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x) (v w : E) :
+    covariantSecondDerivative G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) X x v w
+      - covariantSecondDerivative G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) X x w v
+      = coordCurvatureOp G x v w (X x) := by
+  rw [covariantSecondDerivative_expand G hGsymm hinv hX hΓd v w,
+    covariantSecondDerivative_expand G hGsymm hinv hX hΓd w v,
+    flat_second_derivative_commutes hX x w v,
+    christoffelClosedOp_symm hGd hGsymm w v]
+  unfold coordCurvatureOp
+  simp only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.add_apply,
+    ContinuousLinearMap.comp_apply]
+  abel
+
+end RicciFlow
