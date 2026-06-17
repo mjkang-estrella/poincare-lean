@@ -28270,3 +28270,43 @@ theorem covariantHessian_coordGradNormSq
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved Laplacian of the gradient-norm in two-term covariant-Leibniz form**:
+`Δ_g|∇f|²_G = Σⱼ [2 G(∇²_{♯bʲ,bⱼ}∇_G f, ∇_G f) + 2 G(∇_{bⱼ}∇_G f, ∇_{♯bʲ}∇_G f)]`. Substituting the
+covariant-Leibniz identity (`covariantHessian_coordGradNormSq`) into the metric trace of the covariant
+Hessian (`curvedLaplacian_coordGradNormSq`) gives the curved Laplacian as a sum of two basis-contracted
+terms: the second-covariant-derivative trace `Σⱼ 2 G(∇²_{♯bʲ,bⱼ}∇_G f, ∇_G f)` (the "rough Laplacian of the
+gradient", which the contracted Ricci identity converts into `2G(∇f,∇Δf) + 2Ric(∇f,∇f)`) and the
+Hessian-norm trace `Σⱼ 2 G(∇_{bⱼ}∇_G f, ∇_{♯bʲ}∇_G f)` (the curved `2|∇²f|²`). This is the curved Bochner
+identity awaiting only the curvature-commutation trace (roadmap item 3). -/
+theorem curvedLaplacian_coordGradNormSq_eq
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) :
+    curvedLaplacian G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradNormSq G f) x
+      = ∑ j, (2 * G x (covariantSecondDerivative G (fun y ↦ metricBilin (G y))
+              (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradient G f) x
+              ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+              ((Module.finBasis ℝ E) j))
+            (coordGradient G f x)
+          + 2 * G x (fderiv ℝ (coordGradient G f) x ((Module.finBasis ℝ E) j)
+              + christoffelClosedOp G x ((Module.finBasis ℝ E) j) (coordGradient G f x))
+            (fderiv ℝ (coordGradient G f) x
+                ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+              + christoffelClosedOp G x
+                ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+                (coordGradient G f x))) := by
+  rw [curvedLaplacian_coordGradNormSq hGsymm hinv f]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  exact covariantHessian_coordGradNormSq G hG hGsymm hinv hΓd hf _ _
+
+end RicciFlow
