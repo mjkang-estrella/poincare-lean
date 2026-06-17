@@ -27516,3 +27516,32 @@ theorem sum_g_covariantSecondDerivative_antisymm_eq_coordRicci
     ((Module.finBasis ℝ E) i) w]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved gradient vector field** `∇_G f = G⁻¹·df`: at each point the differential `df` is raised to
+a tangent vector by the inverse of the position-dependent metric `G`. Unlike the flat `metricGradient`
+(which fixes one bilinear form), this is a genuine vector field on the curved background, varying with `G`.
+It is the object whose covariant derivative enters the curved Bochner identity, and whose squared length
+`G(∇_G f, ∇_G f) = df(∇_G f)` is the gradient-norm whose curved Laplacian the identity computes
+(roadmap item 3). -/
+noncomputable def coordGradient (G : E → E →L[ℝ] E →L[ℝ] ℝ) (f : E → ℝ) (y : E) : E :=
+  (G y).inverse (fderiv ℝ f y)
+
+/-- **Defining property of the curved gradient**: `G(∇_G f, v) = df(v)`. Pairing the curved gradient with
+any tangent vector against the metric recovers the differential — the metric-duality that makes `∇_G f`
+the Riemannian gradient (raising the index of `df` with `G⁻¹`). This is the curved analogue of
+`b_metricGradient`, the identity through which the transport term `G(∇f, ∇Δf)` of the curved Bochner
+formula becomes the directional derivative of the Laplacian (roadmap item 3). -/
+theorem g_coordGradient (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (hinv : ∀ y : E, (G y).IsInvertible) (f : E → ℝ) (y v : E) :
+    G y (coordGradient G f y) v = fderiv ℝ f y v := by
+  unfold coordGradient
+  rw [((hinv y).inverse_apply_eq.mp rfl).symm]
+
+end RicciFlow
