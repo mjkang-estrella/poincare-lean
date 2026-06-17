@@ -30574,3 +30574,102 @@ theorem eq_smul_id_of_basis_apply
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The trace-form Cauchy–Schwarz equality case** (Obata rigidity): a self-adjoint operator `A` with
+`(tr A)² = n·tr(A²)` is a scalar multiple of the identity, `A = (tr A/n)·id`. In a `b`-orthogonal basis with
+diagonal entries `dᵢ = b(Avᵢ,vᵢ)/b(vᵢ,vᵢ)` and `eᵢ = b(Avᵢ,Avᵢ)/b(vᵢ,vᵢ)`, the chain `(Σdᵢ)² ≤ n·Σdᵢ² ≤
+n·Σeᵢ = (Σdᵢ)²` is forced to equalities: the Chebyshev equality `(Σdᵢ)² = n·Σdᵢ²` makes all `dᵢ` equal to
+`tr A/n` (`all_eq_of_sq_sum_eq_card_mul_sum_sq`), and the termwise `dᵢ² = eᵢ` makes each `Avᵢ ∥ vᵢ`
+(`bilin_cauchy_schwarz_eq_case`), so `Avᵢ = (tr A/n)vᵢ` and `A = (tr A/n)id` (`eq_smul_id_of_basis_apply`).
+For the curved Hessian this is Obata's equation `∇²f = (Δf/n)·g` — the round-sphere rigidity of the
+Lichnerowicz–Obata eigenvalue equality (roadmap item 3). -/
+theorem eq_smul_id_of_trace_sq_eq
+    (b : LinearMap.BilinForm ℝ E) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v) (A : E →ₗ[ℝ] E)
+    (hsa : ∀ p q : E, b (A p) q = b p (A q)) (hn : 0 < (Module.finrank ℝ E : ℝ))
+    (heqh : (LinearMap.trace ℝ E A) ^ 2
+      = (Module.finrank ℝ E : ℝ) * LinearMap.trace ℝ E (A ∘ₗ A)) :
+    A = (LinearMap.trace ℝ E A / (Module.finrank ℝ E : ℝ)) • LinearMap.id := by
+  obtain ⟨v, hortho⟩ := LinearMap.BilinForm.exists_orthogonal_basis (B := b) hbs
+  have hdiag : ∀ (B : E →ₗ[ℝ] E) (i : Fin (Module.finrank ℝ E)),
+      LinearMap.toMatrix v v B i i = b (B (v i)) (v i) / b (v i) (v i) := by
+    intro B i
+    have hbvi : 0 < b (v i) (v i) := hbpos (v i) (v.ne_zero i)
+    have hexpand : b (B (v i)) (v i) = (LinearMap.toMatrix v v B i i) * b (v i) (v i) := by
+      conv_lhs => rw [← v.sum_repr (B (v i))]
+      have hsum : b (∑ j, v.repr (B (v i)) j • v j) (v i)
+          = ∑ j, v.repr (B (v i)) j * b (v j) (v i) := by
+        rw [map_sum, LinearMap.sum_apply]
+        exact Finset.sum_congr rfl fun j _ ↦ by simp [smul_eq_mul]
+      rw [hsum, Finset.sum_eq_single i]
+      · rw [LinearMap.toMatrix_apply]
+      · intro j _ hji; rw [hortho hji]; ring_nf
+      · intro hi; exact absurd (Finset.mem_univ i) hi
+    rw [eq_div_iff (ne_of_gt hbvi)]; linarith [hexpand]
+  set d : Fin (Module.finrank ℝ E) → ℝ := fun i ↦ LinearMap.toMatrix v v A i i with hd
+  set e : Fin (Module.finrank ℝ E) → ℝ := fun i ↦ LinearMap.toMatrix v v (A ∘ₗ A) i i with he
+  have hdi : ∀ i, d i = b (A (v i)) (v i) / b (v i) (v i) := by
+    intro i; simp only [hd]; exact hdiag A i
+  have hei : ∀ i, e i = b (A (v i)) (A (v i)) / b (v i) (v i) := by
+    intro i; simp only [he, hdiag (A ∘ₗ A) i, show (A ∘ₗ A) (v i) = A (A (v i)) from rfl,
+      hsa (A (v i)) (v i)]
+  have hpt : ∀ i, (d i) ^ 2 ≤ e i := by
+    intro i
+    have hbvi : 0 < b (v i) (v i) := hbpos (v i) (v.ne_zero i)
+    rw [hdi i, hei i, div_pow, div_le_div_iff₀ (by positivity) hbvi]
+    have hcs := bilin_cauchy_schwarz b hbs hbpos (A (v i)) (v i)
+    nlinarith [hcs, sq_nonneg (b (A (v i)) (v i)), hbvi]
+  have htrA : LinearMap.trace ℝ E A = ∑ i, d i := by
+    rw [LinearMap.trace_eq_matrix_trace ℝ v A, Matrix.trace]
+    exact Finset.sum_congr rfl fun i _ ↦ rfl
+  have htrAA : LinearMap.trace ℝ E (A ∘ₗ A) = ∑ i, e i := by
+    rw [LinearMap.trace_eq_matrix_trace ℝ v (A ∘ₗ A), Matrix.trace]
+    exact Finset.sum_congr rfl fun i _ ↦ rfl
+  have hcard : (Finset.univ : Finset (Fin (Module.finrank ℝ E))).card = Module.finrank ℝ E := by simp
+  have hcheb : (∑ i, d i) ^ 2 ≤ (Module.finrank ℝ E : ℝ) * ∑ i, (d i) ^ 2 := by
+    have h := sq_sum_le_card_mul_sum_sq (s := (Finset.univ : Finset (Fin (Module.finrank ℝ E))))
+      (f := d)
+    rwa [hcard] at h
+  have hsumle : ∑ i, (d i) ^ 2 ≤ ∑ i, e i := Finset.sum_le_sum fun i _ ↦ hpt i
+  rw [htrA, htrAA] at heqh
+  have hsq1 : (∑ i, d i) ^ 2 = (Module.finrank ℝ E : ℝ) * ∑ i, (d i) ^ 2 := by
+    have hle2 : (Module.finrank ℝ E : ℝ) * ∑ i, (d i) ^ 2
+        ≤ (Module.finrank ℝ E : ℝ) * ∑ i, e i :=
+      mul_le_mul_of_nonneg_left hsumle (le_of_lt hn)
+    linarith [hcheb, hle2, heqh]
+  have hsumeq : ∑ i, (d i) ^ 2 = ∑ i, e i :=
+    mul_left_cancel₀ (ne_of_gt hn) (by linarith [hsq1, heqh])
+  have hall : ∀ i ∈ Finset.univ, ∀ j ∈ Finset.univ, d i = d j :=
+    all_eq_of_sq_sum_eq_card_mul_sum_sq Finset.univ d (by rw [hcard]; exact hsq1)
+  have hde : ∀ i, (d i) ^ 2 = e i := by
+    intro i
+    by_contra hne
+    have hcon : ∑ j, (d j) ^ 2 < ∑ j, e j :=
+      Finset.sum_lt_sum (fun j _ ↦ hpt j) ⟨i, Finset.mem_univ i, lt_of_le_of_ne (hpt i) hne⟩
+    exact absurd hsumeq (ne_of_lt hcon)
+  have hAvi : ∀ i, A (v i) = d i • v i := by
+    intro i
+    have hbvi : 0 < b (v i) (v i) := hbpos (v i) (v.ne_zero i)
+    have hcs_eq : b (A (v i)) (v i) ^ 2 = b (A (v i)) (A (v i)) * b (v i) (v i) := by
+      have h := hde i
+      rw [hdi i, hei i, div_pow] at h
+      field_simp at h
+      nlinarith [h, hbvi]
+    rw [bilin_cauchy_schwarz_eq_case b hbs hbpos (v.ne_zero i) hcs_eq, ← hdi i]
+  have hdbar : ∀ i, d i = LinearMap.trace ℝ E A / (Module.finrank ℝ E : ℝ) := by
+    intro i
+    have hsumconst : ∑ j, d j = (Module.finrank ℝ E : ℝ) * d i := by
+      rw [Finset.sum_congr rfl fun j _ ↦ hall j (Finset.mem_univ j) i (Finset.mem_univ i),
+        Finset.sum_const, hcard, nsmul_eq_mul]
+    rw [eq_div_iff (ne_of_gt hn), htrA, hsumconst]; ring
+  refine eq_smul_id_of_basis_apply v A _ fun i ↦ ?_
+  rw [hAvi i, hdbar i]
+
+end RicciFlow
