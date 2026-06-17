@@ -26959,3 +26959,33 @@ theorem bochner_flat
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The gradient-norm of a harmonic function is subharmonic**: if `Δf = 0` then `Δ|∇f|² ≥ 0`. A direct
+consequence of the flat Bochner identity `½Δ|∇f|² = |Hess f|² + b(∇f, ∇Δf)`: when `f` is harmonic the
+transport term vanishes (`∇Δf = ∇0 = 0`), leaving `½Δ|∇f|² = |Hess f|² ≥ 0`. This is the classical
+subharmonicity of `|∇(harmonic)|²` — the prototype gradient estimate, and exactly the mechanism the
+*curved* Bochner identity upgrades (with a `+Ric(∇f,∇f)` term) into Ricci-lower-bound gradient and
+eigenvalue estimates (roadmap item 3). -/
+theorem gradient_sq_subharmonic_of_harmonic
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ w : E, w ≠ 0 → 0 < b w w) {f : E → ℝ} (hf : ContDiff ℝ 3 f)
+    (hharm : modelLaplacian b hb f = 0) (x : E) :
+    0 ≤ modelLaplacian b hb
+        (fun z ↦ b (metricGradient b hb f z) (metricGradient b hb f z)) x := by
+  have hbo := bochner_flat b hb hbs hbpos hf x
+  have htransport :
+      b (metricGradient b hb f x) (metricGradient b hb (modelLaplacian b hb f) x) = 0 := by
+    rw [b_gradient_gradLaplacian b hb hbs f x, hharm]
+    simp
+  rw [htransport] at hbo
+  have hHess := hessianNormSq_nonneg b hb hbs hbpos (hf.of_le (by norm_num)) x
+  linarith
+
+end RicciFlow
