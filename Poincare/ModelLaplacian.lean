@@ -28758,3 +28758,39 @@ theorem sum_G_covariantSecondDerivative_gradient_weitzenbock
     (coordGradient G f x) ((Module.finBasis ℝ E) j)]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The transport trace reorders into the covariant-derivative-of-trace form**:
+`Σⱼ G(∇²_{∇_G f,♯bʲ}∇_G f, bⱼ) = Σⱼ G(∇²_{∇_G f,bⱼ}∇_G f, ♯bʲ)`. Each summand swaps its last two slots by
+`g_covariantSecondDerivative_coordGradient_symm_last`. The right side is
+`Σⱼ ∇³f(∇_G f, bⱼ, ♯bʲ)` — the third covariant derivative with the *transport* direction `∇_G f` in the
+first slot and the metric trace over the last two Hessian slots `(bⱼ, ♯bʲ)`. That is precisely the covariant
+directional derivative of the Hessian trace `∇_{∇_G f}(tr ∇²f) = ∂_{∇f}(Δf)`, which by `G(∇f,∇Δf) =
+∂_{∇f}(Δf)` is the remaining transport term `G(∇f,∇Δf)` of the curved Bochner identity (roadmap item 3). -/
+theorem sum_G_covariantSecondDerivative_gradient_transport_swap
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) :
+    (∑ j, G x (covariantSecondDerivative G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradient G f) x
+          (coordGradient G f x)
+          ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j))))
+        ((Module.finBasis ℝ E) j))
+      = ∑ j, G x (covariantSecondDerivative G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradient G f) x
+            (coordGradient G f x) ((Module.finBasis ℝ E) j))
+          ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j))) := by
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  exact g_covariantSecondDerivative_coordGradient_symm_last G hG hGsymm hinv hΓd hf
+    (coordGradient G f x)
+    ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+    ((Module.finBasis ℝ E) j)
+
+end RicciFlow
