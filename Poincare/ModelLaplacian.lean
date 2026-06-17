@@ -27307,3 +27307,28 @@ theorem fderiv_christoffelClosedOp_apply_field
   rw [add_comm]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Evaluation commutes with the derivative of a vector field's differential**:
+`∂_v(∂X·w) = ∂²X(v,w)`. Differentiating the field `y ↦ ∂X(y)·w` (the differential of the vector field `X`
+evaluated at a fixed `w`) in direction `v` recovers the second derivative `D²X(v,w)`. The fixed evaluation
+at `w` is a continuous-linear projection, so the derivative passes through it. This is the vector-field
+analogue of `fderiv_fderiv_fderiv_apply`, the remaining ingredient (with the Christoffel Leibniz rule and
+`curvature_quadratic_operator_form`) for reducing the manifold curvature operator to the coordinate
+`coordCurvatureOp` — the bridge to the Ricci-identity curved Bochner term (roadmap item 3). -/
+theorem fderiv_fderiv_vectorField_apply
+    {X : E → E} (hX : Differentiable ℝ (fderiv ℝ X)) (x v w : E) :
+    fderiv ℝ (fun y ↦ fderiv ℝ X y w) x v = fderiv ℝ (fderiv ℝ X) x v w := by
+  have happ : fderiv ℝ (fun y ↦ fderiv ℝ X y w) x
+      = (ContinuousLinearMap.apply ℝ E w).comp (fderiv ℝ (fderiv ℝ X) x) :=
+    ((ContinuousLinearMap.apply ℝ E w).hasFDerivAt.comp x (hX x).hasFDerivAt).fderiv
+  rw [happ]
+  rfl
+
+end RicciFlow
