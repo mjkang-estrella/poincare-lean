@@ -28385,3 +28385,27 @@ theorem curvedLaplacian_coordGradNormSq_eq_two
     sum_hessNorm_eq_two_coordCovariantHessNormSq, ← Finset.mul_sum]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved gradient field is globally `C²`**: for `G ∈ C³` invertible *everywhere* and `f ∈ C³`, the
+curved gradient `∇_G f = G⁻¹·df` is globally twice continuously differentiable. By
+`contDiff_iff_contDiffAt`, global `C²` reduces to pointwise `C²` (`contDiffAt_coordGradient_two`) at every
+point, which holds since `G` is invertible everywhere. The global `ContDiff ℝ 2` hypothesis is what the
+Ricci-identity coordinate bridge (`covariantSecondDerivative_antisymm_eq_coordCurvatureOp`) requires of the
+gradient vector field, so it lets the curvature commutator be applied to `∇_G f` in the curved Bochner
+identity (roadmap item 3). -/
+theorem contDiff_coordGradient
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (hG : ContDiff ℝ 3 G) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) :
+    ContDiff ℝ 2 (coordGradient G f) := by
+  rw [contDiff_iff_contDiffAt]
+  intro y
+  exact contDiffAt_coordGradient_two G hG (hinv y) hf
+
+end RicciFlow
