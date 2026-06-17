@@ -26590,3 +26590,43 @@ theorem contDiff_two_gradient_sq
   exact (bC.contDiff.comp hgC2).clm_apply hgC2
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The `(0,2)` Hessian of `|∇f|²` in fully-applied form**:
+`∂²(|∇f|²) x w v = 2·D³f(w,v,∇f) + 2·b(Hess♯ v, Hess♯ w)`. This restates `fderiv_fderiv_gradient_sq`
+with both derivative slots applied (`∂²g x w v`, via the evaluation-commutes-with-`fderiv` identity
+`∂²g x w v = ∂(∂g(·)v) x w`), giving the genuine `(0,2)`-tensor entries of the gradient-norm Hessian.
+This is the integrand the metric trace consumes: contracting `v = w = bᵢ` and summing yields
+`Δ|∇f|²` (roadmap item 3). -/
+theorem fderiv_fderiv_gradient_sq_apply
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (hbs : LinearMap.IsSymm b) {f : E → ℝ} (hf : ContDiff ℝ 3 f) (x w v : E) :
+    fderiv ℝ (fderiv ℝ (fun z ↦ b (metricGradient b hb f z)
+        (metricGradient b hb f z))) x w v
+      = 2 * fderiv ℝ (fderiv ℝ (fderiv ℝ f)) x w v (metricGradient b hb f x)
+        + 2 * b (hessianOperator b hb f x v) (hessianOperator b hb f x w) := by
+  rw [← fderiv_fderiv_gradient_sq b hb hbs hf x v w]
+  symm
+  have hG : Differentiable ℝ (fderiv ℝ (fun z ↦ b (metricGradient b hb f z)
+      (metricGradient b hb f z))) :=
+    ((contDiff_two_gradient_sq b hb hf).fderiv_right (m := 1)
+      (by norm_num)).differentiable (by norm_num)
+  have hfun : (fun y ↦ fderiv ℝ (fun z ↦ b (metricGradient b hb f z)
+        (metricGradient b hb f z)) y v)
+      = fun y ↦ (ContinuousLinearMap.apply ℝ ℝ v)
+        (fderiv ℝ (fun z ↦ b (metricGradient b hb f z)
+          (metricGradient b hb f z)) y) := rfl
+  have hevc : HasFDerivAt (fun y ↦ (ContinuousLinearMap.apply ℝ ℝ v)
+      (fderiv ℝ (fun z ↦ b (metricGradient b hb f z)
+        (metricGradient b hb f z)) y)) _ x :=
+    (ContinuousLinearMap.apply ℝ ℝ v).hasFDerivAt.comp x (hG x).hasFDerivAt
+  rw [hfun, hevc.fderiv]
+  simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply]
+
+end RicciFlow
