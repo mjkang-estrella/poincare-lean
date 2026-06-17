@@ -27180,3 +27180,46 @@ theorem hessian_eq_zero_of_hessianNormSq_eq_zero
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Bochner equality characterization (rigidity)**: `½Δ|∇f|² = b(∇f, ∇Δf)` holds at `x` iff the
+Hessian vanishes there, `∇²f(v,w) = 0` for all `v,w`. Since the Bochner identity reads
+`½Δ|∇f|² = |Hess f|² + b(∇f,∇Δf)`, equality in the Bochner *inequality* is exactly the vanishing of the
+nonnegative Hessian-norm term — `f` is affine to second order. The forward direction uses the affine
+rigidity `hessian_eq_zero_of_hessianNormSq_eq_zero`; the converse, that a vanishing Hessian gives a
+vanishing Hessian norm, follows from positive-definiteness of `b` (`b(Hess♯v, Hess♯v) = ∇²f(v, Hess♯v) = 0`
+forces `Hess♯v = 0`). This is the prototype of a curvature rigidity theorem: in the curved setting the
+analogous equality forces a distance/Busemann function, the engine of splitting theorems
+(roadmap item 3). -/
+theorem bochner_equality_iff_hessian_vanishes
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ w : E, w ≠ 0 → 0 < b w w) {f : E → ℝ} (hf : ContDiff ℝ 3 f) (x : E) :
+    (1 / 2) * modelLaplacian b hb
+        (fun z ↦ b (metricGradient b hb f z) (metricGradient b hb f z)) x
+        = b (metricGradient b hb f x) (metricGradient b hb (modelLaplacian b hb f) x)
+      ↔ ∀ v w : E, fderiv ℝ (fderiv ℝ f) x v w = 0 := by
+  rw [bochner_flat b hb hbs hbpos hf x]
+  constructor
+  · intro h v w
+    have hz : hessianNormSq b hb f x = 0 := by linarith
+    exact hessian_eq_zero_of_hessianNormSq_eq_zero b hb hbs hbpos (hf.of_le (by norm_num)) x hz v w
+  · intro h
+    have hHv : ∀ v : E, hessianOperator b hb f x v = 0 := by
+      intro v
+      by_contra hne
+      have hpos := hbpos (hessianOperator b hb f x v) hne
+      rw [b_hessianOperator] at hpos
+      exact absurd (h v (hessianOperator b hb f x v)) hpos.ne'
+    have hHzero : hessianOperator b hb f x = 0 := by
+      ext v; rw [hHv v]; simp
+    have hz : hessianNormSq b hb f x = 0 := by
+      unfold hessianNormSq; rw [hHzero]; simp
+    rw [hz]; ring
+
+end RicciFlow
