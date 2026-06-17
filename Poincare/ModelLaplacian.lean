@@ -28463,3 +28463,31 @@ theorem sum_G_covariantSecondDerivative_swap
   linarith [hdiff, hRiem]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The gradient–Hessian relation as a global field identity**:
+`(y ↦ G_y(∇_v∇_G f, w)) = (y ↦ ∇²f(v,w) at y)`. Globalizing the pointwise gradient–Hessian relation
+`g_covariantDeriv_coordGradient_eq_covariantHessian'` over all base points: the metric pairing of `∇_G f`'s
+covariant derivative with `w` equals the scalar covariant Hessian as functions of the base point. This is
+the function equality whose covariant derivative in a new direction `u` produces the *third* covariant
+derivative — the metric pairing `G(∇²_{u,v}∇_G f, w)` on the left equals `∇³f(u,v,w)` on the right — the
+key step toward the Weitzenböck curvature commutation that supplies the `Ric(∇f,∇f)` term of the curved
+Bochner identity (roadmap item 3). -/
+theorem g_covariantDeriv_coordGradient_eq_covariantHessian_field
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (v w : E) :
+    (fun y ↦ G y (fderiv ℝ (coordGradient G f) y v
+        + christoffelClosedOp G y v (coordGradient G f y)) w)
+      = fun y ↦ covariantHessian G (fun z ↦ metricBilin (G z))
+          (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) f y v w := by
+  funext y
+  exact g_covariantDeriv_coordGradient_eq_covariantHessian' G (hGd y) hGsymm hinv hf v w
+
+end RicciFlow
