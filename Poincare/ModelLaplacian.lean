@@ -30673,3 +30673,49 @@ theorem eq_smul_id_of_trace_sq_eq
   rw [hAvi i, hdbar i]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Obata's equation for the curved Hessian** (Bochner/Lichnerowicz equality case):
+if `(Δf)² = n·|∇²f|²` on a Riemannian metric, then `∇²f♯ = (Δf/n)·id`, i.e. the Hessian is a scalar multiple
+of the metric, `∇²f = (Δf/n)·g`. Equality in the refined Bochner trace Cauchy–Schwarz forces the
+self-adjoint Hessian endomorphism (`Δf = tr ∇²f♯`, `|∇²f|² = tr((∇²f♯)²)`) to be a multiple of the identity
+(`eq_smul_id_of_trace_sq_eq`). This is the rigidity characterizing the round sphere in the Lichnerowicz–Obata
+eigenvalue bound: the equality `λ₁ = n/(n−1)·k` holds iff `f` solves the Obata equation `∇²f = −(λ₁/n) f·g`,
+forcing `(M,g) ≅ Sⁿ` (roadmap item 3). -/
+theorem covariantGradientEndo_eq_smul_id_of_hess_eq
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ))
+    (heq : (curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x) ^ 2
+        = (Module.finrank ℝ E : ℝ) * coordCovariantHessNormSq G f x) :
+    covariantGradientEndo G f x
+      = (curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x
+        / (Module.finrank ℝ E : ℝ)) • LinearMap.id := by
+  set bx : LinearMap.BilinForm ℝ E :=
+    LinearMap.mk₂ ℝ (fun v w ↦ G x v w)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp) with hbx
+  have hbs : LinearMap.IsSymm bx := by
+    rw [LinearMap.isSymm_def]; intro p q
+    simp only [hbx, LinearMap.mk₂_apply, RingHom.id_apply]; exact hGsymm x p q
+  have hbpos : ∀ v : E, v ≠ 0 → 0 < bx v v := by
+    intro v hv; simp only [hbx, LinearMap.mk₂_apply]; exact hGpos v hv
+  have hsa : ∀ p q : E,
+      bx (covariantGradientEndo G f x p) q = bx p (covariantGradientEndo G f x q) := by
+    intro p q; simp only [hbx, LinearMap.mk₂_apply]
+    exact covariantGradientEndo_selfAdjoint G hGd hGsymm hinv hf p q
+  rw [curvedLaplacian_eq_trace_covariantGradientEndo G hGd hGsymm hinv hf,
+    coordCovariantHessNormSq_eq_trace G hGd hGsymm hinv hf] at heq
+  have hres := eq_smul_id_of_trace_sq_eq bx hbs hbpos (covariantGradientEndo G f x) hsa hn heq
+  rwa [← curvedLaplacian_eq_trace_covariantGradientEndo G hGd hGsymm hinv hf] at hres
+
+end RicciFlow
