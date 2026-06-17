@@ -30231,3 +30231,50 @@ theorem curved_ricci_flow_scalar_evolution_trace_form
     (fun u w ↦ coordRicci_symm (hGC4.of_le (by norm_num)) hGsymm hinv (hd2 t₀) u w)] at h
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved Hessian norm is nonnegative** (Riemannian metric): `0 ≤ |∇²f|²_g`. Since `|∇²f|²` is the
+trace of the square of the self-adjoint Hessian endomorphism, it dominates `(Δf)²/n ≥ 0` by the trace
+Cauchy–Schwarz (`curvedLaplacian_sq_le_finrank_mul_coordCovariantHessNormSq`). A genuine nonnegative term —
+needed for the Bochner subharmonicity/vanishing theorem. -/
+theorem coordCovariantHessNormSq_nonneg
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    0 ≤ coordCovariantHessNormSq G f x := by
+  have hsq := curvedLaplacian_sq_le_finrank_mul_coordCovariantHessNormSq G hGd hGsymm hinv hf hGpos
+  nlinarith [le_trans (sq_nonneg (curvedLaplacian G (fun y ↦ metricBilin (G y))
+    (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x)) hsq, hn]
+
+/-- **Bochner subharmonicity / vanishing**: on a Riemannian metric with `Ric ≥ 0`, the squared gradient of a
+harmonic function is subharmonic, `Δ_g|∇f|² ≥ 0`. From the harmonic Bochner identity
+`½Δ_g|∇f|² = |∇²f|² + Ric(∇f,∇f)` (`curvedLaplacian_coordGradNormSq_bochner_harmonic`), both terms are
+nonnegative: `|∇²f|² ≥ 0` (`coordCovariantHessNormSq_nonneg`, positive-definite metric) and `Ric(∇f,∇f) ≥ 0`
+(hypothesis). This is the pointwise inequality of Bochner's theorem — on a closed manifold the maximum
+principle then forces `∇f` parallel and (with `Ric > 0` somewhere) `f` constant, so `b₁ = 0` (roadmap item 3). -/
+theorem curvedLaplacian_coordGradNormSq_nonneg_of_ricci_nonneg
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ))
+    (hharm : curvedLaplacian G (fun y ↦ metricBilin (G y))
+      (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f = fun _ ↦ (0 : ℝ))
+    (hRicNonneg : 0 ≤ coordRicci G x (coordGradient G f x) (coordGradient G f x)) :
+    0 ≤ curvedLaplacian G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradNormSq G f) x := by
+  have hΓdg : ∀ (y a : E), DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z a) y :=
+    fun y a ↦ differentiableAt_christoffelClosedOp (x := y) G (hG.of_le (by norm_num)) hinv a
+  rw [curvedLaplacian_coordGradNormSq_bochner_harmonic G hG hGsymm hinv hΓdg hf hharm]
+  have hhess : 0 ≤ coordCovariantHessNormSq G f x :=
+    coordCovariantHessNormSq_nonneg G (hG.differentiable (by norm_num)) hGsymm hinv
+      (hf.of_le (by norm_num)) hGpos hn
+  linarith [hRicNonneg, hhess]
+
+end RicciFlow
