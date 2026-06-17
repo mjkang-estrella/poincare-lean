@@ -29464,3 +29464,29 @@ theorem contDiffAt_christoffelClosedOp
   exact contDiffAt_const.mul ((t1.add t2).sub t3)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Christoffel second derivative is differentiable** (discharges `hdd`): from the `C²` Christoffel
+field (`contDiffAt_christoffelClosedOp`), `y ↦ ∂Γ(·)(y)` is differentiable at `x`. -/
+theorem differentiableAt_fderiv_christoffelClosedOp
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hinv : ∀ y : E, (G y).IsInvertible) (p : E) :
+    DifferentiableAt ℝ (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x :=
+  ((contDiffAt_christoffelClosedOp G hG hinv p).fderiv_right (m := 1)
+    (by norm_num)).differentiableAt (by norm_num)
+
+/-- **The Christoffel second derivative is symmetric** (discharges `hsymΓ`): the `C²` Christoffel field has
+symmetric second derivative (Schwarz, `ContDiffAt.isSymmSndFDerivAt`). -/
+theorem isSymmSndFDerivAt_christoffelClosedOp
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hinv : ∀ y : E, (G y).IsInvertible) (p : E) :
+    IsSymmSndFDerivAt ℝ (fun y ↦ christoffelClosedOp G y p) x :=
+  (contDiffAt_christoffelClosedOp G hG hinv p).isSymmSndFDerivAt (by norm_num)
+
+end RicciFlow
