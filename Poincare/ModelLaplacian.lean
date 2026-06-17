@@ -28081,3 +28081,50 @@ theorem differentiableAt_covariantDeriv_coordGradient
       hinv (hf.of_le (by norm_num)) w)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The second derivative of the gradient-norm in covariant-Leibniz form**:
+`∂_v∂_w|∇f|²_G = 2 G(∇_v(∇_w∇_G f), ∇_G f) + 2 G(∇_w∇_G f, ∇_v∇_G f)`. Differentiating the first
+covariant derivative field `∂_w|∇f|²_G = 2 G(∇_w∇_G f, ∇_G f)` (`fderiv_coordGradNormSq_field`) once more in
+direction `v`, by the metric-compatible Leibniz rule (`fderiv_g_field_field` with `Y = ∇_w∇_G f`,
+differentiable by `differentiableAt_covariantDeriv_coordGradient`), gives twice the metric pairing of `∇_G f`
+with the covariant derivative of `∇_w∇_G f`, plus twice the cross term. Subtracting the scalar Hessian's
+Christoffel corrector and identifying `∇_v(∇_w∇_G f) = ∇²_{v,w}∇_G f + ∇_{Γ(v,w)}∇_G f` yields the
+covariant-Leibniz expansion `∇²(|∇f|²_G)(v,w) = 2 G(∇²_{v,w}∇_G f, ∇_G f) + 2 G(∇_v∇_G f, ∇_w∇_G f)`, whose
+trace is the curved Bochner identity (roadmap item 3). -/
+theorem fderiv_fderiv_coordGradNormSq
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) (v w : E) :
+    fderiv ℝ (fun y ↦ fderiv ℝ (coordGradNormSq G f) y w) x v
+      = 2 * (G x (fderiv ℝ (fun z ↦ fderiv ℝ (coordGradient G f) z w
+                + christoffelClosedOp G z w (coordGradient G f z)) x v
+              + christoffelClosedOp G x v (fderiv ℝ (coordGradient G f) x w
+                + christoffelClosedOp G x w (coordGradient G f x)))
+            (coordGradient G f x)
+          + G x (fderiv ℝ (coordGradient G f) x w
+              + christoffelClosedOp G x w (coordGradient G f x))
+            (fderiv ℝ (coordGradient G f) x v
+              + christoffelClosedOp G x v (coordGradient G f x))) := by
+  have hGd : Differentiable ℝ G := hG.differentiable (by norm_num)
+  have hf2 : ContDiff ℝ 2 f := hf.of_le (by norm_num)
+  have hXd : DifferentiableAt ℝ (coordGradient G f) x :=
+    differentiableAt_coordGradient G (hGd x) (hinv x) hf2
+  have hYd : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (coordGradient G f) y w
+      + christoffelClosedOp G y w (coordGradient G f y)) x :=
+    differentiableAt_covariantDeriv_coordGradient G hG hGsymm hΓd (hinv x) hf w
+  have hgd : DifferentiableAt ℝ (fun y ↦ G y (fderiv ℝ (coordGradient G f) y w
+      + christoffelClosedOp G y w (coordGradient G f y)) (coordGradient G f y)) x :=
+    ((hGd x).clm_apply hYd).clm_apply hXd
+  rw [fderiv_coordGradNormSq_field G hGd hGsymm hinv hf2 w, fderiv_const_mul hgd,
+    ContinuousLinearMap.smul_apply, smul_eq_mul,
+    fderiv_g_field_field G (hGd x) hGsymm hinv hYd hXd v]
+
+end RicciFlow
