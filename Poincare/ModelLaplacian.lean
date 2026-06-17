@@ -27936,3 +27936,37 @@ theorem contDiffAt_coordGradient_two
     ((hf.fderiv_right (m := 2) (by norm_num)).contDiffAt)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Metric-compatible Leibniz rule for two vector fields**:
+`∂_v(G(Y, X)) = G(∇_v Y, X) + G(Y, ∇_v X)`. Differentiating the metric pairing of two vector fields `Y, X`
+in direction `v` distributes over the *covariant* derivatives `∇_v Y = ∂_v Y + Γ(v)·Y` and
+`∇_v X = ∂_v X + Γ(v)·X`. Proof: the trilinear product rule (`clm_apply`, twice) gives the two flat-paired
+terms plus the metric-derivative `(∂_vG)(Y,X)`, which metric compatibility (`coord_metric_compatible`)
+splits into `G(Γ(v)·Y, X) + G(Y, Γ(v)·X)`; regrouping yields the covariant derivatives. This is the
+statement `∇G = 0` (metric compatibility of the Levi-Civita connection) in Leibniz form — the key step in
+the covariant-Leibniz expansion `∇²(G(X,X)) = 2G(∇²X, X) + 2G(∇X, ∇X)` whose trace is the curved Bochner
+identity (roadmap item 3). -/
+theorem fderiv_g_field_field
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {Y X : E → E} (hYd : DifferentiableAt ℝ Y x) (hXd : DifferentiableAt ℝ X x) (v : E) :
+    fderiv ℝ (fun y ↦ G y (Y y) (X y)) x v
+      = G x (fderiv ℝ Y x v + christoffelClosedOp G x v (Y x)) (X x)
+        + G x (Y x) (fderiv ℝ X x v + christoffelClosedOp G x v (X x)) := by
+  have hev : HasFDerivAt (fun y ↦ G y (Y y) (X y)) _ x :=
+    (hGd.hasFDerivAt.clm_apply hYd.hasFDerivAt).clm_apply hXd.hasFDerivAt
+  rw [hev.fderiv]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.flip_apply]
+  rw [coord_metric_compatible hGd hGsymm (hinv x) v (Y x) (X x)]
+  simp only [map_add, ContinuousLinearMap.add_apply]
+  ring
+
+end RicciFlow
