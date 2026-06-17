@@ -28054,3 +28054,30 @@ theorem differentiableAt_fderiv_coordGradient
   exact hfdX.clm_apply (differentiableAt_const w)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant derivative field of the gradient is differentiable**:
+`y ↦ ∇_w∇_G f(y) = ∂_w∇_G f(y) + Γ_y(w)·∇_G f(y)` is differentiable at `x`. The sum of the flat-derivative
+half (`differentiableAt_fderiv_coordGradient`) and the Christoffel half
+(`differentiableAt_christoffel_coordGradient`). This is precisely the differentiability hypothesis `hYd`
+needed to apply the metric-compatible Leibniz (`fderiv_g_field_field`) with `Y = ∇_w∇_G f` to the first
+Bochner component, yielding the second covariant derivative `2 G(∇_v∇_w∇_G f, ∇_G f) + 2 G(∇_w∇_G f,
+∇_v∇_G f)` — the covariant-Leibniz expansion whose trace is the curved Bochner identity (roadmap item 3). -/
+theorem differentiableAt_covariantDeriv_coordGradient
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hinv : (G x).IsInvertible) {f : E → ℝ} (hf : ContDiff ℝ 3 f) (w : E) :
+    DifferentiableAt ℝ (fun y ↦ fderiv ℝ (coordGradient G f) y w
+        + christoffelClosedOp G y w (coordGradient G f y)) x :=
+  (differentiableAt_fderiv_coordGradient G hG hinv hf w).add
+    (differentiableAt_christoffel_coordGradient G (hG.differentiable (by norm_num)) hGsymm hΓd
+      hinv (hf.of_le (by norm_num)) w)
+
+end RicciFlow
