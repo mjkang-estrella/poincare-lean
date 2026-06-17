@@ -31313,3 +31313,40 @@ theorem coordScalar_sq_lt_finrank_mul_ricciNormSq_of_not_einstein
   exact (div_lt_iff₀ hn).mp h1
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The trace-free Hessian norm is the refined-Bochner gap**: `|∇²f|² − (Δf)²/n = tr(∇²f̊²)`, where
+`∇²f̊♯ = ∇²f♯ − (Δf/n)·id` is the trace-free Hessian operator. Specializing `trace_traceless_sq` to the
+curved Hessian endomorphism (`Δf = tr ∇²f♯`, `|∇²f|² = tr((∇²f♯)²)`), the defect in the refined Bochner
+inequality `(Δf)² ≤ n|∇²f|²` is exactly the squared norm of the trace-free Hessian, vanishing iff the Hessian
+solves Obata's equation. The Hessian analogue of `ricciNormSq_sub_scalar_sq_div_eq_traceless_trace`
+(roadmap item 3). -/
+theorem coordCovariantHessNormSq_sub_curvedLaplacian_sq_div_eq_traceless_trace
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (hn : (Module.finrank ℝ E : ℝ) ≠ 0) :
+    coordCovariantHessNormSq G f x
+        - (curvedLaplacian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x) ^ 2
+          / (Module.finrank ℝ E : ℝ)
+      = LinearMap.trace ℝ E
+          ((covariantGradientEndo G f x
+              - (curvedLaplacian G (fun y ↦ metricBilin (G y))
+                  (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x
+                / (Module.finrank ℝ E : ℝ)) • LinearMap.id)
+            ∘ₗ (covariantGradientEndo G f x
+              - (curvedLaplacian G (fun y ↦ metricBilin (G y))
+                  (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x
+                / (Module.finrank ℝ E : ℝ)) • LinearMap.id)) := by
+  have h := trace_traceless_sq (covariantGradientEndo G f x) hn
+  rw [← curvedLaplacian_eq_trace_covariantGradientEndo G hGd hGsymm hinv hf,
+    ← coordCovariantHessNormSq_eq_trace G hGd hGsymm hinv hf] at h
+  exact h.symm
+
+end RicciFlow
