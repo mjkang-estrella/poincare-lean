@@ -29530,3 +29530,41 @@ theorem contDiffAt_christoffelClosedOp_three
   exact contDiffAt_const.mul ((t1.add t2).sub t3)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curvature operator is `C²`** (from `G ∈ C⁴`): `y ↦ R(u,w)(y)` is twice continuously
+differentiable. The `ContDiff` analogue of `differentiableAt_coordCurvatureOp_family`: the two `∂Γ` terms are
+`C²` because the Christoffel field is `C³` (`contDiffAt_christoffelClosedOp_three`, then `fderiv_right`), and
+the two `Γ∘Γ` terms are `C²` because the Christoffel field is `C²` (`clm_comp`). This carries the curvature
+regularity needed to make the Ricci tensor `C²`, hence to discharge the second-derivative Ricci hypotheses
+(`hRic2`, `hH2`) of the scalar-curvature evolution. -/
+theorem contDiffAt_coordCurvatureOp_family
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (hG : ContDiff ℝ 4 G)
+    (hinv : ∀ y : E, (G y).IsInvertible) (u w : E) :
+    ContDiffAt ℝ 2 (fun y ↦ coordCurvatureOp G y u w) x := by
+  unfold coordCurvatureOp
+  have h1 : ContDiffAt ℝ 2
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z w) y u) x :=
+    ((contDiffAt_christoffelClosedOp_three G hG hinv w).fderiv_right (m := 2)
+      (by norm_num)).clm_apply contDiffAt_const
+  have h2 : ContDiffAt ℝ 2
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z u) y w) x :=
+    ((contDiffAt_christoffelClosedOp_three G hG hinv u).fderiv_right (m := 2)
+      (by norm_num)).clm_apply contDiffAt_const
+  have h3 : ContDiffAt ℝ 2
+      (fun y ↦ (christoffelClosedOp G y u).comp (christoffelClosedOp G y w)) x :=
+    (contDiffAt_christoffelClosedOp G (hG.of_le (by norm_num)) hinv u).clm_comp
+      (contDiffAt_christoffelClosedOp G (hG.of_le (by norm_num)) hinv w)
+  have h4 : ContDiffAt ℝ 2
+      (fun y ↦ (christoffelClosedOp G y w).comp (christoffelClosedOp G y u)) x :=
+    (contDiffAt_christoffelClosedOp G (hG.of_le (by norm_num)) hinv w).clm_comp
+      (contDiffAt_christoffelClosedOp G (hG.of_le (by norm_num)) hinv u)
+  exact ((h1.sub h2).add h3).sub h4
+
+end RicciFlow
