@@ -27136,3 +27136,47 @@ theorem bochner_eigenfunction_pointwise_bound
   linarith [hbound]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Vanishing Hessian norm forces a vanishing Hessian** (affine rigidity): if `|Hess f|² = 0` at `x`
+then `∇²f(v,w) = 0` for all `v,w`. The squared Hessian norm is a sum of nonnegative squares
+`Σᵢ b(Hess♯ bᵢ, Hess♯ bᵢ)/b(bᵢ,bᵢ)` over a `b`-orthogonal basis (`hessianNormSq_eq_orthoBasis_sum`); for a
+positive-definite `b` each term vanishes, forcing `Hess♯ bᵢ = 0` on the basis, hence `Hess♯ = 0` and
+`∇²f(v,w) = b(Hess♯ v, w) = 0`. This is the equality case of the Bochner identity
+(`½Δ|∇f|² = b(∇f,∇Δf)` iff `Hess f = 0`) — the rigidity that, in the curved setting, upgrades to
+splitting theorems via the Ricci term (roadmap item 3). -/
+theorem hessian_eq_zero_of_hessianNormSq_eq_zero
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ w : E, w ≠ 0 → 0 < b w w) {f : E → ℝ} (hf : ContDiff ℝ 2 f) (x : E)
+    (hz : hessianNormSq b hb f x = 0) (v w : E) :
+    fderiv ℝ (fderiv ℝ f) x v w = 0 := by
+  obtain ⟨vb, hortho⟩ := LinearMap.BilinForm.exists_orthogonal_basis (B := b) hbs
+  have hortho' : ∀ i j, i ≠ j → b (vb i) (vb j) = 0 := fun i j h => hortho h
+  rw [hessianNormSq_eq_orthoBasis_sum b hb hbs hbpos hf x vb hortho'] at hz
+  have hnn : ∀ i ∈ Finset.univ, 0 ≤ b (hessianOperator b hb f x (vb i))
+      (hessianOperator b hb f x (vb i)) / b (vb i) (vb i) := by
+    intro i _
+    apply div_nonneg _ (hbpos (vb i) (vb.ne_zero i)).le
+    by_cases h0 : hessianOperator b hb f x (vb i) = 0
+    · rw [h0]; simp
+    · exact (hbpos _ h0).le
+  have hHvb : ∀ i, hessianOperator b hb f x (vb i) = 0 := by
+    intro i
+    have h := (Finset.sum_eq_zero_iff_of_nonneg hnn).mp hz i (Finset.mem_univ i)
+    rw [div_eq_zero_iff] at h
+    rcases h with h | h
+    · by_contra hne
+      exact absurd h (hbpos _ hne).ne'
+    · exact absurd h (hbpos (vb i) (vb.ne_zero i)).ne'
+  have hHzero : hessianOperator b hb f x = 0 :=
+    vb.ext fun i => by rw [hHvb i]; simp
+  rw [← b_hessianOperator b hb f x v w, hHzero]
+  simp
+
+end RicciFlow
