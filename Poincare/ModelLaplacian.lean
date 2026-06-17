@@ -31102,3 +31102,28 @@ theorem fderiv_coordScalar_eq_two_ricciDivergenceForm_of_contDiff
     (fun p ↦ isSymmSndFDerivAt_christoffelClosedOp G hG hinv p)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Divergence-free Ricci forces critical scalar curvature — self-contained form**: for `G ∈ C³`
+symmetric and invertible, if `div Ric ≡ 0` at `x` then `dR = 0` there. The Christoffel regularity is
+discharged internally, so this rests only on the metric's smoothness, nondegeneracy, and the geometric
+hypothesis `div Ric = 0`. By the contracted Bianchi identity `dR = 2 div Ric`, vanishing Ricci divergence is
+equivalent to critical scalar curvature — the local rigidity making constant-scalar-curvature and Einstein
+metrics the natural fixed points of Ricci flow (roadmap item 3). -/
+theorem fderiv_coordScalar_eq_zero_of_ricciDivergence_zero_of_contDiff
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdivzero : ∀ w : E, ricciDivergence G x w = 0) :
+    fderiv ℝ (fun y ↦ coordScalar G y) x = 0 :=
+  fderiv_coordScalar_eq_zero_of_ricciDivergence_zero (hG.of_le (by norm_num)) hGsymm hinv
+    (fun y p ↦ differentiableAt_christoffelClosedOp (x := y) G (hG.of_le (by norm_num)) hinv p)
+    (fun p ↦ differentiableAt_fderiv_christoffelClosedOp G hG hinv p)
+    (fun p ↦ isSymmSndFDerivAt_christoffelClosedOp G hG hinv p) hdivzero
+
+end RicciFlow
