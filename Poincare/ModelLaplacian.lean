@@ -29235,3 +29235,38 @@ theorem curvedLaplacian_coordGradNormSq_bochner_harmonic
   rw [h0, map_zero, zero_add]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Bochner identity for eigenfunctions (Lichnerowicz form)**: if `Δ_g f = −λ f` then
+`½ Δ_g|∇f|² = |∇²f|² − λ|∇f|²_G + Ric(∇f, ∇f)`. The curved gradient is scalar-linear
+(`coordGradient G (−λ·f) = −λ·∇f`, from `fderiv_const_mul` and linearity of the inverse metric), so the
+transport cross term `⟨∇f, ∇Δf⟩ = ⟨∇f, −λ∇f⟩ = −λ|∇f|²`. Substituted into the curved Bochner identity, this
+is the pointwise identity behind the Lichnerowicz–Obata eigenvalue bound `λ₁ ≥ n/(n−1)·k` for `Ric ≥ k g`
+(integrate and use `|∇²f|² ≥ (Δf)²/n`) — a model curvature-spectrum estimate of the same family that
+controls Ricci flow (roadmap item 3). -/
+theorem curvedLaplacian_coordGradNormSq_bochner_eigenfunction
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓdg : ∀ (y a : E), DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z a) y)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) (lam : ℝ)
+    (heig : curvedLaplacian G (fun y ↦ metricBilin (G y))
+      (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f = fun y ↦ -lam * f y) :
+    curvedLaplacian G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradNormSq G f) x
+      = 2 * (-lam * coordGradNormSq G f x
+            + coordRicci G x (coordGradient G f x) (coordGradient G f x))
+        + 2 * coordCovariantHessNormSq G f x := by
+  have hgrad : coordGradient G (fun y ↦ -lam * f y) x = (-lam) • coordGradient G f x := by
+    unfold coordGradient
+    rw [fderiv_const_mul (hf.differentiable (by norm_num)).differentiableAt, map_smul]
+  rw [curvedLaplacian_coordGradNormSq_bochner_gradient_of_christoffelDiff G hG hGsymm hinv hΓdg hf,
+    heig, hgrad, map_smul, smul_eq_mul]
+  rfl
+
+end RicciFlow
