@@ -30868,3 +30868,33 @@ theorem trace_traceless_sq (A : E →ₗ[ℝ] E) (hn : (Module.finrank ℝ E : �
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Einstein metrics saturate `R² ≤ n|Ric|²`** (converse rigidity): if `Ric = (R/n)·g`
+(`coordRicciEndo = (R/n)·id`), then `R² = n·|Ric|²`. From `Rc = (R/n)·id`,
+`|Ric|² = tr(Rc²) = (R/n)²·tr(id) = (R/n)²·n = R²/n`. Together with
+`coordRicciEndo_eq_smul_id_of_scalar_sq_eq` (the forward direction) this gives the equivalence: on a
+Riemannian metric, equality in the Cauchy–Schwarz `R² ≤ n|Ric|²` holds **iff** the metric is Einstein
+(roadmap item 3). -/
+theorem coordScalar_sq_eq_finrank_mul_ricciNormSq_of_einstein
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hn : (Module.finrank ℝ E : ℝ) ≠ 0)
+    (hein : coordRicciEndo G x hdiff
+      = (coordScalar G x / (Module.finrank ℝ E : ℝ)) • LinearMap.id) :
+    (coordScalar G x) ^ 2 = (Module.finrank ℝ E : ℝ) * coordRicciNormSq G x hdiff := by
+  have hRicSymm : ∀ u w : E, coordRicci G x u w = coordRicci G x w u :=
+    fun u w ↦ coordRicci_symm hGC2 hGsymm hinv hdiff u w
+  rw [coordRicciNormSq_eq_trace G x hdiff (hinv x) hRicSymm, hein,
+    LinearMap.smul_comp, LinearMap.comp_smul, LinearMap.id_comp, smul_smul, map_smul,
+    LinearMap.trace_id, smul_eq_mul]
+  field_simp
+
+end RicciFlow
