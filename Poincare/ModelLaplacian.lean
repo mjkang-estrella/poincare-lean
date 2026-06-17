@@ -29794,3 +29794,54 @@ theorem differentiableAt_christoffelDerivOp_neg_two_coordRicciForm_field
   exact (hop.clm_apply hMG).add (hInvDiff.clm_apply hMH)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The contracted second Bianchi identity, regularity-discharged form**:
+`Σⱼ δRic(♯bʲ, bⱼ) = Δ_g R` for `H = −2 Ric`, assuming only `G ∈ C⁴` symmetric and invertible (plus the
+Christoffel-differentiability `hdiffΓ`, itself now a theorem via `differentiableAt_christoffelClosedOp`).
+Every other differentiability hypothesis of `ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian'` — `hdd`,
+`hsymΓ`, `hKd`, `hdivd`, `hHd`, `hH2`, `hVd`, `hφ` — is discharged internally from the `C²`-curvature chain
+(`contDiffAt_christoffelClosedOp(_three)`, `contDiffAt_coordRicci_family`, `contDiff_coordScalar`,
+`differentiableAt_christoffelDerivOp_neg_two_coordRicciForm_field`). This is the twice-contracted Bianchi
+keystone `div div δΓ = Δ_g R`, the analytic heart of Hamilton's scalar-curvature evolution
+`∂R/∂t = Δ_g R + 2|Ric|²`, now resting only on the smoothness and nondegeneracy of the metric. -/
+theorem ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian_of_contDiff
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (hG : ContDiff ℝ 4 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y) :
+    ∑ j, ricciDeriv G (fun y ↦ (-2 : ℝ) • coordRicciForm G y (hdiffΓ y)) x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))
+        ((Module.finBasis ℝ E) j)
+      = curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y))
+          (fun z ↦ coordScalar G z) x := by
+  have hGd : ∀ y, DifferentiableAt ℝ G y :=
+    fun y ↦ (hG.differentiable (by norm_num)).differentiableAt
+  have hG3 : ContDiff ℝ 3 G := hG.of_le (by norm_num)
+  have hddΓ : ∀ (y p : E), DifferentiableAt ℝ
+      (fun z ↦ fderiv ℝ (fun z' ↦ christoffelClosedOp G z' p) z) y :=
+    fun y p ↦ differentiableAt_fderiv_christoffelClosedOp (x := y) G hG3 hinv p
+  have hKd : ∀ y, DifferentiableAt ℝ (fun z ↦ coordRicciForm G z (hdiffΓ z)) y :=
+    fun y ↦ differentiableAt_coordRicciForm_field (x := y) hdiffΓ (fun p ↦ hddΓ y p)
+  have hRic2 : DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ coordRicciForm G z (hdiffΓ z)) y) x :=
+    differentiableAt_fderiv_coordRicciForm_field hG hinv hdiffΓ
+  exact ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian' hGd (hG.of_le (by norm_num)) hGsymm hinv
+    hdiffΓ hddΓ
+    (fun y p ↦ isSymmSndFDerivAt_christoffelClosedOp (x := y) G hG3 hinv p) hKd
+    (differentiableAt_tensorDivCLM_coordRicciForm hGd hGsymm hinv hdiffΓ (hKd x) hRic2)
+    (fun y ↦ ((contDiffAt_coordRicciForm_field (x := y) hG hinv hdiffΓ).const_smul
+      (-2 : ℝ)).differentiableAt (by norm_num))
+    (differentiableAt_fderiv_neg_two_coordRicciForm_field hG hinv hdiffΓ)
+    (fun p ↦ differentiableAt_christoffelDerivOp_neg_two_coordRicciForm_field hG hinv hdiffΓ p)
+    (contDiff_coordScalar hG hinv)
+
+end RicciFlow
