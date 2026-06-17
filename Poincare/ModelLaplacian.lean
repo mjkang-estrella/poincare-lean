@@ -26653,3 +26653,43 @@ theorem fderiv_third_outer_symm
   exact DFunLike.congr_fun h c
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Inner-two symmetry of the third derivative**: `D³f(a,b,c) = D³f(a,c,b)`. The inner two slots are
+the symmetric `(b,c)` slots of the Hessian field `Hess_y`, symmetric at every point `y`
+(`isSymmSndFDerivAt`); differentiating the pointwise identity `Hess_y(b,c) = Hess_y(c,b)` in direction
+`a` (via the evaluation-commutes-with-`fderiv` identity) gives the inner-slot transposition of `D³f`.
+The second transposition that, with `fderiv_third_outer_symm`, yields the full `S₃`-symmetry of the
+third derivative — used in the Bochner trace to slide `∇f` from the inner slot to the outer
+(roadmap item 3). -/
+theorem fderiv_third_inner_symm
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) (x a b c : E) :
+    fderiv ℝ (fderiv ℝ (fderiv ℝ f)) x a b c
+      = fderiv ℝ (fderiv ℝ (fderiv ℝ f)) x a c b := by
+  have hf2 : ContDiff ℝ 2 f := hf.of_le (by norm_num)
+  have hB : Differentiable ℝ (fderiv ℝ (fderiv ℝ f)) :=
+    ((hf.fderiv_right (m := 2) (by norm_num)).fderiv_right (m := 1)
+      (by norm_num)).differentiable (by norm_num)
+  have evc : ∀ p q : E, fderiv ℝ (fun y ↦ fderiv ℝ (fderiv ℝ f) y p q) x a
+      = fderiv ℝ (fderiv ℝ (fderiv ℝ f)) x a p q := by
+    intro p q
+    have hev : HasFDerivAt (fun y ↦ fderiv ℝ (fderiv ℝ f) y p q) _ x :=
+      ((hB x).hasFDerivAt.clm_apply (hasFDerivAt_const p x)).clm_apply
+        (hasFDerivAt_const q x)
+    rw [hev.fderiv]
+    simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply,
+      ContinuousLinearMap.comp_zero, ContinuousLinearMap.flip_apply,
+      ContinuousLinearMap.zero_apply, map_zero, add_zero, zero_add]
+  have hsymm : (fun y ↦ fderiv ℝ (fderiv ℝ f) y b c)
+      = fun y ↦ fderiv ℝ (fderiv ℝ f) y c b := by
+    funext y
+    exact (hf2.contDiffAt.isSymmSndFDerivAt (by simp)) b c
+  rw [← evc b c, ← evc c b, hsymm]
+
+end RicciFlow
