@@ -29349,3 +29349,35 @@ theorem curvedLaplacian_coordGradNormSq_bochner_gradient_unconditional
     (fun y a ↦ differentiableAt_christoffelClosedOp G (hG.of_le (by norm_num)) hinv a) hf
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci-tensor field is differentiable** (discharges `hKd`): for the standard Christoffel
+first/second-derivative regularity `hdiffΓ`, `hdd`, the CLM-valued field `y ↦ Ric(y)` (`coordRicciForm`) is
+differentiable at `x`. Lift the double-CLM differentiability to the scalar components via
+`differentiableAt_clm_of_apply` then `differentiableAt_clm_dual_of_apply`; each component
+`y ↦ coordRicciForm G y _ u w = coordRicci G y w u` is differentiable by `differentiableAt_coordRicci_family`
+(the Ricci tensor is a trace of curvature, polynomial in `Γ` and `∂Γ`). This makes the `coordRicciForm`-field
+differentiability hypothesis `hKd` — assumed throughout the scalar-curvature-evolution development (e.g.
+`ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian`) — a theorem, removing it as a separate input toward an
+unconditional Hamilton scalar evolution `∂R/∂t = Δ_g R + 2|Ric|²`. -/
+theorem differentiableAt_coordRicciForm_field
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x) :
+    DifferentiableAt ℝ (fun y ↦ coordRicciForm G y (hdiffΓ y)) x := by
+  apply differentiableAt_clm_of_apply
+  intro u
+  apply differentiableAt_clm_dual_of_apply
+  intro w
+  simp_rw [coordRicciForm_apply]
+  exact differentiableAt_coordRicci_family hdiffΓ hdd w u
+
+end RicciFlow
