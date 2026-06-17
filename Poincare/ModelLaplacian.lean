@@ -30480,3 +30480,40 @@ theorem covariantHessian_eq_zero_of_hessNormSq_eq_zero
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Cauchy–Schwarz equality case** for a symmetric positive-definite bilinear form:
+if `b(u,v)² = b(u,u)·b(v,v)` and `v ≠ 0`, then `u = (b(u,v)/b(v,v))·v` (the vectors are parallel). The
+"defect" vector `w = u − (b(u,v)/b(v,v))v` satisfies `b(w,w)·b(v,v) = b(u,u)b(v,v) − b(u,v)² = 0`, so
+`b(w,w) = 0`, and positive-definiteness forces `w = 0`. The rigidity ingredient of the Obata/Lichnerowicz
+equality case (`∇²f = (Δf/n)·g`). -/
+theorem bilin_cauchy_schwarz_eq_case
+    (b : LinearMap.BilinForm ℝ E) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v) {u v : E} (hv : v ≠ 0)
+    (heq : b u v ^ 2 = b u u * b v v) :
+    u = (b u v / b v v) • v := by
+  have hbvv : 0 < b v v := hbpos v hv
+  have hsymvu : b v u = b u v := by
+    have h : b u v = b v u := by simpa using hbs.eq u v
+    exact h.symm
+  set w : E := u - (b u v / b v v) • v with hw
+  have key : b w w * b v v = b u u * b v v - b u v ^ 2 := by
+    simp only [hw, map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, hsymvu]
+    field_simp
+    ring
+  have hww : b w w = 0 := by
+    have hz : b w w * b v v = 0 := by rw [key, heq]; ring
+    exact (mul_eq_zero.mp hz).resolve_right (ne_of_gt hbvv)
+  have hw0 : w = 0 := by
+    by_contra hne
+    exact absurd hww (ne_of_gt (hbpos w hne))
+  rw [hw, sub_eq_zero] at hw0
+  exact hw0
+
+end RicciFlow
