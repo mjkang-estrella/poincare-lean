@@ -27913,3 +27913,26 @@ theorem contDiffAt_coordGradient
     ((hf.fderiv_right (m := 1) (by norm_num)).contDiffAt)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved gradient field is `C²`**: for `G ∈ C³` invertible at `x` and `f ∈ C³`, the curved gradient
+`∇_G f = G⁻¹·df` is twice continuously differentiable at `x`. Same structure as `contDiffAt_coordGradient`
+with the regularity bumped one order: the inverse-metric field is `C³` (operator inversion composed with
+the `C³` metric) and `df` is `C²` (since `f ∈ C³`), so their continuous-linear product is `C²`. This
+`C²` regularity is exactly what makes the second covariant derivative `∇²_{v,w}(∇_G f)` (a `fderiv` of
+`fderiv` of the gradient field, plus Christoffel correctors) well-defined — the object the covariant
+Leibniz rule for `Δ_g|∇f|²_G` requires (roadmap item 3). -/
+theorem contDiffAt_coordGradient_two
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G) (hinv : (G x).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) :
+    ContDiffAt ℝ 2 (coordGradient G f) x :=
+  (hinv.contDiffAt_map_inverse.comp x (hG.contDiffAt.of_le (by norm_num))).clm_apply
+    ((hf.fderiv_right (m := 2) (by norm_num)).contDiffAt)
+
+end RicciFlow
