@@ -28409,3 +28409,57 @@ theorem contDiff_coordGradient
   exact contDiffAt_coordGradient_two G hG (hinv y) hf
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The rough-Laplacian pairing is symmetric under the derivative-slot swap**:
+`Σⱼ G(∇²_{♯bʲ,bⱼ}∇_G f, ∇_G f) = Σⱼ G(∇²_{bⱼ,♯bʲ}∇_G f, ∇_G f)`. Swapping the two *derivative* slots changes
+the second covariant derivative by the curvature operator (Ricci identity,
+`covariantSecondDerivative_antisymm_eq_coordCurvatureOp`), and pairing that with `∇_G f` gives
+`coordRiemann(♯bʲ,bⱼ,∇_G f,∇_G f) = 0` by the last-pair antisymmetry of Riemann
+(`coordRiemann_antisymm_pair_right`, both last slots equal). So the curvature contribution from the
+*derivative* slots cancels — confirming the `Ric` term of the curved Bochner identity does NOT arise here
+but from commuting a derivative slot with the gradient-component slot in the third covariant derivative
+(roadmap item 3). -/
+theorem sum_G_covariantSecondDerivative_swap
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) :
+    (∑ j, G x (covariantSecondDerivative G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradient G f) x
+          ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) j))
+        (coordGradient G f x))
+      = ∑ j, G x (covariantSecondDerivative G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradient G f) x
+          ((Module.finBasis ℝ E) j)
+          ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j))))
+        (coordGradient G f x) := by
+  have hX : ContDiff ℝ 2 (coordGradient G f) := contDiff_coordGradient G hG hinv hf
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  set bj := (Module.finBasis ℝ E) j with hbj
+  set sbj := (G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)) with hsbj
+  have hdiff : G x (covariantSecondDerivative G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradient G f) x sbj bj)
+          (coordGradient G f x)
+        - G x (covariantSecondDerivative G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradient G f) x bj sbj)
+          (coordGradient G f x)
+      = G x (coordCurvatureOp G x sbj bj (coordGradient G f x)) (coordGradient G f x) := by
+    rw [← ContinuousLinearMap.sub_apply, ← map_sub,
+      covariantSecondDerivative_antisymm_eq_coordCurvatureOp G
+        (hG.differentiable (by norm_num) x) hGsymm hinv hX hΓd sbj bj]
+  have hRiem : G x (coordCurvatureOp G x sbj bj (coordGradient G f x)) (coordGradient G f x) = 0 := by
+    have h := coordRiemann_antisymm_pair_right (hG.of_le (by norm_num)) hGsymm hinv hΓd
+      sbj bj (coordGradient G f x) (coordGradient G f x)
+    simp only [coordRiemann] at h
+    linarith
+  linarith [hdiff, hRiem]
+
+end RicciFlow
