@@ -28310,3 +28310,44 @@ theorem curvedLaplacian_coordGradNormSq_eq
   exact covariantHessian_coordGradNormSq G hG hGsymm hinv hΓd hf _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved covariant Hessian norm** `|∇²f|²_g := Σⱼ G(∇_{bⱼ}∇_G f, ∇_{♯bʲ}∇_G f)`: the metric trace of
+the squared covariant Hessian, where the Hessian is realized as the covariant derivative of the gradient
+vector field `∇(∇_G f)`. This is the curved analogue of the flat `hessianNormSq` and the manifestly
+nonnegative term of the curved Bochner identity — the trace of the `2 G(∇X, ∇X)` half of the
+covariant-Leibniz expansion `curvedLaplacian_coordGradNormSq_eq` (roadmap item 3). -/
+noncomputable def coordCovariantHessNormSq (G : E → E →L[ℝ] E →L[ℝ] ℝ) (f : E → ℝ) (x : E) : ℝ :=
+  ∑ j, G x (fderiv ℝ (coordGradient G f) x ((Module.finBasis ℝ E) j)
+      + christoffelClosedOp G x ((Module.finBasis ℝ E) j) (coordGradient G f x))
+    (fderiv ℝ (coordGradient G f) x
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+      + christoffelClosedOp G x
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+        (coordGradient G f x))
+
+/-- **The Hessian-norm half of the curved Laplacian is `2|∇²f|²_g`**: the second sum in
+`curvedLaplacian_coordGradNormSq_eq` is exactly twice the curved covariant Hessian norm
+(`coordCovariantHessNormSq`). Factoring the constant `2` out of the basis sum (`Finset.mul_sum`) names the
+manifestly nonnegative term of the curved Bochner identity, isolating the remaining
+second-covariant-derivative half — the rough-Laplacian-of-the-gradient trace that the contracted Ricci
+identity converts into `2G(∇f,∇Δf) + 2Ric(∇f,∇f)` (roadmap item 3). -/
+theorem sum_hessNorm_eq_two_coordCovariantHessNormSq
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (f : E → ℝ) :
+    (∑ j, 2 * G x (fderiv ℝ (coordGradient G f) x ((Module.finBasis ℝ E) j)
+          + christoffelClosedOp G x ((Module.finBasis ℝ E) j) (coordGradient G f x))
+        (fderiv ℝ (coordGradient G f) x
+            ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+          + christoffelClosedOp G x
+            ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+            (coordGradient G f x)))
+      = 2 * coordCovariantHessNormSq G f x := by
+  rw [coordCovariantHessNormSq, Finset.mul_sum]
+
+end RicciFlow
