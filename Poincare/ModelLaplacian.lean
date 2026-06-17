@@ -26555,3 +26555,38 @@ theorem fderiv_fderiv_gradient_sq
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The gradient-norm-squared is `C²`**: for `f ∈ C³`, the function `|∇f|² = b(∇f, ∇f)` is twice
+continuously differentiable. The gradient `∇f = Lc ∘ Df` is `C²` (a fixed continuous-linear raise of the
+`C²` differential of a `C³` function), and `|∇f|²` is the bounded bilinear form `b` applied to the pair
+`(∇f, ∇f)`, hence `C²`. This is the regularity that licenses tracing the second differential
+`∂²(|∇f|²)` over a metric basis to form `Δ|∇f|²` — the left side of the Bochner identity
+(roadmap item 3). -/
+theorem contDiff_two_gradient_sq
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) :
+    ContDiff ℝ 2 (fun z ↦ b (metricGradient b hb f z) (metricGradient b hb f z)) := by
+  have hgf : ContDiff ℝ 2 (fderiv ℝ f) := hf.fderiv_right (m := 2) (by norm_num)
+  set Lc : (E →L[ℝ] ℝ) →L[ℝ] E := LinearMap.toContinuousLinearMap
+    ((LinearMap.BilinForm.toDual b hb).symm.toLinearMap ∘ₗ
+      (LinearMap.toContinuousLinearMap.symm :
+        (E →L[ℝ] ℝ) ≃ₗ[ℝ] (E →ₗ[ℝ] ℝ)).toLinearMap) with hLc
+  have hgrad : (metricGradient b hb f) = fun y ↦ Lc (fderiv ℝ f y) := rfl
+  have hgC2 : ContDiff ℝ 2 (metricGradient b hb f) := by
+    rw [hgrad]; exact Lc.contDiff.comp hgf
+  set bC : E →L[ℝ] E →L[ℝ] ℝ := LinearMap.toContinuousLinearMap
+    ((LinearMap.toContinuousLinearMap :
+      (E →ₗ[ℝ] ℝ) ≃ₗ[ℝ] (E →L[ℝ] ℝ)).toLinearMap ∘ₗ b) with hbC
+  have hfn : (fun z ↦ b (metricGradient b hb f z) (metricGradient b hb f z))
+      = fun z ↦ bC (metricGradient b hb f z) (metricGradient b hb f z) := rfl
+  rw [hfn]
+  exact (bC.contDiff.comp hgC2).clm_apply hgC2
+
+end RicciFlow
