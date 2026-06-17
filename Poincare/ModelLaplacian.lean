@@ -28714,3 +28714,47 @@ theorem sum_coordRiemann_gradient_eq_coordRicci
     (coordGradient G f x) (coordGradient G f x) ((Module.finBasis ℝ E) j)]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The summed Weitzenböck commutation of the rough-Laplacian trace**:
+`Σⱼ G(∇²_{♯bʲ,bⱼ}∇_G f, ∇_G f) = Σⱼ G(∇²_{∇_G f,♯bʲ}∇_G f, bⱼ) + Ric(∇_G f, ∇_G f)`. Each summand is
+reordered by the last-slot symmetry (`g_covariantSecondDerivative_coordGradient_symm_last`,
+`G(∇²_{♯bʲ,bⱼ}X,X) = G(∇²_{♯bʲ,X}X,bⱼ)`) and then has its first two derivative slots commuted by the
+Ricci identity (`g_covariantSecondDerivative_coordGradient_antisymm_first`,
+`G(∇²_{♯bʲ,X}X,bⱼ) = G(∇²_{X,♯bʲ}X,bⱼ) + coordRiemann(♯bʲ,X,X,bⱼ)`); the summed curvature terms contract to
+Ricci (`sum_coordRiemann_gradient_eq_coordRicci`). This is the heart of the curved Bochner Weitzenböck:
+the rough-Laplacian trace splits into the transport term `Σⱼ G(∇²_{∇_G f,♯bʲ}∇_G f, bⱼ)` (still to be
+identified with `G(∇f,∇Δf)`) plus `Ric(∇f,∇f)` (roadmap item 3). -/
+theorem sum_G_covariantSecondDerivative_gradient_weitzenbock
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) :
+    (∑ j, G x (covariantSecondDerivative G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradient G f) x
+          ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) j))
+        (coordGradient G f x))
+      = (∑ j, G x (covariantSecondDerivative G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradient G f) x
+            (coordGradient G f x)
+            ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j))))
+          ((Module.finBasis ℝ E) j))
+        + coordRicci G x (coordGradient G f x) (coordGradient G f x) := by
+  rw [← sum_coordRiemann_gradient_eq_coordRicci (hG.differentiable (by norm_num))
+      (hG.of_le (by norm_num)) hGsymm hinv hΓd f, ← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [g_covariantSecondDerivative_coordGradient_symm_last G hG hGsymm hinv hΓd hf
+    ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+    ((Module.finBasis ℝ E) j) (coordGradient G f x)]
+  linarith [g_covariantSecondDerivative_coordGradient_antisymm_first G hG hGsymm hinv hΓd hf
+    ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+    (coordGradient G f x) ((Module.finBasis ℝ E) j)]
+
+end RicciFlow
