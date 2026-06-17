@@ -27453,3 +27453,31 @@ theorem covariantSecondDerivative_antisymm_eq_coordCurvatureOp
   abel
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of the coordinate curvature operator is the Ricci tensor**:
+`Σᵢ G(coordCurvatureOp(G,x,bᵢ,w)·a, ♯bⁱ) = coordRicci(G,x,w,a)`. Contracting the curvature endomorphism
+`coordCurvatureOp(bᵢ,w)` against the basis `bᵢ` and its raised coframe `♯bⁱ` (slots 1 and 4) is, by the
+definition `coordRiemann(u,w,a,b) = G(coordCurvatureOp(u,w)·a, b)` and `coordRicci_eq_riemann_trace`,
+exactly the Ricci tensor. Composed with the coordinate Ricci identity
+(`covariantSecondDerivative_antisymm_eq_coordCurvatureOp`), this gives the contracted Ricci identity
+`Σᵢ G(∇²_{bᵢ,w}X − ∇²_{w,bᵢ}X, ♯bⁱ) = Ric(w, X)` — the precise curvature contraction that produces the
+`Ric(∇f,∇f)` term when the Laplacian and gradient are commuted in the curved Bochner identity
+(roadmap item 3). -/
+theorem sum_g_coordCurvatureOp_eq_coordRicci
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible) (w a : E) :
+    ∑ i, G x (coordCurvatureOp G x ((Module.finBasis ℝ E) i) w a)
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+      = coordRicci G x w a := by
+  rw [coordRicci_eq_riemann_trace hGsymm (hinv x) w a]
+  exact Finset.sum_congr rfl fun i _ ↦ rfl
+
+end RicciFlow
