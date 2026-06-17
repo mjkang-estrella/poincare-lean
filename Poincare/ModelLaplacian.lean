@@ -30187,3 +30187,47 @@ theorem curvedLaplacian_coordGradNormSq_bochner_eigenfunction_refined
   linarith [hkey]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved Ricci-flow scalar evolution in Ricci-operator trace form**:
+`∂_t R = Δ_g R + 2·tr(Rc²)`, where `Rc = coordRicciEndo` is the `(1,1)` Ricci operator. The same evolution as
+`curved_ricci_flow_scalar_evolution` with `2|Ric|²` rewritten as `2·tr(Rc ∘ Rc)` (`coordRicciNormSq_eq_trace`).
+This is the exact reaction-term shape `R' = Δ_g R + 2·tr(Rc²)` consumed by the finite-time-singularity
+comparison `curved_hamilton_singularity_of_evolution_eq` (whose Cauchy–Schwarz `(tr Rc)² ≤ n·tr(Rc²)` with
+`tr Rc = R` yields `R' ≥ Δ_g R + (2/n)R²`) — the bridge from the genuine evolving-metric evolution to the
+Riccati blow-up bound `T < n/(2 R_min)` (roadmap items 1 & 3). -/
+theorem curved_ricci_flow_scalar_evolution_trace_form
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ} {H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {t₀ : ℝ}
+    (hdG : HasDerivAt (fun t ↦ Gt t x) (H x) t₀)
+    (hev : ∀ᶠ t in nhds t₀, (Gt t x).IsInvertible)
+    (hmix : ∀ p q r : E,
+      HasDerivAt (fun t ↦ (fderiv ℝ (Gt t) x p) q r) ((fderiv ℝ H x p) q r) t₀)
+    (hmix2 : ∀ p v : E,
+      HasDerivAt
+        (fun t ↦ fderiv ℝ (fun y ↦ christoffelClosedOp (Gt t) y p) x v)
+        (fderiv ℝ (fun y ↦ christoffelDerivOp (Gt t₀) H y p) x v) t₀)
+    (hd2 : ∀ t : ℝ, ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp (Gt t) y u) x)
+    (hbnd : ∀ y : E, (metricBilin (Gt t₀ y)).Nondegenerate)
+    (hGC4 : ContDiff ℝ 4 (Gt t₀))
+    (hGsymm : ∀ (y : E) (p q : E), Gt t₀ y p q = Gt t₀ y q p)
+    (hinv : ∀ y : E, (Gt t₀ y).IsInvertible)
+    (hHfield : H = fun y ↦ (-2 : ℝ) • coordRicciForm (Gt t₀) y
+      (fun p ↦ differentiableAt_christoffelClosedOp (x := y) (Gt t₀)
+        (hGC4.of_le (by norm_num)) hinv p)) :
+    HasDerivAt (fun t ↦ coordScalar (Gt t) x)
+      (curvedLaplacian (Gt t₀) (fun y ↦ metricBilin (Gt t₀ y)) hbnd
+          (fun y ↦ coordScalar (Gt t₀) y) x
+        + 2 * LinearMap.trace ℝ E
+            (coordRicciEndo (Gt t₀) x (hd2 t₀) ∘ₗ coordRicciEndo (Gt t₀) x (hd2 t₀))) t₀ := by
+  have h := curved_ricci_flow_scalar_evolution hdG hev hmix hmix2 hd2 hbnd hGC4 hGsymm hinv hHfield
+  rwa [coordRicciNormSq_eq_trace (Gt t₀) x (hd2 t₀) (hinv x)
+    (fun u w ↦ coordRicci_symm (hGC4.of_le (by norm_num)) hGsymm hinv (hd2 t₀) u w)] at h
+
+end RicciFlow
