@@ -27722,3 +27722,29 @@ theorem differentiableAt_coordGradient
   exact hInvDiff.clm_apply hdfd
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The gradient–Hessian relation, unconditionally** (no differentiability side-hypothesis):
+for `f ∈ C²` and an invertible differentiable symmetric metric, `G(∇_v ∇_G f, w) = ∇²f(v,w)`. This
+combines the gradient–Hessian relation `g_covariantDeriv_coordGradient_eq_covariantHessian` with the
+differentiability of the curved gradient `differentiableAt_coordGradient`, so the covariant derivative of
+`∇_G f` is the covariant Hessian with no extra hypotheses — the clean form consumed by the curved Bochner
+assembly, where the curved Laplacian of `|∇f|²_G` is traced through `∇²f` and the contracted Ricci
+identity (roadmap item 3). -/
+theorem g_covariantDeriv_coordGradient_eq_covariantHessian'
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (v w : E) :
+    G x (fderiv ℝ (coordGradient G f) x v + christoffelClosedOp G x v (coordGradient G f x)) w
+      = covariantHessian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x v w :=
+  g_covariantDeriv_coordGradient_eq_covariantHessian G hGd hGsymm hinv hf
+    (differentiableAt_coordGradient G hGd (hinv x) hf) v w
+
+end RicciFlow
