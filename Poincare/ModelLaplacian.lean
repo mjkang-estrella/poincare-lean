@@ -28649,3 +28649,36 @@ theorem g_covariantSecondDerivative_coordGradient_symm_last
     coordThirdDeriv_symm_last G hG hGsymm hinv (hf.of_le (by norm_num)) u v w]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci identity for the third covariant derivative**: antisymmetrizing the first two slots gives
+Riemann, `G(∇²_{u,v}∇_G f, w) − G(∇²_{v,u}∇_G f, w) = coordRiemann(u,v,∇_G f,w)`. The difference of the
+second covariant derivative of the gradient in the two derivative orders is the curvature operator applied
+to the gradient (`covariantSecondDerivative_antisymm_eq_coordCurvatureOp`), and pairing with `w` is exactly
+`coordRiemann` by definition. Via the third-derivative bridge this is the commutator `∇³f(u,v,w) −
+∇³f(v,u,w) = coordRiemann(u,v,∇_G f,w)` — the curvature term that, when the rough-Laplacian trace is
+reordered (`g_covariantSecondDerivative_coordGradient_symm_last`) and the first slot commuted, contracts to
+`Ric(∇f,∇f)` in the curved Bochner identity (roadmap item 3). -/
+theorem g_covariantSecondDerivative_coordGradient_antisymm_first
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) (u v w : E) :
+    G x (covariantSecondDerivative G (fun z ↦ metricBilin (G z))
+        (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) (coordGradient G f) x u v) w
+      - G x (covariantSecondDerivative G (fun z ↦ metricBilin (G z))
+          (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) (coordGradient G f) x v u) w
+      = coordRiemann G x u v (coordGradient G f x) w := by
+  have hX : ContDiff ℝ 2 (coordGradient G f) := contDiff_coordGradient G hG hinv hf
+  rw [← ContinuousLinearMap.sub_apply, ← map_sub,
+    covariantSecondDerivative_antisymm_eq_coordCurvatureOp G (hG.differentiable (by norm_num) x)
+      hGsymm hinv hX hΓd u v]
+  rfl
+
+end RicciFlow
