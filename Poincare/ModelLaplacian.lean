@@ -27070,3 +27070,34 @@ theorem bochner_inequality_refined
   linarith [hdiv]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The eigenfunction Bochner formula**: if `Δf = -μ·f` then
+`½Δ|∇f|² = |Hess f|² - μ·|∇f|²`. For an eigenfunction of the Laplacian, the transport term of the Bochner
+identity becomes `b(∇f, ∇Δf) = b(∇f, -μ∇f) = -μ|∇f|²` (gradient linearity), giving the pointwise identity.
+Integrated over a closed manifold (where `∫Δ|∇f|² = 0`) with the refined trace bound, this is exactly the
+Lichnerowicz–Obata argument forcing `μ ≥ n/(n-1)·(Ricci lower bound)` — the eigenvalue estimate the
+*curved* Bochner term `+Ric(∇f,∇f)` powers (roadmap item 3; here the flat, curvature-free pointwise form). -/
+theorem bochner_eigenfunction
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ w : E, w ≠ 0 → 0 < b w w) {f : E → ℝ} (hf : ContDiff ℝ 3 f) {μ : ℝ}
+    (heig : modelLaplacian b hb f = fun y ↦ -(μ * f y)) (x : E) :
+    (1 / 2) * modelLaplacian b hb
+        (fun z ↦ b (metricGradient b hb f z) (metricGradient b hb f z)) x
+      = hessianNormSq b hb f x
+        - μ * b (metricGradient b hb f x) (metricGradient b hb f x) := by
+  rw [bochner_flat b hb hbs hbpos hf x]
+  have hgrad : metricGradient b hb (modelLaplacian b hb f) x
+      = (-μ) • metricGradient b hb f x := by
+    rw [heig, show (fun y ↦ -(μ * f y)) = (fun y ↦ (-μ) * f y) from by funext y; ring]
+    exact metricGradient_const_mul b hb (hf.differentiable (by norm_num)) (-μ) x
+  rw [hgrad, map_smul, smul_eq_mul]
+  ring
+
+end RicciFlow
