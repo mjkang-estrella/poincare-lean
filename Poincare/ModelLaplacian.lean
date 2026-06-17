@@ -31010,3 +31010,38 @@ theorem covariantGradientEndo_eq_zero_of_harmonic_subharmonic_eq
     hGsymm hinv (hf.of_le (by norm_num)) hGpos h0
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Bochner equality forces the gradient Ricci-null**: on a Riemannian metric with `Ric ≥ 0`, a
+harmonic function with harmonic gradient-norm (`Δ_g|∇f|² = 0`) has `Ric(∇f,∇f) = 0`. The companion to
+`covariantGradientEndo_eq_zero_of_harmonic_subharmonic_eq`: in `½Δ_g|∇f|² = |∇²f|² + Ric(∇f,∇f)`, the
+vanishing left side with `|∇²f|² ≥ 0` forces the (nonnegative) Ricci term to zero. Together they give the
+full Bochner equality case — `∇f` is parallel *and* lies in the kernel of `Ric`; on a closed manifold with
+`Ric > 0` this is the contradiction proving `b₁ = 0`, and the parallel-Ricci-null gradient is the line field
+of the Cheeger–Gromoll splitting theorem (roadmap item 3). -/
+theorem coordRicci_grad_eq_zero_of_harmonic_subharmonic_eq
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ))
+    (hharm : curvedLaplacian G (fun y ↦ metricBilin (G y))
+      (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f = fun _ ↦ (0 : ℝ))
+    (hRicNonneg : 0 ≤ coordRicci G x (coordGradient G f x) (coordGradient G f x))
+    (hsub : curvedLaplacian G (fun y ↦ metricBilin (G y))
+      (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradNormSq G f) x = 0) :
+    coordRicci G x (coordGradient G f x) (coordGradient G f x) = 0 := by
+  have hΓdg : ∀ (y a : E), DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z a) y :=
+    fun y a ↦ differentiableAt_christoffelClosedOp (x := y) G (hG.of_le (by norm_num)) hinv a
+  rw [curvedLaplacian_coordGradNormSq_bochner_harmonic G hG hGsymm hinv hΓdg hf hharm] at hsub
+  have hhess : 0 ≤ coordCovariantHessNormSq G f x :=
+    coordCovariantHessNormSq_nonneg G (hG.differentiable (by norm_num)) hGsymm hinv
+      (hf.of_le (by norm_num)) hGpos hn
+  linarith [hhess, hRicNonneg]
+
+end RicciFlow
