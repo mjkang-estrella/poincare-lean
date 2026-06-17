@@ -30517,3 +30517,40 @@ theorem bilin_cauchy_schwarz_eq_case
   exact hw0
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Chebyshev/Cauchy–Schwarz equality case** (constant-sequence rigidity): if
+`(Σ dᵢ)² = card·(Σ dᵢ²)` then all `dᵢ` are equal. By the variance identity
+`Σᵢⱼ (dᵢ − dⱼ)² = 2(card·Σdᵢ² − (Σdᵢ)²) = 0`, every `(dᵢ − dⱼ)² = 0`. The equality case of the discrete
+Cauchy–Schwarz `(Σdᵢ·1)² ≤ (Σdᵢ²)(Σ1²)` — the "all eigenvalues equal" half of the trace-form
+Cauchy–Schwarz equality case (Obata's `∇²f = (Δf/n)g`). -/
+theorem all_eq_of_sq_sum_eq_card_mul_sum_sq
+    {ι : Type*} (s : Finset ι) (d : ι → ℝ)
+    (heq : (∑ i ∈ s, d i) ^ 2 = (s.card : ℝ) * ∑ i ∈ s, (d i) ^ 2) :
+    ∀ i ∈ s, ∀ j ∈ s, d i = d j := by
+  have key : ∑ i ∈ s, ∑ j ∈ s, (d i - d j) ^ 2
+      = 2 * ((s.card : ℝ) * (∑ i ∈ s, (d i) ^ 2) - (∑ i ∈ s, d i) ^ 2) := by
+    have hinner : ∀ i ∈ s, ∑ j ∈ s, (d i - d j) ^ 2
+        = (s.card : ℝ) * (d i) ^ 2 - 2 * d i * (∑ j ∈ s, d j) + ∑ j ∈ s, (d j) ^ 2 := by
+      intro i _
+      simp only [sub_sq, Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_const,
+        nsmul_eq_mul, Finset.mul_sum]
+    rw [Finset.sum_congr rfl hinner]
+    simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul,
+      ← Finset.sum_mul, ← Finset.mul_sum]
+    ring
+  have hid : ∑ i ∈ s, ∑ j ∈ s, (d i - d j) ^ 2 = 0 := by rw [key, heq]; ring
+  intro i hi j hj
+  have h1 := (Finset.sum_eq_zero_iff_of_nonneg
+    (fun a _ ↦ Finset.sum_nonneg fun b _ ↦ sq_nonneg _)).mp hid i hi
+  have h2 := (Finset.sum_eq_zero_iff_of_nonneg (fun b _ ↦ sq_nonneg _)).mp h1 j hj
+  have h3 : d i - d j = 0 := pow_eq_zero_iff (by norm_num) |>.mp h2
+  linarith [h3]
+
+end RicciFlow
