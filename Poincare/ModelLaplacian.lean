@@ -30931,3 +30931,45 @@ theorem ricciNormSq_sub_scalar_sq_div_eq_traceless_trace
   exact h.symm
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The trace-free Ricci norm is nonnegative** (Riemannian Ricci pinching, trace-free form):
+`0 ≤ |Ric|² − R²/n`. The pinching gap equals the squared norm `tr(Rc̊²)` of the trace-free Ricci operator
+`Rc̊ = Rc − (R/n)·id` (`ricciNormSq_sub_scalar_sq_div_eq_traceless_trace`), which is nonnegative because `Rc̊`
+is self-adjoint (`coordRicciEndo_selfAdjoint` plus the self-adjoint identity) and the trace form is
+positive-semidefinite (`trace_comp_self_nonneg`). So `R²/n ≤ |Ric|²` with equality iff Einstein — the
+trace-free restatement of `coordScalar_sq_le_finrank_mul_ricciNormSq` (roadmap item 3). -/
+theorem traceless_ricci_normSq_nonneg
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v) (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    0 ≤ coordRicciNormSq G x hdiff - (coordScalar G x) ^ 2 / (Module.finrank ℝ E : ℝ) := by
+  have hRicSymm : ∀ u w : E, coordRicci G x u w = coordRicci G x w u :=
+    fun u w ↦ coordRicci_symm hGC2 hGsymm hinv hdiff u w
+  rw [ricciNormSq_sub_scalar_sq_div_eq_traceless_trace G hGC2 hGsymm hinv hdiff (ne_of_gt hn)]
+  set X : E →ₗ[ℝ] E :=
+    coordRicciEndo G x hdiff - (coordScalar G x / (Module.finrank ℝ E : ℝ)) • LinearMap.id with hX
+  set bx : LinearMap.BilinForm ℝ E :=
+    LinearMap.mk₂ ℝ (fun v w ↦ G x v w)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp) with hbx
+  have hbs : LinearMap.IsSymm bx := by
+    rw [LinearMap.isSymm_def]; intro p q
+    simp only [hbx, LinearMap.mk₂_apply, RingHom.id_apply]; exact hGsymm x p q
+  have hbpos : ∀ v : E, v ≠ 0 → 0 < bx v v := by
+    intro v hv; simp only [hbx, LinearMap.mk₂_apply]; exact hGpos v hv
+  have hsa : ∀ p q : E, bx (X p) q = bx p (X q) := by
+    intro p q
+    simp only [hbx, LinearMap.mk₂_apply, hX, LinearMap.sub_apply, LinearMap.smul_apply,
+      LinearMap.id_apply, map_sub, map_smul, smul_eq_mul]
+    rw [coordRicciEndo_selfAdjoint G x hdiff (hinv x) (hGsymm x) hRicSymm p q]
+  exact trace_comp_self_nonneg bx hbs hbpos X hsa hn
+
+end RicciFlow
