@@ -26796,3 +26796,48 @@ theorem fderiv_fderiv_fderiv_apply
     ContinuousLinearMap.zero_apply, map_zero, add_zero, zero_add]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The directional derivative of the Laplacian is the third-derivative contraction**:
+`∂_w(Δf) = Σᵢ D³f(w, bᵢ, bᵢ) / b(bᵢ, bᵢ)` for a `b`-orthogonal basis. Differentiating the metric-basis
+Laplacian sum (`modelLaplacian_eq_orthoBasis_sum`) term by term — each `D²f(bᵢ,bᵢ)/b(bᵢ,bᵢ)` differentiates
+to `D³f(w,bᵢ,bᵢ)/b(bᵢ,bᵢ)` via `fderiv_fderiv_fderiv_apply` — gives the third-derivative metric trace in
+the first slot. With the transport reduction `b(∇f,∇Δf) = ∂_{∇f}(Δf)` and the `S₃`-symmetry of `D³f`,
+this is the Bochner transport term `b(∇f, ∇Δf) = Σᵢ D³f(∇f, bᵢ, bᵢ)/b(bᵢ,bᵢ)` (roadmap item 3). -/
+theorem fderiv_modelLaplacian_eq_basis_sum
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (hbpos : ∀ w : E, w ≠ 0 → 0 < b w w) {f : E → ℝ} (hf : ContDiff ℝ 3 f) (x w : E)
+    {ι : Type*} [Fintype ι] [DecidableEq ι] (v : Module.Basis ι ℝ E)
+    (hortho : ∀ i j, i ≠ j → b (v i) (v j) = 0) :
+    fderiv ℝ (modelLaplacian b hb f) x w
+      = ∑ i, fderiv ℝ (fderiv ℝ (fderiv ℝ f)) x w (v i) (v i) / b (v i) (v i) := by
+  have hB : Differentiable ℝ (fderiv ℝ (fderiv ℝ f)) :=
+    ((hf.fderiv_right (m := 2) (by norm_num)).fderiv_right (m := 1)
+      (by norm_num)).differentiable (by norm_num)
+  have hfe : modelLaplacian b hb f
+      = fun y ↦ ∑ i, (b (v i) (v i))⁻¹ * fderiv ℝ (fderiv ℝ f) y (v i) (v i) := by
+    funext y
+    rw [modelLaplacian_eq_orthoBasis_sum b hb hbpos f y v hortho]
+    exact Finset.sum_congr rfl fun i _ ↦ div_eq_inv_mul _ _
+  have hdiff : ∀ i : ι, DifferentiableAt ℝ
+      (fun y ↦ (b (v i) (v i))⁻¹ * fderiv ℝ (fderiv ℝ f) y (v i) (v i)) x :=
+    fun i => (((hB x).hasFDerivAt.clm_apply (hasFDerivAt_const (v i) x)).clm_apply
+      (hasFDerivAt_const (v i) x)).differentiableAt.const_mul (b (v i) (v i))⁻¹
+  rw [hfe, fderiv_fun_sum (fun i _ => hdiff i), ContinuousLinearMap.sum_apply]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  have hev : HasFDerivAt (fun y ↦ (b (v i) (v i))⁻¹ * fderiv ℝ (fderiv ℝ f) y (v i) (v i)) _ x :=
+    (((hB x).hasFDerivAt.clm_apply (hasFDerivAt_const (v i) x)).clm_apply
+      (hasFDerivAt_const (v i) x)).const_mul (b (v i) (v i))⁻¹
+  rw [hev.fderiv]
+  simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply,
+    ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_zero,
+    ContinuousLinearMap.flip_apply, ContinuousLinearMap.zero_apply, map_zero,
+    add_zero, zero_add, smul_eq_mul, div_eq_inv_mul]
+
+end RicciFlow
