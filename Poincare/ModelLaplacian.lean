@@ -31074,3 +31074,31 @@ theorem einstein_tensor_divergence_free_of_contDiff
     (fun p ↦ isSymmSndFDerivAt_christoffelClosedOp G hG hinv p)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The contracted second Bianchi identity — self-contained form**: for `G ∈ C³` symmetric and invertible,
+`dR = 2·div Ric` (the gradient of scalar curvature is twice the divergence of the Ricci tensor). The
+Christoffel first/second-derivative regularity is discharged internally (`differentiableAt_christoffelClosedOp`,
+`differentiableAt_fderiv_christoffelClosedOp`, `isSymmSndFDerivAt_christoffelClosedOp`), so the fundamental
+curvature conservation law rests only on the smoothness and nondegeneracy of the metric. This is the identity
+that makes the Einstein tensor divergence-free and that underlies the consistency of the scalar-curvature
+evolution under Ricci flow (roadmap item 3). -/
+theorem fderiv_coordScalar_eq_two_ricciDivergenceForm_of_contDiff
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible) :
+    fderiv ℝ (fun y ↦ coordScalar G y) x
+      = (2 : ℝ) • ricciDivergenceForm G x
+          (fun y p ↦ differentiableAt_christoffelClosedOp (x := y) G (hG.of_le (by norm_num)) hinv p)
+          (fun p ↦ differentiableAt_fderiv_christoffelClosedOp G hG hinv p) :=
+  fderiv_coordScalar_eq_two_ricciDivergenceForm (hG.of_le (by norm_num)) hGsymm hinv
+    (fun y p ↦ differentiableAt_christoffelClosedOp (x := y) G (hG.of_le (by norm_num)) hinv p)
+    (fun p ↦ differentiableAt_fderiv_christoffelClosedOp G hG hinv p)
+    (fun p ↦ isSymmSndFDerivAt_christoffelClosedOp G hG hinv p)
+
+end RicciFlow
