@@ -27277,3 +27277,33 @@ theorem curvedLaplacian_const_eq_flat_hessian_trace
   exact covariantHessian_const G₀ _ _ f x _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Leibniz rule for the Christoffel operator on a vector field**:
+`∂_v(Γ(w)·X) = (∂_v Γ(w))·X + Γ(w)·(∂_v X)`. Differentiating the Christoffel-operator field
+`y ↦ Γ_y(w)·X(y)` (a continuous-linear endomorphism applied to a vector field) in direction `v` splits by
+the product rule into the gradient of the operator family acting on `X(x)` plus the operator acting on the
+flat derivative `∂_v X`. This is the field-derivative half of the curvature operator
+(`curvatureOp_modelLeviCivita_extend`), complementing the quadratic `ΓΓ` half
+(`curvature_quadratic_operator_form`); together they reduce the manifold curvature operator to the
+coordinate `coordCurvatureOp`, the bridge that carries the Ricci identity into the `coordRicci`-based
+curved Bochner term (roadmap item 3). -/
+theorem fderiv_christoffelClosedOp_apply_field
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} {X : E → E} {w : E}
+    (hΓd : DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y w) x)
+    (hXd : DifferentiableAt ℝ X x) (v : E) :
+    fderiv ℝ (fun y ↦ christoffelClosedOp G y w (X y)) x v
+      = (fderiv ℝ (fun y ↦ christoffelClosedOp G y w) x v) (X x)
+        + (christoffelClosedOp G x w) (fderiv ℝ X x v) := by
+  rw [fderiv_clm_apply hΓd hXd]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.flip_apply]
+  rw [add_comm]
+
+end RicciFlow
