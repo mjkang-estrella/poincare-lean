@@ -30313,3 +30313,27 @@ theorem curvedLaplacian_coordGradNormSq_bochner_refined_ricci_lower
   linarith [h, hRic]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The trace form is positive-semidefinite on self-adjoint operators**:
+`0 ≤ tr(A ∘ A)` for any `A` self-adjoint w.r.t. a symmetric positive-definite bilinear form `b`. Since
+`tr(A²) = Σ λᵢ²` over the real eigenvalues, it is nonnegative; concretely it follows from the trace
+Cauchy–Schwarz `(tr A)² ≤ n·tr(A²)` (`trace_sq_le_card_mul_trace_comp_self`) with `(tr A)² ≥ 0` and `n > 0`.
+The abstract operator-trace nonnegativity underlying both `coordCovariantHessNormSq_nonneg` (`|∇²f|² ≥ 0`)
+and `coordRicciNormSq_nonneg` (`|Ric|² ≥ 0`) on a Riemannian metric. -/
+theorem trace_comp_self_nonneg
+    (b : LinearMap.BilinForm ℝ E) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v) (A : E →ₗ[ℝ] E)
+    (hsa : ∀ p q : E, b (A p) q = b p (A q))
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    0 ≤ LinearMap.trace ℝ E (A ∘ₗ A) := by
+  have h := trace_sq_le_card_mul_trace_comp_self b hbs hbpos A hsa
+  nlinarith [h, sq_nonneg (LinearMap.trace ℝ E A), hn]
+
+end RicciFlow
