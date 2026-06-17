@@ -31265,3 +31265,51 @@ theorem trace_comp_self_pos
   · exact absurd (eq_zero_of_trace_comp_self_eq_zero b hbs hbpos A hsa h.symm) hA
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Strict Ricci pinching for non-Einstein metrics**: if the metric is not Einstein at `x`
+(`coordRicciEndo ≠ (R/n)·id`), then `R² < n·|Ric|²` strictly. The pinching gap is the strictly positive
+trace-free Ricci norm `|Ric̊|² = tr(Rc̊²) > 0` (`trace_comp_self_pos`, since `Rc̊ = Rc − (R/n)id ≠ 0`),
+giving the strict inequality. So `R² ≤ n|Ric|²` is an equality exactly at Einstein metrics — the strict form
+of the Cauchy–Schwarz pinching (roadmap item 3). -/
+theorem coordScalar_sq_lt_finrank_mul_ricciNormSq_of_not_einstein
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v) (hn : 0 < (Module.finrank ℝ E : ℝ))
+    (hne : coordRicciEndo G x hdiff
+      ≠ (coordScalar G x / (Module.finrank ℝ E : ℝ)) • LinearMap.id) :
+    (coordScalar G x) ^ 2 < (Module.finrank ℝ E : ℝ) * coordRicciNormSq G x hdiff := by
+  have hRicSymm : ∀ u w : E, coordRicci G x u w = coordRicci G x w u :=
+    fun u w ↦ coordRicci_symm hGC2 hGsymm hinv hdiff u w
+  have hgap := ricciNormSq_sub_scalar_sq_div_eq_traceless_trace G hGC2 hGsymm hinv hdiff (ne_of_gt hn)
+  set X : E →ₗ[ℝ] E :=
+    coordRicciEndo G x hdiff - (coordScalar G x / (Module.finrank ℝ E : ℝ)) • LinearMap.id with hX
+  have hXne : X ≠ 0 := sub_ne_zero.mpr hne
+  set bx : LinearMap.BilinForm ℝ E :=
+    LinearMap.mk₂ ℝ (fun v w ↦ G x v w)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp) with hbx
+  have hbs : LinearMap.IsSymm bx := by
+    rw [LinearMap.isSymm_def]; intro p q
+    simp only [hbx, LinearMap.mk₂_apply, RingHom.id_apply]; exact hGsymm x p q
+  have hbpos : ∀ v : E, v ≠ 0 → 0 < bx v v := by
+    intro v hv; simp only [hbx, LinearMap.mk₂_apply]; exact hGpos v hv
+  have hsa : ∀ p q : E, bx (X p) q = bx p (X q) := by
+    intro p q
+    simp only [hbx, LinearMap.mk₂_apply, hX, LinearMap.sub_apply, LinearMap.smul_apply,
+      LinearMap.id_apply, map_sub, map_smul, smul_eq_mul]
+    rw [coordRicciEndo_selfAdjoint G x hdiff (hinv x) (hGsymm x) hRicSymm p q]
+  have hpos : 0 < LinearMap.trace ℝ E (X ∘ₗ X) := trace_comp_self_pos bx hbs hbpos X hsa hn hXne
+  have h1 : (coordScalar G x) ^ 2 / (Module.finrank ℝ E : ℝ) < coordRicciNormSq G x hdiff := by
+    have h2 := hpos; rw [← hgap] at h2; linarith
+  rw [mul_comm]
+  exact (div_lt_iff₀ hn).mp h1
+
+end RicciFlow
