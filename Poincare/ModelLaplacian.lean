@@ -31453,3 +31453,42 @@ theorem traceless_hessian_normSq_nonneg
   exact trace_comp_self_nonneg bx hbs hbpos X hsa hn
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`|Ric|²` is strictly positive for non-Ricci-flat metrics**: on a Riemannian metric, if the Ricci
+operator `coordRicciEndo ≠ 0` then `0 < |Ric|²`. Since `|Ric|² = tr(Rc²)` and `Rc = coordRicciEndo` is
+self-adjoint, the strict positive-definiteness `trace_comp_self_pos` applies. The strict form of
+`coordRicciNormSq_nonneg`, equivalently the contrapositive of the Ricci-flat rigidity
+`coordRicci_eq_zero_of_ricciNormSq_eq_zero` (roadmap item 3). -/
+theorem coordRicciNormSq_pos
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v) (hn : 0 < (Module.finrank ℝ E : ℝ))
+    (hne : coordRicciEndo G x hdiff ≠ 0) :
+    0 < coordRicciNormSq G x hdiff := by
+  have hRicSymm : ∀ u w : E, coordRicci G x u w = coordRicci G x w u :=
+    fun u w ↦ coordRicci_symm hGC2 hGsymm hinv hdiff u w
+  rw [coordRicciNormSq_eq_trace G x hdiff (hinv x) hRicSymm]
+  set bx : LinearMap.BilinForm ℝ E :=
+    LinearMap.mk₂ ℝ (fun v w ↦ G x v w)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp) with hbx
+  have hbs : LinearMap.IsSymm bx := by
+    rw [LinearMap.isSymm_def]; intro p q
+    simp only [hbx, LinearMap.mk₂_apply, RingHom.id_apply]; exact hGsymm x p q
+  have hbpos : ∀ v : E, v ≠ 0 → 0 < bx v v := by
+    intro v hv; simp only [hbx, LinearMap.mk₂_apply]; exact hGpos v hv
+  have hsa : ∀ p q : E,
+      bx (coordRicciEndo G x hdiff p) q = bx p (coordRicciEndo G x hdiff q) := by
+    intro p q; simp only [hbx, LinearMap.mk₂_apply]
+    exact coordRicciEndo_selfAdjoint G x hdiff (hinv x) (hGsymm x) hRicSymm p q
+  exact trace_comp_self_pos bx hbs hbpos (coordRicciEndo G x hdiff) hsa hn hne
+
+end RicciFlow
