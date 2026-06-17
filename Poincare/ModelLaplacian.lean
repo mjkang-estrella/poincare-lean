@@ -29270,3 +29270,50 @@ theorem curvedLaplacian_coordGradNormSq_bochner_eigenfunction
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Christoffel operator is differentiable** (discharges `hΓd`/`hΓdg`): for `G ∈ C²` invertible, the
+field `y ↦ Γ(·)(y)` is differentiable. Lift to vector components via `differentiableAt_clm_of_apply`; each
+`y ↦ Γ(a)(y)v = (G y)⁻¹(toCLM(christoffelFunctional G y a v))` is the differentiable inverse metric
+(`hasFDerivAt_inverse_raise` infrastructure) applied to the Christoffel functional, itself a covector field
+lifted by `differentiableAt_clm_dual_of_apply` from its scalar `w`-components `½((D G·a)v w + (D G·v)a w −
+(D G·w)a v)` — each a slot of the differentiable second-derivative field `D G` (`G ∈ C²`). This makes the
+standard Christoffel-differentiability hypothesis a *theorem* in `G ∈ C²`, so the curved Bochner identity
+rests only on `G ∈ C³` and `f ∈ C³` (roadmap item 3). -/
+theorem differentiableAt_christoffelClosedOp
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 2 G)
+    (hinv : ∀ y : E, (G y).IsInvertible) (a : E) :
+    DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x := by
+  have hInvDiff : DifferentiableAt ℝ (fun y ↦ (G y).inverse) x :=
+    (((hinv x).contDiffAt_map_inverse (n := 1)).differentiableAt one_ne_zero).comp x
+      ((hG.differentiable (by norm_num)).differentiableAt)
+  have hdG2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ G y) x :=
+    ((hG.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)).differentiableAt
+  apply differentiableAt_clm_of_apply
+  intro v
+  simp_rw [christoffelClosedOp_apply]
+  apply hInvDiff.clm_apply
+  apply differentiableAt_clm_dual_of_apply
+  intro w
+  have hfun : (fun y ↦ (LinearMap.toContinuousLinearMap (christoffelFunctional G y a v)) w)
+      = fun y ↦ (1 / 2 : ℝ) * ((fderiv ℝ G y a) v w + (fderiv ℝ G y v) a w
+        - (fderiv ℝ G y w) a v) := rfl
+  rw [hfun]
+  have t1 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ G y a) v w) x :=
+    ((hdG2.clm_apply (differentiableAt_const a)).clm_apply
+      (differentiableAt_const v)).clm_apply (differentiableAt_const w)
+  have t2 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ G y v) a w) x :=
+    ((hdG2.clm_apply (differentiableAt_const v)).clm_apply
+      (differentiableAt_const a)).clm_apply (differentiableAt_const w)
+  have t3 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ G y w) a v) x :=
+    ((hdG2.clm_apply (differentiableAt_const w)).clm_apply
+      (differentiableAt_const a)).clm_apply (differentiableAt_const v)
+  exact ((t1.add t2).sub t3).const_mul (1 / 2 : ℝ)
+
+end RicciFlow
