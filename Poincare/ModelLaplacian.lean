@@ -29635,3 +29635,28 @@ theorem differentiableAt_fderiv_coordRicciForm_field
     (by norm_num)).differentiableAt (by norm_num)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The metric trace of a `C²` tensor field is `C²`**: `tr_g H = Σᵢ H(bᵢ, ♯bⁱ)` is twice continuously
+differentiable when the tensor field `H` is (and `G ∈ C²`, so the raised basis `♯bⁱ = G⁻¹bⁱ` is `C²` via
+`IsInvertible.contDiffAt_map_inverse`). Each summand is the `C²` tensor applied to a constant and to the
+`C²` raised basis vector (`clm_apply`). The `ContDiff` analogue of `differentiableAt_tensorMetricTrace`. -/
+theorem contDiffAt_tensorMetricTrace
+    {G H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hG : ContDiff ℝ 2 G) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hHcd : ContDiffAt ℝ 2 H x) :
+    ContDiffAt ℝ 2 (tensorMetricTrace G H) x := by
+  have hInvCD : ContDiffAt ℝ 2 (fun y ↦ (G y).inverse) x :=
+    ((hinv x).contDiffAt_map_inverse (n := 2)).comp x hG.contDiffAt
+  unfold tensorMetricTrace
+  apply ContDiffAt.sum
+  intro i _
+  exact (hHcd.clm_apply contDiffAt_const).clm_apply (hInvCD.clm_apply contDiffAt_const)
+
+end RicciFlow
