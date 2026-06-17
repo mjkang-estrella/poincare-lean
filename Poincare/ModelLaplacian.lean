@@ -29172,3 +29172,34 @@ theorem differentiableAt_covariantHessianForm
     (hdf.clm_apply ((hΓd w).clm_apply (differentiableAt_const w')))
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **THE CURVED BOCHNER IDENTITY — self-contained form** (no CLM-field hypothesis):
+`Δ_g|∇f|²_G = 2(G(∇f, ∇Δf) + Ric(∇f,∇f)) + 2|∇²f|²_g`, assuming only `G ∈ C³` symmetric and invertible,
+the global Christoffel-differentiability `hΓdg`, and `f ∈ C³`. The CLM-Hessian-field differentiability `hHd`
+of `curvedLaplacian_coordGradNormSq_bochner_gradient` is now discharged internally by
+`differentiableAt_covariantHessianForm` (at every base point, from `hΓdg` and `hf`). This is the genuine
+curved Riemannian Bochner–Weitzenböck formula `½ Δ_g|∇f|² = |∇²f|² + ⟨∇f, ∇Δf⟩_g + Ric(∇f, ∇f)` in the
+coordinate model, resting only on standard geometric regularity (roadmap item 3). -/
+theorem curvedLaplacian_coordGradNormSq_bochner_gradient_of_christoffelDiff
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓdg : ∀ (y a : E), DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z a) y)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) :
+    curvedLaplacian G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradNormSq G f) x
+      = 2 * (G x (coordGradient G f x)
+              (coordGradient G (curvedLaplacian G (fun y ↦ metricBilin (G y))
+                (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f) x)
+            + coordRicci G x (coordGradient G f x) (coordGradient G f x))
+        + 2 * coordCovariantHessNormSq G f x :=
+  curvedLaplacian_coordGradNormSq_bochner_gradient G hG hGsymm hinv (fun a ↦ hΓdg x a) hf
+    (fun y ↦ differentiableAt_covariantHessianForm G hf (fun a ↦ hΓdg y a))
+
+end RicciFlow
