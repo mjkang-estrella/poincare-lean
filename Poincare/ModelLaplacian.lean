@@ -28942,3 +28942,49 @@ theorem covTensor2Deriv_covariantHessianForm_eq
     covariantHessianForm_eq_covariantHessian G hGsymm hinv f x v (christoffelClosedOp G x u w)]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved Bochner transport identity**: the rough-Laplacian trace in the transport slot is the
+directional derivative of the Laplacian, `Σⱼ G(∇²_{v,♯bʲ}∇_G f, bⱼ) = ∂_v(Δf)`. This is the general-tensor
+"covariant derivative commutes with the metric trace" (`sum_covTensor2Deriv_Hslot_trace`:
+`Σⱼ (∇_v H)(♯bʲ,bⱼ) = ∂_v(tr_g H)`) specialized to `H = ∇²f`, using `covTensor2Deriv_covariantHessianForm_eq`
+(`∇H = ∇³f`, T2) on the left and `tensorMetricTrace_covariantHessianForm` (`tr_g ∇²f = Δf`, T1) on the
+right. The metric-compatibility cancellation of the varying raised index is supplied internally by the
+`covTensor2Deriv` machinery (`H_inverse_raise_trace`). Setting `v = ∇_G f` gives the transport term
+`Σⱼ G(∇²_{∇f,♯bʲ}∇_G f, bⱼ) = ∂_{∇f}(Δf) = G(∇f,∇Δf)` of the curved Bochner identity (roadmap item 3).
+Carries the standard CLM-field differentiability `hHd`, as elsewhere for `coordRicciForm`. -/
+theorem sum_G_covariantSecondDerivative_gradient_transport_eq
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f)
+    (hHd : ∀ y, DifferentiableAt ℝ (covariantHessianForm G f) y) (v : E) :
+    (∑ j, G x (covariantSecondDerivative G (fun z ↦ metricBilin (G z))
+          (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) (coordGradient G f) x v
+          ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j))))
+        ((Module.finBasis ℝ E) j))
+      = fderiv ℝ (curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f) x v := by
+  have hGd : Differentiable ℝ G := hG.differentiable (by norm_num)
+  have hf2 : ContDiff ℝ 2 f := hf.of_le (by norm_num)
+  have hHsymm : ∀ (y : E) (p q : E),
+      covariantHessianForm G f y p q = covariantHessianForm G f y q p :=
+    fun y p q ↦ covariantHessianForm_symm G hGd hGsymm hinv hf2.contDiffAt p q
+  have htr : tensorMetricTrace G (covariantHessianForm G f)
+      = curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f := by
+    funext y
+    exact tensorMetricTrace_covariantHessianForm G hGd hGsymm hinv hf2.contDiffAt
+  rw [← htr, ← sum_covTensor2Deriv_Hslot_trace (hGd x) hGsymm hinv (hHd x) hHsymm v]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  exact (covTensor2Deriv_covariantHessianForm_eq G hG hGsymm hinv hΓd hf (hHd x) v
+    ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+    ((Module.finBasis ℝ E) j)).symm
+
+end RicciFlow
