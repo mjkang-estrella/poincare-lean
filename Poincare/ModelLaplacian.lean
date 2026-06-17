@@ -27627,3 +27627,32 @@ theorem coordGradNormSq_eq_fderiv (G : E → E →L[ℝ] E →L[ℝ] ℝ)
   exact g_coordGradient G hinv f y (coordGradient G f y)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Product rule for the metric-paired gradient**:
+`∂_v(G(∇_G f, w)) = G(∂_v∇_G f, w) + (∂_vG)(∇_G f, w)`. Differentiating the scalar field
+`y ↦ G_y(∇_G f(y), w)` in direction `v` splits, by the bilinear product rule, into the metric paired with
+the *flat* derivative of the gradient field plus the *derivative of the metric* paired with the gradient
+(via a double `clm_apply`). Combined with `fderiv_g_coordGradient_eq_fderiv_fderiv`
+(`∂_v(G(∇_G f,w)) = D²f(v,w)`) and metric compatibility (`coord_metric_compatible`), this yields the
+gradient–Hessian relation `G(∇_v ∇_G f, w) = ∇²f(v,w)` (roadmap item 3). -/
+theorem fderiv_g_coordGradient_apply
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : DifferentiableAt ℝ G x)
+    {f : E → ℝ} (hXd : DifferentiableAt ℝ (coordGradient G f) x) (v w : E) :
+    fderiv ℝ (fun y ↦ G y (coordGradient G f y) w) x v
+      = G x (fderiv ℝ (coordGradient G f) x v) w
+        + fderiv ℝ G x v (coordGradient G f x) w := by
+  have hev : HasFDerivAt (fun y ↦ G y (coordGradient G f y) w) _ x :=
+    (hGd.hasFDerivAt.clm_apply hXd.hasFDerivAt).clm_apply (hasFDerivAt_const w x)
+  rw [hev.fderiv]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.comp_zero, ContinuousLinearMap.flip_apply,
+    ContinuousLinearMap.zero_apply, map_zero, add_zero, zero_add]
+
+end RicciFlow
