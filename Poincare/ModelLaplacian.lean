@@ -27602,3 +27602,28 @@ theorem fderiv_g_coordGradient_eq_fderiv_fderiv
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved gradient-norm** `|∇f|²_G := G(∇_G f, ∇_G f)`, the squared length of the curved gradient
+measured by the position-dependent metric. -/
+noncomputable def coordGradNormSq (G : E → E →L[ℝ] E →L[ℝ] ℝ) (f : E → ℝ) (y : E) : ℝ :=
+  G y (coordGradient G f y) (coordGradient G f y)
+
+/-- **The curved gradient-norm equals the differential on the gradient**: `|∇f|²_G = df(∇_G f)`. The
+squared length of the curved gradient is the differential paired against the gradient itself (by the
+defining property `g_coordGradient`), the curved analogue of the flat `b(∇f,∇f) = df(∇f)`. This is the
+scalar field whose curved Laplacian `Δ_g|∇f|²_G` the curved Bochner–Weitzenböck identity expands into
+`2|∇²f|² + 2 G(∇f,∇Δf) + 2 Ric(∇f,∇f)` (roadmap item 3). -/
+theorem coordGradNormSq_eq_fderiv (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (hinv : ∀ y : E, (G y).IsInvertible) (f : E → ℝ) (y : E) :
+    coordGradNormSq G f y = fderiv ℝ f y (coordGradient G f y) := by
+  unfold coordGradNormSq
+  exact g_coordGradient G hinv f y (coordGradient G f y)
+
+end RicciFlow
