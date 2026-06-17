@@ -31152,3 +31152,29 @@ theorem ricciDivergence_eq_zero_of_scalar_const_of_contDiff
     (fun p ↦ isSymmSndFDerivAt_christoffelClosedOp G hG hinv p) hconst w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Einstein characterization** (equality case of the Ricci pinching, both directions):
+on a Riemannian metric, `Ric = (R/n)·g` (i.e. `coordRicciEndo = (R/n)·id`) **iff** `R² = n·|Ric|²`. The
+forward direction is the rigidity `coordRicciEndo_eq_smul_id_of_scalar_sq_eq` (equality in the trace
+Cauchy–Schwarz forces the Ricci operator scalar), the reverse is
+`coordScalar_sq_eq_finrank_mul_ricciNormSq_of_einstein` (an Einstein metric saturates the pinching). Thus the
+Einstein condition is exactly the equality case of `R² ≤ n|Ric|²` — equivalently the vanishing of the
+trace-free Ricci tensor `|Ric̊|² = |Ric|² − R²/n = 0` (roadmap item 3). -/
+theorem coordRicciEndo_eq_smul_id_iff_scalar_sq_eq
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v) (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    coordRicciEndo G x hdiff = (coordScalar G x / (Module.finrank ℝ E : ℝ)) • LinearMap.id
+      ↔ (coordScalar G x) ^ 2 = (Module.finrank ℝ E : ℝ) * coordRicciNormSq G x hdiff :=
+  ⟨coordScalar_sq_eq_finrank_mul_ricciNormSq_of_einstein G hGC2 hGsymm hinv hdiff (ne_of_gt hn),
+    coordRicciEndo_eq_smul_id_of_scalar_sq_eq G hGC2 hGsymm hinv hdiff hGpos hn⟩
+
+end RicciFlow
