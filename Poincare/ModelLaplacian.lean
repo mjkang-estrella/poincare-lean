@@ -31241,3 +31241,27 @@ theorem covariantGradientEndo_eq_smul_id_iff_hess_sq_eq
     covariantGradientEndo_eq_smul_id_of_hess_eq G hGd hGsymm hinv hf hGpos hn⟩
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The trace form is positive-definite on self-adjoint operators**: `A ≠ 0 ⟹ 0 < tr(A∘A)` for `A`
+self-adjoint w.r.t. a symmetric positive-definite `b`. The strict strengthening of `trace_comp_self_nonneg`
+using the rigidity `eq_zero_of_trace_comp_self_eq_zero`: `tr(A²) ≥ 0` with equality only at `A = 0`, so a
+nonzero operator has strictly positive trace-norm. Geometrically: a metric with nonzero trace-free Ricci has
+`|Ric̊|² > 0` (strictly sub-Einstein), and a function with nonzero covariant Hessian has `|∇²f|² > 0`. -/
+theorem trace_comp_self_pos
+    (b : LinearMap.BilinForm ℝ E) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ v : E, v ≠ 0 → 0 < b v v) (A : E →ₗ[ℝ] E)
+    (hsa : ∀ p q : E, b (A p) q = b p (A q))
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) (hA : A ≠ 0) :
+    0 < LinearMap.trace ℝ E (A ∘ₗ A) := by
+  rcases (trace_comp_self_nonneg b hbs hbpos A hsa hn).lt_or_eq with h | h
+  · exact h
+  · exact absurd (eq_zero_of_trace_comp_self_eq_zero b hbs hbpos A hsa h.symm) hA
+
+end RicciFlow
