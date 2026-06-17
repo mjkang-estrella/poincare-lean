@@ -29713,3 +29713,40 @@ theorem differentiableAt_fderiv_neg_two_coordRicciForm_field
   exact (hC2.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Christoffel functional (as a covector) of a tensor field is differentiable**: for a field `K`
+whose derivative field `∂K` is differentiable at `x`, `y ↦ toCLM(christoffelFunctional K y p v)` is
+differentiable. Lift through `differentiableAt_clm_dual_of_apply`; each scalar `w`-component
+`½((∂K·p)v w + (∂K·v)p w − (∂K·w)p v)` is a slot of the differentiable second-derivative field `∂K`. The
+shared engine for the differentiability of both `christoffelFunctional G` (`∂G`, from `G ∈ C²`) and
+`christoffelFunctional H` (`∂H = ∂Ric`, from `Ric ∈ C²`) inside `christoffelDeriv`. -/
+theorem differentiableAt_christoffelFunctionalCLM
+    {K : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hKd2 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ K y) x) (p v : E) :
+    DifferentiableAt ℝ
+      (fun y ↦ LinearMap.toContinuousLinearMap (christoffelFunctional K y p v)) x := by
+  apply differentiableAt_clm_dual_of_apply
+  intro w
+  have hfun : (fun y ↦ (LinearMap.toContinuousLinearMap (christoffelFunctional K y p v)) w)
+      = fun y ↦ (1 / 2 : ℝ) * ((fderiv ℝ K y p) v w + (fderiv ℝ K y v) p w
+        - (fderiv ℝ K y w) p v) := rfl
+  rw [hfun]
+  have t1 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ K y p) v w) x :=
+    ((hKd2.clm_apply (differentiableAt_const p)).clm_apply
+      (differentiableAt_const v)).clm_apply (differentiableAt_const w)
+  have t2 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ K y v) p w) x :=
+    ((hKd2.clm_apply (differentiableAt_const v)).clm_apply
+      (differentiableAt_const p)).clm_apply (differentiableAt_const w)
+  have t3 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ K y w) p v) x :=
+    ((hKd2.clm_apply (differentiableAt_const w)).clm_apply
+      (differentiableAt_const p)).clm_apply (differentiableAt_const v)
+  exact ((t1.add t2).sub t3).const_mul (1 / 2 : ℝ)
+
+end RicciFlow
