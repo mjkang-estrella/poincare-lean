@@ -29845,3 +29845,49 @@ theorem ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian_of_contDiff
     (contDiff_coordScalar hG hinv)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved Ricci-flow scalar-curvature evolution** (Bianchi keystone internalized):
+along a flow whose velocity is `H = ∂_t G = −2 Ric` (the Ricci-flow equation) with `G_{t₀} ∈ C⁴` symmetric
+and invertible, the scalar curvature evolves by `∂_t R = Δ_g R + 2|Ric|²`. This is
+`hamilton_scalar_evolution_of_bianchi_curved` with its `hBianchi` (the twice-contracted second Bianchi
+identity) discharged by `ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian_of_contDiff`, and `hH` matched by
+proof-irrelevance of the Ricci form's differentiability witness (`coordRicciForm_proof_irrel`). The flow only
+needs the metric/Christoffel time-derivative data (`hdG`, `hmix`, `hmix2`, `hd2`); the curvature analytics
+are now unconditional. Hamilton's scalar evolution — the maximum-principle engine forcing `R` to increase —
+in the genuine curved coordinate model (roadmap items 1 & 3). -/
+theorem curved_ricci_flow_scalar_evolution
+    {Gt : ℝ → E → E →L[ℝ] E →L[ℝ] ℝ} {H : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {t₀ : ℝ}
+    (hdG : HasDerivAt (fun t ↦ Gt t x) (H x) t₀)
+    (hev : ∀ᶠ t in nhds t₀, (Gt t x).IsInvertible)
+    (hmix : ∀ p q r : E,
+      HasDerivAt (fun t ↦ (fderiv ℝ (Gt t) x p) q r) ((fderiv ℝ H x p) q r) t₀)
+    (hmix2 : ∀ p v : E,
+      HasDerivAt
+        (fun t ↦ fderiv ℝ (fun y ↦ christoffelClosedOp (Gt t) y p) x v)
+        (fderiv ℝ (fun y ↦ christoffelDerivOp (Gt t₀) H y p) x v) t₀)
+    (hd2 : ∀ t : ℝ, ∀ u : E,
+      DifferentiableAt ℝ (fun y ↦ christoffelClosedOp (Gt t) y u) x)
+    (hbnd : ∀ y : E, (metricBilin (Gt t₀ y)).Nondegenerate)
+    (hGC4 : ContDiff ℝ 4 (Gt t₀))
+    (hGsymm : ∀ (y : E) (p q : E), Gt t₀ y p q = Gt t₀ y q p)
+    (hinv : ∀ y : E, (Gt t₀ y).IsInvertible)
+    (hHfield : H = fun y ↦ (-2 : ℝ) • coordRicciForm (Gt t₀) y
+      (fun p ↦ differentiableAt_christoffelClosedOp (x := y) (Gt t₀)
+        (hGC4.of_le (by norm_num)) hinv p)) :
+    HasDerivAt (fun t ↦ coordScalar (Gt t) x)
+      (curvedLaplacian (Gt t₀) (fun y ↦ metricBilin (Gt t₀ y)) hbnd
+          (fun y ↦ coordScalar (Gt t₀) y) x
+        + 2 * coordRicciNormSq (Gt t₀) x (hd2 t₀)) t₀ := by
+  refine hamilton_scalar_evolution_of_bianchi_curved hdG hev hmix hmix2 hd2 ?_ hbnd ?_
+  · rw [hHfield]
+  · rw [hHfield]
+    exact ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian_of_contDiff hGC4 hGsymm hinv _
+
+end RicciFlow
