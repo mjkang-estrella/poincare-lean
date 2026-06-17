@@ -31178,3 +31178,34 @@ theorem coordRicciEndo_eq_smul_id_iff_scalar_sq_eq
     coordRicciEndo_eq_smul_id_of_scalar_sq_eq G hGC2 hGsymm hinv hdiff hGpos hn⟩
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **An Obata Hessian saturates `(Δf)² ≤ n|∇²f|²`** (converse rigidity): if `∇²f♯ = (Δf/n)·id`
+(`∇²f = (Δf/n)·g`), then `(Δf)² = n·|∇²f|²`. From the Hessian endomorphism being `(Δf/n)·id`,
+`|∇²f|² = tr((∇²f♯)²) = (Δf/n)²·tr(id) = (Δf/n)²·n = (Δf)²/n`. Together with
+`covariantGradientEndo_eq_smul_id_of_hess_eq` (the forward direction) this gives the equivalence: equality in
+the refined Bochner `(Δf)² ≤ n|∇²f|²` holds **iff** the Hessian solves Obata's equation `∇²f = (Δf/n)·g` —
+the Hessian analogue of the Einstein characterization (roadmap item 3). -/
+theorem curvedLaplacian_sq_eq_finrank_mul_coordCovariantHessNormSq_of_hess_smul_id
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (hn : (Module.finrank ℝ E : ℝ) ≠ 0)
+    (hsmul : covariantGradientEndo G f x
+      = (curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x
+        / (Module.finrank ℝ E : ℝ)) • LinearMap.id) :
+    (curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x) ^ 2
+      = (Module.finrank ℝ E : ℝ) * coordCovariantHessNormSq G f x := by
+  rw [coordCovariantHessNormSq_eq_trace G hGd hGsymm hinv hf, hsmul,
+    LinearMap.smul_comp, LinearMap.comp_smul, LinearMap.id_comp, smul_smul, map_smul,
+    LinearMap.trace_id, smul_eq_mul]
+  field_simp
+
+end RicciFlow
