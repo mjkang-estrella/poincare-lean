@@ -31045,3 +31045,32 @@ theorem coordRicci_grad_eq_zero_of_harmonic_subharmonic_eq
   linarith [hhess, hRicNonneg]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Einstein tensor is divergence-free — self-contained form** (contracted second Bianchi):
+for `G ∈ C³` symmetric and invertible, `div Ric − ½ dR = 0`, with the Christoffel first/second-derivative
+regularity discharged internally (`differentiableAt_christoffelClosedOp`,
+`differentiableAt_fderiv_christoffelClosedOp`, `isSymmSndFDerivAt_christoffelClosedOp`). This is the
+twice-contracted second Bianchi identity `2 div Ric = dR` (the conservation law making the Einstein tensor
+`Ric − ½R·g` divergence-free), now resting only on the smoothness and nondegeneracy of the metric — the
+identity underlying the consistency of the Einstein field equations and Hamilton's Ricci-flow estimates
+(roadmap item 3). -/
+theorem einstein_tensor_divergence_free_of_contDiff
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible) :
+    ricciDivergenceForm G x
+        (fun y p ↦ differentiableAt_christoffelClosedOp (x := y) G (hG.of_le (by norm_num)) hinv p)
+        (fun p ↦ differentiableAt_fderiv_christoffelClosedOp G hG hinv p)
+      - (1 / 2 : ℝ) • fderiv ℝ (fun y ↦ coordScalar G y) x = 0 :=
+  einstein_tensor_divergence_free (hG.of_le (by norm_num)) hGsymm hinv
+    (fun y p ↦ differentiableAt_christoffelClosedOp (x := y) G (hG.of_le (by norm_num)) hinv p)
+    (fun p ↦ differentiableAt_fderiv_christoffelClosedOp G hG hinv p)
+    (fun p ↦ isSymmSndFDerivAt_christoffelClosedOp G hG hinv p)
+
+end RicciFlow
