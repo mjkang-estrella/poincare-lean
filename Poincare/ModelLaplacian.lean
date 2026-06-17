@@ -29985,3 +29985,37 @@ theorem covariantGradientEndo_selfAdjoint (G : E → E →L[ℝ] E →L[ℝ] ℝ
     (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) hGd hGsymm hf.contDiffAt p q]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved Laplacian is the trace of the curved Hessian endomorphism**:
+`Δ_g f = tr(∇²f♯)`. The metric trace of the Hessian `(0,2)`-tensor equals the operator trace of its `(1,1)`
+form: by `sum_g_raised_eq_trace`, `tr(∇²f♯) = Σⱼ G(∇²f♯(♯bʲ), bⱼ) = Σⱼ ∇²f(♯bʲ, bⱼ) = Δ_g f`
+(`curvedLaplacian_eq_raised_hessian_sum` + `g_covariantDeriv_coordGradient_eq_covariantHessian'`). This is the
+`tr(A) = Δf` identity feeding the trace Cauchy–Schwarz toward the refined curved Bochner. -/
+theorem curvedLaplacian_eq_trace_covariantGradientEndo
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) :
+    curvedLaplacian G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x
+      = LinearMap.trace ℝ E (covariantGradientEndo G f x) := by
+  rw [curvedLaplacian_eq_raised_hessian_sum G hGsymm hinv f,
+    ← sum_g_raised_eq_trace G x (hinv x) (covariantGradientEndo G f x)]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  simp only [covariantGradientEndo_apply]
+  rw [g_covariantDeriv_coordGradient_eq_covariantHessian' G (hGd x) hGsymm hinv hf
+      ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+      ((Module.finBasis ℝ E) j)]
+  simp only [covariantHessian]
+  rw [christoffelClosedOp_eq_christoffelAt G (metricBilin (G x))
+    (metricBilin_nondeg (hGsymm x) (hinv x)) (fun a b ↦ metricBilin_apply (G x) a b)
+    ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+    ((Module.finBasis ℝ E) j)]
+
+end RicciFlow
