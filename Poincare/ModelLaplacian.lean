@@ -30748,3 +30748,47 @@ theorem covariantGradientEndo_eq_smul_id_of_eigenfunction_hess_eq
   rwa [congrFun heig x] at h
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The equality case of `R² ≤ n|Ric|²` characterizes Einstein metrics**:
+if `(R)² = n·|Ric|²` at `x` on a Riemannian metric, then the Ricci endomorphism is `(R/n)·id`, i.e.
+`Ric = (R/n)·g` — the Einstein condition. Equality in the Cauchy–Schwarz `R² ≤ n|Ric|²`
+(`coordScalar_sq_le_finrank_mul_ricciNormSq`) forces the self-adjoint Ricci operator `Rc = coordRicciEndo`
+(`trace Rc = R`, `trace(Rc²) = |Ric|²`, `coordRicciEndo_selfAdjoint`) to be a multiple of the identity
+(`eq_smul_id_of_trace_sq_eq`). The Ricci-operator analogue of Obata's equation for the Hessian, and the
+pointwise rigidity behind "Ricci-pinched ⟹ Einstein" — a model of the curvature-rigidity arguments
+underlying the differentiable sphere theorem (roadmap item 3). -/
+theorem coordRicciEndo_eq_smul_id_of_scalar_sq_eq
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v) (hn : 0 < (Module.finrank ℝ E : ℝ))
+    (heq : (coordScalar G x) ^ 2 = (Module.finrank ℝ E : ℝ) * coordRicciNormSq G x hdiff) :
+    coordRicciEndo G x hdiff = (coordScalar G x / (Module.finrank ℝ E : ℝ)) • LinearMap.id := by
+  have hRicSymm : ∀ u w : E, coordRicci G x u w = coordRicci G x w u :=
+    fun u w ↦ coordRicci_symm hGC2 hGsymm hinv hdiff u w
+  set bx : LinearMap.BilinForm ℝ E :=
+    LinearMap.mk₂ ℝ (fun v w ↦ G x v w)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp) with hbx
+  have hbs : LinearMap.IsSymm bx := by
+    rw [LinearMap.isSymm_def]; intro p q
+    simp only [hbx, LinearMap.mk₂_apply, RingHom.id_apply]; exact hGsymm x p q
+  have hbpos : ∀ v : E, v ≠ 0 → 0 < bx v v := by
+    intro v hv; simp only [hbx, LinearMap.mk₂_apply]; exact hGpos v hv
+  have hsa : ∀ p q : E,
+      bx (coordRicciEndo G x hdiff p) q = bx p (coordRicciEndo G x hdiff q) := by
+    intro p q; simp only [hbx, LinearMap.mk₂_apply]
+    exact coordRicciEndo_selfAdjoint G x hdiff (hinv x) (hGsymm x) hRicSymm p q
+  rw [coordRicciNormSq_eq_trace G x hdiff (hinv x) hRicSymm,
+    ← trace_coordRicciEndo G x hdiff (hinv x) (hGsymm x)] at heq
+  have hres := eq_smul_id_of_trace_sq_eq bx hbs hbpos (coordRicciEndo G x hdiff) hsa hn heq
+  rwa [trace_coordRicciEndo G x hdiff (hinv x) (hGsymm x)] at hres
+
+end RicciFlow
