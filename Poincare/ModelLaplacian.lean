@@ -30792,3 +30792,48 @@ theorem coordRicciEndo_eq_smul_id_of_scalar_sq_eq
   rwa [trace_coordRicciEndo G x hdiff (hinv x) (hGsymm x)] at hres
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Vanishing `|Ric|²` forces Ricci-flatness** (forward rigidity): on a Riemannian metric, `|Ric|² = 0 ⟹
+Ric ≡ 0`. The metric Frobenius norm `|Ric|² = tr(Rc²)` of the self-adjoint Ricci operator vanishes, so
+`Rc = coordRicciEndo = 0` (`eq_zero_of_trace_comp_self_eq_zero`), and pairing back gives `Ric(p,w) =
+G(Rc w, p) = 0`. The converse of `coordRicciNormSq_eq_zero_of_ricci_flat`, valid on positive-definite metrics:
+`|Ric|² ≥ 0` with equality iff Ricci-flat. The pointwise rigidity behind the Bochner vanishing for the Ricci
+tensor (roadmap item 3). -/
+theorem coordRicci_eq_zero_of_ricciNormSq_eq_zero
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (h0 : coordRicciNormSq G x hdiff = 0) (p w : E) :
+    coordRicci G x p w = 0 := by
+  have hRicSymm : ∀ u w : E, coordRicci G x u w = coordRicci G x w u :=
+    fun u w ↦ coordRicci_symm hGC2 hGsymm hinv hdiff u w
+  rw [coordRicciNormSq_eq_trace G x hdiff (hinv x) hRicSymm] at h0
+  set bx : LinearMap.BilinForm ℝ E :=
+    LinearMap.mk₂ ℝ (fun v w ↦ G x v w)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp) with hbx
+  have hbs : LinearMap.IsSymm bx := by
+    rw [LinearMap.isSymm_def]; intro p q
+    simp only [hbx, LinearMap.mk₂_apply, RingHom.id_apply]; exact hGsymm x p q
+  have hbpos : ∀ v : E, v ≠ 0 → 0 < bx v v := by
+    intro v hv; simp only [hbx, LinearMap.mk₂_apply]; exact hGpos v hv
+  have hsa : ∀ p q : E,
+      bx (coordRicciEndo G x hdiff p) q = bx p (coordRicciEndo G x hdiff q) := by
+    intro p q; simp only [hbx, LinearMap.mk₂_apply]
+    exact coordRicciEndo_selfAdjoint G x hdiff (hinv x) (hGsymm x) hRicSymm p q
+  have hRc0 : coordRicciEndo G x hdiff = 0 :=
+    eq_zero_of_trace_comp_self_eq_zero bx hbs hbpos (coordRicciEndo G x hdiff) hsa h0
+  have hkey : G x (coordRicciEndo G x hdiff w) p = coordRicci G x p w := by
+    rw [g_coordRicciEndo G x hdiff (hinv x) w]; rfl
+  rw [← hkey, hRc0]
+  simp
+
+end RicciFlow
