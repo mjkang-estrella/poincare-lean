@@ -27656,3 +27656,42 @@ theorem fderiv_g_coordGradient_apply
     ContinuousLinearMap.zero_apply, map_zero, add_zero, zero_add]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant derivative of the curved gradient is the covariant Hessian** (the gradient–Hessian
+relation): `G(∇_v ∇_G f, w) = ∇²f(v,w)`. Pairing the covariant derivative of the gradient vector field
+`∇_v ∇_G f = ∂_v∇_G f + Γ(v)·∇_G f` against `w` with the metric recovers the scalar covariant Hessian.
+Proof: `D²f(v,w) = ∂_v(G(∇_G f, w))` (`fderiv_g_coordGradient_eq_fderiv_fderiv`); expand the right side by
+the product rule (`fderiv_g_coordGradient_apply`) and metric compatibility (`coord_metric_compatible`);
+the metric-derivative term splits into a `Γ(v)·∇_G f` piece (which combines with `∂_v∇_G f` into the
+covariant derivative) and a `Γ(v)·w` piece that becomes `df(Γ(v,w))` (`g_coordGradient`), exactly the
+Christoffel corrector of the covariant Hessian. This is the bridge `∇_G f ↦ ∇²f` that turns the curved
+Bochner transport term into a Hessian trace, and (via the contracted Ricci identity) injects the
+`Ric(∇f,∇f)` curvature term (roadmap item 3). -/
+theorem g_covariantDeriv_coordGradient_eq_covariantHessian
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (hXd : DifferentiableAt ℝ (coordGradient G f) x) (v w : E) :
+    G x (fderiv ℝ (coordGradient G f) x v + christoffelClosedOp G x v (coordGradient G f x)) w
+      = covariantHessian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x v w := by
+  have hkey : fderiv ℝ (fderiv ℝ f) x v w
+      = G x (fderiv ℝ (coordGradient G f) x v) w
+        + fderiv ℝ G x v (coordGradient G f x) w := by
+    rw [← fderiv_g_coordGradient_eq_fderiv_fderiv G hinv hf x v w,
+      fderiv_g_coordGradient_apply G hGd hXd v w]
+  rw [coord_metric_compatible hGd hGsymm (hinv x) v (coordGradient G f x) w,
+    g_coordGradient G hinv f x (christoffelClosedOp G x v w)] at hkey
+  unfold covariantHessian
+  rw [← christoffelClosedOp_eq_christoffelAt G (metricBilin (G x))
+    (metricBilin_nondeg (hGsymm x) (hinv x)) (fun p q ↦ rfl) v w,
+    map_add, ContinuousLinearMap.add_apply]
+  linarith [hkey]
+
+end RicciFlow
