@@ -29423,3 +29423,44 @@ theorem contDiffAt_clm_of_apply
   exact ((ContinuousLinearMap.smulRightL ℝ E F (coordC i)).contDiff.contDiffAt).comp x (h (bE i))
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Christoffel field is `C²`** (from `G ∈ C³`): `y ↦ Γ(·)(y)` is twice continuously differentiable.
+Lift to vector slots via `contDiffAt_clm_of_apply`; each `y ↦ Γ(p)(y)v = (G y)⁻¹(toCLM(christoffelFunctional
+G y p v))` is the `C²` inverse metric (`IsInvertible.contDiffAt_map_inverse`) applied to the Christoffel
+functional, itself a covector field lifted (`contDiffAt_clm_of_apply`, codomain `ℝ`) from its scalar
+`w`-components `½((D G·p)v w + (D G·v)p w − (D G·w)p v)`, each a slot of the `C²` second-derivative field
+`D G` (`G ∈ C³`). This upgrades `differentiableAt_christoffelClosedOp` one order, discharging the
+second-derivative Christoffel regularity (`hdd`, `hsymΓ`) of the scalar-curvature evolution. -/
+theorem contDiffAt_christoffelClosedOp
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hinv : ∀ y : E, (G y).IsInvertible) (p : E) :
+    ContDiffAt ℝ 2 (fun y ↦ christoffelClosedOp G y p) x := by
+  have hInvCD : ContDiffAt ℝ 2 (fun y ↦ (G y).inverse) x :=
+    ((hinv x).contDiffAt_map_inverse (n := 2)).comp x (hG.of_le (by norm_num)).contDiffAt
+  have hdG2cd := (hG.fderiv_right (m := 2) (by norm_num)).contDiffAt (x := x)
+  apply contDiffAt_clm_of_apply
+  intro v
+  simp_rw [christoffelClosedOp_apply]
+  refine hInvCD.clm_apply ?_
+  apply contDiffAt_clm_of_apply
+  intro w
+  have hfun : (fun y ↦ (LinearMap.toContinuousLinearMap (christoffelFunctional G y p v)) w)
+      = fun y ↦ (1 / 2 : ℝ) * ((fderiv ℝ G y p) v w + (fderiv ℝ G y v) p w
+        - (fderiv ℝ G y w) p v) := rfl
+  rw [hfun]
+  have t1 : ContDiffAt ℝ 2 (fun y ↦ (fderiv ℝ G y p) v w) x :=
+    ((hdG2cd.clm_apply contDiffAt_const).clm_apply contDiffAt_const).clm_apply contDiffAt_const
+  have t2 : ContDiffAt ℝ 2 (fun y ↦ (fderiv ℝ G y v) p w) x :=
+    ((hdG2cd.clm_apply contDiffAt_const).clm_apply contDiffAt_const).clm_apply contDiffAt_const
+  have t3 : ContDiffAt ℝ 2 (fun y ↦ (fderiv ℝ G y w) p v) x :=
+    ((hdG2cd.clm_apply contDiffAt_const).clm_apply contDiffAt_const).clm_apply contDiffAt_const
+  exact contDiffAt_const.mul ((t1.add t2).sub t3)
+
+end RicciFlow
