@@ -27970,3 +27970,30 @@ theorem fderiv_g_field_field
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The first covariant derivative of the gradient-norm as a global field**:
+`(y ↦ ∂_w|∇f|²_G at y) = (y ↦ 2 G_y(∇_w∇_G f, ∇_G f))`. This globalizes the pointwise covariant first
+derivative `fderiv_coordGradNormSq_eq_two_covariantDeriv` into a function equality over all base points,
+so that the *second* covariant derivative is obtained by differentiating this field once more in direction
+`v` (via the metric-compatible Leibniz `fderiv_g_field_field` with `Y = ∇_w∇_G f`). The result
+`2 G(∇_v∇_w∇_G f, ∇_G f) + 2 G(∇_w∇_G f, ∇_v∇_G f)`, corrected for the scalar Hessian's Christoffel term, is
+the covariant-Leibniz form `∇²(|∇f|²_G)(v,w) = 2 G(∇²_{v,w}∇_G f, ∇_G f) + 2 G(∇_v∇_G f, ∇_w∇_G f)` whose
+trace is the curved Bochner identity (roadmap item 3). -/
+theorem fderiv_coordGradNormSq_field
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (w : E) :
+    (fun y ↦ fderiv ℝ (coordGradNormSq G f) y w)
+      = fun y ↦ 2 * G y (fderiv ℝ (coordGradient G f) y w
+          + christoffelClosedOp G y w (coordGradient G f y)) (coordGradient G f y) := by
+  funext y
+  exact fderiv_coordGradNormSq_eq_two_covariantDeriv G (hGd y) hGsymm hinv hf w
+
+end RicciFlow
