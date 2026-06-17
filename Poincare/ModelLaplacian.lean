@@ -31209,3 +31209,35 @@ theorem curvedLaplacian_sq_eq_finrank_mul_coordCovariantHessNormSq_of_hess_smul_
   field_simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Obata characterization** (equality case of the refined Bochner, both directions):
+on a Riemannian metric, `∇²f = (Δf/n)·g` (i.e. `∇²f♯ = (Δf/n)·id`) **iff** `(Δf)² = n·|∇²f|²`. Forward is
+the rigidity `covariantGradientEndo_eq_smul_id_of_hess_eq` (equality in the trace Cauchy–Schwarz forces the
+Hessian operator scalar), reverse is the converse
+`curvedLaplacian_sq_eq_finrank_mul_coordCovariantHessNormSq_of_hess_smul_id`. Thus Obata's equation is exactly
+the equality case of the refined Bochner `(Δf)² ≤ n|∇²f|²` — the round-sphere rigidity of the
+Lichnerowicz–Obata bound, mirroring the Einstein characterization for the Ricci operator (roadmap item 3). -/
+theorem covariantGradientEndo_eq_smul_id_iff_hess_sq_eq
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    covariantGradientEndo G f x
+        = (curvedLaplacian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x
+          / (Module.finrank ℝ E : ℝ)) • LinearMap.id
+      ↔ (curvedLaplacian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x) ^ 2
+          = (Module.finrank ℝ E : ℝ) * coordCovariantHessNormSq G f x :=
+  ⟨curvedLaplacian_sq_eq_finrank_mul_coordCovariantHessNormSq_of_hess_smul_id G hGd hGsymm hinv hf
+      (ne_of_gt hn),
+    covariantGradientEndo_eq_smul_id_of_hess_eq G hGd hGsymm hinv hf hGpos hn⟩
+
+end RicciFlow
