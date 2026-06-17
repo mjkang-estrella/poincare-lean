@@ -29381,3 +29381,45 @@ theorem differentiableAt_coordRicciForm_field
   exact differentiableAt_coordRicci_family hdiffΓ hdd w u
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`ContDiffAt` of a CLM-valued field from its slotwise components**: `Φ : E → (E →L[ℝ] F)` is `Cⁿ` at
+`x` once each component `y ↦ Φ y w` is. The `ContDiff` analogue of `differentiableAt_clm_of_apply`: the basis
+dual reconstruction `Φ y = Σᵢ bⁱ ⊗ Φ y(bᵢ)` (`smulRight`) makes each summand `Cⁿ` (a fixed `smulRight`
+continuous-linear map composed with the `Cⁿ` component). The tool for upgrading CLM-tensor fields (Christoffel,
+curvature) from pointwise smoothness to full `ContDiff`, needed to discharge the second-derivative regularity
+of the scalar-curvature evolution. -/
+theorem contDiffAt_clm_of_apply
+    {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    {n : WithTop ℕ∞} {Φ : E → E →L[ℝ] F} {x : E}
+    (h : ∀ w : E, ContDiffAt ℝ n (fun y ↦ Φ y w) x) :
+    ContDiffAt ℝ n Φ x := by
+  set bE := Module.finBasis ℝ E with hbE
+  set coordC : (Fin (Module.finrank ℝ E)) → (E →L[ℝ] ℝ) :=
+    fun i ↦ LinearMap.toContinuousLinearMap (bE.coord i) with hcoord
+  have hrepr : ∀ ρ : E →L[ℝ] F, ρ = ∑ i, (coordC i).smulRight (ρ (bE i)) := by
+    intro ρ
+    ext w
+    have hw := bE.sum_repr w
+    conv_lhs => rw [← hw]
+    rw [map_sum]
+    simp only [ContinuousLinearMap.coe_sum', Finset.sum_apply,
+      ContinuousLinearMap.smulRight_apply, map_smul]
+    apply Finset.sum_congr rfl
+    intro i _
+    rw [show (coordC i) w = bE.coord i w from rfl, Module.Basis.coord_apply]
+  have hfun : Φ = fun y ↦ ∑ i, (coordC i).smulRight (Φ y (bE i)) := by
+    funext y
+    exact hrepr (Φ y)
+  rw [hfun]
+  apply ContDiffAt.sum
+  intro i _
+  exact ((ContinuousLinearMap.smulRightL ℝ E F (coordC i)).contDiff.contDiffAt).comp x (h (bE i))
+
+end RicciFlow
