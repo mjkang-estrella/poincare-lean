@@ -30102,3 +30102,45 @@ theorem curvedLaplacian_sq_le_finrank_mul_coordCovariantHessNormSq
   exact trace_sq_le_card_mul_trace_comp_self bx hbs hbpos (covariantGradientEndo G f x) hsa
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **THE REFINED CURVED BOCHNER INEQUALITY** (Lichnerowicz–Obata form):
+`½ Δ_g|∇f|² ≥ (Δf)²/n + ⟨∇f, ∇Δf⟩_g + Ric(∇f, ∇f)`, written doubled as
+`2(G(∇f,∇Δf) + Ric(∇f,∇f)) + (2/n)(Δf)² ≤ Δ_g|∇f|²`. Substitutes the trace Cauchy–Schwarz
+`(Δf)² ≤ n|∇²f|²` (`curvedLaplacian_sq_le_finrank_mul_coordCovariantHessNormSq`) into the unconditional curved
+Bochner identity `Δ_g|∇f|² = 2(G(∇f,∇Δf) + Ric) + 2|∇²f|²`
+(`curvedLaplacian_coordGradNormSq_bochner_gradient_unconditional`), replacing `|∇²f|²` by its lower bound
+`(Δf)²/n`. This is the inequality behind the Lichnerowicz eigenvalue bound and Li–Yau/Hamilton gradient
+estimates — the curvature-pinched form of Bochner used throughout Ricci-flow analysis (roadmap item 3). -/
+theorem curvedLaplacian_coordGradNormSq_bochner_refined
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    2 * (G x (coordGradient G f x)
+            (coordGradient G (curvedLaplacian G (fun y ↦ metricBilin (G y))
+              (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f) x)
+          + coordRicci G x (coordGradient G f x) (coordGradient G f x))
+        + 2 / (Module.finrank ℝ E : ℝ)
+            * (curvedLaplacian G (fun y ↦ metricBilin (G y))
+                (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x) ^ 2
+      ≤ curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradNormSq G f) x := by
+  rw [curvedLaplacian_coordGradNormSq_bochner_gradient_unconditional G hG hGsymm hinv hf]
+  have h := curvedLaplacian_sq_le_finrank_mul_coordCovariantHessNormSq G
+    (hG.differentiable (by norm_num)) hGsymm hinv (hf.of_le (by norm_num)) hGpos
+  have hkey : 2 / (Module.finrank ℝ E : ℝ)
+        * (curvedLaplacian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x) ^ 2
+      ≤ 2 * coordCovariantHessNormSq G f x := by
+    rw [div_mul_eq_mul_div, div_le_iff₀ hn]
+    nlinarith [h]
+  linarith [hkey]
+
+end RicciFlow
