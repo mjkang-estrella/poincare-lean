@@ -29203,3 +29203,35 @@ theorem curvedLaplacian_coordGradNormSq_bochner_gradient_of_christoffelDiff
     (fun y ↦ differentiableAt_covariantHessianForm G hf (fun a ↦ hΓdg y a))
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Bochner identity for harmonic functions**: if `Δ_g f ≡ 0` then the cross term `⟨∇f, ∇Δf⟩`
+vanishes and `½ Δ_g|∇f|² = |∇²f|² + Ric(∇f, ∇f)`. Substituting `Δf = 0` into the curved Bochner identity:
+`∇(Δf) = ∇0 = 0`, so the transport term drops. This is the pointwise engine of the Bochner vanishing
+theorem (a harmonic function with `Ric ≥ 0` has parallel gradient, and is constant when `Ric > 0`
+somewhere) — the prototypical curvature–topology link, and the function-level shadow of the tensor maximum
+principle that drives Ricci flow (roadmap item 3). -/
+theorem curvedLaplacian_coordGradNormSq_bochner_harmonic
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓdg : ∀ (y a : E), DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z a) y)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f)
+    (hharm : curvedLaplacian G (fun y ↦ metricBilin (G y))
+      (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f = fun _ ↦ (0 : ℝ)) :
+    curvedLaplacian G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradNormSq G f) x
+      = 2 * coordRicci G x (coordGradient G f x) (coordGradient G f x)
+        + 2 * coordCovariantHessNormSq G f x := by
+  rw [curvedLaplacian_coordGradNormSq_bochner_gradient_of_christoffelDiff G hG hGsymm hinv hΓdg hf,
+    hharm]
+  have h0 : coordGradient G (fun _ ↦ (0 : ℝ)) x = 0 := by
+    simp [coordGradient, fderiv_fun_const]
+  rw [h0, map_zero, zero_add]
+
+end RicciFlow
