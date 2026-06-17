@@ -30278,3 +30278,38 @@ theorem curvedLaplacian_coordGradNormSq_nonneg_of_ricci_nonneg
   linarith [hRicNonneg, hhess]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The refined curved Bochner inequality under a Ricci lower bound** `Ric ≥ k·g`:
+`½ Δ_g|∇f|² ≥ (Δf)²/n + ⟨∇f, ∇Δf⟩_g + k|∇f|²_G`, written doubled as
+`2(G(∇f,∇Δf) + k|∇f|²) + (2/n)(Δf)² ≤ Δ_g|∇f|²`. Substitutes the Ricci lower bound
+`k|∇f|² ≤ Ric(∇f,∇f)` into the refined curved Bochner inequality
+(`curvedLaplacian_coordGradNormSq_bochner_refined`). This is the exact pointwise inequality powering the
+Li–Yau gradient estimate, the Lichnerowicz eigenvalue bound `λ₁ ≥ n/(n−1)·k`, and Bonnet–Myers-type
+diameter bounds — the standard curvature-pinched Bochner of comparison geometry (roadmap item 3). -/
+theorem curvedLaplacian_coordGradNormSq_bochner_refined_ricci_lower
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) (k : ℝ)
+    (hRic : k * coordGradNormSq G f x
+      ≤ coordRicci G x (coordGradient G f x) (coordGradient G f x)) :
+    2 * (G x (coordGradient G f x)
+            (coordGradient G (curvedLaplacian G (fun y ↦ metricBilin (G y))
+              (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f) x)
+          + k * coordGradNormSq G f x)
+        + 2 / (Module.finrank ℝ E : ℝ)
+            * (curvedLaplacian G (fun y ↦ metricBilin (G y))
+                (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x) ^ 2
+      ≤ curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradNormSq G f) x := by
+  have h := curvedLaplacian_coordGradNormSq_bochner_refined G hG hGsymm hinv hf hGpos hn
+  linarith [h, hRic]
+
+end RicciFlow
