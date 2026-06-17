@@ -30409,3 +30409,46 @@ theorem eq_zero_of_trace_comp_self_eq_zero
   simp only [map_smul, hAvi, smul_zero, Finset.sum_const_zero, LinearMap.zero_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Vanishing Hessian norm forces the Hessian endomorphism to vanish** (parallel gradient):
+on a Riemannian metric, `|∇²f|²_g = 0 ⟹ ∇²f♯ = 0`. Since `|∇²f|² = tr((∇²f♯)²)`
+(`coordCovariantHessNormSq_eq_trace`) and `∇²f♯` is self-adjoint (`covariantGradientEndo_selfAdjoint`), the
+trace-form rigidity `eq_zero_of_trace_comp_self_eq_zero` gives `∇²f♯ = 0`, i.e. the covariant derivative of
+`∇_G f` vanishes — the gradient is parallel. This is the equality case of the curved Bochner identity: on a
+closed manifold with `Ric ≥ 0`, a harmonic function has `|∇²f|² = 0`, so `∇f` is parallel — the Bochner
+rigidity behind `b₁ ≤ n` and the splitting theorem (roadmap item 3). -/
+theorem covariantGradientEndo_eq_zero_of_hessNormSq_eq_zero
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (h0 : coordCovariantHessNormSq G f x = 0) :
+    covariantGradientEndo G f x = 0 := by
+  rw [coordCovariantHessNormSq_eq_trace G hGd hGsymm hinv hf] at h0
+  set bx : LinearMap.BilinForm ℝ E :=
+    LinearMap.mk₂ ℝ (fun v w ↦ G x v w)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp) with hbx
+  have hbs : LinearMap.IsSymm bx := by
+    rw [LinearMap.isSymm_def]
+    intro p q
+    simp only [hbx, LinearMap.mk₂_apply, RingHom.id_apply]
+    exact hGsymm x p q
+  have hbpos : ∀ v : E, v ≠ 0 → 0 < bx v v := by
+    intro v hv
+    simp only [hbx, LinearMap.mk₂_apply]
+    exact hGpos v hv
+  have hsa : ∀ p q : E,
+      bx (covariantGradientEndo G f x p) q = bx p (covariantGradientEndo G f x q) := by
+    intro p q
+    simp only [hbx, LinearMap.mk₂_apply]
+    exact covariantGradientEndo_selfAdjoint G hGd hGsymm hinv hf p q
+  exact eq_zero_of_trace_comp_self_eq_zero bx hbs hbpos (covariantGradientEndo G f x) hsa h0
+
+end RicciFlow
