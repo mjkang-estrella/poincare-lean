@@ -31588,3 +31588,32 @@ theorem coordCovariantHessNormSq_eq_zero_iff_hessian_flat
     exact hflat _ _
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Strict Ricci pinching characterizes non-Einstein metrics**: on a Riemannian metric,
+`R² < n·|Ric|² ↔ Ric ≠ (R/n)·g` (`coordRicciEndo ≠ (R/n)·id`). Reverse is the strict pinching
+`coordScalar_sq_lt_finrank_mul_ricciNormSq_of_not_einstein`; forward is the contrapositive of the Einstein
+converse `coordScalar_sq_eq_finrank_mul_ricciNormSq_of_einstein` (an Einstein metric saturates `R² = n|Ric|²`,
+so strict inequality precludes Einstein). Combined with the equality case, the pinching `R² ≤ n|Ric|²` is
+strict away from Einstein metrics and an equality exactly on them (roadmap item 3). -/
+theorem coordScalar_sq_lt_finrank_mul_ricciNormSq_iff_not_einstein
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v) (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    (coordScalar G x) ^ 2 < (Module.finrank ℝ E : ℝ) * coordRicciNormSq G x hdiff
+      ↔ coordRicciEndo G x hdiff
+        ≠ (coordScalar G x / (Module.finrank ℝ E : ℝ)) • LinearMap.id := by
+  refine ⟨fun hlt hein ↦ ?_,
+    coordScalar_sq_lt_finrank_mul_ricciNormSq_of_not_einstein G hGC2 hGsymm hinv hdiff hGpos hn⟩
+  have heq := coordScalar_sq_eq_finrank_mul_ricciNormSq_of_einstein G hGC2 hGsymm hinv hdiff
+    (ne_of_gt hn) hein
+  linarith
+
+end RicciFlow
