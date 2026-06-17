@@ -27481,3 +27481,38 @@ theorem sum_g_coordCurvatureOp_eq_coordRicci
   exact Finset.sum_congr rfl fun i _ ↦ rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The contracted Ricci identity**: tracing the antisymmetrized second covariant derivative of a
+vector field over a basis recovers the Ricci tensor,
+`Σᵢ G(∇²_{bᵢ,w}X − ∇²_{w,bᵢ}X, ♯bⁱ) = Ric(w, X(x))`. Composing the coordinate Ricci identity
+(`covariantSecondDerivative_antisymm_eq_coordCurvatureOp`) with the curvature-trace identity
+(`sum_g_coordCurvatureOp_eq_coordRicci`): each summand's antisymmetrized covariant second derivative is the
+curvature operator, whose metric trace against `(bᵢ, ♯bⁱ)` is Ricci. This is precisely the curvature
+contraction that appears when the curved Laplacian of `|∇f|²` is expanded and the order of covariant
+differentiations on `∇f` is swapped — producing the `Ric(∇f,∇f)` term of the curved
+Bochner–Weitzenböck identity (roadmap item 3, the curvature term that converts a Ricci lower bound into
+geometric control). -/
+theorem sum_g_covariantSecondDerivative_antisymm_eq_coordRicci
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible) {X : E → E} (hX : ContDiff ℝ 2 X)
+    (hΓd : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x) (w : E) :
+    ∑ i, G x (covariantSecondDerivative G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) X x ((Module.finBasis ℝ E) i) w
+          - covariantSecondDerivative G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) X x w ((Module.finBasis ℝ E) i))
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+      = coordRicci G x w (X x) := by
+  rw [← sum_g_coordCurvatureOp_eq_coordRicci hGsymm hinv w (X x)]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [covariantSecondDerivative_antisymm_eq_coordCurvatureOp G hGd hGsymm hinv hX hΓd
+    ((Module.finBasis ℝ E) i) w]
+
+end RicciFlow
