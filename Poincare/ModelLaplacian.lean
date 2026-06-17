@@ -31617,3 +31617,37 @@ theorem coordScalar_sq_lt_finrank_mul_ricciNormSq_iff_not_einstein
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Strict refined Bochner characterizes non-Obata Hessians**: on a Riemannian metric,
+`(Δf)² < n·|∇²f|² ↔ ∇²f ≠ (Δf/n)·g` (`∇²f♯ ≠ (Δf/n)·id`). Reverse is the strict refined Bochner
+`curvedLaplacian_sq_lt_finrank_mul_coordCovariantHessNormSq_of_not_obata`; forward is the contrapositive of
+the Obata converse. Combined with the equality case, `(Δf)² ≤ n|∇²f|²` is strict away from Obata Hessians and
+an equality exactly on them — the Hessian mirror of the strict Ricci pinching characterization
+(roadmap item 3). -/
+theorem curvedLaplacian_sq_lt_finrank_mul_coordCovariantHessNormSq_iff_not_obata
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    (curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x) ^ 2
+        < (Module.finrank ℝ E : ℝ) * coordCovariantHessNormSq G f x
+      ↔ covariantGradientEndo G f x
+        ≠ (curvedLaplacian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x
+          / (Module.finrank ℝ E : ℝ)) • LinearMap.id := by
+  refine ⟨fun hlt hobata ↦ ?_,
+    curvedLaplacian_sq_lt_finrank_mul_coordCovariantHessNormSq_of_not_obata G hGd hGsymm hinv hf
+      hGpos hn⟩
+  have heq := curvedLaplacian_sq_eq_finrank_mul_coordCovariantHessNormSq_of_hess_smul_id G hGd hGsymm
+    hinv hf (ne_of_gt hn) hobata
+  linarith
+
+end RicciFlow
