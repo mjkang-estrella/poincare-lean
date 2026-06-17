@@ -28570,3 +28570,52 @@ theorem g_covariantSecondDerivative_coordGradient_eq
   linarith [hbridge]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The third covariant derivative is symmetric in its last two slots**:
+`∇³f(u,v,w) = ∇³f(u,w,v)`. Since the covariant Hessian `∇²f` is symmetric (`covariantHessian_symm`), so is
+its covariant derivative in the two Hessian slots: the `∂_u(∇²f(v,w))` term is `∂_u(∇²f(w,v))` (the
+Hessian fields agree, so do their derivatives), and the two Christoffel-corrector terms swap. This is the
+symmetry that lets the rough-Laplacian trace `Σⱼ ∇³f(♯bʲ,bⱼ,∇_G f)` be reordered into the
+gradient-of-Laplacian form (trace over the last two slots) before commuting the first slot via the Ricci
+identity — the structure of the Weitzenböck commutation in the curved Bochner identity (roadmap item 3). -/
+theorem coordThirdDeriv_symm_last
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (u v w : E) :
+    fderiv ℝ (fun y ↦ covariantHessian G (fun z ↦ metricBilin (G z))
+          (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) f y v w) x u
+        - covariantHessian G (fun z ↦ metricBilin (G z))
+            (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) f x (christoffelClosedOp G x u v) w
+        - covariantHessian G (fun z ↦ metricBilin (G z))
+            (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) f x v (christoffelClosedOp G x u w)
+      = fderiv ℝ (fun y ↦ covariantHessian G (fun z ↦ metricBilin (G z))
+            (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) f y w v) x u
+        - covariantHessian G (fun z ↦ metricBilin (G z))
+            (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) f x (christoffelClosedOp G x u w) v
+        - covariantHessian G (fun z ↦ metricBilin (G z))
+            (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) f x w (christoffelClosedOp G x u v) := by
+  have hGd : Differentiable ℝ G := hG.differentiable (by norm_num)
+  have hfield : (fun y ↦ covariantHessian G (fun z ↦ metricBilin (G z))
+        (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) f y v w)
+      = fun y ↦ covariantHessian G (fun z ↦ metricBilin (G z))
+        (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) f y w v := by
+    funext y
+    exact covariantHessian_symm G (fun z ↦ metricBilin (G z))
+      (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) hGd hGsymm hf.contDiffAt v w
+  rw [hfield,
+    covariantHessian_symm G (fun z ↦ metricBilin (G z))
+      (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) hGd hGsymm hf.contDiffAt
+      (christoffelClosedOp G x u v) w,
+    covariantHessian_symm G (fun z ↦ metricBilin (G z))
+      (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) hGd hGsymm hf.contDiffAt
+      v (christoffelClosedOp G x u w)]
+  ring
+
+end RicciFlow
