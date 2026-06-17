@@ -29596,3 +29596,42 @@ theorem contDiffAt_coordRicci_family
     ((Module.finBasis ℝ E).coord i)).contDiff.contDiffAt).comp x happ
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci-tensor field is `C²`** (from `G ∈ C⁴`): the CLM-valued field `y ↦ Ric(y)`
+(`coordRicciForm`) is twice continuously differentiable, lifting the scalar `C²` Ricci components
+(`contDiffAt_coordRicci_family`) through `contDiffAt_clm_of_apply` at both CLM levels. -/
+theorem contDiffAt_coordRicciForm_field
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (hG : ContDiff ℝ 4 G)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y) :
+    ContDiffAt ℝ 2 (fun y ↦ coordRicciForm G y (hdiffΓ y)) x := by
+  apply contDiffAt_clm_of_apply
+  intro u
+  apply contDiffAt_clm_of_apply
+  intro w
+  simp_rw [coordRicciForm_apply]
+  exact contDiffAt_coordRicci_family hG hinv w u
+
+/-- **The Ricci field's derivative is differentiable** (discharges `hRic2`/`hH2`): from the `C²` Ricci field
+(`contDiffAt_coordRicciForm_field`), `y ↦ ∂Ric(y)` is differentiable at `x`. This discharges the second-order
+Ricci-variation regularity of the scalar-curvature evolution, and (scaled by `−2`) the `hH2`/`hdivd`
+hypotheses for `H = −2 Ric`. -/
+theorem differentiableAt_fderiv_coordRicciForm_field
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (hG : ContDiff ℝ 4 G)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y) :
+    DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ coordRicciForm G z (hdiffΓ z)) y) x :=
+  ((contDiffAt_coordRicciForm_field hG hinv hdiffΓ).fderiv_right (m := 1)
+    (by norm_num)).differentiableAt (by norm_num)
+
+end RicciFlow
