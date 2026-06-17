@@ -30452,3 +30452,31 @@ theorem covariantGradientEndo_eq_zero_of_hessNormSq_eq_zero
   exact eq_zero_of_trace_comp_self_eq_zero bx hbs hbpos (covariantGradientEndo G f x) hsa h0
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Vanishing Hessian norm forces the covariant Hessian tensor to vanish**:
+on a Riemannian metric, `|∇²f|²_g = 0 ⟹ ∇²f(v,w) = 0` for all `v, w`. The metric pairing of the (now zero)
+Hessian endomorphism (`covariantGradientEndo_eq_zero_of_hessNormSq_eq_zero`) with any `w` is the covariant
+Hessian (`g_covariantDeriv_coordGradient_eq_covariantHessian'`), so the `(0,2)` Hessian tensor itself
+vanishes — the gradient `∇_G f` is parallel. This is the tensor form of the Bochner equality case: on a
+closed manifold with `Ric ≥ 0`, a harmonic function is affine (`∇²f ≡ 0`) (roadmap item 3). -/
+theorem covariantHessian_eq_zero_of_hessNormSq_eq_zero
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (h0 : coordCovariantHessNormSq G f x = 0) (v w : E) :
+    covariantHessian G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x v w = 0 := by
+  rw [← g_covariantDeriv_coordGradient_eq_covariantHessian' G (hGd x) hGsymm hinv hf v w,
+    show fderiv ℝ (coordGradient G f) x v + christoffelClosedOp G x v (coordGradient G f x)
+      = covariantGradientEndo G f x v from rfl,
+    covariantGradientEndo_eq_zero_of_hessNormSq_eq_zero G hGd hGsymm hinv hf hGpos h0]
+  simp
+
+end RicciFlow
