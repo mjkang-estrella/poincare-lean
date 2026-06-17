@@ -27864,3 +27864,30 @@ theorem differentiableAt_coordGradNormSq
   exact (hGd.clm_apply hX).clm_apply hX
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved Laplacian of the gradient-norm is the metric trace of its covariant Hessian**:
+`Δ_g|∇f|²_G = Σⱼ ∇²(|∇f|²_G)(♯bʲ, bⱼ)`. This is `sum_covariantHessian_eq_curvedLaplacian` applied to the
+scalar field `|∇f|²_G = coordGradNormSq G f`: the curved Laplacian is, by definition, the metric trace of
+the covariant Hessian. This is the left-hand side `Δ_g|∇f|²_G` of the curved Bochner–Weitzenböck identity;
+the next step expands each `∇²(|∇f|²_G)(v,w) = 2 G(∇²_{v,w}∇_G f, ∇_G f) + 2 G(∇_v∇_G f, ∇_w∇_G f)` by the
+covariant Leibniz rule, whence the trace yields `2|∇²f|² + 2G(∇f,∇Δf) + 2Ric(∇f,∇f)` (roadmap item 3). -/
+theorem curvedLaplacian_coordGradNormSq
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (f : E → ℝ) :
+    curvedLaplacian G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradNormSq G f) x
+      = ∑ j, covariantHessian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradNormSq G f) x
+          ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) j) :=
+  (sum_covariantHessian_eq_curvedLaplacian hGsymm hinv (coordGradNormSq G f)).symm
+
+end RicciFlow
