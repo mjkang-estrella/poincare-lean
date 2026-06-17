@@ -28128,3 +28128,26 @@ theorem fderiv_fderiv_coordGradNormSq
     fderiv_g_field_field G (hGd x) hGsymm hinv hYd hXd v]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved gradient-norm is `C²`**: for `G ∈ C³` invertible at `x` and `f ∈ C³`, the gradient-norm
+`|∇f|²_G = G(∇_G f, ∇_G f)` is twice continuously differentiable at `x`. The gradient is `C²`
+(`contDiffAt_coordGradient_two`) and `G` is `C³`, so the trilinear scalar `y ↦ G_y(∇_G f, ∇_G f)` is `C²`
+by the continuous-linear product rule (`clm_apply`, twice). This `C²` regularity makes `∂(|∇f|²_G)`
+differentiable, so the second derivative `∂²(|∇f|²_G)` — and the scalar covariant Hessian
+`∇²(|∇f|²_G) = ∂²(|∇f|²_G) − ∂(|∇f|²_G)∘Γ` whose trace is the curved Laplacian — is well-defined
+(roadmap item 3). -/
+theorem contDiffAt_coordGradNormSq
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G) (hinv : (G x).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) :
+    ContDiffAt ℝ 2 (coordGradNormSq G f) x := by
+  have hX : ContDiffAt ℝ 2 (coordGradient G f) x := contDiffAt_coordGradient_two G hG hinv hf
+  exact ((hG.contDiffAt.of_le (by norm_num)).clm_apply hX).clm_apply hX
+
+end RicciFlow
