@@ -29022,3 +29022,41 @@ theorem sum_G_covariantSecondDerivative_gradient_eq_transport_ricci
       (coordGradient G f x)]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **THE CURVED BOCHNER IDENTITY** (Bochner–Weitzenböck formula for functions):
+`Δ_g|∇f|²_G = 2(∂_{∇f}(Δf) + Ric(∇f,∇f)) + 2|∇²f|²_g`, i.e. classically
+`½ Δ_g|∇f|² = |∇²f|² + ⟨∇f, ∇Δf⟩ + Ric(∇f, ∇f)`.
+
+Assembled from the master reduction `curvedLaplacian_coordGradNormSq_eq_two`
+(`Δ_g|∇f|² = 2 Σⱼ G(∇²_{♯bʲ,bⱼ}∇_G f, ∇_G f) + 2|∇²f|²`) and the rough-Laplacian split
+`sum_G_covariantSecondDerivative_gradient_eq_transport_ricci`
+(`Σⱼ G(∇²_{♯bʲ,bⱼ}∇_G f, ∇_G f) = ∂_{∇f}(Δf) + Ric(∇f,∇f)`), itself the Weitzenböck curvature commutation
+followed by the transport identity. The `∂_{∇f}(Δf)` term equals `G(∇f, ∇Δf)` by `g_coordGradient`.
+
+This is the genuine curved (Riemannian) Bochner identity in the coordinate model — the analytic engine of
+the maximum-principle estimates for Ricci flow (e.g. it forces `∂_t R ≥ Δ R + (2/n) R²` style bounds and
+underlies gradient estimates). It carries the standard CLM-field differentiability hypothesis `hHd`, as
+elsewhere for `coordRicciForm` (roadmap item 3). -/
+theorem curvedLaplacian_coordGradNormSq_bochner
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f)
+    (hHd : ∀ y, DifferentiableAt ℝ (covariantHessianForm G f) y) :
+    curvedLaplacian G (fun y ↦ metricBilin (G y))
+        (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradNormSq G f) x
+      = 2 * (fderiv ℝ (curvedLaplacian G (fun y ↦ metricBilin (G y))
+              (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f) x (coordGradient G f x)
+            + coordRicci G x (coordGradient G f x) (coordGradient G f x))
+        + 2 * coordCovariantHessNormSq G f x := by
+  rw [curvedLaplacian_coordGradNormSq_eq_two G hG hGsymm hinv hΓd hf,
+    sum_G_covariantSecondDerivative_gradient_eq_transport_ricci G hG hGsymm hinv hΓd hf hHd]
+
+end RicciFlow
