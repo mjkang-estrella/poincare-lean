@@ -28988,3 +28988,37 @@ theorem sum_G_covariantSecondDerivative_gradient_transport_eq
     ((Module.finBasis ℝ E) j)).symm
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The rough-Laplacian gradient trace splits into transport plus Ricci**:
+`Σⱼ G(∇²_{♯bʲ,bⱼ}∇_G f, ∇_G f) = ∂_{∇f}(Δf) + Ric(∇f,∇f)`. The Weitzenböck commutation
+(`sum_G_covariantSecondDerivative_gradient_weitzenbock`) turns the rough-Laplacian trace into the transport
+trace plus `Ric`, and the transport identity (`sum_G_covariantSecondDerivative_gradient_transport_eq`, at
+`v = ∇_G f`) identifies the transport trace with `∂_{∇f}(Δf)`. This is the curvature+transport content of
+the curved Bochner identity, ready to substitute into the master reduction
+`curvedLaplacian_coordGradNormSq_eq_two` (roadmap item 3). -/
+theorem sum_G_covariantSecondDerivative_gradient_eq_transport_ricci
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f)
+    (hHd : ∀ y, DifferentiableAt ℝ (covariantHessianForm G f) y) :
+    (∑ j, G x (covariantSecondDerivative G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) (coordGradient G f) x
+          ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+          ((Module.finBasis ℝ E) j))
+        (coordGradient G f x))
+      = fderiv ℝ (curvedLaplacian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f) x (coordGradient G f x)
+        + coordRicci G x (coordGradient G f x) (coordGradient G f x) := by
+  rw [sum_G_covariantSecondDerivative_gradient_weitzenbock G hG hGsymm hinv hΓd hf,
+    sum_G_covariantSecondDerivative_gradient_transport_eq G hG hGsymm hinv hΓd hf hHd
+      (coordGradient G f x)]
+
+end RicciFlow
