@@ -30837,3 +30837,34 @@ theorem coordRicci_eq_zero_of_ricciNormSq_eq_zero
   simp
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The trace of the traceless part squared is the Cauchy–Schwarz gap**:
+`tr((A − (tr A/n)·id)²) = tr(A²) − (tr A)²/n`. Expanding `(A − c·id)² = A² − 2c·A + c²·id` with `c = tr A/n`
+and using trace linearity with `tr(id) = n` gives the variance `tr(A²) − (tr A)²/n ≥ 0`. For the Ricci
+operator this is `|Ric̊|² = |Ric|² − R²/n` (the traceless Ricci norm), the exact defect in `R² ≤ n|Ric|²`;
+its vanishing is the Einstein condition (`coordRicciEndo_eq_smul_id_of_scalar_sq_eq`). -/
+theorem trace_traceless_sq (A : E →ₗ[ℝ] E) (hn : (Module.finrank ℝ E : ℝ) ≠ 0) :
+    LinearMap.trace ℝ E
+        ((A - (LinearMap.trace ℝ E A / (Module.finrank ℝ E : ℝ)) • LinearMap.id)
+          ∘ₗ (A - (LinearMap.trace ℝ E A / (Module.finrank ℝ E : ℝ)) • LinearMap.id))
+      = LinearMap.trace ℝ E (A ∘ₗ A)
+        - (LinearMap.trace ℝ E A) ^ 2 / (Module.finrank ℝ E : ℝ) := by
+  set c : ℝ := LinearMap.trace ℝ E A / (Module.finrank ℝ E : ℝ) with hc
+  have hexp : (A - c • LinearMap.id) ∘ₗ (A - c • LinearMap.id)
+      = A ∘ₗ A - (2 * c) • A + (c ^ 2) • LinearMap.id := by
+    ext v
+    simp only [LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.add_apply,
+      LinearMap.smul_apply, LinearMap.id_apply, map_sub, map_smul, smul_smul]
+    module
+  rw [hexp, map_add, map_sub, map_smul, map_smul, LinearMap.trace_id, smul_eq_mul, smul_eq_mul, hc]
+  field_simp
+  ring
+
+end RicciFlow
