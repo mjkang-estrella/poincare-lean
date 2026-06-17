@@ -31406,3 +31406,50 @@ theorem curvedLaplacian_sq_lt_finrank_mul_coordCovariantHessNormSq_of_not_obata
   exact (div_lt_iff₀ hn).mp h1
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The trace-free Hessian norm is nonnegative** (refined Bochner, trace-free form): `0 ≤ |∇²f|² − (Δf)²/n`.
+The refined-Bochner gap equals the squared norm `tr(∇²f̊²)` of the trace-free Hessian operator
+(`coordCovariantHessNormSq_sub_curvedLaplacian_sq_div_eq_traceless_trace`), nonnegative because `∇²f̊♯` is
+self-adjoint and the trace form is positive-semidefinite (`trace_comp_self_nonneg`). So `(Δf)²/n ≤ |∇²f|²`
+with equality iff Obata — the trace-free restatement of the refined Bochner inequality, mirroring
+`traceless_ricci_normSq_nonneg` (roadmap item 3). -/
+theorem traceless_hessian_normSq_nonneg
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) :
+    0 ≤ coordCovariantHessNormSq G f x
+        - (curvedLaplacian G (fun y ↦ metricBilin (G y))
+            (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x) ^ 2
+          / (Module.finrank ℝ E : ℝ) := by
+  rw [coordCovariantHessNormSq_sub_curvedLaplacian_sq_div_eq_traceless_trace G hGd hGsymm hinv hf
+    (ne_of_gt hn)]
+  set X : E →ₗ[ℝ] E :=
+    covariantGradientEndo G f x
+      - (curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x
+        / (Module.finrank ℝ E : ℝ)) • LinearMap.id with hX
+  set bx : LinearMap.BilinForm ℝ E :=
+    LinearMap.mk₂ ℝ (fun v w ↦ G x v w)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp) with hbx
+  have hbs : LinearMap.IsSymm bx := by
+    rw [LinearMap.isSymm_def]; intro p q
+    simp only [hbx, LinearMap.mk₂_apply, RingHom.id_apply]; exact hGsymm x p q
+  have hbpos : ∀ v : E, v ≠ 0 → 0 < bx v v := by
+    intro v hv; simp only [hbx, LinearMap.mk₂_apply]; exact hGpos v hv
+  have hsa : ∀ p q : E, bx (X p) q = bx p (X q) := by
+    intro p q
+    simp only [hbx, LinearMap.mk₂_apply, hX, LinearMap.sub_apply, LinearMap.smul_apply,
+      LinearMap.id_apply, map_sub, map_smul, smul_eq_mul]
+    rw [covariantGradientEndo_selfAdjoint (x := x) G hGd hGsymm hinv hf p q]
+  exact trace_comp_self_nonneg bx hbs hbpos X hsa hn
+
+end RicciFlow
