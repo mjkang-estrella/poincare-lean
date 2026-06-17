@@ -26630,3 +26630,26 @@ theorem fderiv_fderiv_gradient_sq_apply
   simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Outer-two symmetry of the third derivative**: `D³f(a,b,c) = D³f(b,a,c)`. The two outermost
+differentiations commute (Schwarz / `isSymmSndFDerivAt`) applied to the `C²` covector field `Df`: the
+second derivative of `Df` is symmetric in its two slots, which are the outer two slots of `D³f`. One of
+the two transpositions generating the full `S₃`-symmetry of the third derivative of a `C³` scalar
+(roadmap item 3, the symmetry that converts the Bochner trace term into `b(∇f, ∇Δf)`). -/
+theorem fderiv_third_outer_symm
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) (x a b c : E) :
+    fderiv ℝ (fderiv ℝ (fderiv ℝ f)) x a b c
+      = fderiv ℝ (fderiv ℝ (fderiv ℝ f)) x b a c := by
+  have hg : ContDiffAt ℝ 2 (fderiv ℝ f) x :=
+    (hf.fderiv_right (m := 2) (by norm_num)).contDiffAt
+  have h := (hg.isSymmSndFDerivAt (by simp)) a b
+  exact DFunLike.congr_fun h c
+
+end RicciFlow
