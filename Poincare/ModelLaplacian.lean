@@ -27545,3 +27545,26 @@ theorem g_coordGradient (G : E → E →L[ℝ] E →L[ℝ] ℝ)
   rw [((hinv y).inverse_apply_eq.mp rfl).symm]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Pairing of curved gradients is a directional derivative**: `G(∇_G f, ∇_G g) = dg(∇_G f)`. Pairing
+the curved gradient of `f` with that of `g` against the metric collapses (by symmetry of `G` and the
+defining property `g_coordGradient`) to the directional derivative of `g` along `∇_G f`. Taking `g = Δ_g f`
+gives the curved Bochner transport term `G(∇f, ∇Δf) = ∂_{∇f}(Δf)`, the curved analogue of
+`b_gradient_gradLaplacian` — the form whose covariant-Hessian trace expansion produces the
+third-derivative contraction that the Ricci identity converts into the `Ric(∇f,∇f)` term
+(roadmap item 3). -/
+theorem g_coordGradient_pair
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (f g : E → ℝ) (y : E) :
+    G y (coordGradient G f y) (coordGradient G g y) = fderiv ℝ g y (coordGradient G f y) := by
+  rw [hGsymm y (coordGradient G f y) (coordGradient G g y),
+    g_coordGradient G hinv g y (coordGradient G f y)]
+
+end RicciFlow
