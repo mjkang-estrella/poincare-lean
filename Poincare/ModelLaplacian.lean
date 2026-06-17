@@ -27997,3 +27997,34 @@ theorem fderiv_coordGradNormSq_field
   exact fderiv_coordGradNormSq_eq_two_covariantDeriv G (hGd y) hGsymm hinv hf w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Christoffel-corrector of the gradient field is differentiable**:
+`y ↦ Γ_y(w)·∇_G f(y)` is differentiable at `x`. By Christoffel symmetry it equals
+`y ↦ Γ_y(∇_G f(y))·w` (varying-direction form), differentiable by
+`differentiableAt_christoffelClosedOp_dir` (the differentiable Christoffel field applied to the
+differentiable gradient `differentiableAt_coordGradient`). This is the Christoffel half of the covariant
+derivative field `∇_w∇_G f = ∂_w∇_G f + Γ(w)·∇_G f`, whose differentiability is what licenses
+differentiating the first Bochner component a second time (roadmap item 3). -/
+theorem differentiableAt_christoffel_coordGradient
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGsymm : ∀ (y : E) (a b : E), G y a b = G y b a)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    (hinv : (G x).IsInvertible) {f : E → ℝ} (hf : ContDiff ℝ 2 f) (w : E) :
+    DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y w (coordGradient G f y)) x := by
+  have hXd : DifferentiableAt ℝ (coordGradient G f) x :=
+    differentiableAt_coordGradient G (hGd x) hinv hf
+  have hsymm_fun : (fun y ↦ christoffelClosedOp G y w (coordGradient G f y))
+      = fun y ↦ christoffelClosedOp G y (coordGradient G f y) w := by
+    funext y
+    exact christoffelClosedOp_symm (hGd y) hGsymm w (coordGradient G f y)
+  rw [hsymm_fun]
+  exact differentiableAt_christoffelClosedOp_dir hGd hGsymm hΓd hXd w
+
+end RicciFlow
