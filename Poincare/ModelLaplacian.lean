@@ -26989,3 +26989,27 @@ theorem gradient_sq_subharmonic_of_harmonic
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The flat Bochner inequality**: `b(∇f, ∇Δf) ≤ ½Δ|∇f|²`. Dropping the nonnegative Hessian-norm term
+`|Hess f|²` from the Bochner identity gives the inequality form actually applied in geometric analysis —
+the transport term is bounded above by half the Laplacian of the gradient-norm. This is the workhorse
+behind gradient estimates and eigenvalue bounds; the curved version (with `+Ric(∇f,∇f)`) is the lever
+Ricci lower bounds pull to control the geometry (roadmap item 3). -/
+theorem bochner_inequality
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ w : E, w ≠ 0 → 0 < b w w) {f : E → ℝ} (hf : ContDiff ℝ 3 f) (x : E) :
+    b (metricGradient b hb f x) (metricGradient b hb (modelLaplacian b hb f) x)
+      ≤ (1 / 2) * modelLaplacian b hb
+          (fun z ↦ b (metricGradient b hb f z) (metricGradient b hb f z)) x := by
+  rw [bochner_flat b hb hbs hbpos hf x]
+  have := hessianNormSq_nonneg b hb hbs hbpos (hf.of_le (by norm_num)) x
+  linarith
+
+end RicciFlow
