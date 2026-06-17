@@ -30019,3 +30019,40 @@ theorem curvedLaplacian_eq_trace_covariantGradientEndo
     ((Module.finBasis ℝ E) j)]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved Hessian norm is the trace of the squared Hessian endomorphism**:
+`|∇²f|²_g = tr((∇²f♯)²)`. The metric Frobenius norm of the Hessian is the operator trace of the square of
+its `(1,1)` form: `Σⱼ G(∇²f♯ bⱼ, ∇²f♯ ♯bʲ) = Σⱼ G((∇²f♯)²(♯bʲ), bⱼ) = tr((∇²f♯)²)` by self-adjointness
+(`covariantGradientEndo_selfAdjoint`) and `sum_g_raised_eq_trace`. With
+`curvedLaplacian_eq_trace_covariantGradientEndo` (`Δf = tr ∇²f♯`), the trace Cauchy–Schwarz
+`(tr A)² ≤ n·tr(A²)` (`trace_sq_le_card_mul_trace_comp_self`, self-adjoint `A = ∇²f♯`) gives the refined
+curved Bochner inequality `(Δf)² ≤ n·|∇²f|²`. -/
+theorem coordCovariantHessNormSq_eq_trace
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) :
+    coordCovariantHessNormSq G f x
+      = LinearMap.trace ℝ E (covariantGradientEndo G f x ∘ₗ covariantGradientEndo G f x) := by
+  rw [← sum_g_raised_eq_trace G x (hinv x)
+    (covariantGradientEndo G f x ∘ₗ covariantGradientEndo G f x)]
+  show (∑ j, G x (covariantGradientEndo G f x ((Module.finBasis ℝ E) j))
+        (covariantGradientEndo G f x ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord j)))))
+      = ∑ j, G x ((covariantGradientEndo G f x ∘ₗ covariantGradientEndo G f x)
+          ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j))))
+        ((Module.finBasis ℝ E) j)
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [LinearMap.comp_apply,
+    covariantGradientEndo_selfAdjoint G hGd hGsymm hinv hf ((Module.finBasis ℝ E) j)
+      (covariantGradientEndo G f x ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord j)))),
+    hGsymm x ((Module.finBasis ℝ E) j)]
+
+end RicciFlow
