@@ -29137,3 +29137,38 @@ theorem differentiableAt_clm_of_apply
   simpa using hd
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant Hessian field is differentiable** (discharges `hHd`): for `f ∈ C³` and the standard
+Christoffel-differentiability `hΓd`, the CLM-valued field `y ↦ ∇²f(y)` is differentiable at `x`. Lift the
+double-CLM differentiability to the scalar components via `differentiableAt_clm_of_apply` then
+`differentiableAt_clm_dual_of_apply`; each component `y ↦ D²f(y)(w,w') − df(y)(Γ(w,w'))` is differentiable
+because `D²f = fderiv(fderiv f)` is `C¹` (so its field is differentiable) and the Christoffel correction is
+`df` (differentiable) applied to the differentiable Christoffel operator. This makes the curved Bochner
+identity's `hHd` hypothesis derivable from the regularity it already assumes (`hf`, `hΓd`) — no separate
+input (roadmap item 3). -/
+theorem differentiableAt_covariantHessianForm
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x) :
+    DifferentiableAt ℝ (covariantHessianForm G f) x := by
+  apply differentiableAt_clm_of_apply
+  intro w
+  apply differentiableAt_clm_dual_of_apply
+  intro w'
+  simp_rw [covariantHessianForm_apply]
+  have hdd : DifferentiableAt ℝ (fun y ↦ fderiv ℝ (fderiv ℝ f) y) x :=
+    (((hf.fderiv_right (m := 2) (by norm_num)).fderiv_right (m := 1)
+      (by norm_num)).differentiable (by norm_num)).differentiableAt
+  have hdf : DifferentiableAt ℝ (fun y ↦ fderiv ℝ f y) x :=
+    differentiableAt_fderiv_of_contDiff_two (hf.of_le (by norm_num))
+  exact ((hdd.clm_apply (differentiableAt_const w)).clm_apply (differentiableAt_const w')).sub
+    (hdf.clm_apply ((hΓd w).clm_apply (differentiableAt_const w')))
+
+end RicciFlow
