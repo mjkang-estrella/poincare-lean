@@ -27781,3 +27781,34 @@ theorem fderiv_coordGradNormSq
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant first derivative of the gradient-norm**:
+`∂_v|∇f|²_G = 2 G(∇_v ∇_G f, ∇_G f)`. Combining the product rule (`fderiv_coordGradNormSq`) with metric
+compatibility (`coord_metric_compatible`) and symmetry of `G`: the metric-derivative term
+`(∂_vG)(∇_G f, ∇_G f) = 2 G(Γ(v)·∇_G f, ∇_G f)` recombines with the two flat-derivative terms
+`2 G(∂_v∇_G f, ∇_G f)` into twice the metric pairing of the *covariant* derivative
+`∇_v∇_G f = ∂_v∇_G f + Γ(v)·∇_G f` with the gradient. This is the metric-compatible Leibniz rule for the
+squared norm — the curved analogue of the flat `∂(|∇f|²) = 2 D²f(·,∇f)`; differentiating it again and
+tracing yields the curved Bochner identity (roadmap item 3). -/
+theorem fderiv_coordGradNormSq_eq_two_covariantDeriv
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (v : E) :
+    fderiv ℝ (coordGradNormSq G f) x v
+      = 2 * G x (fderiv ℝ (coordGradient G f) x v
+          + christoffelClosedOp G x v (coordGradient G f x)) (coordGradient G f x) := by
+  rw [fderiv_coordGradNormSq G hGd hinv hf v,
+    coord_metric_compatible hGd hGsymm (hinv x) v (coordGradient G f x) (coordGradient G f x),
+    hGsymm x (coordGradient G f x) (fderiv ℝ (coordGradient G f) x v),
+    hGsymm x (coordGradient G f x) (christoffelClosedOp G x v (coordGradient G f x)),
+    map_add, ContinuousLinearMap.add_apply]
+  ring
+
+end RicciFlow
