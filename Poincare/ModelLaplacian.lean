@@ -28903,3 +28903,42 @@ theorem tensorMetricTrace_covariantHessianForm (G : E → E →L[ℝ] E →L[ℝ
     covariantHessianForm_apply]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant tensor derivative of the Hessian field is the third covariant derivative**:
+`covTensor2Deriv G (∇²f) x u v w = G(∇²_{u,v}∇_G f, w) = ∇³f(u,v,w)`. The general (0,2)-tensor covariant
+derivative `(∇_u H)(v,w) = (∂_u H)(v,w) − H(Γ(u,v),w) − H(v,Γ(u,w))`, instantiated at `H =
+covariantHessianForm G f`, matches the third-derivative bridge `g_covariantSecondDerivative_coordGradient_eq`
+term by term: the basepoint derivative `(∂_u H)(v,w)` becomes the scalar derivative `∂_u(∇²f(v,w))` (two
+applications of `fderiv_clm_family_apply` plus the component identity
+`covariantHessianForm_eq_covariantHessian`), and the two Christoffel correctors agree directly. This is T2
+of the transport: it lets the general-tensor trace identity `sum_covTensor2Deriv_Hslot_trace` (proved for
+arbitrary symmetric tensors) be read as the curved Bochner transport `Σⱼ G(∇²_{v,♯bʲ}∇_G f, bⱼ) = ∂_v(Δf)`
+(roadmap item 3). Carries the standard CLM-field differentiability `hHd`, as elsewhere for `coordRicciForm`. -/
+theorem covTensor2Deriv_covariantHessianForm_eq
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f)
+    (hHd : DifferentiableAt ℝ (covariantHessianForm G f) x) (u v w : E) :
+    covTensor2Deriv G (covariantHessianForm G f) x u v w
+      = G x (covariantSecondDerivative G (fun z ↦ metricBilin (G z))
+          (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) (coordGradient G f) x u v) w := by
+  rw [g_covariantSecondDerivative_coordGradient_eq G hG hGsymm hinv hΓd hf u v w]
+  unfold covTensor2Deriv
+  rw [fderiv_clm_family_apply hHd u v,
+    fderiv_clm_family_apply (hHd.clm_apply (differentiableAt_const v)) u w,
+    show (fun y ↦ covariantHessianForm G f y v w)
+        = fun y ↦ covariantHessian G (fun z ↦ metricBilin (G z))
+            (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) f y v w from
+      funext fun y ↦ covariantHessianForm_eq_covariantHessian G hGsymm hinv f y v w,
+    covariantHessianForm_eq_covariantHessian G hGsymm hinv f x (christoffelClosedOp G x u v) w,
+    covariantHessianForm_eq_covariantHessian G hGsymm hinv f x v (christoffelClosedOp G x u w)]
+
+end RicciFlow
