@@ -27101,3 +27101,38 @@ theorem bochner_eigenfunction
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The pointwise Lichnerowicz bound for an eigenfunction**: if `Δf = -μ·f` then
+`μ²f²/n - μ|∇f|² ≤ ½Δ|∇f|²`. Combining the eigenfunction Bochner formula
+(`½Δ|∇f|² = |Hess f|² - μ|∇f|²`) with the Hessian trace Cauchy–Schwarz
+(`|Hess f|² ≥ (Δf)²/n = μ²f²/n`) gives the sharp pointwise lower bound. This is the integrand of the
+Lichnerowicz–Obata eigenvalue theorem: integrating against the closed-manifold identity `∫Δ(·) = 0` turns
+the `μ²f²/n` and `-μ|∇f|²` terms (with `∫|∇f|² = μ∫f²` from the eigen-equation) into the first-eigenvalue
+bound. In the flat model there is no curvature; the curved Bochner's `+Ric(∇f,∇f)` is what yields a
+positive eigenvalue gap from a Ricci lower bound (roadmap item 3). -/
+theorem bochner_eigenfunction_pointwise_bound
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ w : E, w ≠ 0 → 0 < b w w) {f : E → ℝ} (hf : ContDiff ℝ 3 f) {μ : ℝ}
+    (heig : modelLaplacian b hb f = fun y ↦ -(μ * f y))
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) (x : E) :
+    μ ^ 2 * (f x) ^ 2 / (Module.finrank ℝ E : ℝ)
+        - μ * b (metricGradient b hb f x) (metricGradient b hb f x)
+      ≤ (1 / 2) * modelLaplacian b hb
+          (fun z ↦ b (metricGradient b hb f z) (metricGradient b hb f z)) x := by
+  rw [bochner_eigenfunction b hb hbs hbpos hf heig x]
+  have hcs := laplacian_sq_le_finrank_mul_hessianNormSq b hb hbs hbpos (hf.of_le (by norm_num)) x
+  have hΔ : modelLaplacian b hb f x = -(μ * f x) := congrFun heig x
+  rw [hΔ, show (-(μ * f x)) ^ 2 = μ ^ 2 * (f x) ^ 2 from by ring] at hcs
+  have hbound : μ ^ 2 * (f x) ^ 2 / (Module.finrank ℝ E : ℝ) ≤ hessianNormSq b hb f x := by
+    rw [div_le_iff₀ hn]
+    nlinarith [hcs]
+  linarith [hbound]
+
+end RicciFlow
