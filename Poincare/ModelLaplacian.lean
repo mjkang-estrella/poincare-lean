@@ -26895,3 +26895,67 @@ theorem hessianNormSq_eq_orthoBasis_sum
   exact hexpand.symm
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The flat Bochner–Weitzenböck identity**:
+`½·Δ|∇f|² = |Hess f|² + b(∇f, ∇Δf)`. For `f ∈ C³` and a fixed (flat) nondegenerate positive-definite
+symmetric form `b`, the Laplacian of the gradient-norm splits into the manifestly nonnegative Hessian
+norm `|Hess f|²` and the transport term `b(∇f, ∇Δf)`. Proof: expand `Δ|∇f|²` as the metric trace of the
+`(0,2)` Hessian of `|∇f|²` over a `b`-orthogonal basis, substitute the second differential
+`∂²|∇f|²(bᵢ,bᵢ) = 2 D³f(bᵢ,bᵢ,∇f) + 2 b(Hess♯ bᵢ, Hess♯ bᵢ)`; the squared-Hessian sum is `2|Hess f|²`
+(`hessianNormSq_eq_orthoBasis_sum`), and the third-derivative sum becomes `2 b(∇f, ∇Δf)` via the
+`S₃`-symmetry of `D³f` (sliding `∇f` to the outer slot) and the differentiated Laplacian trace
+(`fderiv_modelLaplacian_eq_basis_sum`). This is THE analytic identity underlying gradient and eigenvalue
+estimates; in the flat model it is exact with no curvature term. Honest scope: the curved
+Weitzenböck identity that drives Ricci-flow estimates adds a `Ric(∇f,∇f)` term absent here
+(roadmap item 3). -/
+theorem bochner_flat
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ w : E, w ≠ 0 → 0 < b w w) {f : E → ℝ} (hf : ContDiff ℝ 3 f) (x : E) :
+    (1 / 2) * modelLaplacian b hb
+        (fun z ↦ b (metricGradient b hb f z) (metricGradient b hb f z)) x
+      = hessianNormSq b hb f x
+        + b (metricGradient b hb f x) (metricGradient b hb (modelLaplacian b hb f) x) := by
+  obtain ⟨v, hortho⟩ := LinearMap.BilinForm.exists_orthogonal_basis (B := b) hbs
+  have hortho' : ∀ i j, i ≠ j → b (v i) (v j) = 0 := fun i j hij => hortho hij
+  have hf2 : ContDiff ℝ 2 f := hf.of_le (by norm_num)
+  have hL : modelLaplacian b hb
+        (fun z ↦ b (metricGradient b hb f z) (metricGradient b hb f z)) x
+      = ∑ i, (2 * fderiv ℝ (fderiv ℝ (fderiv ℝ f)) x (v i) (v i) (metricGradient b hb f x)
+          + 2 * b (hessianOperator b hb f x (v i)) (hessianOperator b hb f x (v i)))
+        / b (v i) (v i) := by
+    rw [modelLaplacian_eq_orthoBasis_sum b hb hbpos _ x v hortho']
+    exact Finset.sum_congr rfl fun i _ ↦ by
+      rw [fderiv_fderiv_gradient_sq_apply b hb hbs hf x (v i) (v i)]
+  have hB3 : (∑ i, fderiv ℝ (fderiv ℝ (fderiv ℝ f)) x (v i) (v i) (metricGradient b hb f x)
+        / b (v i) (v i))
+      = b (metricGradient b hb f x) (metricGradient b hb (modelLaplacian b hb f) x) := by
+    rw [b_gradient_gradLaplacian b hb hbs f x,
+      fderiv_modelLaplacian_eq_basis_sum b hb hbpos hf x (metricGradient b hb f x) v hortho']
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    rw [fderiv_third_inner_symm hf x (v i) (v i) (metricGradient b hb f x),
+      fderiv_third_outer_symm hf x (v i) (metricGradient b hb f x) (v i)]
+  have hA2 : (∑ i, b (hessianOperator b hb f x (v i)) (hessianOperator b hb f x (v i))
+        / b (v i) (v i))
+      = hessianNormSq b hb f x :=
+    (hessianNormSq_eq_orthoBasis_sum b hb hbs hbpos hf2 x v hortho').symm
+  rw [hL,
+    show (∑ i, (2 * fderiv ℝ (fderiv ℝ (fderiv ℝ f)) x (v i) (v i) (metricGradient b hb f x)
+          + 2 * b (hessianOperator b hb f x (v i)) (hessianOperator b hb f x (v i)))
+        / b (v i) (v i))
+      = 2 * (∑ i, fderiv ℝ (fderiv ℝ (fderiv ℝ f)) x (v i) (v i) (metricGradient b hb f x)
+            / b (v i) (v i))
+        + 2 * (∑ i, b (hessianOperator b hb f x (v i)) (hessianOperator b hb f x (v i))
+            / b (v i) (v i)) from by
+      rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]
+      exact Finset.sum_congr rfl fun i _ ↦ by ring,
+    hB3, hA2]
+  ring
+
+end RicciFlow
