@@ -27223,3 +27223,27 @@ theorem bochner_equality_iff_hessian_vanishes
     rw [hz]; ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The flat anchor for the covariant Hessian**: on a constant metric the covariant Hessian is the
+ordinary second derivative, `∇²f(v,w) = D²f(v,w)`. The covariant Hessian
+`∇²f(v,w) = D²f(v,w) - Df(Γ(v,w))` subtracts the Christoffel corrector, which vanishes identically for a
+constant metric (`christoffelAt_const`), so the curved object reduces to the flat second derivative. This
+is the consistency bridge between the curved Bochner stratum and the flat Bochner identity proved here:
+on a flat (constant-metric) background, the curved Bochner formula
+`½Δ_g|∇f|² = |∇²f|² + ⟨∇f,∇Δf⟩ + Ric(∇f,∇f)` must collapse to the flat `bochner_flat` with `Ric = 0`
+(roadmap item 3). -/
+theorem covariantHessian_const (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (b : Π x : E, LinearMap.BilinForm ℝ E) (hb : ∀ x, (b x).Nondegenerate)
+    (f : E → ℝ) (x v w : E) :
+    covariantHessian (fun _ ↦ G₀) b hb f x v w = fderiv ℝ (fderiv ℝ f) x v w := by
+  unfold covariantHessian
+  rw [christoffelAt_const G₀ x (b x) (hb x) v w, map_zero, sub_zero]
+
+end RicciFlow
