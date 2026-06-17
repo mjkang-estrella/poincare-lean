@@ -29094,3 +29094,46 @@ theorem curvedLaplacian_coordGradNormSq_bochner_gradient
       (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f) x]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Differentiability of a CLM-valued field from its slotwise components**: a map `Φ : E → (E →L[ℝ] F)`
+is differentiable at `x` as soon as each scalar/vector component `y ↦ Φ y w` is. Reconstruct `Φ y = Σᵢ
+bⁱ ⊗ Φ y(bᵢ)` (basis dual expansion, `smulRight`), each summand differentiable since `smulRight` by a fixed
+covector is a continuous linear map post-composed with the differentiable component. The `fderiv` analogue of
+`hasDerivAt_clm_of_forall_apply'`, generalizing `differentiableAt_clm_dual_of_apply` to arbitrary codomain
+`F` — the tool that lifts pointwise (per-`(v,w)`) differentiability to CLM-tensor-field differentiability. -/
+theorem differentiableAt_clm_of_apply
+    {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    {Φ : E → E →L[ℝ] F} {x : E}
+    (h : ∀ w : E, DifferentiableAt ℝ (fun y ↦ Φ y w) x) :
+    DifferentiableAt ℝ Φ x := by
+  set bE := Module.finBasis ℝ E with hbE
+  set coordC : (Fin (Module.finrank ℝ E)) → (E →L[ℝ] ℝ) :=
+    fun i ↦ LinearMap.toContinuousLinearMap (bE.coord i) with hcoord
+  have hrepr : ∀ ρ : E →L[ℝ] F, ρ = ∑ i, (coordC i).smulRight (ρ (bE i)) := by
+    intro ρ
+    ext w
+    have hw := bE.sum_repr w
+    conv_lhs => rw [← hw]
+    rw [map_sum]
+    simp only [ContinuousLinearMap.coe_sum', Finset.sum_apply,
+      ContinuousLinearMap.smulRight_apply, map_smul]
+    apply Finset.sum_congr rfl
+    intro i _
+    rw [show (coordC i) w = bE.coord i w from rfl, Module.Basis.coord_apply]
+  have hfun : Φ = fun y ↦ ∑ i, (coordC i).smulRight (Φ y (bE i)) := by
+    funext y
+    exact hrepr (Φ y)
+  rw [hfun]
+  apply DifferentiableAt.fun_sum
+  intro i _
+  have hd := (ContinuousLinearMap.smulRightL ℝ E F (coordC i)).differentiableAt.comp x (h (bE i))
+  simpa using hd
+
+end RicciFlow
