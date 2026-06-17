@@ -28529,3 +28529,44 @@ theorem fderiv_g_covariantDeriv_coordGradient
   simp only [fderiv_fun_const, Pi.zero_apply, ContinuousLinearMap.zero_apply, zero_add]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The second covariant derivative pairing is the third covariant derivative of `f`**:
+`G(∇²_{u,v}∇_G f, w) = ∂_u(∇²f(v,w)) − ∇²f(Γ(u,v), w) − ∇²f(v, Γ(u,w)) = ∇³f(u,v,w)`. From the bridge
+`fderiv_g_covariantDeriv_coordGradient` (`G(∇_u(∇_v∇_G f), w) + G(∇_v∇_G f, Γ(u)w) = ∂_u∇²f(v,w)`),
+splitting `∇_u(∇_v∇_G f) = ∇²_{u,v}∇_G f + ∇_{Γ(u,v)}∇_G f` (`covariantSecondDerivative_iterated`) and using
+the gradient–Hessian relation `G(∇_a∇_G f, b) = ∇²f(a,b)` on the two Christoffel terms gives the manifestly
+*tensorial* covariant derivative of the Hessian. This identifies the metric pairing of the second covariant
+derivative of the gradient with the third covariant derivative of the scalar — the object whose
+antisymmetrization (Ricci identity for the covariant Hessian tensor) produces the `Ric(∇f,∇f)` term of the
+curved Bochner identity (roadmap item 3). -/
+theorem g_covariantSecondDerivative_coordGradient_eq
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x)
+    {f : E → ℝ} (hf : ContDiff ℝ 3 f) (u v w : E) :
+    G x (covariantSecondDerivative G (fun z ↦ metricBilin (G z))
+        (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) (coordGradient G f) x u v) w
+      = fderiv ℝ (fun y ↦ covariantHessian G (fun z ↦ metricBilin (G z))
+            (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) f y v w) x u
+        - covariantHessian G (fun z ↦ metricBilin (G z))
+            (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) f x (christoffelClosedOp G x u v) w
+        - covariantHessian G (fun z ↦ metricBilin (G z))
+            (fun z ↦ metricBilin_nondeg (hGsymm z) (hinv z)) f x v (christoffelClosedOp G x u w) := by
+  have hf2 : ContDiff ℝ 2 f := hf.of_le (by norm_num)
+  have hbridge := fderiv_g_covariantDeriv_coordGradient G hG hGsymm hinv hΓd hf u v w
+  rw [covariantSecondDerivative_iterated G hGsymm hinv (coordGradient G f) u v, map_add,
+    ContinuousLinearMap.add_apply,
+    g_covariantDeriv_coordGradient_eq_covariantHessian' G (hG.differentiable (by norm_num) x)
+      hGsymm hinv hf2 (christoffelClosedOp G x u v) w,
+    g_covariantDeriv_coordGradient_eq_covariantHessian' G (hG.differentiable (by norm_num) x)
+      hGsymm hinv hf2 v (christoffelClosedOp G x u w)] at hbridge
+  linarith [hbridge]
+
+end RicciFlow
