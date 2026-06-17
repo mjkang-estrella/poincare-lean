@@ -27840,3 +27840,27 @@ theorem fderiv_coordGradNormSq_eq_two_covariantHessian
       (coordGradient G f x)]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved gradient-norm is differentiable**: for `f ∈ C²` and an invertible differentiable metric,
+`|∇f|²_G = G(∇_G f, ∇_G f)` is differentiable at `x`. The metric `G` is differentiable and the curved
+gradient `∇_G f` is differentiable (`differentiableAt_coordGradient`), so the trilinear scalar
+`y ↦ G_y(∇_G f, ∇_G f)` is differentiable by the continuous-linear product rule (`clm_apply`, twice). This
+is the regularity that licenses taking the *second* covariant derivative of the gradient-norm — the trace
+of which (via `sum_covariantHessian_eq_curvedLaplacian`) is the curved Laplacian `Δ_g|∇f|²_G` that the
+curved Bochner identity computes (roadmap item 3). -/
+theorem differentiableAt_coordGradNormSq
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : DifferentiableAt ℝ G x)
+    (hinv : (G x).IsInvertible) {f : E → ℝ} (hf : ContDiff ℝ 2 f) :
+    DifferentiableAt ℝ (coordGradNormSq G f) x := by
+  have hX : DifferentiableAt ℝ (coordGradient G f) x :=
+    differentiableAt_coordGradient G hGd hinv hf
+  exact (hGd.clm_apply hX).clm_apply hX
+
+end RicciFlow
