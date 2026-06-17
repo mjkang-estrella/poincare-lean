@@ -27013,3 +27013,29 @@ theorem bochner_inequality
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Hessian trace Cauchy–Schwarz inequality**: `(Δf)² ≤ n·|Hess f|²`. The squared Laplacian (trace
+of the Hessian endomorphism) is bounded by `n` times the squared Hessian norm (`tr(Hess♯ ∘ Hess♯)`), by
+the Cauchy–Schwarz/Newton inequality `(tr A)² ≤ n·tr(A²)` for the self-adjoint operator `A = Hess♯`
+(`trace_sq_le_card_mul_trace_comp_self`, self-adjointness from `hessianOperator_selfAdjoint`). Equality
+holds exactly when the Hessian is a multiple of the identity (umbilic). This sharpens the Bochner
+inequality to `½Δ|∇f|² ≥ (Δf)²/n + b(∇f,∇Δf)` — the trace term that drives Li–Yau/eigenvalue estimates
+(roadmap item 3). -/
+theorem laplacian_sq_le_finrank_mul_hessianNormSq
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ w : E, w ≠ 0 → 0 < b w w) {f : E → ℝ} (hf : ContDiff ℝ 2 f) (x : E) :
+    (modelLaplacian b hb f x) ^ 2
+      ≤ (Module.finrank ℝ E : ℝ) * hessianNormSq b hb f x := by
+  have hsa : ∀ p q : E, b (hessianOperator b hb f x p) q
+      = b p (hessianOperator b hb f x q) :=
+    fun p q => hessianOperator_selfAdjoint b hb hbs hf x p q
+  exact trace_sq_le_card_mul_trace_comp_self b hbs hbpos (hessianOperator b hb f x) hsa
+
+end RicciFlow
