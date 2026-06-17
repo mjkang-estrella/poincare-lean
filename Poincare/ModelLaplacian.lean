@@ -29660,3 +29660,33 @@ theorem contDiffAt_tensorMetricTrace
   exact (hHcd.clm_apply contDiffAt_const).clm_apply (hInvCD.clm_apply contDiffAt_const)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The scalar curvature is `C²`** (from `G ∈ C⁴`, discharges `hφ`): `R = tr_g Ric` is twice continuously
+differentiable. Pointwise (`contDiff_iff_contDiffAt`), the scalar curvature is the metric trace of the `C²`
+Ricci field (`tensorMetricTrace_coordRicciForm`, `contDiffAt_coordRicciForm_field`), which is `C²` by
+`contDiffAt_tensorMetricTrace`. This discharges the `C²`-scalar-curvature hypothesis `hφ` (and via
+`differentiableAt_fderiv_of_contDiff_two` the `hRd2`/`hTr2` it powers) of the scalar-curvature evolution. -/
+theorem contDiff_coordScalar
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} (hG : ContDiff ℝ 4 G)
+    (hinv : ∀ y : E, (G y).IsInvertible) :
+    ContDiff ℝ 2 (fun y ↦ coordScalar G y) := by
+  rw [contDiff_iff_contDiffAt]
+  intro x
+  have hdiffΓ : ∀ (y p : E), DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y :=
+    fun y p ↦ differentiableAt_christoffelClosedOp G (hG.of_le (by norm_num)) hinv p
+  have hfield : (fun y ↦ coordScalar G y)
+      = tensorMetricTrace G (fun z ↦ coordRicciForm G z (hdiffΓ z)) := by
+    funext y
+    exact (tensorMetricTrace_coordRicciForm hdiffΓ).symm
+  rw [hfield]
+  exact contDiffAt_tensorMetricTrace (hG.of_le (by norm_num)) hinv
+    (contDiffAt_coordRicciForm_field hG hinv hdiffΓ)
+
+end RicciFlow
