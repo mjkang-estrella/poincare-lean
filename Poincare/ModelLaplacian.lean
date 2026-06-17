@@ -26719,3 +26719,48 @@ theorem b_gradient_gradLaplacian
   exact b_metricGradient b hb (modelLaplacian b hb f) x (metricGradient b hb f x)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The model Laplacian as a metric-orthogonal-basis sum**:
+`Δf = Σᵢ D²f(bᵢ, bᵢ) / b(bᵢ, bᵢ)` for a `b`-orthogonal basis `{bᵢ}`. The Laplacian is the metric trace
+of the `(0,2)` Hessian — expanding the trace of the raised Hessian operator over an orthogonal basis
+(`trace_eq_matrix_trace`, the diagonal entry `b(Hess♯ bᵢ, bᵢ)/b(bᵢ,bᵢ) = D²f(bᵢ,bᵢ)/b(bᵢ,bᵢ)` via
+`b_hessianOperator`) gives the explicit contraction. This basis form is what lets the Laplacian be
+*differentiated* (term by term) into the third-derivative contraction `Σᵢ D³f(w,bᵢ,bᵢ)/b(bᵢ,bᵢ)` for the
+Bochner transport term (roadmap item 3). -/
+theorem modelLaplacian_eq_orthoBasis_sum
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (hbpos : ∀ w : E, w ≠ 0 → 0 < b w w) (f : E → ℝ) (x : E)
+    {ι : Type*} [Fintype ι] [DecidableEq ι] (v : Module.Basis ι ℝ E)
+    (hortho : ∀ i j, i ≠ j → b (v i) (v j) = 0) :
+    modelLaplacian b hb f x
+      = ∑ i, fderiv ℝ (fderiv ℝ f) x (v i) (v i) / b (v i) (v i) := by
+  rw [modelLaplacian_eq_trace_hessianOperator, LinearMap.trace_eq_matrix_trace ℝ v,
+    Matrix.trace]
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [Matrix.diag_apply]
+  have hbvi : b (v i) (v i) ≠ 0 := (hbpos (v i) (v.ne_zero i)).ne'
+  have hexpand : b (hessianOperator b hb f x (v i)) (v i)
+      = (LinearMap.toMatrix v v (hessianOperator b hb f x)) i i * b (v i) (v i) := by
+    conv_lhs => rw [← v.sum_repr (hessianOperator b hb f x (v i))]
+    have hsum : b (∑ j, v.repr (hessianOperator b hb f x (v i)) j • v j) (v i)
+        = ∑ j, v.repr (hessianOperator b hb f x (v i)) j * b (v j) (v i) := by
+      rw [map_sum, LinearMap.sum_apply]
+      apply Finset.sum_congr rfl
+      intro j _; simp [smul_eq_mul]
+    rw [hsum, Finset.sum_eq_single i]
+    · rw [LinearMap.toMatrix_apply]
+    · intro j _ hji; rw [hortho j i hji]; ring
+    · intro hi; exact absurd (Finset.mem_univ i) hi
+  rw [b_hessianOperator] at hexpand
+  rw [eq_div_iff hbvi]
+  exact hexpand.symm
+
+end RicciFlow
