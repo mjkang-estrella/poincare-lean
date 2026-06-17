@@ -31651,3 +31651,53 @@ theorem curvedLaplacian_sq_lt_finrank_mul_coordCovariantHessNormSq_iff_not_obata
   linarith
 
 end RicciFlow
+
+namespace RicciFlow
+
+/--
+**Metric raising–lowering contraction.** Raising a covector's index with the
+inverse metric and then lowering it back against a vector `u` recovers the
+covector's value on `u`:
+`Σₖ φ(♯bᵏ)·G(u,bₖ) = φ(u)`, where `♯bᵏ = G⁻¹(bᵏ)` is the raised dual basis.
+This is the coordinate-free form of the inverse identity `gⁱᵏ g_{kj} = δⁱⱼ`:
+the dual basis raised by `G⁻¹` and recontracted with `G` is the identity on
+covectors. It is the contraction underlying the divergence of a raised tensor,
+and the first concrete ingredient of Schur's lemma. -/
+theorem sum_raised_pair_eq
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    (hinv : (G x).IsInvertible)
+    (hGsymm : ∀ p q : E, G x p q = G x q p)
+    (φ : E →L[ℝ] ℝ) (u : E) :
+    ∑ k, φ ((G x).inverse (LinearMap.toContinuousLinearMap
+        ((Module.finBasis ℝ E).coord k))) • G x u ((Module.finBasis ℝ E) k)
+      = φ u := by
+  set bE := Module.finBasis ℝ E with hbE
+  -- `G⁻¹` is self-adjoint on covectors: `φ(♯ψ) = ψ(♯φ)`.
+  have hsym : ∀ ψ : E →L[ℝ] ℝ,
+      φ ((G x).inverse ψ) = ψ ((G x).inverse φ) := by
+    intro ψ
+    have hφ : G x ((G x).inverse φ) = φ := (hinv.inverse_apply_eq.mp rfl).symm
+    have hψ : G x ((G x).inverse ψ) = ψ := (hinv.inverse_apply_eq.mp rfl).symm
+    calc φ ((G x).inverse ψ)
+        = G x ((G x).inverse φ) ((G x).inverse ψ) := by rw [hφ]
+      _ = G x ((G x).inverse ψ) ((G x).inverse φ) := hGsymm _ _
+      _ = ψ ((G x).inverse φ) := by rw [hψ]
+  -- The raised covector `♯φ` expands in the basis as `Σₖ φ(♯bᵏ)·bₖ`.
+  have hraise : ∑ k, φ ((G x).inverse (LinearMap.toContinuousLinearMap (bE.coord k)))
+        • bE k = (G x).inverse φ := by
+    conv_rhs => rw [← bE.sum_repr ((G x).inverse φ)]
+    refine Finset.sum_congr rfl (fun k _ ↦ ?_)
+    congr 1
+    rw [hsym (LinearMap.toContinuousLinearMap (bE.coord k))]
+    simp only [LinearMap.coe_toContinuousLinearMap', Module.Basis.coord_apply]
+  -- Pull the contraction into the (linear) metric slot, then apply `hraise`.
+  have hlin : ∑ k, φ ((G x).inverse (LinearMap.toContinuousLinearMap (bE.coord k)))
+        • G x u (bE k)
+      = G x u (∑ k, φ ((G x).inverse (LinearMap.toContinuousLinearMap (bE.coord k)))
+          • bE k) := by
+    rw [map_sum]
+    exact Finset.sum_congr rfl (fun k _ ↦ (map_smul _ _ _).symm)
+  rw [hlin, hraise, hGsymm u ((G x).inverse φ),
+    (hinv.inverse_apply_eq.mp rfl).symm]
+
+end RicciFlow
