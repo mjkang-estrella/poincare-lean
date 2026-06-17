@@ -26693,3 +26693,29 @@ theorem fderiv_third_inner_symm
   rw [← evc b c, ← evc c b, hsymm]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Bochner transport term is the gradient-directional derivative of the Laplacian**:
+`b(∇f, ∇Δf) = ∂_{∇f}(Δf) = D(Δf)(∇f)`. The pairing of the gradient with the gradient of the scalar
+Laplacian is just the directional derivative of `Δf` along `∇f` (by the defining property
+`b(∇g, v) = Dg(v)` of the gradient, plus symmetry of `b`). This is the standard reduction
+`⟨∇f, ∇Δf⟩ = ∇f(Δf)` that turns the Bochner transport term into a derivative of the scalar Laplacian —
+the form whose metric-trace expansion gives the third-derivative contraction (roadmap item 3). -/
+theorem b_gradient_gradLaplacian
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate)
+    (hbs : LinearMap.IsSymm b) (f : E → ℝ) (x : E) :
+    b (metricGradient b hb f x) (metricGradient b hb (modelLaplacian b hb f) x)
+      = fderiv ℝ (modelLaplacian b hb f) x (metricGradient b hb f x) := by
+  have hsy := hbs.eq (metricGradient b hb f x)
+    (metricGradient b hb (modelLaplacian b hb f) x)
+  simp only [RingHom.id_apply] at hsy
+  rw [hsy]
+  exact b_metricGradient b hb (modelLaplacian b hb f) x (metricGradient b hb f x)
+
+end RicciFlow
