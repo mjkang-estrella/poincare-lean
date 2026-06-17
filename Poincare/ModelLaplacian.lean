@@ -27812,3 +27812,31 @@ theorem fderiv_coordGradNormSq_eq_two_covariantDeriv
   ring
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved first Bochner component**: `∂_v|∇f|²_G = 2·∇²f(v, ∇_G f)`. Combining the covariant first
+derivative `∂_v|∇f|²_G = 2 G(∇_v∇_G f, ∇_G f)` (`fderiv_coordGradNormSq_eq_two_covariantDeriv`) with the
+gradient–Hessian relation `G(∇_v∇_G f, w) = ∇²f(v,w)` (`g_covariantDeriv_coordGradient_eq_covariantHessian'`,
+with `w = ∇_G f`) expresses the first derivative of the gradient-norm purely through the covariant Hessian
+contracted with the gradient. This is the exact curved analogue of the flat `fderiv_gradient_sq`
+(`∂(|∇f|²)(v) = 2 D²f(v,∇f)`); differentiating it once more, tracing, and commuting the covariant
+derivatives (via the contracted Ricci identity) produces the curved Bochner identity
+`½Δ_g|∇f|² = |∇²f|² + G(∇f,∇Δf) + Ric(∇f,∇f)` (roadmap item 3). -/
+theorem fderiv_coordGradNormSq_eq_two_covariantHessian
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (v : E) :
+    fderiv ℝ (coordGradNormSq G f) x v
+      = 2 * covariantHessian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x v (coordGradient G f x) := by
+  rw [fderiv_coordGradNormSq_eq_two_covariantDeriv G hGd hGsymm hinv hf v,
+    g_covariantDeriv_coordGradient_eq_covariantHessian' G hGd hGsymm hinv hf v
+      (coordGradient G f x)]
+
+end RicciFlow
