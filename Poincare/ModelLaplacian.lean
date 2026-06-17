@@ -27891,3 +27891,25 @@ theorem curvedLaplacian_coordGradNormSq
   (sum_covariantHessian_eq_curvedLaplacian hGsymm hinv (coordGradNormSq G f)).symm
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved gradient field is `C¹`**: for `G ∈ C²` invertible at `x` and `f ∈ C²`, the curved
+gradient `∇_G f = G⁻¹·df` is continuously differentiable at `x`. The inverse-metric field `y ↦ (G y)⁻¹` is
+`C²` (analyticity of operator inversion `contDiffAt_map_inverse` composed with the `C²` metric), and the
+differential `df` is `C¹`, so their continuous-linear product (`clm_apply`) is `C¹`. This is the regularity
+that licenses the *second* covariant derivative `∇²(∇_G f)` of the gradient field — the third-order object
+appearing in the covariant-Leibniz expansion of `Δ_g|∇f|²_G` (roadmap item 3). -/
+theorem contDiffAt_coordGradient
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hG : ContDiff ℝ 2 G) (hinv : (G x).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) :
+    ContDiffAt ℝ 1 (coordGradient G f) x :=
+  (hinv.contDiffAt_map_inverse.comp x (hG.contDiffAt.of_le (by norm_num))).clm_apply
+    ((hf.fderiv_right (m := 1) (by norm_num)).contDiffAt)
+
+end RicciFlow
