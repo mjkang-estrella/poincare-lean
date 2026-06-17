@@ -31551,3 +31551,40 @@ theorem coordRicciNormSq_eq_zero_iff_ricci_flat
     fun hflat ↦ coordRicciNormSq_eq_zero_of_ricci_flat hdiff hflat⟩
 
 end RicciFlow
+
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The parallel-gradient characterization**: on a Riemannian metric, `|∇²f|² = 0 ↔ ∇²f ≡ 0`. Forward is
+the rigidity `covariantHessian_eq_zero_of_hessNormSq_eq_zero`; reverse: each summand of `|∇²f|² =
+Σⱼ G(∇²f♯bⱼ, ∇²f♯♯bʲ)` is the covariant Hessian `∇²f(bⱼ, ∇²f♯♯bʲ) = 0`
+(`g_covariantDeriv_coordGradient_eq_covariantHessian'`), so the sum vanishes. The curved Hessian norm vanishes
+precisely when the gradient is parallel — the characterization underlying the equality case of Bochner's
+vanishing theorem (roadmap item 3). -/
+theorem coordCovariantHessNormSq_eq_zero_iff_hessian_flat
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v) :
+    coordCovariantHessNormSq G f x = 0
+      ↔ ∀ v w : E, covariantHessian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x v w = 0 := by
+  constructor
+  · intro h0 v w
+    exact covariantHessian_eq_zero_of_hessNormSq_eq_zero G hGd hGsymm hinv hf hGpos h0 v w
+  · intro hflat
+    refine Finset.sum_eq_zero fun j _ ↦ ?_
+    rw [g_covariantDeriv_coordGradient_eq_covariantHessian' G (hGd x) hGsymm hinv hf
+      ((Module.finBasis ℝ E) j)
+      (fderiv ℝ (coordGradient G f) x
+          ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+        + christoffelClosedOp G x
+            ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+            (coordGradient G f x))]
+    exact hflat _ _
+
+end RicciFlow
