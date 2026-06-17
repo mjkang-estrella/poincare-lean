@@ -30719,3 +30719,32 @@ theorem covariantGradientEndo_eq_smul_id_of_hess_eq
   rwa [← curvedLaplacian_eq_trace_covariantGradientEndo G hGd hGsymm hinv hf] at hres
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Obata's equation in eigenfunction form** (Lichnerowicz–Obata round-sphere rigidity):
+if `Δ_g f = −λ f` and the refined Bochner is tight (`(Δf)² = n|∇²f|²`), then `∇²f♯ = −(λ/n)f·id`, i.e.
+`∇²f = −(λ/n) f·g` — Obata's equation. Combines `covariantGradientEndo_eq_smul_id_of_hess_eq` (the Hessian is
+`(Δf/n)·id`) with the eigenvalue relation `Δf = −λf`. By Obata's theorem a closed manifold admitting a
+nonconstant solution of `∇²f = −(λ/n)f·g` with `λ = n·k` (`Ric ≥ kg`) is isometric to the round sphere `Sⁿ` —
+the equality case of the Lichnerowicz eigenvalue bound `λ₁ ≥ n/(n−1)·k` (roadmap item 3). -/
+theorem covariantGradientEndo_eq_smul_id_of_eigenfunction_hess_eq
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) (lam : ℝ)
+    (heig : curvedLaplacian G (fun y ↦ metricBilin (G y))
+      (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f = fun y ↦ -lam * f y)
+    (heq : (curvedLaplacian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x) ^ 2
+        = (Module.finrank ℝ E : ℝ) * coordCovariantHessNormSq G f x) :
+    covariantGradientEndo G f x = (-lam * f x / (Module.finrank ℝ E : ℝ)) • LinearMap.id := by
+  have h := covariantGradientEndo_eq_smul_id_of_hess_eq G hGd hGsymm hinv hf hGpos hn heq
+  rwa [congrFun heig x] at h
+
+end RicciFlow
