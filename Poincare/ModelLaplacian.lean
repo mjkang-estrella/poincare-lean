@@ -27748,3 +27748,36 @@ theorem g_covariantDeriv_coordGradient_eq_covariantHessian'
     (differentiableAt_coordGradient G hGd (hinv x) hf) v w
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Product rule for the curved gradient-norm**:
+`∂_v(G(∇_G f, ∇_G f)) = G(∇_G f, ∂_v∇_G f) + G(∂_v∇_G f, ∇_G f) + (∂_vG)(∇_G f, ∇_G f)`. Differentiating the
+scalar field `y ↦ G_y(∇_G f(y), ∇_G f(y))` in direction `v` splits, by the trilinear product rule (a
+double `clm_apply`, since the metric and both gradient factors vary), into two metric-paired flat-derivative
+terms plus the metric-derivative term. Combined with metric compatibility (`coord_metric_compatible`) and
+symmetry of `G`, the metric-derivative term recombines the flat derivatives into the *covariant* derivative,
+giving `∂_v|∇f|²_G = 2 G(∇_v∇_G f, ∇_G f)` — the first covariant derivative of the gradient-norm, whose
+second covariant derivative the curved Bochner identity traces (roadmap item 3). -/
+theorem fderiv_coordGradNormSq
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : DifferentiableAt ℝ G x)
+    (hinv : ∀ y : E, (G y).IsInvertible) {f : E → ℝ} (hf : ContDiff ℝ 2 f) (v : E) :
+    fderiv ℝ (coordGradNormSq G f) x v
+      = G x (coordGradient G f x) (fderiv ℝ (coordGradient G f) x v)
+        + G x (fderiv ℝ (coordGradient G f) x v) (coordGradient G f x)
+        + fderiv ℝ G x v (coordGradient G f x) (coordGradient G f x) := by
+  have hX : DifferentiableAt ℝ (coordGradient G f) x :=
+    differentiableAt_coordGradient G hGd (hinv x) hf
+  have hgns : HasFDerivAt (coordGradNormSq G f) _ x :=
+    (hGd.hasFDerivAt.clm_apply hX.hasFDerivAt).clm_apply hX.hasFDerivAt
+  rw [hgns.fderiv]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.flip_apply]
+  ring
+
+end RicciFlow
