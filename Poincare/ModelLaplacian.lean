@@ -31492,3 +31492,39 @@ theorem coordRicciNormSq_pos
   exact trace_comp_self_pos bx hbs hbpos (coordRicciEndo G x hdiff) hsa hn hne
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **`|∇²f|²` is strictly positive for nonzero Hessian**: on a Riemannian metric, if the Hessian operator
+`∇²f♯ = covariantGradientEndo ≠ 0` then `0 < |∇²f|²`. Since `|∇²f|² = tr((∇²f♯)²)` and `∇²f♯` is self-adjoint,
+the strict positive-definiteness `trace_comp_self_pos` applies. The strict form of
+`coordCovariantHessNormSq_nonneg`, equivalently the contrapositive of the parallel-gradient rigidity
+`covariantGradientEndo_eq_zero_of_hessNormSq_eq_zero` — mirroring `coordRicciNormSq_pos` (roadmap item 3). -/
+theorem coordCovariantHessNormSq_pos
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGd : Differentiable ℝ G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    {f : E → ℝ} (hf : ContDiff ℝ 2 f) (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v)
+    (hn : 0 < (Module.finrank ℝ E : ℝ)) (hne : covariantGradientEndo G f x ≠ 0) :
+    0 < coordCovariantHessNormSq G f x := by
+  rw [coordCovariantHessNormSq_eq_trace G hGd hGsymm hinv hf]
+  set bx : LinearMap.BilinForm ℝ E :=
+    LinearMap.mk₂ ℝ (fun v w ↦ G x v w)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp)
+      (fun a b c ↦ by simp) (fun c a b ↦ by simp) with hbx
+  have hbs : LinearMap.IsSymm bx := by
+    rw [LinearMap.isSymm_def]; intro p q
+    simp only [hbx, LinearMap.mk₂_apply, RingHom.id_apply]; exact hGsymm x p q
+  have hbpos : ∀ v : E, v ≠ 0 → 0 < bx v v := by
+    intro v hv; simp only [hbx, LinearMap.mk₂_apply]; exact hGpos v hv
+  have hsa : ∀ p q : E,
+      bx (covariantGradientEndo G f x p) q = bx p (covariantGradientEndo G f x q) := by
+    intro p q; simp only [hbx, LinearMap.mk₂_apply]
+    exact covariantGradientEndo_selfAdjoint (x := x) G hGd hGsymm hinv hf p q
+  exact trace_comp_self_pos bx hbs hbpos (covariantGradientEndo G f x) hsa hn hne
+
+end RicciFlow
