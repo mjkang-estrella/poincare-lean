@@ -27332,3 +27332,40 @@ theorem fderiv_fderiv_vectorField_apply
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Expansion of the covariant-derivative inner term**:
+`∂_v(∂X·w + Γ(w)·X) = ∂²X(v,w) + (∂_vΓ(w))·X + Γ(w)·∂_vX`. Differentiating the inner sum
+`y ↦ ∂X(y)·w + Γ_y(w)·X(y)` (the `w`-covariant derivative of the vector field `X` as a field) in direction
+`v` expands by the additive and product rules into the second derivative `D²X(v,w)`, the operator-gradient
+term `(∂_vΓ(w))·X`, and the operator-on-flat-derivative term `Γ(w)·∂_vX` (via
+`fderiv_fderiv_vectorField_apply` and `fderiv_christoffelClosedOp_apply_field`). Antisymmetrizing this in
+`(v,w)` (subtracting the `(w,v)` form, the curvature operator) cancels `D²X` by Schwarz and the mixed
+`Γ·∂X` terms pairwise, leaving the `∂Γ` and `Γ∘Γ` terms of `coordCurvatureOp` — the curvature bridge
+(roadmap item 3). -/
+theorem fderiv_covariant_inner_expand
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} {X : E → E} (hX : ContDiff ℝ 2 X)
+    {w : E} (hΓd : DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y w) x) (v : E) :
+    fderiv ℝ (fun y ↦ fderiv ℝ X y w + christoffelClosedOp G y w (X y)) x v
+      = fderiv ℝ (fderiv ℝ X) x v w
+        + (fderiv ℝ (fun y ↦ christoffelClosedOp G y w) x v) (X x)
+        + christoffelClosedOp G x w (fderiv ℝ X x v) := by
+  have hXd : Differentiable ℝ X := hX.differentiable (by norm_num)
+  have hXfd : Differentiable ℝ (fderiv ℝ X) :=
+    (hX.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)
+  have h1 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ X y w) x :=
+    ((ContinuousLinearMap.apply ℝ E w).hasFDerivAt.comp x (hXfd x).hasFDerivAt).differentiableAt
+  have h2 : DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y w (X y)) x :=
+    (hΓd.hasFDerivAt.clm_apply (hXd x).hasFDerivAt).differentiableAt
+  rw [fderiv_fun_add h1 h2, ContinuousLinearMap.add_apply,
+    fderiv_fderiv_vectorField_apply hXfd x v w,
+    fderiv_christoffelClosedOp_apply_field G hΓd (hXd x) v]
+  abel
+
+end RicciFlow
