@@ -26841,3 +26841,57 @@ theorem fderiv_modelLaplacian_eq_basis_sum
     add_zero, zero_add, smul_eq_mul, div_eq_inv_mul]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The squared Hessian norm as a metric-orthogonal-basis sum**:
+`|Hess f|² = Σᵢ b(Hess♯ bᵢ, Hess♯ bᵢ) / b(bᵢ, bᵢ)` for a `b`-orthogonal basis. Expanding `tr(Hess♯ ∘ Hess♯)`
+over the basis (`trace_eq_matrix_trace`; diagonal `b((Hess♯∘Hess♯) bᵢ, bᵢ)/b(bᵢ,bᵢ) = b(Hess♯ bᵢ, Hess♯ bᵢ)/
+b(bᵢ,bᵢ)` using self-adjointness of `Hess♯`) gives the explicit sum-of-squares. This is the metric trace
+of the Hessian-squared `(0,2)` form `(v,w) ↦ b(Hess♯ v, Hess♯ w)` — the second piece of the Bochner trace
+`Δ|∇f|² = 2|Hess f|² + 2 b(∇f, ∇Δf)` (roadmap item 3). -/
+theorem hessianNormSq_eq_orthoBasis_sum
+    (b : LinearMap.BilinForm ℝ E) (hb : b.Nondegenerate) (hbs : LinearMap.IsSymm b)
+    (hbpos : ∀ w : E, w ≠ 0 → 0 < b w w) {f : E → ℝ} (hf : ContDiff ℝ 2 f) (x : E)
+    {ι : Type*} [Fintype ι] [DecidableEq ι] (v : Module.Basis ι ℝ E)
+    (hortho : ∀ i j, i ≠ j → b (v i) (v j) = 0) :
+    hessianNormSq b hb f x
+      = ∑ i, b (hessianOperator b hb f x (v i)) (hessianOperator b hb f x (v i))
+          / b (v i) (v i) := by
+  set A := hessianOperator b hb f x with hA
+  have hselfadj : ∀ p q : E, b (A p) q = b p (A q) := by
+    intro p q
+    rw [b_hessianOperator]
+    have hsy := hbs.eq p (A q)
+    simp only [RingHom.id_apply] at hsy
+    rw [hsy, b_hessianOperator]
+    exact (hf.contDiffAt.isSymmSndFDerivAt (by simp)) p q
+  unfold hessianNormSq
+  rw [← hA, LinearMap.trace_eq_matrix_trace ℝ v, Matrix.trace]
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [Matrix.diag_apply]
+  have hbvi : b (v i) (v i) ≠ 0 := (hbpos (v i) (v.ne_zero i)).ne'
+  have hexpand : b ((A ∘ₗ A) (v i)) (v i)
+      = (LinearMap.toMatrix v v (A ∘ₗ A)) i i * b (v i) (v i) := by
+    conv_lhs => rw [← v.sum_repr ((A ∘ₗ A) (v i))]
+    have hsum : b (∑ j, v.repr ((A ∘ₗ A) (v i)) j • v j) (v i)
+        = ∑ j, v.repr ((A ∘ₗ A) (v i)) j * b (v j) (v i) := by
+      rw [map_sum, LinearMap.sum_apply]
+      apply Finset.sum_congr rfl
+      intro j _; simp [smul_eq_mul]
+    rw [hsum, Finset.sum_eq_single i]
+    · rw [LinearMap.toMatrix_apply]
+    · intro j _ hji; rw [hortho j i hji]; ring
+    · intro hi; exact absurd (Finset.mem_univ i) hi
+  have hAA : b ((A ∘ₗ A) (v i)) (v i) = b (A (v i)) (A (v i)) := by
+    rw [show (A ∘ₗ A) (v i) = A (A (v i)) from rfl, hselfadj (A (v i)) (v i)]
+  rw [eq_div_iff hbvi, ← hAA]
+  exact hexpand.symm
+
+end RicciFlow
