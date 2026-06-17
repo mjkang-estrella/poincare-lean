@@ -28794,3 +28794,72 @@ theorem sum_G_covariantSecondDerivative_gradient_transport_swap
     ((Module.finBasis ℝ E) j)
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The covariant Hessian with its first slot fixed, as a continuous linear functional**:
+`w ↦ D²f(v,w) − df(Γ(v,w))`. The `fderiv (fderiv f) x v` term and the composition
+`(df).comp (Γ_v)` are both genuine `E →L[ℝ] ℝ`, so their difference packages the covariant Hessian's
+`w`-slot continuously — the inner factor of the CLM-valued Hessian field `covariantHessianForm`. -/
+noncomputable def covariantHessianInnerCLM (G : E → E →L[ℝ] E →L[ℝ] ℝ) (f : E → ℝ)
+    (x v : E) : E →L[ℝ] ℝ :=
+  fderiv ℝ (fderiv ℝ f) x v - (fderiv ℝ f x).comp (christoffelClosedOp G x v)
+
+@[simp]
+theorem covariantHessianInnerCLM_apply (G : E → E →L[ℝ] E →L[ℝ] ℝ) (f : E → ℝ)
+    (x v w : E) :
+    covariantHessianInnerCLM G f x v w
+      = fderiv ℝ (fderiv ℝ f) x v w - fderiv ℝ f x (christoffelClosedOp G x v w) := by
+  simp [covariantHessianInnerCLM]
+
+/-- **The covariant Hessian packaged as a CLM-valued tensor field**: `covariantHessianForm G f x` is the
+continuous bilinear form `(v,w) ↦ D²f(v,w) − df(Γ(v,w))`, built from `covariantHessianInnerCLM` made linear
+in `v` by the first-slot linearity of `D²f` and the Christoffel operator
+(`christoffelClosedOp_add_fst`/`_smul_fst`). This is the `E → E →L[ℝ] E →L[ℝ] ℝ` form needed to feed the
+covariant Hessian into the general (0,2)-tensor machinery (`covTensor2Deriv`, `tensorMetricTrace`) — the
+gateway to identifying its metric trace with `Δf` and its covariant derivative with `∇³f` in the curved
+Bochner transport term (roadmap item 3). -/
+noncomputable def covariantHessianForm (G : E → E →L[ℝ] E →L[ℝ] ℝ) (f : E → ℝ)
+    (x : E) : E →L[ℝ] E →L[ℝ] ℝ :=
+  LinearMap.toContinuousLinearMap
+    { toFun := fun v ↦ covariantHessianInnerCLM G f x v
+      map_add' := fun v₁ v₂ ↦ by
+        ext w
+        simp only [covariantHessianInnerCLM_apply, ContinuousLinearMap.add_apply,
+          map_add, christoffelClosedOp_add_fst]
+        ring
+      map_smul' := fun c v ↦ by
+        ext w
+        simp only [covariantHessianInnerCLM_apply, ContinuousLinearMap.smul_apply,
+          RingHom.id_apply, map_smul, christoffelClosedOp_smul_fst, smul_eq_mul]
+        ring }
+
+@[simp]
+theorem covariantHessianForm_apply (G : E → E →L[ℝ] E →L[ℝ] ℝ) (f : E → ℝ) (x v w : E) :
+    covariantHessianForm G f x v w
+      = fderiv ℝ (fderiv ℝ f) x v w - fderiv ℝ f x (christoffelClosedOp G x v w) := by
+  show covariantHessianInnerCLM G f x v w = _
+  rw [covariantHessianInnerCLM_apply]
+
+/-- **The CLM-valued Hessian field agrees with the scalar covariant Hessian**:
+`covariantHessianForm G f x v w = covariantHessian G (metricBilin∘G) … f x v w`. The packaged field's
+components are the covariant Hessian, once the closed Christoffel operator is identified with the
+metric-`christoffelAt` (`christoffelClosedOp_eq_christoffelAt`). This is what transfers every general-tensor
+lemma about `covariantHessianForm` back to statements about the genuine covariant Hessian of `f`. -/
+theorem covariantHessianForm_eq_covariantHessian (G : E → E →L[ℝ] E →L[ℝ] ℝ)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (f : E → ℝ) (x v w : E) :
+    covariantHessianForm G f x v w
+      = covariantHessian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x v w := by
+  rw [covariantHessianForm_apply,
+    christoffelClosedOp_eq_christoffelAt G (metricBilin (G x))
+      (metricBilin_nondeg (hGsymm x) (hinv x)) (fun a b ↦ metricBilin_apply (G x) a b) v w]
+  rfl
+
+end RicciFlow
