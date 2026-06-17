@@ -29937,3 +29937,51 @@ theorem curved_ricci_flow_scalar_riccati_lower_bound
   linarith [riccati_reaction_bound (hGC4.of_le (by norm_num)) hGsymm hinv (hd2 t₀) hGpos hn]
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curved Hessian endomorphism** `∇²f♯ : v ↦ ∇_v ∇_G f`: the covariant derivative of the gradient
+field, as a linear endomorphism of `E`. Its metric pairing recovers the covariant Hessian
+(`g_covariantDeriv_coordGradient_eq_covariantHessian'`), so it is the `(1,1)` form of `∇²f`. -/
+noncomputable def covariantGradientEndo (G : E → E →L[ℝ] E →L[ℝ] ℝ) (f : E → ℝ)
+    (x : E) : E →ₗ[ℝ] E where
+  toFun v := fderiv ℝ (coordGradient G f) x v + christoffelClosedOp G x v (coordGradient G f x)
+  map_add' v₁ v₂ := by
+    rw [map_add, christoffelClosedOp_add_fst, ContinuousLinearMap.add_apply]
+    abel
+  map_smul' c v := by
+    rw [map_smul, christoffelClosedOp_smul_fst, ContinuousLinearMap.smul_apply, RingHom.id_apply,
+      smul_add]
+
+@[simp]
+theorem covariantGradientEndo_apply (G : E → E →L[ℝ] E →L[ℝ] ℝ) (f : E → ℝ) (x v : E) :
+    covariantGradientEndo G f x v
+      = fderiv ℝ (coordGradient G f) x v + christoffelClosedOp G x v (coordGradient G f x) := rfl
+
+/-- **The curved Hessian endomorphism is self-adjoint** w.r.t. the metric:
+`G(∇²f♯ p, q) = G(p, ∇²f♯ q)`. Both pairings are the covariant Hessian `∇²f(p,q)`
+(`g_covariantDeriv_coordGradient_eq_covariantHessian'`), which is symmetric (`covariantHessian_symm`). This
+is the self-adjointness hypothesis of the trace Cauchy–Schwarz `(tr A)² ≤ n·tr(A²)`
+(`trace_sq_le_card_mul_trace_comp_self`) — the input to the refined curved Bochner `|∇²f|² ≥ (Δf)²/n`. -/
+theorem covariantGradientEndo_selfAdjoint (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E}
+    (hGd : Differentiable ℝ G) (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible) {f : E → ℝ} (hf : ContDiff ℝ 2 f) (p q : E) :
+    G x (covariantGradientEndo G f x p) q = G x p (covariantGradientEndo G f x q) := by
+  have h1 : G x (covariantGradientEndo G f x p) q
+      = covariantHessian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x p q :=
+    g_covariantDeriv_coordGradient_eq_covariantHessian' G (hGd x) hGsymm hinv hf p q
+  have h2 : G x p (covariantGradientEndo G f x q)
+      = covariantHessian G (fun y ↦ metricBilin (G y))
+          (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) f x q p := by
+    rw [hGsymm x p (covariantGradientEndo G f x q)]
+    exact g_covariantDeriv_coordGradient_eq_covariantHessian' G (hGd x) hGsymm hinv hf q p
+  rw [h1, h2, covariantHessian_symm G (fun y ↦ metricBilin (G y))
+    (fun y ↦ metricBilin_nondeg (hGsymm y) (hinv y)) hGd hGsymm hf.contDiffAt p q]
+
+end RicciFlow
