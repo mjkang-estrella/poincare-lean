@@ -28682,3 +28682,35 @@ theorem g_covariantSecondDerivative_coordGradient_antisymm_first
   rfl
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The curvature trace of the gradient is the Ricci tensor**:
+`Σⱼ coordRiemann(♯bʲ, ∇_G f, ∇_G f, bⱼ) = coordRicci(∇_G f, ∇_G f)`. The curvature term produced by the
+Weitzenböck commutation of the rough-Laplacian trace contracts to Ricci: by block symmetry
+(`coordRiemann_block_symm`) each summand `Rm(♯bʲ, ∇f, ∇f, bⱼ)` equals `Rm(∇f, bⱼ, ♯bʲ, ∇f)`, whose
+sum over the inner trace `(bⱼ, ♯bʲ)` is `coordRicci(∇f, ∇f)` (`coordRicci_eq_riemann_inner_trace`). This is
+the `Ric(∇f, ∇f)` term of the curved Bochner identity — the contraction `g^{ij}R_{ikj}{}^l∇_l f = Ric_k{}^l
+∇_l f` realized in the coordinate model (roadmap item 3). -/
+theorem sum_coordRiemann_gradient_eq_coordRicci
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (hGd : ∀ y : E, DifferentiableAt ℝ G y)
+    (hGC2 : ContDiff ℝ 2 G) (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hΓd : ∀ a : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y a) x) (f : E → ℝ) :
+    (∑ j, coordRiemann G x
+        ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+        (coordGradient G f x) (coordGradient G f x) ((Module.finBasis ℝ E) j))
+      = coordRicci G x (coordGradient G f x) (coordGradient G f x) := by
+  rw [coordRicci_eq_riemann_inner_trace hGC2 hGsymm hinv hΓd (coordGradient G f x)
+    (coordGradient G f x)]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [coordRiemann_block_symm hGd hGC2 hGsymm hinv hΓd hΓd
+    ((G x).inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord j)))
+    (coordGradient G f x) (coordGradient G f x) ((Module.finBasis ℝ E) j)]
+
+end RicciFlow
