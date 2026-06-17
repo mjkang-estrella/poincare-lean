@@ -28151,3 +28151,27 @@ theorem contDiffAt_coordGradNormSq
   exact ((hG.contDiffAt.of_le (by norm_num)).clm_apply hX).clm_apply hX
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **Scalar eval-commute for the second derivative**: `∂_v(∂h·w) = ∂²h(v,w)`. Differentiating the scalar
+field `y ↦ ∂h(y)·w` (the differential of a real-valued `h` evaluated at fixed `w`) in direction `v` recovers
+the second derivative `D²h(v,w)`; the fixed evaluation at `w` is a continuous-linear projection, so the
+derivative passes through it. The real-valued analogue of `fderiv_fderiv_vectorField_apply`, used to
+identify the scalar covariant Hessian's `D²h(v,w)` term with the metric-Leibniz second derivative
+`fderiv_fderiv_coordGradNormSq` of the gradient-norm (roadmap item 3). -/
+theorem fderiv_fderiv_apply_real
+    {h : E → ℝ} {x : E} (hh : DifferentiableAt ℝ (fderiv ℝ h) x) (v w : E) :
+    fderiv ℝ (fun y ↦ fderiv ℝ h y w) x v = fderiv ℝ (fderiv ℝ h) x v w := by
+  have happ : fderiv ℝ (fun y ↦ fderiv ℝ h y w) x
+      = (ContinuousLinearMap.apply ℝ ℝ w).comp (fderiv ℝ (fderiv ℝ h) x) :=
+    ((ContinuousLinearMap.apply ℝ ℝ w).hasFDerivAt.comp x hh.hasFDerivAt).fderiv
+  rw [happ]
+  rfl
+
+end RicciFlow
