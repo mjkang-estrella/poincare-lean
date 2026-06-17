@@ -31528,3 +31528,26 @@ theorem coordCovariantHessNormSq_pos
   exact trace_comp_self_pos bx hbs hbpos (covariantGradientEndo G f x) hsa hn hne
 
 end RicciFlow
+
+namespace RicciFlow
+
+open CovariantDerivative
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E]
+
+/-- **The Ricci-flat characterization**: on a Riemannian metric, `|Ric|² = 0 ↔ Ric ≡ 0`. Forward is the
+rigidity `coordRicci_eq_zero_of_ricciNormSq_eq_zero` (a metric with vanishing Ricci norm is Ricci-flat, using
+positive-definiteness), reverse is `coordRicciNormSq_eq_zero_of_ricci_flat`. Thus the squared Ricci norm
+detects Ricci-flatness exactly — the curvature quantity vanishes precisely on Ricci-flat metrics, the fixed
+points of the Ricci flow with zero scalar-curvature reaction (roadmap item 3). -/
+theorem coordRicciNormSq_eq_zero_iff_ricci_flat
+    (G : E → E →L[ℝ] E →L[ℝ] ℝ) {x : E} (hGC2 : ContDiff ℝ 2 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p) (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiff : ∀ u : E, DifferentiableAt ℝ (fun y ↦ christoffelClosedOp G y u) x)
+    (hGpos : ∀ v : E, v ≠ 0 → 0 < G x v v) :
+    coordRicciNormSq G x hdiff = 0 ↔ ∀ p w : E, coordRicci G x p w = 0 :=
+  ⟨fun h0 p w ↦ coordRicci_eq_zero_of_ricciNormSq_eq_zero G hGC2 hGsymm hinv hdiff hGpos h0 p w,
+    fun hflat ↦ coordRicciNormSq_eq_zero_of_ricci_flat hdiff hflat⟩
+
+end RicciFlow
