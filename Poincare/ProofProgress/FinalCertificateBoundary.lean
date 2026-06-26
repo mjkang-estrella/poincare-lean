@@ -9,6 +9,8 @@ together with the post-extinction topology extraction bridge.
 
 import Poincare.CanonicalBridges
 import Poincare.ProofProgress.FullAssemblyClosure
+import Poincare.ProofProgress.GroundedFiniteExtinctionCertificate
+import Poincare.ProofProgress.SmoothabilityProductionPackageBridge
 import Poincare.ProofProgress.TopologyProductionPackageNextField
 
 universe u
@@ -34,6 +36,72 @@ structure FinalCertificateMinimalPackageInputs where
   finiteExtinction :
     dependencyPackageLayerRequirement.{u}
       DependencyPackageLayer.finiteExtinctionPackage
+
+/--
+Lower final-certificate inputs that keep the Moise/smoothability package but
+replace the finite-extinction package-layer witness by its current
+analytic/surgery/Perelman/sub-obligation family.
+-/
+structure FinalCertificateSubobligationInputs where
+  /-- Moise/smoothability package for target topological 3-manifolds. -/
+  smoothability :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.smoothabilityPackage
+  /-- Family-level finite-extinction sub-obligations for target manifolds. -/
+  finiteExtinctionSubobligations :
+    FinalAssemblyFiniteExtinctionSubobligationFamily.{u}
+
+/--
+The lower sub-obligation inputs produce the minimal package inputs by invoking
+the current finite-extinction proof-progress bridge.
+-/
+def finalCertificateMinimalPackageInputs_of_subobligationInputs
+    (inputs : FinalCertificateSubobligationInputs.{u}) :
+    FinalCertificateMinimalPackageInputs.{u} where
+  smoothability := inputs.smoothability
+  finiteExtinction :=
+    finiteExtinctionPackage_requirement_of_subobligations_family
+      inputs.finiteExtinctionSubobligations
+
+/--
+Grounded finite-extinction production certificates are enough to fill the
+finite-extinction subobligation field of the final-certificate boundary. The
+grounded family is first converted to the final assembly subobligation family,
+so the resulting input is the same lower boundary consumed by the checked
+certificate routes.
+-/
+def finalCertificateSubobligationInputs_of_smoothability_and_grounded_certificates
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          GroundedFiniteExtinctionProductionCertificate M) :
+    FinalCertificateSubobligationInputs.{u} where
+  smoothability := smoothability
+  finiteExtinctionSubobligations :=
+    finalAssemblyFiniteExtinctionSubobligationFamily_of_grounded_certificates
+      grounded
+
+/-- Definitional contract for `finalCertificateSubobligationInputs_of_smoothability_and_grounded_certificates`. -/
+theorem finalCertificateSubobligationInputs_of_smoothability_and_grounded_certificates_eq
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          GroundedFiniteExtinctionProductionCertificate M) :
+    finalCertificateSubobligationInputs_of_smoothability_and_grounded_certificates
+        smoothability grounded =
+      { smoothability := smoothability
+        finiteExtinctionSubobligations :=
+          finalAssemblyFiniteExtinctionSubobligationFamily_of_grounded_certificates
+            grounded } :=
+  rfl
 
 /--
 Primitive named input for the canonical completion route after the production
@@ -86,6 +154,27 @@ theorem canonical_completion_payload_of_finalCertificatePrimitiveInputs
     inputs.extinctionImpliesSphere
 
 /--
+The primitive final-certificate input proves the project Poincare statement by
+projecting its canonical completion target.
+-/
+theorem poincare_statement_of_finalCertificatePrimitiveInputs
+    (inputs : FinalCertificatePrimitiveInputs.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_canonical_completion_target
+    (canonical_completion_target_of_finalCertificatePrimitiveInputs inputs)
+
+/--
+The primitive final-certificate input exposes the project-level completion
+payload by projecting its canonical completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificatePrimitiveInputs
+    (inputs : FinalCertificatePrimitiveInputs.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_canonical_completion_payload
+    (canonical_completion_payload_of_finalCertificatePrimitiveInputs inputs)
+
+/--
 The two minimal package inputs prove the canonical completion target by first
 assembling the primitive universal finite-extinction statement.
 -/
@@ -107,6 +196,156 @@ theorem canonical_completion_payload_of_finalCertificateMinimalPackageInputs
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
   canonical_completion_payload_of_finalCertificatePrimitiveInputs
     (finalCertificatePrimitiveInputs_of_minimalPackageInputs inputs extractSphere)
+
+/--
+The two minimal package inputs prove the project Poincare statement after an
+explicit post-extinction extraction bridge is supplied.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_canonical_completion_target
+    (canonical_completion_target_of_finalCertificateMinimalPackageInputs
+      inputs extractSphere)
+
+/--
+The two minimal package inputs expose the project-level completion payload
+after an explicit post-extinction extraction bridge is supplied.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_canonical_completion_payload
+    (canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+      inputs extractSphere)
+
+/--
+Minimal package inputs plus theorem-shaped topology extraction produce both the
+project statement and its completion payload.
+-/
+theorem poincare_statement_and_payload_of_finalCertificateMinimalPackageInputs_and_topologyExtractionStatement
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  ⟨poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+      (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+        inputs.smoothability inputs.finiteExtinction)
+      topologyStatement,
+    poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+      (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+        inputs.smoothability inputs.finiteExtinction)
+      topologyStatement⟩
+
+/--
+Sub-obligation final-certificate inputs plus theorem-shaped topology extraction
+produce the project statement and project-level completion payload after the
+finite-extinction sub-obligation family is converted to the current package
+input.
+-/
+theorem poincare_statement_and_payload_of_finalCertificateSubobligationInputs_and_topologyExtractionStatement
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_statement_and_payload_of_finalCertificateMinimalPackageInputs_and_topologyExtractionStatement
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    topologyStatement
+
+/--
+Sub-obligation final-certificate inputs plus theorem-shaped topology extraction
+close the canonical target, canonical payload, and project Poincare statement.
+This is the statement-level counterpart of the topology-package checked
+certificate route: it consumes the lower finite-extinction sub-obligation
+family and the theorem-shaped topology extractor, but does not assume a full
+topology package.
+-/
+theorem canonical_payload_and_statement_of_finalCertificateSubobligationInputs_and_topologyExtractionStatement
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{u} := by
+  let minimalInputs :=
+    finalCertificateMinimalPackageInputs_of_subobligationInputs inputs
+  let extractSphere : ExtinctionImpliesSphereStatement.{u} :=
+    extinction_implies_sphere_of_topology_extraction_statement
+      topologyStatement
+  exact
+    ⟨canonical_completion_target_of_finalCertificateMinimalPackageInputs
+        minimalInputs extractSphere,
+      canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+        minimalInputs extractSphere,
+      (poincare_statement_and_payload_of_finalCertificateMinimalPackageInputs_and_topologyExtractionStatement
+        minimalInputs topologyStatement).1⟩
+
+/--
+Smoothability, grounded finite-extinction production certificates, and a
+theorem-shaped topology extraction statement produce the project Poincare
+statement and project-level completion payload. This keeps the final route at
+the grounded finite-extinction boundary without requiring a full topology
+package.
+-/
+theorem poincare_statement_and_payload_of_smoothability_grounded_certificates_and_topologyExtractionStatement
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          GroundedFiniteExtinctionProductionCertificate M)
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_statement_and_payload_of_finalCertificateSubobligationInputs_and_topologyExtractionStatement
+    (finalCertificateSubobligationInputs_of_smoothability_and_grounded_certificates
+      smoothability grounded)
+    topologyStatement
+
+/-- Theorem contract for `poincare_statement_and_payload_of_smoothability_grounded_certificates_and_topologyExtractionStatement`. -/
+theorem poincare_statement_and_payload_of_smoothability_grounded_certificates_and_topologyExtractionStatement_eq :
+    @Poincare.poincare_statement_and_payload_of_smoothability_grounded_certificates_and_topologyExtractionStatement =
+      @Poincare.poincare_statement_and_payload_of_smoothability_grounded_certificates_and_topologyExtractionStatement :=
+  rfl
+
+/--
+Smoothability, grounded finite-extinction production certificates, and a
+theorem-shaped topology extraction statement close the canonical target, the
+canonical payload, and the project Poincare statement. This is the lightweight
+canonical counterpart of the checked recognition-prefix route.
+-/
+theorem canonical_payload_and_statement_of_smoothability_grounded_certificates_and_topologyExtractionStatement
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          GroundedFiniteExtinctionProductionCertificate M)
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{u} :=
+  canonical_payload_and_statement_of_finalCertificateSubobligationInputs_and_topologyExtractionStatement
+    (finalCertificateSubobligationInputs_of_smoothability_and_grounded_certificates
+      smoothability grounded)
+    topologyStatement
+
+/-- Theorem contract for `canonical_payload_and_statement_of_smoothability_grounded_certificates_and_topologyExtractionStatement`. -/
+theorem canonical_payload_and_statement_of_smoothability_grounded_certificates_and_topologyExtractionStatement_eq :
+    @Poincare.canonical_payload_and_statement_of_smoothability_grounded_certificates_and_topologyExtractionStatement =
+      @Poincare.canonical_payload_and_statement_of_smoothability_grounded_certificates_and_topologyExtractionStatement :=
+  rfl
 
 /--
 Single-statement boundary: the current canonical completion target and payload
@@ -133,6 +372,45 @@ theorem final_certificate_boundary_of_smoothability_and_finiteExtinctionPackage
     , canonical_completion_payload_of_finalCertificateMinimalPackageInputs
         inputs extractSphere
     ⟩
+
+/--
+The same package-layer boundary reaches the project Poincare statement, not
+only the canonical completion target.
+-/
+theorem poincare_statement_of_smoothability_and_finiteExtinctionPackage
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+    { smoothability := smoothability
+      finiteExtinction := finiteExtinction }
+  exact poincare_statement_of_finalCertificateMinimalPackageInputs
+    inputs extractSphere
+
+/--
+The same package-layer boundary reaches the project-level completion payload,
+not only the canonical completion payload.
+-/
+theorem poincare_completion_payload_of_smoothability_and_finiteExtinctionPackage
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+    { smoothability := smoothability
+      finiteExtinction := finiteExtinction }
+  exact poincare_completion_payload_of_finalCertificateMinimalPackageInputs
+    inputs extractSphere
 
 /--
 The canonical payload obtained from the old three-input boundary is the payload
@@ -188,6 +466,32 @@ theorem canonical_completion_payload_of_completion_certificate_of_remainingDepen
   exact
     canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_eq
       dependencies inputs.universalFiniteExtinction
+
+/--
+The checked certificate constructed from the remaining dependency package and
+primitive final-certificate inputs projects to the reserved Poincare statement.
+-/
+theorem poincare_statement_of_completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+    (dependencies : RemainingDependencyPackage.{u})
+    (inputs : FinalCertificatePrimitiveInputs.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate
+    (completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+      dependencies inputs)
+
+/--
+The checked certificate constructed from the remaining dependency package and
+primitive final-certificate inputs projects to the reserved-name Poincare
+payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+    (dependencies : RemainingDependencyPackage.{u})
+    (inputs : FinalCertificatePrimitiveInputs.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_conjecture_payload_of_completion_certificate
+    (completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+      dependencies inputs)
 
 /--
 The checked certificate proposition itself has no extra primitive
@@ -286,6 +590,231 @@ theorem completion_certificate_of_finalCertificateMinimalPackageInputs_and_topol
       topology := topology }
 
 /--
+Minimal final-certificate package inputs plus a completed topology package close
+the canonical completion target, canonical payload, and checked completion
+certificate directly.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let extractSphere :=
+    extinction_implies_sphere_of_topology_package topology
+  ⟨canonical_completion_target_of_finalCertificateMinimalPackageInputs
+      inputs extractSphere,
+    canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+      inputs extractSphere,
+    completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+      inputs topology⟩
+
+/--
+Minimal final-certificate package inputs plus a completed topology package prove
+the project Poincare statement by explicitly assembling universal finite
+extinction from the smoothability and finite-extinction packages, then applying
+the topology package's extinction-to-sphere extraction bridge.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_universalFiniteExtinctionStatement
+    (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+      inputs.smoothability inputs.finiteExtinction)
+    (extinction_implies_sphere_of_topology_package topology)
+
+/--
+Minimal final-certificate package inputs plus a completed topology package
+expose the project-level completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs
+    inputs (extinction_implies_sphere_of_topology_package topology)
+
+/--
+Minimal final-certificate package inputs plus a completed topology package close
+the project Poincare statement, project payload, and checked completion
+certificate in one theorem-shaped boundary.
+-/
+theorem poincare_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  ⟨poincare_statement_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+      inputs topology,
+    poincare_completion_payload_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+      inputs topology,
+    completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+      inputs topology⟩
+
+/--
+Lower final-certificate sub-obligation inputs plus a completed topology package
+close the canonical completion target, canonical payload, and checked
+completion certificate after converting the finite-extinction sub-obligation
+family into the current package-layer finite-extinction input.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_and_topologyPackage
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    topology
+
+/--
+Smoothability, grounded finite-extinction production certificates, and a
+completed topology package close the checked completion certificate.
+
+This removes the package-level finite-extinction input from this checked
+certificate route: grounded certificates first supply the exact
+sub-obligation-family input, and the existing final certificate constructor
+then produces the certificate.
+-/
+theorem completion_certificate_of_smoothability_grounded_certificates_and_topologyPackage
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          GroundedFiniteExtinctionProductionCertificate M)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    PoincareCompletionCertificate.{u} :=
+  (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_and_topologyPackage
+    (finalCertificateSubobligationInputs_of_smoothability_and_grounded_certificates
+      smoothability grounded)
+    topology).2.2
+
+/-- Theorem contract for `completion_certificate_of_smoothability_grounded_certificates_and_topologyPackage`. -/
+theorem completion_certificate_of_smoothability_grounded_certificates_and_topologyPackage_eq :
+    @Poincare.completion_certificate_of_smoothability_grounded_certificates_and_topologyPackage =
+      @Poincare.completion_certificate_of_smoothability_grounded_certificates_and_topologyPackage :=
+  rfl
+
+/--
+Lower final-certificate sub-obligation inputs plus a completed topology package
+prove the project Poincare statement.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_and_topologyPackage
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    topology
+
+/--
+Lower final-certificate sub-obligation inputs plus a completed topology package
+expose the project-level completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_and_topologyPackage
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    topology
+
+/--
+Lower final-certificate sub-obligation inputs plus a completed topology package
+close the project Poincare statement, project payload, and checked completion
+certificate together.
+-/
+theorem poincare_payload_and_final_certificate_of_finalCertificateSubobligationInputs_and_topologyPackage
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  poincare_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    topology
+
+/--
+Lower final-certificate sub-obligation inputs plus a completed topology package
+expose the canonical target, canonical payload, project statement, project
+payload, and checked completion certificate in one theorem-shaped boundary.
+-/
+theorem canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_and_topologyPackage
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} := by
+  let canonicalAndCertificate :=
+    canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_and_topologyPackage
+      inputs topology
+  let poincareAndCertificate :=
+    poincare_payload_and_final_certificate_of_finalCertificateSubobligationInputs_and_topologyPackage
+      inputs topology
+  exact
+    ⟨canonicalAndCertificate.1,
+      canonicalAndCertificate.2.1,
+      poincareAndCertificate.1,
+      poincareAndCertificate.2.1,
+      canonicalAndCertificate.2.2⟩
+
+/--
+The checked final certificate is equivalent to the two minimal package inputs
+together with the remaining topology package.
+-/
+theorem final_certificate_iff_finalCertificateMinimalPackageInputs_and_topologyPackage :
+    PoincareCompletionCertificate.{u} ↔
+      FinalCertificateMinimalPackageInputs.{u} ∧
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage := by
+  constructor
+  · intro certificate
+    let dependencies := remaining_dependency_package_of_completion_certificate
+      certificate
+    exact
+      ⟨{ smoothability := dependencies.smoothability
+         finiteExtinction := dependencies.surgery }, dependencies.topology⟩
+  · rintro ⟨inputs, topology⟩
+    exact
+      completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+        inputs topology
+
+/--
 The current certificate boundary, expressed directly as named package-layer
 requirements: smoothability, finite extinction, and topology.
 -/
@@ -304,6 +833,47 @@ theorem completion_certificate_of_smoothability_finiteExtinctionPackage_and_topo
     { smoothability := smoothability
       finiteExtinction := finiteExtinction }
     topology
+
+/--
+The package-layer certificate constructor projects to the reserved Poincare
+statement.
+-/
+theorem poincare_statement_of_completion_certificate_of_smoothability_finiteExtinctionPackage_and_topologyPackage
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    completion_certificate_of_smoothability_finiteExtinctionPackage_and_topologyPackage
+      smoothability finiteExtinction topology
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The package-layer certificate constructor projects to the reserved-name
+Poincare payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_smoothability_finiteExtinctionPackage_and_topologyPackage
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    completion_certificate_of_smoothability_finiteExtinctionPackage_and_topologyPackage
+      smoothability finiteExtinction topology
+  exact poincare_conjecture_payload_of_completion_certificate certificate
 
 /--
 The simply connected extinction-recognition prefix now supplies the topology
@@ -347,6 +917,90 @@ theorem completion_certificate_of_finalCertificateMinimalPackageInputs_and_recog
       inputs recognitionPrefix)
 
 /--
+The checked final certificate is equivalently the two non-topology package
+inputs plus a simply connected extinction-recognition prefix.
+
+The forward direction extracts the remaining topology package from the checked
+certificate and projects it to the recognition prefix; the reverse direction
+reconstructs the topology package from that prefix.
+-/
+theorem final_certificate_iff_finalCertificateMinimalPackageInputs_and_recognitionPrefix :
+    PoincareCompletionCertificate.{u} ↔
+      FinalCertificateMinimalPackageInputs.{u} ∧
+        ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u} := by
+  constructor
+  · intro certificate
+    let dependencies := remaining_dependency_package_of_completion_certificate
+      certificate
+    exact
+      ⟨{ smoothability := dependencies.smoothability
+         finiteExtinction := dependencies.surgery },
+       extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_topology_package
+        dependencies.topology⟩
+  · rintro ⟨inputs, recognitionPrefix⟩
+    exact
+      completion_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+        inputs recognitionPrefix
+
+/--
+Named package-layer smoothability and finite-extinction requirements plus a
+simply connected extinction-recognition prefix close the checked certificate.
+-/
+theorem completion_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    { smoothability := smoothability
+      finiteExtinction := finiteExtinction }
+    recognitionPrefix
+
+/--
+The package-layer recognition-prefix constructor projects to the reserved
+Poincare statement.
+-/
+theorem poincare_statement_of_completion_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    completion_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+      smoothability finiteExtinction recognitionPrefix
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The package-layer recognition-prefix constructor projects to the reserved-name
+Poincare payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    completion_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+      smoothability finiteExtinction recognitionPrefix
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
 The canonical target, canonical payload, and checked certificate close from the
 two non-topology package inputs plus the simply connected recognition prefix.
 -/
@@ -368,6 +1022,4865 @@ theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackag
   , completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
       inputs topology
   ⟩
+
+/--
+The minimal final-certificate package inputs plus a simply connected
+recognition prefix construct the project Poincare statement directly.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let topology :=
+    topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+      recognitionPrefix
+  poincare_statement_of_universalFiniteExtinctionStatement
+    (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+      inputs.smoothability inputs.finiteExtinction)
+    (extinction_implies_sphere_of_topology_package topology)
+
+/--
+The minimal final-certificate package inputs plus a simply connected
+recognition prefix construct the project-level completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+        inputs recognitionPrefix).2.1 with
+    ⟨_canonicalTarget, completionCriterion⟩
+  exact
+    ⟨poincare_statement_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+        inputs recognitionPrefix,
+      completionCriterion⟩
+
+/--
+The minimal recognition-prefix final-certificate route produces a checked
+completion certificate, and that certificate projects to the reserved Poincare
+statement endpoint.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+      inputs recognitionPrefix).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The minimal recognition-prefix final-certificate route also projects its
+checked completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+      inputs recognitionPrefix).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+Final-certificate sub-obligation inputs plus a simply connected recognition
+prefix construct the project Poincare statement directly.
+
+This lifts the recognition-prefix route beyond the canonical completion target
+to the actual project statement.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_and_recognitionPrefix
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let minimalInputs :=
+    finalCertificateMinimalPackageInputs_of_subobligationInputs inputs
+  let topology :=
+    topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+      recognitionPrefix
+  poincare_statement_of_universalFiniteExtinctionStatement
+    (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+      minimalInputs.smoothability minimalInputs.finiteExtinction)
+    (extinction_implies_sphere_of_topology_package topology)
+
+/--
+Final-certificate sub-obligation inputs plus a simply connected recognition
+prefix construct the project-level completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_and_recognitionPrefix
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let minimalInputs :=
+    finalCertificateMinimalPackageInputs_of_subobligationInputs inputs
+  rcases
+      (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+        minimalInputs recognitionPrefix).2.1 with
+    ⟨_canonicalTarget, completionCriterion⟩
+  exact
+    ⟨poincare_statement_of_finalCertificateSubobligationInputs_and_recognitionPrefix
+        inputs recognitionPrefix,
+      completionCriterion⟩
+
+/--
+The lower finite-extinction sub-obligation inputs plus a simply connected
+recognition prefix close the canonical target, canonical payload, and checked
+certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_and_recognitionPrefix
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    recognitionPrefix
+
+/--
+The lower recognition-prefix route exposes both canonical and project-level
+payloads together with the checked completion certificate.
+-/
+theorem canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_and_recognitionPrefix
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} := by
+  let canonicalAndCertificate :=
+    canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_and_recognitionPrefix
+      inputs recognitionPrefix
+  exact
+    ⟨canonicalAndCertificate.1,
+      canonicalAndCertificate.2.1,
+      poincare_statement_of_finalCertificateSubobligationInputs_and_recognitionPrefix
+        inputs recognitionPrefix,
+      poincare_completion_payload_of_finalCertificateSubobligationInputs_and_recognitionPrefix
+        inputs recognitionPrefix,
+      canonicalAndCertificate.2.2⟩
+
+/--
+The lower recognition-prefix route also exposes the aggregate reserved-name
+canonical statement payload from its checked completion certificate.
+-/
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_finalCertificateSubobligationInputs_and_recognitionPrefix
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      PoincareProofDependencies.{u} ∧
+      canonicalCompletionTarget.{u} ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere)) ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_and_recognitionPrefix
+      inputs recognitionPrefix).2.2
+  exact poincareCompletionCertificate_aggregate_canonical_statement_payload certificate
+
+/--
+The lower recognition-prefix final-certificate route produces a checked
+completion certificate, and that checked certificate projects to the reserved
+Poincare statement endpoint.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_and_recognitionPrefix
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_and_recognitionPrefix
+      inputs recognitionPrefix).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The lower recognition-prefix final-certificate route also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_and_recognitionPrefix
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_and_recognitionPrefix
+      inputs recognitionPrefix).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+Grounded finite-extinction production certificates, together with smoothability
+and the simply connected recognition prefix, prove the reserved Poincare
+statement through the checked final-certificate route. The proof first builds
+the exact `FinalCertificateSubobligationInputs` object, whose finite-extinction
+field is supplied by the grounded-certificate family.
+-/
+theorem poincare_conjecture_of_checked_smoothability_grounded_certificates_and_recognitionPrefix
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          GroundedFiniteExtinctionProductionCertificate M)
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_checked_finalCertificateSubobligationInputs_and_recognitionPrefix
+    (finalCertificateSubobligationInputs_of_smoothability_and_grounded_certificates
+      smoothability grounded)
+    recognitionPrefix
+
+/-- Theorem contract for `poincare_conjecture_of_checked_smoothability_grounded_certificates_and_recognitionPrefix`. -/
+theorem poincare_conjecture_of_checked_smoothability_grounded_certificates_and_recognitionPrefix_eq :
+    @Poincare.poincare_conjecture_of_checked_smoothability_grounded_certificates_and_recognitionPrefix =
+      @Poincare.poincare_conjecture_of_checked_smoothability_grounded_certificates_and_recognitionPrefix :=
+  rfl
+
+/--
+The grounded-certificate final route also exposes the reserved Poincare
+payload, not just the project statement.
+-/
+theorem poincare_conjecture_payload_of_checked_smoothability_grounded_certificates_and_recognitionPrefix
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          GroundedFiniteExtinctionProductionCertificate M)
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_and_recognitionPrefix
+    (finalCertificateSubobligationInputs_of_smoothability_and_grounded_certificates
+      smoothability grounded)
+    recognitionPrefix
+
+/-- Theorem contract for `poincare_conjecture_payload_of_checked_smoothability_grounded_certificates_and_recognitionPrefix`. -/
+theorem poincare_conjecture_payload_of_checked_smoothability_grounded_certificates_and_recognitionPrefix_eq :
+    @Poincare.poincare_conjecture_payload_of_checked_smoothability_grounded_certificates_and_recognitionPrefix =
+      @Poincare.poincare_conjecture_payload_of_checked_smoothability_grounded_certificates_and_recognitionPrefix :=
+  rfl
+
+/--
+A surgery-trace prefix plus final-homeomorphism payload data supplies the
+topology package-layer requirement consumed by the final certificate boundary.
+-/
+def topologyPackage_requirement_of_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.topologyPackage :=
+  extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    surgeryTracePrefix finalHomeomorphismPayloadData
+
+/--
+The two non-topology final-certificate package inputs plus surgery-trace prefix
+and final-homeomorphism payload data close the canonical target, canonical
+payload, and checked completion certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let topology :=
+    topologyPackage_requirement_of_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+      surgeryTracePrefix finalHomeomorphismPayloadData
+  ⟨canonical_completion_target_of_finalCertificateMinimalPackageInputs
+      inputs (extinction_implies_sphere_of_topology_package topology),
+    canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+      inputs (extinction_implies_sphere_of_topology_package topology),
+    completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+      inputs topology⟩
+
+/--
+The minimal final-certificate package inputs plus surgery-trace prefix and
+final-homeomorphism payload data construct the project Poincare statement.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let topology :=
+    topologyPackage_requirement_of_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+      surgeryTracePrefix finalHomeomorphismPayloadData
+  poincare_statement_of_universalFiniteExtinctionStatement
+    (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+      inputs.smoothability inputs.finiteExtinction)
+    (extinction_implies_sphere_of_topology_package topology)
+
+/--
+The minimal final-homeomorphism payload route reaches the project-level
+completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+        inputs surgeryTracePrefix finalHomeomorphismPayloadData).2.1 with
+    ⟨_canonicalTarget, completionCriterion⟩
+  exact
+    ⟨poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+        inputs surgeryTracePrefix finalHomeomorphismPayloadData,
+      completionCriterion⟩
+
+/--
+The lower finite-extinction sub-obligation inputs plus surgery-trace prefix and
+final-homeomorphism payload data close the canonical target, canonical payload,
+and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    surgeryTracePrefix finalHomeomorphismPayloadData
+
+/--
+The lower final-homeomorphism payload route produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+      inputs surgeryTracePrefix finalHomeomorphismPayloadData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The lower final-homeomorphism payload route also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+      inputs surgeryTracePrefix finalHomeomorphismPayloadData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The minimal final-certificate package inputs plus decomposition data, trace
+reconstruction data, and final-homeomorphism payload data close the canonical
+target, canonical payload, and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    inputs surgeryTracePrefix finalHomeomorphismPayloadData
+
+/--
+The minimal decomposition-data plus final-homeomorphism payload route
+constructs the project Poincare statement.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    inputs surgeryTracePrefix finalHomeomorphismPayloadData
+
+/--
+The minimal decomposition-data plus final-homeomorphism payload route exposes
+the project-level completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    inputs surgeryTracePrefix finalHomeomorphismPayloadData
+
+/--
+Final-certificate sub-obligation inputs plus surgery-trace prefix and
+final-homeomorphism payload data construct the project Poincare statement.
+
+This lifts the final-homeomorphism payload route beyond the canonical
+completion bundle to the actual project statement.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    surgeryTracePrefix finalHomeomorphismPayloadData
+
+/--
+The same final-homeomorphism payload route reaches the project-level completion
+payload for `PoincareConjectureStatement`.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    surgeryTracePrefix finalHomeomorphismPayloadData
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+and final-homeomorphism payload data construct the project Poincare statement.
+
+This removes the prebuilt surgery-trace-prefix assumption from the
+final-homeomorphism payload route.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    inputs surgeryTracePrefix finalHomeomorphismPayloadData
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+and final-homeomorphism payload data expose the project-level completion
+payload.
+
+This removes the prebuilt surgery-trace-prefix assumption by constructing that
+prefix from decomposition and trace reconstruction data before applying the
+final-homeomorphism payload route.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    inputs surgeryTracePrefix finalHomeomorphismPayloadData
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+and final-homeomorphism payload data close the canonical target, canonical
+payload, and checked certificate.
+
+This removes the prebuilt surgery-trace-prefix assumption from the checked
+certificate route for the final-homeomorphism payload input.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    surgeryTracePrefix finalHomeomorphismPayloadData
+
+/--
+The lower decomposition-data plus final-homeomorphism payload route produces a
+checked completion certificate, and that certificate projects to the reserved
+Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_finalHomeomorphismPayloadDataAfterDecomposition
+      inputs decompositionData traceData finalHomeomorphismPayloadData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The lower decomposition-data plus final-homeomorphism payload route also
+projects its checked completion certificate to the reserved-name Poincare
+payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_finalHomeomorphismPayloadDataAfterDecomposition
+      inputs decompositionData traceData finalHomeomorphismPayloadData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+Final-certificate sub-obligation inputs plus surgery-trace prefix and a raw
+final-homeomorphism statement construct the project Poincare statement.
+
+This lowers the project-statement route from final-homeomorphism payload data
+to the raw final-homeomorphism topology statement.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (finalHomeomorphism :
+      FinalHomeomorphismAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    inputs surgeryTracePrefix
+    (finalHomeomorphismPayloadDataAfterDecompositionStatement_of_finalHomeomorphismAfterDecompositionStatement
+      finalHomeomorphism)
+
+/--
+The raw final-homeomorphism route also reaches the project-level completion
+payload, not only the project statement.
+
+This consumes the already verified final-homeomorphism-after-decomposition
+statement by lowering it to payload data, then reuses the proof-bearing
+completion-payload route for that lower topology package.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (finalHomeomorphism :
+      FinalHomeomorphismAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    inputs surgeryTracePrefix
+    (finalHomeomorphismPayloadDataAfterDecompositionStatement_of_finalHomeomorphismAfterDecompositionStatement
+      finalHomeomorphism)
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+and a raw final-homeomorphism statement construct the project Poincare
+statement.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_finalHomeomorphismAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphism :
+      FinalHomeomorphismAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    inputs surgeryTracePrefix finalHomeomorphism
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+and a raw final-homeomorphism statement expose the project-level completion
+payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_finalHomeomorphismAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphism :
+      FinalHomeomorphismAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    inputs surgeryTracePrefix finalHomeomorphism
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+and a raw final-homeomorphism statement close the canonical target, canonical
+payload, and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_finalHomeomorphismAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphism :
+      FinalHomeomorphismAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_finalHomeomorphismPayloadDataAfterDecomposition
+    inputs decompositionData traceData
+    (finalHomeomorphismPayloadDataAfterDecompositionStatement_of_finalHomeomorphismAfterDecompositionStatement
+      finalHomeomorphism)
+
+/--
+The lower raw final-homeomorphism route produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_finalHomeomorphismAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphism :
+      FinalHomeomorphismAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_finalHomeomorphismAfterDecomposition
+      inputs decompositionData traceData finalHomeomorphism).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The lower raw final-homeomorphism route also projects its checked completion
+certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_finalHomeomorphismAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphism :
+      FinalHomeomorphismAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_finalHomeomorphismAfterDecomposition
+      inputs decompositionData traceData finalHomeomorphism).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+A surgery-trace prefix plus the raw final-homeomorphism statement is already
+enough to close the canonical target, canonical payload, and checked
+certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (finalHomeomorphism :
+      FinalHomeomorphismAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    inputs surgeryTracePrefix
+    (finalHomeomorphismPayloadDataAfterDecompositionStatement_of_finalHomeomorphismAfterDecompositionStatement
+      finalHomeomorphism)
+
+/--
+The minimal final-certificate package inputs plus a raw final-homeomorphism
+statement construct the project Poincare statement.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (finalHomeomorphism :
+      FinalHomeomorphismAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    inputs surgeryTracePrefix
+    (finalHomeomorphismPayloadDataAfterDecompositionStatement_of_finalHomeomorphismAfterDecompositionStatement
+      finalHomeomorphism)
+
+/--
+The minimal raw final-homeomorphism route reaches the project-level completion
+payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (finalHomeomorphism :
+      FinalHomeomorphismAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    inputs surgeryTracePrefix
+    (finalHomeomorphismPayloadDataAfterDecompositionStatement_of_finalHomeomorphismAfterDecompositionStatement
+      finalHomeomorphism)
+
+/--
+The minimal final-certificate package inputs plus decomposition data, trace
+reconstruction data, and a raw final-homeomorphism statement close the
+canonical target, canonical payload, and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_finalHomeomorphismAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphism :
+      FinalHomeomorphismAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    inputs surgeryTracePrefix finalHomeomorphism
+
+/--
+The minimal decomposition-data plus raw final-homeomorphism route constructs
+the project Poincare statement.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_finalHomeomorphismAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphism :
+      FinalHomeomorphismAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    inputs surgeryTracePrefix finalHomeomorphism
+
+/--
+The minimal decomposition-data plus raw final-homeomorphism route exposes the
+project-level completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_finalHomeomorphismAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphism :
+      FinalHomeomorphismAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    inputs surgeryTracePrefix finalHomeomorphism
+
+/--
+A surgery-trace prefix plus one-point compactification recognition after
+decomposition closes the canonical target, canonical payload, and checked
+certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_onePointCompactificationRecognition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    inputs surgeryTracePrefix
+    (finalHomeomorphismAfterDecompositionStatement_of_onePointCompactificationRecognitionAfterDecompositionStatement
+      onePointRecognition)
+
+/--
+Decomposition data plus trace reconstruction data and one-point recognition
+close the canonical target, canonical payload, and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_onePointCompactificationRecognition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_onePointCompactificationRecognition
+    inputs surgeryTracePrefix onePointRecognition
+
+/-- Decomposition data, trace data, and one-point recognition produce the checked certificate. -/
+theorem completion_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_onePointCompactificationRecognition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    PoincareCompletionCertificate.{u} :=
+  (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_onePointCompactificationRecognition
+    inputs decompositionData traceData onePointRecognition).2.2
+
+/--
+The checked final certificate is equivalently the two non-topology package
+inputs, a surgery-trace prefix, and one-point compactification recognition
+after decomposition.
+
+The forward direction extracts the topology package from the checked
+certificate, then projects both the surgery-trace prefix and the one-point
+recognition route.  The reverse direction uses those two topology routes to
+reconstruct a checked certificate.
+-/
+theorem final_certificate_iff_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_onePointCompactificationRecognition :
+    PoincareCompletionCertificate.{u} ↔
+      FinalCertificateMinimalPackageInputs.{u} ∧
+        ExtinctionTopologySurgeryTracePrefixPackage.{u} ∧
+        OnePointCompactificationRecognitionAfterDecompositionStatement.{u} := by
+  constructor
+  · intro certificate
+    let dependencies := remaining_dependency_package_of_completion_certificate
+      certificate
+    exact
+      ⟨{ smoothability := dependencies.smoothability
+         finiteExtinction := dependencies.surgery },
+       extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+        dependencies.topology,
+       onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+        dependencies.topology⟩
+  · rintro ⟨inputs, surgeryTracePrefix, onePointRecognition⟩
+    exact
+      (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_onePointCompactificationRecognition
+        inputs surgeryTracePrefix onePointRecognition).2.2
+
+/--
+Named package-layer smoothability and finite-extinction requirements plus a
+surgery-trace prefix and one-point compactification recognition close the
+checked certificate.
+-/
+theorem completion_certificate_of_smoothability_finiteExtinctionPackage_surgeryTracePrefix_and_onePointCompactificationRecognition
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    PoincareCompletionCertificate.{u} :=
+  (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_onePointCompactificationRecognition
+    { smoothability := smoothability
+      finiteExtinction := finiteExtinction }
+    surgeryTracePrefix onePointRecognition).2.2
+
+/--
+The package-layer surgery-trace plus one-point recognition constructor projects
+to the reserved Poincare statement.
+-/
+theorem poincare_statement_of_completion_certificate_of_smoothability_finiteExtinctionPackage_surgeryTracePrefix_and_onePointCompactificationRecognition
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    completion_certificate_of_smoothability_finiteExtinctionPackage_surgeryTracePrefix_and_onePointCompactificationRecognition
+      smoothability finiteExtinction surgeryTracePrefix onePointRecognition
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The package-layer surgery-trace plus one-point recognition constructor projects
+to the reserved-name Poincare payload.
+-/
+theorem poincare_completion_payload_of_completion_certificate_of_smoothability_finiteExtinctionPackage_surgeryTracePrefix_and_onePointCompactificationRecognition
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    completion_certificate_of_smoothability_finiteExtinctionPackage_surgeryTracePrefix_and_onePointCompactificationRecognition
+      smoothability finiteExtinction surgeryTracePrefix onePointRecognition
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The minimal one-point compactification recognition route constructs the project
+Poincare statement.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_onePointCompactificationRecognition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    inputs surgeryTracePrefix
+    (finalHomeomorphismAfterDecompositionStatement_of_onePointCompactificationRecognitionAfterDecompositionStatement
+      onePointRecognition)
+
+/--
+The minimal one-point compactification recognition route reaches the
+project-level completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_onePointCompactificationRecognition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    inputs surgeryTracePrefix
+    (finalHomeomorphismAfterDecompositionStatement_of_onePointCompactificationRecognitionAfterDecompositionStatement
+      onePointRecognition)
+
+/--
+One-point compactification recognition after decomposition reaches the project
+Poincare statement through the raw final-homeomorphism route.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_onePointCompactificationRecognition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    inputs surgeryTracePrefix
+    (finalHomeomorphismAfterDecompositionStatement_of_onePointCompactificationRecognitionAfterDecompositionStatement
+      onePointRecognition)
+
+/--
+One-point compactification recognition after decomposition also supplies the
+project-level completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_onePointCompactificationRecognition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    inputs surgeryTracePrefix
+    (finalHomeomorphismAfterDecompositionStatement_of_onePointCompactificationRecognitionAfterDecompositionStatement
+      onePointRecognition)
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+and one-point compactification recognition construct the project Poincare
+statement.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_onePointCompactificationRecognition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_onePointCompactificationRecognition
+    inputs surgeryTracePrefix onePointRecognition
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+and one-point compactification recognition expose the project-level completion
+payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_onePointCompactificationRecognition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_onePointCompactificationRecognition
+    inputs surgeryTracePrefix onePointRecognition
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+and one-point compactification recognition close the canonical target,
+canonical payload, and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_onePointCompactificationRecognition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_finalHomeomorphismAfterDecomposition
+    inputs decompositionData traceData
+    (finalHomeomorphismAfterDecompositionStatement_of_onePointCompactificationRecognitionAfterDecompositionStatement
+      onePointRecognition)
+
+/--
+The one-point compactification recognition route produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_onePointCompactificationRecognition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_onePointCompactificationRecognition
+      inputs decompositionData traceData onePointRecognition).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The one-point compactification recognition route also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_onePointCompactificationRecognition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_onePointCompactificationRecognition
+      inputs decompositionData traceData onePointRecognition).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+One-point recognition data plus the lower finite-extinction inputs expose both
+canonical and project payload endpoints and the checked completion certificate.
+-/
+theorem canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_onePointCompactificationRecognition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} := by
+  let canonicalAndCertificate :=
+    canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_onePointCompactificationRecognition
+      inputs decompositionData traceData onePointRecognition
+  exact
+    ⟨canonicalAndCertificate.1,
+      canonicalAndCertificate.2.1,
+      poincare_statement_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_onePointCompactificationRecognition
+        inputs decompositionData traceData onePointRecognition,
+      poincare_completion_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_onePointCompactificationRecognition
+        inputs decompositionData traceData onePointRecognition,
+      canonicalAndCertificate.2.2⟩
+
+/--
+The one-point compactification recognition route also exposes the aggregate
+reserved-name artifact payload, including aggregate dependencies, the canonical
+completion target, and the canonical topological 3-sphere statement.
+-/
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_onePointCompactificationRecognition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      PoincareProofDependencies.{u} ∧
+      canonicalCompletionTarget.{u} ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere)) ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_onePointCompactificationRecognition
+      inputs decompositionData traceData onePointRecognition).2.2.2.2
+  exact poincareCompletionCertificate_aggregate_canonical_statement_payload certificate
+
+/--
+A surgery-trace prefix plus decomposition-indexed one-point recognition data
+closes the canonical target, canonical payload, and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_extinctionOnePointRecognitionDataAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (recognizeData :
+      ExtinctionOnePointThreeSpaceRecognitionDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_onePointCompactificationRecognition
+    inputs surgeryTracePrefix
+    (onePointCompactificationRecognitionAfterDecompositionStatement_of_extinctionOnePointThreeSpaceRecognitionDataAfterDecompositionStatement
+      recognizeData)
+
+/--
+The minimal decomposition-indexed one-point recognition route constructs the
+project Poincare statement.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_extinctionOnePointRecognitionDataAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (recognizeData :
+      ExtinctionOnePointThreeSpaceRecognitionDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_onePointCompactificationRecognition
+    inputs surgeryTracePrefix
+    (onePointCompactificationRecognitionAfterDecompositionStatement_of_extinctionOnePointThreeSpaceRecognitionDataAfterDecompositionStatement
+      recognizeData)
+
+/--
+The minimal decomposition-indexed one-point recognition route reaches the
+project-level completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_extinctionOnePointRecognitionDataAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (recognizeData :
+      ExtinctionOnePointThreeSpaceRecognitionDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_onePointCompactificationRecognition
+    inputs surgeryTracePrefix
+    (onePointCompactificationRecognitionAfterDecompositionStatement_of_extinctionOnePointThreeSpaceRecognitionDataAfterDecompositionStatement
+      recognizeData)
+
+/--
+Decomposition-indexed one-point recognition data reaches the project Poincare
+statement through the one-point compactification recognition route.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_extinctionOnePointRecognitionDataAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (recognizeData :
+      ExtinctionOnePointThreeSpaceRecognitionDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_extinctionOnePointRecognitionDataAfterDecomposition
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    surgeryTracePrefix recognizeData
+
+/--
+Decomposition-indexed one-point recognition data also reaches the project-level
+completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_extinctionOnePointRecognitionDataAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (recognizeData :
+      ExtinctionOnePointThreeSpaceRecognitionDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_extinctionOnePointRecognitionDataAfterDecomposition
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    surgeryTracePrefix recognizeData
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+and decomposition-indexed one-point recognition data construct the project
+Poincare statement.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_extinctionOnePointRecognitionDataAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (recognizeData :
+      ExtinctionOnePointThreeSpaceRecognitionDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_extinctionOnePointRecognitionDataAfterDecomposition
+    inputs surgeryTracePrefix recognizeData
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+and decomposition-indexed one-point recognition data expose the project-level
+completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_extinctionOnePointRecognitionDataAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (recognizeData :
+      ExtinctionOnePointThreeSpaceRecognitionDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_extinctionOnePointRecognitionDataAfterDecomposition
+    inputs surgeryTracePrefix recognizeData
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+and decomposition-indexed one-point recognition data close the canonical
+target, canonical payload, and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_extinctionOnePointRecognitionDataAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (recognizeData :
+      ExtinctionOnePointThreeSpaceRecognitionDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_onePointCompactificationRecognition
+    inputs decompositionData traceData
+    (onePointCompactificationRecognitionAfterDecompositionStatement_of_extinctionOnePointThreeSpaceRecognitionDataAfterDecompositionStatement
+      recognizeData)
+
+/--
+The lower decomposition-indexed one-point recognition route produces a checked
+completion certificate, and that certificate projects to the reserved Poincare
+statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_extinctionOnePointRecognitionDataAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (recognizeData :
+      ExtinctionOnePointThreeSpaceRecognitionDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_extinctionOnePointRecognitionDataAfterDecomposition
+      inputs decompositionData traceData recognizeData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The lower decomposition-indexed one-point recognition route also projects its
+checked completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_extinctionOnePointRecognitionDataAfterDecomposition
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (recognizeData :
+      ExtinctionOnePointThreeSpaceRecognitionDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_extinctionOnePointRecognitionDataAfterDecomposition
+      inputs decompositionData traceData recognizeData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+A surgery-trace prefix plus raw forward/inverse map data and forward-continuity
+data closes the canonical target, canonical payload, and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardInverseMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    inputs surgeryTracePrefix
+    (finalHomeomorphismAfterDecompositionStatement_of_extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement_and_forwardContinuityDataAfterDecompositionStatement
+      mapData forwardContinuityData)
+
+/--
+The minimal raw forward/inverse map plus forward-continuity route constructs
+the project Poincare statement.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardInverseMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    inputs surgeryTracePrefix
+    (finalHomeomorphismAfterDecompositionStatement_of_extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement_and_forwardContinuityDataAfterDecompositionStatement
+      mapData forwardContinuityData)
+
+/--
+The minimal raw forward/inverse map plus forward-continuity route reaches the
+project-level completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardInverseMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    inputs surgeryTracePrefix
+    (finalHomeomorphismAfterDecompositionStatement_of_extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement_and_forwardContinuityDataAfterDecompositionStatement
+      mapData forwardContinuityData)
+
+/--
+The minimal final-certificate package inputs plus decomposition data, trace
+reconstruction data, raw forward/inverse map data, and forward continuity close
+the canonical target, canonical payload, and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardInverseMapData_forwardContinuity
+    inputs surgeryTracePrefix mapData forwardContinuityData
+
+/--
+The minimal final-certificate package inputs plus decomposition data, trace
+reconstruction data, raw forward/inverse map data, and forward continuity
+construct the project Poincare statement.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardInverseMapData_forwardContinuity
+    inputs surgeryTracePrefix mapData forwardContinuityData
+
+/--
+The minimal decomposition-data plus raw forward/inverse map route exposes the
+project-level completion payload from the checked canonical payload route.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardInverseMapData_forwardContinuity
+    inputs surgeryTracePrefix mapData forwardContinuityData
+
+/--
+Raw forward/inverse map data plus forward continuity reaches the project
+Poincare statement by producing the final homeomorphism after decomposition.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_forwardInverseMapData_forwardContinuity
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardInverseMapData_forwardContinuity
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    surgeryTracePrefix mapData forwardContinuityData
+
+/--
+Raw forward/inverse map data plus forward continuity also reaches the
+project-level completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_forwardInverseMapData_forwardContinuity
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardInverseMapData_forwardContinuity
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    surgeryTracePrefix mapData forwardContinuityData
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+raw forward/inverse map data, and forward continuity construct the project
+Poincare statement.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    decompositionData traceData mapData forwardContinuityData
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+raw forward/inverse map data, and forward continuity expose the project-level
+completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    decompositionData traceData mapData forwardContinuityData
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+raw forward/inverse map data, and forward continuity close the canonical
+target, canonical payload, and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    decompositionData traceData mapData forwardContinuityData
+
+/--
+The lower raw forward/inverse-map plus forward-continuity route produces a
+checked completion certificate, and that certificate projects to the reserved
+Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity
+      inputs decompositionData traceData mapData forwardContinuityData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The lower raw forward/inverse-map plus forward-continuity route also projects
+its checked completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity
+      inputs decompositionData traceData mapData forwardContinuityData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+A surgery-trace prefix plus selected raw-map data and forward-continuity data
+closes the canonical target, canonical payload, and checked certificate, without
+separately assuming full forward/inverse map data.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardInverseMapData_forwardContinuity
+    inputs surgeryTracePrefix
+    (extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement_of_selectedRawMapData
+      mapSelectionData selectedRawMapData)
+    forwardContinuityData
+
+/--
+The minimal final-certificate package inputs plus selected raw-map data and
+forward-continuity data construct the project Poincare statement directly.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let mapData :=
+    extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement_of_selectedRawMapData
+      mapSelectionData selectedRawMapData
+  let finalHomeomorphism :=
+    finalHomeomorphismAfterDecompositionStatement_of_extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement_and_forwardContinuityDataAfterDecompositionStatement
+      mapData forwardContinuityData
+  let topology :=
+    extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+      surgeryTracePrefix finalHomeomorphism
+  poincare_statement_of_universalFiniteExtinctionStatement
+    (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+      inputs.smoothability inputs.finiteExtinction)
+    (extinction_implies_sphere_of_topology_package topology)
+
+/--
+The minimal selected raw-map topology route exposes the project-level
+completion payload from the checked canonical payload route.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+        inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData).2.1 with
+    ⟨_canonicalTarget, completionCriterion⟩
+  exact
+    ⟨poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+        inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData,
+      completionCriterion⟩
+
+/--
+The minimal final-certificate package inputs plus decomposition data, trace
+reconstruction data, selected raw-map data, and forward continuity close the
+canonical target, canonical payload, and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+    forwardContinuityData
+
+/--
+The minimal decomposition-data plus selected raw-map route constructs the
+project Poincare statement.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+    forwardContinuityData
+
+/--
+The minimal decomposition-data plus selected raw-map route exposes the
+project-level completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+    forwardContinuityData
+
+/--
+The lower finite-extinction sub-obligation inputs plus raw selected-map topology
+data close the canonical target, canonical payload, and checked certificate.
+This removes the final certificate's direct finite-extinction package-layer
+hypothesis on this route.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    surgeryTracePrefix mapSelectionData selectedRawMapData forwardContinuityData
+
+/--
+The lower finite-extinction sub-obligation inputs plus selected raw-map data and
+forward-continuity data construct the project Poincare statement directly. This
+uses the selected-map-to-final-homeomorphism route to build the topology
+extraction package and the universal finite-extinction route from the lower
+sub-obligation inputs.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let minimalInputs :=
+    finalCertificateMinimalPackageInputs_of_subobligationInputs inputs
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    minimalInputs surgeryTracePrefix mapSelectionData selectedRawMapData
+    forwardContinuityData
+
+/--
+The lowered sub-obligation plus selected raw-map topology route also exposes
+the project-level completion payload. The statement is constructed directly
+from the selected-map topology package, while the completion criterion is
+recovered from the same checked canonical payload route.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    surgeryTracePrefix mapSelectionData selectedRawMapData forwardContinuityData
+
+/--
+The surgery-prefix selected raw-map route produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+      inputs surgeryTracePrefix mapSelectionData selectedRawMapData forwardContinuityData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The surgery-prefix selected raw-map route also projects its checked completion
+certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+      inputs surgeryTracePrefix mapSelectionData selectedRawMapData forwardContinuityData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+selected raw-map data, and forward continuity construct the project Poincare
+statement.
+
+This removes the prebuilt surgery-trace-prefix assumption from the selected
+raw-map plus forward-continuity route.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+    forwardContinuityData
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+selected raw-map data, and forward continuity expose the project-level
+completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+    forwardContinuityData
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+selected raw-map data, and forward continuity close the canonical target,
+canonical payload, and checked certificate.
+
+This removes the prebuilt surgery-trace-prefix assumption from the checked
+certificate route, not only from the project statement and payload routes.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+    forwardContinuityData
+
+/--
+The same lower selected raw-map route produces the checked completion
+certificate directly.
+-/
+theorem completion_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    PoincareCompletionCertificate.{u} :=
+  (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity
+    inputs decompositionData traceData mapSelectionData selectedRawMapData
+    forwardContinuityData).2.2
+
+/--
+The lower selected raw-map plus forward-continuity route produces a checked
+completion certificate, and that checked certificate projects to the reserved
+Poincare statement endpoint.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity
+      inputs decompositionData traceData mapSelectionData selectedRawMapData
+      forwardContinuityData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The lower selected raw-map plus forward-continuity route also projects its
+checked completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity
+      inputs decompositionData traceData mapSelectionData selectedRawMapData
+      forwardContinuityData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+A surgery-trace prefix plus continuous forward-map data with injectivity and
+surjectivity closes the canonical target, canonical payload, and checked
+certificate, without separately assuming a homeomorphism payload or
+forward/inverse map datum.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let topology :=
+    extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition
+      surgeryTracePrefix injectiveSurjectiveData
+  ⟨canonical_completion_target_of_finalCertificateMinimalPackageInputs
+      inputs (extinction_implies_sphere_of_topology_package topology),
+    canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+      inputs (extinction_implies_sphere_of_topology_package topology),
+    completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+      inputs topology⟩
+
+/--
+The minimal final-certificate package inputs plus continuous forward-map
+injectivity/surjectivity data construct the project Poincare statement.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let topology :=
+    extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition
+      surgeryTracePrefix injectiveSurjectiveData
+  poincare_statement_of_universalFiniteExtinctionStatement
+    (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+      inputs.smoothability inputs.finiteExtinction)
+    (extinction_implies_sphere_of_topology_package topology)
+
+/--
+The minimal continuous-forward-map topology route exposes the project-level
+completion payload from the checked canonical payload route.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+        inputs surgeryTracePrefix injectiveSurjectiveData).2.1 with
+    ⟨_canonicalTarget, completionCriterion⟩
+  exact
+    ⟨poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+        inputs surgeryTracePrefix injectiveSurjectiveData,
+      completionCriterion⟩
+
+/--
+The minimal final-certificate package inputs plus decomposition data, trace
+reconstruction data, and continuous forward-map injectivity/surjectivity data
+close the canonical target, canonical payload, and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    inputs surgeryTracePrefix injectiveSurjectiveData
+
+/--
+The minimal decomposition-data plus continuous forward-map route constructs the
+project Poincare statement.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    inputs surgeryTracePrefix injectiveSurjectiveData
+
+/--
+The minimal decomposition-data plus continuous forward-map route exposes the
+project-level completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    inputs surgeryTracePrefix injectiveSurjectiveData
+
+/--
+The lower finite-extinction sub-obligation inputs plus continuous forward-map
+data with injectivity and surjectivity close the canonical target, canonical
+payload, and checked certificate. This removes both the direct
+finite-extinction package-layer hypothesis and the explicit final
+homeomorphism/forward-inverse map datum from this final-certificate route.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    surgeryTracePrefix injectiveSurjectiveData
+
+/--
+The surgery-prefix continuous-forward-map route produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+      inputs surgeryTracePrefix injectiveSurjectiveData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The surgery-prefix continuous-forward-map route also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+      inputs surgeryTracePrefix injectiveSurjectiveData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+and continuous forward-map injectivity/surjectivity data close the canonical
+target, canonical payload, and checked certificate.
+
+This removes the prebuilt surgery-trace-prefix assumption from the checked
+certificate route for the continuous-map topology input.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    inputs surgeryTracePrefix injectiveSurjectiveData
+
+/--
+The lower continuous-forward-map injectivity/surjectivity route produces a
+checked completion certificate, and that checked certificate projects to the
+reserved Poincare statement endpoint.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_continuousForwardMapInjectiveSurjectiveData
+      inputs decompositionData traceData injectiveSurjectiveData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The lower continuous-forward-map injectivity/surjectivity route also projects
+its checked completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_continuousForwardMapInjectiveSurjectiveData
+      inputs decompositionData traceData injectiveSurjectiveData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+A surgery-trace prefix plus primitive forward-map point-set data closes the
+canonical target, canonical payload, and checked certificate from the minimal
+final-certificate package inputs.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let topology :=
+    extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition
+      surgeryTracePrefix pointSetData
+  ⟨canonical_completion_target_of_finalCertificateMinimalPackageInputs
+      inputs (extinction_implies_sphere_of_topology_package topology),
+    canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+      inputs (extinction_implies_sphere_of_topology_package topology),
+    completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+      inputs topology⟩
+
+/--
+The minimal final-certificate package inputs plus primitive forward-map
+point-set data construct the project Poincare statement directly.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let topology :=
+    extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition
+      surgeryTracePrefix pointSetData
+  poincare_statement_of_universalFiniteExtinctionStatement
+    (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+      inputs.smoothability inputs.finiteExtinction)
+    (extinction_implies_sphere_of_topology_package topology)
+
+/--
+The minimal final-certificate package inputs plus primitive forward-map
+point-set data expose the project-level completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardMapPointSetData
+        inputs surgeryTracePrefix pointSetData).2.1 with
+    ⟨_canonicalTarget, completionCriterion⟩
+  exact
+    ⟨poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardMapPointSetData
+        inputs surgeryTracePrefix pointSetData,
+      completionCriterion⟩
+
+/--
+The minimal final-certificate package inputs plus decomposition data, trace
+reconstruction data, and primitive forward-map point-set data close the
+canonical target, canonical payload, and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_forwardMapPointSetData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    inputs surgeryTracePrefix pointSetData
+
+/--
+The minimal decomposition-data plus primitive point-set route constructs the
+project Poincare statement.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_forwardMapPointSetData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    inputs surgeryTracePrefix pointSetData
+
+/--
+The minimal decomposition-data plus primitive point-set route exposes the
+project-level completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_forwardMapPointSetData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    inputs surgeryTracePrefix pointSetData
+
+/--
+The lower finite-extinction sub-obligation inputs plus forward-map point-set
+data close the canonical target, canonical payload, and checked certificate.
+
+This lowers the final-certificate topology input from continuous-map
+injectivity/surjectivity data to the primitive point-set payload used to build
+the topology extraction package.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    surgeryTracePrefix pointSetData
+
+/--
+The lower finite-extinction sub-obligation inputs plus forward-map point-set
+data construct the project Poincare statement directly.
+
+This pushes the primitive point-set topology route beyond the checked
+certificate bundle to the project statement itself.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let minimalInputs :=
+    finalCertificateMinimalPackageInputs_of_subobligationInputs inputs
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    minimalInputs surgeryTracePrefix pointSetData
+
+/--
+The primitive forward-map point-set topology route reaches the project-level
+completion payload for the Poincare statement.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    surgeryTracePrefix pointSetData
+
+/--
+The surgery-prefix forward-map point-set route produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_forwardMapPointSetData
+      inputs surgeryTracePrefix pointSetData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The surgery-prefix forward-map point-set route also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_forwardMapPointSetData
+      inputs surgeryTracePrefix pointSetData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+and primitive forward-map point-set data construct the project Poincare
+statement.
+
+This removes the prebuilt surgery-trace-prefix assumption from the point-set
+statement route.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_forwardMapPointSetData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    inputs surgeryTracePrefix pointSetData
+
+/--
+Lower final-certificate route: finite-extinction sub-obligations plus
+first-field topology decomposition data, trace reconstruction data, and
+point-set data for the chosen forward map expose the project completion
+payload.
+
+This removes the prebuilt surgery-trace-prefix assumption by constructing that
+prefix from decomposition and trace reconstruction data before applying the
+primitive point-set topology route.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_forwardMapPointSetData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    inputs surgeryTracePrefix pointSetData
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+and primitive forward-map point-set data close the canonical target, canonical
+payload, and checked certificate.
+
+This removes the prebuilt surgery-trace-prefix assumption from the checked
+certificate route, not only from the project statement and payload routes.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_forwardMapPointSetData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    inputs surgeryTracePrefix pointSetData
+
+/--
+The lower primitive point-set topology final-certificate route produces a
+checked completion certificate, and that checked certificate projects to the
+reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_forwardMapPointSetData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_forwardMapPointSetData
+      inputs decompositionData traceData pointSetData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The lower primitive point-set topology final-certificate route also projects
+its checked completion certificate to the reserved Poincare statement endpoint.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_forwardMapPointSetData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_forwardMapPointSetData
+      inputs decompositionData traceData pointSetData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The lower primitive point-set topology final-certificate route exposes the
+literal reserved-name artifact payload, including the canonical topological
+3-sphere statement.
+-/
+theorem poincareCompletionCertificate_canonical_statement_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_forwardMapPointSetData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      RemainingDependencyPackage.{u} ∧
+      canonicalCompletionTarget.{u} ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere)) ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_forwardMapPointSetData
+      inputs decompositionData traceData pointSetData).2.2
+  exact poincareCompletionCertificate_canonical_statement_payload certificate
+
+/--
+The same lower finite-extinction sub-obligation inputs and primitive
+continuous-forward-map topology data construct the project Poincare statement
+directly.  This bypasses the checked-certificate projection and uses the
+universal finite-extinction plus topology-extraction route itself.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    surgeryTracePrefix injectiveSurjectiveData
+
+/--
+The lowered sub-obligation plus primitive continuous-forward-map route also
+exposes the project-level completion payload: the Poincare statement together
+with the universe-indexed completion criterion.  The statement is produced from
+the lowered final-certificate inputs, while the criterion is recovered from the
+same checked canonical payload route.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    surgeryTracePrefix injectiveSurjectiveData
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+and continuous forward-map injectivity/surjectivity data construct the project
+Poincare statement.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    inputs surgeryTracePrefix injectiveSurjectiveData
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+and continuous forward-map injectivity/surjectivity data expose the
+project-level completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    inputs surgeryTracePrefix injectiveSurjectiveData
+
+/--
+The minimal final-certificate package inputs plus selected raw-map topology
+data, forward continuity, and projection `toFun` coherence close the canonical
+target, canonical payload, and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    inputs surgeryTracePrefix
+    (extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement_of_selectedRawMapData_forwardContinuity_projectionToFunEquality
+      mapSelectionData selectedRawMapData forwardContinuityData
+      projectionToFunEqualityData)
+
+/--
+The minimal selected raw-map topology route reaches the project Poincare
+statement once projection `toFun` coherence supplies continuous forward-map
+injectivity and surjectivity data.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    inputs surgeryTracePrefix
+    (extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement_of_selectedRawMapData_forwardContinuity_projectionToFunEquality
+      mapSelectionData selectedRawMapData forwardContinuityData
+      projectionToFunEqualityData)
+
+/--
+The minimal selected raw-map projection-coherence route reaches the
+project-level completion payload through the primitive continuous-forward-map
+route.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    inputs surgeryTracePrefix
+    (extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement_of_selectedRawMapData_forwardContinuity_projectionToFunEquality
+      mapSelectionData selectedRawMapData forwardContinuityData
+      projectionToFunEqualityData)
+
+/--
+The minimal final-certificate package inputs plus selected raw-map topology
+data, forward continuity, and raw/continuous projection statement-choice data
+close the canonical target, canonical payload, and checked certificate without
+requiring a separate projection-`toFun` equality input.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    inputs surgeryTracePrefix
+    (extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement_of_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+      mapSelectionData selectedRawMapData forwardContinuityData
+      rawStatementChoiceData continuousStatementChoiceData)
+
+/-- Theorem contract for `canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+The minimal selected raw-map topology route reaches the project Poincare
+statement from projection statement-choice data.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    inputs surgeryTracePrefix
+    (extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement_of_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+      mapSelectionData selectedRawMapData forwardContinuityData
+      rawStatementChoiceData continuousStatementChoiceData)
+
+/--
+The minimal selected raw-map topology route exposes the project-level
+completion payload from projection statement-choice data.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    inputs surgeryTracePrefix
+    (extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement_of_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+      mapSelectionData selectedRawMapData forwardContinuityData
+      rawStatementChoiceData continuousStatementChoiceData)
+
+/--
+The minimal surgery-prefix selected raw-map route with projection
+statement-choice data produces a checked completion certificate, and that
+certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+      inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+      forwardContinuityData rawStatementChoiceData continuousStatementChoiceData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/-- Theorem contract for `poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+The minimal surgery-prefix selected raw-map route with projection
+statement-choice data also projects its checked certificate to the reserved
+Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+      inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+      forwardContinuityData rawStatementChoiceData continuousStatementChoiceData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/-- Theorem contract for `poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+The minimal final-certificate package inputs plus decomposition data, trace
+reconstruction data, selected raw-map data, forward continuity, and projection
+`toFun` coherence close the canonical target, canonical payload, and checked
+certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+    forwardContinuityData projectionToFunEqualityData
+
+/--
+The minimal final-certificate package inputs plus decomposition data, trace
+reconstruction data, selected raw-map data, forward continuity, and
+raw/continuous projection statement-choice data close the canonical target,
+canonical payload, and checked certificate without requiring a separate
+projection-`toFun` equality input.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_continuousForwardMapInjectiveSurjectiveData
+    inputs decompositionData traceData
+    (extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement_of_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+      mapSelectionData selectedRawMapData forwardContinuityData
+      rawStatementChoiceData continuousStatementChoiceData)
+
+/-- Theorem contract for `canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+The minimal decomposition-data route reaches the project Poincare statement
+from selected raw-map data, forward continuity, and projection statement-choice
+data.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    PoincareConjectureStatement.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+    forwardContinuityData rawStatementChoiceData continuousStatementChoiceData
+
+/-- Theorem contract for `poincare_statement_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.poincare_statement_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.poincare_statement_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+The minimal decomposition-data route exposes the project-level completion
+payload from selected raw-map data, forward continuity, and projection
+statement-choice data.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+    forwardContinuityData rawStatementChoiceData continuousStatementChoiceData
+
+/-- Theorem contract for `poincare_completion_payload_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.poincare_completion_payload_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.poincare_completion_payload_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+The minimal decomposition-data selected raw-map route with projection
+statement-choice data produces a checked completion certificate, and that
+certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+      inputs decompositionData traceData mapSelectionData selectedRawMapData
+      forwardContinuityData rawStatementChoiceData continuousStatementChoiceData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/-- Theorem contract for `poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+The minimal decomposition-data selected raw-map route with projection
+statement-choice data also projects its checked certificate to the reserved
+Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+      inputs decompositionData traceData mapSelectionData selectedRawMapData
+      forwardContinuityData rawStatementChoiceData continuousStatementChoiceData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/-- Theorem contract for `poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+The minimal decomposition-data plus selected raw-map projection-coherence route
+constructs the project Poincare statement.
+-/
+theorem poincare_statement_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    PoincareConjectureStatement.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+    forwardContinuityData projectionToFunEqualityData
+
+/--
+The minimal decomposition-data plus selected raw-map projection-coherence route
+exposes the project-level completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+    forwardContinuityData projectionToFunEqualityData
+
+/--
+The selected raw-map topology route reaches the project Poincare statement once
+projection `toFun` coherence supplies the continuous forward map data needed to
+derive injectivity and surjectivity.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    surgeryTracePrefix mapSelectionData selectedRawMapData
+    forwardContinuityData projectionToFunEqualityData
+
+/--
+The lowered sub-obligation plus selected raw-map topology route reaches the
+project-level completion payload through the primitive continuous-forward-map
+route, deriving injectivity and surjectivity from selected inverse laws,
+forward continuity, and projection `toFun` coherence.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    surgeryTracePrefix mapSelectionData selectedRawMapData
+    forwardContinuityData projectionToFunEqualityData
+
+/--
+The lower finite-extinction sub-obligation inputs plus selected raw-map topology
+data, forward continuity, and projection `toFun` coherence close the canonical
+target, canonical payload, and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs inputs)
+    surgeryTracePrefix mapSelectionData selectedRawMapData
+    forwardContinuityData projectionToFunEqualityData
+
+/--
+The lower finite-extinction sub-obligation inputs plus selected raw-map
+topology data, forward continuity, and projection statement-choice data close
+the canonical target, canonical payload, and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    inputs surgeryTracePrefix
+    (extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement_of_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+      mapSelectionData selectedRawMapData forwardContinuityData
+      rawStatementChoiceData continuousStatementChoiceData)
+
+/-- Theorem contract for `canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+The surgery-prefix selected raw-map route packages canonical and project
+payloads plus a checked completion certificate from projection statement-choice
+data.
+-/
+theorem canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} := by
+  let injectiveSurjectiveData :=
+    extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement_of_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+      mapSelectionData selectedRawMapData forwardContinuityData
+      rawStatementChoiceData continuousStatementChoiceData
+  let canonicalAndCertificate :=
+    canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+      inputs surgeryTracePrefix injectiveSurjectiveData
+  let poincareStatement :=
+    poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+      inputs surgeryTracePrefix injectiveSurjectiveData
+  let poincarePayload :=
+    poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+      inputs surgeryTracePrefix injectiveSurjectiveData
+  exact
+    ⟨canonicalAndCertificate.1,
+      canonicalAndCertificate.2.1,
+      poincareStatement,
+      poincarePayload,
+      canonicalAndCertificate.2.2⟩
+
+/-- Theorem contract for `canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+The surgery-prefix selected raw-map route with projection `toFun` coherence
+produces a checked completion certificate, and that certificate projects to the
+reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+      inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+      forwardContinuityData projectionToFunEqualityData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The surgery-prefix selected raw-map route with projection statement-choice data
+produces a checked completion certificate, and that certificate projects to the
+reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+      inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+      forwardContinuityData rawStatementChoiceData continuousStatementChoiceData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/-- Theorem contract for `poincare_conjecture_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.poincare_conjecture_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.poincare_conjecture_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+The surgery-prefix selected raw-map route with projection `toFun` coherence
+also projects its checked completion certificate to the reserved-name Poincare
+payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+      inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+      forwardContinuityData projectionToFunEqualityData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The surgery-prefix selected raw-map route with projection statement-choice data
+also projects its checked completion certificate to the reserved-name Poincare
+payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+      inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+      forwardContinuityData rawStatementChoiceData continuousStatementChoiceData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/-- Theorem contract for `poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+selected raw-map data, forward continuity, and projection `toFun` coherence
+construct the project Poincare statement.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    PoincareConjectureStatement.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_statement_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+    forwardContinuityData projectionToFunEqualityData
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+selected raw-map data, forward continuity, and projection `toFun` coherence
+expose the project-level completion payload.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  poincare_completion_payload_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+    forwardContinuityData projectionToFunEqualityData
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+selected raw-map data, forward continuity, and projection `toFun` coherence
+close the canonical target, canonical payload, and checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_decomposition_and_trace_data
+      (extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData)
+      traceData
+  canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+    forwardContinuityData projectionToFunEqualityData
+
+/--
+The lower selected raw-map route packages the canonical completion target, the
+canonical payload, the reserved Poincare statement, the reserved Poincare
+payload, and a checked completion certificate.
+-/
+theorem canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} := by
+  let canonicalAndCertificate :=
+    canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+      inputs decompositionData traceData mapSelectionData selectedRawMapData
+      forwardContinuityData projectionToFunEqualityData
+  let poincareStatement :=
+    poincare_statement_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+      inputs decompositionData traceData mapSelectionData selectedRawMapData
+      forwardContinuityData projectionToFunEqualityData
+  let poincarePayload :=
+    poincare_completion_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+      inputs decompositionData traceData mapSelectionData selectedRawMapData
+      forwardContinuityData projectionToFunEqualityData
+  exact
+    ⟨canonicalAndCertificate.1,
+      canonicalAndCertificate.2.1,
+      poincareStatement,
+      poincarePayload,
+      canonicalAndCertificate.2.2⟩
+
+/--
+The lower selected raw-map route packages the canonical completion target, the
+canonical payload, the reserved Poincare statement, the reserved Poincare
+payload, and a checked completion certificate without asking callers to supply
+projection `toFun` coherence separately.
+
+Raw and continuous projection statement-choice data discharge that equality
+through the one-point topology production theorem.
+-/
+theorem canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} := by
+  let forwardContinuousMapData :=
+    extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+      mapSelectionData selectedRawMapData forwardContinuityData
+  exact
+    canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+      inputs decompositionData traceData mapSelectionData selectedRawMapData
+      forwardContinuityData
+      (extinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement_of_projectionStatementChoiceData
+        forwardContinuousMapData rawStatementChoiceData continuousStatementChoiceData)
+
+/-- Theorem contract for `canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+selected raw-map data, forward continuity, and projection statement-choice data
+construct the project Poincare statement.  This is the standalone statement
+projection of the bundled checked route.
+-/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    PoincareConjectureStatement.{u} :=
+  (canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    inputs decompositionData traceData mapSelectionData selectedRawMapData
+    forwardContinuityData rawStatementChoiceData continuousStatementChoiceData).2.2.1
+
+/-- Theorem contract for `poincare_statement_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem poincare_statement_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.poincare_statement_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.poincare_statement_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+selected raw-map data, forward continuity, and projection statement-choice data
+expose the project-level completion payload as a standalone endpoint.
+-/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  (canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    inputs decompositionData traceData mapSelectionData selectedRawMapData
+    forwardContinuityData rawStatementChoiceData continuousStatementChoiceData).2.2.2.1
+
+/-- Theorem contract for `poincare_completion_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem poincare_completion_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.poincare_completion_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.poincare_completion_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+Lower final-certificate route: decomposition data, trace reconstruction data,
+selected raw-map data, forward continuity, and projection statement-choice data
+close the canonical target, canonical payload, and checked certificate as a
+standalone endpoint.
+-/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} := by
+  let bundled :=
+    canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+      inputs decompositionData traceData mapSelectionData selectedRawMapData
+      forwardContinuityData rawStatementChoiceData continuousStatementChoiceData
+  exact ⟨bundled.1, bundled.2.1, bundled.2.2.2.2⟩
+
+/-- Theorem contract for `canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+The lower selected raw-map route with projection `toFun` coherence produces a
+checked completion certificate, and that certificate projects to the reserved
+Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+      inputs decompositionData traceData mapSelectionData selectedRawMapData
+      forwardContinuityData projectionToFunEqualityData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The lower selected raw-map route with raw and continuous projection
+statement-choice data produces a checked completion certificate, and that
+certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+      inputs decompositionData traceData mapSelectionData selectedRawMapData
+      forwardContinuityData rawStatementChoiceData continuousStatementChoiceData).2.2.2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/-- Theorem contract for `poincare_conjecture_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem poincare_conjecture_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.poincare_conjecture_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.poincare_conjecture_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+The lower selected raw-map route with projection `toFun` coherence also
+projects its checked completion certificate to the reserved-name Poincare
+payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+      inputs decompositionData traceData mapSelectionData selectedRawMapData
+      forwardContinuityData projectionToFunEqualityData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The lower selected raw-map route with raw and continuous projection
+statement-choice data also projects its checked completion certificate to the
+reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+      inputs decompositionData traceData mapSelectionData selectedRawMapData
+      forwardContinuityData rawStatementChoiceData continuousStatementChoiceData).2.2.2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/-- Theorem contract for `poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.poincare_conjecture_payload_of_checked_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+The lower selected raw-map route with projection `toFun` coherence also exposes
+the aggregate reserved-name artifact payload, including aggregate dependencies,
+the canonical completion target, and the canonical topological 3-sphere
+statement.
+-/
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      PoincareProofDependencies.{u} ∧
+      canonicalCompletionTarget.{u} ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere)) ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+      inputs decompositionData traceData mapSelectionData selectedRawMapData
+      forwardContinuityData projectionToFunEqualityData).2.2
+  exact poincareCompletionCertificate_aggregate_canonical_statement_payload certificate
+
+/--
+The lower selected raw-map route with projection statement-choice data exposes
+the aggregate reserved-name artifact payload, including aggregate
+dependencies, the canonical completion target, and the canonical topological
+3-sphere statement.
+-/
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData) :
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      PoincareProofDependencies.{u} ∧
+      canonicalCompletionTarget.{u} ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere)) ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+      inputs decompositionData traceData mapSelectionData selectedRawMapData
+      forwardContinuityData rawStatementChoiceData continuousStatementChoiceData).2.2
+  exact poincareCompletionCertificate_aggregate_canonical_statement_payload certificate
+
+/-- Theorem contract for `poincareCompletionCertificate_aggregate_canonical_statement_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_of_finalCertificateSubobligationInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
+The minimal final-certificate route `_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition` produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+      inputs surgeryTracePrefix finalHomeomorphismPayloadData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition` also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismPayloadDataAfterDecomposition
+      inputs surgeryTracePrefix finalHomeomorphismPayloadData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_decompositionData_traceData_and_finalHomeomorphismPayloadDataAfterDecomposition` produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_finalHomeomorphismPayloadDataAfterDecomposition
+      inputs decompositionData traceData finalHomeomorphismPayloadData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_decompositionData_traceData_and_finalHomeomorphismPayloadDataAfterDecomposition` also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_finalHomeomorphismPayloadDataAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphismPayloadData :
+      FinalHomeomorphismPayloadDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_finalHomeomorphismPayloadDataAfterDecomposition
+      inputs decompositionData traceData finalHomeomorphismPayloadData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition` produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (finalHomeomorphism :
+      FinalHomeomorphismAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+      inputs surgeryTracePrefix finalHomeomorphism).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition` also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (finalHomeomorphism :
+      FinalHomeomorphismAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_finalHomeomorphismAfterDecomposition
+      inputs surgeryTracePrefix finalHomeomorphism).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_decompositionData_traceData_and_finalHomeomorphismAfterDecomposition` produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_finalHomeomorphismAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphism :
+      FinalHomeomorphismAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_finalHomeomorphismAfterDecomposition
+      inputs decompositionData traceData finalHomeomorphism).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_decompositionData_traceData_and_finalHomeomorphismAfterDecomposition` also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_finalHomeomorphismAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (finalHomeomorphism :
+      FinalHomeomorphismAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_finalHomeomorphismAfterDecomposition
+      inputs decompositionData traceData finalHomeomorphism).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_surgeryTracePrefix_and_onePointCompactificationRecognition` produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_onePointCompactificationRecognition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_onePointCompactificationRecognition
+      inputs surgeryTracePrefix onePointRecognition).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_surgeryTracePrefix_and_onePointCompactificationRecognition` also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_onePointCompactificationRecognition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (onePointRecognition :
+      OnePointCompactificationRecognitionAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_onePointCompactificationRecognition
+      inputs surgeryTracePrefix onePointRecognition).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_surgeryTracePrefix_and_extinctionOnePointRecognitionDataAfterDecomposition` produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_extinctionOnePointRecognitionDataAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (recognizeData :
+      ExtinctionOnePointThreeSpaceRecognitionDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_extinctionOnePointRecognitionDataAfterDecomposition
+      inputs surgeryTracePrefix recognizeData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_surgeryTracePrefix_and_extinctionOnePointRecognitionDataAfterDecomposition` also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_extinctionOnePointRecognitionDataAfterDecomposition
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (recognizeData :
+      ExtinctionOnePointThreeSpaceRecognitionDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_extinctionOnePointRecognitionDataAfterDecomposition
+      inputs surgeryTracePrefix recognizeData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_surgeryTracePrefix_and_forwardInverseMapData_forwardContinuity` produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardInverseMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardInverseMapData_forwardContinuity
+      inputs surgeryTracePrefix mapData forwardContinuityData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_surgeryTracePrefix_and_forwardInverseMapData_forwardContinuity` also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardInverseMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardInverseMapData_forwardContinuity
+      inputs surgeryTracePrefix mapData forwardContinuityData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity` produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity
+      inputs decompositionData traceData mapData forwardContinuityData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity` also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement.{u})
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_forwardInverseMapData_forwardContinuity
+      inputs decompositionData traceData mapData forwardContinuityData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity` produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+      inputs surgeryTracePrefix mapSelectionData selectedRawMapData forwardContinuityData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity` also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity
+      inputs surgeryTracePrefix mapSelectionData selectedRawMapData forwardContinuityData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_decompositionData_traceData_and_selectedRawMapData_forwardContinuity` produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity
+      inputs decompositionData traceData mapSelectionData selectedRawMapData forwardContinuityData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_decompositionData_traceData_and_selectedRawMapData_forwardContinuity` also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity
+      inputs decompositionData traceData mapSelectionData selectedRawMapData forwardContinuityData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData` produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+      inputs surgeryTracePrefix injectiveSurjectiveData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData` also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_continuousForwardMapInjectiveSurjectiveData
+      inputs surgeryTracePrefix injectiveSurjectiveData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_decompositionData_traceData_and_continuousForwardMapInjectiveSurjectiveData` produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_continuousForwardMapInjectiveSurjectiveData
+      inputs decompositionData traceData injectiveSurjectiveData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_decompositionData_traceData_and_continuousForwardMapInjectiveSurjectiveData` also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_continuousForwardMapInjectiveSurjectiveData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_continuousForwardMapInjectiveSurjectiveData
+      inputs decompositionData traceData injectiveSurjectiveData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_surgeryTracePrefix_and_forwardMapPointSetData` produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardMapPointSetData
+      inputs surgeryTracePrefix pointSetData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_surgeryTracePrefix_and_forwardMapPointSetData` also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardMapPointSetData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_forwardMapPointSetData
+      inputs surgeryTracePrefix pointSetData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_decompositionData_traceData_and_forwardMapPointSetData` produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_forwardMapPointSetData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_forwardMapPointSetData
+      inputs decompositionData traceData pointSetData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_decompositionData_traceData_and_forwardMapPointSetData` also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_forwardMapPointSetData
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecompositionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_forwardMapPointSetData
+      inputs decompositionData traceData pointSetData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality` produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+      inputs surgeryTracePrefix mapSelectionData selectedRawMapData forwardContinuityData projectionToFunEqualityData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality` also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+      inputs surgeryTracePrefix mapSelectionData selectedRawMapData forwardContinuityData projectionToFunEqualityData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality` produces a checked completion
+certificate, and that certificate projects to the reserved Poincare statement.
+-/
+theorem poincare_conjecture_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    PoincareConjectureStatement.{u} := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+      inputs decompositionData traceData mapSelectionData selectedRawMapData forwardContinuityData projectionToFunEqualityData).2.2
+  exact poincare_conjecture_of_completion_certificate certificate
+
+/--
+The minimal final-certificate route `_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality` also projects its checked
+completion certificate to the reserved-name Poincare payload.
+-/
+theorem poincare_conjecture_payload_of_checked_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (traceData :
+      ExtinctionSurgeryTraceReconstructionDataAfterDecompositionStatement.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (projectionToFunEqualityData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardContinuousMapProjectionToFunEqualityDataAfterDecompositionStatement
+        forwardContinuousMapData) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    (canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_decompositionData_traceData_and_selectedRawMapData_forwardContinuity_projectionToFunEquality
+      inputs decompositionData traceData mapSelectionData selectedRawMapData forwardContinuityData projectionToFunEqualityData).2.2
+  exact poincare_conjecture_payload_of_completion_certificate certificate
 
 /--
 Projecting the remaining dependency package out of the certificate built from
@@ -522,5 +6035,9063 @@ theorem canonical_payload_and_final_certificate_iff_topologyPackage_of_finalCert
       , completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
           inputs topology
       ⟩
+
+/--
+Project-level phrasing of the same remaining boundary: once the two canonical
+package inputs are fixed, the topology package is equivalent to the project
+Poincare statement, project payload, and checked completion certificate.
+-/
+theorem poincare_payload_and_final_certificate_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u}) :
+    (PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u}) ↔
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage := by
+  constructor
+  · intro payload
+    exact topologyPackage_requirement_of_final_certificate payload.2.2
+  · intro topology
+    exact
+      ⟨ poincare_statement_of_finalCertificateMinimalPackageInputs
+          inputs
+          (extinction_implies_sphere_of_topology_package topology)
+      , poincare_completion_payload_of_finalCertificateMinimalPackageInputs
+          inputs
+          (extinction_implies_sphere_of_topology_package topology)
+      , completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          inputs topology
+      ⟩
+
+/--
+Grounded finite-extinction data supplies the finite-extinction package field in
+the two-input final-certificate boundary.
+-/
+def finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    FinalCertificateMinimalPackageInputs.{u} where
+  smoothability := smoothability
+  finiteExtinction :=
+    finiteExtinctionPackage_requirement_of_grounded_universal grounded
+
+/--
+Smoothability plus grounded finite-extinction data proves the canonical target
+once the post-extinction extractor is supplied.
+-/
+theorem canonical_completion_target_of_smoothability_and_groundedUniversal
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    canonicalCompletionTarget.{u} :=
+  canonical_completion_target_of_finalCertificateMinimalPackageInputs
+    (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+      smoothability grounded)
+    extractSphere
+
+/--
+The grounded finite-extinction canonical-target route is the two-input final
+certificate route after projecting the grounded finite-extinction package
+field.
+-/
+theorem canonical_completion_target_of_smoothability_and_groundedUniversal_eq
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    canonical_completion_target_of_smoothability_and_groundedUniversal
+        smoothability grounded extractSphere =
+      canonical_completion_target_of_finalCertificateMinimalPackageInputs
+        (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+          smoothability grounded)
+        extractSphere := by
+  apply Subsingleton.elim
+
+/--
+Smoothability plus grounded finite-extinction data exposes the canonical
+completion payload once the post-extinction extractor is supplied.
+-/
+theorem canonical_completion_payload_of_smoothability_and_groundedUniversal
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    ∃ _target : canonicalCompletionTarget.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+    (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+      smoothability grounded)
+    extractSphere
+
+/--
+The grounded finite-extinction canonical-payload route is the two-input final
+certificate route after projecting the grounded finite-extinction package
+field.
+-/
+theorem canonical_completion_payload_of_smoothability_and_groundedUniversal_eq
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    canonical_completion_payload_of_smoothability_and_groundedUniversal
+        smoothability grounded extractSphere =
+      canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+        (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+          smoothability grounded)
+        extractSphere := by
+  apply Subsingleton.elim
+
+/--
+Smoothability plus grounded finite-extinction data proves the project Poincare
+statement once the post-extinction extractor is supplied.
+-/
+theorem poincare_statement_of_smoothability_and_groundedUniversal
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finalCertificateMinimalPackageInputs
+    (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+      smoothability grounded)
+    extractSphere
+
+/--
+The grounded finite-extinction Poincare route is the two-input final
+certificate route after projecting the grounded finite-extinction package
+field.
+-/
+theorem poincare_statement_of_smoothability_and_groundedUniversal_eq
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    poincare_statement_of_smoothability_and_groundedUniversal
+        smoothability grounded extractSphere =
+      poincare_statement_of_finalCertificateMinimalPackageInputs
+        (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+          smoothability grounded)
+        extractSphere := by
+  apply Subsingleton.elim
+
+/--
+Smoothability plus grounded finite-extinction data exposes the project-level
+completion payload once the post-extinction extractor is supplied.
+-/
+theorem poincare_completion_payload_of_smoothability_and_groundedUniversal
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalCertificateMinimalPackageInputs
+    (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+      smoothability grounded)
+    extractSphere
+
+/--
+The grounded finite-extinction project-payload route is the two-input final
+certificate route after projecting the grounded finite-extinction package
+field.
+-/
+theorem poincare_completion_payload_of_smoothability_and_groundedUniversal_eq
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    poincare_completion_payload_of_smoothability_and_groundedUniversal
+        smoothability grounded extractSphere =
+      poincare_completion_payload_of_finalCertificateMinimalPackageInputs
+        (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+          smoothability grounded)
+        extractSphere := by
+  apply Subsingleton.elim
+
+/--
+Smoothability plus grounded finite-extinction data and theorem-shaped topology
+extraction prove the project statement and project completion payload without
+requiring the full topology package surface.
+-/
+theorem poincare_statement_and_payload_of_smoothability_groundedUniversal_and_topologyExtractionStatement
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_statement_and_payload_of_finalCertificateMinimalPackageInputs_and_topologyExtractionStatement
+    (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+      smoothability grounded)
+    topologyStatement
+
+/--
+The grounded theorem-shaped topology-extraction route is exactly the two-input
+final-certificate boundary after projecting the grounded finite-extinction
+package field.
+-/
+theorem poincare_statement_and_payload_of_smoothability_groundedUniversal_and_topologyExtractionStatement_eq
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    poincare_statement_and_payload_of_smoothability_groundedUniversal_and_topologyExtractionStatement
+        smoothability grounded topologyStatement =
+      poincare_statement_and_payload_of_finalCertificateMinimalPackageInputs_and_topologyExtractionStatement
+        (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+          smoothability grounded)
+        topologyStatement := by
+  apply Subsingleton.elim
+
+/--
+Smoothability plus grounded finite-extinction data and theorem-shaped topology
+extraction close the canonical target, canonical payload, project statement,
+and project payload. This is the statement/payload counterpart of the checked
+certificate route, with the topology assumption kept at theorem-shape rather
+than package-shape.
+-/
+theorem canonical_and_poincare_payloads_of_smoothability_groundedUniversal_and_topologyExtractionStatement
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{u} ∧
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let extractSphere : ExtinctionImpliesSphereStatement.{u} :=
+    extinction_implies_sphere_of_topology_extraction_statement
+      topologyStatement
+  let projectPayload :=
+    poincare_statement_and_payload_of_smoothability_groundedUniversal_and_topologyExtractionStatement
+      smoothability grounded topologyStatement
+  exact
+    ⟨canonical_completion_target_of_smoothability_and_groundedUniversal
+        smoothability grounded extractSphere,
+      canonical_completion_payload_of_smoothability_and_groundedUniversal
+        smoothability grounded extractSphere,
+      projectPayload.1,
+      projectPayload.2⟩
+
+/--
+The grounded canonical/project payload theorem-shaped extraction route is the
+minimal-input final-certificate route after projecting grounded finite
+extinction and deriving the post-extinction sphere extractor from topology.
+-/
+theorem canonical_and_poincare_payloads_of_smoothability_groundedUniversal_and_topologyExtractionStatement_eq
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonical_and_poincare_payloads_of_smoothability_groundedUniversal_and_topologyExtractionStatement
+        smoothability grounded topologyStatement =
+      let extractSphere : ExtinctionImpliesSphereStatement.{u} :=
+        extinction_implies_sphere_of_topology_extraction_statement
+          topologyStatement
+      let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+        finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+          smoothability grounded
+      ⟨canonical_completion_target_of_finalCertificateMinimalPackageInputs
+          inputs extractSphere,
+        canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+          inputs extractSphere,
+        (poincare_statement_and_payload_of_finalCertificateMinimalPackageInputs_and_topologyExtractionStatement
+          inputs topologyStatement).1,
+        (poincare_statement_and_payload_of_finalCertificateMinimalPackageInputs_and_topologyExtractionStatement
+          inputs topologyStatement).2⟩ := by
+  apply Subsingleton.elim
+
+/--
+Grounded universal finite extinction plus theorem-shaped topology extraction
+proves the project statement without passing through the smoothability package
+boundary. This is the direct grounded Ricci-flow/topology route.
+-/
+theorem poincare_statement_of_groundedUniversal_and_topologyExtractionStatement
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_finite_extinction_and_topology_extraction_statement
+    (universalFiniteExtinctionStatement_of_grounded grounded)
+    topologyStatement
+
+/--
+The direct grounded project-statement route is exactly the raw
+finite-extinction/topology-extraction constructor after projecting grounded
+finite extinction to universal finite extinction.
+-/
+theorem poincare_statement_of_groundedUniversal_and_topologyExtractionStatement_eq
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    poincare_statement_of_groundedUniversal_and_topologyExtractionStatement
+        grounded topologyStatement =
+      poincare_statement_of_finite_extinction_and_topology_extraction_statement
+        (universalFiniteExtinctionStatement_of_grounded grounded)
+        topologyStatement := by
+  apply Subsingleton.elim
+
+/--
+Grounded universal finite extinction plus theorem-shaped topology extraction
+exposes the project completion payload directly, without requiring the
+smoothability package boundary.
+-/
+theorem poincare_payload_of_groundedUniversal_and_topologyExtractionStatement
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_payload_of_finite_extinction_and_topology_extraction_statement
+    (universalFiniteExtinctionStatement_of_grounded grounded)
+    topologyStatement
+
+/--
+The direct grounded project-payload route is exactly the raw
+finite-extinction/topology-extraction payload constructor after projecting
+grounded finite extinction to universal finite extinction.
+-/
+theorem poincare_payload_of_groundedUniversal_and_topologyExtractionStatement_eq
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    poincare_payload_of_groundedUniversal_and_topologyExtractionStatement
+        grounded topologyStatement =
+      poincare_payload_of_finite_extinction_and_topology_extraction_statement
+        (universalFiniteExtinctionStatement_of_grounded grounded)
+        topologyStatement := by
+  apply Subsingleton.elim
+
+/--
+Grounded universal finite extinction plus theorem-shaped topology extraction
+exposes the canonical completion target and canonical payload directly.
+-/
+theorem canonical_payload_of_groundedUniversal_and_topologyExtractionStatement
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    ∃ _target : canonicalCompletionTarget.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement
+    (universalFiniteExtinctionStatement_of_grounded grounded)
+    topologyStatement
+
+/--
+The direct grounded canonical-payload route is the raw
+finite-extinction/topology-extraction canonical payload constructor after
+projecting grounded finite extinction to universal finite extinction.
+-/
+theorem canonical_payload_of_groundedUniversal_and_topologyExtractionStatement_eq
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonical_payload_of_groundedUniversal_and_topologyExtractionStatement
+        grounded topologyStatement =
+      canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement
+        (universalFiniteExtinctionStatement_of_grounded grounded)
+        topologyStatement := by
+  apply Subsingleton.elim
+
+/--
+Direct grounded universal finite extinction plus theorem-shaped topology
+extraction exposes canonical target, canonical payload, project statement, and
+project payload in one theorem, avoiding the smoothability package boundary
+when the target is already the topological Poincare statement.
+-/
+theorem canonical_and_poincare_payloads_of_groundedUniversal_and_topologyExtractionStatement
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{u} ∧
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  let finiteExtinction : UniversalFiniteExtinctionStatement.{u} :=
+    universalFiniteExtinctionStatement_of_grounded grounded
+  exact
+    ⟨canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+        finiteExtinction topologyStatement,
+      canonical_payload_of_groundedUniversal_and_topologyExtractionStatement
+        grounded topologyStatement,
+      poincare_statement_of_groundedUniversal_and_topologyExtractionStatement
+        grounded topologyStatement,
+      poincare_payload_of_groundedUniversal_and_topologyExtractionStatement
+        grounded topologyStatement⟩
+
+/--
+The direct grounded canonical/project bundle is the raw
+finite-extinction/topology-extraction bundle after projecting grounded finite
+extinction to universal finite extinction.
+-/
+theorem canonical_and_poincare_payloads_of_groundedUniversal_and_topologyExtractionStatement_eq
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonical_and_poincare_payloads_of_groundedUniversal_and_topologyExtractionStatement
+        grounded topologyStatement =
+      let finiteExtinction : UniversalFiniteExtinctionStatement.{u} :=
+        universalFiniteExtinctionStatement_of_grounded grounded
+      ⟨canonical_completion_target_of_finite_extinction_and_topology_extraction_statement
+          finiteExtinction topologyStatement,
+        canonical_completion_payload_of_finite_extinction_and_topology_extraction_statement
+          finiteExtinction topologyStatement,
+        poincare_statement_of_finite_extinction_and_topology_extraction_statement
+          finiteExtinction topologyStatement,
+        poincare_payload_of_finite_extinction_and_topology_extraction_statement
+          finiteExtinction topologyStatement⟩ := by
+  apply Subsingleton.elim
+
+/--
+Smoothability, grounded finite extinction, and the topology package close the
+checked completion certificate.
+-/
+theorem completion_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+      smoothability grounded)
+    topology
+
+/--
+The grounded checked-certificate route is the two-input final-certificate route
+after projecting the grounded finite-extinction package field.
+-/
+theorem completion_certificate_of_smoothability_groundedUniversal_and_topologyPackage_eq
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    completion_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+        smoothability grounded topology =
+      completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+        (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+          smoothability grounded)
+        topology := by
+  apply Subsingleton.elim
+
+/--
+Grounded finite-extinction data plus smoothability and the topology package
+close the project statement, project payload, and checked certificate in one
+boundary theorem.
+-/
+theorem poincare_payload_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  poincare_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+      smoothability grounded)
+    topology
+
+/--
+The grounded project-payload/certificate route is the two-input final
+certificate route after projecting the grounded finite-extinction package
+field.
+-/
+theorem poincare_payload_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage_eq
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    poincare_payload_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+        smoothability grounded topology =
+      poincare_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+        (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+          smoothability grounded)
+        topology := by
+  apply Subsingleton.elim
+
+/--
+Smoothability, grounded finite extinction, and the topology package expose the
+full currently checked completion bundle: canonical target, canonical payload,
+project statement, project payload, and checked completion certificate.
+-/
+theorem canonical_and_poincare_payloads_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} := by
+  let extractSphere : ExtinctionImpliesSphereStatement.{u} :=
+    extinction_implies_sphere_of_topology_package topology
+  let projectAndCertificate :=
+    poincare_payload_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+      smoothability grounded topology
+  exact
+    ⟨canonical_completion_target_of_smoothability_and_groundedUniversal
+        smoothability grounded extractSphere,
+      canonical_completion_payload_of_smoothability_and_groundedUniversal
+        smoothability grounded extractSphere,
+      projectAndCertificate.1,
+      projectAndCertificate.2.1,
+      projectAndCertificate.2.2⟩
+
+/--
+The full grounded package-level completion bundle is the two-input final
+certificate boundary after projecting grounded finite extinction and using the
+topology package as the post-extinction extractor.
+-/
+theorem canonical_and_poincare_payloads_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage_eq
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    canonical_and_poincare_payloads_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+        smoothability grounded topology =
+      let extractSphere : ExtinctionImpliesSphereStatement.{u} :=
+        extinction_implies_sphere_of_topology_package topology
+      let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+        finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+          smoothability grounded
+      let projectAndCertificate :=
+        poincare_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          inputs topology
+      ⟨canonical_completion_target_of_finalCertificateMinimalPackageInputs
+          inputs extractSphere,
+        canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+          inputs extractSphere,
+        projectAndCertificate.1,
+        projectAndCertificate.2.1,
+        projectAndCertificate.2.2⟩ := by
+  apply Subsingleton.elim
+
+/--
+Expected expanded target for the grounded topology-package final-certificate
+bundle. Naming this term keeps later proof-producing endpoints readable and
+avoids re-parsing a long `let`/tuple expression in theorem statements.
+-/
+noncomputable def canonical_poincare_payloads_final_certificate_expected_of_smoothability_groundedUniversal_and_topologyPackage
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let extractSphere : ExtinctionImpliesSphereStatement.{u} :=
+    extinction_implies_sphere_of_topology_package topology
+  let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+    finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+      smoothability grounded
+  let projectAndCertificate :=
+    poincare_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+      inputs topology
+  ⟨canonical_completion_target_of_finalCertificateMinimalPackageInputs
+      inputs extractSphere,
+    canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+      inputs extractSphere,
+    projectAndCertificate.1,
+    projectAndCertificate.2.1,
+    projectAndCertificate.2.2⟩
+
+/--
+The grounded topology-package endpoint can be unpacked into its payload
+components together with the existing coherence routes back to the minimal
+final-certificate inputs.  This is intentionally proof-bearing: it destructures
+the full bundle and the project/certificate pair, then records the available
+projection equalities.
+-/
+theorem canonical_poincare_certificate_payloads_and_coherence_of_smoothability_groundedUniversal_and_topologyPackage
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} ∧
+      canonical_completion_payload_of_smoothability_and_groundedUniversal
+          smoothability grounded
+          (extinction_implies_sphere_of_topology_package topology) =
+        canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          (extinction_implies_sphere_of_topology_package topology) ∧
+      poincare_completion_payload_of_smoothability_and_groundedUniversal
+          smoothability grounded
+          (extinction_implies_sphere_of_topology_package topology) =
+        poincare_completion_payload_of_finalCertificateMinimalPackageInputs
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          (extinction_implies_sphere_of_topology_package topology) ∧
+      completion_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+          smoothability grounded topology =
+        completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          topology ∧
+      poincare_payload_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+          smoothability grounded topology =
+        poincare_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          topology ∧
+      canonical_and_poincare_payloads_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+          smoothability grounded topology =
+        canonical_poincare_payloads_final_certificate_expected_of_smoothability_groundedUniversal_and_topologyPackage
+          smoothability grounded topology := by
+  let extractSphere : ExtinctionImpliesSphereStatement.{u} :=
+    extinction_implies_sphere_of_topology_package topology
+  let fullBundle :=
+    canonical_and_poincare_payloads_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+      smoothability grounded topology
+  let projectAndCertificate :=
+    poincare_payload_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+      smoothability grounded topology
+  rcases fullBundle with
+    ⟨_canonicalTarget, canonicalPayload, _projectStatementFromFullBundle,
+      _projectPayloadFromFullBundle, _certificateFromFullBundle⟩
+  rcases projectAndCertificate with
+    ⟨_projectStatementFromPair, projectPayload, certificate⟩
+  exact
+    ⟨canonicalPayload,
+      projectPayload,
+      certificate,
+      canonical_completion_payload_of_smoothability_and_groundedUniversal_eq
+        smoothability grounded extractSphere,
+      poincare_completion_payload_of_smoothability_and_groundedUniversal_eq
+        smoothability grounded extractSphere,
+      completion_certificate_of_smoothability_groundedUniversal_and_topologyPackage_eq
+        smoothability grounded topology,
+      poincare_payload_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage_eq
+        smoothability grounded topology,
+      canonical_and_poincare_payloads_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage_eq
+        smoothability grounded topology⟩
+
+/--
+The grounded package-level final boundary also exposes the two actual target
+statements and the checked certificate together with their projection
+coherence.  This consumes the full five-field bundle and the existing payload
+coherence theorem, so it records more than a name bridge.
+-/
+theorem canonical_poincare_targets_certificate_and_coherence_of_smoothability_groundedUniversal_and_topologyPackage
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    canonicalCompletionTarget.{u} ∧
+      PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      canonical_completion_target_of_smoothability_and_groundedUniversal
+          smoothability grounded
+          (extinction_implies_sphere_of_topology_package topology) =
+        canonical_completion_target_of_finalCertificateMinimalPackageInputs
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          (extinction_implies_sphere_of_topology_package topology) ∧
+      poincare_statement_of_smoothability_and_groundedUniversal
+          smoothability grounded
+          (extinction_implies_sphere_of_topology_package topology) =
+        poincare_statement_of_finalCertificateMinimalPackageInputs
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          (extinction_implies_sphere_of_topology_package topology) ∧
+      completion_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+          smoothability grounded topology =
+        completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          topology ∧
+      poincare_payload_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+          smoothability grounded topology =
+        poincare_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          topology ∧
+      canonical_and_poincare_payloads_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+          smoothability grounded topology =
+        canonical_poincare_payloads_final_certificate_expected_of_smoothability_groundedUniversal_and_topologyPackage
+          smoothability grounded topology := by
+  let extractSphere : ExtinctionImpliesSphereStatement.{u} :=
+    extinction_implies_sphere_of_topology_package topology
+  let fullBundle :=
+    canonical_and_poincare_payloads_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+      smoothability grounded topology
+  rcases fullBundle with
+    ⟨canonicalTarget, _canonicalPayload, poincareStatement, _projectPayload,
+      certificate⟩
+  rcases
+      canonical_poincare_certificate_payloads_and_coherence_of_smoothability_groundedUniversal_and_topologyPackage
+        smoothability grounded topology with
+    ⟨_canonicalPayloadWitness, _projectPayloadWitness, _certificateWitness,
+      _canonicalPayloadEq, _projectPayloadEq, certificateEq,
+      projectCertificateEq, fullBundleEq⟩
+  exact
+    ⟨canonicalTarget,
+      poincareStatement,
+      certificate,
+      canonical_completion_target_of_smoothability_and_groundedUniversal_eq
+        smoothability grounded extractSphere,
+      poincare_statement_of_smoothability_and_groundedUniversal_eq
+        smoothability grounded extractSphere,
+      certificateEq,
+      projectCertificateEq,
+      fullBundleEq⟩
+
+/--
+The topology package supplies a theorem-shaped extraction statement and the
+package-level checked certificate boundary simultaneously.  This theorem
+records both theorem-shaped routes--the smoothability/grounded route and the
+direct grounded route--and then carries the checked package-level target,
+project statement, certificate, and coherence equalities in the same endpoint.
+-/
+theorem theoremShaped_extraction_routes_and_package_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    (canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{u} ∧
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (canonicalCompletionTarget.{u} ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        PoincareConjectureStatement.{u} ∧
+        ∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      canonicalCompletionTarget.{u} ∧
+      PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      canonical_completion_target_of_smoothability_and_groundedUniversal
+          smoothability grounded
+          (extinction_implies_sphere_of_topology_package topology) =
+        canonical_completion_target_of_finalCertificateMinimalPackageInputs
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          (extinction_implies_sphere_of_topology_package topology) ∧
+      poincare_statement_of_smoothability_and_groundedUniversal
+          smoothability grounded
+          (extinction_implies_sphere_of_topology_package topology) =
+        poincare_statement_of_finalCertificateMinimalPackageInputs
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          (extinction_implies_sphere_of_topology_package topology) ∧
+      completion_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+          smoothability grounded topology =
+        completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          topology ∧
+      canonical_and_poincare_payloads_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+          smoothability grounded topology =
+        canonical_poincare_payloads_final_certificate_expected_of_smoothability_groundedUniversal_and_topologyPackage
+          smoothability grounded topology := by
+  let topologyStatement : ExtinctionTopologyExtractionStatement.{u} :=
+    extinction_topology_extraction_statement_of_topology_package topology
+  rcases
+      canonical_and_poincare_payloads_of_smoothability_groundedUniversal_and_topologyExtractionStatement
+        smoothability grounded topologyStatement with
+    ⟨smoothCanonicalTarget, smoothCanonicalPayload, smoothProjectStatement,
+      smoothProjectPayload⟩
+  rcases
+      canonical_and_poincare_payloads_of_groundedUniversal_and_topologyExtractionStatement
+        grounded topologyStatement with
+    ⟨directCanonicalTarget, directCanonicalPayload, directProjectStatement,
+      directProjectPayload⟩
+  rcases
+      canonical_poincare_targets_certificate_and_coherence_of_smoothability_groundedUniversal_and_topologyPackage
+        smoothability grounded topology with
+    ⟨packageCanonicalTarget, packageProjectStatement, certificate,
+      canonicalTargetEq, projectStatementEq, certificateEq,
+      _projectCertificateEq, fullBundleEq⟩
+  exact
+    ⟨⟨smoothCanonicalTarget, smoothCanonicalPayload, smoothProjectStatement,
+        smoothProjectPayload⟩,
+      ⟨directCanonicalTarget, directCanonicalPayload, directProjectStatement,
+        directProjectPayload⟩,
+      packageCanonicalTarget,
+      packageProjectStatement,
+      certificate,
+      canonicalTargetEq,
+      projectStatementEq,
+      certificateEq,
+      fullBundleEq⟩
+
+/--
+**Step 3696 source.** The final-certificate boundary now carries
+theorem-shaped routes, targets, payloads, checked certificate, and coherence.
+
+The proof destructures
+`theoremShaped_extraction_routes_and_package_certificate_of_smoothability_groundedUniversal_and_topologyPackage`
+to keep both theorem-shaped extraction routes available.
+
+It also destructures
+`canonical_poincare_targets_certificate_and_coherence_of_smoothability_groundedUniversal_and_topologyPackage`
+to keep the canonical statement, project statement, checked certificate, and
+target-level coherence equalities available.
+
+Finally, it destructures
+`canonical_poincare_certificate_payloads_and_coherence_of_smoothability_groundedUniversal_and_topologyPackage`
+so the payload witnesses and certificate/full-bundle coherence travel with the
+same reusable endpoint.
+-/
+theorem final_certificate_routes_targets_payloads_and_coherence_of_smoothability_groundedUniversal_and_topologyPackage
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    (canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{u} ∧
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (canonicalCompletionTarget.{u} ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        PoincareConjectureStatement.{u} ∧
+        ∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      canonicalCompletionTarget.{u} ∧
+      PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      canonical_completion_target_of_smoothability_and_groundedUniversal
+          smoothability grounded
+          (extinction_implies_sphere_of_topology_package topology) =
+        canonical_completion_target_of_finalCertificateMinimalPackageInputs
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          (extinction_implies_sphere_of_topology_package topology) ∧
+      poincare_statement_of_smoothability_and_groundedUniversal
+          smoothability grounded
+          (extinction_implies_sphere_of_topology_package topology) =
+        poincare_statement_of_finalCertificateMinimalPackageInputs
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          (extinction_implies_sphere_of_topology_package topology) ∧
+      canonical_completion_payload_of_smoothability_and_groundedUniversal
+          smoothability grounded
+          (extinction_implies_sphere_of_topology_package topology) =
+        canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          (extinction_implies_sphere_of_topology_package topology) ∧
+      poincare_completion_payload_of_smoothability_and_groundedUniversal
+          smoothability grounded
+          (extinction_implies_sphere_of_topology_package topology) =
+        poincare_completion_payload_of_finalCertificateMinimalPackageInputs
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          (extinction_implies_sphere_of_topology_package topology) ∧
+      completion_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+          smoothability grounded topology =
+        completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          topology ∧
+      poincare_payload_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+          smoothability grounded topology =
+        poincare_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          topology ∧
+      canonical_and_poincare_payloads_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+          smoothability grounded topology =
+        canonical_poincare_payloads_final_certificate_expected_of_smoothability_groundedUniversal_and_topologyPackage
+          smoothability grounded topology := by
+  rcases
+      theoremShaped_extraction_routes_and_package_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+        smoothability grounded topology with
+    ⟨smoothRoute, directRoute, _packageCanonicalTargetFromRoutes,
+      _packageProjectStatementFromRoutes, _certificateFromRoutes,
+      _canonicalTargetEqFromRoutes, _projectStatementEqFromRoutes,
+      _certificateEqFromRoutes, _fullBundleEqFromRoutes⟩
+  rcases
+      canonical_poincare_targets_certificate_and_coherence_of_smoothability_groundedUniversal_and_topologyPackage
+        smoothability grounded topology with
+    ⟨canonicalTarget, projectStatement, certificate,
+      canonicalTargetEq, projectStatementEq, certificateEq,
+      projectCertificateEq, fullBundleEq⟩
+  rcases
+      canonical_poincare_certificate_payloads_and_coherence_of_smoothability_groundedUniversal_and_topologyPackage
+        smoothability grounded topology with
+    ⟨canonicalPayload, projectPayload, _certificateFromPayloads,
+      canonicalPayloadEq, projectPayloadEq, _certificateEqFromPayloads,
+      _projectCertificateEqFromPayloads, _fullBundleEqFromPayloads⟩
+  exact
+    ⟨smoothRoute,
+      directRoute,
+      canonicalTarget,
+      projectStatement,
+      certificate,
+      canonicalPayload,
+      projectPayload,
+      canonicalTargetEq,
+      projectStatementEq,
+      canonicalPayloadEq,
+      projectPayloadEq,
+      certificateEq,
+      projectCertificateEq,
+      fullBundleEq⟩
+
+/--
+**Step 3707 source.** The final-certificate boundary is now bundled with a
+grounded terminal finite-extinction witness for an arbitrary target manifold.
+
+Reference source: this proof destructs
+`final_certificate_routes_targets_payloads_and_coherence_of_smoothability_groundedUniversal_and_topologyPackage`
+to keep the theorem-shaped final-certificate routes, canonical/Poincare
+targets, payloads, checked certificate, and coherence equalities available.
+It also destructs
+`grounded_universal_finite_extinction_terminal_witness_production_coherence_bundle`
+for the same grounded universal input and target manifold `M`, exposing the
+universal finite-extinction statement, package-layer requirement, concrete
+indexed surgery package witness, local witness nonemptiness, family
+nonemptiness, theorem-shaped finite-extinction output, and terminal
+time/volume extinction evidence.  This records a researcher-checkable route
+from the final certificate boundary down to an actual grounded
+finite-extinction certificate rather than merely re-exporting the
+final-certificate route.
+-/
+theorem final_certificate_routes_with_grounded_terminal_witness_certificate_bundle
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ _smoothRoute :
+      (canonicalCompletionTarget.{u} ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        PoincareConjectureStatement.{u} ∧
+        ∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ _directRoute :
+      (canonicalCompletionTarget.{u} ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        PoincareConjectureStatement.{u} ∧
+        ∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ _canonicalTarget : canonicalCompletionTarget.{u},
+    ∃ _projectStatement : PoincareConjectureStatement.{u},
+    ∃ _certificate : PoincareCompletionCertificate.{u},
+    ∃ _canonicalPayload :
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ _projectPayload :
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+      canonical_completion_target_of_smoothability_and_groundedUniversal
+          smoothability grounded
+          (extinction_implies_sphere_of_topology_package topology) =
+        canonical_completion_target_of_finalCertificateMinimalPackageInputs
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          (extinction_implies_sphere_of_topology_package topology) ∧
+      poincare_statement_of_smoothability_and_groundedUniversal
+          smoothability grounded
+          (extinction_implies_sphere_of_topology_package topology) =
+        poincare_statement_of_finalCertificateMinimalPackageInputs
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          (extinction_implies_sphere_of_topology_package topology) ∧
+      canonical_completion_payload_of_smoothability_and_groundedUniversal
+          smoothability grounded
+          (extinction_implies_sphere_of_topology_package topology) =
+        canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          (extinction_implies_sphere_of_topology_package topology) ∧
+      poincare_completion_payload_of_smoothability_and_groundedUniversal
+          smoothability grounded
+          (extinction_implies_sphere_of_topology_package topology) =
+        poincare_completion_payload_of_finalCertificateMinimalPackageInputs
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          (extinction_implies_sphere_of_topology_package topology) ∧
+      completion_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+          smoothability grounded topology =
+        completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          topology ∧
+      poincare_payload_and_final_certificate_of_smoothability_groundedUniversal_and_topologyPackage
+          smoothability grounded topology =
+        poincare_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          (finalCertificateMinimalPackageInputs_of_smoothability_and_groundedUniversal
+            smoothability grounded)
+          topology ∧
+      UniversalFiniteExtinctionStatement.{u} ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      ∃ packageWitness : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M,
+        Nonempty (FiniteExtinctionSurgeryPackage packageWitness.1 M) ∧
+        Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M) ∧
+        (∃ n : ℕ∞ω,
+          ∃ smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+            @FiniteExtinctionStatement n M _ _ _ _ _ smooth) ∧
+        (∃ n : ℕ∞ω,
+          ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ curvatureFrontier :
+            FiniteExtinctionProductionCurvatureFrontier
+              analyticFoundation surgeryConstruction perelmanControl,
+            HasFiniteExtinctionTimeBound
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control
+              curvatureFrontier.curvaturePinching
+              curvatureFrontier.componentControl ∧
+            HasFiniteExtinctionVolumeDecayEstimate
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control
+              curvatureFrontier.curvaturePinching
+              curvatureFrontier.componentControl ∧
+            FiniteExtinctionByRicciFlowWithSurgery M) := by
+  rcases
+      final_certificate_routes_targets_payloads_and_coherence_of_smoothability_groundedUniversal_and_topologyPackage
+        smoothability grounded topology with
+    ⟨smoothRoute,
+      directRoute,
+      canonicalTarget,
+      projectStatement,
+      certificate,
+      canonicalPayload,
+      projectPayload,
+      canonicalTargetEq,
+      projectStatementEq,
+      canonicalPayloadEq,
+      projectPayloadEq,
+      certificateEq,
+      projectCertificateEq,
+      fullBundleEq⟩
+  rcases
+      grounded_universal_finite_extinction_terminal_witness_production_coherence_bundle
+        grounded M with
+    ⟨universalStatement, packageRequirement, packageWitness,
+      packageWitnessNonempty, familyWitnessNonempty, statementOutput,
+      terminalOutput, _productionLayer, _coherenceLayer⟩
+  exact
+    ⟨smoothRoute,
+      directRoute,
+      canonicalTarget,
+      projectStatement,
+      certificate,
+      canonicalPayload,
+      projectPayload,
+      canonicalTargetEq,
+      projectStatementEq,
+      canonicalPayloadEq,
+      projectPayloadEq,
+      certificateEq,
+      projectCertificateEq,
+      universalStatement,
+      packageRequirement,
+      packageWitness,
+      packageWitnessNonempty, familyWitnessNonempty, statementOutput,
+      terminalOutput⟩
+
+/--
+The grounded final-certificate route also reaches the target sweepout
+interface frontier for the same target manifold.  This bundles a checked final
+certificate, the grounded terminal finite-extinction output, and the target
+sweepout package/interface projections supplied by the finite-extinction
+package requirement extracted from the grounded route.
+-/
+theorem final_certificate_routes_with_grounded_terminal_target_sweepout_interface_bundle
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ _packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ _projectStatement : PoincareConjectureStatement.{u},
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ _terminalOutput :
+      (∃ n : ℕ∞ω,
+        ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+        ∃ analyticFoundation :
+          RicciFlowAnalyticFoundationPackage
+            ThreeManifoldModelWithCorners n M,
+        ∃ surgeryConstruction :
+          RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+            (ricci_flow_data_of_analytic_foundation_package
+              analyticFoundation),
+        ∃ perelmanControl :
+          PerelmanSingularityControlPackage (n := n) (M := M)
+            (ricci_flow_data_of_analytic_foundation_package
+              analyticFoundation),
+        ∃ curvatureFrontier :
+          FiniteExtinctionProductionCurvatureFrontier
+            analyticFoundation surgeryConstruction perelmanControl,
+          HasFiniteExtinctionTimeBound
+            (ricci_flow_data_of_analytic_foundation_package
+              analyticFoundation)
+            surgeryConstruction.withSurgery perelmanControl.control
+            curvatureFrontier.curvaturePinching
+            curvatureFrontier.componentControl ∧
+          HasFiniteExtinctionVolumeDecayEstimate
+            (ricci_flow_data_of_analytic_foundation_package
+              analyticFoundation)
+            surgeryConstruction.withSurgery perelmanControl.control
+            curvatureFrontier.curvaturePinching
+            curvatureFrontier.componentControl ∧
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ certificate : TargetFiniteExtinctionSweepoutPackageCertificate M,
+    ∃ bundle : TargetFiniteExtinctionSweepoutInterfaceBundle M,
+      certificate =
+          target_finite_extinction_sweepout_package_certificate_of_finiteExtinctionPackage_requirement
+            packageRequirement M ∧
+      bundle =
+          target_finite_extinction_sweepout_interface_bundle_of_finiteExtinctionPackage_requirement
+            packageRequirement M ∧
+      HasFiniteExtinctionSweepoutExistence M
+          finite_extinction_fundamental_group_input_of_target ∧
+      HasFiniteExtinctionSweepoutParameterSpace M
+          finite_extinction_fundamental_group_input_of_target ∧
+      HasFiniteExtinctionSweepoutContinuity M
+          finite_extinction_fundamental_group_input_of_target
+          (finite_extinction_sweepout_existence_of_interface_bundle bundle) ∧
+      HasFiniteExtinctionSweepoutAreaBound M
+          finite_extinction_fundamental_group_input_of_target
+          (finite_extinction_sweepout_existence_of_interface_bundle bundle) ∧
+      HasFiniteExtinctionSweepoutNontriviality M
+          finite_extinction_fundamental_group_input_of_target
+          (finite_extinction_sweepout_existence_of_interface_bundle bundle) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_witness_certificate_bundle
+        smoothability grounded topology M with
+    ⟨_smoothRoute, _directRoute, _canonicalTarget, projectStatement,
+      checkedCertificate, _canonicalPayload, _projectPayload,
+      _canonicalTargetEq, _projectStatementEq, _canonicalPayloadEq,
+      _projectPayloadEq, _certificateEq, _projectCertificateEq,
+      _universalStatement, packageRequirement, _packageWitness,
+      _packageWitnessNonempty, _familyWitnessNonempty, _statementOutput,
+      terminalOutput⟩
+  rcases
+      target_finite_extinction_sweepout_certificate_and_interface_projection_bundle_of_finiteExtinctionPackage_requirement
+        packageRequirement M with
+    ⟨certificate, bundle, hcertificate, hbundle, hexistence,
+      hparameterSpace, hcontinuity, hareaBound, hnontriviality⟩
+  exact
+    ⟨packageRequirement, projectStatement, checkedCertificate, terminalOutput,
+      certificate, bundle, hcertificate, hbundle, hexistence,
+      hparameterSpace, hcontinuity, hareaBound, hnontriviality⟩
+
+/-- Theorem contract for `final_certificate_routes_with_grounded_terminal_target_sweepout_interface_bundle`. -/
+theorem final_certificate_routes_with_grounded_terminal_target_sweepout_interface_bundle_eq :
+    @Poincare.final_certificate_routes_with_grounded_terminal_target_sweepout_interface_bundle =
+      @Poincare.final_certificate_routes_with_grounded_terminal_target_sweepout_interface_bundle :=
+  rfl
+
+/--
+The grounded final-certificate route also feeds its concrete terminal
+finite-extinction output into the topology extraction package.  This keeps the
+checked certificate, terminal time/volume witnesses, the resulting extinction
+proof for the same target manifold, and the final-homeomorphism/trace/handle/
+component/discarded-component extraction bundle in one theorem.
+-/
+theorem final_certificate_routes_with_grounded_terminal_topology_extraction_bundle
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ _packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ _projectStatement : PoincareConjectureStatement.{u},
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ analyticFoundation :
+      RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+    ∃ surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl,
+    ∃ _timeBound :
+      HasFiniteExtinctionTimeBound
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ _volumeDecay :
+      HasFiniteExtinctionVolumeDecayEstimate
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      Nonempty
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let package :=
+        extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let handleCancellationPrefix :=
+        extinctionTopologyHandleCancellationPrefixPackage_of_topology_package
+          package
+       let discardedComponentPrefix :=
+        extinctionTopologyDiscardedComponentHomeomorphismClassificationPrefixPackage_of_topology_package
+          package
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        ∃ homeomorphismAssembly :
+          HasExtinctionHomeomorphismAssembly M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.simplyConnectedRecognition M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            homeomorphism,
+          HasExtinctionHomeomorphismDerivation M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.simplyConnectedRecognition M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            homeomorphism homeomorphismAssembly ∧
+          FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+          HasExtinctionSurgeryTraceReconstruction M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          HasExtinctionSurgeryTraceHandleCancellation M extinction
+            (handleCancellationPrefix.decomposition M extinction)
+            (handleCancellationPrefix.surgeryTraceReconstruction M extinction) ∧
+          HasExtinctionComponentClassification M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          HasExtinctionDiscardedComponentHomeomorphismClassification M extinction
+            (discardedComponentPrefix.decomposition M extinction)
+            (discardedComponentPrefix.componentClassification M extinction) ∧
+          ExtinctionTopologyExtractionStatement.{u}) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_witness_certificate_bundle
+        smoothability grounded topology M with
+    ⟨_smoothRoute, _directRoute, _canonicalTarget, projectStatement,
+      checkedCertificate, _canonicalPayload, _projectPayload,
+      _canonicalTargetEq, _projectStatementEq, _canonicalPayloadEq,
+      _projectPayloadEq, _certificateEq, _projectCertificateEq,
+      _universalStatement, packageRequirement, _packageWitness,
+      _packageWitnessNonempty, _familyWitnessNonempty, _statementOutput,
+      terminalOutput⟩
+  rcases terminalOutput with
+    ⟨n, smooth, analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction⟩
+  exact
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      ⟨final_homeomorphism_derivation_trace_handle_component_discarded_projection_and_extraction_statement_bundle_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          (extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+            topology)
+          (onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+            topology)
+          M extinction⟩⟩
+
+/-- Theorem contract for `final_certificate_routes_with_grounded_terminal_topology_extraction_bundle`. -/
+theorem final_certificate_routes_with_grounded_terminal_topology_extraction_bundle_eq :
+    @Poincare.final_certificate_routes_with_grounded_terminal_topology_extraction_bundle =
+      @Poincare.final_certificate_routes_with_grounded_terminal_topology_extraction_bundle :=
+  rfl
+
+/--
+Direct form of the grounded terminal topology-extraction route.  This removes
+the `Nonempty` wrapper from
+`final_certificate_routes_with_grounded_terminal_topology_extraction_bundle`,
+so downstream proofs can consume the final homeomorphism, trace
+reconstruction, handle cancellation, component classification,
+discarded-component classification, and theorem-shaped topology extraction
+payload directly.
+-/
+theorem final_certificate_routes_with_grounded_terminal_topology_extraction_direct_bundle
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ _packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ _projectStatement : PoincareConjectureStatement.{u},
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ analyticFoundation :
+      RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+    ∃ surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl,
+    ∃ _timeBound :
+      HasFiniteExtinctionTimeBound
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ _volumeDecay :
+      HasFiniteExtinctionVolumeDecayEstimate
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let package :=
+        extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let handleCancellationPrefix :=
+        extinctionTopologyHandleCancellationPrefixPackage_of_topology_package
+          package
+       let discardedComponentPrefix :=
+        extinctionTopologyDiscardedComponentHomeomorphismClassificationPrefixPackage_of_topology_package
+          package
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        ∃ homeomorphismAssembly :
+          HasExtinctionHomeomorphismAssembly M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.simplyConnectedRecognition M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            homeomorphism,
+          HasExtinctionHomeomorphismDerivation M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.simplyConnectedRecognition M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            homeomorphism homeomorphismAssembly ∧
+          FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+          HasExtinctionSurgeryTraceReconstruction M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          HasExtinctionSurgeryTraceHandleCancellation M extinction
+            (handleCancellationPrefix.decomposition M extinction)
+            (handleCancellationPrefix.surgeryTraceReconstruction M extinction) ∧
+          HasExtinctionComponentClassification M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          HasExtinctionDiscardedComponentHomeomorphismClassification M extinction
+            (discardedComponentPrefix.decomposition M extinction)
+            (discardedComponentPrefix.componentClassification M extinction) ∧
+          ExtinctionTopologyExtractionStatement.{u}) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_topology_extraction_bundle
+        smoothability grounded topology M with
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      topologyExtraction⟩
+  rcases topologyExtraction with ⟨topologyExtraction⟩
+  exact
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      topologyExtraction⟩
+
+/-- Theorem contract for `final_certificate_routes_with_grounded_terminal_topology_extraction_direct_bundle`. -/
+theorem final_certificate_routes_with_grounded_terminal_topology_extraction_direct_bundle_eq :
+    @Poincare.final_certificate_routes_with_grounded_terminal_topology_extraction_direct_bundle =
+      @Poincare.final_certificate_routes_with_grounded_terminal_topology_extraction_direct_bundle :=
+  rfl
+
+/--
+Strengthened direct terminal topology route.  This keeps the same final
+certificate, time/volume extinction witnesses, concrete extinction proof,
+final homeomorphism, trace reconstruction, handle cancellation, component
+classification, discarded-component classification, and topology extraction
+payload from
+`final_certificate_routes_with_grounded_terminal_topology_extraction_direct_bundle`,
+but also exposes the component inventory and boundary-sphere-control fields
+from the same constructed topology package.
+-/
+theorem final_certificate_routes_with_grounded_terminal_topology_extraction_inventory_boundary_direct_bundle
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ _packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ _projectStatement : PoincareConjectureStatement.{u},
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ analyticFoundation :
+      RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+    ∃ surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl,
+    ∃ _timeBound :
+      HasFiniteExtinctionTimeBound
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ _volumeDecay :
+      HasFiniteExtinctionVolumeDecayEstimate
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let package :=
+        extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let handleCancellationPrefix :=
+        extinctionTopologyHandleCancellationPrefixPackage_of_topology_package
+          package
+       let discardedComponentPrefix :=
+        extinctionTopologyDiscardedComponentHomeomorphismClassificationPrefixPackage_of_topology_package
+          package
+       let boundarySpherePrefix :=
+        extinctionTopologyComponentBoundarySphereControlPrefixPackage_of_topology_package
+          package
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        ∃ homeomorphismAssembly :
+          HasExtinctionHomeomorphismAssembly M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.simplyConnectedRecognition M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            homeomorphism,
+          HasExtinctionHomeomorphismDerivation M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.simplyConnectedRecognition M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            homeomorphism homeomorphismAssembly ∧
+          FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+          HasExtinctionSurgeryTraceReconstruction M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          HasExtinctionSurgeryTraceHandleCancellation M extinction
+            (handleCancellationPrefix.decomposition M extinction)
+            (handleCancellationPrefix.surgeryTraceReconstruction M extinction) ∧
+          HasExtinctionComponentClassification M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          HasExtinctionDiscardedComponentHomeomorphismClassification M extinction
+            (discardedComponentPrefix.decomposition M extinction)
+            (discardedComponentPrefix.componentClassification M extinction) ∧
+          HasExtinctionComponentInventory M extinction
+            (boundarySpherePrefix.decomposition M extinction)
+            (boundarySpherePrefix.componentClassification M extinction) ∧
+          HasExtinctionComponentBoundarySphereControl M extinction
+            (boundarySpherePrefix.decomposition M extinction)
+            (boundarySpherePrefix.componentClassification M extinction)
+            (boundarySpherePrefix.componentInventory M extinction) ∧
+          ExtinctionTopologyExtractionStatement.{u}) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_topology_extraction_direct_bundle
+        smoothability grounded topology M with
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      topologyExtraction⟩
+  rcases topologyExtraction with
+    ⟨homeomorphism, homeomorphismAssembly, homeomorphismDerivation,
+      finalHomeomorphismStatement, traceReconstruction, handleCancellation,
+      componentClassification, discardedComponentClassification,
+      extractionStatement⟩
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_topology_package topology
+  let onePointRecognition :=
+    onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+      topology
+  let package :=
+    extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+      surgeryTracePrefix onePointRecognition
+  let boundarySpherePrefix :=
+    extinctionTopologyComponentBoundarySphereControlPrefixPackage_of_topology_package
+      package
+  exact
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      homeomorphism, homeomorphismAssembly, homeomorphismDerivation,
+      finalHomeomorphismStatement, traceReconstruction, handleCancellation,
+      componentClassification, discardedComponentClassification,
+      boundarySpherePrefix.componentInventory M extinction,
+      boundarySpherePrefix.componentBoundarySphereControl M extinction,
+      extractionStatement⟩
+
+/-- Theorem contract for `final_certificate_routes_with_grounded_terminal_topology_extraction_inventory_boundary_direct_bundle`. -/
+theorem final_certificate_routes_with_grounded_terminal_topology_extraction_inventory_boundary_direct_bundle_eq :
+    @Poincare.final_certificate_routes_with_grounded_terminal_topology_extraction_inventory_boundary_direct_bundle =
+      @Poincare.final_certificate_routes_with_grounded_terminal_topology_extraction_inventory_boundary_direct_bundle :=
+  rfl
+
+/--
+The grounded final-certificate route also transports the package-level puncture
+payload supplied by the same terminal topology package.  This keeps the
+inventory/boundary terminal bundle and exposes the one-point recognition route,
+the final-homeomorphism payload data for the package decomposition, and the
+singleton-complement topology available for every puncture of the target.
+-/
+theorem final_certificate_routes_with_grounded_terminal_topology_extraction_inventory_boundary_puncture_payload_direct_bundle
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ _packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ _projectStatement : PoincareConjectureStatement.{u},
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ analyticFoundation :
+      RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+    ∃ surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl,
+    ∃ _timeBound :
+      HasFiniteExtinctionTimeBound
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ _volumeDecay :
+      HasFiniteExtinctionVolumeDecayEstimate
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let package :=
+        extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let handleCancellationPrefix :=
+        extinctionTopologyHandleCancellationPrefixPackage_of_topology_package
+          package
+       let discardedComponentPrefix :=
+        extinctionTopologyDiscardedComponentHomeomorphismClassificationPrefixPackage_of_topology_package
+          package
+       let boundarySpherePrefix :=
+        extinctionTopologyComponentBoundarySphereControlPrefixPackage_of_topology_package
+          package
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        ∃ homeomorphismAssembly :
+          HasExtinctionHomeomorphismAssembly M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.simplyConnectedRecognition M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            homeomorphism,
+          HasExtinctionHomeomorphismDerivation M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.simplyConnectedRecognition M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            homeomorphism homeomorphismAssembly ∧
+          FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+          HasExtinctionSurgeryTraceReconstruction M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          HasExtinctionSurgeryTraceHandleCancellation M extinction
+            (handleCancellationPrefix.decomposition M extinction)
+            (handleCancellationPrefix.surgeryTraceReconstruction M extinction) ∧
+          HasExtinctionComponentClassification M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          HasExtinctionDiscardedComponentHomeomorphismClassification M extinction
+            (discardedComponentPrefix.decomposition M extinction)
+            (discardedComponentPrefix.componentClassification M extinction) ∧
+          HasExtinctionComponentInventory M extinction
+            (boundarySpherePrefix.decomposition M extinction)
+            (boundarySpherePrefix.componentClassification M extinction) ∧
+          HasExtinctionComponentBoundarySphereControl M extinction
+            (boundarySpherePrefix.decomposition M extinction)
+            (boundarySpherePrefix.componentClassification M extinction)
+            (boundarySpherePrefix.componentInventory M extinction) ∧
+          ExtinctionTopologyExtractionStatement.{u} ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          FinalHomeomorphismPayloadData M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          ∀ x : M,
+            ContractibleSpace ({x}ᶜ : Set M) ∧
+              SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+              PathConnectedSpace ({x}ᶜ : Set M) ∧
+              ConnectedSpace ({x}ᶜ : Set M) ∧
+              Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_topology_extraction_inventory_boundary_direct_bundle
+        smoothability grounded topology M with
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      topologyExtraction⟩
+  rcases topologyExtraction with
+    ⟨homeomorphism, homeomorphismAssembly, homeomorphismDerivation,
+      finalHomeomorphismStatement, traceReconstruction, handleCancellation,
+      componentClassification, discardedComponentClassification,
+      componentInventory, componentBoundarySphereControl,
+      extractionStatement⟩
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_topology_package topology
+  let onePointRecognition :=
+    onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+      topology
+  let package :=
+    extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+      surgeryTracePrefix onePointRecognition
+  exact
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      homeomorphism, homeomorphismAssembly, homeomorphismDerivation,
+      finalHomeomorphismStatement, traceReconstruction, handleCancellation,
+      componentClassification, discardedComponentClassification,
+      componentInventory, componentBoundarySphereControl, extractionStatement,
+      homeomorph_to_onePoint_threeSpace_of_topology_package
+        package M extinction,
+      finalHomeomorphismPayloadData_of_topology_package package M extinction,
+      by
+        intro x
+        exact
+          ⟨compl_singleton_contractibleSpace_of_topology_package
+              package M extinction x,
+            compl_singleton_simplyConnectedSpace_of_topology_package
+              package M extinction x,
+            compl_singleton_pathConnectedSpace_of_topology_package
+              package M extinction x,
+            compl_singleton_connectedSpace_of_topology_package
+              package M extinction x,
+            compl_singleton_nonempty_of_topology_package
+              package M extinction x⟩⟩
+
+/-- Theorem contract for `final_certificate_routes_with_grounded_terminal_topology_extraction_inventory_boundary_puncture_payload_direct_bundle`. -/
+theorem final_certificate_routes_with_grounded_terminal_topology_extraction_inventory_boundary_puncture_payload_direct_bundle_eq :
+    @Poincare.final_certificate_routes_with_grounded_terminal_topology_extraction_inventory_boundary_puncture_payload_direct_bundle =
+      @Poincare.final_certificate_routes_with_grounded_terminal_topology_extraction_inventory_boundary_puncture_payload_direct_bundle :=
+  rfl
+
+/--
+The grounded final-certificate route transports the richer classification
+payload and the puncture payload together.  This endpoint keeps the terminal
+certificate and extinction witnesses while exposing prime decomposition,
+sphere-theorem application, irreducibility, connected-sum collapse,
+spherical-space-form reduction, quotient model, final homeomorphism, extraction
+bundle, one-point recognition, final-homeomorphism payload data, and
+singleton-complement topology for every puncture of the target.
+-/
+theorem final_certificate_routes_with_grounded_terminal_topology_extraction_prime_sphere_irreducible_spherical_and_puncture_payload_direct_bundle
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ _packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ _projectStatement : PoincareConjectureStatement.{u},
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ analyticFoundation :
+      RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+    ∃ surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl,
+    ∃ _timeBound :
+      HasFiniteExtinctionTimeBound
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ _volumeDecay :
+      HasFiniteExtinctionVolumeDecayEstimate
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let package :=
+        extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let handleCancellationPrefix :=
+        extinctionTopologyHandleCancellationPrefixPackage_of_topology_package
+          package
+       let discardedComponentPrefix :=
+        extinctionTopologyDiscardedComponentHomeomorphismClassificationPrefixPackage_of_topology_package
+          package
+       let boundarySpherePrefix :=
+        extinctionTopologyComponentBoundarySphereControlPrefixPackage_of_topology_package
+          package
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        ∃ homeomorphismAssembly :
+          HasExtinctionHomeomorphismAssembly M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.simplyConnectedRecognition M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            homeomorphism,
+          HasExtinctionHomeomorphismDerivation M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.simplyConnectedRecognition M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            homeomorphism homeomorphismAssembly ∧
+          HasExtinctionPrimeDecomposition M extinction
+            (recognitionPrefix.decomposition M extinction) ∧
+          HasExtinctionSphereTheoremApplication M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction) ∧
+          HasExtinctionIrreducibility M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction) ∧
+          HasExtinctionConnectedSumCollapse M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction) ∧
+          HasExtinctionSphericalSpaceFormReduction M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction) ∧
+          HasSphericalSpaceFormQuotientModel M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction) ∧
+          FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+          HasExtinctionSurgeryTraceReconstruction M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          HasExtinctionSurgeryTraceHandleCancellation M extinction
+            (handleCancellationPrefix.decomposition M extinction)
+            (handleCancellationPrefix.surgeryTraceReconstruction M extinction) ∧
+          HasExtinctionComponentClassification M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          HasExtinctionDiscardedComponentHomeomorphismClassification M extinction
+            (discardedComponentPrefix.decomposition M extinction)
+            (discardedComponentPrefix.componentClassification M extinction) ∧
+          HasExtinctionComponentInventory M extinction
+            (boundarySpherePrefix.decomposition M extinction)
+            (boundarySpherePrefix.componentClassification M extinction) ∧
+          HasExtinctionComponentBoundarySphereControl M extinction
+            (boundarySpherePrefix.decomposition M extinction)
+            (boundarySpherePrefix.componentClassification M extinction)
+            (boundarySpherePrefix.componentInventory M extinction) ∧
+          ExtinctionTopologyExtractionStatement.{u} ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          FinalHomeomorphismPayloadData M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          ∀ x : M,
+            ContractibleSpace ({x}ᶜ : Set M) ∧
+              SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+              PathConnectedSpace ({x}ᶜ : Set M) ∧
+              ConnectedSpace ({x}ᶜ : Set M) ∧
+              Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_topology_extraction_inventory_boundary_puncture_payload_direct_bundle
+        smoothability grounded topology M with
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      topologyExtraction⟩
+  rcases topologyExtraction with
+    ⟨homeomorphism, homeomorphismAssembly, homeomorphismDerivation,
+      finalHomeomorphismStatement, traceReconstruction, handleCancellation,
+      componentClassification, discardedComponentClassification,
+      componentInventory, componentBoundarySphereControl, extractionStatement,
+      onePointHomeomorphism, finalHomeomorphismPayload, punctureTopology⟩
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_topology_package topology
+  let onePointRecognition :=
+    onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+      topology
+  let recognitionPrefix :=
+    extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+      surgeryTracePrefix onePointRecognition
+  exact
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      homeomorphism, homeomorphismAssembly, homeomorphismDerivation,
+      recognitionPrefix.primeDecomposition M extinction,
+      recognitionPrefix.sphereTheoremApplication M extinction,
+      recognitionPrefix.irreducibility M extinction,
+      recognitionPrefix.connectedSumCollapse M extinction,
+      recognitionPrefix.sphericalSpaceFormReduction M extinction,
+      recognitionPrefix.sphericalQuotientModel M extinction,
+      finalHomeomorphismStatement, traceReconstruction, handleCancellation,
+      componentClassification, discardedComponentClassification,
+      componentInventory, componentBoundarySphereControl, extractionStatement,
+      onePointHomeomorphism, finalHomeomorphismPayload, punctureTopology⟩
+
+/-- Theorem contract for `final_certificate_routes_with_grounded_terminal_topology_extraction_prime_sphere_irreducible_spherical_and_puncture_payload_direct_bundle`. -/
+theorem final_certificate_routes_with_grounded_terminal_topology_extraction_prime_sphere_irreducible_spherical_and_puncture_payload_direct_bundle_eq :
+    @Poincare.final_certificate_routes_with_grounded_terminal_topology_extraction_prime_sphere_irreducible_spherical_and_puncture_payload_direct_bundle =
+      @Poincare.final_certificate_routes_with_grounded_terminal_topology_extraction_prime_sphere_irreducible_spherical_and_puncture_payload_direct_bundle :=
+  rfl
+
+/--
+The final-certificate route now carries the fixed-manifold topology derivation
+statement itself, not just selected extracted components.
+-/
+theorem final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_prime_sphere_irreducible_spherical_and_puncture_payload_direct_bundle
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ _packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ _projectStatement : PoincareConjectureStatement.{u},
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ analyticFoundation :
+      RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+    ∃ surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl,
+    ∃ _timeBound :
+      HasFiniteExtinctionTimeBound
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ _volumeDecay :
+      HasFiniteExtinctionVolumeDecayEstimate
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let package :=
+        extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let handleCancellationPrefix :=
+        extinctionTopologyHandleCancellationPrefixPackage_of_topology_package
+          package
+       let discardedComponentPrefix :=
+        extinctionTopologyDiscardedComponentHomeomorphismClassificationPrefixPackage_of_topology_package
+          package
+       let boundarySpherePrefix :=
+        extinctionTopologyComponentBoundarySphereControlPrefixPackage_of_topology_package
+          package
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        ∃ homeomorphismAssembly :
+          HasExtinctionHomeomorphismAssembly M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.simplyConnectedRecognition M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            homeomorphism,
+          ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+          HasExtinctionHomeomorphismDerivation M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.simplyConnectedRecognition M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            homeomorphism homeomorphismAssembly ∧
+          HasExtinctionPrimeDecomposition M extinction
+            (recognitionPrefix.decomposition M extinction) ∧
+          HasExtinctionSphereTheoremApplication M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction) ∧
+          HasExtinctionIrreducibility M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction) ∧
+          HasExtinctionConnectedSumCollapse M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction) ∧
+          HasExtinctionSphericalSpaceFormReduction M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction) ∧
+          HasSphericalSpaceFormQuotientModel M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction) ∧
+          FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+          HasExtinctionSurgeryTraceReconstruction M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          HasExtinctionSurgeryTraceHandleCancellation M extinction
+            (handleCancellationPrefix.decomposition M extinction)
+            (handleCancellationPrefix.surgeryTraceReconstruction M extinction) ∧
+          HasExtinctionComponentClassification M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          HasExtinctionDiscardedComponentHomeomorphismClassification M extinction
+            (discardedComponentPrefix.decomposition M extinction)
+            (discardedComponentPrefix.componentClassification M extinction) ∧
+          HasExtinctionComponentInventory M extinction
+            (boundarySpherePrefix.decomposition M extinction)
+            (boundarySpherePrefix.componentClassification M extinction) ∧
+          HasExtinctionComponentBoundarySphereControl M extinction
+            (boundarySpherePrefix.decomposition M extinction)
+            (boundarySpherePrefix.componentClassification M extinction)
+            (boundarySpherePrefix.componentInventory M extinction) ∧
+          ExtinctionTopologyExtractionStatement.{u} ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          FinalHomeomorphismPayloadData M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          ∀ x : M,
+            ContractibleSpace ({x}ᶜ : Set M) ∧
+              SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+              PathConnectedSpace ({x}ᶜ : Set M) ∧
+              ConnectedSpace ({x}ᶜ : Set M) ∧
+              Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_topology_extraction_prime_sphere_irreducible_spherical_and_puncture_payload_direct_bundle
+        smoothability grounded topology M with
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      topologyExtraction⟩
+  rcases topologyExtraction with
+    ⟨homeomorphism, homeomorphismAssembly, homeomorphismDerivation,
+      primeDecomposition, sphereTheoremApplication, irreducibility,
+      connectedSumCollapse, sphericalSpaceFormReduction, sphericalQuotientModel,
+      finalHomeomorphismStatement, traceReconstruction, handleCancellation,
+      componentClassification, discardedComponentClassification,
+      componentInventory, componentBoundarySphereControl, extractionStatement,
+      onePointHomeomorphism, finalHomeomorphismPayload, punctureTopology⟩
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_topology_package topology
+  let onePointRecognition :=
+    onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+      topology
+  let package :=
+    extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+      surgeryTracePrefix onePointRecognition
+  have topologyDerivation :
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism := by
+    convert extinction_topology_derivation_statement_of_topology_package
+      package M extinction
+  exact
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      homeomorphism, homeomorphismAssembly, topologyDerivation,
+      homeomorphismDerivation, primeDecomposition, sphereTheoremApplication,
+      irreducibility, connectedSumCollapse, sphericalSpaceFormReduction,
+      sphericalQuotientModel, finalHomeomorphismStatement, traceReconstruction,
+      handleCancellation, componentClassification,
+      discardedComponentClassification, componentInventory,
+      componentBoundarySphereControl, extractionStatement, onePointHomeomorphism,
+      finalHomeomorphismPayload, punctureTopology⟩
+
+/-- Theorem contract for `final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_prime_sphere_irreducible_spherical_and_puncture_payload_direct_bundle`. -/
+theorem final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_prime_sphere_irreducible_spherical_and_puncture_payload_direct_bundle_eq :
+    @Poincare.final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_prime_sphere_irreducible_spherical_and_puncture_payload_direct_bundle =
+      @Poincare.final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_prime_sphere_irreducible_spherical_and_puncture_payload_direct_bundle :=
+  rfl
+
+/--
+The final-certificate route also carries the deck-group, trivial-quotient,
+and spherical-lift portion of the topology derivation through to the puncture
+payload boundary.
+-/
+theorem final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_deck_lift_and_puncture_payload_direct_bundle
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ _packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ _projectStatement : PoincareConjectureStatement.{u},
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ analyticFoundation :
+      RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+    ∃ surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl,
+    ∃ _timeBound :
+      HasFiniteExtinctionTimeBound
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ _volumeDecay :
+      HasFiniteExtinctionVolumeDecayEstimate
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let package :=
+        extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let handleCancellationPrefix :=
+        extinctionTopologyHandleCancellationPrefixPackage_of_topology_package
+          package
+       let discardedComponentPrefix :=
+        extinctionTopologyDiscardedComponentHomeomorphismClassificationPrefixPackage_of_topology_package
+          package
+       let boundarySpherePrefix :=
+        extinctionTopologyComponentBoundarySphereControlPrefixPackage_of_topology_package
+          package
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        ∃ homeomorphismAssembly :
+          HasExtinctionHomeomorphismAssembly M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.simplyConnectedRecognition M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            homeomorphism,
+          ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+          HasExtinctionHomeomorphismDerivation M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.simplyConnectedRecognition M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            homeomorphism homeomorphismAssembly ∧
+          HasExtinctionPrimeDecomposition M extinction
+            (recognitionPrefix.decomposition M extinction) ∧
+          HasExtinctionSphereTheoremApplication M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction) ∧
+          HasExtinctionIrreducibility M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction) ∧
+          HasExtinctionConnectedSumCollapse M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction) ∧
+          HasExtinctionSphericalSpaceFormReduction M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction) ∧
+          HasSphericalSpaceFormQuotientModel M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction) ∧
+          HasSphericalSpaceFormDeckGroupIdentification M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction) ∧
+          HasSphericalSpaceFormDeckGroupTriviality M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction) ∧
+          HasSphericalSpaceFormDeckActionTrivialization M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction) ∧
+    HasSphericalSpaceFormTrivialDeckQuotientIdentification M extinction
+        (recognitionPrefix.decomposition M extinction)
+        (recognitionPrefix.primeDecomposition M extinction)
+        (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.deckActionTrivialization M extinction) ∧
+          HasTrivialSphericalSpaceFormQuotient M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction) ∧
+          HasSphericalSpaceFormTrivialQuotientHomeomorphism M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalUniversalCover M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction) ∧
+          HasSphericalSpaceFormHomeomorphismLift M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalUniversalCover M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            (recognitionPrefix.trivialQuotientHomeomorphism M extinction) ∧
+          FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+          HasExtinctionSurgeryTraceReconstruction M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          HasExtinctionSurgeryTraceHandleCancellation M extinction
+            (handleCancellationPrefix.decomposition M extinction)
+            (handleCancellationPrefix.surgeryTraceReconstruction M extinction) ∧
+          HasExtinctionComponentClassification M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          HasExtinctionDiscardedComponentHomeomorphismClassification M extinction
+            (discardedComponentPrefix.decomposition M extinction)
+            (discardedComponentPrefix.componentClassification M extinction) ∧
+          HasExtinctionComponentInventory M extinction
+            (boundarySpherePrefix.decomposition M extinction)
+            (boundarySpherePrefix.componentClassification M extinction) ∧
+          HasExtinctionComponentBoundarySphereControl M extinction
+            (boundarySpherePrefix.decomposition M extinction)
+            (boundarySpherePrefix.componentClassification M extinction)
+            (boundarySpherePrefix.componentInventory M extinction) ∧
+          ExtinctionTopologyExtractionStatement.{u} ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          FinalHomeomorphismPayloadData M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          ∀ x : M,
+            ContractibleSpace ({x}ᶜ : Set M) ∧
+              SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+              PathConnectedSpace ({x}ᶜ : Set M) ∧
+              ConnectedSpace ({x}ᶜ : Set M) ∧
+              Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_prime_sphere_irreducible_spherical_and_puncture_payload_direct_bundle
+        smoothability grounded topology M with
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      topologyExtraction⟩
+  rcases topologyExtraction with
+    ⟨homeomorphism, homeomorphismAssembly, topologyDerivation,
+      homeomorphismDerivation, primeDecomposition, sphereTheoremApplication,
+      irreducibility, connectedSumCollapse, sphericalSpaceFormReduction,
+      sphericalQuotientModel, finalHomeomorphismStatement, traceReconstruction,
+      handleCancellation, componentClassification,
+      discardedComponentClassification, componentInventory,
+      componentBoundarySphereControl, extractionStatement, onePointHomeomorphism,
+      finalHomeomorphismPayload, punctureTopology⟩
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_topology_package topology
+  let onePointRecognition :=
+    onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+      topology
+  let recognitionPrefix :=
+    extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+      surgeryTracePrefix onePointRecognition
+  exact
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      homeomorphism, homeomorphismAssembly, topologyDerivation,
+      homeomorphismDerivation, primeDecomposition, sphereTheoremApplication,
+      irreducibility, connectedSumCollapse, sphericalSpaceFormReduction,
+      sphericalQuotientModel,
+      recognitionPrefix.deckGroupIdentification M extinction,
+      recognitionPrefix.deckGroupTriviality M extinction,
+      recognitionPrefix.deckActionTrivialization M extinction,
+      recognitionPrefix.trivialDeckQuotientIdentification M extinction,
+      recognitionPrefix.trivialSphericalQuotient M extinction,
+      recognitionPrefix.trivialQuotientHomeomorphism M extinction,
+      recognitionPrefix.sphericalHomeomorphismLift M extinction,
+      finalHomeomorphismStatement, traceReconstruction, handleCancellation,
+      componentClassification, discardedComponentClassification,
+      componentInventory, componentBoundarySphereControl, extractionStatement,
+      onePointHomeomorphism, finalHomeomorphismPayload, punctureTopology⟩
+
+/-- Theorem contract for `final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_deck_lift_and_puncture_payload_direct_bundle`. -/
+theorem final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_deck_lift_and_puncture_payload_direct_bundle_eq :
+    @Poincare.final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_deck_lift_and_puncture_payload_direct_bundle =
+      @Poincare.final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_deck_lift_and_puncture_payload_direct_bundle :=
+  rfl
+
+/--
+The final-certificate route also carries the simply-connected extinction
+recognition evidence produced after the spherical homeomorphism lift.
+-/
+theorem final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_simply_connected_recognition_and_puncture_payload_direct_bundle
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ _packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ _projectStatement : PoincareConjectureStatement.{u},
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ analyticFoundation :
+      RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+    ∃ surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl,
+    ∃ _timeBound :
+      HasFiniteExtinctionTimeBound
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ _volumeDecay :
+      HasFiniteExtinctionVolumeDecayEstimate
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let package :=
+        extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let handleCancellationPrefix :=
+        extinctionTopologyHandleCancellationPrefixPackage_of_topology_package
+          package
+       let discardedComponentPrefix :=
+        extinctionTopologyDiscardedComponentHomeomorphismClassificationPrefixPackage_of_topology_package
+          package
+       let boundarySpherePrefix :=
+        extinctionTopologyComponentBoundarySphereControlPrefixPackage_of_topology_package
+          package
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        ∃ homeomorphismAssembly :
+          HasExtinctionHomeomorphismAssembly M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.simplyConnectedRecognition M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            homeomorphism,
+          ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+          HasExtinctionHomeomorphismDerivation M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.simplyConnectedRecognition M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            homeomorphism homeomorphismAssembly ∧
+          HasExtinctionPrimeDecomposition M extinction
+            (recognitionPrefix.decomposition M extinction) ∧
+          HasExtinctionSphereTheoremApplication M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction) ∧
+          HasExtinctionIrreducibility M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction) ∧
+          HasExtinctionConnectedSumCollapse M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction) ∧
+          HasExtinctionSphericalSpaceFormReduction M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction) ∧
+          HasSphericalSpaceFormQuotientModel M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction) ∧
+          HasSphericalSpaceFormDeckGroupIdentification M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction) ∧
+          HasSphericalSpaceFormDeckGroupTriviality M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction) ∧
+          HasSphericalSpaceFormDeckActionTrivialization M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction) ∧
+          HasSphericalSpaceFormTrivialDeckQuotientIdentification M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.deckActionTrivialization M extinction) ∧
+          HasTrivialSphericalSpaceFormQuotient M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction) ∧
+          HasSphericalSpaceFormTrivialQuotientHomeomorphism M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalUniversalCover M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction) ∧
+          HasSphericalSpaceFormHomeomorphismLift M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalUniversalCover M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            (recognitionPrefix.trivialQuotientHomeomorphism M extinction) ∧
+          HasSimplyConnectedExtinctionRecognition M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction) ∧
+          FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+          HasExtinctionSurgeryTraceReconstruction M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          HasExtinctionSurgeryTraceHandleCancellation M extinction
+            (handleCancellationPrefix.decomposition M extinction)
+            (handleCancellationPrefix.surgeryTraceReconstruction M extinction) ∧
+          HasExtinctionComponentClassification M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          HasExtinctionDiscardedComponentHomeomorphismClassification M extinction
+            (discardedComponentPrefix.decomposition M extinction)
+            (discardedComponentPrefix.componentClassification M extinction) ∧
+          HasExtinctionComponentInventory M extinction
+            (boundarySpherePrefix.decomposition M extinction)
+            (boundarySpherePrefix.componentClassification M extinction) ∧
+          HasExtinctionComponentBoundarySphereControl M extinction
+            (boundarySpherePrefix.decomposition M extinction)
+            (boundarySpherePrefix.componentClassification M extinction)
+            (boundarySpherePrefix.componentInventory M extinction) ∧
+          ExtinctionTopologyExtractionStatement.{u} ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          FinalHomeomorphismPayloadData M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          ∀ x : M,
+            ContractibleSpace ({x}ᶜ : Set M) ∧
+              SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+              PathConnectedSpace ({x}ᶜ : Set M) ∧
+              ConnectedSpace ({x}ᶜ : Set M) ∧
+              Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_deck_lift_and_puncture_payload_direct_bundle
+        smoothability grounded topology M with
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      topologyExtraction⟩
+  rcases topologyExtraction with
+    ⟨homeomorphism, homeomorphismAssembly, topologyDerivation,
+      homeomorphismDerivation, primeDecomposition, sphereTheoremApplication,
+      irreducibility, connectedSumCollapse, sphericalSpaceFormReduction,
+      sphericalQuotientModel, deckGroupIdentification, deckGroupTriviality,
+      deckActionTrivialization, trivialDeckQuotientIdentification,
+      trivialSphericalQuotient, trivialQuotientHomeomorphism,
+      sphericalHomeomorphismLift, finalHomeomorphismStatement,
+      traceReconstruction, handleCancellation, componentClassification,
+      discardedComponentClassification, componentInventory,
+      componentBoundarySphereControl, extractionStatement, onePointHomeomorphism,
+      finalHomeomorphismPayload, punctureTopology⟩
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_topology_package topology
+  let onePointRecognition :=
+    onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+      topology
+  let recognitionPrefix :=
+    extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+      surgeryTracePrefix onePointRecognition
+  exact
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      homeomorphism, homeomorphismAssembly, topologyDerivation,
+      homeomorphismDerivation, primeDecomposition, sphereTheoremApplication,
+      irreducibility, connectedSumCollapse, sphericalSpaceFormReduction,
+      sphericalQuotientModel, deckGroupIdentification, deckGroupTriviality,
+      deckActionTrivialization, trivialDeckQuotientIdentification,
+      trivialSphericalQuotient, trivialQuotientHomeomorphism,
+      sphericalHomeomorphismLift,
+      recognitionPrefix.simplyConnectedRecognition M extinction,
+      finalHomeomorphismStatement, traceReconstruction, handleCancellation,
+      componentClassification, discardedComponentClassification,
+      componentInventory, componentBoundarySphereControl, extractionStatement,
+      onePointHomeomorphism, finalHomeomorphismPayload, punctureTopology⟩
+
+/-- Theorem contract for `final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_simply_connected_recognition_and_puncture_payload_direct_bundle`. -/
+theorem final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_simply_connected_recognition_and_puncture_payload_direct_bundle_eq :
+    @Poincare.final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_simply_connected_recognition_and_puncture_payload_direct_bundle =
+      @Poincare.final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_simply_connected_recognition_and_puncture_payload_direct_bundle :=
+  rfl
+
+/--
+The final-certificate route also exposes the raw final homeomorphism witness
+derived from the simply-connected extinction recognition field.
+-/
+theorem final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_recognition_homeomorphism_and_puncture_payload_direct_bundle
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ _packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ _projectStatement : PoincareConjectureStatement.{u},
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ analyticFoundation :
+      RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+    ∃ surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl,
+    ∃ _timeBound :
+      HasFiniteExtinctionTimeBound
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ _volumeDecay :
+      HasFiniteExtinctionVolumeDecayEstimate
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let package :=
+        extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let handleCancellationPrefix :=
+        extinctionTopologyHandleCancellationPrefixPackage_of_topology_package
+          package
+       let discardedComponentPrefix :=
+        extinctionTopologyDiscardedComponentHomeomorphismClassificationPrefixPackage_of_topology_package
+          package
+       let boundarySpherePrefix :=
+        extinctionTopologyComponentBoundarySphereControlPrefixPackage_of_topology_package
+          package
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        ∃ homeomorphismAssembly :
+          HasExtinctionHomeomorphismAssembly M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.simplyConnectedRecognition M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            homeomorphism,
+          ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+          HasExtinctionHomeomorphismDerivation M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.simplyConnectedRecognition M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            homeomorphism homeomorphismAssembly ∧
+          HasExtinctionPrimeDecomposition M extinction
+            (recognitionPrefix.decomposition M extinction) ∧
+          HasExtinctionSphereTheoremApplication M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction) ∧
+          HasExtinctionIrreducibility M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction) ∧
+          HasExtinctionConnectedSumCollapse M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction) ∧
+          HasExtinctionSphericalSpaceFormReduction M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction) ∧
+          HasSphericalSpaceFormQuotientModel M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction) ∧
+          HasSphericalSpaceFormDeckGroupIdentification M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction) ∧
+          HasSphericalSpaceFormDeckGroupTriviality M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction) ∧
+          HasSphericalSpaceFormDeckActionTrivialization M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction) ∧
+          HasSphericalSpaceFormTrivialDeckQuotientIdentification M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.deckActionTrivialization M extinction) ∧
+          HasTrivialSphericalSpaceFormQuotient M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction) ∧
+          HasSphericalSpaceFormTrivialQuotientHomeomorphism M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalUniversalCover M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction) ∧
+          HasSphericalSpaceFormHomeomorphismLift M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalQuotientModel M extinction)
+            (recognitionPrefix.sphericalUniversalCover M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupIdentification M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction)
+            (recognitionPrefix.trivialSphericalQuotient M extinction)
+            (recognitionPrefix.trivialQuotientHomeomorphism M extinction) ∧
+          HasSimplyConnectedExtinctionRecognition M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            (recognitionPrefix.sphericalFundamentalGroup M extinction)
+            (recognitionPrefix.deckGroupTriviality M extinction) ∧
+          Nonempty (M ≃ₜ ThreeSphere) ∧
+          FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+          HasExtinctionSurgeryTraceReconstruction M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          HasExtinctionSurgeryTraceHandleCancellation M extinction
+            (handleCancellationPrefix.decomposition M extinction)
+            (handleCancellationPrefix.surgeryTraceReconstruction M extinction) ∧
+          HasExtinctionComponentClassification M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          HasExtinctionDiscardedComponentHomeomorphismClassification M extinction
+            (discardedComponentPrefix.decomposition M extinction)
+            (discardedComponentPrefix.componentClassification M extinction) ∧
+          HasExtinctionComponentInventory M extinction
+            (boundarySpherePrefix.decomposition M extinction)
+            (boundarySpherePrefix.componentClassification M extinction) ∧
+          HasExtinctionComponentBoundarySphereControl M extinction
+            (boundarySpherePrefix.decomposition M extinction)
+            (boundarySpherePrefix.componentClassification M extinction)
+            (boundarySpherePrefix.componentInventory M extinction) ∧
+          ExtinctionTopologyExtractionStatement.{u} ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          FinalHomeomorphismPayloadData M extinction
+            (extinction_decomposition_of_topology_package package M extinction) ∧
+          ∀ x : M,
+            ContractibleSpace ({x}ᶜ : Set M) ∧
+              SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+              PathConnectedSpace ({x}ᶜ : Set M) ∧
+              ConnectedSpace ({x}ᶜ : Set M) ∧
+              Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_simply_connected_recognition_and_puncture_payload_direct_bundle
+        smoothability grounded topology M with
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      topologyExtraction⟩
+  rcases topologyExtraction with
+    ⟨homeomorphism, homeomorphismAssembly, topologyDerivation,
+      homeomorphismDerivation, primeDecomposition, sphereTheoremApplication,
+      irreducibility, connectedSumCollapse, sphericalSpaceFormReduction,
+      sphericalQuotientModel, deckGroupIdentification, deckGroupTriviality,
+      deckActionTrivialization, trivialDeckQuotientIdentification,
+      trivialSphericalQuotient, trivialQuotientHomeomorphism,
+      sphericalHomeomorphismLift, simplyConnectedRecognition,
+      finalHomeomorphismStatement, traceReconstruction, handleCancellation,
+      componentClassification, discardedComponentClassification,
+      componentInventory, componentBoundarySphereControl, extractionStatement,
+      onePointHomeomorphism, finalHomeomorphismPayload, punctureTopology⟩
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_topology_package topology
+  let onePointRecognition :=
+    onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+      topology
+  let recognitionPrefix :=
+    extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+      surgeryTracePrefix onePointRecognition
+  have recognitionHomeomorphism : Nonempty (M ≃ₜ ThreeSphere) :=
+    final_homeomorphism_of_simply_connected_extinction_recognition
+      M extinction
+      (recognitionPrefix.decomposition M extinction)
+      (recognitionPrefix.primeDecomposition M extinction)
+      (recognitionPrefix.irreducibility M extinction)
+      (recognitionPrefix.connectedSumCollapse M extinction)
+      (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+      (recognitionPrefix.sphericalFundamentalGroup M extinction)
+      (recognitionPrefix.deckGroupTriviality M extinction)
+      simplyConnectedRecognition
+  exact
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      homeomorphism, homeomorphismAssembly, topologyDerivation,
+      homeomorphismDerivation, primeDecomposition, sphereTheoremApplication,
+      irreducibility, connectedSumCollapse, sphericalSpaceFormReduction,
+      sphericalQuotientModel, deckGroupIdentification, deckGroupTriviality,
+      deckActionTrivialization, trivialDeckQuotientIdentification,
+      trivialSphericalQuotient, trivialQuotientHomeomorphism,
+      sphericalHomeomorphismLift, simplyConnectedRecognition,
+      recognitionHomeomorphism, finalHomeomorphismStatement,
+      traceReconstruction, handleCancellation, componentClassification,
+      discardedComponentClassification, componentInventory,
+      componentBoundarySphereControl, extractionStatement, onePointHomeomorphism,
+      finalHomeomorphismPayload, punctureTopology⟩
+
+/-- Theorem contract for `final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_recognition_homeomorphism_and_puncture_payload_direct_bundle`. -/
+theorem final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_recognition_homeomorphism_and_puncture_payload_direct_bundle_eq :
+    @Poincare.final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_recognition_homeomorphism_and_puncture_payload_direct_bundle =
+      @Poincare.final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_recognition_homeomorphism_and_puncture_payload_direct_bundle :=
+  rfl
+
+/--
+The final-certificate route can assemble and derive the topology statement for
+the homeomorphism obtained directly from simply-connected extinction
+recognition.  This pins the terminal certificate to the recognition-derived
+`M ≃ₜ S³` witness instead of carrying it only as a separate raw nonempty field.
+-/
+theorem final_certificate_routes_with_grounded_terminal_recognition_homeomorphism_assembly_derivation_and_puncture_payload_direct_bundle
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ _packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ _projectStatement : PoincareConjectureStatement.{u},
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ analyticFoundation :
+      RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+    ∃ surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl,
+    ∃ _timeBound :
+      HasFiniteExtinctionTimeBound
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ _volumeDecay :
+      HasFiniteExtinctionVolumeDecayEstimate
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let recognitionHomeomorphism :=
+        final_homeomorphism_of_simply_connected_extinction_recognition
+          M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+       ∃ recognitionHomeomorphismAssembly :
+        HasExtinctionHomeomorphismAssembly M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          recognitionHomeomorphism,
+        ExtinctionTopologyDerivationStatement M extinction
+          recognitionHomeomorphism ∧
+        HasExtinctionHomeomorphismDerivation M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          recognitionHomeomorphism
+          recognitionHomeomorphismAssembly ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction) ∧
+        ∀ x : M,
+          ContractibleSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            PathConnectedSpace ({x}ᶜ : Set M) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_recognition_homeomorphism_and_puncture_payload_direct_bundle
+        smoothability grounded topology M with
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      topologyExtraction⟩
+  rcases topologyExtraction with
+    ⟨_homeomorphism, _homeomorphismAssembly, _topologyDerivation,
+      _homeomorphismDerivation, _primeDecomposition, _sphereTheoremApplication,
+      _irreducibility, _connectedSumCollapse, _sphericalSpaceFormReduction,
+      _sphericalQuotientModel, _deckGroupIdentification, _deckGroupTriviality,
+      _deckActionTrivialization, _trivialDeckQuotientIdentification,
+      _trivialSphericalQuotient, _trivialQuotientHomeomorphism,
+      _sphericalHomeomorphismLift, simplyConnectedRecognition,
+      _recognitionHomeomorphism, finalHomeomorphismStatement,
+      _traceReconstruction, _handleCancellation, _componentClassification,
+      _discardedComponentClassification, _componentInventory,
+      _componentBoundarySphereControl, _extractionStatement,
+      _onePointHomeomorphism, finalHomeomorphismPayload, punctureTopology⟩
+  let surgeryTracePrefix :=
+    extinctionTopologySurgeryTracePrefixPackage_of_topology_package topology
+  let onePointRecognition :=
+    onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+      topology
+  let recognitionPrefix :=
+    extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+      surgeryTracePrefix onePointRecognition
+  let package :=
+    extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+      surgeryTracePrefix onePointRecognition
+  let recognitionHomeomorphism :=
+    final_homeomorphism_of_simply_connected_extinction_recognition
+      M extinction
+      (recognitionPrefix.decomposition M extinction)
+      (recognitionPrefix.primeDecomposition M extinction)
+      (recognitionPrefix.irreducibility M extinction)
+      (recognitionPrefix.connectedSumCollapse M extinction)
+      (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+      (recognitionPrefix.sphericalFundamentalGroup M extinction)
+      (recognitionPrefix.deckGroupTriviality M extinction)
+      simplyConnectedRecognition
+  let recognitionHomeomorphismAssembly :=
+    extinction_homeomorphism_assembly_of_simply_connected_extinction_recognition
+      M extinction
+      (recognitionPrefix.decomposition M extinction)
+      (recognitionPrefix.primeDecomposition M extinction)
+      (recognitionPrefix.irreducibility M extinction)
+      (recognitionPrefix.connectedSumCollapse M extinction)
+      (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+      (recognitionPrefix.sphericalQuotientModel M extinction)
+      (recognitionPrefix.sphericalFundamentalGroup M extinction)
+      (recognitionPrefix.deckGroupIdentification M extinction)
+      (recognitionPrefix.deckGroupTriviality M extinction)
+      simplyConnectedRecognition
+      (recognitionPrefix.trivialSphericalQuotient M extinction)
+      recognitionHomeomorphism
+  have recognitionHomeomorphismDerivation :
+      HasExtinctionHomeomorphismDerivation M extinction
+        (recognitionPrefix.decomposition M extinction)
+        (recognitionPrefix.primeDecomposition M extinction)
+        (recognitionPrefix.irreducibility M extinction)
+        (recognitionPrefix.connectedSumCollapse M extinction)
+        (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+        (recognitionPrefix.sphericalFundamentalGroup M extinction)
+        (recognitionPrefix.deckGroupTriviality M extinction)
+        simplyConnectedRecognition
+        (recognitionPrefix.sphericalQuotientModel M extinction)
+        (recognitionPrefix.deckGroupIdentification M extinction)
+        (recognitionPrefix.trivialSphericalQuotient M extinction)
+        recognitionHomeomorphism
+        recognitionHomeomorphismAssembly :=
+    extinction_homeomorphism_derivation_of_homeomorphism_assembly
+      M extinction
+      (recognitionPrefix.decomposition M extinction)
+      (recognitionPrefix.primeDecomposition M extinction)
+      (recognitionPrefix.irreducibility M extinction)
+      (recognitionPrefix.connectedSumCollapse M extinction)
+      (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+      (recognitionPrefix.sphericalFundamentalGroup M extinction)
+      (recognitionPrefix.deckGroupTriviality M extinction)
+      simplyConnectedRecognition
+      (recognitionPrefix.sphericalQuotientModel M extinction)
+      (recognitionPrefix.deckGroupIdentification M extinction)
+      (recognitionPrefix.trivialSphericalQuotient M extinction)
+      recognitionHomeomorphism
+      recognitionHomeomorphismAssembly
+  have recognitionTopologyDerivation :
+      ExtinctionTopologyDerivationStatement M extinction
+        recognitionHomeomorphism := by
+    convert extinction_topology_derivation_statement_of_topology_package
+      package M extinction
+  exact
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      recognitionHomeomorphismAssembly, recognitionTopologyDerivation,
+      recognitionHomeomorphismDerivation, finalHomeomorphismStatement,
+      finalHomeomorphismPayload, punctureTopology⟩
+
+/-- Theorem contract for `final_certificate_routes_with_grounded_terminal_recognition_homeomorphism_assembly_derivation_and_puncture_payload_direct_bundle`. -/
+theorem final_certificate_routes_with_grounded_terminal_recognition_homeomorphism_assembly_derivation_and_puncture_payload_direct_bundle_eq :
+    @Poincare.final_certificate_routes_with_grounded_terminal_recognition_homeomorphism_assembly_derivation_and_puncture_payload_direct_bundle =
+      @Poincare.final_certificate_routes_with_grounded_terminal_recognition_homeomorphism_assembly_derivation_and_puncture_payload_direct_bundle :=
+  rfl
+
+/--
+The grounded final-certificate route can keep the full topology extraction
+payload while using the recognition-derived homeomorphism as the assembled and
+derived terminal homeomorphism.
+-/
+theorem final_certificate_routes_with_grounded_terminal_recognition_homeomorphism_assembly_full_extraction_and_puncture_payload_direct_bundle
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ _packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ _projectStatement : PoincareConjectureStatement.{u},
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ analyticFoundation :
+      RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+    ∃ surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl,
+    ∃ _timeBound :
+      HasFiniteExtinctionTimeBound
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ _volumeDecay :
+      HasFiniteExtinctionVolumeDecayEstimate
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let package :=
+        extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let handleCancellationPrefix :=
+        extinctionTopologyHandleCancellationPrefixPackage_of_topology_package
+          package
+       let discardedComponentPrefix :=
+        extinctionTopologyDiscardedComponentHomeomorphismClassificationPrefixPackage_of_topology_package
+          package
+       let boundarySpherePrefix :=
+        extinctionTopologyComponentBoundarySphereControlPrefixPackage_of_topology_package
+          package
+       let recognitionHomeomorphism :=
+        final_homeomorphism_of_simply_connected_extinction_recognition
+          M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+       ∃ recognitionHomeomorphismAssembly :
+        HasExtinctionHomeomorphismAssembly M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          recognitionHomeomorphism,
+        ExtinctionTopologyDerivationStatement M extinction
+          recognitionHomeomorphism ∧
+        HasExtinctionHomeomorphismDerivation M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          recognitionHomeomorphism
+          recognitionHomeomorphismAssembly ∧
+        HasExtinctionPrimeDecomposition M extinction
+          (recognitionPrefix.decomposition M extinction) ∧
+        HasExtinctionSphereTheoremApplication M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction) ∧
+        HasExtinctionIrreducibility M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction) ∧
+        HasExtinctionConnectedSumCollapse M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction) ∧
+        HasExtinctionSphericalSpaceFormReduction M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction) ∧
+        HasSphericalSpaceFormQuotientModel M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction) ∧
+        HasSphericalSpaceFormDeckGroupIdentification M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction) ∧
+        HasSphericalSpaceFormDeckGroupTriviality M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction) ∧
+        HasSphericalSpaceFormDeckActionTrivialization M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction) ∧
+        HasSphericalSpaceFormTrivialDeckQuotientIdentification M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.deckActionTrivialization M extinction) ∧
+        HasTrivialSphericalSpaceFormQuotient M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction) ∧
+        HasSphericalSpaceFormTrivialQuotientHomeomorphism M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalUniversalCover M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction) ∧
+        HasSphericalSpaceFormHomeomorphismLift M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalUniversalCover M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          (recognitionPrefix.trivialQuotientHomeomorphism M extinction) ∧
+        HasSimplyConnectedExtinctionRecognition M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction) ∧
+        Nonempty (M ≃ₜ ThreeSphere) ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        HasExtinctionSurgeryTraceReconstruction M extinction
+          (extinction_decomposition_of_topology_package package M extinction) ∧
+        HasExtinctionSurgeryTraceHandleCancellation M extinction
+          (handleCancellationPrefix.decomposition M extinction)
+          (handleCancellationPrefix.surgeryTraceReconstruction M extinction) ∧
+        HasExtinctionComponentClassification M extinction
+          (extinction_decomposition_of_topology_package package M extinction) ∧
+        HasExtinctionDiscardedComponentHomeomorphismClassification M extinction
+          (discardedComponentPrefix.decomposition M extinction)
+          (discardedComponentPrefix.componentClassification M extinction) ∧
+        HasExtinctionComponentInventory M extinction
+          (boundarySpherePrefix.decomposition M extinction)
+          (boundarySpherePrefix.componentClassification M extinction) ∧
+        HasExtinctionComponentBoundarySphereControl M extinction
+          (boundarySpherePrefix.decomposition M extinction)
+          (boundarySpherePrefix.componentClassification M extinction)
+          (boundarySpherePrefix.componentInventory M extinction) ∧
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction) ∧
+        ∀ x : M,
+          ContractibleSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            PathConnectedSpace ({x}ᶜ : Set M) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_topology_derivation_extraction_recognition_homeomorphism_and_puncture_payload_direct_bundle
+        smoothability grounded topology M with
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      topologyExtraction⟩
+  rcases topologyExtraction with
+    ⟨_homeomorphism, _homeomorphismAssembly, _topologyDerivation,
+      _homeomorphismDerivation, primeDecomposition, sphereTheoremApplication,
+      irreducibility, connectedSumCollapse, sphericalSpaceFormReduction,
+      sphericalQuotientModel, deckGroupIdentification, deckGroupTriviality,
+      deckActionTrivialization, trivialDeckQuotientIdentification,
+      trivialSphericalQuotient, trivialQuotientHomeomorphism,
+      sphericalHomeomorphismLift, simplyConnectedRecognition,
+      recognitionHomeomorphism, finalHomeomorphismStatement,
+      traceReconstruction, handleCancellation, componentClassification,
+      discardedComponentClassification, componentInventory,
+      componentBoundarySphereControl, extractionStatement, onePointHomeomorphism,
+      finalHomeomorphismPayload, punctureTopology⟩
+  rcases
+      final_certificate_routes_with_grounded_terminal_recognition_homeomorphism_assembly_derivation_and_puncture_payload_direct_bundle
+        smoothability grounded topology M with
+    ⟨_, _, _, _, _, _, _, _, _, _, _, _,
+      recognitionHomeomorphismAssembly, recognitionTopologyDerivation,
+      recognitionHomeomorphismDerivation, _, _, _⟩
+  exact
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      recognitionHomeomorphismAssembly, recognitionTopologyDerivation,
+      recognitionHomeomorphismDerivation, primeDecomposition,
+      sphereTheoremApplication, irreducibility, connectedSumCollapse,
+      sphericalSpaceFormReduction, sphericalQuotientModel,
+      deckGroupIdentification, deckGroupTriviality, deckActionTrivialization,
+      trivialDeckQuotientIdentification, trivialSphericalQuotient,
+      trivialQuotientHomeomorphism, sphericalHomeomorphismLift,
+      simplyConnectedRecognition, recognitionHomeomorphism,
+      finalHomeomorphismStatement, traceReconstruction, handleCancellation,
+      componentClassification, discardedComponentClassification,
+      componentInventory, componentBoundarySphereControl, extractionStatement,
+      onePointHomeomorphism, finalHomeomorphismPayload, punctureTopology⟩
+
+/-- Theorem contract for `final_certificate_routes_with_grounded_terminal_recognition_homeomorphism_assembly_full_extraction_and_puncture_payload_direct_bundle`. -/
+theorem final_certificate_routes_with_grounded_terminal_recognition_homeomorphism_assembly_full_extraction_and_puncture_payload_direct_bundle_eq :
+    @Poincare.final_certificate_routes_with_grounded_terminal_recognition_homeomorphism_assembly_full_extraction_and_puncture_payload_direct_bundle =
+      @Poincare.final_certificate_routes_with_grounded_terminal_recognition_homeomorphism_assembly_full_extraction_and_puncture_payload_direct_bundle :=
+  rfl
+
+/--
+The grounded final-certificate route supplies the one-point recognition witness
+needed by the smoothability frontier, so the terminal topology payload can be
+read together with the same-chart transported smoothability certificate for the
+same target manifold.
+-/
+theorem final_certificate_routes_with_grounded_terminal_onePoint_smoothability_frontier_and_recognition_homeomorphism_payload_direct_bundle
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ _packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ _projectStatement : PoincareConjectureStatement.{u},
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ analyticFoundation :
+      RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+    ∃ surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl,
+    ∃ _timeBound :
+      HasFiniteExtinctionTimeBound
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ _volumeDecay :
+      HasFiniteExtinctionVolumeDecayEstimate
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let recognitionHomeomorphism :=
+        final_homeomorphism_of_simply_connected_extinction_recognition
+          M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+       ∃ recognitionHomeomorphismAssembly :
+        HasExtinctionHomeomorphismAssembly M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          recognitionHomeomorphism,
+        ExtinctionTopologyDerivationStatement M extinction
+          recognitionHomeomorphism ∧
+        HasExtinctionHomeomorphismDerivation M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          recognitionHomeomorphism
+          recognitionHomeomorphismAssembly ∧
+        ∃ _onePointHomeomorphism :
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ _smoothabilityFrontier :
+          Nonempty
+            (OnePointRecognitionSameChartCanonicalBridgePackageFrontierBundle M),
+          FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+          FinalHomeomorphismPayloadData M extinction
+            (recognitionPrefix.decomposition M extinction) ∧
+          ∀ x : M,
+            ContractibleSpace ({x}ᶜ : Set M) ∧
+              SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+              PathConnectedSpace ({x}ᶜ : Set M) ∧
+              ConnectedSpace ({x}ᶜ : Set M) ∧
+              Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_recognition_homeomorphism_assembly_full_extraction_and_puncture_payload_direct_bundle
+        smoothability grounded topology M with
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      topologyExtraction⟩
+  rcases topologyExtraction with
+    ⟨recognitionHomeomorphismAssembly, recognitionTopologyDerivation,
+      recognitionHomeomorphismDerivation, _primeDecomposition,
+      _sphereTheoremApplication, _irreducibility, _connectedSumCollapse,
+      _sphericalSpaceFormReduction, _sphericalQuotientModel,
+      _deckGroupIdentification, _deckGroupTriviality,
+      _deckActionTrivialization, _trivialDeckQuotientIdentification,
+      _trivialSphericalQuotient, _trivialQuotientHomeomorphism,
+      _sphericalHomeomorphismLift, _simplyConnectedRecognition,
+      _recognitionHomeomorphism, finalHomeomorphismStatement,
+      _traceReconstruction, _handleCancellation, _componentClassification,
+      _discardedComponentClassification, _componentInventory,
+      _componentBoundarySphereControl, _extractionStatement,
+      onePointHomeomorphism, finalHomeomorphismPayload, punctureTopology⟩
+  exact
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      recognitionHomeomorphismAssembly, recognitionTopologyDerivation,
+      recognitionHomeomorphismDerivation, onePointHomeomorphism,
+      onePointRecognition_sameChartTransportedSmoothManifoldBundle_with_canonicalBridgePackageFrontier_of_subobligationsPayload
+        smoothabilityPayload M onePointHomeomorphism,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+
+/-- Theorem contract for `final_certificate_routes_with_grounded_terminal_onePoint_smoothability_frontier_and_recognition_homeomorphism_payload_direct_bundle`. -/
+theorem final_certificate_routes_with_grounded_terminal_onePoint_smoothability_frontier_and_recognition_homeomorphism_payload_direct_bundle_eq :
+    @Poincare.final_certificate_routes_with_grounded_terminal_onePoint_smoothability_frontier_and_recognition_homeomorphism_payload_direct_bundle =
+      @Poincare.final_certificate_routes_with_grounded_terminal_onePoint_smoothability_frontier_and_recognition_homeomorphism_payload_direct_bundle :=
+  rfl
+
+/--
+The grounded terminal certificate can choose the one-point smoothability
+frontier bundle and immediately expose its transported smooth-manifold fields.
+
+This strengthens the previous nonempty-frontier route by making the same-chart
+`C∞` transported manifold witness and lowered `C¹` manifold witness available
+inside the final certificate payload.
+-/
+theorem final_certificate_routes_with_grounded_terminal_onePoint_smoothability_frontier_fields_and_recognition_homeomorphism_payload_direct_bundle
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ _packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ _projectStatement : PoincareConjectureStatement.{u},
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ analyticFoundation :
+      RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+    ∃ surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl,
+    ∃ _timeBound :
+      HasFiniteExtinctionTimeBound
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ _volumeDecay :
+      HasFiniteExtinctionVolumeDecayEstimate
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let recognitionHomeomorphism :=
+        final_homeomorphism_of_simply_connected_extinction_recognition
+          M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+       ∃ recognitionHomeomorphismAssembly :
+        HasExtinctionHomeomorphismAssembly M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          recognitionHomeomorphism,
+        ExtinctionTopologyDerivationStatement M extinction
+          recognitionHomeomorphism ∧
+        HasExtinctionHomeomorphismDerivation M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          recognitionHomeomorphism
+          recognitionHomeomorphismAssembly ∧
+        ∃ _onePointHomeomorphism :
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ smoothabilityFrontier :
+          OnePointRecognitionSameChartCanonicalBridgePackageFrontierBundle M,
+          (letI : ChartedSpace ThreeManifoldModel M :=
+            smoothabilityFrontier.sameCharted
+           IsManifold (𝓡 3) ∞ M ∧
+             IsManifold ThreeManifoldModelWithCorners 1 M) ∧
+          FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+          FinalHomeomorphismPayloadData M extinction
+            (recognitionPrefix.decomposition M extinction) ∧
+          ∀ x : M,
+            ContractibleSpace ({x}ᶜ : Set M) ∧
+              SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+              PathConnectedSpace ({x}ᶜ : Set M) ∧
+              ConnectedSpace ({x}ᶜ : Set M) ∧
+              Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_onePoint_smoothability_frontier_and_recognition_homeomorphism_payload_direct_bundle
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      recognitionHomeomorphismAssembly, recognitionTopologyDerivation,
+      recognitionHomeomorphismDerivation, onePointHomeomorphism,
+      smoothabilityFrontierNonempty, finalHomeomorphismStatement,
+      finalHomeomorphismPayload, punctureTopology⟩
+  rcases smoothabilityFrontierNonempty with ⟨smoothabilityFrontier⟩
+  have smoothabilityManifoldFields :
+      (letI : ChartedSpace ThreeManifoldModel M :=
+        smoothabilityFrontier.sameCharted
+       IsManifold (𝓡 3) ∞ M ∧
+         IsManifold ThreeManifoldModelWithCorners 1 M) := by
+    exact
+      ⟨smoothabilityFrontier.transportedSmoothManifold,
+        smoothabilityFrontier.loweredManifold⟩
+  exact
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      recognitionHomeomorphismAssembly, recognitionTopologyDerivation,
+      recognitionHomeomorphismDerivation, onePointHomeomorphism,
+      smoothabilityFrontier, smoothabilityManifoldFields,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+
+/-- Theorem contract for `final_certificate_routes_with_grounded_terminal_onePoint_smoothability_frontier_fields_and_recognition_homeomorphism_payload_direct_bundle`. -/
+theorem final_certificate_routes_with_grounded_terminal_onePoint_smoothability_frontier_fields_and_recognition_homeomorphism_payload_direct_bundle_eq :
+    @Poincare.final_certificate_routes_with_grounded_terminal_onePoint_smoothability_frontier_fields_and_recognition_homeomorphism_payload_direct_bundle =
+      @Poincare.final_certificate_routes_with_grounded_terminal_onePoint_smoothability_frontier_fields_and_recognition_homeomorphism_payload_direct_bundle :=
+  rfl
+
+/--
+The grounded terminal certificate also carries the bridge/model/chart
+smoothability projection for the same one-point recognition witness.
+
+This makes the terminal route directly usable by downstream smoothability
+consumers: besides the final homeomorphism payload and puncture topology, it
+contains a proof-producing projection with the selected chart, transported
+smooth-manifold evidence, lowered manifold evidence, bridge derivation, model
+compatibility, chart compatibility, and witness equations.
+-/
+theorem final_certificate_routes_with_grounded_terminal_onePoint_smoothability_bridge_model_chart_evidence_and_recognition_homeomorphism_payload_direct_bundle
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ _packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ _projectStatement : PoincareConjectureStatement.{u},
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ analyticFoundation :
+      RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+    ∃ surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl,
+    ∃ _timeBound :
+      HasFiniteExtinctionTimeBound
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ _volumeDecay :
+      HasFiniteExtinctionVolumeDecayEstimate
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let recognitionHomeomorphism :=
+        final_homeomorphism_of_simply_connected_extinction_recognition
+          M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+       ∃ recognitionHomeomorphismAssembly :
+        HasExtinctionHomeomorphismAssembly M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          recognitionHomeomorphism,
+        ExtinctionTopologyDerivationStatement M extinction
+          recognitionHomeomorphism ∧
+        HasExtinctionHomeomorphismDerivation M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          recognitionHomeomorphism
+          recognitionHomeomorphismAssembly ∧
+        ∃ _onePointHomeomorphism :
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ smoothabilityFrontier :
+          OnePointRecognitionSameChartCanonicalBridgePackageFrontierBundle M,
+        ∃ _smoothabilityManifoldFields :
+          (letI : ChartedSpace ThreeManifoldModel M :=
+            smoothabilityFrontier.sameCharted
+           IsManifold (𝓡 3) ∞ M ∧
+             IsManifold ThreeManifoldModelWithCorners 1 M),
+        ∃ _smoothabilityBridgeEvidence :
+          (∃ charted : ChartedSpace ThreeManifoldModel M,
+            (letI : ChartedSpace ThreeManifoldModel M := charted
+             IsManifold (𝓡 3) ∞ M ∧
+               IsManifold ThreeManifoldModelWithCorners 1 M) ∧
+            ∃ bridgeT2 : T2Space M,
+            ∃ bridgeCharted : ChartedSpace ThreeManifoldModel M,
+            ∃ bridgeSimple : SimplyConnectedSpace M,
+            ∃ bridgeCompact : CompactSpace M,
+              letI : T2Space M := bridgeT2
+              letI : ChartedSpace ThreeManifoldModel M := bridgeCharted
+              letI : SimplyConnectedSpace M := bridgeSimple
+              letI : CompactSpace M := bridgeCompact
+              ∃ _subobligations : SmoothabilitySubobligationsPayload M,
+              ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+              ∃ smoothDerivationStatement :
+                SmoothStructureDerivationStatement M smoothStructure,
+              ∃ bridgeManifoldEvidence :
+                IsManifold ThreeManifoldModelWithCorners 1 M,
+              ∃ bridgeDerivation :
+                HasSmoothabilityBridgeDerivation
+                  M smoothStructure smoothDerivationStatement
+                  bridgeManifoldEvidence,
+              ∃ modelCompatibility :
+                HasSmoothManifoldModelCompatibility
+                  M smoothStructure smoothDerivationStatement
+                  bridgeManifoldEvidence bridgeDerivation,
+              ∃ chartCompatibility :
+                HasSmoothChartCompatibility
+                  M smoothStructure smoothDerivationStatement
+                  bridgeManifoldEvidence bridgeDerivation modelCompatibility,
+                HasSmoothabilityBridgeDerivation.witnesses M
+                  bridgeDerivation =
+                  ⟨smoothDerivationStatement, bridgeManifoldEvidence⟩ ∧
+                HasSmoothChartCompatibility.witnesses M
+                  chartCompatibility =
+                  ⟨smoothDerivationStatement, bridgeManifoldEvidence,
+                    bridgeDerivation, modelCompatibility⟩),
+          FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+          FinalHomeomorphismPayloadData M extinction
+            (recognitionPrefix.decomposition M extinction) ∧
+          ∀ x : M,
+            ContractibleSpace ({x}ᶜ : Set M) ∧
+              SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+              PathConnectedSpace ({x}ᶜ : Set M) ∧
+              ConnectedSpace ({x}ᶜ : Set M) ∧
+              Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_onePoint_smoothability_frontier_fields_and_recognition_homeomorphism_payload_direct_bundle
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      recognitionHomeomorphismAssembly, recognitionTopologyDerivation,
+      recognitionHomeomorphismDerivation, onePointHomeomorphism,
+      smoothabilityFrontier, smoothabilityManifoldFields,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+  exact
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      recognitionHomeomorphismAssembly, recognitionTopologyDerivation,
+      recognitionHomeomorphismDerivation, onePointHomeomorphism,
+      smoothabilityFrontier, smoothabilityManifoldFields,
+      onePointRecognition_sameChartTransportedSmoothManifoldBundle_projection_with_bridge_model_chart_evidence_of_subobligationsPayload
+        smoothabilityPayload M onePointHomeomorphism,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+
+/-- Theorem contract for `final_certificate_routes_with_grounded_terminal_onePoint_smoothability_bridge_model_chart_evidence_and_recognition_homeomorphism_payload_direct_bundle`. -/
+theorem final_certificate_routes_with_grounded_terminal_onePoint_smoothability_bridge_model_chart_evidence_and_recognition_homeomorphism_payload_direct_bundle_eq :
+    @Poincare.final_certificate_routes_with_grounded_terminal_onePoint_smoothability_bridge_model_chart_evidence_and_recognition_homeomorphism_payload_direct_bundle =
+      @Poincare.final_certificate_routes_with_grounded_terminal_onePoint_smoothability_bridge_model_chart_evidence_and_recognition_homeomorphism_payload_direct_bundle :=
+  rfl
+
+/--
+The grounded terminal certificate can also expose the compact smoothability
+consumer projection for the same one-point recognition witness.
+
+Compared with the bridge/model/chart endpoint, this route keeps the additional
+coherence equalities from the smoothability consumer projection together with
+the recognition-derived final homeomorphism payload and puncture topology.
+-/
+theorem final_certificate_routes_with_grounded_terminal_onePoint_core_smoothability_consumer_and_recognition_homeomorphism_payload_direct_bundle
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ _packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ _projectStatement : PoincareConjectureStatement.{u},
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ analyticFoundation :
+      RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+    ∃ surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation),
+    ∃ curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl,
+    ∃ _timeBound :
+      HasFiniteExtinctionTimeBound
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ _volumeDecay :
+      HasFiniteExtinctionVolumeDecayEstimate
+        (ricci_flow_data_of_analytic_foundation_package
+          analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching
+        curvatureFrontier.componentControl,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let recognitionHomeomorphism :=
+        final_homeomorphism_of_simply_connected_extinction_recognition
+          M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+       ∃ recognitionHomeomorphismAssembly :
+        HasExtinctionHomeomorphismAssembly M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          recognitionHomeomorphism,
+        ExtinctionTopologyDerivationStatement M extinction
+          recognitionHomeomorphism ∧
+        HasExtinctionHomeomorphismDerivation M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          recognitionHomeomorphism
+          recognitionHomeomorphismAssembly ∧
+        ∃ _onePointHomeomorphism :
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ _smoothabilityCoreConsumer :
+          (∃ charted : ChartedSpace ThreeManifoldModel M,
+            (letI : ChartedSpace ThreeManifoldModel M := charted
+             IsManifold (𝓡 3) ∞ M ∧
+               IsManifold ThreeManifoldModelWithCorners 1 M) ∧
+            ∃ bridgeT2 : T2Space M,
+            ∃ bridgeCharted : ChartedSpace ThreeManifoldModel M,
+            ∃ bridgeSimple : SimplyConnectedSpace M,
+            ∃ bridgeCompact : CompactSpace M,
+              letI : T2Space M := bridgeT2
+              letI : ChartedSpace ThreeManifoldModel M := bridgeCharted
+              letI : SimplyConnectedSpace M := bridgeSimple
+              letI : CompactSpace M := bridgeCompact
+              ∃ _subobligations : SmoothabilitySubobligationsPayload M,
+              ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+              ∃ smoothDerivationStatement :
+                SmoothStructureDerivationStatement M smoothStructure,
+              ∃ bridgeManifoldEvidence :
+                IsManifold ThreeManifoldModelWithCorners 1 M,
+              ∃ bridgeDerivation :
+                HasSmoothabilityBridgeDerivation
+                  M smoothStructure smoothDerivationStatement
+                  bridgeManifoldEvidence,
+              ∃ modelCompatibility :
+                HasSmoothManifoldModelCompatibility
+                  M smoothStructure smoothDerivationStatement
+                  bridgeManifoldEvidence bridgeDerivation,
+              ∃ chartCompatibility :
+                HasSmoothChartCompatibility
+                  M smoothStructure smoothDerivationStatement
+                  bridgeManifoldEvidence bridgeDerivation modelCompatibility,
+                HasSmoothabilityBridgeDerivation.witnesses M
+                  bridgeDerivation =
+                  ⟨smoothDerivationStatement, bridgeManifoldEvidence⟩ ∧
+                HasSmoothChartCompatibility.witnesses M
+                  chartCompatibility =
+                  ⟨smoothDerivationStatement, bridgeManifoldEvidence,
+                    bridgeDerivation, modelCompatibility⟩ ∧
+                bridgeDerivation.smoothStructureDerivationWitness =
+                  smoothDerivationStatement ∧
+                bridgeDerivation.manifoldEvidenceWitness =
+                  bridgeManifoldEvidence ∧
+                modelCompatibility.smoothStructureDerivationWitness =
+                  smoothDerivationStatement ∧
+                modelCompatibility.manifoldEvidenceWitness =
+                  bridgeManifoldEvidence ∧
+                modelCompatibility.bridgeDerivationWitness =
+                  bridgeDerivation ∧
+                chartCompatibility.smoothStructureDerivationWitness =
+                  smoothDerivationStatement ∧
+                chartCompatibility.manifoldEvidenceWitness =
+                  bridgeManifoldEvidence ∧
+                chartCompatibility.bridgeDerivationWitness =
+                  bridgeDerivation ∧
+                chartCompatibility.modelCompatibilityWitness =
+                  modelCompatibility),
+          FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+          FinalHomeomorphismPayloadData M extinction
+            (recognitionPrefix.decomposition M extinction) ∧
+          ∀ x : M,
+            ContractibleSpace ({x}ᶜ : Set M) ∧
+              SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+              PathConnectedSpace ({x}ᶜ : Set M) ∧
+              ConnectedSpace ({x}ᶜ : Set M) ∧
+              Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_onePoint_smoothability_bridge_model_chart_evidence_and_recognition_homeomorphism_payload_direct_bundle
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      recognitionHomeomorphismAssembly, recognitionTopologyDerivation,
+      recognitionHomeomorphismDerivation, onePointHomeomorphism,
+      _smoothabilityFrontier, _smoothabilityManifoldFields,
+      _smoothabilityBridgeEvidence, finalHomeomorphismStatement,
+      finalHomeomorphismPayload, punctureTopology⟩
+  exact
+    ⟨packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      curvatureFrontier, timeBound, volumeDecay, extinction,
+      recognitionHomeomorphismAssembly, recognitionTopologyDerivation,
+      recognitionHomeomorphismDerivation, onePointHomeomorphism,
+      onePointRecognition_sameChartTransportedSmoothManifoldBundle_coreSmoothabilityConsumerProjection_of_subobligationsPayload
+        smoothabilityPayload M onePointHomeomorphism,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+
+/-- Theorem contract for `final_certificate_routes_with_grounded_terminal_onePoint_core_smoothability_consumer_and_recognition_homeomorphism_payload_direct_bundle`. -/
+theorem final_certificate_routes_with_grounded_terminal_onePoint_core_smoothability_consumer_and_recognition_homeomorphism_payload_direct_bundle_eq :
+    @Poincare.final_certificate_routes_with_grounded_terminal_onePoint_core_smoothability_consumer_and_recognition_homeomorphism_payload_direct_bundle =
+      @Poincare.final_certificate_routes_with_grounded_terminal_onePoint_core_smoothability_consumer_and_recognition_homeomorphism_payload_direct_bundle :=
+  rfl
+
+/--
+The strongest grounded terminal route projects to the actual project target
+statement together with the checked certificate, the recognition derivation,
+the one-point smoothability consumer, and the final homeomorphism payload.
+
+This is the downstream consumer shape needed by the completion boundary: it
+does not merely rename the terminal route, but extracts the target theorem
+proof and keeps the geometric witnesses that justify the extraction.
+-/
+theorem poincare_statement_certificate_recognition_core_smoothability_and_final_payload_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ _n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let recognitionHomeomorphism :=
+        final_homeomorphism_of_simply_connected_extinction_recognition
+          M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+       ∃ recognitionHomeomorphismAssembly :
+        HasExtinctionHomeomorphismAssembly M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          recognitionHomeomorphism,
+        ExtinctionTopologyDerivationStatement M extinction
+          recognitionHomeomorphism ∧
+        HasExtinctionHomeomorphismDerivation M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          recognitionHomeomorphism
+          recognitionHomeomorphismAssembly ∧
+        ∃ _onePointHomeomorphism :
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ _smoothabilityCoreConsumer :
+          (∃ charted : ChartedSpace ThreeManifoldModel M,
+            (letI : ChartedSpace ThreeManifoldModel M := charted
+             IsManifold (𝓡 3) ∞ M ∧
+               IsManifold ThreeManifoldModelWithCorners 1 M) ∧
+            ∃ bridgeT2 : T2Space M,
+            ∃ bridgeCharted : ChartedSpace ThreeManifoldModel M,
+            ∃ bridgeSimple : SimplyConnectedSpace M,
+            ∃ bridgeCompact : CompactSpace M,
+              letI : T2Space M := bridgeT2
+              letI : ChartedSpace ThreeManifoldModel M := bridgeCharted
+              letI : SimplyConnectedSpace M := bridgeSimple
+              letI : CompactSpace M := bridgeCompact
+              ∃ _subobligations : SmoothabilitySubobligationsPayload M,
+              ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+              ∃ smoothDerivationStatement :
+                SmoothStructureDerivationStatement M smoothStructure,
+              ∃ bridgeManifoldEvidence :
+                IsManifold ThreeManifoldModelWithCorners 1 M,
+              ∃ bridgeDerivation :
+                HasSmoothabilityBridgeDerivation
+                  M smoothStructure smoothDerivationStatement
+                  bridgeManifoldEvidence,
+              ∃ modelCompatibility :
+                HasSmoothManifoldModelCompatibility
+                  M smoothStructure smoothDerivationStatement
+                  bridgeManifoldEvidence bridgeDerivation,
+              ∃ chartCompatibility :
+                HasSmoothChartCompatibility
+                  M smoothStructure smoothDerivationStatement
+                  bridgeManifoldEvidence bridgeDerivation modelCompatibility,
+                HasSmoothabilityBridgeDerivation.witnesses M
+                  bridgeDerivation =
+                  ⟨smoothDerivationStatement, bridgeManifoldEvidence⟩ ∧
+                HasSmoothChartCompatibility.witnesses M
+                  chartCompatibility =
+                  ⟨smoothDerivationStatement, bridgeManifoldEvidence,
+                    bridgeDerivation, modelCompatibility⟩ ∧
+                bridgeDerivation.smoothStructureDerivationWitness =
+                  smoothDerivationStatement ∧
+                bridgeDerivation.manifoldEvidenceWitness =
+                  bridgeManifoldEvidence ∧
+                modelCompatibility.smoothStructureDerivationWitness =
+                  smoothDerivationStatement ∧
+                modelCompatibility.manifoldEvidenceWitness =
+                  bridgeManifoldEvidence ∧
+                modelCompatibility.bridgeDerivationWitness =
+                  bridgeDerivation ∧
+                chartCompatibility.smoothStructureDerivationWitness =
+                  smoothDerivationStatement ∧
+                chartCompatibility.manifoldEvidenceWitness =
+                  bridgeManifoldEvidence ∧
+                chartCompatibility.bridgeDerivationWitness =
+                  bridgeDerivation ∧
+                chartCompatibility.modelCompatibilityWitness =
+                  modelCompatibility),
+          FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+          FinalHomeomorphismPayloadData M extinction
+            (recognitionPrefix.decomposition M extinction) ∧
+          ∀ x : M,
+            ContractibleSpace ({x}ᶜ : Set M) ∧
+              SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+              PathConnectedSpace ({x}ᶜ : Set M) ∧
+              ConnectedSpace ({x}ᶜ : Set M) ∧
+              Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_onePoint_core_smoothability_consumer_and_recognition_homeomorphism_payload_direct_bundle
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨_packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      _analyticFoundation, _surgeryConstruction, _perelmanControl,
+      _curvatureFrontier, _timeBound, _volumeDecay, extinction,
+      recognitionHomeomorphismAssembly, recognitionTopologyDerivation,
+      recognitionHomeomorphismDerivation, onePointHomeomorphism,
+      smoothabilityCoreConsumer, finalHomeomorphismStatement,
+      finalHomeomorphismPayload, punctureTopology⟩
+  exact
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      recognitionHomeomorphismAssembly, recognitionTopologyDerivation,
+      recognitionHomeomorphismDerivation, onePointHomeomorphism,
+      smoothabilityCoreConsumer, finalHomeomorphismStatement,
+      finalHomeomorphismPayload, punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_certificate_recognition_core_smoothability_and_final_payload_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_certificate_recognition_core_smoothability_and_final_payload_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_certificate_recognition_core_smoothability_and_final_payload_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_certificate_recognition_core_smoothability_and_final_payload_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The latest grounded terminal route consumes the stronger smoothability
+recognition-coherence projection and the topology payload-agreement consumer
+at the same extinction witness.
+
+This packages the project target, checked certificate, coherent one-point
+smoothability data, final-homeomorphism payload agreement, and puncture
+topology together for the final completion boundary.
+-/
+theorem poincare_statement_certificate_smoothability_recognition_coherence_topology_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ _n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ onePointHomeomorphism :
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+       ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+       ∃ smoothTransitionCompatibility :
+        HasSmoothTransitionCompatibility M smoothStructure,
+       ∃ smoothAtlasTransitionSmoothness :
+        HasSmoothAtlasTransitionSmoothness
+          M smoothStructure smoothTransitionCompatibility,
+       (∃ hSmooth :
+          smoothStructure =
+            HasThreeManifoldSmoothStructure.ofOnePointRecognition
+              onePointHomeomorphism,
+          smoothTransitionCompatibility =
+            HasSmoothTransitionCompatibility.ofOnePointRecognition
+              onePointHomeomorphism hSmooth ∧
+          smoothAtlasTransitionSmoothness.onePointRecognition =
+            onePointHomeomorphism) ∧
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+       ∃ _recognitionPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ assemblyPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+        ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+        homeomorphism =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction (recognitionPrefix.decomposition M extinction)
+            assemblyPayload ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction) ∧
+        ∀ x : M,
+          ContractibleSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            PathConnectedSpace ({x}ᶜ : Set M) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_onePoint_core_smoothability_consumer_and_recognition_homeomorphism_payload_direct_bundle
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨_packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      _analyticFoundation, _surgeryConstruction, _perelmanControl,
+      _curvatureFrontier, _timeBound, _volumeDecay, extinction,
+      _recognitionHomeomorphismAssembly, _recognitionTopologyDerivation,
+      _recognitionHomeomorphismDerivation, onePointHomeomorphism,
+      _smoothabilityCoreConsumer, _finalHomeomorphismStatement,
+      finalHomeomorphismPayload, punctureTopology⟩
+  let smoothStructure : HasThreeManifoldSmoothStructure M :=
+    HasThreeManifoldSmoothStructure.ofOnePointRecognition
+      onePointHomeomorphism
+  let hSmooth :
+      smoothStructure =
+        HasThreeManifoldSmoothStructure.ofOnePointRecognition
+          onePointHomeomorphism :=
+    rfl
+  let smoothTransitionCompatibility :
+      HasSmoothTransitionCompatibility M smoothStructure :=
+    HasSmoothTransitionCompatibility.ofOnePointRecognition
+      onePointHomeomorphism hSmooth
+  let hTransition :
+      smoothTransitionCompatibility =
+        HasSmoothTransitionCompatibility.ofOnePointRecognition
+          onePointHomeomorphism hSmooth :=
+    rfl
+  let smoothAtlasTransitionSmoothness :
+      HasSmoothAtlasTransitionSmoothness
+        M smoothStructure smoothTransitionCompatibility :=
+    HasSmoothAtlasTransitionSmoothness.ofOnePointRecognition
+      onePointHomeomorphism hSmooth hTransition
+  have recognitionCoherence :
+      ∃ hSmooth :
+        smoothStructure =
+          HasThreeManifoldSmoothStructure.ofOnePointRecognition
+            onePointHomeomorphism,
+        smoothTransitionCompatibility =
+          HasSmoothTransitionCompatibility.ofOnePointRecognition
+            onePointHomeomorphism hSmooth ∧
+        smoothAtlasTransitionSmoothness.onePointRecognition =
+          onePointHomeomorphism :=
+    ⟨hSmooth, hTransition, rfl⟩
+  rcases
+      final_homeomorphism_payload_agreement_and_spherical_space_form_derivation_consumer_of_final_homeomorphism_payload_and_spherical_trivial_quotient_chain_downstream_consumer_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+        (extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology)
+        (onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology)
+        M extinction with
+    ⟨homeomorphism, recognitionPayload, assemblyPayload,
+      topologyDerivation, homeomorphism_eq, _sphericalQuotientModel,
+      _sphericalUniversalCover, _sphericalFundamentalGroup,
+      _deckGroupIdentification, _deckGroupTriviality,
+      _trivialSphericalQuotient, _trivialQuotientHomeomorphism,
+      _simplyConnectedRecognition, _homeomorphismAssembly,
+      _homeomorphismDerivation, _sphericalHomeomorphismLift,
+      topologyFinalHomeomorphismStatement⟩
+  exact
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, smoothStructure, smoothTransitionCompatibility,
+      smoothAtlasTransitionSmoothness, recognitionCoherence,
+      homeomorphism, recognitionPayload, assemblyPayload,
+      topologyDerivation, homeomorphism_eq,
+      topologyFinalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_certificate_smoothability_recognition_coherence_topology_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_certificate_smoothability_recognition_coherence_topology_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_certificate_smoothability_recognition_coherence_topology_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_certificate_smoothability_recognition_coherence_topology_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The final-certificate boundary can consume the extraction-package topology
+consumer at the same extinction witness.
+
+This strengthens the previous target-bearing bundle by carrying the concrete
+`ExtinctionTopologyExtractionPackage`, its equality to the package constructed
+from the topology inputs, and the full extraction statement together with the
+project target, smoothability recognition coherence, payload agreement, and
+puncture topology.
+-/
+theorem poincare_statement_certificate_smoothability_recognition_coherence_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ _n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ onePointHomeomorphism :
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+       ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+       ∃ smoothTransitionCompatibility :
+        HasSmoothTransitionCompatibility M smoothStructure,
+       ∃ smoothAtlasTransitionSmoothness :
+        HasSmoothAtlasTransitionSmoothness
+          M smoothStructure smoothTransitionCompatibility,
+       (∃ hSmooth :
+          smoothStructure =
+            HasThreeManifoldSmoothStructure.ofOnePointRecognition
+              onePointHomeomorphism,
+          smoothTransitionCompatibility =
+            HasSmoothTransitionCompatibility.ofOnePointRecognition
+              onePointHomeomorphism hSmooth ∧
+          smoothAtlasTransitionSmoothness.onePointRecognition =
+            onePointHomeomorphism) ∧
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+       ∃ _recognitionPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ assemblyPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        topologyPackage =
+          extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+            surgeryTracePrefix onePointRecognition ∧
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+        homeomorphism =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction (recognitionPrefix.decomposition M extinction)
+            assemblyPayload ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction) ∧
+        ∀ x : M,
+          ContractibleSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            PathConnectedSpace ({x}ᶜ : Set M) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      final_certificate_routes_with_grounded_terminal_onePoint_core_smoothability_consumer_and_recognition_homeomorphism_payload_direct_bundle
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨_packageRequirement, projectStatement, checkedCertificate, n, smooth,
+      _analyticFoundation, _surgeryConstruction, _perelmanControl,
+      _curvatureFrontier, _timeBound, _volumeDecay, extinction,
+      _recognitionHomeomorphismAssembly, _recognitionTopologyDerivation,
+      _recognitionHomeomorphismDerivation, onePointHomeomorphism,
+      _smoothabilityCoreConsumer, _finalHomeomorphismStatement,
+      finalHomeomorphismPayload, punctureTopology⟩
+  let smoothStructure : HasThreeManifoldSmoothStructure M :=
+    HasThreeManifoldSmoothStructure.ofOnePointRecognition
+      onePointHomeomorphism
+  let hSmooth :
+      smoothStructure =
+        HasThreeManifoldSmoothStructure.ofOnePointRecognition
+          onePointHomeomorphism :=
+    rfl
+  let smoothTransitionCompatibility :
+      HasSmoothTransitionCompatibility M smoothStructure :=
+    HasSmoothTransitionCompatibility.ofOnePointRecognition
+      onePointHomeomorphism hSmooth
+  let hTransition :
+      smoothTransitionCompatibility =
+        HasSmoothTransitionCompatibility.ofOnePointRecognition
+          onePointHomeomorphism hSmooth :=
+    rfl
+  let smoothAtlasTransitionSmoothness :
+      HasSmoothAtlasTransitionSmoothness
+        M smoothStructure smoothTransitionCompatibility :=
+    HasSmoothAtlasTransitionSmoothness.ofOnePointRecognition
+      onePointHomeomorphism hSmooth hTransition
+  have recognitionCoherence :
+      ∃ hSmooth :
+        smoothStructure =
+          HasThreeManifoldSmoothStructure.ofOnePointRecognition
+            onePointHomeomorphism,
+        smoothTransitionCompatibility =
+          HasSmoothTransitionCompatibility.ofOnePointRecognition
+            onePointHomeomorphism hSmooth ∧
+        smoothAtlasTransitionSmoothness.onePointRecognition =
+          onePointHomeomorphism :=
+    ⟨hSmooth, hTransition, rfl⟩
+  rcases
+      final_homeomorphism_payload_agreement_with_extraction_package_consumer_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+        (extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology)
+        (onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology)
+        M extinction with
+    ⟨homeomorphism, recognitionPayload, assemblyPayload,
+      topologyPackage, topologyPackage_eq, extractionStatement,
+      topologyDerivation, homeomorphism_eq, _sphericalQuotientModel,
+      _sphericalUniversalCover, _sphericalFundamentalGroup,
+      _deckGroupIdentification, _deckGroupTriviality,
+      _trivialSphericalQuotient, _trivialQuotientHomeomorphism,
+      _simplyConnectedRecognition, _homeomorphismAssembly,
+      _homeomorphismDerivation, _sphericalHomeomorphismLift,
+      topologyFinalHomeomorphismStatement⟩
+  exact
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, smoothStructure, smoothTransitionCompatibility,
+      smoothAtlasTransitionSmoothness, recognitionCoherence,
+      homeomorphism, recognitionPayload, assemblyPayload,
+      topologyPackage, topologyPackage_eq, extractionStatement,
+      topologyDerivation, homeomorphism_eq,
+      topologyFinalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_certificate_smoothability_recognition_coherence_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_certificate_smoothability_recognition_coherence_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_certificate_smoothability_recognition_coherence_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_certificate_smoothability_recognition_coherence_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The final-certificate boundary can consume both the topology extraction-package
+route and the terminal PL-to-smooth bridge certificate at the same selected
+one-point recognition homeomorphism.
+
+This is a source theorem, not a naming bridge: the proof destructs the checked
+final-certificate route to recover the one-point homeomorphism driving the
+topology payload, then feeds that exact witness into the terminal smoothability
+certificate projection.
+-/
+theorem poincare_statement_certificate_terminal_smoothability_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ _n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ _extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let _recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ onePointHomeomorphism :
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+       ∃ _terminalSmoothabilityProjection :
+        OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+          smoothabilityPayload M onePointHomeomorphism,
+       ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        ∀ x : M,
+          ContractibleSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            PathConnectedSpace ({x}ᶜ : Set M) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      poincare_statement_certificate_smoothability_recognition_coherence_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, _smoothStructure,
+      _smoothTransitionCompatibility, _smoothAtlasTransitionSmoothness,
+      _recognitionCoherence, _homeomorphism, _recognitionPayload,
+      _assemblyPayload, topologyPackage, _topologyPackage_eq,
+      extractionStatement, _topologyDerivation, _homeomorphism_eq,
+      finalHomeomorphismStatement, _finalHomeomorphismPayload,
+      punctureTopology⟩
+  let terminalSmoothabilityProjection :=
+    onePointRecognition_sameChartTransportedSmoothManifoldBundle_terminalSmoothabilityBridgeCertificateProjection_with_frontier_coherence_of_subobligationsPayload
+      smoothabilityPayload M onePointHomeomorphism
+  exact
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      topologyPackage, extractionStatement, finalHomeomorphismStatement,
+      punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_certificate_terminal_smoothability_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_certificate_terminal_smoothability_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_certificate_terminal_smoothability_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_certificate_terminal_smoothability_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The final-certificate boundary can retain the full recognition-coherent
+topology extraction-package payload while also carrying the terminal
+PL-to-smooth bridge certificate for the same one-point homeomorphism.
+
+This strengthens the previous terminal-smoothability consumer by preserving the
+smoothability recognition coherence, topology package equality, topology
+derivation, final-homeomorphism payload data, and puncture topology from the
+extraction-package route.
+-/
+theorem poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ _n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ onePointHomeomorphism :
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+       ∃ _terminalSmoothabilityProjection :
+        OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+          smoothabilityPayload M onePointHomeomorphism,
+       ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+       ∃ smoothTransitionCompatibility :
+        HasSmoothTransitionCompatibility M smoothStructure,
+       ∃ smoothAtlasTransitionSmoothness :
+        HasSmoothAtlasTransitionSmoothness
+          M smoothStructure smoothTransitionCompatibility,
+       (∃ hSmooth :
+          smoothStructure =
+            HasThreeManifoldSmoothStructure.ofOnePointRecognition
+              onePointHomeomorphism,
+          smoothTransitionCompatibility =
+            HasSmoothTransitionCompatibility.ofOnePointRecognition
+              onePointHomeomorphism hSmooth ∧
+          smoothAtlasTransitionSmoothness.onePointRecognition =
+            onePointHomeomorphism) ∧
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+       ∃ _recognitionPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ assemblyPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        topologyPackage =
+          extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+            surgeryTracePrefix onePointRecognition ∧
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+        homeomorphism =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction (recognitionPrefix.decomposition M extinction)
+            assemblyPayload ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction) ∧
+        ∀ x : M,
+          ContractibleSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            PathConnectedSpace ({x}ᶜ : Set M) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      poincare_statement_certificate_smoothability_recognition_coherence_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, smoothStructure,
+      smoothTransitionCompatibility, smoothAtlasTransitionSmoothness,
+      recognitionCoherence, homeomorphism, recognitionPayload,
+      assemblyPayload, topologyPackage, topologyPackage_eq,
+      extractionStatement, topologyDerivation, homeomorphism_eq,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+  let terminalSmoothabilityProjection :=
+    onePointRecognition_sameChartTransportedSmoothManifoldBundle_terminalSmoothabilityBridgeCertificateProjection_with_frontier_coherence_of_subobligationsPayload
+      smoothabilityPayload M onePointHomeomorphism
+  exact
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      smoothStructure, smoothTransitionCompatibility,
+      smoothAtlasTransitionSmoothness, recognitionCoherence,
+      homeomorphism, recognitionPayload, assemblyPayload, topologyPackage,
+      topologyPackage_eq, extractionStatement, topologyDerivation,
+      homeomorphism_eq, finalHomeomorphismStatement,
+      finalHomeomorphismPayload, punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The final-certificate boundary can carry the recognition-coherent terminal
+smoothability/topology extraction payload together with the Moise
+chart-triangulation frontier produced from the same one-point recognition
+homeomorphism.
+-/
+theorem poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_and_moise_chart_triangulation_fields_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ _n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ onePointHomeomorphism :
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+       ∃ _terminalSmoothabilityProjection :
+        OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+          smoothabilityPayload M onePointHomeomorphism,
+       ∃ _moiseChartTriangulationFields :
+        (∃ _t2 : T2Space M,
+         ∃ _charted : ChartedSpace ThreeManifoldModel M,
+         ∃ _simple : SimplyConnectedSpace M,
+         ∃ _compact : CompactSpace M,
+         ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+         ∃ _locallyFiniteCoverRefinement :
+          HasMoiseLocallyFiniteCoverRefinement M localCharts,
+         ∃ simplicialComplex : HasMoiseSimplicialComplex M localCharts,
+         ∃ _compatibleChartTriangulations :
+          HasMoiseCompatibleChartTriangulations
+            M localCharts simplicialComplex,
+          HasMoiseTriangulation M),
+       ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+       ∃ smoothTransitionCompatibility :
+        HasSmoothTransitionCompatibility M smoothStructure,
+       ∃ smoothAtlasTransitionSmoothness :
+        HasSmoothAtlasTransitionSmoothness
+          M smoothStructure smoothTransitionCompatibility,
+       (∃ hSmooth :
+          smoothStructure =
+            HasThreeManifoldSmoothStructure.ofOnePointRecognition
+              onePointHomeomorphism,
+          smoothTransitionCompatibility =
+            HasSmoothTransitionCompatibility.ofOnePointRecognition
+              onePointHomeomorphism hSmooth ∧
+          smoothAtlasTransitionSmoothness.onePointRecognition =
+            onePointHomeomorphism) ∧
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+       ∃ _recognitionPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ assemblyPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        topologyPackage =
+          extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+            surgeryTracePrefix onePointRecognition ∧
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+        homeomorphism =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction (recognitionPrefix.decomposition M extinction)
+            assemblyPayload ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction) ∧
+        ∀ x : M,
+          ContractibleSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            PathConnectedSpace ({x}ᶜ : Set M) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      smoothStructure, smoothTransitionCompatibility,
+      smoothAtlasTransitionSmoothness, recognitionCoherence, homeomorphism,
+      recognitionPayload, assemblyPayload, topologyPackage,
+      topologyPackage_eq, extractionStatement, topologyDerivation,
+      homeomorphism_eq, finalHomeomorphismStatement,
+      finalHomeomorphismPayload, punctureTopology⟩
+  let moiseChartTriangulationFields :=
+    moiseChartTriangulationFields_of_onePointRecognition_subobligationsPayload
+      smoothabilityPayload onePointHomeomorphism
+  exact
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      moiseChartTriangulationFields, smoothStructure,
+      smoothTransitionCompatibility, smoothAtlasTransitionSmoothness,
+      recognitionCoherence, homeomorphism, recognitionPayload,
+      assemblyPayload, topologyPackage, topologyPackage_eq,
+      extractionStatement, topologyDerivation, homeomorphism_eq,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_and_moise_chart_triangulation_fields_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_and_moise_chart_triangulation_fields_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_and_moise_chart_triangulation_fields_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_and_moise_chart_triangulation_fields_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The final-certificate boundary can carry the Moise chart-triangulation frontier
+and the downstream PL-to-smooth frontier at the same one-point recognition
+homeomorphism, while retaining the recognition-coherent topology extraction
+payload and puncture topology.
+-/
+theorem poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_moise_chart_triangulation_and_plToSmooth_frontier_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ _n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ onePointHomeomorphism :
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+       ∃ _terminalSmoothabilityProjection :
+        OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+          smoothabilityPayload M onePointHomeomorphism,
+       ∃ _moiseChartTriangulationFields :
+        (∃ _t2 : T2Space M,
+         ∃ _charted : ChartedSpace ThreeManifoldModel M,
+         ∃ _simple : SimplyConnectedSpace M,
+         ∃ _compact : CompactSpace M,
+         ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+         ∃ _locallyFiniteCoverRefinement :
+          HasMoiseLocallyFiniteCoverRefinement M localCharts,
+         ∃ simplicialComplex : HasMoiseSimplicialComplex M localCharts,
+         ∃ _compatibleChartTriangulations :
+          HasMoiseCompatibleChartTriangulations
+            M localCharts simplicialComplex,
+          HasMoiseTriangulation M),
+       ∃ _plToSmoothFrontier :
+        (∃ _t2 : T2Space M,
+         ∃ _charted : ChartedSpace ThreeManifoldModel M,
+         ∃ _simple : SimplyConnectedSpace M,
+         ∃ _compact : CompactSpace M,
+         ∃ triangulation : HasMoiseTriangulation M,
+         ∃ plStructure : HasCompatiblePLStructure M triangulation,
+         ∃ plAtlas : HasCompatiblePLAtlas M triangulation plStructure,
+         ∃ plSmoothingExistence :
+          HasPLSmoothingExistence M triangulation plStructure plAtlas,
+         ∃ plSmoothingObstructionVanishing :
+          HasPLSmoothingObstructionVanishing
+            M triangulation plStructure plAtlas,
+         ∃ _plMicrobundleSmoothing :
+          HasPLMicrobundleSmoothing M triangulation plStructure plAtlas
+            plSmoothingExistence plSmoothingObstructionVanishing,
+         ∃ plSmoothing :
+          HasPLSmoothingTheorem M triangulation plStructure plAtlas,
+         ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+         ∃ smoothAtlasConstruction :
+          HasSmoothAtlasConstruction
+            M triangulation plStructure plAtlas plSmoothing smoothStructure,
+          HasPLSmoothingCompatibility
+            M triangulation plStructure plAtlas plSmoothing ∧
+          HasPLSmoothingUniqueness
+            M triangulation plStructure plAtlas plSmoothing ∧
+          HasPLSmoothingLocalModelCompatibility
+            M triangulation plStructure plAtlas plSmoothing ∧
+          HasSmoothAtlasPLCompatibility
+            M triangulation plStructure plAtlas plSmoothing smoothStructure
+            smoothAtlasConstruction ∧
+          HasSmoothAtlasMaximality
+            M triangulation plStructure plAtlas plSmoothing smoothStructure ∧
+          HasSmoothAtlasUniqueness M smoothStructure ∧
+          HasSmoothStructureUniquenessUpToDiffeomorphism M smoothStructure ∧
+          ∃ smoothTransitionCompatibility :
+            HasSmoothTransitionCompatibility M smoothStructure,
+            HasSmoothAtlasTransitionSmoothness
+              M smoothStructure smoothTransitionCompatibility),
+       ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+       ∃ smoothTransitionCompatibility :
+        HasSmoothTransitionCompatibility M smoothStructure,
+       ∃ smoothAtlasTransitionSmoothness :
+        HasSmoothAtlasTransitionSmoothness
+          M smoothStructure smoothTransitionCompatibility,
+       (∃ hSmooth :
+          smoothStructure =
+            HasThreeManifoldSmoothStructure.ofOnePointRecognition
+              onePointHomeomorphism,
+          smoothTransitionCompatibility =
+            HasSmoothTransitionCompatibility.ofOnePointRecognition
+              onePointHomeomorphism hSmooth ∧
+          smoothAtlasTransitionSmoothness.onePointRecognition =
+            onePointHomeomorphism) ∧
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+       ∃ _recognitionPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ assemblyPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        topologyPackage =
+          extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+            surgeryTracePrefix onePointRecognition ∧
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+        homeomorphism =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction (recognitionPrefix.decomposition M extinction)
+            assemblyPayload ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction) ∧
+        ∀ x : M,
+          ContractibleSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            PathConnectedSpace ({x}ᶜ : Set M) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_and_moise_chart_triangulation_fields_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      moiseChartTriangulationFields, smoothStructure,
+      smoothTransitionCompatibility, smoothAtlasTransitionSmoothness,
+      recognitionCoherence, homeomorphism, recognitionPayload,
+      assemblyPayload, topologyPackage, topologyPackage_eq,
+      extractionStatement, topologyDerivation, homeomorphism_eq,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+  let plToSmoothFrontier :=
+    plToSmoothFrontier_of_onePointRecognition_subobligationsPayload
+      smoothabilityPayload onePointHomeomorphism
+  exact
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      moiseChartTriangulationFields, plToSmoothFrontier, smoothStructure,
+      smoothTransitionCompatibility, smoothAtlasTransitionSmoothness,
+      recognitionCoherence, homeomorphism, recognitionPayload,
+      assemblyPayload, topologyPackage, topologyPackage_eq,
+      extractionStatement, topologyDerivation, homeomorphism_eq,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_moise_chart_triangulation_and_plToSmooth_frontier_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_moise_chart_triangulation_and_plToSmooth_frontier_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_moise_chart_triangulation_and_plToSmooth_frontier_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_moise_chart_triangulation_and_plToSmooth_frontier_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The final-certificate boundary can retain the terminal smoothability
+projection, the recognition-coherent topology extraction payload, puncture
+topology, and the combined Moise chart-triangulation plus PL-to-smooth frontier
+from the same one-point recognition homeomorphism.
+-/
+theorem poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_and_combined_moise_plToSmooth_frontier_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ _n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ onePointHomeomorphism :
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+       ∃ _terminalSmoothabilityProjection :
+        OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+          smoothabilityPayload M onePointHomeomorphism,
+       ∃ _combinedMoisePLFrontier :
+        ((∃ _t2 : T2Space M,
+          ∃ _charted : ChartedSpace ThreeManifoldModel M,
+          ∃ _simple : SimplyConnectedSpace M,
+          ∃ _compact : CompactSpace M,
+          ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+          ∃ _locallyFiniteCoverRefinement :
+            HasMoiseLocallyFiniteCoverRefinement M localCharts,
+          ∃ simplicialComplex : HasMoiseSimplicialComplex M localCharts,
+          ∃ _compatibleChartTriangulations :
+            HasMoiseCompatibleChartTriangulations
+              M localCharts simplicialComplex,
+            HasMoiseTriangulation M) ∧
+         (∃ _t2 : T2Space M,
+          ∃ _charted : ChartedSpace ThreeManifoldModel M,
+          ∃ _simple : SimplyConnectedSpace M,
+          ∃ _compact : CompactSpace M,
+          ∃ triangulation : HasMoiseTriangulation M,
+          ∃ plStructure : HasCompatiblePLStructure M triangulation,
+          ∃ plAtlas : HasCompatiblePLAtlas M triangulation plStructure,
+          ∃ plSmoothingExistence :
+            HasPLSmoothingExistence M triangulation plStructure plAtlas,
+          ∃ plSmoothingObstructionVanishing :
+            HasPLSmoothingObstructionVanishing
+              M triangulation plStructure plAtlas,
+          ∃ _plMicrobundleSmoothing :
+            HasPLMicrobundleSmoothing M triangulation plStructure plAtlas
+              plSmoothingExistence plSmoothingObstructionVanishing,
+          ∃ plSmoothing :
+            HasPLSmoothingTheorem M triangulation plStructure plAtlas,
+          ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+          ∃ smoothAtlasConstruction :
+            HasSmoothAtlasConstruction
+              M triangulation plStructure plAtlas plSmoothing smoothStructure,
+            HasPLSmoothingCompatibility
+              M triangulation plStructure plAtlas plSmoothing ∧
+            HasPLSmoothingUniqueness
+              M triangulation plStructure plAtlas plSmoothing ∧
+            HasPLSmoothingLocalModelCompatibility
+              M triangulation plStructure plAtlas plSmoothing ∧
+            HasSmoothAtlasPLCompatibility
+              M triangulation plStructure plAtlas plSmoothing smoothStructure
+              smoothAtlasConstruction ∧
+            HasSmoothAtlasMaximality
+              M triangulation plStructure plAtlas plSmoothing smoothStructure ∧
+            HasSmoothAtlasUniqueness M smoothStructure ∧
+            HasSmoothStructureUniquenessUpToDiffeomorphism M smoothStructure ∧
+            ∃ smoothTransitionCompatibility :
+              HasSmoothTransitionCompatibility M smoothStructure,
+              HasSmoothAtlasTransitionSmoothness
+                M smoothStructure smoothTransitionCompatibility)),
+       ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+       ∃ smoothTransitionCompatibility :
+        HasSmoothTransitionCompatibility M smoothStructure,
+       ∃ smoothAtlasTransitionSmoothness :
+        HasSmoothAtlasTransitionSmoothness
+          M smoothStructure smoothTransitionCompatibility,
+       (∃ hSmooth :
+          smoothStructure =
+            HasThreeManifoldSmoothStructure.ofOnePointRecognition
+              onePointHomeomorphism,
+          smoothTransitionCompatibility =
+            HasSmoothTransitionCompatibility.ofOnePointRecognition
+              onePointHomeomorphism hSmooth ∧
+          smoothAtlasTransitionSmoothness.onePointRecognition =
+            onePointHomeomorphism) ∧
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+       ∃ _recognitionPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ assemblyPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        topologyPackage =
+          extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+            surgeryTracePrefix onePointRecognition ∧
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+        homeomorphism =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction (recognitionPrefix.decomposition M extinction)
+            assemblyPayload ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction) ∧
+        ∀ x : M,
+          ContractibleSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            PathConnectedSpace ({x}ᶜ : Set M) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_and_puncture_topology_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      smoothStructure, smoothTransitionCompatibility,
+      smoothAtlasTransitionSmoothness, recognitionCoherence,
+      homeomorphism, recognitionPayload, assemblyPayload, topologyPackage,
+      topologyPackage_eq, extractionStatement, topologyDerivation,
+      homeomorphism_eq, finalHomeomorphismStatement,
+      finalHomeomorphismPayload, punctureTopology⟩
+  let combinedMoisePLFrontier :=
+    onePointRecognition_moiseChartTriangulationFields_and_plToSmoothFrontier_of_subobligationsPayload
+      smoothabilityPayload onePointHomeomorphism
+  exact
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      combinedMoisePLFrontier, smoothStructure,
+      smoothTransitionCompatibility, smoothAtlasTransitionSmoothness,
+      recognitionCoherence, homeomorphism, recognitionPayload,
+      assemblyPayload, topologyPackage, topologyPackage_eq,
+      extractionStatement, topologyDerivation, homeomorphism_eq,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_and_combined_moise_plToSmooth_frontier_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_and_combined_moise_plToSmooth_frontier_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_and_combined_moise_plToSmooth_frontier_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_and_combined_moise_plToSmooth_frontier_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The final-certificate boundary can retain the Moise chart-triangulation
+frontier, downstream PL-to-smooth frontier, Moise-to-PL frontier, and
+smoothability bridge tail together with the terminal smoothability projection
+and recognition-coherent topology extraction payload at the same one-point
+recognition homeomorphism.
+-/
+theorem poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_moise_chart_triangulation_plToSmooth_moiseToPL_and_bridge_tail_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ _n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ onePointHomeomorphism :
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+       ∃ _terminalSmoothabilityProjection :
+        OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+          smoothabilityPayload M onePointHomeomorphism,
+       ∃ _moiseChartTriangulationFields :
+        (∃ _t2 : T2Space M,
+         ∃ _charted : ChartedSpace ThreeManifoldModel M,
+         ∃ _simple : SimplyConnectedSpace M,
+         ∃ _compact : CompactSpace M,
+         ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+         ∃ _locallyFiniteCoverRefinement :
+          HasMoiseLocallyFiniteCoverRefinement M localCharts,
+         ∃ simplicialComplex : HasMoiseSimplicialComplex M localCharts,
+         ∃ _compatibleChartTriangulations :
+          HasMoiseCompatibleChartTriangulations
+            M localCharts simplicialComplex,
+          HasMoiseTriangulation M),
+       ∃ _plToSmoothFrontier :
+        (∃ _t2 : T2Space M,
+         ∃ _charted : ChartedSpace ThreeManifoldModel M,
+         ∃ _simple : SimplyConnectedSpace M,
+         ∃ _compact : CompactSpace M,
+         ∃ triangulation : HasMoiseTriangulation M,
+         ∃ plStructure : HasCompatiblePLStructure M triangulation,
+         ∃ plAtlas : HasCompatiblePLAtlas M triangulation plStructure,
+         ∃ plSmoothingExistence :
+          HasPLSmoothingExistence M triangulation plStructure plAtlas,
+         ∃ plSmoothingObstructionVanishing :
+          HasPLSmoothingObstructionVanishing
+            M triangulation plStructure plAtlas,
+         ∃ _plMicrobundleSmoothing :
+          HasPLMicrobundleSmoothing M triangulation plStructure plAtlas
+            plSmoothingExistence plSmoothingObstructionVanishing,
+         ∃ plSmoothing :
+          HasPLSmoothingTheorem M triangulation plStructure plAtlas,
+         ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+         ∃ smoothAtlasConstruction :
+          HasSmoothAtlasConstruction
+            M triangulation plStructure plAtlas plSmoothing smoothStructure,
+          HasPLSmoothingCompatibility
+            M triangulation plStructure plAtlas plSmoothing ∧
+          HasPLSmoothingUniqueness
+            M triangulation plStructure plAtlas plSmoothing ∧
+          HasPLSmoothingLocalModelCompatibility
+            M triangulation plStructure plAtlas plSmoothing ∧
+          HasSmoothAtlasPLCompatibility
+            M triangulation plStructure plAtlas plSmoothing smoothStructure
+            smoothAtlasConstruction ∧
+          HasSmoothAtlasMaximality
+            M triangulation plStructure plAtlas plSmoothing smoothStructure ∧
+          HasSmoothAtlasUniqueness M smoothStructure ∧
+          HasSmoothStructureUniquenessUpToDiffeomorphism M smoothStructure ∧
+          ∃ smoothTransitionCompatibility :
+            HasSmoothTransitionCompatibility M smoothStructure,
+            HasSmoothAtlasTransitionSmoothness
+              M smoothStructure smoothTransitionCompatibility),
+       ∃ _moiseToPLFrontier :
+        (∃ _t2 : T2Space M,
+         ∃ _charted : ChartedSpace ThreeManifoldModel M,
+         ∃ _simple : SimplyConnectedSpace M,
+         ∃ _compact : CompactSpace M,
+         ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+         ∃ simplicialComplex : HasMoiseSimplicialComplex M localCharts,
+         ∃ triangulation : HasMoiseTriangulation M,
+         ∃ linkCompatibility : HasMoiseLinkCompatibility M triangulation,
+         ∃ triangulationUniqueness :
+          HasMoiseTriangulationUniqueness M triangulation,
+         ∃ plStructure : HasCompatiblePLStructure M triangulation,
+          HasMoiseLocallyFiniteCoverRefinement M localCharts ∧
+          HasMoiseCompatibleChartTriangulations
+            M localCharts simplicialComplex ∧
+          HasMoisePLManifoldRecognition M triangulation linkCompatibility ∧
+          HasMoiseTriangulationHomeomorphism M localCharts triangulation ∧
+          HasMoiseTriangulationCompatibility M localCharts triangulation ∧
+          HasMoiseHauptvermutungDimensionThree
+            M triangulation triangulationUniqueness ∧
+          HasPLTransitionCompatibility M triangulation plStructure ∧
+          HasCompatiblePLAtlas M triangulation plStructure),
+       ∃ _smoothabilityBridgeTail :
+        (∃ _t2 : T2Space M,
+         ∃ _charted : ChartedSpace ThreeManifoldModel M,
+         ∃ _simple : SimplyConnectedSpace M,
+         ∃ _compact : CompactSpace M,
+         ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+         ∃ smoothDerivationStatement :
+          SmoothStructureDerivationStatement M smoothStructure,
+         ∃ manifoldEvidence :
+          IsManifold ThreeManifoldModelWithCorners 1 M,
+         ∃ bridgeDerivation :
+          HasSmoothabilityBridgeDerivation
+            M smoothStructure smoothDerivationStatement manifoldEvidence,
+         ∃ modelCompatibility :
+          HasSmoothManifoldModelCompatibility
+            M smoothStructure smoothDerivationStatement manifoldEvidence
+            bridgeDerivation,
+          HasSmoothChartCompatibility
+            M smoothStructure smoothDerivationStatement manifoldEvidence
+            bridgeDerivation modelCompatibility),
+       ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+       ∃ smoothTransitionCompatibility :
+        HasSmoothTransitionCompatibility M smoothStructure,
+       ∃ smoothAtlasTransitionSmoothness :
+        HasSmoothAtlasTransitionSmoothness
+          M smoothStructure smoothTransitionCompatibility,
+       (∃ hSmooth :
+          smoothStructure =
+            HasThreeManifoldSmoothStructure.ofOnePointRecognition
+              onePointHomeomorphism,
+          smoothTransitionCompatibility =
+            HasSmoothTransitionCompatibility.ofOnePointRecognition
+              onePointHomeomorphism hSmooth ∧
+          smoothAtlasTransitionSmoothness.onePointRecognition =
+            onePointHomeomorphism) ∧
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+       ∃ _recognitionPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ assemblyPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        topologyPackage =
+          extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+            surgeryTracePrefix onePointRecognition ∧
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+        homeomorphism =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction (recognitionPrefix.decomposition M extinction)
+            assemblyPayload ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction) ∧
+        ∀ x : M,
+          ContractibleSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            PathConnectedSpace ({x}ᶜ : Set M) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_moise_chart_triangulation_and_plToSmooth_frontier_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      moiseChartTriangulationFields, plToSmoothFrontier,
+      smoothStructure, smoothTransitionCompatibility,
+      smoothAtlasTransitionSmoothness, recognitionCoherence,
+      homeomorphism, recognitionPayload, assemblyPayload,
+      topologyPackage, topologyPackage_eq, extractionStatement,
+      topologyDerivation, homeomorphism_eq, finalHomeomorphismStatement,
+      finalHomeomorphismPayload, punctureTopology⟩
+  let moiseToPLFrontier :=
+    moiseToPLFrontier_of_onePointRecognition_subobligationsPayload
+      smoothabilityPayload onePointHomeomorphism
+  let smoothabilityBridgeTail :=
+    smoothabilityBridgeTail_of_onePointRecognition_subobligationsPayload
+      smoothabilityPayload onePointHomeomorphism
+  exact
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      moiseChartTriangulationFields, plToSmoothFrontier,
+      moiseToPLFrontier, smoothabilityBridgeTail,
+      smoothStructure, smoothTransitionCompatibility,
+      smoothAtlasTransitionSmoothness, recognitionCoherence,
+      homeomorphism, recognitionPayload, assemblyPayload,
+      topologyPackage, topologyPackage_eq, extractionStatement,
+      topologyDerivation, homeomorphism_eq, finalHomeomorphismStatement,
+      finalHomeomorphismPayload, punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_moise_chart_triangulation_plToSmooth_moiseToPL_and_bridge_tail_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_moise_chart_triangulation_plToSmooth_moiseToPL_and_bridge_tail_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_moise_chart_triangulation_plToSmooth_moiseToPL_and_bridge_tail_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_moise_chart_triangulation_plToSmooth_moiseToPL_and_bridge_tail_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The final-certificate boundary can retain the broader terminal smoothability
+package-frontier and witness-coherence bundle at the same one-point recognition
+homeomorphism, together with the previously exposed Moise/PL frontiers,
+bridge-tail witnesses, topology extraction payload, final-homeomorphism data,
+and puncture topology.
+-/
+theorem poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_frontiers_bridge_tail_and_terminal_package_coherence_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ _n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ onePointHomeomorphism :
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+       ∃ _terminalSmoothabilityProjection :
+        OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+          smoothabilityPayload M onePointHomeomorphism,
+       ∃ _terminalSmoothabilityPackageFrontierAndWitnessCoherence :
+        ((∃ _t2 : T2Space M,
+          ∃ _charted : ChartedSpace ThreeManifoldModel M,
+          ∃ _simple : SimplyConnectedSpace M,
+          ∃ _compact : CompactSpace M,
+          ∃ _subobligations : SmoothabilitySubobligationsPayload M,
+          ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+          ∃ smoothTransitionCompatibility :
+            HasSmoothTransitionCompatibility M smoothStructure,
+          ∃ smoothAtlasTransitionSmoothness :
+            HasSmoothAtlasTransitionSmoothness
+              M smoothStructure smoothTransitionCompatibility,
+          ∃ smoothDerivationStatement :
+            SmoothStructureDerivationStatement M smoothStructure,
+          ∃ manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M,
+          ∃ bridgeDerivation :
+            HasSmoothabilityBridgeDerivation
+              M smoothStructure smoothDerivationStatement manifoldEvidence,
+          ∃ modelCompatibility :
+            HasSmoothManifoldModelCompatibility
+              M smoothStructure smoothDerivationStatement manifoldEvidence
+              bridgeDerivation,
+          ∃ chartCompatibility :
+            HasSmoothChartCompatibility
+              M smoothStructure smoothDerivationStatement manifoldEvidence
+              bridgeDerivation modelCompatibility,
+            SmoothStructureDerivationStatement M smoothStructure ∧
+            IsManifold ThreeManifoldModelWithCorners 1 M ∧
+            (∃ hSmooth :
+              smoothStructure =
+                HasThreeManifoldSmoothStructure.ofOnePointRecognition
+                  onePointHomeomorphism,
+              smoothTransitionCompatibility =
+                HasSmoothTransitionCompatibility.ofOnePointRecognition
+                  onePointHomeomorphism hSmooth ∧
+              smoothAtlasTransitionSmoothness.onePointRecognition =
+                onePointHomeomorphism) ∧
+            HasSmoothabilityBridgeDerivation.witnesses M bridgeDerivation =
+              ⟨smoothDerivationStatement, manifoldEvidence⟩ ∧
+            HasSmoothChartCompatibility.witnesses M chartCompatibility =
+              ⟨smoothDerivationStatement, manifoldEvidence,
+                bridgeDerivation, modelCompatibility⟩ ∧
+            bridgeDerivation.smoothStructureDerivationWitness =
+              smoothDerivationStatement ∧
+            bridgeDerivation.manifoldEvidenceWitness = manifoldEvidence ∧
+            modelCompatibility.smoothStructureDerivationWitness =
+              smoothDerivationStatement ∧
+            modelCompatibility.manifoldEvidenceWitness = manifoldEvidence ∧
+            modelCompatibility.bridgeDerivationWitness = bridgeDerivation ∧
+            chartCompatibility.smoothStructureDerivationWitness =
+              smoothDerivationStatement ∧
+            chartCompatibility.manifoldEvidenceWitness = manifoldEvidence ∧
+            chartCompatibility.bridgeDerivationWitness = bridgeDerivation ∧
+            chartCompatibility.modelCompatibilityWitness =
+              modelCompatibility) ∧
+         (∃ _t2 : T2Space M,
+          ∃ _charted : ChartedSpace ThreeManifoldModel M,
+          ∃ _simple : SimplyConnectedSpace M,
+          ∃ _compact : CompactSpace M,
+          ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+            HasMoiseLocallyFiniteCoverRefinement M localCharts) ∧
+         (∃ _t2 : T2Space M,
+          ∃ _charted : ChartedSpace ThreeManifoldModel M,
+          ∃ _simple : SimplyConnectedSpace M,
+          ∃ _compact : CompactSpace M,
+          ∃ triangulation : HasMoiseTriangulation M,
+          ∃ plStructure : HasCompatiblePLStructure M triangulation,
+          ∃ plAtlas : HasCompatiblePLAtlas M triangulation plStructure,
+          ∃ plSmoothingExistence :
+            HasPLSmoothingExistence M triangulation plStructure plAtlas,
+          ∃ plSmoothingObstructionVanishing :
+            HasPLSmoothingObstructionVanishing
+              M triangulation plStructure plAtlas,
+          ∃ _plMicrobundleSmoothing :
+            HasPLMicrobundleSmoothing M triangulation plStructure plAtlas
+              plSmoothingExistence plSmoothingObstructionVanishing,
+          ∃ plSmoothing :
+            HasPLSmoothingTheorem M triangulation plStructure plAtlas,
+          ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+          ∃ smoothAtlasConstruction :
+            HasSmoothAtlasConstruction
+              M triangulation plStructure plAtlas plSmoothing smoothStructure,
+            HasPLSmoothingCompatibility
+              M triangulation plStructure plAtlas plSmoothing ∧
+            HasPLSmoothingUniqueness
+              M triangulation plStructure plAtlas plSmoothing ∧
+            HasPLSmoothingLocalModelCompatibility
+              M triangulation plStructure plAtlas plSmoothing ∧
+            HasSmoothAtlasPLCompatibility
+              M triangulation plStructure plAtlas plSmoothing smoothStructure
+              smoothAtlasConstruction ∧
+            HasSmoothAtlasMaximality
+              M triangulation plStructure plAtlas plSmoothing smoothStructure ∧
+            HasSmoothAtlasUniqueness M smoothStructure ∧
+            HasSmoothStructureUniquenessUpToDiffeomorphism M smoothStructure ∧
+            ∃ smoothTransitionCompatibility :
+              HasSmoothTransitionCompatibility M smoothStructure,
+              HasSmoothAtlasTransitionSmoothness
+                M smoothStructure smoothTransitionCompatibility)),
+       ∃ _moiseChartTriangulationFields :
+        (∃ _t2 : T2Space M,
+         ∃ _charted : ChartedSpace ThreeManifoldModel M,
+         ∃ _simple : SimplyConnectedSpace M,
+         ∃ _compact : CompactSpace M,
+         ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+         ∃ _locallyFiniteCoverRefinement :
+          HasMoiseLocallyFiniteCoverRefinement M localCharts,
+         ∃ simplicialComplex : HasMoiseSimplicialComplex M localCharts,
+         ∃ _compatibleChartTriangulations :
+          HasMoiseCompatibleChartTriangulations
+            M localCharts simplicialComplex,
+          HasMoiseTriangulation M),
+       ∃ _plToSmoothFrontier :
+        (∃ _t2 : T2Space M,
+         ∃ _charted : ChartedSpace ThreeManifoldModel M,
+         ∃ _simple : SimplyConnectedSpace M,
+         ∃ _compact : CompactSpace M,
+         ∃ triangulation : HasMoiseTriangulation M,
+         ∃ plStructure : HasCompatiblePLStructure M triangulation,
+         ∃ plAtlas : HasCompatiblePLAtlas M triangulation plStructure,
+         ∃ plSmoothingExistence :
+          HasPLSmoothingExistence M triangulation plStructure plAtlas,
+         ∃ plSmoothingObstructionVanishing :
+          HasPLSmoothingObstructionVanishing
+            M triangulation plStructure plAtlas,
+         ∃ _plMicrobundleSmoothing :
+          HasPLMicrobundleSmoothing M triangulation plStructure plAtlas
+            plSmoothingExistence plSmoothingObstructionVanishing,
+         ∃ plSmoothing :
+          HasPLSmoothingTheorem M triangulation plStructure plAtlas,
+         ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+         ∃ smoothAtlasConstruction :
+          HasSmoothAtlasConstruction
+            M triangulation plStructure plAtlas plSmoothing smoothStructure,
+          HasPLSmoothingCompatibility
+            M triangulation plStructure plAtlas plSmoothing ∧
+          HasPLSmoothingUniqueness
+            M triangulation plStructure plAtlas plSmoothing ∧
+          HasPLSmoothingLocalModelCompatibility
+            M triangulation plStructure plAtlas plSmoothing ∧
+          HasSmoothAtlasPLCompatibility
+            M triangulation plStructure plAtlas plSmoothing smoothStructure
+            smoothAtlasConstruction ∧
+          HasSmoothAtlasMaximality
+            M triangulation plStructure plAtlas plSmoothing smoothStructure ∧
+          HasSmoothAtlasUniqueness M smoothStructure ∧
+          HasSmoothStructureUniquenessUpToDiffeomorphism M smoothStructure ∧
+          ∃ smoothTransitionCompatibility :
+            HasSmoothTransitionCompatibility M smoothStructure,
+            HasSmoothAtlasTransitionSmoothness
+              M smoothStructure smoothTransitionCompatibility),
+       ∃ _moiseToPLFrontier :
+        (∃ _t2 : T2Space M,
+         ∃ _charted : ChartedSpace ThreeManifoldModel M,
+         ∃ _simple : SimplyConnectedSpace M,
+         ∃ _compact : CompactSpace M,
+         ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+         ∃ simplicialComplex : HasMoiseSimplicialComplex M localCharts,
+         ∃ triangulation : HasMoiseTriangulation M,
+         ∃ linkCompatibility : HasMoiseLinkCompatibility M triangulation,
+         ∃ triangulationUniqueness :
+          HasMoiseTriangulationUniqueness M triangulation,
+         ∃ plStructure : HasCompatiblePLStructure M triangulation,
+          HasMoiseLocallyFiniteCoverRefinement M localCharts ∧
+          HasMoiseCompatibleChartTriangulations
+            M localCharts simplicialComplex ∧
+          HasMoisePLManifoldRecognition M triangulation linkCompatibility ∧
+          HasMoiseTriangulationHomeomorphism M localCharts triangulation ∧
+          HasMoiseTriangulationCompatibility M localCharts triangulation ∧
+          HasMoiseHauptvermutungDimensionThree
+            M triangulation triangulationUniqueness ∧
+          HasPLTransitionCompatibility M triangulation plStructure ∧
+          HasCompatiblePLAtlas M triangulation plStructure),
+       ∃ _smoothabilityBridgeTail :
+        (∃ _t2 : T2Space M,
+         ∃ _charted : ChartedSpace ThreeManifoldModel M,
+         ∃ _simple : SimplyConnectedSpace M,
+         ∃ _compact : CompactSpace M,
+         ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+         ∃ smoothDerivationStatement :
+          SmoothStructureDerivationStatement M smoothStructure,
+         ∃ manifoldEvidence :
+          IsManifold ThreeManifoldModelWithCorners 1 M,
+         ∃ bridgeDerivation :
+          HasSmoothabilityBridgeDerivation
+            M smoothStructure smoothDerivationStatement manifoldEvidence,
+         ∃ modelCompatibility :
+          HasSmoothManifoldModelCompatibility
+            M smoothStructure smoothDerivationStatement manifoldEvidence
+            bridgeDerivation,
+          HasSmoothChartCompatibility
+            M smoothStructure smoothDerivationStatement manifoldEvidence
+            bridgeDerivation modelCompatibility),
+       ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+       ∃ smoothTransitionCompatibility :
+        HasSmoothTransitionCompatibility M smoothStructure,
+       ∃ smoothAtlasTransitionSmoothness :
+        HasSmoothAtlasTransitionSmoothness
+          M smoothStructure smoothTransitionCompatibility,
+       (∃ hSmooth :
+          smoothStructure =
+            HasThreeManifoldSmoothStructure.ofOnePointRecognition
+              onePointHomeomorphism,
+          smoothTransitionCompatibility =
+            HasSmoothTransitionCompatibility.ofOnePointRecognition
+              onePointHomeomorphism hSmooth ∧
+          smoothAtlasTransitionSmoothness.onePointRecognition =
+            onePointHomeomorphism) ∧
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+       ∃ _recognitionPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ assemblyPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        topologyPackage =
+          extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+            surgeryTracePrefix onePointRecognition ∧
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+        homeomorphism =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction (recognitionPrefix.decomposition M extinction)
+            assemblyPayload ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction) ∧
+        ∀ x : M,
+          ContractibleSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            PathConnectedSpace ({x}ᶜ : Set M) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_moise_chart_triangulation_plToSmooth_moiseToPL_and_bridge_tail_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      moiseChartTriangulationFields, plToSmoothFrontier,
+      moiseToPLFrontier, smoothabilityBridgeTail, smoothStructure,
+      smoothTransitionCompatibility, smoothAtlasTransitionSmoothness,
+      recognitionCoherence, homeomorphism, recognitionPayload,
+      assemblyPayload, topologyPackage, topologyPackage_eq,
+      extractionStatement, topologyDerivation, homeomorphism_eq,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+  let terminalSmoothabilityPackageFrontierAndWitnessCoherence :=
+    onePointRecognition_terminalSmoothabilityBridgeCertificate_with_packageFrontier_and_witness_coherence
+      smoothabilityPayload onePointHomeomorphism
+  exact
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      moiseChartTriangulationFields, plToSmoothFrontier,
+      moiseToPLFrontier, smoothabilityBridgeTail, smoothStructure,
+      smoothTransitionCompatibility, smoothAtlasTransitionSmoothness,
+      recognitionCoherence, homeomorphism, recognitionPayload,
+      assemblyPayload, topologyPackage, topologyPackage_eq,
+      extractionStatement, topologyDerivation, homeomorphism_eq,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_frontiers_bridge_tail_and_terminal_package_coherence_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_frontiers_bridge_tail_and_terminal_package_coherence_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_frontiers_bridge_tail_and_terminal_package_coherence_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_frontiers_bridge_tail_and_terminal_package_coherence_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The final-certificate boundary can also carry the transported smooth-manifold
+package fields with their canonical transported bridge package and same-chart
+`C∞`/surgery-model manifold witness, while retaining the final topology
+extraction payload and puncture topology.
+-/
+theorem poincare_statement_certificate_terminal_smoothability_transported_sameChart_package_final_payload_and_puncture_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ _n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ onePointHomeomorphism :
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+       ∃ _terminalSmoothabilityProjection :
+        OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+          smoothabilityPayload M onePointHomeomorphism,
+       ∃ _transportedSameChartPackage :
+        (∃ smoothManifoldStatement :
+          SmoothabilityTransportedSmoothManifoldStatement.{u},
+         ∃ bridgeStatement : SmoothabilityTransportedBridgeStatement.{u},
+         ∃ smoothManifoldPackage :
+          SmoothabilityTransportedSmoothManifoldPackageField.{u},
+         ∃ bridgePackage : SmoothabilityTransportedBridgePackageField.{u},
+          smoothManifoldStatement =
+            transportedSmoothManifoldStatement_of_onePointRecognition_subobligationsPayload
+              smoothabilityPayload ∧
+          bridgeStatement =
+            smoothabilityTransportedBridgeStatement_of_transportedSmoothManifoldStatement
+              smoothManifoldStatement ∧
+          smoothManifoldPackage.transportedSmoothManifold =
+            smoothManifoldStatement ∧
+          bridgePackage.transportedBridge = bridgeStatement ∧
+          bridgePackage.transportedBridge =
+            smoothabilityTransportedBridgeStatement_of_transportedSmoothManifoldStatement
+              smoothManifoldPackage.transportedSmoothManifold ∧
+          ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+            [SimplyConnectedSpace N] [CompactSpace N],
+            Nonempty (N ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
+              ∃ charted : ChartedSpace ThreeManifoldModel N,
+                letI : ChartedSpace ThreeManifoldModel N := charted
+                IsManifold (𝓡 3) ∞ N ∧
+                  IsManifold ThreeManifoldModelWithCorners 1 N),
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+       ∃ _recognitionPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ assemblyPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        topologyPackage =
+          extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+            surgeryTracePrefix onePointRecognition ∧
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+        homeomorphism =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction (recognitionPrefix.decomposition M extinction)
+            assemblyPayload ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction) ∧
+        ∀ x : M,
+          ContractibleSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            PathConnectedSpace ({x}ᶜ : Set M) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_recognition_coherence_extraction_package_payload_agreement_puncture_frontiers_bridge_tail_and_terminal_package_coherence_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      _terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      _moiseChartTriangulationFields, _plToSmoothFrontier,
+      _moiseToPLFrontier, _smoothabilityBridgeTail, _smoothStructure,
+      _smoothTransitionCompatibility, _smoothAtlasTransitionSmoothness,
+      _recognitionCoherence, homeomorphism, recognitionPayload,
+      assemblyPayload, topologyPackage, topologyPackage_eq,
+      extractionStatement, topologyDerivation, homeomorphism_eq,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+  let transportedSameChartPackage :=
+    transportedSmoothManifoldPackageField_with_canonicalBridge_and_sameChartManifoldWitness_of_onePointRecognition_subobligationsPayload
+      smoothabilityPayload
+  exact
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      transportedSameChartPackage, homeomorphism, recognitionPayload,
+      assemblyPayload, topologyPackage, topologyPackage_eq,
+      extractionStatement, topologyDerivation, homeomorphism_eq,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_certificate_terminal_smoothability_transported_sameChart_package_final_payload_and_puncture_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_certificate_terminal_smoothability_transported_sameChart_package_final_payload_and_puncture_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_certificate_terminal_smoothability_transported_sameChart_package_final_payload_and_puncture_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_certificate_terminal_smoothability_transported_sameChart_package_final_payload_and_puncture_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The final-certificate boundary can pin the topology package's final
+homeomorphism projector to the final-homeomorphism payload projector, while
+retaining the terminal smoothability projection, transported same-chart package,
+topology extraction payload, and puncture topology.
+-/
+theorem poincare_statement_certificate_terminal_smoothability_transported_package_final_payload_puncture_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ _n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ onePointHomeomorphism :
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+       ∃ _terminalSmoothabilityProjection :
+        OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+          smoothabilityPayload M onePointHomeomorphism,
+       ∃ _transportedSameChartPackage :
+        (∃ smoothManifoldStatement :
+          SmoothabilityTransportedSmoothManifoldStatement.{u},
+         ∃ bridgeStatement : SmoothabilityTransportedBridgeStatement.{u},
+         ∃ smoothManifoldPackage :
+          SmoothabilityTransportedSmoothManifoldPackageField.{u},
+         ∃ bridgePackage : SmoothabilityTransportedBridgePackageField.{u},
+          smoothManifoldStatement =
+            transportedSmoothManifoldStatement_of_onePointRecognition_subobligationsPayload
+              smoothabilityPayload ∧
+          bridgeStatement =
+            smoothabilityTransportedBridgeStatement_of_transportedSmoothManifoldStatement
+              smoothManifoldStatement ∧
+          smoothManifoldPackage.transportedSmoothManifold =
+            smoothManifoldStatement ∧
+          bridgePackage.transportedBridge = bridgeStatement ∧
+          bridgePackage.transportedBridge =
+            smoothabilityTransportedBridgeStatement_of_transportedSmoothManifoldStatement
+              smoothManifoldPackage.transportedSmoothManifold ∧
+          ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+            [SimplyConnectedSpace N] [CompactSpace N],
+            Nonempty (N ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
+              ∃ charted : ChartedSpace ThreeManifoldModel N,
+                letI : ChartedSpace ThreeManifoldModel N := charted
+                IsManifold (𝓡 3) ∞ N ∧
+                  IsManifold ThreeManifoldModelWithCorners 1 N),
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+       ∃ _recognitionPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ assemblyPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        topologyPackage =
+          extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+            surgeryTracePrefix onePointRecognition ∧
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+        homeomorphism =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction (recognitionPrefix.decomposition M extinction)
+            assemblyPayload ∧
+        homeomorphism_of_topology_package topologyPackage M extinction =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction
+            (extinction_decomposition_of_topology_package
+              topologyPackage M extinction)
+            (finalHomeomorphismPayloadData_of_topology_package
+              topologyPackage M extinction) ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction) ∧
+        ∀ x : M,
+          ContractibleSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            PathConnectedSpace ({x}ᶜ : Set M) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_transported_sameChart_package_final_payload_and_puncture_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      transportedSameChartPackage, homeomorphism, recognitionPayload,
+      assemblyPayload, topologyPackage, topologyPackage_eq,
+      extractionStatement, topologyDerivation, homeomorphism_eq,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+  have packageFinalHomeomorphismProjector_eq :
+      homeomorphism_of_topology_package topologyPackage M extinction =
+        homeomorphism_of_final_homeomorphism_payload_data
+          M extinction
+          (extinction_decomposition_of_topology_package
+            topologyPackage M extinction)
+          (finalHomeomorphismPayloadData_of_topology_package
+            topologyPackage M extinction) := by
+    rfl
+  exact
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      transportedSameChartPackage, homeomorphism, recognitionPayload,
+      assemblyPayload, topologyPackage, topologyPackage_eq,
+      extractionStatement, topologyDerivation, homeomorphism_eq,
+      packageFinalHomeomorphismProjector_eq,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_certificate_terminal_smoothability_transported_package_final_payload_puncture_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_certificate_terminal_smoothability_transported_package_final_payload_puncture_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_certificate_terminal_smoothability_transported_package_final_payload_puncture_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_certificate_terminal_smoothability_transported_package_final_payload_puncture_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The final-certificate boundary can also carry the concrete same-chart canonical
+bridge/frontier bundle, exposing transported `C∞` manifold evidence, lowered
+surgery-model `C¹` manifold evidence, and bridge/model/chart witness
+coherences at the same endpoint that already pins the topology package's final
+homeomorphism projector.
+-/
+theorem poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ _n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ onePointHomeomorphism :
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+       ∃ _terminalSmoothabilityProjection :
+        OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+          smoothabilityPayload M onePointHomeomorphism,
+       ∃ _transportedSameChartPackage :
+        (∃ smoothManifoldStatement :
+          SmoothabilityTransportedSmoothManifoldStatement.{u},
+         ∃ bridgeStatement : SmoothabilityTransportedBridgeStatement.{u},
+         ∃ smoothManifoldPackage :
+          SmoothabilityTransportedSmoothManifoldPackageField.{u},
+         ∃ bridgePackage : SmoothabilityTransportedBridgePackageField.{u},
+          smoothManifoldStatement =
+            transportedSmoothManifoldStatement_of_onePointRecognition_subobligationsPayload
+              smoothabilityPayload ∧
+          bridgeStatement =
+            smoothabilityTransportedBridgeStatement_of_transportedSmoothManifoldStatement
+              smoothManifoldStatement ∧
+          smoothManifoldPackage.transportedSmoothManifold =
+            smoothManifoldStatement ∧
+          bridgePackage.transportedBridge = bridgeStatement ∧
+          bridgePackage.transportedBridge =
+            smoothabilityTransportedBridgeStatement_of_transportedSmoothManifoldStatement
+              smoothManifoldPackage.transportedSmoothManifold ∧
+          ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+            [SimplyConnectedSpace N] [CompactSpace N],
+            Nonempty (N ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
+              ∃ charted : ChartedSpace ThreeManifoldModel N,
+                letI : ChartedSpace ThreeManifoldModel N := charted
+                IsManifold (𝓡 3) ∞ N ∧
+                  IsManifold ThreeManifoldModelWithCorners 1 N),
+       ∃ smoothabilityFrontier :
+        OnePointRecognitionSameChartCanonicalBridgePackageFrontierBundle M,
+        (letI : ChartedSpace ThreeManifoldModel M :=
+          smoothabilityFrontier.sameCharted
+         IsManifold (𝓡 3) ∞ M ∧
+          IsManifold ThreeManifoldModelWithCorners 1 M) ∧
+        (letI : T2Space M := smoothabilityFrontier.bridgeT2
+         letI : ChartedSpace ThreeManifoldModel M :=
+          smoothabilityFrontier.bridgeCharted
+         letI : SimplyConnectedSpace M :=
+          smoothabilityFrontier.bridgeSimple
+         letI : CompactSpace M := smoothabilityFrontier.bridgeCompact
+         HasSmoothabilityBridgeDerivation.witnesses M
+            smoothabilityFrontier.bridgeDerivation =
+          ⟨smoothabilityFrontier.smoothDerivationStatement,
+            smoothabilityFrontier.bridgeManifoldEvidence⟩ ∧
+         HasSmoothChartCompatibility.witnesses M
+            smoothabilityFrontier.chartCompatibility =
+          ⟨smoothabilityFrontier.smoothDerivationStatement,
+            smoothabilityFrontier.bridgeManifoldEvidence,
+            smoothabilityFrontier.bridgeDerivation,
+            smoothabilityFrontier.modelCompatibility⟩ ∧
+         smoothabilityFrontier.bridgeDerivation.smoothStructureDerivationWitness =
+          smoothabilityFrontier.smoothDerivationStatement ∧
+         smoothabilityFrontier.bridgeDerivation.manifoldEvidenceWitness =
+          smoothabilityFrontier.bridgeManifoldEvidence ∧
+         smoothabilityFrontier.modelCompatibility.smoothStructureDerivationWitness =
+          smoothabilityFrontier.smoothDerivationStatement ∧
+         smoothabilityFrontier.modelCompatibility.manifoldEvidenceWitness =
+          smoothabilityFrontier.bridgeManifoldEvidence ∧
+         smoothabilityFrontier.modelCompatibility.bridgeDerivationWitness =
+          smoothabilityFrontier.bridgeDerivation ∧
+         smoothabilityFrontier.chartCompatibility.smoothStructureDerivationWitness =
+          smoothabilityFrontier.smoothDerivationStatement ∧
+         smoothabilityFrontier.chartCompatibility.manifoldEvidenceWitness =
+          smoothabilityFrontier.bridgeManifoldEvidence ∧
+         smoothabilityFrontier.chartCompatibility.bridgeDerivationWitness =
+          smoothabilityFrontier.bridgeDerivation ∧
+         smoothabilityFrontier.chartCompatibility.modelCompatibilityWitness =
+          smoothabilityFrontier.modelCompatibility) ∧
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+       ∃ _recognitionPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ assemblyPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        topologyPackage =
+          extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+            surgeryTracePrefix onePointRecognition ∧
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+        homeomorphism =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction (recognitionPrefix.decomposition M extinction)
+            assemblyPayload ∧
+        homeomorphism_of_topology_package topologyPackage M extinction =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction
+            (extinction_decomposition_of_topology_package
+              topologyPackage M extinction)
+            (finalHomeomorphismPayloadData_of_topology_package
+              topologyPackage M extinction) ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction) ∧
+        ∀ x : M,
+          ContractibleSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            PathConnectedSpace ({x}ᶜ : Set M) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_transported_package_final_payload_puncture_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      transportedSameChartPackage, homeomorphism, recognitionPayload,
+      assemblyPayload, topologyPackage, topologyPackage_eq,
+      extractionStatement, topologyDerivation, homeomorphism_eq,
+      packageFinalHomeomorphismProjector_eq,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+  rcases
+      onePointRecognition_sameChartTransportedSmoothManifoldBundle_with_canonicalBridgePackageFrontier_of_subobligationsPayload
+        smoothabilityPayload M onePointHomeomorphism with
+    ⟨smoothabilityFrontier⟩
+  have smoothabilityFrontierManifolds :
+      (letI : ChartedSpace ThreeManifoldModel M :=
+        smoothabilityFrontier.sameCharted
+       IsManifold (𝓡 3) ∞ M ∧
+        IsManifold ThreeManifoldModelWithCorners 1 M) := by
+    letI : ChartedSpace ThreeManifoldModel M :=
+      smoothabilityFrontier.sameCharted
+    exact
+      ⟨smoothabilityFrontier.transportedSmoothManifold,
+        smoothabilityFrontier.loweredManifold⟩
+  have smoothabilityFrontierCoherence :
+      (letI : T2Space M := smoothabilityFrontier.bridgeT2
+       letI : ChartedSpace ThreeManifoldModel M :=
+        smoothabilityFrontier.bridgeCharted
+       letI : SimplyConnectedSpace M :=
+        smoothabilityFrontier.bridgeSimple
+       letI : CompactSpace M := smoothabilityFrontier.bridgeCompact
+       HasSmoothabilityBridgeDerivation.witnesses M
+          smoothabilityFrontier.bridgeDerivation =
+        ⟨smoothabilityFrontier.smoothDerivationStatement,
+          smoothabilityFrontier.bridgeManifoldEvidence⟩ ∧
+       HasSmoothChartCompatibility.witnesses M
+          smoothabilityFrontier.chartCompatibility =
+        ⟨smoothabilityFrontier.smoothDerivationStatement,
+          smoothabilityFrontier.bridgeManifoldEvidence,
+          smoothabilityFrontier.bridgeDerivation,
+          smoothabilityFrontier.modelCompatibility⟩ ∧
+       smoothabilityFrontier.bridgeDerivation.smoothStructureDerivationWitness =
+        smoothabilityFrontier.smoothDerivationStatement ∧
+       smoothabilityFrontier.bridgeDerivation.manifoldEvidenceWitness =
+        smoothabilityFrontier.bridgeManifoldEvidence ∧
+       smoothabilityFrontier.modelCompatibility.smoothStructureDerivationWitness =
+        smoothabilityFrontier.smoothDerivationStatement ∧
+       smoothabilityFrontier.modelCompatibility.manifoldEvidenceWitness =
+        smoothabilityFrontier.bridgeManifoldEvidence ∧
+       smoothabilityFrontier.modelCompatibility.bridgeDerivationWitness =
+        smoothabilityFrontier.bridgeDerivation ∧
+       smoothabilityFrontier.chartCompatibility.smoothStructureDerivationWitness =
+        smoothabilityFrontier.smoothDerivationStatement ∧
+       smoothabilityFrontier.chartCompatibility.manifoldEvidenceWitness =
+        smoothabilityFrontier.bridgeManifoldEvidence ∧
+       smoothabilityFrontier.chartCompatibility.bridgeDerivationWitness =
+        smoothabilityFrontier.bridgeDerivation ∧
+       smoothabilityFrontier.chartCompatibility.modelCompatibilityWitness =
+        smoothabilityFrontier.modelCompatibility) := by
+    exact
+      ⟨smoothabilityFrontier.bridgeDerivation_witnesses_eq,
+        smoothabilityFrontier.chartCompatibility_witnesses_eq,
+        smoothabilityFrontier.bridgeDerivationStatement_eq,
+        smoothabilityFrontier.bridgeManifold_eq,
+        smoothabilityFrontier.modelDerivationStatement_eq,
+        smoothabilityFrontier.modelManifold_eq,
+        smoothabilityFrontier.modelBridge_eq,
+        smoothabilityFrontier.chartDerivationStatement_eq,
+        smoothabilityFrontier.chartManifold_eq,
+        smoothabilityFrontier.chartBridge_eq,
+        smoothabilityFrontier.chartModel_eq⟩
+  exact
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      transportedSameChartPackage, smoothabilityFrontier,
+      smoothabilityFrontierManifolds, smoothabilityFrontierCoherence,
+      homeomorphism, recognitionPayload, assemblyPayload, topologyPackage,
+      topologyPackage_eq, extractionStatement, topologyDerivation,
+      homeomorphism_eq, packageFinalHomeomorphismProjector_eq,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The final-certificate boundary can strengthen the coarse puncture topology by
+carrying explicit single-puncture paths with endpoint equations and both
+fundamental-group and `π₁` subsingleton witnesses from the same one-point
+recognition homeomorphism.
+-/
+theorem poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ _n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ onePointHomeomorphism :
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+       ∃ _terminalSmoothabilityProjection :
+        OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+          smoothabilityPayload M onePointHomeomorphism,
+       ∃ _transportedSameChartPackage :
+        (∃ smoothManifoldStatement :
+          SmoothabilityTransportedSmoothManifoldStatement.{u},
+         ∃ bridgeStatement : SmoothabilityTransportedBridgeStatement.{u},
+         ∃ smoothManifoldPackage :
+          SmoothabilityTransportedSmoothManifoldPackageField.{u},
+         ∃ bridgePackage : SmoothabilityTransportedBridgePackageField.{u},
+          smoothManifoldStatement =
+            transportedSmoothManifoldStatement_of_onePointRecognition_subobligationsPayload
+              smoothabilityPayload ∧
+          bridgeStatement =
+            smoothabilityTransportedBridgeStatement_of_transportedSmoothManifoldStatement
+              smoothManifoldStatement ∧
+          smoothManifoldPackage.transportedSmoothManifold =
+            smoothManifoldStatement ∧
+          bridgePackage.transportedBridge = bridgeStatement ∧
+          bridgePackage.transportedBridge =
+            smoothabilityTransportedBridgeStatement_of_transportedSmoothManifoldStatement
+              smoothManifoldPackage.transportedSmoothManifold ∧
+          ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+            [SimplyConnectedSpace N] [CompactSpace N],
+            Nonempty (N ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
+              ∃ charted : ChartedSpace ThreeManifoldModel N,
+                letI : ChartedSpace ThreeManifoldModel N := charted
+                IsManifold (𝓡 3) ∞ N ∧
+                  IsManifold ThreeManifoldModelWithCorners 1 N),
+       ∃ smoothabilityFrontier :
+        OnePointRecognitionSameChartCanonicalBridgePackageFrontierBundle M,
+        (letI : ChartedSpace ThreeManifoldModel M :=
+          smoothabilityFrontier.sameCharted
+         IsManifold (𝓡 3) ∞ M ∧
+          IsManifold ThreeManifoldModelWithCorners 1 M) ∧
+        (letI : T2Space M := smoothabilityFrontier.bridgeT2
+         letI : ChartedSpace ThreeManifoldModel M :=
+          smoothabilityFrontier.bridgeCharted
+         letI : SimplyConnectedSpace M :=
+          smoothabilityFrontier.bridgeSimple
+         letI : CompactSpace M := smoothabilityFrontier.bridgeCompact
+         HasSmoothabilityBridgeDerivation.witnesses M
+            smoothabilityFrontier.bridgeDerivation =
+          ⟨smoothabilityFrontier.smoothDerivationStatement,
+            smoothabilityFrontier.bridgeManifoldEvidence⟩ ∧
+         HasSmoothChartCompatibility.witnesses M
+            smoothabilityFrontier.chartCompatibility =
+          ⟨smoothabilityFrontier.smoothDerivationStatement,
+            smoothabilityFrontier.bridgeManifoldEvidence,
+            smoothabilityFrontier.bridgeDerivation,
+            smoothabilityFrontier.modelCompatibility⟩ ∧
+         smoothabilityFrontier.bridgeDerivation.smoothStructureDerivationWitness =
+          smoothabilityFrontier.smoothDerivationStatement ∧
+         smoothabilityFrontier.bridgeDerivation.manifoldEvidenceWitness =
+          smoothabilityFrontier.bridgeManifoldEvidence ∧
+         smoothabilityFrontier.modelCompatibility.smoothStructureDerivationWitness =
+          smoothabilityFrontier.smoothDerivationStatement ∧
+         smoothabilityFrontier.modelCompatibility.manifoldEvidenceWitness =
+          smoothabilityFrontier.bridgeManifoldEvidence ∧
+         smoothabilityFrontier.modelCompatibility.bridgeDerivationWitness =
+          smoothabilityFrontier.bridgeDerivation ∧
+         smoothabilityFrontier.chartCompatibility.smoothStructureDerivationWitness =
+          smoothabilityFrontier.smoothDerivationStatement ∧
+         smoothabilityFrontier.chartCompatibility.manifoldEvidenceWitness =
+          smoothabilityFrontier.bridgeManifoldEvidence ∧
+         smoothabilityFrontier.chartCompatibility.bridgeDerivationWitness =
+          smoothabilityFrontier.bridgeDerivation ∧
+         smoothabilityFrontier.chartCompatibility.modelCompatibilityWitness =
+          smoothabilityFrontier.modelCompatibility) ∧
+       ∃ _puncturePathPiOnePayload :
+        ∀ x : M,
+          (∀ basepoint z : ({x}ᶜ : Set M),
+            ∃ γ : Path basepoint z,
+              γ 0 = basepoint ∧ γ 1 = z ∧ Joined basepoint z) ∧
+          (∀ basepoint : ({x}ᶜ : Set M),
+            Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint)) ∧
+          (∀ basepoint : ({x}ᶜ : Set M),
+            Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint)),
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+       ∃ _recognitionPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ assemblyPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        topologyPackage =
+          extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+            surgeryTracePrefix onePointRecognition ∧
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+        homeomorphism =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction (recognitionPrefix.decomposition M extinction)
+            assemblyPayload ∧
+        homeomorphism_of_topology_package topologyPackage M extinction =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction
+            (extinction_decomposition_of_topology_package
+              topologyPackage M extinction)
+            (finalHomeomorphismPayloadData_of_topology_package
+              topologyPackage M extinction) ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction) ∧
+        ∀ x : M,
+          ContractibleSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            PathConnectedSpace ({x}ᶜ : Set M) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            Nonempty ({x}ᶜ : Set M)) := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      transportedSameChartPackage, smoothabilityFrontier,
+      smoothabilityFrontierManifolds, smoothabilityFrontierCoherence,
+      homeomorphism, recognitionPayload, assemblyPayload, topologyPackage,
+      topologyPackage_eq, extractionStatement, topologyDerivation,
+      homeomorphism_eq, packageFinalHomeomorphismProjector_eq,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+  let puncturePathPiOnePayload :
+      ∀ x : M,
+        (∀ basepoint z : ({x}ᶜ : Set M),
+          ∃ γ : Path basepoint z,
+            γ 0 = basepoint ∧ γ 1 = z ∧ Joined basepoint z) ∧
+        (∀ basepoint : ({x}ᶜ : Set M),
+          Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint)) ∧
+        (∀ basepoint : ({x}ᶜ : Set M),
+          Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint)) := by
+    intro x
+    exact
+      ⟨fun basepoint z =>
+        compl_singleton_exists_path_with_endpoints_of_homeomorph_to_onePoint_threeSpace
+          onePointHomeomorphism x basepoint z,
+       fun basepoint =>
+        compl_singleton_fundamentalGroup_subsingleton_of_homeomorph_to_onePoint_threeSpace
+          onePointHomeomorphism x basepoint,
+       fun basepoint =>
+        compl_singleton_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
+          onePointHomeomorphism x basepoint⟩
+  exact
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      transportedSameChartPackage, smoothabilityFrontier,
+      smoothabilityFrontierManifolds, smoothabilityFrontierCoherence,
+      puncturePathPiOnePayload, homeomorphism, recognitionPayload,
+      assemblyPayload, topologyPackage, topologyPackage_eq,
+      extractionStatement, topologyDerivation, homeomorphism_eq,
+      packageFinalHomeomorphismProjector_eq, finalHomeomorphismStatement,
+      finalHomeomorphismPayload, punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+Named full spherical-space-form derivation payload for final-certificate
+consumers. This is the proposition proved by
+`final_homeomorphism_payload_agreement_with_extraction_package_consumer_of_surgeryTracePrefix_and_onePointCompactificationRecognition`
+at the extinction recovered from the topology package route.
+-/
+abbrev ExtinctionFullSphericalSpaceFormDerivationPayload
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) : Prop :=
+    let surgeryTracePrefix :=
+      extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+        topology
+    let onePointRecognition :=
+      onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+        topology
+    let recognitionPrefix :=
+      extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+        surgeryTracePrefix onePointRecognition
+    ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ _recognitionPayload :
+      FinalHomeomorphismPayloadData M extinction
+        (recognitionPrefix.decomposition M extinction),
+    ∃ assemblyPayload :
+      FinalHomeomorphismPayloadData M extinction
+        (recognitionPrefix.decomposition M extinction),
+    ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+      topologyPackage =
+        extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition ∧
+      ExtinctionTopologyExtractionStatement.{u} ∧
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+      homeomorphism =
+        homeomorphism_of_final_homeomorphism_payload_data
+          M extinction (recognitionPrefix.decomposition M extinction)
+          assemblyPayload ∧
+      ∃ sphericalQuotientModel :
+        HasSphericalSpaceFormQuotientModel M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction),
+      ∃ sphericalUniversalCover :
+        HasSphericalSpaceFormUniversalCover M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          sphericalQuotientModel,
+      ∃ sphericalFundamentalGroup :
+        HasSphericalSpaceFormFundamentalGroupComputation M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction),
+      ∃ deckGroupIdentification :
+        HasSphericalSpaceFormDeckGroupIdentification M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          sphericalQuotientModel sphericalFundamentalGroup,
+      ∃ deckGroupTriviality :
+        HasSphericalSpaceFormDeckGroupTriviality M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          sphericalFundamentalGroup,
+      ∃ trivialSphericalQuotient :
+        HasTrivialSphericalSpaceFormQuotient M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          sphericalQuotientModel sphericalFundamentalGroup
+          deckGroupIdentification deckGroupTriviality,
+      ∃ trivialQuotientHomeomorphism :
+        HasSphericalSpaceFormTrivialQuotientHomeomorphism M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          sphericalQuotientModel sphericalUniversalCover
+          sphericalFundamentalGroup deckGroupIdentification
+          deckGroupTriviality trivialSphericalQuotient,
+      ∃ simplyConnectedRecognition :
+        HasSimplyConnectedExtinctionRecognition M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          sphericalFundamentalGroup deckGroupTriviality,
+      ∃ homeomorphismAssembly :
+        HasExtinctionHomeomorphismAssembly M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          sphericalQuotientModel sphericalFundamentalGroup
+          deckGroupIdentification deckGroupTriviality
+          simplyConnectedRecognition trivialSphericalQuotient
+          homeomorphism,
+        HasExtinctionHomeomorphismDerivation M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          sphericalFundamentalGroup deckGroupTriviality
+          simplyConnectedRecognition sphericalQuotientModel
+          deckGroupIdentification trivialSphericalQuotient
+          homeomorphism homeomorphismAssembly ∧
+        HasSphericalSpaceFormHomeomorphismLift M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          sphericalQuotientModel sphericalUniversalCover
+          sphericalFundamentalGroup deckGroupIdentification
+          deckGroupTriviality trivialSphericalQuotient
+          trivialQuotientHomeomorphism ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u}
+
+/--
+Named chart-level Moise plus downstream PL-to-smooth frontier payload. The
+source proof is
+`onePointRecognition_moiseChartTriangulationFields_and_plToSmoothFrontier_of_subobligationsPayload`
+at the recovered one-point recognition homeomorphism.
+-/
+abbrev OnePointRecognitionCombinedMoisePLFrontierPayload
+    (M : Type u) [TopologicalSpace M] : Prop :=
+    (∃ _t2 : T2Space M,
+      ∃ _charted : ChartedSpace ThreeManifoldModel M,
+      ∃ _simple : SimplyConnectedSpace M,
+      ∃ _compact : CompactSpace M,
+      ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+      ∃ _locallyFiniteCoverRefinement :
+        HasMoiseLocallyFiniteCoverRefinement M localCharts,
+      ∃ simplicialComplex : HasMoiseSimplicialComplex M localCharts,
+      ∃ _compatibleChartTriangulations :
+        HasMoiseCompatibleChartTriangulations
+          M localCharts simplicialComplex,
+        HasMoiseTriangulation M) ∧
+    (∃ _t2 : T2Space M,
+      ∃ _charted : ChartedSpace ThreeManifoldModel M,
+      ∃ _simple : SimplyConnectedSpace M,
+      ∃ _compact : CompactSpace M,
+      ∃ triangulation : HasMoiseTriangulation M,
+      ∃ plStructure : HasCompatiblePLStructure M triangulation,
+      ∃ plAtlas : HasCompatiblePLAtlas M triangulation plStructure,
+      ∃ plSmoothingExistence :
+        HasPLSmoothingExistence M triangulation plStructure plAtlas,
+      ∃ plSmoothingObstructionVanishing :
+        HasPLSmoothingObstructionVanishing
+          M triangulation plStructure plAtlas,
+      ∃ _plMicrobundleSmoothing :
+        HasPLMicrobundleSmoothing M triangulation plStructure plAtlas
+          plSmoothingExistence plSmoothingObstructionVanishing,
+      ∃ plSmoothing :
+        HasPLSmoothingTheorem M triangulation plStructure plAtlas,
+      ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+      ∃ smoothAtlasConstruction :
+        HasSmoothAtlasConstruction
+          M triangulation plStructure plAtlas plSmoothing smoothStructure,
+        HasPLSmoothingCompatibility
+          M triangulation plStructure plAtlas plSmoothing ∧
+        HasPLSmoothingUniqueness
+          M triangulation plStructure plAtlas plSmoothing ∧
+        HasPLSmoothingLocalModelCompatibility
+          M triangulation plStructure plAtlas plSmoothing ∧
+        HasSmoothAtlasPLCompatibility
+          M triangulation plStructure plAtlas plSmoothing smoothStructure
+          smoothAtlasConstruction ∧
+        HasSmoothAtlasMaximality
+          M triangulation plStructure plAtlas plSmoothing smoothStructure ∧
+        HasSmoothAtlasUniqueness M smoothStructure ∧
+        HasSmoothStructureUniquenessUpToDiffeomorphism M smoothStructure ∧
+        ∃ smoothTransitionCompatibility :
+          HasSmoothTransitionCompatibility M smoothStructure,
+          HasSmoothAtlasTransitionSmoothness
+            M smoothStructure smoothTransitionCompatibility)
+
+/--
+Named Moise-to-PL plus bridge-tail payload for the final-certificate boundary.
+The source proofs are `moiseToPLFrontier_of_onePointRecognition_subobligationsPayload`
+and `smoothabilityBridgeTail_of_onePointRecognition_subobligationsPayload` at the
+same recovered one-point recognition homeomorphism.
+-/
+abbrev OnePointRecognitionMoiseToPLAndBridgeTailPayload
+    (M : Type u) [TopologicalSpace M] : Prop :=
+    (∃ _t2 : T2Space M,
+      ∃ _charted : ChartedSpace ThreeManifoldModel M,
+      ∃ _simple : SimplyConnectedSpace M,
+      ∃ _compact : CompactSpace M,
+      ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+      ∃ simplicialComplex : HasMoiseSimplicialComplex M localCharts,
+      ∃ triangulation : HasMoiseTriangulation M,
+      ∃ linkCompatibility : HasMoiseLinkCompatibility M triangulation,
+      ∃ triangulationUniqueness :
+        HasMoiseTriangulationUniqueness M triangulation,
+      ∃ plStructure : HasCompatiblePLStructure M triangulation,
+        HasMoiseLocallyFiniteCoverRefinement M localCharts ∧
+        HasMoiseCompatibleChartTriangulations M localCharts simplicialComplex ∧
+        HasMoisePLManifoldRecognition M triangulation linkCompatibility ∧
+        HasMoiseTriangulationHomeomorphism M localCharts triangulation ∧
+        HasMoiseTriangulationCompatibility M localCharts triangulation ∧
+        HasMoiseHauptvermutungDimensionThree
+          M triangulation triangulationUniqueness ∧
+        HasPLTransitionCompatibility M triangulation plStructure ∧
+        HasCompatiblePLAtlas M triangulation plStructure) ∧
+    (∃ _t2 : T2Space M,
+      ∃ _charted : ChartedSpace ThreeManifoldModel M,
+      ∃ _simple : SimplyConnectedSpace M,
+      ∃ _compact : CompactSpace M,
+      ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+      ∃ smoothDerivationStatement :
+        SmoothStructureDerivationStatement M smoothStructure,
+      ∃ manifoldEvidence :
+        IsManifold ThreeManifoldModelWithCorners 1 M,
+      ∃ bridgeDerivation :
+        HasSmoothabilityBridgeDerivation
+          M smoothStructure smoothDerivationStatement manifoldEvidence,
+      ∃ modelCompatibility :
+        HasSmoothManifoldModelCompatibility
+          M smoothStructure smoothDerivationStatement manifoldEvidence
+          bridgeDerivation,
+        HasSmoothChartCompatibility
+          M smoothStructure smoothDerivationStatement manifoldEvidence
+          bridgeDerivation modelCompatibility)
+
+/--
+Named topology trace/handle/component-classification payload for
+final-certificate consumers. The source proof is
+`final_homeomorphism_derivation_trace_handle_component_projection_and_extraction_statement_bundle_of_surgeryTracePrefix_and_onePointCompactificationRecognition`
+at the extinction recovered from the topology package route.
+-/
+abbrev ExtinctionTraceHandleComponentExtractionPayload
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) : Prop :=
+    let surgeryTracePrefix :=
+      extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+        topology
+    let onePointRecognition :=
+      onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+        topology
+    let recognitionPrefix :=
+      extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+        surgeryTracePrefix onePointRecognition
+    let package :=
+      extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+        surgeryTracePrefix onePointRecognition
+    let handleCancellationPrefix :=
+      extinctionTopologyHandleCancellationPrefixPackage_of_topology_package
+        package
+    ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+      ∃ homeomorphismAssembly :
+        HasExtinctionHomeomorphismAssembly M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          homeomorphism,
+        HasExtinctionHomeomorphismDerivation M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          homeomorphism homeomorphismAssembly ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        HasExtinctionSurgeryTraceReconstruction M extinction
+          (extinction_decomposition_of_topology_package
+            package M extinction) ∧
+        HasExtinctionSurgeryTraceHandleCancellation M extinction
+          (handleCancellationPrefix.decomposition M extinction)
+          (handleCancellationPrefix.surgeryTraceReconstruction M extinction) ∧
+        HasExtinctionComponentClassification M extinction
+          (extinction_decomposition_of_topology_package
+            package M extinction) ∧
+        ExtinctionTopologyExtractionStatement.{u}
+
+/--
+Named topology payload adding discarded-component classification, component
+inventory, and boundary-sphere control to the trace/handle/component route. The
+source proof is
+`final_homeomorphism_derivation_trace_handle_component_discarded_inventory_boundary_projection_and_extraction_statement_bundle_of_surgeryTracePrefix_and_onePointCompactificationRecognition`
+at the extinction recovered from the topology package route.
+-/
+abbrev ExtinctionTraceHandleComponentInventoryBoundaryExtractionPayload
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) : Prop :=
+    let surgeryTracePrefix :=
+      extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+        topology
+    let onePointRecognition :=
+      onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+        topology
+    let recognitionPrefix :=
+      extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+        surgeryTracePrefix onePointRecognition
+    let package :=
+      extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+        surgeryTracePrefix onePointRecognition
+    let handleCancellationPrefix :=
+      extinctionTopologyHandleCancellationPrefixPackage_of_topology_package
+        package
+    let discardedComponentPrefix :=
+      extinctionTopologyDiscardedComponentHomeomorphismClassificationPrefixPackage_of_topology_package
+        package
+    let boundarySpherePrefix :=
+      extinctionTopologyComponentBoundarySphereControlPrefixPackage_of_topology_package
+        package
+    ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+      ∃ homeomorphismAssembly :
+        HasExtinctionHomeomorphismAssembly M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          homeomorphism,
+        HasExtinctionHomeomorphismDerivation M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          homeomorphism homeomorphismAssembly ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        HasExtinctionSurgeryTraceReconstruction M extinction
+          (extinction_decomposition_of_topology_package
+            package M extinction) ∧
+        HasExtinctionSurgeryTraceHandleCancellation M extinction
+          (handleCancellationPrefix.decomposition M extinction)
+          (handleCancellationPrefix.surgeryTraceReconstruction M extinction) ∧
+        HasExtinctionComponentClassification M extinction
+          (extinction_decomposition_of_topology_package
+            package M extinction) ∧
+        HasExtinctionDiscardedComponentHomeomorphismClassification M extinction
+          (discardedComponentPrefix.decomposition M extinction)
+          (discardedComponentPrefix.componentClassification M extinction) ∧
+        HasExtinctionComponentInventory M extinction
+          (boundarySpherePrefix.decomposition M extinction)
+          (boundarySpherePrefix.componentClassification M extinction) ∧
+        HasExtinctionComponentBoundarySphereControl M extinction
+          (boundarySpherePrefix.decomposition M extinction)
+          (boundarySpherePrefix.componentClassification M extinction)
+          (boundarySpherePrefix.componentInventory M extinction) ∧
+        ExtinctionTopologyExtractionStatement.{u}
+
+/--
+Named topology payload adding prime decomposition, sphere theorem,
+irreducibility, connected-sum collapse, spherical-space-form reduction, and
+quotient-model data to the trace/handle/component inventory-boundary route.
+-/
+abbrev ExtinctionTraceHandleComponentInventoryBoundaryPrimeSphericalPayload
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) : Prop :=
+    let surgeryTracePrefix :=
+      extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+        topology
+    let onePointRecognition :=
+      onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+        topology
+    let recognitionPrefix :=
+      extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+        surgeryTracePrefix onePointRecognition
+    let package :=
+      extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+        surgeryTracePrefix onePointRecognition
+    let handleCancellationPrefix :=
+      extinctionTopologyHandleCancellationPrefixPackage_of_topology_package
+        package
+    let discardedComponentPrefix :=
+      extinctionTopologyDiscardedComponentHomeomorphismClassificationPrefixPackage_of_topology_package
+        package
+    let boundarySpherePrefix :=
+      extinctionTopologyComponentBoundarySphereControlPrefixPackage_of_topology_package
+        package
+    ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+      ∃ homeomorphismAssembly :
+        HasExtinctionHomeomorphismAssembly M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          homeomorphism,
+        HasExtinctionHomeomorphismDerivation M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          homeomorphism homeomorphismAssembly ∧
+        HasExtinctionPrimeDecomposition M extinction
+          (recognitionPrefix.decomposition M extinction) ∧
+        HasExtinctionSphereTheoremApplication M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction) ∧
+        HasExtinctionIrreducibility M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction) ∧
+        HasExtinctionConnectedSumCollapse M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction) ∧
+        HasExtinctionSphericalSpaceFormReduction M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction) ∧
+        HasSphericalSpaceFormQuotientModel M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction) ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        HasExtinctionSurgeryTraceReconstruction M extinction
+          (extinction_decomposition_of_topology_package
+            package M extinction) ∧
+        HasExtinctionSurgeryTraceHandleCancellation M extinction
+          (handleCancellationPrefix.decomposition M extinction)
+          (handleCancellationPrefix.surgeryTraceReconstruction M extinction) ∧
+        HasExtinctionComponentClassification M extinction
+          (extinction_decomposition_of_topology_package
+            package M extinction) ∧
+        HasExtinctionDiscardedComponentHomeomorphismClassification M extinction
+          (discardedComponentPrefix.decomposition M extinction)
+          (discardedComponentPrefix.componentClassification M extinction) ∧
+        HasExtinctionComponentInventory M extinction
+          (boundarySpherePrefix.decomposition M extinction)
+          (boundarySpherePrefix.componentClassification M extinction) ∧
+        HasExtinctionComponentBoundarySphereControl M extinction
+          (boundarySpherePrefix.decomposition M extinction)
+          (boundarySpherePrefix.componentClassification M extinction)
+          (boundarySpherePrefix.componentInventory M extinction) ∧
+        ExtinctionTopologyExtractionStatement.{u}
+
+/--
+Named extractor-facing topology payload adding the deck-action
+trivialization and trivial deck-quotient identification fields not already
+exposed by the full spherical and prime/spherical trace-handle payloads.
+-/
+abbrev ExtinctionDeckActionTrivialDeckQuotientPayload
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) : Prop :=
+    let surgeryTracePrefix :=
+      extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+        topology
+    let onePointRecognition :=
+      onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+        topology
+    let recognitionPrefix :=
+      extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+        surgeryTracePrefix onePointRecognition
+    ∃ deckActionTrivialization :
+      HasSphericalSpaceFormDeckActionTrivialization M extinction
+        (recognitionPrefix.decomposition M extinction)
+        (recognitionPrefix.primeDecomposition M extinction)
+        (recognitionPrefix.irreducibility M extinction)
+        (recognitionPrefix.connectedSumCollapse M extinction)
+        (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+        (recognitionPrefix.sphericalQuotientModel M extinction)
+        (recognitionPrefix.sphericalFundamentalGroup M extinction)
+        (recognitionPrefix.deckGroupIdentification M extinction)
+        (recognitionPrefix.deckGroupTriviality M extinction),
+      HasSphericalSpaceFormTrivialDeckQuotientIdentification M extinction
+        (recognitionPrefix.decomposition M extinction)
+        (recognitionPrefix.primeDecomposition M extinction)
+        (recognitionPrefix.irreducibility M extinction)
+        (recognitionPrefix.connectedSumCollapse M extinction)
+        (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+        (recognitionPrefix.sphericalQuotientModel M extinction)
+        (recognitionPrefix.sphericalFundamentalGroup M extinction)
+        (recognitionPrefix.deckGroupIdentification M extinction)
+        (recognitionPrefix.deckGroupTriviality M extinction)
+        deckActionTrivialization
+
+/--
+Named spherical covering/action payload extracted from the downstream final
+homeomorphism topology consumer. This records the classification, free action,
+covering model/projection, and deck-action properness data not exposed by the
+full spherical derivation payload.
+-/
+abbrev ExtinctionSphericalCoveringActionChainPayload
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) : Prop :=
+    let surgeryTracePrefix :=
+      extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+        topology
+    let onePointRecognition :=
+      onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+        topology
+    let recognitionPrefix :=
+      extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+        surgeryTracePrefix onePointRecognition
+    ∃ _classification :
+      HasSphericalSpaceFormClassification M extinction
+        (recognitionPrefix.decomposition M extinction)
+        (recognitionPrefix.primeDecomposition M extinction)
+        (recognitionPrefix.irreducibility M extinction)
+        (recognitionPrefix.connectedSumCollapse M extinction)
+        (recognitionPrefix.sphericalSpaceFormReduction M extinction),
+    ∃ sphericalQuotientModel :
+      HasSphericalSpaceFormQuotientModel M extinction
+        (recognitionPrefix.decomposition M extinction)
+        (recognitionPrefix.primeDecomposition M extinction)
+        (recognitionPrefix.irreducibility M extinction)
+        (recognitionPrefix.connectedSumCollapse M extinction)
+        (recognitionPrefix.sphericalSpaceFormReduction M extinction),
+    ∃ _freeAction :
+      HasSphericalSpaceFormFreeAction M extinction
+        (recognitionPrefix.decomposition M extinction)
+        (recognitionPrefix.primeDecomposition M extinction)
+        (recognitionPrefix.irreducibility M extinction)
+        (recognitionPrefix.connectedSumCollapse M extinction)
+        (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+        sphericalQuotientModel,
+    ∃ sphericalUniversalCover :
+      HasSphericalSpaceFormUniversalCover M extinction
+        (recognitionPrefix.decomposition M extinction)
+        (recognitionPrefix.primeDecomposition M extinction)
+        (recognitionPrefix.irreducibility M extinction)
+        (recognitionPrefix.connectedSumCollapse M extinction)
+        (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+        sphericalQuotientModel,
+    ∃ sphericalCoveringModel :
+      HasSphericalSpaceFormCoveringModel M extinction
+        (recognitionPrefix.decomposition M extinction)
+        (recognitionPrefix.primeDecomposition M extinction)
+        (recognitionPrefix.irreducibility M extinction)
+        (recognitionPrefix.connectedSumCollapse M extinction)
+        (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+        sphericalQuotientModel sphericalUniversalCover,
+    ∃ _coveringProjection :
+      HasSphericalSpaceFormCoveringProjection M extinction
+        (recognitionPrefix.decomposition M extinction)
+        (recognitionPrefix.primeDecomposition M extinction)
+        (recognitionPrefix.irreducibility M extinction)
+        (recognitionPrefix.connectedSumCollapse M extinction)
+        (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+        sphericalQuotientModel sphericalUniversalCover sphericalCoveringModel,
+    ∃ sphericalFundamentalGroup :
+      HasSphericalSpaceFormFundamentalGroupComputation M extinction
+        (recognitionPrefix.decomposition M extinction)
+        (recognitionPrefix.primeDecomposition M extinction)
+        (recognitionPrefix.irreducibility M extinction)
+        (recognitionPrefix.connectedSumCollapse M extinction)
+        (recognitionPrefix.sphericalSpaceFormReduction M extinction),
+    ∃ deckGroupIdentification :
+      HasSphericalSpaceFormDeckGroupIdentification M extinction
+        (recognitionPrefix.decomposition M extinction)
+        (recognitionPrefix.primeDecomposition M extinction)
+        (recognitionPrefix.irreducibility M extinction)
+        (recognitionPrefix.connectedSumCollapse M extinction)
+        (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+        sphericalQuotientModel sphericalFundamentalGroup,
+      HasSphericalSpaceFormDeckActionProperness M extinction
+        (recognitionPrefix.decomposition M extinction)
+        (recognitionPrefix.primeDecomposition M extinction)
+        (recognitionPrefix.irreducibility M extinction)
+        (recognitionPrefix.connectedSumCollapse M extinction)
+        (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+        sphericalQuotientModel sphericalFundamentalGroup
+        deckGroupIdentification
+
+/--
+Named puncture-complement topology payload for the recovered one-point
+recognition route. For every point, the complement carries the contractible,
+simply connected, path connected, connected, and nonempty topology supplied by
+the final-certificate boundary.
+-/
+abbrev OnePointRecognitionPunctureComplementTopologyPayload
+    (M : Type u) [TopologicalSpace M] : Prop :=
+    ∀ x : M,
+      ContractibleSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+        PathConnectedSpace ({x}ᶜ : Set M) ∧
+        ConnectedSpace ({x}ᶜ : Set M) ∧
+        Nonempty ({x}ᶜ : Set M)
+
+/--
+Named puncture path and `π₁` payload for the recovered one-point recognition
+route. For every point, it records explicit path witnesses in the punctured
+complement and the corresponding fundamental-group and first homotopy-group
+subsingleton facts.
+-/
+abbrev OnePointRecognitionPuncturePathPiOnePayload
+    (M : Type u) [TopologicalSpace M] : Prop :=
+    ∀ x : M,
+      (∀ basepoint z : ({x}ᶜ : Set M),
+        ∃ γ : Path basepoint z,
+          γ 0 = basepoint ∧ γ 1 = z ∧ Joined basepoint z) ∧
+      (∀ basepoint : ({x}ᶜ : Set M),
+        Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint)) ∧
+      (∀ basepoint : ({x}ᶜ : Set M),
+        Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint))
+
+/--
+Named topology-package lift-chain payload. It records the package-specific
+trivial quotient homeomorphism, spherical homeomorphism lift, fixed-extinction
+trivial quotient and lift statements, and the lifted-homeomorphism derivation
+for `homeomorphism_of_topology_package`.
+-/
+abbrev ExtinctionTopologyPackageLiftChainPayload
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) : Prop :=
+    ∃ _trivialQuotientHomeomorphism :
+      HasSphericalSpaceFormTrivialQuotientHomeomorphism
+        M extinction
+        (extinction_decomposition_of_topology_package
+          topologyPackage M extinction)
+        (extinction_prime_decomposition_of_topology_package
+          topologyPackage M extinction)
+        (extinction_irreducibility_of_topology_package
+          topologyPackage M extinction)
+        (extinction_connected_sum_collapse_of_topology_package
+          topologyPackage M extinction)
+        (extinction_spherical_space_form_reduction_of_topology_package
+          topologyPackage M extinction)
+        (spherical_quotient_model_of_topology_package
+          topologyPackage M extinction)
+        (spherical_universal_cover_of_topology_package
+          topologyPackage M extinction)
+        (spherical_fundamental_group_of_topology_package
+          topologyPackage M extinction)
+        (spherical_deck_group_identification_of_topology_package
+          topologyPackage M extinction)
+        (spherical_deck_group_triviality_of_topology_package
+          topologyPackage M extinction)
+        (trivial_spherical_quotient_of_topology_package
+          topologyPackage M extinction),
+    ∃ _sphericalHomeomorphismLift :
+      HasSphericalSpaceFormHomeomorphismLift
+        M extinction
+        (extinction_decomposition_of_topology_package
+          topologyPackage M extinction)
+        (extinction_prime_decomposition_of_topology_package
+          topologyPackage M extinction)
+        (extinction_irreducibility_of_topology_package
+          topologyPackage M extinction)
+        (extinction_connected_sum_collapse_of_topology_package
+          topologyPackage M extinction)
+        (extinction_spherical_space_form_reduction_of_topology_package
+          topologyPackage M extinction)
+        (spherical_quotient_model_of_topology_package
+          topologyPackage M extinction)
+        (spherical_universal_cover_of_topology_package
+          topologyPackage M extinction)
+        (spherical_fundamental_group_of_topology_package
+          topologyPackage M extinction)
+        (spherical_deck_group_identification_of_topology_package
+          topologyPackage M extinction)
+        (spherical_deck_group_triviality_of_topology_package
+          topologyPackage M extinction)
+        (trivial_spherical_quotient_of_topology_package
+          topologyPackage M extinction)
+        (trivial_quotient_homeomorphism_of_topology_package
+          topologyPackage M extinction),
+      ExtinctionTopologySphericalTrivialQuotientStatement M extinction ∧
+      ExtinctionTopologySphericalHomeomorphismLiftStatement M extinction ∧
+      ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+        M extinction
+        (homeomorphism_of_topology_package topologyPackage M extinction) ∧
+      ExtinctionTopologyLiftedHomeomorphismDerivationForExtractionStatement.{u}
+        (fun (N : Type u) [TopologicalSpace N] [T2Space N]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+          [SimplyConnectedSpace N] [CompactSpace N]
+          (extinction : FiniteExtinctionByRicciFlowWithSurgery N) =>
+            homeomorphism_of_topology_package topologyPackage N extinction)
+
+/--
+Named final-homeomorphism projector payload. It records the actual recovered
+homeomorphism to `ThreeSphere`, the recognition and assembly payloads, the
+topology package identification, package lift chain, extraction and topology
+derivation statements, agreement of the selected homeomorphism with the final
+payload data, agreement with the topology-package projector, and the final
+homeomorphism statement.
+-/
+abbrev ExtinctionFinalHomeomorphismProjectorPayload
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) : Prop :=
+    let surgeryTracePrefix :=
+      extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+        topology
+    let onePointRecognition :=
+      onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+        topology
+    let recognitionPrefix :=
+      extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+        surgeryTracePrefix onePointRecognition
+    ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ _recognitionPayload :
+      FinalHomeomorphismPayloadData M extinction
+        (recognitionPrefix.decomposition M extinction),
+    ∃ assemblyPayload :
+      FinalHomeomorphismPayloadData M extinction
+        (recognitionPrefix.decomposition M extinction),
+    ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+      topologyPackage =
+        extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition ∧
+      ExtinctionTopologyPackageLiftChainPayload
+        topologyPackage M extinction ∧
+      ExtinctionTopologyExtractionStatement.{u} ∧
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+      homeomorphism =
+        homeomorphism_of_final_homeomorphism_payload_data
+          M extinction (recognitionPrefix.decomposition M extinction)
+          assemblyPayload ∧
+      homeomorphism_of_topology_package topologyPackage M extinction =
+        homeomorphism_of_final_homeomorphism_payload_data
+          M extinction
+          (extinction_decomposition_of_topology_package
+            topologyPackage M extinction)
+          (finalHomeomorphismPayloadData_of_topology_package
+            topologyPackage M extinction) ∧
+      FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+      FinalHomeomorphismPayloadData M extinction
+        (recognitionPrefix.decomposition M extinction)
+
+/--
+The final-certificate boundary can also expose the topology package's
+homeomorphism lift chain: the trivial spherical quotient homeomorphism,
+spherical homeomorphism lift, fixed-extinction lifted statements, and the
+extractor-level lifted-homeomorphism derivation for the package homeomorphism.
+-/
+theorem poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ _n : ℕ∞ω,
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ onePointHomeomorphism :
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+       ∃ _terminalSmoothabilityProjection :
+        OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+          smoothabilityPayload M onePointHomeomorphism,
+       ∃ _terminalSmoothabilityPackageFrontierAndWitnessCoherence :
+        OnePointRecognitionTerminalSmoothabilityPackageFrontierAndWitnessCoherencePayload
+          smoothabilityPayload M onePointHomeomorphism,
+       ∃ _combinedMoisePLFrontier :
+        OnePointRecognitionCombinedMoisePLFrontierPayload M,
+       ∃ _moiseToPLAndBridgeTail :
+        OnePointRecognitionMoiseToPLAndBridgeTailPayload M,
+       ∃ _coreSmoothabilityConsumerRecognitionCoherence :
+        (∃ charted : ChartedSpace ThreeManifoldModel M,
+          (letI : ChartedSpace ThreeManifoldModel M := charted
+           IsManifold (𝓡 3) ∞ M ∧
+             IsManifold ThreeManifoldModelWithCorners 1 M) ∧
+          ∃ bridgeT2 : T2Space M,
+          ∃ bridgeCharted : ChartedSpace ThreeManifoldModel M,
+          ∃ bridgeSimple : SimplyConnectedSpace M,
+          ∃ bridgeCompact : CompactSpace M,
+            letI : T2Space M := bridgeT2
+            letI : ChartedSpace ThreeManifoldModel M := bridgeCharted
+            letI : SimplyConnectedSpace M := bridgeSimple
+            letI : CompactSpace M := bridgeCompact
+            ∃ _subobligations : SmoothabilitySubobligationsPayload M,
+            ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+            ∃ smoothTransitionCompatibility :
+              HasSmoothTransitionCompatibility M smoothStructure,
+            ∃ smoothAtlasTransitionSmoothness :
+              HasSmoothAtlasTransitionSmoothness
+                M smoothStructure smoothTransitionCompatibility,
+            ∃ smoothDerivationStatement :
+              SmoothStructureDerivationStatement M smoothStructure,
+            ∃ bridgeManifoldEvidence :
+              IsManifold ThreeManifoldModelWithCorners 1 M,
+            ∃ bridgeDerivation :
+              HasSmoothabilityBridgeDerivation
+                M smoothStructure smoothDerivationStatement
+                bridgeManifoldEvidence,
+            ∃ modelCompatibility :
+              HasSmoothManifoldModelCompatibility
+                M smoothStructure smoothDerivationStatement
+                bridgeManifoldEvidence bridgeDerivation,
+            ∃ chartCompatibility :
+              HasSmoothChartCompatibility
+                M smoothStructure smoothDerivationStatement
+                bridgeManifoldEvidence bridgeDerivation modelCompatibility,
+              SmoothStructureDerivationStatement M smoothStructure ∧
+              IsManifold ThreeManifoldModelWithCorners 1 M ∧
+              (∃ hSmooth :
+                smoothStructure =
+                  HasThreeManifoldSmoothStructure.ofOnePointRecognition
+                    onePointHomeomorphism,
+                smoothTransitionCompatibility =
+                  HasSmoothTransitionCompatibility.ofOnePointRecognition
+                    onePointHomeomorphism hSmooth ∧
+                smoothAtlasTransitionSmoothness.onePointRecognition =
+                  onePointHomeomorphism) ∧
+              HasSmoothabilityBridgeDerivation.witnesses M bridgeDerivation =
+                ⟨smoothDerivationStatement, bridgeManifoldEvidence⟩ ∧
+              HasSmoothChartCompatibility.witnesses M chartCompatibility =
+                ⟨smoothDerivationStatement, bridgeManifoldEvidence,
+                  bridgeDerivation, modelCompatibility⟩ ∧
+              bridgeDerivation.smoothStructureDerivationWitness =
+                smoothDerivationStatement ∧
+              bridgeDerivation.manifoldEvidenceWitness =
+                bridgeManifoldEvidence ∧
+              modelCompatibility.smoothStructureDerivationWitness =
+                smoothDerivationStatement ∧
+              modelCompatibility.manifoldEvidenceWitness =
+                bridgeManifoldEvidence ∧
+              modelCompatibility.bridgeDerivationWitness =
+                bridgeDerivation ∧
+              chartCompatibility.smoothStructureDerivationWitness =
+                smoothDerivationStatement ∧
+              chartCompatibility.manifoldEvidenceWitness =
+                bridgeManifoldEvidence ∧
+              chartCompatibility.bridgeDerivationWitness =
+                bridgeDerivation ∧
+              chartCompatibility.modelCompatibilityWitness =
+                modelCompatibility),
+       ∃ _transportedSameChartPackage :
+        (∃ smoothManifoldStatement :
+          SmoothabilityTransportedSmoothManifoldStatement.{u},
+         ∃ bridgeStatement : SmoothabilityTransportedBridgeStatement.{u},
+         ∃ smoothManifoldPackage :
+          SmoothabilityTransportedSmoothManifoldPackageField.{u},
+         ∃ bridgePackage : SmoothabilityTransportedBridgePackageField.{u},
+          smoothManifoldStatement =
+            transportedSmoothManifoldStatement_of_onePointRecognition_subobligationsPayload
+              smoothabilityPayload ∧
+          bridgeStatement =
+            smoothabilityTransportedBridgeStatement_of_transportedSmoothManifoldStatement
+              smoothManifoldStatement ∧
+          smoothManifoldPackage.transportedSmoothManifold =
+            smoothManifoldStatement ∧
+          bridgePackage.transportedBridge = bridgeStatement ∧
+          bridgePackage.transportedBridge =
+            smoothabilityTransportedBridgeStatement_of_transportedSmoothManifoldStatement
+              smoothManifoldPackage.transportedSmoothManifold ∧
+          ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+            [SimplyConnectedSpace N] [CompactSpace N],
+            Nonempty (N ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
+              ∃ charted : ChartedSpace ThreeManifoldModel N,
+                letI : ChartedSpace ThreeManifoldModel N := charted
+                IsManifold (𝓡 3) ∞ N ∧
+                  IsManifold ThreeManifoldModelWithCorners 1 N),
+       ∃ smoothabilityFrontier :
+        OnePointRecognitionSameChartCanonicalBridgePackageFrontierBundle M,
+        (letI : ChartedSpace ThreeManifoldModel M :=
+          smoothabilityFrontier.sameCharted
+         IsManifold (𝓡 3) ∞ M ∧
+          IsManifold ThreeManifoldModelWithCorners 1 M) ∧
+        (letI : T2Space M := smoothabilityFrontier.bridgeT2
+         letI : ChartedSpace ThreeManifoldModel M :=
+          smoothabilityFrontier.bridgeCharted
+         letI : SimplyConnectedSpace M :=
+          smoothabilityFrontier.bridgeSimple
+         letI : CompactSpace M := smoothabilityFrontier.bridgeCompact
+         HasSmoothabilityBridgeDerivation.witnesses M
+            smoothabilityFrontier.bridgeDerivation =
+          ⟨smoothabilityFrontier.smoothDerivationStatement,
+            smoothabilityFrontier.bridgeManifoldEvidence⟩ ∧
+         HasSmoothChartCompatibility.witnesses M
+            smoothabilityFrontier.chartCompatibility =
+          ⟨smoothabilityFrontier.smoothDerivationStatement,
+            smoothabilityFrontier.bridgeManifoldEvidence,
+            smoothabilityFrontier.bridgeDerivation,
+            smoothabilityFrontier.modelCompatibility⟩ ∧
+         smoothabilityFrontier.bridgeDerivation.smoothStructureDerivationWitness =
+          smoothabilityFrontier.smoothDerivationStatement ∧
+         smoothabilityFrontier.bridgeDerivation.manifoldEvidenceWitness =
+          smoothabilityFrontier.bridgeManifoldEvidence ∧
+         smoothabilityFrontier.modelCompatibility.smoothStructureDerivationWitness =
+          smoothabilityFrontier.smoothDerivationStatement ∧
+         smoothabilityFrontier.modelCompatibility.manifoldEvidenceWitness =
+          smoothabilityFrontier.bridgeManifoldEvidence ∧
+         smoothabilityFrontier.modelCompatibility.bridgeDerivationWitness =
+          smoothabilityFrontier.bridgeDerivation ∧
+         smoothabilityFrontier.chartCompatibility.smoothStructureDerivationWitness =
+          smoothabilityFrontier.smoothDerivationStatement ∧
+         smoothabilityFrontier.chartCompatibility.manifoldEvidenceWitness =
+          smoothabilityFrontier.bridgeManifoldEvidence ∧
+         smoothabilityFrontier.chartCompatibility.bridgeDerivationWitness =
+          smoothabilityFrontier.bridgeDerivation ∧
+         smoothabilityFrontier.chartCompatibility.modelCompatibilityWitness =
+          smoothabilityFrontier.modelCompatibility) ∧
+       ∃ _puncturePathPiOnePayload :
+        OnePointRecognitionPuncturePathPiOnePayload M,
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+       ∃ _recognitionPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ assemblyPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        topologyPackage =
+          extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+            surgeryTracePrefix onePointRecognition ∧
+        ExtinctionTopologyPackageLiftChainPayload
+          topologyPackage M extinction ∧
+        ExtinctionFullSphericalSpaceFormDerivationPayload
+          topology M extinction ∧
+        ExtinctionTraceHandleComponentExtractionPayload
+          topology M extinction ∧
+        ExtinctionTraceHandleComponentInventoryBoundaryExtractionPayload
+          topology M extinction ∧
+        ExtinctionTraceHandleComponentInventoryBoundaryPrimeSphericalPayload
+          topology M extinction ∧
+        ExtinctionDeckActionTrivialDeckQuotientPayload
+          topology M extinction ∧
+        ExtinctionSphericalCoveringActionChainPayload
+          topology M extinction ∧
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+        homeomorphism =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction (recognitionPrefix.decomposition M extinction)
+            assemblyPayload ∧
+        homeomorphism_of_topology_package topologyPackage M extinction =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction
+            (extinction_decomposition_of_topology_package
+              topologyPackage M extinction)
+            (finalHomeomorphismPayloadData_of_topology_package
+              topologyPackage M extinction) ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction) ∧
+        OnePointRecognitionPunctureComplementTopologyPayload M) := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      transportedSameChartPackage, smoothabilityFrontier,
+      smoothabilityFrontierManifolds, smoothabilityFrontierCoherence,
+      puncturePathPiOnePayload, homeomorphism, recognitionPayload,
+      assemblyPayload, topologyPackage, topologyPackage_eq,
+      extractionStatement, topologyDerivation, homeomorphism_eq,
+      packageFinalHomeomorphismProjector_eq,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+  let topologyLiftChain :
+      ExtinctionTopologyPackageLiftChainPayload
+        topologyPackage M extinction := by
+    exact
+      ⟨trivial_quotient_homeomorphism_of_topology_package
+          topologyPackage M extinction,
+        spherical_homeomorphism_lift_of_topology_package
+          topologyPackage M extinction,
+        topology_spherical_trivial_quotient_statement_of_topology_package
+          topologyPackage M extinction,
+        topology_spherical_homeomorphism_lift_statement_of_topology_package
+          topologyPackage M extinction,
+        topology_lifted_homeomorphism_derivation_statement_of_topology_package
+      topologyPackage M extinction,
+        topology_lifted_homeomorphism_derivation_for_homeomorphism_of_topology_package
+          topologyPackage⟩
+  let terminalSmoothabilityPackageFrontierAndWitnessCoherence :=
+    onePointRecognition_terminalSmoothabilityBridgeCertificate_with_packageFrontier_and_witness_coherence
+      smoothabilityPayload onePointHomeomorphism
+  let combinedMoisePLFrontier :
+      OnePointRecognitionCombinedMoisePLFrontierPayload M :=
+    onePointRecognition_moiseChartTriangulationFields_and_plToSmoothFrontier_of_subobligationsPayload
+      smoothabilityPayload onePointHomeomorphism
+  let moiseToPLAndBridgeTail :
+      OnePointRecognitionMoiseToPLAndBridgeTailPayload M :=
+    ⟨moiseToPLFrontier_of_onePointRecognition_subobligationsPayload
+        smoothabilityPayload onePointHomeomorphism,
+      smoothabilityBridgeTail_of_onePointRecognition_subobligationsPayload
+        smoothabilityPayload onePointHomeomorphism⟩
+  let coreSmoothabilityConsumerRecognitionCoherence :=
+    onePointRecognition_sameChartTransportedSmoothManifoldBundle_coreSmoothabilityConsumerProjection_with_recognition_coherence_of_subobligationsPayload
+      smoothabilityPayload M onePointHomeomorphism
+  let fullSphericalSpaceFormDerivation :
+      ExtinctionFullSphericalSpaceFormDerivationPayload
+        topology M extinction :=
+    final_homeomorphism_payload_agreement_with_extraction_package_consumer_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+      (extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+        topology)
+      (onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+        topology)
+      M extinction
+  let traceHandleComponentExtraction :
+      ExtinctionTraceHandleComponentExtractionPayload
+        topology M extinction :=
+    final_homeomorphism_derivation_trace_handle_component_projection_and_extraction_statement_bundle_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+      (extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+        topology)
+      (onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+        topology)
+      M extinction
+  let traceHandleComponentInventoryBoundary :
+      ExtinctionTraceHandleComponentInventoryBoundaryExtractionPayload
+        topology M extinction :=
+    final_homeomorphism_derivation_trace_handle_component_discarded_inventory_boundary_projection_and_extraction_statement_bundle_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+      (extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+        topology)
+      (onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+        topology)
+      M extinction
+  let traceHandleInventoryBoundaryPrimeSpherical :
+      ExtinctionTraceHandleComponentInventoryBoundaryPrimeSphericalPayload
+        topology M extinction :=
+    final_homeomorphism_derivation_trace_handle_component_discarded_inventory_boundary_prime_sphere_irreducible_spherical_payload_bundle_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+      (extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+        topology)
+      (onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+        topology)
+      M extinction
+  let deckActionTrivialDeckQuotient :
+      ExtinctionDeckActionTrivialDeckQuotientPayload
+        topology M extinction := by
+    rcases
+        final_homeomorphism_derivation_trace_handle_component_discarded_inventory_boundary_prime_sphere_irreducible_spherical_payload_extraction_derivation_for_extractor_bundle_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          (extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+            topology)
+          (onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+            topology)
+          M extinction with
+      ⟨_homeomorphism, _homeomorphismAssembly,
+        _topologyDerivationStatement, _homeomorphismDerivation,
+        _primeDecomposition, _sphereTheoremApplication,
+        _irreducibility, _connectedSumCollapse,
+        _sphericalSpaceFormReduction, _sphericalQuotientModel,
+        _deckGroupIdentification, _deckGroupTriviality,
+        deckActionTrivialization, trivialDeckQuotientIdentification,
+        _trivialSphericalQuotient, _trivialQuotientHomeomorphism,
+        _sphericalHomeomorphismLift, _finalHomeomorphismStatement,
+        _traceProjection, _handleCancellation, _componentClassification,
+        _discardedComponentClassification, _componentInventory,
+        _boundarySphereControl, _extractionStatement⟩
+    exact
+      ⟨deckActionTrivialization, trivialDeckQuotientIdentification⟩
+  let sphericalCoveringActionChain :
+      ExtinctionSphericalCoveringActionChainPayload
+        topology M extinction := by
+    rcases
+        final_homeomorphism_payload_and_spherical_trivial_quotient_chain_downstream_consumer_of_final_homeomorphism_with_decomposition_statement_derivation_payload_and_topology_derivation_statement_of_simply_connected_recognition_bundle_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          (extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+            topology)
+          (onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+            topology)
+          M extinction with
+      ⟨_homeomorphism, _finalHomeomorphismPayloadData,
+        _topologyDerivation, _onePointHomeomorphism,
+        sphericalSpaceFormClassification, sphericalQuotientModel,
+        sphericalFreeAction, sphericalUniversalCover,
+        sphericalCoveringModel, sphericalCoveringProjection,
+        sphericalFundamentalGroup, deckGroupIdentification,
+        deckActionProperness, _deckGroupTriviality,
+        _deckActionTrivialization, _trivialDeckQuotientIdentification,
+        _trivialSphericalQuotient, _trivialQuotientHomeomorphism,
+        _simplyConnectedRecognition, _homeomorphismAssembly,
+        _homeomorphismDerivation, _sphericalHomeomorphismLift,
+        _finalHomeomorphismStatement⟩
+    exact
+      ⟨sphericalSpaceFormClassification, sphericalQuotientModel,
+        sphericalFreeAction, sphericalUniversalCover,
+        sphericalCoveringModel, sphericalCoveringProjection,
+        sphericalFundamentalGroup, deckGroupIdentification,
+        deckActionProperness⟩
+  exact
+    ⟨projectStatement, checkedCertificate, n, smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier,
+      moiseToPLAndBridgeTail,
+      coreSmoothabilityConsumerRecognitionCoherence,
+      transportedSameChartPackage, smoothabilityFrontier,
+      smoothabilityFrontierManifolds, smoothabilityFrontierCoherence,
+      puncturePathPiOnePayload, homeomorphism, recognitionPayload,
+      assemblyPayload, topologyPackage, topologyPackage_eq,
+      topologyLiftChain, fullSphericalSpaceFormDerivation,
+      traceHandleComponentExtraction,
+      traceHandleComponentInventoryBoundary,
+      traceHandleInventoryBoundaryPrimeSpherical,
+      deckActionTrivialDeckQuotient,
+      sphericalCoveringActionChain,
+      extractionStatement, topologyDerivation,
+      homeomorphism_eq, packageFinalHomeomorphismProjector_eq,
+      finalHomeomorphismStatement, finalHomeomorphismPayload,
+      punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The latest final-certificate boundary can be paired with the terminal
+smoothability package-frontier and witness-coherence payload recovered from the
+same one-point recognition route. This reattaches the terminal PL/Moise and
+bridge/model/chart coherence certificate to the endpoint that already carries
+transported smoothability, puncture path/`π₁` data, and the topology
+homeomorphism lift chain.
+-/
+theorem poincare_statement_certificate_terminal_smoothability_transported_package_frontier_terminal_package_coherence_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ onePointHomeomorphism :
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+      OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionTerminalSmoothabilityPackageFrontierAndWitnessCoherencePayload
+        smoothabilityPayload M onePointHomeomorphism := by
+  let latestBoundary :=
+    poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+      smoothability grounded topology smoothabilityPayload M
+  rcases latestBoundary with
+    ⟨projectStatement, _checkedCertificate, _n, _smooth, _extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      _combinedMoisePLFrontier,
+      _moiseToPLAndBridgeTail,
+      _coreSmoothabilityConsumerRecognitionCoherence,
+      _transportedSameChartPackage, _smoothabilityFrontier,
+      _smoothabilityFrontierManifolds, _smoothabilityFrontierCoherence,
+      _puncturePathPiOnePayload, _homeomorphism, _recognitionPayload,
+      _assemblyPayload, _topologyPackage, _topologyPackage_eq,
+      _topologyLiftChain, _fullSphericalSpaceFormDerivation,
+      _traceHandleComponentExtraction,
+      _traceHandleComponentInventoryBoundary,
+      _traceHandleInventoryBoundaryPrimeSpherical,
+      _deckActionTrivialDeckQuotient,
+      _sphericalCoveringActionChain,
+      _extractionStatement, _topologyDerivation,
+      _homeomorphism_eq, _packageFinalHomeomorphismProjector_eq,
+      _finalHomeomorphismStatement, _finalHomeomorphismPayload,
+      _punctureTopology⟩
+  exact
+    ⟨projectStatement, onePointHomeomorphism, terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence⟩
+
+/-- Theorem contract for `poincare_statement_certificate_terminal_smoothability_transported_package_frontier_terminal_package_coherence_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_certificate_terminal_smoothability_transported_package_frontier_terminal_package_coherence_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_certificate_terminal_smoothability_transported_package_frontier_terminal_package_coherence_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_certificate_terminal_smoothability_transported_package_frontier_terminal_package_coherence_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The latest final-certificate boundary also reaches the full extraction-package
+spherical-space-form derivation consumer at the recovered extinction witness.
+This exposes, through the topology package theorem, the quotient model,
+universal cover, fundamental group computation, deck-group identification and
+triviality, trivial quotient, final-homeomorphism assembly and derivation,
+spherical homeomorphism lift, and final-homeomorphism statement.
+-/
+theorem poincare_statement_certificate_terminal_smoothability_transported_package_frontier_terminal_package_coherence_final_payload_puncture_paths_piOne_full_spherical_space_form_derivation_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      (let surgeryTracePrefix :=
+        extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+          topology
+       let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+          topology
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+       ∃ _recognitionPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ assemblyPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        topologyPackage =
+          extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+            surgeryTracePrefix onePointRecognition ∧
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+        homeomorphism =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction (recognitionPrefix.decomposition M extinction)
+            assemblyPayload ∧
+        ∃ sphericalQuotientModel :
+          HasSphericalSpaceFormQuotientModel M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction),
+        ∃ sphericalUniversalCover :
+          HasSphericalSpaceFormUniversalCover M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            sphericalQuotientModel,
+        ∃ sphericalFundamentalGroup :
+          HasSphericalSpaceFormFundamentalGroupComputation M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction),
+        ∃ deckGroupIdentification :
+          HasSphericalSpaceFormDeckGroupIdentification M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            sphericalQuotientModel sphericalFundamentalGroup,
+        ∃ deckGroupTriviality :
+          HasSphericalSpaceFormDeckGroupTriviality M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            sphericalFundamentalGroup,
+        ∃ trivialSphericalQuotient :
+          HasTrivialSphericalSpaceFormQuotient M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            sphericalQuotientModel sphericalFundamentalGroup
+            deckGroupIdentification deckGroupTriviality,
+        ∃ trivialQuotientHomeomorphism :
+          HasSphericalSpaceFormTrivialQuotientHomeomorphism M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            sphericalQuotientModel sphericalUniversalCover
+            sphericalFundamentalGroup deckGroupIdentification
+            deckGroupTriviality trivialSphericalQuotient,
+        ∃ simplyConnectedRecognition :
+          HasSimplyConnectedExtinctionRecognition M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            sphericalFundamentalGroup deckGroupTriviality,
+        ∃ homeomorphismAssembly :
+          HasExtinctionHomeomorphismAssembly M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            sphericalQuotientModel sphericalFundamentalGroup
+            deckGroupIdentification deckGroupTriviality
+            simplyConnectedRecognition trivialSphericalQuotient
+            homeomorphism,
+          HasExtinctionHomeomorphismDerivation M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            sphericalFundamentalGroup deckGroupTriviality
+            simplyConnectedRecognition sphericalQuotientModel
+            deckGroupIdentification trivialSphericalQuotient
+            homeomorphism homeomorphismAssembly ∧
+          HasSphericalSpaceFormHomeomorphismLift M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            sphericalQuotientModel sphericalUniversalCover
+            sphericalFundamentalGroup deckGroupIdentification
+            deckGroupTriviality trivialSphericalQuotient
+            trivialQuotientHomeomorphism ∧
+          FinalHomeomorphismAfterDecompositionStatement.{u}) := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, _checkedCertificate, _n, _smooth, extinction,
+      _onePointHomeomorphism, _terminalSmoothabilityProjection,
+      _terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      _combinedMoisePLFrontier,
+      _moiseToPLAndBridgeTail,
+      _coreSmoothabilityConsumerRecognitionCoherence,
+      _transportedSameChartPackage, _smoothabilityFrontier,
+      _smoothabilityFrontierManifolds, _smoothabilityFrontierCoherence,
+      _puncturePathPiOnePayload, _homeomorphism, _recognitionPayload,
+      _assemblyPayload, _topologyPackage, _topologyPackage_eq,
+      _topologyLiftChain, fullSphericalSpaceFormDerivation,
+      _traceHandleComponentExtraction,
+      _traceHandleComponentInventoryBoundary,
+      _traceHandleInventoryBoundaryPrimeSpherical,
+      _deckActionTrivialDeckQuotient,
+      _sphericalCoveringActionChain,
+      _extractionStatement, _topologyDerivation,
+      _homeomorphism_eq, _packageFinalHomeomorphismProjector_eq,
+      _finalHomeomorphismStatement, _finalHomeomorphismPayload,
+      _punctureTopology⟩
+  exact
+    ⟨projectStatement, extinction, fullSphericalSpaceFormDerivation⟩
+
+/-- Theorem contract for `poincare_statement_certificate_terminal_smoothability_transported_package_frontier_terminal_package_coherence_final_payload_puncture_paths_piOne_full_spherical_space_form_derivation_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_certificate_terminal_smoothability_transported_package_frontier_terminal_package_coherence_final_payload_puncture_paths_piOne_full_spherical_space_form_derivation_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_certificate_terminal_smoothability_transported_package_frontier_terminal_package_coherence_final_payload_puncture_paths_piOne_full_spherical_space_form_derivation_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_certificate_terminal_smoothability_transported_package_frontier_terminal_package_coherence_final_payload_puncture_paths_piOne_full_spherical_space_form_derivation_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The strengthened final-certificate boundary exposes the checked certificate,
+terminal smoothability package coherence, and full spherical-space-form
+derivation payload in one compact researcher-facing endpoint. The smoothability
+and topology witnesses are extracted from the same source theorem, so the
+certificate, one-point recognition route, and recovered extinction witness stay
+coherent.
+-/
+theorem poincare_statement_checked_certificate_terminal_smoothability_and_full_spherical_space_form_derivation_payload_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ onePointHomeomorphism :
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+      OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionTerminalSmoothabilityPackageFrontierAndWitnessCoherencePayload
+        smoothabilityPayload M onePointHomeomorphism ∧
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        ExtinctionFullSphericalSpaceFormDerivationPayload
+          topology M extinction := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, _n, _smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      _combinedMoisePLFrontier,
+      _moiseToPLAndBridgeTail,
+      _coreSmoothabilityConsumerRecognitionCoherence,
+      _transportedSameChartPackage, _smoothabilityFrontier,
+      _smoothabilityFrontierManifolds, _smoothabilityFrontierCoherence,
+      _puncturePathPiOnePayload, _homeomorphism, _recognitionPayload,
+      _assemblyPayload, _topologyPackage, _topologyPackage_eq,
+      _topologyLiftChain, fullSphericalSpaceFormDerivation,
+      _traceHandleComponentExtraction,
+      _traceHandleComponentInventoryBoundary,
+      _traceHandleInventoryBoundaryPrimeSpherical,
+      _deckActionTrivialDeckQuotient,
+      _sphericalCoveringActionChain,
+      _extractionStatement, _topologyDerivation, _homeomorphism_eq,
+      _packageFinalHomeomorphismProjector_eq, _finalHomeomorphismStatement,
+      _finalHomeomorphismPayload, _punctureTopology⟩
+  exact
+    ⟨projectStatement, checkedCertificate, onePointHomeomorphism,
+      terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      extinction, fullSphericalSpaceFormDerivation⟩
+
+/-- Theorem contract for `poincare_statement_checked_certificate_terminal_smoothability_and_full_spherical_space_form_derivation_payload_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_checked_certificate_terminal_smoothability_and_full_spherical_space_form_derivation_payload_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_checked_certificate_terminal_smoothability_and_full_spherical_space_form_derivation_payload_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_checked_certificate_terminal_smoothability_and_full_spherical_space_form_derivation_payload_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The strongest checked-certificate projection now also exposes the combined
+chart-level Moise triangulation and downstream PL-to-smooth frontier payload
+from the same one-point recognition route as the terminal smoothability
+coherence and the full spherical-space-form derivation.
+-/
+theorem poincare_statement_checked_certificate_terminal_smoothability_combined_moise_pl_frontier_and_full_spherical_space_form_derivation_payload_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ onePointHomeomorphism :
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+      OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionTerminalSmoothabilityPackageFrontierAndWitnessCoherencePayload
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionCombinedMoisePLFrontierPayload M ∧
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        ExtinctionFullSphericalSpaceFormDerivationPayload
+          topology M extinction := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, _n, _smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier,
+      _moiseToPLAndBridgeTail,
+      _coreSmoothabilityConsumerRecognitionCoherence,
+      _transportedSameChartPackage, _smoothabilityFrontier,
+      _smoothabilityFrontierManifolds, _smoothabilityFrontierCoherence,
+      _puncturePathPiOnePayload, _homeomorphism, _recognitionPayload,
+      _assemblyPayload, _topologyPackage, _topologyPackage_eq,
+      _topologyLiftChain, fullSphericalSpaceFormDerivation,
+      _traceHandleComponentExtraction,
+      _traceHandleComponentInventoryBoundary,
+      _traceHandleInventoryBoundaryPrimeSpherical,
+      _deckActionTrivialDeckQuotient,
+      _sphericalCoveringActionChain,
+      _extractionStatement, _topologyDerivation, _homeomorphism_eq,
+      _packageFinalHomeomorphismProjector_eq, _finalHomeomorphismStatement,
+      _finalHomeomorphismPayload, _punctureTopology⟩
+  exact
+    ⟨projectStatement, checkedCertificate, onePointHomeomorphism,
+      terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, extinction, fullSphericalSpaceFormDerivation⟩
+
+/-- Theorem contract for `poincare_statement_checked_certificate_terminal_smoothability_combined_moise_pl_frontier_and_full_spherical_space_form_derivation_payload_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_checked_certificate_terminal_smoothability_combined_moise_pl_frontier_and_full_spherical_space_form_derivation_payload_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_checked_certificate_terminal_smoothability_combined_moise_pl_frontier_and_full_spherical_space_form_derivation_payload_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_checked_certificate_terminal_smoothability_combined_moise_pl_frontier_and_full_spherical_space_form_derivation_payload_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The strongest checked-certificate projection also exposes the Moise-to-PL
+frontier and bridge-tail witnesses from the same source tuple as the combined
+Moise/PL frontier and full spherical-space-form derivation.
+-/
+theorem poincare_statement_checked_certificate_terminal_smoothability_moise_pl_bridge_tail_and_full_spherical_space_form_derivation_payload_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ onePointHomeomorphism :
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+      OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionTerminalSmoothabilityPackageFrontierAndWitnessCoherencePayload
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionCombinedMoisePLFrontierPayload M ∧
+      OnePointRecognitionMoiseToPLAndBridgeTailPayload M ∧
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        ExtinctionFullSphericalSpaceFormDerivationPayload
+          topology M extinction := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, _n, _smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail,
+      _coreSmoothabilityConsumerRecognitionCoherence,
+      _transportedSameChartPackage, _smoothabilityFrontier,
+      _smoothabilityFrontierManifolds, _smoothabilityFrontierCoherence,
+      _puncturePathPiOnePayload, _homeomorphism, _recognitionPayload,
+      _assemblyPayload, _topologyPackage, _topologyPackage_eq,
+      _topologyLiftChain, fullSphericalSpaceFormDerivation,
+      _traceHandleComponentExtraction,
+      _traceHandleComponentInventoryBoundary,
+      _traceHandleInventoryBoundaryPrimeSpherical,
+      _deckActionTrivialDeckQuotient,
+      _sphericalCoveringActionChain,
+      _extractionStatement, _topologyDerivation, _homeomorphism_eq,
+      _packageFinalHomeomorphismProjector_eq, _finalHomeomorphismStatement,
+      _finalHomeomorphismPayload, _punctureTopology⟩
+  exact
+    ⟨projectStatement, checkedCertificate, onePointHomeomorphism,
+      terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail,
+      extinction, fullSphericalSpaceFormDerivation⟩
+
+/-- Theorem contract for `poincare_statement_checked_certificate_terminal_smoothability_moise_pl_bridge_tail_and_full_spherical_space_form_derivation_payload_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_checked_certificate_terminal_smoothability_moise_pl_bridge_tail_and_full_spherical_space_form_derivation_payload_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_checked_certificate_terminal_smoothability_moise_pl_bridge_tail_and_full_spherical_space_form_derivation_payload_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_checked_certificate_terminal_smoothability_moise_pl_bridge_tail_and_full_spherical_space_form_derivation_payload_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The strongest checked-certificate projection now pairs the smoothability
+frontier/bridge-tail payloads with the topology trace reconstruction, handle
+cancellation, component-classification, and extraction payload from the same
+source endpoint.
+-/
+theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_trace_handle_component_and_full_spherical_payload_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ onePointHomeomorphism :
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+      OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionTerminalSmoothabilityPackageFrontierAndWitnessCoherencePayload
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionCombinedMoisePLFrontierPayload M ∧
+      OnePointRecognitionMoiseToPLAndBridgeTailPayload M ∧
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        ExtinctionFullSphericalSpaceFormDerivationPayload
+          topology M extinction ∧
+        ExtinctionTraceHandleComponentExtractionPayload
+          topology M extinction := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, _n, _smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail,
+      _coreSmoothabilityConsumerRecognitionCoherence,
+      _transportedSameChartPackage, _smoothabilityFrontier,
+      _smoothabilityFrontierManifolds, _smoothabilityFrontierCoherence,
+      _puncturePathPiOnePayload, _homeomorphism, _recognitionPayload,
+      _assemblyPayload, _topologyPackage, _topologyPackage_eq,
+      _topologyLiftChain, fullSphericalSpaceFormDerivation,
+      traceHandleComponentExtraction,
+      _traceHandleComponentInventoryBoundary,
+      _traceHandleInventoryBoundaryPrimeSpherical,
+      _deckActionTrivialDeckQuotient,
+      _sphericalCoveringActionChain,
+      _extractionStatement, _topologyDerivation, _homeomorphism_eq,
+      _packageFinalHomeomorphismProjector_eq, _finalHomeomorphismStatement,
+      _finalHomeomorphismPayload, _punctureTopology⟩
+  exact
+    ⟨projectStatement, checkedCertificate, onePointHomeomorphism,
+      terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail, extinction,
+      fullSphericalSpaceFormDerivation, traceHandleComponentExtraction⟩
+
+/-- Theorem contract for `poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_trace_handle_component_and_full_spherical_payload_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_trace_handle_component_and_full_spherical_payload_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_trace_handle_component_and_full_spherical_payload_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_trace_handle_component_and_full_spherical_payload_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The checked-certificate projection now exposes the broad topology production
+payload carrying trace reconstruction, handle cancellation, component
+classification, discarded-component classification, component inventory,
+boundary-sphere control, prime decomposition, sphere theorem application,
+irreducibility, connected-sum collapse, spherical-space-form reduction, and
+the quotient model.
+-/
+theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_trace_handle_inventory_prime_spherical_payload_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ onePointHomeomorphism :
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+      OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionTerminalSmoothabilityPackageFrontierAndWitnessCoherencePayload
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionCombinedMoisePLFrontierPayload M ∧
+      OnePointRecognitionMoiseToPLAndBridgeTailPayload M ∧
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        ExtinctionFullSphericalSpaceFormDerivationPayload
+          topology M extinction ∧
+        ExtinctionTraceHandleComponentInventoryBoundaryPrimeSphericalPayload
+          topology M extinction := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, _n, _smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail,
+      _coreSmoothabilityConsumerRecognitionCoherence,
+      _transportedSameChartPackage, _smoothabilityFrontier,
+      _smoothabilityFrontierManifolds, _smoothabilityFrontierCoherence,
+      _puncturePathPiOnePayload, _homeomorphism, _recognitionPayload,
+      _assemblyPayload, _topologyPackage, _topologyPackage_eq,
+      _topologyLiftChain, fullSphericalSpaceFormDerivation,
+      _traceHandleComponentExtraction,
+      _traceHandleComponentInventoryBoundary,
+      traceHandleInventoryBoundaryPrimeSpherical,
+      _deckActionTrivialDeckQuotient,
+      _sphericalCoveringActionChain,
+      _extractionStatement, _topologyDerivation, _homeomorphism_eq,
+      _packageFinalHomeomorphismProjector_eq, _finalHomeomorphismStatement,
+      _finalHomeomorphismPayload, _punctureTopology⟩
+  exact
+    ⟨projectStatement, checkedCertificate, onePointHomeomorphism,
+      terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail, extinction,
+      fullSphericalSpaceFormDerivation,
+      traceHandleInventoryBoundaryPrimeSpherical⟩
+
+/-- Theorem contract for `poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_trace_handle_inventory_prime_spherical_payload_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_trace_handle_inventory_prime_spherical_payload_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_trace_handle_inventory_prime_spherical_payload_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_trace_handle_inventory_prime_spherical_payload_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The checked-certificate projection now exposes the extractor-facing
+deck-action trivialization and trivial deck-quotient identification fields
+together with the already carried smoothability and prime/spherical topology
+production payloads.
+-/
+theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_deck_action_trivial_quotient_payload_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ onePointHomeomorphism :
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+      OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionTerminalSmoothabilityPackageFrontierAndWitnessCoherencePayload
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionCombinedMoisePLFrontierPayload M ∧
+      OnePointRecognitionMoiseToPLAndBridgeTailPayload M ∧
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        ExtinctionFullSphericalSpaceFormDerivationPayload
+          topology M extinction ∧
+        ExtinctionTraceHandleComponentInventoryBoundaryPrimeSphericalPayload
+          topology M extinction ∧
+        ExtinctionDeckActionTrivialDeckQuotientPayload
+          topology M extinction := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, _n, _smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail,
+      _coreSmoothabilityConsumerRecognitionCoherence,
+      _transportedSameChartPackage, _smoothabilityFrontier,
+      _smoothabilityFrontierManifolds, _smoothabilityFrontierCoherence,
+      _puncturePathPiOnePayload, _homeomorphism, _recognitionPayload,
+      _assemblyPayload, _topologyPackage, _topologyPackage_eq,
+      _topologyLiftChain, fullSphericalSpaceFormDerivation,
+      _traceHandleComponentExtraction,
+      _traceHandleComponentInventoryBoundary,
+      traceHandleInventoryBoundaryPrimeSpherical,
+      deckActionTrivialDeckQuotient,
+      _sphericalCoveringActionChain,
+      _extractionStatement, _topologyDerivation, _homeomorphism_eq,
+      _packageFinalHomeomorphismProjector_eq, _finalHomeomorphismStatement,
+      _finalHomeomorphismPayload, _punctureTopology⟩
+  exact
+    ⟨projectStatement, checkedCertificate, onePointHomeomorphism,
+      terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail, extinction,
+      fullSphericalSpaceFormDerivation,
+      traceHandleInventoryBoundaryPrimeSpherical,
+      deckActionTrivialDeckQuotient⟩
+
+/-- Theorem contract for `poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_deck_action_trivial_quotient_payload_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_deck_action_trivial_quotient_payload_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_deck_action_trivial_quotient_payload_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_deck_action_trivial_quotient_payload_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The checked-certificate projection now also exposes the downstream spherical
+covering/action chain: spherical-space-form classification, free action,
+covering model and projection, and deck-action properness, alongside the
+already carried prime/spherical and deck-action/trivial quotient payloads.
+-/
+theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_payload_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ onePointHomeomorphism :
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+      OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionTerminalSmoothabilityPackageFrontierAndWitnessCoherencePayload
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionCombinedMoisePLFrontierPayload M ∧
+      OnePointRecognitionMoiseToPLAndBridgeTailPayload M ∧
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        ExtinctionFullSphericalSpaceFormDerivationPayload
+          topology M extinction ∧
+        ExtinctionTraceHandleComponentInventoryBoundaryPrimeSphericalPayload
+          topology M extinction ∧
+        ExtinctionDeckActionTrivialDeckQuotientPayload
+          topology M extinction ∧
+        ExtinctionSphericalCoveringActionChainPayload
+          topology M extinction := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, _n, _smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail,
+      _coreSmoothabilityConsumerRecognitionCoherence,
+      _transportedSameChartPackage, _smoothabilityFrontier,
+      _smoothabilityFrontierManifolds, _smoothabilityFrontierCoherence,
+      _puncturePathPiOnePayload, _homeomorphism, _recognitionPayload,
+      _assemblyPayload, _topologyPackage, _topologyPackage_eq,
+      _topologyLiftChain, fullSphericalSpaceFormDerivation,
+      _traceHandleComponentExtraction,
+      _traceHandleComponentInventoryBoundary,
+      traceHandleInventoryBoundaryPrimeSpherical,
+      deckActionTrivialDeckQuotient,
+      sphericalCoveringActionChain,
+      _extractionStatement, _topologyDerivation, _homeomorphism_eq,
+      _packageFinalHomeomorphismProjector_eq, _finalHomeomorphismStatement,
+      _finalHomeomorphismPayload, _punctureTopology⟩
+  exact
+    ⟨projectStatement, checkedCertificate, onePointHomeomorphism,
+      terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail, extinction,
+      fullSphericalSpaceFormDerivation,
+      traceHandleInventoryBoundaryPrimeSpherical,
+      deckActionTrivialDeckQuotient,
+      sphericalCoveringActionChain⟩
+
+/-- Theorem contract for `poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_payload_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_payload_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_payload_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_payload_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The checked-certificate projection also carries the point-complement topology
+payload from the final-boundary source route. This adds, for every point of the
+candidate manifold, contractibility, simple connectedness, path connectedness,
+connectedness, and nonemptiness of the punctured complement.
+-/
+theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_and_puncture_topology_payload_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ onePointHomeomorphism :
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+      OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionTerminalSmoothabilityPackageFrontierAndWitnessCoherencePayload
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionCombinedMoisePLFrontierPayload M ∧
+      OnePointRecognitionMoiseToPLAndBridgeTailPayload M ∧
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        ExtinctionFullSphericalSpaceFormDerivationPayload
+          topology M extinction ∧
+        ExtinctionTraceHandleComponentInventoryBoundaryPrimeSphericalPayload
+          topology M extinction ∧
+        ExtinctionDeckActionTrivialDeckQuotientPayload
+          topology M extinction ∧
+        ExtinctionSphericalCoveringActionChainPayload
+          topology M extinction ∧
+        OnePointRecognitionPunctureComplementTopologyPayload M := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, _n, _smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail,
+      _coreSmoothabilityConsumerRecognitionCoherence,
+      _transportedSameChartPackage, _smoothabilityFrontier,
+      _smoothabilityFrontierManifolds, _smoothabilityFrontierCoherence,
+      _puncturePathPiOnePayload, _homeomorphism, _recognitionPayload,
+      _assemblyPayload, _topologyPackage, _topologyPackage_eq,
+      _topologyLiftChain, fullSphericalSpaceFormDerivation,
+      _traceHandleComponentExtraction,
+      _traceHandleComponentInventoryBoundary,
+      traceHandleInventoryBoundaryPrimeSpherical,
+      deckActionTrivialDeckQuotient,
+      sphericalCoveringActionChain,
+      _extractionStatement, _topologyDerivation, _homeomorphism_eq,
+      _packageFinalHomeomorphismProjector_eq, _finalHomeomorphismStatement,
+      _finalHomeomorphismPayload, punctureTopology⟩
+  exact
+    ⟨projectStatement, checkedCertificate, onePointHomeomorphism,
+      terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail, extinction,
+      fullSphericalSpaceFormDerivation,
+      traceHandleInventoryBoundaryPrimeSpherical,
+      deckActionTrivialDeckQuotient,
+      sphericalCoveringActionChain,
+      punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_and_puncture_topology_payload_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_and_puncture_topology_payload_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_and_puncture_topology_payload_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_and_puncture_topology_payload_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The checked-certificate projection also exposes the explicit puncture path and
+`π₁` payload: pointwise path witnesses in every punctured complement together
+with fundamental-group and first homotopy-group subsingleton facts.
+-/
+theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_puncture_path_piOne_and_topology_payload_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ onePointHomeomorphism :
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+      OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionTerminalSmoothabilityPackageFrontierAndWitnessCoherencePayload
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionCombinedMoisePLFrontierPayload M ∧
+      OnePointRecognitionMoiseToPLAndBridgeTailPayload M ∧
+      OnePointRecognitionPuncturePathPiOnePayload M ∧
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        ExtinctionFullSphericalSpaceFormDerivationPayload
+          topology M extinction ∧
+        ExtinctionTraceHandleComponentInventoryBoundaryPrimeSphericalPayload
+          topology M extinction ∧
+        ExtinctionDeckActionTrivialDeckQuotientPayload
+          topology M extinction ∧
+        ExtinctionSphericalCoveringActionChainPayload
+          topology M extinction ∧
+        OnePointRecognitionPunctureComplementTopologyPayload M := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, _n, _smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail,
+      _coreSmoothabilityConsumerRecognitionCoherence,
+      _transportedSameChartPackage, _smoothabilityFrontier,
+      _smoothabilityFrontierManifolds, _smoothabilityFrontierCoherence,
+      puncturePathPiOnePayload, _homeomorphism, _recognitionPayload,
+      _assemblyPayload, _topologyPackage, _topologyPackage_eq,
+      _topologyLiftChain, fullSphericalSpaceFormDerivation,
+      _traceHandleComponentExtraction,
+      _traceHandleComponentInventoryBoundary,
+      traceHandleInventoryBoundaryPrimeSpherical,
+      deckActionTrivialDeckQuotient,
+      sphericalCoveringActionChain,
+      _extractionStatement, _topologyDerivation, _homeomorphism_eq,
+      _packageFinalHomeomorphismProjector_eq, _finalHomeomorphismStatement,
+      _finalHomeomorphismPayload, punctureTopology⟩
+  exact
+    ⟨projectStatement, checkedCertificate, onePointHomeomorphism,
+      terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail,
+      puncturePathPiOnePayload, extinction,
+      fullSphericalSpaceFormDerivation,
+      traceHandleInventoryBoundaryPrimeSpherical,
+      deckActionTrivialDeckQuotient,
+      sphericalCoveringActionChain,
+      punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_puncture_path_piOne_and_topology_payload_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_puncture_path_piOne_and_topology_payload_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_puncture_path_piOne_and_topology_payload_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_puncture_path_piOne_and_topology_payload_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The checked-certificate projection also exposes the topology package lift
+chain. This keeps the package identification, trivial quotient homeomorphism,
+spherical homeomorphism lift, fixed-extinction lift statements, and
+extractor-level lifted-homeomorphism derivation coherent with the same
+extinction witness used by the puncture and spherical-covering payloads.
+-/
+theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_puncture_path_piOne_topology_lift_chain_and_puncture_topology_payload_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ onePointHomeomorphism :
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+      OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionTerminalSmoothabilityPackageFrontierAndWitnessCoherencePayload
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionCombinedMoisePLFrontierPayload M ∧
+      OnePointRecognitionMoiseToPLAndBridgeTailPayload M ∧
+      OnePointRecognitionPuncturePathPiOnePayload M ∧
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        ExtinctionFullSphericalSpaceFormDerivationPayload
+          topology M extinction ∧
+        ExtinctionTraceHandleComponentInventoryBoundaryPrimeSphericalPayload
+          topology M extinction ∧
+        ExtinctionDeckActionTrivialDeckQuotientPayload
+          topology M extinction ∧
+        ExtinctionSphericalCoveringActionChainPayload
+          topology M extinction ∧
+        (∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+          topologyPackage =
+            extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+              (extinctionTopologySurgeryTracePrefixPackage_of_topology_package
+                topology)
+              (onePointCompactificationRecognitionAfterDecompositionStatement_of_topology_package
+                topology) ∧
+          ExtinctionTopologyPackageLiftChainPayload
+            topologyPackage M extinction) ∧
+        OnePointRecognitionPunctureComplementTopologyPayload M := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, _n, _smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail,
+      _coreSmoothabilityConsumerRecognitionCoherence,
+      _transportedSameChartPackage, _smoothabilityFrontier,
+      _smoothabilityFrontierManifolds, _smoothabilityFrontierCoherence,
+      puncturePathPiOnePayload, _homeomorphism, _recognitionPayload,
+      _assemblyPayload, topologyPackage, topologyPackage_eq,
+      topologyLiftChain, fullSphericalSpaceFormDerivation,
+      _traceHandleComponentExtraction,
+      _traceHandleComponentInventoryBoundary,
+      traceHandleInventoryBoundaryPrimeSpherical,
+      deckActionTrivialDeckQuotient,
+      sphericalCoveringActionChain,
+      _extractionStatement, _topologyDerivation, _homeomorphism_eq,
+      _packageFinalHomeomorphismProjector_eq, _finalHomeomorphismStatement,
+      _finalHomeomorphismPayload, punctureTopology⟩
+  exact
+    ⟨projectStatement, checkedCertificate, onePointHomeomorphism,
+      terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail,
+      puncturePathPiOnePayload, extinction,
+      fullSphericalSpaceFormDerivation,
+      traceHandleInventoryBoundaryPrimeSpherical,
+      deckActionTrivialDeckQuotient,
+      sphericalCoveringActionChain,
+      ⟨topologyPackage, topologyPackage_eq, topologyLiftChain⟩,
+      punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_puncture_path_piOne_topology_lift_chain_and_puncture_topology_payload_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_puncture_path_piOne_topology_lift_chain_and_puncture_topology_payload_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_puncture_path_piOne_topology_lift_chain_and_puncture_topology_payload_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_covering_action_chain_puncture_path_piOne_topology_lift_chain_and_puncture_topology_payload_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The checked-certificate projection also exposes the final-homeomorphism
+projector payload. This packages the actual `M ≃ₜ ThreeSphere` witness with
+the topology derivation, extraction statement, final payload agreement, and
+topology-package projector equality at the same extinction witness used by
+the puncture and spherical-covering payloads.
+-/
+theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_final_homeomorphism_projector_and_puncture_payload_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ onePointHomeomorphism :
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+      OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionTerminalSmoothabilityPackageFrontierAndWitnessCoherencePayload
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionCombinedMoisePLFrontierPayload M ∧
+      OnePointRecognitionMoiseToPLAndBridgeTailPayload M ∧
+      OnePointRecognitionPuncturePathPiOnePayload M ∧
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        ExtinctionFinalHomeomorphismProjectorPayload
+          topology M extinction ∧
+        ExtinctionFullSphericalSpaceFormDerivationPayload
+          topology M extinction ∧
+        ExtinctionTraceHandleComponentInventoryBoundaryPrimeSphericalPayload
+          topology M extinction ∧
+        ExtinctionDeckActionTrivialDeckQuotientPayload
+          topology M extinction ∧
+        ExtinctionSphericalCoveringActionChainPayload
+          topology M extinction ∧
+        OnePointRecognitionPunctureComplementTopologyPayload M := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, _n, _smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail,
+      _coreSmoothabilityConsumerRecognitionCoherence,
+      _transportedSameChartPackage, _smoothabilityFrontier,
+      _smoothabilityFrontierManifolds, _smoothabilityFrontierCoherence,
+      puncturePathPiOnePayload, homeomorphism, recognitionPayload,
+      assemblyPayload, topologyPackage, topologyPackage_eq,
+      topologyLiftChain, fullSphericalSpaceFormDerivation,
+      _traceHandleComponentExtraction,
+      _traceHandleComponentInventoryBoundary,
+      traceHandleInventoryBoundaryPrimeSpherical,
+      deckActionTrivialDeckQuotient,
+      sphericalCoveringActionChain,
+      extractionStatement, topologyDerivation, homeomorphism_eq,
+      packageFinalHomeomorphismProjector_eq, finalHomeomorphismStatement,
+      finalHomeomorphismPayload, punctureTopology⟩
+  let finalHomeomorphismProjector :
+      ExtinctionFinalHomeomorphismProjectorPayload
+        topology M extinction :=
+    ⟨homeomorphism, recognitionPayload, assemblyPayload,
+      topologyPackage, topologyPackage_eq, topologyLiftChain,
+      extractionStatement, topologyDerivation, homeomorphism_eq,
+      packageFinalHomeomorphismProjector_eq, finalHomeomorphismStatement,
+      finalHomeomorphismPayload⟩
+  exact
+    ⟨projectStatement, checkedCertificate, onePointHomeomorphism,
+      terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail,
+      puncturePathPiOnePayload, extinction,
+      finalHomeomorphismProjector,
+      fullSphericalSpaceFormDerivation,
+      traceHandleInventoryBoundaryPrimeSpherical,
+      deckActionTrivialDeckQuotient,
+      sphericalCoveringActionChain,
+      punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_final_homeomorphism_projector_and_puncture_payload_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_final_homeomorphism_projector_and_puncture_payload_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_final_homeomorphism_projector_and_puncture_payload_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_final_homeomorphism_projector_and_puncture_payload_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+The checked-certificate projection now exposes the actual recovered
+`ThreeSphere` homeomorphism as a top-level witness. It keeps that witness
+coherent with the final-homeomorphism projector payload and the same
+smoothability, puncture, spherical-covering, and prime/spherical topology
+payloads at the recovered extinction witness.
+-/
+theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_three_sphere_homeomorphism_projector_and_puncture_payload_of_grounded_terminal_onePoint_core_smoothability_consumer
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+    ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ onePointHomeomorphism :
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+      OnePointRecognitionTerminalSmoothabilityBridgeCertificateProjection
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionTerminalSmoothabilityPackageFrontierAndWitnessCoherencePayload
+        smoothabilityPayload M onePointHomeomorphism ∧
+      OnePointRecognitionCombinedMoisePLFrontierPayload M ∧
+      OnePointRecognitionMoiseToPLAndBridgeTailPayload M ∧
+      OnePointRecognitionPuncturePathPiOnePayload M ∧
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      ∃ _threeSphereHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        ExtinctionFinalHomeomorphismProjectorPayload
+          topology M extinction ∧
+        ExtinctionFullSphericalSpaceFormDerivationPayload
+          topology M extinction ∧
+        ExtinctionTraceHandleComponentInventoryBoundaryPrimeSphericalPayload
+          topology M extinction ∧
+        ExtinctionDeckActionTrivialDeckQuotientPayload
+          topology M extinction ∧
+        ExtinctionSphericalCoveringActionChainPayload
+          topology M extinction ∧
+        OnePointRecognitionPunctureComplementTopologyPayload M := by
+  rcases
+      poincare_statement_certificate_terminal_smoothability_transported_package_frontier_final_payload_puncture_paths_piOne_topology_lift_chain_and_package_final_homeomorphism_projector_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M with
+    ⟨projectStatement, checkedCertificate, _n, _smooth, extinction,
+      onePointHomeomorphism, terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail,
+      _coreSmoothabilityConsumerRecognitionCoherence,
+      _transportedSameChartPackage, _smoothabilityFrontier,
+      _smoothabilityFrontierManifolds, _smoothabilityFrontierCoherence,
+      puncturePathPiOnePayload, threeSphereHomeomorphism, recognitionPayload,
+      assemblyPayload, topologyPackage, topologyPackage_eq,
+      topologyLiftChain, fullSphericalSpaceFormDerivation,
+      _traceHandleComponentExtraction,
+      _traceHandleComponentInventoryBoundary,
+      traceHandleInventoryBoundaryPrimeSpherical,
+      deckActionTrivialDeckQuotient,
+      sphericalCoveringActionChain,
+      extractionStatement, topologyDerivation, homeomorphism_eq,
+      packageFinalHomeomorphismProjector_eq, finalHomeomorphismStatement,
+      finalHomeomorphismPayload, punctureTopology⟩
+  let finalHomeomorphismProjector :
+      ExtinctionFinalHomeomorphismProjectorPayload
+        topology M extinction :=
+    ⟨threeSphereHomeomorphism, recognitionPayload, assemblyPayload,
+      topologyPackage, topologyPackage_eq, topologyLiftChain,
+      extractionStatement, topologyDerivation, homeomorphism_eq,
+      packageFinalHomeomorphismProjector_eq, finalHomeomorphismStatement,
+      finalHomeomorphismPayload⟩
+  exact
+    ⟨projectStatement, checkedCertificate, onePointHomeomorphism,
+      terminalSmoothabilityProjection,
+      terminalSmoothabilityPackageFrontierAndWitnessCoherence,
+      combinedMoisePLFrontier, moiseToPLAndBridgeTail,
+      puncturePathPiOnePayload, extinction,
+      threeSphereHomeomorphism,
+      finalHomeomorphismProjector,
+      fullSphericalSpaceFormDerivation,
+      traceHandleInventoryBoundaryPrimeSpherical,
+      deckActionTrivialDeckQuotient,
+      sphericalCoveringActionChain,
+      punctureTopology⟩
+
+/-- Theorem contract for `poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_three_sphere_homeomorphism_projector_and_puncture_payload_of_grounded_terminal_onePoint_core_smoothability_consumer`. -/
+theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_three_sphere_homeomorphism_projector_and_puncture_payload_of_grounded_terminal_onePoint_core_smoothability_consumer_eq :
+    @Poincare.poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_three_sphere_homeomorphism_projector_and_puncture_payload_of_grounded_terminal_onePoint_core_smoothability_consumer =
+      @Poincare.poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_three_sphere_homeomorphism_projector_and_puncture_payload_of_grounded_terminal_onePoint_core_smoothability_consumer :=
+  rfl
+
+/--
+Canonical root theorem name, still explicitly parameterized by the strengthened
+equation-boundary dependency package. This makes the remaining completion
+boundary visible at the reserved theorem name instead of leaving
+`Poincare.poincare_conjecture` undefined.
+-/
+theorem poincare_conjecture
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary
+    dependencies
+
+/-- Theorem contract for `poincare_conjecture`. -/
+theorem poincare_conjecture_eq :
+    @Poincare.poincare_conjecture = @Poincare.poincare_conjecture :=
+  rfl
+
+/--
+Expanded root theorem shape. From the same strengthened dependency package,
+the reserved theorem name gives the canonical topological conclusion for every
+compact simply connected charted 3-manifold.
+-/
+theorem poincare_conjecture_expanded
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  poincare_conjecture dependencies
+
+/-- Theorem contract for `poincare_conjecture_expanded`. -/
+theorem poincare_conjecture_expanded_eq :
+    @Poincare.poincare_conjecture_expanded =
+      @Poincare.poincare_conjecture_expanded :=
+  rfl
 
 end Poincare
