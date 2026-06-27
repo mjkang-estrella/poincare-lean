@@ -213,4 +213,58 @@ theorem threeSphere_twoPointComplement_path_loop_topology_certificate_eq :
       @Poincare.threeSphere_twoPointComplement_path_loop_topology_certificate :=
   rfl
 
+/--
+The standard three-sphere two-puncture certificate projects to a concrete
+chosen path, its endpoint equations, homotopy uniqueness, quotient collapse,
+loop nullhomotopy, and trivial first homotopy group.
+-/
+theorem threeSphere_twoPointComplement_chosen_path_loop_projection_bundle
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (basepoint target : (({a} ∪ {b})ᶜ : Set ThreeSphere))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ canonicalPath : Path basepoint target,
+      Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+        pathComponent basepoint = Set.univ ∧
+        canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+        Joined basepoint target ∧
+        Path.Homotopic chosenPath canonicalPath ∧
+        (⟦chosenPath⟧ :
+          Path.Homotopic.Quotient basepoint target) =
+          ⟦canonicalPath⟧ ∧
+        (∀ η : Path basepoint target,
+          Path.Homotopic canonicalPath η) ∧
+        Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+        loop 0 = basepoint ∧ loop 1 = basepoint ∧
+        Path.Homotopic loop (Path.refl basepoint) ∧
+        FundamentalGroup.fromPath
+            (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+          FundamentalGroup.fromPath
+            (⟦Path.refl basepoint⟧ :
+              Path.Homotopic.Quotient basepoint basepoint) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1 (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint) := by
+  rcases
+      threeSphere_twoPointComplement_path_loop_topology_certificate
+        hab basepoint target chosenPath loop with
+    ⟨nonemptyComplement, componentEq, _joined, canonicalPayload,
+      chosenPathPayload, quotientSubsingleton, loopSource, loopTarget,
+      loopHomotopic, loopFromPath, piOneSubsingleton⟩
+  rcases canonicalPayload with
+    ⟨canonicalPath, canonicalSource, canonicalTarget, canonicalJoined,
+      canonicalUnique⟩
+  rcases chosenPathPayload canonicalPath with
+    ⟨chosenHomotopic, chosenQuotientEq⟩
+  exact
+    ⟨canonicalPath, nonemptyComplement, componentEq, canonicalSource,
+      canonicalTarget, canonicalJoined, chosenHomotopic, chosenQuotientEq,
+      canonicalUnique, quotientSubsingleton, loopSource, loopTarget,
+      loopHomotopic, loopFromPath, piOneSubsingleton⟩
+
+/-- Theorem contract for `threeSphere_twoPointComplement_chosen_path_loop_projection_bundle`. -/
+theorem threeSphere_twoPointComplement_chosen_path_loop_projection_bundle_eq :
+    @Poincare.threeSphere_twoPointComplement_chosen_path_loop_projection_bundle =
+      @Poincare.threeSphere_twoPointComplement_chosen_path_loop_projection_bundle :=
+  rfl
+
 end Poincare
