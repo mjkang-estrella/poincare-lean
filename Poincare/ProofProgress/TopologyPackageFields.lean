@@ -1527,6 +1527,60 @@ theorem topologyPackage_finalHomeomorphism_and_pathLoopBundle
       twoLoopPayload⟩
 
 /--
+The final-homeomorphism package route also exposes the compact two-puncture
+path/loop projection bundle from the same package inputs. This gives final
+certificate consumers a small endpoint that combines the recognized one-point
+compactification with the path, quotient, loop, and first-homotopy-group
+collapse of the two-puncture complement.
+-/
+theorem topologyPackage_finalHomeomorphism_and_twoPointProjectionBundle
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      FinalHomeomorphismPayloadData M extinction
+        (extinction_decomposition_of_topology_package package M extinction) ∧
+      ∃ canonicalPath : Path basepoint target,
+        Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+          pathComponent basepoint = Set.univ ∧
+          canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+          Joined basepoint target ∧
+          Path.Homotopic chosenPath canonicalPath ∧
+          (⟦chosenPath⟧ :
+            Path.Homotopic.Quotient basepoint target) =
+            ⟦canonicalPath⟧ ∧
+          (∀ η : Path basepoint target,
+            Path.Homotopic canonicalPath η) ∧
+          Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+          loop 0 = basepoint ∧ loop 1 = basepoint ∧
+          Path.Homotopic loop (Path.refl basepoint) ∧
+          FundamentalGroup.fromPath
+              (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl basepoint⟧ :
+                Path.Homotopic.Quotient basepoint basepoint) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  exact
+    ⟨homeomorph_to_onePoint_threeSpace_of_topology_package
+        package M extinction,
+      finalHomeomorphismPayloadData_of_topology_package package M extinction,
+      twoPointComplement_chosen_path_loop_projection_bundle_of_topology_package
+        package M extinction hyx basepoint target chosenPath loop⟩
+
+/-- Theorem contract for `topologyPackage_finalHomeomorphism_and_twoPointProjectionBundle`. -/
+theorem topologyPackage_finalHomeomorphism_and_twoPointProjectionBundle_eq :
+    @Poincare.topologyPackage_finalHomeomorphism_and_twoPointProjectionBundle =
+      @Poincare.topologyPackage_finalHomeomorphism_and_twoPointProjectionBundle :=
+  rfl
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
