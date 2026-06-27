@@ -572,6 +572,39 @@ theorem exists_homeomorph_compl_singleton_euclidean_with_endpoint_data_of_topolo
       package M extinction x basepoint
 
 /--
+The topology package exposes singleton local path-connectedness together with
+the Euclidean chart, endpoint-collapse, path-quotient, and `π₁` payload for a
+chosen pair of singleton-complement endpoints.
+-/
+theorem compl_singleton_locPath_euclidean_endpoint_collapse_package_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M)
+    (basepoint target : ({x}ᶜ : Set M)) :
+    LocPathConnectedSpace ({x}ᶜ : Set M) ∧
+      Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+      ContractibleSpace ({x}ᶜ : Set M) ∧
+      PathConnectedSpace ({x}ᶜ : Set M) ∧
+      ConnectedSpace ({x}ᶜ : Set M) ∧
+      SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+      pathComponent basepoint = Set.univ ∧
+      Joined basepoint target ∧
+      Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+      Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) :=
+  compl_singleton_locPath_euclidean_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_topology_package
+      package M extinction) x basepoint target
+
+/-- Theorem contract for
+`compl_singleton_locPath_euclidean_endpoint_collapse_package_of_topology_package`. -/
+theorem compl_singleton_locPath_euclidean_endpoint_collapse_package_of_topology_package_eq :
+    @Poincare.compl_singleton_locPath_euclidean_endpoint_collapse_package_of_topology_package =
+      @Poincare.compl_singleton_locPath_euclidean_endpoint_collapse_package_of_topology_package :=
+  rfl
+
+/--
 A package-selected single-puncture complement supplies a concrete based loop
 payload: the selected loop has certified endpoints, is null-homotopic, and
 represents the stationary element in the fundamental group.

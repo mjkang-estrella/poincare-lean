@@ -416,6 +416,36 @@ theorem compl_singleton_euclidean_endpoint_collapse_package_of_homeomorph_to_one
   rfl
 
 /--
+The singleton-complement Euclidean endpoint-collapse package can be consumed
+together with the transported local path-connectedness instance.
+-/
+theorem compl_singleton_locPath_euclidean_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M)
+    (basepoint target : ({x}ᶜ : Set M)) :
+    LocPathConnectedSpace ({x}ᶜ : Set M) ∧
+      Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+      ContractibleSpace ({x}ᶜ : Set M) ∧
+      PathConnectedSpace ({x}ᶜ : Set M) ∧
+      ConnectedSpace ({x}ᶜ : Set M) ∧
+      SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+      pathComponent basepoint = Set.univ ∧
+      Joined basepoint target ∧
+      Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+      Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) :=
+  ⟨compl_singleton_locPathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+      h x,
+    compl_singleton_euclidean_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace
+      h x basepoint target⟩
+
+/-- Theorem contract for
+`compl_singleton_locPath_euclidean_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace`. -/
+theorem compl_singleton_locPath_euclidean_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace_eq :
+    @Poincare.compl_singleton_locPath_euclidean_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace =
+      @Poincare.compl_singleton_locPath_euclidean_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace :=
+  rfl
+
+/--
 Transport a recognized one-point compactification target's two-puncture
 complement to the punctured Euclidean chart of the model compactification.
 -/
