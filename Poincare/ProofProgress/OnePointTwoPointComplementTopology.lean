@@ -599,4 +599,117 @@ theorem onePoint_threeSpace_singleton_and_twoPointComplement_endpointData_loopCo
       @Poincare.onePoint_threeSpace_singleton_and_twoPointComplement_endpointData_loopCollapse_core :=
   rfl
 
+/--
+The endpoint-data cores also identify the path-homotopy class of any supplied
+path with the selected endpoint-data path, for both the singleton and two-point
+complements.
+-/
+theorem onePoint_threeSpace_singleton_and_twoPointComplement_endpointData_pathClass_payload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (singleBase singleTarget :
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (singlePath : Path singleBase singleTarget)
+    (singleLoop : Path singleBase singleBase)
+    (twoBase twoTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (twoPath : Path twoBase twoTarget)
+    (twoLoop : Path twoBase twoBase) :
+    (∃ singlePathData :
+        PointedPathComponentPathData
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) singleBase,
+      ∃ singleEndpointData :
+          PointedChosenPathEndpointData
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            singleBase singleTarget,
+        singlePathData.path_to singleTarget = singleEndpointData.path ∧
+          singleEndpointData.path 0 = singleBase ∧
+          singleEndpointData.path 1 = singleTarget ∧
+          Joined singleBase singleTarget ∧
+          pathComponent singleBase = Set.univ ∧
+          Path.Homotopic singleEndpointData.path singlePath ∧
+          (⟦singleEndpointData.path⟧ :
+            Path.Homotopic.Quotient singleBase singleTarget) =
+              ⟦singlePath⟧ ∧
+          Subsingleton (Path.Homotopic.Quotient singleBase singleTarget) ∧
+          singleLoop 0 = singleBase ∧
+          singleLoop 1 = singleBase ∧
+          Path.Homotopic singleLoop (Path.refl singleBase) ∧
+          FundamentalGroup.fromPath
+              (⟦singleLoop⟧ :
+                Path.Homotopic.Quotient singleBase singleBase) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl singleBase⟧ :
+                Path.Homotopic.Quotient singleBase singleBase) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1
+              ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              singleBase)) ∧
+    (∃ twoPathData :
+        PointedPathComponentPathData
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          twoBase,
+      ∃ twoEndpointData :
+          PointedChosenPathEndpointData
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            twoBase twoTarget,
+        twoPathData.path_to twoTarget = twoEndpointData.path ∧
+          twoEndpointData.path 0 = twoBase ∧
+          twoEndpointData.path 1 = twoTarget ∧
+          Joined twoBase twoTarget ∧
+          pathComponent twoBase = Set.univ ∧
+          Path.Homotopic twoEndpointData.path twoPath ∧
+          (⟦twoEndpointData.path⟧ :
+            Path.Homotopic.Quotient twoBase twoTarget) = ⟦twoPath⟧ ∧
+          Subsingleton (Path.Homotopic.Quotient twoBase twoTarget) ∧
+          twoLoop 0 = twoBase ∧
+          twoLoop 1 = twoBase ∧
+          Path.Homotopic twoLoop (Path.refl twoBase) ∧
+          FundamentalGroup.fromPath
+              (⟦twoLoop⟧ : Path.Homotopic.Quotient twoBase twoBase) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl twoBase⟧ :
+                Path.Homotopic.Quotient twoBase twoBase) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1
+              (({p} ∪ {q})ᶜ :
+                Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              twoBase)) := by
+  rcases
+    onePoint_threeSpace_singleton_and_twoPointComplement_endpointData_loopCollapse_core
+      hqp singleBase singleTarget singleLoop twoBase twoTarget twoLoop with
+    ⟨singleCore, twoCore⟩
+  rcases singleCore with
+    ⟨singlePathData, singleEndpointData, singlePathEq,
+      singleSource, singleTargetEq, singleJoined, singleComponent,
+      singleUnique, singleQuotient, singleLoopSource, singleLoopTarget,
+      singleLoopHomotopic, singleLoopFromPath, singlePi⟩
+  rcases twoCore with
+    ⟨twoPathData, twoEndpointData, twoPathEq,
+      twoSource, twoTargetEq, twoJoined, twoComponent,
+      twoUnique, twoQuotient, twoLoopSource, twoLoopTarget,
+      twoLoopHomotopic, twoLoopFromPath, twoPi⟩
+  refine ⟨?_, ?_⟩
+  · let hSinglePath : Path.Homotopic singleEndpointData.path singlePath :=
+      singleUnique singlePath
+    refine
+      ⟨singlePathData, singleEndpointData, singlePathEq, singleSource,
+        singleTargetEq, singleJoined, singleComponent, hSinglePath, ?_,
+        singleQuotient, singleLoopSource, singleLoopTarget,
+        singleLoopHomotopic, singleLoopFromPath, singlePi⟩
+    exact Quotient.sound hSinglePath
+  · let hTwoPath : Path.Homotopic twoEndpointData.path twoPath :=
+      twoUnique twoPath
+    refine
+      ⟨twoPathData, twoEndpointData, twoPathEq, twoSource,
+        twoTargetEq, twoJoined, twoComponent, hTwoPath, ?_,
+        twoQuotient, twoLoopSource, twoLoopTarget, twoLoopHomotopic,
+        twoLoopFromPath, twoPi⟩
+    exact Quotient.sound hTwoPath
+
+/-- Theorem contract for `onePoint_threeSpace_singleton_and_twoPointComplement_endpointData_pathClass_payload`. -/
+theorem onePoint_threeSpace_singleton_and_twoPointComplement_endpointData_pathClass_payload_eq :
+    @Poincare.onePoint_threeSpace_singleton_and_twoPointComplement_endpointData_pathClass_payload =
+      @Poincare.onePoint_threeSpace_singleton_and_twoPointComplement_endpointData_pathClass_payload :=
+  rfl
+
 end Poincare
