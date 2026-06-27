@@ -24267,4 +24267,80 @@ theorem conditional_root_selected_threeSphere_completionCriterion_and_endpoint_s
       @Poincare.conditional_root_selected_threeSphere_completionCriterion_and_endpoint_summary_of_full_terminal_certificate_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Direct consumer form of the terminal endpoint: the conditional route now
+exposes a concrete `M ≃ₜ ThreeSphere` witness at top level together with the
+project Poincare statement, the direct completion criterion family, and the
+compact final-homeomorphism/path-homotopy endpoint summary.
+-/
+theorem conditional_root_selected_threeSphere_direct_homeomorphism_completionCriterion_and_endpoint_summary_of_full_terminal_certificate_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {x y : M} (hyx : y ≠ x)
+    {a b : ({x}ᶜ : Set M)} (γ η : Path a b)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (chosenSinglePath : Path singleBase singleTarget)
+    (singleLoop : Path singleBase singleBase)
+    {c d : (({x} ∪ {y})ᶜ : Set M)} (γTwo ηTwo : Path c d)
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path twoBase twoTarget)
+    (loop : Path twoBase twoBase) :
+    PoincareConjectureStatement.{u} ∧
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      ∃ directHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+      ∃ selectedHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        directHomeomorphism = selectedHomeomorphism ∧
+        ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+        ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+          ExtinctionFinalHomeomorphismProjectorPayload
+            topology M extinction ∧
+          Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+          Path.Homotopic γ η ∧
+          Path.Homotopic γTwo ηTwo ∧
+          twoPointComplement_chosenPath_of_topology_package
+            topology M extinction hyx twoBase twoTarget 0 = twoBase := by
+  rcases
+      conditional_root_selected_threeSphere_completionCriterion_and_endpoint_summary_of_full_terminal_certificate_of_equation_boundary_dependencies
+        dependencies smoothability grounded topology smoothabilityPayload M
+        hyx γ η singleBase singleTarget chosenSinglePath singleLoop γTwo
+        ηTwo twoBase twoTarget chosenPath loop with
+    ⟨projectStatement, completionCriterion, rootHomeomorphism,
+      selectedHomeomorphism, hHomeomorphism_eq, checkedCertificate,
+      extinction, finalHomeomorphismProjector, hSingletonChart,
+      singleHomotopy, twoHomotopy, twoSource⟩
+  exact
+    ⟨projectStatement,
+      rootHomeomorphism,
+      completionCriterion,
+      rootHomeomorphism,
+      selectedHomeomorphism,
+      hHomeomorphism_eq,
+      checkedCertificate,
+      extinction,
+      finalHomeomorphismProjector,
+      hSingletonChart,
+      singleHomotopy,
+      twoHomotopy,
+      twoSource⟩
+
+/-- Theorem contract for `conditional_root_selected_threeSphere_direct_homeomorphism_completionCriterion_and_endpoint_summary_of_full_terminal_certificate_of_equation_boundary_dependencies`. -/
+theorem conditional_root_selected_threeSphere_direct_homeomorphism_completionCriterion_and_endpoint_summary_of_full_terminal_certificate_of_equation_boundary_dependencies_eq :
+    @Poincare.conditional_root_selected_threeSphere_direct_homeomorphism_completionCriterion_and_endpoint_summary_of_full_terminal_certificate_of_equation_boundary_dependencies =
+      @Poincare.conditional_root_selected_threeSphere_direct_homeomorphism_completionCriterion_and_endpoint_summary_of_full_terminal_certificate_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
