@@ -14942,6 +14942,97 @@ abbrev ExtinctionSelectedRawMapSphericalCoveringActionChainPayload
       (recognitionPrefix.sphericalFundamentalGroup M extinction)
 
 /--
+Named selected raw-map deck-action and trivial-quotient payload. It records
+deck-action properness, deck-action trivialization, trivial deck quotient
+identification, trivial spherical quotient, and the trivial quotient
+homeomorphism for the same selected projection data.
+-/
+abbrev ExtinctionSelectedRawMapDeckTrivialQuotientChainPayload
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) : Prop :=
+    let onePointRecognition :=
+      onePointCompactificationRecognitionAfterDecompositionStatement_of_extinctionOnePointThreeSpaceSelectedRawMapData_forwardContinuity_projectionStatementChoiceData
+        mapSelectionData selectedRawMapData forwardContinuityData
+        rawStatementChoiceData continuousStatementChoiceData
+    let recognitionPrefix :=
+      extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+        surgeryTracePrefix onePointRecognition
+    HasSphericalSpaceFormDeckActionProperness M extinction
+      (recognitionPrefix.decomposition M extinction)
+      (recognitionPrefix.primeDecomposition M extinction)
+      (recognitionPrefix.irreducibility M extinction)
+      (recognitionPrefix.connectedSumCollapse M extinction)
+      (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+      (recognitionPrefix.sphericalQuotientModel M extinction)
+      (recognitionPrefix.sphericalFundamentalGroup M extinction)
+      (recognitionPrefix.deckGroupIdentification M extinction) ∧
+    HasSphericalSpaceFormDeckActionTrivialization M extinction
+      (recognitionPrefix.decomposition M extinction)
+      (recognitionPrefix.primeDecomposition M extinction)
+      (recognitionPrefix.irreducibility M extinction)
+      (recognitionPrefix.connectedSumCollapse M extinction)
+      (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+      (recognitionPrefix.sphericalQuotientModel M extinction)
+      (recognitionPrefix.sphericalFundamentalGroup M extinction)
+      (recognitionPrefix.deckGroupIdentification M extinction)
+      (recognitionPrefix.deckGroupTriviality M extinction) ∧
+    HasSphericalSpaceFormTrivialDeckQuotientIdentification M extinction
+      (recognitionPrefix.decomposition M extinction)
+      (recognitionPrefix.primeDecomposition M extinction)
+      (recognitionPrefix.irreducibility M extinction)
+      (recognitionPrefix.connectedSumCollapse M extinction)
+      (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+      (recognitionPrefix.sphericalQuotientModel M extinction)
+      (recognitionPrefix.sphericalFundamentalGroup M extinction)
+      (recognitionPrefix.deckGroupIdentification M extinction)
+      (recognitionPrefix.deckGroupTriviality M extinction)
+      (recognitionPrefix.deckActionTrivialization M extinction) ∧
+    HasTrivialSphericalSpaceFormQuotient M extinction
+      (recognitionPrefix.decomposition M extinction)
+      (recognitionPrefix.primeDecomposition M extinction)
+      (recognitionPrefix.irreducibility M extinction)
+      (recognitionPrefix.connectedSumCollapse M extinction)
+      (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+      (recognitionPrefix.sphericalQuotientModel M extinction)
+      (recognitionPrefix.sphericalFundamentalGroup M extinction)
+      (recognitionPrefix.deckGroupIdentification M extinction)
+      (recognitionPrefix.deckGroupTriviality M extinction) ∧
+    HasSphericalSpaceFormTrivialQuotientHomeomorphism M extinction
+      (recognitionPrefix.decomposition M extinction)
+      (recognitionPrefix.primeDecomposition M extinction)
+      (recognitionPrefix.irreducibility M extinction)
+      (recognitionPrefix.connectedSumCollapse M extinction)
+      (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+      (recognitionPrefix.sphericalQuotientModel M extinction)
+      (recognitionPrefix.sphericalUniversalCover M extinction)
+      (recognitionPrefix.sphericalFundamentalGroup M extinction)
+      (recognitionPrefix.deckGroupIdentification M extinction)
+      (recognitionPrefix.deckGroupTriviality M extinction)
+      (recognitionPrefix.trivialSphericalQuotient M extinction)
+
+/--
 Consumer form of the selected raw-map final-certificate route: the same checked
 certificate construction now yields the reserved project statement, checked
 completion certificate, and selected trace/covering/deck-control payload.
@@ -15327,6 +15418,90 @@ theorem poincare_statement_certificate_selectedRawMap_trace_projector_full_spher
 theorem poincare_statement_certificate_selectedRawMap_trace_projector_full_spherical_and_covering_action_of_finalCertificateSubobligationInputs_projectionStatementChoice_eq :
     @Poincare.poincare_statement_certificate_selectedRawMap_trace_projector_full_spherical_and_covering_action_of_finalCertificateSubobligationInputs_projectionStatementChoice =
       @Poincare.poincare_statement_certificate_selectedRawMap_trace_projector_full_spherical_and_covering_action_of_finalCertificateSubobligationInputs_projectionStatementChoice :=
+  rfl
+
+/--
+The selected raw-map final-certificate route also exposes the deck-action and
+trivial-quotient chain together with the selected covering/action chain. This
+keeps the properness, trivialization, trivial deck quotient, trivial spherical
+quotient, and trivial quotient homeomorphism witnesses attached to the same
+checked selected certificate boundary.
+-/
+theorem poincare_statement_certificate_selectedRawMap_covering_action_and_deck_trivial_quotient_of_finalCertificateSubobligationInputs_projectionStatementChoice
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      ExtinctionSelectedRawMapTraceCoveringDeckControlPayload
+        surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData rawStatementChoiceData
+        continuousStatementChoiceData M extinction ∧
+      ExtinctionSelectedRawMapFinalHomeomorphismProjectorPayload
+        surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData rawStatementChoiceData
+        continuousStatementChoiceData M extinction ∧
+      ExtinctionSelectedRawMapFullSphericalSpaceFormDerivationPayload
+        surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData rawStatementChoiceData
+        continuousStatementChoiceData M extinction ∧
+      ExtinctionSelectedRawMapSphericalCoveringActionChainPayload
+        surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData rawStatementChoiceData
+        continuousStatementChoiceData M extinction ∧
+      ExtinctionSelectedRawMapDeckTrivialQuotientChainPayload
+        surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData rawStatementChoiceData
+        continuousStatementChoiceData M extinction := by
+  rcases
+      poincare_statement_certificate_selectedRawMap_trace_projector_full_spherical_and_covering_action_of_finalCertificateSubobligationInputs_projectionStatementChoice
+        inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData rawStatementChoiceData
+        continuousStatementChoiceData M extinction with
+    ⟨poincareStatement, checkedCertificate, selectedControls,
+      selectedProjector, fullSphericalDerivation,
+      coveringActionChain⟩
+  rcases
+      selectedRawMap_projectionStatementChoice_spherical_deck_trivial_quotient_chain_of_final_homeomorphism_consumer_payload
+        surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData rawStatementChoiceData
+        continuousStatementChoiceData M extinction with
+    ⟨deckActionProperness, deckActionTrivialization,
+      trivialDeckQuotientIdentification, trivialSphericalQuotient,
+      trivialQuotientHomeomorphism⟩
+  exact
+    ⟨poincareStatement, checkedCertificate, selectedControls,
+      selectedProjector, fullSphericalDerivation, coveringActionChain,
+      deckActionProperness, deckActionTrivialization,
+      trivialDeckQuotientIdentification, trivialSphericalQuotient,
+      trivialQuotientHomeomorphism⟩
+
+/-- Theorem contract for `poincare_statement_certificate_selectedRawMap_covering_action_and_deck_trivial_quotient_of_finalCertificateSubobligationInputs_projectionStatementChoice`. -/
+theorem poincare_statement_certificate_selectedRawMap_covering_action_and_deck_trivial_quotient_of_finalCertificateSubobligationInputs_projectionStatementChoice_eq :
+    @Poincare.poincare_statement_certificate_selectedRawMap_covering_action_and_deck_trivial_quotient_of_finalCertificateSubobligationInputs_projectionStatementChoice =
+      @Poincare.poincare_statement_certificate_selectedRawMap_covering_action_and_deck_trivial_quotient_of_finalCertificateSubobligationInputs_projectionStatementChoice :=
   rfl
 
 /--
