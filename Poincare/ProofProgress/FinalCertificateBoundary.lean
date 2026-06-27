@@ -501,6 +501,73 @@ theorem poincare_completion_payload_of_finalCertificatePrimitiveInputs
     (canonical_completion_payload_of_finalCertificatePrimitiveInputs inputs)
 
 /--
+The primitive inputs assembled from the grounded terminal package payload close
+the canonical completion target, the canonical completion payload, the project
+Poincare statement, and the project-level completion payload.  This packages
+the exact grounded finite-extinction package requirement used for the primitive
+universal finite-extinction field together with the downstream final-certificate
+outputs.
+-/
+theorem canonical_and_poincare_payloads_of_grounded_terminal_package_payload
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ primitiveInputs : FinalCertificatePrimitiveInputs.{u},
+      ∃ packageRequirement :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        (packageRequirement =
+          (grounded_universal_finite_extinction_package_statement_terminal_full_equality_payload
+            grounded M).2.1) ∧
+        (primitiveInputs =
+          finalCertificatePrimitiveInputs_of_minimalPackageInputs
+            { smoothability := smoothability
+              finiteExtinction := packageRequirement }
+            (extinction_implies_sphere_of_topology_extraction_statement
+              topologyStatement)) ∧
+        canonicalCompletionTarget.{u} ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        PoincareConjectureStatement.{u} ∧
+        ∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  have payload :=
+    grounded_universal_finite_extinction_package_statement_terminal_full_equality_payload
+      grounded M
+  let packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage :=
+    payload.2.1
+  let primitiveInputs : FinalCertificatePrimitiveInputs.{u} :=
+    finalCertificatePrimitiveInputs_of_minimalPackageInputs
+      { smoothability := smoothability
+        finiteExtinction := packageRequirement }
+      (extinction_implies_sphere_of_topology_extraction_statement
+        topologyStatement)
+  exact
+    ⟨primitiveInputs, packageRequirement, rfl, rfl,
+      canonical_completion_target_of_finalCertificatePrimitiveInputs
+        primitiveInputs,
+      canonical_completion_payload_of_finalCertificatePrimitiveInputs
+        primitiveInputs,
+      poincare_statement_of_finalCertificatePrimitiveInputs primitiveInputs,
+      poincare_completion_payload_of_finalCertificatePrimitiveInputs
+        primitiveInputs⟩
+
+/-- Theorem contract for
+`canonical_and_poincare_payloads_of_grounded_terminal_package_payload`. -/
+theorem canonical_and_poincare_payloads_of_grounded_terminal_package_payload_eq :
+    @Poincare.canonical_and_poincare_payloads_of_grounded_terminal_package_payload =
+      @Poincare.canonical_and_poincare_payloads_of_grounded_terminal_package_payload :=
+  rfl
+
+/--
 The two minimal package inputs prove the canonical completion target by first
 assembling the primitive universal finite-extinction statement.
 -/
