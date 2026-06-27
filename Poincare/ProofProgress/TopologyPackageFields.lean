@@ -4253,6 +4253,99 @@ theorem topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognit
   rfl
 
 /--
+The selected topology-package decomposition certificate can also be consumed
+with the homotopy-unique compact singleton/two-puncture endpoint loop-collapse
+core and local path-connectedness of the two-puncture complement.
+-/
+theorem topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_singletonTwoPointLocPathHomotopyUniqueEndpointDataLoopCollapseCore_certificate
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (singleLoop : Path singleBase singleBase)
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M))
+    (twoLoop : Path twoBase twoBase) :
+    ∃ decomposition : HasExtinctionTopologyDecomposition M extinction,
+      Nonempty (ExtinctionTopologyDecompositionData M extinction) ∧
+        HasExtinctionSurgeryTraceReconstruction M extinction decomposition ∧
+        Nonempty
+          (ExtinctionSurgeryTraceReconstructionData M extinction decomposition) ∧
+        FinalHomeomorphismPayloadData M extinction decomposition ∧
+        Nonempty (M ≃ₜ ThreeSphere) ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        (let C := (({x} ∪ {y})ᶜ : Set M)
+        LocPathConnectedSpace C ∧
+          (∃ singlePathData :
+              PointedPathComponentPathData ({x}ᶜ : Set M) singleBase,
+            ∃ singleEndpointData :
+                PointedChosenPathEndpointData ({x}ᶜ : Set M)
+                  singleBase singleTarget,
+              singlePathData.path_to singleTarget = singleEndpointData.path ∧
+                singleEndpointData.path 0 = singleBase ∧
+                singleEndpointData.path 1 = singleTarget ∧
+                Joined singleBase singleTarget ∧
+                pathComponent singleBase = Set.univ ∧
+                (∀ ζ : Path singleBase singleTarget,
+                  Path.Homotopic singleEndpointData.path ζ) ∧
+                Subsingleton
+                  (Path.Homotopic.Quotient singleBase singleTarget) ∧
+                singleLoop 0 = singleBase ∧
+                singleLoop 1 = singleBase ∧
+                Path.Homotopic singleLoop (Path.refl singleBase) ∧
+                FundamentalGroup.fromPath
+                    (⟦singleLoop⟧ :
+                      Path.Homotopic.Quotient singleBase singleBase) =
+                  FundamentalGroup.fromPath
+                    (⟦Path.refl singleBase⟧ :
+                      Path.Homotopic.Quotient singleBase singleBase) ∧
+                Subsingleton
+                  (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBase)) ∧
+            ∃ twoPathData : PointedPathComponentPathData C twoBase,
+              ∃ twoEndpointData :
+                  PointedChosenPathEndpointData C twoBase twoTarget,
+                twoPathData.path_to twoTarget = twoEndpointData.path ∧
+                  twoEndpointData.path 0 = twoBase ∧
+                  twoEndpointData.path 1 = twoTarget ∧
+                  Joined twoBase twoTarget ∧
+                  pathComponent twoBase = Set.univ ∧
+                  (∀ ζ : Path twoBase twoTarget,
+                    Path.Homotopic twoEndpointData.path ζ) ∧
+                  Subsingleton (Path.Homotopic.Quotient twoBase twoTarget) ∧
+                  twoLoop 0 = twoBase ∧
+                  twoLoop 1 = twoBase ∧
+                  Path.Homotopic twoLoop (Path.refl twoBase) ∧
+                  FundamentalGroup.fromPath
+                      (⟦twoLoop⟧ :
+                        Path.Homotopic.Quotient twoBase twoBase) =
+                    FundamentalGroup.fromPath
+                      (⟦Path.refl twoBase⟧ :
+                        Path.Homotopic.Quotient twoBase twoBase) ∧
+                  Subsingleton (HomotopyGroup.Pi 1 C twoBase)) := by
+  rcases
+      topologyPackage_selected_decomposition_trace_finalHomeomorphism_and_recognition_certificate
+        package M extinction with
+    ⟨decomposition, hDecompositionData, hTrace, hTraceData,
+      hFinalPayload, hThreeSphere, hOnePoint⟩
+  rcases
+      topologyPackage_finalHomeomorphism_and_singletonTwoPointLocPathHomotopyUniqueEndpointDataLoopCollapseCore
+        package M extinction hyx singleBase singleTarget singleLoop
+        twoBase twoTarget twoLoop with
+    ⟨_hOnePoint, _hFinal, endpointCore⟩
+  exact
+    ⟨decomposition, hDecompositionData, hTrace, hTraceData,
+      hFinalPayload, hThreeSphere, hOnePoint, endpointCore⟩
+
+/-- Theorem contract for
+`topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_singletonTwoPointLocPathHomotopyUniqueEndpointDataLoopCollapseCore_certificate`. -/
+theorem topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_singletonTwoPointLocPathHomotopyUniqueEndpointDataLoopCollapseCore_certificate_eq :
+    @Poincare.topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_singletonTwoPointLocPathHomotopyUniqueEndpointDataLoopCollapseCore_certificate =
+      @Poincare.topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_singletonTwoPointLocPathHomotopyUniqueEndpointDataLoopCollapseCore_certificate :=
+  rfl
+
+/--
 The selected topology-package certificate can be consumed with both puncture
 levels at once: singleton-complement path-loop collapse and the synchronized
 two-puncture chart/path-loop projection bundle. This is the package-local
