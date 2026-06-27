@@ -32493,4 +32493,119 @@ theorem dependency_only_reserved_mathlib_statement_of_equation_boundary_dependen
       @Poincare.dependency_only_reserved_mathlib_statement_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved statement certificate payload.
+
+This packages the full project and mathlib-shaped reserved statements together
+with the checked completion certificate, its nonempty-certificate bridge, and
+the explicit completion criterion family.  The endpoint records that the final
+statements now project from the concrete certificate built from the
+equation-boundary dependency package.
+-/
+theorem dependency_only_reserved_statement_certificate_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u},
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      nonemptyCertificate =
+        nonempty_completion_certificate_of_completion_certificate
+          certificate ∧
+      projectStatement =
+        dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies
+          dependencies ∧
+      projectStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      mathlibStatement =
+        dependency_only_reserved_mathlib_statement_of_equation_boundary_dependencies
+          dependencies ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement ∧
+      completionCriterionFamily =
+        (fun witness =>
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness projectStatement) := by
+  let theoremName : String := canonicalCompletionTheoremName
+  let certificate : PoincareCompletionCertificate.{u} :=
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+      dependencies
+  let nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u} :=
+    nonempty_completion_certificate_of_completion_certificate certificate
+  let projectStatement : PoincareConjectureStatement.{u} :=
+    dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies
+      dependencies
+  let mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u} :=
+    dependency_only_reserved_mathlib_statement_of_equation_boundary_dependencies
+      dependencies
+  let completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    fun witness =>
+      completionCriterionAtUniverse_of_poincareConjectureStatement
+        witness projectStatement
+  have hTheoremNameCanonical :
+      theoremName = canonicalCompletionTheoremName :=
+    rfl
+  have hTheoremNameLiteral :
+      theoremName = "poincare_conjecture" := by
+    exact canonicalCompletionTheoremName_eq
+  have hCertificate :
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies :=
+    rfl
+  have hNonemptyCertificate :
+      nonemptyCertificate =
+        nonempty_completion_certificate_of_completion_certificate
+          certificate :=
+    rfl
+  have hProjectStatement :
+      projectStatement =
+        dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies
+          dependencies :=
+    rfl
+  have hProjectStatementCertificate :
+      projectStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate := by
+    apply Subsingleton.elim
+  have hMathlibStatement :
+      mathlibStatement =
+        dependency_only_reserved_mathlib_statement_of_equation_boundary_dependencies
+          dependencies :=
+    rfl
+  have hMathlibStatementProject :
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement := by
+    apply Subsingleton.elim
+  have hCompletionCriterionFamily :
+      completionCriterionFamily =
+        (fun witness =>
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness projectStatement) :=
+    rfl
+  exact
+    ⟨theoremName, certificate, nonemptyCertificate, projectStatement,
+      mathlibStatement, completionCriterionFamily, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, hNonemptyCertificate,
+      hProjectStatement, hProjectStatementCertificate, hMathlibStatement,
+      hMathlibStatementProject, hCompletionCriterionFamily⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_statement_certificate_payload_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_statement_certificate_payload_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_statement_certificate_payload_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_statement_certificate_payload_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
