@@ -550,4 +550,53 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_inverse_mapped_path_lo
       @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_inverse_mapped_path_loop_source_chart_payload :=
   rfl
 
+/--
+The explicit complement homeomorphism and its inverse recover mapped paths and
+loops pointwise. This records the concrete round-trip equations needed when a
+consumer transports a path/loop payload across the one-point-to-`ThreeSphere`
+two-puncture identification.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_roundtrip_eval
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    {sourceBase sourceTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    (sourcePath : Path sourceBase sourceTarget)
+    (sourceLoop : Path sourceBase sourceBase)
+    {targetBase targetTarget :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)}
+    (targetPath : Path targetBase targetTarget)
+    (targetLoop : Path targetBase targetBase) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    (∀ t, H.symm ((sourcePath.map H.continuous) t) = sourcePath t) ∧
+      (∀ t, H.symm ((sourceLoop.map H.continuous) t) = sourceLoop t) ∧
+      (∀ t, H ((targetPath.map H.symm.continuous) t) = targetPath t) ∧
+      (∀ t, H ((targetLoop.map H.symm.continuous) t) = targetLoop t) := by
+  dsimp
+  let H :=
+    onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+      hqp
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · intro t
+    change H.symm (H (sourcePath t)) = sourcePath t
+    exact H.left_inv (sourcePath t)
+  · intro t
+    change H.symm (H (sourceLoop t)) = sourceLoop t
+    exact H.left_inv (sourceLoop t)
+  · intro t
+    change H (H.symm (targetPath t)) = targetPath t
+    exact H.right_inv (targetPath t)
+  · intro t
+    change H (H.symm (targetLoop t)) = targetLoop t
+    exact H.right_inv (targetLoop t)
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_roundtrip_eval`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_roundtrip_eval_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_roundtrip_eval =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_roundtrip_eval :=
+  rfl
+
 end Poincare
