@@ -836,6 +836,82 @@ theorem twoPointComplement_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpa
       h hyx basepoint)
 
 /--
+A recognized one-point compactification target supplies a full two-puncture
+path/loop projection payload: a canonical chosen path with endpoint equations,
+homotopy uniqueness against any supplied path, quotient collapse, loop
+nullhomotopy, and trivial first homotopy group.
+-/
+theorem twoPointComplement_chosen_path_loop_projection_bundle_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ canonicalPath : Path basepoint target,
+      Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+        pathComponent basepoint = Set.univ ∧
+        canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+        Joined basepoint target ∧
+        Path.Homotopic chosenPath canonicalPath ∧
+        (⟦chosenPath⟧ :
+          Path.Homotopic.Quotient basepoint target) =
+          ⟦canonicalPath⟧ ∧
+        (∀ η : Path basepoint target,
+          Path.Homotopic canonicalPath η) ∧
+        Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+        loop 0 = basepoint ∧ loop 1 = basepoint ∧
+        Path.Homotopic loop (Path.refl basepoint) ∧
+        FundamentalGroup.fromPath
+            (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+          FundamentalGroup.fromPath
+            (⟦Path.refl basepoint⟧ :
+              Path.Homotopic.Quotient basepoint basepoint) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  rcases
+      twoPointComplement_exists_path_with_endpoints_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint target with
+    ⟨canonicalPath, canonicalSource, canonicalTarget, canonicalJoined⟩
+  have chosenHomotopic :
+      Path.Homotopic chosenPath canonicalPath :=
+    twoPointComplement_paths_homotopic_of_homeomorph_to_onePoint_threeSpace
+      h hyx chosenPath canonicalPath
+  have chosenQuotientEq :
+      (⟦chosenPath⟧ : Path.Homotopic.Quotient basepoint target) =
+        ⟦canonicalPath⟧ :=
+    Quotient.sound chosenHomotopic
+  have loopHomotopic :
+      Path.Homotopic loop (Path.refl basepoint) :=
+    twoPointComplement_loop_nullhomotopic_of_homeomorph_to_onePoint_threeSpace
+      h hyx basepoint loop
+  exact
+    ⟨canonicalPath,
+      twoPointComplement_nonempty_of_homeomorph_to_onePoint_threeSpace h hyx,
+      twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint,
+      canonicalSource, canonicalTarget, canonicalJoined,
+      chosenHomotopic, chosenQuotientEq,
+      fun η =>
+        twoPointComplement_paths_homotopic_of_homeomorph_to_onePoint_threeSpace
+          h hyx canonicalPath η,
+      twoPointComplement_pathQuotient_subsingleton_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint target,
+      Path.source loop, Path.target loop, loopHomotopic,
+      congrArg FundamentalGroup.fromPath (Quotient.sound loopHomotopic),
+      twoPointComplement_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint⟩
+
+/--
+Theorem contract for
+`twoPointComplement_chosen_path_loop_projection_bundle_of_homeomorph_to_onePoint_threeSpace`.
+-/
+theorem twoPointComplement_chosen_path_loop_projection_bundle_of_homeomorph_to_onePoint_threeSpace_eq :
+    @Poincare.twoPointComplement_chosen_path_loop_projection_bundle_of_homeomorph_to_onePoint_threeSpace =
+      @Poincare.twoPointComplement_chosen_path_loop_projection_bundle_of_homeomorph_to_onePoint_threeSpace :=
+  rfl
+
+/--
 The same single-puncture Euclidean chart transport, stated from recognition as
 the project `ThreeSphere`.
 -/
