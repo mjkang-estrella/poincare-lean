@@ -104,6 +104,50 @@ theorem finalCertificateSubobligationInputs_of_smoothability_and_grounded_certif
   rfl
 
 /--
+Grounded finite-extinction data used by the final-certificate boundary also
+exposes the universal finite-extinction and package-layer consequences supplied
+by the strengthened package-level terminal equality payload for each smooth
+target.  This connects the concrete lower final-certificate inputs to the
+grounded finite-extinction theorem-shaped package endpoint.
+-/
+theorem finalCertificateSubobligationInputs_of_grounded_certificates_with_package_statement_terminal_requirements
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ inputs : FinalCertificateSubobligationInputs.{u},
+      (inputs =
+        finalCertificateSubobligationInputs_of_smoothability_and_grounded_certificates
+          smoothability grounded) ∧
+        ((inputs.smoothability = smoothability) ∧
+          ((inputs.finiteExtinctionSubobligations =
+            finalAssemblyFiniteExtinctionSubobligationFamily_of_grounded_certificates
+              grounded) ∧
+            (UniversalFiniteExtinctionStatement.{u} ∧
+              dependencyPackageLayerRequirement.{u}
+                DependencyPackageLayer.finiteExtinctionPackage))) := by
+  let inputs :=
+    finalCertificateSubobligationInputs_of_smoothability_and_grounded_certificates
+      smoothability grounded
+  have payload :=
+    grounded_universal_finite_extinction_package_statement_terminal_full_equality_payload
+      grounded M
+  exact
+    ⟨inputs, rfl, rfl, rfl,
+      payload.1, payload.2.1⟩
+
+/-- Theorem contract for
+`finalCertificateSubobligationInputs_of_grounded_certificates_with_package_statement_terminal_requirements`. -/
+theorem finalCertificateSubobligationInputs_of_grounded_certificates_with_package_statement_terminal_requirements_eq :
+    @Poincare.finalCertificateSubobligationInputs_of_grounded_certificates_with_package_statement_terminal_requirements =
+      @Poincare.finalCertificateSubobligationInputs_of_grounded_certificates_with_package_statement_terminal_requirements :=
+  rfl
+
+/--
 Primitive named input for the canonical completion route after the production
 packages have already assembled finite extinction for topological targets.
 -/
