@@ -355,6 +355,49 @@ theorem compl_singleton_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
       h x basepoint)
 
 /--
+The one-point compactification recognition route exposes a Euclidean chart on
+a singleton complement together with endpoint-level topology, path-quotient,
+and `π₁` collapse data before any chosen path or loop is selected.
+-/
+theorem compl_singleton_euclidean_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M)
+    (basepoint target : ({x}ᶜ : Set M)) :
+    Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+      ContractibleSpace ({x}ᶜ : Set M) ∧
+      PathConnectedSpace ({x}ᶜ : Set M) ∧
+      ConnectedSpace ({x}ᶜ : Set M) ∧
+      SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+      pathComponent basepoint = Set.univ ∧
+      Joined basepoint target ∧
+      Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+      Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) := by
+  letI : ContractibleSpace ({x}ᶜ : Set M) :=
+    compl_singleton_contractibleSpace_of_homeomorph_to_onePoint_threeSpace h x
+  exact
+    ⟨⟨homeomorph_compl_singleton_euclidean_of_homeomorph_to_onePoint_threeSpace
+        h x⟩,
+      compl_singleton_contractibleSpace_of_homeomorph_to_onePoint_threeSpace h x,
+      inferInstance, inferInstance, inferInstance,
+      compl_singleton_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
+        h x basepoint,
+      compl_singleton_joined_of_homeomorph_to_onePoint_threeSpace
+        h x basepoint target,
+      compl_singleton_pathQuotient_subsingleton_of_homeomorph_to_onePoint_threeSpace
+        h x basepoint target,
+      compl_singleton_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
+        h x basepoint⟩
+
+/--
+Theorem contract for
+`compl_singleton_euclidean_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace`.
+-/
+theorem compl_singleton_euclidean_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace_eq :
+    @Poincare.compl_singleton_euclidean_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace =
+      @Poincare.compl_singleton_euclidean_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace :=
+  rfl
+
+/--
 Transport a recognized one-point compactification target's two-puncture
 complement to the punctured Euclidean chart of the model compactification.
 -/
@@ -2286,6 +2329,37 @@ theorem compl_singleton_piOne_subsingleton_of_homeomorph_to_threeSphere
     (X := ({x}ᶜ : Set M)) (x := basepoint)).subsingleton_congr).mpr
     (compl_singleton_fundamentalGroup_subsingleton_of_homeomorph_to_threeSphere
       h x basepoint)
+
+/--
+Recognizing a space as `ThreeSphere` exposes a Euclidean chart on a singleton
+complement together with endpoint-level topology, path-quotient, and `π₁`
+collapse data before any chosen path or loop is selected.
+-/
+theorem compl_singleton_euclidean_endpoint_collapse_package_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M)
+    (basepoint target : ({x}ᶜ : Set M)) :
+    Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+      ContractibleSpace ({x}ᶜ : Set M) ∧
+      PathConnectedSpace ({x}ᶜ : Set M) ∧
+      ConnectedSpace ({x}ᶜ : Set M) ∧
+      SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+      pathComponent basepoint = Set.univ ∧
+      Joined basepoint target ∧
+      Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+      Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) :=
+  compl_singleton_euclidean_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+    basepoint target
+
+/--
+Theorem contract for
+`compl_singleton_euclidean_endpoint_collapse_package_of_homeomorph_to_threeSphere`.
+-/
+theorem compl_singleton_euclidean_endpoint_collapse_package_of_homeomorph_to_threeSphere_eq :
+    @Poincare.compl_singleton_euclidean_endpoint_collapse_package_of_homeomorph_to_threeSphere =
+      @Poincare.compl_singleton_euclidean_endpoint_collapse_package_of_homeomorph_to_threeSphere :=
+  rfl
 
 /--
 Every two-puncture complement of a space recognized as `ThreeSphere` is simply
