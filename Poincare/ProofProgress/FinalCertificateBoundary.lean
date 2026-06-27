@@ -148,6 +148,76 @@ theorem finalCertificateSubobligationInputs_of_grounded_certificates_with_packag
   rfl
 
 /--
+The same final-certificate subobligation boundary exposes the concrete indexed
+surgery package selected by the grounded terminal route, together with the
+package's theorem-shaped finite-extinction statement and finite-extinction
+witness.  This is the final-boundary projection of the package-level statement
+part of the grounded terminal payload.
+-/
+theorem finalCertificateSubobligationInputs_of_grounded_certificates_with_package_statement_witness
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ inputs : FinalCertificateSubobligationInputs.{u},
+      (inputs =
+        finalCertificateSubobligationInputs_of_smoothability_and_grounded_certificates
+          smoothability grounded) ∧
+        ((inputs.smoothability = smoothability) ∧
+          ((inputs.finiteExtinctionSubobligations =
+            finalAssemblyFiniteExtinctionSubobligationFamily_of_grounded_certificates
+              grounded) ∧
+            (∃ packageWitness : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M,
+              Nonempty (FiniteExtinctionSurgeryPackage packageWitness.1 M) ∧
+              Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M) ∧
+              ∃ packageStatement :
+                FiniteExtinctionStatement packageWitness.1 M,
+              ∃ packageFiniteExtinction :
+                FiniteExtinctionByRicciFlowWithSurgery M,
+                (packageStatement =
+                  finite_extinction_statement_of_surgery_package
+                    packageWitness.2) ∧
+                ((packageFiniteExtinction =
+                  finite_extinction_from_statement_payload_of_surgery_package
+                    packageWitness.2) ∧
+                  (UniversalFiniteExtinctionStatement.{u} ∧
+                    dependencyPackageLayerRequirement.{u}
+                      DependencyPackageLayer.finiteExtinctionPackage))))) := by
+  let inputs :=
+    finalCertificateSubobligationInputs_of_smoothability_and_grounded_certificates
+      smoothability grounded
+  rcases
+      grounded_universal_finite_extinction_package_statement_terminal_full_equality_payload
+        grounded M with
+    ⟨universalStatement, packageRequirement, packageWitness,
+      packageWitnessNonempty, packageOutput, packageStatement,
+      packageFiniteExtinction, _n, _smooth, _analyticFoundation,
+      _surgeryConstruction, _perelmanControl, _widthStatement,
+      _curvatureFrontier, _volumeFrontier, _surgeryVolumeFrontier,
+      _scalarCurvatureFrontier, _volumeDifferentialFrontier,
+      _productionCertificate, _terminalFiniteExtinction, _timeBound,
+      _derivation, _source, packageStatementEq,
+      packageFiniteExtinctionEq, _productionEq, _terminalFiniteExtinctionEq,
+      _timeBoundEq, _derivationEq, _sourceCertificateEq,
+      _sourceConclusionEq, _timeBoundSource, _derivationSource⟩
+  exact
+    ⟨inputs, rfl, rfl, rfl, packageWitness, packageWitnessNonempty,
+      packageOutput, packageStatement, packageFiniteExtinction,
+      packageStatementEq, packageFiniteExtinctionEq, universalStatement,
+      packageRequirement⟩
+
+/-- Theorem contract for
+`finalCertificateSubobligationInputs_of_grounded_certificates_with_package_statement_witness`. -/
+theorem finalCertificateSubobligationInputs_of_grounded_certificates_with_package_statement_witness_eq :
+    @Poincare.finalCertificateSubobligationInputs_of_grounded_certificates_with_package_statement_witness =
+      @Poincare.finalCertificateSubobligationInputs_of_grounded_certificates_with_package_statement_witness :=
+  rfl
+
+/--
 Primitive named input for the canonical completion route after the production
 packages have already assembled finite extinction for topological targets.
 -/
