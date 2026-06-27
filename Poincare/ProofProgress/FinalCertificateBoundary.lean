@@ -30469,4 +30469,89 @@ theorem dependency_only_canonical_reserved_theorem_target_analytic_surgery_field
       @Poincare.dependency_only_canonical_reserved_theorem_target_analytic_surgery_fields_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only canonical reserved-theorem endpoint linking the selected
+finite-extinction conclusion from the target surgery package to the topology
+extraction package.
+
+This composes the finite-extinction/Ricci-flow-with-surgery endpoint with the
+topology-extraction endpoint, so downstream final assembly can consume the
+post-extinction decomposition and recognition data produced from the selected
+surgery witness.
+-/
+theorem dependency_only_canonical_reserved_theorem_selected_extinction_topology_data_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ theoremName : String,
+    ∃ n : ℕ∞ω,
+    ∃ equationBoundaryPackage :
+      FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+    ∃ ordinaryPackage : FiniteExtinctionSurgeryPackage n M,
+    ∃ finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+    ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ decomposition : HasExtinctionTopologyDecomposition M finiteExtinction,
+    ∃ surgeryTraceReconstruction :
+      HasExtinctionSurgeryTraceReconstruction M finiteExtinction
+        decomposition,
+    ∃ surgeryTraceHandleCancellation :
+      HasExtinctionSurgeryTraceHandleCancellation M finiteExtinction
+        decomposition surgeryTraceReconstruction,
+    ∃ componentClassification :
+      HasExtinctionComponentClassification M finiteExtinction decomposition,
+    ∃ recognition :
+      HasThreeSphereRecognition M (topologyPackage.decomposition M),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      ordinaryPackage =
+        surgery_package_of_equation_boundary_surgery_package
+          equationBoundaryPackage ∧
+      finiteExtinction = ordinaryPackage.finiteExtinction ∧
+      topologyPackage =
+        (dependencies_of_equation_boundary_dependencies dependencies).topology ∧
+      decomposition = topologyPackage.decomposition M finiteExtinction ∧
+      surgeryTraceReconstruction =
+        topologyPackage.surgeryTraceReconstruction M finiteExtinction ∧
+      surgeryTraceHandleCancellation =
+        topologyPackage.surgeryTraceHandleCancellation M finiteExtinction ∧
+      componentClassification =
+        topologyPackage.componentClassification M finiteExtinction ∧
+      recognition = topologyPackage.recognition M := by
+  rcases
+      dependency_only_canonical_reserved_theorem_target_analytic_surgery_fields_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨theoremName, n, equationBoundaryPackage, ordinaryPackage,
+      _analyticFoundation, _surgeryConstruction, _perelmanControl,
+      _equationBoundary, finiteExtinction, hTheoremNameCanonical,
+      hTheoremNameLiteral, hOrdinaryPackage, _hOrdinaryPackageField,
+      _hAnalyticFoundation, _hSurgeryConstruction, _hPerelmanControl,
+      _hEquationBoundary, hFiniteExtinction⟩
+  rcases
+      dependency_only_canonical_reserved_theorem_topology_extraction_data_of_equation_boundary_dependencies
+        dependencies M finiteExtinction with
+    ⟨_topologyTheoremName, topologyPackage, decomposition,
+      surgeryTraceReconstruction, surgeryTraceHandleCancellation,
+      componentClassification, recognition, _hTopologyTheoremNameCanonical,
+      _hTopologyTheoremNameLiteral, hTopologyPackage, hDecomposition,
+      hSurgeryTraceReconstruction, hSurgeryTraceHandleCancellation,
+      hComponentClassification, hRecognition⟩
+  exact
+    ⟨theoremName, n, equationBoundaryPackage, ordinaryPackage,
+      finiteExtinction, topologyPackage, decomposition,
+      surgeryTraceReconstruction, surgeryTraceHandleCancellation,
+      componentClassification, recognition, hTheoremNameCanonical,
+      hTheoremNameLiteral, hOrdinaryPackage, hFiniteExtinction,
+      hTopologyPackage, hDecomposition, hSurgeryTraceReconstruction,
+      hSurgeryTraceHandleCancellation, hComponentClassification,
+      hRecognition⟩
+
+/-- Theorem contract for
+`dependency_only_canonical_reserved_theorem_selected_extinction_topology_data_of_equation_boundary_dependencies`. -/
+theorem dependency_only_canonical_reserved_theorem_selected_extinction_topology_data_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_canonical_reserved_theorem_selected_extinction_topology_data_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_canonical_reserved_theorem_selected_extinction_topology_data_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
