@@ -33970,4 +33970,81 @@ theorem dependency_only_reserved_final_completion_family_projection_at_witness_o
       @Poincare.dependency_only_reserved_final_completion_family_projection_at_witness_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved final criterion/family projection coherence.
+
+The compact selected-criterion projection and the selected value of the compact
+family projection expose the same certificate, final statements, canonical
+target, and completion criterion at the chosen witness.
+-/
+theorem dependency_only_reserved_final_completionCriterion_family_projection_coherence_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (witness : Type u) :
+    ∃ criterionCertificate : PoincareCompletionCertificate.{u},
+    ∃ familyCertificate : PoincareCompletionCertificate.{u},
+    ∃ criterionProjectStatement : PoincareConjectureStatement.{u},
+    ∃ familyProjectStatement : PoincareConjectureStatement.{u},
+    ∃ criterionMathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ familyMathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ criterionCanonicalTarget : canonicalCompletionTarget.{u},
+    ∃ familyCanonicalTarget : canonicalCompletionTarget.{u},
+    ∃ criterion : CompletionCriterionAtUniverse witness,
+    ∃ familyCriterion : CompletionCriterionAtUniverse witness,
+      criterionCertificate = familyCertificate ∧
+      criterionProjectStatement = familyProjectStatement ∧
+      criterionMathlibStatement = familyMathlibStatement ∧
+      criterionCanonicalTarget = familyCanonicalTarget ∧
+      criterion = familyCriterion ∧
+      criterion =
+        dependency_only_reserved_completionCriterionAtUniverse_of_equation_boundary_dependencies
+          dependencies witness ∧
+      criterionCertificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies := by
+  rcases
+      dependency_only_reserved_final_completionCriterion_projection_of_equation_boundary_dependencies
+        dependencies witness with
+    ⟨criterionCertificate, criterionProjectStatement,
+      criterionMathlibStatement, criterionCanonicalTarget, criterion,
+      hCriterionCertificate, _hCriterionProjectStatement,
+      _hCriterionMathlibStatement, _hCriterionCanonicalTarget,
+      hCriterionReserved⟩
+  rcases
+      dependency_only_reserved_final_completion_family_projection_at_witness_of_equation_boundary_dependencies
+        dependencies witness with
+    ⟨familyCertificate, familyProjectStatement, familyMathlibStatement,
+      familyCanonicalTarget, _completionCriterionFamily, familyCriterion,
+      hFamilyCertificate, _hFamilyProjectStatement, _hFamilyMathlibStatement,
+      _hFamilyCanonicalTarget, _hFamilyCriterion,
+      hFamilyCriterionReserved⟩
+  have hCertificates :
+      criterionCertificate = familyCertificate :=
+    hCriterionCertificate.trans hFamilyCertificate.symm
+  have hProjectStatements :
+      criterionProjectStatement = familyProjectStatement := by
+    apply Subsingleton.elim
+  have hMathlibStatements :
+      criterionMathlibStatement = familyMathlibStatement := by
+    apply Subsingleton.elim
+  have hCanonicalTargets :
+      criterionCanonicalTarget = familyCanonicalTarget := by
+    apply Subsingleton.elim
+  have hCriteria :
+      criterion = familyCriterion :=
+    hCriterionReserved.trans hFamilyCriterionReserved.symm
+  exact
+    ⟨criterionCertificate, familyCertificate, criterionProjectStatement,
+      familyProjectStatement, criterionMathlibStatement,
+      familyMathlibStatement, criterionCanonicalTarget, familyCanonicalTarget,
+      criterion, familyCriterion, hCertificates, hProjectStatements,
+      hMathlibStatements, hCanonicalTargets, hCriteria, hCriterionReserved,
+      hCriterionCertificate⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_final_completionCriterion_family_projection_coherence_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_final_completionCriterion_family_projection_coherence_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_final_completionCriterion_family_projection_coherence_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_final_completionCriterion_family_projection_coherence_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
