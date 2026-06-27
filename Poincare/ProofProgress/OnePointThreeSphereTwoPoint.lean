@@ -2240,6 +2240,57 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_transport_pathQuotient
   rfl
 
 /--
+The transported basepoint and endpoint certificates carry full two-puncture
+topology: both complements are connected, the transported basepoints have
+subsingleton first homotopy groups, and the transported endpoint pairs have
+subsingleton path-homotopy quotients.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_transport_fullTopology_piOne_pathQuotient_package
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (sourceBase sourceTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (targetBase targetTarget :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    let Source :=
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    let Target :=
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)
+    ConnectedSpace Source ∧
+      ConnectedSpace Target ∧
+      Subsingleton (HomotopyGroup.Pi 1 Target (H sourceBase)) ∧
+      Subsingleton (HomotopyGroup.Pi 1 Source (H.symm targetBase)) ∧
+      Subsingleton (Path.Homotopic.Quotient (H sourceBase) (H sourceTarget)) ∧
+      Subsingleton
+        (Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetTarget)) := by
+  dsimp
+  rcases onePoint_threeSpace_twoPointComplement_homeomorph_topology_packages hqp with
+    ⟨_, _, hSourceConnected, _, _, _, hTargetConnected, _⟩
+  rcases
+      onePoint_threeSpace_twoPointComplement_homeomorph_transport_piOne_subsingleton
+        hqp sourceBase targetBase with
+    ⟨hTargetPiOne, hSourcePiOne⟩
+  rcases
+      onePoint_threeSpace_twoPointComplement_homeomorph_transport_pathQuotient_subsingleton
+        hqp sourceBase sourceTarget targetBase targetTarget with
+    ⟨hTargetPathQuotient, hSourcePathQuotient⟩
+  exact
+    ⟨hSourceConnected, hTargetConnected, hTargetPiOne, hSourcePiOne,
+      hTargetPathQuotient, hSourcePathQuotient⟩
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_transport_fullTopology_piOne_pathQuotient_package`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_transport_fullTopology_piOne_pathQuotient_package_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_transport_fullTopology_piOne_pathQuotient_package =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_transport_fullTopology_piOne_pathQuotient_package :=
+  rfl
+
+/--
 Any two paths with matching endpoints remain homotopic after transport through
 the explicit two-puncture complement homeomorphism, in either direction. This
 packages the path-level consequence behind the transported path-quotient
