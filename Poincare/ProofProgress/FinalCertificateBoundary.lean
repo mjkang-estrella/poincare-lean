@@ -29009,4 +29009,106 @@ theorem dependency_only_reserved_payload_internals_project_mathlib_targets_of_eq
       @Poincare.dependency_only_reserved_payload_internals_project_mathlib_targets_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only coherence of reserved payload internals.
+
+After opening the reserved canonical and project payloads, their target proofs
+and universal-completion functions agree with the final certificate targets
+extracted from the same dependency package.  This removes an ambiguity at the
+payload boundary: the payload internals and the statement-level targets are
+the same proof data up to proof irrelevance.
+-/
+theorem dependency_only_reserved_payload_internal_coherence_targets_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ canonicalPayload :
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ canonicalPayloadTarget : canonicalCompletionTarget.{u},
+    ∃ canonicalPayloadCompletion :
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ projectPayload :
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ projectPayloadTarget : PoincareConjectureStatement.{u},
+    ∃ projectPayloadCompletion :
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ canonicalTarget : canonicalCompletionTarget.{u},
+    ∃ projectTarget : PoincareConjectureStatement.{u},
+    ∃ universalCompletion :
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+      canonicalPayload =
+        canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      projectPayload =
+        poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      canonicalPayload = ⟨canonicalPayloadTarget, canonicalPayloadCompletion⟩ ∧
+      projectPayload = ⟨projectPayloadTarget, projectPayloadCompletion⟩ ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      canonical_completion_payload_of_completion_certificate certificate =
+        canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      poincare_completion_payload_of_completion_certificate certificate =
+        poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      canonicalPayloadTarget = canonicalTarget ∧
+      projectPayloadTarget = projectTarget ∧
+      canonicalPayloadCompletion = universalCompletion ∧
+      projectPayloadCompletion = universalCompletion ∧
+      MathlibTopologicalPoincareThreeStatement.{u} := by
+  rcases
+      dependency_only_reserved_payload_internals_project_mathlib_targets_of_equation_boundary_dependencies
+        dependencies with
+    ⟨canonicalPayload, canonicalPayloadTarget, canonicalPayloadCompletion,
+      projectPayload, projectPayloadTarget, projectPayloadCompletion,
+      certificate, hCanonicalPayload_eq, hProjectPayload_eq,
+      hCanonicalPayload_components, hProjectPayload_components, hCertificate,
+      hCanonicalPayload, hProjectPayload, canonicalTarget, projectTarget,
+      mathlibTarget, universalCompletion⟩
+  have hCanonicalTarget : canonicalPayloadTarget = canonicalTarget :=
+    Subsingleton.elim canonicalPayloadTarget canonicalTarget
+  have hProjectTarget : projectPayloadTarget = projectTarget :=
+    Subsingleton.elim projectPayloadTarget projectTarget
+  have hCanonicalCompletion :
+      canonicalPayloadCompletion = universalCompletion := by
+    funext witness
+    apply Subsingleton.elim
+  have hProjectCompletion :
+      projectPayloadCompletion = universalCompletion := by
+    funext witness
+    apply Subsingleton.elim
+  exact
+    ⟨canonicalPayload,
+      canonicalPayloadTarget,
+      canonicalPayloadCompletion,
+      projectPayload,
+      projectPayloadTarget,
+      projectPayloadCompletion,
+      certificate,
+      canonicalTarget,
+      projectTarget,
+      universalCompletion,
+      hCanonicalPayload_eq,
+      hProjectPayload_eq,
+      hCanonicalPayload_components,
+      hProjectPayload_components,
+      hCertificate,
+      hCanonicalPayload,
+      hProjectPayload,
+      hCanonicalTarget,
+      hProjectTarget,
+      hCanonicalCompletion,
+      hProjectCompletion,
+      mathlibTarget⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_payload_internal_coherence_targets_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_payload_internal_coherence_targets_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_payload_internal_coherence_targets_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_payload_internal_coherence_targets_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
