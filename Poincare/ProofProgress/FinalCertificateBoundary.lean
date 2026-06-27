@@ -32826,4 +32826,69 @@ theorem dependency_only_reserved_final_certificate_collapse_of_equation_boundary
       @Poincare.dependency_only_reserved_final_certificate_collapse_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved final statement collapse.
+
+This extracts the statement-level facts from the compact final certificate
+collapse and records that the exposed project statement is exactly the
+nonempty-certificate eliminator applied to the exposed certificate package.
+-/
+theorem dependency_only_reserved_final_statement_collapse_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u},
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ projectPayload :
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ canonicalPayload :
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ certificate : PoincareCompletionCertificate.{u},
+      projectStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement ∧
+      projectPayload =
+        poincare_completion_payload_of_poincareConjectureStatement
+          projectStatement ∧
+      canonicalPayload =
+        canonical_completion_payload_of_completion_certificate certificate ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      nonemptyCertificate =
+        nonempty_completion_certificate_of_completion_certificate
+          certificate := by
+  rcases
+      dependency_only_reserved_certificate_collapse_payload_of_equation_boundary_dependencies
+        dependencies with
+    ⟨_theoremName, certificate, nonemptyCertificate, projectStatement,
+      mathlibStatement, projectPayload, canonicalPayload,
+      _completionCriterionFamily, _hTheoremNameCanonical,
+      _hTheoremNameLiteral, hCertificate, hNonemptyCertificate,
+      _hProjectStatement, hProjectStatementCertificate, _hMathlibStatement,
+      hProjectPayload, _hProjectPayloadCertificate, hCanonicalPayload,
+      _hCompletionCriterionFamily⟩
+  have hMathlibStatementProject :
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement := by
+    apply Subsingleton.elim
+  exact
+    ⟨nonemptyCertificate, projectStatement, mathlibStatement,
+      projectPayload, canonicalPayload, certificate,
+      hProjectStatementCertificate, hMathlibStatementProject,
+      hProjectPayload, hCanonicalPayload, hCertificate,
+      hNonemptyCertificate⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_final_statement_collapse_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_final_statement_collapse_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_final_statement_collapse_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_final_statement_collapse_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
