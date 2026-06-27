@@ -1038,6 +1038,129 @@ theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_r
   rfl
 
 /--
+The checked certificate built from the grounded terminal package payload can be
+recovered from its project-statement payload.  This closes the local certificate
+loop for the terminal package route and exposes the nonempty certificate and
+final Poincare statement obtained from the reconstructed certificate.
+-/
+theorem completion_certificate_project_payload_reconstruction_of_remainingDependencyPackage_and_grounded_terminal_package_payload
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ primitiveInputs : FinalCertificatePrimitiveInputs.{u},
+    ∃ packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ certificateProjectPayload :
+      (∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        PoincareConjectureStatement.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ reconstructedCertificate : PoincareCompletionCertificate.{u},
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u},
+    ∃ finalStatement : PoincareConjectureStatement.{u},
+      packageRequirement =
+        (grounded_universal_finite_extinction_package_statement_terminal_full_equality_payload
+          grounded M).2.1 ∧
+      certificate =
+        completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+          dependencies primitiveInputs ∧
+      certificateProjectPayload =
+        poincareCompletionCertificate_project_statement_payload certificate ∧
+      reconstructedCertificate =
+        completion_certificate_of_project_statement_payload
+          certificateProjectPayload ∧
+      reconstructedCertificate = certificate ∧
+      nonemptyCertificate =
+        nonempty_completion_certificate_of_project_statement_payload
+          certificateProjectPayload ∧
+      poincareCompletionCertificate_project_statement_payload
+          reconstructedCertificate =
+        certificateProjectPayload ∧
+      finalStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      finalStatement =
+        poincare_statement_of_completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+          dependencies primitiveInputs := by
+  rcases
+      completion_certificate_of_remainingDependencyPackage_and_grounded_terminal_package_payload
+        dependencies smoothability grounded topologyStatement M with
+    ⟨primitiveInputs, packageRequirement, certificate,
+      hPackageRequirement, _hPrimitiveInputs, hCertificate,
+      _hCanonicalPayload, _poincareStatement, _poincarePayload⟩
+  let certificateProjectPayload :
+      (∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        PoincareConjectureStatement.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :=
+    poincareCompletionCertificate_project_statement_payload certificate
+  let reconstructedCertificate : PoincareCompletionCertificate.{u} :=
+    completion_certificate_of_project_statement_payload certificateProjectPayload
+  let nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u} :=
+    nonempty_completion_certificate_of_project_statement_payload
+      certificateProjectPayload
+  let finalStatement : PoincareConjectureStatement.{u} :=
+    poincare_conjecture_of_nonempty_completion_certificate nonemptyCertificate
+  have hCertificateProjectPayload :
+      certificateProjectPayload =
+        poincareCompletionCertificate_project_statement_payload certificate :=
+    rfl
+  have hReconstructedCertificate :
+      reconstructedCertificate =
+        completion_certificate_of_project_statement_payload
+          certificateProjectPayload :=
+    rfl
+  have hReconstructedCertificate_eq :
+      reconstructedCertificate = certificate := by
+    apply Subsingleton.elim
+  have hNonemptyCertificate :
+      nonemptyCertificate =
+        nonempty_completion_certificate_of_project_statement_payload
+          certificateProjectPayload :=
+    rfl
+  have hReconstructedProjectPayload :
+      poincareCompletionCertificate_project_statement_payload
+          reconstructedCertificate =
+        certificateProjectPayload := by
+    rw [hReconstructedCertificate_eq]
+  have hFinalStatement :
+      finalStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate :=
+    rfl
+  have hFinalStatementCertificate :
+      finalStatement =
+        poincare_statement_of_completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+          dependencies primitiveInputs := by
+    apply Subsingleton.elim
+  exact
+    ⟨primitiveInputs, packageRequirement, certificate,
+      certificateProjectPayload, reconstructedCertificate,
+      nonemptyCertificate, finalStatement, hPackageRequirement, hCertificate,
+      hCertificateProjectPayload, hReconstructedCertificate,
+      hReconstructedCertificate_eq, hNonemptyCertificate,
+      hReconstructedProjectPayload, hFinalStatement,
+      hFinalStatementCertificate⟩
+
+/-- Theorem contract for
+`completion_certificate_project_payload_reconstruction_of_remainingDependencyPackage_and_grounded_terminal_package_payload`. -/
+theorem completion_certificate_project_payload_reconstruction_of_remainingDependencyPackage_and_grounded_terminal_package_payload_eq :
+    @Poincare.completion_certificate_project_payload_reconstruction_of_remainingDependencyPackage_and_grounded_terminal_package_payload =
+      @Poincare.completion_certificate_project_payload_reconstruction_of_remainingDependencyPackage_and_grounded_terminal_package_payload :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
