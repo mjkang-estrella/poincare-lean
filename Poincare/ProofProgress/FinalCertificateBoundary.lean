@@ -32450,4 +32450,47 @@ theorem dependency_only_reserved_target_homeomorphism_of_equation_boundary_depen
       @Poincare.dependency_only_reserved_target_homeomorphism_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved project Poincare statement.
+
+This lifts the broad target-level reserved certificate route to the full
+project Poincare statement: every target satisfying the project hypotheses gets
+the 3-sphere homeomorphism conclusion through the checked reserved final
+certificate payload.
+-/
+theorem dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} := by
+  intro M
+  exact
+    dependency_only_reserved_target_homeomorphism_of_equation_boundary_dependencies
+      dependencies M
+
+/-- Theorem contract for
+`dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies :=
+  rfl
+
+/--
+Dependency-only reserved mathlib-shaped topological Poincare statement.
+
+This is the mathlib-shaped final statement obtained from the reserved project
+statement route above.
+-/
+theorem dependency_only_reserved_mathlib_statement_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    MathlibTopologicalPoincareThreeStatement.{u} :=
+  mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+    (dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies
+      dependencies)
+
+/-- Theorem contract for
+`dependency_only_reserved_mathlib_statement_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_mathlib_statement_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_mathlib_statement_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_mathlib_statement_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
