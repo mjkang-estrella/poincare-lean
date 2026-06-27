@@ -34838,4 +34838,52 @@ theorem reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dep
       @Poincare.reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Reserved named target homeomorphism from an inhabited dependency package.
+
+This is the target-specific final conclusion under the explicit remaining
+boundary.  From an inhabited strengthened equation-boundary dependency package,
+it recovers the reserved theorem name, checked completion certificate, expanded
+root conclusion, and concrete `M ≃ₜ ThreeSphere` witness for a chosen target.
+-/
+theorem reserved_named_target_homeomorphism_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ expandedConclusion :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          Nonempty (N ≃ₜ ThreeSphere),
+    ∃ targetConclusion : Nonempty (M ≃ₜ ThreeSphere),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{u} ∧
+      targetConclusion = expandedConclusion M ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some := by
+  rcases
+      reserved_named_expanded_root_conclusion_of_nonempty_equation_boundary_dependencies
+        dependencies with
+    ⟨theoremName, certificate, expandedConclusion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hNonemptyDependencies,
+      _hExpandedConclusion, hCertificate, hTargetConclusion⟩
+  rcases hTargetConclusion M with
+    ⟨targetConclusion, hTargetConclusionEq⟩
+  exact
+    ⟨theoremName, certificate, expandedConclusion, targetConclusion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hNonemptyDependencies,
+      hTargetConclusionEq, hCertificate⟩
+
+/-- Theorem contract for
+`reserved_named_target_homeomorphism_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_named_target_homeomorphism_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_named_target_homeomorphism_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_named_target_homeomorphism_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
