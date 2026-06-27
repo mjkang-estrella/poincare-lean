@@ -30554,4 +30554,104 @@ theorem dependency_only_canonical_reserved_theorem_selected_extinction_topology_
       @Poincare.dependency_only_canonical_reserved_theorem_selected_extinction_topology_data_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only canonical reserved-theorem endpoint combining the smoothability
+bridge, selected finite-extinction surgery witness, and topology-recognition
+data for a target manifold.
+
+This is the local final-boundary route that lines up the smoothability bridge
+with the Ricci-flow-with-surgery finite-extinction package and the topology
+extraction package produced from that selected extinction.
+-/
+theorem dependency_only_canonical_reserved_theorem_target_bridge_extinction_topology_route_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ theoremName : String,
+    ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+    ∃ smoothDerivationStatement :
+      SmoothStructureDerivationStatement M smoothStructure,
+    ∃ manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ bridgeDerivation :
+      HasSmoothabilityBridgeDerivation
+        M smoothStructure smoothDerivationStatement manifoldEvidence,
+    ∃ modelCompatibility :
+      HasSmoothManifoldModelCompatibility
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation,
+    ∃ _chartCompatibility :
+      HasSmoothChartCompatibility
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation modelCompatibility,
+    ∃ n : ℕ∞ω,
+    ∃ equationBoundaryPackage :
+      FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+    ∃ ordinaryPackage : FiniteExtinctionSurgeryPackage n M,
+    ∃ finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+    ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ decomposition : HasExtinctionTopologyDecomposition M finiteExtinction,
+    ∃ surgeryTraceReconstruction :
+      HasExtinctionSurgeryTraceReconstruction M finiteExtinction
+        decomposition,
+    ∃ surgeryTraceHandleCancellation :
+      HasExtinctionSurgeryTraceHandleCancellation M finiteExtinction
+        decomposition surgeryTraceReconstruction,
+    ∃ componentClassification :
+      HasExtinctionComponentClassification M finiteExtinction decomposition,
+    ∃ recognition :
+      HasThreeSphereRecognition M (topologyPackage.decomposition M),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      ordinaryPackage =
+        surgery_package_of_equation_boundary_surgery_package
+          equationBoundaryPackage ∧
+      finiteExtinction = ordinaryPackage.finiteExtinction ∧
+      topologyPackage =
+        (dependencies_of_equation_boundary_dependencies dependencies).topology ∧
+      decomposition = topologyPackage.decomposition M finiteExtinction ∧
+      surgeryTraceReconstruction =
+        topologyPackage.surgeryTraceReconstruction M finiteExtinction ∧
+      surgeryTraceHandleCancellation =
+        topologyPackage.surgeryTraceHandleCancellation M finiteExtinction ∧
+      componentClassification =
+        topologyPackage.componentClassification M finiteExtinction ∧
+      recognition = topologyPackage.recognition M := by
+  rcases
+      dependency_only_canonical_reserved_theorem_smoothability_bridge_tail_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨theoremName, smoothStructure, smoothDerivationStatement,
+      manifoldEvidence, bridgeDerivation, modelCompatibility,
+      hTheoremNameCanonical, hTheoremNameLiteral, chartCompatibility⟩
+  rcases
+      dependency_only_canonical_reserved_theorem_selected_extinction_topology_data_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨_topologyTheoremName, n, equationBoundaryPackage, ordinaryPackage,
+      finiteExtinction, topologyPackage, decomposition,
+      surgeryTraceReconstruction, surgeryTraceHandleCancellation,
+      componentClassification, recognition, _hTopologyTheoremNameCanonical,
+      _hTopologyTheoremNameLiteral, hOrdinaryPackage, hFiniteExtinction,
+      hTopologyPackage, hDecomposition, hSurgeryTraceReconstruction,
+      hSurgeryTraceHandleCancellation, hComponentClassification,
+      hRecognition⟩
+  exact
+    ⟨theoremName, smoothStructure, smoothDerivationStatement,
+      manifoldEvidence, bridgeDerivation, modelCompatibility,
+      chartCompatibility, n, equationBoundaryPackage, ordinaryPackage,
+      finiteExtinction, topologyPackage, decomposition,
+      surgeryTraceReconstruction, surgeryTraceHandleCancellation,
+      componentClassification, recognition, hTheoremNameCanonical,
+      hTheoremNameLiteral, hOrdinaryPackage, hFiniteExtinction,
+      hTopologyPackage, hDecomposition, hSurgeryTraceReconstruction,
+      hSurgeryTraceHandleCancellation, hComponentClassification,
+      hRecognition⟩
+
+/-- Theorem contract for
+`dependency_only_canonical_reserved_theorem_target_bridge_extinction_topology_route_of_equation_boundary_dependencies`. -/
+theorem dependency_only_canonical_reserved_theorem_target_bridge_extinction_topology_route_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_canonical_reserved_theorem_target_bridge_extinction_topology_route_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_canonical_reserved_theorem_target_bridge_extinction_topology_route_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
