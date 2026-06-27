@@ -30372,4 +30372,101 @@ theorem dependency_only_canonical_reserved_theorem_topology_extraction_data_of_e
       @Poincare.dependency_only_canonical_reserved_theorem_topology_extraction_data_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only canonical reserved-theorem endpoint with the analytic,
+surgery, Perelman-control, equation-boundary, and finite-extinction fields
+opened from the selected target surgery witness.
+
+This turns the final target-family surgery witness into the concrete
+Ricci-flow-with-surgery inputs consumed by the finite-extinction and topology
+layers.
+-/
+theorem dependency_only_canonical_reserved_theorem_target_analytic_surgery_fields_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ theoremName : String,
+    ∃ n : ℕ∞ω,
+    ∃ equationBoundaryPackage :
+      FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+    ∃ ordinaryPackage : FiniteExtinctionSurgeryPackage n M,
+    ∃ analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M,
+    ∃ surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          ordinaryPackage.analyticFoundation),
+    ∃ perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          ordinaryPackage.analyticFoundation),
+    ∃ equationBoundary :
+      RicciFlowEquationBoundaryPackage
+        (ricci_flow_data_of_surgery_package
+          (surgery_package_of_equation_boundary_surgery_package
+            equationBoundaryPackage)),
+    ∃ finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      ordinaryPackage =
+        surgery_package_of_equation_boundary_surgery_package
+          equationBoundaryPackage ∧
+      ordinaryPackage = equationBoundaryPackage.package ∧
+      analyticFoundation = ordinaryPackage.analyticFoundation ∧
+      surgeryConstruction = ordinaryPackage.surgeryConstruction ∧
+      perelmanControl = ordinaryPackage.perelmanControl ∧
+      equationBoundary =
+        equation_boundary_of_surgery_package_with_equation_boundary
+          equationBoundaryPackage ∧
+      finiteExtinction = ordinaryPackage.finiteExtinction := by
+  rcases
+      dependency_only_canonical_reserved_theorem_target_surgery_witnesses_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨theoremName, _remainingDependencies, _ordinarySurgeryWitness,
+      equationBoundarySurgeryWitness, hTheoremNameCanonical,
+      hTheoremNameLiteral, _hRemainingDependencies, _hOrdinarySurgeryWitness,
+      _hEquationBoundarySurgeryWitness, _hOrdinarySurgeryForgetful,
+      _hEquationBoundarySurgeryProjection⟩
+  rcases equationBoundarySurgeryWitness with
+    ⟨⟨n, equationBoundaryPackage⟩⟩
+  let ordinaryPackage : FiniteExtinctionSurgeryPackage n M :=
+    surgery_package_of_equation_boundary_surgery_package
+      equationBoundaryPackage
+  let analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M :=
+    ordinaryPackage.analyticFoundation
+  let surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          ordinaryPackage.analyticFoundation) :=
+    ordinaryPackage.surgeryConstruction
+  let perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package
+          ordinaryPackage.analyticFoundation) :=
+    ordinaryPackage.perelmanControl
+  let equationBoundary :
+      RicciFlowEquationBoundaryPackage
+        (ricci_flow_data_of_surgery_package
+          (surgery_package_of_equation_boundary_surgery_package
+            equationBoundaryPackage)) :=
+    equation_boundary_of_surgery_package_with_equation_boundary
+      equationBoundaryPackage
+  let finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M :=
+    ordinaryPackage.finiteExtinction
+  exact
+    ⟨theoremName, n, equationBoundaryPackage, ordinaryPackage,
+      analyticFoundation, surgeryConstruction, perelmanControl,
+      equationBoundary, finiteExtinction, hTheoremNameCanonical,
+      hTheoremNameLiteral, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩
+
+/-- Theorem contract for
+`dependency_only_canonical_reserved_theorem_target_analytic_surgery_fields_of_equation_boundary_dependencies`. -/
+theorem dependency_only_canonical_reserved_theorem_target_analytic_surgery_fields_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_canonical_reserved_theorem_target_analytic_surgery_fields_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_canonical_reserved_theorem_target_analytic_surgery_fields_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
