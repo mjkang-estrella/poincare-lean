@@ -345,4 +345,109 @@ theorem onePoint_threeSpace_twoPointComplement_source_and_threeSphere_target_cha
       @Poincare.onePoint_threeSpace_twoPointComplement_source_and_threeSphere_target_chart_path_loop_projection_bundle :=
   rfl
 
+/--
+The explicit complement homeomorphism transports a source path and based loop
+to concrete target paths, and the target standard `ThreeSphere` complement
+then supplies the punctured-Euclidean chart/path-loop projection payload for
+those mapped paths.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_target_chart_payload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (sourceBase sourceTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (sourcePath : Path sourceBase sourceTarget)
+    (sourceLoop : Path sourceBase sourceBase) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    ∃ targetPath : Path (H sourceBase) (H sourceTarget),
+      ∃ targetLoop : Path (H sourceBase) (H sourceBase),
+        targetPath = sourcePath.map H.continuous ∧
+          targetLoop = sourceLoop.map H.continuous ∧
+          ∃ puncture : EuclideanSpace ℝ (Fin 3),
+            ∃ chart :
+                (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                    {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+                  Set ThreeSphere) ≃ₜ
+                  ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+              ∃ pathData :
+                  PointedPathComponentPathData
+                    (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                        {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+                      Set ThreeSphere) (H sourceBase),
+                ∃ endpointData :
+                    PointedChosenPathEndpointData
+                      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+                        Set ThreeSphere) (H sourceBase) (H sourceTarget),
+                  ∃ canonicalPath : Path (H sourceBase) (H sourceTarget),
+                    (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+                      Nonempty
+                        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+                          Set ThreeSphere) ∧
+                      PathConnectedSpace
+                        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+                          Set ThreeSphere) ∧
+                      SimplyConnectedSpace
+                        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+                          Set ThreeSphere) ∧
+                      pathData.path_to (H sourceTarget) = canonicalPath ∧
+                      endpointData.path = canonicalPath ∧
+                      canonicalPath 0 = H sourceBase ∧
+                      canonicalPath 1 = H sourceTarget ∧
+                      Joined (H sourceBase) (H sourceTarget) ∧
+                      pathComponent (H sourceBase) = Set.univ ∧
+                      Path.Homotopic targetPath canonicalPath ∧
+                      (⟦targetPath⟧ :
+                        Path.Homotopic.Quotient (H sourceBase)
+                          (H sourceTarget)) =
+                        ⟦canonicalPath⟧ ∧
+                      (∀ η : Path (H sourceBase) (H sourceTarget),
+                        Path.Homotopic canonicalPath η) ∧
+                      Subsingleton
+                        (Path.Homotopic.Quotient (H sourceBase)
+                          (H sourceTarget)) ∧
+                      targetLoop 0 = H sourceBase ∧
+                      targetLoop 1 = H sourceBase ∧
+                      Path.Homotopic targetLoop (Path.refl (H sourceBase)) ∧
+                      FundamentalGroup.fromPath
+                          (⟦targetLoop⟧ :
+                            Path.Homotopic.Quotient (H sourceBase)
+                              (H sourceBase)) =
+                        FundamentalGroup.fromPath
+                          (⟦Path.refl (H sourceBase)⟧ :
+                            Path.Homotopic.Quotient (H sourceBase)
+                              (H sourceBase)) ∧
+                      Subsingleton
+                        (HomotopyGroup.Pi 1
+                          (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                              {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+                            Set ThreeSphere) (H sourceBase)) := by
+  dsimp
+  let H :=
+    onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+      hqp
+  let e : OnePoint (EuclideanSpace ℝ (Fin 3)) ≃ₜ ThreeSphere :=
+    Classical.choice onePoint_threeSpace_homeomorph_threeSphere
+  have hImage : e q ≠ e p := by
+    intro h
+    exact hqp (e.injective h)
+  let targetPath : Path (H sourceBase) (H sourceTarget) :=
+    sourcePath.map H.continuous
+  let targetLoop : Path (H sourceBase) (H sourceBase) :=
+    sourceLoop.map H.continuous
+  exact
+    ⟨targetPath, targetLoop, rfl, rfl,
+      threeSphere_twoPointComplement_chart_path_loop_projection_bundle
+        hImage (H sourceBase) (H sourceTarget) targetPath targetLoop⟩
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_target_chart_payload`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_target_chart_payload_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_target_chart_payload =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_target_chart_payload :=
+  rfl
+
 end Poincare
