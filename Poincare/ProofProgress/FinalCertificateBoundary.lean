@@ -403,6 +403,65 @@ def finalCertificatePrimitiveInputs_of_minimalPackageInputs
       inputs.smoothability inputs.finiteExtinction
   extinctionImpliesSphere := extractSphere
 
+/--
+Grounded terminal package data supplies the finite-extinction package input
+needed to construct the primitive final-certificate inputs.  This records the
+exact package requirement extracted from the strengthened grounded terminal
+payload and uses it to assemble the primitive universal finite-extinction field
+consumed by the canonical completion route.
+-/
+theorem finalCertificatePrimitiveInputs_of_grounded_terminal_package_payload
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ primitiveInputs : FinalCertificatePrimitiveInputs.{u},
+      ∃ packageRequirement :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        packageRequirement =
+          (grounded_universal_finite_extinction_package_statement_terminal_full_equality_payload
+            grounded M).2.1 ∧
+        (primitiveInputs =
+          finalCertificatePrimitiveInputs_of_minimalPackageInputs
+            { smoothability := smoothability
+              finiteExtinction := packageRequirement }
+            (extinction_implies_sphere_of_topology_extraction_statement
+              topologyStatement)) ∧
+        (primitiveInputs.universalFiniteExtinction =
+          universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+            smoothability packageRequirement) ∧
+        primitiveInputs.extinctionImpliesSphere =
+          extinction_implies_sphere_of_topology_extraction_statement
+            topologyStatement := by
+  have payload :=
+    grounded_universal_finite_extinction_package_statement_terminal_full_equality_payload
+      grounded M
+  let packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage :=
+    payload.2.1
+  let primitiveInputs : FinalCertificatePrimitiveInputs.{u} :=
+    finalCertificatePrimitiveInputs_of_minimalPackageInputs
+      { smoothability := smoothability
+        finiteExtinction := packageRequirement }
+      (extinction_implies_sphere_of_topology_extraction_statement
+        topologyStatement)
+  exact
+    ⟨primitiveInputs, packageRequirement, rfl, rfl, rfl, rfl⟩
+
+/-- Theorem contract for
+`finalCertificatePrimitiveInputs_of_grounded_terminal_package_payload`. -/
+theorem finalCertificatePrimitiveInputs_of_grounded_terminal_package_payload_eq :
+    @Poincare.finalCertificatePrimitiveInputs_of_grounded_terminal_package_payload =
+      @Poincare.finalCertificatePrimitiveInputs_of_grounded_terminal_package_payload :=
+  rfl
+
 /-- The primitive finite-extinction input proves the canonical completion target. -/
 theorem canonical_completion_target_of_finalCertificatePrimitiveInputs
     (inputs : FinalCertificatePrimitiveInputs.{u}) :
