@@ -3603,6 +3603,165 @@ theorem grounded_universal_finite_extinction_statement_terminal_full_equality_pa
   rfl
 
 /--
+The grounded universal finite-extinction pillar exposes the indexed surgery
+package's own theorem-shaped statement and finite-extinction witness together
+with the canonical terminal equality chain.  This is the package-level
+consumer endpoint: it keeps the concrete `FiniteExtinctionSurgeryPackage`,
+its statement route, its statement-payload witness, and the production/source
+equalities from the grounded terminal route in one theorem.
+-/
+theorem grounded_universal_finite_extinction_package_statement_terminal_full_equality_payload
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    UniversalFiniteExtinctionStatement.{u} ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      ∃ packageWitness : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M,
+        Nonempty (FiniteExtinctionSurgeryPackage packageWitness.1 M) ∧
+        Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M) ∧
+        ∃ packageStatement : FiniteExtinctionStatement packageWitness.1 M,
+        ∃ packageFiniteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        ∃ n : ℕ∞ω,
+        ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+        ∃ analyticFoundation :
+          RicciFlowAnalyticFoundationPackage
+            ThreeManifoldModelWithCorners n M,
+        ∃ surgeryConstruction :
+          RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+            (ricci_flow_data_of_analytic_foundation_package
+              analyticFoundation),
+        ∃ perelmanControl :
+          PerelmanSingularityControlPackage (n := n) (M := M)
+            (ricci_flow_data_of_analytic_foundation_package
+              analyticFoundation),
+        ∃ widthStatement :
+          FiniteExtinctionWidthSubobligationsStatement
+            (ricci_flow_data_of_analytic_foundation_package
+              analyticFoundation)
+            surgeryConstruction.withSurgery perelmanControl.control,
+        ∃ curvatureFrontier :
+          FiniteExtinctionProductionCurvatureFrontier
+            analyticFoundation surgeryConstruction perelmanControl,
+        ∃ volumeFrontier :
+          FiniteExtinctionProductionVolumeEvolutionFrontier
+            analyticFoundation surgeryConstruction perelmanControl
+            curvatureFrontier,
+        ∃ surgeryVolumeFrontier :
+          FiniteExtinctionProductionSurgeryVolumeFrontier
+            analyticFoundation surgeryConstruction perelmanControl
+            curvatureFrontier volumeFrontier,
+        ∃ scalarCurvatureFrontier :
+          FiniteExtinctionProductionScalarCurvatureFrontier
+            analyticFoundation surgeryConstruction perelmanControl
+            curvatureFrontier volumeFrontier surgeryVolumeFrontier,
+        ∃ volumeDifferentialFrontier :
+          FiniteExtinctionProductionVolumeDifferentialFrontier
+            analyticFoundation surgeryConstruction perelmanControl
+            curvatureFrontier volumeFrontier surgeryVolumeFrontier
+            scalarCurvatureFrontier,
+        ∃ productionCertificate :
+          FiniteExtinctionByRicciFlowWithSurgeryProductionCertificate M,
+        ∃ terminalFiniteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        ∃ timeBound :
+          HasFiniteExtinctionTimeBound
+            (ricci_flow_data_of_analytic_foundation_package
+              analyticFoundation)
+            surgeryConstruction.withSurgery perelmanControl.control
+            curvatureFrontier.curvaturePinching
+            curvatureFrontier.componentControl,
+        ∃ derivation :
+          HasFiniteExtinctionDerivation
+            (ricci_flow_data_of_analytic_foundation_package
+              analyticFoundation)
+            surgeryConstruction.withSurgery perelmanControl.control,
+        ∃ source :
+          FiniteExtinctionConclusionDerivationSource
+            (ricci_flow_data_of_analytic_foundation_package
+              analyticFoundation)
+            surgeryConstruction.withSurgery perelmanControl.control
+            curvatureFrontier.curvaturePinching
+            curvatureFrontier.componentControl timeBound derivation
+            terminalFiniteExtinction,
+          packageStatement =
+            finite_extinction_statement_of_surgery_package packageWitness.2 ∧
+          packageFiniteExtinction =
+            finite_extinction_from_statement_payload_of_surgery_package
+              packageWitness.2 ∧
+          productionCertificate =
+            finite_extinction_production_certificate_of_volume_differential_frontier
+              analyticFoundation surgeryConstruction perelmanControl
+              widthStatement curvatureFrontier volumeFrontier
+              surgeryVolumeFrontier scalarCurvatureFrontier
+              volumeDifferentialFrontier ∧
+          terminalFiniteExtinction =
+            FiniteExtinctionByRicciFlowWithSurgery.of_production_certificate
+              productionCertificate ∧
+          timeBound =
+            finite_extinction_time_bound_of_volume_differential_frontier
+              analyticFoundation surgeryConstruction perelmanControl
+              curvatureFrontier volumeFrontier surgeryVolumeFrontier
+              scalarCurvatureFrontier volumeDifferentialFrontier ∧
+          derivation =
+            finite_extinction_derivation_of_width_statement
+              analyticFoundation surgeryConstruction perelmanControl
+              widthStatement ∧
+          source.conclusionCertificate = productionCertificate ∧
+          FiniteExtinctionByRicciFlowWithSurgery.of_production_certificate
+            source.conclusionCertificate = terminalFiniteExtinction ∧
+          Nonempty
+            (FiniteExtinctionTimeBoundSource
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control
+              curvatureFrontier.curvaturePinching
+              curvatureFrontier.componentControl) ∧
+          Nonempty
+            (FiniteExtinctionDerivationSource
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control) := by
+  rcases
+      grounded_universal_finite_extinction_terminal_package_equality_route
+        grounded M with
+    ⟨universalStatement, packageRequirement, packageWitness,
+      packageWitnessNonempty, packageOutput, _statementOutput,
+      _terminalOutput, n, smooth, analyticFoundation, surgeryConstruction,
+      perelmanControl, widthStatement, curvatureFrontier, volumeFrontier,
+      surgeryVolumeFrontier, scalarCurvatureFrontier,
+      volumeDifferentialFrontier, productionCertificate, terminalFiniteExtinction,
+      timeBound, derivation, source, productionEq, terminalFiniteExtinctionEq,
+      timeBoundEq, derivationEq, sourceCertificateEq, sourceConclusionEq,
+      timeBoundSource, derivationSource⟩
+  let packageStatement : FiniteExtinctionStatement packageWitness.1 M :=
+    finite_extinction_statement_of_surgery_package packageWitness.2
+  let packageFiniteExtinction : FiniteExtinctionByRicciFlowWithSurgery M :=
+    finite_extinction_from_statement_payload_of_surgery_package
+      packageWitness.2
+  exact
+    ⟨universalStatement, packageRequirement, packageWitness,
+      packageWitnessNonempty, packageOutput, packageStatement,
+      packageFiniteExtinction, n, smooth, analyticFoundation,
+      surgeryConstruction, perelmanControl, widthStatement, curvatureFrontier,
+      volumeFrontier, surgeryVolumeFrontier, scalarCurvatureFrontier,
+      volumeDifferentialFrontier, productionCertificate,
+      terminalFiniteExtinction, timeBound, derivation, source, rfl, rfl,
+      productionEq, terminalFiniteExtinctionEq, timeBoundEq, derivationEq,
+      sourceCertificateEq, sourceConclusionEq, timeBoundSource,
+      derivationSource⟩
+
+/--
+Theorem contract for
+`grounded_universal_finite_extinction_package_statement_terminal_full_equality_payload`.
+-/
+theorem grounded_universal_finite_extinction_package_statement_terminal_full_equality_payload_eq :
+    @Poincare.grounded_universal_finite_extinction_package_statement_terminal_full_equality_payload =
+      @Poincare.grounded_universal_finite_extinction_package_statement_terminal_full_equality_payload :=
+  rfl
+
+/--
 Theorem contract for
 `grounded_universal_finite_extinction_terminal_package_equality_route`.
 -/
