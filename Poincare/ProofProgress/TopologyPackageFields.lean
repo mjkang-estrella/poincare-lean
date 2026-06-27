@@ -2690,6 +2690,126 @@ theorem topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognit
   rfl
 
 /--
+The selected topology-package certificate also exposes the actual singleton
+Euclidean chart together with explicit singleton chosen-path endpoint data,
+singleton path/loop collapse, and the synchronized two-puncture chart/path-loop
+projection payload.
+-/
+theorem topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_singletonEuclideanChart_chosenPathLoop_and_twoPointChartPathLoopProjection_certificate
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (chosenSinglePath : Path singleBase singleTarget)
+    (singleLoop : Path singleBase singleBase)
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path twoBase twoTarget)
+    (loop : Path twoBase twoBase) :
+    ∃ decomposition : HasExtinctionTopologyDecomposition M extinction,
+      Nonempty (ExtinctionTopologyDecompositionData M extinction) ∧
+        HasExtinctionSurgeryTraceReconstruction M extinction decomposition ∧
+        Nonempty
+          (ExtinctionSurgeryTraceReconstructionData M extinction decomposition) ∧
+        FinalHomeomorphismPayloadData M extinction decomposition ∧
+        Nonempty (M ≃ₜ ThreeSphere) ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+        ∃ singlePathData :
+            PointedPathComponentPathData ({x}ᶜ : Set M) singleBase,
+          ∃ singleEndpointData :
+              PointedChosenPathEndpointData ({x}ᶜ : Set M)
+                singleBase singleTarget,
+            ∃ canonicalSinglePath : Path singleBase singleTarget,
+              singlePathData.path_to singleTarget = canonicalSinglePath ∧
+                singleEndpointData.path = canonicalSinglePath ∧
+                canonicalSinglePath 0 = singleBase ∧
+                canonicalSinglePath 1 = singleTarget ∧
+                Joined singleBase singleTarget ∧
+                pathComponent singleBase = Set.univ ∧
+                Path.Homotopic chosenSinglePath canonicalSinglePath ∧
+                (⟦chosenSinglePath⟧ :
+                  Path.Homotopic.Quotient singleBase singleTarget) =
+                  ⟦canonicalSinglePath⟧ ∧
+                (∀ ζ : Path singleBase singleTarget,
+                  Path.Homotopic canonicalSinglePath ζ) ∧
+                Subsingleton
+                  (Path.Homotopic.Quotient singleBase singleTarget) ∧
+                singleLoop 0 = singleBase ∧ singleLoop 1 = singleBase ∧
+                Path.Homotopic singleLoop (Path.refl singleBase) ∧
+                FundamentalGroup.fromPath
+                    (⟦singleLoop⟧ :
+                      Path.Homotopic.Quotient singleBase singleBase) =
+                  FundamentalGroup.fromPath
+                    (⟦Path.refl singleBase⟧ :
+                      Path.Homotopic.Quotient singleBase singleBase) ∧
+                Subsingleton
+                  (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBase) ∧
+                ∃ puncture : EuclideanSpace ℝ (Fin 3),
+                  ∃ chart : (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+                      ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+                    ∃ twoPathData :
+                        PointedPathComponentPathData
+                          (({x} ∪ {y})ᶜ : Set M) twoBase,
+                      ∃ twoEndpointData :
+                          PointedChosenPathEndpointData
+                            (({x} ∪ {y})ᶜ : Set M) twoBase twoTarget,
+                        ∃ canonicalPath : Path twoBase twoTarget,
+                          (∀ w,
+                            (chart w : EuclideanSpace ℝ (Fin 3)) ≠
+                              puncture) ∧
+                            Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+                            PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                            SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                            twoPathData.path_to twoTarget = canonicalPath ∧
+                            twoEndpointData.path = canonicalPath ∧
+                            canonicalPath 0 = twoBase ∧
+                            canonicalPath 1 = twoTarget ∧
+                            Joined twoBase twoTarget ∧
+                            pathComponent twoBase = Set.univ ∧
+                            Path.Homotopic chosenPath canonicalPath ∧
+                            (⟦chosenPath⟧ :
+                              Path.Homotopic.Quotient twoBase twoTarget) =
+                              ⟦canonicalPath⟧ ∧
+                            (∀ ζ : Path twoBase twoTarget,
+                              Path.Homotopic canonicalPath ζ) ∧
+                            Subsingleton
+                              (Path.Homotopic.Quotient twoBase twoTarget) ∧
+                            loop 0 = twoBase ∧ loop 1 = twoBase ∧
+                            Path.Homotopic loop (Path.refl twoBase) ∧
+                            FundamentalGroup.fromPath
+                                (⟦loop⟧ :
+                                  Path.Homotopic.Quotient twoBase twoBase) =
+                              FundamentalGroup.fromPath
+                                (⟦Path.refl twoBase⟧ :
+                                  Path.Homotopic.Quotient twoBase twoBase) ∧
+                            Subsingleton
+                              (HomotopyGroup.Pi 1
+                                (({x} ∪ {y})ᶜ : Set M) twoBase) := by
+  rcases
+      topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_singletonChosenPathLoop_and_twoPointChartPathLoopProjection_certificate
+        package M extinction hyx singleBase singleTarget chosenSinglePath
+        singleLoop twoBase twoTarget chosenPath loop with
+    ⟨decomposition, hDecompositionData, hTrace, hTraceData,
+      hFinalPayload, hThreeSphere, hOnePoint, puncturePayload⟩
+  rcases
+      topologyPackage_singletonEuclideanChart_chosenPathLoop_and_twoPointChartPathLoopProjectionBundle
+        package M extinction hyx singleBase singleTarget chosenSinglePath
+        singleLoop twoBase twoTarget chosenPath loop with
+    ⟨hSingleChart, _puncturePayload'⟩
+  exact
+    ⟨decomposition, hDecompositionData, hTrace, hTraceData,
+      hFinalPayload, hThreeSphere, hOnePoint, hSingleChart, puncturePayload⟩
+
+/-- Theorem contract for `topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_singletonEuclideanChart_chosenPathLoop_and_twoPointChartPathLoopProjection_certificate`. -/
+theorem topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_singletonEuclideanChart_chosenPathLoop_and_twoPointChartPathLoopProjection_certificate_eq :
+    @Poincare.topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_singletonEuclideanChart_chosenPathLoop_and_twoPointChartPathLoopProjection_certificate =
+      @Poincare.topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_singletonEuclideanChart_chosenPathLoop_and_twoPointChartPathLoopProjection_certificate :=
+  rfl
+
+/--
 The selected topology-package decomposition certificate can also be paired with
 the full one- and two-puncture path-loop bundle. This exposes, from one package,
 the selected decomposition and trace reconstruction data, both final recognition
