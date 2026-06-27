@@ -23590,6 +23590,141 @@ theorem conditional_root_selected_chosenEndpoint_direct_homeomorphism_completion
   rfl
 
 /--
+Direct endpoint-data summary for the compact chosen-endpoint route.
+
+This projects the selected-field theorem to the concrete endpoint data and
+loop-collapse fields most useful to final recognition consumers: chosen-path
+homotopies and quotient equalities at both puncture levels, local
+path-connectedness of the two-puncture complement, loop nullhomotopies,
+fundamental-group representatives, and `π₁` collapse.
+-/
+theorem conditional_root_selected_chosenEndpoint_direct_endpointData_loopCollapse_summary_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {x y : M} (hyx : y ≠ x)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (chosenSinglePath : Path singleBase singleTarget)
+    (singleLoop : Path singleBase singleBase)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    PoincareConjectureStatement.{u} ∧
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        ExtinctionFinalHomeomorphismProjectorPayload
+          topology M extinction ∧
+        ∃ decomposition : HasExtinctionTopologyDecomposition M extinction,
+          FinalHomeomorphismPayloadData M extinction decomposition ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          (let C := (({x} ∪ {y})ᶜ : Set M)
+          LocPathConnectedSpace C ∧
+            ∃ singleEndpointData :
+                PointedChosenPathEndpointData ({x}ᶜ : Set M)
+                  singleBase singleTarget,
+              ∃ twoEndpointData :
+                  PointedChosenPathEndpointData C basepoint target,
+                Path.Homotopic chosenSinglePath singleEndpointData.path ∧
+                (⟦chosenSinglePath⟧ :
+                  Path.Homotopic.Quotient singleBase singleTarget) =
+                  ⟦singleEndpointData.path⟧ ∧
+                (∀ ζ : Path singleBase singleTarget,
+                  Path.Homotopic singleEndpointData.path ζ) ∧
+                Path.Homotopic singleLoop (Path.refl singleBase) ∧
+                FundamentalGroup.fromPath
+                    (⟦singleLoop⟧ :
+                      Path.Homotopic.Quotient singleBase singleBase) =
+                  FundamentalGroup.fromPath
+                    (⟦Path.refl singleBase⟧ :
+                      Path.Homotopic.Quotient singleBase singleBase) ∧
+                Subsingleton
+                  (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBase) ∧
+                Path.Homotopic chosenPath twoEndpointData.path ∧
+                (⟦chosenPath⟧ :
+                  Path.Homotopic.Quotient basepoint target) =
+                  ⟦twoEndpointData.path⟧ ∧
+                (∀ ζ : Path basepoint target,
+                  Path.Homotopic twoEndpointData.path ζ) ∧
+                Path.Homotopic loop (Path.refl basepoint) ∧
+                FundamentalGroup.fromPath
+                    (⟦loop⟧ :
+                      Path.Homotopic.Quotient basepoint basepoint) =
+                  FundamentalGroup.fromPath
+                    (⟦Path.refl basepoint⟧ :
+                      Path.Homotopic.Quotient basepoint basepoint) ∧
+                Subsingleton (HomotopyGroup.Pi 1 C basepoint)) := by
+  rcases
+      conditional_root_selected_chosenEndpoint_direct_homeomorphism_completionCriterion_and_selected_fields_of_equation_boundary_dependencies
+        dependencies smoothability grounded topology smoothabilityPayload M
+        hyx singleBase singleTarget chosenSinglePath singleLoop
+        basepoint target chosenPath loop with
+    ⟨projectStatement, directHomeomorphism, completionCriterion,
+      _rootHomeomorphism, _selectedHomeomorphism, _hHomeomorphism_eq,
+      checkedCertificate, extinction, finalHomeomorphismProjector,
+      decomposition, _hDecompositionData, _hTrace, _hTraceData,
+      hFinalPayload, hOnePoint, endpointCore⟩
+  rcases endpointCore with ⟨hLocPath, hSingle, hTwo⟩
+  rcases hSingle with
+    ⟨_singlePathData, singleEndpointData, _hSinglePathData,
+      _hSingleSource, _hSingleTarget, _hSingleJoined, _hSingleComponent,
+      hChosenSingle, hChosenSingleQuotient, hSingleUnique,
+      _hSingleQuotientSubsingleton, _hSingleLoopSource,
+      _hSingleLoopTarget, hSingleLoopHomotopic, hSingleLoopFromPath,
+      hSinglePiOne⟩
+  rcases hTwo with
+    ⟨_twoPathData, twoEndpointData, _hTwoPathData, _hTwoSource,
+      _hTwoTarget, _hTwoJoined, _hTwoComponent, hChosenTwo,
+      hChosenTwoQuotient, hTwoUnique, _hTwoQuotientSubsingleton,
+      _hTwoLoopSource, _hTwoLoopTarget, hTwoLoopHomotopic,
+      hTwoLoopFromPath, hTwoPiOne⟩
+  exact
+    ⟨projectStatement,
+      directHomeomorphism,
+      completionCriterion,
+      checkedCertificate,
+      extinction,
+      finalHomeomorphismProjector,
+      decomposition,
+      hFinalPayload,
+      hOnePoint,
+      hLocPath,
+      singleEndpointData,
+      twoEndpointData,
+      hChosenSingle,
+      hChosenSingleQuotient,
+      hSingleUnique,
+      hSingleLoopHomotopic,
+      hSingleLoopFromPath,
+      hSinglePiOne,
+      hChosenTwo,
+      hChosenTwoQuotient,
+      hTwoUnique,
+      hTwoLoopHomotopic,
+      hTwoLoopFromPath,
+      hTwoPiOne⟩
+
+/-- Theorem contract for
+`conditional_root_selected_chosenEndpoint_direct_endpointData_loopCollapse_summary_of_equation_boundary_dependencies`. -/
+theorem conditional_root_selected_chosenEndpoint_direct_endpointData_loopCollapse_summary_of_equation_boundary_dependencies_eq :
+    @Poincare.conditional_root_selected_chosenEndpoint_direct_endpointData_loopCollapse_summary_of_equation_boundary_dependencies =
+      @Poincare.conditional_root_selected_chosenEndpoint_direct_endpointData_loopCollapse_summary_of_equation_boundary_dependencies :=
+  rfl
+
+/--
 The final-certificate boundary exposes the selected decomposition, surgery
 trace, final recognition, synchronized two-puncture chart/path-loop projection,
 and transported local path-connectedness certificate.
