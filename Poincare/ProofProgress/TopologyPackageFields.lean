@@ -1714,6 +1714,72 @@ theorem topologyPackage_selected_decomposition_trace_finalHomeomorphism_and_reco
       @Poincare.topologyPackage_selected_decomposition_trace_finalHomeomorphism_and_recognition_certificate :=
   rfl
 
+/--
+The selected topology-package decomposition certificate can be consumed together
+with the compact two-puncture path/loop projection bundle. This is the strongest
+local final-topology payload currently available from a topology extraction
+package: decomposition data, surgery-trace reconstruction data, final
+homeomorphism payload data, both final recognition homeomorphisms, and the
+two-puncture complement path, quotient, loop, and `π₁` collapse.
+-/
+theorem topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_twoPointProjection_certificate
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ decomposition : HasExtinctionTopologyDecomposition M extinction,
+      Nonempty (ExtinctionTopologyDecompositionData M extinction) ∧
+        HasExtinctionSurgeryTraceReconstruction M extinction decomposition ∧
+        Nonempty
+          (ExtinctionSurgeryTraceReconstructionData M extinction decomposition) ∧
+        FinalHomeomorphismPayloadData M extinction decomposition ∧
+        Nonempty (M ≃ₜ ThreeSphere) ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        ∃ canonicalPath : Path basepoint target,
+          Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+            pathComponent basepoint = Set.univ ∧
+            canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+            Joined basepoint target ∧
+            Path.Homotopic chosenPath canonicalPath ∧
+            (⟦chosenPath⟧ :
+              Path.Homotopic.Quotient basepoint target) =
+              ⟦canonicalPath⟧ ∧
+            (∀ η : Path basepoint target,
+              Path.Homotopic canonicalPath η) ∧
+            Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+            loop 0 = basepoint ∧ loop 1 = basepoint ∧
+            Path.Homotopic loop (Path.refl basepoint) ∧
+            FundamentalGroup.fromPath
+                (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+              FundamentalGroup.fromPath
+                (⟦Path.refl basepoint⟧ :
+                  Path.Homotopic.Quotient basepoint basepoint) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  rcases
+      topologyPackage_selected_decomposition_trace_finalHomeomorphism_and_recognition_certificate
+        package M extinction with
+    ⟨decomposition, hDecompositionData, hTrace, hTraceData,
+      hFinalPayload, hThreeSphere, hOnePoint⟩
+  rcases
+      topologyPackage_finalHomeomorphism_and_twoPointProjectionBundle
+        package M extinction hyx basepoint target chosenPath loop with
+    ⟨_hOnePoint, _hFinal, twoPointProjection⟩
+  exact
+    ⟨decomposition, hDecompositionData, hTrace, hTraceData,
+      hFinalPayload, hThreeSphere, hOnePoint, twoPointProjection⟩
+
+/-- Theorem contract for `topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_twoPointProjection_certificate`. -/
+theorem topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_twoPointProjection_certificate_eq :
+    @Poincare.topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_twoPointProjection_certificate =
+      @Poincare.topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_twoPointProjection_certificate :=
+  rfl
+
 /-- Theorem contract for `extinction_topology_decomposition_data_of_topology_package`. -/
 theorem extinction_topology_decomposition_data_of_topology_package_eq :
     @Poincare.extinction_topology_decomposition_data_of_topology_package =
