@@ -26848,4 +26848,52 @@ theorem dependency_only_final_endpoint_package_of_equation_boundary_dependencies
       @Poincare.dependency_only_final_endpoint_package_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only direct final-statement projection.
+
+This unwraps the dependency-only final endpoint package into the direct
+consumer order used by final-certificate clients: the reserved project
+statement, the expanded topological Poincare conclusion, the explicit
+completion criterion family, and the checked certificate payload equalities.
+-/
+theorem dependency_only_direct_final_statement_completion_certificate_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere)) ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      ∃ certificate : PoincareCompletionCertificate.{u},
+        certificate =
+          completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+            dependencies ∧
+        canonical_completion_payload_of_completion_certificate certificate =
+          canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+            dependencies ∧
+        poincare_completion_payload_of_completion_certificate certificate =
+          poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+            dependencies := by
+  rcases
+      dependency_only_final_endpoint_package_of_equation_boundary_dependencies
+        dependencies with
+    ⟨expandedConclusion, projectStatement, _canonicalTarget,
+      completionCriterion, certificate, hCertificate, hCanonicalPayload,
+      hProjectPayload⟩
+  exact
+    ⟨projectStatement,
+      expandedConclusion,
+      completionCriterion,
+      certificate,
+      hCertificate,
+      hCanonicalPayload,
+      hProjectPayload⟩
+
+/-- Theorem contract for
+`dependency_only_direct_final_statement_completion_certificate_of_equation_boundary_dependencies`. -/
+theorem dependency_only_direct_final_statement_completion_certificate_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_direct_final_statement_completion_certificate_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_direct_final_statement_completion_certificate_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
