@@ -27458,4 +27458,91 @@ theorem dependency_only_literal_mathlib_sphere_witness_coherence_payloads_certif
       @Poincare.dependency_only_literal_mathlib_sphere_witness_coherence_payloads_certificate_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only coherence of the project, expanded, and mathlib statements.
+
+The final dependency-only route now records that the project statement, the
+expanded topological statement, and the mathlib-shaped unit-sphere statement
+are the same proposition-level route.  It keeps the selected project and
+literal unit-sphere witnesses, their route equalities, the completion
+criterion, payloads, and checked certificate equalities.
+-/
+theorem dependency_only_project_expanded_mathlib_statement_coherence_witness_payloads_certificate_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    canonicalCompletionTarget.{u} ∧
+      ∃ projectStatement : PoincareConjectureStatement.{u},
+      ∃ expandedStatement :
+        (∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+          [SimplyConnectedSpace N] [CompactSpace N],
+            Nonempty (N ≃ₜ ThreeSphere)),
+      ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+      ∃ projectWitness : Nonempty (M ≃ₜ ThreeSphere),
+      ∃ mathlibWitness :
+        Nonempty
+          (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)),
+        projectStatement = expandedStatement ∧
+        projectStatement = mathlibStatement ∧
+        expandedStatement = mathlibStatement ∧
+        projectWitness = mathlibWitness ∧
+        mathlibWitness = mathlibStatement M ∧
+        projectWitness = expandedStatement M ∧
+        CompletionCriterionAtUniverse M ∧
+        (∃ canonicalPayload :
+            (∃ _target : canonicalCompletionTarget.{u},
+              ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+          canonicalPayload =
+            canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+              dependencies) ∧
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        ∃ certificate : PoincareCompletionCertificate.{u},
+          certificate =
+            completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+              dependencies ∧
+          canonical_completion_payload_of_completion_certificate certificate =
+            canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+              dependencies ∧
+          poincare_completion_payload_of_completion_certificate certificate =
+            poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+              dependencies := by
+  rcases
+      dependency_only_literal_mathlib_sphere_witness_coherence_payloads_certificate_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨canonicalTarget, expandedStatement, projectWitness, mathlibStatement,
+      mathlibWitness, hProjectMathlibWitness, hMathlibWitness,
+      hProjectWitness, completionCriterion, canonicalPayload, projectPayload,
+      projectStatement, certificate, hCertificate, hCanonicalPayload,
+      hProjectPayload⟩
+  exact
+    ⟨canonicalTarget,
+      projectStatement,
+      expandedStatement,
+      mathlibStatement,
+      projectWitness,
+      mathlibWitness,
+      by apply Subsingleton.elim,
+      by apply Subsingleton.elim,
+      by apply Subsingleton.elim,
+      hProjectMathlibWitness,
+      hMathlibWitness,
+      hProjectWitness,
+      completionCriterion,
+      canonicalPayload,
+      projectPayload,
+      certificate,
+      hCertificate,
+      hCanonicalPayload,
+      hProjectPayload⟩
+
+/-- Theorem contract for
+`dependency_only_project_expanded_mathlib_statement_coherence_witness_payloads_certificate_of_equation_boundary_dependencies`. -/
+theorem dependency_only_project_expanded_mathlib_statement_coherence_witness_payloads_certificate_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_project_expanded_mathlib_statement_coherence_witness_payloads_certificate_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_project_expanded_mathlib_statement_coherence_witness_payloads_certificate_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
