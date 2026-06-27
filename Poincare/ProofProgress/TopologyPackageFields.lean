@@ -1281,6 +1281,78 @@ theorem exists_homeomorph_twoPointComplement_puncturedEuclidean_with_endpoint_da
       package M extinction hyx basepoint
 
 /--
+A completed topology package exposes the transported chart and endpoint-data
+packages for the singleton and two-puncture complements simultaneously.
+
+This is the low-level chart-data counterpart to the synchronized path-loop
+projection bundles: it records the singleton Euclidean chart with
+contractibility and endpoint-data uniqueness, and the two-puncture
+punctured-Euclidean chart with simple connectedness, endpoint-data uniqueness,
+fundamental-group collapse, and `π₁` collapse.
+-/
+theorem singleton_and_twoPoint_chart_endpoint_data_packages_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x) :
+    (∃ _singleChart : ({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3),
+      ContractibleSpace ({x}ᶜ : Set M) ∧
+        (∀ basepoint z : ({x}ᶜ : Set M),
+          ∃ data : PointedChosenPathEndpointData ({x}ᶜ : Set M) basepoint z,
+            ∀ η : Path basepoint z, Path.Homotopic data.path η) ∧
+        (∀ basepoint : ({x}ᶜ : Set M),
+          Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint)) ∧
+        (∀ basepoint : ({x}ᶜ : Set M),
+          Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint))) ∧
+      ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      ∃ _twoChart : (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+          ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+          (∀ basepoint z : (({x} ∪ {y})ᶜ : Set M),
+            ∃ data : PointedChosenPathEndpointData
+                (({x} ∪ {y})ᶜ : Set M) basepoint z,
+              ∀ η : Path basepoint z, Path.Homotopic data.path η) ∧
+          (∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+            Subsingleton (FundamentalGroup
+              (({x} ∪ {y})ᶜ : Set M) basepoint)) ∧
+          (∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+            Subsingleton (HomotopyGroup.Pi 1
+              (({x} ∪ {y})ᶜ : Set M) basepoint)) := by
+  rcases
+      exists_homeomorph_compl_singleton_euclidean_with_endpoint_data_of_topology_package
+        package M extinction x with
+    ⟨singleChart, hSingleContractible, hSingleEndpointData,
+      hSingleFundamentalGroup⟩
+  rcases
+      exists_homeomorph_twoPointComplement_puncturedEuclidean_with_endpoint_data_of_topology_package
+        package M extinction hyx with
+    ⟨puncture, twoChart, hTwoSimplyConnected, hTwoEndpointData,
+      hTwoFundamentalGroup, hTwoPiOne⟩
+  exact
+    ⟨⟨singleChart,
+        hSingleContractible,
+        hSingleEndpointData,
+        hSingleFundamentalGroup,
+        fun basepoint =>
+          compl_singleton_piOne_subsingleton_of_topology_package
+            package M extinction x basepoint⟩,
+      puncture,
+      twoChart,
+      hTwoSimplyConnected,
+      hTwoEndpointData,
+      hTwoFundamentalGroup,
+      hTwoPiOne⟩
+
+/-- Theorem contract for
+`singleton_and_twoPoint_chart_endpoint_data_packages_of_topology_package`. -/
+theorem singleton_and_twoPoint_chart_endpoint_data_packages_of_topology_package_eq :
+    @Poincare.singleton_and_twoPoint_chart_endpoint_data_packages_of_topology_package =
+      @Poincare.singleton_and_twoPoint_chart_endpoint_data_packages_of_topology_package :=
+  rfl
+
+/--
 A package-selected two-puncture complement supplies a concrete based loop
 payload: the selected loop has certified endpoints, is null-homotopic, and
 represents the stationary element in the fundamental group.
