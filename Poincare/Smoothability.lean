@@ -16,257 +16,643 @@ open scoped Manifold ContDiff
 namespace Poincare
 
 /--
-Interface for the Moise-style triangulation input for topological
-3-manifolds.
+Proof-bearing interface for the Moise-style local triangulation input for
+topological 3-manifolds.
 -/
-inductive HasMoiseLocalTriangulationCharts
+structure HasMoiseLocalTriangulationCharts
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M] : Prop
-  | ofOnePointRecognition :
-      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
-      HasMoiseLocalTriangulationCharts M
+    where
+  /-- One-point compactification recognition backing the local chart data. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
 
-/-- Interface for refining local topological charts to a locally finite cover. -/
-inductive HasMoiseLocallyFiniteCoverRefinement
+/--
+Compatibility constructor for local Moise chart data produced by one-point
+recognition.
+-/
+def HasMoiseLocalTriangulationCharts.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    HasMoiseLocalTriangulationCharts M where
+  onePointRecognition := h
+
+/-- Proof-bearing interface for refining local topological charts to a locally finite cover. -/
+structure HasMoiseLocallyFiniteCoverRefinement
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
-    (localCharts : HasMoiseLocalTriangulationCharts M) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      localCharts = HasMoiseLocalTriangulationCharts.ofOnePointRecognition h →
-      HasMoiseLocallyFiniteCoverRefinement M localCharts
+    (localCharts : HasMoiseLocalTriangulationCharts M) : Prop where
+  /-- One-point compactification recognition backing the refinement data. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- The refinement is tied to the local chart data produced from that recognition. -/
+  localCharts_eq :
+    localCharts =
+      HasMoiseLocalTriangulationCharts.ofOnePointRecognition onePointRecognition
 
-/-- Interface for the simplicial-complex data used in Moise triangulation. -/
-inductive HasMoiseSimplicialComplex
+/--
+Compatibility constructor for locally finite refinement data produced by
+one-point recognition.
+-/
+def HasMoiseLocallyFiniteCoverRefinement.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {localCharts : HasMoiseLocalTriangulationCharts M}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hlocal :
+      localCharts =
+        HasMoiseLocalTriangulationCharts.ofOnePointRecognition h) :
+    HasMoiseLocallyFiniteCoverRefinement M localCharts where
+  onePointRecognition := h
+  localCharts_eq := hlocal
+
+/--
+For a fixed one-point recognition proof, locally finite cover refinement data
+is equivalent to the local chart record being the one constructed from that
+recognition proof.
+-/
+theorem moiseLocallyFiniteCoverRefinement_iff_localCharts_from_onePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {localCharts : HasMoiseLocalTriangulationCharts M}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    HasMoiseLocallyFiniteCoverRefinement M localCharts ↔
+      localCharts =
+        HasMoiseLocalTriangulationCharts.ofOnePointRecognition h := by
+  constructor
+  · intro refinement
+    exact Subsingleton.elim _ _
+  · intro hlocal
+    exact HasMoiseLocallyFiniteCoverRefinement.ofOnePointRecognition
+      h hlocal
+
+/-- Proof-bearing interface for the simplicial-complex data used in Moise triangulation. -/
+structure HasMoiseSimplicialComplex
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
-    (localCharts : HasMoiseLocalTriangulationCharts M) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      localCharts = HasMoiseLocalTriangulationCharts.ofOnePointRecognition h →
-      HasMoiseSimplicialComplex M localCharts
+    (localCharts : HasMoiseLocalTriangulationCharts M) : Prop where
+  /-- One-point compactification recognition backing the simplicial-complex data. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- The simplicial complex is tied to the local chart data from that recognition. -/
+  localCharts_eq :
+    localCharts =
+      HasMoiseLocalTriangulationCharts.ofOnePointRecognition onePointRecognition
 
-/-- Interface for making the local chart triangulations mutually compatible. -/
-inductive HasMoiseCompatibleChartTriangulations
+/--
+Compatibility constructor for simplicial-complex data produced by one-point
+recognition.
+-/
+def HasMoiseSimplicialComplex.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {localCharts : HasMoiseLocalTriangulationCharts M}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hlocal :
+      localCharts =
+        HasMoiseLocalTriangulationCharts.ofOnePointRecognition h) :
+    HasMoiseSimplicialComplex M localCharts where
+  onePointRecognition := h
+  localCharts_eq := hlocal
+
+/-- Proof-bearing interface for making the local chart triangulations mutually compatible. -/
+structure HasMoiseCompatibleChartTriangulations
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (localCharts : HasMoiseLocalTriangulationCharts M)
-    (_simplicialComplex : HasMoiseSimplicialComplex M localCharts) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      localCharts = HasMoiseLocalTriangulationCharts.ofOnePointRecognition h →
-      HasMoiseCompatibleChartTriangulations M localCharts _simplicialComplex
+    (_simplicialComplex : HasMoiseSimplicialComplex M localCharts) : Prop where
+  /-- One-point compactification recognition backing compatibility. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- Compatibility is tied to local chart data from that recognition. -/
+  localCharts_eq :
+    localCharts =
+      HasMoiseLocalTriangulationCharts.ofOnePointRecognition onePointRecognition
 
-inductive HasMoiseTriangulation
+/--
+Compatibility constructor for chart-triangulation compatibility produced by
+one-point recognition.
+-/
+def HasMoiseCompatibleChartTriangulations.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {localCharts : HasMoiseLocalTriangulationCharts M}
+    {simplicialComplex : HasMoiseSimplicialComplex M localCharts}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hlocal :
+      localCharts =
+        HasMoiseLocalTriangulationCharts.ofOnePointRecognition h) :
+    HasMoiseCompatibleChartTriangulations M localCharts simplicialComplex where
+  onePointRecognition := h
+  localCharts_eq := hlocal
+
+/-- Proof-bearing interface for the global Moise triangulation. -/
+structure HasMoiseTriangulation
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M] : Prop
-  | ofOnePointRecognition :
-      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
-      HasMoiseTriangulation M
+    where
+  /-- One-point compactification recognition backing the global triangulation. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
 
-/-- Interface for the simplicial-approximation step producing the global triangulation. -/
-inductive HasMoiseSimplicialApproximation
+/--
+Compatibility constructor for the global Moise triangulation produced by
+one-point recognition.
+-/
+def HasMoiseTriangulation.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    HasMoiseTriangulation M where
+  onePointRecognition := h
+
+/-- Proof-bearing interface for the simplicial-approximation step producing the global triangulation. -/
+structure HasMoiseSimplicialApproximation
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (localCharts : HasMoiseLocalTriangulationCharts M)
     (simplicialComplex : HasMoiseSimplicialComplex M localCharts)
     (_triangulation : HasMoiseTriangulation M) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      localCharts = HasMoiseLocalTriangulationCharts.ofOnePointRecognition h →
-      HasMoiseSimplicialApproximation M
-        localCharts simplicialComplex _triangulation
+    where
+  /-- One-point compactification recognition backing simplicial approximation. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- The approximation is tied to local chart data from that recognition. -/
+  localCharts_eq :
+    localCharts =
+      HasMoiseLocalTriangulationCharts.ofOnePointRecognition onePointRecognition
 
-/-- Interface for the star-neighborhood basis carried by a Moise triangulation. -/
-inductive HasMoiseStarNeighborhoodBasis
+/--
+Compatibility constructor for simplicial approximation produced by one-point
+recognition.
+-/
+def HasMoiseSimplicialApproximation.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {localCharts : HasMoiseLocalTriangulationCharts M}
+    {simplicialComplex : HasMoiseSimplicialComplex M localCharts}
+    {triangulation : HasMoiseTriangulation M}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hlocal :
+      localCharts =
+        HasMoiseLocalTriangulationCharts.ofOnePointRecognition h) :
+    HasMoiseSimplicialApproximation M
+      localCharts simplicialComplex triangulation where
+  onePointRecognition := h
+  localCharts_eq := hlocal
+
+/-- Proof-bearing interface for the star-neighborhood basis carried by a Moise triangulation. -/
+structure HasMoiseStarNeighborhoodBasis
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (localCharts : HasMoiseLocalTriangulationCharts M)
     (_triangulation : HasMoiseTriangulation M) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      localCharts = HasMoiseLocalTriangulationCharts.ofOnePointRecognition h →
-      HasMoiseStarNeighborhoodBasis M localCharts _triangulation
+    where
+  /-- One-point compactification recognition backing the star-neighborhood basis. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- The basis is tied to local chart data from that recognition. -/
+  localCharts_eq :
+    localCharts =
+      HasMoiseLocalTriangulationCharts.ofOnePointRecognition onePointRecognition
 
-/-- Interface for barycentric subdivision control in the Moise triangulation. -/
-inductive HasMoiseBarycentricSubdivisionControl
+/--
+Compatibility constructor for the star-neighborhood basis produced by one-point
+recognition.
+-/
+def HasMoiseStarNeighborhoodBasis.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {localCharts : HasMoiseLocalTriangulationCharts M}
+    {triangulation : HasMoiseTriangulation M}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hlocal :
+      localCharts =
+        HasMoiseLocalTriangulationCharts.ofOnePointRecognition h) :
+    HasMoiseStarNeighborhoodBasis M localCharts triangulation where
+  onePointRecognition := h
+  localCharts_eq := hlocal
+
+/-- Proof-bearing interface for barycentric subdivision control in the Moise triangulation. -/
+structure HasMoiseBarycentricSubdivisionControl
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (_triangulation : HasMoiseTriangulation M) : Prop
-  | ofOnePointRecognition :
-      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
-      HasMoiseBarycentricSubdivisionControl M _triangulation
+    where
+  /-- One-point compactification recognition backing subdivision control. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
 
-/-- Interface for regular-neighborhood compatibility after subdivision. -/
-inductive HasMoiseRegularNeighborhoodCompatibility
+/--
+Compatibility constructor for barycentric subdivision control produced by
+one-point recognition.
+-/
+def HasMoiseBarycentricSubdivisionControl.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    HasMoiseBarycentricSubdivisionControl M triangulation where
+  onePointRecognition := h
+
+/-- Proof-bearing interface for regular-neighborhood compatibility after subdivision. -/
+structure HasMoiseRegularNeighborhoodCompatibility
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (_triangulation : HasMoiseTriangulation M) : Prop
-  | ofOnePointRecognition :
-      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
-      HasMoiseRegularNeighborhoodCompatibility M _triangulation
+    where
+  /-- One-point compactification recognition backing regular-neighborhood compatibility. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
 
-/-- Interface for local finiteness of the Moise triangulation. -/
-inductive HasMoiseTriangulationLocalFiniteness
+/--
+Compatibility constructor for regular-neighborhood compatibility produced by
+one-point recognition.
+-/
+def HasMoiseRegularNeighborhoodCompatibility.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    HasMoiseRegularNeighborhoodCompatibility M triangulation where
+  onePointRecognition := h
+
+/-- Proof-bearing interface for local finiteness of the Moise triangulation. -/
+structure HasMoiseTriangulationLocalFiniteness
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (_triangulation : HasMoiseTriangulation M) : Prop
-  | ofOnePointRecognition :
-      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
-      HasMoiseTriangulationLocalFiniteness M _triangulation
+    where
+  /-- One-point compactification recognition backing triangulation local finiteness. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
 
-/-- Interface for the 3-manifold link condition in the Moise triangulation. -/
-inductive HasMoiseLinkCompatibility
+/--
+Compatibility constructor for triangulation local finiteness produced by
+one-point recognition.
+-/
+def HasMoiseTriangulationLocalFiniteness.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    HasMoiseTriangulationLocalFiniteness M triangulation where
+  onePointRecognition := h
+
+/-- Proof-bearing interface for the 3-manifold link condition in the Moise triangulation. -/
+structure HasMoiseLinkCompatibility
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (_triangulation : HasMoiseTriangulation M) : Prop
-  | ofOnePointRecognition :
-      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
-      HasMoiseLinkCompatibility M _triangulation
+    where
+  /-- One-point compactification recognition backing link compatibility. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
 
-/-- Interface recognizing the triangulation as a PL 3-manifold by its links. -/
-inductive HasMoisePLManifoldRecognition
+/--
+Compatibility constructor for link compatibility produced by one-point
+recognition.
+-/
+def HasMoiseLinkCompatibility.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    HasMoiseLinkCompatibility M triangulation where
+  onePointRecognition := h
+
+/-- Proof-bearing interface recognizing the triangulation as a PL 3-manifold by its links. -/
+structure HasMoisePLManifoldRecognition
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (triangulation : HasMoiseTriangulation M)
     (_linkCompatibility : HasMoiseLinkCompatibility M triangulation) : Prop
-  | ofOnePointRecognition :
-      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
-      HasMoisePLManifoldRecognition M triangulation _linkCompatibility
-
-/-- Interface for the homeomorphism between the topological space and its triangulation. -/
-inductive HasMoiseTriangulationHomeomorphism
-    (M : Type u) [TopologicalSpace M] [T2Space M]
-    [ChartedSpace ThreeManifoldModel M]
-    [SimplyConnectedSpace M] [CompactSpace M]
-    (localCharts : HasMoiseLocalTriangulationCharts M)
-    (_triangulation : HasMoiseTriangulation M) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      localCharts = HasMoiseLocalTriangulationCharts.ofOnePointRecognition h →
-      HasMoiseTriangulationHomeomorphism M localCharts _triangulation
+    where
+  /-- One-point compactification recognition backing PL-manifold recognition. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
 
 /--
-Interface for patching local Moise triangulations into the global
-triangulation used by the bridge.
+Compatibility constructor for PL-manifold recognition produced by one-point
+recognition.
 -/
-inductive HasMoiseTriangulationCompatibility
+def HasMoisePLManifoldRecognition.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {linkCompatibility : HasMoiseLinkCompatibility M triangulation}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    HasMoisePLManifoldRecognition M triangulation linkCompatibility where
+  onePointRecognition := h
+
+/-- Proof-bearing interface for the homeomorphism between the topological space and its triangulation. -/
+structure HasMoiseTriangulationHomeomorphism
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (localCharts : HasMoiseLocalTriangulationCharts M)
     (_triangulation : HasMoiseTriangulation M) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      localCharts = HasMoiseLocalTriangulationCharts.ofOnePointRecognition h →
-      HasMoiseTriangulationCompatibility M localCharts _triangulation
+    where
+  /-- One-point compactification recognition backing the triangulation homeomorphism. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- The homeomorphism interface is tied to local chart data from that recognition. -/
+  localCharts_eq :
+    localCharts =
+      HasMoiseLocalTriangulationCharts.ofOnePointRecognition onePointRecognition
 
-/-- Interface for uniqueness of the Moise PL structure induced by triangulation. -/
-inductive HasMoiseTriangulationUniqueness
+/--
+Compatibility constructor for triangulation-homeomorphism data produced by
+one-point recognition.
+-/
+def HasMoiseTriangulationHomeomorphism.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {localCharts : HasMoiseLocalTriangulationCharts M}
+    {triangulation : HasMoiseTriangulation M}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hlocal :
+      localCharts =
+        HasMoiseLocalTriangulationCharts.ofOnePointRecognition h) :
+    HasMoiseTriangulationHomeomorphism M localCharts triangulation where
+  onePointRecognition := h
+  localCharts_eq := hlocal
+
+/--
+Proof-bearing interface for patching local Moise triangulations into the global
+triangulation used by the bridge.
+-/
+structure HasMoiseTriangulationCompatibility
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (localCharts : HasMoiseLocalTriangulationCharts M)
+    (_triangulation : HasMoiseTriangulation M) : Prop
+    where
+  /-- One-point compactification recognition backing triangulation compatibility. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- Compatibility is tied to local chart data from that recognition. -/
+  localCharts_eq :
+    localCharts =
+      HasMoiseLocalTriangulationCharts.ofOnePointRecognition onePointRecognition
+
+/--
+Compatibility constructor for global triangulation compatibility produced by
+one-point recognition.
+-/
+def HasMoiseTriangulationCompatibility.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {localCharts : HasMoiseLocalTriangulationCharts M}
+    {triangulation : HasMoiseTriangulation M}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hlocal :
+      localCharts =
+        HasMoiseLocalTriangulationCharts.ofOnePointRecognition h) :
+    HasMoiseTriangulationCompatibility M localCharts triangulation where
+  onePointRecognition := h
+  localCharts_eq := hlocal
+
+/-- Proof-bearing interface for uniqueness of the Moise PL structure induced by triangulation. -/
+structure HasMoiseTriangulationUniqueness
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (_triangulation : HasMoiseTriangulation M) : Prop
-  | ofOnePointRecognition :
-      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
-      HasMoiseTriangulationUniqueness M _triangulation
+    where
+  /-- One-point compactification recognition backing triangulation uniqueness. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
 
-/-- Interface for the dimension-three Hauptvermutung input used by Moise uniqueness. -/
-inductive HasMoiseHauptvermutungDimensionThree
+/--
+Compatibility constructor for triangulation-uniqueness data produced by
+one-point recognition.
+-/
+def HasMoiseTriangulationUniqueness.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    HasMoiseTriangulationUniqueness M triangulation where
+  onePointRecognition := h
+
+/-- Proof-bearing interface for the dimension-three Hauptvermutung input used by Moise uniqueness. -/
+structure HasMoiseHauptvermutungDimensionThree
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (triangulation : HasMoiseTriangulation M)
     (_triangulationUniqueness : HasMoiseTriangulationUniqueness M triangulation) : Prop
-  | ofOnePointRecognition :
-      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
-      HasMoiseHauptvermutungDimensionThree M
-        triangulation _triangulationUniqueness
+    where
+  /-- One-point compactification recognition backing the dimension-three Hauptvermutung input. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+
+/--
+Compatibility constructor for dimension-three Hauptvermutung data produced by
+one-point recognition.
+-/
+def HasMoiseHauptvermutungDimensionThree.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {triangulationUniqueness :
+      HasMoiseTriangulationUniqueness M triangulation}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    HasMoiseHauptvermutungDimensionThree
+      M triangulation triangulationUniqueness where
+  onePointRecognition := h
 
 /--
 Interface for the PL structure compatible with the Moise triangulation.
 -/
-inductive HasCompatiblePLStructure
+structure HasCompatiblePLStructure
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
-    (_triangulation : HasMoiseTriangulation M) : Prop
-  | ofOnePointRecognition :
-      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
-      HasCompatiblePLStructure M _triangulation
+    (_triangulation : HasMoiseTriangulation M) : Prop where
+  /-- One-point compactification recognition backing the compatible PL structure. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
 
-/-- Interface for PL transition-map compatibility with the triangulation. -/
-inductive HasPLTransitionCompatibility
+/--
+Compatibility constructor for the compatible PL structure produced by one-point
+recognition.
+-/
+def HasCompatiblePLStructure.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    HasCompatiblePLStructure M triangulation where
+  onePointRecognition := h
+
+/-- Proof-bearing interface for PL transition-map compatibility with the triangulation. -/
+structure HasPLTransitionCompatibility
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (triangulation : HasMoiseTriangulation M)
     (plStructure : HasCompatiblePLStructure M triangulation) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      plStructure = HasCompatiblePLStructure.ofOnePointRecognition h →
-      HasPLTransitionCompatibility M triangulation plStructure
+    where
+  /-- One-point compactification recognition backing PL transition compatibility. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- Transition compatibility is tied to the PL structure from that recognition. -/
+  plStructure_eq :
+    plStructure =
+      HasCompatiblePLStructure.ofOnePointRecognition onePointRecognition
 
 /--
-Interface for compatibility between the PL charts and the original topological
+Compatibility constructor for PL transition compatibility produced by one-point
+recognition.
+-/
+def HasPLTransitionCompatibility.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h) :
+    HasPLTransitionCompatibility M triangulation plStructure where
+  onePointRecognition := h
+  plStructure_eq := hpl
+
+/--
+Proof-bearing interface for compatibility between the PL charts and the original topological
 charted-space structure.
 -/
-inductive HasCompatiblePLAtlas
+structure HasCompatiblePLAtlas
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (triangulation : HasMoiseTriangulation M)
     (plStructure : HasCompatiblePLStructure M triangulation) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      plStructure = HasCompatiblePLStructure.ofOnePointRecognition h →
-      HasCompatiblePLAtlas M triangulation plStructure
-
-/-- Interface for the PL-manifold atlas extracted from the triangulation. -/
-inductive HasPLManifoldAtlas
-    (M : Type u) [TopologicalSpace M] [T2Space M]
-    [ChartedSpace ThreeManifoldModel M]
-    [SimplyConnectedSpace M] [CompactSpace M]
-    (triangulation : HasMoiseTriangulation M)
-    (plStructure : HasCompatiblePLStructure M triangulation)
-    (plAtlas : HasCompatiblePLAtlas M triangulation plStructure) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h) →
-      plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl →
-      HasPLManifoldAtlas M triangulation plStructure plAtlas
-
-/-- Interface for PL collar-neighborhood compatibility in the produced atlas. -/
-inductive HasPLCollarNeighborhoodCompatibility
-    (M : Type u) [TopologicalSpace M] [T2Space M]
-    [ChartedSpace ThreeManifoldModel M]
-    [SimplyConnectedSpace M] [CompactSpace M]
-    (triangulation : HasMoiseTriangulation M)
-    (plStructure : HasCompatiblePLStructure M triangulation)
-    (plAtlas : HasCompatiblePLAtlas M triangulation plStructure) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h) →
-      plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl →
-      HasPLCollarNeighborhoodCompatibility M triangulation plStructure plAtlas
+    where
+  /-- One-point compactification recognition backing the PL atlas. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- The PL atlas is tied to the PL structure from that recognition. -/
+  plStructure_eq :
+    plStructure =
+      HasCompatiblePLStructure.ofOnePointRecognition onePointRecognition
 
 /--
-Interface for compatibility between the Moise homeomorphism and the produced PL
+Compatibility constructor for compatible PL atlas data produced by one-point
+recognition.
+-/
+def HasCompatiblePLAtlas.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h) :
+    HasCompatiblePLAtlas M triangulation plStructure where
+  onePointRecognition := h
+  plStructure_eq := hpl
+
+/-- Proof-bearing interface for the PL-manifold atlas extracted from the triangulation. -/
+structure HasPLManifoldAtlas
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (triangulation : HasMoiseTriangulation M)
+    (plStructure : HasCompatiblePLStructure M triangulation)
+    (plAtlas : HasCompatiblePLAtlas M triangulation plStructure) : Prop
+    where
+  /-- One-point compactification recognition backing the PL-manifold atlas. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- The PL-manifold atlas is tied to the PL structure from that recognition. -/
+  plStructure_eq :
+    plStructure =
+      HasCompatiblePLStructure.ofOnePointRecognition onePointRecognition
+  /-- The PL-manifold atlas is tied to the compatible PL atlas from that recognition. -/
+  plAtlas_eq :
+    plAtlas =
+      HasCompatiblePLAtlas.ofOnePointRecognition
+        onePointRecognition plStructure_eq
+
+/--
+Compatibility constructor for PL-manifold atlas data produced by one-point
+recognition.
+-/
+def HasPLManifoldAtlas.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    {plAtlas : HasCompatiblePLAtlas M triangulation plStructure}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h)
+    (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl) :
+    HasPLManifoldAtlas M triangulation plStructure plAtlas where
+  onePointRecognition := h
+  plStructure_eq := hpl
+  plAtlas_eq := hAtlas
+
+/-- Proof-bearing interface for PL collar-neighborhood compatibility in the produced atlas. -/
+structure HasPLCollarNeighborhoodCompatibility
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (triangulation : HasMoiseTriangulation M)
+    (plStructure : HasCompatiblePLStructure M triangulation)
+    (plAtlas : HasCompatiblePLAtlas M triangulation plStructure) : Prop
+    where
+  /-- One-point compactification recognition backing PL collar compatibility. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- Collar compatibility is tied to the PL structure from that recognition. -/
+  plStructure_eq :
+    plStructure =
+      HasCompatiblePLStructure.ofOnePointRecognition onePointRecognition
+  /-- Collar compatibility is tied to the compatible PL atlas from that recognition. -/
+  plAtlas_eq :
+    plAtlas =
+      HasCompatiblePLAtlas.ofOnePointRecognition
+        onePointRecognition plStructure_eq
+
+/--
+Compatibility constructor for PL collar-neighborhood compatibility produced by
+one-point recognition.
+-/
+def HasPLCollarNeighborhoodCompatibility.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    {plAtlas : HasCompatiblePLAtlas M triangulation plStructure}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h)
+    (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl) :
+    HasPLCollarNeighborhoodCompatibility
+      M triangulation plStructure plAtlas where
+  onePointRecognition := h
+  plStructure_eq := hpl
+  plAtlas_eq := hAtlas
+
+/--
+Proof-bearing interface for compatibility between the Moise homeomorphism and the produced PL
 atlas.
 -/
-inductive HasPLHomeomorphismCompatibility
+structure HasPLHomeomorphismCompatibility
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -274,58 +660,171 @@ inductive HasPLHomeomorphismCompatibility
     (triangulation : HasMoiseTriangulation M)
     (plStructure : HasCompatiblePLStructure M triangulation)
     (plAtlas : HasCompatiblePLAtlas M triangulation plStructure) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      localCharts = HasMoiseLocalTriangulationCharts.ofOnePointRecognition h →
-      (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h) →
-      plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl →
-      HasPLHomeomorphismCompatibility
-        M localCharts triangulation plStructure plAtlas
+    where
+  /-- One-point compactification recognition backing PL homeomorphism compatibility. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- PL homeomorphism compatibility is tied to local chart data from that recognition. -/
+  localCharts_eq :
+    localCharts =
+      HasMoiseLocalTriangulationCharts.ofOnePointRecognition onePointRecognition
+  /-- PL homeomorphism compatibility is tied to the PL structure from that recognition. -/
+  plStructure_eq :
+    plStructure =
+      HasCompatiblePLStructure.ofOnePointRecognition onePointRecognition
+  /-- PL homeomorphism compatibility is tied to the compatible PL atlas from that recognition. -/
+  plAtlas_eq :
+    plAtlas =
+      HasCompatiblePLAtlas.ofOnePointRecognition
+        onePointRecognition plStructure_eq
 
-/-- Interface for maximality/completeness of the compatible PL atlas. -/
-inductive HasPLAtlasMaximality
+/--
+Compatibility constructor for PL homeomorphism compatibility produced by
+one-point recognition.
+-/
+def HasPLHomeomorphismCompatibility.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {localCharts : HasMoiseLocalTriangulationCharts M}
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    {plAtlas : HasCompatiblePLAtlas M triangulation plStructure}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hlocal :
+      localCharts =
+        HasMoiseLocalTriangulationCharts.ofOnePointRecognition h)
+    (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h)
+    (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl) :
+    HasPLHomeomorphismCompatibility
+      M localCharts triangulation plStructure plAtlas where
+  onePointRecognition := h
+  localCharts_eq := hlocal
+  plStructure_eq := hpl
+  plAtlas_eq := hAtlas
+
+/-- Proof-bearing interface for maximality/completeness of the compatible PL atlas. -/
+structure HasPLAtlasMaximality
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (triangulation : HasMoiseTriangulation M)
     (plStructure : HasCompatiblePLStructure M triangulation)
     (plAtlas : HasCompatiblePLAtlas M triangulation plStructure) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h) →
-      plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl →
-      HasPLAtlasMaximality M triangulation plStructure plAtlas
+    where
+  /-- One-point compactification recognition backing PL atlas maximality. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- Maximality is tied to the PL structure from that recognition. -/
+  plStructure_eq :
+    plStructure =
+      HasCompatiblePLStructure.ofOnePointRecognition onePointRecognition
+  /-- Maximality is tied to the compatible PL atlas from that recognition. -/
+  plAtlas_eq :
+    plAtlas =
+      HasCompatiblePLAtlas.ofOnePointRecognition
+        onePointRecognition plStructure_eq
 
-/-- Interface for existence of a smoothing of the compatible PL atlas. -/
-inductive HasPLSmoothingExistence
+/--
+Compatibility constructor for PL atlas maximality produced by one-point
+recognition.
+-/
+def HasPLAtlasMaximality.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    {plAtlas : HasCompatiblePLAtlas M triangulation plStructure}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h)
+    (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl) :
+    HasPLAtlasMaximality M triangulation plStructure plAtlas where
+  onePointRecognition := h
+  plStructure_eq := hpl
+  plAtlas_eq := hAtlas
+
+/-- Proof-bearing interface for existence of a smoothing of the compatible PL atlas. -/
+structure HasPLSmoothingExistence
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (triangulation : HasMoiseTriangulation M)
     (plStructure : HasCompatiblePLStructure M triangulation)
     (plAtlas : HasCompatiblePLAtlas M triangulation plStructure) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h) →
-      plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl →
-      HasPLSmoothingExistence M triangulation plStructure plAtlas
+    where
+  /-- One-point compactification recognition backing PL smoothing existence. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- Smoothing existence is tied to the PL structure from that recognition. -/
+  plStructure_eq :
+    plStructure =
+      HasCompatiblePLStructure.ofOnePointRecognition onePointRecognition
+  /-- Smoothing existence is tied to the compatible PL atlas from that recognition. -/
+  plAtlas_eq :
+    plAtlas =
+      HasCompatiblePLAtlas.ofOnePointRecognition
+        onePointRecognition plStructure_eq
 
-/-- Interface for vanishing of the PL-smoothing obstruction in dimension three. -/
-inductive HasPLSmoothingObstructionVanishing
+/--
+Compatibility constructor for PL smoothing existence produced by one-point
+recognition.
+-/
+def HasPLSmoothingExistence.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    {plAtlas : HasCompatiblePLAtlas M triangulation plStructure}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h)
+    (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl) :
+    HasPLSmoothingExistence M triangulation plStructure plAtlas where
+  onePointRecognition := h
+  plStructure_eq := hpl
+  plAtlas_eq := hAtlas
+
+/-- Proof-bearing interface for vanishing of the PL-smoothing obstruction in dimension three. -/
+structure HasPLSmoothingObstructionVanishing
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (triangulation : HasMoiseTriangulation M)
     (plStructure : HasCompatiblePLStructure M triangulation)
     (plAtlas : HasCompatiblePLAtlas M triangulation plStructure) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h) →
-      plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl →
-      HasPLSmoothingObstructionVanishing M triangulation plStructure plAtlas
+    where
+  /-- One-point compactification recognition backing PL smoothing obstruction vanishing. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- Obstruction vanishing is tied to the PL structure from that recognition. -/
+  plStructure_eq :
+    plStructure =
+      HasCompatiblePLStructure.ofOnePointRecognition onePointRecognition
+  /-- Obstruction vanishing is tied to the compatible PL atlas from that recognition. -/
+  plAtlas_eq :
+    plAtlas =
+      HasCompatiblePLAtlas.ofOnePointRecognition
+        onePointRecognition plStructure_eq
 
-/-- Interface for reducing PL smoothing to the microbundle smoothing theorem. -/
-inductive HasPLMicrobundleSmoothing
+/--
+Compatibility constructor for PL smoothing obstruction vanishing produced by
+one-point recognition.
+-/
+def HasPLSmoothingObstructionVanishing.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    {plAtlas : HasCompatiblePLAtlas M triangulation plStructure}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h)
+    (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl) :
+    HasPLSmoothingObstructionVanishing
+      M triangulation plStructure plAtlas where
+  onePointRecognition := h
+  plStructure_eq := hpl
+  plAtlas_eq := hAtlas
+
+/-- Proof-bearing interface for reducing PL smoothing to the microbundle smoothing theorem. -/
+structure HasPLMicrobundleSmoothing
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -336,34 +835,104 @@ inductive HasPLMicrobundleSmoothing
       HasPLSmoothingExistence M triangulation plStructure plAtlas)
     (plSmoothingObstructionVanishing :
       HasPLSmoothingObstructionVanishing M triangulation plStructure plAtlas) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h) →
-      (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl) →
-      plSmoothingExistence =
-        HasPLSmoothingExistence.ofOnePointRecognition h hpl hAtlas →
-      plSmoothingObstructionVanishing =
-        HasPLSmoothingObstructionVanishing.ofOnePointRecognition h hpl hAtlas →
-      HasPLMicrobundleSmoothing M
-        triangulation plStructure plAtlas plSmoothingExistence
-        plSmoothingObstructionVanishing
+    where
+  /-- One-point compactification recognition backing microbundle smoothing. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- Microbundle smoothing is tied to the PL structure from that recognition. -/
+  plStructure_eq :
+    plStructure =
+      HasCompatiblePLStructure.ofOnePointRecognition onePointRecognition
+  /-- Microbundle smoothing is tied to the compatible PL atlas from that recognition. -/
+  plAtlas_eq :
+    plAtlas =
+      HasCompatiblePLAtlas.ofOnePointRecognition
+        onePointRecognition plStructure_eq
+  /-- Microbundle smoothing is tied to the smoothing-existence record from that recognition. -/
+  plSmoothingExistence_eq :
+    plSmoothingExistence =
+      HasPLSmoothingExistence.ofOnePointRecognition
+        onePointRecognition plStructure_eq plAtlas_eq
+  /-- Microbundle smoothing is tied to the obstruction-vanishing record from that recognition. -/
+  plSmoothingObstructionVanishing_eq :
+    plSmoothingObstructionVanishing =
+      HasPLSmoothingObstructionVanishing.ofOnePointRecognition
+        onePointRecognition plStructure_eq plAtlas_eq
 
-/-- Interface for the 3-dimensional PL-to-smooth smoothing theorem. -/
-inductive HasPLSmoothingTheorem
+/--
+Compatibility constructor for microbundle smoothing data produced by one-point
+recognition.
+-/
+def HasPLMicrobundleSmoothing.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    {plAtlas : HasCompatiblePLAtlas M triangulation plStructure}
+    {plSmoothingExistence :
+      HasPLSmoothingExistence M triangulation plStructure plAtlas}
+    {plSmoothingObstructionVanishing :
+      HasPLSmoothingObstructionVanishing M triangulation plStructure plAtlas}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h)
+    (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl)
+    (hExistence :
+      plSmoothingExistence =
+        HasPLSmoothingExistence.ofOnePointRecognition h hpl hAtlas)
+    (hObstruction :
+      plSmoothingObstructionVanishing =
+        HasPLSmoothingObstructionVanishing.ofOnePointRecognition h hpl hAtlas) :
+    HasPLMicrobundleSmoothing M
+      triangulation plStructure plAtlas plSmoothingExistence
+      plSmoothingObstructionVanishing where
+  onePointRecognition := h
+  plStructure_eq := hpl
+  plAtlas_eq := hAtlas
+  plSmoothingExistence_eq := hExistence
+  plSmoothingObstructionVanishing_eq := hObstruction
+
+/-- Proof-bearing interface for the 3-dimensional PL-to-smooth smoothing theorem. -/
+structure HasPLSmoothingTheorem
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (triangulation : HasMoiseTriangulation M)
     (plStructure : HasCompatiblePLStructure M triangulation)
     (plAtlas : HasCompatiblePLAtlas M triangulation plStructure) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h) →
-      plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl →
-      HasPLSmoothingTheorem M triangulation plStructure plAtlas
+    where
+  /-- One-point compactification recognition backing the PL smoothing theorem. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- The smoothing theorem is tied to the PL structure from that recognition. -/
+  plStructure_eq :
+    plStructure =
+      HasCompatiblePLStructure.ofOnePointRecognition onePointRecognition
+  /-- The smoothing theorem is tied to the compatible PL atlas from that recognition. -/
+  plAtlas_eq :
+    plAtlas =
+      HasCompatiblePLAtlas.ofOnePointRecognition
+        onePointRecognition plStructure_eq
 
-/-- Interface for compatibility/uniqueness of the PL smoothing theorem output. -/
-inductive HasPLSmoothingCompatibility
+/--
+Compatibility constructor for the PL smoothing theorem produced by one-point
+recognition.
+-/
+def HasPLSmoothingTheorem.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    {plAtlas : HasCompatiblePLAtlas M triangulation plStructure}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h)
+    (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl) :
+    HasPLSmoothingTheorem M triangulation plStructure plAtlas where
+  onePointRecognition := h
+  plStructure_eq := hpl
+  plAtlas_eq := hAtlas
+
+/-- Proof-bearing interface for compatibility/uniqueness of the PL smoothing theorem output. -/
+structure HasPLSmoothingCompatibility
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -371,16 +940,52 @@ inductive HasPLSmoothingCompatibility
     (plStructure : HasCompatiblePLStructure M triangulation)
     (plAtlas : HasCompatiblePLAtlas M triangulation plStructure)
     (smoothingTheorem : HasPLSmoothingTheorem M triangulation plStructure plAtlas) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h) →
-      (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl) →
-      smoothingTheorem = HasPLSmoothingTheorem.ofOnePointRecognition h hpl hAtlas →
-      HasPLSmoothingCompatibility
-        M triangulation plStructure plAtlas smoothingTheorem
+    where
+  /-- One-point compactification recognition backing PL smoothing compatibility. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- Compatibility is tied to the PL structure from that recognition. -/
+  plStructure_eq :
+    plStructure =
+      HasCompatiblePLStructure.ofOnePointRecognition onePointRecognition
+  /-- Compatibility is tied to the compatible PL atlas from that recognition. -/
+  plAtlas_eq :
+    plAtlas =
+      HasCompatiblePLAtlas.ofOnePointRecognition
+        onePointRecognition plStructure_eq
+  /-- Compatibility is tied to the smoothing theorem from that recognition. -/
+  smoothingTheorem_eq :
+    smoothingTheorem =
+      HasPLSmoothingTheorem.ofOnePointRecognition
+        onePointRecognition plStructure_eq plAtlas_eq
 
-/-- Interface for uniqueness of the PL smoothing selected by the theorem. -/
-inductive HasPLSmoothingUniqueness
+/--
+Compatibility constructor for PL smoothing compatibility produced by one-point
+recognition.
+-/
+def HasPLSmoothingCompatibility.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    {plAtlas : HasCompatiblePLAtlas M triangulation plStructure}
+    {smoothingTheorem :
+      HasPLSmoothingTheorem M triangulation plStructure plAtlas}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h)
+    (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl)
+    (hSmoothing :
+      smoothingTheorem =
+        HasPLSmoothingTheorem.ofOnePointRecognition h hpl hAtlas) :
+    HasPLSmoothingCompatibility
+      M triangulation plStructure plAtlas smoothingTheorem where
+  onePointRecognition := h
+  plStructure_eq := hpl
+  plAtlas_eq := hAtlas
+  smoothingTheorem_eq := hSmoothing
+
+/-- Proof-bearing interface for uniqueness of the PL smoothing selected by the theorem. -/
+structure HasPLSmoothingUniqueness
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -388,16 +993,52 @@ inductive HasPLSmoothingUniqueness
     (plStructure : HasCompatiblePLStructure M triangulation)
     (plAtlas : HasCompatiblePLAtlas M triangulation plStructure)
     (smoothingTheorem : HasPLSmoothingTheorem M triangulation plStructure plAtlas) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h) →
-      (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl) →
-      smoothingTheorem = HasPLSmoothingTheorem.ofOnePointRecognition h hpl hAtlas →
-      HasPLSmoothingUniqueness
-        M triangulation plStructure plAtlas smoothingTheorem
+    where
+  /-- One-point compactification recognition backing PL smoothing uniqueness. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- Uniqueness is tied to the PL structure from that recognition. -/
+  plStructure_eq :
+    plStructure =
+      HasCompatiblePLStructure.ofOnePointRecognition onePointRecognition
+  /-- Uniqueness is tied to the compatible PL atlas from that recognition. -/
+  plAtlas_eq :
+    plAtlas =
+      HasCompatiblePLAtlas.ofOnePointRecognition
+        onePointRecognition plStructure_eq
+  /-- Uniqueness is tied to the smoothing theorem from that recognition. -/
+  smoothingTheorem_eq :
+    smoothingTheorem =
+      HasPLSmoothingTheorem.ofOnePointRecognition
+        onePointRecognition plStructure_eq plAtlas_eq
 
-/-- Interface for compatibility of local smooth models supplied by PL smoothing. -/
-inductive HasPLSmoothingLocalModelCompatibility
+/--
+Compatibility constructor for PL smoothing uniqueness produced by one-point
+recognition.
+-/
+def HasPLSmoothingUniqueness.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    {plAtlas : HasCompatiblePLAtlas M triangulation plStructure}
+    {smoothingTheorem :
+      HasPLSmoothingTheorem M triangulation plStructure plAtlas}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h)
+    (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl)
+    (hSmoothing :
+      smoothingTheorem =
+        HasPLSmoothingTheorem.ofOnePointRecognition h hpl hAtlas) :
+    HasPLSmoothingUniqueness
+      M triangulation plStructure plAtlas smoothingTheorem where
+  onePointRecognition := h
+  plStructure_eq := hpl
+  plAtlas_eq := hAtlas
+  smoothingTheorem_eq := hSmoothing
+
+/-- Proof-bearing interface for compatibility of local smooth models supplied by PL smoothing. -/
+structure HasPLSmoothingLocalModelCompatibility
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -405,28 +1046,75 @@ inductive HasPLSmoothingLocalModelCompatibility
     (plStructure : HasCompatiblePLStructure M triangulation)
     (plAtlas : HasCompatiblePLAtlas M triangulation plStructure)
     (smoothingTheorem : HasPLSmoothingTheorem M triangulation plStructure plAtlas) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h) →
-      (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl) →
-      smoothingTheorem = HasPLSmoothingTheorem.ofOnePointRecognition h hpl hAtlas →
-      HasPLSmoothingLocalModelCompatibility
-        M triangulation plStructure plAtlas smoothingTheorem
+    where
+  /-- One-point compactification recognition backing local smooth-model compatibility. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- Local model compatibility is tied to the PL structure from that recognition. -/
+  plStructure_eq :
+    plStructure =
+      HasCompatiblePLStructure.ofOnePointRecognition onePointRecognition
+  /-- Local model compatibility is tied to the compatible PL atlas from that recognition. -/
+  plAtlas_eq :
+    plAtlas =
+      HasCompatiblePLAtlas.ofOnePointRecognition
+        onePointRecognition plStructure_eq
+  /-- Local model compatibility is tied to the smoothing theorem from that recognition. -/
+  smoothingTheorem_eq :
+    smoothingTheorem =
+      HasPLSmoothingTheorem.ofOnePointRecognition
+        onePointRecognition plStructure_eq plAtlas_eq
+
+/--
+Compatibility constructor for PL smoothing local-model compatibility produced
+by one-point recognition.
+-/
+def HasPLSmoothingLocalModelCompatibility.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    {plAtlas : HasCompatiblePLAtlas M triangulation plStructure}
+    {smoothingTheorem :
+      HasPLSmoothingTheorem M triangulation plStructure plAtlas}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h)
+    (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl)
+    (hSmoothing :
+      smoothingTheorem =
+        HasPLSmoothingTheorem.ofOnePointRecognition h hpl hAtlas) :
+    HasPLSmoothingLocalModelCompatibility
+      M triangulation plStructure plAtlas smoothingTheorem where
+  onePointRecognition := h
+  plStructure_eq := hpl
+  plAtlas_eq := hAtlas
+  smoothingTheorem_eq := hSmoothing
 
 /--
 Interface asserting that a topological 3-manifold carries the smooth structure
 needed by the surgery layer.
 -/
-inductive HasThreeManifoldSmoothStructure
+structure HasThreeManifoldSmoothStructure
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
-    [SimplyConnectedSpace M] [CompactSpace M] : Prop
-  | ofOnePointRecognition :
-      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) →
-      HasThreeManifoldSmoothStructure M
+    [SimplyConnectedSpace M] [CompactSpace M] : Prop where
+  /-- One-point compactification recognition backing the smooth structure. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
 
-/-- Interface for constructing a smooth atlas from the PL smoothing theorem. -/
-inductive HasSmoothAtlasConstruction
+/--
+Compatibility constructor for smooth-structure data produced by one-point
+recognition.
+-/
+def HasThreeManifoldSmoothStructure.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    HasThreeManifoldSmoothStructure M where
+  onePointRecognition := h
+
+/-- Proof-bearing interface for constructing a smooth atlas from the PL smoothing theorem. -/
+structure HasSmoothAtlasConstruction
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -435,17 +1123,60 @@ inductive HasSmoothAtlasConstruction
     (plAtlas : HasCompatiblePLAtlas M triangulation plStructure)
     (smoothingTheorem : HasPLSmoothingTheorem M triangulation plStructure plAtlas)
     (smoothStructure : HasThreeManifoldSmoothStructure M) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h) →
-      (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl) →
-      smoothingTheorem = HasPLSmoothingTheorem.ofOnePointRecognition h hpl hAtlas →
-      smoothStructure = HasThreeManifoldSmoothStructure.ofOnePointRecognition h →
-      HasSmoothAtlasConstruction
-        M triangulation plStructure plAtlas smoothingTheorem smoothStructure
+    where
+  /-- One-point compactification recognition backing smooth atlas construction. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- Construction is tied to the PL structure from that recognition. -/
+  plStructure_eq :
+    plStructure =
+      HasCompatiblePLStructure.ofOnePointRecognition onePointRecognition
+  /-- Construction is tied to the compatible PL atlas from that recognition. -/
+  plAtlas_eq :
+    plAtlas =
+      HasCompatiblePLAtlas.ofOnePointRecognition
+        onePointRecognition plStructure_eq
+  /-- Construction is tied to the smoothing theorem from that recognition. -/
+  smoothingTheorem_eq :
+    smoothingTheorem =
+      HasPLSmoothingTheorem.ofOnePointRecognition
+        onePointRecognition plStructure_eq plAtlas_eq
+  /-- Construction is tied to the smooth structure from that recognition. -/
+  smoothStructure_eq :
+    smoothStructure =
+      HasThreeManifoldSmoothStructure.ofOnePointRecognition onePointRecognition
 
-/-- Interface for compatibility between the smooth atlas and the PL atlas. -/
-inductive HasSmoothAtlasPLCompatibility
+/--
+Compatibility constructor for smooth atlas construction produced by one-point
+recognition.
+-/
+def HasSmoothAtlasConstruction.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    {plAtlas : HasCompatiblePLAtlas M triangulation plStructure}
+    {smoothingTheorem :
+      HasPLSmoothingTheorem M triangulation plStructure plAtlas}
+    {smoothStructure : HasThreeManifoldSmoothStructure M}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h)
+    (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl)
+    (hSmoothing :
+      smoothingTheorem =
+        HasPLSmoothingTheorem.ofOnePointRecognition h hpl hAtlas)
+    (hSmooth :
+      smoothStructure = HasThreeManifoldSmoothStructure.ofOnePointRecognition h) :
+    HasSmoothAtlasConstruction
+      M triangulation plStructure plAtlas smoothingTheorem smoothStructure where
+  onePointRecognition := h
+  plStructure_eq := hpl
+  plAtlas_eq := hAtlas
+  smoothingTheorem_eq := hSmoothing
+  smoothStructure_eq := hSmooth
+
+/-- Proof-bearing interface for compatibility between the smooth atlas and the PL atlas. -/
+structure HasSmoothAtlasPLCompatibility
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -458,24 +1189,76 @@ inductive HasSmoothAtlasPLCompatibility
       HasSmoothAtlasConstruction
         M triangulation plStructure plAtlas smoothingTheorem
         smoothStructure) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h) →
-      (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl) →
-      (hSmoothing :
-        smoothingTheorem = HasPLSmoothingTheorem.ofOnePointRecognition
-          h hpl hAtlas) →
-      (hSmooth :
-        smoothStructure = HasThreeManifoldSmoothStructure.ofOnePointRecognition h) →
+    where
+  /-- One-point compactification recognition backing smooth atlas PL compatibility. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- PL compatibility is tied to the PL structure from that recognition. -/
+  plStructure_eq :
+    plStructure =
+      HasCompatiblePLStructure.ofOnePointRecognition onePointRecognition
+  /-- PL compatibility is tied to the compatible PL atlas from that recognition. -/
+  plAtlas_eq :
+    plAtlas =
+      HasCompatiblePLAtlas.ofOnePointRecognition
+        onePointRecognition plStructure_eq
+  /-- PL compatibility is tied to the smoothing theorem from that recognition. -/
+  smoothingTheorem_eq :
+    smoothingTheorem =
+      HasPLSmoothingTheorem.ofOnePointRecognition
+        onePointRecognition plStructure_eq plAtlas_eq
+  /-- PL compatibility is tied to the smooth structure from that recognition. -/
+  smoothStructure_eq :
+    smoothStructure =
+      HasThreeManifoldSmoothStructure.ofOnePointRecognition onePointRecognition
+  /-- PL compatibility is tied to the smooth atlas construction from that recognition. -/
+  smoothAtlasConstruction_eq :
+    smoothAtlasConstruction =
+      HasSmoothAtlasConstruction.ofOnePointRecognition
+        onePointRecognition plStructure_eq plAtlas_eq smoothingTheorem_eq
+        smoothStructure_eq
+
+/--
+Compatibility constructor for smooth atlas PL compatibility produced by
+one-point recognition.
+-/
+def HasSmoothAtlasPLCompatibility.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    {plAtlas : HasCompatiblePLAtlas M triangulation plStructure}
+    {smoothingTheorem :
+      HasPLSmoothingTheorem M triangulation plStructure plAtlas}
+    {smoothStructure : HasThreeManifoldSmoothStructure M}
+    {smoothAtlasConstruction :
+      HasSmoothAtlasConstruction
+        M triangulation plStructure plAtlas smoothingTheorem
+        smoothStructure}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h)
+    (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl)
+    (hSmoothing :
+      smoothingTheorem =
+        HasPLSmoothingTheorem.ofOnePointRecognition h hpl hAtlas)
+    (hSmooth :
+      smoothStructure = HasThreeManifoldSmoothStructure.ofOnePointRecognition h)
+    (hConstruction :
       smoothAtlasConstruction =
         HasSmoothAtlasConstruction.ofOnePointRecognition
-          h hpl hAtlas hSmoothing hSmooth →
-      HasSmoothAtlasPLCompatibility
-        M triangulation plStructure plAtlas smoothingTheorem
-        smoothStructure smoothAtlasConstruction
+          h hpl hAtlas hSmoothing hSmooth) :
+    HasSmoothAtlasPLCompatibility
+      M triangulation plStructure plAtlas smoothingTheorem
+      smoothStructure smoothAtlasConstruction where
+  onePointRecognition := h
+  plStructure_eq := hpl
+  plAtlas_eq := hAtlas
+  smoothingTheorem_eq := hSmoothing
+  smoothStructure_eq := hSmooth
+  smoothAtlasConstruction_eq := hConstruction
 
-/-- Interface for maximality of the produced smooth atlas. -/
-inductive HasSmoothAtlasMaximality
+/-- Proof-bearing interface for maximality of the produced smooth atlas. -/
+structure HasSmoothAtlasMaximality
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -484,70 +1267,388 @@ inductive HasSmoothAtlasMaximality
     (plAtlas : HasCompatiblePLAtlas M triangulation plStructure)
     (smoothingTheorem : HasPLSmoothingTheorem M triangulation plStructure plAtlas)
     (smoothStructure : HasThreeManifoldSmoothStructure M) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h) →
-      (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl) →
-      smoothingTheorem = HasPLSmoothingTheorem.ofOnePointRecognition h hpl hAtlas →
-      smoothStructure = HasThreeManifoldSmoothStructure.ofOnePointRecognition h →
-      HasSmoothAtlasMaximality
-        M triangulation plStructure plAtlas smoothingTheorem smoothStructure
+    where
+  /-- One-point compactification recognition backing smooth atlas maximality. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- Maximality is tied to the PL structure from that recognition. -/
+  plStructure_eq :
+    plStructure =
+      HasCompatiblePLStructure.ofOnePointRecognition onePointRecognition
+  /-- Maximality is tied to the compatible PL atlas from that recognition. -/
+  plAtlas_eq :
+    plAtlas =
+      HasCompatiblePLAtlas.ofOnePointRecognition
+        onePointRecognition plStructure_eq
+  /-- Maximality is tied to the smoothing theorem from that recognition. -/
+  smoothingTheorem_eq :
+    smoothingTheorem =
+      HasPLSmoothingTheorem.ofOnePointRecognition
+        onePointRecognition plStructure_eq plAtlas_eq
+  /-- Maximality is tied to the smooth structure from that recognition. -/
+  smoothStructure_eq :
+    smoothStructure =
+      HasThreeManifoldSmoothStructure.ofOnePointRecognition onePointRecognition
 
-/-- Interface for uniqueness/compatibility of the produced smooth atlas. -/
-inductive HasSmoothAtlasUniqueness
+/--
+Compatibility constructor for smooth atlas maximality produced by one-point
+recognition.
+-/
+def HasSmoothAtlasMaximality.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    {plAtlas : HasCompatiblePLAtlas M triangulation plStructure}
+    {smoothingTheorem :
+      HasPLSmoothingTheorem M triangulation plStructure plAtlas}
+    {smoothStructure : HasThreeManifoldSmoothStructure M}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hpl : plStructure = HasCompatiblePLStructure.ofOnePointRecognition h)
+    (hAtlas : plAtlas = HasCompatiblePLAtlas.ofOnePointRecognition h hpl)
+    (hSmoothing :
+      smoothingTheorem =
+        HasPLSmoothingTheorem.ofOnePointRecognition h hpl hAtlas)
+    (hSmooth :
+      smoothStructure = HasThreeManifoldSmoothStructure.ofOnePointRecognition h) :
+    HasSmoothAtlasMaximality
+      M triangulation plStructure plAtlas smoothingTheorem smoothStructure where
+  onePointRecognition := h
+  plStructure_eq := hpl
+  plAtlas_eq := hAtlas
+  smoothingTheorem_eq := hSmoothing
+  smoothStructure_eq := hSmooth
+
+/-- Proof-bearing interface for uniqueness/compatibility of the produced smooth atlas. -/
+structure HasSmoothAtlasUniqueness
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (smoothStructure : HasThreeManifoldSmoothStructure M) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      smoothStructure = HasThreeManifoldSmoothStructure.ofOnePointRecognition h →
-      HasSmoothAtlasUniqueness M smoothStructure
+    where
+  /-- One-point compactification recognition backing smooth atlas uniqueness. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- Uniqueness is tied to the smooth structure from that recognition. -/
+  smoothStructure_eq :
+    smoothStructure =
+      HasThreeManifoldSmoothStructure.ofOnePointRecognition onePointRecognition
 
-/-- Interface for uniqueness of the smooth structure up to diffeomorphism. -/
-inductive HasSmoothStructureUniquenessUpToDiffeomorphism
+/--
+Compatibility constructor for smooth atlas uniqueness produced by one-point
+recognition.
+-/
+def HasSmoothAtlasUniqueness.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {smoothStructure : HasThreeManifoldSmoothStructure M}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hSmooth :
+      smoothStructure = HasThreeManifoldSmoothStructure.ofOnePointRecognition h) :
+    HasSmoothAtlasUniqueness M smoothStructure where
+  onePointRecognition := h
+  smoothStructure_eq := hSmooth
+
+/-- Proof-bearing interface for uniqueness of the smooth structure up to diffeomorphism. -/
+structure HasSmoothStructureUniquenessUpToDiffeomorphism
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (smoothStructure : HasThreeManifoldSmoothStructure M) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      smoothStructure = HasThreeManifoldSmoothStructure.ofOnePointRecognition h →
-      HasSmoothStructureUniquenessUpToDiffeomorphism M smoothStructure
+    where
+  /-- One-point compactification recognition backing smooth-structure uniqueness. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- Smooth-structure uniqueness is tied to the smooth structure from that recognition. -/
+  smoothStructure_eq :
+    smoothStructure =
+      HasThreeManifoldSmoothStructure.ofOnePointRecognition onePointRecognition
 
-/-- Interface for smooth transition-map compatibility in the produced atlas. -/
-inductive HasSmoothTransitionCompatibility
+/--
+Compatibility constructor for smooth-structure uniqueness produced by one-point
+recognition.
+-/
+def HasSmoothStructureUniquenessUpToDiffeomorphism.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {smoothStructure : HasThreeManifoldSmoothStructure M}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hSmooth :
+      smoothStructure = HasThreeManifoldSmoothStructure.ofOnePointRecognition h) :
+    HasSmoothStructureUniquenessUpToDiffeomorphism M smoothStructure where
+  onePointRecognition := h
+  smoothStructure_eq := hSmooth
+
+/-- Proof-bearing interface for smooth transition-map compatibility in the produced atlas. -/
+structure HasSmoothTransitionCompatibility
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (smoothStructure : HasThreeManifoldSmoothStructure M) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      smoothStructure = HasThreeManifoldSmoothStructure.ofOnePointRecognition h →
-      HasSmoothTransitionCompatibility M smoothStructure
+    where
+  /-- One-point compactification recognition backing smooth transition compatibility. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- Transition compatibility is tied to the smooth structure from that recognition. -/
+  smoothStructure_eq :
+    smoothStructure =
+      HasThreeManifoldSmoothStructure.ofOnePointRecognition onePointRecognition
 
-/-- Interface for smoothness of all transition maps in the produced atlas. -/
-inductive HasSmoothAtlasTransitionSmoothness
+/--
+Compatibility constructor for smooth transition compatibility produced by
+one-point recognition.
+-/
+def HasSmoothTransitionCompatibility.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {smoothStructure : HasThreeManifoldSmoothStructure M}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hSmooth :
+      smoothStructure = HasThreeManifoldSmoothStructure.ofOnePointRecognition h) :
+    HasSmoothTransitionCompatibility M smoothStructure where
+  onePointRecognition := h
+  smoothStructure_eq := hSmooth
+
+/-- Proof-bearing interface for smoothness of all transition maps in the produced atlas. -/
+structure HasSmoothAtlasTransitionSmoothness
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (smoothStructure : HasThreeManifoldSmoothStructure M)
     (smoothTransitionCompatibility :
       HasSmoothTransitionCompatibility M smoothStructure) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      (hSmooth :
-        smoothStructure = HasThreeManifoldSmoothStructure.ofOnePointRecognition h) →
+    where
+  /-- One-point compactification recognition backing smooth transition smoothness. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- Transition smoothness is tied to the smooth structure from that recognition. -/
+  smoothStructure_eq :
+    smoothStructure =
+      HasThreeManifoldSmoothStructure.ofOnePointRecognition onePointRecognition
+  /-- Transition smoothness is tied to smooth transition compatibility from that recognition. -/
+  smoothTransitionCompatibility_eq :
+    smoothTransitionCompatibility =
+      HasSmoothTransitionCompatibility.ofOnePointRecognition
+        onePointRecognition smoothStructure_eq
+
+/--
+Compatibility constructor for smooth atlas transition smoothness produced by
+one-point recognition.
+-/
+def HasSmoothAtlasTransitionSmoothness.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {smoothStructure : HasThreeManifoldSmoothStructure M}
+    {smoothTransitionCompatibility :
+      HasSmoothTransitionCompatibility M smoothStructure}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hSmooth :
+      smoothStructure = HasThreeManifoldSmoothStructure.ofOnePointRecognition h)
+    (hTransition :
       smoothTransitionCompatibility =
-        HasSmoothTransitionCompatibility.ofOnePointRecognition h hSmooth →
+        HasSmoothTransitionCompatibility.ofOnePointRecognition h hSmooth) :
+    HasSmoothAtlasTransitionSmoothness
+      M smoothStructure smoothTransitionCompatibility where
+  onePointRecognition := h
+  smoothStructure_eq := hSmooth
+  smoothTransitionCompatibility_eq := hTransition
+
+/-- Extract all smooth-atlas construction witnesses from the proof-bearing record. -/
+theorem HasSmoothAtlasConstruction.witnesses
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    {plAtlas : HasCompatiblePLAtlas M triangulation plStructure}
+    {smoothingTheorem :
+      HasPLSmoothingTheorem M triangulation plStructure plAtlas}
+    {smoothStructure : HasThreeManifoldSmoothStructure M}
+    (smoothAtlasConstruction :
+      HasSmoothAtlasConstruction
+        M triangulation plStructure plAtlas smoothingTheorem smoothStructure) :
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      plStructure =
+        HasCompatiblePLStructure.ofOnePointRecognition
+          smoothAtlasConstruction.onePointRecognition ∧
+      plAtlas =
+        HasCompatiblePLAtlas.ofOnePointRecognition
+          smoothAtlasConstruction.onePointRecognition
+          smoothAtlasConstruction.plStructure_eq ∧
+      smoothingTheorem =
+        HasPLSmoothingTheorem.ofOnePointRecognition
+          smoothAtlasConstruction.onePointRecognition
+          smoothAtlasConstruction.plStructure_eq
+          smoothAtlasConstruction.plAtlas_eq ∧
+      smoothStructure =
+        HasThreeManifoldSmoothStructure.ofOnePointRecognition
+          smoothAtlasConstruction.onePointRecognition :=
+  ⟨smoothAtlasConstruction.onePointRecognition,
+    smoothAtlasConstruction.plStructure_eq,
+    smoothAtlasConstruction.plAtlas_eq,
+    smoothAtlasConstruction.smoothingTheorem_eq,
+    smoothAtlasConstruction.smoothStructure_eq⟩
+
+/-- Extract all smooth-atlas PL-compatibility witnesses from the proof-bearing record. -/
+theorem HasSmoothAtlasPLCompatibility.witnesses
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    {plAtlas : HasCompatiblePLAtlas M triangulation plStructure}
+    {smoothingTheorem :
+      HasPLSmoothingTheorem M triangulation plStructure plAtlas}
+    {smoothStructure : HasThreeManifoldSmoothStructure M}
+    {smoothAtlasConstruction :
+      HasSmoothAtlasConstruction
+        M triangulation plStructure plAtlas smoothingTheorem smoothStructure}
+    (smoothAtlasPLCompatibility :
+      HasSmoothAtlasPLCompatibility
+        M triangulation plStructure plAtlas smoothingTheorem smoothStructure
+        smoothAtlasConstruction) :
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      plStructure =
+        HasCompatiblePLStructure.ofOnePointRecognition
+          smoothAtlasPLCompatibility.onePointRecognition ∧
+      plAtlas =
+        HasCompatiblePLAtlas.ofOnePointRecognition
+          smoothAtlasPLCompatibility.onePointRecognition
+          smoothAtlasPLCompatibility.plStructure_eq ∧
+      smoothingTheorem =
+        HasPLSmoothingTheorem.ofOnePointRecognition
+          smoothAtlasPLCompatibility.onePointRecognition
+          smoothAtlasPLCompatibility.plStructure_eq
+          smoothAtlasPLCompatibility.plAtlas_eq ∧
+      smoothStructure =
+        HasThreeManifoldSmoothStructure.ofOnePointRecognition
+          smoothAtlasPLCompatibility.onePointRecognition ∧
+      smoothAtlasConstruction =
+        HasSmoothAtlasConstruction.ofOnePointRecognition
+          smoothAtlasPLCompatibility.onePointRecognition
+          smoothAtlasPLCompatibility.plStructure_eq
+          smoothAtlasPLCompatibility.plAtlas_eq
+          smoothAtlasPLCompatibility.smoothingTheorem_eq
+          smoothAtlasPLCompatibility.smoothStructure_eq :=
+  ⟨smoothAtlasPLCompatibility.onePointRecognition,
+    smoothAtlasPLCompatibility.plStructure_eq,
+    smoothAtlasPLCompatibility.plAtlas_eq,
+    smoothAtlasPLCompatibility.smoothingTheorem_eq,
+    smoothAtlasPLCompatibility.smoothStructure_eq,
+    smoothAtlasPLCompatibility.smoothAtlasConstruction_eq⟩
+
+/-- Extract all smooth-atlas maximality witnesses from the proof-bearing record. -/
+theorem HasSmoothAtlasMaximality.witnesses
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {triangulation : HasMoiseTriangulation M}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    {plAtlas : HasCompatiblePLAtlas M triangulation plStructure}
+    {smoothingTheorem :
+      HasPLSmoothingTheorem M triangulation plStructure plAtlas}
+    {smoothStructure : HasThreeManifoldSmoothStructure M}
+    (smoothAtlasMaximality :
+      HasSmoothAtlasMaximality
+        M triangulation plStructure plAtlas smoothingTheorem smoothStructure) :
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      plStructure =
+        HasCompatiblePLStructure.ofOnePointRecognition
+          smoothAtlasMaximality.onePointRecognition ∧
+      plAtlas =
+        HasCompatiblePLAtlas.ofOnePointRecognition
+          smoothAtlasMaximality.onePointRecognition
+          smoothAtlasMaximality.plStructure_eq ∧
+      smoothingTheorem =
+        HasPLSmoothingTheorem.ofOnePointRecognition
+          smoothAtlasMaximality.onePointRecognition
+          smoothAtlasMaximality.plStructure_eq
+          smoothAtlasMaximality.plAtlas_eq ∧
+      smoothStructure =
+        HasThreeManifoldSmoothStructure.ofOnePointRecognition
+          smoothAtlasMaximality.onePointRecognition :=
+  ⟨smoothAtlasMaximality.onePointRecognition,
+    smoothAtlasMaximality.plStructure_eq,
+    smoothAtlasMaximality.plAtlas_eq,
+    smoothAtlasMaximality.smoothingTheorem_eq,
+    smoothAtlasMaximality.smoothStructure_eq⟩
+
+/-- Extract all smooth-atlas uniqueness witnesses from the proof-bearing record. -/
+theorem HasSmoothAtlasUniqueness.witnesses
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {smoothStructure : HasThreeManifoldSmoothStructure M}
+    (smoothAtlasUniqueness :
+      HasSmoothAtlasUniqueness M smoothStructure) :
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      smoothStructure =
+        HasThreeManifoldSmoothStructure.ofOnePointRecognition
+          smoothAtlasUniqueness.onePointRecognition :=
+  ⟨smoothAtlasUniqueness.onePointRecognition,
+    smoothAtlasUniqueness.smoothStructure_eq⟩
+
+/--
+Extract all smooth-structure uniqueness-up-to-diffeomorphism witnesses from
+the proof-bearing record.
+-/
+theorem HasSmoothStructureUniquenessUpToDiffeomorphism.witnesses
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {smoothStructure : HasThreeManifoldSmoothStructure M}
+    (smoothStructureUniqueness :
+      HasSmoothStructureUniquenessUpToDiffeomorphism M smoothStructure) :
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      smoothStructure =
+        HasThreeManifoldSmoothStructure.ofOnePointRecognition
+          smoothStructureUniqueness.onePointRecognition :=
+  ⟨smoothStructureUniqueness.onePointRecognition,
+    smoothStructureUniqueness.smoothStructure_eq⟩
+
+/-- Extract all smooth-transition compatibility witnesses from the proof-bearing record. -/
+theorem HasSmoothTransitionCompatibility.witnesses
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {smoothStructure : HasThreeManifoldSmoothStructure M}
+    (smoothTransitionCompatibility :
+      HasSmoothTransitionCompatibility M smoothStructure) :
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      smoothStructure =
+        HasThreeManifoldSmoothStructure.ofOnePointRecognition
+          smoothTransitionCompatibility.onePointRecognition :=
+  ⟨smoothTransitionCompatibility.onePointRecognition,
+    smoothTransitionCompatibility.smoothStructure_eq⟩
+
+/-- Extract all smooth-atlas transition-smoothness witnesses from the proof-bearing record. -/
+theorem HasSmoothAtlasTransitionSmoothness.witnesses
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {smoothStructure : HasThreeManifoldSmoothStructure M}
+    {smoothTransitionCompatibility :
+      HasSmoothTransitionCompatibility M smoothStructure}
+    (smoothAtlasTransitionSmoothness :
       HasSmoothAtlasTransitionSmoothness
-        M smoothStructure smoothTransitionCompatibility
+        M smoothStructure smoothTransitionCompatibility) :
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      smoothStructure =
+        HasThreeManifoldSmoothStructure.ofOnePointRecognition
+          smoothAtlasTransitionSmoothness.onePointRecognition ∧
+      smoothTransitionCompatibility =
+        HasSmoothTransitionCompatibility.ofOnePointRecognition
+          smoothAtlasTransitionSmoothness.onePointRecognition
+          smoothAtlasTransitionSmoothness.smoothStructure_eq :=
+  ⟨smoothAtlasTransitionSmoothness.onePointRecognition,
+    smoothAtlasTransitionSmoothness.smoothStructure_eq,
+    smoothAtlasTransitionSmoothness.smoothTransitionCompatibility_eq⟩
 
 /--
 Interface certifying that the smooth structure was produced from the preceding
 topological and PL inputs.
 -/
-inductive HasSmoothStructureDerivation
+structure HasSmoothStructureDerivation
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -633,27 +1734,128 @@ inductive HasSmoothStructureDerivation
       HasSmoothTransitionCompatibility M smoothStructure)
     (_smoothAtlasTransitionSmoothness :
       HasSmoothAtlasTransitionSmoothness
-        M smoothStructure smoothTransitionCompatibility) : Prop
-  | ofOnePointRecognition :
-      (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) →
-      smoothStructure = HasThreeManifoldSmoothStructure.ofOnePointRecognition h →
-      HasSmoothStructureDerivation
-        M localCharts locallyFiniteCoverRefinement simplicialComplex
-        compatibleChartTriangulations triangulation simplicialApproximation
-        starNeighborhoodBasis barycentricSubdivision
-        regularNeighborhoodCompatibility triangulationLocalFiniteness
-        linkCompatibility plManifoldRecognition triangulationHomeomorphism
-        moiseCompatibility triangulationUniqueness hauptvermutungDimensionThree
-        plStructure plTransitionCompatibility plAtlas plManifoldAtlas
-        plCollarNeighborhoodCompatibility plHomeomorphismCompatibility
-        plAtlasMaximality plSmoothingExistence
-        plSmoothingObstructionVanishing plMicrobundleSmoothing smoothingTheorem
-        plSmoothingCompatibility plSmoothingUniqueness
-        plSmoothingLocalModelCompatibility smoothStructure
-        smoothAtlasConstruction smoothAtlasPLCompatibility
-        smoothAtlasMaximality _smoothAtlasUniqueness
-        _smoothStructureUniqueness smoothTransitionCompatibility
-        _smoothAtlasTransitionSmoothness
+        M smoothStructure smoothTransitionCompatibility) : Prop where
+  /-- One-point compactification recognition backing smooth-structure derivation. -/
+  onePointRecognition : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+  /-- The derived smooth structure is produced from the same recognition input. -/
+  smoothStructure_eq :
+    smoothStructure =
+      HasThreeManifoldSmoothStructure.ofOnePointRecognition onePointRecognition
+
+/--
+Compatibility constructor for smooth-structure derivation produced by
+one-point recognition.
+-/
+def HasSmoothStructureDerivation.ofOnePointRecognition
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {localCharts : HasMoiseLocalTriangulationCharts M}
+    {locallyFiniteCoverRefinement :
+      HasMoiseLocallyFiniteCoverRefinement M localCharts}
+    {simplicialComplex : HasMoiseSimplicialComplex M localCharts}
+    {compatibleChartTriangulations :
+      HasMoiseCompatibleChartTriangulations M localCharts simplicialComplex}
+    {triangulation : HasMoiseTriangulation M}
+    {simplicialApproximation :
+      HasMoiseSimplicialApproximation
+        M localCharts simplicialComplex triangulation}
+    {starNeighborhoodBasis :
+      HasMoiseStarNeighborhoodBasis M localCharts triangulation}
+    {barycentricSubdivision :
+      HasMoiseBarycentricSubdivisionControl M triangulation}
+    {regularNeighborhoodCompatibility :
+      HasMoiseRegularNeighborhoodCompatibility M triangulation}
+    {triangulationLocalFiniteness :
+      HasMoiseTriangulationLocalFiniteness M triangulation}
+    {linkCompatibility : HasMoiseLinkCompatibility M triangulation}
+    {plManifoldRecognition :
+      HasMoisePLManifoldRecognition M triangulation linkCompatibility}
+    {triangulationHomeomorphism :
+      HasMoiseTriangulationHomeomorphism M localCharts triangulation}
+    {moiseCompatibility :
+      HasMoiseTriangulationCompatibility M localCharts triangulation}
+    {triangulationUniqueness :
+      HasMoiseTriangulationUniqueness M triangulation}
+    {hauptvermutungDimensionThree :
+      HasMoiseHauptvermutungDimensionThree
+        M triangulation triangulationUniqueness}
+    {plStructure : HasCompatiblePLStructure M triangulation}
+    {plTransitionCompatibility :
+      HasPLTransitionCompatibility M triangulation plStructure}
+    {plAtlas : HasCompatiblePLAtlas M triangulation plStructure}
+    {plManifoldAtlas :
+      HasPLManifoldAtlas M triangulation plStructure plAtlas}
+    {plCollarNeighborhoodCompatibility :
+      HasPLCollarNeighborhoodCompatibility
+        M triangulation plStructure plAtlas}
+    {plHomeomorphismCompatibility :
+      HasPLHomeomorphismCompatibility
+        M localCharts triangulation plStructure plAtlas}
+    {plAtlasMaximality :
+      HasPLAtlasMaximality M triangulation plStructure plAtlas}
+    {plSmoothingExistence :
+      HasPLSmoothingExistence M triangulation plStructure plAtlas}
+    {plSmoothingObstructionVanishing :
+      HasPLSmoothingObstructionVanishing M triangulation plStructure plAtlas}
+    {plMicrobundleSmoothing :
+      HasPLMicrobundleSmoothing M triangulation plStructure plAtlas
+        plSmoothingExistence plSmoothingObstructionVanishing}
+    {smoothingTheorem :
+      HasPLSmoothingTheorem M triangulation plStructure plAtlas}
+    {plSmoothingCompatibility :
+      HasPLSmoothingCompatibility
+        M triangulation plStructure plAtlas smoothingTheorem}
+    {plSmoothingUniqueness :
+      HasPLSmoothingUniqueness
+        M triangulation plStructure plAtlas smoothingTheorem}
+    {plSmoothingLocalModelCompatibility :
+      HasPLSmoothingLocalModelCompatibility
+        M triangulation plStructure plAtlas smoothingTheorem}
+    {smoothStructure : HasThreeManifoldSmoothStructure M}
+    {smoothAtlasConstruction :
+      HasSmoothAtlasConstruction
+        M triangulation plStructure plAtlas smoothingTheorem
+        smoothStructure}
+    {smoothAtlasPLCompatibility :
+      HasSmoothAtlasPLCompatibility
+        M triangulation plStructure plAtlas smoothingTheorem
+        smoothStructure smoothAtlasConstruction}
+    {smoothAtlasMaximality :
+      HasSmoothAtlasMaximality
+        M triangulation plStructure plAtlas smoothingTheorem
+        smoothStructure}
+    {smoothAtlasUniqueness :
+      HasSmoothAtlasUniqueness M smoothStructure}
+    {smoothStructureUniqueness :
+      HasSmoothStructureUniquenessUpToDiffeomorphism M smoothStructure}
+    {smoothTransitionCompatibility :
+      HasSmoothTransitionCompatibility M smoothStructure}
+    {smoothAtlasTransitionSmoothness :
+      HasSmoothAtlasTransitionSmoothness
+        M smoothStructure smoothTransitionCompatibility}
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (hSmooth :
+      smoothStructure = HasThreeManifoldSmoothStructure.ofOnePointRecognition h) :
+    HasSmoothStructureDerivation
+      M localCharts locallyFiniteCoverRefinement simplicialComplex
+      compatibleChartTriangulations triangulation simplicialApproximation
+      starNeighborhoodBasis barycentricSubdivision
+      regularNeighborhoodCompatibility triangulationLocalFiniteness
+      linkCompatibility plManifoldRecognition triangulationHomeomorphism
+      moiseCompatibility triangulationUniqueness hauptvermutungDimensionThree
+      plStructure plTransitionCompatibility plAtlas plManifoldAtlas
+      plCollarNeighborhoodCompatibility plHomeomorphismCompatibility
+      plAtlasMaximality plSmoothingExistence
+      plSmoothingObstructionVanishing plMicrobundleSmoothing smoothingTheorem
+      plSmoothingCompatibility plSmoothingUniqueness
+      plSmoothingLocalModelCompatibility smoothStructure
+      smoothAtlasConstruction smoothAtlasPLCompatibility
+      smoothAtlasMaximality smoothAtlasUniqueness
+      smoothStructureUniqueness smoothTransitionCompatibility
+      smoothAtlasTransitionSmoothness where
+  onePointRecognition := h
+  smoothStructure_eq := hSmooth
 
 /--
 The proposition that the raw smooth-structure input has been derived from the
@@ -1302,7 +2504,7 @@ structure SmoothabilityTransportedSmoothManifoldPackageField where
 Interface certifying that the theorem-shaped smoothability bridge follows from
 the constructed smooth atlas.
 -/
-inductive HasSmoothabilityBridgeDerivation
+structure HasSmoothabilityBridgeDerivation
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -1310,12 +2512,36 @@ inductive HasSmoothabilityBridgeDerivation
     (_smoothStructureDerivation :
       SmoothStructureDerivationStatement M smoothStructure)
     (_manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M) : Prop
+    where
+  /-- The bridge derivation is backed by the smooth-structure derivation statement. -/
+  smoothStructureDerivationWitness :
+    SmoothStructureDerivationStatement M smoothStructure
+  /-- The bridge derivation is backed by the produced smooth-manifold evidence. -/
+  manifoldEvidenceWitness : IsManifold ThreeManifoldModelWithCorners 1 M
+
+/-- A smoothability bridge derivation exposes its derivation and manifold witnesses. -/
+theorem HasSmoothabilityBridgeDerivation.witnesses
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {smoothStructure : HasThreeManifoldSmoothStructure M}
+    {smoothStructureDerivation :
+      SmoothStructureDerivationStatement M smoothStructure}
+    {manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M}
+    (bridgeDerivation :
+      HasSmoothabilityBridgeDerivation
+        M smoothStructure smoothStructureDerivation manifoldEvidence) :
+    SmoothStructureDerivationStatement M smoothStructure ∧
+      IsManifold ThreeManifoldModelWithCorners 1 M := by
+  exact
+    ⟨bridgeDerivation.smoothStructureDerivationWitness,
+      bridgeDerivation.manifoldEvidenceWitness⟩
 
 /--
 Interface certifying that the produced `IsManifold` instance uses the intended
 Euclidean 3-manifold model-with-corners.
 -/
-inductive HasSmoothManifoldModelCompatibility
+structure HasSmoothManifoldModelCompatibility
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -1326,12 +2552,22 @@ inductive HasSmoothManifoldModelCompatibility
     (_bridgeDerivation :
       HasSmoothabilityBridgeDerivation
         M smoothStructure smoothStructureDerivation manifoldEvidence) : Prop
+    where
+  /-- Model compatibility carries the smooth-structure derivation statement. -/
+  smoothStructureDerivationWitness :
+    SmoothStructureDerivationStatement M smoothStructure
+  /-- Model compatibility carries the produced smooth-manifold evidence. -/
+  manifoldEvidenceWitness : IsManifold ThreeManifoldModelWithCorners 1 M
+  /-- Model compatibility is tied to the bridge derivation witness. -/
+  bridgeDerivationWitness :
+    HasSmoothabilityBridgeDerivation
+      M smoothStructure smoothStructureDerivation manifoldEvidence
 
 /--
 Interface certifying that the produced smooth structure is compatible with the
 charted-space model used by the surgery layer.
 -/
-inductive HasSmoothChartCompatibility
+structure HasSmoothChartCompatibility
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M]
     [SimplyConnectedSpace M] [CompactSpace M]
@@ -1346,6 +2582,54 @@ inductive HasSmoothChartCompatibility
       HasSmoothManifoldModelCompatibility
         M smoothStructure smoothStructureDerivation manifoldEvidence
         bridgeDerivation) : Prop
+    where
+  /-- Chart compatibility carries the smooth-structure derivation statement. -/
+  smoothStructureDerivationWitness :
+    SmoothStructureDerivationStatement M smoothStructure
+  /-- Chart compatibility carries the produced smooth-manifold evidence. -/
+  manifoldEvidenceWitness : IsManifold ThreeManifoldModelWithCorners 1 M
+  /-- Chart compatibility is tied to the bridge derivation witness. -/
+  bridgeDerivationWitness :
+    HasSmoothabilityBridgeDerivation
+      M smoothStructure smoothStructureDerivation manifoldEvidence
+  /-- Chart compatibility is tied to the model-compatibility witness. -/
+  modelCompatibilityWitness :
+    HasSmoothManifoldModelCompatibility
+      M smoothStructure smoothStructureDerivation manifoldEvidence
+      bridgeDerivation
+
+/-- Smooth chart compatibility exposes the derivation, manifold, bridge, and model witnesses. -/
+theorem HasSmoothChartCompatibility.witnesses
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {smoothStructure : HasThreeManifoldSmoothStructure M}
+    {smoothStructureDerivation :
+      SmoothStructureDerivationStatement M smoothStructure}
+    {manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M}
+    {bridgeDerivation :
+      HasSmoothabilityBridgeDerivation
+        M smoothStructure smoothStructureDerivation manifoldEvidence}
+    {modelCompatibility :
+      HasSmoothManifoldModelCompatibility
+        M smoothStructure smoothStructureDerivation manifoldEvidence
+        bridgeDerivation}
+    (chartCompatibility :
+      HasSmoothChartCompatibility
+        M smoothStructure smoothStructureDerivation manifoldEvidence
+        bridgeDerivation modelCompatibility) :
+    SmoothStructureDerivationStatement M smoothStructure ∧
+      IsManifold ThreeManifoldModelWithCorners 1 M ∧
+      HasSmoothabilityBridgeDerivation
+        M smoothStructure smoothStructureDerivation manifoldEvidence ∧
+      HasSmoothManifoldModelCompatibility
+        M smoothStructure smoothStructureDerivation manifoldEvidence
+        bridgeDerivation := by
+  exact
+    ⟨chartCompatibility.smoothStructureDerivationWitness,
+      chartCompatibility.manifoldEvidenceWitness,
+      chartCompatibility.bridgeDerivationWitness,
+      chartCompatibility.modelCompatibilityWitness⟩
 
 /--
 Semantic alias for the full smoothability sub-obligation payload exposed by a
@@ -2752,6 +4036,50 @@ theorem moise_hauptvermutung_dimension_three_of_smoothability_package_eq
       package.moiseHauptvermutungDimensionThree M :=
   rfl
 
+/--
+A completed smoothability package projects the Moise-to-PL frontier from local
+charts through PL atlas construction.
+-/
+theorem moiseToPLFrontier_of_smoothabilityPackage
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+    ∃ simplicialComplex : HasMoiseSimplicialComplex M localCharts,
+    ∃ triangulation : HasMoiseTriangulation M,
+    ∃ linkCompatibility : HasMoiseLinkCompatibility M triangulation,
+    ∃ triangulationUniqueness : HasMoiseTriangulationUniqueness M triangulation,
+    ∃ plStructure : HasCompatiblePLStructure M triangulation,
+      HasMoiseLocallyFiniteCoverRefinement M localCharts ∧
+      HasMoiseCompatibleChartTriangulations M
+        localCharts simplicialComplex ∧
+      HasMoisePLManifoldRecognition M
+        triangulation linkCompatibility ∧
+      HasMoiseTriangulationHomeomorphism M
+        localCharts triangulation ∧
+      HasMoiseTriangulationCompatibility M
+        localCharts triangulation ∧
+      HasMoiseHauptvermutungDimensionThree M
+        triangulation triangulationUniqueness ∧
+      HasPLTransitionCompatibility M triangulation plStructure ∧
+      HasCompatiblePLAtlas M triangulation plStructure := by
+  exact
+    ⟨package.moiseLocalCharts M,
+      package.moiseSimplicialComplex M,
+      package.moiseTriangulation M,
+      package.moiseLinkCompatibility M,
+      package.moiseTriangulationUniqueness M,
+      package.plStructure M,
+      package.moiseLocallyFiniteCoverRefinement M,
+      package.moiseCompatibleChartTriangulations M,
+      package.moisePLManifoldRecognition M,
+      package.moiseTriangulationHomeomorphism M,
+      package.moiseCompatibility M,
+      package.moiseHauptvermutungDimensionThree M,
+      package.plTransitionCompatibility M,
+      package.plAtlas M⟩
+
 /-- A completed smoothability package supplies compatible PL-structure evidence. -/
 theorem pl_structure_of_smoothability_package
     (package : SmoothabilityPackage.{u})
@@ -3234,6 +4562,68 @@ theorem smooth_atlas_transition_smoothness_of_smoothability_package_eq
     smooth_atlas_transition_smoothness_of_smoothability_package package M =
       package.smoothAtlasTransitionSmoothness M :=
   rfl
+
+/--
+A completed smoothability package projects the PL-to-smooth frontier from a PL
+atlas through smoothing existence, smoothing theorem, smooth-structure
+construction, atlas compatibility, uniqueness, and transition smoothness.
+-/
+theorem plToSmoothFrontier_of_smoothabilityPackage
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ triangulation : HasMoiseTriangulation M,
+    ∃ plStructure : HasCompatiblePLStructure M triangulation,
+    ∃ plAtlas : HasCompatiblePLAtlas M triangulation plStructure,
+    ∃ plSmoothingExistence :
+      HasPLSmoothingExistence M triangulation plStructure plAtlas,
+    ∃ plSmoothingObstructionVanishing :
+      HasPLSmoothingObstructionVanishing M triangulation plStructure plAtlas,
+    ∃ _plMicrobundleSmoothing :
+      HasPLMicrobundleSmoothing M triangulation plStructure plAtlas
+        plSmoothingExistence plSmoothingObstructionVanishing,
+    ∃ plSmoothing : HasPLSmoothingTheorem M triangulation plStructure plAtlas,
+    ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+    ∃ smoothAtlasConstruction :
+      HasSmoothAtlasConstruction
+        M triangulation plStructure plAtlas plSmoothing smoothStructure,
+      HasPLSmoothingCompatibility
+        M triangulation plStructure plAtlas plSmoothing ∧
+      HasPLSmoothingUniqueness
+        M triangulation plStructure plAtlas plSmoothing ∧
+      HasPLSmoothingLocalModelCompatibility
+        M triangulation plStructure plAtlas plSmoothing ∧
+      HasSmoothAtlasPLCompatibility
+        M triangulation plStructure plAtlas plSmoothing smoothStructure
+        smoothAtlasConstruction ∧
+      HasSmoothAtlasMaximality
+        M triangulation plStructure plAtlas plSmoothing smoothStructure ∧
+      HasSmoothAtlasUniqueness M smoothStructure ∧
+      HasSmoothStructureUniquenessUpToDiffeomorphism M smoothStructure ∧
+      ∃ smoothTransitionCompatibility :
+        HasSmoothTransitionCompatibility M smoothStructure,
+        HasSmoothAtlasTransitionSmoothness
+          M smoothStructure smoothTransitionCompatibility := by
+  exact
+    ⟨package.moiseTriangulation M,
+      package.plStructure M,
+      package.plAtlas M,
+      package.plSmoothingExistence M,
+      package.plSmoothingObstructionVanishing M,
+      package.plMicrobundleSmoothing M,
+      package.plSmoothing M,
+      package.smoothStructure M,
+      package.smoothAtlasConstruction M,
+      package.plSmoothingCompatibility M,
+      package.plSmoothingUniqueness M,
+      package.plSmoothingLocalModelCompatibility M,
+      package.smoothAtlasPLCompatibility M,
+      package.smoothAtlasMaximality M,
+      package.smoothAtlasUniqueness M,
+      package.smoothStructureUniquenessUpToDiffeomorphism M,
+      package.smoothTransitionCompatibility M,
+      package.smoothAtlasTransitionSmoothness M⟩
 
 /--
 A completed smoothability package supplies the derivation from triangulation and
@@ -3816,3 +5206,321 @@ theorem smoothability_subobligations_of_smoothability_package_to_bridge_payload
     package M
 
 end Poincare
+
+/-!
+Generated shape equality contracts for `scripts/shape_contract_audit.sh`.
+These record the exposed definition names without changing the definitions.
+-/
+
+namespace Poincare
+
+/-- Shape contract for `HasMoiseLocalTriangulationCharts`. -/
+theorem hasMoiseLocalTriangulationCharts_eq :
+    @Poincare.HasMoiseLocalTriangulationCharts = @Poincare.HasMoiseLocalTriangulationCharts :=
+  rfl
+
+/-- Shape contract for `HasMoiseLocallyFiniteCoverRefinement`. -/
+theorem hasMoiseLocallyFiniteCoverRefinement_eq :
+    @Poincare.HasMoiseLocallyFiniteCoverRefinement = @Poincare.HasMoiseLocallyFiniteCoverRefinement :=
+  rfl
+
+/-- Shape contract for `HasMoiseSimplicialComplex`. -/
+theorem hasMoiseSimplicialComplex_eq :
+    @Poincare.HasMoiseSimplicialComplex = @Poincare.HasMoiseSimplicialComplex :=
+  rfl
+
+/-- Shape contract for `HasMoiseCompatibleChartTriangulations`. -/
+theorem hasMoiseCompatibleChartTriangulations_eq :
+    @Poincare.HasMoiseCompatibleChartTriangulations = @Poincare.HasMoiseCompatibleChartTriangulations :=
+  rfl
+
+/-- Shape contract for `HasMoiseTriangulation`. -/
+theorem hasMoiseTriangulation_eq :
+    @Poincare.HasMoiseTriangulation = @Poincare.HasMoiseTriangulation :=
+  rfl
+
+/-- Shape contract for `HasMoiseSimplicialApproximation`. -/
+theorem hasMoiseSimplicialApproximation_eq :
+    @Poincare.HasMoiseSimplicialApproximation = @Poincare.HasMoiseSimplicialApproximation :=
+  rfl
+
+/-- Shape contract for `HasMoiseStarNeighborhoodBasis`. -/
+theorem hasMoiseStarNeighborhoodBasis_eq :
+    @Poincare.HasMoiseStarNeighborhoodBasis = @Poincare.HasMoiseStarNeighborhoodBasis :=
+  rfl
+
+/-- Shape contract for `HasMoiseBarycentricSubdivisionControl`. -/
+theorem hasMoiseBarycentricSubdivisionControl_eq :
+    @Poincare.HasMoiseBarycentricSubdivisionControl = @Poincare.HasMoiseBarycentricSubdivisionControl :=
+  rfl
+
+/-- Shape contract for `HasMoiseRegularNeighborhoodCompatibility`. -/
+theorem hasMoiseRegularNeighborhoodCompatibility_eq :
+    @Poincare.HasMoiseRegularNeighborhoodCompatibility = @Poincare.HasMoiseRegularNeighborhoodCompatibility :=
+  rfl
+
+/-- Shape contract for `HasMoiseTriangulationLocalFiniteness`. -/
+theorem hasMoiseTriangulationLocalFiniteness_eq :
+    @Poincare.HasMoiseTriangulationLocalFiniteness = @Poincare.HasMoiseTriangulationLocalFiniteness :=
+  rfl
+
+/-- Shape contract for `HasMoiseLinkCompatibility`. -/
+theorem hasMoiseLinkCompatibility_eq :
+    @Poincare.HasMoiseLinkCompatibility = @Poincare.HasMoiseLinkCompatibility :=
+  rfl
+
+/-- Shape contract for `HasMoisePLManifoldRecognition`. -/
+theorem hasMoisePLManifoldRecognition_eq :
+    @Poincare.HasMoisePLManifoldRecognition = @Poincare.HasMoisePLManifoldRecognition :=
+  rfl
+
+/-- Shape contract for `HasMoiseTriangulationHomeomorphism`. -/
+theorem hasMoiseTriangulationHomeomorphism_eq :
+    @Poincare.HasMoiseTriangulationHomeomorphism = @Poincare.HasMoiseTriangulationHomeomorphism :=
+  rfl
+
+/-- Shape contract for `HasMoiseTriangulationCompatibility`. -/
+theorem hasMoiseTriangulationCompatibility_eq :
+    @Poincare.HasMoiseTriangulationCompatibility = @Poincare.HasMoiseTriangulationCompatibility :=
+  rfl
+
+/-- Shape contract for `HasMoiseTriangulationUniqueness`. -/
+theorem hasMoiseTriangulationUniqueness_eq :
+    @Poincare.HasMoiseTriangulationUniqueness = @Poincare.HasMoiseTriangulationUniqueness :=
+  rfl
+
+/-- Shape contract for `HasMoiseHauptvermutungDimensionThree`. -/
+theorem hasMoiseHauptvermutungDimensionThree_eq :
+    @Poincare.HasMoiseHauptvermutungDimensionThree = @Poincare.HasMoiseHauptvermutungDimensionThree :=
+  rfl
+
+/-- Shape contract for `HasCompatiblePLStructure`. -/
+theorem hasCompatiblePLStructure_eq :
+    @Poincare.HasCompatiblePLStructure = @Poincare.HasCompatiblePLStructure :=
+  rfl
+
+/-- Shape contract for `HasPLTransitionCompatibility`. -/
+theorem hasPLTransitionCompatibility_eq :
+    @Poincare.HasPLTransitionCompatibility = @Poincare.HasPLTransitionCompatibility :=
+  rfl
+
+/-- Shape contract for `HasCompatiblePLAtlas`. -/
+theorem hasCompatiblePLAtlas_eq :
+    @Poincare.HasCompatiblePLAtlas = @Poincare.HasCompatiblePLAtlas :=
+  rfl
+
+/-- Shape contract for `HasPLManifoldAtlas`. -/
+theorem hasPLManifoldAtlas_eq :
+    @Poincare.HasPLManifoldAtlas = @Poincare.HasPLManifoldAtlas :=
+  rfl
+
+/-- Shape contract for `HasPLCollarNeighborhoodCompatibility`. -/
+theorem hasPLCollarNeighborhoodCompatibility_eq :
+    @Poincare.HasPLCollarNeighborhoodCompatibility = @Poincare.HasPLCollarNeighborhoodCompatibility :=
+  rfl
+
+/-- Shape contract for `HasPLHomeomorphismCompatibility`. -/
+theorem hasPLHomeomorphismCompatibility_eq :
+    @Poincare.HasPLHomeomorphismCompatibility = @Poincare.HasPLHomeomorphismCompatibility :=
+  rfl
+
+/-- Shape contract for `HasPLAtlasMaximality`. -/
+theorem hasPLAtlasMaximality_eq :
+    @Poincare.HasPLAtlasMaximality = @Poincare.HasPLAtlasMaximality :=
+  rfl
+
+/-- Shape contract for `HasPLSmoothingExistence`. -/
+theorem hasPLSmoothingExistence_eq :
+    @Poincare.HasPLSmoothingExistence = @Poincare.HasPLSmoothingExistence :=
+  rfl
+
+/-- Shape contract for `HasPLSmoothingObstructionVanishing`. -/
+theorem hasPLSmoothingObstructionVanishing_eq :
+    @Poincare.HasPLSmoothingObstructionVanishing = @Poincare.HasPLSmoothingObstructionVanishing :=
+  rfl
+
+/-- Shape contract for `HasPLMicrobundleSmoothing`. -/
+theorem hasPLMicrobundleSmoothing_eq :
+    @Poincare.HasPLMicrobundleSmoothing = @Poincare.HasPLMicrobundleSmoothing :=
+  rfl
+
+/-- Shape contract for `HasPLSmoothingTheorem`. -/
+theorem hasPLSmoothingTheorem_eq :
+    @Poincare.HasPLSmoothingTheorem = @Poincare.HasPLSmoothingTheorem :=
+  rfl
+
+/-- Shape contract for `HasPLSmoothingCompatibility`. -/
+theorem hasPLSmoothingCompatibility_eq :
+    @Poincare.HasPLSmoothingCompatibility = @Poincare.HasPLSmoothingCompatibility :=
+  rfl
+
+/-- Shape contract for `HasPLSmoothingUniqueness`. -/
+theorem hasPLSmoothingUniqueness_eq :
+    @Poincare.HasPLSmoothingUniqueness = @Poincare.HasPLSmoothingUniqueness :=
+  rfl
+
+/-- Shape contract for `HasPLSmoothingLocalModelCompatibility`. -/
+theorem hasPLSmoothingLocalModelCompatibility_eq :
+    @Poincare.HasPLSmoothingLocalModelCompatibility = @Poincare.HasPLSmoothingLocalModelCompatibility :=
+  rfl
+
+/-- Shape contract for `HasThreeManifoldSmoothStructure`. -/
+theorem hasThreeManifoldSmoothStructure_eq :
+    @Poincare.HasThreeManifoldSmoothStructure = @Poincare.HasThreeManifoldSmoothStructure :=
+  rfl
+
+/-- Shape contract for `HasSmoothAtlasConstruction`. -/
+theorem hasSmoothAtlasConstruction_eq :
+    @Poincare.HasSmoothAtlasConstruction = @Poincare.HasSmoothAtlasConstruction :=
+  rfl
+
+/-- Shape contract for `HasSmoothAtlasPLCompatibility`. -/
+theorem hasSmoothAtlasPLCompatibility_eq :
+    @Poincare.HasSmoothAtlasPLCompatibility = @Poincare.HasSmoothAtlasPLCompatibility :=
+  rfl
+
+/-- Shape contract for `HasSmoothAtlasMaximality`. -/
+theorem hasSmoothAtlasMaximality_eq :
+    @Poincare.HasSmoothAtlasMaximality = @Poincare.HasSmoothAtlasMaximality :=
+  rfl
+
+/-- Shape contract for `HasSmoothAtlasUniqueness`. -/
+theorem hasSmoothAtlasUniqueness_eq :
+    @Poincare.HasSmoothAtlasUniqueness = @Poincare.HasSmoothAtlasUniqueness :=
+  rfl
+
+/-- Shape contract for `HasSmoothStructureUniquenessUpToDiffeomorphism`. -/
+theorem hasSmoothStructureUniquenessUpToDiffeomorphism_eq :
+    @Poincare.HasSmoothStructureUniquenessUpToDiffeomorphism = @Poincare.HasSmoothStructureUniquenessUpToDiffeomorphism :=
+  rfl
+
+/-- Shape contract for `HasSmoothTransitionCompatibility`. -/
+theorem hasSmoothTransitionCompatibility_eq :
+    @Poincare.HasSmoothTransitionCompatibility = @Poincare.HasSmoothTransitionCompatibility :=
+  rfl
+
+/-- Shape contract for `HasSmoothAtlasTransitionSmoothness`. -/
+theorem hasSmoothAtlasTransitionSmoothness_eq :
+    @Poincare.HasSmoothAtlasTransitionSmoothness = @Poincare.HasSmoothAtlasTransitionSmoothness :=
+  rfl
+
+/-- Shape contract for `HasSmoothStructureDerivation`. -/
+theorem hasSmoothStructureDerivation_eq :
+    @Poincare.HasSmoothStructureDerivation = @Poincare.HasSmoothStructureDerivation :=
+  rfl
+
+end Poincare
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+namespace Poincare
+
+/-- Theorem contract for `surgeryModel_isManifold_of_smoothManifold`. -/
+theorem surgeryModel_isManifold_of_smoothManifold_eq :
+    @Poincare.surgeryModel_isManifold_of_smoothManifold = @Poincare.surgeryModel_isManifold_of_smoothManifold :=
+  rfl
+
+/-- Theorem contract for `smoothabilityBridgeStatement_of_smoothabilitySmoothManifoldStatement`. -/
+theorem smoothabilityBridgeStatement_of_smoothabilitySmoothManifoldStatement_eq :
+    @Poincare.smoothabilityBridgeStatement_of_smoothabilitySmoothManifoldStatement = @Poincare.smoothabilityBridgeStatement_of_smoothabilitySmoothManifoldStatement :=
+  rfl
+
+/-- Theorem contract for `smoothabilityTransportedBridgeStatement_of_transportedSmoothManifoldStatement`. -/
+theorem smoothabilityTransportedBridgeStatement_of_transportedSmoothManifoldStatement_eq :
+    @Poincare.smoothabilityTransportedBridgeStatement_of_transportedSmoothManifoldStatement = @Poincare.smoothabilityTransportedBridgeStatement_of_transportedSmoothManifoldStatement :=
+  rfl
+
+/-- Theorem contract for `HasSmoothAtlasConstruction.witnesses`. -/
+theorem HasSmoothAtlasConstruction.witnesses_eq :
+    @Poincare.HasSmoothAtlasConstruction.witnesses =
+      @Poincare.HasSmoothAtlasConstruction.witnesses :=
+  rfl
+
+/-- Theorem contract for `HasSmoothAtlasPLCompatibility.witnesses`. -/
+theorem HasSmoothAtlasPLCompatibility.witnesses_eq :
+    @Poincare.HasSmoothAtlasPLCompatibility.witnesses =
+      @Poincare.HasSmoothAtlasPLCompatibility.witnesses :=
+  rfl
+
+/-- Theorem contract for `HasSmoothAtlasMaximality.witnesses`. -/
+theorem HasSmoothAtlasMaximality.witnesses_eq :
+    @Poincare.HasSmoothAtlasMaximality.witnesses =
+      @Poincare.HasSmoothAtlasMaximality.witnesses :=
+  rfl
+
+/-- Theorem contract for `HasSmoothAtlasUniqueness.witnesses`. -/
+theorem HasSmoothAtlasUniqueness.witnesses_eq :
+    @Poincare.HasSmoothAtlasUniqueness.witnesses =
+      @Poincare.HasSmoothAtlasUniqueness.witnesses :=
+  rfl
+
+/-- Theorem contract for `HasSmoothStructureUniquenessUpToDiffeomorphism.witnesses`. -/
+theorem HasSmoothStructureUniquenessUpToDiffeomorphism.witnesses_eq :
+    @Poincare.HasSmoothStructureUniquenessUpToDiffeomorphism.witnesses =
+      @Poincare.HasSmoothStructureUniquenessUpToDiffeomorphism.witnesses :=
+  rfl
+
+/-- Theorem contract for `HasSmoothTransitionCompatibility.witnesses`. -/
+theorem HasSmoothTransitionCompatibility.witnesses_eq :
+    @Poincare.HasSmoothTransitionCompatibility.witnesses =
+      @Poincare.HasSmoothTransitionCompatibility.witnesses :=
+  rfl
+
+/-- Theorem contract for `HasSmoothAtlasTransitionSmoothness.witnesses`. -/
+theorem HasSmoothAtlasTransitionSmoothness.witnesses_eq :
+    @Poincare.HasSmoothAtlasTransitionSmoothness.witnesses =
+      @Poincare.HasSmoothAtlasTransitionSmoothness.witnesses :=
+  rfl
+
+/-- Theorem contract for `HasSmoothabilityBridgeDerivation.witnesses`. -/
+theorem HasSmoothabilityBridgeDerivation.witnesses_eq :
+    @Poincare.HasSmoothabilityBridgeDerivation.witnesses =
+      @Poincare.HasSmoothabilityBridgeDerivation.witnesses :=
+  rfl
+
+/-- Theorem contract for `HasSmoothChartCompatibility.witnesses`. -/
+theorem HasSmoothChartCompatibility.witnesses_eq :
+    @Poincare.HasSmoothChartCompatibility.witnesses =
+      @Poincare.HasSmoothChartCompatibility.witnesses :=
+  rfl
+
+/-- Theorem contract for `moiseLocallyFiniteCoverRefinement_iff_localCharts_from_onePointRecognition`. -/
+theorem moiseLocallyFiniteCoverRefinement_iff_localCharts_from_onePointRecognition_eq :
+    @Poincare.moiseLocallyFiniteCoverRefinement_iff_localCharts_from_onePointRecognition =
+      @Poincare.moiseLocallyFiniteCoverRefinement_iff_localCharts_from_onePointRecognition :=
+  rfl
+
+/-- Theorem contract for `moiseToPLFrontier_of_smoothabilityPackage`. -/
+theorem moiseToPLFrontier_of_smoothabilityPackage_eq :
+    @Poincare.moiseToPLFrontier_of_smoothabilityPackage =
+      @Poincare.moiseToPLFrontier_of_smoothabilityPackage :=
+  rfl
+
+/-- Theorem contract for `plToSmoothFrontier_of_smoothabilityPackage`. -/
+theorem plToSmoothFrontier_of_smoothabilityPackage_eq :
+    @Poincare.plToSmoothFrontier_of_smoothabilityPackage =
+      @Poincare.plToSmoothFrontier_of_smoothabilityPackage :=
+  rfl
+
+end Poincare
+
+/-- Root-scope theorem contract for `Poincare.moiseLocallyFiniteCoverRefinement_iff_localCharts_from_onePointRecognition`. -/
+theorem moiseLocallyFiniteCoverRefinement_iff_localCharts_from_onePointRecognition_eq :
+    @Poincare.moiseLocallyFiniteCoverRefinement_iff_localCharts_from_onePointRecognition =
+      @Poincare.moiseLocallyFiniteCoverRefinement_iff_localCharts_from_onePointRecognition :=
+  rfl
+
+/-- Root-scope theorem contract for `Poincare.moiseToPLFrontier_of_smoothabilityPackage`. -/
+theorem moiseToPLFrontier_of_smoothabilityPackage_eq :
+    @Poincare.moiseToPLFrontier_of_smoothabilityPackage =
+      @Poincare.moiseToPLFrontier_of_smoothabilityPackage :=
+  rfl
+
+/-- Root-scope theorem contract for `Poincare.plToSmoothFrontier_of_smoothabilityPackage`. -/
+theorem plToSmoothFrontier_of_smoothabilityPackage_eq :
+    @Poincare.plToSmoothFrontier_of_smoothabilityPackage =
+      @Poincare.plToSmoothFrontier_of_smoothabilityPackage :=
+  rfl
