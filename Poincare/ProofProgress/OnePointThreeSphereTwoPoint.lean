@@ -85,6 +85,57 @@ theorem onePoint_threeSpace_twoPointComplement_topology_package_eq :
   rfl
 
 /--
+The explicit one-point-to-`ThreeSphere` two-puncture complement bridge carries
+matching topology packages on the source and target models: nonemptiness,
+path-connectedness, connectedness, and simple connectedness on both sides.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_topology_packages
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    Nonempty (({p} ∪ {q})ᶜ :
+      Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      PathConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      ConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      SimplyConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      Nonempty
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere) ∧
+      PathConnectedSpace
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere) ∧
+      ConnectedSpace
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere) ∧
+      SimplyConnectedSpace
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere) := by
+  let e : OnePoint (EuclideanSpace ℝ (Fin 3)) ≃ₜ ThreeSphere :=
+    Classical.choice onePoint_threeSpace_homeomorph_threeSphere
+  have hImage : e q ≠ e p := by
+    intro h
+    exact hqp (e.injective h)
+  rcases onePoint_threeSpace_twoPointComplement_topology_package hqp with
+    ⟨hSourceNonempty, hSourcePath, hSourceConnected, hSourceSimply⟩
+  exact
+    ⟨hSourceNonempty, hSourcePath, hSourceConnected, hSourceSimply,
+      threeSphere_twoPointComplement_nonempty hImage,
+      threeSphere_twoPointComplement_pathConnectedSpace hImage,
+      threeSphere_twoPointComplement_connectedSpace hImage,
+      threeSphere_twoPointComplement_simplyConnectedSpace hImage⟩
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_topology_packages`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_topology_packages_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_topology_packages =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_topology_packages :=
+  rfl
+
+/--
 The standard one-point compactification model two-puncture complement carries
 the transported punctured-Euclidean chart together with the canonical path,
 endpoint-data, homotopy quotient collapse, loop nullhomotopy, and `π₁`
