@@ -28510,4 +28510,71 @@ theorem dependency_only_statement_applications_concrete_topological_maps_certifi
       @Poincare.dependency_only_statement_applications_concrete_topological_maps_certificate_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only canonical target with universal concrete final maps.
+
+This collapses the equation-boundary dependency package to the reserved
+canonical completion target and, for each admissible `M`, a concrete final
+homeomorphism carrying the recognition-facing topological map data.  The
+statement is still conditional on the dependency package, but its surface is
+the actual project target plus concrete map consequences rather than the
+larger certificate ledger.
+-/
+theorem dependency_only_canonical_target_with_universal_concrete_final_maps_certificate_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+        ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+          IsOpenMap projectHomeomorphism ∧
+          IsClosedMap projectHomeomorphism ∧
+          Topology.IsInducing projectHomeomorphism ∧
+          Topology.IsEmbedding projectHomeomorphism ∧
+          Function.Bijective projectHomeomorphism ∧
+          Continuous projectHomeomorphism ∧
+          Continuous projectHomeomorphism.symm ∧
+          Function.LeftInverse projectHomeomorphism.symm projectHomeomorphism ∧
+          Function.RightInverse projectHomeomorphism.symm projectHomeomorphism ∧
+          CompletionCriterionAtUniverse M := by
+  constructor
+  · exact conditional_poincare_conjecture_of_equation_boundary_dependencies dependencies
+  · intro M _ _ _ _ _
+    rcases
+        dependency_only_concrete_homeomorphism_topological_map_payloads_certificate_of_equation_boundary_dependencies
+          dependencies M with
+      ⟨_canonicalTarget, _projectStatement, _expandedStatement,
+        _mathlibStatement, _projectWitness, _mathlibWitness,
+        projectHomeomorphism, _mathlibHomeomorphism, hProjectOpen,
+        _hMathlibOpen, hProjectClosed, _hMathlibClosed, hProjectInducing,
+        _hMathlibInducing, hProjectEmbedding, _hMathlibEmbedding,
+        hProjectBijective, _hMathlibBijective, hProjectLeftInverse,
+        hProjectRightInverse, _hMathlibLeftInverse, _hMathlibRightInverse,
+        hProjectContinuous, _hMathlibContinuous, hProjectSymmContinuous,
+        _hMathlibSymmContinuous, _hForward, _hInverse, _hHomeomorphism,
+        _hProjectExpanded, _hProjectMathlib, _hExpandedMathlib,
+        _hProjectMathlibWitness, _hMathlibWitness, _hProjectWitness,
+        _hProjectHomeomorphism, _hMathlibHomeomorphism, completionCriterion,
+        _canonicalPayload, _projectPayload, _certificate, _hCertificate,
+        _hCanonicalPayload, _hProjectPayload⟩
+    exact
+      ⟨projectHomeomorphism,
+        hProjectOpen,
+        hProjectClosed,
+        hProjectInducing,
+        hProjectEmbedding,
+        hProjectBijective,
+        hProjectContinuous,
+        hProjectSymmContinuous,
+        hProjectLeftInverse,
+        hProjectRightInverse,
+        completionCriterion⟩
+
+/-- Theorem contract for
+`dependency_only_canonical_target_with_universal_concrete_final_maps_certificate_of_equation_boundary_dependencies`. -/
+theorem dependency_only_canonical_target_with_universal_concrete_final_maps_certificate_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_canonical_target_with_universal_concrete_final_maps_certificate_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_canonical_target_with_universal_concrete_final_maps_certificate_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
