@@ -2386,4 +2386,59 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_transport_paths_homoto
       @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_transport_paths_homotopic_payload :=
   rfl
 
+/--
+Transported same-endpoint path homotopies carry the full two-puncture topology
+payload: both complements are connected and both transported path-quotient
+classes agree.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_transport_paths_fullTopology_homotopic_payload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    {sourceBase sourceTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    (sourcePath₀ sourcePath₁ : Path sourceBase sourceTarget)
+    {targetBase targetTarget :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)}
+    (targetPath₀ targetPath₁ : Path targetBase targetTarget) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    let Source :=
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    let Target :=
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)
+    ConnectedSpace Source ∧
+      ConnectedSpace Target ∧
+      Path.Homotopic
+        (sourcePath₀.map H.continuous)
+        (sourcePath₁.map H.continuous) ∧
+      (⟦sourcePath₀.map H.continuous⟧ :
+        Path.Homotopic.Quotient (H sourceBase) (H sourceTarget)) =
+        ⟦sourcePath₁.map H.continuous⟧ ∧
+      Path.Homotopic
+        (targetPath₀.map H.symm.continuous)
+        (targetPath₁.map H.symm.continuous) ∧
+      (⟦targetPath₀.map H.symm.continuous⟧ :
+        Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetTarget)) =
+        ⟦targetPath₁.map H.symm.continuous⟧ := by
+  dsimp
+  rcases onePoint_threeSpace_twoPointComplement_homeomorph_topology_packages hqp with
+    ⟨_, _, hSourceConnected, _, _, _, hTargetConnected, _⟩
+  rcases
+      onePoint_threeSpace_twoPointComplement_homeomorph_transport_paths_homotopic_payload
+        hqp sourcePath₀ sourcePath₁ targetPath₀ targetPath₁ with
+    ⟨hSourceHomotopic, hSourceQuotient, hTargetHomotopic, hTargetQuotient⟩
+  exact
+    ⟨hSourceConnected, hTargetConnected, hSourceHomotopic, hSourceQuotient,
+      hTargetHomotopic, hTargetQuotient⟩
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_transport_paths_fullTopology_homotopic_payload`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_transport_paths_fullTopology_homotopic_payload_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_transport_paths_fullTopology_homotopic_payload =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_transport_paths_fullTopology_homotopic_payload :=
+  rfl
+
 end Poincare
