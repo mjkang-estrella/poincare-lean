@@ -511,6 +511,31 @@ theorem twoPointComplement_nonempty_of_homeomorph_to_onePoint_threeSpace
   infer_instance
 
 /--
+The topology package for every two-puncture complement of a space recognized as
+the one-point compactification of `R^3`: nonemptiness, path-connectedness,
+connectedness, and simple connectedness.
+-/
+theorem twoPointComplement_topology_package_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x) :
+    Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+      PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+      ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+      SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+  ⟨twoPointComplement_nonempty_of_homeomorph_to_onePoint_threeSpace h hyx,
+    twoPointComplement_pathConnectedSpace_of_homeomorph_to_onePoint_threeSpace h hyx,
+    twoPointComplement_connectedSpace_of_homeomorph_to_onePoint_threeSpace h hyx,
+    twoPointComplement_simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+      h hyx⟩
+
+/-- Theorem contract for `twoPointComplement_topology_package_of_homeomorph_to_onePoint_threeSpace`. -/
+theorem twoPointComplement_topology_package_of_homeomorph_to_onePoint_threeSpace_eq :
+    @Poincare.twoPointComplement_topology_package_of_homeomorph_to_onePoint_threeSpace =
+      @Poincare.twoPointComplement_topology_package_of_homeomorph_to_onePoint_threeSpace :=
+  rfl
+
+/--
 The transported two-puncture Euclidean chart also carries the concrete topology
 payload needed downstream: the image avoids the transported puncture, and the
 source complement is nonempty, path-connected, and simply connected.
@@ -540,6 +565,38 @@ theorem exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_topolog
   have hNonempty : Nonempty (({x} ∪ {y})ᶜ : Set M) :=
     twoPointComplement_nonempty_of_homeomorph_to_onePoint_threeSpace h hyx
   exact ⟨puncture, chart, hAvoidsPuncture, hNonempty, hPath, hSimply⟩
+
+/--
+The transported two-puncture Euclidean chart with the full concrete topology
+payload, including connectedness in addition to nonemptiness,
+path-connectedness, and simple connectedness.
+-/
+theorem exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_fullTopologyPayload
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x) :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      ∃ chart : (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+          ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        (∀ z, (chart z : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+          Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+          PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+          ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+          SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) := by
+  rcases
+      exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_of_homeomorph_to_onePoint_threeSpace
+        h hyx with
+    ⟨puncture, chart, hAvoidsPuncture⟩
+  rcases twoPointComplement_topology_package_of_homeomorph_to_onePoint_threeSpace h hyx with
+    ⟨hNonempty, hPath, hConnected, hSimply⟩
+  exact
+    ⟨puncture, chart, hAvoidsPuncture, hNonempty, hPath, hConnected, hSimply⟩
+
+/-- Theorem contract for `exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_fullTopologyPayload`. -/
+theorem exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_fullTopologyPayload_eq :
+    @Poincare.exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_fullTopologyPayload =
+      @Poincare.exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_fullTopologyPayload :=
+  rfl
 
 /--
 The based fundamental group of every two-puncture complement of a recognized
@@ -1584,6 +1641,33 @@ Theorem contract for
 theorem exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_topologyPayload_of_homeomorph_to_threeSphere_eq :
     @Poincare.exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_topologyPayload_of_homeomorph_to_threeSphere =
       @Poincare.exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_topologyPayload_of_homeomorph_to_threeSphere :=
+  rfl
+
+/--
+The transported two-puncture Euclidean chart with full topology payload, stated
+directly from recognition as `ThreeSphere`.
+-/
+theorem exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_fullTopologyPayload_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x) :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      ∃ chart : (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+          ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        (∀ z, (chart z : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+          Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+          PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+          ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+          SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+  exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_fullTopologyPayload
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+
+/--
+Theorem contract for
+`exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_fullTopologyPayload_of_homeomorph_to_threeSphere`.
+-/
+theorem exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_fullTopologyPayload_of_homeomorph_to_threeSphere_eq :
+    @Poincare.exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_fullTopologyPayload_of_homeomorph_to_threeSphere =
+      @Poincare.exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_fullTopologyPayload_of_homeomorph_to_threeSphere :=
   rfl
 
 /--
