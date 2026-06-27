@@ -34970,4 +34970,85 @@ theorem reserved_named_final_conclusion_at_witness_of_nonempty_equation_boundary
       @Poincare.reserved_named_final_conclusion_at_witness_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Reserved final bundle/direct projection coherence from an inhabited dependency
+package.
+
+The named final bundle, the selected-witness criterion, and the direct reserved
+projection theorems all expose the same final proof routes under the explicit
+remaining dependency boundary.
+-/
+theorem reserved_named_final_conclusion_bundle_projection_coherence_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u})
+    (witness : Type u) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ criterion : CompletionCriterionAtUniverse witness,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      projectStatement =
+        reserved_poincare_statement_of_nonempty_equation_boundary_dependencies
+          dependencies ∧
+      mathlibStatement =
+        reserved_mathlib_statement_of_nonempty_equation_boundary_dependencies
+          dependencies ∧
+      completionCriterionFamily =
+        reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+          dependencies ∧
+      criterion = completionCriterionFamily witness ∧
+      criterion =
+        reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+          dependencies witness := by
+  rcases
+      reserved_named_final_conclusion_bundle_of_nonempty_equation_boundary_dependencies
+        dependencies with
+    ⟨theoremName, certificate, hTheoremNameCanonical, hTheoremNameLiteral,
+      hCertificate, _nonemptyCertificate, projectStatement, mathlibStatement,
+      _canonicalTarget, completionCriterionFamily⟩
+  let criterion : CompletionCriterionAtUniverse witness :=
+    completionCriterionFamily witness
+  have hProjectStatement :
+      projectStatement =
+        reserved_poincare_statement_of_nonempty_equation_boundary_dependencies
+          dependencies := by
+    apply Subsingleton.elim
+  have hMathlibStatement :
+      mathlibStatement =
+        reserved_mathlib_statement_of_nonempty_equation_boundary_dependencies
+          dependencies := by
+    apply Subsingleton.elim
+  have hCompletionCriterionFamily :
+      completionCriterionFamily =
+        reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+          dependencies := by
+    funext witness
+    apply Subsingleton.elim
+  have hCriterionFamily :
+      criterion = completionCriterionFamily witness := by
+    rfl
+  have hCriterionReserved :
+      criterion =
+        reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+          dependencies witness := by
+    rw [hCriterionFamily, hCompletionCriterionFamily]
+  exact
+    ⟨theoremName, certificate, projectStatement, mathlibStatement,
+      completionCriterionFamily, criterion, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, hProjectStatement, hMathlibStatement,
+      hCompletionCriterionFamily, hCriterionFamily, hCriterionReserved⟩
+
+/-- Theorem contract for
+`reserved_named_final_conclusion_bundle_projection_coherence_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_named_final_conclusion_bundle_projection_coherence_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_named_final_conclusion_bundle_projection_coherence_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_named_final_conclusion_bundle_projection_coherence_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
