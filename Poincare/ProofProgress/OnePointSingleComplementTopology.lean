@@ -431,4 +431,86 @@ theorem onePoint_threeSpace_compl_singleton_fullTopology_endpointData_loopCollap
       @Poincare.onePoint_threeSpace_compl_singleton_fullTopology_endpointData_loopCollapse_core :=
   rfl
 
+/--
+The one-point complement full-topology endpoint-data certificate with
+bidirectional path-class comparison for a supplied path.  This strengthens the
+endpoint-data/loop-collapse payload by recording both homotopies between the
+supplied path and the selected endpoint-data path, plus both induced quotient
+equalities.
+-/
+theorem onePoint_threeSpace_compl_singleton_fullTopology_endpointData_bidirectional_pathClass_payload
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (basepoint target :
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ pathData :
+        PointedPathComponentPathData
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) basepoint,
+      ∃ endpointData :
+          PointedChosenPathEndpointData
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint target,
+        LocPathConnectedSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          Nonempty ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          PathConnectedSpace
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          ConnectedSpace
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          SimplyConnectedSpace
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          pathData.path_to target = endpointData.path ∧
+          endpointData.path 0 = basepoint ∧
+          endpointData.path 1 = target ∧
+          Joined basepoint target ∧
+          pathComponent basepoint = Set.univ ∧
+          Path.Homotopic chosenPath endpointData.path ∧
+          Path.Homotopic endpointData.path chosenPath ∧
+          (⟦chosenPath⟧ :
+            Path.Homotopic.Quotient basepoint target) =
+              ⟦endpointData.path⟧ ∧
+          (⟦endpointData.path⟧ :
+            Path.Homotopic.Quotient basepoint target) =
+              ⟦chosenPath⟧ ∧
+          Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+          loop 0 = basepoint ∧
+          loop 1 = basepoint ∧
+          Path.Homotopic loop (Path.refl basepoint) ∧
+          FundamentalGroup.fromPath
+              (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl basepoint⟧ :
+                Path.Homotopic.Quotient basepoint basepoint) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1
+              ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              basepoint) := by
+  rcases
+      onePoint_threeSpace_compl_singleton_fullTopology_endpointData_loopCollapse_core
+        p basepoint target loop with
+    ⟨pathData, endpointData, hLocPath, hNonempty, hPathConnected,
+      hConnected, hSimplyConnected, hPathData, hSource, hTarget, hJoined,
+      hComponent, hEndpointUnique, hPathQuotient, hLoopSource,
+      hLoopTarget, hLoopHomotopic, hLoopFromPath, hPiOne⟩
+  let hChosenEndpoint : Path.Homotopic chosenPath endpointData.path :=
+    onePoint_threeSpace_compl_singleton_paths_homotopic
+      p chosenPath endpointData.path
+  let hEndpointChosen : Path.Homotopic endpointData.path chosenPath :=
+    hEndpointUnique chosenPath
+  exact
+    ⟨pathData, endpointData, hLocPath, hNonempty, hPathConnected,
+      hConnected, hSimplyConnected, hPathData, hSource, hTarget, hJoined,
+      hComponent, hChosenEndpoint, hEndpointChosen,
+      Quotient.sound hChosenEndpoint, Quotient.sound hEndpointChosen,
+      hPathQuotient, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+
+/-- Theorem contract for
+`onePoint_threeSpace_compl_singleton_fullTopology_endpointData_bidirectional_pathClass_payload`. -/
+theorem onePoint_threeSpace_compl_singleton_fullTopology_endpointData_bidirectional_pathClass_payload_eq :
+    @Poincare.onePoint_threeSpace_compl_singleton_fullTopology_endpointData_bidirectional_pathClass_payload =
+      @Poincare.onePoint_threeSpace_compl_singleton_fullTopology_endpointData_bidirectional_pathClass_payload :=
+  rfl
+
 end Poincare
