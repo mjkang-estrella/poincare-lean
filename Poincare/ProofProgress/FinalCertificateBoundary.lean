@@ -15059,39 +15059,42 @@ theorem poincare_statement_checked_certificate_terminal_smoothability_bridge_tai
   rfl
 
 /--
-Canonical root theorem name, still explicitly parameterized by the strengthened
-equation-boundary dependency package. This makes the remaining completion
-boundary visible at the reserved theorem name instead of leaving
-`Poincare.poincare_conjecture` undefined.
+Conditional root theorem route, explicitly parameterized by the strengthened
+equation-boundary dependency package. The reserved unconditional theorem name
+`Poincare.poincare_conjecture` remains unused until the dependency package is
+itself constructed without assumptions.
 -/
-theorem poincare_conjecture
+theorem conditional_poincare_conjecture_of_equation_boundary_dependencies
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     PoincareConjectureStatement.{u} :=
   poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary
     dependencies
 
-/-- Theorem contract for `poincare_conjecture`. -/
-theorem poincare_conjecture_eq :
-    @Poincare.poincare_conjecture = @Poincare.poincare_conjecture :=
+/-- Theorem contract for `conditional_poincare_conjecture_of_equation_boundary_dependencies`. -/
+theorem conditional_poincare_conjecture_of_equation_boundary_dependencies_eq :
+    @Poincare.conditional_poincare_conjecture_of_equation_boundary_dependencies =
+      @Poincare.conditional_poincare_conjecture_of_equation_boundary_dependencies :=
   rfl
 
 /--
 Expanded root theorem shape. From the same strengthened dependency package,
-the reserved theorem name gives the canonical topological conclusion for every
-compact simply connected charted 3-manifold.
+the conditional route gives the canonical topological conclusion for every
+compact simply connected charted 3-manifold, without occupying the reserved
+unconditional theorem name.
 -/
-theorem poincare_conjecture_expanded
+theorem conditional_poincare_conjecture_expanded_of_equation_boundary_dependencies
     (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
     ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
       [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
       [SimplyConnectedSpace M] [CompactSpace M],
         Nonempty (M ≃ₜ ThreeSphere) :=
-  poincare_conjecture dependencies
+  conditional_poincare_conjecture_of_equation_boundary_dependencies
+    dependencies
 
-/-- Theorem contract for `poincare_conjecture_expanded`. -/
-theorem poincare_conjecture_expanded_eq :
-    @Poincare.poincare_conjecture_expanded =
-      @Poincare.poincare_conjecture_expanded :=
+/-- Theorem contract for `conditional_poincare_conjecture_expanded_of_equation_boundary_dependencies`. -/
+theorem conditional_poincare_conjecture_expanded_of_equation_boundary_dependencies_eq :
+    @Poincare.conditional_poincare_conjecture_expanded_of_equation_boundary_dependencies =
+      @Poincare.conditional_poincare_conjecture_expanded_of_equation_boundary_dependencies :=
   rfl
 
 end Poincare
