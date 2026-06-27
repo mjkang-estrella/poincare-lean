@@ -31776,4 +31776,39 @@ theorem dependency_only_direct_final_statement_selected_extraction_application_o
       @Poincare.dependency_only_direct_final_statement_selected_extraction_application_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only selected-target conclusion obtained through the direct
+final-statement/selected-extraction identification.
+
+This is the consumer-facing target theorem below the reserved final theorem:
+after the equation-boundary dependencies are supplied, the selected target
+manifold receives the concrete topological 3-sphere homeomorphism payload
+carried by the final-statement route.
+-/
+theorem dependency_only_selected_target_homeomorphism_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    Nonempty (M ≃ₜ ThreeSphere) := by
+  rcases
+      dependency_only_direct_final_statement_selected_extraction_application_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨_projectStatement, _expandedConclusion, _completionCriterionFamily,
+      _certificate, _finalStatement, extractedHomeomorphism,
+      _projectHomeomorphism, _topologyPackage, _finiteExtinction,
+      _hProjectStatementFinal, _hExpandedProject, _hCompletionCriterionFamily,
+      _hProjectStatementApplication, _hExpandedConclusionApplication,
+      _hFinalStatementApplication, _hProjectPayloadTarget,
+      _hExtractedHomeomorphism, _hCertificate⟩
+  exact extractedHomeomorphism
+
+/-- Theorem contract for
+`dependency_only_selected_target_homeomorphism_of_equation_boundary_dependencies`. -/
+theorem dependency_only_selected_target_homeomorphism_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_selected_target_homeomorphism_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_selected_target_homeomorphism_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
