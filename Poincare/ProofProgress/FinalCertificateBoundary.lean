@@ -23194,6 +23194,126 @@ theorem conditional_root_projector_selected_decomposition_trace_finalHomeomorphi
   rfl
 
 /--
+Direct consumer form of the chart endpoint-data package boundary.
+
+This projects the conditional chart-data package route to the project Poincare
+statement, a concrete `M ≃ₜ ThreeSphere` witness from the selected topology
+certificate, and the completion criterion family carried by the checked
+completion certificate, while retaining the extinction witness,
+final-homeomorphism projector, selected decomposition/trace data, and both
+transported chart endpoint-data packages.
+-/
+theorem conditional_root_selected_chartEndpointDataPackages_direct_homeomorphism_completionCriterion_certificate_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    PoincareConjectureStatement.{u} ∧
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        ExtinctionFinalHomeomorphismProjectorPayload
+          topology M extinction ∧
+        ∃ decomposition : HasExtinctionTopologyDecomposition M extinction,
+          Nonempty (ExtinctionTopologyDecompositionData M extinction) ∧
+          HasExtinctionSurgeryTraceReconstruction M extinction
+            decomposition ∧
+          Nonempty
+            (ExtinctionSurgeryTraceReconstructionData M extinction
+              decomposition) ∧
+          FinalHomeomorphismPayloadData M extinction decomposition ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          (∃ _singleChart : ({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3),
+            ContractibleSpace ({x}ᶜ : Set M) ∧
+              (∀ basepoint z : ({x}ᶜ : Set M),
+                ∃ data :
+                    PointedChosenPathEndpointData
+                      ({x}ᶜ : Set M) basepoint z,
+                  ∀ η : Path basepoint z,
+                    Path.Homotopic data.path η) ∧
+              (∀ basepoint : ({x}ᶜ : Set M),
+                Subsingleton
+                  (FundamentalGroup ({x}ᶜ : Set M) basepoint)) ∧
+              (∀ basepoint : ({x}ᶜ : Set M),
+                Subsingleton
+                  (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint))) ∧
+          ∃ puncture : EuclideanSpace ℝ (Fin 3),
+          ∃ _twoChart : (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+              ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+            SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+              (∀ basepoint z : (({x} ∪ {y})ᶜ : Set M),
+                ∃ data :
+                    PointedChosenPathEndpointData
+                      (({x} ∪ {y})ᶜ : Set M) basepoint z,
+                  ∀ η : Path basepoint z,
+                    Path.Homotopic data.path η) ∧
+              (∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+                Subsingleton
+                  (FundamentalGroup
+                    (({x} ∪ {y})ᶜ : Set M) basepoint)) ∧
+              (∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+                Subsingleton
+                  (HomotopyGroup.Pi 1
+                    (({x} ∪ {y})ᶜ : Set M) basepoint)) := by
+  rcases
+      conditional_root_projector_selected_decomposition_trace_finalHomeomorphism_recognition_and_chartEndpointDataPackages_certificate_of_equation_boundary_dependencies
+        dependencies smoothability grounded topology smoothabilityPayload M
+        hyx basepoint target chosenPath loop with
+    ⟨projectStatement, checkedCertificate, extinction,
+      finalHomeomorphismProjector, decomposition, hDecompositionData,
+      hTrace, hTraceData, hFinalPayload, hThreeSphere, hOnePoint,
+      singleChartPackage, puncture, twoChart, hTwoSimplyConnected,
+      hTwoEndpointData, hTwoFundamentalGroup, hTwoPiOne⟩
+  let projectPayload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    poincare_conjecture_payload_of_completion_certificate checkedCertificate
+  rcases projectPayload with ⟨_payloadTarget, completionCriterion⟩
+  exact
+    ⟨projectStatement,
+      hThreeSphere,
+      completionCriterion,
+      checkedCertificate,
+      extinction,
+      finalHomeomorphismProjector,
+      decomposition,
+      hDecompositionData,
+      hTrace,
+      hTraceData,
+      hFinalPayload,
+      hOnePoint,
+      singleChartPackage,
+      puncture,
+      twoChart,
+      hTwoSimplyConnected,
+      hTwoEndpointData,
+      hTwoFundamentalGroup,
+      hTwoPiOne⟩
+
+/-- Theorem contract for
+`conditional_root_selected_chartEndpointDataPackages_direct_homeomorphism_completionCriterion_certificate_of_equation_boundary_dependencies`. -/
+theorem conditional_root_selected_chartEndpointDataPackages_direct_homeomorphism_completionCriterion_certificate_of_equation_boundary_dependencies_eq :
+    @Poincare.conditional_root_selected_chartEndpointDataPackages_direct_homeomorphism_completionCriterion_certificate_of_equation_boundary_dependencies =
+      @Poincare.conditional_root_selected_chartEndpointDataPackages_direct_homeomorphism_completionCriterion_certificate_of_equation_boundary_dependencies :=
+  rfl
+
+/--
 The final-certificate boundary also exposes the selected decomposition,
 surgery trace, final recognition, and compact chosen-endpoint coherence
 certificate for both singleton and two-puncture complements.
