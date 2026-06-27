@@ -2324,6 +2324,108 @@ theorem singletonAndTwoPoint_locPath_endpointData_loopCollapse_core_of_topology_
   rfl
 
 /--
+The compact singleton/two-puncture endpoint core also exposes homotopy
+uniqueness for the selected endpoint-data paths on both puncture complements.
+This keeps the smaller no-chart payload while making the endpoint paths usable
+as canonical representatives.
+-/
+theorem singletonAndTwoPoint_locPath_endpointData_homotopyUnique_loopCollapse_core_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (singleLoop : Path singleBase singleBase)
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M))
+    (twoLoop : Path twoBase twoBase) :
+    let C := (({x} ∪ {y})ᶜ : Set M)
+    LocPathConnectedSpace C ∧
+      (∃ singlePathData :
+          PointedPathComponentPathData ({x}ᶜ : Set M) singleBase,
+        ∃ singleEndpointData :
+            PointedChosenPathEndpointData ({x}ᶜ : Set M)
+              singleBase singleTarget,
+          singlePathData.path_to singleTarget = singleEndpointData.path ∧
+            singleEndpointData.path 0 = singleBase ∧
+            singleEndpointData.path 1 = singleTarget ∧
+            Joined singleBase singleTarget ∧
+            pathComponent singleBase = Set.univ ∧
+            (∀ ζ : Path singleBase singleTarget,
+              Path.Homotopic singleEndpointData.path ζ) ∧
+            Subsingleton (Path.Homotopic.Quotient singleBase singleTarget) ∧
+            singleLoop 0 = singleBase ∧
+            singleLoop 1 = singleBase ∧
+            Path.Homotopic singleLoop (Path.refl singleBase) ∧
+            FundamentalGroup.fromPath
+                (⟦singleLoop⟧ :
+                  Path.Homotopic.Quotient singleBase singleBase) =
+              FundamentalGroup.fromPath
+                (⟦Path.refl singleBase⟧ :
+                  Path.Homotopic.Quotient singleBase singleBase) ∧
+            Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBase)) ∧
+        ∃ twoPathData : PointedPathComponentPathData C twoBase,
+          ∃ twoEndpointData :
+              PointedChosenPathEndpointData C twoBase twoTarget,
+            twoPathData.path_to twoTarget = twoEndpointData.path ∧
+              twoEndpointData.path 0 = twoBase ∧
+              twoEndpointData.path 1 = twoTarget ∧
+              Joined twoBase twoTarget ∧
+              pathComponent twoBase = Set.univ ∧
+              (∀ ζ : Path twoBase twoTarget,
+                Path.Homotopic twoEndpointData.path ζ) ∧
+              Subsingleton (Path.Homotopic.Quotient twoBase twoTarget) ∧
+              twoLoop 0 = twoBase ∧
+              twoLoop 1 = twoBase ∧
+              Path.Homotopic twoLoop (Path.refl twoBase) ∧
+              FundamentalGroup.fromPath
+                  (⟦twoLoop⟧ :
+                    Path.Homotopic.Quotient twoBase twoBase) =
+                FundamentalGroup.fromPath
+                  (⟦Path.refl twoBase⟧ :
+                    Path.Homotopic.Quotient twoBase twoBase) ∧
+              Subsingleton (HomotopyGroup.Pi 1 C twoBase) := by
+  dsimp
+  rcases
+      singletonAndTwoPoint_locPath_endpointData_loopCollapse_core_of_topology_package
+        package M extinction hyx singleBase singleTarget singleLoop
+        twoBase twoTarget twoLoop with
+    ⟨hLocPath, hSingle, hTwo⟩
+  rcases hSingle with
+    ⟨singlePathData, singleEndpointData, hSinglePathData,
+      hSingleSource, hSingleTarget, hSingleJoined, hSingleComponent,
+      hSingleQuotient, hSingleLoopSource, hSingleLoopTarget,
+      hSingleLoopHomotopic, hSingleLoopFromPath, hSinglePiOne⟩
+  rcases hTwo with
+    ⟨twoPathData, twoEndpointData, hTwoPathData, hTwoSource, hTwoTarget,
+      hTwoJoined, hTwoComponent, hTwoQuotient, hTwoLoopSource,
+      hTwoLoopTarget, hTwoLoopHomotopic, hTwoLoopFromPath, hTwoPiOne⟩
+  exact
+    ⟨hLocPath,
+      ⟨singlePathData, singleEndpointData, hSinglePathData,
+        hSingleSource, hSingleTarget, hSingleJoined, hSingleComponent,
+        fun ζ =>
+          compl_singleton_paths_homotopic_of_topology_package
+            package M extinction x singleEndpointData.path ζ,
+        hSingleQuotient, hSingleLoopSource, hSingleLoopTarget,
+        hSingleLoopHomotopic, hSingleLoopFromPath, hSinglePiOne⟩,
+      twoPathData, twoEndpointData, hTwoPathData, hTwoSource, hTwoTarget,
+      hTwoJoined, hTwoComponent,
+      fun ζ =>
+        twoPointComplement_paths_homotopic_of_topology_package
+          package M extinction hyx twoEndpointData.path ζ,
+      hTwoQuotient, hTwoLoopSource, hTwoLoopTarget, hTwoLoopHomotopic,
+      hTwoLoopFromPath, hTwoPiOne⟩
+
+/-- Theorem contract for
+`singletonAndTwoPoint_locPath_endpointData_homotopyUnique_loopCollapse_core_of_topology_package`. -/
+theorem singletonAndTwoPoint_locPath_endpointData_homotopyUnique_loopCollapse_core_of_topology_package_eq :
+    @Poincare.singletonAndTwoPoint_locPath_endpointData_homotopyUnique_loopCollapse_core_of_topology_package =
+      @Poincare.singletonAndTwoPoint_locPath_endpointData_homotopyUnique_loopCollapse_core_of_topology_package :=
+  rfl
+
+/--
 The final-homeomorphism package route exposes the compact two-puncture
 endpoint-data path-coherence core from the same topology package inputs.
 -/
@@ -2513,6 +2615,87 @@ theorem topologyPackage_finalHomeomorphism_and_singletonTwoPointLocPathEndpointD
 theorem topologyPackage_finalHomeomorphism_and_singletonTwoPointLocPathEndpointDataLoopCollapseCore_eq :
     @Poincare.topologyPackage_finalHomeomorphism_and_singletonTwoPointLocPathEndpointDataLoopCollapseCore =
       @Poincare.topologyPackage_finalHomeomorphism_and_singletonTwoPointLocPathEndpointDataLoopCollapseCore :=
+  rfl
+
+/--
+The final-homeomorphism package route carries the compact singleton/two-point
+endpoint core with local path-connectedness and explicit homotopy uniqueness
+for both selected endpoint-data paths.
+-/
+theorem topologyPackage_finalHomeomorphism_and_singletonTwoPointLocPathHomotopyUniqueEndpointDataLoopCollapseCore
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (singleLoop : Path singleBase singleBase)
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M))
+    (twoLoop : Path twoBase twoBase) :
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      FinalHomeomorphismPayloadData M extinction
+        (extinction_decomposition_of_topology_package package M extinction) ∧
+      (let C := (({x} ∪ {y})ᶜ : Set M)
+      LocPathConnectedSpace C ∧
+        (∃ singlePathData :
+            PointedPathComponentPathData ({x}ᶜ : Set M) singleBase,
+          ∃ singleEndpointData :
+              PointedChosenPathEndpointData ({x}ᶜ : Set M)
+                singleBase singleTarget,
+            singlePathData.path_to singleTarget = singleEndpointData.path ∧
+              singleEndpointData.path 0 = singleBase ∧
+              singleEndpointData.path 1 = singleTarget ∧
+              Joined singleBase singleTarget ∧
+              pathComponent singleBase = Set.univ ∧
+              (∀ ζ : Path singleBase singleTarget,
+                Path.Homotopic singleEndpointData.path ζ) ∧
+              Subsingleton
+                (Path.Homotopic.Quotient singleBase singleTarget) ∧
+              singleLoop 0 = singleBase ∧
+              singleLoop 1 = singleBase ∧
+              Path.Homotopic singleLoop (Path.refl singleBase) ∧
+              FundamentalGroup.fromPath
+                  (⟦singleLoop⟧ :
+                    Path.Homotopic.Quotient singleBase singleBase) =
+                FundamentalGroup.fromPath
+                  (⟦Path.refl singleBase⟧ :
+                    Path.Homotopic.Quotient singleBase singleBase) ∧
+              Subsingleton
+                (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBase)) ∧
+          ∃ twoPathData : PointedPathComponentPathData C twoBase,
+            ∃ twoEndpointData :
+                PointedChosenPathEndpointData C twoBase twoTarget,
+              twoPathData.path_to twoTarget = twoEndpointData.path ∧
+                twoEndpointData.path 0 = twoBase ∧
+                twoEndpointData.path 1 = twoTarget ∧
+                Joined twoBase twoTarget ∧
+                pathComponent twoBase = Set.univ ∧
+                (∀ ζ : Path twoBase twoTarget,
+                  Path.Homotopic twoEndpointData.path ζ) ∧
+                Subsingleton (Path.Homotopic.Quotient twoBase twoTarget) ∧
+                twoLoop 0 = twoBase ∧
+                twoLoop 1 = twoBase ∧
+                Path.Homotopic twoLoop (Path.refl twoBase) ∧
+                FundamentalGroup.fromPath
+                    (⟦twoLoop⟧ :
+                      Path.Homotopic.Quotient twoBase twoBase) =
+                  FundamentalGroup.fromPath
+                    (⟦Path.refl twoBase⟧ :
+                      Path.Homotopic.Quotient twoBase twoBase) ∧
+                Subsingleton (HomotopyGroup.Pi 1 C twoBase)) :=
+  ⟨homeomorph_to_onePoint_threeSpace_of_topology_package
+      package M extinction,
+    finalHomeomorphismPayloadData_of_topology_package package M extinction,
+    singletonAndTwoPoint_locPath_endpointData_homotopyUnique_loopCollapse_core_of_topology_package
+      package M extinction hyx singleBase singleTarget singleLoop
+      twoBase twoTarget twoLoop⟩
+
+/-- Theorem contract for
+`topologyPackage_finalHomeomorphism_and_singletonTwoPointLocPathHomotopyUniqueEndpointDataLoopCollapseCore`. -/
+theorem topologyPackage_finalHomeomorphism_and_singletonTwoPointLocPathHomotopyUniqueEndpointDataLoopCollapseCore_eq :
+    @Poincare.topologyPackage_finalHomeomorphism_and_singletonTwoPointLocPathHomotopyUniqueEndpointDataLoopCollapseCore =
+      @Poincare.topologyPackage_finalHomeomorphism_and_singletonTwoPointLocPathHomotopyUniqueEndpointDataLoopCollapseCore :=
   rfl
 
 /--
