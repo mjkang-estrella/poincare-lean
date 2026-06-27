@@ -32166,4 +32166,101 @@ theorem dependency_only_direct_mathlib_selected_target_certificate_payload_of_eq
       @Poincare.dependency_only_direct_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved-name mathlib selected-target certificate payload.
+
+This carries the canonical reserved theorem name and literal theorem-name
+payload through to the direct mathlib-shaped selected-target endpoint, while
+also retaining the reconstructed nonempty-certificate final statement and the
+selected concrete homeomorphism.
+-/
+theorem dependency_only_reserved_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ theoremName : String,
+    ∃ directMathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ selectedConclusion : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u},
+    ∃ finalStatement : PoincareConjectureStatement.{u},
+    ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      directMathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement ∧
+      directMathlibStatement M = selectedConclusion ∧
+      projectStatement =
+        conditional_poincare_conjecture_of_equation_boundary_dependencies
+          dependencies ∧
+      projectStatement M = selectedConclusion ∧
+      completionCriterionFamily M M = selectedConclusion ∧
+      finalStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      finalStatement M = selectedConclusion ∧
+      selectedConclusion =
+        (⟨projectHomeomorphism⟩ : Nonempty (M ≃ₜ ThreeSphere)) ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies := by
+  rcases
+      dependency_only_direct_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨directMathlibStatement, selectedConclusion, projectStatement,
+      completionCriterionFamily, _finalStatementFromDirect,
+      _expandedConclusion, projectHomeomorphism, certificate,
+      hDirectMathlibStatementApplication, hProjectStatementApplication,
+      hCompletionCriterionApplication, _hFinalStatementFromDirectApplication,
+      _hExpandedConclusionApplication, hProjectPayloadTarget, hCertificate⟩
+  rcases
+      dependency_only_canonical_reserved_theorem_selected_extraction_final_statement_application_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨theoremName, _selectedCertificate, nonemptyCertificate, finalStatement,
+      _projectPayloadTarget, _projectPayloadCompletion, _n, _ordinaryPackage,
+      _finiteExtinction, _topologyPackage, _extractedHomeomorphism,
+      _selectedProjectHomeomorphism, _completionCriterion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hFinalStatement,
+      _hFinalStatementProject, hFinalStatementApplication,
+      _hExtractedProjectPayload, _hProjectPayloadTarget,
+      _hCompletionCriterion, _hSelectedCertificate, _hFiniteExtinction,
+      _hTopologyPackage, _hExtractedHomeomorphism⟩
+  have hDirectMathlibStatement :
+      directMathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement := by
+    apply Subsingleton.elim
+  have hProjectStatement :
+      projectStatement =
+        conditional_poincare_conjecture_of_equation_boundary_dependencies
+          dependencies := by
+    apply Subsingleton.elim
+  have hFinalStatementSelected :
+      finalStatement M = selectedConclusion := by
+    exact
+      Eq.trans hFinalStatementApplication
+        (hProjectPayloadTarget.symm.trans hProjectStatementApplication)
+  exact
+    ⟨theoremName, directMathlibStatement, selectedConclusion,
+      projectStatement, completionCriterionFamily, nonemptyCertificate,
+      finalStatement, projectHomeomorphism, certificate, hTheoremNameCanonical,
+      hTheoremNameLiteral, hDirectMathlibStatement,
+      hDirectMathlibStatementApplication, hProjectStatement,
+      hProjectStatementApplication, hCompletionCriterionApplication,
+      hFinalStatement, hFinalStatementSelected, hProjectPayloadTarget,
+      hCertificate⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
