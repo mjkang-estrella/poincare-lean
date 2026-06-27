@@ -23223,6 +23223,84 @@ theorem conditional_root_projector_selected_decomposition_trace_finalHomeomorphi
   rfl
 
 /--
+Canonical completion payload bundled with the compact selected
+chosen-endpoint coherence endpoint.
+
+The endpoint proof object is the no-chart singleton/two-puncture selected
+certificate above, while the same checked completion certificate supplies the
+canonical target, canonical completion payload, and reserved-name project
+payload.
+-/
+theorem canonical_completion_payload_and_selected_chosenEndpoint_endpoint_proof_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {x y : M} (hyx : y ≠ x)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (chosenSinglePath : Path singleBase singleTarget)
+    (singleLoop : Path singleBase singleBase)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      ∃ endpointProof,
+        endpointProof =
+          conditional_root_projector_selected_decomposition_trace_finalHomeomorphism_recognition_and_singletonTwoPointLocPathChosenEndpointCoherence_certificate_of_equation_boundary_dependencies
+            dependencies smoothability grounded topology smoothabilityPayload M
+            hyx singleBase singleTarget chosenSinglePath singleLoop
+            basepoint target chosenPath loop := by
+  let endpointProof :=
+    conditional_root_projector_selected_decomposition_trace_finalHomeomorphism_recognition_and_singletonTwoPointLocPathChosenEndpointCoherence_certificate_of_equation_boundary_dependencies
+      dependencies smoothability grounded topology smoothabilityPayload M
+      hyx singleBase singleTarget chosenSinglePath singleLoop
+      basepoint target chosenPath loop
+  rcases endpointProof with
+    ⟨_projectStatement, checkedCertificate, _extinction, _pathData,
+      _endpointData, _finalHomeomorphismProjector, _selectedCertificate⟩
+  let canonicalTarget : canonicalCompletionTarget.{u} :=
+    canonical_completion_target_of_completion_certificate checkedCertificate
+  let canonicalPayload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    canonical_completion_payload_of_completion_certificate checkedCertificate
+  let projectPayload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    poincare_conjecture_payload_of_completion_certificate checkedCertificate
+  exact
+    ⟨canonicalTarget,
+      canonicalPayload,
+      projectPayload,
+      conditional_root_projector_selected_decomposition_trace_finalHomeomorphism_recognition_and_singletonTwoPointLocPathChosenEndpointCoherence_certificate_of_equation_boundary_dependencies
+        dependencies smoothability grounded topology smoothabilityPayload M
+        hyx singleBase singleTarget chosenSinglePath singleLoop
+        basepoint target chosenPath loop,
+      rfl⟩
+
+/-- Theorem contract for
+`canonical_completion_payload_and_selected_chosenEndpoint_endpoint_proof_of_equation_boundary_dependencies`. -/
+theorem canonical_completion_payload_and_selected_chosenEndpoint_endpoint_proof_of_equation_boundary_dependencies_eq :
+    @Poincare.canonical_completion_payload_and_selected_chosenEndpoint_endpoint_proof_of_equation_boundary_dependencies =
+      @Poincare.canonical_completion_payload_and_selected_chosenEndpoint_endpoint_proof_of_equation_boundary_dependencies :=
+  rfl
+
+/--
 The final-certificate boundary exposes the selected decomposition, surgery
 trace, final recognition, synchronized two-puncture chart/path-loop projection,
 and transported local path-connectedness certificate.
