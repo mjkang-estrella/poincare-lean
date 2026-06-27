@@ -938,6 +938,78 @@ theorem onePoint_threeSpace_twoPointComplement_chart_path_loop_projection_bundle
   rfl
 
 /--
+The standard one-point compactification two-puncture chart/path-loop package
+projects to a source-only endpoint-data homotopy core.  Consumers can use the
+selected endpoint-data path directly, together with chosen-path homotopy,
+quotient collapse, universal path homotopy, loop null-homotopy, fundamental
+group equality, and `π₁` subsingleton evidence.
+-/
+theorem onePoint_threeSpace_twoPointComplement_endpointData_pathCoherence_loopCollapse_core
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint target :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ pathData :
+        PointedPathComponentPathData
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+      ∃ endpointData :
+          PointedChosenPathEndpointData
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint target,
+        pathData.path_to target = endpointData.path ∧
+          endpointData.path 0 = basepoint ∧
+          endpointData.path 1 = target ∧
+          Joined basepoint target ∧
+          pathComponent basepoint = Set.univ ∧
+          Path.Homotopic chosenPath endpointData.path ∧
+          (⟦chosenPath⟧ : Path.Homotopic.Quotient basepoint target) =
+            ⟦endpointData.path⟧ ∧
+          (∀ η : Path basepoint target,
+            Path.Homotopic endpointData.path η) ∧
+          Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+          loop 0 = basepoint ∧
+          loop 1 = basepoint ∧
+          Path.Homotopic loop (Path.refl basepoint) ∧
+          FundamentalGroup.fromPath
+              (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl basepoint⟧ :
+                Path.Homotopic.Quotient basepoint basepoint) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1
+              (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              basepoint) := by
+  rcases
+      onePoint_threeSpace_twoPointComplement_chart_path_loop_projection_bundle
+        hqp basepoint target chosenPath loop with
+    ⟨_puncture, _chart, pathData, endpointData, canonicalPath, _hAvoid,
+      _hNonempty, _hPathConnected, _hSimplyConnected, hPathData,
+      hEndpointData, hCanonicalSource, hCanonicalTarget, hJoined,
+      hComponent, hChosenHomotopic, hChosenQuotient, hCanonicalUnique,
+      hQuotientSubsingleton, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+  exact
+    ⟨pathData, endpointData, hPathData.trans hEndpointData.symm,
+      by simpa [hEndpointData] using hCanonicalSource,
+      by simpa [hEndpointData] using hCanonicalTarget, hJoined, hComponent,
+      by simpa [hEndpointData] using hChosenHomotopic,
+      by simpa [hEndpointData] using hChosenQuotient,
+      by
+        intro η
+        simpa [hEndpointData] using hCanonicalUnique η,
+      hQuotientSubsingleton, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+
+/-- Theorem contract for
+`onePoint_threeSpace_twoPointComplement_endpointData_pathCoherence_loopCollapse_core`. -/
+theorem onePoint_threeSpace_twoPointComplement_endpointData_pathCoherence_loopCollapse_core_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_endpointData_pathCoherence_loopCollapse_core =
+      @Poincare.onePoint_threeSpace_twoPointComplement_endpointData_pathCoherence_loopCollapse_core :=
+  rfl
+
+/--
 The standard one-point compactification model two-puncture complement carries
 the full topology package together with a concrete chosen path, homotopy
 quotient collapse, loop nullhomotopy, and trivial first homotopy group.
