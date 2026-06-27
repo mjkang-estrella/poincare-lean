@@ -1011,4 +1011,53 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_transport_pathQuotient
       @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_transport_pathQuotient_subsingleton :=
   rfl
 
+/--
+Any two paths with matching endpoints remain homotopic after transport through
+the explicit two-puncture complement homeomorphism, in either direction. This
+packages the path-level consequence behind the transported path-quotient
+subsingleton certificate.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_transport_paths_homotopic
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    {sourceBase sourceTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    (sourcePath₀ sourcePath₁ : Path sourceBase sourceTarget)
+    {targetBase targetTarget :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)}
+    (targetPath₀ targetPath₁ : Path targetBase targetTarget) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    Path.Homotopic
+        (sourcePath₀.map H.continuous)
+        (sourcePath₁.map H.continuous) ∧
+      Path.Homotopic
+        (targetPath₀.map H.symm.continuous)
+        (targetPath₁.map H.symm.continuous) := by
+  dsimp
+  let H :=
+    onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+      hqp
+  let e : OnePoint (EuclideanSpace ℝ (Fin 3)) ≃ₜ ThreeSphere :=
+    Classical.choice onePoint_threeSpace_homeomorph_threeSphere
+  have hImage : e q ≠ e p := by
+    intro h
+    exact hqp (e.injective h)
+  exact
+    ⟨threeSphere_twoPointComplement_paths_homotopic
+        hImage (sourcePath₀.map H.continuous) (sourcePath₁.map H.continuous),
+      twoPointComplement_paths_homotopic_of_homeomorph_to_onePoint_threeSpace
+        (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+        ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩
+        hqp (targetPath₀.map H.symm.continuous)
+          (targetPath₁.map H.symm.continuous)⟩
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_transport_paths_homotopic`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_transport_paths_homotopic_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_transport_paths_homotopic =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_transport_paths_homotopic :=
+  rfl
+
 end Poincare
