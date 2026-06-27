@@ -34795,4 +34795,47 @@ theorem reserved_expanded_root_conclusion_of_nonempty_equation_boundary_dependen
       @Poincare.reserved_expanded_root_conclusion_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Reserved mathlib-shaped statement from an inhabited dependency package.
+
+This converts the direct project statement obtained from an inhabited
+strengthened equation-boundary dependency package to the mathlib-shaped
+topological Poincare statement.
+-/
+theorem reserved_mathlib_statement_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u}) :
+    MathlibTopologicalPoincareThreeStatement.{u} :=
+  mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+    (reserved_poincare_statement_of_nonempty_equation_boundary_dependencies
+      dependencies)
+
+/-- Theorem contract for
+`reserved_mathlib_statement_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_mathlib_statement_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_mathlib_statement_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_mathlib_statement_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
+/--
+Reserved completion criterion from an inhabited dependency package.
+
+This is the universe-indexed final criterion form of the same remaining
+boundary: once the strengthened equation-boundary dependency package is
+inhabited, every completion criterion at universe `u` is discharged.
+-/
+theorem reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u})
+    (witness : Type u) :
+    CompletionCriterionAtUniverse witness :=
+  completionCriterionAtUniverse_of_poincareConjectureStatement witness
+    (reserved_poincare_statement_of_nonempty_equation_boundary_dependencies
+      dependencies)
+
+/-- Theorem contract for
+`reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
