@@ -27869,4 +27869,122 @@ theorem dependency_only_concrete_homeomorphism_pointwise_coherence_payloads_cert
       @Poincare.dependency_only_concrete_homeomorphism_pointwise_coherence_payloads_certificate_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only continuity payload for the concrete final homeomorphisms.
+
+The concrete project and literal unit-sphere homeomorphisms carry continuity
+of the forward maps and inverse maps.  This endpoint exposes those continuity
+facts beside the pointwise map coherence, concrete homeomorphism equality,
+rewrapped witness-route equalities, statement-route coherence, completion
+criterion, payloads, and checked certificate equalities.
+-/
+theorem dependency_only_concrete_homeomorphism_continuity_payloads_certificate_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    canonicalCompletionTarget.{u} ∧
+      ∃ projectStatement : PoincareConjectureStatement.{u},
+      ∃ expandedStatement :
+        (∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+          [SimplyConnectedSpace N] [CompactSpace N],
+            Nonempty (N ≃ₜ ThreeSphere)),
+      ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+      ∃ projectWitness : Nonempty (M ≃ₜ ThreeSphere),
+      ∃ mathlibWitness :
+        Nonempty
+          (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)),
+      ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+      ∃ mathlibHomeomorphism :
+        M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+        Continuous projectHomeomorphism ∧
+        Continuous mathlibHomeomorphism ∧
+        Continuous projectHomeomorphism.symm ∧
+        Continuous mathlibHomeomorphism.symm ∧
+        (∀ z : M, projectHomeomorphism z = mathlibHomeomorphism z) ∧
+        (∀ z : ThreeSphere,
+          projectHomeomorphism.symm z = mathlibHomeomorphism.symm z) ∧
+        projectHomeomorphism = mathlibHomeomorphism ∧
+        projectStatement = expandedStatement ∧
+        projectStatement = mathlibStatement ∧
+        expandedStatement = mathlibStatement ∧
+        projectWitness = mathlibWitness ∧
+        mathlibWitness = mathlibStatement M ∧
+        projectWitness = expandedStatement M ∧
+        (⟨projectHomeomorphism⟩ : Nonempty (M ≃ₜ ThreeSphere)) =
+          projectWitness ∧
+        (⟨mathlibHomeomorphism⟩ :
+          Nonempty
+            (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) =
+          mathlibWitness ∧
+        CompletionCriterionAtUniverse M ∧
+        (∃ canonicalPayload :
+            (∃ _target : canonicalCompletionTarget.{u},
+              ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+          canonicalPayload =
+            canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+              dependencies) ∧
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        ∃ certificate : PoincareCompletionCertificate.{u},
+          certificate =
+            completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+              dependencies ∧
+          canonical_completion_payload_of_completion_certificate certificate =
+            canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+              dependencies ∧
+          poincare_completion_payload_of_completion_certificate certificate =
+            poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+              dependencies := by
+  rcases
+      dependency_only_concrete_homeomorphism_pointwise_coherence_payloads_certificate_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨canonicalTarget, projectStatement, expandedStatement, mathlibStatement,
+      projectWitness, mathlibWitness, projectHomeomorphism,
+      mathlibHomeomorphism, hForward, hInverse, hHomeomorphism,
+      hProjectExpanded, hProjectMathlib, hExpandedMathlib,
+      hProjectMathlibWitness, hMathlibWitness, hProjectWitness,
+      hProjectHomeomorphism, hMathlibHomeomorphism, completionCriterion,
+      canonicalPayload, projectPayload, certificate, hCertificate,
+      hCanonicalPayload, hProjectPayload⟩
+  exact
+    ⟨canonicalTarget,
+      projectStatement,
+      expandedStatement,
+      mathlibStatement,
+      projectWitness,
+      mathlibWitness,
+      projectHomeomorphism,
+      mathlibHomeomorphism,
+      projectHomeomorphism.continuous_toFun,
+      mathlibHomeomorphism.continuous_toFun,
+      projectHomeomorphism.symm.continuous_toFun,
+      mathlibHomeomorphism.symm.continuous_toFun,
+      hForward,
+      hInverse,
+      hHomeomorphism,
+      hProjectExpanded,
+      hProjectMathlib,
+      hExpandedMathlib,
+      hProjectMathlibWitness,
+      hMathlibWitness,
+      hProjectWitness,
+      hProjectHomeomorphism,
+      hMathlibHomeomorphism,
+      completionCriterion,
+      canonicalPayload,
+      projectPayload,
+      certificate,
+      hCertificate,
+      hCanonicalPayload,
+      hProjectPayload⟩
+
+/-- Theorem contract for
+`dependency_only_concrete_homeomorphism_continuity_payloads_certificate_of_equation_boundary_dependencies`. -/
+theorem dependency_only_concrete_homeomorphism_continuity_payloads_certificate_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_concrete_homeomorphism_continuity_payloads_certificate_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_concrete_homeomorphism_continuity_payloads_certificate_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
