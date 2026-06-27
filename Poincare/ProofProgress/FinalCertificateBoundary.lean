@@ -24940,4 +24940,58 @@ theorem canonical_completion_payload_and_full_direct_terminal_endpoint_proof_of_
       @Poincare.canonical_completion_payload_and_full_direct_terminal_endpoint_proof_of_full_terminal_certificate_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only checked certificate collapse to the canonical completion
+payload.
+
+This removes the local terminal witness arguments from the final-certificate
+collapse: the strengthened equation-boundary dependency package directly
+provides a checked completion certificate, its project target statement, the
+canonical completion target, and the canonical/project completion payloads.
+-/
+theorem canonical_completion_payload_and_checked_certificate_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      ∃ certificate : PoincareCompletionCertificate.{u},
+        certificate =
+          completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+            dependencies ∧
+        PoincareConjectureStatement.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        canonical_completion_payload_of_completion_certificate certificate =
+          canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+            dependencies := by
+  let certificate : PoincareCompletionCertificate.{u} :=
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+      dependencies
+  let canonicalTarget : canonicalCompletionTarget.{u} :=
+    canonical_completion_target_of_completion_certificate certificate
+  let canonicalPayload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    canonical_completion_payload_of_completion_certificate certificate
+  let projectPayload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    poincare_completion_payload_of_completion_certificate certificate
+  exact
+    ⟨canonicalTarget,
+      canonicalPayload,
+      projectPayload,
+      certificate,
+      rfl,
+      target_statement_of_completion_certificate certificate,
+      canonicalTarget,
+      by apply Subsingleton.elim⟩
+
+/-- Theorem contract for `canonical_completion_payload_and_checked_certificate_of_equation_boundary_dependencies`. -/
+theorem canonical_completion_payload_and_checked_certificate_of_equation_boundary_dependencies_eq :
+    @Poincare.canonical_completion_payload_and_checked_certificate_of_equation_boundary_dependencies =
+      @Poincare.canonical_completion_payload_and_checked_certificate_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
