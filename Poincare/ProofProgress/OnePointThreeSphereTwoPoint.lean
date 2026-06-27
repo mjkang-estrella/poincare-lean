@@ -849,4 +849,75 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_nullhomotopic_loop_fro
       @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_nullhomotopic_loop_fromPath_transport :=
   rfl
 
+/--
+The chart/path-loop projection payloads on both sides of the explicit
+two-puncture complement homeomorphism make transported based loops trivial in
+the corresponding fundamental group. The source loop is transported forward to
+the standard `ThreeSphere` complement, and the target loop is transported back
+to the one-point compactification complement.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_mapped_loops_fromPath_eq_refl
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (sourceBase :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (sourceLoop : Path sourceBase sourceBase)
+    (targetBase :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere))
+    (targetLoop : Path targetBase targetBase) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    FundamentalGroup.fromPath
+        (⟦sourceLoop.map H.continuous⟧ :
+          Path.Homotopic.Quotient (H sourceBase) (H sourceBase)) =
+      FundamentalGroup.fromPath
+        (⟦Path.refl (H sourceBase)⟧ :
+          Path.Homotopic.Quotient (H sourceBase) (H sourceBase)) ∧
+      FundamentalGroup.fromPath
+          (⟦targetLoop.map H.symm.continuous⟧ :
+            Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetBase)) =
+        FundamentalGroup.fromPath
+          (⟦Path.refl (H.symm targetBase)⟧ :
+            Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetBase)) := by
+  dsimp
+  let H :=
+    onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+      hqp
+  let e : OnePoint (EuclideanSpace ℝ (Fin 3)) ≃ₜ ThreeSphere :=
+    Classical.choice onePoint_threeSpace_homeomorph_threeSphere
+  have hImage : e q ≠ e p := by
+    intro h
+    exact hqp (e.injective h)
+  rcases
+      onePoint_threeSpace_twoPointComplement_chart_path_loop_projection_bundle
+        hqp sourceBase sourceBase (Path.refl sourceBase) sourceLoop with
+    ⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _,
+      hSourceLoop, _, _⟩
+  rcases
+      threeSphere_twoPointComplement_chart_path_loop_projection_bundle
+        hImage targetBase targetBase (Path.refl targetBase) targetLoop with
+    ⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _,
+      hTargetLoop, _, _⟩
+  have hSourceMapped :
+      Path.Homotopic
+        (sourceLoop.map H.continuous)
+        (Path.refl (H sourceBase)) := by
+    simpa using hSourceLoop.map (⟨H, H.continuous⟩)
+  have hTargetMapped :
+      Path.Homotopic
+        (targetLoop.map H.symm.continuous)
+        (Path.refl (H.symm targetBase)) := by
+    simpa using hTargetLoop.map (⟨H.symm, H.symm.continuous⟩)
+  exact
+    ⟨congrArg FundamentalGroup.fromPath (Quotient.sound hSourceMapped),
+      congrArg FundamentalGroup.fromPath (Quotient.sound hTargetMapped)⟩
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_mapped_loops_fromPath_eq_refl`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_mapped_loops_fromPath_eq_refl_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_mapped_loops_fromPath_eq_refl =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_mapped_loops_fromPath_eq_refl :=
+  rfl
+
 end Poincare
