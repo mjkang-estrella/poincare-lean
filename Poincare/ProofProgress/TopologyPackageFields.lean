@@ -4135,6 +4135,89 @@ theorem topologyPackage_selected_decomposition_trace_finalHomeomorphism_and_reco
   rfl
 
 /--
+The selected decomposition certificate can also be consumed with the paired
+singleton/two-puncture chart endpoint-data packages.
+
+This moves the low-level transported chart packages to the selected topology
+certificate boundary: decomposition data, surgery-trace reconstruction data,
+final-homeomorphism payload, both final recognition witnesses, singleton
+contractibility, endpoint-data homotopy uniqueness, fundamental-group collapse,
+and `π₁` collapse are available from one package theorem.
+-/
+theorem topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_chartEndpointDataPackages_certificate
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x) :
+    ∃ decomposition : HasExtinctionTopologyDecomposition M extinction,
+      Nonempty (ExtinctionTopologyDecompositionData M extinction) ∧
+        HasExtinctionSurgeryTraceReconstruction M extinction decomposition ∧
+        Nonempty
+          (ExtinctionSurgeryTraceReconstructionData M extinction decomposition) ∧
+        FinalHomeomorphismPayloadData M extinction decomposition ∧
+        Nonempty (M ≃ₜ ThreeSphere) ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        (∃ _singleChart : ({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3),
+          ContractibleSpace ({x}ᶜ : Set M) ∧
+            (∀ basepoint z : ({x}ᶜ : Set M),
+              ∃ data :
+                  PointedChosenPathEndpointData ({x}ᶜ : Set M) basepoint z,
+                ∀ η : Path basepoint z, Path.Homotopic data.path η) ∧
+            (∀ basepoint : ({x}ᶜ : Set M),
+              Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint)) ∧
+            (∀ basepoint : ({x}ᶜ : Set M),
+              Subsingleton
+                (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint))) ∧
+        ∃ puncture : EuclideanSpace ℝ (Fin 3),
+        ∃ _twoChart : (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+          SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+            (∀ basepoint z : (({x} ∪ {y})ᶜ : Set M),
+              ∃ data : PointedChosenPathEndpointData
+                  (({x} ∪ {y})ᶜ : Set M) basepoint z,
+                ∀ η : Path basepoint z, Path.Homotopic data.path η) ∧
+            (∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+              Subsingleton (FundamentalGroup
+                (({x} ∪ {y})ᶜ : Set M) basepoint)) ∧
+            (∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+              Subsingleton (HomotopyGroup.Pi 1
+                (({x} ∪ {y})ᶜ : Set M) basepoint)) := by
+  rcases
+      topologyPackage_selected_decomposition_trace_finalHomeomorphism_and_recognition_certificate
+        package M extinction with
+    ⟨decomposition, hDecompositionData, hTrace, hTraceData,
+      hFinalPayload, hThreeSphere, hOnePoint⟩
+  rcases
+      singleton_and_twoPoint_chart_endpoint_data_packages_of_topology_package
+        package M extinction hyx with
+    ⟨singleChartPackage, puncture, twoChart, hTwoSimplyConnected,
+      hTwoEndpointData, hTwoFundamentalGroup, hTwoPiOne⟩
+  exact
+    ⟨decomposition,
+      hDecompositionData,
+      hTrace,
+      hTraceData,
+      hFinalPayload,
+      hThreeSphere,
+      hOnePoint,
+      singleChartPackage,
+      puncture,
+      twoChart,
+      hTwoSimplyConnected,
+      hTwoEndpointData,
+      hTwoFundamentalGroup,
+      hTwoPiOne⟩
+
+/-- Theorem contract for
+`topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_chartEndpointDataPackages_certificate`. -/
+theorem topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_chartEndpointDataPackages_certificate_eq :
+    @Poincare.topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_chartEndpointDataPackages_certificate =
+      @Poincare.topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_chartEndpointDataPackages_certificate :=
+  rfl
+
+/--
 The selected topology-package decomposition certificate can be consumed together
 with the compact two-puncture path/loop projection bundle. This is the strongest
 local final-topology payload currently available from a topology extraction
