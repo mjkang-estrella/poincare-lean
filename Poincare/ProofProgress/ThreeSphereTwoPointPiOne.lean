@@ -376,6 +376,57 @@ theorem threeSphere_twoPointComplement_path_loop_topology_certificate_eq :
   rfl
 
 /--
+The standard three-sphere two-puncture path/loop certificate together with the
+full topology package for the complement.
+-/
+theorem threeSphere_twoPointComplement_fullTopology_path_loop_certificate
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (basepoint target : (({a} ∪ {b})ᶜ : Set ThreeSphere))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+      PathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+      ConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+      SimplyConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+      pathComponent basepoint = Set.univ ∧
+      Joined basepoint target ∧
+      (∃ canonicalPath : Path basepoint target,
+        canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+          Joined basepoint target ∧
+          ∀ η : Path basepoint target, Path.Homotopic canonicalPath η) ∧
+      (∀ η : Path basepoint target,
+        Path.Homotopic chosenPath η ∧
+          (⟦chosenPath⟧ :
+            Path.Homotopic.Quotient basepoint target) = ⟦η⟧) ∧
+      Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+      loop 0 = basepoint ∧ loop 1 = basepoint ∧
+      Path.Homotopic loop (Path.refl basepoint) ∧
+      FundamentalGroup.fromPath
+          (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+        FundamentalGroup.fromPath
+          (⟦Path.refl basepoint⟧ :
+            Path.Homotopic.Quotient basepoint basepoint) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 1 (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint) := by
+  rcases threeSphere_twoPointComplement_topology_package hab with
+    ⟨hNonempty, hPathConnected, hConnected, hSimplyConnected⟩
+  rcases
+      threeSphere_twoPointComplement_path_loop_topology_certificate
+        hab basepoint target chosenPath loop with
+    ⟨_, hComponent, hJoined, hCanonical, hChosen, hQuotientSubsingleton,
+      hLoopSource, hLoopTarget, hLoopHomotopic, hLoopFromPath, hPiOne⟩
+  exact
+    ⟨hNonempty, hPathConnected, hConnected, hSimplyConnected, hComponent,
+      hJoined, hCanonical, hChosen, hQuotientSubsingleton, hLoopSource,
+      hLoopTarget, hLoopHomotopic, hLoopFromPath, hPiOne⟩
+
+/-- Theorem contract for `threeSphere_twoPointComplement_fullTopology_path_loop_certificate`. -/
+theorem threeSphere_twoPointComplement_fullTopology_path_loop_certificate_eq :
+    @Poincare.threeSphere_twoPointComplement_fullTopology_path_loop_certificate =
+      @Poincare.threeSphere_twoPointComplement_fullTopology_path_loop_certificate :=
+  rfl
+
+/--
 The standard three-sphere two-puncture certificate projects to a concrete
 chosen path, its endpoint equations, homotopy uniqueness, quotient collapse,
 loop nullhomotopy, and trivial first homotopy group.
