@@ -518,4 +518,85 @@ theorem onePoint_threeSpace_twoPointComplement_endpointData_loopCollapse_core_eq
       @Poincare.onePoint_threeSpace_twoPointComplement_endpointData_loopCollapse_core :=
   rfl
 
+/--
+The singleton and two-point complements in compactified three-space expose
+their endpoint-data loop-collapse cores as one reusable model certificate.
+-/
+theorem onePoint_threeSpace_singleton_and_twoPointComplement_endpointData_loopCollapse_core
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (singleBase singleTarget :
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (singleLoop : Path singleBase singleBase)
+    (twoBase twoTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (twoLoop : Path twoBase twoBase) :
+    (∃ singlePathData :
+        PointedPathComponentPathData
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) singleBase,
+      ∃ singleEndpointData :
+          PointedChosenPathEndpointData
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            singleBase singleTarget,
+        singlePathData.path_to singleTarget = singleEndpointData.path ∧
+          singleEndpointData.path 0 = singleBase ∧
+          singleEndpointData.path 1 = singleTarget ∧
+          Joined singleBase singleTarget ∧
+          pathComponent singleBase = Set.univ ∧
+          (∀ η : Path singleBase singleTarget,
+            Path.Homotopic singleEndpointData.path η) ∧
+          Subsingleton (Path.Homotopic.Quotient singleBase singleTarget) ∧
+          singleLoop 0 = singleBase ∧
+          singleLoop 1 = singleBase ∧
+          Path.Homotopic singleLoop (Path.refl singleBase) ∧
+          FundamentalGroup.fromPath
+              (⟦singleLoop⟧ :
+                Path.Homotopic.Quotient singleBase singleBase) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl singleBase⟧ :
+                Path.Homotopic.Quotient singleBase singleBase) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1
+              ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              singleBase)) ∧
+    (∃ twoPathData :
+        PointedPathComponentPathData
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          twoBase,
+      ∃ twoEndpointData :
+          PointedChosenPathEndpointData
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            twoBase twoTarget,
+        twoPathData.path_to twoTarget = twoEndpointData.path ∧
+          twoEndpointData.path 0 = twoBase ∧
+          twoEndpointData.path 1 = twoTarget ∧
+          Joined twoBase twoTarget ∧
+          pathComponent twoBase = Set.univ ∧
+          (∀ η : Path twoBase twoTarget,
+            Path.Homotopic twoEndpointData.path η) ∧
+          Subsingleton (Path.Homotopic.Quotient twoBase twoTarget) ∧
+          twoLoop 0 = twoBase ∧
+          twoLoop 1 = twoBase ∧
+          Path.Homotopic twoLoop (Path.refl twoBase) ∧
+          FundamentalGroup.fromPath
+              (⟦twoLoop⟧ : Path.Homotopic.Quotient twoBase twoBase) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl twoBase⟧ :
+                Path.Homotopic.Quotient twoBase twoBase) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1
+              (({p} ∪ {q})ᶜ :
+                Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              twoBase)) := by
+  exact
+    ⟨onePoint_threeSpace_compl_singleton_endpointData_loopCollapse_core
+        p singleBase singleTarget singleLoop,
+      onePoint_threeSpace_twoPointComplement_endpointData_loopCollapse_core
+        hqp twoBase twoTarget twoLoop⟩
+
+/-- Theorem contract for `onePoint_threeSpace_singleton_and_twoPointComplement_endpointData_loopCollapse_core`. -/
+theorem onePoint_threeSpace_singleton_and_twoPointComplement_endpointData_loopCollapse_core_eq :
+    @Poincare.onePoint_threeSpace_singleton_and_twoPointComplement_endpointData_loopCollapse_core =
+      @Poincare.onePoint_threeSpace_singleton_and_twoPointComplement_endpointData_loopCollapse_core :=
+  rfl
+
 end Poincare
