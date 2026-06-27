@@ -505,6 +505,113 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_loop_payloads_eq :
   rfl
 
 /--
+Combined consumer payload for the explicit two-puncture complement bridge:
+canonical path data, homotopy/quotient comparison, based-loop endpoint data,
+nullhomotopies, and `fromPath` equalities are all available simultaneously for
+source data, forward-transported `ThreeSphere` data, target data, and
+inverse-transported one-point data.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_payloads
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    {sourceBase sourceTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    (sourcePath : Path sourceBase sourceTarget)
+    (sourceLoop : Path sourceBase sourceBase)
+    {targetBase targetTarget :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)}
+    (targetPath : Path targetBase targetTarget)
+    (targetLoop : Path targetBase targetBase) :
+    (let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    (∃ sourceCanonical : Path sourceBase sourceTarget,
+      sourceCanonical 0 = sourceBase ∧ sourceCanonical 1 = sourceTarget ∧
+        Joined sourceBase sourceTarget ∧
+        Path.Homotopic sourcePath sourceCanonical ∧
+        (⟦sourcePath⟧ : Path.Homotopic.Quotient sourceBase sourceTarget) =
+          ⟦sourceCanonical⟧ ∧
+        (∀ η : Path sourceBase sourceTarget,
+          Path.Homotopic sourceCanonical η)) ∧
+      (∃ targetCanonical : Path (H sourceBase) (H sourceTarget),
+        targetCanonical 0 = H sourceBase ∧
+          targetCanonical 1 = H sourceTarget ∧
+          Joined (H sourceBase) (H sourceTarget) ∧
+          Path.Homotopic
+            (sourcePath.map H.continuous)
+            targetCanonical ∧
+          (⟦sourcePath.map H.continuous⟧ :
+            Path.Homotopic.Quotient (H sourceBase) (H sourceTarget)) =
+            ⟦targetCanonical⟧ ∧
+          (∀ η : Path (H sourceBase) (H sourceTarget),
+            Path.Homotopic targetCanonical η)) ∧
+      (∃ inverseCanonical : Path (H.symm targetBase) (H.symm targetTarget),
+        inverseCanonical 0 = H.symm targetBase ∧
+          inverseCanonical 1 = H.symm targetTarget ∧
+          Joined (H.symm targetBase) (H.symm targetTarget) ∧
+          Path.Homotopic
+            (targetPath.map H.symm.continuous)
+            inverseCanonical ∧
+          (⟦targetPath.map H.symm.continuous⟧ :
+            Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetTarget)) =
+            ⟦inverseCanonical⟧ ∧
+          (∀ η : Path (H.symm targetBase) (H.symm targetTarget),
+            Path.Homotopic inverseCanonical η))) ∧
+      (let H :=
+        onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+          hqp
+      (sourceLoop 0 = sourceBase ∧ sourceLoop 1 = sourceBase ∧
+        Path.Homotopic sourceLoop (Path.refl sourceBase) ∧
+        FundamentalGroup.fromPath
+            (⟦sourceLoop⟧ :
+              Path.Homotopic.Quotient sourceBase sourceBase) =
+          FundamentalGroup.fromPath
+            (⟦Path.refl sourceBase⟧ :
+              Path.Homotopic.Quotient sourceBase sourceBase)) ∧
+        ((sourceLoop.map H.continuous) 0 = H sourceBase ∧
+          (sourceLoop.map H.continuous) 1 = H sourceBase ∧
+          Path.Homotopic
+            (sourceLoop.map H.continuous)
+            (Path.refl (H sourceBase)) ∧
+          FundamentalGroup.fromPath
+              (⟦sourceLoop.map H.continuous⟧ :
+                Path.Homotopic.Quotient (H sourceBase) (H sourceBase)) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl (H sourceBase)⟧ :
+                Path.Homotopic.Quotient (H sourceBase) (H sourceBase))) ∧
+        (targetLoop 0 = targetBase ∧ targetLoop 1 = targetBase ∧
+          Path.Homotopic targetLoop (Path.refl targetBase) ∧
+          FundamentalGroup.fromPath
+              (⟦targetLoop⟧ :
+                Path.Homotopic.Quotient targetBase targetBase) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl targetBase⟧ :
+                Path.Homotopic.Quotient targetBase targetBase)) ∧
+        ((targetLoop.map H.symm.continuous) 0 = H.symm targetBase ∧
+          (targetLoop.map H.symm.continuous) 1 = H.symm targetBase ∧
+          Path.Homotopic
+            (targetLoop.map H.symm.continuous)
+            (Path.refl (H.symm targetBase)) ∧
+          FundamentalGroup.fromPath
+              (⟦targetLoop.map H.symm.continuous⟧ :
+                Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetBase)) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl (H.symm targetBase)⟧ :
+                Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetBase)))) := by
+  exact
+    ⟨onePoint_threeSpace_twoPointComplement_homeomorph_canonical_path_payloads
+        hqp sourcePath targetPath,
+      onePoint_threeSpace_twoPointComplement_homeomorph_loop_payloads
+        hqp sourceLoop targetLoop⟩
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_payloads`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_payloads_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_payloads =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_payloads :=
+  rfl
+
+/--
 The standard one-point compactification model two-puncture complement carries
 the transported punctured-Euclidean chart together with the canonical path,
 endpoint-data, homotopy quotient collapse, loop nullhomotopy, and `π₁`
