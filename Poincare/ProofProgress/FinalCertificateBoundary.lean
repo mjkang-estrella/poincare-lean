@@ -31597,4 +31597,86 @@ theorem dependency_only_canonical_reserved_theorem_selected_extraction_nonempty_
       @Poincare.dependency_only_canonical_reserved_theorem_selected_extraction_nonempty_certificate_final_statement_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only canonical reserved-theorem endpoint applying the reconstructed
+final Poincare statement to the selected target manifold.
+
+This strengthens the local selected-extraction route from equality of statement
+surfaces to the concrete target assertion: the final theorem statement applied
+to `M` is exactly the selected extracted homeomorphism payload.
+-/
+theorem dependency_only_canonical_reserved_theorem_selected_extraction_final_statement_application_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u},
+    ∃ finalStatement : PoincareConjectureStatement.{u},
+    ∃ projectPayloadTarget : PoincareConjectureStatement.{u},
+    ∃ projectPayloadCompletion :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ n : ℕ∞ω,
+    ∃ ordinaryPackage : FiniteExtinctionSurgeryPackage n M,
+    ∃ finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+    ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ extractedHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ completionCriterion : CompletionCriterionAtUniverse M,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      finalStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      finalStatement = projectPayloadTarget ∧
+      finalStatement M = extractedHomeomorphism ∧
+      extractedHomeomorphism = projectPayloadTarget M ∧
+      projectPayloadTarget M =
+        (⟨projectHomeomorphism⟩ : Nonempty (M ≃ₜ ThreeSphere)) ∧
+      projectPayloadCompletion M = completionCriterion ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      finiteExtinction = ordinaryPackage.finiteExtinction ∧
+      topologyPackage =
+        (dependencies_of_equation_boundary_dependencies dependencies).topology ∧
+      extractedHomeomorphism =
+        topologyPackage.extractHomeomorphism M finiteExtinction := by
+  rcases
+      dependency_only_canonical_reserved_theorem_selected_extraction_nonempty_certificate_final_statement_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨theoremName, certificate, _certificateProjectPayload,
+      _reconstructedCertificate, nonemptyCertificate, finalStatement,
+      projectPayloadTarget, projectPayloadCompletion, n, ordinaryPackage,
+      finiteExtinction, topologyPackage, extractedHomeomorphism,
+      projectHomeomorphism, completionCriterion, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, _hReconstructedCertificate_eq,
+      _hNonemptyCertificate, hFinalStatement, hFinalStatementProject,
+      hFiniteExtinction, hTopologyPackage, hExtractedHomeomorphism,
+      hExtractedProjectPayload, hProjectPayloadTarget,
+      hCompletionCriterion⟩
+  have hFinalStatementApplication :
+      finalStatement M = extractedHomeomorphism := by
+    exact
+      Eq.trans (congrArg (fun statement => statement M) hFinalStatementProject)
+        hExtractedProjectPayload.symm
+  exact
+    ⟨theoremName, certificate, nonemptyCertificate, finalStatement,
+      projectPayloadTarget, projectPayloadCompletion, n, ordinaryPackage,
+      finiteExtinction, topologyPackage, extractedHomeomorphism,
+      projectHomeomorphism, completionCriterion, hTheoremNameCanonical,
+      hTheoremNameLiteral, hFinalStatement, hFinalStatementProject,
+      hFinalStatementApplication, hExtractedProjectPayload,
+      hProjectPayloadTarget, hCompletionCriterion, hCertificate,
+      hFiniteExtinction, hTopologyPackage, hExtractedHomeomorphism⟩
+
+/-- Theorem contract for
+`dependency_only_canonical_reserved_theorem_selected_extraction_final_statement_application_of_equation_boundary_dependencies`. -/
+theorem dependency_only_canonical_reserved_theorem_selected_extraction_final_statement_application_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_canonical_reserved_theorem_selected_extraction_final_statement_application_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_canonical_reserved_theorem_selected_extraction_final_statement_application_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
