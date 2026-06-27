@@ -2292,6 +2292,168 @@ theorem onePoint_threeSpace_twoPointComplement_source_and_threeSphere_target_ful
   rfl
 
 /--
+Witness-level form of the source/target full-chart, full-topology, local-path
+endpoint-data bridge.  This exposes the actual complement homeomorphism
+together with both charted path-data and endpoint-data payloads, so downstream
+recognition consumers do not have to unpack `Nonempty` before accessing the
+source and target certificates.
+-/
+theorem onePoint_threeSpace_twoPointComplement_source_and_threeSphere_target_fullChart_fullTopology_locPath_endpointData_bidirectional_pathClass_witnesses
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (sourceBase sourceTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (sourcePath : Path sourceBase sourceTarget)
+    (sourceLoop : Path sourceBase sourceBase)
+    (targetBase targetTarget :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere))
+    (targetPath : Path targetBase targetTarget)
+    (targetLoop : Path targetBase targetBase) :
+    let Source :=
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    let Target :=
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)
+    ∃ _bridge : Source ≃ₜ Target,
+      ∃ sourcePuncture : EuclideanSpace ℝ (Fin 3),
+        ∃ sourceChart :
+            Source ≃ₜ ({sourcePuncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+          ∃ sourcePathData : PointedPathComponentPathData Source sourceBase,
+            ∃ sourceEndpointData :
+                PointedChosenPathEndpointData Source sourceBase sourceTarget,
+              ∃ targetPuncture : EuclideanSpace ℝ (Fin 3),
+                ∃ targetChart :
+                    Target ≃ₜ
+                      ({targetPuncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+                  ∃ targetPathData :
+                      PointedPathComponentPathData Target targetBase,
+                    ∃ targetEndpointData :
+                        PointedChosenPathEndpointData
+                          Target targetBase targetTarget,
+                      (∀ w, (sourceChart w : EuclideanSpace ℝ (Fin 3)) ≠
+                        sourcePuncture) ∧
+                        LocPathConnectedSpace Source ∧
+                        Nonempty Source ∧
+                        PathConnectedSpace Source ∧
+                        ConnectedSpace Source ∧
+                        SimplyConnectedSpace Source ∧
+                        sourcePathData.path_to sourceTarget =
+                          sourceEndpointData.path ∧
+                        sourceEndpointData.path 0 = sourceBase ∧
+                        sourceEndpointData.path 1 = sourceTarget ∧
+                        Joined sourceBase sourceTarget ∧
+                        pathComponent sourceBase = Set.univ ∧
+                        Path.Homotopic sourcePath sourceEndpointData.path ∧
+                        Path.Homotopic sourceEndpointData.path sourcePath ∧
+                        (⟦sourcePath⟧ :
+                          Path.Homotopic.Quotient sourceBase sourceTarget) =
+                          ⟦sourceEndpointData.path⟧ ∧
+                        (⟦sourceEndpointData.path⟧ :
+                          Path.Homotopic.Quotient sourceBase sourceTarget) =
+                          ⟦sourcePath⟧ ∧
+                        (∀ η : Path sourceBase sourceTarget,
+                          Path.Homotopic sourceEndpointData.path η) ∧
+                        Subsingleton
+                          (Path.Homotopic.Quotient sourceBase sourceTarget) ∧
+                        sourceLoop 0 = sourceBase ∧
+                        sourceLoop 1 = sourceBase ∧
+                        Path.Homotopic sourceLoop (Path.refl sourceBase) ∧
+                        FundamentalGroup.fromPath
+                            (⟦sourceLoop⟧ :
+                              Path.Homotopic.Quotient sourceBase sourceBase) =
+                          FundamentalGroup.fromPath
+                            (⟦Path.refl sourceBase⟧ :
+                              Path.Homotopic.Quotient sourceBase sourceBase) ∧
+                        Subsingleton (HomotopyGroup.Pi 1 Source sourceBase) ∧
+                        (∀ w, (targetChart w : EuclideanSpace ℝ (Fin 3)) ≠
+                          targetPuncture) ∧
+                        LocPathConnectedSpace Target ∧
+                        Nonempty Target ∧
+                        PathConnectedSpace Target ∧
+                        ConnectedSpace Target ∧
+                        SimplyConnectedSpace Target ∧
+                        targetPathData.path_to targetTarget =
+                          targetEndpointData.path ∧
+                        targetEndpointData.path 0 = targetBase ∧
+                        targetEndpointData.path 1 = targetTarget ∧
+                        Joined targetBase targetTarget ∧
+                        pathComponent targetBase = Set.univ ∧
+                        Path.Homotopic targetPath targetEndpointData.path ∧
+                        Path.Homotopic targetEndpointData.path targetPath ∧
+                        (⟦targetPath⟧ :
+                          Path.Homotopic.Quotient targetBase targetTarget) =
+                          ⟦targetEndpointData.path⟧ ∧
+                        (⟦targetEndpointData.path⟧ :
+                          Path.Homotopic.Quotient targetBase targetTarget) =
+                          ⟦targetPath⟧ ∧
+                        (∀ η : Path targetBase targetTarget,
+                          Path.Homotopic targetEndpointData.path η) ∧
+                        Subsingleton
+                          (Path.Homotopic.Quotient targetBase targetTarget) ∧
+                        targetLoop 0 = targetBase ∧
+                        targetLoop 1 = targetBase ∧
+                        Path.Homotopic targetLoop (Path.refl targetBase) ∧
+                        FundamentalGroup.fromPath
+                            (⟦targetLoop⟧ :
+                              Path.Homotopic.Quotient targetBase targetBase) =
+                          FundamentalGroup.fromPath
+                            (⟦Path.refl targetBase⟧ :
+                              Path.Homotopic.Quotient targetBase targetBase) ∧
+                        Subsingleton
+                          (HomotopyGroup.Pi 1 Target targetBase) := by
+  dsimp
+  rcases
+      onePoint_threeSpace_twoPointComplement_source_and_threeSphere_target_fullChart_fullTopology_locPath_endpointData_bidirectional_pathClass_bundle
+        hqp sourceBase sourceTarget sourcePath sourceLoop
+        targetBase targetTarget targetPath targetLoop with
+    ⟨⟨bridge⟩,
+      ⟨sourcePuncture, sourceChart, sourcePathData, sourceEndpointData,
+        hSourceAvoid, hSourceLocPath, hSourceNonempty,
+        hSourcePathConnected, hSourceConnected, hSourceSimplyConnected,
+        hSourcePathData, hSourceEndpointSource, hSourceEndpointTarget,
+        hSourceJoined, hSourceComponent, hSourceHomotopic,
+        hSourceEndpointHomotopic, hSourceQuotient, hSourceEndpointQuotient,
+        hSourceUnique, hSourceQuotientSubsingleton, hSourceLoopSource,
+        hSourceLoopTarget, hSourceLoopHomotopic, hSourceLoopFromPath,
+        hSourcePiOne⟩,
+      ⟨targetPuncture, targetChart, targetPathData, targetEndpointData,
+        hTargetAvoid, hTargetLocPath, hTargetNonempty,
+        hTargetPathConnected, hTargetConnected, hTargetSimplyConnected,
+        hTargetPathData, hTargetEndpointSource, hTargetEndpointTarget,
+        hTargetJoined, hTargetComponent, hTargetHomotopic,
+        hTargetEndpointHomotopic, hTargetQuotient, hTargetEndpointQuotient,
+        hTargetUnique, hTargetQuotientSubsingleton, hTargetLoopSource,
+        hTargetLoopTarget, hTargetLoopHomotopic, hTargetLoopFromPath,
+        hTargetPiOne⟩⟩
+  exact
+    ⟨bridge, sourcePuncture, sourceChart, sourcePathData,
+      sourceEndpointData, targetPuncture, targetChart, targetPathData,
+      targetEndpointData, hSourceAvoid, hSourceLocPath, hSourceNonempty,
+      hSourcePathConnected, hSourceConnected, hSourceSimplyConnected,
+      hSourcePathData, hSourceEndpointSource, hSourceEndpointTarget,
+      hSourceJoined, hSourceComponent, hSourceHomotopic,
+      hSourceEndpointHomotopic, hSourceQuotient, hSourceEndpointQuotient,
+      hSourceUnique, hSourceQuotientSubsingleton, hSourceLoopSource,
+      hSourceLoopTarget, hSourceLoopHomotopic, hSourceLoopFromPath,
+      hSourcePiOne, hTargetAvoid, hTargetLocPath, hTargetNonempty,
+      hTargetPathConnected, hTargetConnected, hTargetSimplyConnected,
+      hTargetPathData, hTargetEndpointSource, hTargetEndpointTarget,
+      hTargetJoined, hTargetComponent, hTargetHomotopic,
+      hTargetEndpointHomotopic, hTargetQuotient, hTargetEndpointQuotient,
+      hTargetUnique, hTargetQuotientSubsingleton, hTargetLoopSource,
+      hTargetLoopTarget, hTargetLoopHomotopic, hTargetLoopFromPath,
+      hTargetPiOne⟩
+
+/-- Theorem contract for
+`onePoint_threeSpace_twoPointComplement_source_and_threeSphere_target_fullChart_fullTopology_locPath_endpointData_bidirectional_pathClass_witnesses`. -/
+theorem onePoint_threeSpace_twoPointComplement_source_and_threeSphere_target_fullChart_fullTopology_locPath_endpointData_bidirectional_pathClass_witnesses_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_source_and_threeSphere_target_fullChart_fullTopology_locPath_endpointData_bidirectional_pathClass_witnesses =
+      @Poincare.onePoint_threeSpace_twoPointComplement_source_and_threeSphere_target_fullChart_fullTopology_locPath_endpointData_bidirectional_pathClass_witnesses :=
+  rfl
+
+/--
 The source/target full-chart endpoint-data bundle projects to the homotopy
 core needed by recognition consumers: selected endpoint paths, path-data
 coherence, endpoint equations, path-quotient collapse, loop collapse, and
