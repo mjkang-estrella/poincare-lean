@@ -28926,4 +28926,87 @@ theorem dependency_only_reserved_payloads_project_mathlib_targets_of_equation_bo
       @Poincare.dependency_only_reserved_payloads_project_mathlib_targets_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved payload internals with final targets.
+
+This opens the canonical and project completion payloads into their target and
+universal-completion components.  The endpoint keeps the reserved certificate
+and both final statement targets, so later final-collapse code can consume the
+payload internals directly instead of destructing opaque payload witnesses.
+-/
+theorem dependency_only_reserved_payload_internals_project_mathlib_targets_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ canonicalPayload :
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ canonicalPayloadTarget : canonicalCompletionTarget.{u},
+    ∃ canonicalPayloadCompletion :
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ projectPayload :
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ projectPayloadTarget : PoincareConjectureStatement.{u},
+    ∃ projectPayloadCompletion :
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+      canonicalPayload =
+        canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      projectPayload =
+        poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      canonicalPayload = ⟨canonicalPayloadTarget, canonicalPayloadCompletion⟩ ∧
+      projectPayload = ⟨projectPayloadTarget, projectPayloadCompletion⟩ ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      canonical_completion_payload_of_completion_certificate certificate =
+        canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      poincare_completion_payload_of_completion_certificate certificate =
+        poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      canonicalCompletionTarget.{u} ∧
+      PoincareConjectureStatement.{u} ∧
+      MathlibTopologicalPoincareThreeStatement.{u} ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  rcases
+      dependency_only_reserved_payloads_project_mathlib_targets_of_equation_boundary_dependencies
+        dependencies with
+    ⟨canonicalPayloadData, projectPayloadData, certificate, hCertificate,
+      hCanonicalPayload, hProjectPayload, canonicalTarget, projectTarget,
+      mathlibTarget, universalCompletion⟩
+  rcases canonicalPayloadData with ⟨canonicalPayload, hCanonicalPayload_eq⟩
+  rcases projectPayloadData with ⟨projectPayload, hProjectPayload_eq⟩
+  rcases canonicalPayload with
+    ⟨canonicalPayloadTarget, canonicalPayloadCompletion⟩
+  rcases projectPayload with
+    ⟨projectPayloadTarget, projectPayloadCompletion⟩
+  exact
+    ⟨⟨canonicalPayloadTarget, canonicalPayloadCompletion⟩,
+      canonicalPayloadTarget,
+      canonicalPayloadCompletion,
+      ⟨projectPayloadTarget, projectPayloadCompletion⟩,
+      projectPayloadTarget,
+      projectPayloadCompletion,
+      certificate,
+      hCanonicalPayload_eq,
+      hProjectPayload_eq,
+      rfl,
+      rfl,
+      hCertificate,
+      hCanonicalPayload,
+      hProjectPayload,
+      canonicalTarget,
+      projectTarget,
+      mathlibTarget,
+      universalCompletion⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_payload_internals_project_mathlib_targets_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_payload_internals_project_mathlib_targets_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_payload_internals_project_mathlib_targets_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_payload_internals_project_mathlib_targets_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
