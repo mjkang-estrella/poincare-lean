@@ -1255,6 +1255,110 @@ theorem singletonChosenPathLoop_and_twoPointChartPathLoopProjection_of_homeomorp
   rfl
 
 /--
+Recognition as a one-point compactification gives the actual Euclidean chart
+on a singleton complement together with explicit singleton chosen-path data,
+singleton path/loop collapse, and the synchronized two-puncture chart/path-loop
+projection payload.
+-/
+theorem singletonEuclideanChart_chosenPathLoop_and_twoPointChartPathLoopProjection_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (chosenSinglePath : Path singleBase singleTarget)
+    (singleLoop : Path singleBase singleBase)
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path twoBase twoTarget)
+    (loop : Path twoBase twoBase) :
+    Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+      ∃ singlePathData :
+          PointedPathComponentPathData ({x}ᶜ : Set M) singleBase,
+        ∃ singleEndpointData :
+            PointedChosenPathEndpointData ({x}ᶜ : Set M)
+              singleBase singleTarget,
+          ∃ canonicalSinglePath : Path singleBase singleTarget,
+            singlePathData.path_to singleTarget = canonicalSinglePath ∧
+              singleEndpointData.path = canonicalSinglePath ∧
+              canonicalSinglePath 0 = singleBase ∧
+              canonicalSinglePath 1 = singleTarget ∧
+              Joined singleBase singleTarget ∧
+              pathComponent singleBase = Set.univ ∧
+              Path.Homotopic chosenSinglePath canonicalSinglePath ∧
+              (⟦chosenSinglePath⟧ :
+                Path.Homotopic.Quotient singleBase singleTarget) =
+                ⟦canonicalSinglePath⟧ ∧
+              (∀ ζ : Path singleBase singleTarget,
+                Path.Homotopic canonicalSinglePath ζ) ∧
+              Subsingleton
+                (Path.Homotopic.Quotient singleBase singleTarget) ∧
+              singleLoop 0 = singleBase ∧ singleLoop 1 = singleBase ∧
+              Path.Homotopic singleLoop (Path.refl singleBase) ∧
+              FundamentalGroup.fromPath
+                  (⟦singleLoop⟧ :
+                    Path.Homotopic.Quotient singleBase singleBase) =
+                FundamentalGroup.fromPath
+                  (⟦Path.refl singleBase⟧ :
+                    Path.Homotopic.Quotient singleBase singleBase) ∧
+              Subsingleton
+                (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBase) ∧
+              ∃ puncture : EuclideanSpace ℝ (Fin 3),
+                ∃ chart : (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+                    ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+                  ∃ twoPathData :
+                      PointedPathComponentPathData
+                        (({x} ∪ {y})ᶜ : Set M) twoBase,
+                    ∃ twoEndpointData :
+                        PointedChosenPathEndpointData
+                          (({x} ∪ {y})ᶜ : Set M) twoBase twoTarget,
+                      ∃ canonicalPath : Path twoBase twoTarget,
+                        (∀ w,
+                          (chart w : EuclideanSpace ℝ (Fin 3)) ≠
+                            puncture) ∧
+                          Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+                          PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                          SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                          twoPathData.path_to twoTarget = canonicalPath ∧
+                          twoEndpointData.path = canonicalPath ∧
+                          canonicalPath 0 = twoBase ∧
+                          canonicalPath 1 = twoTarget ∧
+                          Joined twoBase twoTarget ∧
+                          pathComponent twoBase = Set.univ ∧
+                          Path.Homotopic chosenPath canonicalPath ∧
+                          (⟦chosenPath⟧ :
+                            Path.Homotopic.Quotient twoBase twoTarget) =
+                            ⟦canonicalPath⟧ ∧
+                          (∀ ζ : Path twoBase twoTarget,
+                            Path.Homotopic canonicalPath ζ) ∧
+                          Subsingleton
+                            (Path.Homotopic.Quotient twoBase twoTarget) ∧
+                          loop 0 = twoBase ∧ loop 1 = twoBase ∧
+                          Path.Homotopic loop (Path.refl twoBase) ∧
+                          FundamentalGroup.fromPath
+                              (⟦loop⟧ :
+                                Path.Homotopic.Quotient twoBase twoBase) =
+                            FundamentalGroup.fromPath
+                              (⟦Path.refl twoBase⟧ :
+                                Path.Homotopic.Quotient twoBase twoBase) ∧
+                          Subsingleton
+                            (HomotopyGroup.Pi 1
+                              (({x} ∪ {y})ᶜ : Set M) twoBase) := by
+  exact
+    ⟨⟨homeomorph_compl_singleton_euclidean_of_homeomorph_to_onePoint_threeSpace
+        h x⟩,
+      singletonChosenPathLoop_and_twoPointChartPathLoopProjection_of_homeomorph_to_onePoint_threeSpace
+        h hyx singleBase singleTarget chosenSinglePath singleLoop
+        twoBase twoTarget chosenPath loop⟩
+
+/--
+Theorem contract for
+`singletonEuclideanChart_chosenPathLoop_and_twoPointChartPathLoopProjection_of_homeomorph_to_onePoint_threeSpace`.
+-/
+theorem singletonEuclideanChart_chosenPathLoop_and_twoPointChartPathLoopProjection_of_homeomorph_to_onePoint_threeSpace_eq :
+    @Poincare.singletonEuclideanChart_chosenPathLoop_and_twoPointChartPathLoopProjection_of_homeomorph_to_onePoint_threeSpace =
+      @Poincare.singletonEuclideanChart_chosenPathLoop_and_twoPointChartPathLoopProjection_of_homeomorph_to_onePoint_threeSpace :=
+  rfl
+
+/--
 The same single-puncture Euclidean chart transport, stated from recognition as
 the project `ThreeSphere`.
 -/
@@ -1839,6 +1943,107 @@ theorem singletonChosenPathLoop_and_twoPointChartPathLoopProjection_of_homeomorp
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
     singleBase singleTarget chosenSinglePath singleLoop twoBase twoTarget
     chosenPath loop
+
+/--
+Recognition as `ThreeSphere` gives the actual Euclidean chart on a singleton
+complement together with explicit singleton chosen-path data, singleton
+path/loop collapse, and the synchronized two-puncture chart/path-loop
+projection payload.
+-/
+theorem singletonEuclideanChart_chosenPathLoop_and_twoPointChartPathLoopProjection_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (chosenSinglePath : Path singleBase singleTarget)
+    (singleLoop : Path singleBase singleBase)
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path twoBase twoTarget)
+    (loop : Path twoBase twoBase) :
+    Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+      ∃ singlePathData :
+          PointedPathComponentPathData ({x}ᶜ : Set M) singleBase,
+        ∃ singleEndpointData :
+            PointedChosenPathEndpointData ({x}ᶜ : Set M)
+              singleBase singleTarget,
+          ∃ canonicalSinglePath : Path singleBase singleTarget,
+            singlePathData.path_to singleTarget = canonicalSinglePath ∧
+              singleEndpointData.path = canonicalSinglePath ∧
+              canonicalSinglePath 0 = singleBase ∧
+              canonicalSinglePath 1 = singleTarget ∧
+              Joined singleBase singleTarget ∧
+              pathComponent singleBase = Set.univ ∧
+              Path.Homotopic chosenSinglePath canonicalSinglePath ∧
+              (⟦chosenSinglePath⟧ :
+                Path.Homotopic.Quotient singleBase singleTarget) =
+                ⟦canonicalSinglePath⟧ ∧
+              (∀ ζ : Path singleBase singleTarget,
+                Path.Homotopic canonicalSinglePath ζ) ∧
+              Subsingleton
+                (Path.Homotopic.Quotient singleBase singleTarget) ∧
+              singleLoop 0 = singleBase ∧ singleLoop 1 = singleBase ∧
+              Path.Homotopic singleLoop (Path.refl singleBase) ∧
+              FundamentalGroup.fromPath
+                  (⟦singleLoop⟧ :
+                    Path.Homotopic.Quotient singleBase singleBase) =
+                FundamentalGroup.fromPath
+                  (⟦Path.refl singleBase⟧ :
+                    Path.Homotopic.Quotient singleBase singleBase) ∧
+              Subsingleton
+                (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBase) ∧
+              ∃ puncture : EuclideanSpace ℝ (Fin 3),
+                ∃ chart : (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+                    ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+                  ∃ twoPathData :
+                      PointedPathComponentPathData
+                        (({x} ∪ {y})ᶜ : Set M) twoBase,
+                    ∃ twoEndpointData :
+                        PointedChosenPathEndpointData
+                          (({x} ∪ {y})ᶜ : Set M) twoBase twoTarget,
+                      ∃ canonicalPath : Path twoBase twoTarget,
+                        (∀ w,
+                          (chart w : EuclideanSpace ℝ (Fin 3)) ≠
+                            puncture) ∧
+                          Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+                          PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                          SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                          twoPathData.path_to twoTarget = canonicalPath ∧
+                          twoEndpointData.path = canonicalPath ∧
+                          canonicalPath 0 = twoBase ∧
+                          canonicalPath 1 = twoTarget ∧
+                          Joined twoBase twoTarget ∧
+                          pathComponent twoBase = Set.univ ∧
+                          Path.Homotopic chosenPath canonicalPath ∧
+                          (⟦chosenPath⟧ :
+                            Path.Homotopic.Quotient twoBase twoTarget) =
+                            ⟦canonicalPath⟧ ∧
+                          (∀ ζ : Path twoBase twoTarget,
+                            Path.Homotopic canonicalPath ζ) ∧
+                          Subsingleton
+                            (Path.Homotopic.Quotient twoBase twoTarget) ∧
+                          loop 0 = twoBase ∧ loop 1 = twoBase ∧
+                          Path.Homotopic loop (Path.refl twoBase) ∧
+                          FundamentalGroup.fromPath
+                              (⟦loop⟧ :
+                                Path.Homotopic.Quotient twoBase twoBase) =
+                            FundamentalGroup.fromPath
+                              (⟦Path.refl twoBase⟧ :
+                                Path.Homotopic.Quotient twoBase twoBase) ∧
+                          Subsingleton
+                            (HomotopyGroup.Pi 1
+                              (({x} ∪ {y})ᶜ : Set M) twoBase) :=
+  singletonEuclideanChart_chosenPathLoop_and_twoPointChartPathLoopProjection_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+    singleBase singleTarget chosenSinglePath singleLoop twoBase twoTarget
+    chosenPath loop
+
+/--
+Theorem contract for
+`singletonEuclideanChart_chosenPathLoop_and_twoPointChartPathLoopProjection_of_homeomorph_to_threeSphere`.
+-/
+theorem singletonEuclideanChart_chosenPathLoop_and_twoPointChartPathLoopProjection_of_homeomorph_to_threeSphere_eq :
+    @Poincare.singletonEuclideanChart_chosenPathLoop_and_twoPointChartPathLoopProjection_of_homeomorph_to_threeSphere =
+      @Poincare.singletonEuclideanChart_chosenPathLoop_and_twoPointChartPathLoopProjection_of_homeomorph_to_threeSphere :=
+  rfl
 
 /--
 Theorem contract for
