@@ -1671,6 +1671,73 @@ theorem topologyPackage_finalHomeomorphism_and_twoPointProjectionBundle_eq :
   rfl
 
 /--
+The final-homeomorphism package route also exposes the synchronized
+two-puncture chart/path-loop projection bundle. This combines final one-point
+recognition and final-homeomorphism payload data with the transported
+two-puncture Euclidean chart, chosen endpoint data, homotopy quotient collapse,
+loop nullhomotopy, and `π₁` collapse around one canonical path.
+-/
+theorem topologyPackage_finalHomeomorphism_and_twoPointChartPathLoopProjectionBundle
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      FinalHomeomorphismPayloadData M extinction
+        (extinction_decomposition_of_topology_package package M extinction) ∧
+      ∃ puncture : EuclideanSpace ℝ (Fin 3),
+        ∃ chart : (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+          ∃ pathData :
+              PointedPathComponentPathData (({x} ∪ {y})ᶜ : Set M) basepoint,
+            ∃ endpointData :
+                PointedChosenPathEndpointData
+                  (({x} ∪ {y})ᶜ : Set M) basepoint target,
+              ∃ canonicalPath : Path basepoint target,
+                (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+                  Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+                  PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                  SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                  pathData.path_to target = canonicalPath ∧
+                  endpointData.path = canonicalPath ∧
+                  canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+                  Joined basepoint target ∧
+                  pathComponent basepoint = Set.univ ∧
+                  Path.Homotopic chosenPath canonicalPath ∧
+                  (⟦chosenPath⟧ :
+                    Path.Homotopic.Quotient basepoint target) =
+                    ⟦canonicalPath⟧ ∧
+                  (∀ η : Path basepoint target,
+                    Path.Homotopic canonicalPath η) ∧
+                  Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+                  loop 0 = basepoint ∧ loop 1 = basepoint ∧
+                  Path.Homotopic loop (Path.refl basepoint) ∧
+                  FundamentalGroup.fromPath
+                      (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+                    FundamentalGroup.fromPath
+                      (⟦Path.refl basepoint⟧ :
+                        Path.Homotopic.Quotient basepoint basepoint) ∧
+                  Subsingleton
+                    (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  exact
+    ⟨homeomorph_to_onePoint_threeSpace_of_topology_package
+        package M extinction,
+      finalHomeomorphismPayloadData_of_topology_package package M extinction,
+      twoPointComplement_chart_path_loop_projection_bundle_of_topology_package
+        package M extinction hyx basepoint target chosenPath loop⟩
+
+/-- Theorem contract for `topologyPackage_finalHomeomorphism_and_twoPointChartPathLoopProjectionBundle`. -/
+theorem topologyPackage_finalHomeomorphism_and_twoPointChartPathLoopProjectionBundle_eq :
+    @Poincare.topologyPackage_finalHomeomorphism_and_twoPointChartPathLoopProjectionBundle =
+      @Poincare.topologyPackage_finalHomeomorphism_and_twoPointChartPathLoopProjectionBundle :=
+  rfl
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
