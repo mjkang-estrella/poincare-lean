@@ -33700,4 +33700,106 @@ theorem dependency_only_reserved_final_statement_completion_routes_of_equation_b
       @Poincare.dependency_only_reserved_final_statement_completion_routes_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved final statement and completion-family collapse.
+
+This is the family-level counterpart of the fixed-witness route collapse:
+the final project/mathlib statements, canonical target, certificate, and all
+completion-family routes are packaged together and synchronized through the
+same checked completion certificate.
+-/
+theorem dependency_only_reserved_final_statement_completion_family_routes_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ canonicalTarget : canonicalCompletionTarget.{u},
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u},
+    ∃ statementCertificate : PoincareCompletionCertificate.{u},
+    ∃ routeCertificate : PoincareCompletionCertificate.{u},
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ canonicalPayloadCompletion :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ projectPayloadCompletion :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+      projectStatement =
+        dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies
+          dependencies ∧
+      projectStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      mathlibStatement =
+        dependency_only_reserved_mathlib_statement_of_equation_boundary_dependencies
+          dependencies ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement ∧
+      canonicalTarget =
+        canonical_completion_target_of_completion_certificate
+          statementCertificate ∧
+      statementCertificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      routeCertificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      statementCertificate = routeCertificate ∧
+      completionCriterionFamily = canonicalPayloadCompletion ∧
+      completionCriterionFamily = projectPayloadCompletion ∧
+      (∀ witness : Type u,
+        completionCriterionFamily witness =
+          dependency_only_reserved_completionCriterionAtUniverse_of_equation_boundary_dependencies
+            dependencies witness) := by
+  rcases
+      dependency_only_reserved_canonical_target_collapse_of_equation_boundary_dependencies
+        dependencies with
+    ⟨statementCertificate, nonemptyCertificate, canonicalTarget,
+      projectStatement, mathlibStatement, _canonicalPayload, _projectPayload,
+      hStatementCertificate, _hNonemptyCertificate, hCanonicalTarget,
+      _hProjectStatementTarget, hProjectStatementCertificate,
+      _hMathlibStatementProject, _hCanonicalPayload, _hProjectPayload,
+      _hCanonicalProjectPayload⟩
+  rcases
+      dependency_only_reserved_completion_family_routes_of_equation_boundary_dependencies
+        dependencies with
+    ⟨completionCriterionFamily, canonicalPayloadCompletion,
+      projectPayloadCompletion, _canonicalPayloadRoute, _projectPayloadRoute,
+      routeCertificate, hCompletionCanonical, hCompletionProject,
+      hCompletionReserved, _hCanonicalPayloadRoute, _hProjectPayloadRoute,
+      hRouteCertificate⟩
+  have hProjectStatementDirect :
+      projectStatement =
+        dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies
+          dependencies := by
+    apply Subsingleton.elim
+  have hMathlibStatementDirect :
+      mathlibStatement =
+        dependency_only_reserved_mathlib_statement_of_equation_boundary_dependencies
+          dependencies := by
+    apply Subsingleton.elim
+  have hMathlibStatementProject :
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement := by
+    apply Subsingleton.elim
+  have hStatementRouteCertificate :
+      statementCertificate = routeCertificate :=
+    hStatementCertificate.trans hRouteCertificate.symm
+  exact
+    ⟨projectStatement, mathlibStatement, canonicalTarget,
+      nonemptyCertificate, statementCertificate, routeCertificate,
+      completionCriterionFamily, canonicalPayloadCompletion,
+      projectPayloadCompletion, hProjectStatementDirect,
+      hProjectStatementCertificate, hMathlibStatementDirect,
+      hMathlibStatementProject, hCanonicalTarget, hStatementCertificate,
+      hRouteCertificate, hStatementRouteCertificate, hCompletionCanonical,
+      hCompletionProject, hCompletionReserved⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_final_statement_completion_family_routes_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_final_statement_completion_family_routes_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_final_statement_completion_family_routes_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_final_statement_completion_family_routes_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
