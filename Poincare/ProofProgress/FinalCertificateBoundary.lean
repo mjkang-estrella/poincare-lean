@@ -30287,4 +30287,89 @@ theorem dependency_only_canonical_reserved_theorem_smoothability_bridge_tail_of_
       @Poincare.dependency_only_canonical_reserved_theorem_smoothability_bridge_tail_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only canonical reserved-theorem endpoint with topology-extraction
+data opened at a fixed finite-extinction proof.
+
+This specializes the final topology package to the decomposition, surgery-trace
+reconstruction, handle-cancellation, component-classification, and recognition
+inputs consumed after finite extinction.
+-/
+theorem dependency_only_canonical_reserved_theorem_topology_extraction_data_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ∃ theoremName : String,
+    ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ decomposition : HasExtinctionTopologyDecomposition M extinction,
+    ∃ surgeryTraceReconstruction :
+      HasExtinctionSurgeryTraceReconstruction M extinction decomposition,
+    ∃ surgeryTraceHandleCancellation :
+      HasExtinctionSurgeryTraceHandleCancellation M extinction decomposition
+        surgeryTraceReconstruction,
+    ∃ componentClassification :
+      HasExtinctionComponentClassification M extinction decomposition,
+    ∃ recognition :
+      HasThreeSphereRecognition M (topologyPackage.decomposition M),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      topologyPackage =
+        (dependencies_of_equation_boundary_dependencies dependencies).topology ∧
+      decomposition = topologyPackage.decomposition M extinction ∧
+      surgeryTraceReconstruction =
+        topologyPackage.surgeryTraceReconstruction M extinction ∧
+      surgeryTraceHandleCancellation =
+        topologyPackage.surgeryTraceHandleCancellation M extinction ∧
+      componentClassification =
+        topologyPackage.componentClassification M extinction ∧
+      recognition = topologyPackage.recognition M := by
+  rcases
+      dependency_only_canonical_reserved_theorem_named_dependency_fields_of_equation_boundary_dependencies
+        dependencies with
+    ⟨theoremName, remainingDependencies, _ordinarySmoothability,
+      _ordinarySurgery, ordinaryTopology, _equationBoundarySmoothability,
+      _equationBoundarySurgery, _equationBoundaryTopology,
+      hTheoremNameCanonical, hTheoremNameLiteral, hRemainingDependencies,
+      _hOrdinarySmoothability, _hOrdinarySurgery, hOrdinaryTopology,
+      _hEquationBoundarySmoothability, _hEquationBoundarySurgery,
+      _hEquationBoundaryTopology, _hOrdinaryPayloadFields,
+      _hEquationBoundaryPayloadFields⟩
+  let topologyPackage : ExtinctionTopologyExtractionPackage.{u} :=
+    ordinaryTopology
+  let decomposition : HasExtinctionTopologyDecomposition M extinction :=
+    topologyPackage.decomposition M extinction
+  let surgeryTraceReconstruction :
+      HasExtinctionSurgeryTraceReconstruction M extinction decomposition :=
+    topologyPackage.surgeryTraceReconstruction M extinction
+  let surgeryTraceHandleCancellation :
+      HasExtinctionSurgeryTraceHandleCancellation M extinction decomposition
+        surgeryTraceReconstruction :=
+    topologyPackage.surgeryTraceHandleCancellation M extinction
+  let componentClassification :
+      HasExtinctionComponentClassification M extinction decomposition :=
+    topologyPackage.componentClassification M extinction
+  let recognition :
+      HasThreeSphereRecognition M (topologyPackage.decomposition M) :=
+    topologyPackage.recognition M
+  have hTopologyPackage :
+      topologyPackage =
+        (dependencies_of_equation_boundary_dependencies dependencies).topology := by
+    change ordinaryTopology =
+      (dependencies_of_equation_boundary_dependencies dependencies).topology
+    rw [hOrdinaryTopology, hRemainingDependencies]
+  exact
+    ⟨theoremName, topologyPackage, decomposition,
+      surgeryTraceReconstruction, surgeryTraceHandleCancellation,
+      componentClassification, recognition, hTheoremNameCanonical,
+      hTheoremNameLiteral, hTopologyPackage, rfl, rfl, rfl, rfl, rfl⟩
+
+/-- Theorem contract for
+`dependency_only_canonical_reserved_theorem_topology_extraction_data_of_equation_boundary_dependencies`. -/
+theorem dependency_only_canonical_reserved_theorem_topology_extraction_data_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_canonical_reserved_theorem_topology_extraction_data_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_canonical_reserved_theorem_topology_extraction_data_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
