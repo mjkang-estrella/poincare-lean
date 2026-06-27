@@ -94,6 +94,18 @@ theorem levi_civita_uniqueness_of_payload
       (metric_of_ricci_flow_data flow) :=
   subobligations.2.1
 
+/-- Any analytic sub-obligation payload exposes the torsion-free Levi-Civita field. -/
+theorem levi_civita_torsion_free_of_payload
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (subobligations : AnalyticFoundationSubobligationsPayload flow) :
+    HasLeviCivitaTorsionFreeProperty
+      (metric_of_ricci_flow_data flow) :=
+  subobligations.2.2.1
+
 /-- Any analytic sub-obligation payload exposes scalar-curvature theory. -/
 theorem scalar_curvature_theory_of_payload
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -315,6 +327,40 @@ theorem short_time_ricci_flow_solution_of_payload
     ⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _,
       _, _, _, _, _, _, _, _, _, _, _, _, _, _, shortTimeExistence, _⟩
   exact shortTimeExistence
+
+/--
+**Step 3692 source.** Bundle the analytic Levi-Civita-to-short-time closure.
+Researcher-verifiable source fields: the theorem only repackages projections
+from `AnalyticFoundationSubobligationsPayload`, namely
+`HasLeviCivitaConnectionExistence`, `HasLeviCivitaConnectionUniqueness`,
+`HasLeviCivitaTorsionFreeProperty`, `HasDeTurckGaugeFixing`,
+`HasDeTurckEquationDerivation`, `HasDeTurckShortTimeExistence`, and
+`HasShortTimeRicciFlowSolution`.
+-/
+theorem analytic_foundation_payload_closes_levi_civita_deturck_short_time_bundle_current_api
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (subobligations : AnalyticFoundationSubobligationsPayload flow) :
+    FirstAnalyticFoundationSubobligation flow ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasDeTurckGaugeFixing flow ∧
+      HasDeTurckEquationDerivation flow ∧
+      HasDeTurckShortTimeExistence flow ∧
+      HasShortTimeRicciFlowSolution flow := by
+  exact
+    ⟨first_analytic_foundation_subobligation_of_payload subobligations,
+      levi_civita_uniqueness_of_payload subobligations,
+      levi_civita_torsion_free_of_payload subobligations,
+      deturck_gauge_fixing_of_payload subobligations,
+      deturck_equation_derivation_of_payload subobligations,
+      deturck_short_time_existence_of_payload subobligations,
+      short_time_ricci_flow_solution_of_payload subobligations⟩
 
 /-- Any analytic sub-obligation payload exposes the maximal-time interval field. -/
 theorem ricci_flow_maximal_time_interval_of_payload
@@ -688,5 +734,78 @@ theorem analytic_levi_civita_blocker_curvature_evolution_of_analytic_foundation_
     ⟨flow,
       analytic_foundation_derivation_statement_closes_curvature_evolution_current_api
         flow derivation⟩
+
+/--
+**Step 3706 source.** The analytic sub-obligation payload now closes the
+Levi-Civita, DeTurck, short-time, continuation, regularity, uniqueness, and
+curvature-evolution surfaces in one endpoint.
+
+Reference source: this proof destructures
+`analytic_foundation_payload_closes_levi_civita_deturck_short_time_bundle_current_api`
+for the Levi-Civita/DeTurck/short-time block, then projects the continuation,
+regularity, uniqueness, evolution-equation, and curvature-evolution fields from
+the same `AnalyticFoundationSubobligationsPayload`.  The theorem records a
+single proof-bearing closure surface rather than separate projection names.
+-/
+theorem analytic_foundation_payload_closes_full_levi_civita_deturck_continuation_evolution_bundle_current_api
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (subobligations : AnalyticFoundationSubobligationsPayload flow) :
+    FirstAnalyticFoundationSubobligation flow ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasDeTurckGaugeFixing flow ∧
+      HasDeTurckEquationDerivation flow ∧
+      HasDeTurckShortTimeExistence flow ∧
+      HasShortTimeRicciFlowSolution flow ∧
+      HasRicciFlowMaximalTimeInterval flow ∧
+      HasRicciFlowContinuationCriterion flow ∧
+      HasCurvatureBlowUpContinuationCriterion flow ∧
+      HasMaximalSolutionExtension flow ∧
+      HasParabolicSchauderEstimates flow ∧
+      HasRicciFlowParabolicRegularity flow ∧
+      HasShiDerivativeEstimates flow ∧
+      HasCurvatureDerivativeBootstrap flow ∧
+      HasHamiltonMaximumPrinciple flow ∧
+      HasRicciFlowUniquenessTheory flow ∧
+      HasMetricEvolutionEquation flow ∧
+      HasRicciTensorEvolutionEquation flow ∧
+      HasScalarCurvatureEvolutionEquation flow ∧
+      HasCurvatureNormEvolutionInequality flow ∧
+      HasCurvatureEvolutionEquations flow := by
+  rcases
+      analytic_foundation_payload_closes_levi_civita_deturck_short_time_bundle_current_api
+        subobligations with
+    ⟨firstSubobligation, leviCivitaUniqueness, leviCivitaTorsionFree,
+      deturckGauge, deturckEquation, deturckShortTime,
+      shortTimeSolution⟩
+  exact
+    ⟨firstSubobligation,
+      leviCivitaUniqueness,
+      leviCivitaTorsionFree,
+      deturckGauge,
+      deturckEquation,
+      deturckShortTime,
+      shortTimeSolution,
+      ricci_flow_maximal_time_interval_of_payload subobligations,
+      ricci_flow_continuation_criterion_of_payload subobligations,
+      curvature_blow_up_continuation_criterion_of_payload subobligations,
+      maximal_solution_extension_of_payload subobligations,
+      parabolic_schauder_estimates_of_payload subobligations,
+      ricci_flow_parabolic_regularity_of_payload subobligations,
+      shi_derivative_estimates_of_payload subobligations,
+      curvature_derivative_bootstrap_of_payload subobligations,
+      hamilton_maximum_principle_of_payload subobligations,
+      uniqueness_theory_of_payload subobligations,
+      metric_evolution_equation_of_payload subobligations,
+      ricci_tensor_evolution_equation_of_payload subobligations,
+      scalar_curvature_evolution_equation_of_payload subobligations,
+      curvature_norm_evolution_inequality_of_payload subobligations,
+      curvature_evolution_of_payload subobligations⟩
 
 end Poincare
