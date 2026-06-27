@@ -14200,6 +14200,219 @@ theorem finalCertificateSubobligationInputs_selectedRawMap_projectionStatementCh
   rfl
 
 /--
+The selected raw-map final-certificate boundary carries the extracted topology
+package together with the full spherical space-form derivation data used to
+assemble the final homeomorphism.
+-/
+theorem finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_extractionPackage_lift_chain_projector_and_spherical_space_form_derivation
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} ∧
+      (let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_extinctionOnePointThreeSpaceSelectedRawMapData_forwardContinuity_projectionStatementChoiceData
+          mapSelectionData selectedRawMapData forwardContinuityData
+          rawStatementChoiceData continuousStatementChoiceData
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+       ∃ _recognitionPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ assemblyPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        topologyPackage =
+          extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+            surgeryTracePrefix onePointRecognition ∧
+        ExtinctionTopologyPackageLiftChainPayload
+          topologyPackage M extinction ∧
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+        homeomorphism =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction (recognitionPrefix.decomposition M extinction)
+            assemblyPayload ∧
+        homeomorphism_of_topology_package topologyPackage M extinction =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction
+            (extinction_decomposition_of_topology_package
+              topologyPackage M extinction)
+            (finalHomeomorphismPayloadData_of_topology_package
+              topologyPackage M extinction) ∧
+        ∃ sphericalQuotientModel :
+          HasSphericalSpaceFormQuotientModel M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction),
+        ∃ sphericalUniversalCover :
+          HasSphericalSpaceFormUniversalCover M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            sphericalQuotientModel,
+        ∃ sphericalFundamentalGroup :
+          HasSphericalSpaceFormFundamentalGroupComputation M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction),
+        ∃ deckGroupIdentification :
+          HasSphericalSpaceFormDeckGroupIdentification M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            sphericalQuotientModel sphericalFundamentalGroup,
+        ∃ deckGroupTriviality :
+          HasSphericalSpaceFormDeckGroupTriviality M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            sphericalFundamentalGroup,
+        ∃ trivialSphericalQuotient :
+          HasTrivialSphericalSpaceFormQuotient M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            sphericalQuotientModel sphericalFundamentalGroup
+            deckGroupIdentification deckGroupTriviality,
+        ∃ trivialQuotientHomeomorphism :
+          HasSphericalSpaceFormTrivialQuotientHomeomorphism M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            sphericalQuotientModel sphericalUniversalCover
+            sphericalFundamentalGroup deckGroupIdentification
+            deckGroupTriviality trivialSphericalQuotient,
+        ∃ simplyConnectedRecognition :
+          HasSimplyConnectedExtinctionRecognition M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            sphericalFundamentalGroup deckGroupTriviality,
+        ∃ homeomorphismAssembly :
+          HasExtinctionHomeomorphismAssembly M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            sphericalQuotientModel sphericalFundamentalGroup
+            deckGroupIdentification deckGroupTriviality
+            simplyConnectedRecognition trivialSphericalQuotient
+            homeomorphism,
+          HasExtinctionHomeomorphismDerivation M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            sphericalFundamentalGroup deckGroupTriviality
+            simplyConnectedRecognition sphericalQuotientModel
+            deckGroupIdentification trivialSphericalQuotient
+            homeomorphism homeomorphismAssembly ∧
+          HasSphericalSpaceFormHomeomorphismLift M extinction
+            (recognitionPrefix.decomposition M extinction)
+            (recognitionPrefix.primeDecomposition M extinction)
+            (recognitionPrefix.irreducibility M extinction)
+            (recognitionPrefix.connectedSumCollapse M extinction)
+            (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+            sphericalQuotientModel sphericalUniversalCover
+            sphericalFundamentalGroup deckGroupIdentification
+            deckGroupTriviality trivialSphericalQuotient
+            trivialQuotientHomeomorphism ∧
+          FinalHomeomorphismAfterDecompositionStatement.{u}) := by
+  rcases
+      finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_extractionPackage_payload_agreement_topology_lift_chain_and_package_final_homeomorphism_projector
+        inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData rawStatementChoiceData
+        continuousStatementChoiceData M extinction with
+    ⟨canonicalTarget, canonicalPayload, poincareStatement,
+      poincarePayload, checkedCertificate, _homeomorphism,
+      _recognitionPayload, _assemblyPayload, topologyPackage,
+      topologyPackage_eq, topologyLiftChain, extractionStatement,
+      _topologyDerivation, _homeomorphism_eq,
+      packageFinalHomeomorphismProjector_eq,
+      _finalHomeomorphismStatement⟩
+  rcases
+      final_homeomorphism_payload_agreement_and_spherical_space_form_derivation_consumer_of_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+        surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData rawStatementChoiceData
+        continuousStatementChoiceData M extinction with
+    ⟨homeomorphism, recognitionPayload, assemblyPayload,
+      topologyDerivation, homeomorphism_eq,
+      sphericalQuotientModel, sphericalUniversalCover,
+      sphericalFundamentalGroup, deckGroupIdentification,
+      deckGroupTriviality, trivialSphericalQuotient,
+      trivialQuotientHomeomorphism, simplyConnectedRecognition,
+      homeomorphismAssembly, homeomorphismDerivation,
+      sphericalHomeomorphismLift, finalHomeomorphismStatement⟩
+  exact
+    ⟨canonicalTarget, canonicalPayload, poincareStatement,
+      poincarePayload, checkedCertificate, homeomorphism,
+      recognitionPayload, assemblyPayload, topologyPackage,
+      topologyPackage_eq, topologyLiftChain, extractionStatement,
+      topologyDerivation, homeomorphism_eq,
+      packageFinalHomeomorphismProjector_eq,
+      sphericalQuotientModel, sphericalUniversalCover,
+      sphericalFundamentalGroup, deckGroupIdentification,
+      deckGroupTriviality, trivialSphericalQuotient,
+      trivialQuotientHomeomorphism, simplyConnectedRecognition,
+      homeomorphismAssembly, homeomorphismDerivation,
+      sphericalHomeomorphismLift, finalHomeomorphismStatement⟩
+
+/-- Theorem contract for `finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_extractionPackage_lift_chain_projector_and_spherical_space_form_derivation`. -/
+theorem finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_extractionPackage_lift_chain_projector_and_spherical_space_form_derivation_eq :
+    @Poincare.finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_extractionPackage_lift_chain_projector_and_spherical_space_form_derivation =
+      @Poincare.finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_extractionPackage_lift_chain_projector_and_spherical_space_form_derivation :=
+  rfl
+
+/--
 Named final-homeomorphism projector payload. It records the actual recovered
 homeomorphism to `ThreeSphere`, the recognition and assembly payloads, the
 topology package identification, package lift chain, extraction and topology
