@@ -31679,4 +31679,101 @@ theorem dependency_only_canonical_reserved_theorem_selected_extraction_final_sta
       @Poincare.dependency_only_canonical_reserved_theorem_selected_extraction_final_statement_application_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only endpoint identifying the direct final-statement route with the
+selected target extraction route.
+
+The older dependency-only final package already exposes the expanded
+topological Poincare conclusion.  The newer selected-extraction route exposes a
+specific target homeomorphism payload.  This theorem records that applying the
+direct expanded conclusion, the project statement, and the reconstructed final
+statement to the selected target all produces the same extracted payload.
+-/
+theorem dependency_only_direct_final_statement_selected_extraction_application_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ expandedConclusion :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          Nonempty (N ≃ₜ ThreeSphere),
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ finalStatement : PoincareConjectureStatement.{u},
+    ∃ extractedHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      projectStatement = finalStatement ∧
+      expandedConclusion = projectStatement ∧
+      completionCriterionFamily M = finalStatement ∧
+      projectStatement M = extractedHomeomorphism ∧
+      expandedConclusion M = extractedHomeomorphism ∧
+      finalStatement M = extractedHomeomorphism ∧
+      extractedHomeomorphism =
+        (⟨projectHomeomorphism⟩ : Nonempty (M ≃ₜ ThreeSphere)) ∧
+      extractedHomeomorphism =
+        topologyPackage.extractHomeomorphism M finiteExtinction ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies := by
+  rcases
+      dependency_only_direct_final_statement_completion_certificate_of_equation_boundary_dependencies
+        dependencies with
+    ⟨projectStatement, expandedConclusion, completionCriterionFamily,
+      certificate, hCertificate, _hCanonicalPayload, _hProjectPayload⟩
+  rcases
+      dependency_only_canonical_reserved_theorem_selected_extraction_final_statement_application_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨_theoremName, selectedCertificate, _nonemptyCertificate,
+      finalStatement, _projectPayloadTarget, _projectPayloadCompletion, _n,
+      _ordinaryPackage, finiteExtinction, topologyPackage,
+      extractedHomeomorphism, projectHomeomorphism, _completionCriterion,
+      _hTheoremNameCanonical, _hTheoremNameLiteral, _hFinalStatement,
+      _hFinalStatementProject, hFinalStatementApplication,
+      _hExtractedProjectPayload, hProjectPayloadTarget,
+      _hCompletionCriterion, hSelectedCertificate, _hFiniteExtinction,
+      _hTopologyPackage, hExtractedHomeomorphism⟩
+  have hProjectStatementFinal :
+      projectStatement = finalStatement := by
+    apply Subsingleton.elim
+  have hExpandedProject :
+      expandedConclusion = projectStatement := by
+    apply Subsingleton.elim
+  have hCompletionCriterionFamily :
+      completionCriterionFamily M = finalStatement := by
+    apply Subsingleton.elim
+  have hProjectStatementApplication :
+      projectStatement M = extractedHomeomorphism := by
+    exact
+      Eq.trans (congrArg (fun statement => statement M) hProjectStatementFinal)
+        hFinalStatementApplication
+  have hExpandedConclusionApplication :
+      expandedConclusion M = extractedHomeomorphism := by
+    exact
+      Eq.trans (congrArg (fun statement => statement M) hExpandedProject)
+        hProjectStatementApplication
+  have hCertificateSelected : certificate = selectedCertificate := by
+    rw [hCertificate, hSelectedCertificate]
+  exact
+    ⟨projectStatement, expandedConclusion, completionCriterionFamily,
+      certificate, finalStatement, extractedHomeomorphism,
+      projectHomeomorphism, topologyPackage, finiteExtinction,
+      hProjectStatementFinal, hExpandedProject, hCompletionCriterionFamily,
+      hProjectStatementApplication, hExpandedConclusionApplication,
+      hFinalStatementApplication, hProjectPayloadTarget.symm, hExtractedHomeomorphism,
+      hCertificateSelected.trans hSelectedCertificate⟩
+
+/-- Theorem contract for
+`dependency_only_direct_final_statement_selected_extraction_application_of_equation_boundary_dependencies`. -/
+theorem dependency_only_direct_final_statement_selected_extraction_application_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_direct_final_statement_selected_extraction_application_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_direct_final_statement_selected_extraction_application_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
