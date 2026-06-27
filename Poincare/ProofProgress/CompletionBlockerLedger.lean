@@ -3134,6 +3134,16 @@ theorem completion_frontier_analytic_three_manifold_model_standard_stationary_ze
   ⟨three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api⟩
 
 /--
+The standard stationary zero Ricci-flow data now fills the analytic package's
+Ricci-flow equation-derivation field by packaging the concrete
+zero-derivative/zero-Ricci equation verification.
+-/
+theorem completion_frontier_analytic_three_manifold_model_standard_stationary_zero_ricci_flow_equation_derivation_current_interface :
+    HasRicciFlowEquationDerivation
+      three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api :=
+  three_manifold_model_standard_stationary_zero_ricci_flow_equation_derivation_current_api
+
+/--
 The stationary zero analytic-boundary route no longer requires callers to
 provide Ricci-flow equation evidence separately: it is derived from the zero
 metric-derivative and zero Ricci identifications.
@@ -17147,6 +17157,21 @@ theorem completion_frontier_topology_homeomorphism_of_recognition_prefix_current
   final_homeomorphism_of_simplyConnectedExtinctionRecognitionPrefixPackage
     recognitionPrefix M extinction
 
+/--
+The theorem-shaped topology extraction statement is already enough to recover
+the raw final homeomorphism, without constructing the larger recognition-prefix
+package when the final homeomorphism is the only topology output needed.
+-/
+theorem completion_frontier_topology_homeomorphism_of_topology_extraction_statement_current_interface
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{uT})
+    (M : Type uT) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    Nonempty (M ≃ₜ ThreeSphere) :=
+  homeomorphism_of_topology_extraction_statement
+    topologyStatement M extinction
+
 /-- After the raw final homeomorphism, topology constructs homeomorphism assembly. -/
 theorem completion_frontier_topology_homeomorphism_assembly_after_final_homeomorphism_current_interface
     (recognitionPrefix :
@@ -17262,6 +17287,55 @@ theorem completion_frontier_canonical_payload_and_final_certificate_of_minimal_i
     inputs recognitionPrefix
 
 /--
+A completed topology extraction package closes the target, payload, and checked
+certificate directly with the two non-topology minimal inputs. This avoids
+routing through the simply connected recognition-prefix package once the full
+topology package is already available.
+-/
+theorem completion_frontier_canonical_payload_and_final_certificate_of_minimal_inputs_and_topology_package_current_interface
+    (inputs : FinalCertificateMinimalPackageInputs.{uT})
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{uT}) :
+    canonicalCompletionTarget.{uT} ∧
+      (∃ _target : canonicalCompletionTarget.{uT},
+        ∀ witness : Type uT, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{uT} :=
+  let extractSphere :=
+    extinction_implies_sphere_of_topology_package topologyPackage
+  ⟨canonical_completion_target_of_finalCertificateMinimalPackageInputs
+      inputs extractSphere,
+    canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+      inputs extractSphere,
+    completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+      inputs topologyPackage⟩
+
+/--
+For target-level completion content, the non-topology minimal package inputs
+plus the theorem-shaped topology extraction statement suffice. This proves the
+canonical completion target, its payload, and the Poincare statement without
+requiring the bulky recognition-prefix package when a checked certificate is
+not the goal.
+-/
+theorem completion_frontier_target_payload_and_statement_of_minimal_inputs_and_topology_extraction_statement_current_interface
+    (inputs : FinalCertificateMinimalPackageInputs.{uT})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{uT}) :
+    canonicalCompletionTarget.{uT} ∧
+      (∃ _target : canonicalCompletionTarget.{uT},
+        ∀ witness : Type uT, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{uT} := by
+  let extractSphere : ExtinctionImpliesSphereStatement.{uT} :=
+    extinction_implies_sphere_of_topology_extraction_statement
+      topologyStatement
+  exact
+    ⟨canonical_completion_target_of_finalCertificateMinimalPackageInputs
+        inputs extractSphere,
+      canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+        inputs extractSphere,
+      poincare_statement_of_finite_extinction_and_topology_extraction_statement
+        (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+          inputs.smoothability inputs.finiteExtinction)
+        topologyStatement⟩
+
+/--
 Concise query surface for the current analytic, finite, and topology frontiers.
 Each conjunct records the current analytic, finite, and topology frontier.
 The analytic conjunct records the stationary zero metric-derivative
@@ -17337,6 +17411,8 @@ theorem completion_blocker_ledger_three_current_frontier_interfaces
           three_manifold_model_standard_riemannian_metric)
         (zero_ricci_curvature_data
           three_manifold_model_standard_stationary_zero_ricci_identification_current_api) ∧
+      HasRicciFlowEquationDerivation
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
       Nonempty
         (RicciFlowData ThreeManifoldModelWithCorners ω ThreeManifoldModel)) ∧
       Nonempty (FiniteExtinctionSurgeryPackage nfinite Mfinite) ∧
@@ -17355,6 +17431,7 @@ theorem completion_blocker_ledger_three_current_frontier_interfaces
         completion_frontier_analytic_three_manifold_model_standard_stationary_zero_ricci_identification_current_interface,
         completion_frontier_analytic_three_manifold_model_standard_stationary_zero_ricci_identification_of_zeroRiemannCurvatureMetricData_current_interface,
         completion_frontier_analytic_three_manifold_model_standard_stationary_zero_satisfies_ricci_flow_equation_current_interface,
+        completion_frontier_analytic_three_manifold_model_standard_stationary_zero_ricci_flow_equation_derivation_current_interface,
         completion_frontier_analytic_three_manifold_model_standard_stationary_zero_ricci_flow_data_nonempty_current_interface⟩,
       completion_frontier_finite_surgery_package_from_target_assumptions_current_interface
         analyticFoundation surgeryConstruction perelmanControl,
@@ -17362,5 +17439,251 @@ theorem completion_blocker_ledger_three_current_frontier_interfaces
           recognitionPrefix Mtop extinction,
         ⟨completion_frontier_topology_extraction_package_of_recognition_prefix_current_interface
             recognitionPrefix⟩⟩⟩
+
+/--
+**Step 3693 source.** Destructure the current-frontier ledger and combine it
+with the final-boundary route.
+
+This theorem reuses
+`completion_blocker_ledger_three_current_frontier_interfaces` as the checked
+source for the analytic stationary-zero, finite surgery-package, and topology
+homeomorphism/package payloads.
+
+From the same simply connected
+recognition prefix, the proof invokes
+`completion_frontier_topology_package_layer_requirement_of_recognition_prefix_current_interface`,
+`completion_frontier_canonical_payload_and_final_certificate_of_minimal_inputs_and_recognition_prefix_current_interface`,
+and `poincare_statement_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix`;
+these source names let a researcher verify exactly which completion-boundary
+facts were combined.
+
+The result packages the destructured
+current-frontier payloads together with the topology package-layer requirement,
+canonical target, canonical payload, project statement, and checked completion
+certificate.
+-/
+theorem completion_blocker_ledger_current_frontiers_and_final_boundary_bundle
+    {nanalytic : ℕ∞ω}
+    {Manalytic : Type uA} [TopologicalSpace Manalytic]
+    [ChartedSpace ThreeManifoldModel Manalytic]
+    [IsManifold ThreeManifoldModelWithCorners 1 Manalytic]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners nanalytic
+        ThreeManifoldModel
+        (fun x : Manalytic => TangentSpace ThreeManifoldModelWithCorners x))
+    {nfinite : ℕ∞ω}
+    {Mfinite : Type uF} [TopologicalSpace Mfinite] [T2Space Mfinite]
+    [ChartedSpace ThreeManifoldModel Mfinite] [SimplyConnectedSpace Mfinite]
+    [CompactSpace Mfinite] [IsManifold ThreeManifoldModelWithCorners 1 Mfinite]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners nfinite Mfinite)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := nfinite) (M := Mfinite)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := nfinite) (M := Mfinite)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (inputs : FinalCertificateMinimalPackageInputs.{uT})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{uT})
+    (Mtop : Type uT) [TopologicalSpace Mtop] [T2Space Mtop]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) Mtop]
+    [SimplyConnectedSpace Mtop] [CompactSpace Mtop]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery Mtop) :
+    ((IsMetricTimeDerivativeOf
+      (stationary_time_dependent_riemannian_metric metric)
+      (zero_metric_time_derivative_field
+        (stationary_time_dependent_riemannian_metric metric)) ∧
+      ThreeManifoldModelStandardScopedZeroRiemannCurvatureData ∧
+      ThreeManifoldModelStandardZeroRiemannCurvatureBridge ∧
+      StandardEuclideanThreeZeroRiemannCurvatureMetricData
+        three_manifold_model_standard_riemannian_metric ∧
+      HasZeroRiemannCurvatureMetric
+        three_manifold_model_standard_riemannian_metric ∧
+      ZeroRiemannCurvatureMetricData
+        three_manifold_model_standard_riemannian_metric ∧
+      (ThreeManifoldModelStandardZeroRiemannCurvatureBridge →
+        ZeroRiemannCurvatureMetricData
+          three_manifold_model_standard_riemannian_metric) ∧
+      ((ThreeManifoldModelStandardZeroRiemannCurvatureBridge →
+          ZeroRiemannCurvatureMetricData
+            three_manifold_model_standard_riemannian_metric) ↔
+        ZeroRiemannCurvatureMetricData
+          three_manifold_model_standard_riemannian_metric) ∧
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric
+          three_manifold_model_standard_riemannian_metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric
+            three_manifold_model_standard_riemannian_metric)) ∧
+      (ZeroRiemannCurvatureMetricData
+          three_manifold_model_standard_riemannian_metric →
+        IsRicciTensorOf
+          (stationary_time_dependent_riemannian_metric
+            three_manifold_model_standard_riemannian_metric)
+          (zero_ricci_tensor_field
+            (stationary_time_dependent_riemannian_metric
+              three_manifold_model_standard_riemannian_metric))) ∧
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric
+          three_manifold_model_standard_riemannian_metric)
+        (zero_ricci_curvature_data
+          three_manifold_model_standard_stationary_zero_ricci_identification_current_api) ∧
+      HasRicciFlowEquationDerivation
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+      Nonempty
+        (RicciFlowData ThreeManifoldModelWithCorners ω ThreeManifoldModel)) ∧
+      Nonempty (FiniteExtinctionSurgeryPackage nfinite Mfinite) ∧
+      (Nonempty (Mtop ≃ₜ ThreeSphere) ∧
+        Nonempty ExtinctionTopologyExtractionPackage.{uT})) ∧
+      dependencyPackageLayerRequirement.{uT}
+        DependencyPackageLayer.topologyPackage ∧
+      canonicalCompletionTarget.{uT} ∧
+      (∃ _target : canonicalCompletionTarget.{uT},
+        ∀ witness : Type uT, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{uT} ∧
+      PoincareCompletionCertificate.{uT} := by
+  rcases
+      completion_blocker_ledger_three_current_frontier_interfaces
+        metric analyticFoundation surgeryConstruction perelmanControl
+        recognitionPrefix Mtop extinction with
+    ⟨analyticFrontiers, finiteFrontier, topologyFrontiers⟩
+  let topologyRequirement :=
+    completion_frontier_topology_package_layer_requirement_of_recognition_prefix_current_interface
+      recognitionPrefix
+  rcases
+      completion_frontier_canonical_payload_and_final_certificate_of_minimal_inputs_and_recognition_prefix_current_interface
+        inputs recognitionPrefix with
+    ⟨canonicalTarget, canonicalPayload, certificate⟩
+  let statement :=
+    poincare_statement_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+      inputs recognitionPrefix
+  exact
+    ⟨⟨analyticFrontiers, finiteFrontier, topologyFrontiers⟩,
+      topologyRequirement, canonicalTarget, canonicalPayload, statement,
+      certificate⟩
+
+/--
+**Step 3708 source.** Extend the current-frontiers/final-boundary bundle with
+the topology-package target payload.
+
+This theorem first destructures
+`completion_blocker_ledger_current_frontiers_and_final_boundary_bundle`, so a
+researcher can verify that the analytic stationary-zero frontier, finite
+surgery-package frontier, topology recognition frontier, topology package-layer
+requirement, canonical target, canonical payload, Poincare statement, and final
+certificate are all inherited from the checked Step 3693 source endpoint.
+
+It then builds the full topology extraction package from the same recognition
+prefix via
+`completion_frontier_topology_extraction_package_of_recognition_prefix_current_interface`
+and applies
+`completion_frontier_canonical_payload_and_final_certificate_of_minimal_inputs_and_topology_package_current_interface`.
+The added final conjunct is therefore a separately verified topology-package
+route to the canonical target, completion payload, and final certificate, not a
+mere alias of the current bundle.
+-/
+theorem completion_blocker_ledger_current_frontiers_final_boundary_and_topology_package_payload_bundle
+    {nanalytic : ℕ∞ω}
+    {Manalytic : Type uA} [TopologicalSpace Manalytic]
+    [ChartedSpace ThreeManifoldModel Manalytic]
+    [IsManifold ThreeManifoldModelWithCorners 1 Manalytic]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners nanalytic
+        ThreeManifoldModel
+        (fun x : Manalytic => TangentSpace ThreeManifoldModelWithCorners x))
+    {nfinite : ℕ∞ω}
+    {Mfinite : Type uF} [TopologicalSpace Mfinite] [T2Space Mfinite]
+    [ChartedSpace ThreeManifoldModel Mfinite] [SimplyConnectedSpace Mfinite]
+    [CompactSpace Mfinite] [IsManifold ThreeManifoldModelWithCorners 1 Mfinite]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners nfinite Mfinite)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := nfinite) (M := Mfinite)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := nfinite) (M := Mfinite)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (inputs : FinalCertificateMinimalPackageInputs.{uT})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{uT})
+    (Mtop : Type uT) [TopologicalSpace Mtop] [T2Space Mtop]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) Mtop]
+    [SimplyConnectedSpace Mtop] [CompactSpace Mtop]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery Mtop) :
+    (((IsMetricTimeDerivativeOf
+      (stationary_time_dependent_riemannian_metric metric)
+      (zero_metric_time_derivative_field
+        (stationary_time_dependent_riemannian_metric metric)) ∧
+      ThreeManifoldModelStandardScopedZeroRiemannCurvatureData ∧
+      ThreeManifoldModelStandardZeroRiemannCurvatureBridge ∧
+      StandardEuclideanThreeZeroRiemannCurvatureMetricData
+        three_manifold_model_standard_riemannian_metric ∧
+      HasZeroRiemannCurvatureMetric
+        three_manifold_model_standard_riemannian_metric ∧
+      ZeroRiemannCurvatureMetricData
+        three_manifold_model_standard_riemannian_metric ∧
+      (ThreeManifoldModelStandardZeroRiemannCurvatureBridge →
+        ZeroRiemannCurvatureMetricData
+          three_manifold_model_standard_riemannian_metric) ∧
+      ((ThreeManifoldModelStandardZeroRiemannCurvatureBridge →
+          ZeroRiemannCurvatureMetricData
+            three_manifold_model_standard_riemannian_metric) ↔
+        ZeroRiemannCurvatureMetricData
+          three_manifold_model_standard_riemannian_metric) ∧
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric
+          three_manifold_model_standard_riemannian_metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric
+            three_manifold_model_standard_riemannian_metric)) ∧
+      (ZeroRiemannCurvatureMetricData
+          three_manifold_model_standard_riemannian_metric →
+        IsRicciTensorOf
+          (stationary_time_dependent_riemannian_metric
+            three_manifold_model_standard_riemannian_metric)
+          (zero_ricci_tensor_field
+            (stationary_time_dependent_riemannian_metric
+              three_manifold_model_standard_riemannian_metric))) ∧
+      SatisfiesRicciFlowEquation
+        (stationary_time_dependent_riemannian_metric
+          three_manifold_model_standard_riemannian_metric)
+        (zero_ricci_curvature_data
+          three_manifold_model_standard_stationary_zero_ricci_identification_current_api) ∧
+      HasRicciFlowEquationDerivation
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+      Nonempty
+        (RicciFlowData ThreeManifoldModelWithCorners ω ThreeManifoldModel)) ∧
+      Nonempty (FiniteExtinctionSurgeryPackage nfinite Mfinite) ∧
+      (Nonempty (Mtop ≃ₜ ThreeSphere) ∧
+        Nonempty ExtinctionTopologyExtractionPackage.{uT})) ∧
+      dependencyPackageLayerRequirement.{uT}
+        DependencyPackageLayer.topologyPackage ∧
+      canonicalCompletionTarget.{uT} ∧
+      (∃ _target : canonicalCompletionTarget.{uT},
+        ∀ witness : Type uT, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{uT} ∧
+      PoincareCompletionCertificate.{uT}) ∧
+      canonicalCompletionTarget.{uT} ∧
+      (∃ _target : canonicalCompletionTarget.{uT},
+        ∀ witness : Type uT, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{uT} := by
+  rcases
+      completion_blocker_ledger_current_frontiers_and_final_boundary_bundle
+        metric analyticFoundation surgeryConstruction perelmanControl
+        inputs recognitionPrefix Mtop extinction with
+    ⟨currentFrontiers, topologyRequirement, canonicalTarget, canonicalPayload,
+      statement, certificate⟩
+  let topologyPackage :=
+    completion_frontier_topology_extraction_package_of_recognition_prefix_current_interface
+      recognitionPrefix
+  rcases
+      completion_frontier_canonical_payload_and_final_certificate_of_minimal_inputs_and_topology_package_current_interface
+        inputs topologyPackage with
+    ⟨topologyPackageTarget, topologyPackagePayload, topologyPackageCertificate⟩
+  exact
+    ⟨⟨currentFrontiers, topologyRequirement, canonicalTarget, canonicalPayload,
+        statement, certificate⟩,
+      topologyPackageTarget, topologyPackagePayload, topologyPackageCertificate⟩
 
 end Poincare
