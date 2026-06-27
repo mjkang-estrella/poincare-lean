@@ -705,4 +705,53 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_quotient_tra
       @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_quotient_transport :=
   rfl
 
+/--
+Transported based-loop homotopies give equal fundamental-group elements on both
+sides of the explicit one-point-to-`ThreeSphere` two-puncture complement
+homeomorphism. This is the group-level consumer of the homotopy and quotient
+transport bridges above.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_loop_fromPath_transport
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    {sourceBase :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    {sourceLoop₀ sourceLoop₁ : Path sourceBase sourceBase}
+    {targetBase :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)}
+    {targetLoop₀ targetLoop₁ : Path targetBase targetBase}
+    (hSourceLoop : Path.Homotopic sourceLoop₀ sourceLoop₁)
+    (hTargetLoop : Path.Homotopic targetLoop₀ targetLoop₁) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    FundamentalGroup.fromPath
+        (⟦sourceLoop₀.map H.continuous⟧ :
+          Path.Homotopic.Quotient (H sourceBase) (H sourceBase)) =
+      FundamentalGroup.fromPath
+        (⟦sourceLoop₁.map H.continuous⟧ :
+          Path.Homotopic.Quotient (H sourceBase) (H sourceBase)) ∧
+      FundamentalGroup.fromPath
+          (⟦targetLoop₀.map H.symm.continuous⟧ :
+            Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetBase)) =
+        FundamentalGroup.fromPath
+          (⟦targetLoop₁.map H.symm.continuous⟧ :
+            Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetBase)) := by
+  dsimp
+  let H :=
+    onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+      hqp
+  exact
+    ⟨congrArg FundamentalGroup.fromPath
+        (Quotient.sound (hSourceLoop.map (⟨H, H.continuous⟩))),
+      congrArg FundamentalGroup.fromPath
+        (Quotient.sound (hTargetLoop.map (⟨H.symm, H.symm.continuous⟩)))⟩
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_loop_fromPath_transport`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_loop_fromPath_transport_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_loop_fromPath_transport =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_loop_fromPath_transport :=
+  rfl
+
 end Poincare
