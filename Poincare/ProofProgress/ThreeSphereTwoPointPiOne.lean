@@ -1446,4 +1446,82 @@ theorem threeSphere_twoPointComplement_fullTopology_locPath_endpointData_bidirec
       @Poincare.threeSphere_twoPointComplement_fullTopology_locPath_endpointData_bidirectional_pathClass_witnesses :=
   rfl
 
+/--
+Full-chart target-side endpoint-data witnesses for the standard `ThreeSphere`
+two-puncture complement.  This combines the punctured-Euclidean chart with the
+local-path/full-topology endpoint-data and loop-collapse certificate, giving
+recognition consumers a single charted payload with explicit path witnesses.
+-/
+theorem threeSphere_twoPointComplement_fullChart_fullTopology_locPath_endpointData_bidirectional_pathClass_witnesses
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (basepoint target : (({a} ∪ {b})ᶜ : Set ThreeSphere))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      ∃ chart : (({a} ∪ {b})ᶜ : Set ThreeSphere) ≃ₜ
+          ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        ∃ pathData :
+            PointedPathComponentPathData
+              (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint,
+          ∃ endpointData :
+              PointedChosenPathEndpointData
+                (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint target,
+            (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+              LocPathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+              Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+              PathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+              ConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+              SimplyConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+              pathData.path_to target = endpointData.path ∧
+              endpointData.path 0 = basepoint ∧
+              endpointData.path 1 = target ∧
+              Joined basepoint target ∧
+              pathComponent basepoint = Set.univ ∧
+              Path.Homotopic chosenPath endpointData.path ∧
+              Path.Homotopic endpointData.path chosenPath ∧
+              (⟦chosenPath⟧ :
+                Path.Homotopic.Quotient basepoint target) =
+                  ⟦endpointData.path⟧ ∧
+              (⟦endpointData.path⟧ :
+                Path.Homotopic.Quotient basepoint target) = ⟦chosenPath⟧ ∧
+              Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+              loop 0 = basepoint ∧
+              loop 1 = basepoint ∧
+              Path.Homotopic loop (Path.refl basepoint) ∧
+              FundamentalGroup.fromPath
+                  (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+                FundamentalGroup.fromPath
+                  (⟦Path.refl basepoint⟧ :
+                    Path.Homotopic.Quotient basepoint basepoint) ∧
+              Subsingleton
+                (HomotopyGroup.Pi 1
+                  (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint) := by
+  rcases threeSphere_twoPointComplement_puncturedEuclidean_fullChart_package
+      hab with
+    ⟨puncture, chart, hAvoid, _hChartNonempty, _hChartPathConnected,
+      _hChartConnected, _hChartSimplyConnected⟩
+  rcases
+      threeSphere_twoPointComplement_fullTopology_locPath_endpointData_bidirectional_pathClass_witnesses
+        hab basepoint target chosenPath loop with
+    ⟨pathData, endpointData, hLocPath, hNonempty, hPathConnected,
+      hConnected, hSimplyConnected, hPathData, hEndpointSource,
+      hEndpointTarget, hJoined, hComponent, hChosenHomotopic,
+      hEndpointHomotopic, hChosenQuotient, hEndpointQuotient,
+      hQuotientSubsingleton, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+  exact
+    ⟨puncture, chart, pathData, endpointData, hAvoid, hLocPath,
+      hNonempty, hPathConnected, hConnected, hSimplyConnected, hPathData,
+      hEndpointSource, hEndpointTarget, hJoined, hComponent,
+      hChosenHomotopic, hEndpointHomotopic, hChosenQuotient,
+      hEndpointQuotient, hQuotientSubsingleton, hLoopSource, hLoopTarget,
+      hLoopHomotopic, hLoopFromPath, hPiOne⟩
+
+/-- Theorem contract for
+`threeSphere_twoPointComplement_fullChart_fullTopology_locPath_endpointData_bidirectional_pathClass_witnesses`. -/
+theorem threeSphere_twoPointComplement_fullChart_fullTopology_locPath_endpointData_bidirectional_pathClass_witnesses_eq :
+    @Poincare.threeSphere_twoPointComplement_fullChart_fullTopology_locPath_endpointData_bidirectional_pathClass_witnesses =
+      @Poincare.threeSphere_twoPointComplement_fullChart_fullTopology_locPath_endpointData_bidirectional_pathClass_witnesses :=
+  rfl
+
 end Poincare
