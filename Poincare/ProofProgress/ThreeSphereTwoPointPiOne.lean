@@ -990,4 +990,58 @@ theorem threeSphere_twoPointComplement_fullChart_endpointData_direct_loopCollaps
       @Poincare.threeSphere_twoPointComplement_fullChart_endpointData_direct_loopCollapse_package :=
   rfl
 
+/--
+The standard `ThreeSphere` two-puncture full-chart endpoint-data package
+projects to the homotopy core used by transport consumers: the selected
+endpoint path, its path-data coherence, homotopy uniqueness, path-quotient
+collapse, loop collapse, and `π₁` subsingleton evidence.
+-/
+theorem threeSphere_twoPointComplement_endpointData_loopCollapse_core
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (basepoint target : (({a} ∪ {b})ᶜ : Set ThreeSphere))
+    (loop : Path basepoint basepoint) :
+    ∃ pathData :
+        PointedPathComponentPathData
+          (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint,
+      ∃ endpointData :
+          PointedChosenPathEndpointData
+            (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint target,
+        pathData.path_to target = endpointData.path ∧
+          endpointData.path 0 = basepoint ∧
+          endpointData.path 1 = target ∧
+          Joined basepoint target ∧
+          pathComponent basepoint = Set.univ ∧
+          (∀ η : Path basepoint target,
+            Path.Homotopic endpointData.path η) ∧
+          Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+          loop 0 = basepoint ∧
+          loop 1 = basepoint ∧
+          Path.Homotopic loop (Path.refl basepoint) ∧
+          FundamentalGroup.fromPath
+              (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl basepoint⟧ :
+                Path.Homotopic.Quotient basepoint basepoint) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1
+              (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint) := by
+  rcases
+      threeSphere_twoPointComplement_fullChart_endpointData_direct_loopCollapse_package
+        hab basepoint target loop with
+    ⟨_puncture, _chart, pathData, endpointData, _hAvoid, _hNonempty,
+      _hPathConnected, _hConnected, _hSimplyConnected, hPathData,
+      hEndpointSource, hEndpointTarget, hJoined, hComponent,
+      hEndpointUnique, hQuotientSubsingleton, hLoopSource, hLoopTarget,
+      hLoopHomotopic, hLoopFromPath, hPiOne⟩
+  exact
+    ⟨pathData, endpointData, hPathData, hEndpointSource, hEndpointTarget,
+      hJoined, hComponent, hEndpointUnique, hQuotientSubsingleton,
+      hLoopSource, hLoopTarget, hLoopHomotopic, hLoopFromPath, hPiOne⟩
+
+/-- Theorem contract for `threeSphere_twoPointComplement_endpointData_loopCollapse_core`. -/
+theorem threeSphere_twoPointComplement_endpointData_loopCollapse_core_eq :
+    @Poincare.threeSphere_twoPointComplement_endpointData_loopCollapse_core =
+      @Poincare.threeSphere_twoPointComplement_endpointData_loopCollapse_core :=
+  rfl
+
 end Poincare
