@@ -1449,6 +1449,53 @@ theorem twoPointComplement_chosenPathTopologyPayload_of_topology_package
       hPath, hSimply, hPathData, hEndpointPath, hSource, hTarget, hJoined⟩
 
 /--
+The package-level two-puncture chosen-path topology payload also carries local
+path-connectedness of the transported source complement.
+-/
+theorem twoPointComplement_locPath_chosenPathTopologyPayload_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint z : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      ∃ chart : (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+          ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        ∃ pathData :
+            PointedPathComponentPathData (({x} ∪ {y})ᶜ : Set M) basepoint,
+          ∃ endpointData :
+              PointedChosenPathEndpointData
+                (({x} ∪ {y})ᶜ : Set M) basepoint z,
+            ∃ γ : Path basepoint z,
+              (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+                Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+                LocPathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                pathData.path_to z = γ ∧
+                endpointData.path = γ ∧
+                γ 0 = basepoint ∧ γ 1 = z ∧ Joined basepoint z := by
+  rcases
+      twoPointComplement_chosenPathTopologyPayload_of_topology_package
+        package M extinction hyx basepoint z with
+    ⟨puncture, chart, pathData, endpointData, γ, hAvoid, hNonempty, hPath,
+      hSimply, hPathData, hEndpointPath, hSource, hTarget, hJoined⟩
+  exact
+    ⟨puncture, chart, pathData, endpointData, γ, hAvoid, hNonempty,
+      twoPointComplement_locPathConnectedSpace_of_topology_package
+        package M extinction hyx,
+      hPath, hSimply, hPathData, hEndpointPath, hSource, hTarget, hJoined⟩
+
+/-- Theorem contract for
+`twoPointComplement_locPath_chosenPathTopologyPayload_of_topology_package`. -/
+theorem twoPointComplement_locPath_chosenPathTopologyPayload_of_topology_package_eq :
+    @Poincare.twoPointComplement_locPath_chosenPathTopologyPayload_of_topology_package =
+      @Poincare.twoPointComplement_locPath_chosenPathTopologyPayload_of_topology_package :=
+  rfl
+
+/--
 The package-level two-puncture complement supplies the transported Euclidean
 chart and the path/loop projection payload with one shared canonical chosen
 path. This synchronizes the chart, endpoint-data, homotopy, quotient, loop, and
