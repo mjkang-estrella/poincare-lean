@@ -968,4 +968,47 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_transport_piOne_subsin
       @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_transport_piOne_subsingleton :=
   rfl
 
+/--
+The transported endpoints supplied by the explicit two-puncture complement
+homeomorphism have subsingleton path-homotopy quotients on both sides. This is
+the path-space counterpart of the transported-basepoint pi-one certificate.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_transport_pathQuotient_subsingleton
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (sourceBase sourceTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (targetBase targetTarget :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    Subsingleton
+        (Path.Homotopic.Quotient (H sourceBase) (H sourceTarget)) ∧
+      Subsingleton
+        (Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetTarget)) := by
+  dsimp
+  let H :=
+    onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+      hqp
+  let e : OnePoint (EuclideanSpace ℝ (Fin 3)) ≃ₜ ThreeSphere :=
+    Classical.choice onePoint_threeSpace_homeomorph_threeSphere
+  have hImage : e q ≠ e p := by
+    intro h
+    exact hqp (e.injective h)
+  exact
+    ⟨threeSphere_twoPointComplement_pathQuotient_subsingleton
+        hImage (H sourceBase) (H sourceTarget),
+      twoPointComplement_pathQuotient_subsingleton_of_homeomorph_to_onePoint_threeSpace
+        (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+        ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩
+        hqp (H.symm targetBase) (H.symm targetTarget)⟩
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_transport_pathQuotient_subsingleton`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_transport_pathQuotient_subsingleton_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_transport_pathQuotient_subsingleton =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_transport_pathQuotient_subsingleton :=
+  rfl
+
 end Poincare
