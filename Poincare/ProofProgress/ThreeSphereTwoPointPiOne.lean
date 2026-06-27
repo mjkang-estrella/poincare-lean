@@ -704,4 +704,67 @@ theorem threeSphere_twoPointComplement_fullChart_endpoint_collapse_package_eq :
       @Poincare.threeSphere_twoPointComplement_fullChart_endpoint_collapse_package :=
   rfl
 
+/--
+The standard `ThreeSphere` two-puncture complement exposes its full
+punctured-Euclidean chart together with a canonical endpoint path, homotopy
+uniqueness for that canonical path, and collapse of any supplied based loop.
+This is the canonical-path version of the full chart endpoint package, before
+an arbitrary chosen path is supplied by a downstream consumer.
+-/
+theorem threeSphere_twoPointComplement_fullChart_canonicalPath_loopCollapse_package
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (basepoint target : (({a} ∪ {b})ᶜ : Set ThreeSphere))
+    (loop : Path basepoint basepoint) :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      ∃ chart : (({a} ∪ {b})ᶜ : Set ThreeSphere) ≃ₜ
+          ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        ∃ canonicalPath : Path basepoint target,
+          (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+            Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+            PathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+            ConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+            SimplyConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+            pathComponent basepoint = Set.univ ∧
+            canonicalPath 0 = basepoint ∧
+            canonicalPath 1 = target ∧
+            Joined basepoint target ∧
+            (∀ η : Path basepoint target,
+              Path.Homotopic canonicalPath η) ∧
+            Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+            loop 0 = basepoint ∧
+            loop 1 = basepoint ∧
+            Path.Homotopic loop (Path.refl basepoint) ∧
+            FundamentalGroup.fromPath
+                (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+              FundamentalGroup.fromPath
+                (⟦Path.refl basepoint⟧ :
+                  Path.Homotopic.Quotient basepoint basepoint) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 1
+                (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint) := by
+  rcases
+      threeSphere_twoPointComplement_fullChart_endpoint_collapse_package
+        hab basepoint target with
+    ⟨puncture, chart, hAvoid, hNonempty, hPathConnected, hConnected,
+      hSimplyConnected, hComponent, _hJoined, hQuotient, hPiOne⟩
+  rcases
+      threeSphere_twoPointComplement_exists_path_with_endpoints_and_homotopy_unique
+        hab basepoint target with
+    ⟨canonicalPath, hCanonicalSource, hCanonicalTarget, hCanonicalJoined,
+      hCanonicalUnique⟩
+  rcases threeSphere_twoPointComplement_loop_payload hab basepoint loop with
+    ⟨hLoopSource, hLoopTarget, hLoopHomotopic, hLoopFromPath⟩
+  exact
+    ⟨puncture, chart, canonicalPath, hAvoid, hNonempty, hPathConnected,
+      hConnected, hSimplyConnected, hComponent, hCanonicalSource,
+      hCanonicalTarget, hCanonicalJoined, hCanonicalUnique, hQuotient,
+      hLoopSource, hLoopTarget, hLoopHomotopic, hLoopFromPath, hPiOne⟩
+
+/-- Theorem contract for
+`threeSphere_twoPointComplement_fullChart_canonicalPath_loopCollapse_package`. -/
+theorem threeSphere_twoPointComplement_fullChart_canonicalPath_loopCollapse_package_eq :
+    @Poincare.threeSphere_twoPointComplement_fullChart_canonicalPath_loopCollapse_package =
+      @Poincare.threeSphere_twoPointComplement_fullChart_canonicalPath_loopCollapse_package :=
+  rfl
+
 end Poincare
