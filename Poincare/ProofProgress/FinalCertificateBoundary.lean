@@ -28805,4 +28805,63 @@ theorem dependency_only_reserved_certificate_with_universal_completion_and_paire
       @Poincare.dependency_only_reserved_certificate_with_universal_completion_and_paired_final_maps_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved certificate with project and mathlib targets.
+
+The reserved certificate package proves both statement surfaces: the project
+`PoincareConjectureStatement` and the literal mathlib unit-sphere statement.
+The mathlib-shaped target is extracted from the paired final maps, while the
+project target is the canonical completion target.
+-/
+theorem dependency_only_reserved_certificate_project_mathlib_targets_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ certificate : PoincareCompletionCertificate.{u},
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      canonical_completion_payload_of_completion_certificate certificate =
+        canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      poincare_completion_payload_of_completion_certificate certificate =
+        poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      canonicalCompletionTarget.{u} ∧
+      PoincareConjectureStatement.{u} ∧
+      MathlibTopologicalPoincareThreeStatement.{u} ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  rcases
+      dependency_only_reserved_certificate_with_universal_completion_and_paired_final_maps_of_equation_boundary_dependencies
+        dependencies with
+    ⟨certificate, hCertificate, hCanonicalPayload, hProjectPayload,
+      canonicalTarget, universalCompletion, pairedFinalMaps⟩
+  have projectTarget : PoincareConjectureStatement.{u} :=
+    canonicalTarget
+  have mathlibTarget : MathlibTopologicalPoincareThreeStatement.{u} := by
+    intro M _ _ _ _ _
+    rcases pairedFinalMaps M with
+      ⟨_projectHomeomorphism, mathlibHomeomorphism, _hHomeomorphism,
+        _hProjectOpen, _hMathlibOpen, _hProjectClosed, _hMathlibClosed,
+        _hProjectInducing, _hMathlibInducing, _hProjectEmbedding,
+        _hMathlibEmbedding, _hProjectBijective, _hMathlibBijective,
+        _hProjectContinuous, _hMathlibContinuous, _hProjectSymmContinuous,
+        _hMathlibSymmContinuous, _hProjectLeftInverse, _hProjectRightInverse,
+        _hMathlibLeftInverse, _hMathlibRightInverse, _completionCriterion⟩
+    exact ⟨mathlibHomeomorphism⟩
+  exact
+    ⟨certificate,
+      hCertificate,
+      hCanonicalPayload,
+      hProjectPayload,
+      canonicalTarget,
+      projectTarget,
+      mathlibTarget,
+      universalCompletion⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_certificate_project_mathlib_targets_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_certificate_project_mathlib_targets_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_certificate_project_mathlib_targets_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_certificate_project_mathlib_targets_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
