@@ -32006,4 +32006,90 @@ theorem dependency_only_conditional_poincare_selected_target_certificate_payload
       @Poincare.dependency_only_conditional_poincare_selected_target_certificate_payload_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only mathlib-shaped final statement applied to the selected target.
+
+This moves the selected-target certificate payload onto the mathlib-shaped
+topological Poincare statement surface.  Applying the mathlib-shaped statement
+obtained from the dependency-only project statement at `M` gives the same
+selected homeomorphism payload as the project statement, completion criterion,
+reconstructed final statement, and direct expanded conclusion.
+-/
+theorem dependency_only_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ selectedConclusion : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ finalStatement : PoincareConjectureStatement.{u},
+    ∃ expandedConclusion :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          Nonempty (N ≃ₜ ThreeSphere),
+    ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+      projectStatement =
+        conditional_poincare_conjecture_of_equation_boundary_dependencies
+          dependencies ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement ∧
+      mathlibStatement M = selectedConclusion ∧
+      projectStatement M = selectedConclusion ∧
+      completionCriterionFamily M M = selectedConclusion ∧
+      finalStatement M = selectedConclusion ∧
+      expandedConclusion M = selectedConclusion ∧
+      selectedConclusion =
+        (⟨projectHomeomorphism⟩ : Nonempty (M ≃ₜ ThreeSphere)) ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies := by
+  rcases
+      dependency_only_conditional_poincare_selected_target_certificate_payload_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨selectedConclusion, completionCriterionFamily, finalStatement,
+      expandedConclusion, projectHomeomorphism, certificate,
+      hConditionalStatementApplication, _hSelectedConclusion,
+      hCompletionCriterionApplication, hFinalStatementApplication,
+      hExpandedConclusionApplication, hProjectPayloadTarget, hCertificate⟩
+  let projectStatement : PoincareConjectureStatement.{u} :=
+    conditional_poincare_conjecture_of_equation_boundary_dependencies
+      dependencies
+  let mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u} :=
+    mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+      projectStatement
+  have hProjectStatement :
+      projectStatement =
+        conditional_poincare_conjecture_of_equation_boundary_dependencies
+          dependencies :=
+    rfl
+  have hMathlibStatement :
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement :=
+    rfl
+  have hMathlibStatementApplication :
+      mathlibStatement M = selectedConclusion := by
+    exact hConditionalStatementApplication
+  exact
+    ⟨mathlibStatement, projectStatement, selectedConclusion,
+      completionCriterionFamily, finalStatement, expandedConclusion,
+      projectHomeomorphism, certificate, hProjectStatement, hMathlibStatement,
+      hMathlibStatementApplication, hConditionalStatementApplication,
+      hCompletionCriterionApplication, hFinalStatementApplication,
+      hExpandedConclusionApplication, hProjectPayloadTarget, hCertificate⟩
+
+/-- Theorem contract for
+`dependency_only_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies`. -/
+theorem dependency_only_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
