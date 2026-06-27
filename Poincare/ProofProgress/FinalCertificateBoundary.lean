@@ -27047,4 +27047,60 @@ theorem dependency_only_canonical_and_project_completion_payloads_mathlib_statem
       @Poincare.dependency_only_canonical_and_project_completion_payloads_mathlib_statement_certificate_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only witness-indexed completion criterion projection.
+
+This final-certificate boundary form removes one more consumer unpacking step:
+for any witness universe object, the dependency-only route directly supplies
+`CompletionCriterionAtUniverse witness` together with the canonical/project
+payloads, mathlib-shaped statement, and checked certificate equalities.
+-/
+theorem dependency_only_completionCriterion_payloads_mathlib_statement_certificate_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (witness : Type u) :
+    CompletionCriterionAtUniverse witness ∧
+      (∃ canonicalPayload :
+          (∃ _target : canonicalCompletionTarget.{u},
+            ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+        canonicalPayload =
+          canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+            dependencies) ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      MathlibTopologicalPoincareThreeStatement.{u} ∧
+      PoincareConjectureStatement.{u} ∧
+      ∃ certificate : PoincareCompletionCertificate.{u},
+        certificate =
+          completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+            dependencies ∧
+        canonical_completion_payload_of_completion_certificate certificate =
+          canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+            dependencies ∧
+        poincare_completion_payload_of_completion_certificate certificate =
+          poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+            dependencies := by
+  rcases
+      dependency_only_canonical_and_project_completion_payloads_mathlib_statement_certificate_of_equation_boundary_dependencies
+        dependencies with
+    ⟨canonicalPayload, projectPayload, mathlibStatement, projectStatement,
+      certificate, hCertificate, hCanonicalPayload, hProjectPayload⟩
+  rcases projectPayload with ⟨projectTarget, completionCriterion⟩
+  exact
+    ⟨completionCriterion witness,
+      canonicalPayload,
+      ⟨projectTarget, completionCriterion⟩,
+      mathlibStatement,
+      projectStatement,
+      certificate,
+      hCertificate,
+      hCanonicalPayload,
+      hProjectPayload⟩
+
+/-- Theorem contract for
+`dependency_only_completionCriterion_payloads_mathlib_statement_certificate_of_equation_boundary_dependencies`. -/
+theorem dependency_only_completionCriterion_payloads_mathlib_statement_certificate_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_completionCriterion_payloads_mathlib_statement_certificate_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_completionCriterion_payloads_mathlib_statement_certificate_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
