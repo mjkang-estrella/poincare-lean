@@ -33521,4 +33521,85 @@ theorem dependency_only_reserved_completion_family_routes_of_equation_boundary_d
       @Poincare.dependency_only_reserved_completion_family_routes_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved completion criterion all-routes collapse.
+
+At a fixed witness, this packages the direct reserved criterion with the
+criteria obtained from the opened canonical and project payload-completion
+families, proving that all three routes are the same proof supplied by the same
+checked completion certificate.
+-/
+theorem dependency_only_reserved_completionCriterion_all_routes_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (witness : Type u) :
+    ∃ directCriterion : CompletionCriterionAtUniverse witness,
+    ∃ canonicalCriterion : CompletionCriterionAtUniverse witness,
+    ∃ projectCriterion : CompletionCriterionAtUniverse witness,
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ canonicalPayloadCompletion :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ projectPayloadCompletion :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+      directCriterion =
+        dependency_only_reserved_completionCriterionAtUniverse_of_equation_boundary_dependencies
+          dependencies witness ∧
+      canonicalCriterion = canonicalPayloadCompletion witness ∧
+      projectCriterion = projectPayloadCompletion witness ∧
+      directCriterion = completionCriterionFamily witness ∧
+      directCriterion = canonicalCriterion ∧
+      directCriterion = projectCriterion ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies := by
+  rcases
+      dependency_only_reserved_completion_family_routes_of_equation_boundary_dependencies
+        dependencies with
+    ⟨completionCriterionFamily, canonicalPayloadCompletion,
+      projectPayloadCompletion, _canonicalPayload, _projectPayload,
+      certificate, hCompletionCanonical, hCompletionProject,
+      hCompletionReserved, _hCanonicalPayload, _hProjectPayload,
+      hCertificate⟩
+  let directCriterion : CompletionCriterionAtUniverse witness :=
+    dependency_only_reserved_completionCriterionAtUniverse_of_equation_boundary_dependencies
+      dependencies witness
+  let canonicalCriterion : CompletionCriterionAtUniverse witness :=
+    canonicalPayloadCompletion witness
+  let projectCriterion : CompletionCriterionAtUniverse witness :=
+    projectPayloadCompletion witness
+  have hDirectCriterion :
+      directCriterion =
+        dependency_only_reserved_completionCriterionAtUniverse_of_equation_boundary_dependencies
+          dependencies witness :=
+    rfl
+  have hCanonicalCriterion :
+      canonicalCriterion = canonicalPayloadCompletion witness :=
+    rfl
+  have hProjectCriterion :
+      projectCriterion = projectPayloadCompletion witness :=
+    rfl
+  have hDirectFamily :
+      directCriterion = completionCriterionFamily witness := by
+    exact (hCompletionReserved witness).symm
+  have hDirectCanonical :
+      directCriterion = canonicalCriterion := by
+    exact hDirectFamily.trans (congrFun hCompletionCanonical witness)
+  have hDirectProject :
+      directCriterion = projectCriterion := by
+    exact hDirectFamily.trans (congrFun hCompletionProject witness)
+  exact
+    ⟨directCriterion, canonicalCriterion, projectCriterion,
+      completionCriterionFamily, canonicalPayloadCompletion,
+      projectPayloadCompletion, certificate, hDirectCriterion,
+      hCanonicalCriterion, hProjectCriterion, hDirectFamily,
+      hDirectCanonical, hDirectProject, hCertificate⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_completionCriterion_all_routes_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_completionCriterion_all_routes_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_completionCriterion_all_routes_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_completionCriterion_all_routes_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
