@@ -30043,4 +30043,108 @@ theorem dependency_only_canonical_reserved_theorem_component_payloads_of_equatio
       @Poincare.dependency_only_canonical_reserved_theorem_component_payloads_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only canonical reserved-theorem endpoint with the remaining
+dependency fields named individually.
+
+This opens the component payloads into the exact package fields consumed by the
+proof boundary: the ordinary smoothability, finite-extinction surgery, and
+topology packages, plus the strengthened equation-boundary surgery family.
+-/
+theorem dependency_only_canonical_reserved_theorem_named_dependency_fields_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ theoremName : String,
+    ∃ remainingDependencies : RemainingDependencyPackage.{u},
+    ∃ ordinarySmoothability : SmoothabilityPackage.{u},
+    ∃ ordinarySurgery :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+    ∃ ordinaryTopology : ExtinctionTopologyExtractionPackage.{u},
+    ∃ equationBoundarySmoothability : SmoothabilityPackage.{u},
+    ∃ equationBoundarySurgery :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)),
+    ∃ equationBoundaryTopology : ExtinctionTopologyExtractionPackage.{u},
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      remainingDependencies =
+        dependencies_of_equation_boundary_dependencies dependencies ∧
+      ordinarySmoothability = remainingDependencies.smoothability ∧
+      ordinarySurgery = remainingDependencies.surgery ∧
+      ordinaryTopology = remainingDependencies.topology ∧
+      equationBoundarySmoothability = dependencies.smoothability ∧
+      equationBoundarySurgery = dependencies.surgery ∧
+      equationBoundaryTopology = dependencies.topology ∧
+      remainingDependencyPackage_components_payload remainingDependencies =
+        ⟨ordinarySmoothability, ordinarySurgery, ordinaryTopology⟩ ∧
+      remainingDependencyPackageWithEquationBoundary_components_payload
+          dependencies =
+        ⟨equationBoundarySmoothability, equationBoundarySurgery,
+          equationBoundaryTopology⟩ := by
+  rcases
+      dependency_only_canonical_reserved_theorem_component_payloads_of_equation_boundary_dependencies
+        dependencies with
+    ⟨theoremName, remainingDependencies, _ordinaryComponents,
+      _equationBoundaryComponents, hTheoremNameCanonical,
+      hTheoremNameLiteral, hRemainingDependencies, _hOrdinaryComponents,
+      hOrdinaryComponentsFields, _hEquationBoundaryComponents,
+      hEquationBoundaryComponentsFields, _hOrdinaryReconstruct,
+      _hEquationBoundaryReconstruct⟩
+  let ordinarySmoothability : SmoothabilityPackage.{u} :=
+    remainingDependencies.smoothability
+  let ordinarySurgery :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :=
+    remainingDependencies.surgery
+  let ordinaryTopology : ExtinctionTopologyExtractionPackage.{u} :=
+    remainingDependencies.topology
+  let equationBoundarySmoothability : SmoothabilityPackage.{u} :=
+    dependencies.smoothability
+  let equationBoundarySurgery :
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (Σ n : ℕ∞ω,
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :=
+    dependencies.surgery
+  let equationBoundaryTopology : ExtinctionTopologyExtractionPackage.{u} :=
+    dependencies.topology
+  have hOrdinaryPayloadFields :
+      remainingDependencyPackage_components_payload remainingDependencies =
+        ⟨ordinarySmoothability, ordinarySurgery, ordinaryTopology⟩ := by
+    exact hOrdinaryComponentsFields.symm
+  have hEquationBoundaryPayloadFields :
+      remainingDependencyPackageWithEquationBoundary_components_payload
+          dependencies =
+        ⟨equationBoundarySmoothability, equationBoundarySurgery,
+          equationBoundaryTopology⟩ := by
+    exact hEquationBoundaryComponentsFields.symm
+  exact
+    ⟨theoremName, remainingDependencies, ordinarySmoothability,
+      ordinarySurgery, ordinaryTopology, equationBoundarySmoothability,
+      equationBoundarySurgery, equationBoundaryTopology,
+      hTheoremNameCanonical, hTheoremNameLiteral, hRemainingDependencies, rfl,
+      rfl, rfl, rfl, rfl, rfl, hOrdinaryPayloadFields,
+      hEquationBoundaryPayloadFields⟩
+
+/-- Theorem contract for
+`dependency_only_canonical_reserved_theorem_named_dependency_fields_of_equation_boundary_dependencies`. -/
+theorem dependency_only_canonical_reserved_theorem_named_dependency_fields_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_canonical_reserved_theorem_named_dependency_fields_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_canonical_reserved_theorem_named_dependency_fields_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
