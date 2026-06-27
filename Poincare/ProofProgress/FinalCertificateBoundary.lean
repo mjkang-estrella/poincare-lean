@@ -32341,4 +32341,80 @@ theorem dependency_only_reserved_final_statement_application_of_equation_boundar
       @Poincare.dependency_only_reserved_final_statement_application_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved-name mathlib final-statement application for an
+arbitrary target satisfying the project Poincare hypotheses.
+
+This is the broad final-statement counterpart of the selected-target mathlib
+payload above: the mathlib-shaped statement induced from the dependency-only
+project statement applies at `M` to the same target conclusion, while retaining
+the canonical theorem name, literal theorem-name payload, completion criterion,
+and checked certificate equality.
+-/
+theorem dependency_only_reserved_mathlib_final_statement_application_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ theoremName : String,
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ expandedConclusion :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          Nonempty (N ≃ₜ ThreeSphere),
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ targetConclusion : Nonempty (M ≃ₜ ThreeSphere),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement ∧
+      projectStatement =
+        conditional_poincare_conjecture_of_equation_boundary_dependencies
+          dependencies ∧
+      mathlibStatement M = targetConclusion ∧
+      projectStatement M = targetConclusion ∧
+      expandedConclusion M = targetConclusion ∧
+      completionCriterionFamily M M = targetConclusion ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies := by
+  rcases
+      dependency_only_reserved_final_statement_application_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨theoremName, projectStatement, expandedConclusion,
+      completionCriterionFamily, certificate, targetConclusion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hProjectStatement,
+      hProjectStatementApplication, hExpandedConclusionApplication,
+      hCompletionCriterionApplication, hCertificate⟩
+  let mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u} :=
+    mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+      projectStatement
+  have hMathlibStatement :
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement :=
+    rfl
+  have hMathlibStatementApplication :
+      mathlibStatement M = targetConclusion := by
+    exact hProjectStatementApplication
+  exact
+    ⟨theoremName, mathlibStatement, projectStatement, expandedConclusion,
+      completionCriterionFamily, certificate, targetConclusion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hMathlibStatement,
+      hProjectStatement, hMathlibStatementApplication,
+      hProjectStatementApplication, hExpandedConclusionApplication,
+      hCompletionCriterionApplication, hCertificate⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_mathlib_final_statement_application_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_mathlib_final_statement_application_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_mathlib_final_statement_application_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_mathlib_final_statement_application_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
