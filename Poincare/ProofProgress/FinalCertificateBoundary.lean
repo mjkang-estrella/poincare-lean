@@ -35051,4 +35051,57 @@ theorem reserved_named_final_conclusion_bundle_projection_coherence_of_nonempty_
       @Poincare.reserved_named_final_conclusion_bundle_projection_coherence_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Reserved target/direct expanded-root coherence from an inhabited dependency
+package.
+
+The target-level homeomorphism witness recovered from the named final route is
+the same proof as the direct expanded-root projection at the chosen target
+manifold.
+-/
+theorem reserved_named_target_homeomorphism_direct_projection_coherence_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ expandedConclusion :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          Nonempty (N ≃ₜ ThreeSphere),
+    ∃ targetConclusion : Nonempty (M ≃ₜ ThreeSphere),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      targetConclusion = expandedConclusion M ∧
+      targetConclusion =
+        reserved_expanded_root_conclusion_of_nonempty_equation_boundary_dependencies
+          dependencies M := by
+  rcases
+      reserved_named_target_homeomorphism_of_nonempty_equation_boundary_dependencies
+        dependencies M with
+    ⟨theoremName, certificate, expandedConclusion, targetConclusion,
+      hTheoremNameCanonical, hTheoremNameLiteral, _hNonemptyDependencies,
+      hTargetExpanded, hCertificate⟩
+  have hTargetDirect :
+      targetConclusion =
+        reserved_expanded_root_conclusion_of_nonempty_equation_boundary_dependencies
+          dependencies M := by
+    apply Subsingleton.elim
+  exact
+    ⟨theoremName, certificate, expandedConclusion, targetConclusion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hTargetExpanded, hTargetDirect⟩
+
+/-- Theorem contract for
+`reserved_named_target_homeomorphism_direct_projection_coherence_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_named_target_homeomorphism_direct_projection_coherence_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_named_target_homeomorphism_direct_projection_coherence_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_named_target_homeomorphism_direct_projection_coherence_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
