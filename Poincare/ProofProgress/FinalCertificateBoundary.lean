@@ -4921,6 +4921,97 @@ theorem poincare_conjecture_payload_of_checked_finalCertificateSubobligationInpu
   rfl
 
 /--
+Selected raw-map, forward-continuity, and projection statement-choice data carry
+both the checked final-certificate bundle and the concrete extraction-package
+payload agreement for the same surgery-trace prefix.
+-/
+theorem finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_and_extractionPackage_payload_agreement
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} ∧
+      (let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_extinctionOnePointThreeSpaceSelectedRawMapData_forwardContinuity_projectionStatementChoiceData
+          mapSelectionData selectedRawMapData forwardContinuityData
+          rawStatementChoiceData continuousStatementChoiceData
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+       ∃ _recognitionPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ assemblyPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        topologyPackage =
+          extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+            surgeryTracePrefix onePointRecognition ∧
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+        homeomorphism =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction (recognitionPrefix.decomposition M extinction)
+            assemblyPayload ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u}) := by
+  let certificateBundle :=
+    canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+      inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+      forwardContinuityData rawStatementChoiceData continuousStatementChoiceData
+  dsimp
+  rcases
+      final_homeomorphism_payload_agreement_with_extraction_package_consumer_of_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+        surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData rawStatementChoiceData
+        continuousStatementChoiceData M extinction with
+    ⟨homeomorphism, recognitionPayload, assemblyPayload,
+      topologyPackage, topologyPackage_eq, extractionStatement,
+      topologyDerivation, homeomorphism_eq, finalHomeomorphismStatement⟩
+  exact
+    ⟨certificateBundle.1, certificateBundle.2.1,
+      certificateBundle.2.2.1, certificateBundle.2.2.2.1,
+      certificateBundle.2.2.2.2,
+      homeomorphism, recognitionPayload, assemblyPayload,
+      topologyPackage, topologyPackage_eq, extractionStatement,
+      topologyDerivation, homeomorphism_eq,
+      finalHomeomorphismStatement⟩
+
+/-- Theorem contract for `finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_and_extractionPackage_payload_agreement`. -/
+theorem finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_and_extractionPackage_payload_agreement_eq :
+    @Poincare.finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_and_extractionPackage_payload_agreement =
+      @Poincare.finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_and_extractionPackage_payload_agreement :=
+  rfl
+
+/--
 Lower final-certificate route: decomposition data, trace reconstruction data,
 selected raw-map data, forward continuity, and projection `toFun` coherence
 construct the project Poincare statement.
