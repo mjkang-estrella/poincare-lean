@@ -26443,6 +26443,140 @@ theorem final_homeomorphism_derivation_trace_handle_component_discarded_inventor
   rfl
 
 /--
+Selected raw-map, forward-continuity, and projection statement-choice data reach
+the trace-handle component inventory, boundary-sphere control, and
+prime/sphere/irreducible/spherical payload bundle for the final homeomorphism
+route.
+-/
+theorem final_homeomorphism_derivation_trace_handle_component_discarded_inventory_boundary_prime_sphere_irreducible_spherical_payload_bundle_of_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    let onePointRecognition :=
+      onePointCompactificationRecognitionAfterDecompositionStatement_of_extinctionOnePointThreeSpaceSelectedRawMapData_forwardContinuity_projectionStatementChoiceData
+        mapSelectionData selectedRawMapData forwardContinuityData
+        rawStatementChoiceData continuousStatementChoiceData
+    let recognitionPrefix :=
+      extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+        surgeryTracePrefix onePointRecognition
+    let package :=
+      extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+        surgeryTracePrefix onePointRecognition
+    let handleCancellationPrefix :=
+      extinctionTopologyHandleCancellationPrefixPackage_of_topology_package package
+    let discardedComponentPrefix :=
+      extinctionTopologyDiscardedComponentHomeomorphismClassificationPrefixPackage_of_topology_package
+        package
+    let boundarySpherePrefix :=
+      extinctionTopologyComponentBoundarySphereControlPrefixPackage_of_topology_package
+        package
+    ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+      ∃ homeomorphismAssembly :
+        HasExtinctionHomeomorphismAssembly M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          homeomorphism,
+        HasExtinctionHomeomorphismDerivation M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          homeomorphism homeomorphismAssembly ∧
+        HasExtinctionPrimeDecomposition M extinction
+          (recognitionPrefix.decomposition M extinction) ∧
+        HasExtinctionSphereTheoremApplication M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction) ∧
+        HasExtinctionIrreducibility M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction) ∧
+        HasExtinctionConnectedSumCollapse M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction) ∧
+        HasExtinctionSphericalSpaceFormReduction M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction) ∧
+        HasSphericalSpaceFormQuotientModel M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction) ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+        HasExtinctionSurgeryTraceReconstruction M extinction
+          (extinction_decomposition_of_topology_package package M extinction) ∧
+        HasExtinctionSurgeryTraceHandleCancellation M extinction
+          (handleCancellationPrefix.decomposition M extinction)
+          (handleCancellationPrefix.surgeryTraceReconstruction M extinction) ∧
+        HasExtinctionComponentClassification M extinction
+          (extinction_decomposition_of_topology_package package M extinction) ∧
+        HasExtinctionDiscardedComponentHomeomorphismClassification M extinction
+          (discardedComponentPrefix.decomposition M extinction)
+          (discardedComponentPrefix.componentClassification M extinction) ∧
+        HasExtinctionComponentInventory M extinction
+          (boundarySpherePrefix.decomposition M extinction)
+          (boundarySpherePrefix.componentClassification M extinction) ∧
+        HasExtinctionComponentBoundarySphereControl M extinction
+          (boundarySpherePrefix.decomposition M extinction)
+          (boundarySpherePrefix.componentClassification M extinction)
+          (boundarySpherePrefix.componentInventory M extinction) ∧
+        ExtinctionTopologyExtractionStatement.{u} := by
+  dsimp
+  exact
+    final_homeomorphism_derivation_trace_handle_component_discarded_inventory_boundary_prime_sphere_irreducible_spherical_payload_bundle_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+      surgeryTracePrefix
+      (onePointCompactificationRecognitionAfterDecompositionStatement_of_extinctionOnePointThreeSpaceSelectedRawMapData_forwardContinuity_projectionStatementChoiceData
+        mapSelectionData selectedRawMapData forwardContinuityData
+        rawStatementChoiceData continuousStatementChoiceData)
+      M extinction
+
+/-- Theorem contract for `final_homeomorphism_derivation_trace_handle_component_discarded_inventory_boundary_prime_sphere_irreducible_spherical_payload_bundle_of_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem final_homeomorphism_derivation_trace_handle_component_discarded_inventory_boundary_prime_sphere_irreducible_spherical_payload_bundle_of_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.final_homeomorphism_derivation_trace_handle_component_discarded_inventory_boundary_prime_sphere_irreducible_spherical_payload_bundle_of_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.final_homeomorphism_derivation_trace_handle_component_discarded_inventory_boundary_prime_sphere_irreducible_spherical_payload_bundle_of_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
 The prime/sphere/irreducible/spherical payload endpoint also exposes the full
 fixed-homeomorphism topology derivation statement for the same produced
 homeomorphism.
