@@ -209,6 +209,88 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_path_component_package
   rfl
 
 /--
+The explicit two-puncture complement bridge supplies concrete canonical paths
+with endpoint equations, joined witnesses, and homotopy uniqueness at source
+endpoints, forward-transported `ThreeSphere` endpoints, and target endpoints
+transported back to the one-point compactification complement.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_canonical_path_packages
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (sourceBase sourceTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (targetBase targetTarget :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    (∃ sourceCanonical : Path sourceBase sourceTarget,
+      sourceCanonical 0 = sourceBase ∧ sourceCanonical 1 = sourceTarget ∧
+        Joined sourceBase sourceTarget ∧
+        (∀ η : Path sourceBase sourceTarget,
+          Path.Homotopic sourceCanonical η)) ∧
+      (∃ targetCanonical : Path (H sourceBase) (H sourceTarget),
+        targetCanonical 0 = H sourceBase ∧
+          targetCanonical 1 = H sourceTarget ∧
+          Joined (H sourceBase) (H sourceTarget) ∧
+          (∀ η : Path (H sourceBase) (H sourceTarget),
+            Path.Homotopic targetCanonical η)) ∧
+      (∃ inverseCanonical : Path (H.symm targetBase) (H.symm targetTarget),
+        inverseCanonical 0 = H.symm targetBase ∧
+          inverseCanonical 1 = H.symm targetTarget ∧
+          Joined (H.symm targetBase) (H.symm targetTarget) ∧
+          (∀ η : Path (H.symm targetBase) (H.symm targetTarget),
+            Path.Homotopic inverseCanonical η)) := by
+  dsimp
+  let H :=
+    onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+      hqp
+  let e : OnePoint (EuclideanSpace ℝ (Fin 3)) ≃ₜ ThreeSphere :=
+    Classical.choice onePoint_threeSpace_homeomorph_threeSphere
+  have hImage : e q ≠ e p := by
+    intro h
+    exact hqp (e.injective h)
+  rcases
+      twoPointComplement_exists_path_with_endpoints_of_homeomorph_to_onePoint_threeSpace
+        (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+        ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩
+        hqp sourceBase sourceTarget with
+    ⟨sourceCanonical, hSourceStart, hSourceEnd, hSourceJoined⟩
+  rcases
+      threeSphere_twoPointComplement_exists_path_with_endpoints_and_homotopy_unique
+        hImage (H sourceBase) (H sourceTarget) with
+    ⟨targetCanonical, hTargetStart, hTargetEnd, hTargetJoined,
+      hTargetUnique⟩
+  rcases
+      twoPointComplement_exists_path_with_endpoints_of_homeomorph_to_onePoint_threeSpace
+        (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+        ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩
+        hqp (H.symm targetBase) (H.symm targetTarget) with
+    ⟨inverseCanonical, hInverseStart, hInverseEnd, hInverseJoined⟩
+  exact
+    ⟨⟨sourceCanonical, hSourceStart, hSourceEnd, hSourceJoined,
+        fun η =>
+          twoPointComplement_paths_homotopic_of_homeomorph_to_onePoint_threeSpace
+            (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+            ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩
+            hqp sourceCanonical η⟩,
+      ⟨targetCanonical, hTargetStart, hTargetEnd, hTargetJoined,
+        hTargetUnique⟩,
+      ⟨inverseCanonical, hInverseStart, hInverseEnd, hInverseJoined,
+        fun η =>
+          twoPointComplement_paths_homotopic_of_homeomorph_to_onePoint_threeSpace
+            (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+            ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩
+            hqp inverseCanonical η⟩⟩
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_canonical_path_packages`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_canonical_path_packages_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_canonical_path_packages =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_canonical_path_packages :=
+  rfl
+
+/--
 The standard one-point compactification model two-puncture complement carries
 the transported punctured-Euclidean chart together with the canonical path,
 endpoint-data, homotopy quotient collapse, loop nullhomotopy, and `π₁`
