@@ -481,6 +481,63 @@ theorem threeSphere_twoPointComplement_chosen_path_loop_projection_bundle_eq :
   rfl
 
 /--
+The standard three-sphere two-puncture certificate projects to a concrete
+chosen path while retaining the full topology package for the complement.
+-/
+theorem threeSphere_twoPointComplement_fullTopology_chosen_path_loop_projection_bundle
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (basepoint target : (({a} ∪ {b})ᶜ : Set ThreeSphere))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ canonicalPath : Path basepoint target,
+      Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+        PathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+        ConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+        SimplyConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+        pathComponent basepoint = Set.univ ∧
+        canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+        Joined basepoint target ∧
+        Path.Homotopic chosenPath canonicalPath ∧
+        (⟦chosenPath⟧ :
+          Path.Homotopic.Quotient basepoint target) =
+          ⟦canonicalPath⟧ ∧
+        (∀ η : Path basepoint target,
+          Path.Homotopic canonicalPath η) ∧
+        Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+        loop 0 = basepoint ∧ loop 1 = basepoint ∧
+        Path.Homotopic loop (Path.refl basepoint) ∧
+        FundamentalGroup.fromPath
+            (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+          FundamentalGroup.fromPath
+            (⟦Path.refl basepoint⟧ :
+              Path.Homotopic.Quotient basepoint basepoint) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1 (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint) := by
+  rcases
+      threeSphere_twoPointComplement_fullTopology_path_loop_certificate
+        hab basepoint target chosenPath loop with
+    ⟨hNonempty, hPathConnected, hConnected, hSimplyConnected, hComponent,
+      _hJoined, hCanonical, hChosen, hQuotientSubsingleton, hLoopSource,
+      hLoopTarget, hLoopHomotopic, hLoopFromPath, hPiOne⟩
+  rcases hCanonical with
+    ⟨canonicalPath, hCanonicalSource, hCanonicalTarget, hCanonicalJoined,
+      hCanonicalUnique⟩
+  rcases hChosen canonicalPath with
+    ⟨hChosenHomotopic, hChosenQuotient⟩
+  exact
+    ⟨canonicalPath, hNonempty, hPathConnected, hConnected, hSimplyConnected,
+      hComponent, hCanonicalSource, hCanonicalTarget, hCanonicalJoined,
+      hChosenHomotopic, hChosenQuotient, hCanonicalUnique,
+      hQuotientSubsingleton, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+
+/-- Theorem contract for `threeSphere_twoPointComplement_fullTopology_chosen_path_loop_projection_bundle`. -/
+theorem threeSphere_twoPointComplement_fullTopology_chosen_path_loop_projection_bundle_eq :
+    @Poincare.threeSphere_twoPointComplement_fullTopology_chosen_path_loop_projection_bundle =
+      @Poincare.threeSphere_twoPointComplement_fullTopology_chosen_path_loop_projection_bundle :=
+  rfl
+
+/--
 The standard `ThreeSphere` two-puncture complement carries the transported
 punctured-Euclidean chart together with the same canonical path, endpoint-data,
 homotopy quotient, loop nullhomotopy, and `π₁` collapse payload used by the
