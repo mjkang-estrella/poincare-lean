@@ -519,6 +519,75 @@ theorem onePoint_threeSpace_twoPointComplement_endpointData_loopCollapse_core_eq
   rfl
 
 /--
+The selected endpoint-data path and any supplied path in the two-point
+complement of compactified three-space have the same path-homotopy class in
+both directions, while retaining loop-collapse and `π₁` evidence.
+-/
+theorem onePoint_threeSpace_twoPointComplement_endpointData_bidirectional_pathClass_payload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint target :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ pathData :
+        PointedPathComponentPathData
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+      ∃ endpointData :
+          PointedChosenPathEndpointData
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint target,
+        pathData.path_to target = endpointData.path ∧
+          endpointData.path 0 = basepoint ∧
+          endpointData.path 1 = target ∧
+          Joined basepoint target ∧
+          pathComponent basepoint = Set.univ ∧
+          Path.Homotopic chosenPath endpointData.path ∧
+          Path.Homotopic endpointData.path chosenPath ∧
+          (⟦chosenPath⟧ :
+            Path.Homotopic.Quotient basepoint target) =
+              ⟦endpointData.path⟧ ∧
+          (⟦endpointData.path⟧ :
+            Path.Homotopic.Quotient basepoint target) = ⟦chosenPath⟧ ∧
+          Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+          loop 0 = basepoint ∧
+          loop 1 = basepoint ∧
+          Path.Homotopic loop (Path.refl basepoint) ∧
+          FundamentalGroup.fromPath
+              (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl basepoint⟧ :
+                Path.Homotopic.Quotient basepoint basepoint) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1
+              (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              basepoint) := by
+  rcases
+      onePoint_threeSpace_twoPointComplement_endpointData_loopCollapse_core
+        hqp basepoint target loop with
+    ⟨pathData, endpointData, hPathData, hEndpointSource, hEndpointTarget,
+      hJoined, hComponent, hEndpointUnique, hQuotientSubsingleton,
+      hLoopSource, hLoopTarget, hLoopHomotopic, hLoopFromPath, hPiOne⟩
+  let hChosenPath : Path.Homotopic chosenPath endpointData.path :=
+    onePoint_threeSpace_twoPointComplement_paths_homotopic
+      hqp chosenPath endpointData.path
+  let hEndpointPath : Path.Homotopic endpointData.path chosenPath :=
+    hEndpointUnique chosenPath
+  exact
+    ⟨pathData, endpointData, hPathData, hEndpointSource, hEndpointTarget,
+      hJoined, hComponent, hChosenPath, hEndpointPath,
+      Quotient.sound hChosenPath, Quotient.sound hEndpointPath,
+      hQuotientSubsingleton, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+
+/-- Theorem contract for
+`onePoint_threeSpace_twoPointComplement_endpointData_bidirectional_pathClass_payload`. -/
+theorem onePoint_threeSpace_twoPointComplement_endpointData_bidirectional_pathClass_payload_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_endpointData_bidirectional_pathClass_payload =
+      @Poincare.onePoint_threeSpace_twoPointComplement_endpointData_bidirectional_pathClass_payload :=
+  rfl
+
+/--
 The singleton and two-point complements in compactified three-space expose
 their endpoint-data loop-collapse cores as one reusable model certificate.
 -/
