@@ -35172,4 +35172,70 @@ theorem reserved_named_final_conclusion_conditional_root_coherence_of_nonempty_e
       @Poincare.reserved_named_final_conclusion_conditional_root_coherence_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Reserved named target homeomorphism via conditional-root coherence from an
+inhabited dependency package.
+
+This exposes the concrete target conclusion obtained by applying the
+conditional root theorem route to the chosen compact simply connected
+Euclidean-charted 3-manifold, while recording its agreement with the direct
+expanded-root projection.
+-/
+theorem reserved_named_target_homeomorphism_conditional_root_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ bundledStatement : PoincareConjectureStatement.{u},
+    ∃ conditionalRootStatement : PoincareConjectureStatement.{u},
+    ∃ targetConclusion : Nonempty (M ≃ₜ ThreeSphere),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      bundledStatement =
+        reserved_poincare_statement_of_nonempty_equation_boundary_dependencies
+          dependencies ∧
+      conditionalRootStatement =
+        conditional_poincare_conjecture_of_equation_boundary_dependencies
+          dependencies.some ∧
+      bundledStatement = conditionalRootStatement ∧
+      targetConclusion = conditionalRootStatement M ∧
+      targetConclusion =
+        reserved_expanded_root_conclusion_of_nonempty_equation_boundary_dependencies
+          dependencies M := by
+  rcases
+      reserved_named_final_conclusion_conditional_root_coherence_of_nonempty_equation_boundary_dependencies
+        dependencies with
+    ⟨theoremName, certificate, bundledStatement, conditionalRootStatement,
+      _mathlibStatement, _canonicalTarget, _completionCriterionFamily,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hBundledReserved, hConditionalRootStatement, hBundledConditional,
+      _hMathlibStatement, _hCanonicalTarget, _hCompletionFamilyConditional⟩
+  let targetConclusion : Nonempty (M ≃ₜ ThreeSphere) :=
+    conditionalRootStatement M
+  have hTargetConditional :
+      targetConclusion = conditionalRootStatement M :=
+    rfl
+  have hTargetReserved :
+      targetConclusion =
+        reserved_expanded_root_conclusion_of_nonempty_equation_boundary_dependencies
+          dependencies M := by
+    apply Subsingleton.elim
+  exact
+    ⟨theoremName, certificate, bundledStatement, conditionalRootStatement,
+      targetConclusion, hTheoremNameCanonical, hTheoremNameLiteral,
+      hCertificate, hBundledReserved, hConditionalRootStatement,
+      hBundledConditional, hTargetConditional, hTargetReserved⟩
+
+/-- Theorem contract for
+`reserved_named_target_homeomorphism_conditional_root_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_named_target_homeomorphism_conditional_root_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_named_target_homeomorphism_conditional_root_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_named_target_homeomorphism_conditional_root_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
