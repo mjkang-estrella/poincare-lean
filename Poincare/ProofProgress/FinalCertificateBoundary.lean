@@ -14087,6 +14087,119 @@ abbrev ExtinctionTopologyPackageLiftChainPayload
             homeomorphism_of_topology_package topologyPackage N extinction)
 
 /--
+The selected raw-map final-certificate boundary carries the extracted topology
+package far enough to recover the package lift chain used by the final
+homeomorphism route.
+-/
+theorem finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_extractionPackage_payload_agreement_topology_lift_chain_and_package_final_homeomorphism_projector
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} ∧
+      (let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_extinctionOnePointThreeSpaceSelectedRawMapData_forwardContinuity_projectionStatementChoiceData
+          mapSelectionData selectedRawMapData forwardContinuityData
+          rawStatementChoiceData continuousStatementChoiceData
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+       ∃ _recognitionPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ assemblyPayload :
+        FinalHomeomorphismPayloadData M extinction
+          (recognitionPrefix.decomposition M extinction),
+       ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        topologyPackage =
+          extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+            surgeryTracePrefix onePointRecognition ∧
+        ExtinctionTopologyPackageLiftChainPayload
+          topologyPackage M extinction ∧
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+        homeomorphism =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction (recognitionPrefix.decomposition M extinction)
+            assemblyPayload ∧
+        homeomorphism_of_topology_package topologyPackage M extinction =
+          homeomorphism_of_final_homeomorphism_payload_data
+            M extinction
+            (extinction_decomposition_of_topology_package
+              topologyPackage M extinction)
+            (finalHomeomorphismPayloadData_of_topology_package
+              topologyPackage M extinction) ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u}) := by
+  rcases
+      finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_extractionPackage_payload_agreement_and_package_final_homeomorphism_projector
+        inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData rawStatementChoiceData
+        continuousStatementChoiceData M extinction with
+    ⟨canonicalTarget, canonicalPayload, poincareStatement,
+      poincarePayload, checkedCertificate, homeomorphism,
+      recognitionPayload, assemblyPayload, topologyPackage,
+      topologyPackage_eq, extractionStatement, topologyDerivation,
+      homeomorphism_eq, packageFinalHomeomorphismProjector_eq,
+      finalHomeomorphismStatement⟩
+  let topologyLiftChain :
+      ExtinctionTopologyPackageLiftChainPayload
+        topologyPackage M extinction := by
+    exact
+      ⟨trivial_quotient_homeomorphism_of_topology_package
+          topologyPackage M extinction,
+        spherical_homeomorphism_lift_of_topology_package
+          topologyPackage M extinction,
+        topology_spherical_trivial_quotient_statement_of_topology_package
+          topologyPackage M extinction,
+        topology_spherical_homeomorphism_lift_statement_of_topology_package
+          topologyPackage M extinction,
+        topology_lifted_homeomorphism_derivation_statement_of_topology_package
+          topologyPackage M extinction,
+        topology_lifted_homeomorphism_derivation_for_homeomorphism_of_topology_package
+          topologyPackage⟩
+  exact
+    ⟨canonicalTarget, canonicalPayload, poincareStatement,
+      poincarePayload, checkedCertificate, homeomorphism,
+      recognitionPayload, assemblyPayload, topologyPackage,
+      topologyPackage_eq, topologyLiftChain, extractionStatement,
+      topologyDerivation, homeomorphism_eq,
+      packageFinalHomeomorphismProjector_eq, finalHomeomorphismStatement⟩
+
+/-- Theorem contract for `finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_extractionPackage_payload_agreement_topology_lift_chain_and_package_final_homeomorphism_projector`. -/
+theorem finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_extractionPackage_payload_agreement_topology_lift_chain_and_package_final_homeomorphism_projector_eq :
+    @Poincare.finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_extractionPackage_payload_agreement_topology_lift_chain_and_package_final_homeomorphism_projector =
+      @Poincare.finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_extractionPackage_payload_agreement_topology_lift_chain_and_package_final_homeomorphism_projector :=
+  rfl
+
+/--
 Named final-homeomorphism projector payload. It records the actual recovered
 homeomorphism to `ThreeSphere`, the recognition and assembly payloads, the
 topology package identification, package lift chain, extraction and topology
