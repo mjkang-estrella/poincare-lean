@@ -789,6 +789,78 @@ theorem completion_certificate_of_smoothability_grounded_certificates_and_topolo
   rfl
 
 /--
+Smoothability, grounded finite-extinction production certificates, and a
+completed topology package expose the checked certificate together with the
+compact two-puncture endpoint-data path-coherence core at a fixed extinction
+witness.
+-/
+theorem poincare_payload_final_certificate_and_twoPointEndpointDataPathCoherenceCore_of_smoothability_grounded_certificates_and_topologyPackage
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          GroundedFiniteExtinctionProductionCertificate N)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} ∧
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      FinalHomeomorphismPayloadData M extinction
+        (extinction_decomposition_of_topology_package topology M extinction) ∧
+      ∃ pathData :
+          PointedPathComponentPathData (({x} ∪ {y})ᶜ : Set M) basepoint,
+        ∃ endpointData :
+            PointedChosenPathEndpointData
+              (({x} ∪ {y})ᶜ : Set M) basepoint target,
+          pathData.path_to target = endpointData.path ∧
+            endpointData.path 0 = basepoint ∧
+            endpointData.path 1 = target ∧
+            Joined basepoint target ∧
+            pathComponent basepoint = Set.univ ∧
+            Path.Homotopic chosenPath endpointData.path ∧
+            (⟦chosenPath⟧ : Path.Homotopic.Quotient basepoint target) =
+              ⟦endpointData.path⟧ ∧
+            (∀ η : Path basepoint target,
+              Path.Homotopic endpointData.path η) ∧
+            Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+            loop 0 = basepoint ∧
+            loop 1 = basepoint ∧
+            Path.Homotopic loop (Path.refl basepoint) ∧
+            FundamentalGroup.fromPath
+                (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+              FundamentalGroup.fromPath
+                (⟦Path.refl basepoint⟧ :
+                  Path.Homotopic.Quotient basepoint basepoint) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+  poincare_payload_final_certificate_and_twoPointEndpointDataPathCoherenceCore_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    (finalCertificateMinimalPackageInputs_of_subobligationInputs
+      (finalCertificateSubobligationInputs_of_smoothability_and_grounded_certificates
+        smoothability grounded))
+    topology M extinction hyx basepoint target chosenPath loop
+
+/-- Theorem contract for
+`poincare_payload_final_certificate_and_twoPointEndpointDataPathCoherenceCore_of_smoothability_grounded_certificates_and_topologyPackage`. -/
+theorem poincare_payload_final_certificate_and_twoPointEndpointDataPathCoherenceCore_of_smoothability_grounded_certificates_and_topologyPackage_eq :
+    @Poincare.poincare_payload_final_certificate_and_twoPointEndpointDataPathCoherenceCore_of_smoothability_grounded_certificates_and_topologyPackage =
+      @Poincare.poincare_payload_final_certificate_and_twoPointEndpointDataPathCoherenceCore_of_smoothability_grounded_certificates_and_topologyPackage :=
+  rfl
+
+/--
 Lower final-certificate sub-obligation inputs plus a completed topology package
 prove the project Poincare statement.
 -/
