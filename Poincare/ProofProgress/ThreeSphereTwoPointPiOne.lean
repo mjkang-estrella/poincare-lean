@@ -20,6 +20,29 @@ theorem threeSphere_twoPointComplement_nonempty
   infer_instance
 
 /--
+The standard three-sphere two-puncture complement is nonempty, path-connected,
+connected, and simply connected. This packages the topological core used by the
+path, loop, quotient, and `π₁` payloads below.
+-/
+theorem threeSphere_twoPointComplement_topology_package
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+      PathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+      ConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+      SimplyConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) := by
+  exact
+    ⟨threeSphere_twoPointComplement_nonempty hab,
+      threeSphere_twoPointComplement_pathConnectedSpace hab,
+      threeSphere_twoPointComplement_connectedSpace hab,
+      threeSphere_twoPointComplement_simplyConnectedSpace hab⟩
+
+/-- Theorem contract for `threeSphere_twoPointComplement_topology_package`. -/
+theorem threeSphere_twoPointComplement_topology_package_eq :
+    @Poincare.threeSphere_twoPointComplement_topology_package =
+      @Poincare.threeSphere_twoPointComplement_topology_package :=
+  rfl
+
+/--
 Every point of a standard three-sphere two-puncture complement lies in the
 path component of any chosen basepoint.
 -/
