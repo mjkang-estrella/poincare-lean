@@ -33272,4 +33272,87 @@ theorem dependency_only_reserved_canonical_payload_completionCriterion_of_equati
       @Poincare.dependency_only_reserved_canonical_payload_completionCriterion_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved canonical/project completion criterion equivalence.
+
+For each witness, the completion criterion extracted from the canonical payload
+and the criterion extracted from the project payload are the same proof of the
+reserved completion criterion, and both payloads come from the same checked
+completion certificate.
+-/
+theorem dependency_only_reserved_canonical_project_completionCriterion_equivalence_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (witness : Type u) :
+    ∃ canonicalCriterion : CompletionCriterionAtUniverse witness,
+    ∃ projectCriterion : CompletionCriterionAtUniverse witness,
+    ∃ canonicalPayload :
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ canonicalPayloadTarget : canonicalCompletionTarget.{u},
+    ∃ canonicalPayloadCompletion :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ projectPayload :
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ certificate : PoincareCompletionCertificate.{u},
+      canonicalCriterion = canonicalPayloadCompletion witness ∧
+      projectCriterion =
+        completionCriterionAtUniverse_of_poincare_completion_payload
+          witness projectPayload ∧
+      canonicalCriterion = projectCriterion ∧
+      canonicalPayload =
+        ⟨canonicalPayloadTarget, canonicalPayloadCompletion⟩ ∧
+      canonicalPayload =
+        canonical_completion_payload_of_completion_certificate certificate ∧
+      projectPayload =
+        poincare_completion_payload_of_completion_certificate certificate ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      projectStatement =
+        target_statement_of_completion_certificate certificate := by
+  rcases
+      dependency_only_reserved_canonical_payload_completionCriterion_of_equation_boundary_dependencies
+        dependencies witness with
+    ⟨canonicalCriterion, canonicalCertificate, canonicalPayload,
+      canonicalPayloadTarget, canonicalPayloadCompletion, _canonicalTarget,
+      projectStatement, _nonemptyCertificate, hCanonicalCriterion,
+      hCanonicalPayloadComponents, hCanonicalCertificate,
+      hCanonicalPayload, _hCanonicalTarget, hProjectStatementTarget,
+      _hProjectStatementCertificate⟩
+  rcases
+      dependency_only_reserved_completionCriterion_project_payload_of_equation_boundary_dependencies
+        dependencies witness with
+    ⟨projectCriterion, projectPayload, _projectPayloadStatement,
+      _projectPayloadNonemptyCertificate, projectCertificate,
+      _hProjectCriterionReserved, hProjectCriterionPayload, _hProjectPayload,
+      _hProjectPayloadStatementCertificate, hProjectCertificate,
+      _hProjectNonemptyCertificate⟩
+  have hCertificate :
+      canonicalCertificate = projectCertificate := by
+    exact hCanonicalCertificate.trans hProjectCertificate.symm
+  have hProjectPayloadCertificate :
+      projectPayload =
+        poincare_completion_payload_of_completion_certificate
+          canonicalCertificate := by
+    apply Subsingleton.elim
+  have hCanonicalProjectCriterion :
+      canonicalCriterion = projectCriterion := by
+    apply Subsingleton.elim
+  exact
+    ⟨canonicalCriterion, projectCriterion, canonicalPayload,
+      canonicalPayloadTarget, canonicalPayloadCompletion, projectPayload,
+      projectStatement, canonicalCertificate, hCanonicalCriterion,
+      hProjectCriterionPayload, hCanonicalProjectCriterion,
+      hCanonicalPayloadComponents, hCanonicalPayload, hProjectPayloadCertificate,
+      hCanonicalCertificate, hProjectStatementTarget⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_canonical_project_completionCriterion_equivalence_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_canonical_project_completionCriterion_equivalence_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_canonical_project_completionCriterion_equivalence_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_canonical_project_completionCriterion_equivalence_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
