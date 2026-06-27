@@ -3307,4 +3307,103 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_transport_paths_fullTo
       @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_transport_paths_fullTopology_piOne_pathQuotient_payload :=
   rfl
 
+/--
+The explicit two-puncture complement homeomorphism now exposes one consolidated
+transport certificate for consumers that need endpoint path homotopies, path
+quotient collapse, `π₁` collapse, transported loop triviality, and pointwise
+round-trip equations at the same basepoints.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_fullTopology_transport_path_loop_package
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    {sourceBase sourceTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    (sourcePath₀ sourcePath₁ : Path sourceBase sourceTarget)
+    (sourceLoop : Path sourceBase sourceBase)
+    {targetBase targetTarget :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)}
+    (targetPath₀ targetPath₁ : Path targetBase targetTarget)
+    (targetLoop : Path targetBase targetBase) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    let Source :=
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    let Target :=
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)
+    Nonempty Source ∧
+      PathConnectedSpace Source ∧
+      ConnectedSpace Source ∧
+      SimplyConnectedSpace Source ∧
+      Nonempty Target ∧
+      PathConnectedSpace Target ∧
+      ConnectedSpace Target ∧
+      SimplyConnectedSpace Target ∧
+      Subsingleton (HomotopyGroup.Pi 1 Target (H sourceBase)) ∧
+      Subsingleton (HomotopyGroup.Pi 1 Source (H.symm targetBase)) ∧
+      Subsingleton (Path.Homotopic.Quotient (H sourceBase) (H sourceTarget)) ∧
+      Subsingleton
+        (Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetTarget)) ∧
+      Path.Homotopic
+        (sourcePath₀.map H.continuous)
+        (sourcePath₁.map H.continuous) ∧
+      (⟦sourcePath₀.map H.continuous⟧ :
+        Path.Homotopic.Quotient (H sourceBase) (H sourceTarget)) =
+        ⟦sourcePath₁.map H.continuous⟧ ∧
+      Path.Homotopic
+        (targetPath₀.map H.symm.continuous)
+        (targetPath₁.map H.symm.continuous) ∧
+      (⟦targetPath₀.map H.symm.continuous⟧ :
+        Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetTarget)) =
+        ⟦targetPath₁.map H.symm.continuous⟧ ∧
+      FundamentalGroup.fromPath
+          (⟦sourceLoop.map H.continuous⟧ :
+            Path.Homotopic.Quotient (H sourceBase) (H sourceBase)) =
+        FundamentalGroup.fromPath
+          (⟦Path.refl (H sourceBase)⟧ :
+            Path.Homotopic.Quotient (H sourceBase) (H sourceBase)) ∧
+      FundamentalGroup.fromPath
+          (⟦targetLoop.map H.symm.continuous⟧ :
+            Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetBase)) =
+        FundamentalGroup.fromPath
+          (⟦Path.refl (H.symm targetBase)⟧ :
+            Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetBase)) ∧
+      (∀ t, H.symm ((sourcePath₀.map H.continuous) t) = sourcePath₀ t) ∧
+      (∀ t, H.symm ((sourceLoop.map H.continuous) t) = sourceLoop t) ∧
+      (∀ t, H ((targetPath₀.map H.symm.continuous) t) = targetPath₀ t) ∧
+      (∀ t, H ((targetLoop.map H.symm.continuous) t) = targetLoop t) := by
+  dsimp
+  rcases
+      onePoint_threeSpace_twoPointComplement_homeomorph_fullTopology_fromPath_roundtrip_package
+        hqp sourcePath₀ sourceLoop targetPath₀ targetLoop with
+    ⟨hSourceNonempty, hSourcePathConnected, hSourceConnected,
+      hSourceSimplyConnected, hTargetNonempty, hTargetPathConnected,
+      hTargetConnected, hTargetSimplyConnected, hSourceLoopFromPath,
+      hTargetLoopFromPath, hSourcePathRoundtrip, hSourceLoopRoundtrip,
+      hTargetPathRoundtrip, hTargetLoopRoundtrip⟩
+  rcases
+      onePoint_threeSpace_twoPointComplement_homeomorph_transport_paths_fullTopology_piOne_pathQuotient_payload
+        hqp sourcePath₀ sourcePath₁ targetPath₀ targetPath₁ with
+    ⟨_, _, hTargetPiOne, hSourcePiOne, hTargetPathQuotient,
+      hSourcePathQuotient, hSourceHomotopic, hSourceQuotient,
+      hTargetHomotopic, hTargetQuotient⟩
+  exact
+    ⟨hSourceNonempty, hSourcePathConnected, hSourceConnected,
+      hSourceSimplyConnected, hTargetNonempty, hTargetPathConnected,
+      hTargetConnected, hTargetSimplyConnected, hTargetPiOne, hSourcePiOne,
+      hTargetPathQuotient, hSourcePathQuotient, hSourceHomotopic,
+      hSourceQuotient, hTargetHomotopic, hTargetQuotient,
+      hSourceLoopFromPath, hTargetLoopFromPath, hSourcePathRoundtrip,
+      hSourceLoopRoundtrip, hTargetPathRoundtrip, hTargetLoopRoundtrip⟩
+
+/-- Theorem contract for
+`onePoint_threeSpace_twoPointComplement_homeomorph_fullTopology_transport_path_loop_package`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_fullTopology_transport_path_loop_package_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_fullTopology_transport_path_loop_package =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_fullTopology_transport_path_loop_package :=
+  rfl
+
 end Poincare
