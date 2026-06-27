@@ -17359,4 +17359,108 @@ theorem conditional_root_projector_canonical_quotient_and_fundamentalGroup_repre
       @Poincare.conditional_root_projector_canonical_quotient_and_fundamentalGroup_representatives_of_equation_boundary_dependencies :=
   rfl
 
+/--
+The canonical endpoint representatives assemble into `Unique` structures for
+the endpoint path quotient, based-loop quotient, and based fundamental group.
+
+This packages the final endpoint collapse as concrete uniqueness data whose
+defaults are exactly the chosen path class, the constant loop class, and the
+constant-loop `FundamentalGroup.fromPath` element.
+-/
+theorem conditional_root_projector_unique_canonical_endpoint_quotients_and_fundamentalGroup_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    PoincareConjectureStatement.{u} ∧
+      ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      ∃ _pathData :
+          PointedPathComponentPathData (({x} ∪ {y})ᶜ : Set M) basepoint,
+      ∃ _endpointData :
+          PointedChosenPathEndpointData
+            (({x} ∪ {y})ᶜ : Set M) basepoint target,
+        ExtinctionFinalHomeomorphismProjectorPayload
+          topology M extinction ∧
+        FinalHomeomorphismPayloadData M extinction
+          (extinction_decomposition_of_topology_package topology M extinction) ∧
+        ∃ _endpointQuotientUnique :
+          Unique (Path.Homotopic.Quotient basepoint target),
+        ∃ _loopQuotientUnique :
+          Unique (Path.Homotopic.Quotient basepoint basepoint),
+        ∃ _fundamentalGroupUnique :
+          Unique (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint),
+        (∀ q : Path.Homotopic.Quotient basepoint target,
+          q = (⟦chosenPath⟧ :
+            Path.Homotopic.Quotient basepoint target)) ∧
+        (∀ q : Path.Homotopic.Quotient basepoint basepoint,
+          q = (⟦Path.refl basepoint⟧ :
+            Path.Homotopic.Quotient basepoint basepoint)) ∧
+        (∀ g : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+          g =
+            FundamentalGroup.fromPath
+              (⟦Path.refl basepoint⟧ :
+                Path.Homotopic.Quotient basepoint basepoint)) := by
+  rcases
+      conditional_root_projector_canonical_quotient_and_fundamentalGroup_representatives_of_equation_boundary_dependencies
+        dependencies smoothability grounded topology smoothabilityPayload M
+        hyx basepoint target chosenPath loop with
+    ⟨projectStatement, checkedCertificate, extinction, pathData,
+      endpointData, finalHomeomorphismProjector,
+      finalHomeomorphismPayloadData, endpointCanonicalCollapse,
+      loopCanonicalCollapse, fundamentalGroupCanonicalCollapse,
+      _endpointPathHomotopyCollapse, _allLoopFromPathCollapse⟩
+  let endpointQuotientUnique :
+      Unique (Path.Homotopic.Quotient basepoint target) :=
+    { default := (⟦chosenPath⟧ :
+        Path.Homotopic.Quotient basepoint target)
+      uniq := endpointCanonicalCollapse }
+  let loopQuotientUnique :
+      Unique (Path.Homotopic.Quotient basepoint basepoint) :=
+    { default := (⟦Path.refl basepoint⟧ :
+        Path.Homotopic.Quotient basepoint basepoint)
+      uniq := loopCanonicalCollapse }
+  let fundamentalGroupUnique :
+      Unique (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+    { default :=
+        FundamentalGroup.fromPath
+          (⟦Path.refl basepoint⟧ :
+            Path.Homotopic.Quotient basepoint basepoint)
+      uniq := fundamentalGroupCanonicalCollapse }
+  exact
+    ⟨projectStatement,
+      checkedCertificate,
+      extinction,
+      pathData,
+      endpointData,
+      finalHomeomorphismProjector,
+      finalHomeomorphismPayloadData,
+      endpointQuotientUnique,
+      loopQuotientUnique,
+      fundamentalGroupUnique,
+      endpointCanonicalCollapse,
+      loopCanonicalCollapse,
+      fundamentalGroupCanonicalCollapse⟩
+
+/-- Theorem contract for `conditional_root_projector_unique_canonical_endpoint_quotients_and_fundamentalGroup_of_equation_boundary_dependencies`. -/
+theorem conditional_root_projector_unique_canonical_endpoint_quotients_and_fundamentalGroup_of_equation_boundary_dependencies_eq :
+    @Poincare.conditional_root_projector_unique_canonical_endpoint_quotients_and_fundamentalGroup_of_equation_boundary_dependencies =
+      @Poincare.conditional_root_projector_unique_canonical_endpoint_quotients_and_fundamentalGroup_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
