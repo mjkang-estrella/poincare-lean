@@ -1239,6 +1239,84 @@ theorem twoPointComplement_fullChart_path_loop_projection_bundle_of_homeomorph_t
   rfl
 
 /--
+For a space recognized as a one-point compactification, the full-chart
+two-puncture path/loop package exposes the selected endpoint-data path
+directly. This discharges the path-data coherence, endpoint equations,
+chosen-path quotient equality, homotopy uniqueness, and loop collapse without
+requiring consumers to rewrite through the canonical-path witness.
+-/
+theorem twoPointComplement_fullChart_endpointData_pathCoherence_loopCollapse_package_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    let C := (({x} ∪ {y})ᶜ : Set M)
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      ∃ chart : C ≃ₜ ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        ∃ pathData : PointedPathComponentPathData C basepoint,
+          ∃ endpointData : PointedChosenPathEndpointData C basepoint target,
+            (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+              Nonempty C ∧
+              PathConnectedSpace C ∧
+              ConnectedSpace C ∧
+              SimplyConnectedSpace C ∧
+              pathData.path_to target = endpointData.path ∧
+              endpointData.path 0 = basepoint ∧
+              endpointData.path 1 = target ∧
+              Joined basepoint target ∧
+              pathComponent basepoint = Set.univ ∧
+              Path.Homotopic chosenPath endpointData.path ∧
+              (⟦chosenPath⟧ :
+                Path.Homotopic.Quotient basepoint target) =
+                ⟦endpointData.path⟧ ∧
+              (∀ η : Path basepoint target,
+                Path.Homotopic endpointData.path η) ∧
+              Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+              loop 0 = basepoint ∧
+              loop 1 = basepoint ∧
+              Path.Homotopic loop (Path.refl basepoint) ∧
+              FundamentalGroup.fromPath
+                  (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+                FundamentalGroup.fromPath
+                  (⟦Path.refl basepoint⟧ :
+                    Path.Homotopic.Quotient basepoint basepoint) ∧
+              Subsingleton (HomotopyGroup.Pi 1 C basepoint) := by
+  dsimp
+  rcases
+      twoPointComplement_fullChart_path_loop_projection_bundle_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint target chosenPath loop with
+    ⟨puncture, chart, pathData, endpointData, canonicalPath, hAvoid,
+      hNonempty, hPathConnected, hConnected, hSimplyConnected, hPathData,
+      hEndpointData, hCanonicalSource, hCanonicalTarget, hJoined, hComponent,
+      hChosenHomotopic, hChosenQuotient, hCanonicalUnique,
+      hQuotientSubsingleton, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+  exact
+    ⟨puncture, chart, pathData, endpointData, hAvoid, hNonempty,
+      hPathConnected, hConnected, hSimplyConnected,
+      hPathData.trans hEndpointData.symm,
+      by simpa [hEndpointData] using hCanonicalSource,
+      by simpa [hEndpointData] using hCanonicalTarget, hJoined, hComponent,
+      by simpa [hEndpointData] using hChosenHomotopic,
+      by simpa [hEndpointData] using hChosenQuotient,
+      by
+        intro η
+        simpa [hEndpointData] using hCanonicalUnique η,
+      hQuotientSubsingleton, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+
+/--
+Theorem contract for
+`twoPointComplement_fullChart_endpointData_pathCoherence_loopCollapse_package_of_homeomorph_to_onePoint_threeSpace`.
+-/
+theorem twoPointComplement_fullChart_endpointData_pathCoherence_loopCollapse_package_of_homeomorph_to_onePoint_threeSpace_eq :
+    @Poincare.twoPointComplement_fullChart_endpointData_pathCoherence_loopCollapse_package_of_homeomorph_to_onePoint_threeSpace =
+      @Poincare.twoPointComplement_fullChart_endpointData_pathCoherence_loopCollapse_package_of_homeomorph_to_onePoint_threeSpace :=
+  rfl
+
+/--
 The one-point compactification recognition route supplies the transported
 two-puncture Euclidean chart together with endpoint-level path and `π₁`
 collapse, without requiring a chosen path or based loop.
@@ -3243,6 +3321,62 @@ Theorem contract for
 theorem twoPointComplement_fullChart_path_loop_projection_bundle_of_homeomorph_to_threeSphere_eq :
     @Poincare.twoPointComplement_fullChart_path_loop_projection_bundle_of_homeomorph_to_threeSphere =
       @Poincare.twoPointComplement_fullChart_path_loop_projection_bundle_of_homeomorph_to_threeSphere :=
+  rfl
+
+/--
+For a space recognized as `ThreeSphere`, the full-chart two-puncture
+path/loop package exposes the selected endpoint-data path directly, including
+path-data coherence, endpoint equations, chosen-path quotient equality,
+homotopy uniqueness, and loop collapse.
+-/
+theorem twoPointComplement_fullChart_endpointData_pathCoherence_loopCollapse_package_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    let C := (({x} ∪ {y})ᶜ : Set M)
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      ∃ chart : C ≃ₜ ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        ∃ pathData : PointedPathComponentPathData C basepoint,
+          ∃ endpointData : PointedChosenPathEndpointData C basepoint target,
+            (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+              Nonempty C ∧
+              PathConnectedSpace C ∧
+              ConnectedSpace C ∧
+              SimplyConnectedSpace C ∧
+              pathData.path_to target = endpointData.path ∧
+              endpointData.path 0 = basepoint ∧
+              endpointData.path 1 = target ∧
+              Joined basepoint target ∧
+              pathComponent basepoint = Set.univ ∧
+              Path.Homotopic chosenPath endpointData.path ∧
+              (⟦chosenPath⟧ :
+                Path.Homotopic.Quotient basepoint target) =
+                ⟦endpointData.path⟧ ∧
+              (∀ η : Path basepoint target,
+                Path.Homotopic endpointData.path η) ∧
+              Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+              loop 0 = basepoint ∧
+              loop 1 = basepoint ∧
+              Path.Homotopic loop (Path.refl basepoint) ∧
+              FundamentalGroup.fromPath
+                  (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+                FundamentalGroup.fromPath
+                  (⟦Path.refl basepoint⟧ :
+                    Path.Homotopic.Quotient basepoint basepoint) ∧
+              Subsingleton (HomotopyGroup.Pi 1 C basepoint) :=
+  twoPointComplement_fullChart_endpointData_pathCoherence_loopCollapse_package_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+    basepoint target chosenPath loop
+
+/--
+Theorem contract for
+`twoPointComplement_fullChart_endpointData_pathCoherence_loopCollapse_package_of_homeomorph_to_threeSphere`.
+-/
+theorem twoPointComplement_fullChart_endpointData_pathCoherence_loopCollapse_package_of_homeomorph_to_threeSphere_eq :
+    @Poincare.twoPointComplement_fullChart_endpointData_pathCoherence_loopCollapse_package_of_homeomorph_to_threeSphere =
+      @Poincare.twoPointComplement_fullChart_endpointData_pathCoherence_loopCollapse_package_of_homeomorph_to_threeSphere :=
   rfl
 
 /--
