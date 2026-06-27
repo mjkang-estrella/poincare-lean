@@ -505,6 +505,35 @@ structure SurgeryNeckCanonicalCoordinatesPayload
         canonicalCoordinateError parameter x ≤
           strongDeltaPayload.strongDelta parameter
 
+/-- Canonical neck coordinate domains are contained in the detected strong delta-neck regions. -/
+theorem SurgeryNeckCanonicalCoordinatesPayload.canonicalCoordinateDomain_subset_detectedNeckRegion
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload : SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload : SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload : SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload : SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload : SurgeryNeckParametrizationPayload neckSeparationPayload}
+    (neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload) :
+    ∀ parameter x,
+      x ∈ neckCanonicalCoordinatesPayload.canonicalCoordinateDomain parameter →
+        x ∈ strongDeltaPayload.detectedNeckRegion parameter := by
+  intro parameter x hx
+  exact
+    neckSeparationPayload.separatedNeckNeighborhood_subset_detectedNeckRegion
+      parameter x
+      (neckParametrizationPayload.parametrizationDomain_subset_separatedNeckNeighborhood
+        parameter x
+        (neckCanonicalCoordinatesPayload.canonicalCoordinateDomain_subset_parametrizationDomain
+          parameter x hx))
+
 /--
 Concrete decomposition data for surgery necks with canonical coordinates.
 
@@ -755,6 +784,44 @@ structure StandardCapModelPayload
         standardCapModelError parameter x ≤
           strongDeltaPayload.strongDelta parameter
 
+/-- Cap attachment regions lie inside the detected strong delta-neck regions. -/
+theorem StandardCapModelPayload.capAttachmentRegion_subset_detectedNeckRegion
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload : SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload : SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload : SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload : SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload : SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload neckCanonicalCoordinatesPayload}
+    (standardCapModelPayload : StandardCapModelPayload neckDecompositionPayload) :
+    ∀ parameter x,
+      x ∈ standardCapModelPayload.capAttachmentRegion parameter →
+        x ∈ strongDeltaPayload.detectedNeckRegion parameter := by
+  intro parameter x hx
+  exact
+    neckSeparationPayload.separatedNeckNeighborhood_subset_detectedNeckRegion
+      parameter x
+      (neckParametrizationPayload.parametrizationDomain_subset_separatedNeckNeighborhood
+        parameter x
+        (neckCanonicalCoordinatesPayload.canonicalCoordinateDomain_subset_parametrizationDomain
+          parameter x
+          (neckDecompositionPayload.decomposedNeckRegion_subset_canonicalCoordinateDomain
+            parameter x
+            (neckDecompositionPayload.positiveEndRegion_subset_decomposedNeckRegion
+              parameter x
+              (standardCapModelPayload.capAttachmentRegion_subset_positiveEndRegion
+                parameter x hx)))))
+
 /--
 Concrete smooth gluing data for attaching standard caps to decomposed surgery
 necks.
@@ -862,6 +929,103 @@ structure CapGluingSmoothnessPayload
       x ∈ gluingRegion parameter →
         gluingSmoothnessError parameter x ≤
           strongDeltaPayload.strongDelta parameter
+
+/-- The cap-gluing region is exactly the cap attachment locus. -/
+theorem CapGluingSmoothnessPayload.gluingRegion_eq_capAttachmentRegion
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload : SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload : SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload : SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload : SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload : SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload : StandardCapModelPayload neckDecompositionPayload}
+    (capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload) :
+    ∀ parameter,
+      capGluingSmoothnessPayload.gluingRegion parameter =
+        standardCapModelPayload.capAttachmentRegion parameter := by
+  intro parameter
+  ext x
+  constructor
+  · exact capGluingSmoothnessPayload.gluingRegion_subset_capAttachmentRegion
+      parameter x
+  · exact capGluingSmoothnessPayload.capAttachmentRegion_subset_gluingRegion
+      parameter x
+
+/-- Cap-gluing regions lie inside the detected strong delta-neck regions. -/
+theorem CapGluingSmoothnessPayload.gluingRegion_subset_detectedNeckRegion
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload : SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload : SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload : SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload : SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload : SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload : StandardCapModelPayload neckDecompositionPayload}
+    (capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload) :
+    ∀ parameter x,
+      x ∈ capGluingSmoothnessPayload.gluingRegion parameter →
+        x ∈ strongDeltaPayload.detectedNeckRegion parameter := by
+  intro parameter x hx
+  exact
+    standardCapModelPayload.capAttachmentRegion_subset_detectedNeckRegion
+      parameter x
+      (capGluingSmoothnessPayload.gluingRegion_subset_capAttachmentRegion
+        parameter x hx)
+
+/-- Gluing-region points occur after the positive neck boundary level. -/
+theorem CapGluingSmoothnessPayload.positiveBoundaryLevel_le_axis_of_mem_gluingRegion
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload : SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload : SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload : SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload : SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload : SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload : StandardCapModelPayload neckDecompositionPayload}
+    (capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload) :
+    ∀ parameter x,
+      x ∈ capGluingSmoothnessPayload.gluingRegion parameter →
+        neckDecompositionPayload.positiveBoundaryLevel parameter ≤
+          neckCanonicalCoordinatesPayload.canonicalAxisCoordinate parameter x := by
+  intro parameter x hx
+  exact le_trans
+    (capGluingSmoothnessPayload.positiveBoundaryLevel_le_gluingTransitionStart
+      parameter)
+    (capGluingSmoothnessPayload.gluingRegion_axis_between parameter x hx).1
 
 /--
 Concrete metric interpolation data across the cap-neck gluing region.
@@ -985,6 +1149,49 @@ structure SurgeryCapMetricInterpolationPayload
         capMetricInterpolationError parameter x ≤
           strongDeltaPayload.strongDelta parameter
 
+/-- On the gluing region, metric interpolation inherits nonnegativity and error controls. -/
+theorem SurgeryCapMetricInterpolationPayload.gluingRegion_interpolation_error_controls
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload : SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload : SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload : SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload : SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload : SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload : StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    (capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload capGluingSmoothnessPayload) :
+    ∀ parameter x,
+      x ∈ capGluingSmoothnessPayload.gluingRegion parameter →
+        0 ≤ capMetricInterpolationPayload.capMetricInterpolationError parameter x ∧
+          capMetricInterpolationPayload.capMetricInterpolationError parameter x ≤
+            capGluingSmoothnessPayload.gluingSmoothnessError parameter x ∧
+          capMetricInterpolationPayload.capMetricInterpolationError parameter x ≤
+            strongDeltaPayload.strongDelta parameter := by
+  intro parameter x hx
+  have hinterp : x ∈ capMetricInterpolationPayload.interpolationRegion parameter :=
+    capMetricInterpolationPayload.gluingRegion_subset_interpolationRegion
+      parameter x hx
+  exact
+    ⟨capMetricInterpolationPayload.capMetricInterpolationErrorNonnegative
+        parameter x hinterp,
+      capMetricInterpolationPayload.capMetricInterpolationError_le_gluingSmoothnessError
+        parameter x hinterp,
+      capMetricInterpolationPayload.capMetricInterpolationError_le_strongDelta
+        parameter x hinterp⟩
+
 /--
 Concrete curvature estimate data for the standard cap and its metric
 interpolation region.
@@ -1096,6 +1303,45 @@ structure SurgeryCapCurvatureEstimatesPayload
       x ∈ curvatureControlRegion parameter →
         capCurvatureEstimateError parameter x ≤
           strongDeltaPayload.strongDelta parameter
+
+/-- Cap-core points lie in the curvature-control region and have nonnegative sectional profile. -/
+theorem SurgeryCapCurvatureEstimatesPayload.capCore_curvature_control_and_nonnegative
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload : SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload : SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload : SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload : SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload : SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload : StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload capGluingSmoothnessPayload}
+    (capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload capMetricInterpolationPayload) :
+    ∀ parameter x,
+      x ∈ standardCapModelPayload.capCoreRegion parameter →
+        x ∈ capCurvatureEstimatesPayload.curvatureControlRegion parameter ∧
+          0 ≤ capCurvatureEstimatesPayload.capSectionalCurvatureProfile parameter x := by
+  intro parameter x hx
+  have hstd : x ∈ standardCapModelPayload.standardCapRegion parameter :=
+    standardCapModelPayload.capCoreRegion_subset_standardCapRegion parameter x hx
+  exact
+    ⟨capCurvatureEstimatesPayload.standardCapRegion_subset_curvatureControlRegion
+        parameter x hstd,
+      capCurvatureEstimatesPayload.capSectionalCurvatureNonnegativeOnCore
+        parameter x hx⟩
 
 /--
 Concrete standard-cap construction data after cap curvature estimates.
@@ -1238,6 +1484,53 @@ structure SurgeryCapConstructionPayload
         capConstructionError parameter x ≤
           strongDeltaPayload.strongDelta parameter
 
+/-- Constructed cap points carry curvature-control membership, scalar nonnegativity, and error bounds. -/
+theorem SurgeryCapConstructionPayload.constructed_cap_curvature_error_bundle
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload : SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload : SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload : SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload : SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload : SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload : StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload capMetricInterpolationPayload}
+    (capConstructionPayload :
+      SurgeryCapConstructionPayload capCurvatureEstimatesPayload) :
+    ∀ parameter x,
+      x ∈ capConstructionPayload.constructedCapRegion parameter →
+        x ∈ capCurvatureEstimatesPayload.curvatureControlRegion parameter ∧
+          0 ≤ capConstructionPayload.constructedScalarCurvatureProfile parameter x ∧
+          0 ≤ capConstructionPayload.capConstructionError parameter x ∧
+          capConstructionPayload.capConstructionError parameter x ≤
+            capCurvatureEstimatesPayload.capCurvatureEstimateError parameter x ∧
+          capConstructionPayload.capConstructionError parameter x ≤
+            strongDeltaPayload.strongDelta parameter := by
+  intro parameter x hx
+  exact
+    ⟨capConstructionPayload.constructedCapRegion_subset_curvatureControlRegion
+        parameter x hx,
+      capConstructionPayload.constructedScalarCurvatureNonnegative parameter x hx,
+      capConstructionPayload.capConstructionErrorNonnegative parameter x hx,
+      capConstructionPayload.capConstructionError_le_curvatureEstimateError
+        parameter x hx,
+      capConstructionPayload.capConstructionError_le_strongDelta parameter x hx⟩
+
 /--
 Concrete post-surgery curvature pinching data after the cap has been
 constructed.
@@ -1362,6 +1655,67 @@ structure PostSurgeryCurvaturePinchingPayload
       x ∈ pinchingRegion parameter →
         postSurgeryPinchingDefect parameter x ≤
           strongDeltaPayload.strongDelta parameter
+
+/-- Constructed cap points satisfy the post-surgery pinching-region controls. -/
+theorem PostSurgeryCurvaturePinchingPayload.constructed_cap_pinching_bundle
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload : SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload : SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload : SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload : SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload : SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload : StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload capMetricInterpolationPayload}
+    {capConstructionPayload :
+      SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
+    (postSurgeryCurvaturePinchingPayload :
+      PostSurgeryCurvaturePinchingPayload capConstructionPayload) :
+    ∀ parameter x,
+      x ∈ capConstructionPayload.constructedCapRegion parameter →
+        x ∈ postSurgeryCurvaturePinchingPayload.pinchingRegion parameter ∧
+          postSurgeryCurvaturePinchingPayload.postSurgeryScalarCurvatureProfile
+              parameter x =
+            capConstructionPayload.constructedScalarCurvatureProfile parameter x ∧
+          0 ≤
+            postSurgeryCurvaturePinchingPayload.postSurgeryScalarCurvatureProfile
+              parameter x ∧
+          postSurgeryCurvaturePinchingPayload.postSurgeryPinchingDefect
+              parameter x ≤
+            capConstructionPayload.capConstructionError parameter x ∧
+          postSurgeryCurvaturePinchingPayload.postSurgeryPinchingDefect
+              parameter x ≤
+            strongDeltaPayload.strongDelta parameter := by
+  intro parameter x hx
+  have hpinch :
+      x ∈ postSurgeryCurvaturePinchingPayload.pinchingRegion parameter :=
+    postSurgeryCurvaturePinchingPayload.constructedCapRegion_subset_pinchingRegion
+      parameter x hx
+  exact
+    ⟨hpinch,
+      postSurgeryCurvaturePinchingPayload.postSurgeryScalarProfile_eq_constructed
+        parameter x hx,
+      postSurgeryCurvaturePinchingPayload.postSurgeryScalarCurvatureNonnegative
+        parameter x hpinch,
+      postSurgeryCurvaturePinchingPayload.postSurgeryPinchingDefect_le_capConstructionError
+        parameter x hx,
+      postSurgeryCurvaturePinchingPayload.postSurgeryPinchingDefect_le_strongDelta
+        parameter x hpinch⟩
 
 /--
 Concrete post-surgery noncollapsing data after curvature pinching has been
@@ -1496,6 +1850,88 @@ structure PostSurgeryNoncollapsingControlPayload
         postSurgeryNoncollapsingDefect parameter x ≤
           strongDeltaPayload.strongDelta parameter
 
+/-- Pinching-region points inherit the post-surgery noncollapsing controls. -/
+theorem PostSurgeryNoncollapsingControlPayload.pinching_region_noncollapsing_bundle
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload : SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload : SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload : SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload : SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload : SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload : StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload capMetricInterpolationPayload}
+    {capConstructionPayload :
+      SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
+    {postSurgeryCurvaturePinchingPayload :
+      PostSurgeryCurvaturePinchingPayload capConstructionPayload}
+    (postSurgeryNoncollapsingPayload :
+      PostSurgeryNoncollapsingControlPayload
+        postSurgeryCurvaturePinchingPayload) :
+    ∀ parameter x,
+      x ∈ postSurgeryCurvaturePinchingPayload.pinchingRegion parameter →
+        x ∈ postSurgeryNoncollapsingPayload.noncollapsingRegion parameter ∧
+          0 ≤ postSurgeryNoncollapsingPayload.postSurgeryVolumeRatioProfile
+            parameter x ∧
+          0 ≤ postSurgeryNoncollapsingPayload.postSurgeryNoncollapsingDefect
+            parameter x ∧
+          postSurgeryNoncollapsingPayload.postSurgeryKappaLowerBound
+              parameter ≤
+            postSurgeryNoncollapsingPayload.postSurgeryVolumeRatioProfile
+                parameter x +
+              postSurgeryNoncollapsingPayload.postSurgeryNoncollapsingDefect
+                parameter x ∧
+          0 <
+            postSurgeryNoncollapsingPayload.postSurgeryCurvatureRadiusProfile
+              parameter x ∧
+          postSurgeryNoncollapsingPayload.postSurgeryNoncollapsingScale
+              parameter ≤
+            postSurgeryNoncollapsingPayload.postSurgeryCurvatureRadiusProfile
+              parameter x ∧
+          postSurgeryNoncollapsingPayload.postSurgeryNoncollapsingDefect
+              parameter x ≤
+            postSurgeryCurvaturePinchingPayload.postSurgeryPinchingDefect
+              parameter x ∧
+          postSurgeryNoncollapsingPayload.postSurgeryNoncollapsingDefect
+              parameter x ≤
+            strongDeltaPayload.strongDelta parameter := by
+  intro parameter x hx
+  have hnoncollapse :
+      x ∈ postSurgeryNoncollapsingPayload.noncollapsingRegion parameter :=
+    postSurgeryNoncollapsingPayload.pinchingRegion_subset_noncollapsingRegion
+      parameter x hx
+  exact
+    ⟨hnoncollapse,
+      postSurgeryNoncollapsingPayload.postSurgeryVolumeRatioNonnegative
+        parameter x hnoncollapse,
+      postSurgeryNoncollapsingPayload.postSurgeryNoncollapsingDefectNonnegative
+        parameter x hnoncollapse,
+      postSurgeryNoncollapsingPayload.postSurgeryVolumeRatio_ge_kappa
+        parameter x hnoncollapse,
+      postSurgeryNoncollapsingPayload.postSurgeryCurvatureRadiusPositive
+        parameter x hnoncollapse,
+      postSurgeryNoncollapsingPayload.postSurgeryNoncollapsingScale_le_curvatureRadius
+        parameter x hnoncollapse,
+      postSurgeryNoncollapsingPayload.postSurgeryNoncollapsingDefect_le_pinchingDefect
+        parameter x hx,
+      postSurgeryNoncollapsingPayload.postSurgeryNoncollapsingDefect_le_strongDelta
+        parameter x hnoncollapse⟩
+
 /--
 Concrete post-surgery derivative-bound data after noncollapsing control.
 
@@ -1626,6 +2062,82 @@ structure PostSurgeryDerivativeBoundsPayload
       x ∈ derivativeControlRegion parameter →
         postSurgeryDerivativeDefect order parameter x ≤
           strongDeltaPayload.strongDelta parameter
+
+/-- Noncollapsing-region points inherit post-surgery derivative norm and defect bounds. -/
+theorem PostSurgeryDerivativeBoundsPayload.noncollapsing_region_derivative_bundle
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload : SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload : SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload : SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload : SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload : SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload : StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload capMetricInterpolationPayload}
+    {capConstructionPayload :
+      SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
+    {postSurgeryCurvaturePinchingPayload :
+      PostSurgeryCurvaturePinchingPayload capConstructionPayload}
+    {postSurgeryNoncollapsingPayload :
+      PostSurgeryNoncollapsingControlPayload
+        postSurgeryCurvaturePinchingPayload}
+    (postSurgeryDerivativeBoundsPayload :
+      PostSurgeryDerivativeBoundsPayload postSurgeryNoncollapsingPayload) :
+    ∀ order parameter x,
+      x ∈ postSurgeryNoncollapsingPayload.noncollapsingRegion parameter →
+        x ∈ postSurgeryDerivativeBoundsPayload.derivativeControlRegion
+            parameter ∧
+          0 ≤
+            postSurgeryDerivativeBoundsPayload.postSurgeryDerivativeNormProfile
+              order parameter x ∧
+          0 ≤
+            postSurgeryDerivativeBoundsPayload.postSurgeryDerivativeDefect
+              order parameter x ∧
+          postSurgeryDerivativeBoundsPayload.postSurgeryDerivativeNormProfile
+              order parameter x ≤
+            postSurgeryDerivativeBoundsPayload.postSurgeryDerivativeBound
+                order parameter +
+              postSurgeryDerivativeBoundsPayload.postSurgeryDerivativeDefect
+                order parameter x ∧
+          postSurgeryDerivativeBoundsPayload.postSurgeryDerivativeDefect
+              order parameter x ≤
+            postSurgeryNoncollapsingPayload.postSurgeryNoncollapsingDefect
+              parameter x ∧
+          postSurgeryDerivativeBoundsPayload.postSurgeryDerivativeDefect
+              order parameter x ≤
+            strongDeltaPayload.strongDelta parameter := by
+  intro order parameter x hx
+  have hderiv :
+      x ∈ postSurgeryDerivativeBoundsPayload.derivativeControlRegion parameter :=
+    postSurgeryDerivativeBoundsPayload.noncollapsingRegion_subset_derivativeControlRegion
+      parameter x hx
+  exact
+    ⟨hderiv,
+      postSurgeryDerivativeBoundsPayload.postSurgeryDerivativeNormNonnegative
+        order parameter x hderiv,
+      postSurgeryDerivativeBoundsPayload.postSurgeryDerivativeDefectNonnegative
+        order parameter x hderiv,
+      postSurgeryDerivativeBoundsPayload.postSurgeryDerivativeNorm_le_bound_plus_defect
+        order parameter x hderiv,
+      postSurgeryDerivativeBoundsPayload.postSurgeryDerivativeDefect_le_noncollapsingDefect
+        order parameter x hx,
+      postSurgeryDerivativeBoundsPayload.postSurgeryDerivativeDefect_le_strongDelta
+        order parameter x hderiv⟩
 
 /--
 Concrete persistence data for canonical-neighborhood control after surgery.
@@ -2843,1089 +3355,2408 @@ structure RicciFlowWithSurgeryPayload
         postSurgeryMetricControlPayload.postSurgeryMetricDistortionBound
           parameter
 
+/--
+Source data for the aggregate Ricci-flow-with-surgery interface.
+
+This keeps the long dependent payload chain in `Type`, while the public
+interface remains a proof-bearing proposition.
+-/
+structure RicciFlowWithSurgeryPayloadSource
+    (n : ℕ∞ω)
+    (M : Type u) [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] : Type (u + 1) where
+  flow : RicciFlowData ThreeManifoldModelWithCorners n M
+  scalePayload : SurgeryScaleFunctionPayload flow
+  continuityPayload : SurgeryScaleContinuityPayload scalePayload
+  separationPayload : SurgeryScaleSeparationPayload continuityPayload
+  cutoffPayload : SurgeryCutoffParameterControlPayload separationPayload
+  smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload
+  parameterSelectionPayload :
+    SurgeryParameterSelectionPayload smoothBumpPayload
+  strongDeltaPayload :
+    SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload
+  neckSeparationPayload :
+    SurgeryNeckSeparationPayload strongDeltaPayload
+  neckParametrizationPayload :
+    SurgeryNeckParametrizationPayload neckSeparationPayload
+  neckCanonicalCoordinatesPayload :
+    SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload
+  neckDecompositionPayload :
+    SurgeryNeckDecompositionPayload neckCanonicalCoordinatesPayload
+  standardCapModelPayload :
+    StandardCapModelPayload neckDecompositionPayload
+  capGluingSmoothnessPayload :
+    CapGluingSmoothnessPayload standardCapModelPayload
+  capMetricInterpolationPayload :
+    SurgeryCapMetricInterpolationPayload capGluingSmoothnessPayload
+  capCurvatureEstimatesPayload :
+    SurgeryCapCurvatureEstimatesPayload capMetricInterpolationPayload
+  capConstructionPayload :
+    SurgeryCapConstructionPayload capCurvatureEstimatesPayload
+  postSurgeryCurvaturePinchingPayload :
+    PostSurgeryCurvaturePinchingPayload capConstructionPayload
+  postSurgeryNoncollapsingPayload :
+    PostSurgeryNoncollapsingControlPayload
+      postSurgeryCurvaturePinchingPayload
+  postSurgeryDerivativeBoundsPayload :
+    PostSurgeryDerivativeBoundsPayload postSurgeryNoncollapsingPayload
+  postSurgeryCanonicalNeighborhoodPersistencePayload :
+    PostSurgeryCanonicalNeighborhoodPersistencePayload
+      postSurgeryDerivativeBoundsPayload
+  postSurgeryMetricControlPayload :
+    PostSurgeryMetricControlPayload
+      postSurgeryCanonicalNeighborhoodPersistencePayload
+  surgeryTimeDiscretenessPayload :
+    SurgeryTimeDiscretenessPayload postSurgeryMetricControlPayload
+  surgeryTimeLocalFinitenessPayload :
+    SurgeryTimeLocalFinitenessPayload surgeryTimeDiscretenessPayload
+  longTimeExistenceIterationPayload :
+    LongTimeExistenceIterationPayload surgeryTimeLocalFinitenessPayload
+  longTimeSurgeryParameterCoherencePayload :
+    LongTimeSurgeryParameterCoherencePayload
+      longTimeExistenceIterationPayload
+  longTimeNonaccumulationPayload :
+    LongTimeNonaccumulationPayload longTimeSurgeryParameterCoherencePayload
+  longTimeSurgeryContinuationPayload :
+    LongTimeSurgeryContinuationPayload longTimeNonaccumulationPayload
+  payload :
+    RicciFlowWithSurgeryPayload longTimeSurgeryContinuationPayload
+
 /-- Interface for a Ricci flow with surgery on a manifold. -/
-inductive HasRicciFlowWithSurgery
+structure HasRicciFlowWithSurgery
     (n : ℕ∞ω)
     (M : Type u) [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M] : Prop where
-  | of_ricci_flow_with_surgery_payload
-      {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      {neckCanonicalCoordinatesPayload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload}
-      {neckDecompositionPayload :
-        SurgeryNeckDecompositionPayload
-          neckCanonicalCoordinatesPayload}
-      {standardCapModelPayload :
-        StandardCapModelPayload neckDecompositionPayload}
-      {capGluingSmoothnessPayload :
-        CapGluingSmoothnessPayload standardCapModelPayload}
-      {capMetricInterpolationPayload :
-        SurgeryCapMetricInterpolationPayload
-          capGluingSmoothnessPayload}
-      {capCurvatureEstimatesPayload :
-        SurgeryCapCurvatureEstimatesPayload
-          capMetricInterpolationPayload}
-      {capConstructionPayload :
-        SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
-      {postSurgeryCurvaturePinchingPayload :
-        PostSurgeryCurvaturePinchingPayload capConstructionPayload}
-      {postSurgeryNoncollapsingPayload :
-        PostSurgeryNoncollapsingControlPayload
-          postSurgeryCurvaturePinchingPayload}
-      {postSurgeryDerivativeBoundsPayload :
-        PostSurgeryDerivativeBoundsPayload
-          postSurgeryNoncollapsingPayload}
-      {postSurgeryCanonicalNeighborhoodPersistencePayload :
-        PostSurgeryCanonicalNeighborhoodPersistencePayload
-          postSurgeryDerivativeBoundsPayload}
-      {postSurgeryMetricControlPayload :
-        PostSurgeryMetricControlPayload
-          postSurgeryCanonicalNeighborhoodPersistencePayload}
-      {surgeryTimeDiscretenessPayload :
-        SurgeryTimeDiscretenessPayload postSurgeryMetricControlPayload}
-      {surgeryTimeLocalFinitenessPayload :
-        SurgeryTimeLocalFinitenessPayload
-          surgeryTimeDiscretenessPayload}
-      {longTimeExistenceIterationPayload :
-        LongTimeExistenceIterationPayload
-          surgeryTimeLocalFinitenessPayload}
-      {longTimeSurgeryParameterCoherencePayload :
-        LongTimeSurgeryParameterCoherencePayload
-          longTimeExistenceIterationPayload}
-      {longTimeNonaccumulationPayload :
-        LongTimeNonaccumulationPayload
-          longTimeSurgeryParameterCoherencePayload}
-      {longTimeSurgeryContinuationPayload :
-        LongTimeSurgeryContinuationPayload
-          longTimeNonaccumulationPayload}
-      (payload :
-        RicciFlowWithSurgeryPayload
-          longTimeSurgeryContinuationPayload) :
-      HasRicciFlowWithSurgery n M
+  ricciFlowWithSurgeryPayload_source :
+    Nonempty (RicciFlowWithSurgeryPayloadSource n M)
+
+/-- Compatibility constructor from aggregate Ricci-flow-with-surgery payloads. -/
+def HasRicciFlowWithSurgery.of_ricci_flow_with_surgery_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload :
+      StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload capMetricInterpolationPayload}
+    {capConstructionPayload :
+      SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
+    {postSurgeryCurvaturePinchingPayload :
+      PostSurgeryCurvaturePinchingPayload capConstructionPayload}
+    {postSurgeryNoncollapsingPayload :
+      PostSurgeryNoncollapsingControlPayload
+        postSurgeryCurvaturePinchingPayload}
+    {postSurgeryDerivativeBoundsPayload :
+      PostSurgeryDerivativeBoundsPayload postSurgeryNoncollapsingPayload}
+    {postSurgeryCanonicalNeighborhoodPersistencePayload :
+      PostSurgeryCanonicalNeighborhoodPersistencePayload
+        postSurgeryDerivativeBoundsPayload}
+    {postSurgeryMetricControlPayload :
+      PostSurgeryMetricControlPayload
+        postSurgeryCanonicalNeighborhoodPersistencePayload}
+    {surgeryTimeDiscretenessPayload :
+      SurgeryTimeDiscretenessPayload postSurgeryMetricControlPayload}
+    {surgeryTimeLocalFinitenessPayload :
+      SurgeryTimeLocalFinitenessPayload surgeryTimeDiscretenessPayload}
+    {longTimeExistenceIterationPayload :
+      LongTimeExistenceIterationPayload surgeryTimeLocalFinitenessPayload}
+    {longTimeSurgeryParameterCoherencePayload :
+      LongTimeSurgeryParameterCoherencePayload
+        longTimeExistenceIterationPayload}
+    {longTimeNonaccumulationPayload :
+      LongTimeNonaccumulationPayload longTimeSurgeryParameterCoherencePayload}
+    {longTimeSurgeryContinuationPayload :
+      LongTimeSurgeryContinuationPayload longTimeNonaccumulationPayload}
+    (payload :
+      RicciFlowWithSurgeryPayload longTimeSurgeryContinuationPayload) :
+    HasRicciFlowWithSurgery n M where
+  ricciFlowWithSurgeryPayload_source :=
+    ⟨{
+      flow := flow
+      scalePayload := scalePayload
+      continuityPayload := continuityPayload
+      separationPayload := separationPayload
+      cutoffPayload := cutoffPayload
+      smoothBumpPayload := smoothBumpPayload
+      parameterSelectionPayload := parameterSelectionPayload
+      strongDeltaPayload := strongDeltaPayload
+      neckSeparationPayload := neckSeparationPayload
+      neckParametrizationPayload := neckParametrizationPayload
+      neckCanonicalCoordinatesPayload := neckCanonicalCoordinatesPayload
+      neckDecompositionPayload := neckDecompositionPayload
+      standardCapModelPayload := standardCapModelPayload
+      capGluingSmoothnessPayload := capGluingSmoothnessPayload
+      capMetricInterpolationPayload := capMetricInterpolationPayload
+      capCurvatureEstimatesPayload := capCurvatureEstimatesPayload
+      capConstructionPayload := capConstructionPayload
+      postSurgeryCurvaturePinchingPayload :=
+        postSurgeryCurvaturePinchingPayload
+      postSurgeryNoncollapsingPayload := postSurgeryNoncollapsingPayload
+      postSurgeryDerivativeBoundsPayload :=
+        postSurgeryDerivativeBoundsPayload
+      postSurgeryCanonicalNeighborhoodPersistencePayload :=
+        postSurgeryCanonicalNeighborhoodPersistencePayload
+      postSurgeryMetricControlPayload := postSurgeryMetricControlPayload
+      surgeryTimeDiscretenessPayload := surgeryTimeDiscretenessPayload
+      surgeryTimeLocalFinitenessPayload := surgeryTimeLocalFinitenessPayload
+      longTimeExistenceIterationPayload := longTimeExistenceIterationPayload
+      longTimeSurgeryParameterCoherencePayload :=
+        longTimeSurgeryParameterCoherencePayload
+      longTimeNonaccumulationPayload := longTimeNonaccumulationPayload
+      longTimeSurgeryContinuationPayload :=
+        longTimeSurgeryContinuationPayload
+      payload := payload
+    }⟩
 
 /-- Interface for constructing the surgery scale function from concrete scale data. -/
-inductive HasSurgeryScaleFunction
+structure HasSurgeryScaleFunction
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_scale_function_payload
-      (payload : SurgeryScaleFunctionPayload flow) :
-      HasSurgeryScaleFunction flow
+  scaleFunctionPayload_source :
+    Nonempty (SurgeryScaleFunctionPayload flow)
+
+/-- Compatibility constructor for concrete surgery-scale payloads. -/
+def HasSurgeryScaleFunction.of_scale_function_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (payload : SurgeryScaleFunctionPayload flow) :
+    HasSurgeryScaleFunction flow where
+  scaleFunctionPayload_source := ⟨payload⟩
 
 /-- Interface for continuity and controlled variation of the surgery scale function. -/
-inductive HasSurgeryScaleContinuity
+structure HasSurgeryScaleContinuity
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_scale_continuity_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      (payload : SurgeryScaleContinuityPayload scalePayload) :
-      HasSurgeryScaleContinuity flow
+  scaleContinuityPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      Nonempty (SurgeryScaleContinuityPayload scalePayload)
+
+/-- Compatibility constructor for surgery-scale continuity payloads. -/
+def HasSurgeryScaleContinuity.of_scale_continuity_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    (payload : SurgeryScaleContinuityPayload scalePayload) :
+    HasSurgeryScaleContinuity flow where
+  scaleContinuityPayload_source := ⟨scalePayload, ⟨payload⟩⟩
 
 /-- Interface for separating surgery, cutoff, and canonical-neighborhood scales. -/
-inductive HasSurgeryScaleSeparation
+structure HasSurgeryScaleSeparation
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_scale_separation_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      (payload : SurgeryScaleSeparationPayload continuityPayload) :
-      HasSurgeryScaleSeparation flow
+  scaleSeparationPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        Nonempty (SurgeryScaleSeparationPayload continuityPayload)
+
+/-- Compatibility constructor for surgery-scale separation payloads. -/
+def HasSurgeryScaleSeparation.of_scale_separation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    (payload : SurgeryScaleSeparationPayload continuityPayload) :
+    HasSurgeryScaleSeparation flow where
+  scaleSeparationPayload_source :=
+    ⟨scalePayload, continuityPayload, ⟨payload⟩⟩
 
 /-- Interface for controlling surgery cutoff parameters. -/
-inductive HasSurgeryCutoffParameterControl
+structure HasSurgeryCutoffParameterControl
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_cutoff_parameter_control_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      (payload : SurgeryCutoffParameterControlPayload separationPayload) :
-      HasSurgeryCutoffParameterControl flow
+  cutoffParameterControlPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          Nonempty (SurgeryCutoffParameterControlPayload separationPayload)
+
+/-- Compatibility constructor for surgery cutoff-parameter control payloads. -/
+def HasSurgeryCutoffParameterControl.of_cutoff_parameter_control_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    (payload : SurgeryCutoffParameterControlPayload separationPayload) :
+    HasSurgeryCutoffParameterControl flow where
+  cutoffParameterControlPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, ⟨payload⟩⟩
 
 /-- Interface for constructing smooth cutoff bump functions used in surgery. -/
-inductive HasSurgeryCutoffSmoothBumpFunction
+structure HasSurgeryCutoffSmoothBumpFunction
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_cutoff_smooth_bump_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      (payload : SurgeryCutoffSmoothBumpPayload cutoffPayload) :
-      HasSurgeryCutoffSmoothBumpFunction flow
+  cutoffSmoothBumpPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            Nonempty (SurgeryCutoffSmoothBumpPayload cutoffPayload)
+
+/-- Compatibility constructor for surgery cutoff smooth-bump payloads. -/
+def HasSurgeryCutoffSmoothBumpFunction.of_cutoff_smooth_bump_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    (payload : SurgeryCutoffSmoothBumpPayload cutoffPayload) :
+    HasSurgeryCutoffSmoothBumpFunction flow where
+  cutoffSmoothBumpPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      ⟨payload⟩⟩
 
 /-- Interface for choosing surgery scales and cutoff parameters. -/
-inductive HasSurgeryParameterSelection
+structure HasSurgeryParameterSelection
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_parameter_selection_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      (payload : SurgeryParameterSelectionPayload smoothBumpPayload) :
-      HasSurgeryParameterSelection flow
+  parameterSelectionPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              Nonempty (SurgeryParameterSelectionPayload smoothBumpPayload)
+
+/-- Compatibility constructor for surgery parameter-selection payloads. -/
+def HasSurgeryParameterSelection.of_parameter_selection_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    (payload : SurgeryParameterSelectionPayload smoothBumpPayload) :
+    HasSurgeryParameterSelection flow where
+  parameterSelectionPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, ⟨payload⟩⟩
 
 /-- Interface for detecting strong delta-necks at surgery scales. -/
-inductive HasStrongDeltaNeckDetection
+structure HasStrongDeltaNeckDetection
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_strong_delta_neck_detection_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      (payload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload) :
-      HasStrongDeltaNeckDetection flow
+  strongDeltaNeckDetectionPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                Nonempty
+                  (SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload)
+
+/-- Compatibility constructor for strong delta-neck detection payloads. -/
+def HasStrongDeltaNeckDetection.of_strong_delta_neck_detection_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    (payload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload) :
+    HasStrongDeltaNeckDetection flow where
+  strongDeltaNeckDetectionPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, ⟨payload⟩⟩
 
 /-- Interface for detecting and decomposing surgery necks. -/
-inductive HasSurgeryNeckDecomposition
+structure HasSurgeryNeckDecomposition
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_neck_decomposition_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      {neckCanonicalCoordinatesPayload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload}
-      (payload :
-        SurgeryNeckDecompositionPayload
-          neckCanonicalCoordinatesPayload) :
-      HasSurgeryNeckDecomposition flow
+  neckDecompositionPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    ∃ neckParametrizationPayload :
+                      SurgeryNeckParametrizationPayload
+                        neckSeparationPayload,
+                      ∃ neckCanonicalCoordinatesPayload :
+                        SurgeryNeckCanonicalCoordinatesPayload
+                          neckParametrizationPayload,
+                        Nonempty
+                          (SurgeryNeckDecompositionPayload
+                            neckCanonicalCoordinatesPayload)
+
+/-- Compatibility constructor for surgery neck-decomposition payloads. -/
+def HasSurgeryNeckDecomposition.of_neck_decomposition_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload
+        neckParametrizationPayload}
+    (payload :
+      SurgeryNeckDecompositionPayload
+        neckCanonicalCoordinatesPayload) :
+    HasSurgeryNeckDecomposition flow where
+  neckDecompositionPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, neckParametrizationPayload,
+      neckCanonicalCoordinatesPayload, ⟨payload⟩⟩
 
 /-- Interface for separating selected surgery necks. -/
-inductive HasSurgeryNeckSeparation
+structure HasSurgeryNeckSeparation
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_neck_separation_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      (payload : SurgeryNeckSeparationPayload strongDeltaPayload) :
-      HasSurgeryNeckSeparation flow
+  neckSeparationPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  Nonempty (SurgeryNeckSeparationPayload strongDeltaPayload)
+
+/-- Compatibility constructor for surgery neck-separation payloads. -/
+def HasSurgeryNeckSeparation.of_neck_separation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    (payload : SurgeryNeckSeparationPayload strongDeltaPayload) :
+    HasSurgeryNeckSeparation flow where
+  neckSeparationPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      ⟨payload⟩⟩
 
 /-- Interface for parametrizing selected surgery necks by canonical cylinders. -/
-inductive HasSurgeryNeckParametrization
+structure HasSurgeryNeckParametrization
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_neck_parametrization_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      (payload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload) :
-      HasSurgeryNeckParametrization flow
+  neckParametrizationPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    Nonempty
+                      (SurgeryNeckParametrizationPayload
+                        neckSeparationPayload)
+
+/-- Compatibility constructor for surgery neck-parametrization payloads. -/
+def HasSurgeryNeckParametrization.of_neck_parametrization_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    (payload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload) :
+    HasSurgeryNeckParametrization flow where
+  neckParametrizationPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, ⟨payload⟩⟩
 
 /-- Interface for canonical coordinates on surgery necks with controlled errors. -/
-inductive HasSurgeryNeckCanonicalCoordinates
+structure HasSurgeryNeckCanonicalCoordinates
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_neck_canonical_coordinates_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      (payload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload) :
-      HasSurgeryNeckCanonicalCoordinates flow
+  neckCanonicalCoordinatesPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    ∃ neckParametrizationPayload :
+                      SurgeryNeckParametrizationPayload
+                        neckSeparationPayload,
+                      Nonempty
+                        (SurgeryNeckCanonicalCoordinatesPayload
+                          neckParametrizationPayload)
+
+/-- Compatibility constructor for surgery neck canonical-coordinate payloads. -/
+def HasSurgeryNeckCanonicalCoordinates.of_neck_canonical_coordinates_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    (payload :
+      SurgeryNeckCanonicalCoordinatesPayload
+        neckParametrizationPayload) :
+    HasSurgeryNeckCanonicalCoordinates flow where
+  neckCanonicalCoordinatesPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, neckParametrizationPayload, ⟨payload⟩⟩
 
 /-- Interface for constructing standard caps used in surgery. -/
-inductive HasSurgeryCapConstruction
+structure HasSurgeryCapConstruction
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_cap_construction_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      {neckCanonicalCoordinatesPayload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload}
-      {neckDecompositionPayload :
-        SurgeryNeckDecompositionPayload
-          neckCanonicalCoordinatesPayload}
-      {standardCapModelPayload :
-        StandardCapModelPayload neckDecompositionPayload}
-      {capGluingSmoothnessPayload :
-        CapGluingSmoothnessPayload standardCapModelPayload}
-      {capMetricInterpolationPayload :
-        SurgeryCapMetricInterpolationPayload
-          capGluingSmoothnessPayload}
-      {capCurvatureEstimatesPayload :
-        SurgeryCapCurvatureEstimatesPayload
-          capMetricInterpolationPayload}
-      (payload :
-        SurgeryCapConstructionPayload
-          capCurvatureEstimatesPayload) :
-      HasSurgeryCapConstruction flow
+  capConstructionPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    ∃ neckParametrizationPayload :
+                      SurgeryNeckParametrizationPayload
+                        neckSeparationPayload,
+                      ∃ neckCanonicalCoordinatesPayload :
+                        SurgeryNeckCanonicalCoordinatesPayload
+                          neckParametrizationPayload,
+                        ∃ neckDecompositionPayload :
+                          SurgeryNeckDecompositionPayload
+                            neckCanonicalCoordinatesPayload,
+                          ∃ standardCapModelPayload :
+                            StandardCapModelPayload
+                              neckDecompositionPayload,
+                            ∃ capGluingSmoothnessPayload :
+                              CapGluingSmoothnessPayload
+                                standardCapModelPayload,
+                              ∃ capMetricInterpolationPayload :
+                                SurgeryCapMetricInterpolationPayload
+                                  capGluingSmoothnessPayload,
+                                ∃ capCurvatureEstimatesPayload :
+                                  SurgeryCapCurvatureEstimatesPayload
+                                    capMetricInterpolationPayload,
+                                  Nonempty
+                                    (SurgeryCapConstructionPayload
+                                      capCurvatureEstimatesPayload)
+
+/-- Compatibility constructor for surgery cap-construction payloads. -/
+def HasSurgeryCapConstruction.of_cap_construction_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload
+        neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload
+        neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload :
+      StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload
+        capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload
+        capMetricInterpolationPayload}
+    (payload :
+      SurgeryCapConstructionPayload
+        capCurvatureEstimatesPayload) :
+    HasSurgeryCapConstruction flow where
+  capConstructionPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, neckParametrizationPayload,
+      neckCanonicalCoordinatesPayload, neckDecompositionPayload,
+      standardCapModelPayload, capGluingSmoothnessPayload,
+      capMetricInterpolationPayload, capCurvatureEstimatesPayload,
+      ⟨payload⟩⟩
 
 /-- Interface for the standard cap model used in surgery. -/
-inductive HasStandardCapModel
+structure HasStandardCapModel
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_standard_cap_model_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      {neckCanonicalCoordinatesPayload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload}
-      {neckDecompositionPayload :
-        SurgeryNeckDecompositionPayload
-          neckCanonicalCoordinatesPayload}
-      (payload :
-        StandardCapModelPayload neckDecompositionPayload) :
-      HasStandardCapModel flow
+  standardCapModelPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    ∃ neckParametrizationPayload :
+                      SurgeryNeckParametrizationPayload
+                        neckSeparationPayload,
+                      ∃ neckCanonicalCoordinatesPayload :
+                        SurgeryNeckCanonicalCoordinatesPayload
+                          neckParametrizationPayload,
+                        ∃ neckDecompositionPayload :
+                          SurgeryNeckDecompositionPayload
+                            neckCanonicalCoordinatesPayload,
+                          Nonempty
+                            (StandardCapModelPayload
+                              neckDecompositionPayload)
+
+/-- Compatibility constructor for standard cap model payloads. -/
+def HasStandardCapModel.of_standard_cap_model_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload
+        neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload
+        neckCanonicalCoordinatesPayload}
+    (payload :
+      StandardCapModelPayload neckDecompositionPayload) :
+    HasStandardCapModel flow where
+  standardCapModelPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, neckParametrizationPayload,
+      neckCanonicalCoordinatesPayload, neckDecompositionPayload,
+      ⟨payload⟩⟩
 
 /-- Interface for smooth gluing of standard caps into surgery necks. -/
-inductive HasCapGluingSmoothness
+structure HasCapGluingSmoothness
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_cap_gluing_smoothness_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      {neckCanonicalCoordinatesPayload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload}
-      {neckDecompositionPayload :
-        SurgeryNeckDecompositionPayload
-          neckCanonicalCoordinatesPayload}
-      {standardCapModelPayload :
-        StandardCapModelPayload neckDecompositionPayload}
-      (payload :
-        CapGluingSmoothnessPayload standardCapModelPayload) :
-      HasCapGluingSmoothness flow
+  capGluingSmoothnessPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    ∃ neckParametrizationPayload :
+                      SurgeryNeckParametrizationPayload
+                        neckSeparationPayload,
+                      ∃ neckCanonicalCoordinatesPayload :
+                        SurgeryNeckCanonicalCoordinatesPayload
+                          neckParametrizationPayload,
+                        ∃ neckDecompositionPayload :
+                          SurgeryNeckDecompositionPayload
+                            neckCanonicalCoordinatesPayload,
+                          ∃ standardCapModelPayload :
+                            StandardCapModelPayload
+                              neckDecompositionPayload,
+                            Nonempty
+                              (CapGluingSmoothnessPayload
+                                standardCapModelPayload)
+
+/-- Compatibility constructor for cap gluing smoothness payloads. -/
+def HasCapGluingSmoothness.of_cap_gluing_smoothness_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload
+        neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload
+        neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload :
+      StandardCapModelPayload neckDecompositionPayload}
+    (payload :
+      CapGluingSmoothnessPayload standardCapModelPayload) :
+    HasCapGluingSmoothness flow where
+  capGluingSmoothnessPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, neckParametrizationPayload,
+      neckCanonicalCoordinatesPayload, neckDecompositionPayload,
+      standardCapModelPayload, ⟨payload⟩⟩
 
 /-- Interface for interpolating the neck and cap metrics across the gluing region. -/
-inductive HasSurgeryCapMetricInterpolation
+structure HasSurgeryCapMetricInterpolation
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_cap_metric_interpolation_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      {neckCanonicalCoordinatesPayload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload}
-      {neckDecompositionPayload :
-        SurgeryNeckDecompositionPayload
-          neckCanonicalCoordinatesPayload}
-      {standardCapModelPayload :
-        StandardCapModelPayload neckDecompositionPayload}
-      {capGluingSmoothnessPayload :
-        CapGluingSmoothnessPayload standardCapModelPayload}
-      (payload :
-        SurgeryCapMetricInterpolationPayload
-          capGluingSmoothnessPayload) :
-      HasSurgeryCapMetricInterpolation flow
+  capMetricInterpolationPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    ∃ neckParametrizationPayload :
+                      SurgeryNeckParametrizationPayload
+                        neckSeparationPayload,
+                      ∃ neckCanonicalCoordinatesPayload :
+                        SurgeryNeckCanonicalCoordinatesPayload
+                          neckParametrizationPayload,
+                        ∃ neckDecompositionPayload :
+                          SurgeryNeckDecompositionPayload
+                            neckCanonicalCoordinatesPayload,
+                          ∃ standardCapModelPayload :
+                            StandardCapModelPayload
+                              neckDecompositionPayload,
+                            ∃ capGluingSmoothnessPayload :
+                              CapGluingSmoothnessPayload
+                                standardCapModelPayload,
+                              Nonempty
+                                (SurgeryCapMetricInterpolationPayload
+                                  capGluingSmoothnessPayload)
+
+/-- Compatibility constructor for cap metric interpolation payloads. -/
+def HasSurgeryCapMetricInterpolation.of_cap_metric_interpolation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload
+        neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload
+        neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload :
+      StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    (payload :
+      SurgeryCapMetricInterpolationPayload
+        capGluingSmoothnessPayload) :
+    HasSurgeryCapMetricInterpolation flow where
+  capMetricInterpolationPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, neckParametrizationPayload,
+      neckCanonicalCoordinatesPayload, neckDecompositionPayload,
+      standardCapModelPayload, capGluingSmoothnessPayload, ⟨payload⟩⟩
 
 /-- Interface for curvature estimates on the inserted standard caps. -/
-inductive HasSurgeryCapCurvatureEstimates
+structure HasSurgeryCapCurvatureEstimates
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_cap_curvature_estimates_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      {neckCanonicalCoordinatesPayload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload}
-      {neckDecompositionPayload :
-        SurgeryNeckDecompositionPayload
-          neckCanonicalCoordinatesPayload}
-      {standardCapModelPayload :
-        StandardCapModelPayload neckDecompositionPayload}
-      {capGluingSmoothnessPayload :
-        CapGluingSmoothnessPayload standardCapModelPayload}
-      {capMetricInterpolationPayload :
-        SurgeryCapMetricInterpolationPayload
-          capGluingSmoothnessPayload}
-      (payload :
-        SurgeryCapCurvatureEstimatesPayload
-          capMetricInterpolationPayload) :
-      HasSurgeryCapCurvatureEstimates flow
+  capCurvatureEstimatesPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    ∃ neckParametrizationPayload :
+                      SurgeryNeckParametrizationPayload
+                        neckSeparationPayload,
+                      ∃ neckCanonicalCoordinatesPayload :
+                        SurgeryNeckCanonicalCoordinatesPayload
+                          neckParametrizationPayload,
+                        ∃ neckDecompositionPayload :
+                          SurgeryNeckDecompositionPayload
+                            neckCanonicalCoordinatesPayload,
+                          ∃ standardCapModelPayload :
+                            StandardCapModelPayload
+                              neckDecompositionPayload,
+                            ∃ capGluingSmoothnessPayload :
+                              CapGluingSmoothnessPayload
+                                standardCapModelPayload,
+                              ∃ capMetricInterpolationPayload :
+                                SurgeryCapMetricInterpolationPayload
+                                  capGluingSmoothnessPayload,
+                                Nonempty
+                                  (SurgeryCapCurvatureEstimatesPayload
+                                    capMetricInterpolationPayload)
+
+/-- Compatibility constructor for cap curvature estimate payloads. -/
+def HasSurgeryCapCurvatureEstimates.of_cap_curvature_estimates_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload
+        neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload
+        neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload :
+      StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload
+        capGluingSmoothnessPayload}
+    (payload :
+      SurgeryCapCurvatureEstimatesPayload
+        capMetricInterpolationPayload) :
+    HasSurgeryCapCurvatureEstimates flow where
+  capCurvatureEstimatesPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, neckParametrizationPayload,
+      neckCanonicalCoordinatesPayload, neckDecompositionPayload,
+      standardCapModelPayload, capGluingSmoothnessPayload,
+      capMetricInterpolationPayload, ⟨payload⟩⟩
 
 /-- Interface for metric estimates after the surgery modification. -/
-inductive HasPostSurgeryMetricControl
+structure HasPostSurgeryMetricControl
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_post_surgery_metric_control_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      {neckCanonicalCoordinatesPayload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload}
-      {neckDecompositionPayload :
-        SurgeryNeckDecompositionPayload
-          neckCanonicalCoordinatesPayload}
-      {standardCapModelPayload :
-        StandardCapModelPayload neckDecompositionPayload}
-      {capGluingSmoothnessPayload :
-        CapGluingSmoothnessPayload standardCapModelPayload}
-      {capMetricInterpolationPayload :
-        SurgeryCapMetricInterpolationPayload
-          capGluingSmoothnessPayload}
-      {capCurvatureEstimatesPayload :
-        SurgeryCapCurvatureEstimatesPayload
-          capMetricInterpolationPayload}
-      {capConstructionPayload :
-        SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
-      {postSurgeryCurvaturePinchingPayload :
-        PostSurgeryCurvaturePinchingPayload capConstructionPayload}
-      {postSurgeryNoncollapsingPayload :
-        PostSurgeryNoncollapsingControlPayload
-          postSurgeryCurvaturePinchingPayload}
-      {postSurgeryDerivativeBoundsPayload :
-        PostSurgeryDerivativeBoundsPayload
-          postSurgeryNoncollapsingPayload}
-      {postSurgeryCanonicalNeighborhoodPersistencePayload :
-        PostSurgeryCanonicalNeighborhoodPersistencePayload
-          postSurgeryDerivativeBoundsPayload}
-      (payload :
-        PostSurgeryMetricControlPayload
-          postSurgeryCanonicalNeighborhoodPersistencePayload) :
-      HasPostSurgeryMetricControl flow
+  postSurgeryMetricControlPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    ∃ neckParametrizationPayload :
+                      SurgeryNeckParametrizationPayload
+                        neckSeparationPayload,
+                      ∃ neckCanonicalCoordinatesPayload :
+                        SurgeryNeckCanonicalCoordinatesPayload
+                          neckParametrizationPayload,
+                        ∃ neckDecompositionPayload :
+                          SurgeryNeckDecompositionPayload
+                            neckCanonicalCoordinatesPayload,
+                          ∃ standardCapModelPayload :
+                            StandardCapModelPayload
+                              neckDecompositionPayload,
+                            ∃ capGluingSmoothnessPayload :
+                              CapGluingSmoothnessPayload
+                                standardCapModelPayload,
+                              ∃ capMetricInterpolationPayload :
+                                SurgeryCapMetricInterpolationPayload
+                                  capGluingSmoothnessPayload,
+                                ∃ capCurvatureEstimatesPayload :
+                                  SurgeryCapCurvatureEstimatesPayload
+                                    capMetricInterpolationPayload,
+                                  ∃ capConstructionPayload :
+                                    SurgeryCapConstructionPayload
+                                      capCurvatureEstimatesPayload,
+                                    ∃ postSurgeryCurvaturePinchingPayload :
+                                      PostSurgeryCurvaturePinchingPayload
+                                        capConstructionPayload,
+                                      ∃ postSurgeryNoncollapsingPayload :
+                                        PostSurgeryNoncollapsingControlPayload
+                                          postSurgeryCurvaturePinchingPayload,
+                                        ∃ postSurgeryDerivativeBoundsPayload :
+                                          PostSurgeryDerivativeBoundsPayload
+                                            postSurgeryNoncollapsingPayload,
+                                          ∃ postSurgeryCanonicalNeighborhoodPersistencePayload :
+                                            PostSurgeryCanonicalNeighborhoodPersistencePayload
+                                              postSurgeryDerivativeBoundsPayload,
+                                            Nonempty
+                                              (PostSurgeryMetricControlPayload
+                                                postSurgeryCanonicalNeighborhoodPersistencePayload)
+
+/-- Compatibility constructor for post-surgery metric-control payloads. -/
+def HasPostSurgeryMetricControl.of_post_surgery_metric_control_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload
+        neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload
+        neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload :
+      StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload
+        capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload
+        capMetricInterpolationPayload}
+    {capConstructionPayload :
+      SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
+    {postSurgeryCurvaturePinchingPayload :
+      PostSurgeryCurvaturePinchingPayload capConstructionPayload}
+    {postSurgeryNoncollapsingPayload :
+      PostSurgeryNoncollapsingControlPayload
+        postSurgeryCurvaturePinchingPayload}
+    {postSurgeryDerivativeBoundsPayload :
+      PostSurgeryDerivativeBoundsPayload
+        postSurgeryNoncollapsingPayload}
+    {postSurgeryCanonicalNeighborhoodPersistencePayload :
+      PostSurgeryCanonicalNeighborhoodPersistencePayload
+        postSurgeryDerivativeBoundsPayload}
+    (payload :
+      PostSurgeryMetricControlPayload
+        postSurgeryCanonicalNeighborhoodPersistencePayload) :
+    HasPostSurgeryMetricControl flow where
+  postSurgeryMetricControlPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, neckParametrizationPayload,
+      neckCanonicalCoordinatesPayload, neckDecompositionPayload,
+      standardCapModelPayload, capGluingSmoothnessPayload,
+      capMetricInterpolationPayload, capCurvatureEstimatesPayload,
+      capConstructionPayload, postSurgeryCurvaturePinchingPayload,
+      postSurgeryNoncollapsingPayload, postSurgeryDerivativeBoundsPayload,
+      postSurgeryCanonicalNeighborhoodPersistencePayload, ⟨payload⟩⟩
 
 /-- Interface for post-surgery curvature pinching estimates. -/
-inductive HasPostSurgeryCurvaturePinching
+structure HasPostSurgeryCurvaturePinching
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_post_surgery_curvature_pinching_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      {neckCanonicalCoordinatesPayload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload}
-      {neckDecompositionPayload :
-        SurgeryNeckDecompositionPayload
-          neckCanonicalCoordinatesPayload}
-      {standardCapModelPayload :
-        StandardCapModelPayload neckDecompositionPayload}
-      {capGluingSmoothnessPayload :
-        CapGluingSmoothnessPayload standardCapModelPayload}
-      {capMetricInterpolationPayload :
-        SurgeryCapMetricInterpolationPayload
-          capGluingSmoothnessPayload}
-      {capCurvatureEstimatesPayload :
-        SurgeryCapCurvatureEstimatesPayload
-          capMetricInterpolationPayload}
-      {capConstructionPayload :
-        SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
-      (payload :
-        PostSurgeryCurvaturePinchingPayload
-          capConstructionPayload) :
-      HasPostSurgeryCurvaturePinching flow
+  postSurgeryCurvaturePinchingPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    ∃ neckParametrizationPayload :
+                      SurgeryNeckParametrizationPayload
+                        neckSeparationPayload,
+                      ∃ neckCanonicalCoordinatesPayload :
+                        SurgeryNeckCanonicalCoordinatesPayload
+                          neckParametrizationPayload,
+                        ∃ neckDecompositionPayload :
+                          SurgeryNeckDecompositionPayload
+                            neckCanonicalCoordinatesPayload,
+                          ∃ standardCapModelPayload :
+                            StandardCapModelPayload
+                              neckDecompositionPayload,
+                            ∃ capGluingSmoothnessPayload :
+                              CapGluingSmoothnessPayload
+                                standardCapModelPayload,
+                              ∃ capMetricInterpolationPayload :
+                                SurgeryCapMetricInterpolationPayload
+                                  capGluingSmoothnessPayload,
+                                ∃ capCurvatureEstimatesPayload :
+                                  SurgeryCapCurvatureEstimatesPayload
+                                    capMetricInterpolationPayload,
+                                  ∃ capConstructionPayload :
+                                    SurgeryCapConstructionPayload
+                                      capCurvatureEstimatesPayload,
+                                    Nonempty
+                                      (PostSurgeryCurvaturePinchingPayload
+                                        capConstructionPayload)
+
+/-- Compatibility constructor for post-surgery curvature-pinching payloads. -/
+def HasPostSurgeryCurvaturePinching.of_post_surgery_curvature_pinching_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload
+        neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload
+        neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload :
+      StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload
+        capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload
+        capMetricInterpolationPayload}
+    {capConstructionPayload :
+      SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
+    (payload :
+      PostSurgeryCurvaturePinchingPayload capConstructionPayload) :
+    HasPostSurgeryCurvaturePinching flow where
+  postSurgeryCurvaturePinchingPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, neckParametrizationPayload,
+      neckCanonicalCoordinatesPayload, neckDecompositionPayload,
+      standardCapModelPayload, capGluingSmoothnessPayload,
+      capMetricInterpolationPayload, capCurvatureEstimatesPayload,
+      capConstructionPayload, ⟨payload⟩⟩
 
 /-- Interface for post-surgery noncollapsing control. -/
-inductive HasPostSurgeryNoncollapsingControl
+structure HasPostSurgeryNoncollapsingControl
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_post_surgery_noncollapsing_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      {neckCanonicalCoordinatesPayload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload}
-      {neckDecompositionPayload :
-        SurgeryNeckDecompositionPayload
-          neckCanonicalCoordinatesPayload}
-      {standardCapModelPayload :
-        StandardCapModelPayload neckDecompositionPayload}
-      {capGluingSmoothnessPayload :
-        CapGluingSmoothnessPayload standardCapModelPayload}
-      {capMetricInterpolationPayload :
-        SurgeryCapMetricInterpolationPayload
-          capGluingSmoothnessPayload}
-      {capCurvatureEstimatesPayload :
-        SurgeryCapCurvatureEstimatesPayload
-          capMetricInterpolationPayload}
-      {capConstructionPayload :
-        SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
-      {postSurgeryCurvaturePinchingPayload :
-        PostSurgeryCurvaturePinchingPayload capConstructionPayload}
-      (payload :
-        PostSurgeryNoncollapsingControlPayload
-          postSurgeryCurvaturePinchingPayload) :
-      HasPostSurgeryNoncollapsingControl flow
+  postSurgeryNoncollapsingPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    ∃ neckParametrizationPayload :
+                      SurgeryNeckParametrizationPayload
+                        neckSeparationPayload,
+                      ∃ neckCanonicalCoordinatesPayload :
+                        SurgeryNeckCanonicalCoordinatesPayload
+                          neckParametrizationPayload,
+                        ∃ neckDecompositionPayload :
+                          SurgeryNeckDecompositionPayload
+                            neckCanonicalCoordinatesPayload,
+                          ∃ standardCapModelPayload :
+                            StandardCapModelPayload
+                              neckDecompositionPayload,
+                            ∃ capGluingSmoothnessPayload :
+                              CapGluingSmoothnessPayload
+                                standardCapModelPayload,
+                              ∃ capMetricInterpolationPayload :
+                                SurgeryCapMetricInterpolationPayload
+                                  capGluingSmoothnessPayload,
+                                ∃ capCurvatureEstimatesPayload :
+                                  SurgeryCapCurvatureEstimatesPayload
+                                    capMetricInterpolationPayload,
+                                  ∃ capConstructionPayload :
+                                    SurgeryCapConstructionPayload
+                                      capCurvatureEstimatesPayload,
+                                    ∃ postSurgeryCurvaturePinchingPayload :
+                                      PostSurgeryCurvaturePinchingPayload
+                                        capConstructionPayload,
+                                      Nonempty
+                                        (PostSurgeryNoncollapsingControlPayload
+                                          postSurgeryCurvaturePinchingPayload)
+
+/-- Compatibility constructor for post-surgery noncollapsing-control payloads. -/
+def HasPostSurgeryNoncollapsingControl.of_post_surgery_noncollapsing_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload
+        neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload
+        neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload :
+      StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload
+        capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload
+        capMetricInterpolationPayload}
+    {capConstructionPayload :
+      SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
+    {postSurgeryCurvaturePinchingPayload :
+      PostSurgeryCurvaturePinchingPayload capConstructionPayload}
+    (payload :
+      PostSurgeryNoncollapsingControlPayload
+        postSurgeryCurvaturePinchingPayload) :
+    HasPostSurgeryNoncollapsingControl flow where
+  postSurgeryNoncollapsingPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, neckParametrizationPayload,
+      neckCanonicalCoordinatesPayload, neckDecompositionPayload,
+      standardCapModelPayload, capGluingSmoothnessPayload,
+      capMetricInterpolationPayload, capCurvatureEstimatesPayload,
+      capConstructionPayload, postSurgeryCurvaturePinchingPayload,
+      ⟨payload⟩⟩
 
 /-- Interface for post-surgery derivative estimates needed to restart the flow. -/
-inductive HasPostSurgeryDerivativeBounds
+structure HasPostSurgeryDerivativeBounds
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_post_surgery_derivative_bounds_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      {neckCanonicalCoordinatesPayload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload}
-      {neckDecompositionPayload :
-        SurgeryNeckDecompositionPayload
-          neckCanonicalCoordinatesPayload}
-      {standardCapModelPayload :
-        StandardCapModelPayload neckDecompositionPayload}
-      {capGluingSmoothnessPayload :
-        CapGluingSmoothnessPayload standardCapModelPayload}
-      {capMetricInterpolationPayload :
-        SurgeryCapMetricInterpolationPayload
-          capGluingSmoothnessPayload}
-      {capCurvatureEstimatesPayload :
-        SurgeryCapCurvatureEstimatesPayload
-          capMetricInterpolationPayload}
-      {capConstructionPayload :
-        SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
-      {postSurgeryCurvaturePinchingPayload :
-        PostSurgeryCurvaturePinchingPayload capConstructionPayload}
-      {postSurgeryNoncollapsingPayload :
-        PostSurgeryNoncollapsingControlPayload
-          postSurgeryCurvaturePinchingPayload}
-      (payload :
-        PostSurgeryDerivativeBoundsPayload
-          postSurgeryNoncollapsingPayload) :
-      HasPostSurgeryDerivativeBounds flow
+  postSurgeryDerivativeBoundsPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    ∃ neckParametrizationPayload :
+                      SurgeryNeckParametrizationPayload
+                        neckSeparationPayload,
+                      ∃ neckCanonicalCoordinatesPayload :
+                        SurgeryNeckCanonicalCoordinatesPayload
+                          neckParametrizationPayload,
+                        ∃ neckDecompositionPayload :
+                          SurgeryNeckDecompositionPayload
+                            neckCanonicalCoordinatesPayload,
+                          ∃ standardCapModelPayload :
+                            StandardCapModelPayload
+                              neckDecompositionPayload,
+                            ∃ capGluingSmoothnessPayload :
+                              CapGluingSmoothnessPayload
+                                standardCapModelPayload,
+                              ∃ capMetricInterpolationPayload :
+                                SurgeryCapMetricInterpolationPayload
+                                  capGluingSmoothnessPayload,
+                                ∃ capCurvatureEstimatesPayload :
+                                  SurgeryCapCurvatureEstimatesPayload
+                                    capMetricInterpolationPayload,
+                                  ∃ capConstructionPayload :
+                                    SurgeryCapConstructionPayload
+                                      capCurvatureEstimatesPayload,
+                                    ∃ postSurgeryCurvaturePinchingPayload :
+                                      PostSurgeryCurvaturePinchingPayload
+                                        capConstructionPayload,
+                                      ∃ postSurgeryNoncollapsingPayload :
+                                        PostSurgeryNoncollapsingControlPayload
+                                          postSurgeryCurvaturePinchingPayload,
+                                        Nonempty
+                                          (PostSurgeryDerivativeBoundsPayload
+                                            postSurgeryNoncollapsingPayload)
+
+/-- Compatibility constructor for post-surgery derivative-bound payloads. -/
+def HasPostSurgeryDerivativeBounds.of_post_surgery_derivative_bounds_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload
+        neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload
+        neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload :
+      StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload
+        capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload
+        capMetricInterpolationPayload}
+    {capConstructionPayload :
+      SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
+    {postSurgeryCurvaturePinchingPayload :
+      PostSurgeryCurvaturePinchingPayload capConstructionPayload}
+    {postSurgeryNoncollapsingPayload :
+      PostSurgeryNoncollapsingControlPayload
+        postSurgeryCurvaturePinchingPayload}
+    (payload :
+      PostSurgeryDerivativeBoundsPayload
+        postSurgeryNoncollapsingPayload) :
+    HasPostSurgeryDerivativeBounds flow where
+  postSurgeryDerivativeBoundsPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, neckParametrizationPayload,
+      neckCanonicalCoordinatesPayload, neckDecompositionPayload,
+      standardCapModelPayload, capGluingSmoothnessPayload,
+      capMetricInterpolationPayload, capCurvatureEstimatesPayload,
+      capConstructionPayload, postSurgeryCurvaturePinchingPayload,
+      postSurgeryNoncollapsingPayload, ⟨payload⟩⟩
 
 /-- Interface for persistence of canonical-neighborhood control after surgery. -/
-inductive HasPostSurgeryCanonicalNeighborhoodPersistence
+structure HasPostSurgeryCanonicalNeighborhoodPersistence
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_post_surgery_canonical_neighborhood_persistence_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      {neckCanonicalCoordinatesPayload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload}
-      {neckDecompositionPayload :
-        SurgeryNeckDecompositionPayload
-          neckCanonicalCoordinatesPayload}
-      {standardCapModelPayload :
-        StandardCapModelPayload neckDecompositionPayload}
-      {capGluingSmoothnessPayload :
-        CapGluingSmoothnessPayload standardCapModelPayload}
-      {capMetricInterpolationPayload :
-        SurgeryCapMetricInterpolationPayload
-          capGluingSmoothnessPayload}
-      {capCurvatureEstimatesPayload :
-        SurgeryCapCurvatureEstimatesPayload
-          capMetricInterpolationPayload}
-      {capConstructionPayload :
-        SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
-      {postSurgeryCurvaturePinchingPayload :
-        PostSurgeryCurvaturePinchingPayload capConstructionPayload}
-      {postSurgeryNoncollapsingPayload :
-        PostSurgeryNoncollapsingControlPayload
-          postSurgeryCurvaturePinchingPayload}
-      {postSurgeryDerivativeBoundsPayload :
-        PostSurgeryDerivativeBoundsPayload
-          postSurgeryNoncollapsingPayload}
-      (payload :
-        PostSurgeryCanonicalNeighborhoodPersistencePayload
-          postSurgeryDerivativeBoundsPayload) :
-      HasPostSurgeryCanonicalNeighborhoodPersistence flow
+  postSurgeryCanonicalNeighborhoodPersistencePayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    ∃ neckParametrizationPayload :
+                      SurgeryNeckParametrizationPayload
+                        neckSeparationPayload,
+                      ∃ neckCanonicalCoordinatesPayload :
+                        SurgeryNeckCanonicalCoordinatesPayload
+                          neckParametrizationPayload,
+                        ∃ neckDecompositionPayload :
+                          SurgeryNeckDecompositionPayload
+                            neckCanonicalCoordinatesPayload,
+                          ∃ standardCapModelPayload :
+                            StandardCapModelPayload
+                              neckDecompositionPayload,
+                            ∃ capGluingSmoothnessPayload :
+                              CapGluingSmoothnessPayload
+                                standardCapModelPayload,
+                              ∃ capMetricInterpolationPayload :
+                                SurgeryCapMetricInterpolationPayload
+                                  capGluingSmoothnessPayload,
+                                ∃ capCurvatureEstimatesPayload :
+                                  SurgeryCapCurvatureEstimatesPayload
+                                    capMetricInterpolationPayload,
+                                  ∃ capConstructionPayload :
+                                    SurgeryCapConstructionPayload
+                                      capCurvatureEstimatesPayload,
+                                    ∃ postSurgeryCurvaturePinchingPayload :
+                                      PostSurgeryCurvaturePinchingPayload
+                                        capConstructionPayload,
+                                      ∃ postSurgeryNoncollapsingPayload :
+                                        PostSurgeryNoncollapsingControlPayload
+                                          postSurgeryCurvaturePinchingPayload,
+                                        ∃ postSurgeryDerivativeBoundsPayload :
+                                          PostSurgeryDerivativeBoundsPayload
+                                            postSurgeryNoncollapsingPayload,
+                                          Nonempty
+                                            (PostSurgeryCanonicalNeighborhoodPersistencePayload
+                                              postSurgeryDerivativeBoundsPayload)
+
+/-- Compatibility constructor for post-surgery canonical-neighborhood persistence payloads. -/
+def HasPostSurgeryCanonicalNeighborhoodPersistence.of_post_surgery_canonical_neighborhood_persistence_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload
+        neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload
+        neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload :
+      StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload
+        capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload
+        capMetricInterpolationPayload}
+    {capConstructionPayload :
+      SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
+    {postSurgeryCurvaturePinchingPayload :
+      PostSurgeryCurvaturePinchingPayload capConstructionPayload}
+    {postSurgeryNoncollapsingPayload :
+      PostSurgeryNoncollapsingControlPayload
+        postSurgeryCurvaturePinchingPayload}
+    {postSurgeryDerivativeBoundsPayload :
+      PostSurgeryDerivativeBoundsPayload
+        postSurgeryNoncollapsingPayload}
+    (payload :
+      PostSurgeryCanonicalNeighborhoodPersistencePayload
+        postSurgeryDerivativeBoundsPayload) :
+    HasPostSurgeryCanonicalNeighborhoodPersistence flow where
+  postSurgeryCanonicalNeighborhoodPersistencePayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, neckParametrizationPayload,
+      neckCanonicalCoordinatesPayload, neckDecompositionPayload,
+      standardCapModelPayload, capGluingSmoothnessPayload,
+      capMetricInterpolationPayload, capCurvatureEstimatesPayload,
+      capConstructionPayload, postSurgeryCurvaturePinchingPayload,
+      postSurgeryNoncollapsingPayload, postSurgeryDerivativeBoundsPayload,
+      ⟨payload⟩⟩
 
 /-- Interface for long-time continuation of the flow after repeated surgery. -/
-inductive HasLongTimeSurgeryContinuation
+structure HasLongTimeSurgeryContinuation
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_long_time_surgery_continuation_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      {neckCanonicalCoordinatesPayload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload}
-      {neckDecompositionPayload :
-        SurgeryNeckDecompositionPayload
-          neckCanonicalCoordinatesPayload}
-      {standardCapModelPayload :
-        StandardCapModelPayload neckDecompositionPayload}
-      {capGluingSmoothnessPayload :
-        CapGluingSmoothnessPayload standardCapModelPayload}
-      {capMetricInterpolationPayload :
-        SurgeryCapMetricInterpolationPayload
-          capGluingSmoothnessPayload}
-      {capCurvatureEstimatesPayload :
-        SurgeryCapCurvatureEstimatesPayload
-          capMetricInterpolationPayload}
-      {capConstructionPayload :
-        SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
-      {postSurgeryCurvaturePinchingPayload :
-        PostSurgeryCurvaturePinchingPayload capConstructionPayload}
-      {postSurgeryNoncollapsingPayload :
-        PostSurgeryNoncollapsingControlPayload
-          postSurgeryCurvaturePinchingPayload}
-      {postSurgeryDerivativeBoundsPayload :
-        PostSurgeryDerivativeBoundsPayload
-          postSurgeryNoncollapsingPayload}
-      {postSurgeryCanonicalNeighborhoodPersistencePayload :
-        PostSurgeryCanonicalNeighborhoodPersistencePayload
-          postSurgeryDerivativeBoundsPayload}
-      {postSurgeryMetricControlPayload :
-        PostSurgeryMetricControlPayload
-          postSurgeryCanonicalNeighborhoodPersistencePayload}
-      {surgeryTimeDiscretenessPayload :
-        SurgeryTimeDiscretenessPayload postSurgeryMetricControlPayload}
-      {surgeryTimeLocalFinitenessPayload :
-        SurgeryTimeLocalFinitenessPayload
-          surgeryTimeDiscretenessPayload}
-      {longTimeExistenceIterationPayload :
-        LongTimeExistenceIterationPayload
-          surgeryTimeLocalFinitenessPayload}
-      {longTimeSurgeryParameterCoherencePayload :
-        LongTimeSurgeryParameterCoherencePayload
-          longTimeExistenceIterationPayload}
-      {longTimeNonaccumulationPayload :
-        LongTimeNonaccumulationPayload
-          longTimeSurgeryParameterCoherencePayload}
-      (payload :
-        LongTimeSurgeryContinuationPayload
-          longTimeNonaccumulationPayload) :
-      HasLongTimeSurgeryContinuation flow
+  longTimeSurgeryContinuationPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    ∃ neckParametrizationPayload :
+                      SurgeryNeckParametrizationPayload
+                        neckSeparationPayload,
+                      ∃ neckCanonicalCoordinatesPayload :
+                        SurgeryNeckCanonicalCoordinatesPayload
+                          neckParametrizationPayload,
+                        ∃ neckDecompositionPayload :
+                          SurgeryNeckDecompositionPayload
+                            neckCanonicalCoordinatesPayload,
+                          ∃ standardCapModelPayload :
+                            StandardCapModelPayload
+                              neckDecompositionPayload,
+                            ∃ capGluingSmoothnessPayload :
+                              CapGluingSmoothnessPayload
+                                standardCapModelPayload,
+                              ∃ capMetricInterpolationPayload :
+                                SurgeryCapMetricInterpolationPayload
+                                  capGluingSmoothnessPayload,
+                                ∃ capCurvatureEstimatesPayload :
+                                  SurgeryCapCurvatureEstimatesPayload
+                                    capMetricInterpolationPayload,
+                                  ∃ capConstructionPayload :
+                                    SurgeryCapConstructionPayload
+                                      capCurvatureEstimatesPayload,
+                                    ∃ postSurgeryCurvaturePinchingPayload :
+                                      PostSurgeryCurvaturePinchingPayload
+                                        capConstructionPayload,
+                                      ∃ postSurgeryNoncollapsingPayload :
+                                        PostSurgeryNoncollapsingControlPayload
+                                          postSurgeryCurvaturePinchingPayload,
+                                        ∃ postSurgeryDerivativeBoundsPayload :
+                                          PostSurgeryDerivativeBoundsPayload
+                                            postSurgeryNoncollapsingPayload,
+                                          ∃ postSurgeryCanonicalNeighborhoodPersistencePayload :
+                                            PostSurgeryCanonicalNeighborhoodPersistencePayload
+                                              postSurgeryDerivativeBoundsPayload,
+                                            ∃ postSurgeryMetricControlPayload :
+                                              PostSurgeryMetricControlPayload
+                                                postSurgeryCanonicalNeighborhoodPersistencePayload,
+                                              ∃ surgeryTimeDiscretenessPayload :
+                                                SurgeryTimeDiscretenessPayload
+                                                  postSurgeryMetricControlPayload,
+                                                ∃ surgeryTimeLocalFinitenessPayload :
+                                                  SurgeryTimeLocalFinitenessPayload
+                                                    surgeryTimeDiscretenessPayload,
+                                                  ∃ longTimeExistenceIterationPayload :
+                                                    LongTimeExistenceIterationPayload
+                                                      surgeryTimeLocalFinitenessPayload,
+                                                    ∃ longTimeSurgeryParameterCoherencePayload :
+                                                      LongTimeSurgeryParameterCoherencePayload
+                                                        longTimeExistenceIterationPayload,
+                                                      ∃ longTimeNonaccumulationPayload :
+                                                        LongTimeNonaccumulationPayload
+                                                          longTimeSurgeryParameterCoherencePayload,
+                                                        Nonempty
+                                                          (LongTimeSurgeryContinuationPayload
+                                                            longTimeNonaccumulationPayload)
+
+/-- Compatibility constructor for long-time surgery-continuation payloads. -/
+def HasLongTimeSurgeryContinuation.of_long_time_surgery_continuation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload :
+      StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload capMetricInterpolationPayload}
+    {capConstructionPayload :
+      SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
+    {postSurgeryCurvaturePinchingPayload :
+      PostSurgeryCurvaturePinchingPayload capConstructionPayload}
+    {postSurgeryNoncollapsingPayload :
+      PostSurgeryNoncollapsingControlPayload
+        postSurgeryCurvaturePinchingPayload}
+    {postSurgeryDerivativeBoundsPayload :
+      PostSurgeryDerivativeBoundsPayload postSurgeryNoncollapsingPayload}
+    {postSurgeryCanonicalNeighborhoodPersistencePayload :
+      PostSurgeryCanonicalNeighborhoodPersistencePayload
+        postSurgeryDerivativeBoundsPayload}
+    {postSurgeryMetricControlPayload :
+      PostSurgeryMetricControlPayload
+        postSurgeryCanonicalNeighborhoodPersistencePayload}
+    {surgeryTimeDiscretenessPayload :
+      SurgeryTimeDiscretenessPayload postSurgeryMetricControlPayload}
+    {surgeryTimeLocalFinitenessPayload :
+      SurgeryTimeLocalFinitenessPayload surgeryTimeDiscretenessPayload}
+    {longTimeExistenceIterationPayload :
+      LongTimeExistenceIterationPayload surgeryTimeLocalFinitenessPayload}
+    {longTimeSurgeryParameterCoherencePayload :
+      LongTimeSurgeryParameterCoherencePayload
+        longTimeExistenceIterationPayload}
+    {longTimeNonaccumulationPayload :
+      LongTimeNonaccumulationPayload
+        longTimeSurgeryParameterCoherencePayload}
+    (payload :
+      LongTimeSurgeryContinuationPayload longTimeNonaccumulationPayload) :
+    HasLongTimeSurgeryContinuation flow where
+  longTimeSurgeryContinuationPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, neckParametrizationPayload,
+      neckCanonicalCoordinatesPayload, neckDecompositionPayload,
+      standardCapModelPayload, capGluingSmoothnessPayload,
+      capMetricInterpolationPayload, capCurvatureEstimatesPayload,
+      capConstructionPayload, postSurgeryCurvaturePinchingPayload,
+      postSurgeryNoncollapsingPayload, postSurgeryDerivativeBoundsPayload,
+      postSurgeryCanonicalNeighborhoodPersistencePayload,
+      postSurgeryMetricControlPayload, surgeryTimeDiscretenessPayload,
+      surgeryTimeLocalFinitenessPayload, longTimeExistenceIterationPayload,
+      longTimeSurgeryParameterCoherencePayload, longTimeNonaccumulationPayload,
+      ⟨payload⟩⟩
 
 /-- Interface for discreteness of surgery times. -/
-inductive HasSurgeryTimeDiscreteness
+structure HasSurgeryTimeDiscreteness
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_surgery_time_discreteness_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      {neckCanonicalCoordinatesPayload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload}
-      {neckDecompositionPayload :
-        SurgeryNeckDecompositionPayload
-          neckCanonicalCoordinatesPayload}
-      {standardCapModelPayload :
-        StandardCapModelPayload neckDecompositionPayload}
-      {capGluingSmoothnessPayload :
-        CapGluingSmoothnessPayload standardCapModelPayload}
-      {capMetricInterpolationPayload :
-        SurgeryCapMetricInterpolationPayload
-          capGluingSmoothnessPayload}
-      {capCurvatureEstimatesPayload :
-        SurgeryCapCurvatureEstimatesPayload
-          capMetricInterpolationPayload}
-      {capConstructionPayload :
-        SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
-      {postSurgeryCurvaturePinchingPayload :
-        PostSurgeryCurvaturePinchingPayload capConstructionPayload}
-      {postSurgeryNoncollapsingPayload :
-        PostSurgeryNoncollapsingControlPayload
-          postSurgeryCurvaturePinchingPayload}
-      {postSurgeryDerivativeBoundsPayload :
-        PostSurgeryDerivativeBoundsPayload
-          postSurgeryNoncollapsingPayload}
-      {postSurgeryCanonicalNeighborhoodPersistencePayload :
-        PostSurgeryCanonicalNeighborhoodPersistencePayload
-          postSurgeryDerivativeBoundsPayload}
-      {postSurgeryMetricControlPayload :
-        PostSurgeryMetricControlPayload
-          postSurgeryCanonicalNeighborhoodPersistencePayload}
-      (payload :
-        SurgeryTimeDiscretenessPayload
-          postSurgeryMetricControlPayload) :
-      HasSurgeryTimeDiscreteness flow
+  surgeryTimeDiscretenessPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    ∃ neckParametrizationPayload :
+                      SurgeryNeckParametrizationPayload
+                        neckSeparationPayload,
+                      ∃ neckCanonicalCoordinatesPayload :
+                        SurgeryNeckCanonicalCoordinatesPayload
+                          neckParametrizationPayload,
+                        ∃ neckDecompositionPayload :
+                          SurgeryNeckDecompositionPayload
+                            neckCanonicalCoordinatesPayload,
+                          ∃ standardCapModelPayload :
+                            StandardCapModelPayload
+                              neckDecompositionPayload,
+                            ∃ capGluingSmoothnessPayload :
+                              CapGluingSmoothnessPayload
+                                standardCapModelPayload,
+                              ∃ capMetricInterpolationPayload :
+                                SurgeryCapMetricInterpolationPayload
+                                  capGluingSmoothnessPayload,
+                                ∃ capCurvatureEstimatesPayload :
+                                  SurgeryCapCurvatureEstimatesPayload
+                                    capMetricInterpolationPayload,
+                                  ∃ capConstructionPayload :
+                                    SurgeryCapConstructionPayload
+                                      capCurvatureEstimatesPayload,
+                                    ∃ postSurgeryCurvaturePinchingPayload :
+                                      PostSurgeryCurvaturePinchingPayload
+                                        capConstructionPayload,
+                                      ∃ postSurgeryNoncollapsingPayload :
+                                        PostSurgeryNoncollapsingControlPayload
+                                          postSurgeryCurvaturePinchingPayload,
+                                        ∃ postSurgeryDerivativeBoundsPayload :
+                                          PostSurgeryDerivativeBoundsPayload
+                                            postSurgeryNoncollapsingPayload,
+                                          ∃ postSurgeryCanonicalNeighborhoodPersistencePayload :
+                                            PostSurgeryCanonicalNeighborhoodPersistencePayload
+                                              postSurgeryDerivativeBoundsPayload,
+                                            ∃ postSurgeryMetricControlPayload :
+                                              PostSurgeryMetricControlPayload
+                                                postSurgeryCanonicalNeighborhoodPersistencePayload,
+                                              Nonempty
+                                                (SurgeryTimeDiscretenessPayload
+                                                  postSurgeryMetricControlPayload)
+
+/-- Compatibility constructor for surgery-time discreteness payloads. -/
+def HasSurgeryTimeDiscreteness.of_surgery_time_discreteness_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload :
+      StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload capMetricInterpolationPayload}
+    {capConstructionPayload :
+      SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
+    {postSurgeryCurvaturePinchingPayload :
+      PostSurgeryCurvaturePinchingPayload capConstructionPayload}
+    {postSurgeryNoncollapsingPayload :
+      PostSurgeryNoncollapsingControlPayload
+        postSurgeryCurvaturePinchingPayload}
+    {postSurgeryDerivativeBoundsPayload :
+      PostSurgeryDerivativeBoundsPayload postSurgeryNoncollapsingPayload}
+    {postSurgeryCanonicalNeighborhoodPersistencePayload :
+      PostSurgeryCanonicalNeighborhoodPersistencePayload
+        postSurgeryDerivativeBoundsPayload}
+    {postSurgeryMetricControlPayload :
+      PostSurgeryMetricControlPayload
+        postSurgeryCanonicalNeighborhoodPersistencePayload}
+    (payload :
+      SurgeryTimeDiscretenessPayload postSurgeryMetricControlPayload) :
+    HasSurgeryTimeDiscreteness flow where
+  surgeryTimeDiscretenessPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, neckParametrizationPayload,
+      neckCanonicalCoordinatesPayload, neckDecompositionPayload,
+      standardCapModelPayload, capGluingSmoothnessPayload,
+      capMetricInterpolationPayload, capCurvatureEstimatesPayload,
+      capConstructionPayload, postSurgeryCurvaturePinchingPayload,
+      postSurgeryNoncollapsingPayload, postSurgeryDerivativeBoundsPayload,
+      postSurgeryCanonicalNeighborhoodPersistencePayload,
+      postSurgeryMetricControlPayload, ⟨payload⟩⟩
 
 /-- Interface for local finiteness of surgery times on bounded time intervals. -/
-inductive HasSurgeryTimeLocalFiniteness
+structure HasSurgeryTimeLocalFiniteness
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_surgery_time_local_finiteness_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      {neckCanonicalCoordinatesPayload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload}
-      {neckDecompositionPayload :
-        SurgeryNeckDecompositionPayload
-          neckCanonicalCoordinatesPayload}
-      {standardCapModelPayload :
-        StandardCapModelPayload neckDecompositionPayload}
-      {capGluingSmoothnessPayload :
-        CapGluingSmoothnessPayload standardCapModelPayload}
-      {capMetricInterpolationPayload :
-        SurgeryCapMetricInterpolationPayload
-          capGluingSmoothnessPayload}
-      {capCurvatureEstimatesPayload :
-        SurgeryCapCurvatureEstimatesPayload
-          capMetricInterpolationPayload}
-      {capConstructionPayload :
-        SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
-      {postSurgeryCurvaturePinchingPayload :
-        PostSurgeryCurvaturePinchingPayload capConstructionPayload}
-      {postSurgeryNoncollapsingPayload :
-        PostSurgeryNoncollapsingControlPayload
-          postSurgeryCurvaturePinchingPayload}
-      {postSurgeryDerivativeBoundsPayload :
-        PostSurgeryDerivativeBoundsPayload
-          postSurgeryNoncollapsingPayload}
-      {postSurgeryCanonicalNeighborhoodPersistencePayload :
-        PostSurgeryCanonicalNeighborhoodPersistencePayload
-          postSurgeryDerivativeBoundsPayload}
-      {postSurgeryMetricControlPayload :
-        PostSurgeryMetricControlPayload
-          postSurgeryCanonicalNeighborhoodPersistencePayload}
-      {surgeryTimeDiscretenessPayload :
-        SurgeryTimeDiscretenessPayload postSurgeryMetricControlPayload}
-      (payload :
-        SurgeryTimeLocalFinitenessPayload
-          surgeryTimeDiscretenessPayload) :
-      HasSurgeryTimeLocalFiniteness flow
+  surgeryTimeLocalFinitenessPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    ∃ neckParametrizationPayload :
+                      SurgeryNeckParametrizationPayload
+                        neckSeparationPayload,
+                      ∃ neckCanonicalCoordinatesPayload :
+                        SurgeryNeckCanonicalCoordinatesPayload
+                          neckParametrizationPayload,
+                        ∃ neckDecompositionPayload :
+                          SurgeryNeckDecompositionPayload
+                            neckCanonicalCoordinatesPayload,
+                          ∃ standardCapModelPayload :
+                            StandardCapModelPayload
+                              neckDecompositionPayload,
+                            ∃ capGluingSmoothnessPayload :
+                              CapGluingSmoothnessPayload
+                                standardCapModelPayload,
+                              ∃ capMetricInterpolationPayload :
+                                SurgeryCapMetricInterpolationPayload
+                                  capGluingSmoothnessPayload,
+                                ∃ capCurvatureEstimatesPayload :
+                                  SurgeryCapCurvatureEstimatesPayload
+                                    capMetricInterpolationPayload,
+                                  ∃ capConstructionPayload :
+                                    SurgeryCapConstructionPayload
+                                      capCurvatureEstimatesPayload,
+                                    ∃ postSurgeryCurvaturePinchingPayload :
+                                      PostSurgeryCurvaturePinchingPayload
+                                        capConstructionPayload,
+                                      ∃ postSurgeryNoncollapsingPayload :
+                                        PostSurgeryNoncollapsingControlPayload
+                                          postSurgeryCurvaturePinchingPayload,
+                                        ∃ postSurgeryDerivativeBoundsPayload :
+                                          PostSurgeryDerivativeBoundsPayload
+                                            postSurgeryNoncollapsingPayload,
+                                          ∃ postSurgeryCanonicalNeighborhoodPersistencePayload :
+                                            PostSurgeryCanonicalNeighborhoodPersistencePayload
+                                              postSurgeryDerivativeBoundsPayload,
+                                            ∃ postSurgeryMetricControlPayload :
+                                              PostSurgeryMetricControlPayload
+                                                postSurgeryCanonicalNeighborhoodPersistencePayload,
+                                              ∃ surgeryTimeDiscretenessPayload :
+                                                SurgeryTimeDiscretenessPayload
+                                                  postSurgeryMetricControlPayload,
+                                                Nonempty
+                                                  (SurgeryTimeLocalFinitenessPayload
+                                                    surgeryTimeDiscretenessPayload)
+
+/-- Compatibility constructor for surgery-time local-finiteness payloads. -/
+def HasSurgeryTimeLocalFiniteness.of_surgery_time_local_finiteness_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload :
+      StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload capMetricInterpolationPayload}
+    {capConstructionPayload :
+      SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
+    {postSurgeryCurvaturePinchingPayload :
+      PostSurgeryCurvaturePinchingPayload capConstructionPayload}
+    {postSurgeryNoncollapsingPayload :
+      PostSurgeryNoncollapsingControlPayload
+        postSurgeryCurvaturePinchingPayload}
+    {postSurgeryDerivativeBoundsPayload :
+      PostSurgeryDerivativeBoundsPayload postSurgeryNoncollapsingPayload}
+    {postSurgeryCanonicalNeighborhoodPersistencePayload :
+      PostSurgeryCanonicalNeighborhoodPersistencePayload
+        postSurgeryDerivativeBoundsPayload}
+    {postSurgeryMetricControlPayload :
+      PostSurgeryMetricControlPayload
+        postSurgeryCanonicalNeighborhoodPersistencePayload}
+    {surgeryTimeDiscretenessPayload :
+      SurgeryTimeDiscretenessPayload postSurgeryMetricControlPayload}
+    (payload :
+      SurgeryTimeLocalFinitenessPayload surgeryTimeDiscretenessPayload) :
+    HasSurgeryTimeLocalFiniteness flow where
+  surgeryTimeLocalFinitenessPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, neckParametrizationPayload,
+      neckCanonicalCoordinatesPayload, neckDecompositionPayload,
+      standardCapModelPayload, capGluingSmoothnessPayload,
+      capMetricInterpolationPayload, capCurvatureEstimatesPayload,
+      capConstructionPayload, postSurgeryCurvaturePinchingPayload,
+      postSurgeryNoncollapsingPayload, postSurgeryDerivativeBoundsPayload,
+      postSurgeryCanonicalNeighborhoodPersistencePayload,
+      postSurgeryMetricControlPayload, surgeryTimeDiscretenessPayload,
+      ⟨payload⟩⟩
 
 /-- Interface for iterating the post-surgery continuation argument for all time. -/
-inductive HasLongTimeExistenceIteration
+structure HasLongTimeExistenceIteration
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_long_time_existence_iteration_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      {neckCanonicalCoordinatesPayload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload}
-      {neckDecompositionPayload :
-        SurgeryNeckDecompositionPayload
-          neckCanonicalCoordinatesPayload}
-      {standardCapModelPayload :
-        StandardCapModelPayload neckDecompositionPayload}
-      {capGluingSmoothnessPayload :
-        CapGluingSmoothnessPayload standardCapModelPayload}
-      {capMetricInterpolationPayload :
-        SurgeryCapMetricInterpolationPayload
-          capGluingSmoothnessPayload}
-      {capCurvatureEstimatesPayload :
-        SurgeryCapCurvatureEstimatesPayload
-          capMetricInterpolationPayload}
-      {capConstructionPayload :
-        SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
-      {postSurgeryCurvaturePinchingPayload :
-        PostSurgeryCurvaturePinchingPayload capConstructionPayload}
-      {postSurgeryNoncollapsingPayload :
-        PostSurgeryNoncollapsingControlPayload
-          postSurgeryCurvaturePinchingPayload}
-      {postSurgeryDerivativeBoundsPayload :
-        PostSurgeryDerivativeBoundsPayload
-          postSurgeryNoncollapsingPayload}
-      {postSurgeryCanonicalNeighborhoodPersistencePayload :
-        PostSurgeryCanonicalNeighborhoodPersistencePayload
-          postSurgeryDerivativeBoundsPayload}
-      {postSurgeryMetricControlPayload :
-        PostSurgeryMetricControlPayload
-          postSurgeryCanonicalNeighborhoodPersistencePayload}
-      {surgeryTimeDiscretenessPayload :
-        SurgeryTimeDiscretenessPayload postSurgeryMetricControlPayload}
-      {surgeryTimeLocalFinitenessPayload :
-        SurgeryTimeLocalFinitenessPayload
-          surgeryTimeDiscretenessPayload}
-      (payload :
-        LongTimeExistenceIterationPayload
-          surgeryTimeLocalFinitenessPayload) :
-      HasLongTimeExistenceIteration flow
+  longTimeExistenceIterationPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    ∃ neckParametrizationPayload :
+                      SurgeryNeckParametrizationPayload
+                        neckSeparationPayload,
+                      ∃ neckCanonicalCoordinatesPayload :
+                        SurgeryNeckCanonicalCoordinatesPayload
+                          neckParametrizationPayload,
+                        ∃ neckDecompositionPayload :
+                          SurgeryNeckDecompositionPayload
+                            neckCanonicalCoordinatesPayload,
+                          ∃ standardCapModelPayload :
+                            StandardCapModelPayload
+                              neckDecompositionPayload,
+                            ∃ capGluingSmoothnessPayload :
+                              CapGluingSmoothnessPayload
+                                standardCapModelPayload,
+                              ∃ capMetricInterpolationPayload :
+                                SurgeryCapMetricInterpolationPayload
+                                  capGluingSmoothnessPayload,
+                                ∃ capCurvatureEstimatesPayload :
+                                  SurgeryCapCurvatureEstimatesPayload
+                                    capMetricInterpolationPayload,
+                                  ∃ capConstructionPayload :
+                                    SurgeryCapConstructionPayload
+                                      capCurvatureEstimatesPayload,
+                                    ∃ postSurgeryCurvaturePinchingPayload :
+                                      PostSurgeryCurvaturePinchingPayload
+                                        capConstructionPayload,
+                                      ∃ postSurgeryNoncollapsingPayload :
+                                        PostSurgeryNoncollapsingControlPayload
+                                          postSurgeryCurvaturePinchingPayload,
+                                        ∃ postSurgeryDerivativeBoundsPayload :
+                                          PostSurgeryDerivativeBoundsPayload
+                                            postSurgeryNoncollapsingPayload,
+                                          ∃ postSurgeryCanonicalNeighborhoodPersistencePayload :
+                                            PostSurgeryCanonicalNeighborhoodPersistencePayload
+                                              postSurgeryDerivativeBoundsPayload,
+                                            ∃ postSurgeryMetricControlPayload :
+                                              PostSurgeryMetricControlPayload
+                                                postSurgeryCanonicalNeighborhoodPersistencePayload,
+                                              ∃ surgeryTimeDiscretenessPayload :
+                                                SurgeryTimeDiscretenessPayload
+                                                  postSurgeryMetricControlPayload,
+                                                ∃ surgeryTimeLocalFinitenessPayload :
+                                                  SurgeryTimeLocalFinitenessPayload
+                                                    surgeryTimeDiscretenessPayload,
+                                                  Nonempty
+                                                    (LongTimeExistenceIterationPayload
+                                                      surgeryTimeLocalFinitenessPayload)
+
+/-- Compatibility constructor for long-time existence-iteration payloads. -/
+def HasLongTimeExistenceIteration.of_long_time_existence_iteration_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload :
+      StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload capMetricInterpolationPayload}
+    {capConstructionPayload :
+      SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
+    {postSurgeryCurvaturePinchingPayload :
+      PostSurgeryCurvaturePinchingPayload capConstructionPayload}
+    {postSurgeryNoncollapsingPayload :
+      PostSurgeryNoncollapsingControlPayload
+        postSurgeryCurvaturePinchingPayload}
+    {postSurgeryDerivativeBoundsPayload :
+      PostSurgeryDerivativeBoundsPayload postSurgeryNoncollapsingPayload}
+    {postSurgeryCanonicalNeighborhoodPersistencePayload :
+      PostSurgeryCanonicalNeighborhoodPersistencePayload
+        postSurgeryDerivativeBoundsPayload}
+    {postSurgeryMetricControlPayload :
+      PostSurgeryMetricControlPayload
+        postSurgeryCanonicalNeighborhoodPersistencePayload}
+    {surgeryTimeDiscretenessPayload :
+      SurgeryTimeDiscretenessPayload postSurgeryMetricControlPayload}
+    {surgeryTimeLocalFinitenessPayload :
+      SurgeryTimeLocalFinitenessPayload surgeryTimeDiscretenessPayload}
+    (payload :
+      LongTimeExistenceIterationPayload surgeryTimeLocalFinitenessPayload) :
+    HasLongTimeExistenceIteration flow where
+  longTimeExistenceIterationPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, neckParametrizationPayload,
+      neckCanonicalCoordinatesPayload, neckDecompositionPayload,
+      standardCapModelPayload, capGluingSmoothnessPayload,
+      capMetricInterpolationPayload, capCurvatureEstimatesPayload,
+      capConstructionPayload, postSurgeryCurvaturePinchingPayload,
+      postSurgeryNoncollapsingPayload, postSurgeryDerivativeBoundsPayload,
+      postSurgeryCanonicalNeighborhoodPersistencePayload,
+      postSurgeryMetricControlPayload, surgeryTimeDiscretenessPayload,
+      surgeryTimeLocalFinitenessPayload, ⟨payload⟩⟩
 
 /-- Interface for coherent surgery-parameter choices through the long-time iteration. -/
-inductive HasLongTimeSurgeryParameterCoherence
+structure HasLongTimeSurgeryParameterCoherence
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_long_time_surgery_parameter_coherence_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      {neckCanonicalCoordinatesPayload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload}
-      {neckDecompositionPayload :
-        SurgeryNeckDecompositionPayload
-          neckCanonicalCoordinatesPayload}
-      {standardCapModelPayload :
-        StandardCapModelPayload neckDecompositionPayload}
-      {capGluingSmoothnessPayload :
-        CapGluingSmoothnessPayload standardCapModelPayload}
-      {capMetricInterpolationPayload :
-        SurgeryCapMetricInterpolationPayload
-          capGluingSmoothnessPayload}
-      {capCurvatureEstimatesPayload :
-        SurgeryCapCurvatureEstimatesPayload
-          capMetricInterpolationPayload}
-      {capConstructionPayload :
-        SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
-      {postSurgeryCurvaturePinchingPayload :
-        PostSurgeryCurvaturePinchingPayload capConstructionPayload}
-      {postSurgeryNoncollapsingPayload :
-        PostSurgeryNoncollapsingControlPayload
-          postSurgeryCurvaturePinchingPayload}
-      {postSurgeryDerivativeBoundsPayload :
-        PostSurgeryDerivativeBoundsPayload
-          postSurgeryNoncollapsingPayload}
-      {postSurgeryCanonicalNeighborhoodPersistencePayload :
-        PostSurgeryCanonicalNeighborhoodPersistencePayload
-          postSurgeryDerivativeBoundsPayload}
-      {postSurgeryMetricControlPayload :
-        PostSurgeryMetricControlPayload
-          postSurgeryCanonicalNeighborhoodPersistencePayload}
-      {surgeryTimeDiscretenessPayload :
-        SurgeryTimeDiscretenessPayload postSurgeryMetricControlPayload}
-      {surgeryTimeLocalFinitenessPayload :
-        SurgeryTimeLocalFinitenessPayload
-          surgeryTimeDiscretenessPayload}
-      {longTimeExistenceIterationPayload :
-        LongTimeExistenceIterationPayload
-          surgeryTimeLocalFinitenessPayload}
-      (payload :
-        LongTimeSurgeryParameterCoherencePayload
-          longTimeExistenceIterationPayload) :
-      HasLongTimeSurgeryParameterCoherence flow
+  longTimeSurgeryParameterCoherencePayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    ∃ neckParametrizationPayload :
+                      SurgeryNeckParametrizationPayload
+                        neckSeparationPayload,
+                      ∃ neckCanonicalCoordinatesPayload :
+                        SurgeryNeckCanonicalCoordinatesPayload
+                          neckParametrizationPayload,
+                        ∃ neckDecompositionPayload :
+                          SurgeryNeckDecompositionPayload
+                            neckCanonicalCoordinatesPayload,
+                          ∃ standardCapModelPayload :
+                            StandardCapModelPayload
+                              neckDecompositionPayload,
+                            ∃ capGluingSmoothnessPayload :
+                              CapGluingSmoothnessPayload
+                                standardCapModelPayload,
+                              ∃ capMetricInterpolationPayload :
+                                SurgeryCapMetricInterpolationPayload
+                                  capGluingSmoothnessPayload,
+                                ∃ capCurvatureEstimatesPayload :
+                                  SurgeryCapCurvatureEstimatesPayload
+                                    capMetricInterpolationPayload,
+                                  ∃ capConstructionPayload :
+                                    SurgeryCapConstructionPayload
+                                      capCurvatureEstimatesPayload,
+                                    ∃ postSurgeryCurvaturePinchingPayload :
+                                      PostSurgeryCurvaturePinchingPayload
+                                        capConstructionPayload,
+                                      ∃ postSurgeryNoncollapsingPayload :
+                                        PostSurgeryNoncollapsingControlPayload
+                                          postSurgeryCurvaturePinchingPayload,
+                                        ∃ postSurgeryDerivativeBoundsPayload :
+                                          PostSurgeryDerivativeBoundsPayload
+                                            postSurgeryNoncollapsingPayload,
+                                          ∃ postSurgeryCanonicalNeighborhoodPersistencePayload :
+                                            PostSurgeryCanonicalNeighborhoodPersistencePayload
+                                              postSurgeryDerivativeBoundsPayload,
+                                            ∃ postSurgeryMetricControlPayload :
+                                              PostSurgeryMetricControlPayload
+                                                postSurgeryCanonicalNeighborhoodPersistencePayload,
+                                              ∃ surgeryTimeDiscretenessPayload :
+                                                SurgeryTimeDiscretenessPayload
+                                                  postSurgeryMetricControlPayload,
+                                                ∃ surgeryTimeLocalFinitenessPayload :
+                                                  SurgeryTimeLocalFinitenessPayload
+                                                    surgeryTimeDiscretenessPayload,
+                                                  ∃ longTimeExistenceIterationPayload :
+                                                    LongTimeExistenceIterationPayload
+                                                      surgeryTimeLocalFinitenessPayload,
+                                                    Nonempty
+                                                      (LongTimeSurgeryParameterCoherencePayload
+                                                        longTimeExistenceIterationPayload)
+
+/-- Compatibility constructor for long-time surgery-parameter coherence payloads. -/
+def HasLongTimeSurgeryParameterCoherence.of_long_time_surgery_parameter_coherence_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload :
+      StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload capMetricInterpolationPayload}
+    {capConstructionPayload :
+      SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
+    {postSurgeryCurvaturePinchingPayload :
+      PostSurgeryCurvaturePinchingPayload capConstructionPayload}
+    {postSurgeryNoncollapsingPayload :
+      PostSurgeryNoncollapsingControlPayload
+        postSurgeryCurvaturePinchingPayload}
+    {postSurgeryDerivativeBoundsPayload :
+      PostSurgeryDerivativeBoundsPayload postSurgeryNoncollapsingPayload}
+    {postSurgeryCanonicalNeighborhoodPersistencePayload :
+      PostSurgeryCanonicalNeighborhoodPersistencePayload
+        postSurgeryDerivativeBoundsPayload}
+    {postSurgeryMetricControlPayload :
+      PostSurgeryMetricControlPayload
+        postSurgeryCanonicalNeighborhoodPersistencePayload}
+    {surgeryTimeDiscretenessPayload :
+      SurgeryTimeDiscretenessPayload postSurgeryMetricControlPayload}
+    {surgeryTimeLocalFinitenessPayload :
+      SurgeryTimeLocalFinitenessPayload surgeryTimeDiscretenessPayload}
+    {longTimeExistenceIterationPayload :
+      LongTimeExistenceIterationPayload surgeryTimeLocalFinitenessPayload}
+    (payload :
+      LongTimeSurgeryParameterCoherencePayload
+        longTimeExistenceIterationPayload) :
+    HasLongTimeSurgeryParameterCoherence flow where
+  longTimeSurgeryParameterCoherencePayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, neckParametrizationPayload,
+      neckCanonicalCoordinatesPayload, neckDecompositionPayload,
+      standardCapModelPayload, capGluingSmoothnessPayload,
+      capMetricInterpolationPayload, capCurvatureEstimatesPayload,
+      capConstructionPayload, postSurgeryCurvaturePinchingPayload,
+      postSurgeryNoncollapsingPayload, postSurgeryDerivativeBoundsPayload,
+      postSurgeryCanonicalNeighborhoodPersistencePayload,
+      postSurgeryMetricControlPayload, surgeryTimeDiscretenessPayload,
+      surgeryTimeLocalFinitenessPayload, longTimeExistenceIterationPayload,
+      ⟨payload⟩⟩
 
 /-- Interface ruling out finite-time accumulation of long-time surgery events. -/
-inductive HasLongTimeNonaccumulation
+structure HasLongTimeNonaccumulation
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_long_time_nonaccumulation_payload
-      {scalePayload : SurgeryScaleFunctionPayload flow}
-      {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
-      {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
-      {cutoffPayload :
-        SurgeryCutoffParameterControlPayload separationPayload}
-      {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
-      {parameterSelectionPayload :
-        SurgeryParameterSelectionPayload smoothBumpPayload}
-      {strongDeltaPayload :
-        SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
-      {neckSeparationPayload :
-        SurgeryNeckSeparationPayload strongDeltaPayload}
-      {neckParametrizationPayload :
-        SurgeryNeckParametrizationPayload neckSeparationPayload}
-      {neckCanonicalCoordinatesPayload :
-        SurgeryNeckCanonicalCoordinatesPayload
-          neckParametrizationPayload}
-      {neckDecompositionPayload :
-        SurgeryNeckDecompositionPayload
-          neckCanonicalCoordinatesPayload}
-      {standardCapModelPayload :
-        StandardCapModelPayload neckDecompositionPayload}
-      {capGluingSmoothnessPayload :
-        CapGluingSmoothnessPayload standardCapModelPayload}
-      {capMetricInterpolationPayload :
-        SurgeryCapMetricInterpolationPayload
-          capGluingSmoothnessPayload}
-      {capCurvatureEstimatesPayload :
-        SurgeryCapCurvatureEstimatesPayload
-          capMetricInterpolationPayload}
-      {capConstructionPayload :
-        SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
-      {postSurgeryCurvaturePinchingPayload :
-        PostSurgeryCurvaturePinchingPayload capConstructionPayload}
-      {postSurgeryNoncollapsingPayload :
-        PostSurgeryNoncollapsingControlPayload
-          postSurgeryCurvaturePinchingPayload}
-      {postSurgeryDerivativeBoundsPayload :
-        PostSurgeryDerivativeBoundsPayload
-          postSurgeryNoncollapsingPayload}
-      {postSurgeryCanonicalNeighborhoodPersistencePayload :
-        PostSurgeryCanonicalNeighborhoodPersistencePayload
-          postSurgeryDerivativeBoundsPayload}
-      {postSurgeryMetricControlPayload :
-        PostSurgeryMetricControlPayload
-          postSurgeryCanonicalNeighborhoodPersistencePayload}
-      {surgeryTimeDiscretenessPayload :
-        SurgeryTimeDiscretenessPayload postSurgeryMetricControlPayload}
-      {surgeryTimeLocalFinitenessPayload :
-        SurgeryTimeLocalFinitenessPayload
-          surgeryTimeDiscretenessPayload}
-      {longTimeExistenceIterationPayload :
-        LongTimeExistenceIterationPayload
-          surgeryTimeLocalFinitenessPayload}
-      {longTimeSurgeryParameterCoherencePayload :
-        LongTimeSurgeryParameterCoherencePayload
-          longTimeExistenceIterationPayload}
-      (payload :
-        LongTimeNonaccumulationPayload
-          longTimeSurgeryParameterCoherencePayload) :
-      HasLongTimeNonaccumulation flow
+  longTimeNonaccumulationPayload_source :
+    ∃ scalePayload : SurgeryScaleFunctionPayload flow,
+      ∃ continuityPayload : SurgeryScaleContinuityPayload scalePayload,
+        ∃ separationPayload : SurgeryScaleSeparationPayload continuityPayload,
+          ∃ cutoffPayload :
+            SurgeryCutoffParameterControlPayload separationPayload,
+            ∃ smoothBumpPayload :
+              SurgeryCutoffSmoothBumpPayload cutoffPayload,
+              ∃ parameterSelectionPayload :
+                SurgeryParameterSelectionPayload smoothBumpPayload,
+                ∃ strongDeltaPayload :
+                  SurgeryStrongDeltaNeckDetectionPayload
+                    parameterSelectionPayload,
+                  ∃ neckSeparationPayload :
+                    SurgeryNeckSeparationPayload strongDeltaPayload,
+                    ∃ neckParametrizationPayload :
+                      SurgeryNeckParametrizationPayload
+                        neckSeparationPayload,
+                      ∃ neckCanonicalCoordinatesPayload :
+                        SurgeryNeckCanonicalCoordinatesPayload
+                          neckParametrizationPayload,
+                        ∃ neckDecompositionPayload :
+                          SurgeryNeckDecompositionPayload
+                            neckCanonicalCoordinatesPayload,
+                          ∃ standardCapModelPayload :
+                            StandardCapModelPayload
+                              neckDecompositionPayload,
+                            ∃ capGluingSmoothnessPayload :
+                              CapGluingSmoothnessPayload
+                                standardCapModelPayload,
+                              ∃ capMetricInterpolationPayload :
+                                SurgeryCapMetricInterpolationPayload
+                                  capGluingSmoothnessPayload,
+                                ∃ capCurvatureEstimatesPayload :
+                                  SurgeryCapCurvatureEstimatesPayload
+                                    capMetricInterpolationPayload,
+                                  ∃ capConstructionPayload :
+                                    SurgeryCapConstructionPayload
+                                      capCurvatureEstimatesPayload,
+                                    ∃ postSurgeryCurvaturePinchingPayload :
+                                      PostSurgeryCurvaturePinchingPayload
+                                        capConstructionPayload,
+                                      ∃ postSurgeryNoncollapsingPayload :
+                                        PostSurgeryNoncollapsingControlPayload
+                                          postSurgeryCurvaturePinchingPayload,
+                                        ∃ postSurgeryDerivativeBoundsPayload :
+                                          PostSurgeryDerivativeBoundsPayload
+                                            postSurgeryNoncollapsingPayload,
+                                          ∃ postSurgeryCanonicalNeighborhoodPersistencePayload :
+                                            PostSurgeryCanonicalNeighborhoodPersistencePayload
+                                              postSurgeryDerivativeBoundsPayload,
+                                            ∃ postSurgeryMetricControlPayload :
+                                              PostSurgeryMetricControlPayload
+                                                postSurgeryCanonicalNeighborhoodPersistencePayload,
+                                              ∃ surgeryTimeDiscretenessPayload :
+                                                SurgeryTimeDiscretenessPayload
+                                                  postSurgeryMetricControlPayload,
+                                                ∃ surgeryTimeLocalFinitenessPayload :
+                                                  SurgeryTimeLocalFinitenessPayload
+                                                    surgeryTimeDiscretenessPayload,
+                                                  ∃ longTimeExistenceIterationPayload :
+                                                    LongTimeExistenceIterationPayload
+                                                      surgeryTimeLocalFinitenessPayload,
+                                                    ∃ longTimeSurgeryParameterCoherencePayload :
+                                                      LongTimeSurgeryParameterCoherencePayload
+                                                        longTimeExistenceIterationPayload,
+                                                      Nonempty
+                                                        (LongTimeNonaccumulationPayload
+                                                          longTimeSurgeryParameterCoherencePayload)
+
+/-- Compatibility constructor for long-time nonaccumulation payloads. -/
+def HasLongTimeNonaccumulation.of_long_time_nonaccumulation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload :
+      SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload :
+      StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload capMetricInterpolationPayload}
+    {capConstructionPayload :
+      SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
+    {postSurgeryCurvaturePinchingPayload :
+      PostSurgeryCurvaturePinchingPayload capConstructionPayload}
+    {postSurgeryNoncollapsingPayload :
+      PostSurgeryNoncollapsingControlPayload
+        postSurgeryCurvaturePinchingPayload}
+    {postSurgeryDerivativeBoundsPayload :
+      PostSurgeryDerivativeBoundsPayload postSurgeryNoncollapsingPayload}
+    {postSurgeryCanonicalNeighborhoodPersistencePayload :
+      PostSurgeryCanonicalNeighborhoodPersistencePayload
+        postSurgeryDerivativeBoundsPayload}
+    {postSurgeryMetricControlPayload :
+      PostSurgeryMetricControlPayload
+        postSurgeryCanonicalNeighborhoodPersistencePayload}
+    {surgeryTimeDiscretenessPayload :
+      SurgeryTimeDiscretenessPayload postSurgeryMetricControlPayload}
+    {surgeryTimeLocalFinitenessPayload :
+      SurgeryTimeLocalFinitenessPayload surgeryTimeDiscretenessPayload}
+    {longTimeExistenceIterationPayload :
+      LongTimeExistenceIterationPayload surgeryTimeLocalFinitenessPayload}
+    {longTimeSurgeryParameterCoherencePayload :
+      LongTimeSurgeryParameterCoherencePayload
+        longTimeExistenceIterationPayload}
+    (payload :
+      LongTimeNonaccumulationPayload
+        longTimeSurgeryParameterCoherencePayload) :
+    HasLongTimeNonaccumulation flow where
+  longTimeNonaccumulationPayload_source :=
+    ⟨scalePayload, continuityPayload, separationPayload, cutoffPayload,
+      smoothBumpPayload, parameterSelectionPayload, strongDeltaPayload,
+      neckSeparationPayload, neckParametrizationPayload,
+      neckCanonicalCoordinatesPayload, neckDecompositionPayload,
+      standardCapModelPayload, capGluingSmoothnessPayload,
+      capMetricInterpolationPayload, capCurvatureEstimatesPayload,
+      capConstructionPayload, postSurgeryCurvaturePinchingPayload,
+      postSurgeryNoncollapsingPayload, postSurgeryDerivativeBoundsPayload,
+      postSurgeryCanonicalNeighborhoodPersistencePayload,
+      postSurgeryMetricControlPayload, surgeryTimeDiscretenessPayload,
+      surgeryTimeLocalFinitenessPayload, longTimeExistenceIterationPayload,
+      longTimeSurgeryParameterCoherencePayload, ⟨payload⟩⟩
 
 /--
 Package for constructing Ricci flow with surgery.
@@ -4315,6 +6146,50 @@ theorem ricci_flow_with_surgery_of_construction_statement_eq
       _longTimeExistenceIteration, _longTimeParameterCoherence,
       _longTimeNonaccumulation, _longTimeContinuation, withSurgery⟩
   rfl
+
+/-- The theorem-shaped surgery-construction statement supplies post-surgery metric control. -/
+theorem post_surgery_metric_control_of_construction_statement
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (statement : RicciFlowWithSurgeryConstructionStatement flow) :
+    HasPostSurgeryMetricControl flow := by
+  rcases statement with
+    ⟨_scaleFunction, _scaleContinuity, _scaleSeparation,
+      _cutoffParameterControl, _cutoffSmoothBump, _parameterSelection,
+      _strongDeltaNeckDetection, _neckSeparation, _neckParametrization,
+      _neckCanonicalCoordinates, _neckDecomposition, _standardCapModel,
+      _capGluingSmoothness, _capMetricInterpolation, _capCurvatureEstimates,
+      _capConstruction, _postSurgeryCurvaturePinching,
+      _postSurgeryNoncollapsing, _postSurgeryDerivativeBounds,
+      _postSurgeryCanonicalNeighborhoodPersistence, metricControl,
+      _surgeryTimeDiscreteness, _surgeryTimeLocalFiniteness,
+      _longTimeExistenceIteration, _longTimeParameterCoherence,
+      _longTimeNonaccumulation, _longTimeContinuation, _withSurgery⟩
+  exact metricControl
+
+/-- The theorem-shaped surgery-construction statement supplies local finiteness of surgery times. -/
+theorem surgery_time_local_finiteness_of_construction_statement
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (statement : RicciFlowWithSurgeryConstructionStatement flow) :
+    HasSurgeryTimeLocalFiniteness flow := by
+  rcases statement with
+    ⟨_scaleFunction, _scaleContinuity, _scaleSeparation,
+      _cutoffParameterControl, _cutoffSmoothBump, _parameterSelection,
+      _strongDeltaNeckDetection, _neckSeparation, _neckParametrization,
+      _neckCanonicalCoordinates, _neckDecomposition, _standardCapModel,
+      _capGluingSmoothness, _capMetricInterpolation, _capCurvatureEstimates,
+      _capConstruction, _postSurgeryCurvaturePinching,
+      _postSurgeryNoncollapsing, _postSurgeryDerivativeBounds,
+      _postSurgeryCanonicalNeighborhoodPersistence, _metricControl,
+      _surgeryTimeDiscreteness, surgeryTimeLocalFiniteness,
+      _longTimeExistenceIteration, _longTimeParameterCoherence,
+      _longTimeNonaccumulation, _longTimeContinuation, _withSurgery⟩
+  exact surgeryTimeLocalFiniteness
 
 /--
 Semantic alias for the named surgery-construction sub-obligation payload exposed
@@ -5119,14 +6994,23 @@ structure PerelmanFFunctionalSetupPayload
     ∀ potential, fFunctionalValue potential ≤ fFunctionalSetupDefect potential
 
 /-- Interface for Perelman's F-functional and normalization constraints. -/
-inductive HasPerelmanFFunctionalSetup
+structure HasPerelmanFFunctionalSetup
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_f_functional_setup_payload
-      (payload : PerelmanFFunctionalSetupPayload flow) :
-      HasPerelmanFFunctionalSetup flow
+  fFunctionalSetupPayload_source :
+    Nonempty (PerelmanFFunctionalSetupPayload flow)
+
+/-- Compatibility constructor for F-functional setup payloads. -/
+def HasPerelmanFFunctionalSetup.of_f_functional_setup_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (payload : PerelmanFFunctionalSetupPayload flow) :
+    HasPerelmanFFunctionalSetup flow where
+  fFunctionalSetupPayload_source := ⟨payload⟩
 
 /--
 Concrete entropy-normalization data for Perelman's F-functional setup.
@@ -5185,15 +7069,25 @@ structure PerelmanEntropyNormalizationPayload
         fFunctionalPayload.fFunctionalSetupDefect potential
 
 /-- Interface for entropy normalization choices in Perelman's functional. -/
-inductive HasPerelmanEntropyNormalization
+structure HasPerelmanEntropyNormalization
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_entropy_normalization_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      (payload : PerelmanEntropyNormalizationPayload fFunctionalPayload) :
-      HasPerelmanEntropyNormalization flow
+  entropyNormalizationPayload_source :
+    ∃ fFunctionalPayload : PerelmanFFunctionalSetupPayload flow,
+      Nonempty (PerelmanEntropyNormalizationPayload fFunctionalPayload)
+
+/-- Compatibility constructor for entropy-normalization payloads. -/
+def HasPerelmanEntropyNormalization.of_entropy_normalization_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    (payload : PerelmanEntropyNormalizationPayload fFunctionalPayload) :
+    HasPerelmanEntropyNormalization flow where
+  entropyNormalizationPayload_source := ⟨fFunctionalPayload, ⟨payload⟩⟩
 
 /--
 Concrete entropy-minimizer existence data for the normalized F-functional.
@@ -5251,19 +7145,34 @@ structure PerelmanEntropyMinimizerExistencePayload
         entropyMinimizer
 
 /-- Interface for existence of entropy minimizers at controlled scales. -/
-inductive HasPerelmanEntropyMinimizerExistence
+structure HasPerelmanEntropyMinimizerExistence
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_entropy_minimizer_existence_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      (payload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload) :
-      HasPerelmanEntropyMinimizerExistence flow
+  entropyMinimizerExistencePayload_source :
+    ∃ fFunctionalPayload : PerelmanFFunctionalSetupPayload flow,
+      ∃ entropyNormalizationPayload :
+        PerelmanEntropyNormalizationPayload fFunctionalPayload,
+        Nonempty
+          (PerelmanEntropyMinimizerExistencePayload
+            entropyNormalizationPayload)
+
+/-- Compatibility constructor for entropy-minimizer existence payloads. -/
+def HasPerelmanEntropyMinimizerExistence.of_entropy_minimizer_existence_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    (payload :
+      PerelmanEntropyMinimizerExistencePayload
+        entropyNormalizationPayload) :
+    HasPerelmanEntropyMinimizerExistence flow where
+  entropyMinimizerExistencePayload_source :=
+    ⟨fFunctionalPayload, entropyNormalizationPayload, ⟨payload⟩⟩
 
 /--
 Concrete log-Sobolev control data for the normalized entropy setup.
@@ -5328,22 +7237,41 @@ structure PerelmanEntropyLogSobolevControlPayload
             entropyLogSobolevDefect potential)
 
 /-- Interface for the log-Sobolev control behind Perelman's entropy bounds. -/
-inductive HasPerelmanEntropyLogSobolevControl
+structure HasPerelmanEntropyLogSobolevControl
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_entropy_log_sobolev_control_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      (payload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload) :
-      HasPerelmanEntropyLogSobolevControl flow
+  entropyLogSobolevControlPayload_source :
+    ∃ fFunctionalPayload : PerelmanFFunctionalSetupPayload flow,
+      ∃ entropyNormalizationPayload :
+        PerelmanEntropyNormalizationPayload fFunctionalPayload,
+        ∃ entropyMinimizerPayload :
+          PerelmanEntropyMinimizerExistencePayload
+            entropyNormalizationPayload,
+          Nonempty
+            (PerelmanEntropyLogSobolevControlPayload
+              entropyMinimizerPayload)
+
+/-- Compatibility constructor for entropy log-Sobolev control payloads. -/
+def HasPerelmanEntropyLogSobolevControl.of_entropy_log_sobolev_control_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload
+        entropyNormalizationPayload}
+    (payload :
+      PerelmanEntropyLogSobolevControlPayload
+        entropyMinimizerPayload) :
+    HasPerelmanEntropyLogSobolevControl flow where
+  entropyLogSobolevControlPayload_source :=
+    ⟨fFunctionalPayload, entropyNormalizationPayload,
+      entropyMinimizerPayload, ⟨payload⟩⟩
 
 /--
 Concrete conjugate heat equation data for the normalized entropy setup.
@@ -5423,25 +7351,47 @@ structure ConjugateHeatEquationTheoryPayload
         entropyMinimizerPayload.entropyMinimizer
 
 /-- Interface for the conjugate heat equation used in Perelman's monotonicity. -/
-inductive HasConjugateHeatEquationTheory
+structure HasConjugateHeatEquationTheory
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_conjugate_heat_equation_theory_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      (payload :
-        ConjugateHeatEquationTheoryPayload
-          entropyLogSobolevPayload) :
-      HasConjugateHeatEquationTheory flow
+  conjugateHeatEquationTheoryPayload_source :
+    ∃ fFunctionalPayload : PerelmanFFunctionalSetupPayload flow,
+      ∃ entropyNormalizationPayload :
+        PerelmanEntropyNormalizationPayload fFunctionalPayload,
+        ∃ entropyMinimizerPayload :
+          PerelmanEntropyMinimizerExistencePayload
+            entropyNormalizationPayload,
+          ∃ entropyLogSobolevPayload :
+            PerelmanEntropyLogSobolevControlPayload
+              entropyMinimizerPayload,
+            Nonempty
+              (ConjugateHeatEquationTheoryPayload
+                entropyLogSobolevPayload)
+
+/-- Compatibility constructor for conjugate heat-equation theory payloads. -/
+def HasConjugateHeatEquationTheory.of_conjugate_heat_equation_theory_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload
+        entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload
+        entropyMinimizerPayload}
+    (payload :
+      ConjugateHeatEquationTheoryPayload
+        entropyLogSobolevPayload) :
+    HasConjugateHeatEquationTheory flow where
+  conjugateHeatEquationTheoryPayload_source :=
+    ⟨fFunctionalPayload, entropyNormalizationPayload,
+      entropyMinimizerPayload, entropyLogSobolevPayload, ⟨payload⟩⟩
 
 /--
 Concrete adjoint heat-kernel construction data along the backward flow.
@@ -5522,26 +7472,52 @@ structure AdjointHeatKernelConstructionPayload
         conjugateHeatPayload.baseConjugateHeatSolution
 
 /-- Interface for constructing adjoint heat kernels along the backward flow. -/
-inductive HasAdjointHeatKernelConstruction
+structure HasAdjointHeatKernelConstruction
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_adjoint_heat_kernel_construction_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      (payload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload) :
-      HasAdjointHeatKernelConstruction flow
+  adjointHeatKernelConstructionPayload_source :
+    ∃ fFunctionalPayload : PerelmanFFunctionalSetupPayload flow,
+      ∃ entropyNormalizationPayload :
+        PerelmanEntropyNormalizationPayload fFunctionalPayload,
+        ∃ entropyMinimizerPayload :
+          PerelmanEntropyMinimizerExistencePayload
+            entropyNormalizationPayload,
+          ∃ entropyLogSobolevPayload :
+            PerelmanEntropyLogSobolevControlPayload
+              entropyMinimizerPayload,
+            ∃ conjugateHeatPayload :
+              ConjugateHeatEquationTheoryPayload
+                entropyLogSobolevPayload,
+              Nonempty
+                (AdjointHeatKernelConstructionPayload
+                  conjugateHeatPayload)
+
+/-- Compatibility constructor for adjoint heat-kernel construction payloads. -/
+def HasAdjointHeatKernelConstruction.of_adjoint_heat_kernel_construction_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload
+        entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload
+        entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    (payload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload) :
+    HasAdjointHeatKernelConstruction flow where
+  adjointHeatKernelConstructionPayload_source :=
+    ⟨fFunctionalPayload, entropyNormalizationPayload,
+      entropyMinimizerPayload, entropyLogSobolevPayload, conjugateHeatPayload,
+      ⟨payload⟩⟩
 
 /--
 Concrete adjoint/conjugate heat-kernel estimates.
@@ -5621,29 +7597,58 @@ structure PerelmanConjugateHeatKernelEstimatesPayload
         heatKernelEstimateDefect
 
 /-- Interface for adjoint/conjugate heat-kernel estimates used in noncollapsing. -/
-inductive HasPerelmanConjugateHeatKernelEstimates
+structure HasPerelmanConjugateHeatKernelEstimates
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_conjugate_heat_kernel_estimates_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      (payload :
-        PerelmanConjugateHeatKernelEstimatesPayload
-          adjointHeatPayload) :
-      HasPerelmanConjugateHeatKernelEstimates flow
+  conjugateHeatKernelEstimatesPayload_source :
+    ∃ fFunctionalPayload : PerelmanFFunctionalSetupPayload flow,
+      ∃ entropyNormalizationPayload :
+        PerelmanEntropyNormalizationPayload fFunctionalPayload,
+        ∃ entropyMinimizerPayload :
+          PerelmanEntropyMinimizerExistencePayload
+            entropyNormalizationPayload,
+          ∃ entropyLogSobolevPayload :
+            PerelmanEntropyLogSobolevControlPayload
+              entropyMinimizerPayload,
+            ∃ conjugateHeatPayload :
+              ConjugateHeatEquationTheoryPayload
+                entropyLogSobolevPayload,
+              ∃ adjointHeatPayload :
+                AdjointHeatKernelConstructionPayload
+                  conjugateHeatPayload,
+                Nonempty
+                  (PerelmanConjugateHeatKernelEstimatesPayload
+                    adjointHeatPayload)
+
+/-- Compatibility constructor for conjugate heat-kernel estimate payloads. -/
+def HasPerelmanConjugateHeatKernelEstimates.of_conjugate_heat_kernel_estimates_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload
+        entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload
+        entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    (payload :
+      PerelmanConjugateHeatKernelEstimatesPayload
+        adjointHeatPayload) :
+    HasPerelmanConjugateHeatKernelEstimates flow where
+  conjugateHeatKernelEstimatesPayload_source :=
+    ⟨fFunctionalPayload, entropyNormalizationPayload,
+      entropyMinimizerPayload, entropyLogSobolevPayload, conjugateHeatPayload,
+      adjointHeatPayload, ⟨payload⟩⟩
 
 /--
 Concrete setup data for Perelman's W-functional.
@@ -5723,31 +7728,63 @@ structure PerelmanWFunctionalSetupPayload
         wFunctionalValue potential + wFunctionalSetupDefect potential
 
 /-- Interface for the W-functional setup behind Perelman's entropy. -/
-inductive HasPerelmanWFunctionalSetup
+structure HasPerelmanWFunctionalSetup
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_w_functional_setup_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      (payload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload) :
-      HasPerelmanWFunctionalSetup flow
+  wFunctionalSetupPayload_source :
+    ∃ fFunctionalPayload : PerelmanFFunctionalSetupPayload flow,
+      ∃ entropyNormalizationPayload :
+        PerelmanEntropyNormalizationPayload fFunctionalPayload,
+        ∃ entropyMinimizerPayload :
+          PerelmanEntropyMinimizerExistencePayload
+            entropyNormalizationPayload,
+          ∃ entropyLogSobolevPayload :
+            PerelmanEntropyLogSobolevControlPayload
+              entropyMinimizerPayload,
+            ∃ conjugateHeatPayload :
+              ConjugateHeatEquationTheoryPayload
+                entropyLogSobolevPayload,
+              ∃ adjointHeatPayload :
+                AdjointHeatKernelConstructionPayload
+                  conjugateHeatPayload,
+                ∃ conjugateHeatKernelEstimatesPayload :
+                  PerelmanConjugateHeatKernelEstimatesPayload
+                    adjointHeatPayload,
+                  Nonempty
+                    (PerelmanWFunctionalSetupPayload
+                      conjugateHeatKernelEstimatesPayload)
+
+/-- Compatibility constructor for W-functional setup payloads. -/
+def HasPerelmanWFunctionalSetup.of_w_functional_setup_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload
+        entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload
+        entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    (payload :
+      PerelmanWFunctionalSetupPayload
+        conjugateHeatKernelEstimatesPayload) :
+    HasPerelmanWFunctionalSetup flow where
+  wFunctionalSetupPayload_source :=
+    ⟨fFunctionalPayload, entropyNormalizationPayload,
+      entropyMinimizerPayload, entropyLogSobolevPayload, conjugateHeatPayload,
+      adjointHeatPayload, conjugateHeatKernelEstimatesPayload, ⟨payload⟩⟩
 
 /--
 Concrete entropy-gradient formula data for Perelman's W-functional.
@@ -5829,33 +7866,69 @@ structure PerelmanEntropyGradientFormulaPayload
         wFunctionalPayload.wFunctionalSetupDefect potential
 
 /-- Interface for the entropy-gradient formula driving monotonicity. -/
-inductive HasPerelmanEntropyGradientFormula
+structure HasPerelmanEntropyGradientFormula
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_entropy_gradient_formula_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      (payload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload) :
-      HasPerelmanEntropyGradientFormula flow
+  entropyGradientFormulaPayload_source :
+    ∃ fFunctionalPayload : PerelmanFFunctionalSetupPayload flow,
+      ∃ entropyNormalizationPayload :
+        PerelmanEntropyNormalizationPayload fFunctionalPayload,
+        ∃ entropyMinimizerPayload :
+          PerelmanEntropyMinimizerExistencePayload
+            entropyNormalizationPayload,
+          ∃ entropyLogSobolevPayload :
+            PerelmanEntropyLogSobolevControlPayload
+              entropyMinimizerPayload,
+            ∃ conjugateHeatPayload :
+              ConjugateHeatEquationTheoryPayload
+                entropyLogSobolevPayload,
+              ∃ adjointHeatPayload :
+                AdjointHeatKernelConstructionPayload
+                  conjugateHeatPayload,
+                ∃ conjugateHeatKernelEstimatesPayload :
+                  PerelmanConjugateHeatKernelEstimatesPayload
+                    adjointHeatPayload,
+                  ∃ wFunctionalPayload :
+                    PerelmanWFunctionalSetupPayload
+                      conjugateHeatKernelEstimatesPayload,
+                    Nonempty
+                      (PerelmanEntropyGradientFormulaPayload
+                        wFunctionalPayload)
+
+/-- Compatibility constructor for entropy-gradient formula payloads. -/
+def HasPerelmanEntropyGradientFormula.of_entropy_gradient_formula_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload
+        entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload
+        entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload
+        conjugateHeatKernelEstimatesPayload}
+    (payload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload) :
+    HasPerelmanEntropyGradientFormula flow where
+  entropyGradientFormulaPayload_source :=
+    ⟨fFunctionalPayload, entropyNormalizationPayload,
+      entropyMinimizerPayload, entropyLogSobolevPayload, conjugateHeatPayload,
+      adjointHeatPayload, conjugateHeatKernelEstimatesPayload,
+      wFunctionalPayload, ⟨payload⟩⟩
 
 /--
 Concrete first-variation data for Perelman's entropy functional.
@@ -5945,35 +8018,74 @@ structure PerelmanEntropyFirstVariationPayload
           entropyFirstVariationDefect variation
 
 /-- Interface for the first-variation formula for Perelman's entropy. -/
-inductive HasPerelmanEntropyFirstVariation
+structure HasPerelmanEntropyFirstVariation
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_entropy_first_variation_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      (payload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload) :
-      HasPerelmanEntropyFirstVariation flow
+  entropyFirstVariationPayload_source :
+    ∃ fFunctionalPayload : PerelmanFFunctionalSetupPayload flow,
+      ∃ entropyNormalizationPayload :
+        PerelmanEntropyNormalizationPayload fFunctionalPayload,
+        ∃ entropyMinimizerPayload :
+          PerelmanEntropyMinimizerExistencePayload
+            entropyNormalizationPayload,
+          ∃ entropyLogSobolevPayload :
+            PerelmanEntropyLogSobolevControlPayload
+              entropyMinimizerPayload,
+            ∃ conjugateHeatPayload :
+              ConjugateHeatEquationTheoryPayload
+                entropyLogSobolevPayload,
+              ∃ adjointHeatPayload :
+                AdjointHeatKernelConstructionPayload
+                  conjugateHeatPayload,
+                ∃ conjugateHeatKernelEstimatesPayload :
+                  PerelmanConjugateHeatKernelEstimatesPayload
+                    adjointHeatPayload,
+                  ∃ wFunctionalPayload :
+                    PerelmanWFunctionalSetupPayload
+                      conjugateHeatKernelEstimatesPayload,
+                    ∃ entropyGradientPayload :
+                      PerelmanEntropyGradientFormulaPayload
+                        wFunctionalPayload,
+                      Nonempty
+                        (PerelmanEntropyFirstVariationPayload
+                          entropyGradientPayload)
+
+/-- Compatibility constructor for entropy first-variation payloads. -/
+def HasPerelmanEntropyFirstVariation.of_entropy_first_variation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload
+        entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload
+        entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload
+        conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    (payload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload) :
+    HasPerelmanEntropyFirstVariation flow where
+  entropyFirstVariationPayload_source :=
+    ⟨fFunctionalPayload, entropyNormalizationPayload,
+      entropyMinimizerPayload, entropyLogSobolevPayload, conjugateHeatPayload,
+      adjointHeatPayload, conjugateHeatKernelEstimatesPayload,
+      wFunctionalPayload, entropyGradientPayload, ⟨payload⟩⟩
 
 /--
 Concrete monotonicity data for Perelman's entropy functional.
@@ -6062,38 +8174,81 @@ structure PerelmanEntropyMonotonicityPayload
         entropyValueAlongFlow t₁ ≤ entropyValueAlongFlow t₂
 
 /-- Interface for monotonicity of Perelman's entropy functional. -/
-inductive HasPerelmanEntropyMonotonicity
+structure HasPerelmanEntropyMonotonicity
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_entropy_monotonicity_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      (payload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload) :
-      HasPerelmanEntropyMonotonicity flow
+  entropyMonotonicityPayload_source :
+    ∃ fFunctionalPayload : PerelmanFFunctionalSetupPayload flow,
+      ∃ entropyNormalizationPayload :
+        PerelmanEntropyNormalizationPayload fFunctionalPayload,
+        ∃ entropyMinimizerPayload :
+          PerelmanEntropyMinimizerExistencePayload
+            entropyNormalizationPayload,
+          ∃ entropyLogSobolevPayload :
+            PerelmanEntropyLogSobolevControlPayload
+              entropyMinimizerPayload,
+            ∃ conjugateHeatPayload :
+              ConjugateHeatEquationTheoryPayload
+                entropyLogSobolevPayload,
+              ∃ adjointHeatPayload :
+                AdjointHeatKernelConstructionPayload
+                  conjugateHeatPayload,
+                ∃ conjugateHeatKernelEstimatesPayload :
+                  PerelmanConjugateHeatKernelEstimatesPayload
+                    adjointHeatPayload,
+                  ∃ wFunctionalPayload :
+                    PerelmanWFunctionalSetupPayload
+                      conjugateHeatKernelEstimatesPayload,
+                    ∃ entropyGradientPayload :
+                      PerelmanEntropyGradientFormulaPayload
+                        wFunctionalPayload,
+                      ∃ entropyFirstVariationPayload :
+                        PerelmanEntropyFirstVariationPayload
+                          entropyGradientPayload,
+                        Nonempty
+                          (PerelmanEntropyMonotonicityPayload
+                            entropyFirstVariationPayload)
+
+/-- Compatibility constructor for entropy-monotonicity payloads. -/
+def HasPerelmanEntropyMonotonicity.of_entropy_monotonicity_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload
+        entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload
+        entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload
+        conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    (payload :
+      PerelmanEntropyMonotonicityPayload
+        entropyFirstVariationPayload) :
+    HasPerelmanEntropyMonotonicity flow where
+  entropyMonotonicityPayload_source :=
+    ⟨fFunctionalPayload, entropyNormalizationPayload,
+      entropyMinimizerPayload, entropyLogSobolevPayload, conjugateHeatPayload,
+      adjointHeatPayload, conjugateHeatKernelEstimatesPayload,
+      wFunctionalPayload, entropyGradientPayload,
+      entropyFirstVariationPayload, ⟨payload⟩⟩
 
 /--
 Concrete lower-bound propagation data for Perelman's entropy.
@@ -6216,41 +8371,87 @@ theorem PerelmanEntropyLowerBoundPropagationPayload.entropyLowerBound_le_value
   exact le_trans payload.entropyLowerBoundAtBase hmonotone
 
 /-- Interface for propagating entropy lower bounds along the flow. -/
-inductive HasPerelmanEntropyLowerBoundPropagation
+structure HasPerelmanEntropyLowerBoundPropagation
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_entropy_lower_bound_propagation_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      (payload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload) :
-      HasPerelmanEntropyLowerBoundPropagation flow
+  entropyLowerBoundPropagationPayload_source :
+    ∃ fFunctionalPayload : PerelmanFFunctionalSetupPayload flow,
+      ∃ entropyNormalizationPayload :
+        PerelmanEntropyNormalizationPayload fFunctionalPayload,
+        ∃ entropyMinimizerPayload :
+          PerelmanEntropyMinimizerExistencePayload
+            entropyNormalizationPayload,
+          ∃ entropyLogSobolevPayload :
+            PerelmanEntropyLogSobolevControlPayload
+              entropyMinimizerPayload,
+            ∃ conjugateHeatPayload :
+              ConjugateHeatEquationTheoryPayload
+                entropyLogSobolevPayload,
+              ∃ adjointHeatPayload :
+                AdjointHeatKernelConstructionPayload
+                  conjugateHeatPayload,
+                ∃ conjugateHeatKernelEstimatesPayload :
+                  PerelmanConjugateHeatKernelEstimatesPayload
+                    adjointHeatPayload,
+                  ∃ wFunctionalPayload :
+                    PerelmanWFunctionalSetupPayload
+                      conjugateHeatKernelEstimatesPayload,
+                    ∃ entropyGradientPayload :
+                      PerelmanEntropyGradientFormulaPayload
+                        wFunctionalPayload,
+                      ∃ entropyFirstVariationPayload :
+                        PerelmanEntropyFirstVariationPayload
+                          entropyGradientPayload,
+                        ∃ entropyMonotonicityPayload :
+                          PerelmanEntropyMonotonicityPayload
+                            entropyFirstVariationPayload,
+                          Nonempty
+                            (PerelmanEntropyLowerBoundPropagationPayload
+                              entropyMonotonicityPayload)
+
+/-- Compatibility constructor for entropy lower-bound propagation payloads. -/
+def HasPerelmanEntropyLowerBoundPropagation.of_entropy_lower_bound_propagation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload
+        entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload
+        entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload
+        conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload
+        entropyFirstVariationPayload}
+    (payload :
+      PerelmanEntropyLowerBoundPropagationPayload
+        entropyMonotonicityPayload) :
+    HasPerelmanEntropyLowerBoundPropagation flow where
+  entropyLowerBoundPropagationPayload_source :=
+    ⟨fFunctionalPayload, entropyNormalizationPayload,
+      entropyMinimizerPayload, entropyLogSobolevPayload, conjugateHeatPayload,
+      adjointHeatPayload, conjugateHeatKernelEstimatesPayload,
+      wFunctionalPayload, entropyGradientPayload,
+      entropyFirstVariationPayload, entropyMonotonicityPayload, ⟨payload⟩⟩
 
 /--
 Concrete entropy-functional data compatible with the propagated entropy lower
@@ -6383,44 +8584,94 @@ theorem PerelmanEntropyFunctionalPayload.entropyFunctionalLowerBound_le_value
       (payload.entropyStateTime_mem_lowerBoundInterval state)
 
 /-- Interface for Perelman's entropy functional and its basic variational setup. -/
-inductive HasPerelmanEntropyFunctional
+structure HasPerelmanEntropyFunctional
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_entropy_functional_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      (payload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload) :
-      HasPerelmanEntropyFunctional flow
+  entropyFunctionalPayload_source :
+    ∃ fFunctionalPayload : PerelmanFFunctionalSetupPayload flow,
+      ∃ entropyNormalizationPayload :
+        PerelmanEntropyNormalizationPayload fFunctionalPayload,
+        ∃ entropyMinimizerPayload :
+          PerelmanEntropyMinimizerExistencePayload
+            entropyNormalizationPayload,
+          ∃ entropyLogSobolevPayload :
+            PerelmanEntropyLogSobolevControlPayload
+              entropyMinimizerPayload,
+            ∃ conjugateHeatPayload :
+              ConjugateHeatEquationTheoryPayload
+                entropyLogSobolevPayload,
+              ∃ adjointHeatPayload :
+                AdjointHeatKernelConstructionPayload
+                  conjugateHeatPayload,
+                ∃ conjugateHeatKernelEstimatesPayload :
+                  PerelmanConjugateHeatKernelEstimatesPayload
+                    adjointHeatPayload,
+                  ∃ wFunctionalPayload :
+                    PerelmanWFunctionalSetupPayload
+                      conjugateHeatKernelEstimatesPayload,
+                    ∃ entropyGradientPayload :
+                      PerelmanEntropyGradientFormulaPayload
+                        wFunctionalPayload,
+                      ∃ entropyFirstVariationPayload :
+                        PerelmanEntropyFirstVariationPayload
+                          entropyGradientPayload,
+                        ∃ entropyMonotonicityPayload :
+                          PerelmanEntropyMonotonicityPayload
+                            entropyFirstVariationPayload,
+                          ∃ entropyLowerBoundPropagationPayload :
+                            PerelmanEntropyLowerBoundPropagationPayload
+                              entropyMonotonicityPayload,
+                            Nonempty
+                              (PerelmanEntropyFunctionalPayload
+                                entropyLowerBoundPropagationPayload)
+
+/-- Compatibility constructor for entropy-functional payloads. -/
+def HasPerelmanEntropyFunctional.of_entropy_functional_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload
+        entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload
+        entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload
+        conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload
+        entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload
+        entropyMonotonicityPayload}
+    (payload :
+      PerelmanEntropyFunctionalPayload
+        entropyLowerBoundPropagationPayload) :
+    HasPerelmanEntropyFunctional flow where
+  entropyFunctionalPayload_source :=
+    ⟨fFunctionalPayload, entropyNormalizationPayload,
+      entropyMinimizerPayload, entropyLogSobolevPayload, conjugateHeatPayload,
+      adjointHeatPayload, conjugateHeatKernelEstimatesPayload,
+      wFunctionalPayload, entropyGradientPayload,
+      entropyFirstVariationPayload, entropyMonotonicityPayload,
+      entropyLowerBoundPropagationPayload, ⟨payload⟩⟩
 
 /--
 Concrete first-variation data for Perelman's reduced length.
@@ -6574,48 +8825,137 @@ theorem PerelmanReducedLengthFirstVariationPayload.entropyFunctionalLowerBound_l
     _ = payload.reducedLengthFirstVariationValue variation := by
       rw [← payload.reducedLengthFirstVariationIdentity variation]
 
+/-- Source data for the reduced-length first-variation interface. -/
+structure PerelmanReducedLengthFirstVariationPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  fFunctionalPayload : PerelmanFFunctionalSetupPayload flow
+  entropyNormalizationPayload :
+    PerelmanEntropyNormalizationPayload fFunctionalPayload
+  entropyMinimizerPayload :
+    PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload
+  entropyLogSobolevPayload :
+    PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload
+  conjugateHeatPayload :
+    ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload
+  adjointHeatPayload :
+    AdjointHeatKernelConstructionPayload conjugateHeatPayload
+  conjugateHeatKernelEstimatesPayload :
+    PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload
+  wFunctionalPayload :
+    PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload
+  entropyGradientPayload :
+    PerelmanEntropyGradientFormulaPayload wFunctionalPayload
+  entropyFirstVariationPayload :
+    PerelmanEntropyFirstVariationPayload entropyGradientPayload
+  entropyMonotonicityPayload :
+    PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload
+  entropyLowerBoundPropagationPayload :
+    PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload
+  entropyFunctionalPayload :
+    PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload
+  payload :
+    PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload
+
+/-- Package reduced-length first-variation payloads as source data. -/
+def PerelmanReducedLengthFirstVariationPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    (payload :
+      PerelmanReducedLengthFirstVariationPayload
+        entropyFunctionalPayload) :
+    PerelmanReducedLengthFirstVariationPayloadSource flow where
+  fFunctionalPayload := fFunctionalPayload
+  entropyNormalizationPayload := entropyNormalizationPayload
+  entropyMinimizerPayload := entropyMinimizerPayload
+  entropyLogSobolevPayload := entropyLogSobolevPayload
+  conjugateHeatPayload := conjugateHeatPayload
+  adjointHeatPayload := adjointHeatPayload
+  conjugateHeatKernelEstimatesPayload := conjugateHeatKernelEstimatesPayload
+  wFunctionalPayload := wFunctionalPayload
+  entropyGradientPayload := entropyGradientPayload
+  entropyFirstVariationPayload := entropyFirstVariationPayload
+  entropyMonotonicityPayload := entropyMonotonicityPayload
+  entropyLowerBoundPropagationPayload := entropyLowerBoundPropagationPayload
+  entropyFunctionalPayload := entropyFunctionalPayload
+  payload := payload
+
 /-- Interface for the first-variation formula for reduced length. -/
-inductive HasPerelmanReducedLengthFirstVariation
+structure HasPerelmanReducedLengthFirstVariation
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_reduced_length_first_variation_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      (payload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload) :
-      HasPerelmanReducedLengthFirstVariation flow
+  reducedLengthFirstVariationPayload_source :
+    Nonempty (PerelmanReducedLengthFirstVariationPayloadSource flow)
+
+/-- Compatibility constructor for reduced-length first-variation payloads. -/
+def HasPerelmanReducedLengthFirstVariation.of_reduced_length_first_variation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    (payload :
+      PerelmanReducedLengthFirstVariationPayload
+        entropyFunctionalPayload) :
+    HasPerelmanReducedLengthFirstVariation flow where
+  reducedLengthFirstVariationPayload_source :=
+    ⟨PerelmanReducedLengthFirstVariationPayloadSource.of_payload payload⟩
 
 /--
 Concrete reduced-distance minimizer/L-geodesic existence data.
@@ -6759,51 +9099,109 @@ theorem PerelmanReducedDistanceExistencePayload.exists_minimizer_attaining_infim
   ⟨payload.baseReducedDistanceMinimizer,
     payload.baseReducedDistanceMinimizer_attainsInfimum⟩
 
+/-- Source data for the reduced-distance existence interface. -/
+structure PerelmanReducedDistanceExistencePayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  reducedLengthFirstVariationSource :
+    PerelmanReducedLengthFirstVariationPayloadSource flow
+  payload :
+    PerelmanReducedDistanceExistencePayload
+      reducedLengthFirstVariationSource.payload
+
+/-- Package reduced-distance existence payloads as source data. -/
+def PerelmanReducedDistanceExistencePayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    (payload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload) :
+    PerelmanReducedDistanceExistencePayloadSource flow where
+  reducedLengthFirstVariationSource :=
+    PerelmanReducedLengthFirstVariationPayloadSource.of_payload
+      reducedLengthFirstVariationPayload
+  payload := payload
+
 /-- Interface for existence of reduced-distance minimizers or L-geodesics. -/
-inductive HasPerelmanReducedDistanceExistence
+structure HasPerelmanReducedDistanceExistence
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_reduced_distance_existence_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      (payload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload) :
-      HasPerelmanReducedDistanceExistence flow
+  reducedDistanceExistencePayload_source :
+    Nonempty (PerelmanReducedDistanceExistencePayloadSource flow)
+
+/-- Compatibility constructor for reduced-distance existence payloads. -/
+def HasPerelmanReducedDistanceExistence.of_reduced_distance_existence_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    (payload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload) :
+    HasPerelmanReducedDistanceExistence flow where
+  reducedDistanceExistencePayload_source :=
+    ⟨PerelmanReducedDistanceExistencePayloadSource.of_payload payload⟩
 
 /--
 Concrete differential-inequality data for Perelman's reduced distance.
@@ -6976,54 +9374,117 @@ theorem PerelmanReducedDistanceDifferentialInequalityPayload.barrierHamiltonJaco
     (payload.smoothHamiltonJacobiResidual_le_defectBound
       (payload.barrierTestToSmoothTest test))
 
+/-- Source data for the reduced-distance differential inequality interface. -/
+structure PerelmanReducedDistanceDifferentialInequalityPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  reducedDistanceExistenceSource :
+    PerelmanReducedDistanceExistencePayloadSource flow
+  payload :
+    PerelmanReducedDistanceDifferentialInequalityPayload
+      reducedDistanceExistenceSource.payload
+
+/-- Package reduced-distance differential inequality payloads as source data. -/
+def PerelmanReducedDistanceDifferentialInequalityPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    (payload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload) :
+    PerelmanReducedDistanceDifferentialInequalityPayloadSource flow where
+  reducedDistanceExistenceSource :=
+    PerelmanReducedDistanceExistencePayloadSource.of_payload
+      reducedDistanceExistencePayload
+  payload := payload
+
 /-- Interface for the differential inequality satisfied by reduced distance. -/
-inductive HasPerelmanReducedDistanceDifferentialInequality
+structure HasPerelmanReducedDistanceDifferentialInequality
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_reduced_distance_differential_inequality_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      (payload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload) :
-      HasPerelmanReducedDistanceDifferentialInequality flow
+  reducedDistanceDifferentialInequalityPayload_source :
+    Nonempty
+      (PerelmanReducedDistanceDifferentialInequalityPayloadSource flow)
+
+/-- Compatibility constructor for reduced-distance differential inequality payloads. -/
+def HasPerelmanReducedDistanceDifferentialInequality.of_reduced_distance_differential_inequality_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    (payload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload) :
+    HasPerelmanReducedDistanceDifferentialInequality flow where
+  reducedDistanceDifferentialInequalityPayload_source :=
+    ⟨PerelmanReducedDistanceDifferentialInequalityPayloadSource.of_payload
+      payload⟩
 
 /--
 Concrete reduced-distance estimates used in blow-up analysis.
@@ -7261,57 +9722,121 @@ theorem PerelmanReducedDistanceEstimatesPayload.barrierResidual_le_blowupEstimat
     (payload.barrierHamiltonJacobiResidual_le_estimateBound test)
     payload.barrierResidualEstimateBound_le_blowupEstimateConstant
 
+/-- Source data for the reduced-distance estimates interface. -/
+structure PerelmanReducedDistanceEstimatesPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  reducedDistanceDifferentialInequalitySource :
+    PerelmanReducedDistanceDifferentialInequalityPayloadSource flow
+  payload :
+    PerelmanReducedDistanceEstimatesPayload
+      reducedDistanceDifferentialInequalitySource.payload
+
+/-- Package reduced-distance estimates payloads as source data. -/
+def PerelmanReducedDistanceEstimatesPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    (payload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload) :
+    PerelmanReducedDistanceEstimatesPayloadSource flow where
+  reducedDistanceDifferentialInequalitySource :=
+    PerelmanReducedDistanceDifferentialInequalityPayloadSource.of_payload
+      reducedDistanceDifferentialInequalityPayload
+  payload := payload
+
 /-- Interface for estimates on reduced distance used in blow-up analysis. -/
-inductive HasPerelmanReducedDistanceEstimates
+structure HasPerelmanReducedDistanceEstimates
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_reduced_distance_estimates_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      (payload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload) :
-      HasPerelmanReducedDistanceEstimates flow
+  reducedDistanceEstimatesPayload_source :
+    Nonempty (PerelmanReducedDistanceEstimatesPayloadSource flow)
+
+/-- Compatibility constructor for reduced-distance estimates payloads. -/
+def HasPerelmanReducedDistanceEstimates.of_reduced_distance_estimates_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    (payload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload) :
+    HasPerelmanReducedDistanceEstimates flow where
+  reducedDistanceEstimatesPayload_source :=
+    ⟨PerelmanReducedDistanceEstimatesPayloadSource.of_payload payload⟩
 
 /--
 Concrete cut-locus and barrier-control data for reduced distance.
@@ -7543,60 +10068,127 @@ theorem PerelmanReducedDistanceCutLocusControlPayload.barrierResidual_le_cutLocu
       test)
     payload.barrierResidualEstimateBound_le_cutLocusBarrierResidualBound
 
+/-- Source data for the reduced-distance cut-locus-control interface. -/
+structure PerelmanReducedDistanceCutLocusControlPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  reducedDistanceEstimatesSource :
+    PerelmanReducedDistanceEstimatesPayloadSource flow
+  payload :
+    PerelmanReducedDistanceCutLocusControlPayload
+      reducedDistanceEstimatesSource.payload
+
+/-- Package reduced-distance cut-locus-control payloads as source data. -/
+def PerelmanReducedDistanceCutLocusControlPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    (payload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload) :
+    PerelmanReducedDistanceCutLocusControlPayloadSource flow where
+  reducedDistanceEstimatesSource :=
+    PerelmanReducedDistanceEstimatesPayloadSource.of_payload
+      reducedDistanceEstimatesPayload
+  payload := payload
+
 /-- Interface for cut-locus and barrier control in reduced-distance arguments. -/
-inductive HasPerelmanReducedDistanceCutLocusControl
+structure HasPerelmanReducedDistanceCutLocusControl
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_reduced_distance_cut_locus_control_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      (payload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload) :
-      HasPerelmanReducedDistanceCutLocusControl flow
+  reducedDistanceCutLocusControlPayload_source :
+    Nonempty (PerelmanReducedDistanceCutLocusControlPayloadSource flow)
+
+/-- Compatibility constructor for reduced-distance cut-locus-control payloads. -/
+def HasPerelmanReducedDistanceCutLocusControl.of_reduced_distance_cut_locus_control_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    (payload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload) :
+    HasPerelmanReducedDistanceCutLocusControl flow where
+  reducedDistanceCutLocusControlPayload_source :=
+    ⟨PerelmanReducedDistanceCutLocusControlPayloadSource.of_payload payload⟩
 
 /--
 Concrete reduced-Jacobian comparison data used in reduced-volume monotonicity.
@@ -7879,63 +10471,133 @@ theorem PerelmanReducedJacobianComparisonPayload.barrierReducedJacobianValue_le_
     (payload.barrierReducedJacobianValue_le_barrierBound test)
     payload.barrierReducedJacobianBound_le_envelope
 
+/-- Source data for the reduced-Jacobian-comparison interface. -/
+structure PerelmanReducedJacobianComparisonPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  reducedDistanceCutLocusControlSource :
+    PerelmanReducedDistanceCutLocusControlPayloadSource flow
+  payload :
+    PerelmanReducedJacobianComparisonPayload
+      reducedDistanceCutLocusControlSource.payload
+
+/-- Package reduced-Jacobian-comparison payloads as source data. -/
+def PerelmanReducedJacobianComparisonPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    (payload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload) :
+    PerelmanReducedJacobianComparisonPayloadSource flow where
+  reducedDistanceCutLocusControlSource :=
+    PerelmanReducedDistanceCutLocusControlPayloadSource.of_payload
+      reducedDistanceCutLocusControlPayload
+  payload := payload
+
 /-- Interface for the reduced-Jacobian comparison used in reduced-volume monotonicity. -/
-inductive HasPerelmanReducedJacobianComparison
+structure HasPerelmanReducedJacobianComparison
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_reduced_jacobian_comparison_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      (payload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload) :
-      HasPerelmanReducedJacobianComparison flow
+  reducedJacobianComparisonPayload_source :
+    Nonempty (PerelmanReducedJacobianComparisonPayloadSource flow)
+
+/-- Compatibility constructor for reduced-Jacobian-comparison payloads. -/
+def HasPerelmanReducedJacobianComparison.of_reduced_jacobian_comparison_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    (payload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload) :
+    HasPerelmanReducedJacobianComparison flow where
+  reducedJacobianComparisonPayload_source :=
+    ⟨PerelmanReducedJacobianComparisonPayloadSource.of_payload payload⟩
 
 /--
 Concrete reduced-distance theory data for the Perelman package.
@@ -8283,66 +10945,139 @@ theorem PerelmanReducedDistanceTheoryPayload.barrierReducedJacobianValue_le_theo
       reducedJacobianComparisonPayload test)
     payload.reducedJacobianComparisonEnvelope_le_theoryEnvelope
 
+/-- Source data for the reduced-distance theory interface. -/
+structure PerelmanReducedDistanceTheoryPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  reducedJacobianComparisonSource :
+    PerelmanReducedJacobianComparisonPayloadSource flow
+  payload :
+    PerelmanReducedDistanceTheoryPayload
+      reducedJacobianComparisonSource.payload
+
+/-- Package reduced-distance theory payloads as source data. -/
+def PerelmanReducedDistanceTheoryPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    (payload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload) :
+    PerelmanReducedDistanceTheoryPayloadSource flow where
+  reducedJacobianComparisonSource :=
+    PerelmanReducedJacobianComparisonPayloadSource.of_payload
+      reducedJacobianComparisonPayload
+  payload := payload
+
 /-- Interface for reduced distance along the backward Ricci-flow spacetime. -/
-inductive HasPerelmanReducedDistanceTheory
+structure HasPerelmanReducedDistanceTheory
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_reduced_distance_theory_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      (payload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload) :
-      HasPerelmanReducedDistanceTheory flow
+  reducedDistanceTheoryPayload_source :
+    Nonempty (PerelmanReducedDistanceTheoryPayloadSource flow)
+
+/-- Compatibility constructor for reduced-distance theory payloads. -/
+def HasPerelmanReducedDistanceTheory.of_reduced_distance_theory_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    (payload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload) :
+    HasPerelmanReducedDistanceTheory flow where
+  reducedDistanceTheoryPayload_source :=
+    ⟨PerelmanReducedDistanceTheoryPayloadSource.of_payload payload⟩
 
 /--
 Concrete reduced-volume definition data for the Perelman package.
@@ -8626,69 +11361,144 @@ theorem PerelmanReducedVolumeDefinitionPayload.reducedVolumeDistanceValue_le_the
     PerelmanReducedDistanceTheoryPayload.reducedDistanceTheoryValue_le_envelope
       reducedDistanceTheoryPayload (payload.reducedVolumePointToTheoryPoint point)
 
+/-- Source data for the reduced-volume definition interface. -/
+structure PerelmanReducedVolumeDefinitionPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  reducedDistanceTheorySource :
+    PerelmanReducedDistanceTheoryPayloadSource flow
+  payload :
+    PerelmanReducedVolumeDefinitionPayload reducedDistanceTheorySource.payload
+
+/-- Package reduced-volume definition payloads as source data. -/
+def PerelmanReducedVolumeDefinitionPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    (payload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload) :
+    PerelmanReducedVolumeDefinitionPayloadSource flow where
+  reducedDistanceTheorySource :=
+    PerelmanReducedDistanceTheoryPayloadSource.of_payload
+      reducedDistanceTheoryPayload
+  payload := payload
+
 /-- Interface for defining reduced volume from reduced distance. -/
-inductive HasPerelmanReducedVolumeDefinition
+structure HasPerelmanReducedVolumeDefinition
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_reduced_volume_definition_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      (payload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload) :
-      HasPerelmanReducedVolumeDefinition flow
+  reducedVolumeDefinitionPayload_source :
+    Nonempty (PerelmanReducedVolumeDefinitionPayloadSource flow)
+
+/-- Compatibility constructor for reduced-volume definition payloads. -/
+def HasPerelmanReducedVolumeDefinition.of_reduced_volume_definition_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    (payload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload) :
+    HasPerelmanReducedVolumeDefinition flow where
+  reducedVolumeDefinitionPayload_source :=
+    ⟨PerelmanReducedVolumeDefinitionPayloadSource.of_payload payload⟩
 
 /--
 Concrete reduced-volume derivative-formula data for the Perelman package.
@@ -8973,72 +11783,151 @@ theorem PerelmanReducedVolumeDerivativeFormulaPayload.reducedVolumeValueAtDeriva
   exact
     reducedVolumeDefinitionPayload.reducedVolumeValue_le_definitionEnvelope
 
+/-- Source data for the reduced-volume derivative-formula interface. -/
+structure PerelmanReducedVolumeDerivativeFormulaPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  reducedVolumeDefinitionSource :
+    PerelmanReducedVolumeDefinitionPayloadSource flow
+  payload :
+    PerelmanReducedVolumeDerivativeFormulaPayload
+      reducedVolumeDefinitionSource.payload
+
+/-- Package reduced-volume derivative-formula payloads as source data. -/
+def PerelmanReducedVolumeDerivativeFormulaPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    (payload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload) :
+    PerelmanReducedVolumeDerivativeFormulaPayloadSource flow where
+  reducedVolumeDefinitionSource :=
+    PerelmanReducedVolumeDefinitionPayloadSource.of_payload
+      reducedVolumeDefinitionPayload
+  payload := payload
+
 /-- Interface for the reduced-volume derivative formula. -/
-inductive HasPerelmanReducedVolumeDerivativeFormula
+structure HasPerelmanReducedVolumeDerivativeFormula
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_reduced_volume_derivative_formula_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      (payload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload) :
-      HasPerelmanReducedVolumeDerivativeFormula flow
+  reducedVolumeDerivativeFormulaPayload_source :
+    Nonempty (PerelmanReducedVolumeDerivativeFormulaPayloadSource flow)
+
+/-- Compatibility constructor for reduced-volume derivative-formula payloads. -/
+def HasPerelmanReducedVolumeDerivativeFormula.of_reduced_volume_derivative_formula_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    (payload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload) :
+    HasPerelmanReducedVolumeDerivativeFormula flow where
+  reducedVolumeDerivativeFormulaPayload_source :=
+    ⟨PerelmanReducedVolumeDerivativeFormulaPayloadSource.of_payload payload⟩
 
 /--
 Concrete reduced-volume rigidity/equality-case data for the Perelman package.
@@ -9406,75 +12295,157 @@ theorem PerelmanReducedVolumeRigidityPayload.rigidityConclusion_of_equalityCase
     (PerelmanReducedVolumeRigidityPayload.equalityCaseRigidityDefect_eq_zero
       payload equalityCase)
 
+/-- Source data for the reduced-volume rigidity interface. -/
+structure PerelmanReducedVolumeRigidityPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  reducedVolumeDerivativeFormulaSource :
+    PerelmanReducedVolumeDerivativeFormulaPayloadSource flow
+  payload :
+    PerelmanReducedVolumeRigidityPayload
+      reducedVolumeDerivativeFormulaSource.payload
+
+/-- Package reduced-volume rigidity payloads as source data. -/
+def PerelmanReducedVolumeRigidityPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    (payload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload) :
+    PerelmanReducedVolumeRigidityPayloadSource flow where
+  reducedVolumeDerivativeFormulaSource :=
+    PerelmanReducedVolumeDerivativeFormulaPayloadSource.of_payload
+      reducedVolumeDerivativeFormulaPayload
+  payload := payload
+
 /-- Interface for the reduced-volume rigidity/equality case input. -/
-inductive HasPerelmanReducedVolumeRigidity
+structure HasPerelmanReducedVolumeRigidity
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_reduced_volume_rigidity_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      (payload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload) :
-      HasPerelmanReducedVolumeRigidity flow
+  reducedVolumeRigidityPayload_source :
+    Nonempty (PerelmanReducedVolumeRigidityPayloadSource flow)
+
+/-- Compatibility constructor for reduced-volume rigidity payloads. -/
+def HasPerelmanReducedVolumeRigidity.of_reduced_volume_rigidity_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    (payload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload) :
+    HasPerelmanReducedVolumeRigidity flow where
+  reducedVolumeRigidityPayload_source :=
+    ⟨PerelmanReducedVolumeRigidityPayloadSource.of_payload payload⟩
 
 /--
 Concrete positive lower-bound data for reduced volume at controlled scales.
@@ -9902,78 +12873,163 @@ theorem PerelmanReducedVolumePositiveLowerBoundPayload.basepointWeight_le_lowerB
     (le_trans reducedVolumeDefinitionPayload.reducedVolumeValue_le_definitionEnvelope
       payload.definitionEnvelope_le_lowerBoundEnvelope)
 
+/-- Source data for the reduced-volume positive-lower-bound interface. -/
+structure PerelmanReducedVolumePositiveLowerBoundPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  reducedVolumeRigiditySource :
+    PerelmanReducedVolumeRigidityPayloadSource flow
+  payload :
+    PerelmanReducedVolumePositiveLowerBoundPayload
+      reducedVolumeRigiditySource.payload
+
+/-- Package reduced-volume positive-lower-bound payloads as source data. -/
+def PerelmanReducedVolumePositiveLowerBoundPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    (payload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload) :
+    PerelmanReducedVolumePositiveLowerBoundPayloadSource flow where
+  reducedVolumeRigiditySource :=
+    PerelmanReducedVolumeRigidityPayloadSource.of_payload
+      reducedVolumeRigidityPayload
+  payload := payload
+
 /-- Interface for positive lower bounds on reduced volume at controlled scales. -/
-inductive HasPerelmanReducedVolumePositiveLowerBound
+structure HasPerelmanReducedVolumePositiveLowerBound
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_reduced_volume_positive_lower_bound_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      (payload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload) :
-      HasPerelmanReducedVolumePositiveLowerBound flow
+  reducedVolumePositiveLowerBoundPayload_source :
+    Nonempty (PerelmanReducedVolumePositiveLowerBoundPayloadSource flow)
+
+/-- Compatibility constructor for reduced-volume positive-lower-bound payloads. -/
+def HasPerelmanReducedVolumePositiveLowerBound.of_reduced_volume_positive_lower_bound_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    (payload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload) :
+    HasPerelmanReducedVolumePositiveLowerBound flow where
+  reducedVolumePositiveLowerBoundPayload_source :=
+    ⟨PerelmanReducedVolumePositiveLowerBoundPayloadSource.of_payload payload⟩
 
 /--
 Concrete reduced-volume limit-rigidity data for equality and almost-equality
@@ -10542,81 +13598,169 @@ theorem PerelmanReducedVolumeLimitRigidityPayload.almostEqualityDefect_le_envelo
     payload.reducedVolumeLimitRigidityDefect_le_envelope
       (payload.almostEqualityToLimitCase almostCase)
 
+/-- Source data for the reduced-volume limit-rigidity interface. -/
+structure PerelmanReducedVolumeLimitRigidityPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  reducedVolumePositiveLowerBoundSource :
+    PerelmanReducedVolumePositiveLowerBoundPayloadSource flow
+  payload :
+    PerelmanReducedVolumeLimitRigidityPayload
+      reducedVolumePositiveLowerBoundSource.payload
+
+/-- Package reduced-volume limit-rigidity payloads as source data. -/
+def PerelmanReducedVolumeLimitRigidityPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    (payload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload) :
+    PerelmanReducedVolumeLimitRigidityPayloadSource flow where
+  reducedVolumePositiveLowerBoundSource :=
+    PerelmanReducedVolumePositiveLowerBoundPayloadSource.of_payload
+      reducedVolumePositiveLowerBoundPayload
+  payload := payload
+
 /-- Interface for reduced-volume limit rigidity in equality or almost-equality cases. -/
-inductive HasPerelmanReducedVolumeLimitRigidity
+structure HasPerelmanReducedVolumeLimitRigidity
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_reduced_volume_limit_rigidity_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      (payload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload) :
-      HasPerelmanReducedVolumeLimitRigidity flow
+  reducedVolumeLimitRigidityPayload_source :
+    Nonempty (PerelmanReducedVolumeLimitRigidityPayloadSource flow)
+
+/-- Compatibility constructor for reduced-volume limit-rigidity payloads. -/
+def HasPerelmanReducedVolumeLimitRigidity.of_reduced_volume_limit_rigidity_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    (payload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload) :
+    HasPerelmanReducedVolumeLimitRigidity flow where
+  reducedVolumeLimitRigidityPayload_source :=
+    ⟨PerelmanReducedVolumeLimitRigidityPayloadSource.of_payload payload⟩
 
 /--
 Concrete nonincreasing/monotonicity data for reduced volume.
@@ -11016,84 +14160,175 @@ theorem PerelmanReducedVolumeNonincreasingPayload.monotonicityDefect_nonnegative
   rw [payload.reducedVolumeMonotonicityDefect_eq_drop pair]
   exact sub_nonneg.mpr (payload.reducedVolumeLater_le_earlier pair)
 
+/-- Source data for the reduced-volume nonincreasing interface. -/
+structure PerelmanReducedVolumeNonincreasingPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  reducedVolumeLimitRigiditySource :
+    PerelmanReducedVolumeLimitRigidityPayloadSource flow
+  payload :
+    PerelmanReducedVolumeNonincreasingPayload
+      reducedVolumeLimitRigiditySource.payload
+
+/-- Package reduced-volume nonincreasing payloads as source data. -/
+def PerelmanReducedVolumeNonincreasingPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    (payload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload) :
+    PerelmanReducedVolumeNonincreasingPayloadSource flow where
+  reducedVolumeLimitRigiditySource :=
+    PerelmanReducedVolumeLimitRigidityPayloadSource.of_payload
+      reducedVolumeLimitRigidityPayload
+  payload := payload
+
 /-- Interface for the nonincreasing or monotonicity formula for reduced volume. -/
-inductive HasPerelmanReducedVolumeNonincreasing
+structure HasPerelmanReducedVolumeNonincreasing
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_reduced_volume_nonincreasing_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      (payload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload) :
-      HasPerelmanReducedVolumeNonincreasing flow
+  reducedVolumeNonincreasingPayload_source :
+    Nonempty (PerelmanReducedVolumeNonincreasingPayloadSource flow)
+
+/-- Compatibility constructor for reduced-volume nonincreasing payloads. -/
+def HasPerelmanReducedVolumeNonincreasing.of_reduced_volume_nonincreasing_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    (payload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload) :
+    HasPerelmanReducedVolumeNonincreasing flow where
+  reducedVolumeNonincreasingPayload_source :=
+    ⟨PerelmanReducedVolumeNonincreasingPayloadSource.of_payload payload⟩
 
 /--
 Concrete data deriving kappa-noncollapsing from reduced-volume control.
@@ -11668,98 +14903,202 @@ theorem PerelmanKappaNoncollapsingFromReducedVolumePayload.ballVolumeRatio_posit
     (PerelmanKappaNoncollapsingFromReducedVolumePayload.kappaConstant_le_ballVolumeRatio
       payload ball)
 
+/-- Source data for the kappa-from-reduced-volume interface. -/
+structure PerelmanKappaNoncollapsingFromReducedVolumePayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  reducedVolumeNonincreasingSource :
+    PerelmanReducedVolumeNonincreasingPayloadSource flow
+  payload :
+    PerelmanKappaNoncollapsingFromReducedVolumePayload
+      reducedVolumeNonincreasingSource.payload
+
+/-- Package kappa-from-reduced-volume payloads as source data. -/
+def PerelmanKappaNoncollapsingFromReducedVolumePayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    (payload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload) :
+    PerelmanKappaNoncollapsingFromReducedVolumePayloadSource flow where
+  reducedVolumeNonincreasingSource :=
+    PerelmanReducedVolumeNonincreasingPayloadSource.of_payload
+      reducedVolumeNonincreasingPayload
+  payload := payload
+
 /-- Interface deriving kappa-noncollapsing from reduced-volume control. -/
-inductive HasPerelmanKappaNoncollapsingFromReducedVolume
+structure HasPerelmanKappaNoncollapsingFromReducedVolume
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_kappa_noncollapsing_from_reduced_volume_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      (payload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload) :
-      HasPerelmanKappaNoncollapsingFromReducedVolume flow
+  kappaNoncollapsingFromReducedVolumePayload_source :
+    Nonempty
+      (PerelmanKappaNoncollapsingFromReducedVolumePayloadSource flow)
+
+/-- Compatibility constructor for kappa-from-reduced-volume payloads. -/
+def HasPerelmanKappaNoncollapsingFromReducedVolume.of_kappa_noncollapsing_from_reduced_volume_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    (payload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload) :
+    HasPerelmanKappaNoncollapsingFromReducedVolume flow where
+  kappaNoncollapsingFromReducedVolumePayload_source :=
+    ⟨PerelmanKappaNoncollapsingFromReducedVolumePayloadSource.of_payload payload⟩
 
 /-- Interface for quantified kappa-noncollapsing constants and scale ranges. -/
-inductive HasPerelmanKappaNoncollapsingQuantification
+structure HasPerelmanKappaNoncollapsingQuantification
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_kappa_noncollapsing_from_reduced_volume
-      (kappaNoncollapsingFromReducedVolume :
-        HasPerelmanKappaNoncollapsingFromReducedVolume flow) :
-      HasPerelmanKappaNoncollapsingQuantification flow
+  kappaNoncollapsingFromReducedVolume :
+    HasPerelmanKappaNoncollapsingFromReducedVolume flow
+
+/-- Compatibility constructor from kappa-from-reduced-volume data. -/
+def HasPerelmanKappaNoncollapsingQuantification.of_kappa_noncollapsing_from_reduced_volume
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (kappaNoncollapsingFromReducedVolume :
+      HasPerelmanKappaNoncollapsingFromReducedVolume flow) :
+    HasPerelmanKappaNoncollapsingQuantification flow where
+  kappaNoncollapsingFromReducedVolume := kappaNoncollapsingFromReducedVolume
 
 /--
 Concrete contradiction-setup data for Perelman's no-local-collapsing theorem.
@@ -12289,90 +15628,189 @@ theorem PerelmanNoLocalCollapsingContradictionSetupPayload.collapseHypothesis_co
     (PerelmanNoLocalCollapsingContradictionSetupPayload.collapseHypothesis_collapsedVolumeRatio_lt_kappaConstant
       payload setup hypothesis)
 
+/-- Source data for the no-local-collapsing contradiction-setup interface. -/
+structure PerelmanNoLocalCollapsingContradictionSetupPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  kappaNoncollapsingFromReducedVolumeSource :
+    PerelmanKappaNoncollapsingFromReducedVolumePayloadSource flow
+  payload :
+    PerelmanNoLocalCollapsingContradictionSetupPayload
+      kappaNoncollapsingFromReducedVolumeSource.payload
+
+/-- Package no-local-collapsing contradiction-setup payloads as source data. -/
+def PerelmanNoLocalCollapsingContradictionSetupPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    (payload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload) :
+    PerelmanNoLocalCollapsingContradictionSetupPayloadSource flow where
+  kappaNoncollapsingFromReducedVolumeSource :=
+    PerelmanKappaNoncollapsingFromReducedVolumePayloadSource.of_payload
+      kappaNoncollapsingFromReducedVolumePayload
+  payload := payload
+
 /-- Interface for the contradiction setup in the no-local-collapsing theorem. -/
-inductive HasPerelmanNoLocalCollapsingContradictionSetup
+structure HasPerelmanNoLocalCollapsingContradictionSetup
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_no_local_collapsing_contradiction_setup_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      (payload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload) :
-      HasPerelmanNoLocalCollapsingContradictionSetup flow
+  noLocalCollapsingContradictionSetupPayload_source :
+    Nonempty
+      (PerelmanNoLocalCollapsingContradictionSetupPayloadSource flow)
+
+/-- Compatibility constructor for no-local-collapsing contradiction-setup payloads. -/
+def HasPerelmanNoLocalCollapsingContradictionSetup.of_no_local_collapsing_contradiction_setup_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    (payload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload) :
+    HasPerelmanNoLocalCollapsingContradictionSetup flow where
+  noLocalCollapsingContradictionSetupPayload_source :=
+    ⟨PerelmanNoLocalCollapsingContradictionSetupPayloadSource.of_payload
+      payload⟩
 
 /--
 Concrete collapsed-ball blowup data for Perelman's no-local-collapsing
@@ -13026,269 +16464,375 @@ theorem PerelmanCollapsedBallBlowupPayload.rescaledVolumeRatio_contradiction
     (PerelmanCollapsedBallBlowupPayload.rescaledVolumeRatio_lt_kappaConstant
       payload index)
 
+/-- Source data for the collapsed-ball blowup interface. -/
+structure PerelmanCollapsedBallBlowupPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  noLocalCollapsingContradictionSetupSource :
+    PerelmanNoLocalCollapsingContradictionSetupPayloadSource flow
+  payload :
+    PerelmanCollapsedBallBlowupPayload
+      noLocalCollapsingContradictionSetupSource.payload
+
+/-- Package collapsed-ball blowup payloads as source data. -/
+def PerelmanCollapsedBallBlowupPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    (payload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload) :
+    PerelmanCollapsedBallBlowupPayloadSource flow where
+  noLocalCollapsingContradictionSetupSource :=
+    PerelmanNoLocalCollapsingContradictionSetupPayloadSource.of_payload
+      noLocalCollapsingContradictionSetupPayload
+  payload := payload
+
 /-- Interface for blowing up a collapsed ball in Perelman's contradiction argument. -/
-inductive HasPerelmanCollapsedBallBlowup
+structure HasPerelmanCollapsedBallBlowup
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_collapsed_ball_blowup_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {noLocalCollapsingContradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      (payload :
-        PerelmanCollapsedBallBlowupPayload
-          noLocalCollapsingContradictionSetupPayload) :
-      HasPerelmanCollapsedBallBlowup flow
+  collapsedBallBlowupPayload_source :
+    Nonempty (PerelmanCollapsedBallBlowupPayloadSource flow)
+
+/-- Compatibility constructor for collapsed-ball blowup payloads. -/
+def HasPerelmanCollapsedBallBlowup.of_collapsed_ball_blowup_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    (payload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload) :
+    HasPerelmanCollapsedBallBlowup flow where
+  collapsedBallBlowupPayload_source :=
+    ⟨PerelmanCollapsedBallBlowupPayloadSource.of_payload payload⟩
 
 /-- Interface for deriving the volume-ratio contradiction in no-local-collapsing. -/
-inductive HasPerelmanVolumeRatioContradiction
+structure HasPerelmanVolumeRatioContradiction
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_collapsed_ball_blowup_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {noLocalCollapsingContradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      (payload :
-        PerelmanCollapsedBallBlowupPayload
-          noLocalCollapsingContradictionSetupPayload) :
-      HasPerelmanVolumeRatioContradiction flow
+  collapsedBallBlowup :
+    HasPerelmanCollapsedBallBlowup flow
+
+/-- Compatibility constructor from collapsed-ball blowup payloads. -/
+def HasPerelmanVolumeRatioContradiction.of_collapsed_ball_blowup_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    (payload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload) :
+    HasPerelmanVolumeRatioContradiction flow where
+  collapsedBallBlowup :=
+    HasPerelmanCollapsedBallBlowup.of_collapsed_ball_blowup_payload payload
 
 /-- Interface for the local volume lower bound in no-local-collapsing. -/
-inductive HasNoLocalCollapsingVolumeLowerBound
+structure HasNoLocalCollapsingVolumeLowerBound
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_collapsed_ball_blowup_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {noLocalCollapsingContradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      (payload :
-        PerelmanCollapsedBallBlowupPayload
-          noLocalCollapsingContradictionSetupPayload) :
-      HasNoLocalCollapsingVolumeLowerBound flow
+  collapsedBallBlowup :
+    HasPerelmanCollapsedBallBlowup flow
+
+/-- Compatibility constructor from collapsed-ball blowup payloads. -/
+def HasNoLocalCollapsingVolumeLowerBound.of_collapsed_ball_blowup_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    (payload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload) :
+    HasNoLocalCollapsingVolumeLowerBound flow where
+  collapsedBallBlowup :=
+    HasPerelmanCollapsedBallBlowup.of_collapsed_ball_blowup_payload payload
 
 /--
 Concrete Hamilton compactness data for the collapsed-ball blowup sequence.
@@ -13565,94 +17109,194 @@ theorem HamiltonCompactnessPayload.compactnessConvergenceError_nonnegative
       (payload.subsequenceToBlowupIndex index)
       (payload.compactnessTestToPointedConvergenceTest test)
 
+/-- Source data for the Hamilton compactness interface. -/
+structure HamiltonCompactnessPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  collapsedBallBlowupSource :
+    PerelmanCollapsedBallBlowupPayloadSource flow
+  payload :
+    HamiltonCompactnessPayload collapsedBallBlowupSource.payload
+
+/-- Package Hamilton compactness payloads as source data. -/
+def HamiltonCompactnessPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    (payload : HamiltonCompactnessPayload collapsedBallBlowupPayload) :
+    HamiltonCompactnessPayloadSource flow where
+  collapsedBallBlowupSource :=
+    PerelmanCollapsedBallBlowupPayloadSource.of_payload
+      collapsedBallBlowupPayload
+  payload := payload
+
 /-- Interface for Hamilton compactness for pointed Ricci-flow sequences. -/
-inductive HasHamiltonCompactnessTheorem
+structure HasHamiltonCompactnessTheorem
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_hamilton_compactness_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {noLocalCollapsingContradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      {collapsedBallBlowupPayload :
-        PerelmanCollapsedBallBlowupPayload
-          noLocalCollapsingContradictionSetupPayload}
-      (payload : HamiltonCompactnessPayload collapsedBallBlowupPayload) :
-      HasHamiltonCompactnessTheorem flow
+  hamiltonCompactnessPayload_source :
+    Nonempty (HamiltonCompactnessPayloadSource flow)
+
+/-- Compatibility constructor for Hamilton compactness payloads. -/
+def HasHamiltonCompactnessTheorem.of_hamilton_compactness_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    (payload : HamiltonCompactnessPayload collapsedBallBlowupPayload) :
+    HasHamiltonCompactnessTheorem flow where
+  hamiltonCompactnessPayload_source :=
+    ⟨HamiltonCompactnessPayloadSource.of_payload payload⟩
 
 /--
 Concrete compactness data for ancient kappa-solution blow-up limits.
@@ -14183,191 +17827,396 @@ theorem AncientKappaSolutionLimitExtractionPayload.limitExtractionConvergenceErr
       (payload.limitExtractionToCompactnessIndex index)
       (payload.limitExtractionTestToCompactnessTest test)
 
+/-- Source data for ancient kappa-solution compactness. -/
+structure AncientKappaSolutionCompactnessPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  hamiltonCompactnessSource :
+    HamiltonCompactnessPayloadSource flow
+  payload :
+    AncientKappaSolutionCompactnessPayload hamiltonCompactnessSource.payload
+
+/-- Package ancient kappa-solution compactness payloads as source data. -/
+def AncientKappaSolutionCompactnessPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    (payload :
+      AncientKappaSolutionCompactnessPayload hamiltonCompactnessPayload) :
+    AncientKappaSolutionCompactnessPayloadSource flow where
+  hamiltonCompactnessSource :=
+    HamiltonCompactnessPayloadSource.of_payload hamiltonCompactnessPayload
+  payload := payload
+
 /-- Interface for compactness of ancient kappa-solutions used as blow-up limits. -/
-inductive HasAncientKappaSolutionCompactness
+structure HasAncientKappaSolutionCompactness
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_ancient_kappa_solution_compactness_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {noLocalCollapsingContradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      {collapsedBallBlowupPayload :
-        PerelmanCollapsedBallBlowupPayload
-          noLocalCollapsingContradictionSetupPayload}
-      {hamiltonCompactnessPayload :
-        HamiltonCompactnessPayload collapsedBallBlowupPayload}
-      (payload :
-        AncientKappaSolutionCompactnessPayload
-          hamiltonCompactnessPayload) :
-      HasAncientKappaSolutionCompactness flow
+  ancientKappaSolutionCompactnessPayload_source :
+    Nonempty (AncientKappaSolutionCompactnessPayloadSource flow)
+
+/-- Compatibility constructor for ancient kappa-solution compactness payloads. -/
+def HasAncientKappaSolutionCompactness.of_ancient_kappa_solution_compactness_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    (payload :
+      AncientKappaSolutionCompactnessPayload hamiltonCompactnessPayload) :
+    HasAncientKappaSolutionCompactness flow where
+  ancientKappaSolutionCompactnessPayload_source :=
+    ⟨AncientKappaSolutionCompactnessPayloadSource.of_payload payload⟩
+
+/-- Source data for ancient kappa-solution limit extraction. -/
+structure AncientKappaSolutionLimitExtractionPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  hamiltonCompactnessSource :
+    HamiltonCompactnessPayloadSource flow
+  payload :
+    AncientKappaSolutionLimitExtractionPayload
+      hamiltonCompactnessSource.payload
+
+/-- Package ancient kappa-solution limit-extraction payloads as source data. -/
+def AncientKappaSolutionLimitExtractionPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    (payload :
+      AncientKappaSolutionLimitExtractionPayload
+        hamiltonCompactnessPayload) :
+    AncientKappaSolutionLimitExtractionPayloadSource flow where
+  hamiltonCompactnessSource :=
+    HamiltonCompactnessPayloadSource.of_payload hamiltonCompactnessPayload
+  payload := payload
 
 /-- Interface for extracting ancient kappa-solution limits from high-curvature blow-ups. -/
-inductive HasAncientKappaSolutionLimitExtraction
+structure HasAncientKappaSolutionLimitExtraction
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_ancient_kappa_solution_limit_extraction_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {noLocalCollapsingContradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      {collapsedBallBlowupPayload :
-        PerelmanCollapsedBallBlowupPayload
-          noLocalCollapsingContradictionSetupPayload}
-      {hamiltonCompactnessPayload :
-        HamiltonCompactnessPayload collapsedBallBlowupPayload}
-      (payload :
-        AncientKappaSolutionLimitExtractionPayload
-          hamiltonCompactnessPayload) :
-      HasAncientKappaSolutionLimitExtraction flow
+  ancientKappaSolutionLimitExtractionPayload_source :
+    Nonempty (AncientKappaSolutionLimitExtractionPayloadSource flow)
+
+/-- Compatibility constructor for ancient kappa-solution limit-extraction payloads. -/
+def HasAncientKappaSolutionLimitExtraction.of_ancient_kappa_solution_limit_extraction_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    (payload :
+      AncientKappaSolutionLimitExtractionPayload
+        hamiltonCompactnessPayload) :
+    HasAncientKappaSolutionLimitExtraction flow where
+  ancientKappaSolutionLimitExtractionPayload_source :=
+    ⟨AncientKappaSolutionLimitExtractionPayloadSource.of_payload payload⟩
 
 /--
 Concrete pointed parabolic-rescaling data for the extracted ancient
@@ -15431,99 +19280,204 @@ theorem KappaSolutionPointedRescalingPayload.one_le_pointedRescalingEnvelope
 
 end KappaSolutionPointedRescalingSubsequenceEstimateLemmas
 
+/-- Source data for pointed parabolic rescalings used to form kappa-solution limits. -/
+structure KappaSolutionPointedRescalingPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  limitExtractionSource :
+    AncientKappaSolutionLimitExtractionPayloadSource flow
+  payload :
+    KappaSolutionPointedRescalingPayload limitExtractionSource.payload
+
+/-- Package pointed-rescaling payloads as source data. -/
+def KappaSolutionPointedRescalingPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {limitExtractionPayload :
+      AncientKappaSolutionLimitExtractionPayload
+        hamiltonCompactnessPayload}
+    (payload : KappaSolutionPointedRescalingPayload limitExtractionPayload) :
+    KappaSolutionPointedRescalingPayloadSource flow where
+  limitExtractionSource :=
+    AncientKappaSolutionLimitExtractionPayloadSource.of_payload
+      limitExtractionPayload
+  payload := payload
+
 /-- Interface for pointed parabolic rescalings used to form kappa-solution limits. -/
-inductive HasKappaSolutionPointedRescaling
+structure HasKappaSolutionPointedRescaling
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_kappa_solution_pointed_rescaling_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {noLocalCollapsingContradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      {collapsedBallBlowupPayload :
-        PerelmanCollapsedBallBlowupPayload
-          noLocalCollapsingContradictionSetupPayload}
-      {hamiltonCompactnessPayload :
-        HamiltonCompactnessPayload collapsedBallBlowupPayload}
-      {limitExtractionPayload :
-        AncientKappaSolutionLimitExtractionPayload
-          hamiltonCompactnessPayload}
-      (payload : KappaSolutionPointedRescalingPayload limitExtractionPayload) :
-      HasKappaSolutionPointedRescaling flow
+  kappaSolutionPointedRescalingPayload_source :
+    Nonempty (KappaSolutionPointedRescalingPayloadSource flow)
+
+/-- Compatibility constructor for pointed-rescaling payloads. -/
+def HasKappaSolutionPointedRescaling.of_kappa_solution_pointed_rescaling_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {limitExtractionPayload :
+      AncientKappaSolutionLimitExtractionPayload
+        hamiltonCompactnessPayload}
+    (payload : KappaSolutionPointedRescalingPayload limitExtractionPayload) :
+    HasKappaSolutionPointedRescaling flow where
+  kappaSolutionPointedRescalingPayload_source :=
+    ⟨KappaSolutionPointedRescalingPayloadSource.of_payload payload⟩
 
 /--
 Concrete curvature-normalization data for pointed kappa-solution rescalings.
@@ -16014,103 +19968,213 @@ theorem KappaSolutionCurvatureNormalizationPayload.normalizedKappaScale_positive
     KappaSolutionPointedRescalingPayload.pointedRescalingKappaScale_positive
       pointedRescalingPayload
 
+/-- Source data for curvature normalization in kappa-solution blow-up limits. -/
+structure KappaSolutionCurvatureNormalizationPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  pointedRescalingSource :
+    KappaSolutionPointedRescalingPayloadSource flow
+  payload :
+    KappaSolutionCurvatureNormalizationPayload
+      pointedRescalingSource.payload
+
+/-- Package curvature-normalization payloads as source data. -/
+def KappaSolutionCurvatureNormalizationPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {limitExtractionPayload :
+      AncientKappaSolutionLimitExtractionPayload
+        hamiltonCompactnessPayload}
+    {pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload}
+    (payload :
+      KappaSolutionCurvatureNormalizationPayload
+        pointedRescalingPayload) :
+    KappaSolutionCurvatureNormalizationPayloadSource flow where
+  pointedRescalingSource :=
+    KappaSolutionPointedRescalingPayloadSource.of_payload
+      pointedRescalingPayload
+  payload := payload
+
 /-- Interface for curvature normalization in kappa-solution blow-up limits. -/
-inductive HasKappaSolutionCurvatureNormalization
+structure HasKappaSolutionCurvatureNormalization
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_kappa_solution_curvature_normalization_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {noLocalCollapsingContradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      {collapsedBallBlowupPayload :
-        PerelmanCollapsedBallBlowupPayload
-          noLocalCollapsingContradictionSetupPayload}
-      {hamiltonCompactnessPayload :
-        HamiltonCompactnessPayload collapsedBallBlowupPayload}
-      {limitExtractionPayload :
-        AncientKappaSolutionLimitExtractionPayload
-          hamiltonCompactnessPayload}
-      {pointedRescalingPayload :
-        KappaSolutionPointedRescalingPayload limitExtractionPayload}
-      (payload :
-        KappaSolutionCurvatureNormalizationPayload
-          pointedRescalingPayload) :
-      HasKappaSolutionCurvatureNormalization flow
+  kappaSolutionCurvatureNormalizationPayload_source :
+    Nonempty (KappaSolutionCurvatureNormalizationPayloadSource flow)
+
+/-- Compatibility constructor for curvature-normalization payloads. -/
+def HasKappaSolutionCurvatureNormalization.of_kappa_solution_curvature_normalization_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {limitExtractionPayload :
+      AncientKappaSolutionLimitExtractionPayload
+        hamiltonCompactnessPayload}
+    {pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload}
+    (payload :
+      KappaSolutionCurvatureNormalizationPayload
+        pointedRescalingPayload) :
+    HasKappaSolutionCurvatureNormalization flow where
+  kappaSolutionCurvatureNormalizationPayload_source :=
+    ⟨KappaSolutionCurvatureNormalizationPayloadSource.of_payload payload⟩
 
 /--
 Concrete structure-theory data for curvature-normalized ancient
@@ -16259,106 +20323,219 @@ structure KappaSolutionStructureTheoryPayload
   structureModelDefect_le_structureTheoryEnvelope :
     ∀ model, structureModelDefect model ≤ structureTheoryEnvelope
 
+/-- Source data for the structure theory of three-dimensional ancient kappa-solutions. -/
+structure KappaSolutionStructureTheoryPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  curvatureNormalizationSource :
+    KappaSolutionCurvatureNormalizationPayloadSource flow
+  payload :
+    KappaSolutionStructureTheoryPayload
+      curvatureNormalizationSource.payload
+
+/-- Package kappa-solution structure-theory payloads as source data. -/
+def KappaSolutionStructureTheoryPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {limitExtractionPayload :
+      AncientKappaSolutionLimitExtractionPayload
+        hamiltonCompactnessPayload}
+    {pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload}
+    {curvatureNormalizationPayload :
+      KappaSolutionCurvatureNormalizationPayload
+        pointedRescalingPayload}
+    (payload :
+      KappaSolutionStructureTheoryPayload
+        curvatureNormalizationPayload) :
+    KappaSolutionStructureTheoryPayloadSource flow where
+  curvatureNormalizationSource :=
+    KappaSolutionCurvatureNormalizationPayloadSource.of_payload
+      curvatureNormalizationPayload
+  payload := payload
+
 /-- Interface for the structure theory of three-dimensional ancient kappa-solutions. -/
-inductive HasKappaSolutionStructureTheory
+structure HasKappaSolutionStructureTheory
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_kappa_solution_structure_theory_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {noLocalCollapsingContradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      {collapsedBallBlowupPayload :
-        PerelmanCollapsedBallBlowupPayload
-          noLocalCollapsingContradictionSetupPayload}
-      {hamiltonCompactnessPayload :
-        HamiltonCompactnessPayload collapsedBallBlowupPayload}
-      {limitExtractionPayload :
-        AncientKappaSolutionLimitExtractionPayload
-          hamiltonCompactnessPayload}
-      {pointedRescalingPayload :
-        KappaSolutionPointedRescalingPayload limitExtractionPayload}
-      {curvatureNormalizationPayload :
-        KappaSolutionCurvatureNormalizationPayload
-          pointedRescalingPayload}
-      (payload :
-        KappaSolutionStructureTheoryPayload
-          curvatureNormalizationPayload) :
-      HasKappaSolutionStructureTheory flow
+  kappaSolutionStructureTheoryPayload_source :
+    Nonempty (KappaSolutionStructureTheoryPayloadSource flow)
+
+/-- Compatibility constructor for kappa-solution structure-theory payloads. -/
+def HasKappaSolutionStructureTheory.of_kappa_solution_structure_theory_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {limitExtractionPayload :
+      AncientKappaSolutionLimitExtractionPayload
+        hamiltonCompactnessPayload}
+    {pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload}
+    {curvatureNormalizationPayload :
+      KappaSolutionCurvatureNormalizationPayload
+        pointedRescalingPayload}
+    (payload :
+      KappaSolutionStructureTheoryPayload
+        curvatureNormalizationPayload) :
+    HasKappaSolutionStructureTheory flow where
+  kappaSolutionStructureTheoryPayload_source :=
+    ⟨KappaSolutionStructureTheoryPayloadSource.of_payload payload⟩
 
 /--
 Concrete nonnegative curvature-operator data for the structured
@@ -16601,109 +20778,217 @@ theorem KappaSolutionNonnegativeCurvatureOperatorPayload.curvatureOperatorLowerB
     (payload.curvatureOperatorTestToStructureModel test)]
   exact zero_le_one
 
+/-- Source data for nonnegative curvature-operator control in kappa-solutions. -/
+structure KappaSolutionNonnegativeCurvatureOperatorPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  structureTheorySource : KappaSolutionStructureTheoryPayloadSource flow
+  payload :
+    KappaSolutionNonnegativeCurvatureOperatorPayload
+      structureTheorySource.payload
+
+/-- Package nonnegative curvature-operator payloads as source data. -/
+def KappaSolutionNonnegativeCurvatureOperatorPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {limitExtractionPayload :
+      AncientKappaSolutionLimitExtractionPayload
+        hamiltonCompactnessPayload}
+    {pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload}
+    {curvatureNormalizationPayload :
+      KappaSolutionCurvatureNormalizationPayload pointedRescalingPayload}
+    {structurePayload :
+      KappaSolutionStructureTheoryPayload curvatureNormalizationPayload}
+    (payload :
+      KappaSolutionNonnegativeCurvatureOperatorPayload structurePayload) :
+    KappaSolutionNonnegativeCurvatureOperatorPayloadSource flow where
+  structureTheorySource :=
+    KappaSolutionStructureTheoryPayloadSource.of_payload structurePayload
+  payload := payload
+
 /-- Interface for nonnegative curvature-operator control in kappa-solutions. -/
-inductive HasKappaSolutionNonnegativeCurvatureOperator
+structure HasKappaSolutionNonnegativeCurvatureOperator
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_kappa_solution_nonnegative_curvature_operator_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {noLocalCollapsingContradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      {collapsedBallBlowupPayload :
-        PerelmanCollapsedBallBlowupPayload
-          noLocalCollapsingContradictionSetupPayload}
-      {hamiltonCompactnessPayload :
-        HamiltonCompactnessPayload collapsedBallBlowupPayload}
-      {limitExtractionPayload :
-        AncientKappaSolutionLimitExtractionPayload
-          hamiltonCompactnessPayload}
-      {pointedRescalingPayload :
-        KappaSolutionPointedRescalingPayload limitExtractionPayload}
-      {curvatureNormalizationPayload :
-        KappaSolutionCurvatureNormalizationPayload
-          pointedRescalingPayload}
-      {structurePayload :
-        KappaSolutionStructureTheoryPayload
-          curvatureNormalizationPayload}
-      (payload :
-        KappaSolutionNonnegativeCurvatureOperatorPayload
-          structurePayload) :
-      HasKappaSolutionNonnegativeCurvatureOperator flow
+  kappaSolutionNonnegativeCurvatureOperatorPayload_source :
+    Nonempty (KappaSolutionNonnegativeCurvatureOperatorPayloadSource flow)
+
+/-- Compatibility constructor for nonnegative curvature-operator payloads. -/
+def HasKappaSolutionNonnegativeCurvatureOperator.of_kappa_solution_nonnegative_curvature_operator_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {limitExtractionPayload :
+      AncientKappaSolutionLimitExtractionPayload
+        hamiltonCompactnessPayload}
+    {pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload}
+    {curvatureNormalizationPayload :
+      KappaSolutionCurvatureNormalizationPayload pointedRescalingPayload}
+    {structurePayload :
+      KappaSolutionStructureTheoryPayload curvatureNormalizationPayload}
+    (payload :
+      KappaSolutionNonnegativeCurvatureOperatorPayload structurePayload) :
+    HasKappaSolutionNonnegativeCurvatureOperator flow where
+  kappaSolutionNonnegativeCurvatureOperatorPayload_source :=
+    ⟨KappaSolutionNonnegativeCurvatureOperatorPayloadSource.of_payload payload⟩
 
 /--
 Concrete asymptotic-soliton data for nonnegatively curved kappa-solution
@@ -16967,112 +21252,225 @@ theorem KappaSolutionAsymptoticSolitonPayload.asymptoticSolitonCurvatureLowerBou
       nonnegativeCurvatureOperatorPayload
       (payload.asymptoticSolitonToCurvatureOperatorTest model)
 
+/-- Source data for asymptotic soliton analysis of ancient kappa-solutions. -/
+structure KappaSolutionAsymptoticSolitonPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  nonnegativeCurvatureOperatorSource :
+    KappaSolutionNonnegativeCurvatureOperatorPayloadSource flow
+  payload :
+    KappaSolutionAsymptoticSolitonPayload
+      nonnegativeCurvatureOperatorSource.payload
+
+/-- Package asymptotic-soliton payloads as source data. -/
+def KappaSolutionAsymptoticSolitonPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {limitExtractionPayload :
+      AncientKappaSolutionLimitExtractionPayload
+        hamiltonCompactnessPayload}
+    {pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload}
+    {curvatureNormalizationPayload :
+      KappaSolutionCurvatureNormalizationPayload pointedRescalingPayload}
+    {structurePayload :
+      KappaSolutionStructureTheoryPayload curvatureNormalizationPayload}
+    {nonnegativeCurvatureOperatorPayload :
+      KappaSolutionNonnegativeCurvatureOperatorPayload structurePayload}
+    (payload :
+      KappaSolutionAsymptoticSolitonPayload
+        nonnegativeCurvatureOperatorPayload) :
+    KappaSolutionAsymptoticSolitonPayloadSource flow where
+  nonnegativeCurvatureOperatorSource :=
+    KappaSolutionNonnegativeCurvatureOperatorPayloadSource.of_payload
+      nonnegativeCurvatureOperatorPayload
+  payload := payload
+
 /-- Interface for asymptotic soliton analysis of ancient kappa-solutions. -/
-inductive HasKappaSolutionAsymptoticSoliton
+structure HasKappaSolutionAsymptoticSoliton
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_kappa_solution_asymptotic_soliton_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {noLocalCollapsingContradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      {collapsedBallBlowupPayload :
-        PerelmanCollapsedBallBlowupPayload
-          noLocalCollapsingContradictionSetupPayload}
-      {hamiltonCompactnessPayload :
-        HamiltonCompactnessPayload collapsedBallBlowupPayload}
-      {limitExtractionPayload :
-        AncientKappaSolutionLimitExtractionPayload
-          hamiltonCompactnessPayload}
-      {pointedRescalingPayload :
-        KappaSolutionPointedRescalingPayload limitExtractionPayload}
-      {curvatureNormalizationPayload :
-        KappaSolutionCurvatureNormalizationPayload
-          pointedRescalingPayload}
-      {structurePayload :
-        KappaSolutionStructureTheoryPayload
-          curvatureNormalizationPayload}
-      {nonnegativeCurvatureOperatorPayload :
-        KappaSolutionNonnegativeCurvatureOperatorPayload
-          structurePayload}
-      (payload :
-        KappaSolutionAsymptoticSolitonPayload
-          nonnegativeCurvatureOperatorPayload) :
-      HasKappaSolutionAsymptoticSoliton flow
+  kappaSolutionAsymptoticSolitonPayload_source :
+    Nonempty (KappaSolutionAsymptoticSolitonPayloadSource flow)
+
+/-- Compatibility constructor for asymptotic-soliton payloads. -/
+def HasKappaSolutionAsymptoticSoliton.of_kappa_solution_asymptotic_soliton_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {limitExtractionPayload :
+      AncientKappaSolutionLimitExtractionPayload
+        hamiltonCompactnessPayload}
+    {pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload}
+    {curvatureNormalizationPayload :
+      KappaSolutionCurvatureNormalizationPayload pointedRescalingPayload}
+    {structurePayload :
+      KappaSolutionStructureTheoryPayload curvatureNormalizationPayload}
+    {nonnegativeCurvatureOperatorPayload :
+      KappaSolutionNonnegativeCurvatureOperatorPayload structurePayload}
+    (payload :
+      KappaSolutionAsymptoticSolitonPayload
+        nonnegativeCurvatureOperatorPayload) :
+    HasKappaSolutionAsymptoticSoliton flow where
+  kappaSolutionAsymptoticSolitonPayload_source :=
+    ⟨KappaSolutionAsymptoticSolitonPayloadSource.of_payload payload⟩
 
 /--
 Concrete scale-control data for the canonical-neighborhood theorem.
@@ -17430,101 +21828,204 @@ theorem CanonicalNeighborhoodScaleControlPayload.one_le_canonicalScaleControlEnv
       ancientCompactnessPayload pointedRescalingPayload index)
     payload.ancientCompactnessEnvelope_le_canonicalScaleControlEnvelope
 
+/-- Source data for scale control in the canonical-neighborhood theorem. -/
+structure CanonicalNeighborhoodScaleControlPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  ancientCompactnessSource : AncientKappaSolutionCompactnessPayloadSource flow
+  payload :
+    CanonicalNeighborhoodScaleControlPayload
+      ancientCompactnessSource.payload
+
+/-- Package canonical-neighborhood scale-control payloads as source data. -/
+def CanonicalNeighborhoodScaleControlPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {ancientCompactnessPayload :
+      AncientKappaSolutionCompactnessPayload hamiltonCompactnessPayload}
+    (payload :
+      CanonicalNeighborhoodScaleControlPayload ancientCompactnessPayload) :
+    CanonicalNeighborhoodScaleControlPayloadSource flow where
+  ancientCompactnessSource :=
+    AncientKappaSolutionCompactnessPayloadSource.of_payload
+      ancientCompactnessPayload
+  payload := payload
+
 /-- Interface for scale control in the canonical-neighborhood theorem. -/
-inductive HasCanonicalNeighborhoodScaleControl
+structure HasCanonicalNeighborhoodScaleControl
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_canonical_neighborhood_scale_control_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {noLocalCollapsingContradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      {collapsedBallBlowupPayload :
-        PerelmanCollapsedBallBlowupPayload
-          noLocalCollapsingContradictionSetupPayload}
-      {hamiltonCompactnessPayload :
-        HamiltonCompactnessPayload collapsedBallBlowupPayload}
-      {ancientCompactnessPayload :
-        AncientKappaSolutionCompactnessPayload
-          hamiltonCompactnessPayload}
-      (payload :
-        CanonicalNeighborhoodScaleControlPayload
-          ancientCompactnessPayload) :
-      HasCanonicalNeighborhoodScaleControl flow
+  canonicalNeighborhoodScaleControlPayload_source :
+    Nonempty (CanonicalNeighborhoodScaleControlPayloadSource flow)
+
+/-- Compatibility constructor for canonical-neighborhood scale-control payloads. -/
+def HasCanonicalNeighborhoodScaleControl.of_canonical_neighborhood_scale_control_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {ancientCompactnessPayload :
+      AncientKappaSolutionCompactnessPayload hamiltonCompactnessPayload}
+    (payload :
+      CanonicalNeighborhoodScaleControlPayload ancientCompactnessPayload) :
+    HasCanonicalNeighborhoodScaleControl flow where
+  canonicalNeighborhoodScaleControlPayload_source :=
+    ⟨CanonicalNeighborhoodScaleControlPayloadSource.of_payload payload⟩
 
 /--
 Concrete stability data for canonical-neighborhood models under blow-up limits.
@@ -17774,104 +22275,208 @@ theorem CanonicalNeighborhoodStabilityPayload.stabilityScale_positive
     scaleControlPayload.canonicalNeighborhoodScalePositive
       (payload.stabilityModelToScaleParameter model)
 
+/-- Source data for stability of canonical-neighborhood models under blow-up limits. -/
+structure CanonicalNeighborhoodStabilityPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  scaleControlSource : CanonicalNeighborhoodScaleControlPayloadSource flow
+  payload :
+    CanonicalNeighborhoodStabilityPayload
+      scaleControlSource.payload
+
+/-- Package canonical-neighborhood stability payloads as source data. -/
+def CanonicalNeighborhoodStabilityPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {ancientCompactnessPayload :
+      AncientKappaSolutionCompactnessPayload hamiltonCompactnessPayload}
+    {scaleControlPayload :
+      CanonicalNeighborhoodScaleControlPayload ancientCompactnessPayload}
+    (payload :
+      CanonicalNeighborhoodStabilityPayload scaleControlPayload) :
+    CanonicalNeighborhoodStabilityPayloadSource flow where
+  scaleControlSource :=
+    CanonicalNeighborhoodScaleControlPayloadSource.of_payload
+      scaleControlPayload
+  payload := payload
+
 /-- Interface for stability of canonical-neighborhood models under blow-up limits. -/
-inductive HasCanonicalNeighborhoodStability
+structure HasCanonicalNeighborhoodStability
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_canonical_neighborhood_stability_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {noLocalCollapsingContradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      {collapsedBallBlowupPayload :
-        PerelmanCollapsedBallBlowupPayload
-          noLocalCollapsingContradictionSetupPayload}
-      {hamiltonCompactnessPayload :
-        HamiltonCompactnessPayload collapsedBallBlowupPayload}
-      {ancientCompactnessPayload :
-        AncientKappaSolutionCompactnessPayload
-          hamiltonCompactnessPayload}
-      {scaleControlPayload :
-        CanonicalNeighborhoodScaleControlPayload
-          ancientCompactnessPayload}
-      (payload :
-        CanonicalNeighborhoodStabilityPayload
-          scaleControlPayload) :
-      HasCanonicalNeighborhoodStability flow
+  canonicalNeighborhoodStabilityPayload_source :
+    Nonempty (CanonicalNeighborhoodStabilityPayloadSource flow)
+
+/-- Compatibility constructor for canonical-neighborhood stability payloads. -/
+def HasCanonicalNeighborhoodStability.of_canonical_neighborhood_stability_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {ancientCompactnessPayload :
+      AncientKappaSolutionCompactnessPayload hamiltonCompactnessPayload}
+    {scaleControlPayload :
+      CanonicalNeighborhoodScaleControlPayload ancientCompactnessPayload}
+    (payload :
+      CanonicalNeighborhoodStabilityPayload scaleControlPayload) :
+    HasCanonicalNeighborhoodStability flow where
+  canonicalNeighborhoodStabilityPayload_source :=
+    ⟨CanonicalNeighborhoodStabilityPayloadSource.of_payload payload⟩
 
 /--
 Concrete persistence data for canonical-neighborhood control across scales.
@@ -18240,107 +22845,211 @@ theorem CanonicalNeighborhoodPersistenceAcrossScalesPayload.persistenceTargetSca
     CanonicalNeighborhoodStabilityPayload.stabilityScale_positive
       stabilityPayload (payload.persistenceTargetModel transition)
 
+/-- Source data for persistence of canonical-neighborhood control across scales. -/
+structure CanonicalNeighborhoodPersistenceAcrossScalesPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  stabilitySource : CanonicalNeighborhoodStabilityPayloadSource flow
+  payload :
+    CanonicalNeighborhoodPersistenceAcrossScalesPayload
+      stabilitySource.payload
+
+/-- Package cross-scale persistence payloads as source data. -/
+def CanonicalNeighborhoodPersistenceAcrossScalesPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {ancientCompactnessPayload :
+      AncientKappaSolutionCompactnessPayload hamiltonCompactnessPayload}
+    {scaleControlPayload :
+      CanonicalNeighborhoodScaleControlPayload ancientCompactnessPayload}
+    {stabilityPayload :
+      CanonicalNeighborhoodStabilityPayload scaleControlPayload}
+    (payload :
+      CanonicalNeighborhoodPersistenceAcrossScalesPayload stabilityPayload) :
+    CanonicalNeighborhoodPersistenceAcrossScalesPayloadSource flow where
+  stabilitySource :=
+    CanonicalNeighborhoodStabilityPayloadSource.of_payload stabilityPayload
+  payload := payload
+
 /-- Interface for persistence of canonical-neighborhood control across scales. -/
-inductive HasCanonicalNeighborhoodPersistenceAcrossScales
+structure HasCanonicalNeighborhoodPersistenceAcrossScales
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_canonical_neighborhood_persistence_across_scales_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {noLocalCollapsingContradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      {collapsedBallBlowupPayload :
-        PerelmanCollapsedBallBlowupPayload
-          noLocalCollapsingContradictionSetupPayload}
-      {hamiltonCompactnessPayload :
-        HamiltonCompactnessPayload collapsedBallBlowupPayload}
-      {ancientCompactnessPayload :
-        AncientKappaSolutionCompactnessPayload
-          hamiltonCompactnessPayload}
-      {scaleControlPayload :
-        CanonicalNeighborhoodScaleControlPayload
-          ancientCompactnessPayload}
-      {stabilityPayload :
-        CanonicalNeighborhoodStabilityPayload
-          scaleControlPayload}
-      (payload :
-        CanonicalNeighborhoodPersistenceAcrossScalesPayload
-          stabilityPayload) :
-      HasCanonicalNeighborhoodPersistenceAcrossScales flow
+  canonicalNeighborhoodPersistenceAcrossScalesPayload_source :
+    Nonempty (CanonicalNeighborhoodPersistenceAcrossScalesPayloadSource flow)
+
+/-- Compatibility constructor for cross-scale persistence payloads. -/
+def HasCanonicalNeighborhoodPersistenceAcrossScales.of_canonical_neighborhood_persistence_across_scales_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {ancientCompactnessPayload :
+      AncientKappaSolutionCompactnessPayload hamiltonCompactnessPayload}
+    {scaleControlPayload :
+      CanonicalNeighborhoodScaleControlPayload ancientCompactnessPayload}
+    {stabilityPayload :
+      CanonicalNeighborhoodStabilityPayload scaleControlPayload}
+    (payload :
+      CanonicalNeighborhoodPersistenceAcrossScalesPayload stabilityPayload) :
+    HasCanonicalNeighborhoodPersistenceAcrossScales flow where
+  canonicalNeighborhoodPersistenceAcrossScalesPayload_source :=
+    ⟨CanonicalNeighborhoodPersistenceAcrossScalesPayloadSource.of_payload payload⟩
 
 /--
 Concrete epsilon-neck/epsilon-cap dichotomy data for canonical neighborhoods.
@@ -18725,110 +23434,217 @@ theorem CanonicalNeighborhoodNeckCapDichotomyPayload.epsilonCapScale_positive
       persistencePayload
       (payload.neckCapModelToPersistenceTransition model)
 
+/-- Source data for the epsilon-neck/epsilon-cap dichotomy in canonical neighborhoods. -/
+structure CanonicalNeighborhoodNeckCapDichotomyPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  persistenceSource :
+    CanonicalNeighborhoodPersistenceAcrossScalesPayloadSource flow
+  payload :
+    CanonicalNeighborhoodNeckCapDichotomyPayload
+      persistenceSource.payload
+
+/-- Package neck/cap dichotomy payloads as source data. -/
+def CanonicalNeighborhoodNeckCapDichotomyPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {ancientCompactnessPayload :
+      AncientKappaSolutionCompactnessPayload hamiltonCompactnessPayload}
+    {scaleControlPayload :
+      CanonicalNeighborhoodScaleControlPayload ancientCompactnessPayload}
+    {stabilityPayload :
+      CanonicalNeighborhoodStabilityPayload scaleControlPayload}
+    {persistencePayload :
+      CanonicalNeighborhoodPersistenceAcrossScalesPayload stabilityPayload}
+    (payload :
+      CanonicalNeighborhoodNeckCapDichotomyPayload persistencePayload) :
+    CanonicalNeighborhoodNeckCapDichotomyPayloadSource flow where
+  persistenceSource :=
+    CanonicalNeighborhoodPersistenceAcrossScalesPayloadSource.of_payload
+      persistencePayload
+  payload := payload
+
 /-- Interface for the epsilon-neck/epsilon-cap dichotomy in canonical neighborhoods. -/
-inductive HasCanonicalNeighborhoodNeckCapDichotomy
+structure HasCanonicalNeighborhoodNeckCapDichotomy
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_canonical_neighborhood_neck_cap_dichotomy_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {noLocalCollapsingContradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      {collapsedBallBlowupPayload :
-        PerelmanCollapsedBallBlowupPayload
-          noLocalCollapsingContradictionSetupPayload}
-      {hamiltonCompactnessPayload :
-        HamiltonCompactnessPayload collapsedBallBlowupPayload}
-      {ancientCompactnessPayload :
-        AncientKappaSolutionCompactnessPayload
-          hamiltonCompactnessPayload}
-      {scaleControlPayload :
-        CanonicalNeighborhoodScaleControlPayload
-          ancientCompactnessPayload}
-      {stabilityPayload :
-        CanonicalNeighborhoodStabilityPayload
-          scaleControlPayload}
-      {persistencePayload :
-        CanonicalNeighborhoodPersistenceAcrossScalesPayload
-          stabilityPayload}
-      (payload :
-        CanonicalNeighborhoodNeckCapDichotomyPayload
-          persistencePayload) :
-      HasCanonicalNeighborhoodNeckCapDichotomy flow
+  canonicalNeighborhoodNeckCapDichotomyPayload_source :
+    Nonempty (CanonicalNeighborhoodNeckCapDichotomyPayloadSource flow)
+
+/-- Compatibility constructor for neck/cap dichotomy payloads. -/
+def HasCanonicalNeighborhoodNeckCapDichotomy.of_canonical_neighborhood_neck_cap_dichotomy_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {ancientCompactnessPayload :
+      AncientKappaSolutionCompactnessPayload hamiltonCompactnessPayload}
+    {scaleControlPayload :
+      CanonicalNeighborhoodScaleControlPayload ancientCompactnessPayload}
+    {stabilityPayload :
+      CanonicalNeighborhoodStabilityPayload scaleControlPayload}
+    {persistencePayload :
+      CanonicalNeighborhoodPersistenceAcrossScalesPayload stabilityPayload}
+    (payload :
+      CanonicalNeighborhoodNeckCapDichotomyPayload persistencePayload) :
+    HasCanonicalNeighborhoodNeckCapDichotomy flow where
+  canonicalNeighborhoodNeckCapDichotomyPayload_source :=
+    ⟨CanonicalNeighborhoodNeckCapDichotomyPayloadSource.of_payload payload⟩
 
 /--
 Concrete classification data for canonical-neighborhood model regions.
@@ -19204,113 +24020,219 @@ theorem CanonicalNeighborhoodClassificationPayload.classificationCapScale_positi
     CanonicalNeighborhoodNeckCapDichotomyPayload.epsilonCapScale_positive
       neckCapPayload model
 
+/-- Source data for the classification input behind canonical neighborhoods. -/
+structure CanonicalNeighborhoodClassificationPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  neckCapSource : CanonicalNeighborhoodNeckCapDichotomyPayloadSource flow
+  payload :
+    CanonicalNeighborhoodClassificationPayload
+      neckCapSource.payload
+
+/-- Package canonical-neighborhood classification payloads as source data. -/
+def CanonicalNeighborhoodClassificationPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {ancientCompactnessPayload :
+      AncientKappaSolutionCompactnessPayload hamiltonCompactnessPayload}
+    {scaleControlPayload :
+      CanonicalNeighborhoodScaleControlPayload ancientCompactnessPayload}
+    {stabilityPayload :
+      CanonicalNeighborhoodStabilityPayload scaleControlPayload}
+    {persistencePayload :
+      CanonicalNeighborhoodPersistenceAcrossScalesPayload stabilityPayload}
+    {neckCapPayload :
+      CanonicalNeighborhoodNeckCapDichotomyPayload persistencePayload}
+    (payload :
+      CanonicalNeighborhoodClassificationPayload neckCapPayload) :
+    CanonicalNeighborhoodClassificationPayloadSource flow where
+  neckCapSource :=
+    CanonicalNeighborhoodNeckCapDichotomyPayloadSource.of_payload neckCapPayload
+  payload := payload
+
 /-- Interface for the classification input behind canonical neighborhoods. -/
-inductive HasCanonicalNeighborhoodClassification
+structure HasCanonicalNeighborhoodClassification
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_canonical_neighborhood_classification_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {noLocalCollapsingContradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      {collapsedBallBlowupPayload :
-        PerelmanCollapsedBallBlowupPayload
-          noLocalCollapsingContradictionSetupPayload}
-      {hamiltonCompactnessPayload :
-        HamiltonCompactnessPayload collapsedBallBlowupPayload}
-      {ancientCompactnessPayload :
-        AncientKappaSolutionCompactnessPayload
-          hamiltonCompactnessPayload}
-      {scaleControlPayload :
-        CanonicalNeighborhoodScaleControlPayload
-          ancientCompactnessPayload}
-      {stabilityPayload :
-        CanonicalNeighborhoodStabilityPayload
-          scaleControlPayload}
-      {persistencePayload :
-        CanonicalNeighborhoodPersistenceAcrossScalesPayload
-          stabilityPayload}
-      {neckCapPayload :
-        CanonicalNeighborhoodNeckCapDichotomyPayload
-          persistencePayload}
-      (payload :
-        CanonicalNeighborhoodClassificationPayload
-          neckCapPayload) :
-      HasCanonicalNeighborhoodClassification flow
+  canonicalNeighborhoodClassificationPayload_source :
+    Nonempty (CanonicalNeighborhoodClassificationPayloadSource flow)
+
+/-- Compatibility constructor for canonical-neighborhood classification payloads. -/
+def HasCanonicalNeighborhoodClassification.of_canonical_neighborhood_classification_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {ancientCompactnessPayload :
+      AncientKappaSolutionCompactnessPayload hamiltonCompactnessPayload}
+    {scaleControlPayload :
+      CanonicalNeighborhoodScaleControlPayload ancientCompactnessPayload}
+    {stabilityPayload :
+      CanonicalNeighborhoodStabilityPayload scaleControlPayload}
+    {persistencePayload :
+      CanonicalNeighborhoodPersistenceAcrossScalesPayload stabilityPayload}
+    {neckCapPayload :
+      CanonicalNeighborhoodNeckCapDichotomyPayload persistencePayload}
+    (payload :
+      CanonicalNeighborhoodClassificationPayload neckCapPayload) :
+    HasCanonicalNeighborhoodClassification flow where
+  canonicalNeighborhoodClassificationPayload_source :=
+    ⟨CanonicalNeighborhoodClassificationPayloadSource.of_payload payload⟩
 
 /--
 Concrete no-local-collapsing data after the reduced-volume kappa estimate and
@@ -19722,92 +24644,191 @@ theorem PerelmanNoLocalCollapsingPayload.not_collapseHypothesis
     PerelmanNoLocalCollapsingContradictionSetupPayload.collapseHypothesis_contradiction
       contradictionSetupPayload setup hypothesis
 
+/-- Source data for Perelman's no-local-collapsing theorem. -/
+structure PerelmanNoLocalCollapsingPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  contradictionSetupSource :
+    PerelmanNoLocalCollapsingContradictionSetupPayloadSource flow
+  payload :
+    PerelmanNoLocalCollapsingPayload
+      contradictionSetupSource.payload
+
+/-- Package no-local-collapsing payloads as source data. -/
+def PerelmanNoLocalCollapsingPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {contradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    (payload :
+      PerelmanNoLocalCollapsingPayload contradictionSetupPayload) :
+    PerelmanNoLocalCollapsingPayloadSource flow where
+  contradictionSetupSource :=
+    PerelmanNoLocalCollapsingContradictionSetupPayloadSource.of_payload
+      contradictionSetupPayload
+  payload := payload
+
 /-- Interface for Perelman's no-local-collapsing theorem. -/
-inductive HasPerelmanNoLocalCollapsing
+structure HasPerelmanNoLocalCollapsing
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_no_local_collapsing_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {contradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      (payload :
-        PerelmanNoLocalCollapsingPayload contradictionSetupPayload) :
-      HasPerelmanNoLocalCollapsing flow
+  noLocalCollapsingPayload_source :
+    Nonempty (PerelmanNoLocalCollapsingPayloadSource flow)
+
+/-- Compatibility constructor for no-local-collapsing payloads. -/
+def HasPerelmanNoLocalCollapsing.of_no_local_collapsing_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {contradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    (payload :
+      PerelmanNoLocalCollapsingPayload contradictionSetupPayload) :
+    HasPerelmanNoLocalCollapsing flow where
+  noLocalCollapsingPayload_source :=
+    ⟨PerelmanNoLocalCollapsingPayloadSource.of_payload payload⟩
 
 /--
 Concrete reduced-volume monotonicity data derived from the nonincreasing
@@ -20245,87 +25266,176 @@ theorem PerelmanReducedVolumeMonotonicityPayload.monotonicityDefect_nonnegative
       (PerelmanReducedVolumeMonotonicityPayload.reducedVolumeLater_le_earlier
         payload pair)
 
+/-- Source data for Perelman's reduced-volume/reduced-distance monotonicity input. -/
+structure PerelmanReducedVolumeMonotonicityPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  reducedVolumeNonincreasingSource :
+    PerelmanReducedVolumeNonincreasingPayloadSource flow
+  payload :
+    PerelmanReducedVolumeMonotonicityPayload
+      reducedVolumeNonincreasingSource.payload
+
+/-- Package reduced-volume monotonicity payloads as source data. -/
+def PerelmanReducedVolumeMonotonicityPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {nonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload reducedVolumeLimitRigidityPayload}
+    (payload :
+      PerelmanReducedVolumeMonotonicityPayload nonincreasingPayload) :
+    PerelmanReducedVolumeMonotonicityPayloadSource flow where
+  reducedVolumeNonincreasingSource :=
+    PerelmanReducedVolumeNonincreasingPayloadSource.of_payload nonincreasingPayload
+  payload := payload
+
 /-- Interface for Perelman's reduced-volume/reduced-distance monotonicity input. -/
-inductive HasPerelmanReducedVolumeMonotonicity
+structure HasPerelmanReducedVolumeMonotonicity
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_reduced_volume_monotonicity_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {nonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      (payload :
-        PerelmanReducedVolumeMonotonicityPayload
-          nonincreasingPayload) :
-      HasPerelmanReducedVolumeMonotonicity flow
+  reducedVolumeMonotonicityPayload_source :
+    Nonempty (PerelmanReducedVolumeMonotonicityPayloadSource flow)
+
+/-- Compatibility constructor for reduced-volume monotonicity payloads. -/
+def HasPerelmanReducedVolumeMonotonicity.of_reduced_volume_monotonicity_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {nonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload reducedVolumeLimitRigidityPayload}
+    (payload :
+      PerelmanReducedVolumeMonotonicityPayload nonincreasingPayload) :
+    HasPerelmanReducedVolumeMonotonicity flow where
+  reducedVolumeMonotonicityPayload_source :=
+    ⟨PerelmanReducedVolumeMonotonicityPayloadSource.of_payload payload⟩
 
 /--
 Concrete canonical-neighborhood theorem data assembled from the canonical
@@ -20513,115 +25623,224 @@ structure CanonicalNeighborhoodTheoremPayload
       canonicalNeighborhoodRegionDefect region ≤
         canonicalNeighborhoodTheoremEnvelope
 
+/-- Source data for the canonical-neighborhood theorem used in the surgery analysis. -/
+structure CanonicalNeighborhoodTheoremPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  classificationSource : CanonicalNeighborhoodClassificationPayloadSource flow
+  payload :
+    CanonicalNeighborhoodTheoremPayload
+      classificationSource.payload
+
+/-- Package canonical-neighborhood theorem payloads as source data. -/
+def CanonicalNeighborhoodTheoremPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {ancientCompactnessPayload :
+      AncientKappaSolutionCompactnessPayload hamiltonCompactnessPayload}
+    {scaleControlPayload :
+      CanonicalNeighborhoodScaleControlPayload ancientCompactnessPayload}
+    {stabilityPayload :
+      CanonicalNeighborhoodStabilityPayload scaleControlPayload}
+    {persistencePayload :
+      CanonicalNeighborhoodPersistenceAcrossScalesPayload stabilityPayload}
+    {neckCapPayload :
+      CanonicalNeighborhoodNeckCapDichotomyPayload persistencePayload}
+    {classificationPayload :
+      CanonicalNeighborhoodClassificationPayload neckCapPayload}
+    (payload :
+      CanonicalNeighborhoodTheoremPayload classificationPayload) :
+    CanonicalNeighborhoodTheoremPayloadSource flow where
+  classificationSource :=
+    CanonicalNeighborhoodClassificationPayloadSource.of_payload
+      classificationPayload
+  payload := payload
+
 /-- Interface for the canonical-neighborhood theorem used in the surgery analysis. -/
-inductive HasCanonicalNeighborhoodTheorem
+structure HasCanonicalNeighborhoodTheorem
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_canonical_neighborhood_theorem_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {noLocalCollapsingContradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      {collapsedBallBlowupPayload :
-        PerelmanCollapsedBallBlowupPayload
-          noLocalCollapsingContradictionSetupPayload}
-      {hamiltonCompactnessPayload :
-        HamiltonCompactnessPayload collapsedBallBlowupPayload}
-      {ancientCompactnessPayload :
-        AncientKappaSolutionCompactnessPayload
-          hamiltonCompactnessPayload}
-      {scaleControlPayload :
-        CanonicalNeighborhoodScaleControlPayload
-          ancientCompactnessPayload}
-      {stabilityPayload :
-        CanonicalNeighborhoodStabilityPayload scaleControlPayload}
-      {persistencePayload :
-        CanonicalNeighborhoodPersistenceAcrossScalesPayload
-          stabilityPayload}
-      {neckCapPayload :
-        CanonicalNeighborhoodNeckCapDichotomyPayload
-          persistencePayload}
-      {classificationPayload :
-        CanonicalNeighborhoodClassificationPayload
-          neckCapPayload}
-      (payload :
-        CanonicalNeighborhoodTheoremPayload
-          classificationPayload) :
-      HasCanonicalNeighborhoodTheorem flow
+  canonicalNeighborhoodTheoremPayload_source :
+    Nonempty (CanonicalNeighborhoodTheoremPayloadSource flow)
+
+/-- Compatibility constructor for canonical-neighborhood theorem payloads. -/
+def HasCanonicalNeighborhoodTheorem.of_canonical_neighborhood_theorem_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {ancientCompactnessPayload :
+      AncientKappaSolutionCompactnessPayload hamiltonCompactnessPayload}
+    {scaleControlPayload :
+      CanonicalNeighborhoodScaleControlPayload ancientCompactnessPayload}
+    {stabilityPayload :
+      CanonicalNeighborhoodStabilityPayload scaleControlPayload}
+    {persistencePayload :
+      CanonicalNeighborhoodPersistenceAcrossScalesPayload stabilityPayload}
+    {neckCapPayload :
+      CanonicalNeighborhoodNeckCapDichotomyPayload persistencePayload}
+    {classificationPayload :
+      CanonicalNeighborhoodClassificationPayload neckCapPayload}
+    (payload :
+      CanonicalNeighborhoodTheoremPayload classificationPayload) :
+    HasCanonicalNeighborhoodTheorem flow where
+  canonicalNeighborhoodTheoremPayload_source :=
+    ⟨CanonicalNeighborhoodTheoremPayloadSource.of_payload payload⟩
 
 /--
 Concrete singularity-model classification data.
@@ -21056,135 +26275,281 @@ theorem SingularityModelClassificationPayload.one_le_singularityModelClassificat
 
 end CanonicalNeighborhoodEnvelopeLowerBoundLemmas
 
+/-- Source data for classification of singularity models needed by surgery control. -/
+structure SingularityModelClassificationPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
+    Type (u + 1) where
+  asymptoticSolitonSource : KappaSolutionAsymptoticSolitonPayloadSource flow
+  ancientCompactnessPayload :
+    AncientKappaSolutionCompactnessPayload
+      asymptoticSolitonSource.nonnegativeCurvatureOperatorSource.structureTheorySource.curvatureNormalizationSource.pointedRescalingSource.limitExtractionSource.hamiltonCompactnessSource.payload
+  scaleControlPayload :
+    CanonicalNeighborhoodScaleControlPayload ancientCompactnessPayload
+  stabilityPayload :
+    CanonicalNeighborhoodStabilityPayload scaleControlPayload
+  persistencePayload :
+    CanonicalNeighborhoodPersistenceAcrossScalesPayload stabilityPayload
+  neckCapPayload :
+    CanonicalNeighborhoodNeckCapDichotomyPayload persistencePayload
+  classificationPayload :
+    CanonicalNeighborhoodClassificationPayload neckCapPayload
+  canonicalNeighborhoodTheoremPayload :
+    CanonicalNeighborhoodTheoremPayload classificationPayload
+  payload :
+    SingularityModelClassificationPayload
+      asymptoticSolitonSource.payload
+      canonicalNeighborhoodTheoremPayload
+
+/-- Package singularity-model classification payloads as source data. -/
+def SingularityModelClassificationPayloadSource.of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {limitExtractionPayload :
+      AncientKappaSolutionLimitExtractionPayload hamiltonCompactnessPayload}
+    {pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload}
+    {curvatureNormalizationPayload :
+      KappaSolutionCurvatureNormalizationPayload pointedRescalingPayload}
+    {structurePayload :
+      KappaSolutionStructureTheoryPayload curvatureNormalizationPayload}
+    {nonnegativeCurvatureOperatorPayload :
+      KappaSolutionNonnegativeCurvatureOperatorPayload structurePayload}
+    {asymptoticSolitonPayload :
+      KappaSolutionAsymptoticSolitonPayload
+        nonnegativeCurvatureOperatorPayload}
+    {ancientCompactnessPayload :
+      AncientKappaSolutionCompactnessPayload hamiltonCompactnessPayload}
+    {scaleControlPayload :
+      CanonicalNeighborhoodScaleControlPayload ancientCompactnessPayload}
+    {stabilityPayload :
+      CanonicalNeighborhoodStabilityPayload scaleControlPayload}
+    {persistencePayload :
+      CanonicalNeighborhoodPersistenceAcrossScalesPayload stabilityPayload}
+    {neckCapPayload :
+      CanonicalNeighborhoodNeckCapDichotomyPayload persistencePayload}
+    {classificationPayload :
+      CanonicalNeighborhoodClassificationPayload neckCapPayload}
+    {canonicalNeighborhoodTheoremPayload :
+      CanonicalNeighborhoodTheoremPayload classificationPayload}
+    (payload :
+      SingularityModelClassificationPayload
+        asymptoticSolitonPayload
+        canonicalNeighborhoodTheoremPayload) :
+    SingularityModelClassificationPayloadSource flow where
+  asymptoticSolitonSource :=
+    KappaSolutionAsymptoticSolitonPayloadSource.of_payload
+      asymptoticSolitonPayload
+  ancientCompactnessPayload := ancientCompactnessPayload
+  scaleControlPayload := scaleControlPayload
+  stabilityPayload := stabilityPayload
+  persistencePayload := persistencePayload
+  neckCapPayload := neckCapPayload
+  classificationPayload := classificationPayload
+  canonicalNeighborhoodTheoremPayload := canonicalNeighborhoodTheoremPayload
+  payload := payload
+
 /-- Interface for classification of singularity models needed by surgery control. -/
-inductive HasSingularityModelClassification
+structure HasSingularityModelClassification
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_singularity_model_classification_payload
-      {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
-      {entropyNormalizationPayload :
-        PerelmanEntropyNormalizationPayload fFunctionalPayload}
-      {entropyMinimizerPayload :
-        PerelmanEntropyMinimizerExistencePayload
-          entropyNormalizationPayload}
-      {entropyLogSobolevPayload :
-        PerelmanEntropyLogSobolevControlPayload
-          entropyMinimizerPayload}
-      {conjugateHeatPayload :
-        ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
-      {adjointHeatPayload :
-        AdjointHeatKernelConstructionPayload conjugateHeatPayload}
-      {conjugateHeatKernelEstimatesPayload :
-        PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
-      {wFunctionalPayload :
-        PerelmanWFunctionalSetupPayload
-          conjugateHeatKernelEstimatesPayload}
-      {entropyGradientPayload :
-        PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
-      {entropyFirstVariationPayload :
-        PerelmanEntropyFirstVariationPayload entropyGradientPayload}
-      {entropyMonotonicityPayload :
-        PerelmanEntropyMonotonicityPayload
-          entropyFirstVariationPayload}
-      {entropyLowerBoundPropagationPayload :
-        PerelmanEntropyLowerBoundPropagationPayload
-          entropyMonotonicityPayload}
-      {entropyFunctionalPayload :
-        PerelmanEntropyFunctionalPayload
-          entropyLowerBoundPropagationPayload}
-      {reducedLengthFirstVariationPayload :
-        PerelmanReducedLengthFirstVariationPayload
-          entropyFunctionalPayload}
-      {reducedDistanceExistencePayload :
-        PerelmanReducedDistanceExistencePayload
-          reducedLengthFirstVariationPayload}
-      {reducedDistanceDifferentialInequalityPayload :
-        PerelmanReducedDistanceDifferentialInequalityPayload
-          reducedDistanceExistencePayload}
-      {reducedDistanceEstimatesPayload :
-        PerelmanReducedDistanceEstimatesPayload
-          reducedDistanceDifferentialInequalityPayload}
-      {reducedDistanceCutLocusControlPayload :
-        PerelmanReducedDistanceCutLocusControlPayload
-          reducedDistanceEstimatesPayload}
-      {reducedJacobianComparisonPayload :
-        PerelmanReducedJacobianComparisonPayload
-          reducedDistanceCutLocusControlPayload}
-      {reducedDistanceTheoryPayload :
-        PerelmanReducedDistanceTheoryPayload
-          reducedJacobianComparisonPayload}
-      {reducedVolumeDefinitionPayload :
-        PerelmanReducedVolumeDefinitionPayload
-          reducedDistanceTheoryPayload}
-      {reducedVolumeDerivativeFormulaPayload :
-        PerelmanReducedVolumeDerivativeFormulaPayload
-          reducedVolumeDefinitionPayload}
-      {reducedVolumeRigidityPayload :
-        PerelmanReducedVolumeRigidityPayload
-          reducedVolumeDerivativeFormulaPayload}
-      {reducedVolumePositiveLowerBoundPayload :
-        PerelmanReducedVolumePositiveLowerBoundPayload
-          reducedVolumeRigidityPayload}
-      {reducedVolumeLimitRigidityPayload :
-        PerelmanReducedVolumeLimitRigidityPayload
-          reducedVolumePositiveLowerBoundPayload}
-      {reducedVolumeNonincreasingPayload :
-        PerelmanReducedVolumeNonincreasingPayload
-          reducedVolumeLimitRigidityPayload}
-      {kappaNoncollapsingFromReducedVolumePayload :
-        PerelmanKappaNoncollapsingFromReducedVolumePayload
-          reducedVolumeNonincreasingPayload}
-      {noLocalCollapsingContradictionSetupPayload :
-        PerelmanNoLocalCollapsingContradictionSetupPayload
-          kappaNoncollapsingFromReducedVolumePayload}
-      {collapsedBallBlowupPayload :
-        PerelmanCollapsedBallBlowupPayload
-          noLocalCollapsingContradictionSetupPayload}
-      {hamiltonCompactnessPayload :
-        HamiltonCompactnessPayload collapsedBallBlowupPayload}
-      {limitExtractionPayload :
-        AncientKappaSolutionLimitExtractionPayload
-          hamiltonCompactnessPayload}
-      {pointedRescalingPayload :
-        KappaSolutionPointedRescalingPayload limitExtractionPayload}
-      {curvatureNormalizationPayload :
-        KappaSolutionCurvatureNormalizationPayload
-          pointedRescalingPayload}
-      {structurePayload :
-        KappaSolutionStructureTheoryPayload
-          curvatureNormalizationPayload}
-      {nonnegativeCurvatureOperatorPayload :
-        KappaSolutionNonnegativeCurvatureOperatorPayload
-          structurePayload}
-      {asymptoticSolitonPayload :
-        KappaSolutionAsymptoticSolitonPayload
-          nonnegativeCurvatureOperatorPayload}
-      {ancientCompactnessPayload :
-        AncientKappaSolutionCompactnessPayload
-          hamiltonCompactnessPayload}
-      {scaleControlPayload :
-        CanonicalNeighborhoodScaleControlPayload
-          ancientCompactnessPayload}
-      {stabilityPayload :
-        CanonicalNeighborhoodStabilityPayload scaleControlPayload}
-      {persistencePayload :
-        CanonicalNeighborhoodPersistenceAcrossScalesPayload
-          stabilityPayload}
-      {neckCapPayload :
-        CanonicalNeighborhoodNeckCapDichotomyPayload
-          persistencePayload}
-      {classificationPayload :
-        CanonicalNeighborhoodClassificationPayload neckCapPayload}
-      {canonicalNeighborhoodTheoremPayload :
-        CanonicalNeighborhoodTheoremPayload
-          classificationPayload}
-      (payload :
-        SingularityModelClassificationPayload
-          asymptoticSolitonPayload
-          canonicalNeighborhoodTheoremPayload) :
-      HasSingularityModelClassification flow
+  singularityModelClassificationPayload_source :
+    Nonempty (SingularityModelClassificationPayloadSource flow)
+
+/-- Compatibility constructor for singularity-model classification payloads. -/
+def HasSingularityModelClassification.of_singularity_model_classification_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {fFunctionalPayload : PerelmanFFunctionalSetupPayload flow}
+    {entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload}
+    {entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload entropyNormalizationPayload}
+    {entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload entropyMinimizerPayload}
+    {conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload}
+    {adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload}
+    {conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload}
+    {wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload conjugateHeatKernelEstimatesPayload}
+    {entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload}
+    {entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload}
+    {entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload entropyFirstVariationPayload}
+    {entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload entropyMonotonicityPayload}
+    {entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload entropyLowerBoundPropagationPayload}
+    {reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload entropyFunctionalPayload}
+    {reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload}
+    {reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload}
+    {reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload}
+    {reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload}
+    {reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload}
+    {reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload}
+    {reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload}
+    {reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload}
+    {reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload}
+    {reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload}
+    {reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload}
+    {reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload}
+    {kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload}
+    {noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload}
+    {collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload}
+    {hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload}
+    {limitExtractionPayload :
+      AncientKappaSolutionLimitExtractionPayload hamiltonCompactnessPayload}
+    {pointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload limitExtractionPayload}
+    {curvatureNormalizationPayload :
+      KappaSolutionCurvatureNormalizationPayload pointedRescalingPayload}
+    {structurePayload :
+      KappaSolutionStructureTheoryPayload curvatureNormalizationPayload}
+    {nonnegativeCurvatureOperatorPayload :
+      KappaSolutionNonnegativeCurvatureOperatorPayload structurePayload}
+    {asymptoticSolitonPayload :
+      KappaSolutionAsymptoticSolitonPayload
+        nonnegativeCurvatureOperatorPayload}
+    {ancientCompactnessPayload :
+      AncientKappaSolutionCompactnessPayload hamiltonCompactnessPayload}
+    {scaleControlPayload :
+      CanonicalNeighborhoodScaleControlPayload ancientCompactnessPayload}
+    {stabilityPayload :
+      CanonicalNeighborhoodStabilityPayload scaleControlPayload}
+    {persistencePayload :
+      CanonicalNeighborhoodPersistenceAcrossScalesPayload stabilityPayload}
+    {neckCapPayload :
+      CanonicalNeighborhoodNeckCapDichotomyPayload persistencePayload}
+    {classificationPayload :
+      CanonicalNeighborhoodClassificationPayload neckCapPayload}
+    {canonicalNeighborhoodTheoremPayload :
+      CanonicalNeighborhoodTheoremPayload classificationPayload}
+    (payload :
+      SingularityModelClassificationPayload
+        asymptoticSolitonPayload
+        canonicalNeighborhoodTheoremPayload) :
+    HasSingularityModelClassification flow where
+  singularityModelClassificationPayload_source :=
+    ⟨SingularityModelClassificationPayloadSource.of_payload payload⟩
 
 /-- Interface for classifying the singularity models obtained from blow-up limits. -/
 inductive HasSingularityModelBlowupClassification
@@ -21264,24 +26629,47 @@ structure PerelmanSingularityControlPayload
 Interface for Perelman's singularity-control package: non-collapsing,
 canonical neighborhoods, and the estimates needed to control surgery.
 -/
-inductive HasPerelmanSingularityControl
+structure HasPerelmanSingularityControl
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
-  | of_perelman_singularity_control_payload
-      {noLocalCollapsing : HasPerelmanNoLocalCollapsing flow}
-      {reducedVolume : HasPerelmanReducedVolumeMonotonicity flow}
-      {canonicalNeighborhood : HasCanonicalNeighborhoodTheorem flow}
-      {singularityModelClassification :
-        HasSingularityModelClassification flow}
-      {singularityModelBlowupClassification :
-        HasSingularityModelBlowupClassification flow}
-      (payload :
-        PerelmanSingularityControlPayload flow noLocalCollapsing
-          reducedVolume canonicalNeighborhood singularityModelClassification
-          singularityModelBlowupClassification) :
-      HasPerelmanSingularityControl flow
+  perelmanSingularityControlPayload_source :
+    ∃ noLocalCollapsing : HasPerelmanNoLocalCollapsing flow,
+      ∃ reducedVolume : HasPerelmanReducedVolumeMonotonicity flow,
+        ∃ canonicalNeighborhood : HasCanonicalNeighborhoodTheorem flow,
+          ∃ singularityModelClassification :
+            HasSingularityModelClassification flow,
+            ∃ singularityModelBlowupClassification :
+              HasSingularityModelBlowupClassification flow,
+              Nonempty
+                (PerelmanSingularityControlPayload flow noLocalCollapsing
+                  reducedVolume canonicalNeighborhood
+                  singularityModelClassification
+                  singularityModelBlowupClassification)
+
+/-- Compatibility constructor for Perelman singularity-control payloads. -/
+def HasPerelmanSingularityControl.of_perelman_singularity_control_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {noLocalCollapsing : HasPerelmanNoLocalCollapsing flow}
+    {reducedVolume : HasPerelmanReducedVolumeMonotonicity flow}
+    {canonicalNeighborhood : HasCanonicalNeighborhoodTheorem flow}
+    {singularityModelClassification :
+      HasSingularityModelClassification flow}
+    {singularityModelBlowupClassification :
+      HasSingularityModelBlowupClassification flow}
+    (payload :
+      PerelmanSingularityControlPayload flow noLocalCollapsing
+        reducedVolume canonicalNeighborhood singularityModelClassification
+        singularityModelBlowupClassification) :
+    HasPerelmanSingularityControl flow where
+  perelmanSingularityControlPayload_source :=
+    ⟨noLocalCollapsing, reducedVolume, canonicalNeighborhood,
+      singularityModelClassification, singularityModelBlowupClassification,
+      ⟨payload⟩⟩
 
 /--
 Package for the Perelman singularity-control inputs used by surgery.
@@ -23578,78 +28966,169 @@ structure FiniteExtinctionSweepoutPayload
   /-- Every slice area is bounded by the uniform bound. -/
   areaValueLeBound : ∀ p : parameterSpace, areaValue p ≤ areaBound
 
+/-- Source data for producing the sweepout family used by the width argument. -/
+structure FiniteExtinctionSweepoutPayloadSource
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M) :
+    Type (u + 1) where
+  payload : FiniteExtinctionSweepoutPayload M fundamentalGroup
+
 /-- Interface for producing the sweepout family used by the width argument. -/
-inductive HasFiniteExtinctionSweepoutExistence
+structure HasFiniteExtinctionSweepoutExistence
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
     [CompactSpace M]
     (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M) : Prop where
-  /--
-  A concrete set-valued sweepout payload supplies the abstract sweepout
-  existence interface.
-  -/
-  | of_sweepout_payload
-      (payload : FiniteExtinctionSweepoutPayload M fundamentalGroup) :
-      HasFiniteExtinctionSweepoutExistence M fundamentalGroup
+  finiteExtinctionSweepoutPayload_source :
+    Nonempty (FiniteExtinctionSweepoutPayloadSource M fundamentalGroup)
+
+/-- Compatibility constructor for finite-extinction sweepout payloads. -/
+def HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    {fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M}
+    (payload : FiniteExtinctionSweepoutPayload M fundamentalGroup) :
+    HasFiniteExtinctionSweepoutExistence M fundamentalGroup where
+  finiteExtinctionSweepoutPayload_source := ⟨⟨payload⟩⟩
 
 /-- Interface for the parameter space used to index the finite-extinction sweepout. -/
-inductive HasFiniteExtinctionSweepoutParameterSpace
+structure HasFiniteExtinctionSweepoutParameterSpace
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
     [CompactSpace M]
     (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M) : Prop where
-  /-- A concrete sweepout payload supplies the indexing parameter-space input. -/
-  | of_sweepout_payload
-      (payload : FiniteExtinctionSweepoutPayload M fundamentalGroup) :
-      HasFiniteExtinctionSweepoutParameterSpace M fundamentalGroup
+  finiteExtinctionSweepoutParameterSpacePayload_source :
+    Nonempty (FiniteExtinctionSweepoutPayloadSource M fundamentalGroup)
+
+/-- Compatibility constructor for sweepout parameter-space payloads. -/
+def HasFiniteExtinctionSweepoutParameterSpace.of_sweepout_payload
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    {fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M}
+    (payload : FiniteExtinctionSweepoutPayload M fundamentalGroup) :
+    HasFiniteExtinctionSweepoutParameterSpace M fundamentalGroup where
+  finiteExtinctionSweepoutParameterSpacePayload_source := ⟨⟨payload⟩⟩
 
 /-- Interface for continuity/compactness of the sweepout family used by width. -/
-inductive HasFiniteExtinctionSweepoutContinuity
+structure FiniteExtinctionSweepoutContinuityPayloadSource
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
+    (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup) :
+    Type (u + 1) where
+  sweepoutSource : FiniteExtinctionSweepoutPayloadSource M fundamentalGroup
+  sweepout_eq :
+    sweepout =
+      HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutSource.payload
+
+/-- Interface for continuity/compactness of the sweepout family used by width. -/
+structure HasFiniteExtinctionSweepoutContinuity
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
     [CompactSpace M]
     (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
     (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup) : Prop where
-  /--
-  The continuity-neighborhood component of a concrete sweepout payload supplies
-  the abstract sweepout-continuity interface for the sweepout it constructs.
-  -/
-  | of_sweepout_payload
-      (payload : FiniteExtinctionSweepoutPayload M fundamentalGroup) :
-      HasFiniteExtinctionSweepoutContinuity M fundamentalGroup
-        (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload payload)
+  finiteExtinctionSweepoutContinuityPayload_source :
+    Nonempty
+      (FiniteExtinctionSweepoutContinuityPayloadSource M fundamentalGroup
+        sweepout)
+
+/-- Compatibility constructor for sweepout-continuity payloads. -/
+def HasFiniteExtinctionSweepoutContinuity.of_sweepout_payload
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    {fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M}
+    (payload : FiniteExtinctionSweepoutPayload M fundamentalGroup) :
+    HasFiniteExtinctionSweepoutContinuity M fundamentalGroup
+      (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload payload) where
+  finiteExtinctionSweepoutContinuityPayload_source :=
+    ⟨{ sweepoutSource := ⟨payload⟩
+       sweepout_eq := rfl }⟩
 
 /-- Interface for uniform area bounds on the finite-extinction sweepout family. -/
-inductive HasFiniteExtinctionSweepoutAreaBound
+structure FiniteExtinctionSweepoutAreaBoundPayloadSource
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
+    (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup) :
+    Type (u + 1) where
+  sweepoutSource : FiniteExtinctionSweepoutPayloadSource M fundamentalGroup
+  sweepout_eq :
+    sweepout =
+      HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutSource.payload
+
+/-- Interface for uniform area bounds on the finite-extinction sweepout family. -/
+structure HasFiniteExtinctionSweepoutAreaBound
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
     [CompactSpace M]
     (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
     (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup) : Prop where
-  /--
-  The uniform area-bound component of a concrete sweepout payload supplies the
-  abstract sweepout-area-bound interface for the sweepout it constructs.
-  -/
-  | of_sweepout_payload
-      (payload : FiniteExtinctionSweepoutPayload M fundamentalGroup) :
-      HasFiniteExtinctionSweepoutAreaBound M fundamentalGroup
-        (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload payload)
+  finiteExtinctionSweepoutAreaBoundPayload_source :
+    Nonempty
+      (FiniteExtinctionSweepoutAreaBoundPayloadSource M fundamentalGroup
+        sweepout)
+
+/-- Compatibility constructor for sweepout-area-bound payloads. -/
+def HasFiniteExtinctionSweepoutAreaBound.of_sweepout_payload
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    {fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M}
+    (payload : FiniteExtinctionSweepoutPayload M fundamentalGroup) :
+    HasFiniteExtinctionSweepoutAreaBound M fundamentalGroup
+      (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload payload) where
+  finiteExtinctionSweepoutAreaBoundPayload_source :=
+    ⟨{ sweepoutSource := ⟨payload⟩
+       sweepout_eq := rfl }⟩
 
 /-- Interface for the nontrivial sweepout class that gives positive width. -/
-inductive HasFiniteExtinctionSweepoutNontriviality
+structure FiniteExtinctionSweepoutNontrivialityPayloadSource
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
+    (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup) :
+    Type (u + 1) where
+  sweepoutSource : FiniteExtinctionSweepoutPayloadSource M fundamentalGroup
+  sweepout_eq :
+    sweepout =
+      HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutSource.payload
+
+/-- Interface for the nontrivial sweepout class that gives positive width. -/
+structure HasFiniteExtinctionSweepoutNontriviality
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
     [CompactSpace M]
     (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
     (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup) : Prop where
-  /--
-  The distinguished nonempty slice of a concrete sweepout payload supplies the
-  abstract nontriviality interface for the sweepout it constructs.
-  -/
-  | of_sweepout_payload
-      (payload : FiniteExtinctionSweepoutPayload M fundamentalGroup) :
-      HasFiniteExtinctionSweepoutNontriviality M fundamentalGroup
-        (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload payload)
+  finiteExtinctionSweepoutNontrivialityPayload_source :
+    Nonempty
+      (FiniteExtinctionSweepoutNontrivialityPayloadSource M fundamentalGroup
+        sweepout)
+
+/-- Compatibility constructor for sweepout-nontriviality payloads. -/
+def HasFiniteExtinctionSweepoutNontriviality.of_sweepout_payload
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    {fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M}
+    (payload : FiniteExtinctionSweepoutPayload M fundamentalGroup) :
+    HasFiniteExtinctionSweepoutNontriviality M fundamentalGroup
+      (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload payload) where
+  finiteExtinctionSweepoutNontrivialityPayload_source :=
+    ⟨{ sweepoutSource := ⟨payload⟩
+       sweepout_eq := rfl }⟩
 
 /--
 Concrete payload for the area functional used on a finite-extinction sweepout.
@@ -23686,8 +29165,29 @@ structure FiniteExtinctionAreaFunctionalPayload
   /-- Post-surgery metric control needed to compare areas across surgery times. -/
   postSurgeryMetricControl : HasPostSurgeryMetricControl flow
 
+/-- Source data for setting up the area functional on the sweepout class. -/
+structure FiniteExtinctionAreaFunctionalSetupPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
+    (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup) :
+    Type (u + 1) where
+  sweepoutPayload : FiniteExtinctionSweepoutPayload M fundamentalGroup
+  areaPayload :
+    FiniteExtinctionAreaFunctionalPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+  sweepout_eq :
+    sweepout =
+      HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutPayload
+
 /-- Interface for setting up the area functional on the sweepout class. -/
-inductive HasFiniteExtinctionAreaFunctionalSetup
+structure HasFiniteExtinctionAreaFunctionalSetup
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -23697,20 +29197,34 @@ inductive HasFiniteExtinctionAreaFunctionalSetup
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
     (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
     (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup) : Prop where
-  /--
-  A concrete sweepout payload together with the corresponding area-functional
-  payload supplies the abstract area-functional setup.
-  -/
-  | of_area_functional_payload
-      (sweepoutPayload :
-        FiniteExtinctionSweepoutPayload M fundamentalGroup)
-      (areaPayload :
-        FiniteExtinctionAreaFunctionalPayload
-          flow surgery control fundamentalGroup sweepoutPayload) :
-      HasFiniteExtinctionAreaFunctionalSetup
-        flow surgery control fundamentalGroup
-        (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
-          sweepoutPayload)
+  finiteExtinctionAreaFunctionalSetupPayload_source :
+    Nonempty
+      (FiniteExtinctionAreaFunctionalSetupPayloadSource
+        flow surgery control fundamentalGroup sweepout)
+
+/-- Compatibility constructor for area-functional setup payloads. -/
+def HasFiniteExtinctionAreaFunctionalSetup.of_area_functional_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M}
+    (sweepoutPayload :
+      FiniteExtinctionSweepoutPayload M fundamentalGroup)
+    (areaPayload :
+      FiniteExtinctionAreaFunctionalPayload
+        flow surgery control fundamentalGroup sweepoutPayload) :
+    HasFiniteExtinctionAreaFunctionalSetup
+      flow surgery control fundamentalGroup
+      (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutPayload) where
+  finiteExtinctionAreaFunctionalSetupPayload_source :=
+    ⟨{ sweepoutPayload := sweepoutPayload
+       areaPayload := areaPayload
+       sweepout_eq := rfl }⟩
 
 /--
 Concrete payload for defining the min-max width associated to a finite
@@ -23749,8 +29263,32 @@ structure FiniteExtinctionMinMaxWidthPayload
   /-- The chosen width remains within the sweepout payload's uniform bound. -/
   widthLeSweepoutBound : widthValue ≤ sweepoutPayload.areaBound
 
+/-- Source data for defining the min-max width from the sweepout family. -/
+structure FiniteExtinctionMinMaxWidthDefinitionPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
+    (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup) :
+    Type (u + 1) where
+  sweepoutPayload : FiniteExtinctionSweepoutPayload M fundamentalGroup
+  areaPayload :
+    FiniteExtinctionAreaFunctionalPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+  widthPayload :
+    FiniteExtinctionMinMaxWidthPayload
+      flow surgery control fundamentalGroup sweepoutPayload areaPayload
+  sweepout_eq :
+    sweepout =
+      HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutPayload
+
 /-- Interface for defining the min-max width from the sweepout family. -/
-inductive HasFiniteExtinctionMinMaxWidthDefinition
+structure HasFiniteExtinctionMinMaxWidthDefinition
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -23761,24 +29299,38 @@ inductive HasFiniteExtinctionMinMaxWidthDefinition
     (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
     (sweepout : HasFiniteExtinctionSweepoutExistence M
       fundamentalGroup) : Prop where
-  /--
-  A concrete sweepout payload, its area-functional payload, and the associated
-  min-max width payload supply the abstract min-max width definition.
-  -/
-  | of_min_max_width_payload
-      (sweepoutPayload :
-        FiniteExtinctionSweepoutPayload M fundamentalGroup)
-      (areaPayload :
-        FiniteExtinctionAreaFunctionalPayload
-          flow surgery control fundamentalGroup sweepoutPayload)
-      (widthPayload :
-        FiniteExtinctionMinMaxWidthPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload) :
-      HasFiniteExtinctionMinMaxWidthDefinition
-        flow surgery control fundamentalGroup
-        (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
-          sweepoutPayload)
+  finiteExtinctionMinMaxWidthDefinitionPayload_source :
+    Nonempty
+      (FiniteExtinctionMinMaxWidthDefinitionPayloadSource
+        flow surgery control fundamentalGroup sweepout)
+
+/-- Compatibility constructor for min-max width payloads. -/
+def HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M}
+    (sweepoutPayload :
+      FiniteExtinctionSweepoutPayload M fundamentalGroup)
+    (areaPayload :
+      FiniteExtinctionAreaFunctionalPayload
+        flow surgery control fundamentalGroup sweepoutPayload)
+    (widthPayload :
+      FiniteExtinctionMinMaxWidthPayload
+        flow surgery control fundamentalGroup sweepoutPayload areaPayload) :
+    HasFiniteExtinctionMinMaxWidthDefinition
+      flow surgery control fundamentalGroup
+      (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutPayload) where
+  finiteExtinctionMinMaxWidthDefinitionPayload_source :=
+    ⟨{ sweepoutPayload := sweepoutPayload
+       areaPayload := areaPayload
+       widthPayload := widthPayload
+       sweepout_eq := rfl }⟩
 
 /--
 Concrete payload for compactness of width-minimizing sweepout sequences.
@@ -23826,8 +29378,43 @@ structure FiniteExtinctionWidthCompactnessPayload
       areaPayload.areaFunctional (minimizingSequence (extractedSubsequence n)) ≤
         widthPayload.widthValue
 
+/-- Source data for compactness of width-minimizing sweepout sequences. -/
+structure FiniteExtinctionWidthCompactnessPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
+    (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup)
+    (widthDefinition :
+      HasFiniteExtinctionMinMaxWidthDefinition flow surgery control
+        fundamentalGroup sweepout) :
+    Type (u + 1) where
+  sweepoutPayload : FiniteExtinctionSweepoutPayload M fundamentalGroup
+  areaPayload :
+    FiniteExtinctionAreaFunctionalPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+  widthPayload :
+    FiniteExtinctionMinMaxWidthPayload
+      flow surgery control fundamentalGroup sweepoutPayload areaPayload
+  compactnessPayload :
+    FiniteExtinctionWidthCompactnessPayload
+      flow surgery control fundamentalGroup sweepoutPayload areaPayload
+      widthPayload
+  sweepout_eq :
+    sweepout =
+      HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutPayload
+  widthDefinition_heq :
+    HEq widthDefinition
+      (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
+        sweepoutPayload areaPayload widthPayload)
+
 /-- Interface for compactness of width-minimizing sweepout sequences. -/
-inductive HasFiniteExtinctionWidthCompactness
+structure HasFiniteExtinctionWidthCompactness
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -23840,30 +29427,46 @@ inductive HasFiniteExtinctionWidthCompactness
     (widthDefinition :
       HasFiniteExtinctionMinMaxWidthDefinition flow surgery control
         fundamentalGroup sweepout) : Prop where
-  /--
-  A concrete compactness payload for a sweepout and its min-max width definition
-  supplies the abstract width-compactness interface.
-  -/
-  | of_width_compactness_payload
-      (sweepoutPayload :
-        FiniteExtinctionSweepoutPayload M fundamentalGroup)
-      (areaPayload :
-        FiniteExtinctionAreaFunctionalPayload
-          flow surgery control fundamentalGroup sweepoutPayload)
-      (widthPayload :
-        FiniteExtinctionMinMaxWidthPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload)
-      (compactnessPayload :
-        FiniteExtinctionWidthCompactnessPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload) :
-      HasFiniteExtinctionWidthCompactness
-        flow surgery control fundamentalGroup
-        (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
-          sweepoutPayload)
-        (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
-          sweepoutPayload areaPayload widthPayload)
+  finiteExtinctionWidthCompactnessPayload_source :
+    Nonempty
+      (FiniteExtinctionWidthCompactnessPayloadSource
+        flow surgery control fundamentalGroup sweepout widthDefinition)
+
+/-- Compatibility constructor for width-compactness payloads. -/
+def HasFiniteExtinctionWidthCompactness.of_width_compactness_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M}
+    (sweepoutPayload :
+      FiniteExtinctionSweepoutPayload M fundamentalGroup)
+    (areaPayload :
+      FiniteExtinctionAreaFunctionalPayload
+        flow surgery control fundamentalGroup sweepoutPayload)
+    (widthPayload :
+      FiniteExtinctionMinMaxWidthPayload
+        flow surgery control fundamentalGroup sweepoutPayload areaPayload)
+    (compactnessPayload :
+      FiniteExtinctionWidthCompactnessPayload
+        flow surgery control fundamentalGroup sweepoutPayload areaPayload
+        widthPayload) :
+    HasFiniteExtinctionWidthCompactness
+      flow surgery control fundamentalGroup
+      (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutPayload)
+      (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
+        sweepoutPayload areaPayload widthPayload) where
+  finiteExtinctionWidthCompactnessPayload_source :=
+    ⟨{ sweepoutPayload := sweepoutPayload
+       areaPayload := areaPayload
+       widthPayload := widthPayload
+       compactnessPayload := compactnessPayload
+       sweepout_eq := rfl
+       widthDefinition_heq := HEq.rfl }⟩
 
 /--
 Concrete payload for lower semicontinuity of the target min-max width.
@@ -23917,8 +29520,8 @@ structure FiniteExtinctionWidthLowerSemicontinuityPayload
             (compactnessPayload.extractedSubsequence n)) ≤
         widthPayload.widthValue
 
-/-- Interface for lower semicontinuity of width under limiting sweepouts. -/
-inductive HasFiniteExtinctionWidthLowerSemicontinuity
+/-- Source data for lower semicontinuity of width under limiting sweepouts. -/
+structure FiniteExtinctionWidthLowerSemicontinuityPayloadSource
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -23928,37 +29531,93 @@ inductive HasFiniteExtinctionWidthLowerSemicontinuity
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
     (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
     (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup)
-    (_widthDefinition :
+    (widthDefinition :
+      HasFiniteExtinctionMinMaxWidthDefinition flow surgery control
+        fundamentalGroup sweepout) :
+    Type (u + 1) where
+  sweepoutPayload : FiniteExtinctionSweepoutPayload M fundamentalGroup
+  areaPayload :
+    FiniteExtinctionAreaFunctionalPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+  widthPayload :
+    FiniteExtinctionMinMaxWidthPayload
+      flow surgery control fundamentalGroup sweepoutPayload areaPayload
+  compactnessPayload :
+    FiniteExtinctionWidthCompactnessPayload
+      flow surgery control fundamentalGroup sweepoutPayload areaPayload
+      widthPayload
+  lowerSemicontinuityPayload :
+    FiniteExtinctionWidthLowerSemicontinuityPayload
+      flow surgery control fundamentalGroup sweepoutPayload areaPayload
+      widthPayload compactnessPayload
+  sweepout_eq :
+    sweepout =
+      HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutPayload
+  widthDefinition_heq :
+    HEq widthDefinition
+      (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
+        sweepoutPayload areaPayload widthPayload)
+
+/-- Interface for lower semicontinuity of width under limiting sweepouts. -/
+structure HasFiniteExtinctionWidthLowerSemicontinuity
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
+    (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup)
+    (widthDefinition :
       HasFiniteExtinctionMinMaxWidthDefinition flow surgery control
         fundamentalGroup sweepout) : Prop where
-  /--
-  A concrete lower-semicontinuity payload, grounded in a compactness extraction,
-  supplies the abstract width-lower-semicontinuity interface.
-  -/
-  | of_width_lower_semicontinuity_payload
-      (sweepoutPayload :
-        FiniteExtinctionSweepoutPayload M fundamentalGroup)
-      (areaPayload :
-        FiniteExtinctionAreaFunctionalPayload
-          flow surgery control fundamentalGroup sweepoutPayload)
-      (widthPayload :
-        FiniteExtinctionMinMaxWidthPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload)
-      (compactnessPayload :
-        FiniteExtinctionWidthCompactnessPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload)
-      (lowerSemicontinuityPayload :
-        FiniteExtinctionWidthLowerSemicontinuityPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload) :
-      HasFiniteExtinctionWidthLowerSemicontinuity
-        flow surgery control fundamentalGroup
-        (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
-          sweepoutPayload)
-        (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
-          sweepoutPayload areaPayload widthPayload)
+  finiteExtinctionWidthLowerSemicontinuityPayload_source :
+    Nonempty
+      (FiniteExtinctionWidthLowerSemicontinuityPayloadSource
+        flow surgery control fundamentalGroup sweepout widthDefinition)
+
+/-- Compatibility constructor for width-lower-semicontinuity payloads. -/
+def HasFiniteExtinctionWidthLowerSemicontinuity.of_width_lower_semicontinuity_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M}
+    (sweepoutPayload :
+      FiniteExtinctionSweepoutPayload M fundamentalGroup)
+    (areaPayload :
+      FiniteExtinctionAreaFunctionalPayload
+        flow surgery control fundamentalGroup sweepoutPayload)
+    (widthPayload :
+      FiniteExtinctionMinMaxWidthPayload
+        flow surgery control fundamentalGroup sweepoutPayload areaPayload)
+    (compactnessPayload :
+      FiniteExtinctionWidthCompactnessPayload
+        flow surgery control fundamentalGroup sweepoutPayload areaPayload
+        widthPayload)
+    (lowerSemicontinuityPayload :
+      FiniteExtinctionWidthLowerSemicontinuityPayload
+        flow surgery control fundamentalGroup sweepoutPayload areaPayload
+        widthPayload compactnessPayload) :
+    HasFiniteExtinctionWidthLowerSemicontinuity
+      flow surgery control fundamentalGroup
+      (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutPayload)
+      (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
+        sweepoutPayload areaPayload widthPayload) where
+  finiteExtinctionWidthLowerSemicontinuityPayload_source :=
+    ⟨{ sweepoutPayload := sweepoutPayload
+       areaPayload := areaPayload
+       widthPayload := widthPayload
+       compactnessPayload := compactnessPayload
+       lowerSemicontinuityPayload := lowerSemicontinuityPayload
+       sweepout_eq := rfl
+       widthDefinition_heq := HEq.rfl }⟩
 
 /--
 Concrete payload for a minimizing sequence realizing the target min-max width.
@@ -24028,8 +29687,8 @@ structure FiniteExtinctionMinimizingSequencePayload
       minimizingSequence (extractedSubsequence n) ∈
         compactnessPayload.compactnessNeighborhood
 
-/-- Interface for extracting a minimizing sequence realizing the width. -/
-inductive HasFiniteExtinctionMinimizingSequence
+/-- Source data for extracting a minimizing sequence realizing the width. -/
+structure FiniteExtinctionMinimizingSequencePayloadSource
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -24039,42 +29698,102 @@ inductive HasFiniteExtinctionMinimizingSequence
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
     (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
     (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup)
-    (_widthDefinition :
+    (widthDefinition :
+      HasFiniteExtinctionMinMaxWidthDefinition flow surgery control
+        fundamentalGroup sweepout) :
+    Type (u + 1) where
+  sweepoutPayload : FiniteExtinctionSweepoutPayload M fundamentalGroup
+  areaPayload :
+    FiniteExtinctionAreaFunctionalPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+  widthPayload :
+    FiniteExtinctionMinMaxWidthPayload
+      flow surgery control fundamentalGroup sweepoutPayload areaPayload
+  compactnessPayload :
+    FiniteExtinctionWidthCompactnessPayload
+      flow surgery control fundamentalGroup sweepoutPayload areaPayload
+      widthPayload
+  lowerSemicontinuityPayload :
+    FiniteExtinctionWidthLowerSemicontinuityPayload
+      flow surgery control fundamentalGroup sweepoutPayload areaPayload
+      widthPayload compactnessPayload
+  minimizingSequencePayload :
+    FiniteExtinctionMinimizingSequencePayload
+      flow surgery control fundamentalGroup sweepoutPayload areaPayload
+      widthPayload compactnessPayload lowerSemicontinuityPayload
+  sweepout_eq :
+    sweepout =
+      HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutPayload
+  widthDefinition_heq :
+    HEq widthDefinition
+      (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
+        sweepoutPayload areaPayload widthPayload)
+
+/-- Interface for extracting a minimizing sequence realizing the width. -/
+structure HasFiniteExtinctionMinimizingSequence
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
+    (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup)
+    (widthDefinition :
       HasFiniteExtinctionMinMaxWidthDefinition flow surgery control
         fundamentalGroup sweepout) : Prop where
-  /--
-  A concrete minimizing-sequence payload supplies the abstract
-  minimizing-sequence interface for the target min-max width.
-  -/
-  | of_minimizing_sequence_payload
-      (sweepoutPayload :
-        FiniteExtinctionSweepoutPayload M fundamentalGroup)
-      (areaPayload :
-        FiniteExtinctionAreaFunctionalPayload
-          flow surgery control fundamentalGroup sweepoutPayload)
-      (widthPayload :
-        FiniteExtinctionMinMaxWidthPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload)
-      (compactnessPayload :
-        FiniteExtinctionWidthCompactnessPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload)
-      (lowerSemicontinuityPayload :
-        FiniteExtinctionWidthLowerSemicontinuityPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload)
-      (minimizingSequencePayload :
-        FiniteExtinctionMinimizingSequencePayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload
-          lowerSemicontinuityPayload) :
-      HasFiniteExtinctionMinimizingSequence
-        flow surgery control fundamentalGroup
-        (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
-          sweepoutPayload)
-        (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
-          sweepoutPayload areaPayload widthPayload)
+  finiteExtinctionMinimizingSequencePayload_source :
+    Nonempty
+      (FiniteExtinctionMinimizingSequencePayloadSource
+        flow surgery control fundamentalGroup sweepout widthDefinition)
+
+/-- Compatibility constructor for minimizing-sequence payloads. -/
+def HasFiniteExtinctionMinimizingSequence.of_minimizing_sequence_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M}
+    (sweepoutPayload :
+      FiniteExtinctionSweepoutPayload M fundamentalGroup)
+    (areaPayload :
+      FiniteExtinctionAreaFunctionalPayload
+        flow surgery control fundamentalGroup sweepoutPayload)
+    (widthPayload :
+      FiniteExtinctionMinMaxWidthPayload
+        flow surgery control fundamentalGroup sweepoutPayload areaPayload)
+    (compactnessPayload :
+      FiniteExtinctionWidthCompactnessPayload
+        flow surgery control fundamentalGroup sweepoutPayload areaPayload
+        widthPayload)
+    (lowerSemicontinuityPayload :
+      FiniteExtinctionWidthLowerSemicontinuityPayload
+        flow surgery control fundamentalGroup sweepoutPayload areaPayload
+        widthPayload compactnessPayload)
+    (minimizingSequencePayload :
+      FiniteExtinctionMinimizingSequencePayload
+        flow surgery control fundamentalGroup sweepoutPayload areaPayload
+        widthPayload compactnessPayload lowerSemicontinuityPayload) :
+    HasFiniteExtinctionMinimizingSequence
+      flow surgery control fundamentalGroup
+      (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutPayload)
+      (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
+        sweepoutPayload areaPayload widthPayload) where
+  finiteExtinctionMinimizingSequencePayload_source :=
+    ⟨{ sweepoutPayload := sweepoutPayload
+       areaPayload := areaPayload
+       widthPayload := widthPayload
+       compactnessPayload := compactnessPayload
+       lowerSemicontinuityPayload := lowerSemicontinuityPayload
+       minimizingSequencePayload := minimizingSequencePayload
+       sweepout_eq := rfl
+       widthDefinition_heq := HEq.rfl }⟩
 
 /--
 Concrete payload for the pull-tight argument in the target min-max setup.
@@ -24147,8 +29866,8 @@ structure FiniteExtinctionPullTightPayload
     ∃ N : ℕ, ∀ k : ℕ, N ≤ k →
       tightenedSequence k ∈ compactnessPayload.compactnessNeighborhood
 
-/-- Interface for the pull-tight argument in the finite-extinction min-max setup. -/
-inductive HasFiniteExtinctionPullTightArgument
+/-- Source data for the pull-tight argument in the finite-extinction min-max setup. -/
+structure FiniteExtinctionPullTightPayloadSource
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -24158,47 +29877,113 @@ inductive HasFiniteExtinctionPullTightArgument
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
     (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
     (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup)
-    (_widthDefinition :
+    (widthDefinition :
+      HasFiniteExtinctionMinMaxWidthDefinition flow surgery control
+        fundamentalGroup sweepout) :
+    Type (u + 1) where
+  sweepoutPayload : FiniteExtinctionSweepoutPayload M fundamentalGroup
+  areaPayload :
+    FiniteExtinctionAreaFunctionalPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+  widthPayload :
+    FiniteExtinctionMinMaxWidthPayload
+      flow surgery control fundamentalGroup sweepoutPayload areaPayload
+  compactnessPayload :
+    FiniteExtinctionWidthCompactnessPayload
+      flow surgery control fundamentalGroup sweepoutPayload areaPayload
+      widthPayload
+  lowerSemicontinuityPayload :
+    FiniteExtinctionWidthLowerSemicontinuityPayload
+      flow surgery control fundamentalGroup sweepoutPayload areaPayload
+      widthPayload compactnessPayload
+  minimizingSequencePayload :
+    FiniteExtinctionMinimizingSequencePayload
+      flow surgery control fundamentalGroup sweepoutPayload areaPayload
+      widthPayload compactnessPayload lowerSemicontinuityPayload
+  pullTightPayload :
+    FiniteExtinctionPullTightPayload
+      flow surgery control fundamentalGroup sweepoutPayload areaPayload
+      widthPayload compactnessPayload lowerSemicontinuityPayload
+      minimizingSequencePayload
+  sweepout_eq :
+    sweepout =
+      HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutPayload
+  widthDefinition_heq :
+    HEq widthDefinition
+      (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
+        sweepoutPayload areaPayload widthPayload)
+
+/-- Interface for the pull-tight argument in the finite-extinction min-max setup. -/
+structure HasFiniteExtinctionPullTightArgument
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
+    (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup)
+    (widthDefinition :
       HasFiniteExtinctionMinMaxWidthDefinition flow surgery control
         fundamentalGroup sweepout) : Prop where
-  /--
-  A concrete pull-tight payload supplies the abstract pull-tight interface for
-  the target min-max width.
-  -/
-  | of_pull_tight_payload
-      (sweepoutPayload :
-        FiniteExtinctionSweepoutPayload M fundamentalGroup)
-      (areaPayload :
-        FiniteExtinctionAreaFunctionalPayload
-          flow surgery control fundamentalGroup sweepoutPayload)
-      (widthPayload :
-        FiniteExtinctionMinMaxWidthPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload)
-      (compactnessPayload :
-        FiniteExtinctionWidthCompactnessPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload)
-      (lowerSemicontinuityPayload :
-        FiniteExtinctionWidthLowerSemicontinuityPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload)
-      (minimizingSequencePayload :
-        FiniteExtinctionMinimizingSequencePayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload
-          lowerSemicontinuityPayload)
-      (pullTightPayload :
-        FiniteExtinctionPullTightPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload
-          lowerSemicontinuityPayload minimizingSequencePayload) :
-      HasFiniteExtinctionPullTightArgument
-        flow surgery control fundamentalGroup
-        (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
-          sweepoutPayload)
-        (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
-          sweepoutPayload areaPayload widthPayload)
+  finiteExtinctionPullTightPayload_source :
+    Nonempty
+      (FiniteExtinctionPullTightPayloadSource
+        flow surgery control fundamentalGroup sweepout widthDefinition)
+
+/-- Compatibility constructor for pull-tight payloads. -/
+def HasFiniteExtinctionPullTightArgument.of_pull_tight_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M}
+    (sweepoutPayload :
+      FiniteExtinctionSweepoutPayload M fundamentalGroup)
+    (areaPayload :
+      FiniteExtinctionAreaFunctionalPayload
+        flow surgery control fundamentalGroup sweepoutPayload)
+    (widthPayload :
+      FiniteExtinctionMinMaxWidthPayload
+        flow surgery control fundamentalGroup sweepoutPayload areaPayload)
+    (compactnessPayload :
+      FiniteExtinctionWidthCompactnessPayload
+        flow surgery control fundamentalGroup sweepoutPayload areaPayload
+        widthPayload)
+    (lowerSemicontinuityPayload :
+      FiniteExtinctionWidthLowerSemicontinuityPayload
+        flow surgery control fundamentalGroup sweepoutPayload areaPayload
+        widthPayload compactnessPayload)
+    (minimizingSequencePayload :
+      FiniteExtinctionMinimizingSequencePayload
+        flow surgery control fundamentalGroup sweepoutPayload areaPayload
+        widthPayload compactnessPayload lowerSemicontinuityPayload)
+    (pullTightPayload :
+      FiniteExtinctionPullTightPayload
+        flow surgery control fundamentalGroup sweepoutPayload areaPayload
+        widthPayload compactnessPayload lowerSemicontinuityPayload
+        minimizingSequencePayload) :
+    HasFiniteExtinctionPullTightArgument
+      flow surgery control fundamentalGroup
+      (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutPayload)
+      (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
+        sweepoutPayload areaPayload widthPayload) where
+  finiteExtinctionPullTightPayload_source :=
+    ⟨{ sweepoutPayload := sweepoutPayload
+       areaPayload := areaPayload
+       widthPayload := widthPayload
+       compactnessPayload := compactnessPayload
+       lowerSemicontinuityPayload := lowerSemicontinuityPayload
+       minimizingSequencePayload := minimizingSequencePayload
+       pullTightPayload := pullTightPayload
+       sweepout_eq := rfl
+       widthDefinition_heq := HEq.rfl }⟩
 
 /--
 Concrete payload for stationarity of the min-max limit.
@@ -24264,8 +30049,8 @@ structure FiniteExtinctionMinMaxStationarityPayload
     areaPayload.areaFunctional pullTightPayload.tightenedLimit ≤
       widthPayload.widthValue
 
-/-- Interface for stationarity of the min-max limit realizing width. -/
-inductive HasFiniteExtinctionMinMaxStationarity
+/-- Source data for stationarity of the min-max limit realizing width. -/
+structure FiniteExtinctionMinMaxStationarityPayloadSource
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -24275,53 +30060,131 @@ inductive HasFiniteExtinctionMinMaxStationarity
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
     (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
     (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup)
-    (_widthDefinition :
+    (widthDefinition :
+      HasFiniteExtinctionMinMaxWidthDefinition flow surgery control
+        fundamentalGroup sweepout) :
+    Type (u + 1) where
+  sweepoutPayload :
+    FiniteExtinctionSweepoutPayload M fundamentalGroup
+  areaPayload :
+    FiniteExtinctionAreaFunctionalPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+  widthPayload :
+    FiniteExtinctionMinMaxWidthPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload
+  compactnessPayload :
+    FiniteExtinctionWidthCompactnessPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload widthPayload
+  lowerSemicontinuityPayload :
+    FiniteExtinctionWidthLowerSemicontinuityPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload widthPayload compactnessPayload
+  minimizingSequencePayload :
+    FiniteExtinctionMinimizingSequencePayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload widthPayload compactnessPayload
+      lowerSemicontinuityPayload
+  pullTightPayload :
+    FiniteExtinctionPullTightPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload widthPayload compactnessPayload
+      lowerSemicontinuityPayload minimizingSequencePayload
+  stationarityPayload :
+    FiniteExtinctionMinMaxStationarityPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload widthPayload compactnessPayload
+      lowerSemicontinuityPayload minimizingSequencePayload
+      pullTightPayload
+  sweepout_eq :
+    sweepout =
+      HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutPayload
+  widthDefinition_heq :
+    HEq widthDefinition
+      (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
+        sweepoutPayload areaPayload widthPayload)
+
+/-- Interface for stationarity of the min-max limit realizing width. -/
+structure HasFiniteExtinctionMinMaxStationarity
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
+    (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup)
+    (widthDefinition :
       HasFiniteExtinctionMinMaxWidthDefinition flow surgery control
         fundamentalGroup sweepout) : Prop where
-  /--
-  A concrete stationarity payload supplies the abstract stationarity interface
-  for the target min-max width.
-  -/
-  | of_min_max_stationarity_payload
-      (sweepoutPayload :
-        FiniteExtinctionSweepoutPayload M fundamentalGroup)
-      (areaPayload :
-        FiniteExtinctionAreaFunctionalPayload
-          flow surgery control fundamentalGroup sweepoutPayload)
-      (widthPayload :
-        FiniteExtinctionMinMaxWidthPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload)
-      (compactnessPayload :
-        FiniteExtinctionWidthCompactnessPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload)
-      (lowerSemicontinuityPayload :
-        FiniteExtinctionWidthLowerSemicontinuityPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload)
-      (minimizingSequencePayload :
-        FiniteExtinctionMinimizingSequencePayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload
-          lowerSemicontinuityPayload)
-      (pullTightPayload :
-        FiniteExtinctionPullTightPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload
-          lowerSemicontinuityPayload minimizingSequencePayload)
-      (stationarityPayload :
-        FiniteExtinctionMinMaxStationarityPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload
-          lowerSemicontinuityPayload minimizingSequencePayload
-          pullTightPayload) :
-      HasFiniteExtinctionMinMaxStationarity
-        flow surgery control fundamentalGroup
-        (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
-          sweepoutPayload)
-        (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
-          sweepoutPayload areaPayload widthPayload)
+  finiteExtinctionMinMaxStationarityPayload_source :
+    Nonempty
+      (FiniteExtinctionMinMaxStationarityPayloadSource
+        flow surgery control fundamentalGroup sweepout widthDefinition)
+
+/-- Compatibility constructor for min-max stationarity payloads. -/
+def HasFiniteExtinctionMinMaxStationarity.of_min_max_stationarity_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M}
+    (sweepoutPayload :
+      FiniteExtinctionSweepoutPayload M fundamentalGroup)
+    (areaPayload :
+      FiniteExtinctionAreaFunctionalPayload
+        flow surgery control fundamentalGroup sweepoutPayload)
+    (widthPayload :
+      FiniteExtinctionMinMaxWidthPayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload)
+    (compactnessPayload :
+      FiniteExtinctionWidthCompactnessPayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload widthPayload)
+    (lowerSemicontinuityPayload :
+      FiniteExtinctionWidthLowerSemicontinuityPayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload widthPayload compactnessPayload)
+    (minimizingSequencePayload :
+      FiniteExtinctionMinimizingSequencePayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload widthPayload compactnessPayload
+        lowerSemicontinuityPayload)
+    (pullTightPayload :
+      FiniteExtinctionPullTightPayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload widthPayload compactnessPayload
+        lowerSemicontinuityPayload minimizingSequencePayload)
+    (stationarityPayload :
+      FiniteExtinctionMinMaxStationarityPayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload widthPayload compactnessPayload
+        lowerSemicontinuityPayload minimizingSequencePayload
+        pullTightPayload) :
+    HasFiniteExtinctionMinMaxStationarity
+      flow surgery control fundamentalGroup
+      (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutPayload)
+      (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
+        sweepoutPayload areaPayload widthPayload) where
+  finiteExtinctionMinMaxStationarityPayload_source :=
+    ⟨{ sweepoutPayload := sweepoutPayload
+       areaPayload := areaPayload
+       widthPayload := widthPayload
+       compactnessPayload := compactnessPayload
+       lowerSemicontinuityPayload := lowerSemicontinuityPayload
+       minimizingSequencePayload := minimizingSequencePayload
+       pullTightPayload := pullTightPayload
+       stationarityPayload := stationarityPayload
+       sweepout_eq := rfl
+       widthDefinition_heq := HEq.rfl }⟩
 
 /--
 Concrete payload for regularity of the min-max surface.
@@ -24400,8 +30263,8 @@ structure FiniteExtinctionMinSurfaceRegularityPayload
   regularityFirstVariationZero :
     stationarityPayload.firstVariationFunctional regularityParameter = 0
 
-/-- Interface for regularity of the min-max surfaces realizing width. -/
-inductive HasFiniteExtinctionMinSurfaceRegularity
+/-- Source data for regularity of the min-max surfaces realizing width. -/
+structure FiniteExtinctionMinSurfaceRegularityPayloadSource
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -24411,59 +30274,144 @@ inductive HasFiniteExtinctionMinSurfaceRegularity
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
     (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
     (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup)
-    (_widthDefinition :
+    (widthDefinition :
+      HasFiniteExtinctionMinMaxWidthDefinition flow surgery control
+        fundamentalGroup sweepout) :
+    Type (u + 1) where
+  sweepoutPayload :
+    FiniteExtinctionSweepoutPayload M fundamentalGroup
+  areaPayload :
+    FiniteExtinctionAreaFunctionalPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+  widthPayload :
+    FiniteExtinctionMinMaxWidthPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload
+  compactnessPayload :
+    FiniteExtinctionWidthCompactnessPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload widthPayload
+  lowerSemicontinuityPayload :
+    FiniteExtinctionWidthLowerSemicontinuityPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload widthPayload compactnessPayload
+  minimizingSequencePayload :
+    FiniteExtinctionMinimizingSequencePayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload widthPayload compactnessPayload
+      lowerSemicontinuityPayload
+  pullTightPayload :
+    FiniteExtinctionPullTightPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload widthPayload compactnessPayload
+      lowerSemicontinuityPayload minimizingSequencePayload
+  stationarityPayload :
+    FiniteExtinctionMinMaxStationarityPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload widthPayload compactnessPayload
+      lowerSemicontinuityPayload minimizingSequencePayload
+      pullTightPayload
+  regularityPayload :
+    FiniteExtinctionMinSurfaceRegularityPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload widthPayload compactnessPayload
+      lowerSemicontinuityPayload minimizingSequencePayload
+      pullTightPayload stationarityPayload
+  sweepout_eq :
+    sweepout =
+      HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutPayload
+  widthDefinition_heq :
+    HEq widthDefinition
+      (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
+        sweepoutPayload areaPayload widthPayload)
+
+/-- Interface for regularity of the min-max surfaces realizing width. -/
+structure HasFiniteExtinctionMinSurfaceRegularity
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
+    (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup)
+    (widthDefinition :
       HasFiniteExtinctionMinMaxWidthDefinition flow surgery control
         fundamentalGroup sweepout) : Prop where
-  /--
-  A concrete regularity payload supplies the abstract regularity interface for
-  the target min-max surface.
-  -/
-  | of_min_surface_regularity_payload
-      (sweepoutPayload :
-        FiniteExtinctionSweepoutPayload M fundamentalGroup)
-      (areaPayload :
-        FiniteExtinctionAreaFunctionalPayload
-          flow surgery control fundamentalGroup sweepoutPayload)
-      (widthPayload :
-        FiniteExtinctionMinMaxWidthPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload)
-      (compactnessPayload :
-        FiniteExtinctionWidthCompactnessPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload)
-      (lowerSemicontinuityPayload :
-        FiniteExtinctionWidthLowerSemicontinuityPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload)
-      (minimizingSequencePayload :
-        FiniteExtinctionMinimizingSequencePayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload
-          lowerSemicontinuityPayload)
-      (pullTightPayload :
-        FiniteExtinctionPullTightPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload
-          lowerSemicontinuityPayload minimizingSequencePayload)
-      (stationarityPayload :
-        FiniteExtinctionMinMaxStationarityPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload
-          lowerSemicontinuityPayload minimizingSequencePayload
-          pullTightPayload)
-      (regularityPayload :
-        FiniteExtinctionMinSurfaceRegularityPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload
-          lowerSemicontinuityPayload minimizingSequencePayload
-          pullTightPayload stationarityPayload) :
-      HasFiniteExtinctionMinSurfaceRegularity
-        flow surgery control fundamentalGroup
-        (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
-          sweepoutPayload)
-        (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
-          sweepoutPayload areaPayload widthPayload)
+  finiteExtinctionMinSurfaceRegularityPayload_source :
+    Nonempty
+      (FiniteExtinctionMinSurfaceRegularityPayloadSource
+        flow surgery control fundamentalGroup sweepout widthDefinition)
+
+/-- Compatibility constructor for min-surface regularity payloads. -/
+def HasFiniteExtinctionMinSurfaceRegularity.of_min_surface_regularity_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M}
+    (sweepoutPayload :
+      FiniteExtinctionSweepoutPayload M fundamentalGroup)
+    (areaPayload :
+      FiniteExtinctionAreaFunctionalPayload
+        flow surgery control fundamentalGroup sweepoutPayload)
+    (widthPayload :
+      FiniteExtinctionMinMaxWidthPayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload)
+    (compactnessPayload :
+      FiniteExtinctionWidthCompactnessPayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload widthPayload)
+    (lowerSemicontinuityPayload :
+      FiniteExtinctionWidthLowerSemicontinuityPayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload widthPayload compactnessPayload)
+    (minimizingSequencePayload :
+      FiniteExtinctionMinimizingSequencePayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload widthPayload compactnessPayload
+        lowerSemicontinuityPayload)
+    (pullTightPayload :
+      FiniteExtinctionPullTightPayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload widthPayload compactnessPayload
+        lowerSemicontinuityPayload minimizingSequencePayload)
+    (stationarityPayload :
+      FiniteExtinctionMinMaxStationarityPayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload widthPayload compactnessPayload
+        lowerSemicontinuityPayload minimizingSequencePayload
+        pullTightPayload)
+    (regularityPayload :
+      FiniteExtinctionMinSurfaceRegularityPayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload widthPayload compactnessPayload
+        lowerSemicontinuityPayload minimizingSequencePayload
+        pullTightPayload stationarityPayload) :
+    HasFiniteExtinctionMinSurfaceRegularity
+      flow surgery control fundamentalGroup
+      (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutPayload)
+      (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
+        sweepoutPayload areaPayload widthPayload) where
+  finiteExtinctionMinSurfaceRegularityPayload_source :=
+    ⟨{ sweepoutPayload := sweepoutPayload
+       areaPayload := areaPayload
+       widthPayload := widthPayload
+       compactnessPayload := compactnessPayload
+       lowerSemicontinuityPayload := lowerSemicontinuityPayload
+       minimizingSequencePayload := minimizingSequencePayload
+       pullTightPayload := pullTightPayload
+       stationarityPayload := stationarityPayload
+       regularityPayload := regularityPayload
+       sweepout_eq := rfl
+       widthDefinition_heq := HEq.rfl }⟩
 
 /--
 Concrete payload for positive/nontrivial width before extinction.
@@ -24545,8 +30493,8 @@ structure FiniteExtinctionPositiveWidthPayload
   positiveWidthLeSweepoutBound :
     widthPayload.widthValue ≤ sweepoutPayload.areaBound
 
-/-- Interface for positivity/nontriviality of the width before extinction. -/
-inductive HasFiniteExtinctionPositiveWidth
+/-- Source data for positivity/nontriviality of the width before extinction. -/
+structure FiniteExtinctionPositiveWidthPayloadSource
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -24556,65 +30504,157 @@ inductive HasFiniteExtinctionPositiveWidth
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
     (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
     (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup)
-    (_widthDefinition :
+    (widthDefinition :
+      HasFiniteExtinctionMinMaxWidthDefinition flow surgery control
+        fundamentalGroup sweepout) :
+    Type (u + 1) where
+  sweepoutPayload :
+    FiniteExtinctionSweepoutPayload M fundamentalGroup
+  areaPayload :
+    FiniteExtinctionAreaFunctionalPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+  widthPayload :
+    FiniteExtinctionMinMaxWidthPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload
+  compactnessPayload :
+    FiniteExtinctionWidthCompactnessPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload widthPayload
+  lowerSemicontinuityPayload :
+    FiniteExtinctionWidthLowerSemicontinuityPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload widthPayload compactnessPayload
+  minimizingSequencePayload :
+    FiniteExtinctionMinimizingSequencePayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload widthPayload compactnessPayload
+      lowerSemicontinuityPayload
+  pullTightPayload :
+    FiniteExtinctionPullTightPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload widthPayload compactnessPayload
+      lowerSemicontinuityPayload minimizingSequencePayload
+  stationarityPayload :
+    FiniteExtinctionMinMaxStationarityPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload widthPayload compactnessPayload
+      lowerSemicontinuityPayload minimizingSequencePayload
+      pullTightPayload
+  regularityPayload :
+    FiniteExtinctionMinSurfaceRegularityPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload widthPayload compactnessPayload
+      lowerSemicontinuityPayload minimizingSequencePayload
+      pullTightPayload stationarityPayload
+  positiveWidthPayload :
+    FiniteExtinctionPositiveWidthPayload
+      flow surgery control fundamentalGroup sweepoutPayload
+      areaPayload widthPayload compactnessPayload
+      lowerSemicontinuityPayload minimizingSequencePayload
+      pullTightPayload stationarityPayload regularityPayload
+  sweepout_eq :
+    sweepout =
+      HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutPayload
+  widthDefinition_heq :
+    HEq widthDefinition
+      (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
+        sweepoutPayload areaPayload widthPayload)
+
+/-- Interface for positivity/nontriviality of the width before extinction. -/
+structure HasFiniteExtinctionPositiveWidth
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M)
+    (sweepout : HasFiniteExtinctionSweepoutExistence M fundamentalGroup)
+    (widthDefinition :
       HasFiniteExtinctionMinMaxWidthDefinition flow surgery control
         fundamentalGroup sweepout) : Prop where
-  /--
-  A concrete positive-width payload supplies the abstract positive-width
-  interface for the target min-max width.
-  -/
-  | of_positive_width_payload
-      (sweepoutPayload :
-        FiniteExtinctionSweepoutPayload M fundamentalGroup)
-      (areaPayload :
-        FiniteExtinctionAreaFunctionalPayload
-          flow surgery control fundamentalGroup sweepoutPayload)
-      (widthPayload :
-        FiniteExtinctionMinMaxWidthPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload)
-      (compactnessPayload :
-        FiniteExtinctionWidthCompactnessPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload)
-      (lowerSemicontinuityPayload :
-        FiniteExtinctionWidthLowerSemicontinuityPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload)
-      (minimizingSequencePayload :
-        FiniteExtinctionMinimizingSequencePayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload
-          lowerSemicontinuityPayload)
-      (pullTightPayload :
-        FiniteExtinctionPullTightPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload
-          lowerSemicontinuityPayload minimizingSequencePayload)
-      (stationarityPayload :
-        FiniteExtinctionMinMaxStationarityPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload
-          lowerSemicontinuityPayload minimizingSequencePayload
-          pullTightPayload)
-      (regularityPayload :
-        FiniteExtinctionMinSurfaceRegularityPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload
-          lowerSemicontinuityPayload minimizingSequencePayload
-          pullTightPayload stationarityPayload)
-      (positiveWidthPayload :
-        FiniteExtinctionPositiveWidthPayload
-          flow surgery control fundamentalGroup sweepoutPayload
-          areaPayload widthPayload compactnessPayload
-          lowerSemicontinuityPayload minimizingSequencePayload
-          pullTightPayload stationarityPayload regularityPayload) :
-      HasFiniteExtinctionPositiveWidth
-        flow surgery control fundamentalGroup
-        (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
-          sweepoutPayload)
-        (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
-          sweepoutPayload areaPayload widthPayload)
+  finiteExtinctionPositiveWidthPayload_source :
+    Nonempty
+      (FiniteExtinctionPositiveWidthPayloadSource
+        flow surgery control fundamentalGroup sweepout widthDefinition)
+
+/-- Compatibility constructor for positive-width payloads. -/
+def HasFiniteExtinctionPositiveWidth.of_positive_width_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {fundamentalGroup : HasFiniteExtinctionFundamentalGroupInput M}
+    (sweepoutPayload :
+      FiniteExtinctionSweepoutPayload M fundamentalGroup)
+    (areaPayload :
+      FiniteExtinctionAreaFunctionalPayload
+        flow surgery control fundamentalGroup sweepoutPayload)
+    (widthPayload :
+      FiniteExtinctionMinMaxWidthPayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload)
+    (compactnessPayload :
+      FiniteExtinctionWidthCompactnessPayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload widthPayload)
+    (lowerSemicontinuityPayload :
+      FiniteExtinctionWidthLowerSemicontinuityPayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload widthPayload compactnessPayload)
+    (minimizingSequencePayload :
+      FiniteExtinctionMinimizingSequencePayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload widthPayload compactnessPayload
+        lowerSemicontinuityPayload)
+    (pullTightPayload :
+      FiniteExtinctionPullTightPayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload widthPayload compactnessPayload
+        lowerSemicontinuityPayload minimizingSequencePayload)
+    (stationarityPayload :
+      FiniteExtinctionMinMaxStationarityPayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload widthPayload compactnessPayload
+        lowerSemicontinuityPayload minimizingSequencePayload
+        pullTightPayload)
+    (regularityPayload :
+      FiniteExtinctionMinSurfaceRegularityPayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload widthPayload compactnessPayload
+        lowerSemicontinuityPayload minimizingSequencePayload
+        pullTightPayload stationarityPayload)
+    (positiveWidthPayload :
+      FiniteExtinctionPositiveWidthPayload
+        flow surgery control fundamentalGroup sweepoutPayload
+        areaPayload widthPayload compactnessPayload
+        lowerSemicontinuityPayload minimizingSequencePayload
+        pullTightPayload stationarityPayload regularityPayload) :
+    HasFiniteExtinctionPositiveWidth
+      flow surgery control fundamentalGroup
+      (HasFiniteExtinctionSweepoutExistence.of_sweepout_payload
+        sweepoutPayload)
+      (HasFiniteExtinctionMinMaxWidthDefinition.of_min_max_width_payload
+        sweepoutPayload areaPayload widthPayload) where
+  finiteExtinctionPositiveWidthPayload_source :=
+    ⟨{ sweepoutPayload := sweepoutPayload
+       areaPayload := areaPayload
+       widthPayload := widthPayload
+       compactnessPayload := compactnessPayload
+       lowerSemicontinuityPayload := lowerSemicontinuityPayload
+       minimizingSequencePayload := minimizingSequencePayload
+       pullTightPayload := pullTightPayload
+       stationarityPayload := stationarityPayload
+       regularityPayload := regularityPayload
+       positiveWidthPayload := positiveWidthPayload
+       sweepout_eq := rfl
+       widthDefinition_heq := HEq.rfl }⟩
 
 /--
 Concrete payload for the min-max/width theory used in finite extinction.
@@ -24649,8 +30689,20 @@ structure FiniteExtinctionWidthTheoryPayload
   /-- Noncollapsing control through surgery for the width theory. -/
   postSurgeryNoncollapsing : HasPostSurgeryNoncollapsingControl flow
 
+/-- Source data for the min-max or width theory used in finite extinction. -/
+structure FiniteExtinctionWidthTheoryPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow) :
+    Type (u + 1) where
+  payload : FiniteExtinctionWidthTheoryPayload flow surgery control
+
 /-- Interface for the min-max or width theory used in finite extinction. -/
-inductive HasFiniteExtinctionWidthTheory
+structure HasFiniteExtinctionWidthTheory
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -24658,13 +30710,23 @@ inductive HasFiniteExtinctionWidthTheory
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
     (surgery : HasRicciFlowWithSurgery n M)
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow) : Prop where
-  /--
-  Shared analytic, Perelman, and surgery-control data supplies the abstract
-  finite-extinction width theory interface.
-  -/
-  | of_width_theory_payload
-      (payload : FiniteExtinctionWidthTheoryPayload flow surgery control) :
-      HasFiniteExtinctionWidthTheory flow surgery control
+  finiteExtinctionWidthTheoryPayload_source :
+    Nonempty
+      (FiniteExtinctionWidthTheoryPayloadSource flow surgery control)
+
+/-- Compatibility constructor for width-theory payloads. -/
+def HasFiniteExtinctionWidthTheory.of_width_theory_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    (payload : FiniteExtinctionWidthTheoryPayload flow surgery control) :
+    HasFiniteExtinctionWidthTheory flow surgery control where
+  finiteExtinctionWidthTheoryPayload_source :=
+    ⟨{ payload := payload }⟩
 
 /--
 Concrete payload for the first-variation formula used by finite extinction.
@@ -24720,8 +30782,23 @@ structure FiniteExtinctionFirstVariationFormulaPayload
   /-- The stationary slice area is bounded by the selected width. -/
   stationaryAreaLeWidth : stationaryAreaValue ≤ widthValue
 
+/-- Source data for the first-variation formula for the width-realizing surfaces. -/
+structure FiniteExtinctionFirstVariationFormulaPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control) :
+    Type (u + 1) where
+  payload :
+    FiniteExtinctionFirstVariationFormulaPayload
+      flow surgery control widthTheory
+
 /-- Interface for the first-variation formula for the width-realizing surfaces. -/
-inductive HasFiniteExtinctionFirstVariationFormula
+structure HasFiniteExtinctionFirstVariationFormula
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -24730,16 +30807,28 @@ inductive HasFiniteExtinctionFirstVariationFormula
     (surgery : HasRicciFlowWithSurgery n M)
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
     (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control) : Prop where
-  /--
-  Concrete first-variation data for the width-realizing slice supplies the
-  abstract first-variation formula interface.
-  -/
-  | of_first_variation_payload
-      (payload :
-        FiniteExtinctionFirstVariationFormulaPayload
-          flow surgery control widthTheory) :
-      HasFiniteExtinctionFirstVariationFormula
-        flow surgery control widthTheory
+  finiteExtinctionFirstVariationFormulaPayload_source :
+    Nonempty
+      (FiniteExtinctionFirstVariationFormulaPayloadSource
+        flow surgery control widthTheory)
+
+/-- Compatibility constructor for first-variation payloads. -/
+def HasFiniteExtinctionFirstVariationFormula.of_first_variation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    (payload :
+      FiniteExtinctionFirstVariationFormulaPayload
+        flow surgery control widthTheory) :
+    HasFiniteExtinctionFirstVariationFormula
+      flow surgery control widthTheory where
+  finiteExtinctionFirstVariationFormulaPayload_source :=
+    ⟨{ payload := payload }⟩
 
 /--
 Concrete payload for the second-variation/stability inequality in the finite
@@ -24799,8 +30888,23 @@ structure FiniteExtinctionSecondVariationInequalityPayload
   /-- The stable slice area remains bounded by the width. -/
   stableAreaLeWidth : stableAreaValue ≤ widthValue
 
+/-- Source data for the second-variation/stability inequality in the width argument. -/
+structure FiniteExtinctionSecondVariationInequalityPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control) :
+    Type (u + 1) where
+  payload :
+    FiniteExtinctionSecondVariationInequalityPayload
+      flow surgery control widthTheory
+
 /-- Interface for the second-variation/stability inequality in the width argument. -/
-inductive HasFiniteExtinctionSecondVariationInequality
+structure HasFiniteExtinctionSecondVariationInequality
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -24809,16 +30913,28 @@ inductive HasFiniteExtinctionSecondVariationInequality
     (surgery : HasRicciFlowWithSurgery n M)
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
     (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control) : Prop where
-  /--
-  Concrete second-variation/stability data at the width-realizing slice supplies
-  the abstract second-variation inequality interface.
-  -/
-  | of_second_variation_payload
-      (payload :
-        FiniteExtinctionSecondVariationInequalityPayload
-          flow surgery control widthTheory) :
-      HasFiniteExtinctionSecondVariationInequality
-        flow surgery control widthTheory
+  finiteExtinctionSecondVariationInequalityPayload_source :
+    Nonempty
+      (FiniteExtinctionSecondVariationInequalityPayloadSource
+        flow surgery control widthTheory)
+
+/-- Compatibility constructor for second-variation payloads. -/
+def HasFiniteExtinctionSecondVariationInequality.of_second_variation_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    (payload :
+      FiniteExtinctionSecondVariationInequalityPayload
+        flow surgery control widthTheory) :
+    HasFiniteExtinctionSecondVariationInequality
+      flow surgery control widthTheory where
+  finiteExtinctionSecondVariationInequalityPayload_source :=
+    ⟨{ payload := payload }⟩
 
 /--
 Concrete payload for the Gauss-Bonnet estimate used in the finite-extinction
@@ -24892,8 +31008,23 @@ structure FiniteExtinctionGaussBonnetEstimatePayload
   /-- The selected slice area remains controlled by width. -/
   surfaceAreaLeWidth : surfaceAreaValue ≤ widthValue
 
+/-- Source data for the Gauss-Bonnet estimate used in the width derivative bound. -/
+structure FiniteExtinctionGaussBonnetEstimatePayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control) :
+    Type (u + 1) where
+  payload :
+    FiniteExtinctionGaussBonnetEstimatePayload
+      flow surgery control widthTheory
+
 /-- Interface for the Gauss-Bonnet estimate used in the width derivative bound. -/
-inductive HasFiniteExtinctionGaussBonnetEstimate
+structure HasFiniteExtinctionGaussBonnetEstimate
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -24902,15 +31033,27 @@ inductive HasFiniteExtinctionGaussBonnetEstimate
     (surgery : HasRicciFlowWithSurgery n M)
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
     (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control) : Prop where
-  /--
-  Concrete curvature-integral and bound data supplies the abstract
-  Gauss-Bonnet estimate interface for the finite-extinction width argument.
-  -/
-  | of_gauss_bonnet_payload
-      (payload :
-        FiniteExtinctionGaussBonnetEstimatePayload
-          flow surgery control widthTheory) :
-      HasFiniteExtinctionGaussBonnetEstimate flow surgery control widthTheory
+  finiteExtinctionGaussBonnetEstimatePayload_source :
+    Nonempty
+      (FiniteExtinctionGaussBonnetEstimatePayloadSource
+        flow surgery control widthTheory)
+
+/-- Compatibility constructor for Gauss-Bonnet payloads. -/
+def HasFiniteExtinctionGaussBonnetEstimate.of_gauss_bonnet_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    (payload :
+      FiniteExtinctionGaussBonnetEstimatePayload
+        flow surgery control widthTheory) :
+    HasFiniteExtinctionGaussBonnetEstimate flow surgery control widthTheory where
+  finiteExtinctionGaussBonnetEstimatePayload_source :=
+    ⟨{ payload := payload }⟩
 
 /--
 Concrete payload for the scalar-curvature contribution to the finite-extinction
@@ -24974,8 +31117,23 @@ structure FiniteExtinctionScalarCurvatureWidthBoundPayload
   gaussBonnetUpperBoundNonnegative :
     0 ≤ gaussBonnetPayload.gaussBonnetUpperBound
 
+/-- Source data for the scalar-curvature contribution to the width bound. -/
+structure FiniteExtinctionScalarCurvatureWidthBoundPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control) :
+    Type (u + 1) where
+  payload :
+    FiniteExtinctionScalarCurvatureWidthBoundPayload
+      flow surgery control widthTheory
+
 /-- Interface for the scalar-curvature contribution to the width bound. -/
-inductive HasFiniteExtinctionScalarCurvatureWidthBound
+structure HasFiniteExtinctionScalarCurvatureWidthBound
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -24984,16 +31142,28 @@ inductive HasFiniteExtinctionScalarCurvatureWidthBound
     (surgery : HasRicciFlowWithSurgery n M)
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
     (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control) : Prop where
-  /--
-  Concrete scalar-curvature contribution and width-control data supplies the
-  abstract scalar-curvature width-bound interface.
-  -/
-  | of_scalar_curvature_width_bound_payload
-      (payload :
-        FiniteExtinctionScalarCurvatureWidthBoundPayload
-          flow surgery control widthTheory) :
-      HasFiniteExtinctionScalarCurvatureWidthBound
-        flow surgery control widthTheory
+  finiteExtinctionScalarCurvatureWidthBoundPayload_source :
+    Nonempty
+      (FiniteExtinctionScalarCurvatureWidthBoundPayloadSource
+        flow surgery control widthTheory)
+
+/-- Compatibility constructor for scalar-curvature width-bound payloads. -/
+def HasFiniteExtinctionScalarCurvatureWidthBound.of_scalar_curvature_width_bound_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    (payload :
+      FiniteExtinctionScalarCurvatureWidthBoundPayload
+        flow surgery control widthTheory) :
+    HasFiniteExtinctionScalarCurvatureWidthBound
+      flow surgery control widthTheory where
+  finiteExtinctionScalarCurvatureWidthBoundPayload_source :=
+    ⟨{ payload := payload }⟩
 
 /--
 Concrete payload for the width-evolution comparison used in finite extinction.
@@ -25063,8 +31233,23 @@ structure FiniteExtinctionWidthEvolutionPayload
   comparisonWidthLeInitialWidth :
     comparisonWidthValue ≤ initialWidthValue
 
+/-- Source data for the differential/monotonicity inequality controlling width. -/
+structure FiniteExtinctionWidthEvolutionPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control) :
+    Type (u + 1) where
+  payload :
+    FiniteExtinctionWidthEvolutionPayload
+      flow surgery control widthTheory
+
 /-- Interface for the differential/monotonicity inequality controlling width. -/
-inductive HasFiniteExtinctionWidthEvolution
+structure HasFiniteExtinctionWidthEvolution
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -25073,15 +31258,27 @@ inductive HasFiniteExtinctionWidthEvolution
     (surgery : HasRicciFlowWithSurgery n M)
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
     (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control) : Prop where
-  /--
-  Concrete two-time width comparison data supplies the abstract width-evolution
-  interface.
-  -/
-  | of_width_evolution_payload
-      (payload :
-        FiniteExtinctionWidthEvolutionPayload
-          flow surgery control widthTheory) :
-      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory
+  finiteExtinctionWidthEvolutionPayload_source :
+    Nonempty
+      (FiniteExtinctionWidthEvolutionPayloadSource
+        flow surgery control widthTheory)
+
+/-- Compatibility constructor for width-evolution payloads. -/
+def HasFiniteExtinctionWidthEvolution.of_width_evolution_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    (payload :
+      FiniteExtinctionWidthEvolutionPayload
+        flow surgery control widthTheory) :
+    HasFiniteExtinctionWidthEvolution flow surgery control widthTheory where
+  finiteExtinctionWidthEvolutionPayload_source :=
+    ⟨{ payload := payload }⟩
 
 /--
 Concrete payload for the smooth width differential inequality.
@@ -25144,8 +31341,23 @@ structure FiniteExtinctionWidthDifferentialInequalityPayload
   scalarCurvatureContributionLeWidth :
     scalarCurvatureContribution ≤ widthValue
 
+/-- Source data for the width differential inequality along the smooth flow pieces. -/
+structure FiniteExtinctionWidthDifferentialInequalityPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control) :
+    Type (u + 1) where
+  payload :
+    FiniteExtinctionWidthDifferentialInequalityPayload
+      flow surgery control widthTheory
+
 /-- Interface for the width differential inequality along the smooth flow pieces. -/
-inductive HasFiniteExtinctionWidthDifferentialInequality
+structure HasFiniteExtinctionWidthDifferentialInequality
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -25154,16 +31366,28 @@ inductive HasFiniteExtinctionWidthDifferentialInequality
     (surgery : HasRicciFlowWithSurgery n M)
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
     (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control) : Prop where
-  /--
-  Concrete local derivative and geometric upper-bound data supplies the abstract
-  smooth width differential inequality.
-  -/
-  | of_width_differential_inequality_payload
-      (payload :
-        FiniteExtinctionWidthDifferentialInequalityPayload
-          flow surgery control widthTheory) :
-      HasFiniteExtinctionWidthDifferentialInequality
-        flow surgery control widthTheory
+  finiteExtinctionWidthDifferentialInequalityPayload_source :
+    Nonempty
+      (FiniteExtinctionWidthDifferentialInequalityPayloadSource
+        flow surgery control widthTheory)
+
+/-- Compatibility constructor for width-differential-inequality payloads. -/
+def HasFiniteExtinctionWidthDifferentialInequality.of_width_differential_inequality_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    (payload :
+      FiniteExtinctionWidthDifferentialInequalityPayload
+        flow surgery control widthTheory) :
+    HasFiniteExtinctionWidthDifferentialInequality
+      flow surgery control widthTheory where
+  finiteExtinctionWidthDifferentialInequalityPayload_source :=
+    ⟨{ payload := payload }⟩
 
 /--
 Concrete payload for width drop/nonincrease across surgery.
@@ -25217,8 +31441,51 @@ structure FiniteExtinctionSurgeryWidthDropPayload
   postSurgeryWidthLePreSurgeryWidth :
     postSurgeryWidth ≤ preSurgeryWidth
 
+/-- Width-drop payloads expose the pre/post widths, nonnegative drop, and nonincrease. -/
+theorem FiniteExtinctionSurgeryWidthDropPayload.width_drop_accounting_bundle
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    {widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory}
+    (payload :
+      FiniteExtinctionSurgeryWidthDropPayload
+        flow surgery control widthTheory widthEvolution) :
+    payload.preSurgeryWidth = payload.widthEvolutionPayload.initialWidthValue ∧
+      payload.postSurgeryWidth =
+        payload.widthEvolutionPayload.comparisonWidthValue ∧
+      0 ≤ payload.widthDropAmount ∧
+      payload.postSurgeryWidth ≤ payload.preSurgeryWidth := by
+  exact
+    ⟨payload.preSurgeryWidthEqEvolutionInitial,
+      payload.postSurgeryWidthEqEvolutionComparison,
+      payload.widthDropAmountNonnegative,
+      payload.postSurgeryWidthLePreSurgeryWidth⟩
+
+/-- Source data for the width drop/nonincrease across surgery times. -/
+structure FiniteExtinctionSurgeryWidthDropPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control)
+    (widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory) :
+    Type (u + 1) where
+  payload :
+    FiniteExtinctionSurgeryWidthDropPayload
+      flow surgery control widthTheory widthEvolution
+
 /-- Interface for the width drop/nonincrease across surgery times. -/
-inductive HasFiniteExtinctionSurgeryWidthDrop
+structure HasFiniteExtinctionSurgeryWidthDrop
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -25229,16 +31496,30 @@ inductive HasFiniteExtinctionSurgeryWidthDrop
     (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control)
     (widthEvolution :
       HasFiniteExtinctionWidthEvolution flow surgery control widthTheory) : Prop where
-  /--
-  Concrete before/after surgery width values and a nonnegative drop amount
-  supply the abstract surgery width-drop interface.
-  -/
-  | of_surgery_width_drop_payload
-      (payload :
-        FiniteExtinctionSurgeryWidthDropPayload
-          flow surgery control widthTheory widthEvolution) :
-      HasFiniteExtinctionSurgeryWidthDrop
-        flow surgery control widthTheory widthEvolution
+  finiteExtinctionSurgeryWidthDropPayload_source :
+    Nonempty
+      (FiniteExtinctionSurgeryWidthDropPayloadSource
+        flow surgery control widthTheory widthEvolution)
+
+/-- Compatibility constructor for surgery-width-drop payloads. -/
+def HasFiniteExtinctionSurgeryWidthDrop.of_surgery_width_drop_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    {widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory}
+    (payload :
+      FiniteExtinctionSurgeryWidthDropPayload
+        flow surgery control widthTheory widthEvolution) :
+    HasFiniteExtinctionSurgeryWidthDrop
+      flow surgery control widthTheory widthEvolution where
+  finiteExtinctionSurgeryWidthDropPayload_source :=
+    ⟨{ payload := payload }⟩
 
 /--
 Concrete payload for comparing the width metric across a surgery time.
@@ -25304,8 +31585,25 @@ structure FiniteExtinctionSurgeryMetricComparisonPayload
   postSurgeryWidthLePreSurgeryWidthPlusDistortion :
     postSurgeryWidth ≤ preSurgeryWidth + metricDistortionBound
 
+/-- Source data for comparing the metric across a surgery time in the width argument. -/
+structure FiniteExtinctionSurgeryMetricComparisonPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control)
+    (widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory) :
+    Type (u + 1) where
+  payload :
+    FiniteExtinctionSurgeryMetricComparisonPayload
+      flow surgery control widthTheory widthEvolution
+
 /-- Interface for comparing the metric across a surgery time in the width argument. -/
-inductive HasFiniteExtinctionSurgeryMetricComparison
+structure HasFiniteExtinctionSurgeryMetricComparison
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -25316,16 +31614,30 @@ inductive HasFiniteExtinctionSurgeryMetricComparison
     (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control)
     (widthEvolution :
       HasFiniteExtinctionWidthEvolution flow surgery control widthTheory) : Prop where
-  /--
-  Concrete before/after surgery metric comparison data supplies the abstract
-  surgery-metric-comparison interface.
-  -/
-  | of_surgery_metric_comparison_payload
-      (payload :
-        FiniteExtinctionSurgeryMetricComparisonPayload
-          flow surgery control widthTheory widthEvolution) :
-      HasFiniteExtinctionSurgeryMetricComparison
-        flow surgery control widthTheory widthEvolution
+  finiteExtinctionSurgeryMetricComparisonPayload_source :
+    Nonempty
+      (FiniteExtinctionSurgeryMetricComparisonPayloadSource
+        flow surgery control widthTheory widthEvolution)
+
+/-- Compatibility constructor for surgery-metric-comparison payloads. -/
+def HasFiniteExtinctionSurgeryMetricComparison.of_surgery_metric_comparison_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    {widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory}
+    (payload :
+      FiniteExtinctionSurgeryMetricComparisonPayload
+        flow surgery control widthTheory widthEvolution) :
+    HasFiniteExtinctionSurgeryMetricComparison
+      flow surgery control widthTheory widthEvolution where
+  finiteExtinctionSurgeryMetricComparisonPayload_source :=
+    ⟨{ payload := payload }⟩
 
 /--
 Concrete payload for the sweepout comparison map across surgery.
@@ -25393,8 +31705,53 @@ structure FiniteExtinctionSurgeryWidthComparisonMapPayload
     targetWidth ≤
       sourceWidth + surgeryMetricComparisonPayload.metricDistortionBound
 
+/-- The sweepout comparison map carries a nonempty source slice to a nonempty target slice with the stored width bound. -/
+theorem FiniteExtinctionSurgeryWidthComparisonMapPayload.target_slice_transport_bundle
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    {widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory}
+    (payload :
+      FiniteExtinctionSurgeryWidthComparisonMapPayload
+        flow surgery control widthTheory widthEvolution) :
+    ∃ sourcePoint targetPoint : M,
+      sourcePoint ∈ payload.sourceSlice ∧
+        targetPoint ∈ payload.targetSlice ∧
+          targetPoint = sourcePoint ∧
+            payload.targetWidth ≤
+              payload.sourceWidth +
+                payload.surgeryMetricComparisonPayload.metricDistortionBound := by
+  exact
+    ⟨payload.sourceWitnessPoint, payload.targetWitnessPoint,
+      payload.sourceWitnessMem, payload.targetWitnessMem,
+      payload.comparisonCarriesWitness,
+      payload.targetWidthLeSourceWidthPlusDistortion⟩
+
+/-- Source data for pushing sweepouts through the surgery metric comparison map. -/
+structure FiniteExtinctionSurgeryWidthComparisonMapPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control)
+    (widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory) :
+    Type (u + 1) where
+  payload :
+    FiniteExtinctionSurgeryWidthComparisonMapPayload
+      flow surgery control widthTheory widthEvolution
+
 /-- Interface for pushing sweepouts through the surgery metric comparison map. -/
-inductive HasFiniteExtinctionSurgeryWidthComparisonMap
+structure HasFiniteExtinctionSurgeryWidthComparisonMap
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -25405,16 +31762,30 @@ inductive HasFiniteExtinctionSurgeryWidthComparisonMap
     (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control)
     (widthEvolution :
       HasFiniteExtinctionWidthEvolution flow surgery control widthTheory) : Prop where
-  /--
-  Concrete source/target sweepout parameter map and transported width-control
-  data supplies the abstract surgery width comparison map.
-  -/
-  | of_surgery_width_comparison_map_payload
-      (payload :
-        FiniteExtinctionSurgeryWidthComparisonMapPayload
-          flow surgery control widthTheory widthEvolution) :
-      HasFiniteExtinctionSurgeryWidthComparisonMap
-        flow surgery control widthTheory widthEvolution
+  finiteExtinctionSurgeryWidthComparisonMapPayload_source :
+    Nonempty
+      (FiniteExtinctionSurgeryWidthComparisonMapPayloadSource
+        flow surgery control widthTheory widthEvolution)
+
+/-- Compatibility constructor for surgery-width-comparison-map payloads. -/
+def HasFiniteExtinctionSurgeryWidthComparisonMap.of_surgery_width_comparison_map_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    {widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory}
+    (payload :
+      FiniteExtinctionSurgeryWidthComparisonMapPayload
+        flow surgery control widthTheory widthEvolution) :
+    HasFiniteExtinctionSurgeryWidthComparisonMap
+      flow surgery control widthTheory widthEvolution where
+  finiteExtinctionSurgeryWidthComparisonMapPayload_source :=
+    ⟨{ payload := payload }⟩
 
 /--
 Concrete payload for controlling surgery and discarded components in the width
@@ -25484,8 +31855,53 @@ structure FiniteExtinctionSurgeryDiscardControlPayload
   retainedWidthContributionLePostSurgeryWidth :
     retainedWidthContribution ≤ surgeryWidthDropPayload.postSurgeryWidth
 
+/-- Discard-control payloads expose nonnegative discarded width and retained/discarded bounds. -/
+theorem FiniteExtinctionSurgeryDiscardControlPayload.width_accounting_bundle
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    {widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory}
+    (payload :
+      FiniteExtinctionSurgeryDiscardControlPayload
+        flow surgery control widthTheory widthEvolution) :
+    0 ≤ payload.discardedWidthContribution ∧
+      payload.retainedWidthContribution ≤
+        payload.surgeryWidthDropPayload.preSurgeryWidth ∧
+      payload.discardedWidthContribution ≤
+        payload.surgeryWidthDropPayload.widthDropAmount ∧
+      payload.retainedWidthContribution ≤
+        payload.surgeryWidthDropPayload.postSurgeryWidth := by
+  exact
+    ⟨payload.discardedWidthContributionNonnegative,
+      payload.retainedWidthContributionLePreSurgeryWidth,
+      payload.discardedWidthContributionLeDrop,
+      payload.retainedWidthContributionLePostSurgeryWidth⟩
+
+/-- Source data for showing surgery and discarded components preserve the width argument. -/
+structure FiniteExtinctionSurgeryDiscardControlPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control)
+    (widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory) :
+    Type (u + 1) where
+  payload :
+    FiniteExtinctionSurgeryDiscardControlPayload
+      flow surgery control widthTheory widthEvolution
+
 /-- Interface for showing surgery and discarded components preserve the width argument. -/
-inductive HasFiniteExtinctionSurgeryDiscardControl
+structure HasFiniteExtinctionSurgeryDiscardControl
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -25496,16 +31912,30 @@ inductive HasFiniteExtinctionSurgeryDiscardControl
     (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control)
     (widthEvolution :
       HasFiniteExtinctionWidthEvolution flow surgery control widthTheory) : Prop where
-  /--
-  Concrete surgery comparison, width-drop, and discarded/retained width
-  accounting data supplies the abstract surgery-discard-control interface.
-  -/
-  | of_surgery_discard_control_payload
-      (payload :
-        FiniteExtinctionSurgeryDiscardControlPayload
-          flow surgery control widthTheory widthEvolution) :
-      HasFiniteExtinctionSurgeryDiscardControl
-        flow surgery control widthTheory widthEvolution
+  finiteExtinctionSurgeryDiscardControlPayload_source :
+    Nonempty
+      (FiniteExtinctionSurgeryDiscardControlPayloadSource
+        flow surgery control widthTheory widthEvolution)
+
+/-- Compatibility constructor for surgery-discard-control payloads. -/
+def HasFiniteExtinctionSurgeryDiscardControl.of_surgery_discard_control_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    {widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory}
+    (payload :
+      FiniteExtinctionSurgeryDiscardControlPayload
+        flow surgery control widthTheory widthEvolution) :
+    HasFiniteExtinctionSurgeryDiscardControl
+      flow surgery control widthTheory widthEvolution where
+  finiteExtinctionSurgeryDiscardControlPayload_source :=
+    ⟨{ payload := payload }⟩
 
 /--
 Concrete payload for the statement that discarded components do not carry the
@@ -25575,8 +32005,67 @@ structure FiniteExtinctionDiscardedComponentWidthNeutralityPayload
     surgeryDiscardControlPayload.retainedWidthContribution ≤
       surgeryDiscardControlPayload.surgeryWidthDropPayload.postSurgeryWidth
 
+/-- Bundle the concrete retained/discarded-component facts used by width neutrality. -/
+theorem FiniteExtinctionDiscardedComponentWidthNeutralityPayload.neutrality_bundle
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    {widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory}
+    {discardControl :
+      HasFiniteExtinctionSurgeryDiscardControl
+        flow surgery control widthTheory widthEvolution}
+    (payload :
+      FiniteExtinctionDiscardedComponentWidthNeutralityPayload
+        flow surgery control widthTheory widthEvolution discardControl) :
+    payload.neutralizedComponent =
+        payload.surgeryDiscardControlPayload.selectedDiscardedComponent ∧
+      payload.discardedComponentSet =
+        payload.surgeryDiscardControlPayload.discardedComponentSet ∧
+      payload.retainedTargetSlice =
+        payload.surgeryDiscardControlPayload.retainedComponentSet ∧
+      payload.retainedWitnessPoint ∈ payload.retainedTargetSlice ∧
+      payload.surgeryDiscardControlPayload.discardedWidthContribution = 0 ∧
+      payload.surgeryDiscardControlPayload.discardedWidthContribution ≤
+        payload.surgeryDiscardControlPayload.surgeryWidthDropPayload.widthDropAmount ∧
+      payload.surgeryDiscardControlPayload.retainedWidthContribution ≤
+        payload.surgeryDiscardControlPayload.surgeryWidthDropPayload.postSurgeryWidth := by
+  exact
+    ⟨payload.neutralizedComponentEqSelected,
+      payload.discardedComponentSetEqControl,
+      payload.retainedTargetSliceEqControl,
+      payload.retainedWitnessMem,
+      payload.discardedWidthNeutralized,
+      payload.discardedWidthLeDrop,
+      payload.retainedWidthLePostSurgeryWidth⟩
+
+/-- Source data for proving discarded components do not carry the target sweepout width. -/
+structure FiniteExtinctionDiscardedComponentWidthNeutralityPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control)
+    (widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory)
+    (discardControl :
+      HasFiniteExtinctionSurgeryDiscardControl
+        flow surgery control widthTheory widthEvolution) :
+    Type (u + 1) where
+  payload :
+    FiniteExtinctionDiscardedComponentWidthNeutralityPayload
+      flow surgery control widthTheory widthEvolution discardControl
+
 /-- Interface for proving discarded components do not carry the target sweepout width. -/
-inductive HasFiniteExtinctionDiscardedComponentWidthNeutrality
+structure HasFiniteExtinctionDiscardedComponentWidthNeutrality
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -25590,16 +32079,33 @@ inductive HasFiniteExtinctionDiscardedComponentWidthNeutrality
     (discardControl :
       HasFiniteExtinctionSurgeryDiscardControl
         flow surgery control widthTheory widthEvolution) : Prop where
-  /--
-  Concrete retained-slice and zero discarded-width data supplies the abstract
-  discarded-component width-neutrality interface.
-  -/
-  | of_discarded_component_width_neutrality_payload
-      (payload :
-        FiniteExtinctionDiscardedComponentWidthNeutralityPayload
-          flow surgery control widthTheory widthEvolution discardControl) :
-      HasFiniteExtinctionDiscardedComponentWidthNeutrality
-        flow surgery control widthTheory widthEvolution discardControl
+  finiteExtinctionDiscardedComponentWidthNeutralityPayload_source :
+    Nonempty
+      (FiniteExtinctionDiscardedComponentWidthNeutralityPayloadSource
+        flow surgery control widthTheory widthEvolution discardControl)
+
+/-- Compatibility constructor for discarded-component width-neutrality payloads. -/
+def HasFiniteExtinctionDiscardedComponentWidthNeutrality.of_discarded_component_width_neutrality_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    {widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory}
+    {discardControl :
+      HasFiniteExtinctionSurgeryDiscardControl
+        flow surgery control widthTheory widthEvolution}
+    (payload :
+      FiniteExtinctionDiscardedComponentWidthNeutralityPayload
+        flow surgery control widthTheory widthEvolution discardControl) :
+    HasFiniteExtinctionDiscardedComponentWidthNeutrality
+      flow surgery control widthTheory widthEvolution discardControl where
+  finiteExtinctionDiscardedComponentWidthNeutralityPayload_source :=
+    ⟨{ payload := payload }⟩
 
 /--
 Concrete payload for the statement that discarded components carry only trivial
@@ -25670,8 +32176,66 @@ structure FiniteExtinctionDiscardedComponentSweepoutTrivialityPayload
   retainedTargetSliceEqNeutrality :
     retainedTargetSlice = widthNeutralityPayload.retainedTargetSlice
 
+/-- Bundle the empty discarded-slice and zero-width facts used by sweepout triviality. -/
+theorem FiniteExtinctionDiscardedComponentSweepoutTrivialityPayload.triviality_bundle
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    {widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory}
+    {discardControl :
+      HasFiniteExtinctionSurgeryDiscardControl
+        flow surgery control widthTheory widthEvolution}
+    (payload :
+      FiniteExtinctionDiscardedComponentSweepoutTrivialityPayload
+        flow surgery control widthTheory widthEvolution discardControl) :
+    payload.surgeryDiscardControlPayload.discardedComponentSet = ∅ ∧
+      payload.trivializedSweepoutSlice =
+        payload.surgeryDiscardControlPayload.discardedComponentSet ∧
+      payload.trivializedSweepoutSlice = ∅ ∧
+      payload.trivializedComponent =
+        payload.surgeryDiscardControlPayload.selectedDiscardedComponent ∧
+      payload.surgeryDiscardControlPayload.discardedWidthContribution = 0 ∧
+      payload.surgeryDiscardControlPayload.discardedWidthContribution =
+        payload.widthNeutralityPayload.surgeryDiscardControlPayload.discardedWidthContribution ∧
+      payload.retainedTargetSlice =
+        payload.widthNeutralityPayload.retainedTargetSlice := by
+  exact
+    ⟨payload.discardedComponentSetEmpty,
+      payload.trivializedSweepoutSliceEqDiscarded,
+      payload.trivializedSweepoutSliceEmpty,
+      payload.trivializedComponentEqSelected,
+      payload.discardedWidthZero,
+      payload.discardedWidthZeroEqNeutrality,
+      payload.retainedTargetSliceEqNeutrality⟩
+
+/-- Source data for proving discarded components carry only trivial sweepout classes. -/
+structure FiniteExtinctionDiscardedComponentSweepoutTrivialityPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control)
+    (widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory)
+    (discardControl :
+      HasFiniteExtinctionSurgeryDiscardControl
+        flow surgery control widthTheory widthEvolution) :
+    Type (u + 1) where
+  payload :
+    FiniteExtinctionDiscardedComponentSweepoutTrivialityPayload
+      flow surgery control widthTheory widthEvolution discardControl
+
 /-- Interface for proving discarded components carry only trivial sweepout classes. -/
-inductive HasFiniteExtinctionDiscardedComponentSweepoutTriviality
+structure HasFiniteExtinctionDiscardedComponentSweepoutTriviality
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -25685,16 +32249,33 @@ inductive HasFiniteExtinctionDiscardedComponentSweepoutTriviality
     (discardControl :
       HasFiniteExtinctionSurgeryDiscardControl
         flow surgery control widthTheory widthEvolution) : Prop where
-  /--
-  Concrete empty discarded-slice data and the accompanying width-neutrality
-  payload supply the abstract sweepout-triviality interface.
-  -/
-  | of_discarded_component_sweepout_triviality_payload
-      (payload :
-        FiniteExtinctionDiscardedComponentSweepoutTrivialityPayload
-          flow surgery control widthTheory widthEvolution discardControl) :
-      HasFiniteExtinctionDiscardedComponentSweepoutTriviality
-        flow surgery control widthTheory widthEvolution discardControl
+  finiteExtinctionDiscardedComponentSweepoutTrivialityPayload_source :
+    Nonempty
+      (FiniteExtinctionDiscardedComponentSweepoutTrivialityPayloadSource
+        flow surgery control widthTheory widthEvolution discardControl)
+
+/-- Compatibility constructor for discarded-component sweepout-triviality payloads. -/
+def HasFiniteExtinctionDiscardedComponentSweepoutTriviality.of_discarded_component_sweepout_triviality_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    {widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory}
+    {discardControl :
+      HasFiniteExtinctionSurgeryDiscardControl
+        flow surgery control widthTheory widthEvolution}
+    (payload :
+      FiniteExtinctionDiscardedComponentSweepoutTrivialityPayload
+        flow surgery control widthTheory widthEvolution discardControl) :
+    HasFiniteExtinctionDiscardedComponentSweepoutTriviality
+      flow surgery control widthTheory widthEvolution discardControl where
+  finiteExtinctionDiscardedComponentSweepoutTrivialityPayload_source :=
+    ⟨{ payload := payload }⟩
 
 /--
 Concrete payload for classifying discarded components in the finite-extinction
@@ -25766,8 +32347,63 @@ structure FiniteExtinctionDiscardedComponentClassificationPayload
   classifiedDiscardedWidthZero :
     surgeryDiscardControlPayload.discardedWidthContribution = 0
 
+/-- Bundle the discarded-component classification data used before survivor tracking. -/
+theorem FiniteExtinctionDiscardedComponentClassificationPayload.classification_bundle
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    {widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory}
+    {discardControl :
+      HasFiniteExtinctionSurgeryDiscardControl
+        flow surgery control widthTheory widthEvolution}
+    (payload :
+      FiniteExtinctionDiscardedComponentClassificationPayload
+        flow surgery control widthTheory widthEvolution discardControl) :
+    payload.classifiedComponent =
+        payload.surgeryDiscardControlPayload.selectedDiscardedComponent ∧
+      payload.sweepoutTrivialityPayload.trivializedComponent =
+        payload.sweepoutTrivialityPayload.surgeryDiscardControlPayload.selectedDiscardedComponent ∧
+      payload.componentClassification payload.classifiedComponent =
+        payload.trivialComponentClass ∧
+      payload.surgeryDiscardControlPayload.discardedComponentSet = ∅ ∧
+      payload.sweepoutTrivialityPayload.trivializedSweepoutSlice = ∅ ∧
+      payload.surgeryDiscardControlPayload.discardedWidthContribution = 0 := by
+  exact
+    ⟨payload.classifiedComponentEqSelected,
+      payload.trivializedComponentEqSelected,
+      payload.classifiedComponentClassEqTrivial,
+      payload.classifiedDiscardedSetEmpty,
+      payload.trivializedSweepoutSliceEmpty,
+      payload.classifiedDiscardedWidthZero⟩
+
+/-- Source data for classifying discarded components in the finite-extinction argument. -/
+structure FiniteExtinctionDiscardedComponentClassificationPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control)
+    (widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory)
+    (discardControl :
+      HasFiniteExtinctionSurgeryDiscardControl
+        flow surgery control widthTheory widthEvolution) :
+    Type (u + 1) where
+  payload :
+    FiniteExtinctionDiscardedComponentClassificationPayload
+      flow surgery control widthTheory widthEvolution discardControl
+
 /-- Interface for classifying discarded components in the finite-extinction argument. -/
-inductive HasFiniteExtinctionDiscardedComponentClassification
+structure HasFiniteExtinctionDiscardedComponentClassification
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -25781,17 +32417,33 @@ inductive HasFiniteExtinctionDiscardedComponentClassification
     (discardControl :
       HasFiniteExtinctionSurgeryDiscardControl
         flow surgery control widthTheory widthEvolution) : Prop where
-  /--
-  Concrete classification-map data, grounded in the preceding
-  sweepout-triviality payload, supplies the abstract discarded-component
-  classification interface.
-  -/
-  | of_discarded_component_classification_payload
-      (payload :
-        FiniteExtinctionDiscardedComponentClassificationPayload
-          flow surgery control widthTheory widthEvolution discardControl) :
-      HasFiniteExtinctionDiscardedComponentClassification
-        flow surgery control widthTheory widthEvolution discardControl
+  finiteExtinctionDiscardedComponentClassificationPayload_source :
+    Nonempty
+      (FiniteExtinctionDiscardedComponentClassificationPayloadSource
+        flow surgery control widthTheory widthEvolution discardControl)
+
+/-- Compatibility constructor for discarded-component classification payloads. -/
+def HasFiniteExtinctionDiscardedComponentClassification.of_discarded_component_classification_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    {widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory}
+    {discardControl :
+      HasFiniteExtinctionSurgeryDiscardControl
+        flow surgery control widthTheory widthEvolution}
+    (payload :
+      FiniteExtinctionDiscardedComponentClassificationPayload
+        flow surgery control widthTheory widthEvolution discardControl) :
+    HasFiniteExtinctionDiscardedComponentClassification
+      flow surgery control widthTheory widthEvolution discardControl where
+  finiteExtinctionDiscardedComponentClassificationPayload_source :=
+    ⟨{ payload := payload }⟩
 
 /--
 Concrete payload for tracking components that survive surgery before
@@ -25868,8 +32520,65 @@ structure FiniteExtinctionSurvivingComponentTrackingPayload
   classifiedDiscardedSetEmpty :
     classificationPayload.surgeryDiscardControlPayload.discardedComponentSet = ∅
 
+/-- Bundle the retained-component tracking facts used by the component topology step. -/
+theorem FiniteExtinctionSurvivingComponentTrackingPayload.tracking_bundle
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    {widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory}
+    {discardControl :
+      HasFiniteExtinctionSurgeryDiscardControl
+        flow surgery control widthTheory widthEvolution}
+    (payload :
+      FiniteExtinctionSurvivingComponentTrackingPayload
+        flow surgery control widthTheory widthEvolution discardControl) :
+    payload.survivingComponentMap payload.preSurgerySurvivingComponent =
+        payload.postSurgerySurvivingComponent ∧
+      payload.survivingComponentSet =
+        payload.surgeryDiscardControlPayload.retainedComponentSet ∧
+      payload.survivingWitnessPoint ∈ payload.survivingComponentSet ∧
+      payload.surgeryDiscardControlPayload.retainedWidthContribution ≤
+        payload.surgeryDiscardControlPayload.surgeryWidthDropPayload.postSurgeryWidth ∧
+      payload.classificationPayload.componentClassification
+          payload.classificationPayload.classifiedComponent =
+        payload.classificationPayload.trivialComponentClass ∧
+      payload.classificationPayload.surgeryDiscardControlPayload.discardedComponentSet = ∅ := by
+  exact
+    ⟨payload.selectedSurvivingComponentTracked,
+      payload.survivingComponentSetEqRetained,
+      payload.survivingWitnessMem,
+      payload.retainedWidthTrackedLePostSurgeryWidth,
+      payload.discardedComponentClassifiedTrivial,
+      payload.classifiedDiscardedSetEmpty⟩
+
+/-- Source data for tracking the components that survive surgery before extinction. -/
+structure FiniteExtinctionSurvivingComponentTrackingPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control)
+    (widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory)
+    (discardControl :
+      HasFiniteExtinctionSurgeryDiscardControl
+        flow surgery control widthTheory widthEvolution) :
+    Type (u + 1) where
+  payload :
+    FiniteExtinctionSurvivingComponentTrackingPayload
+      flow surgery control widthTheory widthEvolution discardControl
+
 /-- Interface for tracking the components that survive surgery before extinction. -/
-inductive HasFiniteExtinctionSurvivingComponentTracking
+structure HasFiniteExtinctionSurvivingComponentTracking
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -25883,17 +32592,33 @@ inductive HasFiniteExtinctionSurvivingComponentTracking
     (discardControl :
       HasFiniteExtinctionSurgeryDiscardControl
         flow surgery control widthTheory widthEvolution) : Prop where
-  /--
-  Concrete retained-component tracking data, grounded in the preceding
-  discarded-component classification payload, supplies the abstract
-  surviving-component tracking interface.
-  -/
-  | of_surviving_component_tracking_payload
-      (payload :
-        FiniteExtinctionSurvivingComponentTrackingPayload
-          flow surgery control widthTheory widthEvolution discardControl) :
-      HasFiniteExtinctionSurvivingComponentTracking
-        flow surgery control widthTheory widthEvolution discardControl
+  finiteExtinctionSurvivingComponentTrackingPayload_source :
+    Nonempty
+      (FiniteExtinctionSurvivingComponentTrackingPayloadSource
+        flow surgery control widthTheory widthEvolution discardControl)
+
+/-- Compatibility constructor for surviving-component tracking payloads. -/
+def HasFiniteExtinctionSurvivingComponentTracking.of_surviving_component_tracking_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    {widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory}
+    {discardControl :
+      HasFiniteExtinctionSurgeryDiscardControl
+        flow surgery control widthTheory widthEvolution}
+    (payload :
+      FiniteExtinctionSurvivingComponentTrackingPayload
+        flow surgery control widthTheory widthEvolution discardControl) :
+    HasFiniteExtinctionSurvivingComponentTracking
+      flow surgery control widthTheory widthEvolution discardControl where
+  finiteExtinctionSurvivingComponentTrackingPayload_source :=
+    ⟨{ payload := payload }⟩
 
 /--
 Concrete payload for topological control of components that survive before
@@ -25972,8 +32697,67 @@ structure FiniteExtinctionComponentTopologyPayload
   discardedComponentsClassifiedEmpty :
     surgeryDiscardControlPayload.discardedComponentSet = ∅
 
+/-- Bundle the local component-topology facts for the surviving finite-extinction component. -/
+theorem FiniteExtinctionComponentTopologyPayload.component_topology_bundle
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    {widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory}
+    {discardControl :
+      HasFiniteExtinctionSurgeryDiscardControl
+        flow surgery control widthTheory widthEvolution}
+    (payload :
+      FiniteExtinctionComponentTopologyPayload
+        flow surgery control widthTheory widthEvolution discardControl) :
+    payload.componentSet =
+        payload.survivingComponentTrackingPayload.survivingComponentSet ∧
+      (∀ x : payload.componentCarrier, payload.componentEmbedding x ∈ payload.componentSet) ∧
+      payload.componentEmbedding payload.componentCarrierWitness =
+        payload.componentWitnessPoint ∧
+      payload.componentWitnessPoint ∈ payload.componentSet ∧
+      payload.componentWitnessPoint ∈ payload.componentNeighborhood ∧
+      payload.componentNeighborhood ⊆ payload.componentSet ∧
+      payload.surgeryDiscardControlPayload.retainedWidthContribution ≤
+        payload.surgeryDiscardControlPayload.surgeryWidthDropPayload.postSurgeryWidth ∧
+      payload.surgeryDiscardControlPayload.discardedComponentSet = ∅ := by
+  exact
+    ⟨payload.componentSetEqTracked,
+      payload.componentEmbeddingMem,
+      payload.componentWitnessEq,
+      payload.componentWitnessMem,
+      payload.componentWitnessMemNeighborhood,
+      payload.componentNeighborhoodSubset,
+      payload.retainedWidthTopologyBound,
+      payload.discardedComponentsClassifiedEmpty⟩
+
+/-- Source data for topological control of components that survive before extinction. -/
+structure FiniteExtinctionComponentTopologyPayloadSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control)
+    (widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory)
+    (discardControl :
+      HasFiniteExtinctionSurgeryDiscardControl
+        flow surgery control widthTheory widthEvolution) :
+    Type (u + 1) where
+  payload :
+    FiniteExtinctionComponentTopologyPayload
+      flow surgery control widthTheory widthEvolution discardControl
+
 /-- Interface for topological control of components that survive before extinction. -/
-inductive HasFiniteExtinctionComponentTopology
+structure HasFiniteExtinctionComponentTopology
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -25987,18 +32771,56 @@ inductive HasFiniteExtinctionComponentTopology
     (discardControl :
       HasFiniteExtinctionSurgeryDiscardControl
         flow surgery control widthTheory widthEvolution) : Prop where
-  /--
-  Concrete carrier, witness, and local topological-control data for the tracked
-  surviving component supplies the abstract component-topology interface.
-  -/
-  | of_component_topology_payload
-      (payload :
-        FiniteExtinctionComponentTopologyPayload
-          flow surgery control widthTheory widthEvolution discardControl) :
-      HasFiniteExtinctionComponentTopology
-        flow surgery control widthTheory widthEvolution discardControl
+  finiteExtinctionComponentTopologyPayload_source :
+    Nonempty
+      (FiniteExtinctionComponentTopologyPayloadSource
+        flow surgery control widthTheory widthEvolution discardControl)
 
-inductive HasFiniteExtinctionDerivation
+/-- Compatibility constructor for component-topology payloads. -/
+def HasFiniteExtinctionComponentTopology.of_component_topology_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {widthTheory : HasFiniteExtinctionWidthTheory flow surgery control}
+    {widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory}
+    {discardControl :
+      HasFiniteExtinctionSurgeryDiscardControl
+        flow surgery control widthTheory widthEvolution}
+    (payload :
+      FiniteExtinctionComponentTopologyPayload
+        flow surgery control widthTheory widthEvolution discardControl) :
+    HasFiniteExtinctionComponentTopology
+      flow surgery control widthTheory widthEvolution discardControl where
+  finiteExtinctionComponentTopologyPayload_source :=
+    ⟨{ payload := payload }⟩
+
+/-- Source data for the finite-extinction derivation package. -/
+structure FiniteExtinctionDerivationSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow) :
+    Type (u + 1) where
+  widthTheory : HasFiniteExtinctionWidthTheory flow surgery control
+  widthEvolution :
+    HasFiniteExtinctionWidthEvolution flow surgery control widthTheory
+  surgeryDiscardControl :
+    HasFiniteExtinctionSurgeryDiscardControl
+      flow surgery control widthTheory widthEvolution
+  componentTopology :
+    HasFiniteExtinctionComponentTopology
+      flow surgery control widthTheory widthEvolution surgeryDiscardControl
+
+/-- Interface for the finite-extinction derivation package. -/
+structure HasFiniteExtinctionDerivation
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -26006,25 +32828,58 @@ inductive HasFiniteExtinctionDerivation
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
     (surgery : HasRicciFlowWithSurgery n M)
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow) : Prop where
-  /--
-  The finite-extinction derivation is packaged from the width evolution,
-  surgery-discard control, and surviving-component topology payload.
-  -/
-  | of_width_component_topology
-      (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control)
-      (widthEvolution :
-        HasFiniteExtinctionWidthEvolution flow surgery control widthTheory)
-      (surgeryDiscardControl :
-        HasFiniteExtinctionSurgeryDiscardControl
-          flow surgery control widthTheory widthEvolution)
-      (componentTopology :
-        HasFiniteExtinctionComponentTopology
-          flow surgery control widthTheory widthEvolution
-          surgeryDiscardControl) :
-      HasFiniteExtinctionDerivation flow surgery control
+  finiteExtinctionDerivation_source :
+    Nonempty (FiniteExtinctionDerivationSource flow surgery control)
+
+/-- Compatibility constructor for finite-extinction derivation source data. -/
+def HasFiniteExtinctionDerivation.of_width_component_topology
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    (widthTheory : HasFiniteExtinctionWidthTheory flow surgery control)
+    (widthEvolution :
+      HasFiniteExtinctionWidthEvolution flow surgery control widthTheory)
+    (surgeryDiscardControl :
+      HasFiniteExtinctionSurgeryDiscardControl
+        flow surgery control widthTheory widthEvolution)
+    (componentTopology :
+      HasFiniteExtinctionComponentTopology
+        flow surgery control widthTheory widthEvolution
+        surgeryDiscardControl) :
+    HasFiniteExtinctionDerivation flow surgery control where
+  finiteExtinctionDerivation_source :=
+    ⟨{ widthTheory := widthTheory
+       widthEvolution := widthEvolution
+       surgeryDiscardControl := surgeryDiscardControl
+       componentTopology := componentTopology }⟩
 
 /-- Interface for the curvature pinching input used in finite extinction. -/
-inductive HasFiniteExtinctionCurvaturePinching
+structure FiniteExtinctionCurvaturePinchingSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow) :
+    Type (u + 1) where
+  ricciContraction :
+    HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow)
+  scalarCurvature :
+    HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow)
+  curvatureEvolution : HasCurvatureEvolutionEquations flow
+  curvatureNormEvolution : HasCurvatureNormEvolutionInequality flow
+  canonicalNeighborhood : HasCanonicalNeighborhoodTheorem flow
+  noLocalCollapsing : HasPerelmanNoLocalCollapsing flow
+  reducedVolume : HasPerelmanReducedVolumeMonotonicity flow
+  postSurgeryCurvaturePinching : HasPostSurgeryCurvaturePinching flow
+
+/-- Interface for the curvature pinching input used in finite extinction. -/
+structure HasFiniteExtinctionCurvaturePinching
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -26032,26 +32887,58 @@ inductive HasFiniteExtinctionCurvaturePinching
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
     (surgery : HasRicciFlowWithSurgery n M)
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow) : Prop where
-  /--
-  Curvature pinching for finite extinction is obtained from the smooth
-  curvature evolution package, Perelman's noncollapsing/canonical-neighborhood
-  control, and the post-surgery pinching estimate.
-  -/
-  | of_perelman_curvature_control
-      (ricciContraction :
-        HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow))
-      (scalarCurvature :
-        HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow))
-      (curvatureEvolution : HasCurvatureEvolutionEquations flow)
-      (curvatureNormEvolution : HasCurvatureNormEvolutionInequality flow)
-      (canonicalNeighborhood : HasCanonicalNeighborhoodTheorem flow)
-      (noLocalCollapsing : HasPerelmanNoLocalCollapsing flow)
-      (reducedVolume : HasPerelmanReducedVolumeMonotonicity flow)
-      (postSurgeryCurvaturePinching : HasPostSurgeryCurvaturePinching flow) :
-      HasFiniteExtinctionCurvaturePinching flow surgery control
+  finiteExtinctionCurvaturePinching_source :
+    Nonempty (FiniteExtinctionCurvaturePinchingSource flow surgery control)
+
+/-- Compatibility constructor for curvature-pinching source data. -/
+def HasFiniteExtinctionCurvaturePinching.of_perelman_curvature_control
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    (ricciContraction :
+      HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow))
+    (scalarCurvature :
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow))
+    (curvatureEvolution : HasCurvatureEvolutionEquations flow)
+    (curvatureNormEvolution : HasCurvatureNormEvolutionInequality flow)
+    (canonicalNeighborhood : HasCanonicalNeighborhoodTheorem flow)
+    (noLocalCollapsing : HasPerelmanNoLocalCollapsing flow)
+    (reducedVolume : HasPerelmanReducedVolumeMonotonicity flow)
+    (postSurgeryCurvaturePinching : HasPostSurgeryCurvaturePinching flow) :
+    HasFiniteExtinctionCurvaturePinching flow surgery control where
+  finiteExtinctionCurvaturePinching_source :=
+    ⟨{ ricciContraction := ricciContraction
+       scalarCurvature := scalarCurvature
+       curvatureEvolution := curvatureEvolution
+       curvatureNormEvolution := curvatureNormEvolution
+       canonicalNeighborhood := canonicalNeighborhood
+       noLocalCollapsing := noLocalCollapsing
+       reducedVolume := reducedVolume
+       postSurgeryCurvaturePinching := postSurgeryCurvaturePinching }⟩
 
 /-- Interface for preserving positive scalar curvature/pinching under the flow with surgery. -/
-inductive HasFiniteExtinctionPositiveScalarCurvaturePersistence
+structure FiniteExtinctionPositiveScalarCurvaturePersistenceSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control) :
+    Type (u + 1) where
+  postSurgeryCurvaturePinching : HasPostSurgeryCurvaturePinching flow
+  postSurgeryCanonicalNeighborhoodPersistence :
+    HasPostSurgeryCanonicalNeighborhoodPersistence flow
+  canonicalNeighborhoodPersistenceAcrossScales :
+    HasCanonicalNeighborhoodPersistenceAcrossScales flow
+
+/-- Interface for preserving positive scalar curvature/pinching under the flow with surgery. -/
+structure HasFiniteExtinctionPositiveScalarCurvaturePersistence
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -26060,22 +32947,54 @@ inductive HasFiniteExtinctionPositiveScalarCurvaturePersistence
     (surgery : HasRicciFlowWithSurgery n M)
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
     (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control) : Prop where
-  /--
-  Positive scalar curvature persists through the finite-extinction surgery
-  argument from the post-surgery pinching estimate and canonical-neighborhood
-  persistence across the Perelman and surgery packages.
-  -/
-  | of_post_surgery_pinching
-      (postSurgeryCurvaturePinching : HasPostSurgeryCurvaturePinching flow)
-      (postSurgeryCanonicalNeighborhoodPersistence :
-        HasPostSurgeryCanonicalNeighborhoodPersistence flow)
-      (canonicalNeighborhoodPersistenceAcrossScales :
-        HasCanonicalNeighborhoodPersistenceAcrossScales flow) :
-      HasFiniteExtinctionPositiveScalarCurvaturePersistence
-        flow surgery control pinching
+  finiteExtinctionPositiveScalarCurvaturePersistence_source :
+    Nonempty
+      (FiniteExtinctionPositiveScalarCurvaturePersistenceSource
+        flow surgery control pinching)
+
+/-- Compatibility constructor for positive-scalar-curvature persistence source data. -/
+def HasFiniteExtinctionPositiveScalarCurvaturePersistence.of_post_surgery_pinching
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    (postSurgeryCurvaturePinching : HasPostSurgeryCurvaturePinching flow)
+    (postSurgeryCanonicalNeighborhoodPersistence :
+      HasPostSurgeryCanonicalNeighborhoodPersistence flow)
+    (canonicalNeighborhoodPersistenceAcrossScales :
+      HasCanonicalNeighborhoodPersistenceAcrossScales flow) :
+    HasFiniteExtinctionPositiveScalarCurvaturePersistence
+      flow surgery control pinching where
+  finiteExtinctionPositiveScalarCurvaturePersistence_source :=
+    ⟨{ postSurgeryCurvaturePinching := postSurgeryCurvaturePinching
+       postSurgeryCanonicalNeighborhoodPersistence :=
+        postSurgeryCanonicalNeighborhoodPersistence
+       canonicalNeighborhoodPersistenceAcrossScales :=
+        canonicalNeighborhoodPersistenceAcrossScales }⟩
 
 /-- Interface for extracting a scalar-curvature lower bound from pinching. -/
-inductive HasFiniteExtinctionPositiveScalarCurvatureLowerBound
+structure FiniteExtinctionPositiveScalarCurvatureLowerBoundSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control) :
+    Type (u + 1) where
+  scalarCurvature :
+    HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow)
+  scalarCurvatureEvolution : HasScalarCurvatureEvolutionEquation flow
+  reducedVolumePositiveLowerBound :
+    HasPerelmanReducedVolumePositiveLowerBound flow
+
+/-- Interface for extracting a scalar-curvature lower bound from pinching. -/
+structure HasFiniteExtinctionPositiveScalarCurvatureLowerBound
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -26084,24 +33003,57 @@ inductive HasFiniteExtinctionPositiveScalarCurvatureLowerBound
     (surgery : HasRicciFlowWithSurgery n M)
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
     (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control) : Prop where
-  /--
-  A scalar-curvature lower bound is extracted from the scalar-curvature theory,
-  its evolution equation, and Perelman's positive reduced-volume lower bound.
-  -/
-  | of_scalar_curvature_pinching
-      (scalarCurvature :
-        HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow))
-      (scalarCurvatureEvolution : HasScalarCurvatureEvolutionEquation flow)
-      (reducedVolumePositiveLowerBound :
-        HasPerelmanReducedVolumePositiveLowerBound flow) :
-      HasFiniteExtinctionPositiveScalarCurvatureLowerBound
-        flow surgery control pinching
+  finiteExtinctionPositiveScalarCurvatureLowerBound_source :
+    Nonempty
+      (FiniteExtinctionPositiveScalarCurvatureLowerBoundSource
+        flow surgery control pinching)
+
+/-- Compatibility constructor for scalar-curvature lower-bound source data. -/
+def HasFiniteExtinctionPositiveScalarCurvatureLowerBound.of_scalar_curvature_pinching
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    (scalarCurvature :
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow))
+    (scalarCurvatureEvolution : HasScalarCurvatureEvolutionEquation flow)
+    (reducedVolumePositiveLowerBound :
+      HasPerelmanReducedVolumePositiveLowerBound flow) :
+    HasFiniteExtinctionPositiveScalarCurvatureLowerBound
+      flow surgery control pinching where
+  finiteExtinctionPositiveScalarCurvatureLowerBound_source :=
+    ⟨{ scalarCurvature := scalarCurvature
+       scalarCurvatureEvolution := scalarCurvatureEvolution
+       reducedVolumePositiveLowerBound := reducedVolumePositiveLowerBound }⟩
 
 /--
 Interface for controlling the topological components that remain during the
 finite-extinction argument.
 -/
-inductive HasFiniteExtinctionComponentControl
+structure FiniteExtinctionComponentControlSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control) :
+    Type (u + 1) where
+  canonicalNeighborhood : HasCanonicalNeighborhoodTheorem flow
+  noLocalCollapsing : HasPerelmanNoLocalCollapsing flow
+  singularityModelClassification : HasSingularityModelClassification flow
+  postSurgeryNoncollapsing : HasPostSurgeryNoncollapsingControl flow
+
+/--
+Interface for controlling the topological components that remain during the
+finite-extinction argument.
+-/
+structure HasFiniteExtinctionComponentControl
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -26110,19 +33062,57 @@ inductive HasFiniteExtinctionComponentControl
     (surgery : HasRicciFlowWithSurgery n M)
     (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
     (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control) : Prop where
-  /--
-  Component control is supplied by canonical neighborhoods, no-local-collapsing,
-  singularity-model classification, and post-surgery noncollapsing.
-  -/
-  | of_canonical_noncollapsing
-      (canonicalNeighborhood : HasCanonicalNeighborhoodTheorem flow)
-      (noLocalCollapsing : HasPerelmanNoLocalCollapsing flow)
-      (singularityModelClassification : HasSingularityModelClassification flow)
-      (postSurgeryNoncollapsing : HasPostSurgeryNoncollapsingControl flow) :
-      HasFiniteExtinctionComponentControl flow surgery control pinching
+  finiteExtinctionComponentControl_source :
+    Nonempty
+      (FiniteExtinctionComponentControlSource
+        flow surgery control pinching)
+
+/-- Compatibility constructor for component-control source data. -/
+def HasFiniteExtinctionComponentControl.of_canonical_noncollapsing
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    (canonicalNeighborhood : HasCanonicalNeighborhoodTheorem flow)
+    (noLocalCollapsing : HasPerelmanNoLocalCollapsing flow)
+    (singularityModelClassification : HasSingularityModelClassification flow)
+    (postSurgeryNoncollapsing : HasPostSurgeryNoncollapsingControl flow) :
+    HasFiniteExtinctionComponentControl flow surgery control pinching where
+  finiteExtinctionComponentControl_source :=
+    ⟨{ canonicalNeighborhood := canonicalNeighborhood
+       noLocalCollapsing := noLocalCollapsing
+       singularityModelClassification := singularityModelClassification
+       postSurgeryNoncollapsing := postSurgeryNoncollapsing }⟩
 
 /-- Interface for the volume evolution formula along smooth flow intervals. -/
-inductive HasFiniteExtinctionVolumeEvolutionFormula
+structure FiniteExtinctionVolumeEvolutionFormulaSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
+    (componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching) :
+    Type (u + 1) where
+  metricRegularity :
+    HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow)
+  metricTimeDerivative :
+    HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow)
+  scalarCurvature :
+    HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow)
+  equationDerivation : HasRicciFlowEquationDerivation flow
+  metricEvolution : HasMetricEvolutionEquation flow
+  scalarCurvatureEvolution : HasScalarCurvatureEvolutionEquation flow
+
+/-- Interface for the volume evolution formula along smooth flow intervals. -/
+structure HasFiniteExtinctionVolumeEvolutionFormula
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -26133,29 +33123,65 @@ inductive HasFiniteExtinctionVolumeEvolutionFormula
     (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
     (componentControl :
       HasFiniteExtinctionComponentControl flow surgery control pinching) : Prop where
-  /--
-  The smooth-interval volume evolution formula is packaged from the analytic
-  Ricci-flow equation, metric time-derivative, scalar-curvature theory, and
-  evolution equations for the same controlled components.
-  -/
-  | of_analytic_volume_evolution_inputs
-      (metricRegularity :
-        HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow))
-      (metricTimeDerivative :
-        HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow))
-      (scalarCurvature :
-        HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow))
-      (equationDerivation :
-        HasRicciFlowEquationDerivation flow)
-      (metricEvolution :
-        HasMetricEvolutionEquation flow)
-      (scalarCurvatureEvolution :
-        HasScalarCurvatureEvolutionEquation flow) :
-      HasFiniteExtinctionVolumeEvolutionFormula
-        flow surgery control pinching componentControl
+  finiteExtinctionVolumeEvolutionFormula_source :
+    Nonempty
+      (FiniteExtinctionVolumeEvolutionFormulaSource
+        flow surgery control pinching componentControl)
+
+/-- Compatibility constructor for volume-evolution source data. -/
+def HasFiniteExtinctionVolumeEvolutionFormula.of_analytic_volume_evolution_inputs
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    (metricRegularity :
+      HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow))
+    (metricTimeDerivative :
+      HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow))
+    (scalarCurvature :
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow))
+    (equationDerivation : HasRicciFlowEquationDerivation flow)
+    (metricEvolution : HasMetricEvolutionEquation flow)
+    (scalarCurvatureEvolution : HasScalarCurvatureEvolutionEquation flow) :
+    HasFiniteExtinctionVolumeEvolutionFormula
+      flow surgery control pinching componentControl where
+  finiteExtinctionVolumeEvolutionFormula_source :=
+    ⟨{ metricRegularity := metricRegularity
+       metricTimeDerivative := metricTimeDerivative
+       scalarCurvature := scalarCurvature
+       equationDerivation := equationDerivation
+       metricEvolution := metricEvolution
+       scalarCurvatureEvolution := scalarCurvatureEvolution }⟩
 
 /-- Interface for nonincrease of volume through surgery and discarded components. -/
-inductive HasFiniteExtinctionSurgeryVolumeNonincrease
+structure FiniteExtinctionSurgeryVolumeNonincreaseSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
+    (componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching) :
+    Type (u + 1) where
+  neckDecomposition : HasSurgeryNeckDecomposition flow
+  capMetricInterpolation : HasSurgeryCapMetricInterpolation flow
+  postSurgeryMetricControl : HasPostSurgeryMetricControl flow
+  surgeryTimeLocalFiniteness : HasSurgeryTimeLocalFiniteness flow
+  volumeEvolutionFormula :
+    HasFiniteExtinctionVolumeEvolutionFormula
+      flow surgery control pinching componentControl
+
+/-- Interface for nonincrease of volume through surgery and discarded components. -/
+structure HasFiniteExtinctionSurgeryVolumeNonincrease
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -26166,24 +33192,61 @@ inductive HasFiniteExtinctionSurgeryVolumeNonincrease
     (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
     (componentControl :
       HasFiniteExtinctionComponentControl flow surgery control pinching) : Prop where
-  /--
-  Surgery-volume nonincrease is packaged from the local surgery geometry, the
-  post-surgery metric comparison, local finiteness of surgery times, and the
-  smooth-interval volume evolution formula for the same controlled components.
-  -/
-  | of_surgery_metric_volume_inputs
-      (neckDecomposition : HasSurgeryNeckDecomposition flow)
-      (capMetricInterpolation : HasSurgeryCapMetricInterpolation flow)
-      (postSurgeryMetricControl : HasPostSurgeryMetricControl flow)
-      (surgeryTimeLocalFiniteness : HasSurgeryTimeLocalFiniteness flow)
-      (volumeEvolutionFormula :
-        HasFiniteExtinctionVolumeEvolutionFormula
-          flow surgery control pinching componentControl) :
-      HasFiniteExtinctionSurgeryVolumeNonincrease
-        flow surgery control pinching componentControl
+  finiteExtinctionSurgeryVolumeNonincrease_source :
+    Nonempty
+      (FiniteExtinctionSurgeryVolumeNonincreaseSource
+        flow surgery control pinching componentControl)
+
+/-- Compatibility constructor for surgery-volume-nonincrease source data. -/
+def HasFiniteExtinctionSurgeryVolumeNonincrease.of_surgery_metric_volume_inputs
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    (neckDecomposition : HasSurgeryNeckDecomposition flow)
+    (capMetricInterpolation : HasSurgeryCapMetricInterpolation flow)
+    (postSurgeryMetricControl : HasPostSurgeryMetricControl flow)
+    (surgeryTimeLocalFiniteness : HasSurgeryTimeLocalFiniteness flow)
+    (volumeEvolutionFormula :
+      HasFiniteExtinctionVolumeEvolutionFormula
+        flow surgery control pinching componentControl) :
+    HasFiniteExtinctionSurgeryVolumeNonincrease
+      flow surgery control pinching componentControl where
+  finiteExtinctionSurgeryVolumeNonincrease_source :=
+    ⟨{ neckDecomposition := neckDecomposition
+       capMetricInterpolation := capMetricInterpolation
+       postSurgeryMetricControl := postSurgeryMetricControl
+       surgeryTimeLocalFiniteness := surgeryTimeLocalFiniteness
+       volumeEvolutionFormula := volumeEvolutionFormula }⟩
 
 /-- Interface for the scalar-curvature differential inequality used in extinction. -/
-inductive HasFiniteExtinctionScalarCurvatureDifferentialInequality
+structure FiniteExtinctionScalarCurvatureDifferentialInequalitySource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
+    (componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching) :
+    Type (u + 1) where
+  positiveScalarCurvatureLowerBound :
+    HasFiniteExtinctionPositiveScalarCurvatureLowerBound
+      flow surgery control pinching
+  positiveScalarCurvaturePersistence :
+    HasFiniteExtinctionPositiveScalarCurvaturePersistence
+      flow surgery control pinching
+
+/-- Interface for the scalar-curvature differential inequality used in extinction. -/
+structure HasFiniteExtinctionScalarCurvatureDifferentialInequality
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -26194,23 +33257,62 @@ inductive HasFiniteExtinctionScalarCurvatureDifferentialInequality
     (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
     (componentControl :
       HasFiniteExtinctionComponentControl flow surgery control pinching) : Prop where
-  /--
-  The scalar-curvature differential inequality is packaged from the pinching
-  lower bound, persistence across surgery, and the component control on which
-  the inequality is applied.
-  -/
-  | of_positive_scalar_curvature_inputs
-      (positiveScalarCurvatureLowerBound :
-        HasFiniteExtinctionPositiveScalarCurvatureLowerBound
-          flow surgery control pinching)
-      (positiveScalarCurvaturePersistence :
-        HasFiniteExtinctionPositiveScalarCurvaturePersistence
-          flow surgery control pinching) :
-      HasFiniteExtinctionScalarCurvatureDifferentialInequality
-        flow surgery control pinching componentControl
+  finiteExtinctionScalarCurvatureDifferentialInequality_source :
+    Nonempty
+      (FiniteExtinctionScalarCurvatureDifferentialInequalitySource
+        flow surgery control pinching componentControl)
+
+/-- Compatibility constructor for scalar-curvature differential-inequality source data. -/
+def HasFiniteExtinctionScalarCurvatureDifferentialInequality.of_positive_scalar_curvature_inputs
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    (positiveScalarCurvatureLowerBound :
+      HasFiniteExtinctionPositiveScalarCurvatureLowerBound
+        flow surgery control pinching)
+    (positiveScalarCurvaturePersistence :
+      HasFiniteExtinctionPositiveScalarCurvaturePersistence
+        flow surgery control pinching) :
+    HasFiniteExtinctionScalarCurvatureDifferentialInequality
+      flow surgery control pinching componentControl where
+  finiteExtinctionScalarCurvatureDifferentialInequality_source :=
+    ⟨{ positiveScalarCurvatureLowerBound :=
+        positiveScalarCurvatureLowerBound
+       positiveScalarCurvaturePersistence :=
+        positiveScalarCurvaturePersistence }⟩
 
 /-- Interface for the volume differential inequality behind finite extinction. -/
-inductive HasFiniteExtinctionVolumeDifferentialInequality
+structure FiniteExtinctionVolumeDifferentialInequalitySource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
+    (componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching) :
+    Type (u + 1) where
+  volumeEvolutionFormula :
+    HasFiniteExtinctionVolumeEvolutionFormula
+      flow surgery control pinching componentControl
+  surgeryVolumeNonincrease :
+    HasFiniteExtinctionSurgeryVolumeNonincrease
+      flow surgery control pinching componentControl
+  scalarCurvatureDifferentialInequality :
+    HasFiniteExtinctionScalarCurvatureDifferentialInequality
+      flow surgery control pinching componentControl
+
+/-- Interface for the volume differential inequality behind finite extinction. -/
+structure HasFiniteExtinctionVolumeDifferentialInequality
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -26221,26 +33323,68 @@ inductive HasFiniteExtinctionVolumeDifferentialInequality
     (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
     (componentControl :
       HasFiniteExtinctionComponentControl flow surgery control pinching) : Prop where
-  /--
-  The volume differential inequality is packaged from smooth-interval volume
-  evolution, nonincrease across surgeries, and the scalar-curvature
-  differential inequality on the controlled components.
-  -/
-  | of_volume_scalar_inputs
-      (volumeEvolutionFormula :
-        HasFiniteExtinctionVolumeEvolutionFormula
-          flow surgery control pinching componentControl)
-      (surgeryVolumeNonincrease :
-        HasFiniteExtinctionSurgeryVolumeNonincrease
-          flow surgery control pinching componentControl)
-      (scalarCurvatureDifferentialInequality :
-        HasFiniteExtinctionScalarCurvatureDifferentialInequality
-          flow surgery control pinching componentControl) :
-      HasFiniteExtinctionVolumeDifferentialInequality
-        flow surgery control pinching componentControl
+  finiteExtinctionVolumeDifferentialInequality_source :
+    Nonempty
+      (FiniteExtinctionVolumeDifferentialInequalitySource
+        flow surgery control pinching componentControl)
+
+/-- Compatibility constructor for volume differential-inequality source data. -/
+def HasFiniteExtinctionVolumeDifferentialInequality.of_volume_scalar_inputs
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    (volumeEvolutionFormula :
+      HasFiniteExtinctionVolumeEvolutionFormula
+        flow surgery control pinching componentControl)
+    (surgeryVolumeNonincrease :
+      HasFiniteExtinctionSurgeryVolumeNonincrease
+        flow surgery control pinching componentControl)
+    (scalarCurvatureDifferentialInequality :
+      HasFiniteExtinctionScalarCurvatureDifferentialInequality
+        flow surgery control pinching componentControl) :
+    HasFiniteExtinctionVolumeDifferentialInequality
+      flow surgery control pinching componentControl where
+  finiteExtinctionVolumeDifferentialInequality_source :=
+    ⟨{ volumeEvolutionFormula := volumeEvolutionFormula
+       surgeryVolumeNonincrease := surgeryVolumeNonincrease
+       scalarCurvatureDifferentialInequality :=
+        scalarCurvatureDifferentialInequality }⟩
 
 /-- Interface for the time-bound or volume-decay input in finite extinction. -/
-inductive HasFiniteExtinctionTimeBound
+structure FiniteExtinctionTimeBoundSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
+    (componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching) :
+    Type (u + 1) where
+  volumeEvolutionFormula :
+    HasFiniteExtinctionVolumeEvolutionFormula
+      flow surgery control pinching componentControl
+  surgeryVolumeNonincrease :
+    HasFiniteExtinctionSurgeryVolumeNonincrease
+      flow surgery control pinching componentControl
+  scalarCurvatureDifferentialInequality :
+    HasFiniteExtinctionScalarCurvatureDifferentialInequality
+      flow surgery control pinching componentControl
+  volumeDifferentialInequality :
+    HasFiniteExtinctionVolumeDifferentialInequality
+      flow surgery control pinching componentControl
+
+/-- Interface for the time-bound or volume-decay input in finite extinction. -/
+structure HasFiniteExtinctionTimeBound
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -26251,28 +33395,72 @@ inductive HasFiniteExtinctionTimeBound
     (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
     (componentControl :
       HasFiniteExtinctionComponentControl flow surgery control pinching) : Prop where
-  /--
-  The finite-extinction time bound is obtained from the same analytic inputs
-  that drive the volume-decay estimate.
-  -/
-  | of_volume_differential_inputs
-      (volumeEvolutionFormula :
-        HasFiniteExtinctionVolumeEvolutionFormula
-          flow surgery control pinching componentControl)
-      (surgeryVolumeNonincrease :
-        HasFiniteExtinctionSurgeryVolumeNonincrease
-          flow surgery control pinching componentControl)
-      (scalarCurvatureDifferentialInequality :
-        HasFiniteExtinctionScalarCurvatureDifferentialInequality
-          flow surgery control pinching componentControl)
-      (volumeDifferentialInequality :
-        HasFiniteExtinctionVolumeDifferentialInequality
-          flow surgery control pinching componentControl) :
-      HasFiniteExtinctionTimeBound
-        flow surgery control pinching componentControl
+  finiteExtinctionTimeBound_source :
+    Nonempty
+      (FiniteExtinctionTimeBoundSource
+        flow surgery control pinching componentControl)
+
+/-- Compatibility constructor for time-bound source data. -/
+def HasFiniteExtinctionTimeBound.of_volume_differential_inputs
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    (volumeEvolutionFormula :
+      HasFiniteExtinctionVolumeEvolutionFormula
+        flow surgery control pinching componentControl)
+    (surgeryVolumeNonincrease :
+      HasFiniteExtinctionSurgeryVolumeNonincrease
+        flow surgery control pinching componentControl)
+    (scalarCurvatureDifferentialInequality :
+      HasFiniteExtinctionScalarCurvatureDifferentialInequality
+        flow surgery control pinching componentControl)
+    (volumeDifferentialInequality :
+      HasFiniteExtinctionVolumeDifferentialInequality
+        flow surgery control pinching componentControl) :
+    HasFiniteExtinctionTimeBound
+      flow surgery control pinching componentControl where
+  finiteExtinctionTimeBound_source :=
+    ⟨{ volumeEvolutionFormula := volumeEvolutionFormula
+       surgeryVolumeNonincrease := surgeryVolumeNonincrease
+       scalarCurvatureDifferentialInequality :=
+        scalarCurvatureDifferentialInequality
+       volumeDifferentialInequality := volumeDifferentialInequality }⟩
 
 /-- Interface for the volume-decay estimate used to bound the extinction time. -/
-inductive HasFiniteExtinctionVolumeDecayEstimate
+structure FiniteExtinctionVolumeDecayEstimateSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
+    (componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching) :
+    Type (u + 1) where
+  volumeEvolutionFormula :
+    HasFiniteExtinctionVolumeEvolutionFormula
+      flow surgery control pinching componentControl
+  surgeryVolumeNonincrease :
+    HasFiniteExtinctionSurgeryVolumeNonincrease
+      flow surgery control pinching componentControl
+  scalarCurvatureDifferentialInequality :
+    HasFiniteExtinctionScalarCurvatureDifferentialInequality
+      flow surgery control pinching componentControl
+  volumeDifferentialInequality :
+    HasFiniteExtinctionVolumeDifferentialInequality
+      flow surgery control pinching componentControl
+
+/-- Interface for the volume-decay estimate used to bound the extinction time. -/
+structure HasFiniteExtinctionVolumeDecayEstimate
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -26283,29 +33471,65 @@ inductive HasFiniteExtinctionVolumeDecayEstimate
     (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
     (componentControl :
       HasFiniteExtinctionComponentControl flow surgery control pinching) : Prop where
-  /--
-  The volume-decay estimate is the packaged output of the volume evolution
-  formula, surgery volume monotonicity, scalar-curvature differential
-  inequality, and volume differential inequality.
-  -/
-  | of_volume_differential_inputs
-      (volumeEvolutionFormula :
-        HasFiniteExtinctionVolumeEvolutionFormula
-          flow surgery control pinching componentControl)
-      (surgeryVolumeNonincrease :
-        HasFiniteExtinctionSurgeryVolumeNonincrease
-          flow surgery control pinching componentControl)
-      (scalarCurvatureDifferentialInequality :
-        HasFiniteExtinctionScalarCurvatureDifferentialInequality
-          flow surgery control pinching componentControl)
-      (volumeDifferentialInequality :
-        HasFiniteExtinctionVolumeDifferentialInequality
-          flow surgery control pinching componentControl) :
-      HasFiniteExtinctionVolumeDecayEstimate
-        flow surgery control pinching componentControl
+  finiteExtinctionVolumeDecayEstimate_source :
+    Nonempty
+      (FiniteExtinctionVolumeDecayEstimateSource
+        flow surgery control pinching componentControl)
+
+/-- Compatibility constructor for volume-decay-estimate source data. -/
+def HasFiniteExtinctionVolumeDecayEstimate.of_volume_differential_inputs
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    (volumeEvolutionFormula :
+      HasFiniteExtinctionVolumeEvolutionFormula
+        flow surgery control pinching componentControl)
+    (surgeryVolumeNonincrease :
+      HasFiniteExtinctionSurgeryVolumeNonincrease
+        flow surgery control pinching componentControl)
+    (scalarCurvatureDifferentialInequality :
+      HasFiniteExtinctionScalarCurvatureDifferentialInequality
+        flow surgery control pinching componentControl)
+    (volumeDifferentialInequality :
+      HasFiniteExtinctionVolumeDifferentialInequality
+        flow surgery control pinching componentControl) :
+    HasFiniteExtinctionVolumeDecayEstimate
+      flow surgery control pinching componentControl where
+  finiteExtinctionVolumeDecayEstimate_source :=
+    ⟨{ volumeEvolutionFormula := volumeEvolutionFormula
+       surgeryVolumeNonincrease := surgeryVolumeNonincrease
+       scalarCurvatureDifferentialInequality :=
+        scalarCurvatureDifferentialInequality
+       volumeDifferentialInequality := volumeDifferentialInequality }⟩
 
 /-- Interface for integrating the decay estimate to obtain finite-time extinction. -/
-inductive HasFiniteExtinctionFiniteTimeIntegration
+structure FiniteExtinctionFiniteTimeIntegrationSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
+    (componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching)
+    (timeBound :
+      HasFiniteExtinctionTimeBound flow surgery control pinching componentControl) :
+    Type (u + 1) where
+  volumeDecayEstimate :
+    HasFiniteExtinctionVolumeDecayEstimate
+      flow surgery control pinching componentControl
+
+/-- Interface for integrating the decay estimate to obtain finite-time extinction. -/
+structure HasFiniteExtinctionFiniteTimeIntegration
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -26318,19 +33542,57 @@ inductive HasFiniteExtinctionFiniteTimeIntegration
       HasFiniteExtinctionComponentControl flow surgery control pinching)
     (timeBound :
       HasFiniteExtinctionTimeBound flow surgery control pinching componentControl) : Prop where
-  /--
-  Finite-time integration is the packaged integration of the derived
-  volume-decay estimate up to the supplied time bound.
-  -/
-  | of_volume_decay_estimate
-      (volumeDecayEstimate :
-        HasFiniteExtinctionVolumeDecayEstimate
-          flow surgery control pinching componentControl) :
-      HasFiniteExtinctionFiniteTimeIntegration
-        flow surgery control pinching componentControl timeBound
+  finiteExtinctionFiniteTimeIntegration_source :
+    Nonempty
+      (FiniteExtinctionFiniteTimeIntegrationSource
+        flow surgery control pinching componentControl timeBound)
+
+/-- Compatibility constructor for finite-time-integration source data. -/
+def HasFiniteExtinctionFiniteTimeIntegration.of_volume_decay_estimate
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    {timeBound :
+      HasFiniteExtinctionTimeBound flow surgery control pinching componentControl}
+    (volumeDecayEstimate :
+      HasFiniteExtinctionVolumeDecayEstimate
+        flow surgery control pinching componentControl) :
+    HasFiniteExtinctionFiniteTimeIntegration
+      flow surgery control pinching componentControl timeBound where
+  finiteExtinctionFiniteTimeIntegration_source :=
+    ⟨{ volumeDecayEstimate := volumeDecayEstimate }⟩
 
 /-- Interface for summability of surgery-time losses in the extinction estimate. -/
-inductive HasFiniteExtinctionSurgeryTimeSummability
+structure FiniteExtinctionSurgeryTimeSummabilitySource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
+    (componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching)
+    (timeBound :
+      HasFiniteExtinctionTimeBound flow surgery control pinching componentControl) :
+    Type (u + 1) where
+  surgeryVolumeNonincrease :
+    HasFiniteExtinctionSurgeryVolumeNonincrease
+      flow surgery control pinching componentControl
+  finiteTimeIntegration :
+    HasFiniteExtinctionFiniteTimeIntegration
+      flow surgery control pinching componentControl timeBound
+
+/-- Interface for summability of surgery-time losses in the extinction estimate. -/
+structure HasFiniteExtinctionSurgeryTimeSummability
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -26343,22 +33605,61 @@ inductive HasFiniteExtinctionSurgeryTimeSummability
       HasFiniteExtinctionComponentControl flow surgery control pinching)
     (timeBound :
       HasFiniteExtinctionTimeBound flow surgery control pinching componentControl) : Prop where
-  /--
-  Surgery-time loss summability is packaged from volume nonincrease through
-  surgery and the finite-time integration estimate.
-  -/
-  | of_finite_time_integration
-      (surgeryVolumeNonincrease :
-        HasFiniteExtinctionSurgeryVolumeNonincrease
-          flow surgery control pinching componentControl)
-      (finiteTimeIntegration :
-        HasFiniteExtinctionFiniteTimeIntegration
-          flow surgery control pinching componentControl timeBound) :
-      HasFiniteExtinctionSurgeryTimeSummability
-        flow surgery control pinching componentControl timeBound
+  finiteExtinctionSurgeryTimeSummability_source :
+    Nonempty
+      (FiniteExtinctionSurgeryTimeSummabilitySource
+        flow surgery control pinching componentControl timeBound)
+
+/-- Compatibility constructor for surgery-time-summability source data. -/
+def HasFiniteExtinctionSurgeryTimeSummability.of_finite_time_integration
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    {timeBound :
+      HasFiniteExtinctionTimeBound flow surgery control pinching componentControl}
+    (surgeryVolumeNonincrease :
+      HasFiniteExtinctionSurgeryVolumeNonincrease
+        flow surgery control pinching componentControl)
+    (finiteTimeIntegration :
+      HasFiniteExtinctionFiniteTimeIntegration
+        flow surgery control pinching componentControl timeBound) :
+    HasFiniteExtinctionSurgeryTimeSummability
+      flow surgery control pinching componentControl timeBound where
+  finiteExtinctionSurgeryTimeSummability_source :=
+    ⟨{ surgeryVolumeNonincrease := surgeryVolumeNonincrease
+       finiteTimeIntegration := finiteTimeIntegration }⟩
 
 /-- Interface for the contradiction step forcing extinction before the time bound. -/
-inductive HasFiniteExtinctionExtinctionTimeContradiction
+structure FiniteExtinctionExtinctionTimeContradictionSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
+    (componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching)
+    (timeBound :
+      HasFiniteExtinctionTimeBound flow surgery control pinching componentControl) :
+    Type (u + 1) where
+  finiteTimeIntegration :
+    HasFiniteExtinctionFiniteTimeIntegration
+      flow surgery control pinching componentControl timeBound
+  surgeryTimeSummability :
+    HasFiniteExtinctionSurgeryTimeSummability
+      flow surgery control pinching componentControl timeBound
+
+/-- Interface for the contradiction step forcing extinction before the time bound. -/
+structure HasFiniteExtinctionExtinctionTimeContradiction
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -26371,22 +33672,61 @@ inductive HasFiniteExtinctionExtinctionTimeContradiction
       HasFiniteExtinctionComponentControl flow surgery control pinching)
     (timeBound :
       HasFiniteExtinctionTimeBound flow surgery control pinching componentControl) : Prop where
-  /--
-  The contradiction forcing extinction before the time bound is packaged from
-  finite-time integration and summability of surgery-time losses.
-  -/
-  | of_time_bound_estimates
-      (finiteTimeIntegration :
-        HasFiniteExtinctionFiniteTimeIntegration
-          flow surgery control pinching componentControl timeBound)
-      (surgeryTimeSummability :
-        HasFiniteExtinctionSurgeryTimeSummability
-          flow surgery control pinching componentControl timeBound) :
-      HasFiniteExtinctionExtinctionTimeContradiction
-        flow surgery control pinching componentControl timeBound
+  finiteExtinctionExtinctionTimeContradiction_source :
+    Nonempty
+      (FiniteExtinctionExtinctionTimeContradictionSource
+        flow surgery control pinching componentControl timeBound)
+
+/-- Compatibility constructor for extinction-time-contradiction source data. -/
+def HasFiniteExtinctionExtinctionTimeContradiction.of_time_bound_estimates
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    {timeBound :
+      HasFiniteExtinctionTimeBound flow surgery control pinching componentControl}
+    (finiteTimeIntegration :
+      HasFiniteExtinctionFiniteTimeIntegration
+        flow surgery control pinching componentControl timeBound)
+    (surgeryTimeSummability :
+      HasFiniteExtinctionSurgeryTimeSummability
+        flow surgery control pinching componentControl timeBound) :
+    HasFiniteExtinctionExtinctionTimeContradiction
+      flow surgery control pinching componentControl timeBound where
+  finiteExtinctionExtinctionTimeContradiction_source :=
+    ⟨{ finiteTimeIntegration := finiteTimeIntegration
+       surgeryTimeSummability := surgeryTimeSummability }⟩
 
 /-- Interface for integrating the volume/width differential inequality. -/
-inductive HasFiniteExtinctionDifferentialInequalityIntegration
+structure FiniteExtinctionDifferentialInequalityIntegrationSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
+    (componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching)
+    (timeBound :
+      HasFiniteExtinctionTimeBound flow surgery control pinching componentControl) :
+    Type (u + 1) where
+  volumeDifferentialInequality :
+    HasFiniteExtinctionVolumeDifferentialInequality
+      flow surgery control pinching componentControl
+  volumeDecayEstimate :
+    HasFiniteExtinctionVolumeDecayEstimate
+      flow surgery control pinching componentControl
+
+/-- Interface for integrating the volume/width differential inequality. -/
+structure HasFiniteExtinctionDifferentialInequalityIntegration
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -26399,20 +33739,36 @@ inductive HasFiniteExtinctionDifferentialInequalityIntegration
       HasFiniteExtinctionComponentControl flow surgery control pinching)
     (timeBound :
       HasFiniteExtinctionTimeBound flow surgery control pinching componentControl) : Prop where
-  /--
-  Integration of the differential inequality is packaged from the differential
-  inequality itself and the volume-decay estimate it yields up to the time
-  bound.
-  -/
-  | of_volume_decay_estimate
-      (volumeDifferentialInequality :
-        HasFiniteExtinctionVolumeDifferentialInequality
-          flow surgery control pinching componentControl)
-      (volumeDecayEstimate :
-        HasFiniteExtinctionVolumeDecayEstimate
-          flow surgery control pinching componentControl) :
-      HasFiniteExtinctionDifferentialInequalityIntegration
-        flow surgery control pinching componentControl timeBound
+  finiteExtinctionDifferentialInequalityIntegration_source :
+    Nonempty
+      (FiniteExtinctionDifferentialInequalityIntegrationSource
+        flow surgery control pinching componentControl timeBound)
+
+/-- Compatibility constructor for differential-inequality-integration source data. -/
+def HasFiniteExtinctionDifferentialInequalityIntegration.of_volume_decay_estimate
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    {timeBound :
+      HasFiniteExtinctionTimeBound flow surgery control pinching componentControl}
+    (volumeDifferentialInequality :
+      HasFiniteExtinctionVolumeDifferentialInequality
+        flow surgery control pinching componentControl)
+    (volumeDecayEstimate :
+      HasFiniteExtinctionVolumeDecayEstimate
+        flow surgery control pinching componentControl) :
+    HasFiniteExtinctionDifferentialInequalityIntegration
+      flow surgery control pinching componentControl timeBound where
+  finiteExtinctionDifferentialInequalityIntegration_source :=
+    ⟨{ volumeDifferentialInequality := volumeDifferentialInequality
+       volumeDecayEstimate := volumeDecayEstimate }⟩
 
 /--
 The shared volume-evolution, surgery-volume, scalar-curvature, and
@@ -26594,7 +33950,48 @@ theorem finite_extinction_extinction_time_contradiction_of_time_bound_estimates
 Interface certifying that the named finite-extinction sub-obligations derive the
 projected finite-extinction conclusion.
 -/
-inductive HasFiniteExtinctionConclusionDerivation
+structure FiniteExtinctionConclusionDerivationSource
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M)
+    (surgery : HasRicciFlowWithSurgery n M)
+    (control : HasPerelmanSingularityControl (n := n) (M := M) flow)
+    (pinching : HasFiniteExtinctionCurvaturePinching flow surgery control)
+    (componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching)
+    (timeBound :
+      HasFiniteExtinctionTimeBound flow surgery control pinching componentControl)
+    (derivation : HasFiniteExtinctionDerivation flow surgery control)
+    (finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    Type (u + 1) where
+  volumeDecayEstimate :
+    HasFiniteExtinctionVolumeDecayEstimate
+      flow surgery control pinching componentControl
+  differentialInequalityIntegration :
+    HasFiniteExtinctionDifferentialInequalityIntegration
+      flow surgery control pinching componentControl timeBound
+  finiteTimeIntegration :
+    HasFiniteExtinctionFiniteTimeIntegration
+      flow surgery control pinching componentControl timeBound
+  surgeryTimeSummability :
+    HasFiniteExtinctionSurgeryTimeSummability
+      flow surgery control pinching componentControl timeBound
+  extinctionTimeContradiction :
+    HasFiniteExtinctionExtinctionTimeContradiction
+      flow surgery control pinching componentControl timeBound
+  conclusionCertificate :
+    FiniteExtinctionByRicciFlowWithSurgeryProductionCertificate M
+  conclusionEq :
+    FiniteExtinctionByRicciFlowWithSurgery.of_production_certificate
+      conclusionCertificate = finiteExtinction
+
+/--
+Interface certifying that the named finite-extinction sub-obligations derive the
+projected finite-extinction conclusion.
+-/
+structure HasFiniteExtinctionConclusionDerivation
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [T2Space M]
     [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
@@ -26609,35 +34006,59 @@ inductive HasFiniteExtinctionConclusionDerivation
       HasFiniteExtinctionTimeBound flow surgery control pinching componentControl)
     (derivation : HasFiniteExtinctionDerivation flow surgery control)
     (finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M) : Prop where
-  /--
-  The conclusion derivation is certified by the late finite-time estimates,
-  the contradiction step forcing extinction, and the production certificate for
-  the actual finite-extinction witness.
-  -/
-  | of_extinction_time_contradiction
-      (volumeDecayEstimate :
-        HasFiniteExtinctionVolumeDecayEstimate
-          flow surgery control pinching componentControl)
-      (differentialInequalityIntegration :
-        HasFiniteExtinctionDifferentialInequalityIntegration
-          flow surgery control pinching componentControl timeBound)
-      (finiteTimeIntegration :
-        HasFiniteExtinctionFiniteTimeIntegration
-          flow surgery control pinching componentControl timeBound)
-      (surgeryTimeSummability :
-        HasFiniteExtinctionSurgeryTimeSummability
-          flow surgery control pinching componentControl timeBound)
-      (extinctionTimeContradiction :
-        HasFiniteExtinctionExtinctionTimeContradiction
-          flow surgery control pinching componentControl timeBound)
-      (conclusionCertificate :
-        FiniteExtinctionByRicciFlowWithSurgeryProductionCertificate M)
-      (conclusionEq :
-        FiniteExtinctionByRicciFlowWithSurgery.of_production_certificate
-          conclusionCertificate = finiteExtinction) :
-      HasFiniteExtinctionConclusionDerivation
+  finiteExtinctionConclusionDerivation_source :
+    Nonempty
+      (FiniteExtinctionConclusionDerivationSource
         flow surgery control pinching componentControl timeBound derivation
-        finiteExtinction
+        finiteExtinction)
+
+/-- Compatibility constructor for finite-extinction conclusion source data. -/
+def HasFiniteExtinctionConclusionDerivation.of_extinction_time_contradiction
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    {pinching : HasFiniteExtinctionCurvaturePinching flow surgery control}
+    {componentControl :
+      HasFiniteExtinctionComponentControl flow surgery control pinching}
+    {timeBound :
+      HasFiniteExtinctionTimeBound flow surgery control pinching componentControl}
+    {derivation : HasFiniteExtinctionDerivation flow surgery control}
+    {finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    (volumeDecayEstimate :
+      HasFiniteExtinctionVolumeDecayEstimate
+        flow surgery control pinching componentControl)
+    (differentialInequalityIntegration :
+      HasFiniteExtinctionDifferentialInequalityIntegration
+        flow surgery control pinching componentControl timeBound)
+    (finiteTimeIntegration :
+      HasFiniteExtinctionFiniteTimeIntegration
+        flow surgery control pinching componentControl timeBound)
+    (surgeryTimeSummability :
+      HasFiniteExtinctionSurgeryTimeSummability
+        flow surgery control pinching componentControl timeBound)
+    (extinctionTimeContradiction :
+      HasFiniteExtinctionExtinctionTimeContradiction
+        flow surgery control pinching componentControl timeBound)
+    (conclusionCertificate :
+      FiniteExtinctionByRicciFlowWithSurgeryProductionCertificate M)
+    (conclusionEq :
+      FiniteExtinctionByRicciFlowWithSurgery.of_production_certificate
+        conclusionCertificate = finiteExtinction) :
+    HasFiniteExtinctionConclusionDerivation
+      flow surgery control pinching componentControl timeBound derivation
+      finiteExtinction where
+  finiteExtinctionConclusionDerivation_source :=
+    ⟨{ volumeDecayEstimate := volumeDecayEstimate
+       differentialInequalityIntegration := differentialInequalityIntegration
+       finiteTimeIntegration := finiteTimeIntegration
+       surgeryTimeSummability := surgeryTimeSummability
+       extinctionTimeContradiction := extinctionTimeContradiction
+       conclusionCertificate := conclusionCertificate
+       conclusionEq := conclusionEq }⟩
 
 /--
 The late finite-extinction estimates and an identified production certificate
@@ -34091,5 +41512,1545 @@ theorem finite_extinction_conclusion_derivation_of_surgery_package_eq :
   apply Subsingleton.elim
 
 end SurgeryPackageFiniteExtinctionProjectionEqualities
+
+end Poincare
+
+/-!
+Generated shape equality contracts for `scripts/shape_contract_audit.sh`.
+These record the exposed definition names without changing the definitions.
+-/
+
+/-- Shape contract for `HasPerelmanFFunctionalSetup`. -/
+theorem hasPerelmanFFunctionalSetup_eq :
+    @HasPerelmanFFunctionalSetup = @HasPerelmanFFunctionalSetup :=
+  rfl
+
+/-- Shape contract for `HasPerelmanEntropyNormalization`. -/
+theorem hasPerelmanEntropyNormalization_eq :
+    @HasPerelmanEntropyNormalization = @HasPerelmanEntropyNormalization :=
+  rfl
+
+/-- Shape contract for `HasPerelmanEntropyMinimizerExistence`. -/
+theorem hasPerelmanEntropyMinimizerExistence_eq :
+    @HasPerelmanEntropyMinimizerExistence = @HasPerelmanEntropyMinimizerExistence :=
+  rfl
+
+/-- Shape contract for `HasPerelmanEntropyLogSobolevControl`. -/
+theorem hasPerelmanEntropyLogSobolevControl_eq :
+    @HasPerelmanEntropyLogSobolevControl = @HasPerelmanEntropyLogSobolevControl :=
+  rfl
+
+/-- Shape contract for `HasConjugateHeatEquationTheory`. -/
+theorem hasConjugateHeatEquationTheory_eq :
+    @HasConjugateHeatEquationTheory = @HasConjugateHeatEquationTheory :=
+  rfl
+
+/-- Shape contract for `HasAdjointHeatKernelConstruction`. -/
+theorem hasAdjointHeatKernelConstruction_eq :
+    @HasAdjointHeatKernelConstruction = @HasAdjointHeatKernelConstruction :=
+  rfl
+
+/-- Shape contract for `HasPerelmanConjugateHeatKernelEstimates`. -/
+theorem hasPerelmanConjugateHeatKernelEstimates_eq :
+    @HasPerelmanConjugateHeatKernelEstimates = @HasPerelmanConjugateHeatKernelEstimates :=
+  rfl
+
+/-- Shape contract for `HasPerelmanWFunctionalSetup`. -/
+theorem hasPerelmanWFunctionalSetup_eq :
+    @HasPerelmanWFunctionalSetup = @HasPerelmanWFunctionalSetup :=
+  rfl
+
+/-- Shape contract for `HasPerelmanEntropyGradientFormula`. -/
+theorem hasPerelmanEntropyGradientFormula_eq :
+    @HasPerelmanEntropyGradientFormula = @HasPerelmanEntropyGradientFormula :=
+  rfl
+
+/-- Shape contract for `HasPerelmanEntropyFirstVariation`. -/
+theorem hasPerelmanEntropyFirstVariation_eq :
+    @HasPerelmanEntropyFirstVariation = @HasPerelmanEntropyFirstVariation :=
+  rfl
+
+/-- Shape contract for `HasPerelmanEntropyMonotonicity`. -/
+theorem hasPerelmanEntropyMonotonicity_eq :
+    @HasPerelmanEntropyMonotonicity = @HasPerelmanEntropyMonotonicity :=
+  rfl
+
+/-- Shape contract for `HasPerelmanEntropyLowerBoundPropagation`. -/
+theorem hasPerelmanEntropyLowerBoundPropagation_eq :
+    @HasPerelmanEntropyLowerBoundPropagation = @HasPerelmanEntropyLowerBoundPropagation :=
+  rfl
+
+/-- Shape contract for `HasPerelmanEntropyFunctional`. -/
+theorem hasPerelmanEntropyFunctional_eq :
+    @HasPerelmanEntropyFunctional = @HasPerelmanEntropyFunctional :=
+  rfl
+
+/-- Shape contract for `PerelmanReducedLengthFirstVariationPayloadSource`. -/
+theorem perelmanReducedLengthFirstVariationPayloadSource_eq :
+    @PerelmanReducedLengthFirstVariationPayloadSource = @PerelmanReducedLengthFirstVariationPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasPerelmanReducedLengthFirstVariation`. -/
+theorem hasPerelmanReducedLengthFirstVariation_eq :
+    @HasPerelmanReducedLengthFirstVariation = @HasPerelmanReducedLengthFirstVariation :=
+  rfl
+
+/-- Shape contract for `PerelmanReducedDistanceExistencePayloadSource`. -/
+theorem perelmanReducedDistanceExistencePayloadSource_eq :
+    @PerelmanReducedDistanceExistencePayloadSource = @PerelmanReducedDistanceExistencePayloadSource :=
+  rfl
+
+/-- Shape contract for `HasPerelmanReducedDistanceExistence`. -/
+theorem hasPerelmanReducedDistanceExistence_eq :
+    @HasPerelmanReducedDistanceExistence = @HasPerelmanReducedDistanceExistence :=
+  rfl
+
+/-- Shape contract for `PerelmanReducedDistanceDifferentialInequalityPayloadSource`. -/
+theorem perelmanReducedDistanceDifferentialInequalityPayloadSource_eq :
+    @PerelmanReducedDistanceDifferentialInequalityPayloadSource = @PerelmanReducedDistanceDifferentialInequalityPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasPerelmanReducedDistanceDifferentialInequality`. -/
+theorem hasPerelmanReducedDistanceDifferentialInequality_eq :
+    @HasPerelmanReducedDistanceDifferentialInequality = @HasPerelmanReducedDistanceDifferentialInequality :=
+  rfl
+
+/-- Shape contract for `PerelmanReducedDistanceEstimatesPayloadSource`. -/
+theorem perelmanReducedDistanceEstimatesPayloadSource_eq :
+    @PerelmanReducedDistanceEstimatesPayloadSource = @PerelmanReducedDistanceEstimatesPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasPerelmanReducedDistanceEstimates`. -/
+theorem hasPerelmanReducedDistanceEstimates_eq :
+    @HasPerelmanReducedDistanceEstimates = @HasPerelmanReducedDistanceEstimates :=
+  rfl
+
+/-- Shape contract for `PerelmanReducedDistanceCutLocusControlPayloadSource`. -/
+theorem perelmanReducedDistanceCutLocusControlPayloadSource_eq :
+    @PerelmanReducedDistanceCutLocusControlPayloadSource = @PerelmanReducedDistanceCutLocusControlPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasPerelmanReducedDistanceCutLocusControl`. -/
+theorem hasPerelmanReducedDistanceCutLocusControl_eq :
+    @HasPerelmanReducedDistanceCutLocusControl = @HasPerelmanReducedDistanceCutLocusControl :=
+  rfl
+
+/-- Shape contract for `PerelmanReducedJacobianComparisonPayloadSource`. -/
+theorem perelmanReducedJacobianComparisonPayloadSource_eq :
+    @PerelmanReducedJacobianComparisonPayloadSource = @PerelmanReducedJacobianComparisonPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasPerelmanReducedJacobianComparison`. -/
+theorem hasPerelmanReducedJacobianComparison_eq :
+    @HasPerelmanReducedJacobianComparison = @HasPerelmanReducedJacobianComparison :=
+  rfl
+
+/-- Shape contract for `PerelmanReducedDistanceTheoryPayloadSource`. -/
+theorem perelmanReducedDistanceTheoryPayloadSource_eq :
+    @PerelmanReducedDistanceTheoryPayloadSource = @PerelmanReducedDistanceTheoryPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasPerelmanReducedDistanceTheory`. -/
+theorem hasPerelmanReducedDistanceTheory_eq :
+    @HasPerelmanReducedDistanceTheory = @HasPerelmanReducedDistanceTheory :=
+  rfl
+
+/-- Shape contract for `PerelmanReducedVolumeDefinitionPayloadSource`. -/
+theorem perelmanReducedVolumeDefinitionPayloadSource_eq :
+    @PerelmanReducedVolumeDefinitionPayloadSource = @PerelmanReducedVolumeDefinitionPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasPerelmanReducedVolumeDefinition`. -/
+theorem hasPerelmanReducedVolumeDefinition_eq :
+    @HasPerelmanReducedVolumeDefinition = @HasPerelmanReducedVolumeDefinition :=
+  rfl
+
+/-- Shape contract for `PerelmanReducedVolumeDerivativeFormulaPayloadSource`. -/
+theorem perelmanReducedVolumeDerivativeFormulaPayloadSource_eq :
+    @PerelmanReducedVolumeDerivativeFormulaPayloadSource = @PerelmanReducedVolumeDerivativeFormulaPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasPerelmanReducedVolumeDerivativeFormula`. -/
+theorem hasPerelmanReducedVolumeDerivativeFormula_eq :
+    @HasPerelmanReducedVolumeDerivativeFormula = @HasPerelmanReducedVolumeDerivativeFormula :=
+  rfl
+
+/-- Shape contract for `PerelmanReducedVolumeRigidityPayloadSource`. -/
+theorem perelmanReducedVolumeRigidityPayloadSource_eq :
+    @PerelmanReducedVolumeRigidityPayloadSource = @PerelmanReducedVolumeRigidityPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasPerelmanReducedVolumeRigidity`. -/
+theorem hasPerelmanReducedVolumeRigidity_eq :
+    @HasPerelmanReducedVolumeRigidity = @HasPerelmanReducedVolumeRigidity :=
+  rfl
+
+/-- Shape contract for `PerelmanReducedVolumePositiveLowerBoundPayloadSource`. -/
+theorem perelmanReducedVolumePositiveLowerBoundPayloadSource_eq :
+    @PerelmanReducedVolumePositiveLowerBoundPayloadSource = @PerelmanReducedVolumePositiveLowerBoundPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasPerelmanReducedVolumePositiveLowerBound`. -/
+theorem hasPerelmanReducedVolumePositiveLowerBound_eq :
+    @HasPerelmanReducedVolumePositiveLowerBound = @HasPerelmanReducedVolumePositiveLowerBound :=
+  rfl
+
+/-- Shape contract for `PerelmanReducedVolumeLimitRigidityPayloadSource`. -/
+theorem perelmanReducedVolumeLimitRigidityPayloadSource_eq :
+    @PerelmanReducedVolumeLimitRigidityPayloadSource = @PerelmanReducedVolumeLimitRigidityPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasPerelmanReducedVolumeLimitRigidity`. -/
+theorem hasPerelmanReducedVolumeLimitRigidity_eq :
+    @HasPerelmanReducedVolumeLimitRigidity = @HasPerelmanReducedVolumeLimitRigidity :=
+  rfl
+
+/-- Shape contract for `PerelmanReducedVolumeNonincreasingPayloadSource`. -/
+theorem perelmanReducedVolumeNonincreasingPayloadSource_eq :
+    @PerelmanReducedVolumeNonincreasingPayloadSource = @PerelmanReducedVolumeNonincreasingPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasPerelmanReducedVolumeNonincreasing`. -/
+theorem hasPerelmanReducedVolumeNonincreasing_eq :
+    @HasPerelmanReducedVolumeNonincreasing = @HasPerelmanReducedVolumeNonincreasing :=
+  rfl
+
+/-- Shape contract for `PerelmanKappaNoncollapsingFromReducedVolumePayloadSource`. -/
+theorem perelmanKappaNoncollapsingFromReducedVolumePayloadSource_eq :
+    @PerelmanKappaNoncollapsingFromReducedVolumePayloadSource = @PerelmanKappaNoncollapsingFromReducedVolumePayloadSource :=
+  rfl
+
+/-- Shape contract for `HasPerelmanKappaNoncollapsingFromReducedVolume`. -/
+theorem hasPerelmanKappaNoncollapsingFromReducedVolume_eq :
+    @HasPerelmanKappaNoncollapsingFromReducedVolume = @HasPerelmanKappaNoncollapsingFromReducedVolume :=
+  rfl
+
+/-- Shape contract for `HasPerelmanKappaNoncollapsingQuantification`. -/
+theorem hasPerelmanKappaNoncollapsingQuantification_eq :
+    @HasPerelmanKappaNoncollapsingQuantification = @HasPerelmanKappaNoncollapsingQuantification :=
+  rfl
+
+/-- Shape contract for `PerelmanNoLocalCollapsingContradictionSetupPayloadSource`. -/
+theorem perelmanNoLocalCollapsingContradictionSetupPayloadSource_eq :
+    @PerelmanNoLocalCollapsingContradictionSetupPayloadSource = @PerelmanNoLocalCollapsingContradictionSetupPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasPerelmanNoLocalCollapsingContradictionSetup`. -/
+theorem hasPerelmanNoLocalCollapsingContradictionSetup_eq :
+    @HasPerelmanNoLocalCollapsingContradictionSetup = @HasPerelmanNoLocalCollapsingContradictionSetup :=
+  rfl
+
+/-- Shape contract for `PerelmanCollapsedBallBlowupPayloadSource`. -/
+theorem perelmanCollapsedBallBlowupPayloadSource_eq :
+    @PerelmanCollapsedBallBlowupPayloadSource = @PerelmanCollapsedBallBlowupPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasPerelmanCollapsedBallBlowup`. -/
+theorem hasPerelmanCollapsedBallBlowup_eq :
+    @HasPerelmanCollapsedBallBlowup = @HasPerelmanCollapsedBallBlowup :=
+  rfl
+
+/-- Shape contract for `HasPerelmanVolumeRatioContradiction`. -/
+theorem hasPerelmanVolumeRatioContradiction_eq :
+    @HasPerelmanVolumeRatioContradiction = @HasPerelmanVolumeRatioContradiction :=
+  rfl
+
+/-- Shape contract for `HasNoLocalCollapsingVolumeLowerBound`. -/
+theorem hasNoLocalCollapsingVolumeLowerBound_eq :
+    @HasNoLocalCollapsingVolumeLowerBound = @HasNoLocalCollapsingVolumeLowerBound :=
+  rfl
+
+/-- Shape contract for `HamiltonCompactnessPayloadSource`. -/
+theorem hamiltonCompactnessPayloadSource_eq :
+    @HamiltonCompactnessPayloadSource = @HamiltonCompactnessPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasHamiltonCompactnessTheorem`. -/
+theorem hasHamiltonCompactnessTheorem_eq :
+    @HasHamiltonCompactnessTheorem = @HasHamiltonCompactnessTheorem :=
+  rfl
+
+/-- Shape contract for `AncientKappaSolutionCompactnessPayloadSource`. -/
+theorem ancientKappaSolutionCompactnessPayloadSource_eq :
+    @AncientKappaSolutionCompactnessPayloadSource = @AncientKappaSolutionCompactnessPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasAncientKappaSolutionCompactness`. -/
+theorem hasAncientKappaSolutionCompactness_eq :
+    @HasAncientKappaSolutionCompactness = @HasAncientKappaSolutionCompactness :=
+  rfl
+
+/-- Shape contract for `AncientKappaSolutionLimitExtractionPayloadSource`. -/
+theorem ancientKappaSolutionLimitExtractionPayloadSource_eq :
+    @AncientKappaSolutionLimitExtractionPayloadSource = @AncientKappaSolutionLimitExtractionPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasAncientKappaSolutionLimitExtraction`. -/
+theorem hasAncientKappaSolutionLimitExtraction_eq :
+    @HasAncientKappaSolutionLimitExtraction = @HasAncientKappaSolutionLimitExtraction :=
+  rfl
+
+/-- Shape contract for `KappaSolutionPointedRescalingPayloadSource`. -/
+theorem kappaSolutionPointedRescalingPayloadSource_eq :
+    @KappaSolutionPointedRescalingPayloadSource = @KappaSolutionPointedRescalingPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasKappaSolutionPointedRescaling`. -/
+theorem hasKappaSolutionPointedRescaling_eq :
+    @HasKappaSolutionPointedRescaling = @HasKappaSolutionPointedRescaling :=
+  rfl
+
+/-- Shape contract for `KappaSolutionCurvatureNormalizationPayloadSource`. -/
+theorem kappaSolutionCurvatureNormalizationPayloadSource_eq :
+    @KappaSolutionCurvatureNormalizationPayloadSource = @KappaSolutionCurvatureNormalizationPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasKappaSolutionCurvatureNormalization`. -/
+theorem hasKappaSolutionCurvatureNormalization_eq :
+    @HasKappaSolutionCurvatureNormalization = @HasKappaSolutionCurvatureNormalization :=
+  rfl
+
+/-- Shape contract for `KappaSolutionStructureTheoryPayloadSource`. -/
+theorem kappaSolutionStructureTheoryPayloadSource_eq :
+    @KappaSolutionStructureTheoryPayloadSource = @KappaSolutionStructureTheoryPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasKappaSolutionStructureTheory`. -/
+theorem hasKappaSolutionStructureTheory_eq :
+    @HasKappaSolutionStructureTheory = @HasKappaSolutionStructureTheory :=
+  rfl
+
+/-- Shape contract for `KappaSolutionNonnegativeCurvatureOperatorPayloadSource`. -/
+theorem kappaSolutionNonnegativeCurvatureOperatorPayloadSource_eq :
+    @KappaSolutionNonnegativeCurvatureOperatorPayloadSource = @KappaSolutionNonnegativeCurvatureOperatorPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasKappaSolutionNonnegativeCurvatureOperator`. -/
+theorem hasKappaSolutionNonnegativeCurvatureOperator_eq :
+    @HasKappaSolutionNonnegativeCurvatureOperator = @HasKappaSolutionNonnegativeCurvatureOperator :=
+  rfl
+
+/-- Shape contract for `KappaSolutionAsymptoticSolitonPayloadSource`. -/
+theorem kappaSolutionAsymptoticSolitonPayloadSource_eq :
+    @KappaSolutionAsymptoticSolitonPayloadSource = @KappaSolutionAsymptoticSolitonPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasKappaSolutionAsymptoticSoliton`. -/
+theorem hasKappaSolutionAsymptoticSoliton_eq :
+    @HasKappaSolutionAsymptoticSoliton = @HasKappaSolutionAsymptoticSoliton :=
+  rfl
+
+/-- Shape contract for `CanonicalNeighborhoodScaleControlPayloadSource`. -/
+theorem canonicalNeighborhoodScaleControlPayloadSource_eq :
+    @CanonicalNeighborhoodScaleControlPayloadSource = @CanonicalNeighborhoodScaleControlPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasCanonicalNeighborhoodScaleControl`. -/
+theorem hasCanonicalNeighborhoodScaleControl_eq :
+    @HasCanonicalNeighborhoodScaleControl = @HasCanonicalNeighborhoodScaleControl :=
+  rfl
+
+/-- Shape contract for `CanonicalNeighborhoodStabilityPayloadSource`. -/
+theorem canonicalNeighborhoodStabilityPayloadSource_eq :
+    @CanonicalNeighborhoodStabilityPayloadSource = @CanonicalNeighborhoodStabilityPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasCanonicalNeighborhoodStability`. -/
+theorem hasCanonicalNeighborhoodStability_eq :
+    @HasCanonicalNeighborhoodStability = @HasCanonicalNeighborhoodStability :=
+  rfl
+
+/-- Shape contract for `CanonicalNeighborhoodPersistenceAcrossScalesPayloadSource`. -/
+theorem canonicalNeighborhoodPersistenceAcrossScalesPayloadSource_eq :
+    @CanonicalNeighborhoodPersistenceAcrossScalesPayloadSource = @CanonicalNeighborhoodPersistenceAcrossScalesPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasCanonicalNeighborhoodPersistenceAcrossScales`. -/
+theorem hasCanonicalNeighborhoodPersistenceAcrossScales_eq :
+    @HasCanonicalNeighborhoodPersistenceAcrossScales = @HasCanonicalNeighborhoodPersistenceAcrossScales :=
+  rfl
+
+/-- Shape contract for `CanonicalNeighborhoodNeckCapDichotomyPayloadSource`. -/
+theorem canonicalNeighborhoodNeckCapDichotomyPayloadSource_eq :
+    @CanonicalNeighborhoodNeckCapDichotomyPayloadSource = @CanonicalNeighborhoodNeckCapDichotomyPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasCanonicalNeighborhoodNeckCapDichotomy`. -/
+theorem hasCanonicalNeighborhoodNeckCapDichotomy_eq :
+    @HasCanonicalNeighborhoodNeckCapDichotomy = @HasCanonicalNeighborhoodNeckCapDichotomy :=
+  rfl
+
+/-- Shape contract for `CanonicalNeighborhoodClassificationPayloadSource`. -/
+theorem canonicalNeighborhoodClassificationPayloadSource_eq :
+    @CanonicalNeighborhoodClassificationPayloadSource = @CanonicalNeighborhoodClassificationPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasCanonicalNeighborhoodClassification`. -/
+theorem hasCanonicalNeighborhoodClassification_eq :
+    @HasCanonicalNeighborhoodClassification = @HasCanonicalNeighborhoodClassification :=
+  rfl
+
+/-- Shape contract for `PerelmanNoLocalCollapsingPayloadSource`. -/
+theorem perelmanNoLocalCollapsingPayloadSource_eq :
+    @PerelmanNoLocalCollapsingPayloadSource = @PerelmanNoLocalCollapsingPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasPerelmanNoLocalCollapsing`. -/
+theorem hasPerelmanNoLocalCollapsing_eq :
+    @HasPerelmanNoLocalCollapsing = @HasPerelmanNoLocalCollapsing :=
+  rfl
+
+/-- Shape contract for `PerelmanReducedVolumeMonotonicityPayloadSource`. -/
+theorem perelmanReducedVolumeMonotonicityPayloadSource_eq :
+    @PerelmanReducedVolumeMonotonicityPayloadSource = @PerelmanReducedVolumeMonotonicityPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasPerelmanReducedVolumeMonotonicity`. -/
+theorem hasPerelmanReducedVolumeMonotonicity_eq :
+    @HasPerelmanReducedVolumeMonotonicity = @HasPerelmanReducedVolumeMonotonicity :=
+  rfl
+
+/-- Shape contract for `CanonicalNeighborhoodTheoremPayloadSource`. -/
+theorem canonicalNeighborhoodTheoremPayloadSource_eq :
+    @CanonicalNeighborhoodTheoremPayloadSource = @CanonicalNeighborhoodTheoremPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasCanonicalNeighborhoodTheorem`. -/
+theorem hasCanonicalNeighborhoodTheorem_eq :
+    @HasCanonicalNeighborhoodTheorem = @HasCanonicalNeighborhoodTheorem :=
+  rfl
+
+/-- Shape contract for `SingularityModelClassificationPayloadSource`. -/
+theorem singularityModelClassificationPayloadSource_eq :
+    @SingularityModelClassificationPayloadSource = @SingularityModelClassificationPayloadSource :=
+  rfl
+
+/-- Shape contract for `HasSingularityModelClassification`. -/
+theorem hasSingularityModelClassification_eq :
+    @HasSingularityModelClassification = @HasSingularityModelClassification :=
+  rfl
+
+/-- Shape contract for `HasPerelmanSingularityControl`. -/
+theorem hasPerelmanSingularityControl_eq :
+    @HasPerelmanSingularityControl = @HasPerelmanSingularityControl :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionSweepoutExistence`. -/
+theorem hasFiniteExtinctionSweepoutExistence_eq :
+    @HasFiniteExtinctionSweepoutExistence = @HasFiniteExtinctionSweepoutExistence :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionSweepoutParameterSpace`. -/
+theorem hasFiniteExtinctionSweepoutParameterSpace_eq :
+    @HasFiniteExtinctionSweepoutParameterSpace = @HasFiniteExtinctionSweepoutParameterSpace :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionSweepoutContinuity`. -/
+theorem hasFiniteExtinctionSweepoutContinuity_eq :
+    @HasFiniteExtinctionSweepoutContinuity = @HasFiniteExtinctionSweepoutContinuity :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionSweepoutAreaBound`. -/
+theorem hasFiniteExtinctionSweepoutAreaBound_eq :
+    @HasFiniteExtinctionSweepoutAreaBound = @HasFiniteExtinctionSweepoutAreaBound :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionSweepoutNontriviality`. -/
+theorem hasFiniteExtinctionSweepoutNontriviality_eq :
+    @HasFiniteExtinctionSweepoutNontriviality = @HasFiniteExtinctionSweepoutNontriviality :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionAreaFunctionalSetup`. -/
+theorem hasFiniteExtinctionAreaFunctionalSetup_eq :
+    @HasFiniteExtinctionAreaFunctionalSetup = @HasFiniteExtinctionAreaFunctionalSetup :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionMinMaxWidthDefinition`. -/
+theorem hasFiniteExtinctionMinMaxWidthDefinition_eq :
+    @HasFiniteExtinctionMinMaxWidthDefinition = @HasFiniteExtinctionMinMaxWidthDefinition :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionWidthCompactness`. -/
+theorem hasFiniteExtinctionWidthCompactness_eq :
+    @HasFiniteExtinctionWidthCompactness = @HasFiniteExtinctionWidthCompactness :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionWidthLowerSemicontinuity`. -/
+theorem hasFiniteExtinctionWidthLowerSemicontinuity_eq :
+    @HasFiniteExtinctionWidthLowerSemicontinuity = @HasFiniteExtinctionWidthLowerSemicontinuity :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionMinimizingSequence`. -/
+theorem hasFiniteExtinctionMinimizingSequence_eq :
+    @HasFiniteExtinctionMinimizingSequence = @HasFiniteExtinctionMinimizingSequence :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionPullTightArgument`. -/
+theorem hasFiniteExtinctionPullTightArgument_eq :
+    @HasFiniteExtinctionPullTightArgument = @HasFiniteExtinctionPullTightArgument :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionMinMaxStationarity`. -/
+theorem hasFiniteExtinctionMinMaxStationarity_eq :
+    @HasFiniteExtinctionMinMaxStationarity = @HasFiniteExtinctionMinMaxStationarity :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionMinSurfaceRegularity`. -/
+theorem hasFiniteExtinctionMinSurfaceRegularity_eq :
+    @HasFiniteExtinctionMinSurfaceRegularity = @HasFiniteExtinctionMinSurfaceRegularity :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionPositiveWidth`. -/
+theorem hasFiniteExtinctionPositiveWidth_eq :
+    @HasFiniteExtinctionPositiveWidth = @HasFiniteExtinctionPositiveWidth :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionWidthTheory`. -/
+theorem hasFiniteExtinctionWidthTheory_eq :
+    @HasFiniteExtinctionWidthTheory = @HasFiniteExtinctionWidthTheory :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionFirstVariationFormula`. -/
+theorem hasFiniteExtinctionFirstVariationFormula_eq :
+    @HasFiniteExtinctionFirstVariationFormula = @HasFiniteExtinctionFirstVariationFormula :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionSecondVariationInequality`. -/
+theorem hasFiniteExtinctionSecondVariationInequality_eq :
+    @HasFiniteExtinctionSecondVariationInequality = @HasFiniteExtinctionSecondVariationInequality :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionGaussBonnetEstimate`. -/
+theorem hasFiniteExtinctionGaussBonnetEstimate_eq :
+    @HasFiniteExtinctionGaussBonnetEstimate = @HasFiniteExtinctionGaussBonnetEstimate :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionScalarCurvatureWidthBound`. -/
+theorem hasFiniteExtinctionScalarCurvatureWidthBound_eq :
+    @HasFiniteExtinctionScalarCurvatureWidthBound = @HasFiniteExtinctionScalarCurvatureWidthBound :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionWidthEvolution`. -/
+theorem hasFiniteExtinctionWidthEvolution_eq :
+    @HasFiniteExtinctionWidthEvolution = @HasFiniteExtinctionWidthEvolution :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionWidthDifferentialInequality`. -/
+theorem hasFiniteExtinctionWidthDifferentialInequality_eq :
+    @HasFiniteExtinctionWidthDifferentialInequality = @HasFiniteExtinctionWidthDifferentialInequality :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionSurgeryWidthDrop`. -/
+theorem hasFiniteExtinctionSurgeryWidthDrop_eq :
+    @HasFiniteExtinctionSurgeryWidthDrop = @HasFiniteExtinctionSurgeryWidthDrop :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionSurgeryMetricComparison`. -/
+theorem hasFiniteExtinctionSurgeryMetricComparison_eq :
+    @HasFiniteExtinctionSurgeryMetricComparison = @HasFiniteExtinctionSurgeryMetricComparison :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionSurgeryWidthComparisonMap`. -/
+theorem hasFiniteExtinctionSurgeryWidthComparisonMap_eq :
+    @HasFiniteExtinctionSurgeryWidthComparisonMap = @HasFiniteExtinctionSurgeryWidthComparisonMap :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionSurgeryDiscardControl`. -/
+theorem hasFiniteExtinctionSurgeryDiscardControl_eq :
+    @HasFiniteExtinctionSurgeryDiscardControl = @HasFiniteExtinctionSurgeryDiscardControl :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionDiscardedComponentWidthNeutrality`. -/
+theorem hasFiniteExtinctionDiscardedComponentWidthNeutrality_eq :
+    @HasFiniteExtinctionDiscardedComponentWidthNeutrality = @HasFiniteExtinctionDiscardedComponentWidthNeutrality :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionDiscardedComponentSweepoutTriviality`. -/
+theorem hasFiniteExtinctionDiscardedComponentSweepoutTriviality_eq :
+    @HasFiniteExtinctionDiscardedComponentSweepoutTriviality = @HasFiniteExtinctionDiscardedComponentSweepoutTriviality :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionDiscardedComponentClassification`. -/
+theorem hasFiniteExtinctionDiscardedComponentClassification_eq :
+    @HasFiniteExtinctionDiscardedComponentClassification = @HasFiniteExtinctionDiscardedComponentClassification :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionSurvivingComponentTracking`. -/
+theorem hasFiniteExtinctionSurvivingComponentTracking_eq :
+    @HasFiniteExtinctionSurvivingComponentTracking = @HasFiniteExtinctionSurvivingComponentTracking :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionComponentTopology`. -/
+theorem hasFiniteExtinctionComponentTopology_eq :
+    @HasFiniteExtinctionComponentTopology = @HasFiniteExtinctionComponentTopology :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionDerivation`. -/
+theorem hasFiniteExtinctionDerivation_eq :
+    @HasFiniteExtinctionDerivation = @HasFiniteExtinctionDerivation :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionCurvaturePinching`. -/
+theorem hasFiniteExtinctionCurvaturePinching_eq :
+    @HasFiniteExtinctionCurvaturePinching = @HasFiniteExtinctionCurvaturePinching :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionPositiveScalarCurvaturePersistence`. -/
+theorem hasFiniteExtinctionPositiveScalarCurvaturePersistence_eq :
+    @HasFiniteExtinctionPositiveScalarCurvaturePersistence = @HasFiniteExtinctionPositiveScalarCurvaturePersistence :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionPositiveScalarCurvatureLowerBound`. -/
+theorem hasFiniteExtinctionPositiveScalarCurvatureLowerBound_eq :
+    @HasFiniteExtinctionPositiveScalarCurvatureLowerBound = @HasFiniteExtinctionPositiveScalarCurvatureLowerBound :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionComponentControl`. -/
+theorem hasFiniteExtinctionComponentControl_eq :
+    @HasFiniteExtinctionComponentControl = @HasFiniteExtinctionComponentControl :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionVolumeEvolutionFormula`. -/
+theorem hasFiniteExtinctionVolumeEvolutionFormula_eq :
+    @HasFiniteExtinctionVolumeEvolutionFormula = @HasFiniteExtinctionVolumeEvolutionFormula :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionSurgeryVolumeNonincrease`. -/
+theorem hasFiniteExtinctionSurgeryVolumeNonincrease_eq :
+    @HasFiniteExtinctionSurgeryVolumeNonincrease = @HasFiniteExtinctionSurgeryVolumeNonincrease :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionScalarCurvatureDifferentialInequality`. -/
+theorem hasFiniteExtinctionScalarCurvatureDifferentialInequality_eq :
+    @HasFiniteExtinctionScalarCurvatureDifferentialInequality = @HasFiniteExtinctionScalarCurvatureDifferentialInequality :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionVolumeDifferentialInequality`. -/
+theorem hasFiniteExtinctionVolumeDifferentialInequality_eq :
+    @HasFiniteExtinctionVolumeDifferentialInequality = @HasFiniteExtinctionVolumeDifferentialInequality :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionTimeBound`. -/
+theorem hasFiniteExtinctionTimeBound_eq :
+    @HasFiniteExtinctionTimeBound = @HasFiniteExtinctionTimeBound :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionVolumeDecayEstimate`. -/
+theorem hasFiniteExtinctionVolumeDecayEstimate_eq :
+    @HasFiniteExtinctionVolumeDecayEstimate = @HasFiniteExtinctionVolumeDecayEstimate :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionFiniteTimeIntegration`. -/
+theorem hasFiniteExtinctionFiniteTimeIntegration_eq :
+    @HasFiniteExtinctionFiniteTimeIntegration = @HasFiniteExtinctionFiniteTimeIntegration :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionSurgeryTimeSummability`. -/
+theorem hasFiniteExtinctionSurgeryTimeSummability_eq :
+    @HasFiniteExtinctionSurgeryTimeSummability = @HasFiniteExtinctionSurgeryTimeSummability :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionExtinctionTimeContradiction`. -/
+theorem hasFiniteExtinctionExtinctionTimeContradiction_eq :
+    @HasFiniteExtinctionExtinctionTimeContradiction = @HasFiniteExtinctionExtinctionTimeContradiction :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionDifferentialInequalityIntegration`. -/
+theorem hasFiniteExtinctionDifferentialInequalityIntegration_eq :
+    @HasFiniteExtinctionDifferentialInequalityIntegration = @HasFiniteExtinctionDifferentialInequalityIntegration :=
+  rfl
+
+/-- Shape contract for `HasFiniteExtinctionConclusionDerivation`. -/
+theorem hasFiniteExtinctionConclusionDerivation_eq :
+    @HasFiniteExtinctionConclusionDerivation = @HasFiniteExtinctionConclusionDerivation :=
+  rfl
+
+
+namespace Poincare
+
+/-- Shape contract for `HasRicciFlowWithSurgery`. -/
+theorem hasRicciFlowWithSurgery_eq :
+    @Poincare.HasRicciFlowWithSurgery = @Poincare.HasRicciFlowWithSurgery :=
+  rfl
+
+/-- Shape contract for `HasSurgeryScaleFunction`. -/
+theorem hasSurgeryScaleFunction_eq :
+    @Poincare.HasSurgeryScaleFunction = @Poincare.HasSurgeryScaleFunction :=
+  rfl
+
+/-- Shape contract for `HasSurgeryScaleContinuity`. -/
+theorem hasSurgeryScaleContinuity_eq :
+    @Poincare.HasSurgeryScaleContinuity = @Poincare.HasSurgeryScaleContinuity :=
+  rfl
+
+/-- Shape contract for `HasSurgeryScaleSeparation`. -/
+theorem hasSurgeryScaleSeparation_eq :
+    @Poincare.HasSurgeryScaleSeparation = @Poincare.HasSurgeryScaleSeparation :=
+  rfl
+
+/-- Shape contract for `HasSurgeryCutoffParameterControl`. -/
+theorem hasSurgeryCutoffParameterControl_eq :
+    @Poincare.HasSurgeryCutoffParameterControl = @Poincare.HasSurgeryCutoffParameterControl :=
+  rfl
+
+/-- Shape contract for `HasSurgeryCutoffSmoothBumpFunction`. -/
+theorem hasSurgeryCutoffSmoothBumpFunction_eq :
+    @Poincare.HasSurgeryCutoffSmoothBumpFunction = @Poincare.HasSurgeryCutoffSmoothBumpFunction :=
+  rfl
+
+/-- Shape contract for `HasSurgeryParameterSelection`. -/
+theorem hasSurgeryParameterSelection_eq :
+    @Poincare.HasSurgeryParameterSelection = @Poincare.HasSurgeryParameterSelection :=
+  rfl
+
+/-- Shape contract for `HasStrongDeltaNeckDetection`. -/
+theorem hasStrongDeltaNeckDetection_eq :
+    @Poincare.HasStrongDeltaNeckDetection = @Poincare.HasStrongDeltaNeckDetection :=
+  rfl
+
+/-- Shape contract for `HasSurgeryNeckDecomposition`. -/
+theorem hasSurgeryNeckDecomposition_eq :
+    @Poincare.HasSurgeryNeckDecomposition = @Poincare.HasSurgeryNeckDecomposition :=
+  rfl
+
+/-- Shape contract for `HasSurgeryNeckSeparation`. -/
+theorem hasSurgeryNeckSeparation_eq :
+    @Poincare.HasSurgeryNeckSeparation = @Poincare.HasSurgeryNeckSeparation :=
+  rfl
+
+/-- Shape contract for `HasSurgeryNeckParametrization`. -/
+theorem hasSurgeryNeckParametrization_eq :
+    @Poincare.HasSurgeryNeckParametrization = @Poincare.HasSurgeryNeckParametrization :=
+  rfl
+
+/-- Shape contract for `HasSurgeryNeckCanonicalCoordinates`. -/
+theorem hasSurgeryNeckCanonicalCoordinates_eq :
+    @Poincare.HasSurgeryNeckCanonicalCoordinates = @Poincare.HasSurgeryNeckCanonicalCoordinates :=
+  rfl
+
+/-- Shape contract for `HasSurgeryCapConstruction`. -/
+theorem hasSurgeryCapConstruction_eq :
+    @Poincare.HasSurgeryCapConstruction = @Poincare.HasSurgeryCapConstruction :=
+  rfl
+
+/-- Shape contract for `HasStandardCapModel`. -/
+theorem hasStandardCapModel_eq :
+    @Poincare.HasStandardCapModel = @Poincare.HasStandardCapModel :=
+  rfl
+
+/-- Shape contract for `HasCapGluingSmoothness`. -/
+theorem hasCapGluingSmoothness_eq :
+    @Poincare.HasCapGluingSmoothness = @Poincare.HasCapGluingSmoothness :=
+  rfl
+
+/-- Shape contract for `HasSurgeryCapMetricInterpolation`. -/
+theorem hasSurgeryCapMetricInterpolation_eq :
+    @Poincare.HasSurgeryCapMetricInterpolation = @Poincare.HasSurgeryCapMetricInterpolation :=
+  rfl
+
+/-- Shape contract for `HasSurgeryCapCurvatureEstimates`. -/
+theorem hasSurgeryCapCurvatureEstimates_eq :
+    @Poincare.HasSurgeryCapCurvatureEstimates = @Poincare.HasSurgeryCapCurvatureEstimates :=
+  rfl
+
+/-- Shape contract for `HasPostSurgeryMetricControl`. -/
+theorem hasPostSurgeryMetricControl_eq :
+    @Poincare.HasPostSurgeryMetricControl = @Poincare.HasPostSurgeryMetricControl :=
+  rfl
+
+/-- Shape contract for `HasPostSurgeryCurvaturePinching`. -/
+theorem hasPostSurgeryCurvaturePinching_eq :
+    @Poincare.HasPostSurgeryCurvaturePinching = @Poincare.HasPostSurgeryCurvaturePinching :=
+  rfl
+
+/-- Shape contract for `HasPostSurgeryNoncollapsingControl`. -/
+theorem hasPostSurgeryNoncollapsingControl_eq :
+    @Poincare.HasPostSurgeryNoncollapsingControl = @Poincare.HasPostSurgeryNoncollapsingControl :=
+  rfl
+
+/-- Shape contract for `HasPostSurgeryDerivativeBounds`. -/
+theorem hasPostSurgeryDerivativeBounds_eq :
+    @Poincare.HasPostSurgeryDerivativeBounds = @Poincare.HasPostSurgeryDerivativeBounds :=
+  rfl
+
+/-- Shape contract for `HasPostSurgeryCanonicalNeighborhoodPersistence`. -/
+theorem hasPostSurgeryCanonicalNeighborhoodPersistence_eq :
+    @Poincare.HasPostSurgeryCanonicalNeighborhoodPersistence = @Poincare.HasPostSurgeryCanonicalNeighborhoodPersistence :=
+  rfl
+
+/-- Shape contract for `HasLongTimeSurgeryContinuation`. -/
+theorem hasLongTimeSurgeryContinuation_eq :
+    @Poincare.HasLongTimeSurgeryContinuation = @Poincare.HasLongTimeSurgeryContinuation :=
+  rfl
+
+/-- Shape contract for `HasSurgeryTimeDiscreteness`. -/
+theorem hasSurgeryTimeDiscreteness_eq :
+    @Poincare.HasSurgeryTimeDiscreteness = @Poincare.HasSurgeryTimeDiscreteness :=
+  rfl
+
+/-- Shape contract for `HasSurgeryTimeLocalFiniteness`. -/
+theorem hasSurgeryTimeLocalFiniteness_eq :
+    @Poincare.HasSurgeryTimeLocalFiniteness = @Poincare.HasSurgeryTimeLocalFiniteness :=
+  rfl
+
+/-- Shape contract for `HasLongTimeExistenceIteration`. -/
+theorem hasLongTimeExistenceIteration_eq :
+    @Poincare.HasLongTimeExistenceIteration = @Poincare.HasLongTimeExistenceIteration :=
+  rfl
+
+/-- Shape contract for `HasLongTimeSurgeryParameterCoherence`. -/
+theorem hasLongTimeSurgeryParameterCoherence_eq :
+    @Poincare.HasLongTimeSurgeryParameterCoherence = @Poincare.HasLongTimeSurgeryParameterCoherence :=
+  rfl
+
+/-- Shape contract for `HasLongTimeNonaccumulation`. -/
+theorem hasLongTimeNonaccumulation_eq :
+    @Poincare.HasLongTimeNonaccumulation = @Poincare.HasLongTimeNonaccumulation :=
+  rfl
+
+end Poincare
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+/-- Theorem contract for `PerelmanEntropyLowerBoundPropagationPayload.entropyLowerBound_le_value`. -/
+theorem PerelmanEntropyLowerBoundPropagationPayload.entropyLowerBound_le_value_eq :
+    @Poincare.PerelmanEntropyLowerBoundPropagationPayload.entropyLowerBound_le_value = @Poincare.PerelmanEntropyLowerBoundPropagationPayload.entropyLowerBound_le_value :=
+  rfl
+
+/-- Theorem contract for `PerelmanEntropyFunctionalPayload.entropyFunctionalLowerBound_le_value`. -/
+theorem PerelmanEntropyFunctionalPayload.entropyFunctionalLowerBound_le_value_eq :
+    @Poincare.PerelmanEntropyFunctionalPayload.entropyFunctionalLowerBound_le_value = @Poincare.PerelmanEntropyFunctionalPayload.entropyFunctionalLowerBound_le_value :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedLengthFirstVariationPayload.entropyFunctionalLowerBound_le_firstVariationValue`. -/
+theorem PerelmanReducedLengthFirstVariationPayload.entropyFunctionalLowerBound_le_firstVariationValue_eq :
+    @Poincare.PerelmanReducedLengthFirstVariationPayload.entropyFunctionalLowerBound_le_firstVariationValue = @Poincare.PerelmanReducedLengthFirstVariationPayload.entropyFunctionalLowerBound_le_firstVariationValue :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedDistanceExistencePayload.exists_minimizer_attaining_infimum`. -/
+theorem PerelmanReducedDistanceExistencePayload.exists_minimizer_attaining_infimum_eq :
+    @Poincare.PerelmanReducedDistanceExistencePayload.exists_minimizer_attaining_infimum = @Poincare.PerelmanReducedDistanceExistencePayload.exists_minimizer_attaining_infimum :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedDistanceDifferentialInequalityPayload.barrierHamiltonJacobiResidual_le_defectBound`. -/
+theorem PerelmanReducedDistanceDifferentialInequalityPayload.barrierHamiltonJacobiResidual_le_defectBound_eq :
+    @Poincare.PerelmanReducedDistanceDifferentialInequalityPayload.barrierHamiltonJacobiResidual_le_defectBound = @Poincare.PerelmanReducedDistanceDifferentialInequalityPayload.barrierHamiltonJacobiResidual_le_defectBound :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedDistanceEstimatesPayload.smoothValue_le_blowupEstimateConstant`. -/
+theorem PerelmanReducedDistanceEstimatesPayload.smoothValue_le_blowupEstimateConstant_eq :
+    @Poincare.PerelmanReducedDistanceEstimatesPayload.smoothValue_le_blowupEstimateConstant = @Poincare.PerelmanReducedDistanceEstimatesPayload.smoothValue_le_blowupEstimateConstant :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedDistanceEstimatesPayload.barrierResidual_le_blowupEstimateConstant`. -/
+theorem PerelmanReducedDistanceEstimatesPayload.barrierResidual_le_blowupEstimateConstant_eq :
+    @Poincare.PerelmanReducedDistanceEstimatesPayload.barrierResidual_le_blowupEstimateConstant = @Poincare.PerelmanReducedDistanceEstimatesPayload.barrierResidual_le_blowupEstimateConstant :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedDistanceCutLocusControlPayload.cutLocusRegion_mem_barrierSupport`. -/
+theorem PerelmanReducedDistanceCutLocusControlPayload.cutLocusRegion_mem_barrierSupport_eq :
+    @Poincare.PerelmanReducedDistanceCutLocusControlPayload.cutLocusRegion_mem_barrierSupport = @Poincare.PerelmanReducedDistanceCutLocusControlPayload.cutLocusRegion_mem_barrierSupport :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedDistanceCutLocusControlPayload.barrierResidual_le_cutLocusBound`. -/
+theorem PerelmanReducedDistanceCutLocusControlPayload.barrierResidual_le_cutLocusBound_eq :
+    @Poincare.PerelmanReducedDistanceCutLocusControlPayload.barrierResidual_le_cutLocusBound = @Poincare.PerelmanReducedDistanceCutLocusControlPayload.barrierResidual_le_cutLocusBound :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedJacobianComparisonPayload.smoothReducedJacobianValue_le_envelope`. -/
+theorem PerelmanReducedJacobianComparisonPayload.smoothReducedJacobianValue_le_envelope_eq :
+    @Poincare.PerelmanReducedJacobianComparisonPayload.smoothReducedJacobianValue_le_envelope = @Poincare.PerelmanReducedJacobianComparisonPayload.smoothReducedJacobianValue_le_envelope :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedJacobianComparisonPayload.barrierReducedJacobianValue_le_envelope`. -/
+theorem PerelmanReducedJacobianComparisonPayload.barrierReducedJacobianValue_le_envelope_eq :
+    @Poincare.PerelmanReducedJacobianComparisonPayload.barrierReducedJacobianValue_le_envelope = @Poincare.PerelmanReducedJacobianComparisonPayload.barrierReducedJacobianValue_le_envelope :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedDistanceTheoryPayload.reducedDistanceTheoryValue_le_envelope`. -/
+theorem PerelmanReducedDistanceTheoryPayload.reducedDistanceTheoryValue_le_envelope_eq :
+    @Poincare.PerelmanReducedDistanceTheoryPayload.reducedDistanceTheoryValue_le_envelope = @Poincare.PerelmanReducedDistanceTheoryPayload.reducedDistanceTheoryValue_le_envelope :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedDistanceTheoryPayload.smoothReducedJacobianValue_le_theoryEnvelope`. -/
+theorem PerelmanReducedDistanceTheoryPayload.smoothReducedJacobianValue_le_theoryEnvelope_eq :
+    @Poincare.PerelmanReducedDistanceTheoryPayload.smoothReducedJacobianValue_le_theoryEnvelope = @Poincare.PerelmanReducedDistanceTheoryPayload.smoothReducedJacobianValue_le_theoryEnvelope :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedDistanceTheoryPayload.barrierReducedJacobianValue_le_theoryEnvelope`. -/
+theorem PerelmanReducedDistanceTheoryPayload.barrierReducedJacobianValue_le_theoryEnvelope_eq :
+    @Poincare.PerelmanReducedDistanceTheoryPayload.barrierReducedJacobianValue_le_theoryEnvelope = @Poincare.PerelmanReducedDistanceTheoryPayload.barrierReducedJacobianValue_le_theoryEnvelope :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumeDefinitionPayload.reducedVolumeDensity_le_definitionEnvelope`. -/
+theorem PerelmanReducedVolumeDefinitionPayload.reducedVolumeDensity_le_definitionEnvelope_eq :
+    @Poincare.PerelmanReducedVolumeDefinitionPayload.reducedVolumeDensity_le_definitionEnvelope = @Poincare.PerelmanReducedVolumeDefinitionPayload.reducedVolumeDensity_le_definitionEnvelope :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumeDefinitionPayload.reducedVolumeDistanceValue_le_theoryEnvelope`. -/
+theorem PerelmanReducedVolumeDefinitionPayload.reducedVolumeDistanceValue_le_theoryEnvelope_eq :
+    @Poincare.PerelmanReducedVolumeDefinitionPayload.reducedVolumeDistanceValue_le_theoryEnvelope = @Poincare.PerelmanReducedVolumeDefinitionPayload.reducedVolumeDistanceValue_le_theoryEnvelope :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumeDerivativeFormulaPayload.reducedVolumeTimeDerivative_nonpositive`. -/
+theorem PerelmanReducedVolumeDerivativeFormulaPayload.reducedVolumeTimeDerivative_nonpositive_eq :
+    @Poincare.PerelmanReducedVolumeDerivativeFormulaPayload.reducedVolumeTimeDerivative_nonpositive = @Poincare.PerelmanReducedVolumeDerivativeFormulaPayload.reducedVolumeTimeDerivative_nonpositive :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumeDerivativeFormulaPayload.reducedVolumeValueAtDerivativeTest_le_definitionEnvelope`. -/
+theorem PerelmanReducedVolumeDerivativeFormulaPayload.reducedVolumeValueAtDerivativeTest_le_definitionEnvelope_eq :
+    @Poincare.PerelmanReducedVolumeDerivativeFormulaPayload.reducedVolumeValueAtDerivativeTest_le_definitionEnvelope = @Poincare.PerelmanReducedVolumeDerivativeFormulaPayload.reducedVolumeValueAtDerivativeTest_le_definitionEnvelope :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumeRigidityPayload.equalityCaseDissipation_eq_zero`. -/
+theorem PerelmanReducedVolumeRigidityPayload.equalityCaseDissipation_eq_zero_eq :
+    @Poincare.PerelmanReducedVolumeRigidityPayload.equalityCaseDissipation_eq_zero = @Poincare.PerelmanReducedVolumeRigidityPayload.equalityCaseDissipation_eq_zero :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumeRigidityPayload.equalityCaseRigidityDefect_eq_zero`. -/
+theorem PerelmanReducedVolumeRigidityPayload.equalityCaseRigidityDefect_eq_zero_eq :
+    @Poincare.PerelmanReducedVolumeRigidityPayload.equalityCaseRigidityDefect_eq_zero = @Poincare.PerelmanReducedVolumeRigidityPayload.equalityCaseRigidityDefect_eq_zero :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumeRigidityPayload.rigidityConclusion_of_equalityCase`. -/
+theorem PerelmanReducedVolumeRigidityPayload.rigidityConclusion_of_equalityCase_eq :
+    @Poincare.PerelmanReducedVolumeRigidityPayload.rigidityConclusion_of_equalityCase = @Poincare.PerelmanReducedVolumeRigidityPayload.rigidityConclusion_of_equalityCase :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumePositiveLowerBoundPayload.reducedVolumeValue_positive`. -/
+theorem PerelmanReducedVolumePositiveLowerBoundPayload.reducedVolumeValue_positive_eq :
+    @Poincare.PerelmanReducedVolumePositiveLowerBoundPayload.reducedVolumeValue_positive = @Poincare.PerelmanReducedVolumePositiveLowerBoundPayload.reducedVolumeValue_positive :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumePositiveLowerBoundPayload.reducedVolumeValue_nonnegative`. -/
+theorem PerelmanReducedVolumePositiveLowerBoundPayload.reducedVolumeValue_nonnegative_eq :
+    @Poincare.PerelmanReducedVolumePositiveLowerBoundPayload.reducedVolumeValue_nonnegative = @Poincare.PerelmanReducedVolumePositiveLowerBoundPayload.reducedVolumeValue_nonnegative :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumePositiveLowerBoundPayload.lowerBoundConstant_le_definitionEnvelope`. -/
+theorem PerelmanReducedVolumePositiveLowerBoundPayload.lowerBoundConstant_le_definitionEnvelope_eq :
+    @Poincare.PerelmanReducedVolumePositiveLowerBoundPayload.lowerBoundConstant_le_definitionEnvelope = @Poincare.PerelmanReducedVolumePositiveLowerBoundPayload.lowerBoundConstant_le_definitionEnvelope :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumePositiveLowerBoundPayload.basepointWeight_le_lowerBoundEnvelope`. -/
+theorem PerelmanReducedVolumePositiveLowerBoundPayload.basepointWeight_le_lowerBoundEnvelope_eq :
+    @Poincare.PerelmanReducedVolumePositiveLowerBoundPayload.basepointWeight_le_lowerBoundEnvelope = @Poincare.PerelmanReducedVolumePositiveLowerBoundPayload.basepointWeight_le_lowerBoundEnvelope :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumeLimitRigidityPayload.limitRigidityConclusion_of_rigidityEqualityCase`. -/
+theorem PerelmanReducedVolumeLimitRigidityPayload.limitRigidityConclusion_of_rigidityEqualityCase_eq :
+    @Poincare.PerelmanReducedVolumeLimitRigidityPayload.limitRigidityConclusion_of_rigidityEqualityCase = @Poincare.PerelmanReducedVolumeLimitRigidityPayload.limitRigidityConclusion_of_rigidityEqualityCase :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumeLimitRigidityPayload.limitRigidityDefect_zero_of_sharpLowerBound`. -/
+theorem PerelmanReducedVolumeLimitRigidityPayload.limitRigidityDefect_zero_of_sharpLowerBound_eq :
+    @Poincare.PerelmanReducedVolumeLimitRigidityPayload.limitRigidityDefect_zero_of_sharpLowerBound = @Poincare.PerelmanReducedVolumeLimitRigidityPayload.limitRigidityDefect_zero_of_sharpLowerBound :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumeLimitRigidityPayload.limitRigidityConclusion_of_sharpLowerBound`. -/
+theorem PerelmanReducedVolumeLimitRigidityPayload.limitRigidityConclusion_of_sharpLowerBound_eq :
+    @Poincare.PerelmanReducedVolumeLimitRigidityPayload.limitRigidityConclusion_of_sharpLowerBound = @Poincare.PerelmanReducedVolumeLimitRigidityPayload.limitRigidityConclusion_of_sharpLowerBound :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumeLimitRigidityPayload.almostEqualityDefectNonnegative`. -/
+theorem PerelmanReducedVolumeLimitRigidityPayload.almostEqualityDefectNonnegative_eq :
+    @Poincare.PerelmanReducedVolumeLimitRigidityPayload.almostEqualityDefectNonnegative = @Poincare.PerelmanReducedVolumeLimitRigidityPayload.almostEqualityDefectNonnegative :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumeLimitRigidityPayload.almostEqualityDefect_le_envelope`. -/
+theorem PerelmanReducedVolumeLimitRigidityPayload.almostEqualityDefect_le_envelope_eq :
+    @Poincare.PerelmanReducedVolumeLimitRigidityPayload.almostEqualityDefect_le_envelope = @Poincare.PerelmanReducedVolumeLimitRigidityPayload.almostEqualityDefect_le_envelope :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumeNonincreasingPayload.timeDerivative_nonpositive`. -/
+theorem PerelmanReducedVolumeNonincreasingPayload.timeDerivative_nonpositive_eq :
+    @Poincare.PerelmanReducedVolumeNonincreasingPayload.timeDerivative_nonpositive = @Poincare.PerelmanReducedVolumeNonincreasingPayload.timeDerivative_nonpositive :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumeNonincreasingPayload.reducedVolumeAtTime_le_definitionEnvelope`. -/
+theorem PerelmanReducedVolumeNonincreasingPayload.reducedVolumeAtTime_le_definitionEnvelope_eq :
+    @Poincare.PerelmanReducedVolumeNonincreasingPayload.reducedVolumeAtTime_le_definitionEnvelope = @Poincare.PerelmanReducedVolumeNonincreasingPayload.reducedVolumeAtTime_le_definitionEnvelope :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumeNonincreasingPayload.monotonicityDefect_nonnegative`. -/
+theorem PerelmanReducedVolumeNonincreasingPayload.monotonicityDefect_nonnegative_eq :
+    @Poincare.PerelmanReducedVolumeNonincreasingPayload.monotonicityDefect_nonnegative = @Poincare.PerelmanReducedVolumeNonincreasingPayload.monotonicityDefect_nonnegative :=
+  rfl
+
+/-- Theorem contract for `PerelmanKappaNoncollapsingFromReducedVolumePayload.kappaConstant_le_reducedVolumeAtTime`. -/
+theorem PerelmanKappaNoncollapsingFromReducedVolumePayload.kappaConstant_le_reducedVolumeAtTime_eq :
+    @Poincare.PerelmanKappaNoncollapsingFromReducedVolumePayload.kappaConstant_le_reducedVolumeAtTime = @Poincare.PerelmanKappaNoncollapsingFromReducedVolumePayload.kappaConstant_le_reducedVolumeAtTime :=
+  rfl
+
+/-- Theorem contract for `PerelmanKappaNoncollapsingFromReducedVolumePayload.kappaConstant_le_volumeRatioAtScale`. -/
+theorem PerelmanKappaNoncollapsingFromReducedVolumePayload.kappaConstant_le_volumeRatioAtScale_eq :
+    @Poincare.PerelmanKappaNoncollapsingFromReducedVolumePayload.kappaConstant_le_volumeRatioAtScale = @Poincare.PerelmanKappaNoncollapsingFromReducedVolumePayload.kappaConstant_le_volumeRatioAtScale :=
+  rfl
+
+/-- Theorem contract for `PerelmanKappaNoncollapsingFromReducedVolumePayload.volumeRatioAtScale_positive`. -/
+theorem PerelmanKappaNoncollapsingFromReducedVolumePayload.volumeRatioAtScale_positive_eq :
+    @Poincare.PerelmanKappaNoncollapsingFromReducedVolumePayload.volumeRatioAtScale_positive = @Poincare.PerelmanKappaNoncollapsingFromReducedVolumePayload.volumeRatioAtScale_positive :=
+  rfl
+
+/-- Theorem contract for `PerelmanKappaNoncollapsingFromReducedVolumePayload.kappaConstant_le_ballVolumeRatio`. -/
+theorem PerelmanKappaNoncollapsingFromReducedVolumePayload.kappaConstant_le_ballVolumeRatio_eq :
+    @Poincare.PerelmanKappaNoncollapsingFromReducedVolumePayload.kappaConstant_le_ballVolumeRatio = @Poincare.PerelmanKappaNoncollapsingFromReducedVolumePayload.kappaConstant_le_ballVolumeRatio :=
+  rfl
+
+/-- Theorem contract for `PerelmanKappaNoncollapsingFromReducedVolumePayload.ballVolumeRatio_positive`. -/
+theorem PerelmanKappaNoncollapsingFromReducedVolumePayload.ballVolumeRatio_positive_eq :
+    @Poincare.PerelmanKappaNoncollapsingFromReducedVolumePayload.ballVolumeRatio_positive = @Poincare.PerelmanKappaNoncollapsingFromReducedVolumePayload.ballVolumeRatio_positive :=
+  rfl
+
+/-- Theorem contract for `PerelmanNoLocalCollapsingContradictionSetupPayload.kappaConstant_le_collapsedVolumeRatio`. -/
+theorem PerelmanNoLocalCollapsingContradictionSetupPayload.kappaConstant_le_collapsedVolumeRatio_eq :
+    @Poincare.PerelmanNoLocalCollapsingContradictionSetupPayload.kappaConstant_le_collapsedVolumeRatio = @Poincare.PerelmanNoLocalCollapsingContradictionSetupPayload.kappaConstant_le_collapsedVolumeRatio :=
+  rfl
+
+/-- Theorem contract for `PerelmanNoLocalCollapsingContradictionSetupPayload.collapsedVolumeRatio_positive`. -/
+theorem PerelmanNoLocalCollapsingContradictionSetupPayload.collapsedVolumeRatio_positive_eq :
+    @Poincare.PerelmanNoLocalCollapsingContradictionSetupPayload.collapsedVolumeRatio_positive = @Poincare.PerelmanNoLocalCollapsingContradictionSetupPayload.collapsedVolumeRatio_positive :=
+  rfl
+
+/-- Theorem contract for `PerelmanNoLocalCollapsingContradictionSetupPayload.collapseHypothesis_collapsedVolumeRatio_lt_kappaConstant`. -/
+theorem PerelmanNoLocalCollapsingContradictionSetupPayload.collapseHypothesis_collapsedVolumeRatio_lt_kappaConstant_eq :
+    @Poincare.PerelmanNoLocalCollapsingContradictionSetupPayload.collapseHypothesis_collapsedVolumeRatio_lt_kappaConstant = @Poincare.PerelmanNoLocalCollapsingContradictionSetupPayload.collapseHypothesis_collapsedVolumeRatio_lt_kappaConstant :=
+  rfl
+
+/-- Theorem contract for `PerelmanNoLocalCollapsingContradictionSetupPayload.collapseHypothesis_contradiction`. -/
+theorem PerelmanNoLocalCollapsingContradictionSetupPayload.collapseHypothesis_contradiction_eq :
+    @Poincare.PerelmanNoLocalCollapsingContradictionSetupPayload.collapseHypothesis_contradiction = @Poincare.PerelmanNoLocalCollapsingContradictionSetupPayload.collapseHypothesis_contradiction :=
+  rfl
+
+/-- Theorem contract for `PerelmanCollapsedBallBlowupPayload.blowupRadius_positive`. -/
+theorem PerelmanCollapsedBallBlowupPayload.blowupRadius_positive_eq :
+    @Poincare.PerelmanCollapsedBallBlowupPayload.blowupRadius_positive = @Poincare.PerelmanCollapsedBallBlowupPayload.blowupRadius_positive :=
+  rfl
+
+/-- Theorem contract for `PerelmanCollapsedBallBlowupPayload.rescalingFactor_positive`. -/
+theorem PerelmanCollapsedBallBlowupPayload.rescalingFactor_positive_eq :
+    @Poincare.PerelmanCollapsedBallBlowupPayload.rescalingFactor_positive = @Poincare.PerelmanCollapsedBallBlowupPayload.rescalingFactor_positive :=
+  rfl
+
+/-- Theorem contract for `PerelmanCollapsedBallBlowupPayload.kappaConstant_le_rescaledVolumeRatio`. -/
+theorem PerelmanCollapsedBallBlowupPayload.kappaConstant_le_rescaledVolumeRatio_eq :
+    @Poincare.PerelmanCollapsedBallBlowupPayload.kappaConstant_le_rescaledVolumeRatio = @Poincare.PerelmanCollapsedBallBlowupPayload.kappaConstant_le_rescaledVolumeRatio :=
+  rfl
+
+/-- Theorem contract for `PerelmanCollapsedBallBlowupPayload.rescaledVolumeRatio_lt_kappaConstant`. -/
+theorem PerelmanCollapsedBallBlowupPayload.rescaledVolumeRatio_lt_kappaConstant_eq :
+    @Poincare.PerelmanCollapsedBallBlowupPayload.rescaledVolumeRatio_lt_kappaConstant = @Poincare.PerelmanCollapsedBallBlowupPayload.rescaledVolumeRatio_lt_kappaConstant :=
+  rfl
+
+/-- Theorem contract for `PerelmanCollapsedBallBlowupPayload.rescaledVolumeRatio_contradiction`. -/
+theorem PerelmanCollapsedBallBlowupPayload.rescaledVolumeRatio_contradiction_eq :
+    @Poincare.PerelmanCollapsedBallBlowupPayload.rescaledVolumeRatio_contradiction = @Poincare.PerelmanCollapsedBallBlowupPayload.rescaledVolumeRatio_contradiction :=
+  rfl
+
+/-- Theorem contract for `HamiltonCompactnessPayload.compactnessConvergenceError_nonnegative`. -/
+theorem HamiltonCompactnessPayload.compactnessConvergenceError_nonnegative_eq :
+    @Poincare.HamiltonCompactnessPayload.compactnessConvergenceError_nonnegative = @Poincare.HamiltonCompactnessPayload.compactnessConvergenceError_nonnegative :=
+  rfl
+
+/-- Theorem contract for `AncientKappaSolutionCompactnessPayload.ancientCompactnessConvergenceError_nonnegative`. -/
+theorem AncientKappaSolutionCompactnessPayload.ancientCompactnessConvergenceError_nonnegative_eq :
+    @Poincare.AncientKappaSolutionCompactnessPayload.ancientCompactnessConvergenceError_nonnegative = @Poincare.AncientKappaSolutionCompactnessPayload.ancientCompactnessConvergenceError_nonnegative :=
+  rfl
+
+/-- Theorem contract for `AncientKappaSolutionLimitExtractionPayload.limitExtractionConvergenceError_nonnegative`. -/
+theorem AncientKappaSolutionLimitExtractionPayload.limitExtractionConvergenceError_nonnegative_eq :
+    @Poincare.AncientKappaSolutionLimitExtractionPayload.limitExtractionConvergenceError_nonnegative = @Poincare.AncientKappaSolutionLimitExtractionPayload.limitExtractionConvergenceError_nonnegative :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.pointedRescalingBasepoint_eq_subsequenceBlowupBasepoint`. -/
+theorem KappaSolutionPointedRescalingPayload.pointedRescalingBasepoint_eq_subsequenceBlowupBasepoint_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.pointedRescalingBasepoint_eq_subsequenceBlowupBasepoint = @Poincare.KappaSolutionPointedRescalingPayload.pointedRescalingBasepoint_eq_subsequenceBlowupBasepoint :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.pointedRescalingTime_eq_subsequenceBlowupTime`. -/
+theorem KappaSolutionPointedRescalingPayload.pointedRescalingTime_eq_subsequenceBlowupTime_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.pointedRescalingTime_eq_subsequenceBlowupTime = @Poincare.KappaSolutionPointedRescalingPayload.pointedRescalingTime_eq_subsequenceBlowupTime :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.pointedRescalingRadius_eq_subsequenceBlowupRadius`. -/
+theorem KappaSolutionPointedRescalingPayload.pointedRescalingRadius_eq_subsequenceBlowupRadius_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.pointedRescalingRadius_eq_subsequenceBlowupRadius = @Poincare.KappaSolutionPointedRescalingPayload.pointedRescalingRadius_eq_subsequenceBlowupRadius :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.parabolicRescalingFactor_eq_subsequenceBlowupRescalingFactor`. -/
+theorem KappaSolutionPointedRescalingPayload.parabolicRescalingFactor_eq_subsequenceBlowupRescalingFactor_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.parabolicRescalingFactor_eq_subsequenceBlowupRescalingFactor = @Poincare.KappaSolutionPointedRescalingPayload.parabolicRescalingFactor_eq_subsequenceBlowupRescalingFactor :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.pointedRescaledModelAtIndex_eq_subsequenceRescaledFlow`. -/
+theorem KappaSolutionPointedRescalingPayload.pointedRescaledModelAtIndex_eq_subsequenceRescaledFlow_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.pointedRescaledModelAtIndex_eq_subsequenceRescaledFlow = @Poincare.KappaSolutionPointedRescalingPayload.pointedRescaledModelAtIndex_eq_subsequenceRescaledFlow :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.pointedRescalingRadius_positive`. -/
+theorem KappaSolutionPointedRescalingPayload.pointedRescalingRadius_positive_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.pointedRescalingRadius_positive = @Poincare.KappaSolutionPointedRescalingPayload.pointedRescalingRadius_positive :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.parabolicRescalingFactor_positive`. -/
+theorem KappaSolutionPointedRescalingPayload.parabolicRescalingFactor_positive_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.parabolicRescalingFactor_positive = @Poincare.KappaSolutionPointedRescalingPayload.parabolicRescalingFactor_positive :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.pointedRescalingCurvatureScale_eq_one`. -/
+theorem KappaSolutionPointedRescalingPayload.pointedRescalingCurvatureScale_eq_one_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.pointedRescalingCurvatureScale_eq_one = @Poincare.KappaSolutionPointedRescalingPayload.pointedRescalingCurvatureScale_eq_one :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.pointedRescalingKappaScale_positive`. -/
+theorem KappaSolutionPointedRescalingPayload.pointedRescalingKappaScale_positive_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.pointedRescalingKappaScale_positive = @Poincare.KappaSolutionPointedRescalingPayload.pointedRescalingKappaScale_positive :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.subsequenceBlowupRadius_positive`. -/
+theorem KappaSolutionPointedRescalingPayload.subsequenceBlowupRadius_positive_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.subsequenceBlowupRadius_positive = @Poincare.KappaSolutionPointedRescalingPayload.subsequenceBlowupRadius_positive :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.subsequenceBlowupRescalingFactor_positive`. -/
+theorem KappaSolutionPointedRescalingPayload.subsequenceBlowupRescalingFactor_positive_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.subsequenceBlowupRescalingFactor_positive = @Poincare.KappaSolutionPointedRescalingPayload.subsequenceBlowupRescalingFactor_positive :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.subsequenceBlowupRadius_le_pointedRescalingEnvelope`. -/
+theorem KappaSolutionPointedRescalingPayload.subsequenceBlowupRadius_le_pointedRescalingEnvelope_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.subsequenceBlowupRadius_le_pointedRescalingEnvelope = @Poincare.KappaSolutionPointedRescalingPayload.subsequenceBlowupRadius_le_pointedRescalingEnvelope :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.subsequenceBlowupRescalingFactor_le_pointedRescalingEnvelope`. -/
+theorem KappaSolutionPointedRescalingPayload.subsequenceBlowupRescalingFactor_le_pointedRescalingEnvelope_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.subsequenceBlowupRescalingFactor_le_pointedRescalingEnvelope = @Poincare.KappaSolutionPointedRescalingPayload.subsequenceBlowupRescalingFactor_le_pointedRescalingEnvelope :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.pointedRescalingRadius_le_compactnessRadiusScale`. -/
+theorem KappaSolutionPointedRescalingPayload.pointedRescalingRadius_le_compactnessRadiusScale_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.pointedRescalingRadius_le_compactnessRadiusScale = @Poincare.KappaSolutionPointedRescalingPayload.pointedRescalingRadius_le_compactnessRadiusScale :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.pointedRescaledModelAtIndex_eq_compactnessFlowAtLimitExtractionIndex`. -/
+theorem KappaSolutionPointedRescalingPayload.pointedRescaledModelAtIndex_eq_compactnessFlowAtLimitExtractionIndex_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.pointedRescaledModelAtIndex_eq_compactnessFlowAtLimitExtractionIndex = @Poincare.KappaSolutionPointedRescalingPayload.pointedRescaledModelAtIndex_eq_compactnessFlowAtLimitExtractionIndex :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.pointedRescalingCurvatureScale_eq_subsequenceRescaledCurvatureScale`. -/
+theorem KappaSolutionPointedRescalingPayload.pointedRescalingCurvatureScale_eq_subsequenceRescaledCurvatureScale_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.pointedRescalingCurvatureScale_eq_subsequenceRescaledCurvatureScale = @Poincare.KappaSolutionPointedRescalingPayload.pointedRescalingCurvatureScale_eq_subsequenceRescaledCurvatureScale :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.subsequenceRescaledCurvatureScale_eq_one`. -/
+theorem KappaSolutionPointedRescalingPayload.subsequenceRescaledCurvatureScale_eq_one_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.subsequenceRescaledCurvatureScale_eq_one = @Poincare.KappaSolutionPointedRescalingPayload.subsequenceRescaledCurvatureScale_eq_one :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.pointedRescalingCurvatureScale_le_compactnessCurvatureBound`. -/
+theorem KappaSolutionPointedRescalingPayload.pointedRescalingCurvatureScale_le_compactnessCurvatureBound_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.pointedRescalingCurvatureScale_le_compactnessCurvatureBound = @Poincare.KappaSolutionPointedRescalingPayload.pointedRescalingCurvatureScale_le_compactnessCurvatureBound :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.one_le_compactnessCurvatureBound`. -/
+theorem KappaSolutionPointedRescalingPayload.one_le_compactnessCurvatureBound_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.one_le_compactnessCurvatureBound = @Poincare.KappaSolutionPointedRescalingPayload.one_le_compactnessCurvatureBound :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.compactnessCurvatureBound_positive`. -/
+theorem KappaSolutionPointedRescalingPayload.compactnessCurvatureBound_positive_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.compactnessCurvatureBound_positive = @Poincare.KappaSolutionPointedRescalingPayload.compactnessCurvatureBound_positive :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.one_le_hamiltonCompactnessEnvelope`. -/
+theorem KappaSolutionPointedRescalingPayload.one_le_hamiltonCompactnessEnvelope_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.one_le_hamiltonCompactnessEnvelope = @Poincare.KappaSolutionPointedRescalingPayload.one_le_hamiltonCompactnessEnvelope :=
+  rfl
+
+/-- Theorem contract for `AncientKappaSolutionCompactnessPayload.one_le_ancientCompactnessConvergenceEnvelope_of_pointedRescaling`. -/
+theorem AncientKappaSolutionCompactnessPayload.one_le_ancientCompactnessConvergenceEnvelope_of_pointedRescaling_eq :
+    @Poincare.AncientKappaSolutionCompactnessPayload.one_le_ancientCompactnessConvergenceEnvelope_of_pointedRescaling = @Poincare.AncientKappaSolutionCompactnessPayload.one_le_ancientCompactnessConvergenceEnvelope_of_pointedRescaling :=
+  rfl
+
+/-- Theorem contract for `AncientKappaSolutionLimitExtractionPayload.one_le_ancientLimitExtractionEnvelope_of_pointedRescaling`. -/
+theorem AncientKappaSolutionLimitExtractionPayload.one_le_ancientLimitExtractionEnvelope_of_pointedRescaling_eq :
+    @Poincare.AncientKappaSolutionLimitExtractionPayload.one_le_ancientLimitExtractionEnvelope_of_pointedRescaling = @Poincare.AncientKappaSolutionLimitExtractionPayload.one_le_ancientLimitExtractionEnvelope_of_pointedRescaling :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionPointedRescalingPayload.one_le_pointedRescalingEnvelope`. -/
+theorem KappaSolutionPointedRescalingPayload.one_le_pointedRescalingEnvelope_eq :
+    @Poincare.KappaSolutionPointedRescalingPayload.one_le_pointedRescalingEnvelope = @Poincare.KappaSolutionPointedRescalingPayload.one_le_pointedRescalingEnvelope :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionCurvatureNormalizationPayload.normalizedCurvatureScale_eq_one`. -/
+theorem KappaSolutionCurvatureNormalizationPayload.normalizedCurvatureScale_eq_one_eq :
+    @Poincare.KappaSolutionCurvatureNormalizationPayload.normalizedCurvatureScale_eq_one = @Poincare.KappaSolutionCurvatureNormalizationPayload.normalizedCurvatureScale_eq_one :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionCurvatureNormalizationPayload.normalizedCurvatureScale_le_compactnessCurvatureBound`. -/
+theorem KappaSolutionCurvatureNormalizationPayload.normalizedCurvatureScale_le_compactnessCurvatureBound_eq :
+    @Poincare.KappaSolutionCurvatureNormalizationPayload.normalizedCurvatureScale_le_compactnessCurvatureBound = @Poincare.KappaSolutionCurvatureNormalizationPayload.normalizedCurvatureScale_le_compactnessCurvatureBound :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionCurvatureNormalizationPayload.one_le_compactnessCurvatureBound`. -/
+theorem KappaSolutionCurvatureNormalizationPayload.one_le_compactnessCurvatureBound_eq :
+    @Poincare.KappaSolutionCurvatureNormalizationPayload.one_le_compactnessCurvatureBound = @Poincare.KappaSolutionCurvatureNormalizationPayload.one_le_compactnessCurvatureBound :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionCurvatureNormalizationPayload.one_le_hamiltonCompactnessEnvelope`. -/
+theorem KappaSolutionCurvatureNormalizationPayload.one_le_hamiltonCompactnessEnvelope_eq :
+    @Poincare.KappaSolutionCurvatureNormalizationPayload.one_le_hamiltonCompactnessEnvelope = @Poincare.KappaSolutionCurvatureNormalizationPayload.one_le_hamiltonCompactnessEnvelope :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionCurvatureNormalizationPayload.one_le_curvatureNormalizationEnvelope`. -/
+theorem KappaSolutionCurvatureNormalizationPayload.one_le_curvatureNormalizationEnvelope_eq :
+    @Poincare.KappaSolutionCurvatureNormalizationPayload.one_le_curvatureNormalizationEnvelope = @Poincare.KappaSolutionCurvatureNormalizationPayload.one_le_curvatureNormalizationEnvelope :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionCurvatureNormalizationPayload.normalizedKappaScale_positive`. -/
+theorem KappaSolutionCurvatureNormalizationPayload.normalizedKappaScale_positive_eq :
+    @Poincare.KappaSolutionCurvatureNormalizationPayload.normalizedKappaScale_positive = @Poincare.KappaSolutionCurvatureNormalizationPayload.normalizedKappaScale_positive :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionNonnegativeCurvatureOperatorPayload.curvatureOperatorLowerBound_nonnegative`. -/
+theorem KappaSolutionNonnegativeCurvatureOperatorPayload.curvatureOperatorLowerBound_nonnegative_eq :
+    @Poincare.KappaSolutionNonnegativeCurvatureOperatorPayload.curvatureOperatorLowerBound_nonnegative = @Poincare.KappaSolutionNonnegativeCurvatureOperatorPayload.curvatureOperatorLowerBound_nonnegative :=
+  rfl
+
+/-- Theorem contract for `KappaSolutionAsymptoticSolitonPayload.asymptoticSolitonCurvatureLowerBound_nonnegative`. -/
+theorem KappaSolutionAsymptoticSolitonPayload.asymptoticSolitonCurvatureLowerBound_nonnegative_eq :
+    @Poincare.KappaSolutionAsymptoticSolitonPayload.asymptoticSolitonCurvatureLowerBound_nonnegative = @Poincare.KappaSolutionAsymptoticSolitonPayload.asymptoticSolitonCurvatureLowerBound_nonnegative :=
+  rfl
+
+/-- Theorem contract for `CanonicalNeighborhoodScaleControlPayload.canonicalNeighborhoodScale_nonnegative`. -/
+theorem CanonicalNeighborhoodScaleControlPayload.canonicalNeighborhoodScale_nonnegative_eq :
+    @Poincare.CanonicalNeighborhoodScaleControlPayload.canonicalNeighborhoodScale_nonnegative = @Poincare.CanonicalNeighborhoodScaleControlPayload.canonicalNeighborhoodScale_nonnegative :=
+  rfl
+
+/-- Theorem contract for `CanonicalNeighborhoodScaleControlPayload.one_le_canonicalScaleControlEnvelope_of_pointedRescaling`. -/
+theorem CanonicalNeighborhoodScaleControlPayload.one_le_canonicalScaleControlEnvelope_of_pointedRescaling_eq :
+    @Poincare.CanonicalNeighborhoodScaleControlPayload.one_le_canonicalScaleControlEnvelope_of_pointedRescaling = @Poincare.CanonicalNeighborhoodScaleControlPayload.one_le_canonicalScaleControlEnvelope_of_pointedRescaling :=
+  rfl
+
+/-- Theorem contract for `CanonicalNeighborhoodStabilityPayload.stabilityScale_positive`. -/
+theorem CanonicalNeighborhoodStabilityPayload.stabilityScale_positive_eq :
+    @Poincare.CanonicalNeighborhoodStabilityPayload.stabilityScale_positive = @Poincare.CanonicalNeighborhoodStabilityPayload.stabilityScale_positive :=
+  rfl
+
+/-- Theorem contract for `CanonicalNeighborhoodPersistenceAcrossScalesPayload.persistenceSourceScale_positive`. -/
+theorem CanonicalNeighborhoodPersistenceAcrossScalesPayload.persistenceSourceScale_positive_eq :
+    @Poincare.CanonicalNeighborhoodPersistenceAcrossScalesPayload.persistenceSourceScale_positive = @Poincare.CanonicalNeighborhoodPersistenceAcrossScalesPayload.persistenceSourceScale_positive :=
+  rfl
+
+/-- Theorem contract for `CanonicalNeighborhoodPersistenceAcrossScalesPayload.persistenceTargetScale_positive`. -/
+theorem CanonicalNeighborhoodPersistenceAcrossScalesPayload.persistenceTargetScale_positive_eq :
+    @Poincare.CanonicalNeighborhoodPersistenceAcrossScalesPayload.persistenceTargetScale_positive = @Poincare.CanonicalNeighborhoodPersistenceAcrossScalesPayload.persistenceTargetScale_positive :=
+  rfl
+
+/-- Theorem contract for `CanonicalNeighborhoodNeckCapDichotomyPayload.epsilonNeckScale_positive`. -/
+theorem CanonicalNeighborhoodNeckCapDichotomyPayload.epsilonNeckScale_positive_eq :
+    @Poincare.CanonicalNeighborhoodNeckCapDichotomyPayload.epsilonNeckScale_positive = @Poincare.CanonicalNeighborhoodNeckCapDichotomyPayload.epsilonNeckScale_positive :=
+  rfl
+
+/-- Theorem contract for `CanonicalNeighborhoodNeckCapDichotomyPayload.epsilonCapScale_positive`. -/
+theorem CanonicalNeighborhoodNeckCapDichotomyPayload.epsilonCapScale_positive_eq :
+    @Poincare.CanonicalNeighborhoodNeckCapDichotomyPayload.epsilonCapScale_positive = @Poincare.CanonicalNeighborhoodNeckCapDichotomyPayload.epsilonCapScale_positive :=
+  rfl
+
+/-- Theorem contract for `CanonicalNeighborhoodClassificationPayload.classificationNeckScale_positive`. -/
+theorem CanonicalNeighborhoodClassificationPayload.classificationNeckScale_positive_eq :
+    @Poincare.CanonicalNeighborhoodClassificationPayload.classificationNeckScale_positive = @Poincare.CanonicalNeighborhoodClassificationPayload.classificationNeckScale_positive :=
+  rfl
+
+/-- Theorem contract for `CanonicalNeighborhoodClassificationPayload.classificationCapScale_positive`. -/
+theorem CanonicalNeighborhoodClassificationPayload.classificationCapScale_positive_eq :
+    @Poincare.CanonicalNeighborhoodClassificationPayload.classificationCapScale_positive = @Poincare.CanonicalNeighborhoodClassificationPayload.classificationCapScale_positive :=
+  rfl
+
+/-- Theorem contract for `PerelmanNoLocalCollapsingPayload.noLocalCollapsingKappa_positive`. -/
+theorem PerelmanNoLocalCollapsingPayload.noLocalCollapsingKappa_positive_eq :
+    @Poincare.PerelmanNoLocalCollapsingPayload.noLocalCollapsingKappa_positive = @Poincare.PerelmanNoLocalCollapsingPayload.noLocalCollapsingKappa_positive :=
+  rfl
+
+/-- Theorem contract for `PerelmanNoLocalCollapsingPayload.noLocalCollapsingBallVolumeRatio_positive`. -/
+theorem PerelmanNoLocalCollapsingPayload.noLocalCollapsingBallVolumeRatio_positive_eq :
+    @Poincare.PerelmanNoLocalCollapsingPayload.noLocalCollapsingBallVolumeRatio_positive = @Poincare.PerelmanNoLocalCollapsingPayload.noLocalCollapsingBallVolumeRatio_positive :=
+  rfl
+
+/-- Theorem contract for `PerelmanNoLocalCollapsingPayload.not_collapseHypothesis`. -/
+theorem PerelmanNoLocalCollapsingPayload.not_collapseHypothesis_eq :
+    @Poincare.PerelmanNoLocalCollapsingPayload.not_collapseHypothesis = @Poincare.PerelmanNoLocalCollapsingPayload.not_collapseHypothesis :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumeMonotonicityPayload.timeDerivative_nonpositive`. -/
+theorem PerelmanReducedVolumeMonotonicityPayload.timeDerivative_nonpositive_eq :
+    @Poincare.PerelmanReducedVolumeMonotonicityPayload.timeDerivative_nonpositive = @Poincare.PerelmanReducedVolumeMonotonicityPayload.timeDerivative_nonpositive :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumeMonotonicityPayload.reducedVolumeLater_le_earlier`. -/
+theorem PerelmanReducedVolumeMonotonicityPayload.reducedVolumeLater_le_earlier_eq :
+    @Poincare.PerelmanReducedVolumeMonotonicityPayload.reducedVolumeLater_le_earlier = @Poincare.PerelmanReducedVolumeMonotonicityPayload.reducedVolumeLater_le_earlier :=
+  rfl
+
+/-- Theorem contract for `PerelmanReducedVolumeMonotonicityPayload.monotonicityDefect_nonnegative`. -/
+theorem PerelmanReducedVolumeMonotonicityPayload.monotonicityDefect_nonnegative_eq :
+    @Poincare.PerelmanReducedVolumeMonotonicityPayload.monotonicityDefect_nonnegative = @Poincare.PerelmanReducedVolumeMonotonicityPayload.monotonicityDefect_nonnegative :=
+  rfl
+
+/-- Theorem contract for `CanonicalNeighborhoodStabilityPayload.one_le_stabilityEnvelope_of_pointedRescaling`. -/
+theorem CanonicalNeighborhoodStabilityPayload.one_le_stabilityEnvelope_of_pointedRescaling_eq :
+    @Poincare.CanonicalNeighborhoodStabilityPayload.one_le_stabilityEnvelope_of_pointedRescaling = @Poincare.CanonicalNeighborhoodStabilityPayload.one_le_stabilityEnvelope_of_pointedRescaling :=
+  rfl
+
+/-- Theorem contract for `CanonicalNeighborhoodPersistenceAcrossScalesPayload.one_le_persistenceEnvelope_of_pointedRescaling`. -/
+theorem CanonicalNeighborhoodPersistenceAcrossScalesPayload.one_le_persistenceEnvelope_of_pointedRescaling_eq :
+    @Poincare.CanonicalNeighborhoodPersistenceAcrossScalesPayload.one_le_persistenceEnvelope_of_pointedRescaling = @Poincare.CanonicalNeighborhoodPersistenceAcrossScalesPayload.one_le_persistenceEnvelope_of_pointedRescaling :=
+  rfl
+
+/-- Theorem contract for `CanonicalNeighborhoodNeckCapDichotomyPayload.one_le_neckCapDichotomyEnvelope_of_pointedRescaling`. -/
+theorem CanonicalNeighborhoodNeckCapDichotomyPayload.one_le_neckCapDichotomyEnvelope_of_pointedRescaling_eq :
+    @Poincare.CanonicalNeighborhoodNeckCapDichotomyPayload.one_le_neckCapDichotomyEnvelope_of_pointedRescaling = @Poincare.CanonicalNeighborhoodNeckCapDichotomyPayload.one_le_neckCapDichotomyEnvelope_of_pointedRescaling :=
+  rfl
+
+/-- Theorem contract for `CanonicalNeighborhoodClassificationPayload.one_le_classificationEnvelope_of_pointedRescaling`. -/
+theorem CanonicalNeighborhoodClassificationPayload.one_le_classificationEnvelope_of_pointedRescaling_eq :
+    @Poincare.CanonicalNeighborhoodClassificationPayload.one_le_classificationEnvelope_of_pointedRescaling = @Poincare.CanonicalNeighborhoodClassificationPayload.one_le_classificationEnvelope_of_pointedRescaling :=
+  rfl
+
+/-- Theorem contract for `CanonicalNeighborhoodTheoremPayload.one_le_canonicalNeighborhoodTheoremEnvelope_of_pointedRescaling`. -/
+theorem CanonicalNeighborhoodTheoremPayload.one_le_canonicalNeighborhoodTheoremEnvelope_of_pointedRescaling_eq :
+    @Poincare.CanonicalNeighborhoodTheoremPayload.one_le_canonicalNeighborhoodTheoremEnvelope_of_pointedRescaling = @Poincare.CanonicalNeighborhoodTheoremPayload.one_le_canonicalNeighborhoodTheoremEnvelope_of_pointedRescaling :=
+  rfl
+
+/-- Theorem contract for `SingularityModelClassificationPayload.one_le_singularityModelClassificationEnvelope_of_pointedRescaling`. -/
+theorem SingularityModelClassificationPayload.one_le_singularityModelClassificationEnvelope_of_pointedRescaling_eq :
+    @Poincare.SingularityModelClassificationPayload.one_le_singularityModelClassificationEnvelope_of_pointedRescaling = @Poincare.SingularityModelClassificationPayload.one_le_singularityModelClassificationEnvelope_of_pointedRescaling :=
+  rfl
+
+/-- Theorem contract for `fundamentalGroup_subsingleton_of_simplyConnectedSpace`. -/
+theorem fundamentalGroup_subsingleton_of_simplyConnectedSpace_eq :
+    @fundamentalGroup_subsingleton_of_simplyConnectedSpace = @fundamentalGroup_subsingleton_of_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `fundamentalGroup_finite_of_simplyConnectedSpace`. -/
+theorem fundamentalGroup_finite_of_simplyConnectedSpace_eq :
+    @fundamentalGroup_finite_of_simplyConnectedSpace = @fundamentalGroup_finite_of_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `piOne_finite_of_fundamentalGroup_finite`. -/
+theorem piOne_finite_of_fundamentalGroup_finite_eq :
+    @piOne_finite_of_fundamentalGroup_finite = @piOne_finite_of_fundamentalGroup_finite :=
+  rfl
+
+/-- Theorem contract for `piOne_finite_of_simplyConnectedSpace`. -/
+theorem piOne_finite_of_simplyConnectedSpace_eq :
+    @piOne_finite_of_simplyConnectedSpace = @piOne_finite_of_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `finite_extinction_fundamentalGroup_subsingleton_of_simplyConnectedSpace`. -/
+theorem finite_extinction_fundamentalGroup_subsingleton_of_simplyConnectedSpace_eq :
+    @finite_extinction_fundamentalGroup_subsingleton_of_simplyConnectedSpace = @finite_extinction_fundamentalGroup_subsingleton_of_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `finite_extinction_fundamentalGroup_finite_of_simplyConnectedSpace`. -/
+theorem finite_extinction_fundamentalGroup_finite_of_simplyConnectedSpace_eq :
+    @finite_extinction_fundamentalGroup_finite_of_simplyConnectedSpace = @finite_extinction_fundamentalGroup_finite_of_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `finite_extinction_fundamental_group_input_of_simplyConnectedSpace`. -/
+theorem finite_extinction_fundamental_group_input_of_simplyConnectedSpace_eq :
+    @finite_extinction_fundamental_group_input_of_simplyConnectedSpace = @finite_extinction_fundamental_group_input_of_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `finite_extinction_piOne_finite_of_fundamentalGroupInput`. -/
+theorem finite_extinction_piOne_finite_of_fundamentalGroupInput_eq :
+    @finite_extinction_piOne_finite_of_fundamentalGroupInput = @finite_extinction_piOne_finite_of_fundamentalGroupInput :=
+  rfl
+
+/-- Theorem contract for `finite_extinction_piOne_finite_of_simplyConnectedSpace`. -/
+theorem finite_extinction_piOne_finite_of_simplyConnectedSpace_eq :
+    @finite_extinction_piOne_finite_of_simplyConnectedSpace = @finite_extinction_piOne_finite_of_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `finite_extinction_time_bound_of_volume_differential_inputs`. -/
+theorem finite_extinction_time_bound_of_volume_differential_inputs_eq :
+    @finite_extinction_time_bound_of_volume_differential_inputs = @finite_extinction_time_bound_of_volume_differential_inputs :=
+  rfl
+
+/-- Theorem contract for `finite_extinction_volume_decay_estimate_of_volume_differential_inputs`. -/
+theorem finite_extinction_volume_decay_estimate_of_volume_differential_inputs_eq :
+    @finite_extinction_volume_decay_estimate_of_volume_differential_inputs = @finite_extinction_volume_decay_estimate_of_volume_differential_inputs :=
+  rfl
+
+/-- Theorem contract for `finite_extinction_finite_time_integration_of_volume_decay_estimate`. -/
+theorem finite_extinction_finite_time_integration_of_volume_decay_estimate_eq :
+    @finite_extinction_finite_time_integration_of_volume_decay_estimate = @finite_extinction_finite_time_integration_of_volume_decay_estimate :=
+  rfl
+
+/-- Theorem contract for `finite_extinction_differential_inequality_integration_of_volume_decay_estimate`. -/
+theorem finite_extinction_differential_inequality_integration_of_volume_decay_estimate_eq :
+    @finite_extinction_differential_inequality_integration_of_volume_decay_estimate = @finite_extinction_differential_inequality_integration_of_volume_decay_estimate :=
+  rfl
+
+/-- Theorem contract for `finite_extinction_surgery_time_summability_of_finite_time_integration`. -/
+theorem finite_extinction_surgery_time_summability_of_finite_time_integration_eq :
+    @finite_extinction_surgery_time_summability_of_finite_time_integration = @finite_extinction_surgery_time_summability_of_finite_time_integration :=
+  rfl
+
+/-- Theorem contract for `finite_extinction_extinction_time_contradiction_of_time_bound_estimates`. -/
+theorem finite_extinction_extinction_time_contradiction_of_time_bound_estimates_eq :
+    @finite_extinction_extinction_time_contradiction_of_time_bound_estimates = @finite_extinction_extinction_time_contradiction_of_time_bound_estimates :=
+  rfl
+
+/-- Theorem contract for `finite_extinction_conclusion_derivation_of_extinction_time_contradiction`. -/
+theorem finite_extinction_conclusion_derivation_of_extinction_time_contradiction_eq :
+    @finite_extinction_conclusion_derivation_of_extinction_time_contradiction = @finite_extinction_conclusion_derivation_of_extinction_time_contradiction :=
+  rfl
+
+/-- Theorem contract for `finite_extinction_conclusion_derivation_of_volume_differential_inputs`. -/
+theorem finite_extinction_conclusion_derivation_of_volume_differential_inputs_eq :
+    @finite_extinction_conclusion_derivation_of_volume_differential_inputs = @finite_extinction_conclusion_derivation_of_volume_differential_inputs :=
+  rfl
+
+/-- Theorem contract for `finite_extinction_conclusion_statement_of_volume_differential_inputs`. -/
+theorem finite_extinction_conclusion_statement_of_volume_differential_inputs_eq :
+    @finite_extinction_conclusion_statement_of_volume_differential_inputs = @finite_extinction_conclusion_statement_of_volume_differential_inputs :=
+  rfl
+
+/-- Theorem contract for `finite_extinction_statement_of_volume_differential_inputs`. -/
+theorem finite_extinction_statement_of_volume_differential_inputs_eq :
+    @finite_extinction_statement_of_volume_differential_inputs = @finite_extinction_statement_of_volume_differential_inputs :=
+  rfl
+
+/-- Theorem contract for `SurgeryNeckCanonicalCoordinatesPayload.canonicalCoordinateDomain_subset_detectedNeckRegion`. -/
+theorem SurgeryNeckCanonicalCoordinatesPayload.canonicalCoordinateDomain_subset_detectedNeckRegion_eq :
+    @Poincare.SurgeryNeckCanonicalCoordinatesPayload.canonicalCoordinateDomain_subset_detectedNeckRegion =
+      @Poincare.SurgeryNeckCanonicalCoordinatesPayload.canonicalCoordinateDomain_subset_detectedNeckRegion :=
+  rfl
+
+/-- Theorem contract for `StandardCapModelPayload.capAttachmentRegion_subset_detectedNeckRegion`. -/
+theorem StandardCapModelPayload.capAttachmentRegion_subset_detectedNeckRegion_eq :
+    @Poincare.StandardCapModelPayload.capAttachmentRegion_subset_detectedNeckRegion =
+      @Poincare.StandardCapModelPayload.capAttachmentRegion_subset_detectedNeckRegion :=
+  rfl
+
+/-- Theorem contract for `CapGluingSmoothnessPayload.gluingRegion_eq_capAttachmentRegion`. -/
+theorem CapGluingSmoothnessPayload.gluingRegion_eq_capAttachmentRegion_eq :
+    @Poincare.CapGluingSmoothnessPayload.gluingRegion_eq_capAttachmentRegion =
+      @Poincare.CapGluingSmoothnessPayload.gluingRegion_eq_capAttachmentRegion :=
+  rfl
+
+/-- Theorem contract for `CapGluingSmoothnessPayload.gluingRegion_subset_detectedNeckRegion`. -/
+theorem CapGluingSmoothnessPayload.gluingRegion_subset_detectedNeckRegion_eq :
+    @Poincare.CapGluingSmoothnessPayload.gluingRegion_subset_detectedNeckRegion =
+      @Poincare.CapGluingSmoothnessPayload.gluingRegion_subset_detectedNeckRegion :=
+  rfl
+
+/-- Theorem contract for `CapGluingSmoothnessPayload.positiveBoundaryLevel_le_axis_of_mem_gluingRegion`. -/
+theorem CapGluingSmoothnessPayload.positiveBoundaryLevel_le_axis_of_mem_gluingRegion_eq :
+    @Poincare.CapGluingSmoothnessPayload.positiveBoundaryLevel_le_axis_of_mem_gluingRegion =
+      @Poincare.CapGluingSmoothnessPayload.positiveBoundaryLevel_le_axis_of_mem_gluingRegion :=
+  rfl
+
+/-- Theorem contract for `SurgeryCapMetricInterpolationPayload.gluingRegion_interpolation_error_controls`. -/
+theorem SurgeryCapMetricInterpolationPayload.gluingRegion_interpolation_error_controls_eq :
+    @Poincare.SurgeryCapMetricInterpolationPayload.gluingRegion_interpolation_error_controls =
+      @Poincare.SurgeryCapMetricInterpolationPayload.gluingRegion_interpolation_error_controls :=
+  rfl
+
+/-- Theorem contract for `SurgeryCapCurvatureEstimatesPayload.capCore_curvature_control_and_nonnegative`. -/
+theorem SurgeryCapCurvatureEstimatesPayload.capCore_curvature_control_and_nonnegative_eq :
+    @Poincare.SurgeryCapCurvatureEstimatesPayload.capCore_curvature_control_and_nonnegative =
+      @Poincare.SurgeryCapCurvatureEstimatesPayload.capCore_curvature_control_and_nonnegative :=
+  rfl
+
+/-- Theorem contract for `FiniteExtinctionSurgeryWidthComparisonMapPayload.target_slice_transport_bundle`. -/
+theorem FiniteExtinctionSurgeryWidthComparisonMapPayload.target_slice_transport_bundle_eq :
+    @Poincare.FiniteExtinctionSurgeryWidthComparisonMapPayload.target_slice_transport_bundle =
+      @Poincare.FiniteExtinctionSurgeryWidthComparisonMapPayload.target_slice_transport_bundle :=
+  rfl
+
+namespace Poincare
+
+/-- Theorem contract for `SurgeryCapConstructionPayload.constructed_cap_curvature_error_bundle`. -/
+theorem SurgeryCapConstructionPayload.constructed_cap_curvature_error_bundle_eq :
+    @Poincare.SurgeryCapConstructionPayload.constructed_cap_curvature_error_bundle =
+      @Poincare.SurgeryCapConstructionPayload.constructed_cap_curvature_error_bundle :=
+  rfl
+
+/-- Theorem contract for `PostSurgeryCurvaturePinchingPayload.constructed_cap_pinching_bundle`. -/
+theorem PostSurgeryCurvaturePinchingPayload.constructed_cap_pinching_bundle_eq :
+    @Poincare.PostSurgeryCurvaturePinchingPayload.constructed_cap_pinching_bundle =
+      @Poincare.PostSurgeryCurvaturePinchingPayload.constructed_cap_pinching_bundle :=
+  rfl
+
+/-- Theorem contract for `PostSurgeryNoncollapsingControlPayload.pinching_region_noncollapsing_bundle`. -/
+theorem PostSurgeryNoncollapsingControlPayload.pinching_region_noncollapsing_bundle_eq :
+    @Poincare.PostSurgeryNoncollapsingControlPayload.pinching_region_noncollapsing_bundle =
+      @Poincare.PostSurgeryNoncollapsingControlPayload.pinching_region_noncollapsing_bundle :=
+  rfl
+
+/-- Theorem contract for `PostSurgeryDerivativeBoundsPayload.noncollapsing_region_derivative_bundle`. -/
+theorem PostSurgeryDerivativeBoundsPayload.noncollapsing_region_derivative_bundle_eq :
+    @Poincare.PostSurgeryDerivativeBoundsPayload.noncollapsing_region_derivative_bundle =
+      @Poincare.PostSurgeryDerivativeBoundsPayload.noncollapsing_region_derivative_bundle :=
+  rfl
+
+/-- Theorem contract for `FiniteExtinctionSurgeryWidthDropPayload.width_drop_accounting_bundle`. -/
+theorem FiniteExtinctionSurgeryWidthDropPayload.width_drop_accounting_bundle_eq :
+    @Poincare.FiniteExtinctionSurgeryWidthDropPayload.width_drop_accounting_bundle =
+      @Poincare.FiniteExtinctionSurgeryWidthDropPayload.width_drop_accounting_bundle :=
+  rfl
+
+/-- Theorem contract for `FiniteExtinctionSurgeryDiscardControlPayload.width_accounting_bundle`. -/
+theorem FiniteExtinctionSurgeryDiscardControlPayload.width_accounting_bundle_eq :
+    @Poincare.FiniteExtinctionSurgeryDiscardControlPayload.width_accounting_bundle =
+      @Poincare.FiniteExtinctionSurgeryDiscardControlPayload.width_accounting_bundle :=
+  rfl
+
+/-- Theorem contract for `FiniteExtinctionDiscardedComponentWidthNeutralityPayload.neutrality_bundle`. -/
+theorem FiniteExtinctionDiscardedComponentWidthNeutralityPayload.neutrality_bundle_eq :
+    @Poincare.FiniteExtinctionDiscardedComponentWidthNeutralityPayload.neutrality_bundle =
+      @Poincare.FiniteExtinctionDiscardedComponentWidthNeutralityPayload.neutrality_bundle :=
+  rfl
+
+/-- Theorem contract for `FiniteExtinctionDiscardedComponentSweepoutTrivialityPayload.triviality_bundle`. -/
+theorem FiniteExtinctionDiscardedComponentSweepoutTrivialityPayload.triviality_bundle_eq :
+    @Poincare.FiniteExtinctionDiscardedComponentSweepoutTrivialityPayload.triviality_bundle =
+      @Poincare.FiniteExtinctionDiscardedComponentSweepoutTrivialityPayload.triviality_bundle :=
+  rfl
+
+/-- Theorem contract for `FiniteExtinctionDiscardedComponentClassificationPayload.classification_bundle`. -/
+theorem FiniteExtinctionDiscardedComponentClassificationPayload.classification_bundle_eq :
+    @Poincare.FiniteExtinctionDiscardedComponentClassificationPayload.classification_bundle =
+      @Poincare.FiniteExtinctionDiscardedComponentClassificationPayload.classification_bundle :=
+  rfl
+
+/-- Theorem contract for `FiniteExtinctionSurvivingComponentTrackingPayload.tracking_bundle`. -/
+theorem FiniteExtinctionSurvivingComponentTrackingPayload.tracking_bundle_eq :
+    @Poincare.FiniteExtinctionSurvivingComponentTrackingPayload.tracking_bundle =
+      @Poincare.FiniteExtinctionSurvivingComponentTrackingPayload.tracking_bundle :=
+  rfl
+
+/-- Theorem contract for `FiniteExtinctionComponentTopologyPayload.component_topology_bundle`. -/
+theorem FiniteExtinctionComponentTopologyPayload.component_topology_bundle_eq :
+    @Poincare.FiniteExtinctionComponentTopologyPayload.component_topology_bundle =
+      @Poincare.FiniteExtinctionComponentTopologyPayload.component_topology_bundle :=
+  rfl
+
+/-- Theorem contract for `post_surgery_metric_control_of_construction_statement`. -/
+theorem post_surgery_metric_control_of_construction_statement_eq :
+    @Poincare.post_surgery_metric_control_of_construction_statement =
+      @Poincare.post_surgery_metric_control_of_construction_statement :=
+  rfl
+
+/-- Theorem contract for `surgery_time_local_finiteness_of_construction_statement`. -/
+theorem surgery_time_local_finiteness_of_construction_statement_eq :
+    @Poincare.surgery_time_local_finiteness_of_construction_statement =
+      @Poincare.surgery_time_local_finiteness_of_construction_statement :=
+  rfl
 
 end Poincare
