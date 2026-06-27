@@ -2860,6 +2860,369 @@ theorem poincareProofDependencies_of_milestone_requirements_payload_eq :
   rfl
 
 /--
+Component requirements are enough to reach the same conditional Poincare
+endpoint as the aggregate dependency package, once reconstructed through the
+crosswalk payload constructor.
+-/
+theorem poincare_conjecture_of_component_requirements_payload
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_dependencies
+    (poincareProofDependencies_of_component_requirements_payload payload)
+
+/-- The component-requirement endpoint is exactly the dependency endpoint after reconstruction. -/
+theorem poincare_conjecture_of_component_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincare_conjecture_of_component_requirements_payload payload =
+      poincare_conjecture_of_dependencies
+        (poincareProofDependencies_of_component_requirements_payload payload) := by
+  rfl
+
+/--
+Component requirements also supply the named Poincare payload, including the
+completion criterion family, through the aggregate dependency reconstruction.
+-/
+theorem poincare_conjecture_payload_of_component_requirements_payload
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_conjecture_payload_of_dependencies
+    (poincareProofDependencies_of_component_requirements_payload payload)
+
+/-- The component-requirement payload route is exactly the dependency payload route. -/
+theorem poincare_conjecture_payload_of_component_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincare_conjecture_payload_of_component_requirements_payload payload =
+      poincare_conjecture_payload_of_dependencies
+        (poincareProofDependencies_of_component_requirements_payload payload) := by
+  rfl
+
+/--
+Component requirements supply the aggregate completion payload through the
+same reconstructed dependency package.
+-/
+theorem poincare_completion_payload_of_component_requirements_payload
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_dependencies
+    (poincareProofDependencies_of_component_requirements_payload payload)
+
+/-- The component-requirement completion-payload route is exactly the dependency route. -/
+theorem poincare_completion_payload_of_component_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    poincare_completion_payload_of_component_requirements_payload payload =
+      poincare_completion_payload_of_dependencies
+        (poincareProofDependencies_of_component_requirements_payload payload) := by
+  rfl
+
+/--
+Package-layer requirements are enough to reach the same conditional Poincare
+endpoint as the aggregate dependency package, once reconstructed through the
+crosswalk payload constructor.
+-/
+theorem poincare_conjecture_of_package_layer_requirements_payload
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_dependencies
+    (poincareProofDependencies_of_package_layer_requirements_payload payload)
+
+/-- The package-layer endpoint is exactly the dependency endpoint after reconstruction. -/
+theorem poincare_conjecture_of_package_layer_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    poincare_conjecture_of_package_layer_requirements_payload payload =
+      poincare_conjecture_of_dependencies
+        (poincareProofDependencies_of_package_layer_requirements_payload payload) := by
+  rfl
+
+/--
+Package-layer requirements also supply the named Poincare payload, including
+the completion criterion family, through aggregate dependency reconstruction.
+-/
+theorem poincare_conjecture_payload_of_package_layer_requirements_payload
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_conjecture_payload_of_dependencies
+    (poincareProofDependencies_of_package_layer_requirements_payload payload)
+
+/-- The package-layer payload route is exactly the dependency payload route. -/
+theorem poincare_conjecture_payload_of_package_layer_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    poincare_conjecture_payload_of_package_layer_requirements_payload payload =
+      poincare_conjecture_payload_of_dependencies
+        (poincareProofDependencies_of_package_layer_requirements_payload payload) := by
+  rfl
+
+/--
+Package-layer requirements supply the aggregate completion payload through the
+same reconstructed dependency package.
+-/
+theorem poincare_completion_payload_of_package_layer_requirements_payload
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_dependencies
+    (poincareProofDependencies_of_package_layer_requirements_payload payload)
+
+/-- The package-layer completion-payload route is exactly the dependency route. -/
+theorem poincare_completion_payload_of_package_layer_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    poincare_completion_payload_of_package_layer_requirements_payload payload =
+      poincare_completion_payload_of_dependencies
+        (poincareProofDependencies_of_package_layer_requirements_payload payload) := by
+  rfl
+
+/--
+Milestone requirements are enough to reach the same conditional Poincare
+endpoint as the aggregate dependency package, once reconstructed through the
+crosswalk payload constructor.
+-/
+theorem poincare_conjecture_of_milestone_requirements_payload
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_dependencies
+    (poincareProofDependencies_of_milestone_requirements_payload payload)
+
+/-- The milestone endpoint is exactly the dependency endpoint after reconstruction. -/
+theorem poincare_conjecture_of_milestone_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincare_conjecture_of_milestone_requirements_payload payload =
+      poincare_conjecture_of_dependencies
+        (poincareProofDependencies_of_milestone_requirements_payload payload) := by
+  rfl
+
+/--
+Milestone requirements also supply the named Poincare payload, including the
+completion criterion family, through aggregate dependency reconstruction.
+-/
+theorem poincare_conjecture_payload_of_milestone_requirements_payload
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_conjecture_payload_of_dependencies
+    (poincareProofDependencies_of_milestone_requirements_payload payload)
+
+/-- The milestone payload route is exactly the dependency payload route. -/
+theorem poincare_conjecture_payload_of_milestone_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincare_conjecture_payload_of_milestone_requirements_payload payload =
+      poincare_conjecture_payload_of_dependencies
+        (poincareProofDependencies_of_milestone_requirements_payload payload) := by
+  rfl
+
+/--
+Milestone requirements supply the aggregate completion payload through the same
+reconstructed dependency package.
+-/
+theorem poincare_completion_payload_of_milestone_requirements_payload
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_dependencies
+    (poincareProofDependencies_of_milestone_requirements_payload payload)
+
+/-- The milestone completion-payload route is exactly the dependency route. -/
+theorem poincare_completion_payload_of_milestone_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    poincare_completion_payload_of_milestone_requirements_payload payload =
+      poincare_completion_payload_of_dependencies
+        (poincareProofDependencies_of_milestone_requirements_payload payload) := by
+  rfl
+
+/--
 Projecting milestone requirements from the aggregate dependencies
 reconstructed from that payload returns the original payload.
 -/
