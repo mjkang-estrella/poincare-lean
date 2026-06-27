@@ -1632,6 +1632,100 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_inverse_mapped_path_lo
   rfl
 
 /--
+The inverse of the explicit complement homeomorphism transports a target
+standard `ThreeSphere` path and based loop back to concrete source paths, and
+the one-point compactification complement supplies the full
+punctured-Euclidean chart/path-loop projection payload, including connectedness,
+for those mapped-back paths.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_inverse_mapped_path_loop_source_fullChart_payload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (targetBase targetTarget :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere))
+    (targetPath : Path targetBase targetTarget)
+    (targetLoop : Path targetBase targetBase) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    let Source :=
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    ∃ sourcePath : Path (H.symm targetBase) (H.symm targetTarget),
+      ∃ sourceLoop : Path (H.symm targetBase) (H.symm targetBase),
+        sourcePath = targetPath.map H.symm.continuous ∧
+          sourceLoop = targetLoop.map H.symm.continuous ∧
+          ∃ puncture : EuclideanSpace ℝ (Fin 3),
+            ∃ chart : Source ≃ₜ ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+              ∃ pathData :
+                  PointedPathComponentPathData Source (H.symm targetBase),
+                ∃ endpointData :
+                    PointedChosenPathEndpointData
+                      Source (H.symm targetBase) (H.symm targetTarget),
+                  ∃ canonicalPath :
+                      Path (H.symm targetBase) (H.symm targetTarget),
+                    (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+                      Nonempty Source ∧
+                      PathConnectedSpace Source ∧
+                      ConnectedSpace Source ∧
+                      SimplyConnectedSpace Source ∧
+                      pathData.path_to (H.symm targetTarget) = canonicalPath ∧
+                      endpointData.path = canonicalPath ∧
+                      canonicalPath 0 = H.symm targetBase ∧
+                      canonicalPath 1 = H.symm targetTarget ∧
+                      Joined (H.symm targetBase) (H.symm targetTarget) ∧
+                      pathComponent (H.symm targetBase) = Set.univ ∧
+                      Path.Homotopic sourcePath canonicalPath ∧
+                      (⟦sourcePath⟧ :
+                        Path.Homotopic.Quotient (H.symm targetBase)
+                          (H.symm targetTarget)) =
+                        ⟦canonicalPath⟧ ∧
+                      (∀ η : Path (H.symm targetBase) (H.symm targetTarget),
+                        Path.Homotopic canonicalPath η) ∧
+                      Subsingleton
+                        (Path.Homotopic.Quotient (H.symm targetBase)
+                          (H.symm targetTarget)) ∧
+                      sourceLoop 0 = H.symm targetBase ∧
+                      sourceLoop 1 = H.symm targetBase ∧
+                      Path.Homotopic sourceLoop
+                        (Path.refl (H.symm targetBase)) ∧
+                      FundamentalGroup.fromPath
+                          (⟦sourceLoop⟧ :
+                            Path.Homotopic.Quotient (H.symm targetBase)
+                              (H.symm targetBase)) =
+                        FundamentalGroup.fromPath
+                          (⟦Path.refl (H.symm targetBase)⟧ :
+                            Path.Homotopic.Quotient (H.symm targetBase)
+                              (H.symm targetBase)) ∧
+                      Subsingleton
+                        (HomotopyGroup.Pi 1 Source (H.symm targetBase)) := by
+  dsimp
+  rcases onePoint_threeSpace_twoPointComplement_homeomorph_topology_packages hqp with
+    ⟨_, _, hSourceConnected, _, _, _, _, _⟩
+  rcases
+      onePoint_threeSpace_twoPointComplement_homeomorph_inverse_mapped_path_loop_source_chart_payload
+        hqp targetBase targetTarget targetPath targetLoop with
+    ⟨sourcePath, sourceLoop, hSourcePathEq, hSourceLoopEq, puncture, chart,
+      pathData, endpointData, canonicalPath, hAvoid, hNonempty, hPath, hSimply,
+      hPathData, hEndpointData, hCanonicalSource, hCanonicalTarget, hJoined,
+      hComponent, hChosenHomotopic, hChosenQuotient, hCanonicalUnique,
+      hQuotientSubsingleton, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+  exact
+    ⟨sourcePath, sourceLoop, hSourcePathEq, hSourceLoopEq, puncture, chart,
+      pathData, endpointData, canonicalPath, hAvoid, hNonempty, hPath,
+      hSourceConnected, hSimply, hPathData, hEndpointData, hCanonicalSource,
+      hCanonicalTarget, hJoined, hComponent, hChosenHomotopic,
+      hChosenQuotient, hCanonicalUnique, hQuotientSubsingleton, hLoopSource,
+      hLoopTarget, hLoopHomotopic, hLoopFromPath, hPiOne⟩
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_inverse_mapped_path_loop_source_fullChart_payload`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_inverse_mapped_path_loop_source_fullChart_payload_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_inverse_mapped_path_loop_source_fullChart_payload =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_inverse_mapped_path_loop_source_fullChart_payload :=
+  rfl
+
+/--
 The explicit complement homeomorphism and its inverse recover mapped paths and
 loops pointwise. This records the concrete round-trip equations needed when a
 consumer transports a path/loop payload across the one-point-to-`ThreeSphere`
