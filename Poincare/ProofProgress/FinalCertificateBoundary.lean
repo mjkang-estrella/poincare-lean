@@ -34421,4 +34421,93 @@ theorem dependency_only_reserved_named_final_conclusion_at_witness_of_equation_b
       @Poincare.dependency_only_reserved_named_final_conclusion_at_witness_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved named final conclusion/conditional root coherence.
+
+This connects the named final conclusion bundle to the existing conditional
+root theorem route.  The final statement carried by the named certificate
+bundle and the statement produced by
+`conditional_poincare_conjecture_of_equation_boundary_dependencies` are the
+same proof object up to proof irrelevance, with the mathlib-shaped statement
+kept in the same package.
+-/
+theorem dependency_only_reserved_named_final_conclusion_conditional_root_coherence_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ bundledStatement : PoincareConjectureStatement.{u},
+    ∃ conditionalRootStatement : PoincareConjectureStatement.{u},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ canonicalTarget : canonicalCompletionTarget.{u},
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      bundledStatement =
+        dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies
+          dependencies ∧
+      conditionalRootStatement =
+        conditional_poincare_conjecture_of_equation_boundary_dependencies
+          dependencies ∧
+      bundledStatement = conditionalRootStatement ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          bundledStatement ∧
+      canonicalTarget =
+        canonical_completion_target_of_completion_certificate certificate ∧
+      (∀ witness : Type u,
+        completionCriterionFamily witness =
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness conditionalRootStatement) := by
+  rcases
+      dependency_only_reserved_named_final_statement_tuple_completion_family_of_equation_boundary_dependencies
+        dependencies with
+    ⟨theoremName, certificate, _nonemptyCertificate, bundledStatement,
+      mathlibStatement, canonicalTarget, completionCriterionFamily,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      _hNonemptyCertificate, _hBundledStatementCertificate,
+      hBundledStatementDirect, hMathlibStatementProject,
+      _hMathlibStatementDirect, hCanonicalTarget, hCompletionReserved⟩
+  let conditionalRootStatement : PoincareConjectureStatement.{u} :=
+    conditional_poincare_conjecture_of_equation_boundary_dependencies
+      dependencies
+  have hConditionalRootStatement :
+      conditionalRootStatement =
+        conditional_poincare_conjecture_of_equation_boundary_dependencies
+          dependencies :=
+    rfl
+  have hBundledConditional :
+      bundledStatement = conditionalRootStatement := by
+    apply Subsingleton.elim
+  have hCompletionFamilyConditional :
+      ∀ witness : Type u,
+        completionCriterionFamily witness =
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness conditionalRootStatement := by
+    intro witness
+    exact
+      (hCompletionReserved witness).trans
+        (Subsingleton.elim
+          (dependency_only_reserved_completionCriterionAtUniverse_of_equation_boundary_dependencies
+            dependencies witness)
+          (completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness conditionalRootStatement))
+  exact
+    ⟨theoremName, certificate, bundledStatement, conditionalRootStatement,
+      mathlibStatement, canonicalTarget, completionCriterionFamily,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hBundledStatementDirect, hConditionalRootStatement,
+      hBundledConditional, hMathlibStatementProject, hCanonicalTarget,
+      hCompletionFamilyConditional⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_named_final_conclusion_conditional_root_coherence_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_named_final_conclusion_conditional_root_coherence_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_named_final_conclusion_conditional_root_coherence_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_named_final_conclusion_conditional_root_coherence_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
