@@ -3622,4 +3622,118 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_fullC
       @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_fullChart_payloads_and_roundtrip :=
   rfl
 
+/--
+The explicit one-point-to-`ThreeSphere` two-puncture bridge exposes full
+punctured-Euclidean charts together with endpoint-level collapse data on both
+the source complement and the corresponding standard `ThreeSphere` complement.
+This is the chart/endpoint recognition payload before a consumer chooses
+particular paths or loops.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_fullChart_endpoint_collapse_packages
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (sourceBase sourceTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (targetBase targetTarget :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)) :
+    (∃ sourcePuncture : EuclideanSpace ℝ (Fin 3),
+      ∃ sourceChart :
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+            ({sourcePuncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        (∀ w, (sourceChart w : EuclideanSpace ℝ (Fin 3)) ≠
+          sourcePuncture) ∧
+          Nonempty
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          PathConnectedSpace
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          ConnectedSpace
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          SimplyConnectedSpace
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          pathComponent sourceBase = Set.univ ∧
+          Joined sourceBase sourceTarget ∧
+          Subsingleton (Path.Homotopic.Quotient sourceBase sourceTarget) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1
+              (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              sourceBase)) ∧
+      (∃ targetPuncture : EuclideanSpace ℝ (Fin 3),
+        ∃ targetChart :
+            (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+              Set ThreeSphere) ≃ₜ
+              ({targetPuncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+          (∀ w, (targetChart w : EuclideanSpace ℝ (Fin 3)) ≠
+            targetPuncture) ∧
+            Nonempty
+              (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                  {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+                Set ThreeSphere) ∧
+            PathConnectedSpace
+              (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                  {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+                Set ThreeSphere) ∧
+            ConnectedSpace
+              (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                  {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+                Set ThreeSphere) ∧
+            SimplyConnectedSpace
+              (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                  {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+                Set ThreeSphere) ∧
+            pathComponent targetBase = Set.univ ∧
+            Joined targetBase targetTarget ∧
+            Subsingleton (Path.Homotopic.Quotient targetBase targetTarget) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 1
+                (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                    {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+                  Set ThreeSphere) targetBase)) := by
+  let e : OnePoint (EuclideanSpace ℝ (Fin 3)) ≃ₜ ThreeSphere :=
+    Classical.choice onePoint_threeSpace_homeomorph_threeSphere
+  have hImage : e q ≠ e p := by
+    intro h
+    exact hqp (e.injective h)
+  rcases onePoint_threeSpace_twoPointComplement_homeomorph_puncturedEuclidean_fullChart_packages
+      hqp with
+    ⟨⟨sourcePuncture, sourceChart, hSourceAvoid, hSourceNonempty,
+          hSourcePathConnected, hSourceConnected, hSourceSimplyConnected⟩,
+      ⟨targetPuncture, targetChart, hTargetAvoid, hTargetNonempty,
+          hTargetPathConnected, hTargetConnected, hTargetSimplyConnected⟩⟩
+  exact
+    ⟨⟨sourcePuncture, sourceChart, hSourceAvoid, hSourceNonempty,
+        hSourcePathConnected, hSourceConnected, hSourceSimplyConnected,
+        twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
+          (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+          ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩
+          hqp sourceBase,
+        twoPointComplement_joined_of_homeomorph_to_onePoint_threeSpace
+          (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+          ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩
+          hqp sourceBase sourceTarget,
+        twoPointComplement_pathQuotient_subsingleton_of_homeomorph_to_onePoint_threeSpace
+          (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+          ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩
+          hqp sourceBase sourceTarget,
+        twoPointComplement_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
+          (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+          ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩
+          hqp sourceBase⟩,
+      ⟨targetPuncture, targetChart, hTargetAvoid, hTargetNonempty,
+        hTargetPathConnected, hTargetConnected, hTargetSimplyConnected,
+        threeSphere_twoPointComplement_pathComponent_eq_univ hImage targetBase,
+        threeSphere_twoPointComplement_path_nonempty
+          hImage targetBase targetTarget,
+        threeSphere_twoPointComplement_pathQuotient_subsingleton
+          hImage targetBase targetTarget,
+        threeSphere_twoPointComplement_piOne_subsingleton hImage targetBase⟩⟩
+
+/-- Theorem contract for
+`onePoint_threeSpace_twoPointComplement_homeomorph_fullChart_endpoint_collapse_packages`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_fullChart_endpoint_collapse_packages_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_fullChart_endpoint_collapse_packages =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_fullChart_endpoint_collapse_packages :=
+  rfl
+
 end Poincare
