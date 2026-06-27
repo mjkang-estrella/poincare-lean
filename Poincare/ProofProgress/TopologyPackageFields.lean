@@ -1373,6 +1373,96 @@ theorem twoPointComplement_chosenPathTopologyPayload_of_topology_package
       hPath, hSimply, hPathData, hEndpointPath, hSource, hTarget, hJoined⟩
 
 /--
+The package-level two-puncture complement supplies the transported Euclidean
+chart and the path/loop projection payload with one shared canonical chosen
+path. This synchronizes the chart, endpoint-data, homotopy, quotient, loop, and
+`π₁` collapse evidence directly at the topology-package boundary.
+-/
+theorem twoPointComplement_chart_path_loop_projection_bundle_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      ∃ chart : (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+          ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        ∃ pathData :
+            PointedPathComponentPathData (({x} ∪ {y})ᶜ : Set M) basepoint,
+          ∃ endpointData :
+              PointedChosenPathEndpointData
+                (({x} ∪ {y})ᶜ : Set M) basepoint target,
+            ∃ canonicalPath : Path basepoint target,
+              (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+                Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+                PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                pathData.path_to target = canonicalPath ∧
+                endpointData.path = canonicalPath ∧
+                canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+                Joined basepoint target ∧
+                pathComponent basepoint = Set.univ ∧
+                Path.Homotopic chosenPath canonicalPath ∧
+                (⟦chosenPath⟧ :
+                  Path.Homotopic.Quotient basepoint target) =
+                  ⟦canonicalPath⟧ ∧
+                (∀ η : Path basepoint target,
+                  Path.Homotopic canonicalPath η) ∧
+                Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+                loop 0 = basepoint ∧ loop 1 = basepoint ∧
+                Path.Homotopic loop (Path.refl basepoint) ∧
+                FundamentalGroup.fromPath
+                    (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+                  FundamentalGroup.fromPath
+                    (⟦Path.refl basepoint⟧ :
+                      Path.Homotopic.Quotient basepoint basepoint) ∧
+                Subsingleton
+                  (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  rcases
+      twoPointComplement_chosenPathTopologyPayload_of_topology_package
+        package M extinction hyx basepoint target with
+    ⟨puncture, chart, pathData, endpointData, canonicalPath,
+      hAvoidsPuncture, hNonempty, hPathConnected, hSimplyConnected,
+      hPathData, hEndpointPath, hSource, hTarget, hJoined⟩
+  rcases
+      twoPointComplement_paths_homotopic_payload_of_topology_package
+        package M extinction hyx chosenPath canonicalPath with
+    ⟨chosenHomotopic, chosenQuotientEq⟩
+  have hComponent :
+      pathComponent basepoint = Set.univ :=
+    twoPointComplement_pathComponent_eq_univ_of_topology_package
+      package M extinction hyx basepoint
+  have loopHomotopic :
+      Path.Homotopic loop (Path.refl basepoint) :=
+    twoPointComplement_loop_nullhomotopic_of_topology_package
+      package M extinction hyx basepoint loop
+  exact
+    ⟨puncture, chart, pathData, endpointData, canonicalPath,
+      hAvoidsPuncture, hNonempty, hPathConnected, hSimplyConnected,
+      hPathData, hEndpointPath, hSource, hTarget, hJoined, hComponent,
+      chosenHomotopic, chosenQuotientEq,
+      fun η =>
+        (twoPointComplement_paths_homotopic_payload_of_topology_package
+          package M extinction hyx canonicalPath η).1,
+      twoPointComplement_pathQuotient_subsingleton_of_topology_package
+        package M extinction hyx basepoint target,
+      Path.source loop, Path.target loop, loopHomotopic,
+      twoPointComplement_loop_fromPath_eq_refl_of_topology_package
+        package M extinction hyx basepoint loop,
+      twoPointComplement_piOne_subsingleton_of_topology_package
+        package M extinction hyx basepoint⟩
+
+/-- Theorem contract for `twoPointComplement_chart_path_loop_projection_bundle_of_topology_package`. -/
+theorem twoPointComplement_chart_path_loop_projection_bundle_of_topology_package_eq :
+    @Poincare.twoPointComplement_chart_path_loop_projection_bundle_of_topology_package =
+      @Poincare.twoPointComplement_chart_path_loop_projection_bundle_of_topology_package :=
+  rfl
+
+/--
 The package-level topology output can be consumed as one larger block: the
 two-puncture transported chart and chosen-path topology payload, together with
 the one- and two-puncture path-homotopy quotient and chosen-loop payloads.
