@@ -32417,4 +32417,37 @@ theorem dependency_only_reserved_mathlib_final_statement_application_of_equation
       @Poincare.dependency_only_reserved_mathlib_final_statement_application_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved final target conclusion.
+
+This is the direct consumer theorem extracted from the broad reserved-name
+mathlib final-statement endpoint: after the equation-boundary dependencies are
+supplied, any target satisfying the project Poincare hypotheses receives the
+3-sphere homeomorphism conclusion, with the proof routed through the checked
+reserved certificate payload.
+-/
+theorem dependency_only_reserved_target_homeomorphism_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    Nonempty (M ≃ₜ ThreeSphere) := by
+  rcases
+      dependency_only_reserved_mathlib_final_statement_application_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨_theoremName, _mathlibStatement, _projectStatement,
+      _expandedConclusion, _completionCriterionFamily, _certificate,
+      targetConclusion, _hTheoremNameCanonical, _hTheoremNameLiteral,
+      _hMathlibStatement, _hProjectStatement, _hMathlibStatementApplication,
+      _hProjectStatementApplication, _hExpandedConclusionApplication,
+      _hCompletionCriterionApplication, _hCertificate⟩
+  exact targetConclusion
+
+/-- Theorem contract for
+`dependency_only_reserved_target_homeomorphism_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_target_homeomorphism_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_target_homeomorphism_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_target_homeomorphism_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
