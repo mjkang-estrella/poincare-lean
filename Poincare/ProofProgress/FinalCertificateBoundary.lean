@@ -27103,4 +27103,65 @@ theorem dependency_only_completionCriterion_payloads_mathlib_statement_certifica
       @Poincare.dependency_only_completionCriterion_payloads_mathlib_statement_certificate_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only direct `ThreeSphere` homeomorphism projection.
+
+This specializes the dependency-only final statement to an arbitrary compact
+simply connected charted 3-manifold, producing the actual `M ≃ₜ ThreeSphere`
+witness required by the topological Poincare conclusion while retaining the
+completion criterion, canonical/project payloads, mathlib-shaped statement,
+project statement, and checked certificate equalities.
+-/
+theorem dependency_only_direct_threeSphere_homeomorphism_completionCriterion_payloads_certificate_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    Nonempty (M ≃ₜ ThreeSphere) ∧
+      CompletionCriterionAtUniverse M ∧
+      (∃ canonicalPayload :
+          (∃ _target : canonicalCompletionTarget.{u},
+            ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+        canonicalPayload =
+          canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+            dependencies) ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      MathlibTopologicalPoincareThreeStatement.{u} ∧
+      PoincareConjectureStatement.{u} ∧
+      ∃ certificate : PoincareCompletionCertificate.{u},
+        certificate =
+          completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+            dependencies ∧
+        canonical_completion_payload_of_completion_certificate certificate =
+          canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+            dependencies ∧
+        poincare_completion_payload_of_completion_certificate certificate =
+          poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+            dependencies := by
+  rcases
+      dependency_only_completionCriterion_payloads_mathlib_statement_certificate_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨completionCriterion, canonicalPayload, projectPayload,
+      mathlibStatement, projectStatement, certificate, hCertificate,
+      hCanonicalPayload, hProjectPayload⟩
+  exact
+    ⟨projectStatement M,
+      completionCriterion,
+      canonicalPayload,
+      projectPayload,
+      mathlibStatement,
+      projectStatement,
+      certificate,
+      hCertificate,
+      hCanonicalPayload,
+      hProjectPayload⟩
+
+/-- Theorem contract for
+`dependency_only_direct_threeSphere_homeomorphism_completionCriterion_payloads_certificate_of_equation_boundary_dependencies`. -/
+theorem dependency_only_direct_threeSphere_homeomorphism_completionCriterion_payloads_certificate_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_direct_threeSphere_homeomorphism_completionCriterion_payloads_certificate_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_direct_threeSphere_homeomorphism_completionCriterion_payloads_certificate_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
