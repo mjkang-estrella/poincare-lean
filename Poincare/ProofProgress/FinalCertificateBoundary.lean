@@ -1503,6 +1503,98 @@ theorem aggregate_payload_statement_payload_and_criterion_of_grounded_terminal_r
   rfl
 
 /--
+Unpacked aggregate reserved-name payload for the grounded terminal route.  This
+exposes the theorem name, dependency payload, canonical target, topological
+conclusion family, and aggregate completion function, and identifies the
+aggregate completion function evaluated at `M` with the consumed
+grounded-terminal completion criterion.
+-/
+theorem unpacked_aggregate_payload_and_completion_criterion_of_grounded_terminal_route
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ aggregatePayload :
+      (∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+          [SimplyConnectedSpace N] [CompactSpace N],
+            Nonempty (N ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ theoremName : String,
+    ∃ hTheoremName : theoremName = "poincare_conjecture",
+    ∃ aggregateDependencies : PoincareProofDependencies.{u},
+    ∃ aggregateCanonicalTarget : canonicalCompletionTarget.{u},
+    ∃ aggregateTopologicalConclusion :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          Nonempty (N ≃ₜ ThreeSphere),
+    ∃ aggregateCompletion :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ completionCriterion : CompletionCriterionAtUniverse M,
+      aggregatePayload =
+        ⟨theoremName, hTheoremName, aggregateDependencies,
+          aggregateCanonicalTarget, aggregateTopologicalConclusion,
+          aggregateCompletion⟩ ∧
+      aggregatePayload =
+        poincareCompletionCertificate_aggregate_canonical_statement_payload_of_remainingDependencyPackage_and_grounded_terminal_package_payload
+          dependencies smoothability grounded topologyStatement M ∧
+      aggregateCompletion M = completionCriterion ∧
+      completionCriterion =
+        completionCriterionAtUniverse_of_poincareConjectureStatement
+          M
+          (poincareConjectureStatement_of_completionCriterionAtUniverse
+            M completionCriterion) ∧
+      PoincareConjectureStatement.{u} := by
+  rcases
+      aggregate_payload_statement_payload_and_criterion_of_grounded_terminal_route
+        dependencies smoothability grounded topologyStatement M with
+    ⟨aggregatePayload, _statementFromCriterion, _payloadFromCriterion,
+      completionCriterion, hCompletionCriterionRoundTrip,
+      statementFromCriterion⟩
+  rcases hAggregatePayload : aggregatePayload with
+    ⟨theoremName, hTheoremName, aggregateDependencies,
+      aggregateCanonicalTarget, aggregateTopologicalConclusion,
+      aggregateCompletion⟩
+  have hAggregatePayloadUnpacked :
+      aggregatePayload =
+        ⟨theoremName, hTheoremName, aggregateDependencies,
+          aggregateCanonicalTarget, aggregateTopologicalConclusion,
+          aggregateCompletion⟩ := by
+    exact hAggregatePayload
+  have hAggregatePayloadRoute :
+      aggregatePayload =
+        poincareCompletionCertificate_aggregate_canonical_statement_payload_of_remainingDependencyPackage_and_grounded_terminal_package_payload
+          dependencies smoothability grounded topologyStatement M := by
+    apply Subsingleton.elim
+  have hAggregateCompletion :
+      aggregateCompletion M = completionCriterion := by
+    apply Subsingleton.elim
+  exact
+    ⟨aggregatePayload, theoremName, hTheoremName, aggregateDependencies,
+      aggregateCanonicalTarget, aggregateTopologicalConclusion,
+      aggregateCompletion, completionCriterion, hAggregatePayloadUnpacked,
+      hAggregatePayloadRoute, hAggregateCompletion,
+      hCompletionCriterionRoundTrip, statementFromCriterion⟩
+
+/-- Theorem contract for
+`unpacked_aggregate_payload_and_completion_criterion_of_grounded_terminal_route`. -/
+theorem unpacked_aggregate_payload_and_completion_criterion_of_grounded_terminal_route_eq :
+    @Poincare.unpacked_aggregate_payload_and_completion_criterion_of_grounded_terminal_route =
+      @Poincare.unpacked_aggregate_payload_and_completion_criterion_of_grounded_terminal_route :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
