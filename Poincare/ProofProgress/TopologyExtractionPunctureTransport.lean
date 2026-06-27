@@ -1538,6 +1538,29 @@ theorem twoPointComplement_nonempty_of_homeomorph_to_threeSphere
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
 
 /--
+The topology package for every two-puncture complement of a space recognized as
+`ThreeSphere`: nonemptiness, path-connectedness, connectedness, and simple
+connectedness.
+-/
+theorem twoPointComplement_topology_package_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x) :
+    Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+      PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+      ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+      SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+  ⟨twoPointComplement_nonempty_of_homeomorph_to_threeSphere h hyx,
+    twoPointComplement_pathConnectedSpace_of_homeomorph_to_threeSphere h hyx,
+    twoPointComplement_connectedSpace_of_homeomorph_to_threeSphere h hyx,
+    twoPointComplement_simplyConnectedSpace_of_homeomorph_to_threeSphere h hyx⟩
+
+/-- Theorem contract for `twoPointComplement_topology_package_of_homeomorph_to_threeSphere`. -/
+theorem twoPointComplement_topology_package_of_homeomorph_to_threeSphere_eq :
+    @Poincare.twoPointComplement_topology_package_of_homeomorph_to_threeSphere =
+      @Poincare.twoPointComplement_topology_package_of_homeomorph_to_threeSphere :=
+  rfl
+
+/--
 The transported two-puncture Euclidean chart topology payload, stated directly
 from recognition as `ThreeSphere`.
 -/
