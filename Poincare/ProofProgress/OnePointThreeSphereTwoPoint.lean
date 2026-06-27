@@ -1443,6 +1443,95 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_targe
   rfl
 
 /--
+The explicit complement homeomorphism transports a source path and based loop
+to concrete target paths, and the target standard `ThreeSphere` complement
+then supplies the full punctured-Euclidean chart/path-loop projection payload,
+including connectedness, for those mapped paths.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_target_fullChart_payload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (sourceBase sourceTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (sourcePath : Path sourceBase sourceTarget)
+    (sourceLoop : Path sourceBase sourceBase) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    let Target :=
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)
+    ∃ targetPath : Path (H sourceBase) (H sourceTarget),
+      ∃ targetLoop : Path (H sourceBase) (H sourceBase),
+        targetPath = sourcePath.map H.continuous ∧
+          targetLoop = sourceLoop.map H.continuous ∧
+          ∃ puncture : EuclideanSpace ℝ (Fin 3),
+            ∃ chart : Target ≃ₜ ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+              ∃ pathData : PointedPathComponentPathData Target (H sourceBase),
+                ∃ endpointData :
+                    PointedChosenPathEndpointData Target (H sourceBase) (H sourceTarget),
+                  ∃ canonicalPath : Path (H sourceBase) (H sourceTarget),
+                    (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+                      Nonempty Target ∧
+                      PathConnectedSpace Target ∧
+                      ConnectedSpace Target ∧
+                      SimplyConnectedSpace Target ∧
+                      pathData.path_to (H sourceTarget) = canonicalPath ∧
+                      endpointData.path = canonicalPath ∧
+                      canonicalPath 0 = H sourceBase ∧
+                      canonicalPath 1 = H sourceTarget ∧
+                      Joined (H sourceBase) (H sourceTarget) ∧
+                      pathComponent (H sourceBase) = Set.univ ∧
+                      Path.Homotopic targetPath canonicalPath ∧
+                      (⟦targetPath⟧ :
+                        Path.Homotopic.Quotient (H sourceBase)
+                          (H sourceTarget)) =
+                        ⟦canonicalPath⟧ ∧
+                      (∀ η : Path (H sourceBase) (H sourceTarget),
+                        Path.Homotopic canonicalPath η) ∧
+                      Subsingleton
+                        (Path.Homotopic.Quotient (H sourceBase)
+                          (H sourceTarget)) ∧
+                      targetLoop 0 = H sourceBase ∧
+                      targetLoop 1 = H sourceBase ∧
+                      Path.Homotopic targetLoop (Path.refl (H sourceBase)) ∧
+                      FundamentalGroup.fromPath
+                          (⟦targetLoop⟧ :
+                            Path.Homotopic.Quotient (H sourceBase)
+                              (H sourceBase)) =
+                        FundamentalGroup.fromPath
+                          (⟦Path.refl (H sourceBase)⟧ :
+                            Path.Homotopic.Quotient (H sourceBase)
+                              (H sourceBase)) ∧
+                      Subsingleton
+                        (HomotopyGroup.Pi 1 Target (H sourceBase)) := by
+  dsimp
+  rcases onePoint_threeSpace_twoPointComplement_homeomorph_topology_packages hqp with
+    ⟨_, _, _, _, _, _, hTargetConnected, _⟩
+  rcases
+      onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_target_chart_payload
+        hqp sourceBase sourceTarget sourcePath sourceLoop with
+    ⟨targetPath, targetLoop, hTargetPathEq, hTargetLoopEq, puncture, chart,
+      pathData, endpointData, canonicalPath, hAvoid, hNonempty, hPath, hSimply,
+      hPathData, hEndpointData, hCanonicalSource, hCanonicalTarget, hJoined,
+      hComponent, hChosenHomotopic, hChosenQuotient, hCanonicalUnique,
+      hQuotientSubsingleton, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+  exact
+    ⟨targetPath, targetLoop, hTargetPathEq, hTargetLoopEq, puncture, chart,
+      pathData, endpointData, canonicalPath, hAvoid, hNonempty, hPath,
+      hTargetConnected, hSimply, hPathData, hEndpointData, hCanonicalSource,
+      hCanonicalTarget, hJoined, hComponent, hChosenHomotopic,
+      hChosenQuotient, hCanonicalUnique, hQuotientSubsingleton, hLoopSource,
+      hLoopTarget, hLoopHomotopic, hLoopFromPath, hPiOne⟩
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_target_fullChart_payload`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_target_fullChart_payload_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_target_fullChart_payload =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_target_fullChart_payload :=
+  rfl
+
+/--
 The inverse of the explicit complement homeomorphism transports a target
 standard `ThreeSphere` path and based loop back to concrete source paths, and
 the one-point compactification complement supplies the punctured-Euclidean
