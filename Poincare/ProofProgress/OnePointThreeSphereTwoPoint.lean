@@ -2046,6 +2046,127 @@ theorem onePoint_threeSpace_twoPointComplement_source_and_threeSphere_target_end
   rfl
 
 /--
+Across the one-point compactification/`ThreeSphere` two-puncture bridge, the
+selected endpoint-data paths and supplied paths have the same path-homotopy
+classes in both directions on both the source and target complements.
+-/
+theorem onePoint_threeSpace_twoPointComplement_source_and_threeSphere_target_endpointData_bidirectional_pathClass_payload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (sourceBase sourceTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (sourcePath : Path sourceBase sourceTarget)
+    (sourceLoop : Path sourceBase sourceBase)
+    (targetBase targetTarget :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere))
+    (targetPath : Path targetBase targetTarget)
+    (targetLoop : Path targetBase targetBase) :
+    let Source :=
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    let Target :=
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)
+    Nonempty (Source ≃ₜ Target) ∧
+      (∃ pathData : PointedPathComponentPathData Source sourceBase,
+        ∃ endpointData :
+            PointedChosenPathEndpointData Source sourceBase sourceTarget,
+          pathData.path_to sourceTarget = endpointData.path ∧
+            endpointData.path 0 = sourceBase ∧
+            endpointData.path 1 = sourceTarget ∧
+            Joined sourceBase sourceTarget ∧
+            pathComponent sourceBase = Set.univ ∧
+            Path.Homotopic sourcePath endpointData.path ∧
+            Path.Homotopic endpointData.path sourcePath ∧
+            (⟦sourcePath⟧ :
+              Path.Homotopic.Quotient sourceBase sourceTarget) =
+              ⟦endpointData.path⟧ ∧
+            (⟦endpointData.path⟧ :
+              Path.Homotopic.Quotient sourceBase sourceTarget) =
+              ⟦sourcePath⟧ ∧
+            Subsingleton (Path.Homotopic.Quotient sourceBase sourceTarget) ∧
+            sourceLoop 0 = sourceBase ∧
+            sourceLoop 1 = sourceBase ∧
+            Path.Homotopic sourceLoop (Path.refl sourceBase) ∧
+            FundamentalGroup.fromPath
+                (⟦sourceLoop⟧ :
+                  Path.Homotopic.Quotient sourceBase sourceBase) =
+              FundamentalGroup.fromPath
+                (⟦Path.refl sourceBase⟧ :
+                  Path.Homotopic.Quotient sourceBase sourceBase) ∧
+            Subsingleton (HomotopyGroup.Pi 1 Source sourceBase)) ∧
+      ∃ pathData : PointedPathComponentPathData Target targetBase,
+        ∃ endpointData :
+            PointedChosenPathEndpointData Target targetBase targetTarget,
+          pathData.path_to targetTarget = endpointData.path ∧
+            endpointData.path 0 = targetBase ∧
+            endpointData.path 1 = targetTarget ∧
+            Joined targetBase targetTarget ∧
+            pathComponent targetBase = Set.univ ∧
+            Path.Homotopic targetPath endpointData.path ∧
+            Path.Homotopic endpointData.path targetPath ∧
+            (⟦targetPath⟧ :
+              Path.Homotopic.Quotient targetBase targetTarget) =
+              ⟦endpointData.path⟧ ∧
+            (⟦endpointData.path⟧ :
+              Path.Homotopic.Quotient targetBase targetTarget) =
+              ⟦targetPath⟧ ∧
+            Subsingleton (Path.Homotopic.Quotient targetBase targetTarget) ∧
+            targetLoop 0 = targetBase ∧
+            targetLoop 1 = targetBase ∧
+            Path.Homotopic targetLoop (Path.refl targetBase) ∧
+            FundamentalGroup.fromPath
+                (⟦targetLoop⟧ :
+                  Path.Homotopic.Quotient targetBase targetBase) =
+              FundamentalGroup.fromPath
+                (⟦Path.refl targetBase⟧ :
+                  Path.Homotopic.Quotient targetBase targetBase) ∧
+            Subsingleton (HomotopyGroup.Pi 1 Target targetBase) := by
+  dsimp
+  rcases
+      onePoint_threeSpace_twoPointComplement_source_and_threeSphere_target_endpointData_loopCollapse_core
+        hqp sourceBase sourceTarget sourcePath sourceLoop
+        targetBase targetTarget targetPath targetLoop with
+    ⟨hHomeomorph,
+      ⟨sourcePathData, sourceEndpointData, hSourcePathData,
+        hSourceEndpointSource, hSourceEndpointTarget, hSourceJoined,
+        hSourceComponent, hSourceHomotopic, hSourceQuotient,
+        hSourceUnique, hSourceQuotientSubsingleton, hSourceLoopSource,
+        hSourceLoopTarget, hSourceLoopHomotopic, hSourceLoopFromPath,
+        hSourcePiOne⟩,
+      targetPathData, targetEndpointData, hTargetPathData,
+      hTargetEndpointSource, hTargetEndpointTarget, hTargetJoined,
+      hTargetComponent, hTargetHomotopic, hTargetQuotient, hTargetUnique,
+      hTargetQuotientSubsingleton, hTargetLoopSource, hTargetLoopTarget,
+      hTargetLoopHomotopic, hTargetLoopFromPath, hTargetPiOne⟩
+  let hSourceEndpoint : Path.Homotopic sourceEndpointData.path sourcePath :=
+    hSourceUnique sourcePath
+  let hTargetEndpoint : Path.Homotopic targetEndpointData.path targetPath :=
+    hTargetUnique targetPath
+  exact
+    ⟨hHomeomorph,
+      ⟨sourcePathData, sourceEndpointData, hSourcePathData,
+        hSourceEndpointSource, hSourceEndpointTarget, hSourceJoined,
+        hSourceComponent, hSourceHomotopic, hSourceEndpoint,
+        hSourceQuotient, Quotient.sound hSourceEndpoint,
+        hSourceQuotientSubsingleton, hSourceLoopSource, hSourceLoopTarget,
+        hSourceLoopHomotopic, hSourceLoopFromPath, hSourcePiOne⟩,
+      targetPathData, targetEndpointData, hTargetPathData,
+      hTargetEndpointSource, hTargetEndpointTarget, hTargetJoined,
+      hTargetComponent, hTargetHomotopic, hTargetEndpoint, hTargetQuotient,
+      Quotient.sound hTargetEndpoint, hTargetQuotientSubsingleton,
+      hTargetLoopSource, hTargetLoopTarget, hTargetLoopHomotopic,
+      hTargetLoopFromPath, hTargetPiOne⟩
+
+/-- Theorem contract for
+`onePoint_threeSpace_twoPointComplement_source_and_threeSphere_target_endpointData_bidirectional_pathClass_payload`. -/
+theorem onePoint_threeSpace_twoPointComplement_source_and_threeSphere_target_endpointData_bidirectional_pathClass_payload_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_source_and_threeSphere_target_endpointData_bidirectional_pathClass_payload =
+      @Poincare.onePoint_threeSpace_twoPointComplement_source_and_threeSphere_target_endpointData_bidirectional_pathClass_payload :=
+  rfl
+
+/--
 The one-point compactification two-puncture model and the corresponding
 standard `ThreeSphere` two-puncture model expose full-topology chosen
 path/loop payloads on both sides, together with the explicit homeomorphism
