@@ -18612,4 +18612,158 @@ theorem conditional_root_projector_finalHomeomorphism_twoPointEndpointDataPathCo
       @Poincare.conditional_root_projector_finalHomeomorphism_twoPointEndpointDataPathCoherenceCore_payload_of_equation_boundary_dependencies :=
   rfl
 
+/--
+The final-certificate boundary exposes the topology package's strongest
+singleton-chart and synchronized two-puncture chart/path-loop payload.
+
+This carries the actual Euclidean chart on the singleton complement together
+with singleton chosen-path endpoint data, singleton path and loop collapses,
+and the synchronized two-puncture Euclidean chart/path-loop projection bundle.
+-/
+theorem conditional_root_projector_finalHomeomorphism_singletonEuclideanChart_and_twoPointChartPathLoop_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {x y : M} (hyx : y ≠ x)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (chosenSinglePath : Path singleBase singleTarget)
+    (singleLoop : Path singleBase singleBase)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    PoincareConjectureStatement.{u} ∧
+      ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      ∃ _pathData :
+          PointedPathComponentPathData (({x} ∪ {y})ᶜ : Set M) basepoint,
+      ∃ _endpointData :
+          PointedChosenPathEndpointData
+            (({x} ∪ {y})ᶜ : Set M) basepoint target,
+        ExtinctionFinalHomeomorphismProjectorPayload
+          topology M extinction ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        FinalHomeomorphismPayloadData M extinction
+          (extinction_decomposition_of_topology_package topology M extinction) ∧
+        Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+        ∃ singlePathData :
+            PointedPathComponentPathData ({x}ᶜ : Set M) singleBase,
+          ∃ singleEndpointData :
+              PointedChosenPathEndpointData ({x}ᶜ : Set M)
+                singleBase singleTarget,
+            ∃ canonicalSinglePath : Path singleBase singleTarget,
+              singlePathData.path_to singleTarget = canonicalSinglePath ∧
+              singleEndpointData.path = canonicalSinglePath ∧
+              canonicalSinglePath 0 = singleBase ∧
+              canonicalSinglePath 1 = singleTarget ∧
+              Joined singleBase singleTarget ∧
+              pathComponent singleBase = Set.univ ∧
+              Path.Homotopic chosenSinglePath canonicalSinglePath ∧
+              (⟦chosenSinglePath⟧ :
+                Path.Homotopic.Quotient singleBase singleTarget) =
+                ⟦canonicalSinglePath⟧ ∧
+              (∀ ζ : Path singleBase singleTarget,
+                Path.Homotopic canonicalSinglePath ζ) ∧
+              Subsingleton
+                (Path.Homotopic.Quotient singleBase singleTarget) ∧
+              singleLoop 0 = singleBase ∧
+              singleLoop 1 = singleBase ∧
+              Path.Homotopic singleLoop (Path.refl singleBase) ∧
+              FundamentalGroup.fromPath
+                  (⟦singleLoop⟧ :
+                    Path.Homotopic.Quotient singleBase singleBase) =
+                FundamentalGroup.fromPath
+                  (⟦Path.refl singleBase⟧ :
+                    Path.Homotopic.Quotient singleBase singleBase) ∧
+              Subsingleton
+                (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBase) ∧
+              ∃ puncture : EuclideanSpace ℝ (Fin 3),
+                ∃ chart : (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+                    ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+                  ∃ twoPathData :
+                      PointedPathComponentPathData
+                        (({x} ∪ {y})ᶜ : Set M) basepoint,
+                    ∃ twoEndpointData :
+                        PointedChosenPathEndpointData
+                          (({x} ∪ {y})ᶜ : Set M) basepoint target,
+                      ∃ canonicalPath : Path basepoint target,
+                        (∀ w,
+                          (chart w : EuclideanSpace ℝ (Fin 3)) ≠
+                            puncture) ∧
+                        Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+                        PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                        SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                        twoPathData.path_to target = canonicalPath ∧
+                        twoEndpointData.path = canonicalPath ∧
+                        canonicalPath 0 = basepoint ∧
+                        canonicalPath 1 = target ∧
+                        Joined basepoint target ∧
+                        pathComponent basepoint = Set.univ ∧
+                        Path.Homotopic chosenPath canonicalPath ∧
+                        (⟦chosenPath⟧ :
+                          Path.Homotopic.Quotient basepoint target) =
+                          ⟦canonicalPath⟧ ∧
+                        (∀ ζ : Path basepoint target,
+                          Path.Homotopic canonicalPath ζ) ∧
+                        Subsingleton
+                          (Path.Homotopic.Quotient basepoint target) ∧
+                        loop 0 = basepoint ∧
+                        loop 1 = basepoint ∧
+                        Path.Homotopic loop (Path.refl basepoint) ∧
+                        FundamentalGroup.fromPath
+                            (⟦loop⟧ :
+                              Path.Homotopic.Quotient basepoint basepoint) =
+                          FundamentalGroup.fromPath
+                            (⟦Path.refl basepoint⟧ :
+                              Path.Homotopic.Quotient basepoint basepoint) ∧
+                        Subsingleton
+                          (HomotopyGroup.Pi 1
+                            (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  rcases
+      conditional_root_projector_finalHomeomorphism_twoPointEndpointDataPathCoherenceCore_payload_of_equation_boundary_dependencies
+        dependencies smoothability grounded topology smoothabilityPayload M
+        hyx basepoint target chosenPath loop with
+    ⟨projectStatement, checkedCertificate, extinction, pathData,
+      endpointData, finalHomeomorphismProjector, _finalHomeomorphism,
+      _finalHomeomorphismPayloadData, _packagePathData,
+      _packageEndpointData, _hPathCoherence, _hEndpointSource,
+      _hEndpointTarget, _hJoined, _hPathComponent, _hChosenHomotopic,
+      _hChosenQuotient, _hEndpointUnique, _hQuotientSubsingleton,
+      _hLoopSource, _hLoopTarget, _hLoopHomotopic, _hLoopFromPath,
+      _hPiOne⟩
+  rcases
+      topologyPackage_finalHomeomorphism_singletonEuclideanChart_chosenPathLoop_and_twoPointChartPathLoopProjectionBundle
+        topology M extinction hyx singleBase singleTarget chosenSinglePath
+        singleLoop basepoint target chosenPath loop with
+    ⟨finalHomeomorphism, finalHomeomorphismPayloadData,
+      singletonChart, singletonAndTwoPointPayload⟩
+  exact
+    ⟨projectStatement,
+      checkedCertificate,
+      extinction,
+      pathData,
+      endpointData,
+      finalHomeomorphismProjector,
+      finalHomeomorphism,
+      finalHomeomorphismPayloadData,
+      singletonChart,
+      singletonAndTwoPointPayload⟩
+
+/-- Theorem contract for `conditional_root_projector_finalHomeomorphism_singletonEuclideanChart_and_twoPointChartPathLoop_payload_of_equation_boundary_dependencies`. -/
+theorem conditional_root_projector_finalHomeomorphism_singletonEuclideanChart_and_twoPointChartPathLoop_payload_of_equation_boundary_dependencies_eq :
+    @Poincare.conditional_root_projector_finalHomeomorphism_singletonEuclideanChart_and_twoPointChartPathLoop_payload_of_equation_boundary_dependencies =
+      @Poincare.conditional_root_projector_finalHomeomorphism_singletonEuclideanChart_and_twoPointChartPathLoop_payload_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
