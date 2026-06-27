@@ -922,6 +922,79 @@ theorem poincare_completion_payload_of_completion_certificate_of_remainingDepend
       dependencies inputs)
 
 /--
+The grounded terminal package payload supplies the primitive final-certificate
+inputs used by the checked completion certificate constructor.  This records
+the concrete finite-extinction package requirement extracted from the terminal
+payload, the primitive inputs assembled from it, the resulting checked
+certificate, and the canonical/project projections of that certificate.
+-/
+theorem completion_certificate_of_remainingDependencyPackage_and_grounded_terminal_package_payload
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ primitiveInputs : FinalCertificatePrimitiveInputs.{u},
+      ∃ packageRequirement :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+      ∃ certificate : PoincareCompletionCertificate.{u},
+        (packageRequirement =
+          (grounded_universal_finite_extinction_package_statement_terminal_full_equality_payload
+            grounded M).2.1) ∧
+        (primitiveInputs =
+          finalCertificatePrimitiveInputs_of_minimalPackageInputs
+            { smoothability := smoothability
+              finiteExtinction := packageRequirement }
+            (extinction_implies_sphere_of_topology_extraction_statement
+              topologyStatement)) ∧
+        (certificate =
+          completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+            dependencies primitiveInputs) ∧
+        canonical_completion_payload_of_completion_certificate certificate =
+          canonical_completion_payload_of_finalCertificatePrimitiveInputs
+            primitiveInputs ∧
+        PoincareConjectureStatement.{u} ∧
+        ∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  have payload :=
+    grounded_universal_finite_extinction_package_statement_terminal_full_equality_payload
+      grounded M
+  let packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage :=
+    payload.2.1
+  let primitiveInputs : FinalCertificatePrimitiveInputs.{u} :=
+    finalCertificatePrimitiveInputs_of_minimalPackageInputs
+      { smoothability := smoothability
+        finiteExtinction := packageRequirement }
+      (extinction_implies_sphere_of_topology_extraction_statement
+        topologyStatement)
+  let certificate : PoincareCompletionCertificate.{u} :=
+    completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+      dependencies primitiveInputs
+  exact
+    ⟨primitiveInputs, packageRequirement, certificate, rfl, rfl, rfl,
+      canonical_completion_payload_of_completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs_eq
+        dependencies primitiveInputs,
+      poincare_statement_of_completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+        dependencies primitiveInputs,
+      poincare_completion_payload_of_completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+        dependencies primitiveInputs⟩
+
+/-- Theorem contract for
+`completion_certificate_of_remainingDependencyPackage_and_grounded_terminal_package_payload`. -/
+theorem completion_certificate_of_remainingDependencyPackage_and_grounded_terminal_package_payload_eq :
+    @Poincare.completion_certificate_of_remainingDependencyPackage_and_grounded_terminal_package_payload =
+      @Poincare.completion_certificate_of_remainingDependencyPackage_and_grounded_terminal_package_payload :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
