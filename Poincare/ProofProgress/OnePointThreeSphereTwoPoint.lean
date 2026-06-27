@@ -794,4 +794,59 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_loop_nullhomotopy_tran
       @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_loop_nullhomotopy_transport :=
   rfl
 
+/--
+Transported nullhomotopic based loops represent the same fundamental-group
+element as the constant loop at the transported basepoint.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_nullhomotopic_loop_fromPath_transport
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    {sourceBase :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    (sourceLoop : Path sourceBase sourceBase)
+    {targetBase :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)}
+    (targetLoop : Path targetBase targetBase)
+    (hSourceLoop : Path.Homotopic sourceLoop (Path.refl sourceBase))
+    (hTargetLoop : Path.Homotopic targetLoop (Path.refl targetBase)) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    FundamentalGroup.fromPath
+        (⟦sourceLoop.map H.continuous⟧ :
+          Path.Homotopic.Quotient (H sourceBase) (H sourceBase)) =
+      FundamentalGroup.fromPath
+        (⟦Path.refl (H sourceBase)⟧ :
+          Path.Homotopic.Quotient (H sourceBase) (H sourceBase)) ∧
+      FundamentalGroup.fromPath
+          (⟦targetLoop.map H.symm.continuous⟧ :
+            Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetBase)) =
+        FundamentalGroup.fromPath
+          (⟦Path.refl (H.symm targetBase)⟧ :
+            Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetBase)) := by
+  dsimp
+  let H :=
+    onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+      hqp
+  have hSource :
+      Path.Homotopic
+        (sourceLoop.map H.continuous)
+        (Path.refl (H sourceBase)) := by
+    simpa using hSourceLoop.map (⟨H, H.continuous⟩)
+  have hTarget :
+      Path.Homotopic
+        (targetLoop.map H.symm.continuous)
+        (Path.refl (H.symm targetBase)) := by
+    simpa using hTargetLoop.map (⟨H.symm, H.symm.continuous⟩)
+  exact
+    ⟨congrArg FundamentalGroup.fromPath (Quotient.sound hSource),
+      congrArg FundamentalGroup.fromPath (Quotient.sound hTarget)⟩
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_nullhomotopic_loop_fromPath_transport`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_nullhomotopic_loop_fromPath_transport_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_nullhomotopic_loop_fromPath_transport =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_nullhomotopic_loop_fromPath_transport :=
+  rfl
+
 end Poincare
