@@ -28342,6 +28342,131 @@ theorem selectedRawMap_projectionStatementChoice_spherical_deck_trivial_quotient
   rfl
 
 /--
+Selected raw-map, forward-continuity, and projection statement-choice data carry
+the classification, quotient, covering, fundamental-group, and deck-group
+identification side of the spherical-collapse chain.
+-/
+theorem selectedRawMap_projectionStatementChoice_spherical_covering_chain_of_final_homeomorphism_consumer_payload
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    let onePointRecognition :=
+      onePointCompactificationRecognitionAfterDecompositionStatement_of_extinctionOnePointThreeSpaceSelectedRawMapData_forwardContinuity_projectionStatementChoiceData
+        mapSelectionData selectedRawMapData forwardContinuityData
+        rawStatementChoiceData continuousStatementChoiceData
+    let recognitionPrefix :=
+      extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+        surgeryTracePrefix onePointRecognition
+    HasSphericalSpaceFormClassification M extinction
+      (recognitionPrefix.decomposition M extinction)
+      (recognitionPrefix.primeDecomposition M extinction)
+      (recognitionPrefix.irreducibility M extinction)
+      (recognitionPrefix.connectedSumCollapse M extinction)
+      (recognitionPrefix.sphericalSpaceFormReduction M extinction) ∧
+    HasSphericalSpaceFormQuotientModel M extinction
+      (recognitionPrefix.decomposition M extinction)
+      (recognitionPrefix.primeDecomposition M extinction)
+      (recognitionPrefix.irreducibility M extinction)
+      (recognitionPrefix.connectedSumCollapse M extinction)
+      (recognitionPrefix.sphericalSpaceFormReduction M extinction) ∧
+    HasSphericalSpaceFormFreeAction M extinction
+      (recognitionPrefix.decomposition M extinction)
+      (recognitionPrefix.primeDecomposition M extinction)
+      (recognitionPrefix.irreducibility M extinction)
+      (recognitionPrefix.connectedSumCollapse M extinction)
+      (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+      (recognitionPrefix.sphericalQuotientModel M extinction) ∧
+    HasSphericalSpaceFormUniversalCover M extinction
+      (recognitionPrefix.decomposition M extinction)
+      (recognitionPrefix.primeDecomposition M extinction)
+      (recognitionPrefix.irreducibility M extinction)
+      (recognitionPrefix.connectedSumCollapse M extinction)
+      (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+      (recognitionPrefix.sphericalQuotientModel M extinction) ∧
+    HasSphericalSpaceFormCoveringModel M extinction
+      (recognitionPrefix.decomposition M extinction)
+      (recognitionPrefix.primeDecomposition M extinction)
+      (recognitionPrefix.irreducibility M extinction)
+      (recognitionPrefix.connectedSumCollapse M extinction)
+      (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+      (recognitionPrefix.sphericalQuotientModel M extinction)
+      (recognitionPrefix.sphericalUniversalCover M extinction) ∧
+    HasSphericalSpaceFormCoveringProjection M extinction
+      (recognitionPrefix.decomposition M extinction)
+      (recognitionPrefix.primeDecomposition M extinction)
+      (recognitionPrefix.irreducibility M extinction)
+      (recognitionPrefix.connectedSumCollapse M extinction)
+      (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+      (recognitionPrefix.sphericalQuotientModel M extinction)
+      (recognitionPrefix.sphericalUniversalCover M extinction)
+      (recognitionPrefix.sphericalCoveringModel M extinction) ∧
+    HasSphericalSpaceFormFundamentalGroupComputation M extinction
+      (recognitionPrefix.decomposition M extinction)
+      (recognitionPrefix.primeDecomposition M extinction)
+      (recognitionPrefix.irreducibility M extinction)
+      (recognitionPrefix.connectedSumCollapse M extinction)
+      (recognitionPrefix.sphericalSpaceFormReduction M extinction) ∧
+    HasSphericalSpaceFormDeckGroupIdentification M extinction
+      (recognitionPrefix.decomposition M extinction)
+      (recognitionPrefix.primeDecomposition M extinction)
+      (recognitionPrefix.irreducibility M extinction)
+      (recognitionPrefix.connectedSumCollapse M extinction)
+      (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+      (recognitionPrefix.sphericalQuotientModel M extinction)
+      (recognitionPrefix.sphericalFundamentalGroup M extinction) := by
+  dsimp
+  rcases
+    final_homeomorphism_consumer_payload_with_onePoint_final_payload_data_and_spherical_trivial_quotient_chain_of_final_homeomorphism_with_decomposition_statement_derivation_payload_and_topology_derivation_statement_of_simply_connected_recognition_bundle_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+      surgeryTracePrefix
+      (onePointCompactificationRecognitionAfterDecompositionStatement_of_extinctionOnePointThreeSpaceSelectedRawMapData_forwardContinuity_projectionStatementChoiceData
+        mapSelectionData selectedRawMapData forwardContinuityData
+        rawStatementChoiceData continuousStatementChoiceData)
+      M extinction with
+    ⟨_homeomorphism, _topologyDerivation, _onePointHomeomorphism,
+      _finalHomeomorphismPayloadData, classification,
+      sphericalQuotientModel, freeAction, sphericalUniversalCover,
+      sphericalCoveringModel, sphericalCoveringProjection,
+      sphericalFundamentalGroup, deckGroupIdentification,
+      _deckActionProperness, _deckGroupTriviality,
+      _deckActionTrivialization, _trivialDeckQuotientIdentification,
+      _trivialSphericalQuotient, _trivialQuotientHomeomorphism,
+      _simplyConnectedRecognition, _homeomorphismAssembly,
+      _homeomorphismDerivation, _sphericalHomeomorphismLift,
+      _finalHomeomorphismStatement⟩
+  exact
+    ⟨classification, sphericalQuotientModel, freeAction,
+      sphericalUniversalCover, sphericalCoveringModel,
+      sphericalCoveringProjection, sphericalFundamentalGroup,
+      deckGroupIdentification⟩
+
+/-- Theorem contract for `selectedRawMap_projectionStatementChoice_spherical_covering_chain_of_final_homeomorphism_consumer_payload`. -/
+theorem selectedRawMap_projectionStatementChoice_spherical_covering_chain_of_final_homeomorphism_consumer_payload_eq :
+    @Poincare.selectedRawMap_projectionStatementChoice_spherical_covering_chain_of_final_homeomorphism_consumer_payload =
+      @Poincare.selectedRawMap_projectionStatementChoice_spherical_covering_chain_of_final_homeomorphism_consumer_payload :=
+  rfl
+
+/--
 Downstream-consumer form of the final topology route: choose the final
 homeomorphism and final payload first, then expose the late spherical-collapse
 chain as dependent named witnesses ending in the assembly, derivation, lift,
