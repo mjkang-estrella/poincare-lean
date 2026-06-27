@@ -1512,6 +1512,156 @@ theorem singleton_and_twoPoint_chosen_path_loop_projection_bundles_of_topology_p
   rfl
 
 /--
+The topology package exposes synchronized endpoint-data paths together with
+the canonical path/loop projection fields for both puncture levels.
+
+This is the endpoint-data version of the compact singleton/two-puncture
+projection bundle: the canonical paths are the selected endpoint-data paths,
+and they carry endpoint equations, path-component collapse, homotopy
+uniqueness, quotient collapse, loop nullhomotopy, fundamental-group
+representative equality, and `π₁` collapse.
+-/
+theorem singleton_and_twoPoint_endpointData_chosen_path_loop_projection_bundles_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (chosenSinglePath : Path singleBase singleTarget)
+    (singleLoop : Path singleBase singleBase)
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path twoBase twoTarget)
+    (loop : Path twoBase twoBase) :
+    let C := (({x} ∪ {y})ᶜ : Set M)
+    ∃ singleEndpointData :
+        PointedChosenPathEndpointData ({x}ᶜ : Set M)
+          singleBase singleTarget,
+      ∃ twoEndpointData :
+          PointedChosenPathEndpointData C twoBase twoTarget,
+        Nonempty ({x}ᶜ : Set M) ∧
+        pathComponent singleBase = Set.univ ∧
+        singleEndpointData.path 0 = singleBase ∧
+        singleEndpointData.path 1 = singleTarget ∧
+        Joined singleBase singleTarget ∧
+        Path.Homotopic chosenSinglePath singleEndpointData.path ∧
+        (⟦chosenSinglePath⟧ :
+          Path.Homotopic.Quotient singleBase singleTarget) =
+          ⟦singleEndpointData.path⟧ ∧
+        (∀ η : Path singleBase singleTarget,
+          Path.Homotopic singleEndpointData.path η) ∧
+        Subsingleton
+          (Path.Homotopic.Quotient singleBase singleTarget) ∧
+        singleLoop 0 = singleBase ∧
+        singleLoop 1 = singleBase ∧
+        Path.Homotopic singleLoop (Path.refl singleBase) ∧
+        FundamentalGroup.fromPath
+            (⟦singleLoop⟧ :
+              Path.Homotopic.Quotient singleBase singleBase) =
+          FundamentalGroup.fromPath
+            (⟦Path.refl singleBase⟧ :
+              Path.Homotopic.Quotient singleBase singleBase) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBase) ∧
+        Nonempty C ∧
+        pathComponent twoBase = Set.univ ∧
+        twoEndpointData.path 0 = twoBase ∧
+        twoEndpointData.path 1 = twoTarget ∧
+        Joined twoBase twoTarget ∧
+        Path.Homotopic chosenPath twoEndpointData.path ∧
+        (⟦chosenPath⟧ :
+          Path.Homotopic.Quotient twoBase twoTarget) =
+          ⟦twoEndpointData.path⟧ ∧
+        (∀ η : Path twoBase twoTarget,
+          Path.Homotopic twoEndpointData.path η) ∧
+        Subsingleton (Path.Homotopic.Quotient twoBase twoTarget) ∧
+        loop 0 = twoBase ∧
+        loop 1 = twoBase ∧
+        Path.Homotopic loop (Path.refl twoBase) ∧
+        FundamentalGroup.fromPath
+            (⟦loop⟧ : Path.Homotopic.Quotient twoBase twoBase) =
+          FundamentalGroup.fromPath
+            (⟦Path.refl twoBase⟧ :
+              Path.Homotopic.Quotient twoBase twoBase) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1 C twoBase) := by
+  let singleEndpointData :
+      PointedChosenPathEndpointData ({x}ᶜ : Set M)
+        singleBase singleTarget :=
+    compl_singleton_chosenPathEndpointData_of_topology_package
+      package M extinction x singleBase singleTarget
+  let twoEndpointData :
+      PointedChosenPathEndpointData (({x} ∪ {y})ᶜ : Set M)
+        twoBase twoTarget :=
+    twoPointComplement_chosenPathEndpointData_of_topology_package
+      package M extinction hyx twoBase twoTarget
+  have hChosenSingle :
+      Path.Homotopic chosenSinglePath singleEndpointData.path :=
+    compl_singleton_paths_homotopic_of_topology_package
+      package M extinction x chosenSinglePath singleEndpointData.path
+  have hSingleLoop :
+      Path.Homotopic singleLoop (Path.refl singleBase) :=
+    compl_singleton_loop_nullhomotopic_of_topology_package
+      package M extinction x singleBase singleLoop
+  have hChosenTwo :
+      Path.Homotopic chosenPath twoEndpointData.path :=
+    twoPointComplement_paths_homotopic_of_topology_package
+      package M extinction hyx chosenPath twoEndpointData.path
+  have hLoop :
+      Path.Homotopic loop (Path.refl twoBase) :=
+    twoPointComplement_loop_nullhomotopic_of_topology_package
+      package M extinction hyx twoBase loop
+  exact
+    ⟨singleEndpointData,
+      twoEndpointData,
+      compl_singleton_nonempty_of_topology_package package M extinction x,
+      compl_singleton_pathComponent_eq_univ_of_topology_package
+        package M extinction x singleBase,
+      singleEndpointData.source_eq,
+      singleEndpointData.target_eq,
+      singleEndpointData.joined,
+      hChosenSingle,
+      Quotient.sound hChosenSingle,
+      fun η =>
+        compl_singleton_paths_homotopic_of_topology_package
+          package M extinction x singleEndpointData.path η,
+      compl_singleton_pathQuotient_subsingleton_of_topology_package
+        package M extinction x singleBase singleTarget,
+      Path.source singleLoop,
+      Path.target singleLoop,
+      hSingleLoop,
+      congrArg FundamentalGroup.fromPath (Quotient.sound hSingleLoop),
+      compl_singleton_piOne_subsingleton_of_topology_package
+        package M extinction x singleBase,
+      twoPointComplement_nonempty_of_topology_package package M extinction hyx,
+      twoPointComplement_pathComponent_eq_univ_of_topology_package
+        package M extinction hyx twoBase,
+      twoEndpointData.source_eq,
+      twoEndpointData.target_eq,
+      twoEndpointData.joined,
+      hChosenTwo,
+      Quotient.sound hChosenTwo,
+      fun η =>
+        twoPointComplement_paths_homotopic_of_topology_package
+          package M extinction hyx twoEndpointData.path η,
+      twoPointComplement_pathQuotient_subsingleton_of_topology_package
+        package M extinction hyx twoBase twoTarget,
+      Path.source loop,
+      Path.target loop,
+      hLoop,
+      congrArg FundamentalGroup.fromPath (Quotient.sound hLoop),
+      twoPointComplement_piOne_subsingleton_of_topology_package
+        package M extinction hyx twoBase⟩
+
+/-- Theorem contract for
+`singleton_and_twoPoint_endpointData_chosen_path_loop_projection_bundles_of_topology_package`. -/
+theorem singleton_and_twoPoint_endpointData_chosen_path_loop_projection_bundles_of_topology_package_eq :
+    @Poincare.singleton_and_twoPoint_endpointData_chosen_path_loop_projection_bundles_of_topology_package =
+      @Poincare.singleton_and_twoPoint_endpointData_chosen_path_loop_projection_bundles_of_topology_package :=
+  rfl
+
+/--
 A single topology-package endpoint bundles the path-homotopy payloads, chosen
 path source equations, and chosen-loop payloads for both one- and two-puncture
 complements.
