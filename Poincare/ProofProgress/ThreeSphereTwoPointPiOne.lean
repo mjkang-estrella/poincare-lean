@@ -1376,4 +1376,74 @@ theorem threeSphere_twoPointComplement_fullTopology_locPath_endpointData_bidirec
       @Poincare.threeSphere_twoPointComplement_fullTopology_locPath_endpointData_bidirectional_pathClass_certificate :=
   rfl
 
+/--
+Witness-level target-side full-topology/local-path endpoint-data certificate
+for a standard `ThreeSphere` two-puncture complement.  This exposes the
+path-component and endpoint-data objects first, while retaining local path
+connectedness, topology instances, bidirectional path-class equalities, loop
+endpoint equations, nullhomotopy, `fromPath` collapse, and `π₁` collapse.
+-/
+theorem threeSphere_twoPointComplement_fullTopology_locPath_endpointData_bidirectional_pathClass_witnesses
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (basepoint target : (({a} ∪ {b})ᶜ : Set ThreeSphere))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ pathData :
+        PointedPathComponentPathData
+          (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint,
+      ∃ endpointData :
+          PointedChosenPathEndpointData
+            (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint target,
+        LocPathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+          Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+          PathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+          ConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+          SimplyConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+          pathData.path_to target = endpointData.path ∧
+          endpointData.path 0 = basepoint ∧
+          endpointData.path 1 = target ∧
+          Joined basepoint target ∧
+          pathComponent basepoint = Set.univ ∧
+          Path.Homotopic chosenPath endpointData.path ∧
+          Path.Homotopic endpointData.path chosenPath ∧
+          (⟦chosenPath⟧ :
+            Path.Homotopic.Quotient basepoint target) =
+              ⟦endpointData.path⟧ ∧
+          (⟦endpointData.path⟧ :
+            Path.Homotopic.Quotient basepoint target) = ⟦chosenPath⟧ ∧
+          Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+          loop 0 = basepoint ∧
+          loop 1 = basepoint ∧
+          Path.Homotopic loop (Path.refl basepoint) ∧
+          FundamentalGroup.fromPath
+              (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl basepoint⟧ :
+                Path.Homotopic.Quotient basepoint basepoint) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1
+              (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint) := by
+  rcases
+      threeSphere_twoPointComplement_fullTopology_locPath_endpointData_bidirectional_pathClass_certificate
+        hab basepoint target chosenPath loop with
+    ⟨hLocPath, hNonempty, hPathConnected, hConnected, hSimplyConnected,
+      pathData, endpointData, hPathData, hEndpointSource, hEndpointTarget,
+      hJoined, hComponent, hChosenHomotopic, hEndpointHomotopic,
+      hChosenQuotient, hEndpointQuotient, hQuotientSubsingleton,
+      hLoopSource, hLoopTarget, hLoopHomotopic, hLoopFromPath, hPiOne⟩
+  exact
+    ⟨pathData, endpointData, hLocPath, hNonempty, hPathConnected,
+      hConnected, hSimplyConnected, hPathData, hEndpointSource,
+      hEndpointTarget, hJoined, hComponent, hChosenHomotopic,
+      hEndpointHomotopic, hChosenQuotient, hEndpointQuotient,
+      hQuotientSubsingleton, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+
+/-- Theorem contract for
+`threeSphere_twoPointComplement_fullTopology_locPath_endpointData_bidirectional_pathClass_witnesses`. -/
+theorem threeSphere_twoPointComplement_fullTopology_locPath_endpointData_bidirectional_pathClass_witnesses_eq :
+    @Poincare.threeSphere_twoPointComplement_fullTopology_locPath_endpointData_bidirectional_pathClass_witnesses =
+      @Poincare.threeSphere_twoPointComplement_fullTopology_locPath_endpointData_bidirectional_pathClass_witnesses :=
+  rfl
+
 end Poincare
