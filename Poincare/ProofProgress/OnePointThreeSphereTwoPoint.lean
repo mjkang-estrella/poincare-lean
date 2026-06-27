@@ -136,6 +136,67 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_topology_packages_eq :
   rfl
 
 /--
+The source one-point two-puncture complement and the corresponding target
+`ThreeSphere` two-puncture complement both carry concrete punctured-Euclidean
+charts. Each chart lands in the complement of a named Euclidean puncture,
+avoids that puncture pointwise, and carries the nonempty/path-connected/simply
+connected topology payload.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_puncturedEuclidean_chart_packages
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    (∃ sourcePuncture : EuclideanSpace ℝ (Fin 3),
+      ∃ sourceChart :
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+            ({sourcePuncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        (∀ z, (sourceChart z : EuclideanSpace ℝ (Fin 3)) ≠ sourcePuncture) ∧
+          Nonempty
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          PathConnectedSpace
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          SimplyConnectedSpace
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) ∧
+      (∃ targetPuncture : EuclideanSpace ℝ (Fin 3),
+        ∃ targetChart :
+            (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+              Set ThreeSphere) ≃ₜ
+              ({targetPuncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+          (∀ z, (targetChart z : EuclideanSpace ℝ (Fin 3)) ≠ targetPuncture) ∧
+            Nonempty
+              (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                  {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+                Set ThreeSphere) ∧
+            PathConnectedSpace
+              (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                  {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+                Set ThreeSphere) ∧
+            SimplyConnectedSpace
+              (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                  {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+                Set ThreeSphere)) := by
+  let e : OnePoint (EuclideanSpace ℝ (Fin 3)) ≃ₜ ThreeSphere :=
+    Classical.choice onePoint_threeSpace_homeomorph_threeSphere
+  have hImage : e q ≠ e p := by
+    intro h
+    exact hqp (e.injective h)
+  exact
+    ⟨exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_topologyPayload
+        (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+        ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩
+        hqp,
+      exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_topologyPayload
+        (M := ThreeSphere)
+        (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere
+          ⟨Homeomorph.refl ThreeSphere⟩)
+        hImage⟩
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_puncturedEuclidean_chart_packages`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_puncturedEuclidean_chart_packages_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_puncturedEuclidean_chart_packages =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_puncturedEuclidean_chart_packages :=
+  rfl
+
+/--
 The explicit two-puncture complement bridge supplies path-component collapse
 and concrete joined/path witnesses at the source endpoints, at their
 forward-transported `ThreeSphere` endpoints, and at target endpoints transported
