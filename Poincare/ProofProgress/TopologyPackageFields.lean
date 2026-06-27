@@ -638,6 +638,78 @@ theorem compl_singleton_chosenLoop_payload_of_topology_package
       package M extinction x basepoint γ
 
 /--
+The package-level single-puncture complement can be consumed through the same
+compact path/loop projection shape as the two-puncture complement: a canonical
+chosen path, endpoint equations, homotopy uniqueness for any supplied path,
+quotient collapse, arbitrary-loop nullhomotopy, and trivial first homotopy
+group.
+-/
+theorem compl_singleton_chosen_path_loop_projection_bundle_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M)
+    (basepoint target : ({x}ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ canonicalPath : Path basepoint target,
+      Nonempty ({x}ᶜ : Set M) ∧
+        pathComponent basepoint = Set.univ ∧
+        canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+        Joined basepoint target ∧
+        Path.Homotopic chosenPath canonicalPath ∧
+        (⟦chosenPath⟧ :
+          Path.Homotopic.Quotient basepoint target) =
+          ⟦canonicalPath⟧ ∧
+        (∀ η : Path basepoint target,
+          Path.Homotopic canonicalPath η) ∧
+        Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+        loop 0 = basepoint ∧ loop 1 = basepoint ∧
+        Path.Homotopic loop (Path.refl basepoint) ∧
+        FundamentalGroup.fromPath
+            (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+          FundamentalGroup.fromPath
+            (⟦Path.refl basepoint⟧ :
+              Path.Homotopic.Quotient basepoint basepoint) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) := by
+  rcases
+      compl_singleton_exists_path_with_endpoints_and_homotopy_unique_of_topology_package
+        package M extinction x basepoint target with
+    ⟨canonicalPath, canonicalSource, canonicalTarget, canonicalJoined,
+      canonicalUnique⟩
+  rcases
+      compl_singleton_paths_homotopic_payload_of_topology_package
+        package M extinction x chosenPath canonicalPath with
+    ⟨chosenHomotopic, chosenQuotientEq⟩
+  have loopHomotopic :
+      Path.Homotopic loop (Path.refl basepoint) :=
+    compl_singleton_loop_nullhomotopic_of_topology_package
+      package M extinction x basepoint loop
+  exact
+    ⟨canonicalPath,
+      compl_singleton_nonempty_of_topology_package package M extinction x,
+      compl_singleton_pathComponent_eq_univ_of_topology_package
+        package M extinction x basepoint,
+      canonicalSource, canonicalTarget, canonicalJoined,
+      chosenHomotopic, chosenQuotientEq, canonicalUnique,
+      compl_singleton_pathQuotient_subsingleton_of_topology_package
+        package M extinction x basepoint target,
+      Path.source loop, Path.target loop, loopHomotopic,
+      compl_singleton_loop_fromPath_eq_refl_of_topology_package
+        package M extinction x basepoint loop,
+      compl_singleton_piOne_subsingleton_of_topology_package
+        package M extinction x basepoint⟩
+
+/-- Theorem contract for
+`compl_singleton_chosen_path_loop_projection_bundle_of_topology_package`. -/
+theorem compl_singleton_chosen_path_loop_projection_bundle_of_topology_package_eq :
+    @Poincare.compl_singleton_chosen_path_loop_projection_bundle_of_topology_package =
+      @Poincare.compl_singleton_chosen_path_loop_projection_bundle_of_topology_package :=
+  rfl
+
+/--
 A completed topology extraction package exposes the actual two-puncture
 Euclidean transport chart, not only its connectivity and fundamental-group
 consequences.
