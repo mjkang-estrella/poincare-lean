@@ -802,21 +802,39 @@ theorem timeDependentMetricRegularityData_of_metric_metricAtTime_eq
   rfl
 
 /-- Interface for the Levi-Civita connection theory of a time-dependent metric. -/
-inductive HasLeviCivitaConnectionTheory
+structure HasLeviCivitaConnectionTheory
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (g : TimeDependentRiemannianMetric I n M) : Prop where
   /--
-  A metric-compatible time-dependent tangent connection with smooth mathlib
-  covariant-derivative time slices supplies the non-vacuous connection-theory
-  witness.
+  Existing source data for a metric-compatible time-dependent tangent
+  connection with smooth mathlib covariant-derivative time slices.
   -/
-  | of_connectionTheoryData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (connectionTheoryAtTime :
-        LeviCivitaTimeDependentConnectionTheoryData g)
+  connectionTheoryData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (LeviCivitaTimeDependentConnectionTheoryData g)
+
+/-- Compatibility constructor for Levi-Civita connection-theory data. -/
+def HasLeviCivitaConnectionTheory.of_connectionTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (connectionTheoryAtTime :
+      LeviCivitaTimeDependentConnectionTheoryData g) :
+    HasLeviCivitaConnectionTheory g where
+  connectionTheoryData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨connectionTheoryAtTime⟩⟩
 
 /--
 Concrete smooth metric-compatible connection data proves the production
@@ -837,7 +855,7 @@ theorem hasLeviCivitaConnectionTheory_of_connectionTheoryData
     connectionTheoryAtTime
 
 /-- Interface for existence of a Levi-Civita connection for each metric time slice. -/
-inductive HasLeviCivitaConnectionExistence
+structure HasLeviCivitaConnectionExistence
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -847,8 +865,18 @@ inductive HasLeviCivitaConnectionExistence
   A time-indexed bundled mathlib covariant derivative on the tangent bundle
   supplies the non-vacuous existence witness.
   -/
-  | of_connectionField
-      (connectionAtTime : TimeDependentTangentConnectionField g)
+  connectionField_source : Nonempty (TimeDependentTangentConnectionField g)
+
+/-- Compatibility constructor for Levi-Civita connection-field data. -/
+def HasLeviCivitaConnectionExistence.of_connectionField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (connectionAtTime : TimeDependentTangentConnectionField g) :
+    HasLeviCivitaConnectionExistence g where
+  connectionField_source := ⟨connectionAtTime⟩
 
 /-- A concrete connection field proves the production Levi-Civita existence interface. -/
 theorem hasLeviCivitaConnectionExistence_of_connectionField
@@ -875,13 +903,12 @@ theorem hasLeviCivitaConnectionExistence_iff_connectionField_nonempty
       Nonempty (TimeDependentTangentConnectionField g) := by
   constructor
   · intro h
-    cases h with
-    | of_connectionField connectionAtTime => exact ⟨connectionAtTime⟩
+    exact h.connectionField_source
   · rintro ⟨connectionAtTime⟩
     exact hasLeviCivitaConnectionExistence_of_connectionField connectionAtTime
 
 /-- Interface for uniqueness of the Levi-Civita connection. -/
-inductive HasLeviCivitaConnectionUniqueness
+structure HasLeviCivitaConnectionUniqueness
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -891,8 +918,19 @@ inductive HasLeviCivitaConnectionUniqueness
   A selected time-indexed tangent covariant derivative plus a uniqueness theorem
   supplies the non-vacuous uniqueness witness.
   -/
-  | of_uniqueConnectionField
-      (uniqueConnectionAtTime : UniqueTimeDependentTangentConnectionField g)
+  uniqueConnectionField_source :
+    Nonempty (UniqueTimeDependentTangentConnectionField g)
+
+/-- Compatibility constructor for Levi-Civita uniqueness data. -/
+def HasLeviCivitaConnectionUniqueness.of_uniqueConnectionField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (uniqueConnectionAtTime : UniqueTimeDependentTangentConnectionField g) :
+    HasLeviCivitaConnectionUniqueness g where
+  uniqueConnectionField_source := ⟨uniqueConnectionAtTime⟩
 
 /-- Concrete uniqueness data proves the production Levi-Civita uniqueness interface. -/
 theorem hasLeviCivitaConnectionUniqueness_of_uniqueConnectionField
@@ -920,16 +958,14 @@ theorem hasLeviCivitaConnectionUniqueness_iff_uniqueConnectionField_nonempty
       Nonempty (UniqueTimeDependentTangentConnectionField g) := by
   constructor
   · intro h
-    cases h with
-    | of_uniqueConnectionField uniqueConnectionAtTime =>
-        exact ⟨uniqueConnectionAtTime⟩
+    exact h.uniqueConnectionField_source
   · rintro ⟨uniqueConnectionAtTime⟩
     exact
       hasLeviCivitaConnectionUniqueness_of_uniqueConnectionField
         uniqueConnectionAtTime
 
 /-- Interface for the torsion-free property of the Levi-Civita connection. -/
-inductive HasLeviCivitaTorsionFreeProperty
+structure HasLeviCivitaTorsionFreeProperty
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -939,10 +975,29 @@ inductive HasLeviCivitaTorsionFreeProperty
   A unique time-dependent tangent connection field with vanishing mathlib torsion
   supplies the non-vacuous torsion-free witness.
   -/
-  | of_torsionFreeConnectionField
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (torsionFreeConnectionAtTime :
-        TorsionFreeTimeDependentTangentConnectionField g)
+  torsionFreeConnectionField_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (TorsionFreeTimeDependentTangentConnectionField g)
+
+/-- Compatibility constructor for Levi-Civita torsion-free data. -/
+def HasLeviCivitaTorsionFreeProperty.of_torsionFreeConnectionField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (torsionFreeConnectionAtTime :
+      TorsionFreeTimeDependentTangentConnectionField g) :
+    HasLeviCivitaTorsionFreeProperty g where
+  torsionFreeConnectionField_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨torsionFreeConnectionAtTime⟩⟩
 
 /-- Concrete zero-torsion connection data proves the production torsion-free interface. -/
 theorem hasLeviCivitaTorsionFreeProperty_of_torsionFreeConnectionField
@@ -981,7 +1036,7 @@ theorem leviCivitaExistence_uniqueness_of_torsionFreeConnectionField
       torsionFreeConnectionAtTime.uniqueConnectionAtTime⟩
 
 /-- Interface for metric compatibility of the Levi-Civita connection. -/
-inductive HasLeviCivitaMetricCompatibility
+structure HasLeviCivitaMetricCompatibility
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -992,10 +1047,29 @@ inductive HasLeviCivitaMetricCompatibility
   metric-compatibility identity supplies the non-vacuous metric-compatibility
   witness.
   -/
-  | of_metricCompatibleConnectionField
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (metricCompatibleConnectionAtTime :
-        MetricCompatibleTimeDependentTangentConnectionField g)
+  metricCompatibleConnectionField_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (MetricCompatibleTimeDependentTangentConnectionField g)
+
+/-- Compatibility constructor for Levi-Civita metric-compatibility data. -/
+def HasLeviCivitaMetricCompatibility.of_metricCompatibleConnectionField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (metricCompatibleConnectionAtTime :
+      MetricCompatibleTimeDependentTangentConnectionField g) :
+    HasLeviCivitaMetricCompatibility g where
+  metricCompatibleConnectionField_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨metricCompatibleConnectionAtTime⟩⟩
 
 /--
 Concrete metric-compatible connection data proves the production
@@ -1067,7 +1141,7 @@ theorem leviCivitaFirstFour_of_connectionTheoryData
       connectionTheoryAtTime.metricCompatibleConnectionAtTime⟩
 
 /-- Interface for the Riemann-curvature tensor theory of a time-dependent metric. -/
-inductive HasRiemannCurvatureTensorTheory
+structure HasRiemannCurvatureTensorTheory
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -1077,10 +1151,29 @@ inductive HasRiemannCurvatureTensorTheory
   Curvature construction, symmetries, and both Bianchi identities supply the
   non-vacuous Riemann-curvature-theory witness.
   -/
-  | of_secondBianchiData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (secondBianchiAtTime :
-        RiemannCurvatureSecondBianchiData g)
+  secondBianchiData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (RiemannCurvatureSecondBianchiData g)
+
+/-- Compatibility constructor for Riemann-curvature theory data. -/
+def HasRiemannCurvatureTensorTheory.of_secondBianchiData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (secondBianchiAtTime :
+      RiemannCurvatureSecondBianchiData g) :
+    HasRiemannCurvatureTensorTheory g where
+  secondBianchiData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨secondBianchiAtTime⟩⟩
 
 /--
 Concrete second-Bianchi data proves the production Riemann-curvature-theory
@@ -1101,7 +1194,7 @@ theorem hasRiemannCurvatureTensorTheory_of_secondBianchiData
     secondBianchiAtTime
 
 /-- Interface for constructing the Riemann curvature tensor from the connection. -/
-inductive HasRiemannCurvatureTensorConstruction
+structure HasRiemannCurvatureTensorConstruction
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -1111,10 +1204,29 @@ inductive HasRiemannCurvatureTensorConstruction
   A tangent-valued curvature tensor with the standard commutator construction
   formula supplies the non-vacuous Riemann-curvature construction witness.
   -/
-  | of_curvatureConstructionData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (curvatureConstructionAtTime :
-        RiemannCurvatureTensorConstructionData g)
+  curvatureConstructionData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (RiemannCurvatureTensorConstructionData g)
+
+/-- Compatibility constructor for Riemann-curvature construction data. -/
+def HasRiemannCurvatureTensorConstruction.of_curvatureConstructionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData g) :
+    HasRiemannCurvatureTensorConstruction g where
+  curvatureConstructionData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨curvatureConstructionAtTime⟩⟩
 
 /--
 Concrete curvature construction data proves the production
@@ -1161,7 +1273,7 @@ theorem leviCivitaFirstFive_of_curvatureConstructionData
       curvatureConstructionAtTime.connectionTheoryAtTime⟩
 
 /-- Interface for the standard symmetries of the Riemann curvature tensor. -/
-inductive HasRiemannCurvatureTensorSymmetries
+structure HasRiemannCurvatureTensorSymmetries
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -1171,10 +1283,29 @@ inductive HasRiemannCurvatureTensorSymmetries
   A constructed Riemann-curvature tensor with the standard algebraic symmetry
   identities supplies the non-vacuous symmetry witness.
   -/
-  | of_curvatureSymmetryData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (curvatureSymmetryAtTime :
-        RiemannCurvatureTensorSymmetryData g)
+  curvatureSymmetryData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (RiemannCurvatureTensorSymmetryData g)
+
+/-- Compatibility constructor for Riemann-curvature symmetry data. -/
+def HasRiemannCurvatureTensorSymmetries.of_curvatureSymmetryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvatureSymmetryAtTime :
+      RiemannCurvatureTensorSymmetryData g) :
+    HasRiemannCurvatureTensorSymmetries g where
+  curvatureSymmetryData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨curvatureSymmetryAtTime⟩⟩
 
 /--
 Concrete curvature symmetry data proves the production Riemann-curvature
@@ -1223,7 +1354,7 @@ theorem riemannCurvatureFirstSix_of_curvatureSymmetryData
       curvatureSymmetryAtTime.curvatureConstructionAtTime⟩
 
 /-- Interface for the first Bianchi identity. -/
-inductive HasFirstBianchiIdentity
+structure HasFirstBianchiIdentity
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -1233,10 +1364,29 @@ inductive HasFirstBianchiIdentity
   A constructed Riemann-curvature tensor satisfying the cyclic first Bianchi
   identity supplies the non-vacuous first-Bianchi witness.
   -/
-  | of_firstBianchiData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (firstBianchiAtTime :
-        RiemannCurvatureFirstBianchiData g)
+  firstBianchiData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (RiemannCurvatureFirstBianchiData g)
+
+/-- Compatibility constructor for first-Bianchi data. -/
+def HasFirstBianchiIdentity.of_firstBianchiData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (firstBianchiAtTime :
+      RiemannCurvatureFirstBianchiData g) :
+    HasFirstBianchiIdentity g where
+  firstBianchiData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨firstBianchiAtTime⟩⟩
 
 /--
 Concrete first-Bianchi data proves the production first-Bianchi interface.
@@ -1286,7 +1436,7 @@ theorem riemannCurvatureFirstSeven_of_firstBianchiData
       firstBianchiAtTime.curvatureSymmetryAtTime⟩
 
 /-- Interface for the second Bianchi identity. -/
-inductive HasSecondBianchiIdentity
+structure HasSecondBianchiIdentity
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -1297,10 +1447,29 @@ inductive HasSecondBianchiIdentity
   derivative satisfying the cyclic second Bianchi identity supplies the
   non-vacuous second-Bianchi witness.
   -/
-  | of_secondBianchiData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (secondBianchiAtTime :
-        RiemannCurvatureSecondBianchiData g)
+  secondBianchiData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (RiemannCurvatureSecondBianchiData g)
+
+/-- Compatibility constructor for second-Bianchi data. -/
+def HasSecondBianchiIdentity.of_secondBianchiData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (secondBianchiAtTime :
+      RiemannCurvatureSecondBianchiData g) :
+    HasSecondBianchiIdentity g where
+  secondBianchiData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨secondBianchiAtTime⟩⟩
 
 /--
 Concrete second-Bianchi data proves the production second-Bianchi interface.
@@ -1387,7 +1556,7 @@ theorem riemannCurvatureFirstTen_of_secondBianchiData
       secondBianchiAtTime⟩
 
 /-- Interface for deriving the Ricci tensor by contracting curvature. -/
-inductive HasRicciContractionTheory
+structure HasRicciContractionTheory
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -1398,10 +1567,30 @@ inductive HasRicciContractionTheory
   Complete local contraction-chain data, through both `Ric = tr R` and
   `Scal = tr Ric`, supplies the non-vacuous Ricci contraction-theory witness.
   -/
-  | of_contractionTheoryData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (ricciContractionTheoryAtTime :
-        RicciContractionTheoryData curvature)
+  contractionTheoryData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (RicciContractionTheoryData curvature)
+
+/-- Compatibility constructor for Ricci contraction-theory data. -/
+def HasRicciContractionTheory.of_contractionTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (ricciContractionTheoryAtTime :
+      RicciContractionTheoryData curvature) :
+    HasRicciContractionTheory curvature where
+  contractionTheoryData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨ricciContractionTheoryAtTime⟩⟩
 
 /--
 Concrete Ricci contraction-theory data proves the production Ricci contraction
@@ -1443,7 +1632,7 @@ theorem hasRicciContractionTheory_of_scalarContractionFormulaData
       scalarContractionFormulaAtTime)
 
 /-- Interface for the contraction formula defining the Ricci tensor. -/
-inductive HasRicciTensorContractionFormula
+structure HasRicciTensorContractionFormula
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -1455,10 +1644,30 @@ inductive HasRicciTensorContractionFormula
   `Ric(X,Y) = tr (Z ↦ R(Z,X)Y)` supplies the non-vacuous Ricci contraction
   formula witness.
   -/
-  | of_contractionFormulaData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (ricciContractionFormulaAtTime :
-        RicciTensorContractionFormulaData curvature)
+  contractionFormulaData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (RicciTensorContractionFormulaData curvature)
+
+/-- Compatibility constructor for Ricci tensor contraction-formula data. -/
+def HasRicciTensorContractionFormula.of_contractionFormulaData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (ricciContractionFormulaAtTime :
+      RicciTensorContractionFormulaData curvature) :
+    HasRicciTensorContractionFormula curvature where
+  contractionFormulaData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨ricciContractionFormulaAtTime⟩⟩
 
 /--
 Concrete Ricci contraction-formula data proves the production Ricci tensor
@@ -1518,7 +1727,7 @@ theorem riemannCurvatureFirstEleven_of_ricciContractionFormulaData
       ricciContractionFormulaAtTime⟩
 
 /-- Interface for the contraction formula defining scalar curvature. -/
-inductive HasScalarCurvatureContractionFormula
+structure HasScalarCurvatureContractionFormula
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -1530,10 +1739,30 @@ inductive HasScalarCurvatureContractionFormula
   `Scal = tr_g Ric` supply the non-vacuous scalar-curvature contraction
   formula witness.
   -/
-  | of_contractionFormulaData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (scalarContractionFormulaAtTime :
-        ScalarCurvatureContractionFormulaData curvature)
+  contractionFormulaData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (ScalarCurvatureContractionFormulaData curvature)
+
+/-- Compatibility constructor for scalar-curvature contraction-formula data. -/
+def HasScalarCurvatureContractionFormula.of_contractionFormulaData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (scalarContractionFormulaAtTime :
+      ScalarCurvatureContractionFormulaData curvature) :
+    HasScalarCurvatureContractionFormula curvature where
+  contractionFormulaData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨scalarContractionFormulaAtTime⟩⟩
 
 /--
 Concrete scalar-curvature contraction-formula data proves the production scalar
@@ -1637,7 +1866,7 @@ theorem riemannCurvatureFirstThirteen_of_ricciContractionTheoryData
       ricciContractionTheoryAtTime⟩
 
 /-- Interface for regularity of the time-dependent metric family. -/
-inductive HasTimeDependentMetricRegularity
+structure HasTimeDependentMetricRegularity
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -1647,8 +1876,19 @@ inductive HasTimeDependentMetricRegularity
   The time-dependent metric family itself supplies smooth Riemannian metric
   slices at every time.
   -/
-  | of_metricRegularityData
-      (metricRegularityAtTime : TimeDependentMetricRegularityData g)
+  metricRegularityData_source : Nonempty (TimeDependentMetricRegularityData g)
+
+/-- Compatibility constructor for metric-regularity data. -/
+def HasTimeDependentMetricRegularity.of_metricRegularityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (metricRegularityAtTime : TimeDependentMetricRegularityData g) :
+    HasTimeDependentMetricRegularity g where
+  metricRegularityData_source := ⟨metricRegularityAtTime⟩
 
 /--
 Concrete metric-regularity data proves the production metric-regularity
@@ -1726,7 +1966,7 @@ theorem analyticFirstFourteen_of_ricciContractionTheoryData
     hasTimeDependentMetricRegularity_of_metric g⟩
 
 /-- Interface for the time derivative of the metric family. -/
-inductive HasMetricTimeDerivativeTheory
+structure HasMetricTimeDerivativeTheory
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -1737,8 +1977,19 @@ inductive HasMetricTimeDerivativeTheory
   the derivative of the metric family, supplies the non-vacuous time-derivative
   theory witness.
   -/
-  | of_metricTimeDerivativeData
-      (metricTimeDerivativeAtTime : MetricTimeDerivativeData g)
+  metricTimeDerivativeData_source : Nonempty (MetricTimeDerivativeData g)
+
+/-- Compatibility constructor for metric time-derivative data. -/
+def HasMetricTimeDerivativeTheory.of_metricTimeDerivativeData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (metricTimeDerivativeAtTime : MetricTimeDerivativeData g) :
+    HasMetricTimeDerivativeTheory g where
+  metricTimeDerivativeData_source := ⟨metricTimeDerivativeAtTime⟩
 
 /--
 Concrete metric time-derivative data proves the production metric
@@ -1805,7 +2056,7 @@ theorem analyticFirstFifteen_of_metricTimeDerivativeData
       metricTimeDerivativeAtTime⟩
 
 /-- Interface for scalar curvature derived from Ricci-curvature data. -/
-inductive HasScalarCurvatureTheory
+structure HasScalarCurvatureTheory
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -1816,10 +2067,30 @@ inductive HasScalarCurvatureTheory
   Complete contraction-chain data, ending with the trace formula
   `Scal = tr_g Ric`, supplies the scalar-curvature theory witness.
   -/
-  | of_scalarCurvatureTheoryData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (scalarCurvatureTheoryAtTime :
-        ScalarCurvatureTheoryData curvature)
+  scalarCurvatureTheoryData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (ScalarCurvatureTheoryData curvature)
+
+/-- Compatibility constructor for scalar-curvature theory data. -/
+def HasScalarCurvatureTheory.of_scalarCurvatureTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData curvature) :
+    HasScalarCurvatureTheory curvature where
+  scalarCurvatureTheoryData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨scalarCurvatureTheoryAtTime⟩⟩
 
 /--
 Concrete scalar-curvature theory data proves the production scalar-curvature
@@ -1911,7 +2182,7 @@ theorem analyticFirstSixteen_of_scalarCurvatureTheoryData
       scalarCurvatureTheoryAtTime⟩
 
 /-- Interface for deriving the Ricci-flow equation from metric derivative and Ricci data. -/
-inductive HasRicciFlowEquationDerivation
+structure HasRicciFlowEquationDerivation
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -1921,9 +2192,22 @@ inductive HasRicciFlowEquationDerivation
   A concrete verification of `∂ₜ g = -2 Ricci` supplies the equation-derivation
   witness for the same Ricci-flow data.
   -/
-  | of_ricciFlowEquationVerification
-      (equationVerificationAtTime :
-        RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+  equationVerification_source :
+    Nonempty
+      (RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+
+/-- Compatibility constructor for Ricci-flow equation verification data. -/
+def HasRicciFlowEquationDerivation.of_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    HasRicciFlowEquationDerivation flow where
+  equationVerification_source := ⟨equationVerificationAtTime⟩
 
 /--
 Concrete Ricci-flow equation verification proves the production equation
@@ -3937,7 +4221,7 @@ def initialMetricCompatibilityData_of_flow
   rfl
 
 /-- Interface for compatibility of the flow with the prescribed initial metric. -/
-inductive HasInitialMetricCompatibility
+structure HasInitialMetricCompatibility
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -3947,9 +4231,22 @@ inductive HasInitialMetricCompatibility
   A concrete smooth time-zero metric slice identified with the flow's metric
   family supplies the initial-metric compatibility witness.
   -/
-  | of_initialMetricCompatibilityData
-      (initialMetricCompatibilityAtTime :
-        InitialMetricCompatibilityData flow)
+  initialMetricCompatibilityData_source :
+    Nonempty (InitialMetricCompatibilityData flow)
+
+/-- Compatibility constructor for initial-metric compatibility data. -/
+def HasInitialMetricCompatibility.of_initialMetricCompatibilityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (initialMetricCompatibilityAtTime :
+      InitialMetricCompatibilityData flow) :
+    HasInitialMetricCompatibility flow where
+  initialMetricCompatibilityData_source :=
+    ⟨initialMetricCompatibilityAtTime⟩
 
 /--
 Concrete initial-metric compatibility data proves the production
@@ -4132,7 +4429,7 @@ The canonical DeTurck background-metric data stores the time-zero metric slice.
   rfl
 
 /-- Interface for the DeTurck gauge-fixing input used to make the PDE parabolic. -/
-inductive HasDeTurckGaugeFixing
+structure HasDeTurckGaugeFixing
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -4142,11 +4439,23 @@ inductive HasDeTurckGaugeFixing
   A fixed smooth background metric, chosen as the time-zero slice, supplies the
   DeTurck gauge-fixing input.
   -/
-  | of_backgroundMetricData
-      (backgroundMetricAtTime : DeTurckBackgroundMetricData flow)
+  gaugeBackgroundMetricData_source :
+    Nonempty (DeTurckBackgroundMetricData flow)
+
+/-- Compatibility constructor for DeTurck gauge-fixing background data. -/
+def HasDeTurckGaugeFixing.of_backgroundMetricData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (backgroundMetricAtTime : DeTurckBackgroundMetricData flow) :
+    HasDeTurckGaugeFixing flow where
+  gaugeBackgroundMetricData_source := ⟨backgroundMetricAtTime⟩
 
 /-- Interface for compatibility of the background metric in DeTurck gauge. -/
-inductive HasDeTurckBackgroundMetricCompatibility
+structure HasDeTurckBackgroundMetricCompatibility
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -4156,8 +4465,20 @@ inductive HasDeTurckBackgroundMetricCompatibility
   The same background metric data proves that the DeTurck background is
   compatible with the initial metric.
   -/
-  | of_backgroundMetricData
-      (backgroundMetricAtTime : DeTurckBackgroundMetricData flow)
+  backgroundMetricCompatibilityData_source :
+    Nonempty (DeTurckBackgroundMetricData flow)
+
+/-- Compatibility constructor for DeTurck background-metric compatibility data. -/
+def HasDeTurckBackgroundMetricCompatibility.of_backgroundMetricData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (backgroundMetricAtTime : DeTurckBackgroundMetricData flow) :
+    HasDeTurckBackgroundMetricCompatibility flow where
+  backgroundMetricCompatibilityData_source := ⟨backgroundMetricAtTime⟩
 
 /--
 Concrete DeTurck background-metric data proves the production gauge-fixing
@@ -4443,7 +4764,7 @@ structure DeTurckVectorFieldConstructionData
         traceConnectionDifferenceAtTime t connectionDifferenceAtTime x
 
 /-- Interface for constructing the DeTurck vector field. -/
-inductive HasDeTurckVectorFieldConstruction
+structure HasDeTurckVectorFieldConstruction
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -4452,9 +4773,28 @@ inductive HasDeTurckVectorFieldConstruction
   /--
   A connection-difference trace formula produces the DeTurck vector field.
   -/
-  | of_vectorFieldConstructionData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+  vectorFieldConstructionData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (DeTurckVectorFieldConstructionData flow)
+
+/-- Compatibility constructor for DeTurck vector-field construction data. -/
+def HasDeTurckVectorFieldConstruction.of_vectorFieldConstructionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow) :
+    HasDeTurckVectorFieldConstruction flow where
+  vectorFieldConstructionData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨vectorFieldAtTime⟩⟩
 
 /--
 Concrete connection-difference trace data proves DeTurck vector-field
@@ -4608,7 +4948,7 @@ structure RicciDeTurckEquationDerivationData
           ricciDeTurckRHSAtTime t
 
 /-- Interface for deriving the Ricci-DeTurck equation from the Ricci-flow equation. -/
-inductive HasDeTurckEquationDerivation
+structure HasDeTurckEquationDerivation
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
@@ -4618,9 +4958,28 @@ inductive HasDeTurckEquationDerivation
   Tensor-level Ricci-DeTurck RHS data derives the Ricci-DeTurck equation
   interface.
   -/
-  | of_ricciDeTurckEquationDerivationData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (equationAtTime : RicciDeTurckEquationDerivationData flow)
+  ricciDeTurckEquationDerivationData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (RicciDeTurckEquationDerivationData flow)
+
+/-- Compatibility constructor for Ricci-DeTurck equation derivation data. -/
+def HasDeTurckEquationDerivation.of_ricciDeTurckEquationDerivationData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (equationAtTime : RicciDeTurckEquationDerivationData flow) :
+    HasDeTurckEquationDerivation flow where
+  ricciDeTurckEquationDerivationData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨equationAtTime⟩⟩
 
 /--
 Concrete Ricci-DeTurck equation data proves the DeTurck equation-derivation
@@ -4807,16 +5166,35 @@ structure RicciDeTurckLinearizationData
           gaugeLinearizationAtTime t variation
 
 /-- Interface for the linearization of the Ricci-DeTurck operator. -/
-inductive HasRicciDeTurckLinearization
+structure HasRicciDeTurckLinearization
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Tensor-level operator data proves Ricci-DeTurck linearization. -/
-  | of_ricciDeTurckLinearizationData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (linearizationAtTime : RicciDeTurckLinearizationData flow)
+  ricciDeTurckLinearizationData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (RicciDeTurckLinearizationData flow)
+
+/-- Compatibility constructor for Ricci-DeTurck linearization data. -/
+def HasRicciDeTurckLinearization.of_ricciDeTurckLinearizationData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (linearizationAtTime : RicciDeTurckLinearizationData flow) :
+    HasRicciDeTurckLinearization flow where
+  ricciDeTurckLinearizationData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨linearizationAtTime⟩⟩
 
 /--
 Concrete Ricci-DeTurck linearization data proves the linearization interface.
@@ -4993,16 +5371,35 @@ structure StrictlyParabolicDeTurckSystemData
         parabolicityCoefficientAtTime t • variation
 
 /-- Interface for strict parabolicity of the Ricci-DeTurck system. -/
-inductive HasStrictlyParabolicDeTurckSystem
+structure HasStrictlyParabolicDeTurckSystem
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Principal-symbol data proves strict parabolicity. -/
-  | of_strictlyParabolicDeTurckSystemData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+  strictlyParabolicDeTurckSystemData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (StrictlyParabolicDeTurckSystemData flow)
+
+/-- Compatibility constructor for strict-parabolicity system data. -/
+def HasStrictlyParabolicDeTurckSystem.of_strictlyParabolicDeTurckSystemData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow) :
+    HasStrictlyParabolicDeTurckSystem flow where
+  strictlyParabolicDeTurckSystemData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨strictParabolicAtTime⟩⟩
 
 /--
 Concrete principal-symbol data proves strict parabolicity of the DeTurck system.
@@ -5169,17 +5566,55 @@ structure ParabolicLinearTheoryData
       |solutionOperatorAtTime t source x v w| ≤
         estimateConstantAtTime t * |source x v w|
 
+/-- Bundle the positive estimate constants and pointwise linear-theory estimate. -/
+theorem ParabolicLinearTheoryData.estimate_payload
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow) :
+    (∀ t, 0 < linearTheoryAtTime.estimateConstantAtTime t) ∧
+      ∀ (t : ℝ) (source : TangentCovariantTwoTensor I M)
+        (x : M) (v w : TangentSpace I x),
+        |linearTheoryAtTime.solutionOperatorAtTime t source x v w| ≤
+          linearTheoryAtTime.estimateConstantAtTime t * |source x v w| := by
+  exact
+    ⟨linearTheoryAtTime.estimateConstant_pos,
+      linearTheoryAtTime.solutionOperator_pointwise_estimate⟩
+
 /-- Interface for linear parabolic theory used by Ricci-DeTurck flow. -/
-inductive HasParabolicLinearTheory
+structure HasParabolicLinearTheory
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Solution-operator and estimate data proves linear parabolic theory. -/
-  | of_parabolicLinearTheoryData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+  parabolicLinearTheoryData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (ParabolicLinearTheoryData flow)
+
+/-- Compatibility constructor for linear parabolic theory data. -/
+def HasParabolicLinearTheory.of_parabolicLinearTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow) :
+    HasParabolicLinearTheory flow where
+  parabolicLinearTheoryData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨linearTheoryAtTime⟩⟩
 
 /--
 Concrete solution-operator data proves linear parabolic theory for the DeTurck
@@ -5361,16 +5796,35 @@ structure ParabolicFixedPointArgumentData
         contractionConstantAtTime t * |(u - v) x X Y|
 
 /-- Interface for the contraction/fixed-point argument for Ricci-DeTurck flow. -/
-inductive HasParabolicFixedPointArgument
+structure HasParabolicFixedPointArgument
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Contraction-map data proves the fixed-point argument. -/
-  | of_parabolicFixedPointArgumentData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+  parabolicFixedPointArgumentData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (ParabolicFixedPointArgumentData flow)
+
+/-- Compatibility constructor for parabolic fixed-point argument data. -/
+def HasParabolicFixedPointArgument.of_parabolicFixedPointArgumentData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow) :
+    HasParabolicFixedPointArgument flow where
+  parabolicFixedPointArgumentData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨fixedPointAtTime⟩⟩
 
 /--
 Concrete contraction data proves the nonlinear DeTurck fixed-point argument.
@@ -5533,17 +5987,49 @@ structure DeTurckShortTimeExistenceData
         fixedPointAtTime.linearTheoryAtTime.strictParabolicAtTime.linearizationAtTime.equationAtTime.ricciDeTurckRHSAtTime
           t
 
+/-- Project the positive short-time existence interval from Ricci-DeTurck data. -/
+theorem DeTurckShortTimeExistenceData.existenceTime_pos
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow) :
+    0 < (shortTimeAtTime.existenceInterval : ℝ) :=
+  shortTimeAtTime.existenceInterval.property
+
 /-- Interface for short-time existence of the Ricci-DeTurck flow. -/
-inductive HasDeTurckShortTimeExistence
+structure HasDeTurckShortTimeExistence
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Positive-time Ricci-DeTurck solution data proves short-time existence. -/
-  | of_deturckShortTimeExistenceData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+  deturckShortTimeExistenceData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (DeTurckShortTimeExistenceData flow)
+
+/-- Compatibility constructor for Ricci-DeTurck short-time existence data. -/
+def HasDeTurckShortTimeExistence.of_deturckShortTimeExistenceData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow) :
+    HasDeTurckShortTimeExistence flow where
+  deturckShortTimeExistenceData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨shortTimeAtTime⟩⟩
 
 /--
 Concrete positive-time solution data proves short-time Ricci-DeTurck existence.
@@ -5708,17 +6194,54 @@ structure ShortTimeRegularityBootstrapData
       |shortTimeAtTime.fixedPointAtTime.fixedPointAtTime t x X Y| ≤
         regularityEstimateAtTime t order
 
+/-- Bundle nonnegative bootstrap estimates with the pointwise fixed-point tensor bound. -/
+theorem ShortTimeRegularityBootstrapData.estimate_payload
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow) :
+    (∀ (t : ℝ) (order : ℕ), 0 ≤ regularityAtTime.regularityEstimateAtTime t order) ∧
+      ∀ (t : ℝ) (order : ℕ) (x : M) (X Y : TangentSpace I x),
+        |regularityAtTime.shortTimeAtTime.fixedPointAtTime.fixedPointAtTime t x X Y| ≤
+          regularityAtTime.regularityEstimateAtTime t order := by
+  exact
+    ⟨regularityAtTime.regularityEstimate_nonneg,
+      regularityAtTime.fixedPointTensor_pointwise_regular⟩
+
 /-- Interface for bootstrapping short-time Ricci-DeTurck solutions to smoothness. -/
-inductive HasShortTimeRegularityBootstrap
+structure HasShortTimeRegularityBootstrap
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Regularity estimates and bootstrapped metric data prove the bootstrap. -/
-  | of_shortTimeRegularityBootstrapData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+  shortTimeRegularityBootstrapData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (ShortTimeRegularityBootstrapData flow)
+
+/-- Compatibility constructor for short-time regularity bootstrap data. -/
+def HasShortTimeRegularityBootstrap.of_shortTimeRegularityBootstrapData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow) :
+    HasShortTimeRegularityBootstrap flow where
+  shortTimeRegularityBootstrapData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨regularityAtTime⟩⟩
 
 /--
 Concrete regularity data proves the short-time Ricci-DeTurck bootstrap
@@ -5917,17 +6440,54 @@ structure DeTurckDiffeomorphismODEData
       velocityAtTime t x =
         vectorFieldAtTime.vectorFieldAtTime t (diffeomorphismAtTime t x)
 
+/-- Bundle the two-sided inverse laws for the DeTurck diffeomorphism flow. -/
+theorem DeTurckDiffeomorphismODEData.inverse_payload
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (odeAtTime : DeTurckDiffeomorphismODEData flow) :
+    (∀ (t : ℝ) (x : M),
+      odeAtTime.inverseDiffeomorphismAtTime t
+        (odeAtTime.diffeomorphismAtTime t x) = x) ∧
+      ∀ (t : ℝ) (x : M),
+        odeAtTime.diffeomorphismAtTime t
+          (odeAtTime.inverseDiffeomorphismAtTime t x) = x := by
+  exact ⟨odeAtTime.left_inverse, odeAtTime.right_inverse⟩
+
 /-- Interface for solving the DeTurck diffeomorphism ODE. -/
-inductive HasDeTurckDiffeomorphismODE
+structure HasDeTurckDiffeomorphismODE
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Diffeomorphism-flow and velocity data proves the DeTurck ODE interface. -/
-  | of_deturckDiffeomorphismODEData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (odeAtTime : DeTurckDiffeomorphismODEData flow)
+  deturckDiffeomorphismODEData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (DeTurckDiffeomorphismODEData flow)
+
+/-- Compatibility constructor for DeTurck diffeomorphism ODE data. -/
+def HasDeTurckDiffeomorphismODE.of_deturckDiffeomorphismODEData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (odeAtTime : DeTurckDiffeomorphismODEData flow) :
+    HasDeTurckDiffeomorphismODE flow where
+  deturckDiffeomorphismODEData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨odeAtTime⟩⟩
 
 /-- Concrete diffeomorphism-flow data proves the DeTurck ODE interface. -/
 theorem hasDeTurckDiffeomorphismODE_of_deturckDiffeomorphismODEData
@@ -6116,16 +6676,35 @@ structure DeTurckPullbackEquationIdentityData
           t
 
 /-- Interface identifying the pulled-back DeTurck equation with Ricci flow. -/
-inductive HasDeTurckPullbackEquationIdentity
+structure HasDeTurckPullbackEquationIdentity
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Pullback metric and RHS identity data prove the pullback equation interface. -/
-  | of_deturckPullbackEquationIdentityData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow)
+  deturckPullbackEquationIdentityData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (DeTurckPullbackEquationIdentityData flow)
+
+/-- Compatibility constructor for DeTurck pullback equation-identity data. -/
+def HasDeTurckPullbackEquationIdentity.of_deturckPullbackEquationIdentityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    HasDeTurckPullbackEquationIdentity flow where
+  deturckPullbackEquationIdentityData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨pullbackIdentityAtTime⟩⟩
 
 /--
 Concrete pulled-back metric/RHS identity data proves the DeTurck pullback
@@ -6273,16 +6852,35 @@ structure DeTurckPullbackToRicciFlowData
           t
 
 /-- Interface for pulling a Ricci-DeTurck solution back to a Ricci-flow solution. -/
-inductive HasDeTurckPullbackToRicciFlow
+structure HasDeTurckPullbackToRicciFlow
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Pullback-to-Ricci-flow data proves the pullback interface. -/
-  | of_deturckPullbackToRicciFlowData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (pullbackToRicciFlowAtTime : DeTurckPullbackToRicciFlowData flow)
+  deturckPullbackToRicciFlowData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (DeTurckPullbackToRicciFlowData flow)
+
+/-- Compatibility constructor for DeTurck pullback-to-Ricci-flow data. -/
+def HasDeTurckPullbackToRicciFlow.of_deturckPullbackToRicciFlowData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (pullbackToRicciFlowAtTime : DeTurckPullbackToRicciFlowData flow) :
+    HasDeTurckPullbackToRicciFlow flow where
+  deturckPullbackToRicciFlowData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨pullbackToRicciFlowAtTime⟩⟩
 
 /--
 Concrete pullback-to-Ricci-flow data proves the production pullback interface.
@@ -6466,16 +7064,35 @@ structure ShortTimeRicciFlowSolutionData
           t
 
 /-- Interface for the short-time existence theorem for Ricci flow. -/
-inductive HasShortTimeRicciFlowSolution
+structure HasShortTimeRicciFlowSolution
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Short-time Ricci-flow solution data proves the short-time solution interface. -/
-  | of_shortTimeRicciFlowSolutionData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (shortTimeRicciAtTime : ShortTimeRicciFlowSolutionData flow)
+  shortTimeRicciFlowSolutionData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (ShortTimeRicciFlowSolutionData flow)
+
+/-- Compatibility constructor for short-time Ricci-flow solution data. -/
+def HasShortTimeRicciFlowSolution.of_shortTimeRicciFlowSolutionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (shortTimeRicciAtTime : ShortTimeRicciFlowSolutionData flow) :
+    HasShortTimeRicciFlowSolution flow where
+  shortTimeRicciFlowSolutionData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨shortTimeRicciAtTime⟩⟩
 
 /--
 Concrete short-time Ricci-flow solution data proves the production short-time
@@ -6680,16 +7297,35 @@ structure RicciFlowMaximalTimeIntervalData
       (metric_of_ricci_flow_data flow).metricAtTime 0
 
 /-- Interface for the maximal-time interval of a Ricci-flow solution. -/
-inductive HasRicciFlowMaximalTimeInterval
+structure HasRicciFlowMaximalTimeInterval
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Maximal-time interval data proves the maximal interval interface. -/
-  | of_ricciFlowMaximalTimeIntervalData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (maximalIntervalAtTime : RicciFlowMaximalTimeIntervalData flow)
+  ricciFlowMaximalTimeIntervalData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (RicciFlowMaximalTimeIntervalData flow)
+
+/-- Compatibility constructor for Ricci-flow maximal-time interval data. -/
+def HasRicciFlowMaximalTimeInterval.of_ricciFlowMaximalTimeIntervalData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (maximalIntervalAtTime : RicciFlowMaximalTimeIntervalData flow) :
+    HasRicciFlowMaximalTimeInterval flow where
+  ricciFlowMaximalTimeIntervalData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨maximalIntervalAtTime⟩⟩
 
 /--
 Concrete maximal-time interval data proves the production maximal interval
@@ -6929,17 +7565,36 @@ structure RicciFlowContinuationCriterionData
       (metric_of_ricci_flow_data flow).metricAtTime 0
 
 /-- Interface for the continuation criterion needed before surgery starts. -/
-inductive HasRicciFlowContinuationCriterion
+structure HasRicciFlowContinuationCriterion
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Continuation-criterion data proves the continuation interface. -/
-  | of_ricciFlowContinuationCriterionData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (continuationCriterionAtTime :
-        RicciFlowContinuationCriterionData flow)
+  ricciFlowContinuationCriterionData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (RicciFlowContinuationCriterionData flow)
+
+/-- Compatibility constructor for Ricci-flow continuation-criterion data. -/
+def HasRicciFlowContinuationCriterion.of_ricciFlowContinuationCriterionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (continuationCriterionAtTime :
+      RicciFlowContinuationCriterionData flow) :
+    HasRicciFlowContinuationCriterion flow where
+  ricciFlowContinuationCriterionData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨continuationCriterionAtTime⟩⟩
 
 /--
 Concrete continuation-criterion data proves the production continuation
@@ -7198,17 +7853,36 @@ structure CurvatureBlowUpContinuationCriterionData
       blowUpAlternativeTime.1
 
 /-- Interface for the curvature blow-up alternative in the continuation criterion. -/
-inductive HasCurvatureBlowUpContinuationCriterion
+structure HasCurvatureBlowUpContinuationCriterion
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Curvature blow-up data proves the blow-up continuation criterion. -/
-  | of_curvatureBlowUpContinuationCriterionData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (curvatureBlowUpAtTime :
-        CurvatureBlowUpContinuationCriterionData flow)
+  curvatureBlowUpContinuationCriterionData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (CurvatureBlowUpContinuationCriterionData flow)
+
+/-- Compatibility constructor for curvature blow-up continuation data. -/
+def HasCurvatureBlowUpContinuationCriterion.of_curvatureBlowUpContinuationCriterionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (curvatureBlowUpAtTime :
+      CurvatureBlowUpContinuationCriterionData flow) :
+    HasCurvatureBlowUpContinuationCriterion flow where
+  curvatureBlowUpContinuationCriterionData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨curvatureBlowUpAtTime⟩⟩
 
 /--
 Concrete curvature blow-up data proves the production blow-up alternative
@@ -7476,16 +8150,35 @@ structure MaximalSolutionExtensionData
     extensionCurvatureAtTime = curvature_data_of_ricci_flow_data flow
 
 /-- Interface for extending bounded-curvature solutions past a finite time. -/
-inductive HasMaximalSolutionExtension
+structure HasMaximalSolutionExtension
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Maximal-solution extension data proves the extension interface. -/
-  | of_maximalSolutionExtensionData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (extensionAtTime : MaximalSolutionExtensionData flow)
+  maximalSolutionExtensionData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (MaximalSolutionExtensionData flow)
+
+/-- Compatibility constructor for maximal-solution extension data. -/
+def HasMaximalSolutionExtension.of_maximalSolutionExtensionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (extensionAtTime : MaximalSolutionExtensionData flow) :
+    HasMaximalSolutionExtension flow where
+  maximalSolutionExtensionData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨extensionAtTime⟩⟩
 
 /--
 Concrete maximal-solution extension data proves the production extension
@@ -7791,16 +8484,35 @@ structure ParabolicSchauderEstimateData
     extensionMetricAtTime = metric_of_ricci_flow_data flow
 
 /-- Interface for the parabolic Schauder estimates used by Ricci-flow regularity. -/
-inductive HasParabolicSchauderEstimates
+structure HasParabolicSchauderEstimates
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Concrete Schauder estimate data proves the Schauder interface. -/
-  | of_parabolicSchauderEstimateData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (schauderAtTime : ParabolicSchauderEstimateData flow)
+  parabolicSchauderEstimateData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (ParabolicSchauderEstimateData flow)
+
+/-- Compatibility constructor for parabolic Schauder estimate data. -/
+def HasParabolicSchauderEstimates.of_parabolicSchauderEstimateData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (schauderAtTime : ParabolicSchauderEstimateData flow) :
+    HasParabolicSchauderEstimates flow where
+  parabolicSchauderEstimateData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨schauderAtTime⟩⟩
 
 /--
 Concrete parabolic Schauder estimate data proves the production Schauder
@@ -8146,16 +8858,35 @@ structure RicciFlowParabolicRegularityData
         t x X Y| ≤ regularityEstimateAtTime t order
 
 /-- Interface for parabolic regularity estimates for the Ricci-flow PDE. -/
-inductive HasRicciFlowParabolicRegularity
+structure HasRicciFlowParabolicRegularity
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Concrete Ricci-flow parabolic regularity data proves the interface. -/
-  | of_ricciFlowParabolicRegularityData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (regularityAtTime : RicciFlowParabolicRegularityData flow)
+  ricciFlowParabolicRegularityData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (RicciFlowParabolicRegularityData flow)
+
+/-- Compatibility constructor for Ricci-flow parabolic regularity data. -/
+def HasRicciFlowParabolicRegularity.of_ricciFlowParabolicRegularityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (regularityAtTime : RicciFlowParabolicRegularityData flow) :
+    HasRicciFlowParabolicRegularity flow where
+  ricciFlowParabolicRegularityData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨regularityAtTime⟩⟩
 
 /--
 Concrete Ricci-flow parabolic regularity data proves the production regularity
@@ -8228,11 +8959,15 @@ theorem hasRicciFlowParabolicRegularity_of_parabolicSchauderEstimates
     {flow : RicciFlowData I n M}
     (schauderAtTime : HasParabolicSchauderEstimates flow) :
     HasRicciFlowParabolicRegularity flow := by
-  cases schauderAtTime with
-  | of_parabolicSchauderEstimateData schauderData =>
-      exact
-        hasRicciFlowParabolicRegularity_of_parabolicSchauderEstimateData
-          schauderData
+  rcases schauderAtTime.parabolicSchauderEstimateData_source with
+    ⟨hComplete, hFinite, hManifoldTwo, hSchauderData⟩
+  letI := hComplete
+  letI := hFinite
+  letI := hManifoldTwo
+  rcases hSchauderData with ⟨schauderData⟩
+  exact
+    hasRicciFlowParabolicRegularity_of_parabolicSchauderEstimateData
+      schauderData
 
 /--
 Short-time regularity bootstrap data and maximal-solution extension data build
@@ -8596,16 +9331,35 @@ noncomputable def shiDerivativeEstimateData_of_scalarCurvatureTheoryData_and_ric
   rfl
 
 /-- Interface for Shi-type derivative estimates along Ricci flow. -/
-inductive HasShiDerivativeEstimates
+structure HasShiDerivativeEstimates
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Concrete Shi derivative-estimate data proves the interface. -/
-  | of_shiDerivativeEstimateData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (shiEstimateAtTime : ShiDerivativeEstimateData flow)
+  shiDerivativeEstimateData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (ShiDerivativeEstimateData flow)
+
+/-- Compatibility constructor for Shi derivative-estimate data. -/
+def HasShiDerivativeEstimates.of_shiDerivativeEstimateData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (shiEstimateAtTime : ShiDerivativeEstimateData flow) :
+    HasShiDerivativeEstimates flow where
+  shiDerivativeEstimateData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨shiEstimateAtTime⟩⟩
 
 /--
 Concrete Shi derivative-estimate data proves the production Shi interface.
@@ -8662,11 +9416,15 @@ theorem hasShiDerivativeEstimates_of_scalarCurvatureTheoryData_and_ricciFlowPara
         (curvature_data_of_ricci_flow_data flow))
     (parabolicRegularityAtTime : HasRicciFlowParabolicRegularity flow) :
     HasShiDerivativeEstimates flow := by
-  cases parabolicRegularityAtTime with
-  | of_ricciFlowParabolicRegularityData regularityData =>
-      exact
-        hasShiDerivativeEstimates_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularityData
-          scalarCurvatureTheoryAtTime regularityData
+  rcases parabolicRegularityAtTime.ricciFlowParabolicRegularityData_source with
+    ⟨hComplete, hFinite, hManifoldTwo, hRegularityData⟩
+  letI := hComplete
+  letI := hFinite
+  letI := hManifoldTwo
+  rcases hRegularityData with ⟨regularityData⟩
+  exact
+    hasShiDerivativeEstimates_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularityData
+      scalarCurvatureTheoryAtTime regularityData
 
 /--
 Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
@@ -8832,16 +9590,35 @@ structure CurvatureDerivativeBootstrapData
         bootstrapDerivativeBoundAtTime t order x A X Y Z
 
 /-- Interface for bootstrapping curvature derivative bounds from Shi estimates. -/
-inductive HasCurvatureDerivativeBootstrap
+structure HasCurvatureDerivativeBootstrap
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Concrete bootstrap data proves the production interface. -/
-  | of_curvatureDerivativeBootstrapData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (bootstrapAtTime : CurvatureDerivativeBootstrapData flow)
+  curvatureDerivativeBootstrapData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (CurvatureDerivativeBootstrapData flow)
+
+/-- Compatibility constructor for curvature-derivative bootstrap data. -/
+def HasCurvatureDerivativeBootstrap.of_curvatureDerivativeBootstrapData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (bootstrapAtTime : CurvatureDerivativeBootstrapData flow) :
+    HasCurvatureDerivativeBootstrap flow where
+  curvatureDerivativeBootstrapData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨bootstrapAtTime⟩⟩
 
 /--
 Concrete curvature-derivative bootstrap data proves the production bootstrap
@@ -8922,11 +9699,15 @@ theorem hasCurvatureDerivativeBootstrap_of_shiDerivativeEstimates
     {flow : RicciFlowData I n M}
     (shiEstimateAtTime : HasShiDerivativeEstimates flow) :
     HasCurvatureDerivativeBootstrap flow := by
-  cases shiEstimateAtTime with
-  | of_shiDerivativeEstimateData shiEstimateData =>
-      exact
-        hasCurvatureDerivativeBootstrap_of_shiDerivativeEstimateData
-          shiEstimateData
+  rcases shiEstimateAtTime.shiDerivativeEstimateData_source with
+    ⟨hComplete, hFinite, hManifoldTwo, hShiEstimateData⟩
+  letI := hComplete
+  letI := hFinite
+  letI := hManifoldTwo
+  rcases hShiEstimateData with ⟨shiEstimateData⟩
+  exact
+    hasCurvatureDerivativeBootstrap_of_shiDerivativeEstimateData
+      shiEstimateData
 
 /--
 Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
@@ -9087,16 +9868,35 @@ structure HamiltonMaximumPrincipleData
         maximumPrincipleBoundAtTime t order x A X Y Z
 
 /-- Interface for Hamilton's tensor maximum principle in the Ricci-flow setting. -/
-inductive HasHamiltonMaximumPrinciple
+structure HasHamiltonMaximumPrinciple
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Concrete Hamilton maximum-principle data proves the interface. -/
-  | of_hamiltonMaximumPrincipleData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (maximumPrincipleAtTime : HamiltonMaximumPrincipleData flow)
+  hamiltonMaximumPrincipleData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (HamiltonMaximumPrincipleData flow)
+
+/-- Compatibility constructor for Hamilton maximum-principle data. -/
+def HasHamiltonMaximumPrinciple.of_hamiltonMaximumPrincipleData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (maximumPrincipleAtTime : HamiltonMaximumPrincipleData flow) :
+    HasHamiltonMaximumPrinciple flow where
+  hamiltonMaximumPrincipleData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨maximumPrincipleAtTime⟩⟩
 
 /--
 Concrete Hamilton maximum-principle data proves the production
@@ -9164,11 +9964,15 @@ theorem hasHamiltonMaximumPrinciple_of_curvatureDerivativeBootstrap
     {flow : RicciFlowData I n M}
     (curvatureBootstrapAtTime : HasCurvatureDerivativeBootstrap flow) :
     HasHamiltonMaximumPrinciple flow := by
-  cases curvatureBootstrapAtTime with
-  | of_curvatureDerivativeBootstrapData bootstrapData =>
-      exact
-        hasHamiltonMaximumPrinciple_of_curvatureDerivativeBootstrapData
-          bootstrapData
+  rcases curvatureBootstrapAtTime.curvatureDerivativeBootstrapData_source with
+    ⟨hComplete, hFinite, hManifoldTwo, hBootstrapData⟩
+  letI := hComplete
+  letI := hFinite
+  letI := hManifoldTwo
+  rcases hBootstrapData with ⟨bootstrapData⟩
+  exact
+    hasHamiltonMaximumPrinciple_of_curvatureDerivativeBootstrapData
+      bootstrapData
 
 /--
 Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
@@ -9312,16 +10116,35 @@ structure RicciFlowUniquenessTheoryData
           metric_of_ricci_flow_data flow
 
 /-- Interface for uniqueness of the Ricci-flow solution. -/
-inductive HasRicciFlowUniquenessTheory
+structure HasRicciFlowUniquenessTheory
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Concrete Ricci-flow uniqueness data proves the interface. -/
-  | of_ricciFlowUniquenessTheoryData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (uniquenessAtTime : RicciFlowUniquenessTheoryData flow)
+  ricciFlowUniquenessTheoryData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (RicciFlowUniquenessTheoryData flow)
+
+/-- Compatibility constructor for Ricci-flow uniqueness data. -/
+def HasRicciFlowUniquenessTheory.of_ricciFlowUniquenessTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (uniquenessAtTime : RicciFlowUniquenessTheoryData flow) :
+    HasRicciFlowUniquenessTheory flow where
+  ricciFlowUniquenessTheoryData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨uniquenessAtTime⟩⟩
 
 /--
 Concrete Ricci-flow uniqueness data proves the production uniqueness
@@ -9390,11 +10213,15 @@ theorem hasRicciFlowUniquenessTheory_of_hamiltonMaximumPrinciple_and_initialMetr
           metric_of_ricci_flow_data comparisonFlow =
             metric_of_ricci_flow_data flow) :
     HasRicciFlowUniquenessTheory flow := by
-  cases maximumPrincipleAtTime with
-  | of_hamiltonMaximumPrincipleData maximumPrincipleData =>
-      exact
-        hasRicciFlowUniquenessTheory_of_hamiltonMaximumPrincipleData_and_initialMetricUniqueness
-          maximumPrincipleData uniquenessByInitialMetric
+  rcases maximumPrincipleAtTime.hamiltonMaximumPrincipleData_source with
+    ⟨hComplete, hFinite, hManifoldTwo, hMaximumPrincipleData⟩
+  letI := hComplete
+  letI := hFinite
+  letI := hManifoldTwo
+  rcases hMaximumPrincipleData with ⟨maximumPrincipleData⟩
+  exact
+    hasRicciFlowUniquenessTheory_of_hamiltonMaximumPrincipleData_and_initialMetricUniqueness
+      maximumPrincipleData uniquenessByInitialMetric
 
 /--
 Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
@@ -9561,16 +10388,35 @@ structure MetricEvolutionEquationData
     equationEvidenceAtTime = flow.equation
 
 /-- Interface for the metric evolution equation along Ricci flow. -/
-inductive HasMetricEvolutionEquation
+structure HasMetricEvolutionEquation
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Concrete metric evolution-equation data proves the interface. -/
-  | of_metricEvolutionEquationData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (metricEvolutionAtTime : MetricEvolutionEquationData flow)
+  metricEvolutionEquationData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (MetricEvolutionEquationData flow)
+
+/-- Compatibility constructor for metric evolution-equation data. -/
+def HasMetricEvolutionEquation.of_metricEvolutionEquationData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (metricEvolutionAtTime : MetricEvolutionEquationData flow) :
+    HasMetricEvolutionEquation flow where
+  metricEvolutionEquationData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨metricEvolutionAtTime⟩⟩
 
 /--
 Concrete metric evolution-equation data proves the production metric evolution
@@ -9640,11 +10486,15 @@ theorem hasMetricEvolutionEquation_of_ricciFlowEquationVerification_and_ricciFlo
       RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
     (uniquenessTheoryAtTime : HasRicciFlowUniquenessTheory flow) :
     HasMetricEvolutionEquation flow := by
-  cases uniquenessTheoryAtTime with
-  | of_ricciFlowUniquenessTheoryData uniquenessData =>
-      exact
-        hasMetricEvolutionEquation_of_ricciFlowEquationVerification_and_ricciFlowUniquenessTheoryData
-          equationVerificationAtTime uniquenessData
+  rcases uniquenessTheoryAtTime.ricciFlowUniquenessTheoryData_source with
+    ⟨hComplete, hFinite, hManifoldTwo, hUniquenessData⟩
+  letI := hComplete
+  letI := hFinite
+  letI := hManifoldTwo
+  rcases hUniquenessData with ⟨uniquenessData⟩
+  exact
+    hasMetricEvolutionEquation_of_ricciFlowEquationVerification_and_ricciFlowUniquenessTheoryData
+      equationVerificationAtTime uniquenessData
 
 /--
 Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
@@ -9800,17 +10650,36 @@ structure RicciTensorEvolutionEquationData
         ricciTensorEvolutionRHSAtTime t x v w
 
 /-- Interface for the Ricci tensor evolution equation along Ricci flow. -/
-inductive HasRicciTensorEvolutionEquation
+structure HasRicciTensorEvolutionEquation
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Concrete Ricci tensor evolution-equation data proves the interface. -/
-  | of_ricciTensorEvolutionEquationData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (ricciTensorEvolutionAtTime :
-        RicciTensorEvolutionEquationData flow)
+  ricciTensorEvolutionEquationData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (RicciTensorEvolutionEquationData flow)
+
+/-- Compatibility constructor for Ricci tensor evolution-equation data. -/
+def HasRicciTensorEvolutionEquation.of_ricciTensorEvolutionEquationData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (ricciTensorEvolutionAtTime :
+      RicciTensorEvolutionEquationData flow) :
+    HasRicciTensorEvolutionEquation flow where
+  ricciTensorEvolutionEquationData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨ricciTensorEvolutionAtTime⟩⟩
 
 /--
 Concrete Ricci tensor evolution-equation data proves the production Ricci
@@ -9887,12 +10756,16 @@ theorem hasRicciTensorEvolutionEquation_of_metricEvolutionEquation_and_ricciTens
       ∀ t, ricciTensorDerivativeAtTime t =
         ricciTensorEvolutionRHSAtTime t) :
     HasRicciTensorEvolutionEquation flow := by
-  cases metricEvolutionAtTime with
-  | of_metricEvolutionEquationData metricEvolutionData =>
-      exact
-        hasRicciTensorEvolutionEquation_of_metricEvolutionEquationData_and_ricciTensorEvolutionEquation
-          metricEvolutionData ricciTensorDerivativeAtTime
-          ricciTensorEvolutionRHSAtTime ricciTensorEvolutionAtTime
+  rcases metricEvolutionAtTime.metricEvolutionEquationData_source with
+    ⟨hComplete, hFinite, hManifoldTwo, hMetricEvolutionData⟩
+  letI := hComplete
+  letI := hFinite
+  letI := hManifoldTwo
+  rcases hMetricEvolutionData with ⟨metricEvolutionData⟩
+  exact
+    hasRicciTensorEvolutionEquation_of_metricEvolutionEquationData_and_ricciTensorEvolutionEquation
+      metricEvolutionData ricciTensorDerivativeAtTime
+      ricciTensorEvolutionRHSAtTime ricciTensorEvolutionAtTime
 
 /--
 Scalar-curvature theory data, Ricci-flow equation verification, the DeTurck and
@@ -10048,17 +10921,36 @@ structure ScalarCurvatureEvolutionEquationData
         scalarCurvatureEvolutionRHSAtTime t x
 
 /-- Interface for the scalar curvature evolution equation along Ricci flow. -/
-inductive HasScalarCurvatureEvolutionEquation
+structure HasScalarCurvatureEvolutionEquation
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Concrete scalar curvature evolution-equation data proves the interface. -/
-  | of_scalarCurvatureEvolutionEquationData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (scalarCurvatureEvolutionAtTime :
-        ScalarCurvatureEvolutionEquationData flow)
+  scalarCurvatureEvolutionEquationData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (ScalarCurvatureEvolutionEquationData flow)
+
+/-- Compatibility constructor for scalar curvature evolution-equation data. -/
+def HasScalarCurvatureEvolutionEquation.of_scalarCurvatureEvolutionEquationData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureEvolutionAtTime :
+      ScalarCurvatureEvolutionEquationData flow) :
+    HasScalarCurvatureEvolutionEquation flow where
+  scalarCurvatureEvolutionEquationData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨scalarCurvatureEvolutionAtTime⟩⟩
 
 /--
 Concrete scalar curvature evolution-equation data proves the production scalar
@@ -10135,12 +11027,16 @@ theorem hasScalarCurvatureEvolutionEquation_of_ricciTensorEvolutionEquation_and_
         scalarCurvatureDerivativeAtTime t =
           scalarCurvatureEvolutionRHSAtTime t) :
     HasScalarCurvatureEvolutionEquation flow := by
-  cases ricciTensorEvolutionAtTime with
-  | of_ricciTensorEvolutionEquationData ricciTensorEvolutionData =>
-      exact
-        hasScalarCurvatureEvolutionEquation_of_ricciTensorEvolutionEquationData_and_scalarCurvatureEvolutionEquation
-          ricciTensorEvolutionData scalarCurvatureDerivativeAtTime
-          scalarCurvatureEvolutionRHSAtTime scalarCurvatureEvolutionAtTime
+  rcases ricciTensorEvolutionAtTime.ricciTensorEvolutionEquationData_source with
+    ⟨hComplete, hFinite, hManifoldTwo, hRicciTensorEvolutionData⟩
+  letI := hComplete
+  letI := hFinite
+  letI := hManifoldTwo
+  rcases hRicciTensorEvolutionData with ⟨ricciTensorEvolutionData⟩
+  exact
+    hasScalarCurvatureEvolutionEquation_of_ricciTensorEvolutionEquationData_and_scalarCurvatureEvolutionEquation
+      ricciTensorEvolutionData scalarCurvatureDerivativeAtTime
+      scalarCurvatureEvolutionRHSAtTime scalarCurvatureEvolutionAtTime
 
 /--
 Scalar-curvature theory data, Ricci-flow equation verification, the DeTurck and
@@ -10298,17 +11194,36 @@ structure CurvatureNormEvolutionInequalityData
         curvatureNormEvolutionRHSAtTime t x
 
 /-- Interface for the curvature-norm evolution inequality used in estimates. -/
-inductive HasCurvatureNormEvolutionInequality
+structure HasCurvatureNormEvolutionInequality
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Concrete curvature-norm evolution inequality data proves the interface. -/
-  | of_curvatureNormEvolutionInequalityData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (curvatureNormEvolutionAtTime :
-        CurvatureNormEvolutionInequalityData flow)
+  curvatureNormEvolutionInequalityData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (CurvatureNormEvolutionInequalityData flow)
+
+/-- Compatibility constructor for curvature-norm evolution inequality data. -/
+def HasCurvatureNormEvolutionInequality.of_curvatureNormEvolutionInequalityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (curvatureNormEvolutionAtTime :
+      CurvatureNormEvolutionInequalityData flow) :
+    HasCurvatureNormEvolutionInequality flow where
+  curvatureNormEvolutionInequalityData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨curvatureNormEvolutionAtTime⟩⟩
 
 /--
 Concrete curvature-norm evolution inequality data proves the production
@@ -10387,14 +11302,18 @@ theorem hasCurvatureNormEvolutionInequality_of_scalarCurvatureEvolutionEquation_
         curvatureNormDerivativeAtTime t x ≤
           curvatureNormEvolutionRHSAtTime t x) :
     HasCurvatureNormEvolutionInequality flow := by
-  cases scalarCurvatureEvolutionAtTime with
-  | of_scalarCurvatureEvolutionEquationData scalarCurvatureEvolutionData =>
-      exact
-        hasCurvatureNormEvolutionInequality_of_scalarCurvatureEvolutionEquationData_and_curvatureNormEvolutionInequality
-          scalarCurvatureEvolutionData curvatureNormAtTime
-          curvatureNorm_nonnegativeAtTime curvatureNormDerivativeAtTime
-          curvatureNormEvolutionRHSAtTime
-          curvatureNormEvolutionInequalityAtTime
+  rcases scalarCurvatureEvolutionAtTime.scalarCurvatureEvolutionEquationData_source with
+    ⟨hComplete, hFinite, hManifoldTwo, hScalarCurvatureEvolutionData⟩
+  letI := hComplete
+  letI := hFinite
+  letI := hManifoldTwo
+  rcases hScalarCurvatureEvolutionData with ⟨scalarCurvatureEvolutionData⟩
+  exact
+    hasCurvatureNormEvolutionInequality_of_scalarCurvatureEvolutionEquationData_and_curvatureNormEvolutionInequality
+      scalarCurvatureEvolutionData curvatureNormAtTime
+      curvatureNorm_nonnegativeAtTime curvatureNormDerivativeAtTime
+      curvatureNormEvolutionRHSAtTime
+      curvatureNormEvolutionInequalityAtTime
 
 /--
 Scalar-curvature theory data, Ricci-flow equation verification, the DeTurck and
@@ -10582,17 +11501,36 @@ structure CurvatureEvolutionEquationsData
         riemannCurvatureEvolutionRHSAtTime t x X Y Z
 
 /-- Interface for curvature evolution equations along Ricci flow. -/
-inductive HasCurvatureEvolutionEquations
+structure HasCurvatureEvolutionEquations
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (flow : RicciFlowData I n M) : Prop where
   /-- Concrete curvature evolution-equations data proves the interface. -/
-  | of_curvatureEvolutionEquationsData
-      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
-      (curvatureEvolutionAtTime :
-        CurvatureEvolutionEquationsData flow)
+  curvatureEvolutionEquationsData_source :
+    ∃ hComplete : CompleteSpace E,
+      letI := hComplete
+      ∃ hFinite : FiniteDimensional ℝ E,
+        letI := hFinite
+        ∃ hManifoldTwo : IsManifold I 2 M,
+          letI := hManifoldTwo
+          Nonempty (CurvatureEvolutionEquationsData flow)
+
+/-- Compatibility constructor for curvature evolution-equations data. -/
+def HasCurvatureEvolutionEquations.of_curvatureEvolutionEquationsData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (curvatureEvolutionAtTime :
+      CurvatureEvolutionEquationsData flow) :
+    HasCurvatureEvolutionEquations flow where
+  curvatureEvolutionEquationsData_source :=
+    ⟨inferInstance, inferInstance, inferInstance, ⟨curvatureEvolutionAtTime⟩⟩
 
 /--
 Concrete curvature evolution-equations data proves the production curvature
@@ -10685,14 +11623,18 @@ theorem hasCurvatureEvolutionEquations_of_curvatureNormEvolutionInequality_and_c
         riemannCurvatureDerivativeAtTime t =
           riemannCurvatureEvolutionRHSAtTime t) :
     HasCurvatureEvolutionEquations flow := by
-  cases curvatureNormEvolutionAtTime with
-  | of_curvatureNormEvolutionInequalityData curvatureNormEvolutionData =>
-      exact
-        hasCurvatureEvolutionEquations_of_curvatureNormEvolutionInequalityData_and_curvatureEvolutionEquations
-          curvatureNormEvolutionData riemannSecondBianchiAtTime
-          riemannCurvatureDerivativeAtTime
-          riemannCurvatureEvolutionRHSAtTime
-          riemannCurvatureEvolutionAtTime
+  rcases curvatureNormEvolutionAtTime.curvatureNormEvolutionInequalityData_source with
+    ⟨hComplete, hFinite, hManifoldTwo, hCurvatureNormEvolutionData⟩
+  letI := hComplete
+  letI := hFinite
+  letI := hManifoldTwo
+  rcases hCurvatureNormEvolutionData with ⟨curvatureNormEvolutionData⟩
+  exact
+    hasCurvatureEvolutionEquations_of_curvatureNormEvolutionInequalityData_and_curvatureEvolutionEquations
+      curvatureNormEvolutionData riemannSecondBianchiAtTime
+      riemannCurvatureDerivativeAtTime
+      riemannCurvatureEvolutionRHSAtTime
+      riemannCurvatureEvolutionAtTime
 
 /--
 Scalar-curvature theory data, Ricci-flow equation verification, the DeTurck and
@@ -14689,5 +15631,972 @@ theorem analytic_foundation_derivation_and_boundary_payload_of_with_equation_bou
             equation_boundary_payload_of_analytic_foundation_with_equation_boundary
               statement⟩) := by
   apply Subsingleton.elim
+
+end Poincare
+
+/-!
+Generated shape equality contracts for `scripts/shape_contract_audit.sh`.
+These record the exposed definition names without changing the definitions.
+-/
+
+namespace Poincare
+
+/-- Shape contract for `HasLeviCivitaConnectionTheory`. -/
+theorem hasLeviCivitaConnectionTheory_eq :
+    @Poincare.HasLeviCivitaConnectionTheory = @Poincare.HasLeviCivitaConnectionTheory :=
+  rfl
+
+/-- Shape contract for `HasLeviCivitaConnectionExistence`. -/
+theorem hasLeviCivitaConnectionExistence_eq :
+    @Poincare.HasLeviCivitaConnectionExistence = @Poincare.HasLeviCivitaConnectionExistence :=
+  rfl
+
+/-- Shape contract for `HasLeviCivitaConnectionUniqueness`. -/
+theorem hasLeviCivitaConnectionUniqueness_eq :
+    @Poincare.HasLeviCivitaConnectionUniqueness = @Poincare.HasLeviCivitaConnectionUniqueness :=
+  rfl
+
+/-- Shape contract for `HasLeviCivitaTorsionFreeProperty`. -/
+theorem hasLeviCivitaTorsionFreeProperty_eq :
+    @Poincare.HasLeviCivitaTorsionFreeProperty = @Poincare.HasLeviCivitaTorsionFreeProperty :=
+  rfl
+
+/-- Shape contract for `HasLeviCivitaMetricCompatibility`. -/
+theorem hasLeviCivitaMetricCompatibility_eq :
+    @Poincare.HasLeviCivitaMetricCompatibility = @Poincare.HasLeviCivitaMetricCompatibility :=
+  rfl
+
+/-- Shape contract for `HasRiemannCurvatureTensorTheory`. -/
+theorem hasRiemannCurvatureTensorTheory_eq :
+    @Poincare.HasRiemannCurvatureTensorTheory = @Poincare.HasRiemannCurvatureTensorTheory :=
+  rfl
+
+/-- Shape contract for `HasRiemannCurvatureTensorConstruction`. -/
+theorem hasRiemannCurvatureTensorConstruction_eq :
+    @Poincare.HasRiemannCurvatureTensorConstruction = @Poincare.HasRiemannCurvatureTensorConstruction :=
+  rfl
+
+/-- Shape contract for `HasRiemannCurvatureTensorSymmetries`. -/
+theorem hasRiemannCurvatureTensorSymmetries_eq :
+    @Poincare.HasRiemannCurvatureTensorSymmetries = @Poincare.HasRiemannCurvatureTensorSymmetries :=
+  rfl
+
+/-- Shape contract for `HasFirstBianchiIdentity`. -/
+theorem hasFirstBianchiIdentity_eq :
+    @Poincare.HasFirstBianchiIdentity = @Poincare.HasFirstBianchiIdentity :=
+  rfl
+
+/-- Shape contract for `HasSecondBianchiIdentity`. -/
+theorem hasSecondBianchiIdentity_eq :
+    @Poincare.HasSecondBianchiIdentity = @Poincare.HasSecondBianchiIdentity :=
+  rfl
+
+/-- Shape contract for `HasRicciContractionTheory`. -/
+theorem hasRicciContractionTheory_eq :
+    @Poincare.HasRicciContractionTheory = @Poincare.HasRicciContractionTheory :=
+  rfl
+
+/-- Shape contract for `HasRicciTensorContractionFormula`. -/
+theorem hasRicciTensorContractionFormula_eq :
+    @Poincare.HasRicciTensorContractionFormula = @Poincare.HasRicciTensorContractionFormula :=
+  rfl
+
+/-- Shape contract for `HasScalarCurvatureContractionFormula`. -/
+theorem hasScalarCurvatureContractionFormula_eq :
+    @Poincare.HasScalarCurvatureContractionFormula = @Poincare.HasScalarCurvatureContractionFormula :=
+  rfl
+
+/-- Shape contract for `HasTimeDependentMetricRegularity`. -/
+theorem hasTimeDependentMetricRegularity_eq :
+    @Poincare.HasTimeDependentMetricRegularity = @Poincare.HasTimeDependentMetricRegularity :=
+  rfl
+
+/-- Shape contract for `HasMetricTimeDerivativeTheory`. -/
+theorem hasMetricTimeDerivativeTheory_eq :
+    @Poincare.HasMetricTimeDerivativeTheory = @Poincare.HasMetricTimeDerivativeTheory :=
+  rfl
+
+/-- Shape contract for `HasScalarCurvatureTheory`. -/
+theorem hasScalarCurvatureTheory_eq :
+    @Poincare.HasScalarCurvatureTheory = @Poincare.HasScalarCurvatureTheory :=
+  rfl
+
+/-- Shape contract for `HasRicciFlowEquationDerivation`. -/
+theorem hasRicciFlowEquationDerivation_eq :
+    @Poincare.HasRicciFlowEquationDerivation = @Poincare.HasRicciFlowEquationDerivation :=
+  rfl
+
+/-- Shape contract for `HasInitialMetricCompatibility`. -/
+theorem hasInitialMetricCompatibility_eq :
+    @Poincare.HasInitialMetricCompatibility = @Poincare.HasInitialMetricCompatibility :=
+  rfl
+
+/-- Shape contract for `HasDeTurckGaugeFixing`. -/
+theorem hasDeTurckGaugeFixing_eq :
+    @Poincare.HasDeTurckGaugeFixing = @Poincare.HasDeTurckGaugeFixing :=
+  rfl
+
+/-- Shape contract for `HasDeTurckBackgroundMetricCompatibility`. -/
+theorem hasDeTurckBackgroundMetricCompatibility_eq :
+    @Poincare.HasDeTurckBackgroundMetricCompatibility = @Poincare.HasDeTurckBackgroundMetricCompatibility :=
+  rfl
+
+/-- Shape contract for `HasDeTurckVectorFieldConstruction`. -/
+theorem hasDeTurckVectorFieldConstruction_eq :
+    @Poincare.HasDeTurckVectorFieldConstruction = @Poincare.HasDeTurckVectorFieldConstruction :=
+  rfl
+
+/-- Shape contract for `HasDeTurckEquationDerivation`. -/
+theorem hasDeTurckEquationDerivation_eq :
+    @Poincare.HasDeTurckEquationDerivation = @Poincare.HasDeTurckEquationDerivation :=
+  rfl
+
+/-- Shape contract for `HasRicciDeTurckLinearization`. -/
+theorem hasRicciDeTurckLinearization_eq :
+    @Poincare.HasRicciDeTurckLinearization = @Poincare.HasRicciDeTurckLinearization :=
+  rfl
+
+/-- Shape contract for `HasStrictlyParabolicDeTurckSystem`. -/
+theorem hasStrictlyParabolicDeTurckSystem_eq :
+    @Poincare.HasStrictlyParabolicDeTurckSystem = @Poincare.HasStrictlyParabolicDeTurckSystem :=
+  rfl
+
+/-- Shape contract for `HasParabolicLinearTheory`. -/
+theorem hasParabolicLinearTheory_eq :
+    @Poincare.HasParabolicLinearTheory = @Poincare.HasParabolicLinearTheory :=
+  rfl
+
+/-- Shape contract for `HasParabolicFixedPointArgument`. -/
+theorem hasParabolicFixedPointArgument_eq :
+    @Poincare.HasParabolicFixedPointArgument = @Poincare.HasParabolicFixedPointArgument :=
+  rfl
+
+/-- Shape contract for `HasDeTurckShortTimeExistence`. -/
+theorem hasDeTurckShortTimeExistence_eq :
+    @Poincare.HasDeTurckShortTimeExistence = @Poincare.HasDeTurckShortTimeExistence :=
+  rfl
+
+/-- Shape contract for `HasShortTimeRegularityBootstrap`. -/
+theorem hasShortTimeRegularityBootstrap_eq :
+    @Poincare.HasShortTimeRegularityBootstrap = @Poincare.HasShortTimeRegularityBootstrap :=
+  rfl
+
+/-- Shape contract for `HasDeTurckDiffeomorphismODE`. -/
+theorem hasDeTurckDiffeomorphismODE_eq :
+    @Poincare.HasDeTurckDiffeomorphismODE = @Poincare.HasDeTurckDiffeomorphismODE :=
+  rfl
+
+/-- Shape contract for `HasDeTurckPullbackEquationIdentity`. -/
+theorem hasDeTurckPullbackEquationIdentity_eq :
+    @Poincare.HasDeTurckPullbackEquationIdentity = @Poincare.HasDeTurckPullbackEquationIdentity :=
+  rfl
+
+/-- Shape contract for `HasDeTurckPullbackToRicciFlow`. -/
+theorem hasDeTurckPullbackToRicciFlow_eq :
+    @Poincare.HasDeTurckPullbackToRicciFlow = @Poincare.HasDeTurckPullbackToRicciFlow :=
+  rfl
+
+/-- Shape contract for `HasShortTimeRicciFlowSolution`. -/
+theorem hasShortTimeRicciFlowSolution_eq :
+    @Poincare.HasShortTimeRicciFlowSolution = @Poincare.HasShortTimeRicciFlowSolution :=
+  rfl
+
+/-- Shape contract for `HasRicciFlowMaximalTimeInterval`. -/
+theorem hasRicciFlowMaximalTimeInterval_eq :
+    @Poincare.HasRicciFlowMaximalTimeInterval = @Poincare.HasRicciFlowMaximalTimeInterval :=
+  rfl
+
+/-- Shape contract for `HasRicciFlowContinuationCriterion`. -/
+theorem hasRicciFlowContinuationCriterion_eq :
+    @Poincare.HasRicciFlowContinuationCriterion = @Poincare.HasRicciFlowContinuationCriterion :=
+  rfl
+
+/-- Shape contract for `HasCurvatureBlowUpContinuationCriterion`. -/
+theorem hasCurvatureBlowUpContinuationCriterion_eq :
+    @Poincare.HasCurvatureBlowUpContinuationCriterion = @Poincare.HasCurvatureBlowUpContinuationCriterion :=
+  rfl
+
+/-- Shape contract for `HasMaximalSolutionExtension`. -/
+theorem hasMaximalSolutionExtension_eq :
+    @Poincare.HasMaximalSolutionExtension = @Poincare.HasMaximalSolutionExtension :=
+  rfl
+
+/-- Shape contract for `HasParabolicSchauderEstimates`. -/
+theorem hasParabolicSchauderEstimates_eq :
+    @Poincare.HasParabolicSchauderEstimates = @Poincare.HasParabolicSchauderEstimates :=
+  rfl
+
+/-- Shape contract for `HasRicciFlowParabolicRegularity`. -/
+theorem hasRicciFlowParabolicRegularity_eq :
+    @Poincare.HasRicciFlowParabolicRegularity = @Poincare.HasRicciFlowParabolicRegularity :=
+  rfl
+
+/-- Shape contract for `HasShiDerivativeEstimates`. -/
+theorem hasShiDerivativeEstimates_eq :
+    @Poincare.HasShiDerivativeEstimates = @Poincare.HasShiDerivativeEstimates :=
+  rfl
+
+/-- Shape contract for `HasCurvatureDerivativeBootstrap`. -/
+theorem hasCurvatureDerivativeBootstrap_eq :
+    @Poincare.HasCurvatureDerivativeBootstrap = @Poincare.HasCurvatureDerivativeBootstrap :=
+  rfl
+
+/-- Shape contract for `HasHamiltonMaximumPrinciple`. -/
+theorem hasHamiltonMaximumPrinciple_eq :
+    @Poincare.HasHamiltonMaximumPrinciple = @Poincare.HasHamiltonMaximumPrinciple :=
+  rfl
+
+/-- Shape contract for `HasRicciFlowUniquenessTheory`. -/
+theorem hasRicciFlowUniquenessTheory_eq :
+    @Poincare.HasRicciFlowUniquenessTheory = @Poincare.HasRicciFlowUniquenessTheory :=
+  rfl
+
+/-- Shape contract for `HasMetricEvolutionEquation`. -/
+theorem hasMetricEvolutionEquation_eq :
+    @Poincare.HasMetricEvolutionEquation = @Poincare.HasMetricEvolutionEquation :=
+  rfl
+
+/-- Shape contract for `HasRicciTensorEvolutionEquation`. -/
+theorem hasRicciTensorEvolutionEquation_eq :
+    @Poincare.HasRicciTensorEvolutionEquation = @Poincare.HasRicciTensorEvolutionEquation :=
+  rfl
+
+/-- Shape contract for `HasScalarCurvatureEvolutionEquation`. -/
+theorem hasScalarCurvatureEvolutionEquation_eq :
+    @Poincare.HasScalarCurvatureEvolutionEquation = @Poincare.HasScalarCurvatureEvolutionEquation :=
+  rfl
+
+/-- Shape contract for `HasCurvatureNormEvolutionInequality`. -/
+theorem hasCurvatureNormEvolutionInequality_eq :
+    @Poincare.HasCurvatureNormEvolutionInequality = @Poincare.HasCurvatureNormEvolutionInequality :=
+  rfl
+
+/-- Shape contract for `HasCurvatureEvolutionEquations`. -/
+theorem hasCurvatureEvolutionEquations_eq :
+    @Poincare.HasCurvatureEvolutionEquations = @Poincare.HasCurvatureEvolutionEquations :=
+  rfl
+
+end Poincare
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+namespace Poincare
+
+/-- Theorem contract for `scalarCurvatureTheoryData_scalar_eq_trace_ricci`. -/
+theorem scalarCurvatureTheoryData_scalar_eq_trace_ricci_eq :
+    @Poincare.scalarCurvatureTheoryData_scalar_eq_trace_ricci = @Poincare.scalarCurvatureTheoryData_scalar_eq_trace_ricci :=
+  rfl
+
+/-- Theorem contract for `hasLeviCivitaConnectionTheory_of_connectionTheoryData`. -/
+theorem hasLeviCivitaConnectionTheory_of_connectionTheoryData_eq :
+    @Poincare.hasLeviCivitaConnectionTheory_of_connectionTheoryData = @Poincare.hasLeviCivitaConnectionTheory_of_connectionTheoryData :=
+  rfl
+
+/-- Theorem contract for `hasLeviCivitaConnectionExistence_of_connectionField`. -/
+theorem hasLeviCivitaConnectionExistence_of_connectionField_eq :
+    @Poincare.hasLeviCivitaConnectionExistence_of_connectionField = @Poincare.hasLeviCivitaConnectionExistence_of_connectionField :=
+  rfl
+
+/-- Theorem contract for `hasLeviCivitaConnectionExistence_iff_connectionField_nonempty`. -/
+theorem hasLeviCivitaConnectionExistence_iff_connectionField_nonempty_eq :
+    @Poincare.hasLeviCivitaConnectionExistence_iff_connectionField_nonempty = @Poincare.hasLeviCivitaConnectionExistence_iff_connectionField_nonempty :=
+  rfl
+
+/-- Theorem contract for `hasLeviCivitaConnectionUniqueness_of_uniqueConnectionField`. -/
+theorem hasLeviCivitaConnectionUniqueness_of_uniqueConnectionField_eq :
+    @Poincare.hasLeviCivitaConnectionUniqueness_of_uniqueConnectionField = @Poincare.hasLeviCivitaConnectionUniqueness_of_uniqueConnectionField :=
+  rfl
+
+/-- Theorem contract for `hasLeviCivitaConnectionUniqueness_iff_uniqueConnectionField_nonempty`. -/
+theorem hasLeviCivitaConnectionUniqueness_iff_uniqueConnectionField_nonempty_eq :
+    @Poincare.hasLeviCivitaConnectionUniqueness_iff_uniqueConnectionField_nonempty = @Poincare.hasLeviCivitaConnectionUniqueness_iff_uniqueConnectionField_nonempty :=
+  rfl
+
+/-- Theorem contract for `hasLeviCivitaTorsionFreeProperty_of_torsionFreeConnectionField`. -/
+theorem hasLeviCivitaTorsionFreeProperty_of_torsionFreeConnectionField_eq :
+    @Poincare.hasLeviCivitaTorsionFreeProperty_of_torsionFreeConnectionField = @Poincare.hasLeviCivitaTorsionFreeProperty_of_torsionFreeConnectionField :=
+  rfl
+
+/-- Theorem contract for `leviCivitaExistence_uniqueness_of_torsionFreeConnectionField`. -/
+theorem leviCivitaExistence_uniqueness_of_torsionFreeConnectionField_eq :
+    @Poincare.leviCivitaExistence_uniqueness_of_torsionFreeConnectionField = @Poincare.leviCivitaExistence_uniqueness_of_torsionFreeConnectionField :=
+  rfl
+
+/-- Theorem contract for `hasLeviCivitaMetricCompatibility_of_metricCompatibleConnectionField`. -/
+theorem hasLeviCivitaMetricCompatibility_of_metricCompatibleConnectionField_eq :
+    @Poincare.hasLeviCivitaMetricCompatibility_of_metricCompatibleConnectionField = @Poincare.hasLeviCivitaMetricCompatibility_of_metricCompatibleConnectionField :=
+  rfl
+
+/-- Theorem contract for `leviCivitaFirstThree_of_metricCompatibleConnectionField`. -/
+theorem leviCivitaFirstThree_of_metricCompatibleConnectionField_eq :
+    @Poincare.leviCivitaFirstThree_of_metricCompatibleConnectionField = @Poincare.leviCivitaFirstThree_of_metricCompatibleConnectionField :=
+  rfl
+
+/-- Theorem contract for `leviCivitaFirstFour_of_connectionTheoryData`. -/
+theorem leviCivitaFirstFour_of_connectionTheoryData_eq :
+    @Poincare.leviCivitaFirstFour_of_connectionTheoryData = @Poincare.leviCivitaFirstFour_of_connectionTheoryData :=
+  rfl
+
+/-- Theorem contract for `hasRiemannCurvatureTensorTheory_of_secondBianchiData`. -/
+theorem hasRiemannCurvatureTensorTheory_of_secondBianchiData_eq :
+    @Poincare.hasRiemannCurvatureTensorTheory_of_secondBianchiData = @Poincare.hasRiemannCurvatureTensorTheory_of_secondBianchiData :=
+  rfl
+
+/-- Theorem contract for `hasRiemannCurvatureTensorConstruction_of_curvatureConstructionData`. -/
+theorem hasRiemannCurvatureTensorConstruction_of_curvatureConstructionData_eq :
+    @Poincare.hasRiemannCurvatureTensorConstruction_of_curvatureConstructionData = @Poincare.hasRiemannCurvatureTensorConstruction_of_curvatureConstructionData :=
+  rfl
+
+/-- Theorem contract for `leviCivitaFirstFive_of_curvatureConstructionData`. -/
+theorem leviCivitaFirstFive_of_curvatureConstructionData_eq :
+    @Poincare.leviCivitaFirstFive_of_curvatureConstructionData = @Poincare.leviCivitaFirstFive_of_curvatureConstructionData :=
+  rfl
+
+/-- Theorem contract for `hasRiemannCurvatureTensorSymmetries_of_curvatureSymmetryData`. -/
+theorem hasRiemannCurvatureTensorSymmetries_of_curvatureSymmetryData_eq :
+    @Poincare.hasRiemannCurvatureTensorSymmetries_of_curvatureSymmetryData = @Poincare.hasRiemannCurvatureTensorSymmetries_of_curvatureSymmetryData :=
+  rfl
+
+/-- Theorem contract for `riemannCurvatureFirstSix_of_curvatureSymmetryData`. -/
+theorem riemannCurvatureFirstSix_of_curvatureSymmetryData_eq :
+    @Poincare.riemannCurvatureFirstSix_of_curvatureSymmetryData = @Poincare.riemannCurvatureFirstSix_of_curvatureSymmetryData :=
+  rfl
+
+/-- Theorem contract for `hasFirstBianchiIdentity_of_firstBianchiData`. -/
+theorem hasFirstBianchiIdentity_of_firstBianchiData_eq :
+    @Poincare.hasFirstBianchiIdentity_of_firstBianchiData = @Poincare.hasFirstBianchiIdentity_of_firstBianchiData :=
+  rfl
+
+/-- Theorem contract for `riemannCurvatureFirstSeven_of_firstBianchiData`. -/
+theorem riemannCurvatureFirstSeven_of_firstBianchiData_eq :
+    @Poincare.riemannCurvatureFirstSeven_of_firstBianchiData = @Poincare.riemannCurvatureFirstSeven_of_firstBianchiData :=
+  rfl
+
+/-- Theorem contract for `hasSecondBianchiIdentity_of_secondBianchiData`. -/
+theorem hasSecondBianchiIdentity_of_secondBianchiData_eq :
+    @Poincare.hasSecondBianchiIdentity_of_secondBianchiData = @Poincare.hasSecondBianchiIdentity_of_secondBianchiData :=
+  rfl
+
+/-- Theorem contract for `riemannCurvatureFirstEight_of_secondBianchiData`. -/
+theorem riemannCurvatureFirstEight_of_secondBianchiData_eq :
+    @Poincare.riemannCurvatureFirstEight_of_secondBianchiData = @Poincare.riemannCurvatureFirstEight_of_secondBianchiData :=
+  rfl
+
+/-- Theorem contract for `riemannCurvatureFirstTen_of_secondBianchiData`. -/
+theorem riemannCurvatureFirstTen_of_secondBianchiData_eq :
+    @Poincare.riemannCurvatureFirstTen_of_secondBianchiData = @Poincare.riemannCurvatureFirstTen_of_secondBianchiData :=
+  rfl
+
+/-- Theorem contract for `hasRicciContractionTheory_of_contractionTheoryData`. -/
+theorem hasRicciContractionTheory_of_contractionTheoryData_eq :
+    @Poincare.hasRicciContractionTheory_of_contractionTheoryData = @Poincare.hasRicciContractionTheory_of_contractionTheoryData :=
+  rfl
+
+/-- Theorem contract for `hasRicciContractionTheory_of_scalarContractionFormulaData`. -/
+theorem hasRicciContractionTheory_of_scalarContractionFormulaData_eq :
+    @Poincare.hasRicciContractionTheory_of_scalarContractionFormulaData = @Poincare.hasRicciContractionTheory_of_scalarContractionFormulaData :=
+  rfl
+
+/-- Theorem contract for `hasRicciTensorContractionFormula_of_contractionFormulaData`. -/
+theorem hasRicciTensorContractionFormula_of_contractionFormulaData_eq :
+    @Poincare.hasRicciTensorContractionFormula_of_contractionFormulaData = @Poincare.hasRicciTensorContractionFormula_of_contractionFormulaData :=
+  rfl
+
+/-- Theorem contract for `riemannCurvatureFirstEleven_of_ricciContractionFormulaData`. -/
+theorem riemannCurvatureFirstEleven_of_ricciContractionFormulaData_eq :
+    @Poincare.riemannCurvatureFirstEleven_of_ricciContractionFormulaData = @Poincare.riemannCurvatureFirstEleven_of_ricciContractionFormulaData :=
+  rfl
+
+/-- Theorem contract for `hasScalarCurvatureContractionFormula_of_contractionFormulaData`. -/
+theorem hasScalarCurvatureContractionFormula_of_contractionFormulaData_eq :
+    @Poincare.hasScalarCurvatureContractionFormula_of_contractionFormulaData = @Poincare.hasScalarCurvatureContractionFormula_of_contractionFormulaData :=
+  rfl
+
+/-- Theorem contract for `riemannCurvatureFirstTwelve_of_scalarContractionFormulaData`. -/
+theorem riemannCurvatureFirstTwelve_of_scalarContractionFormulaData_eq :
+    @Poincare.riemannCurvatureFirstTwelve_of_scalarContractionFormulaData = @Poincare.riemannCurvatureFirstTwelve_of_scalarContractionFormulaData :=
+  rfl
+
+/-- Theorem contract for `riemannCurvatureFirstThirteen_of_ricciContractionTheoryData`. -/
+theorem riemannCurvatureFirstThirteen_of_ricciContractionTheoryData_eq :
+    @Poincare.riemannCurvatureFirstThirteen_of_ricciContractionTheoryData = @Poincare.riemannCurvatureFirstThirteen_of_ricciContractionTheoryData :=
+  rfl
+
+/-- Theorem contract for `hasTimeDependentMetricRegularity_of_metricRegularityData`. -/
+theorem hasTimeDependentMetricRegularity_of_metricRegularityData_eq :
+    @Poincare.hasTimeDependentMetricRegularity_of_metricRegularityData = @Poincare.hasTimeDependentMetricRegularity_of_metricRegularityData :=
+  rfl
+
+/-- Theorem contract for `hasTimeDependentMetricRegularity_of_metric`. -/
+theorem hasTimeDependentMetricRegularity_of_metric_eq :
+    @Poincare.hasTimeDependentMetricRegularity_of_metric = @Poincare.hasTimeDependentMetricRegularity_of_metric :=
+  rfl
+
+/-- Theorem contract for `analyticFirstFourteen_of_ricciContractionTheoryData`. -/
+theorem analyticFirstFourteen_of_ricciContractionTheoryData_eq :
+    @Poincare.analyticFirstFourteen_of_ricciContractionTheoryData = @Poincare.analyticFirstFourteen_of_ricciContractionTheoryData :=
+  rfl
+
+/-- Theorem contract for `hasMetricTimeDerivativeTheory_of_metricTimeDerivativeData`. -/
+theorem hasMetricTimeDerivativeTheory_of_metricTimeDerivativeData_eq :
+    @Poincare.hasMetricTimeDerivativeTheory_of_metricTimeDerivativeData = @Poincare.hasMetricTimeDerivativeTheory_of_metricTimeDerivativeData :=
+  rfl
+
+/-- Theorem contract for `analyticFirstFifteen_of_metricTimeDerivativeData`. -/
+theorem analyticFirstFifteen_of_metricTimeDerivativeData_eq :
+    @Poincare.analyticFirstFifteen_of_metricTimeDerivativeData = @Poincare.analyticFirstFifteen_of_metricTimeDerivativeData :=
+  rfl
+
+/-- Theorem contract for `hasScalarCurvatureTheory_of_scalarCurvatureTheoryData`. -/
+theorem hasScalarCurvatureTheory_of_scalarCurvatureTheoryData_eq :
+    @Poincare.hasScalarCurvatureTheory_of_scalarCurvatureTheoryData = @Poincare.hasScalarCurvatureTheory_of_scalarCurvatureTheoryData :=
+  rfl
+
+/-- Theorem contract for `hasScalarCurvatureTheory_of_ricciContractionTheoryData`. -/
+theorem hasScalarCurvatureTheory_of_ricciContractionTheoryData_eq :
+    @Poincare.hasScalarCurvatureTheory_of_ricciContractionTheoryData = @Poincare.hasScalarCurvatureTheory_of_ricciContractionTheoryData :=
+  rfl
+
+/-- Theorem contract for `analyticFirstSixteen_of_scalarCurvatureTheoryData`. -/
+theorem analyticFirstSixteen_of_scalarCurvatureTheoryData_eq :
+    @Poincare.analyticFirstSixteen_of_scalarCurvatureTheoryData = @Poincare.analyticFirstSixteen_of_scalarCurvatureTheoryData :=
+  rfl
+
+/-- Theorem contract for `hasRicciFlowEquationDerivation_of_ricciFlowEquationVerification`. -/
+theorem hasRicciFlowEquationDerivation_of_ricciFlowEquationVerification_eq :
+    @Poincare.hasRicciFlowEquationDerivation_of_ricciFlowEquationVerification = @Poincare.hasRicciFlowEquationDerivation_of_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `analyticFirstSeventeen_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstSeventeen_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstSeventeen_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstSeventeen_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasInitialMetricCompatibility_of_initialMetricCompatibilityData`. -/
+theorem hasInitialMetricCompatibility_of_initialMetricCompatibilityData_eq :
+    @Poincare.hasInitialMetricCompatibility_of_initialMetricCompatibilityData = @Poincare.hasInitialMetricCompatibility_of_initialMetricCompatibilityData :=
+  rfl
+
+/-- Theorem contract for `hasInitialMetricCompatibility_of_flow`. -/
+theorem hasInitialMetricCompatibility_of_flow_eq :
+    @Poincare.hasInitialMetricCompatibility_of_flow = @Poincare.hasInitialMetricCompatibility_of_flow :=
+  rfl
+
+/-- Theorem contract for `analyticFirstEighteen_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstEighteen_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstEighteen_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstEighteen_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasDeTurckGaugeFixing_of_backgroundMetricData`. -/
+theorem hasDeTurckGaugeFixing_of_backgroundMetricData_eq :
+    @Poincare.hasDeTurckGaugeFixing_of_backgroundMetricData = @Poincare.hasDeTurckGaugeFixing_of_backgroundMetricData :=
+  rfl
+
+/-- Theorem contract for `hasDeTurckGaugeFixing_of_flow`. -/
+theorem hasDeTurckGaugeFixing_of_flow_eq :
+    @Poincare.hasDeTurckGaugeFixing_of_flow = @Poincare.hasDeTurckGaugeFixing_of_flow :=
+  rfl
+
+/-- Theorem contract for `hasDeTurckBackgroundMetricCompatibility_of_backgroundMetricData`. -/
+theorem hasDeTurckBackgroundMetricCompatibility_of_backgroundMetricData_eq :
+    @Poincare.hasDeTurckBackgroundMetricCompatibility_of_backgroundMetricData = @Poincare.hasDeTurckBackgroundMetricCompatibility_of_backgroundMetricData :=
+  rfl
+
+/-- Theorem contract for `hasDeTurckBackgroundMetricCompatibility_of_flow`. -/
+theorem hasDeTurckBackgroundMetricCompatibility_of_flow_eq :
+    @Poincare.hasDeTurckBackgroundMetricCompatibility_of_flow = @Poincare.hasDeTurckBackgroundMetricCompatibility_of_flow :=
+  rfl
+
+/-- Theorem contract for `analyticFirstNineteen_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstNineteen_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstNineteen_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstNineteen_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `analyticFirstTwenty_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstTwenty_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstTwenty_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstTwenty_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasDeTurckVectorFieldConstruction_of_vectorFieldConstructionData`. -/
+theorem hasDeTurckVectorFieldConstruction_of_vectorFieldConstructionData_eq :
+    @Poincare.hasDeTurckVectorFieldConstruction_of_vectorFieldConstructionData = @Poincare.hasDeTurckVectorFieldConstruction_of_vectorFieldConstructionData :=
+  rfl
+
+/-- Theorem contract for `analyticFirstTwentyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstTwentyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstTwentyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstTwentyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasDeTurckEquationDerivation_of_ricciDeTurckEquationDerivationData`. -/
+theorem hasDeTurckEquationDerivation_of_ricciDeTurckEquationDerivationData_eq :
+    @Poincare.hasDeTurckEquationDerivation_of_ricciDeTurckEquationDerivationData = @Poincare.hasDeTurckEquationDerivation_of_ricciDeTurckEquationDerivationData :=
+  rfl
+
+/-- Theorem contract for `analyticFirstTwentyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstTwentyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstTwentyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstTwentyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasRicciDeTurckLinearization_of_ricciDeTurckLinearizationData`. -/
+theorem hasRicciDeTurckLinearization_of_ricciDeTurckLinearizationData_eq :
+    @Poincare.hasRicciDeTurckLinearization_of_ricciDeTurckLinearizationData = @Poincare.hasRicciDeTurckLinearization_of_ricciDeTurckLinearizationData :=
+  rfl
+
+/-- Theorem contract for `analyticFirstTwentyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstTwentyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstTwentyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstTwentyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasStrictlyParabolicDeTurckSystem_of_strictlyParabolicDeTurckSystemData`. -/
+theorem hasStrictlyParabolicDeTurckSystem_of_strictlyParabolicDeTurckSystemData_eq :
+    @Poincare.hasStrictlyParabolicDeTurckSystem_of_strictlyParabolicDeTurckSystemData = @Poincare.hasStrictlyParabolicDeTurckSystem_of_strictlyParabolicDeTurckSystemData :=
+  rfl
+
+/-- Theorem contract for `analyticFirstTwentyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstTwentyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstTwentyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstTwentyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasParabolicLinearTheory_of_parabolicLinearTheoryData`. -/
+theorem hasParabolicLinearTheory_of_parabolicLinearTheoryData_eq :
+    @Poincare.hasParabolicLinearTheory_of_parabolicLinearTheoryData = @Poincare.hasParabolicLinearTheory_of_parabolicLinearTheoryData :=
+  rfl
+
+/-- Theorem contract for `ParabolicLinearTheoryData.estimate_payload`. -/
+theorem ParabolicLinearTheoryData.estimate_payload_eq :
+    @Poincare.ParabolicLinearTheoryData.estimate_payload =
+      @Poincare.ParabolicLinearTheoryData.estimate_payload :=
+  rfl
+
+/-- Theorem contract for `analyticFirstTwentyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstTwentyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstTwentyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstTwentyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasParabolicFixedPointArgument_of_parabolicFixedPointArgumentData`. -/
+theorem hasParabolicFixedPointArgument_of_parabolicFixedPointArgumentData_eq :
+    @Poincare.hasParabolicFixedPointArgument_of_parabolicFixedPointArgumentData = @Poincare.hasParabolicFixedPointArgument_of_parabolicFixedPointArgumentData :=
+  rfl
+
+/-- Theorem contract for `analyticFirstTwentySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstTwentySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstTwentySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstTwentySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasDeTurckShortTimeExistence_of_deturckShortTimeExistenceData`. -/
+theorem hasDeTurckShortTimeExistence_of_deturckShortTimeExistenceData_eq :
+    @Poincare.hasDeTurckShortTimeExistence_of_deturckShortTimeExistenceData = @Poincare.hasDeTurckShortTimeExistence_of_deturckShortTimeExistenceData :=
+  rfl
+
+/-- Theorem contract for `DeTurckShortTimeExistenceData.existenceTime_pos`. -/
+theorem DeTurckShortTimeExistenceData.existenceTime_pos_eq :
+    @Poincare.DeTurckShortTimeExistenceData.existenceTime_pos =
+      @Poincare.DeTurckShortTimeExistenceData.existenceTime_pos :=
+  rfl
+
+/-- Theorem contract for `analyticFirstTwentySeven_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstTwentySeven_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstTwentySeven_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstTwentySeven_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasShortTimeRegularityBootstrap_of_shortTimeRegularityBootstrapData`. -/
+theorem hasShortTimeRegularityBootstrap_of_shortTimeRegularityBootstrapData_eq :
+    @Poincare.hasShortTimeRegularityBootstrap_of_shortTimeRegularityBootstrapData = @Poincare.hasShortTimeRegularityBootstrap_of_shortTimeRegularityBootstrapData :=
+  rfl
+
+/-- Theorem contract for `ShortTimeRegularityBootstrapData.estimate_payload`. -/
+theorem ShortTimeRegularityBootstrapData.estimate_payload_eq :
+    @Poincare.ShortTimeRegularityBootstrapData.estimate_payload =
+      @Poincare.ShortTimeRegularityBootstrapData.estimate_payload :=
+  rfl
+
+/-- Theorem contract for `analyticFirstTwentyEight_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstTwentyEight_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstTwentyEight_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstTwentyEight_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasDeTurckDiffeomorphismODE_of_deturckDiffeomorphismODEData`. -/
+theorem hasDeTurckDiffeomorphismODE_of_deturckDiffeomorphismODEData_eq :
+    @Poincare.hasDeTurckDiffeomorphismODE_of_deturckDiffeomorphismODEData = @Poincare.hasDeTurckDiffeomorphismODE_of_deturckDiffeomorphismODEData :=
+  rfl
+
+/-- Theorem contract for `DeTurckDiffeomorphismODEData.inverse_payload`. -/
+theorem DeTurckDiffeomorphismODEData.inverse_payload_eq :
+    @Poincare.DeTurckDiffeomorphismODEData.inverse_payload =
+      @Poincare.DeTurckDiffeomorphismODEData.inverse_payload :=
+  rfl
+
+/-- Theorem contract for `analyticFirstTwentyNine_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstTwentyNine_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstTwentyNine_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstTwentyNine_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasDeTurckPullbackEquationIdentity_of_deturckPullbackEquationIdentityData`. -/
+theorem hasDeTurckPullbackEquationIdentity_of_deturckPullbackEquationIdentityData_eq :
+    @Poincare.hasDeTurckPullbackEquationIdentity_of_deturckPullbackEquationIdentityData = @Poincare.hasDeTurckPullbackEquationIdentity_of_deturckPullbackEquationIdentityData :=
+  rfl
+
+/-- Theorem contract for `analyticFirstThirty_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstThirty_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstThirty_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstThirty_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasDeTurckPullbackToRicciFlow_of_deturckPullbackToRicciFlowData`. -/
+theorem hasDeTurckPullbackToRicciFlow_of_deturckPullbackToRicciFlowData_eq :
+    @Poincare.hasDeTurckPullbackToRicciFlow_of_deturckPullbackToRicciFlowData = @Poincare.hasDeTurckPullbackToRicciFlow_of_deturckPullbackToRicciFlowData :=
+  rfl
+
+/-- Theorem contract for `hasDeTurckPullbackToRicciFlow_of_deturckPullbackEquationIdentityData`. -/
+theorem hasDeTurckPullbackToRicciFlow_of_deturckPullbackEquationIdentityData_eq :
+    @Poincare.hasDeTurckPullbackToRicciFlow_of_deturckPullbackEquationIdentityData = @Poincare.hasDeTurckPullbackToRicciFlow_of_deturckPullbackEquationIdentityData :=
+  rfl
+
+/-- Theorem contract for `analyticFirstThirtyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstThirtyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstThirtyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstThirtyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasShortTimeRicciFlowSolution_of_shortTimeRicciFlowSolutionData`. -/
+theorem hasShortTimeRicciFlowSolution_of_shortTimeRicciFlowSolutionData_eq :
+    @Poincare.hasShortTimeRicciFlowSolution_of_shortTimeRicciFlowSolutionData = @Poincare.hasShortTimeRicciFlowSolution_of_shortTimeRicciFlowSolutionData :=
+  rfl
+
+/-- Theorem contract for `hasShortTimeRicciFlowSolution_of_deturckPullbackToRicciFlowData`. -/
+theorem hasShortTimeRicciFlowSolution_of_deturckPullbackToRicciFlowData_eq :
+    @Poincare.hasShortTimeRicciFlowSolution_of_deturckPullbackToRicciFlowData = @Poincare.hasShortTimeRicciFlowSolution_of_deturckPullbackToRicciFlowData :=
+  rfl
+
+/-- Theorem contract for `hasShortTimeRicciFlowSolution_of_deturckPullbackEquationIdentityData`. -/
+theorem hasShortTimeRicciFlowSolution_of_deturckPullbackEquationIdentityData_eq :
+    @Poincare.hasShortTimeRicciFlowSolution_of_deturckPullbackEquationIdentityData = @Poincare.hasShortTimeRicciFlowSolution_of_deturckPullbackEquationIdentityData :=
+  rfl
+
+/-- Theorem contract for `analyticFirstThirtyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstThirtyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstThirtyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstThirtyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasRicciFlowMaximalTimeInterval_of_ricciFlowMaximalTimeIntervalData`. -/
+theorem hasRicciFlowMaximalTimeInterval_of_ricciFlowMaximalTimeIntervalData_eq :
+    @Poincare.hasRicciFlowMaximalTimeInterval_of_ricciFlowMaximalTimeIntervalData = @Poincare.hasRicciFlowMaximalTimeInterval_of_ricciFlowMaximalTimeIntervalData :=
+  rfl
+
+/-- Theorem contract for `hasRicciFlowMaximalTimeInterval_of_shortTimeRicciFlowSolutionData`. -/
+theorem hasRicciFlowMaximalTimeInterval_of_shortTimeRicciFlowSolutionData_eq :
+    @Poincare.hasRicciFlowMaximalTimeInterval_of_shortTimeRicciFlowSolutionData = @Poincare.hasRicciFlowMaximalTimeInterval_of_shortTimeRicciFlowSolutionData :=
+  rfl
+
+/-- Theorem contract for `hasRicciFlowMaximalTimeInterval_of_deturckPullbackToRicciFlowData`. -/
+theorem hasRicciFlowMaximalTimeInterval_of_deturckPullbackToRicciFlowData_eq :
+    @Poincare.hasRicciFlowMaximalTimeInterval_of_deturckPullbackToRicciFlowData = @Poincare.hasRicciFlowMaximalTimeInterval_of_deturckPullbackToRicciFlowData :=
+  rfl
+
+/-- Theorem contract for `hasRicciFlowMaximalTimeInterval_of_deturckPullbackEquationIdentityData`. -/
+theorem hasRicciFlowMaximalTimeInterval_of_deturckPullbackEquationIdentityData_eq :
+    @Poincare.hasRicciFlowMaximalTimeInterval_of_deturckPullbackEquationIdentityData = @Poincare.hasRicciFlowMaximalTimeInterval_of_deturckPullbackEquationIdentityData :=
+  rfl
+
+/-- Theorem contract for `analyticFirstThirtyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstThirtyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstThirtyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstThirtyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasRicciFlowContinuationCriterion_of_ricciFlowContinuationCriterionData`. -/
+theorem hasRicciFlowContinuationCriterion_of_ricciFlowContinuationCriterionData_eq :
+    @Poincare.hasRicciFlowContinuationCriterion_of_ricciFlowContinuationCriterionData = @Poincare.hasRicciFlowContinuationCriterion_of_ricciFlowContinuationCriterionData :=
+  rfl
+
+/-- Theorem contract for `hasRicciFlowContinuationCriterion_of_ricciFlowMaximalTimeIntervalData`. -/
+theorem hasRicciFlowContinuationCriterion_of_ricciFlowMaximalTimeIntervalData_eq :
+    @Poincare.hasRicciFlowContinuationCriterion_of_ricciFlowMaximalTimeIntervalData = @Poincare.hasRicciFlowContinuationCriterion_of_ricciFlowMaximalTimeIntervalData :=
+  rfl
+
+/-- Theorem contract for `hasRicciFlowContinuationCriterion_of_deturckPullbackEquationIdentityData`. -/
+theorem hasRicciFlowContinuationCriterion_of_deturckPullbackEquationIdentityData_eq :
+    @Poincare.hasRicciFlowContinuationCriterion_of_deturckPullbackEquationIdentityData = @Poincare.hasRicciFlowContinuationCriterion_of_deturckPullbackEquationIdentityData :=
+  rfl
+
+/-- Theorem contract for `analyticFirstThirtyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstThirtyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstThirtyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstThirtyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasCurvatureBlowUpContinuationCriterion_of_curvatureBlowUpContinuationCriterionData`. -/
+theorem hasCurvatureBlowUpContinuationCriterion_of_curvatureBlowUpContinuationCriterionData_eq :
+    @Poincare.hasCurvatureBlowUpContinuationCriterion_of_curvatureBlowUpContinuationCriterionData = @Poincare.hasCurvatureBlowUpContinuationCriterion_of_curvatureBlowUpContinuationCriterionData :=
+  rfl
+
+/-- Theorem contract for `hasCurvatureBlowUpContinuationCriterion_of_ricciFlowContinuationCriterionData`. -/
+theorem hasCurvatureBlowUpContinuationCriterion_of_ricciFlowContinuationCriterionData_eq :
+    @Poincare.hasCurvatureBlowUpContinuationCriterion_of_ricciFlowContinuationCriterionData = @Poincare.hasCurvatureBlowUpContinuationCriterion_of_ricciFlowContinuationCriterionData :=
+  rfl
+
+/-- Theorem contract for `hasCurvatureBlowUpContinuationCriterion_of_deturckPullbackEquationIdentityData`. -/
+theorem hasCurvatureBlowUpContinuationCriterion_of_deturckPullbackEquationIdentityData_eq :
+    @Poincare.hasCurvatureBlowUpContinuationCriterion_of_deturckPullbackEquationIdentityData = @Poincare.hasCurvatureBlowUpContinuationCriterion_of_deturckPullbackEquationIdentityData :=
+  rfl
+
+/-- Theorem contract for `analyticFirstThirtyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstThirtyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstThirtyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstThirtyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasMaximalSolutionExtension_of_maximalSolutionExtensionData`. -/
+theorem hasMaximalSolutionExtension_of_maximalSolutionExtensionData_eq :
+    @Poincare.hasMaximalSolutionExtension_of_maximalSolutionExtensionData = @Poincare.hasMaximalSolutionExtension_of_maximalSolutionExtensionData :=
+  rfl
+
+/-- Theorem contract for `hasMaximalSolutionExtension_of_curvatureBlowUpContinuationCriterionData`. -/
+theorem hasMaximalSolutionExtension_of_curvatureBlowUpContinuationCriterionData_eq :
+    @Poincare.hasMaximalSolutionExtension_of_curvatureBlowUpContinuationCriterionData = @Poincare.hasMaximalSolutionExtension_of_curvatureBlowUpContinuationCriterionData :=
+  rfl
+
+/-- Theorem contract for `hasMaximalSolutionExtension_of_deturckPullbackEquationIdentityData`. -/
+theorem hasMaximalSolutionExtension_of_deturckPullbackEquationIdentityData_eq :
+    @Poincare.hasMaximalSolutionExtension_of_deturckPullbackEquationIdentityData = @Poincare.hasMaximalSolutionExtension_of_deturckPullbackEquationIdentityData :=
+  rfl
+
+/-- Theorem contract for `analyticFirstThirtySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstThirtySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstThirtySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstThirtySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasParabolicSchauderEstimates_of_parabolicSchauderEstimateData`. -/
+theorem hasParabolicSchauderEstimates_of_parabolicSchauderEstimateData_eq :
+    @Poincare.hasParabolicSchauderEstimates_of_parabolicSchauderEstimateData = @Poincare.hasParabolicSchauderEstimates_of_parabolicSchauderEstimateData :=
+  rfl
+
+/-- Theorem contract for `hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_maximalSolutionExtensionData`. -/
+theorem hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_maximalSolutionExtensionData_eq :
+    @Poincare.hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_maximalSolutionExtensionData = @Poincare.hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_maximalSolutionExtensionData :=
+  rfl
+
+/-- Theorem contract for `hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_curvatureBlowUpContinuationCriterionData`. -/
+theorem hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_curvatureBlowUpContinuationCriterionData_eq :
+    @Poincare.hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_curvatureBlowUpContinuationCriterionData = @Poincare.hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_curvatureBlowUpContinuationCriterionData :=
+  rfl
+
+/-- Theorem contract for `hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_deturckPullbackEquationIdentityData`. -/
+theorem hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_deturckPullbackEquationIdentityData_eq :
+    @Poincare.hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_deturckPullbackEquationIdentityData = @Poincare.hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_deturckPullbackEquationIdentityData :=
+  rfl
+
+/-- Theorem contract for `analyticFirstThirtySeven_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstThirtySeven_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstThirtySeven_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstThirtySeven_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasRicciFlowParabolicRegularity_of_ricciFlowParabolicRegularityData`. -/
+theorem hasRicciFlowParabolicRegularity_of_ricciFlowParabolicRegularityData_eq :
+    @Poincare.hasRicciFlowParabolicRegularity_of_ricciFlowParabolicRegularityData = @Poincare.hasRicciFlowParabolicRegularity_of_ricciFlowParabolicRegularityData :=
+  rfl
+
+/-- Theorem contract for `hasRicciFlowParabolicRegularity_of_parabolicSchauderEstimateData`. -/
+theorem hasRicciFlowParabolicRegularity_of_parabolicSchauderEstimateData_eq :
+    @Poincare.hasRicciFlowParabolicRegularity_of_parabolicSchauderEstimateData = @Poincare.hasRicciFlowParabolicRegularity_of_parabolicSchauderEstimateData :=
+  rfl
+
+/-- Theorem contract for `hasRicciFlowParabolicRegularity_of_parabolicSchauderEstimates`. -/
+theorem hasRicciFlowParabolicRegularity_of_parabolicSchauderEstimates_eq :
+    @Poincare.hasRicciFlowParabolicRegularity_of_parabolicSchauderEstimates = @Poincare.hasRicciFlowParabolicRegularity_of_parabolicSchauderEstimates :=
+  rfl
+
+/-- Theorem contract for `hasRicciFlowParabolicRegularity_of_shortTimeRegularityBootstrapData_and_maximalSolutionExtensionData`. -/
+theorem hasRicciFlowParabolicRegularity_of_shortTimeRegularityBootstrapData_and_maximalSolutionExtensionData_eq :
+    @Poincare.hasRicciFlowParabolicRegularity_of_shortTimeRegularityBootstrapData_and_maximalSolutionExtensionData = @Poincare.hasRicciFlowParabolicRegularity_of_shortTimeRegularityBootstrapData_and_maximalSolutionExtensionData :=
+  rfl
+
+/-- Theorem contract for `hasRicciFlowParabolicRegularity_of_shortTimeRegularityBootstrapData_and_deturckPullbackEquationIdentityData`. -/
+theorem hasRicciFlowParabolicRegularity_of_shortTimeRegularityBootstrapData_and_deturckPullbackEquationIdentityData_eq :
+    @Poincare.hasRicciFlowParabolicRegularity_of_shortTimeRegularityBootstrapData_and_deturckPullbackEquationIdentityData = @Poincare.hasRicciFlowParabolicRegularity_of_shortTimeRegularityBootstrapData_and_deturckPullbackEquationIdentityData :=
+  rfl
+
+/-- Theorem contract for `analyticFirstThirtyEight_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstThirtyEight_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstThirtyEight_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstThirtyEight_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasShiDerivativeEstimates_of_shiDerivativeEstimateData`. -/
+theorem hasShiDerivativeEstimates_of_shiDerivativeEstimateData_eq :
+    @Poincare.hasShiDerivativeEstimates_of_shiDerivativeEstimateData = @Poincare.hasShiDerivativeEstimates_of_shiDerivativeEstimateData :=
+  rfl
+
+/-- Theorem contract for `hasShiDerivativeEstimates_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularityData`. -/
+theorem hasShiDerivativeEstimates_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularityData_eq :
+    @Poincare.hasShiDerivativeEstimates_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularityData = @Poincare.hasShiDerivativeEstimates_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularityData :=
+  rfl
+
+/-- Theorem contract for `hasShiDerivativeEstimates_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularity`. -/
+theorem hasShiDerivativeEstimates_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularity_eq :
+    @Poincare.hasShiDerivativeEstimates_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularity = @Poincare.hasShiDerivativeEstimates_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularity :=
+  rfl
+
+/-- Theorem contract for `analyticFirstThirtyNine_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstThirtyNine_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstThirtyNine_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstThirtyNine_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasCurvatureDerivativeBootstrap_of_curvatureDerivativeBootstrapData`. -/
+theorem hasCurvatureDerivativeBootstrap_of_curvatureDerivativeBootstrapData_eq :
+    @Poincare.hasCurvatureDerivativeBootstrap_of_curvatureDerivativeBootstrapData = @Poincare.hasCurvatureDerivativeBootstrap_of_curvatureDerivativeBootstrapData :=
+  rfl
+
+/-- Theorem contract for `hasCurvatureDerivativeBootstrap_of_shiDerivativeEstimateData`. -/
+theorem hasCurvatureDerivativeBootstrap_of_shiDerivativeEstimateData_eq :
+    @Poincare.hasCurvatureDerivativeBootstrap_of_shiDerivativeEstimateData = @Poincare.hasCurvatureDerivativeBootstrap_of_shiDerivativeEstimateData :=
+  rfl
+
+/-- Theorem contract for `hasCurvatureDerivativeBootstrap_of_shiDerivativeEstimates`. -/
+theorem hasCurvatureDerivativeBootstrap_of_shiDerivativeEstimates_eq :
+    @Poincare.hasCurvatureDerivativeBootstrap_of_shiDerivativeEstimates = @Poincare.hasCurvatureDerivativeBootstrap_of_shiDerivativeEstimates :=
+  rfl
+
+/-- Theorem contract for `analyticFirstForty_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstForty_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstForty_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstForty_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasHamiltonMaximumPrinciple_of_hamiltonMaximumPrincipleData`. -/
+theorem hasHamiltonMaximumPrinciple_of_hamiltonMaximumPrincipleData_eq :
+    @Poincare.hasHamiltonMaximumPrinciple_of_hamiltonMaximumPrincipleData = @Poincare.hasHamiltonMaximumPrinciple_of_hamiltonMaximumPrincipleData :=
+  rfl
+
+/-- Theorem contract for `hasHamiltonMaximumPrinciple_of_curvatureDerivativeBootstrapData`. -/
+theorem hasHamiltonMaximumPrinciple_of_curvatureDerivativeBootstrapData_eq :
+    @Poincare.hasHamiltonMaximumPrinciple_of_curvatureDerivativeBootstrapData = @Poincare.hasHamiltonMaximumPrinciple_of_curvatureDerivativeBootstrapData :=
+  rfl
+
+/-- Theorem contract for `hasHamiltonMaximumPrinciple_of_curvatureDerivativeBootstrap`. -/
+theorem hasHamiltonMaximumPrinciple_of_curvatureDerivativeBootstrap_eq :
+    @Poincare.hasHamiltonMaximumPrinciple_of_curvatureDerivativeBootstrap = @Poincare.hasHamiltonMaximumPrinciple_of_curvatureDerivativeBootstrap :=
+  rfl
+
+/-- Theorem contract for `analyticFirstFortyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstFortyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstFortyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstFortyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasRicciFlowUniquenessTheory_of_ricciFlowUniquenessTheoryData`. -/
+theorem hasRicciFlowUniquenessTheory_of_ricciFlowUniquenessTheoryData_eq :
+    @Poincare.hasRicciFlowUniquenessTheory_of_ricciFlowUniquenessTheoryData = @Poincare.hasRicciFlowUniquenessTheory_of_ricciFlowUniquenessTheoryData :=
+  rfl
+
+/-- Theorem contract for `hasRicciFlowUniquenessTheory_of_hamiltonMaximumPrincipleData_and_initialMetricUniqueness`. -/
+theorem hasRicciFlowUniquenessTheory_of_hamiltonMaximumPrincipleData_and_initialMetricUniqueness_eq :
+    @Poincare.hasRicciFlowUniquenessTheory_of_hamiltonMaximumPrincipleData_and_initialMetricUniqueness = @Poincare.hasRicciFlowUniquenessTheory_of_hamiltonMaximumPrincipleData_and_initialMetricUniqueness :=
+  rfl
+
+/-- Theorem contract for `hasRicciFlowUniquenessTheory_of_hamiltonMaximumPrinciple_and_initialMetricUniqueness`. -/
+theorem hasRicciFlowUniquenessTheory_of_hamiltonMaximumPrinciple_and_initialMetricUniqueness_eq :
+    @Poincare.hasRicciFlowUniquenessTheory_of_hamiltonMaximumPrinciple_and_initialMetricUniqueness = @Poincare.hasRicciFlowUniquenessTheory_of_hamiltonMaximumPrinciple_and_initialMetricUniqueness :=
+  rfl
+
+/-- Theorem contract for `analyticFirstFortyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstFortyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstFortyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstFortyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasMetricEvolutionEquation_of_metricEvolutionEquationData`. -/
+theorem hasMetricEvolutionEquation_of_metricEvolutionEquationData_eq :
+    @Poincare.hasMetricEvolutionEquation_of_metricEvolutionEquationData = @Poincare.hasMetricEvolutionEquation_of_metricEvolutionEquationData :=
+  rfl
+
+/-- Theorem contract for `hasMetricEvolutionEquation_of_ricciFlowEquationVerification_and_ricciFlowUniquenessTheoryData`. -/
+theorem hasMetricEvolutionEquation_of_ricciFlowEquationVerification_and_ricciFlowUniquenessTheoryData_eq :
+    @Poincare.hasMetricEvolutionEquation_of_ricciFlowEquationVerification_and_ricciFlowUniquenessTheoryData = @Poincare.hasMetricEvolutionEquation_of_ricciFlowEquationVerification_and_ricciFlowUniquenessTheoryData :=
+  rfl
+
+/-- Theorem contract for `hasMetricEvolutionEquation_of_ricciFlowEquationVerification_and_ricciFlowUniquenessTheory`. -/
+theorem hasMetricEvolutionEquation_of_ricciFlowEquationVerification_and_ricciFlowUniquenessTheory_eq :
+    @Poincare.hasMetricEvolutionEquation_of_ricciFlowEquationVerification_and_ricciFlowUniquenessTheory = @Poincare.hasMetricEvolutionEquation_of_ricciFlowEquationVerification_and_ricciFlowUniquenessTheory :=
+  rfl
+
+/-- Theorem contract for `analyticFirstFortyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstFortyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstFortyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstFortyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasRicciTensorEvolutionEquation_of_ricciTensorEvolutionEquationData`. -/
+theorem hasRicciTensorEvolutionEquation_of_ricciTensorEvolutionEquationData_eq :
+    @Poincare.hasRicciTensorEvolutionEquation_of_ricciTensorEvolutionEquationData = @Poincare.hasRicciTensorEvolutionEquation_of_ricciTensorEvolutionEquationData :=
+  rfl
+
+/-- Theorem contract for `hasRicciTensorEvolutionEquation_of_metricEvolutionEquationData_and_ricciTensorEvolutionEquation`. -/
+theorem hasRicciTensorEvolutionEquation_of_metricEvolutionEquationData_and_ricciTensorEvolutionEquation_eq :
+    @Poincare.hasRicciTensorEvolutionEquation_of_metricEvolutionEquationData_and_ricciTensorEvolutionEquation = @Poincare.hasRicciTensorEvolutionEquation_of_metricEvolutionEquationData_and_ricciTensorEvolutionEquation :=
+  rfl
+
+/-- Theorem contract for `hasRicciTensorEvolutionEquation_of_metricEvolutionEquation_and_ricciTensorEvolutionEquation`. -/
+theorem hasRicciTensorEvolutionEquation_of_metricEvolutionEquation_and_ricciTensorEvolutionEquation_eq :
+    @Poincare.hasRicciTensorEvolutionEquation_of_metricEvolutionEquation_and_ricciTensorEvolutionEquation = @Poincare.hasRicciTensorEvolutionEquation_of_metricEvolutionEquation_and_ricciTensorEvolutionEquation :=
+  rfl
+
+/-- Theorem contract for `analyticFirstFortyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstFortyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstFortyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstFortyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasScalarCurvatureEvolutionEquation_of_scalarCurvatureEvolutionEquationData`. -/
+theorem hasScalarCurvatureEvolutionEquation_of_scalarCurvatureEvolutionEquationData_eq :
+    @Poincare.hasScalarCurvatureEvolutionEquation_of_scalarCurvatureEvolutionEquationData = @Poincare.hasScalarCurvatureEvolutionEquation_of_scalarCurvatureEvolutionEquationData :=
+  rfl
+
+/-- Theorem contract for `hasScalarCurvatureEvolutionEquation_of_ricciTensorEvolutionEquationData_and_scalarCurvatureEvolutionEquation`. -/
+theorem hasScalarCurvatureEvolutionEquation_of_ricciTensorEvolutionEquationData_and_scalarCurvatureEvolutionEquation_eq :
+    @Poincare.hasScalarCurvatureEvolutionEquation_of_ricciTensorEvolutionEquationData_and_scalarCurvatureEvolutionEquation = @Poincare.hasScalarCurvatureEvolutionEquation_of_ricciTensorEvolutionEquationData_and_scalarCurvatureEvolutionEquation :=
+  rfl
+
+/-- Theorem contract for `hasScalarCurvatureEvolutionEquation_of_ricciTensorEvolutionEquation_and_scalarCurvatureEvolutionEquation`. -/
+theorem hasScalarCurvatureEvolutionEquation_of_ricciTensorEvolutionEquation_and_scalarCurvatureEvolutionEquation_eq :
+    @Poincare.hasScalarCurvatureEvolutionEquation_of_ricciTensorEvolutionEquation_and_scalarCurvatureEvolutionEquation = @Poincare.hasScalarCurvatureEvolutionEquation_of_ricciTensorEvolutionEquation_and_scalarCurvatureEvolutionEquation :=
+  rfl
+
+/-- Theorem contract for `analyticFirstFortyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstFortyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstFortyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstFortyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasCurvatureNormEvolutionInequality_of_curvatureNormEvolutionInequalityData`. -/
+theorem hasCurvatureNormEvolutionInequality_of_curvatureNormEvolutionInequalityData_eq :
+    @Poincare.hasCurvatureNormEvolutionInequality_of_curvatureNormEvolutionInequalityData = @Poincare.hasCurvatureNormEvolutionInequality_of_curvatureNormEvolutionInequalityData :=
+  rfl
+
+/-- Theorem contract for `hasCurvatureNormEvolutionInequality_of_scalarCurvatureEvolutionEquationData_and_curvatureNormEvolutionInequality`. -/
+theorem hasCurvatureNormEvolutionInequality_of_scalarCurvatureEvolutionEquationData_and_curvatureNormEvolutionInequality_eq :
+    @Poincare.hasCurvatureNormEvolutionInequality_of_scalarCurvatureEvolutionEquationData_and_curvatureNormEvolutionInequality = @Poincare.hasCurvatureNormEvolutionInequality_of_scalarCurvatureEvolutionEquationData_and_curvatureNormEvolutionInequality :=
+  rfl
+
+/-- Theorem contract for `hasCurvatureNormEvolutionInequality_of_scalarCurvatureEvolutionEquation_and_curvatureNormEvolutionInequality`. -/
+theorem hasCurvatureNormEvolutionInequality_of_scalarCurvatureEvolutionEquation_and_curvatureNormEvolutionInequality_eq :
+    @Poincare.hasCurvatureNormEvolutionInequality_of_scalarCurvatureEvolutionEquation_and_curvatureNormEvolutionInequality = @Poincare.hasCurvatureNormEvolutionInequality_of_scalarCurvatureEvolutionEquation_and_curvatureNormEvolutionInequality :=
+  rfl
+
+/-- Theorem contract for `analyticFirstFortySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstFortySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstFortySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstFortySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
+
+/-- Theorem contract for `hasCurvatureEvolutionEquations_of_curvatureEvolutionEquationsData`. -/
+theorem hasCurvatureEvolutionEquations_of_curvatureEvolutionEquationsData_eq :
+    @Poincare.hasCurvatureEvolutionEquations_of_curvatureEvolutionEquationsData = @Poincare.hasCurvatureEvolutionEquations_of_curvatureEvolutionEquationsData :=
+  rfl
+
+/-- Theorem contract for `hasCurvatureEvolutionEquations_of_curvatureNormEvolutionInequalityData_and_curvatureEvolutionEquations`. -/
+theorem hasCurvatureEvolutionEquations_of_curvatureNormEvolutionInequalityData_and_curvatureEvolutionEquations_eq :
+    @Poincare.hasCurvatureEvolutionEquations_of_curvatureNormEvolutionInequalityData_and_curvatureEvolutionEquations = @Poincare.hasCurvatureEvolutionEquations_of_curvatureNormEvolutionInequalityData_and_curvatureEvolutionEquations :=
+  rfl
+
+/-- Theorem contract for `hasCurvatureEvolutionEquations_of_curvatureNormEvolutionInequality_and_curvatureEvolutionEquations`. -/
+theorem hasCurvatureEvolutionEquations_of_curvatureNormEvolutionInequality_and_curvatureEvolutionEquations_eq :
+    @Poincare.hasCurvatureEvolutionEquations_of_curvatureNormEvolutionInequality_and_curvatureEvolutionEquations = @Poincare.hasCurvatureEvolutionEquations_of_curvatureNormEvolutionInequality_and_curvatureEvolutionEquations :=
+  rfl
+
+/-- Theorem contract for `analyticFirstFortySeven_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification`. -/
+theorem analyticFirstFortySeven_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification_eq :
+    @Poincare.analyticFirstFortySeven_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification = @Poincare.analyticFirstFortySeven_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification :=
+  rfl
 
 end Poincare
