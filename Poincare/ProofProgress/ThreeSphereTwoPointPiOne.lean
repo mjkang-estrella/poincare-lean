@@ -154,6 +154,89 @@ theorem threeSphere_twoPointComplement_pathQuotient_subsingleton
         (threeSphere_twoPointComplement_paths_homotopic hab γ η)
 
 /--
+The standard three-sphere two-puncture complement supplies a concrete path
+between any two selected points, with endpoint equations, the corresponding
+`Joined` witness, and homotopy uniqueness among all paths with those endpoints.
+-/
+theorem threeSphere_twoPointComplement_exists_path_with_endpoints_and_homotopy_unique
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (basepoint target : (({a} ∪ {b})ᶜ : Set ThreeSphere)) :
+    ∃ canonicalPath : Path basepoint target,
+      canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+        Joined basepoint target ∧
+        ∀ η : Path basepoint target, Path.Homotopic canonicalPath η := by
+  letI : PathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) :=
+    threeSphere_twoPointComplement_pathConnectedSpace hab
+  let joined : Joined basepoint target :=
+    PathConnectedSpace.joined basepoint target
+  refine ⟨joined.somePath, ?_, ?_, joined, ?_⟩
+  · exact Path.source joined.somePath
+  · exact Path.target joined.somePath
+  · intro η
+    exact threeSphere_twoPointComplement_paths_homotopic hab joined.somePath η
+
+/-- Theorem contract for `threeSphere_twoPointComplement_exists_path_with_endpoints_and_homotopy_unique`. -/
+theorem threeSphere_twoPointComplement_exists_path_with_endpoints_and_homotopy_unique_eq :
+    @Poincare.threeSphere_twoPointComplement_exists_path_with_endpoints_and_homotopy_unique =
+      @Poincare.threeSphere_twoPointComplement_exists_path_with_endpoints_and_homotopy_unique :=
+  rfl
+
+/--
+A compact model-level consumer for the standard three-sphere two-puncture
+complement: any supplied path is homotopic to a canonical path with endpoint
+equations, every path quotient collapses, every based loop is null-homotopic,
+and the first homotopy group is trivial.
+-/
+theorem threeSphere_twoPointComplement_compact_path_loop_payload
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (basepoint target : (({a} ∪ {b})ᶜ : Set ThreeSphere))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ canonicalPath : Path basepoint target,
+      canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+        Joined basepoint target ∧
+        Path.Homotopic chosenPath canonicalPath ∧
+        (⟦chosenPath⟧ :
+          Path.Homotopic.Quotient basepoint target) =
+          ⟦canonicalPath⟧ ∧
+        (∀ η : Path basepoint target,
+          Path.Homotopic canonicalPath η) ∧
+        Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+        loop 0 = basepoint ∧ loop 1 = basepoint ∧
+        Path.Homotopic loop (Path.refl basepoint) ∧
+        FundamentalGroup.fromPath
+            (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+          FundamentalGroup.fromPath
+            (⟦Path.refl basepoint⟧ :
+              Path.Homotopic.Quotient basepoint basepoint) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1 (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint) := by
+  rcases
+      threeSphere_twoPointComplement_exists_path_with_endpoints_and_homotopy_unique
+        hab basepoint target with
+    ⟨canonicalPath, canonicalSource, canonicalTarget, canonicalJoined,
+      canonicalUnique⟩
+  rcases
+      threeSphere_twoPointComplement_paths_homotopic_payload
+        hab chosenPath canonicalPath with
+    ⟨chosenHomotopic, chosenQuotientEq⟩
+  rcases threeSphere_twoPointComplement_loop_payload hab basepoint loop with
+    ⟨loopSource, loopTarget, loopHomotopic, loopFromPath⟩
+  exact
+    ⟨canonicalPath, canonicalSource, canonicalTarget, canonicalJoined,
+      chosenHomotopic, chosenQuotientEq, canonicalUnique,
+      threeSphere_twoPointComplement_pathQuotient_subsingleton
+        hab basepoint target,
+      loopSource, loopTarget, loopHomotopic, loopFromPath,
+      threeSphere_twoPointComplement_piOne_subsingleton hab basepoint⟩
+
+/-- Theorem contract for `threeSphere_twoPointComplement_compact_path_loop_payload`. -/
+theorem threeSphere_twoPointComplement_compact_path_loop_payload_eq :
+    @Poincare.threeSphere_twoPointComplement_compact_path_loop_payload =
+      @Poincare.threeSphere_twoPointComplement_compact_path_loop_payload :=
+  rfl
+
+/--
 The standard three-sphere two-puncture complement supplies the same
 path/loop-level topology certificate used by the one-point compactification
 complement route: nonemptiness, global path-component control, a chosen path
