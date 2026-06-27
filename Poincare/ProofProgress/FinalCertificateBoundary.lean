@@ -23926,4 +23926,210 @@ theorem conditional_root_selected_threeSphere_homeomorphism_coherence_full_termi
       @Poincare.conditional_root_selected_threeSphere_homeomorphism_coherence_full_terminal_certificate_of_equation_boundary_dependencies :=
   rfl
 
+/--
+The full terminal root/selected certificate also carries the reserved-name
+completion payload obtained from its checked completion certificate.
+
+This is the final selected-topology endpoint with both theorem-level
+`PoincareConjectureStatement` data and the certificate-derived completion
+criterion payload, while retaining the full synchronized chart/path-loop and
+arbitrary path-loop collapse data.
+-/
+theorem conditional_root_selected_threeSphere_homeomorphism_coherence_full_terminal_certificate_and_poincare_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {x y : M} (hyx : y ≠ x)
+    {a b : ({x}ᶜ : Set M)} (γ η : Path a b)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (chosenSinglePath : Path singleBase singleTarget)
+    (singleLoop : Path singleBase singleBase)
+    {c d : (({x} ∪ {y})ᶜ : Set M)} (γTwo ηTwo : Path c d)
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path twoBase twoTarget)
+    (loop : Path twoBase twoBase) :
+    (∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+    PoincareConjectureStatement.{u} ∧
+      ∃ rootHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+      ∃ selectedHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        rootHomeomorphism = selectedHomeomorphism ∧
+        ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+        ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        ∃ _pathData :
+            PointedPathComponentPathData (({x} ∪ {y})ᶜ : Set M) twoBase,
+        ∃ _endpointData :
+            PointedChosenPathEndpointData
+              (({x} ∪ {y})ᶜ : Set M) twoBase twoTarget,
+          ExtinctionFinalHomeomorphismProjectorPayload
+            topology M extinction ∧
+          ∃ decomposition : HasExtinctionTopologyDecomposition M extinction,
+            Nonempty (ExtinctionTopologyDecompositionData M extinction) ∧
+            HasExtinctionSurgeryTraceReconstruction M extinction
+              decomposition ∧
+            Nonempty
+              (ExtinctionSurgeryTraceReconstructionData M extinction
+                decomposition) ∧
+            FinalHomeomorphismPayloadData M extinction decomposition ∧
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+            Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+            (∃ singlePathData :
+                PointedPathComponentPathData ({x}ᶜ : Set M) singleBase,
+              ∃ singleEndpointData :
+                  PointedChosenPathEndpointData ({x}ᶜ : Set M)
+                    singleBase singleTarget,
+                ∃ canonicalSinglePath : Path singleBase singleTarget,
+                  singlePathData.path_to singleTarget = canonicalSinglePath ∧
+                  singleEndpointData.path = canonicalSinglePath ∧
+                  canonicalSinglePath 0 = singleBase ∧
+                  canonicalSinglePath 1 = singleTarget ∧
+                  Joined singleBase singleTarget ∧
+                  pathComponent singleBase = Set.univ ∧
+                  Path.Homotopic chosenSinglePath canonicalSinglePath ∧
+                  (⟦chosenSinglePath⟧ :
+                    Path.Homotopic.Quotient singleBase singleTarget) =
+                    ⟦canonicalSinglePath⟧ ∧
+                  (∀ ζ : Path singleBase singleTarget,
+                    Path.Homotopic canonicalSinglePath ζ) ∧
+                  Subsingleton
+                    (Path.Homotopic.Quotient singleBase singleTarget) ∧
+                  singleLoop 0 = singleBase ∧
+                  singleLoop 1 = singleBase ∧
+                  Path.Homotopic singleLoop (Path.refl singleBase) ∧
+                  FundamentalGroup.fromPath
+                      (⟦singleLoop⟧ :
+                        Path.Homotopic.Quotient singleBase singleBase) =
+                    FundamentalGroup.fromPath
+                      (⟦Path.refl singleBase⟧ :
+                        Path.Homotopic.Quotient singleBase singleBase) ∧
+                  Subsingleton
+                    (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBase) ∧
+                  ∃ puncture : EuclideanSpace ℝ (Fin 3),
+                    ∃ chart : (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+                        ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+                      ∃ twoPathData :
+                          PointedPathComponentPathData
+                            (({x} ∪ {y})ᶜ : Set M) twoBase,
+                        ∃ twoEndpointData :
+                            PointedChosenPathEndpointData
+                              (({x} ∪ {y})ᶜ : Set M) twoBase twoTarget,
+                          ∃ canonicalPath : Path twoBase twoTarget,
+                            (∀ w,
+                              (chart w : EuclideanSpace ℝ (Fin 3)) ≠
+                                puncture) ∧
+                            Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+                            PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                            SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                            twoPathData.path_to twoTarget = canonicalPath ∧
+                            twoEndpointData.path = canonicalPath ∧
+                            canonicalPath 0 = twoBase ∧
+                            canonicalPath 1 = twoTarget ∧
+                            Joined twoBase twoTarget ∧
+                            pathComponent twoBase = Set.univ ∧
+                            Path.Homotopic chosenPath canonicalPath ∧
+                            (⟦chosenPath⟧ :
+                              Path.Homotopic.Quotient twoBase twoTarget) =
+                              ⟦canonicalPath⟧ ∧
+                            (∀ ζ : Path twoBase twoTarget,
+                              Path.Homotopic canonicalPath ζ) ∧
+                            Subsingleton
+                              (Path.Homotopic.Quotient twoBase twoTarget) ∧
+                            loop 0 = twoBase ∧
+                            loop 1 = twoBase ∧
+                            Path.Homotopic loop (Path.refl twoBase) ∧
+                            FundamentalGroup.fromPath
+                                (⟦loop⟧ :
+                                  Path.Homotopic.Quotient twoBase twoBase) =
+                              FundamentalGroup.fromPath
+                                (⟦Path.refl twoBase⟧ :
+                                  Path.Homotopic.Quotient twoBase twoBase) ∧
+                            Subsingleton
+                              (HomotopyGroup.Pi 1
+                                (({x} ∪ {y})ᶜ : Set M) twoBase)) ∧
+            Path.Homotopic γ η ∧
+            (⟦γ⟧ : Path.Homotopic.Quotient a b) = ⟦η⟧ ∧
+            compl_singleton_chosenPath_of_topology_package
+              topology M extinction x singleBase singleTarget 0 = singleBase ∧
+            (∃ δ : Path singleBase singleBase,
+              δ 0 = singleBase ∧ δ 1 = singleBase ∧
+                Path.Homotopic δ (Path.refl singleBase) ∧
+                FundamentalGroup.fromPath
+                    (⟦δ⟧ : Path.Homotopic.Quotient singleBase singleBase) =
+                  FundamentalGroup.fromPath
+                    (⟦Path.refl singleBase⟧ :
+                      Path.Homotopic.Quotient singleBase singleBase)) ∧
+            Path.Homotopic γTwo ηTwo ∧
+            (⟦γTwo⟧ : Path.Homotopic.Quotient c d) = ⟦ηTwo⟧ ∧
+            twoPointComplement_chosenPath_of_topology_package
+              topology M extinction hyx twoBase twoTarget 0 = twoBase ∧
+            (∃ δ : Path twoBase twoBase,
+              δ 0 = twoBase ∧ δ 1 = twoBase ∧
+                Path.Homotopic δ (Path.refl twoBase) ∧
+                FundamentalGroup.fromPath
+                    (⟦δ⟧ : Path.Homotopic.Quotient twoBase twoBase) =
+                  FundamentalGroup.fromPath
+                    (⟦Path.refl twoBase⟧ :
+                      Path.Homotopic.Quotient twoBase twoBase)) := by
+  rcases
+      conditional_root_selected_threeSphere_homeomorphism_coherence_full_terminal_certificate_of_equation_boundary_dependencies
+        dependencies smoothability grounded topology smoothabilityPayload M
+        hyx γ η singleBase singleTarget chosenSinglePath singleLoop γTwo
+        ηTwo twoBase twoTarget chosenPath loop with
+    ⟨projectStatement, rootHomeomorphism, selectedHomeomorphism,
+      hHomeomorphism_eq, checkedCertificate, extinction, pathData,
+      endpointData, finalHomeomorphismProjector, decomposition,
+      hDecompositionData, hTrace, hTraceData, hFinalPayload, hOnePoint,
+      hSingletonChart, chartPathLoopPayload, singleHomotopy,
+      singleQuotient, singleSource, singleLoopPayload, twoHomotopy,
+      twoQuotient, twoSource, twoLoopPayload⟩
+  let payload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    poincare_conjecture_payload_of_completion_certificate checkedCertificate
+  exact
+    ⟨payload,
+      projectStatement,
+      rootHomeomorphism,
+      selectedHomeomorphism,
+      hHomeomorphism_eq,
+      checkedCertificate,
+      extinction,
+      pathData,
+      endpointData,
+      finalHomeomorphismProjector,
+      decomposition,
+      hDecompositionData,
+      hTrace,
+      hTraceData,
+      hFinalPayload,
+      hOnePoint,
+      hSingletonChart,
+      chartPathLoopPayload,
+      singleHomotopy,
+      singleQuotient,
+      singleSource,
+      singleLoopPayload,
+      twoHomotopy,
+      twoQuotient,
+      twoSource,
+      twoLoopPayload⟩
+
+/-- Theorem contract for `conditional_root_selected_threeSphere_homeomorphism_coherence_full_terminal_certificate_and_poincare_payload_of_equation_boundary_dependencies`. -/
+theorem conditional_root_selected_threeSphere_homeomorphism_coherence_full_terminal_certificate_and_poincare_payload_of_equation_boundary_dependencies_eq :
+    @Poincare.conditional_root_selected_threeSphere_homeomorphism_coherence_full_terminal_certificate_and_poincare_payload_of_equation_boundary_dependencies =
+      @Poincare.conditional_root_selected_threeSphere_homeomorphism_coherence_full_terminal_certificate_and_poincare_payload_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
