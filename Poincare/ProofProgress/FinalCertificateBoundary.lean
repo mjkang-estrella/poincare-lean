@@ -1262,6 +1262,88 @@ theorem final_statement_project_payload_of_grounded_terminal_certificate_reconst
   rfl
 
 /--
+The reconstructed grounded-terminal certificate also evaluates its unpacked
+project completion function at the same target manifold used by the grounded
+terminal package payload.  This exposes an actual
+`CompletionCriterionAtUniverse M` together with the final statement and the
+project statement recovered from the reconstructed certificate.
+-/
+theorem completion_criterion_of_grounded_terminal_certificate_reconstruction
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ primitiveInputs : FinalCertificatePrimitiveInputs.{u},
+    ∃ packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ reconstructedCertificate : PoincareCompletionCertificate.{u},
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u},
+    ∃ finalStatement : PoincareConjectureStatement.{u},
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ projectCompletion :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ completionCriterion : CompletionCriterionAtUniverse M,
+      packageRequirement =
+        (grounded_universal_finite_extinction_package_statement_terminal_full_equality_payload
+          grounded M).2.1 ∧
+      certificate =
+        completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+          dependencies primitiveInputs ∧
+      reconstructedCertificate = certificate ∧
+      nonemptyCertificate =
+        nonempty_completion_certificate_of_project_statement_payload
+          (poincareCompletionCertificate_project_statement_payload
+            certificate) ∧
+      finalStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      finalStatement = projectStatement ∧
+      projectCompletion =
+        (poincareCompletionCertificate_project_statement_payload
+          reconstructedCertificate).choose_spec.2.2.2 ∧
+      projectCompletion M = completionCriterion := by
+  rcases
+      final_statement_project_payload_of_grounded_terminal_certificate_reconstruction
+        dependencies smoothability grounded topologyStatement M with
+    ⟨primitiveInputs, packageRequirement, certificate,
+      certificateProjectPayload, reconstructedCertificate,
+      nonemptyCertificate, finalStatement, _theoremName, _projectDependencies,
+      projectStatement, projectCompletion, _hTheoremName,
+      hPackageRequirement, hCertificate, _hCertificateProjectPayload,
+      hReconstructedCertificate_eq, hNonemptyCertificate, hFinalStatement,
+      hFinalStatementProject, hProjectCompletion⟩
+  let completionCriterion : CompletionCriterionAtUniverse M :=
+    projectCompletion M
+  have hNonemptyCertificateProjectPayload :
+      nonemptyCertificate =
+        nonempty_completion_certificate_of_project_statement_payload
+          (poincareCompletionCertificate_project_statement_payload
+            certificate) := by
+    apply Subsingleton.elim
+  exact
+    ⟨primitiveInputs, packageRequirement, certificate,
+      reconstructedCertificate, nonemptyCertificate, finalStatement,
+      projectStatement, projectCompletion, completionCriterion,
+      hPackageRequirement, hCertificate, hReconstructedCertificate_eq,
+      hNonemptyCertificateProjectPayload, hFinalStatement,
+      hFinalStatementProject, hProjectCompletion, rfl⟩
+
+/-- Theorem contract for
+`completion_criterion_of_grounded_terminal_certificate_reconstruction`. -/
+theorem completion_criterion_of_grounded_terminal_certificate_reconstruction_eq :
+    @Poincare.completion_criterion_of_grounded_terminal_certificate_reconstruction =
+      @Poincare.completion_criterion_of_grounded_terminal_certificate_reconstruction :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
