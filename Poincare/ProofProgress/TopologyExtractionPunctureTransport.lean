@@ -912,6 +912,100 @@ theorem twoPointComplement_chosen_path_loop_projection_bundle_of_homeomorph_to_o
   rfl
 
 /--
+The one-point compactification recognition route supplies the transported
+two-puncture Euclidean chart and the path/loop projection payload with one
+shared canonical chosen path. This keeps the chart, endpoint-data, homotopy,
+quotient, loop, and `π₁` collapse evidence synchronized for downstream
+topology extraction consumers.
+-/
+theorem twoPointComplement_chart_path_loop_projection_bundle_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      ∃ chart : (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+          ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        ∃ pathData :
+            PointedPathComponentPathData (({x} ∪ {y})ᶜ : Set M) basepoint,
+          ∃ endpointData :
+              PointedChosenPathEndpointData
+                (({x} ∪ {y})ᶜ : Set M) basepoint target,
+            ∃ canonicalPath : Path basepoint target,
+              (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+                Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+                PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                pathData.path_to target = canonicalPath ∧
+                endpointData.path = canonicalPath ∧
+                canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+                Joined basepoint target ∧
+                pathComponent basepoint = Set.univ ∧
+                Path.Homotopic chosenPath canonicalPath ∧
+                (⟦chosenPath⟧ :
+                  Path.Homotopic.Quotient basepoint target) =
+                  ⟦canonicalPath⟧ ∧
+                (∀ η : Path basepoint target,
+                  Path.Homotopic canonicalPath η) ∧
+                Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+                loop 0 = basepoint ∧ loop 1 = basepoint ∧
+                Path.Homotopic loop (Path.refl basepoint) ∧
+                FundamentalGroup.fromPath
+                    (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+                  FundamentalGroup.fromPath
+                    (⟦Path.refl basepoint⟧ :
+                      Path.Homotopic.Quotient basepoint basepoint) ∧
+                Subsingleton
+                  (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  rcases
+      exists_puncture_homeomorph_twoPointComplement_chosenPathTopologyPayload
+        h hyx basepoint target with
+    ⟨puncture, chart, pathData, endpointData, canonicalPath,
+      hAvoidsPuncture, hNonempty, hPathConnected, hSimplyConnected,
+      hPathData, hEndpointPath, hSource, hTarget, hJoined⟩
+  have hComponent :
+      pathComponent basepoint = Set.univ :=
+    twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
+      h hyx basepoint
+  have chosenHomotopic :
+      Path.Homotopic chosenPath canonicalPath :=
+    twoPointComplement_paths_homotopic_of_homeomorph_to_onePoint_threeSpace
+      h hyx chosenPath canonicalPath
+  have chosenQuotientEq :
+      (⟦chosenPath⟧ : Path.Homotopic.Quotient basepoint target) =
+        ⟦canonicalPath⟧ :=
+    Quotient.sound chosenHomotopic
+  have loopHomotopic :
+      Path.Homotopic loop (Path.refl basepoint) :=
+    twoPointComplement_loop_nullhomotopic_of_homeomorph_to_onePoint_threeSpace
+      h hyx basepoint loop
+  exact
+    ⟨puncture, chart, pathData, endpointData, canonicalPath,
+      hAvoidsPuncture, hNonempty, hPathConnected, hSimplyConnected,
+      hPathData, hEndpointPath, hSource, hTarget, hJoined, hComponent,
+      chosenHomotopic, chosenQuotientEq,
+      fun η =>
+        twoPointComplement_paths_homotopic_of_homeomorph_to_onePoint_threeSpace
+          h hyx canonicalPath η,
+      twoPointComplement_pathQuotient_subsingleton_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint target,
+      Path.source loop, Path.target loop, loopHomotopic,
+      congrArg FundamentalGroup.fromPath (Quotient.sound loopHomotopic),
+      twoPointComplement_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint⟩
+
+/--
+Theorem contract for
+`twoPointComplement_chart_path_loop_projection_bundle_of_homeomorph_to_onePoint_threeSpace`.
+-/
+theorem twoPointComplement_chart_path_loop_projection_bundle_of_homeomorph_to_onePoint_threeSpace_eq :
+    @Poincare.twoPointComplement_chart_path_loop_projection_bundle_of_homeomorph_to_onePoint_threeSpace =
+      @Poincare.twoPointComplement_chart_path_loop_projection_bundle_of_homeomorph_to_onePoint_threeSpace :=
+  rfl
+
+/--
 The same single-puncture Euclidean chart transport, stated from recognition as
 the project `ThreeSphere`.
 -/
