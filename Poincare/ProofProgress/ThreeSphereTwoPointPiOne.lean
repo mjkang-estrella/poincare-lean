@@ -486,4 +486,74 @@ theorem threeSphere_twoPointComplement_chart_path_loop_projection_bundle_eq :
       @Poincare.threeSphere_twoPointComplement_chart_path_loop_projection_bundle :=
   rfl
 
+/--
+The standard `ThreeSphere` two-puncture chart/path/loop projection bundle with
+the full chart topology payload, including connectedness of the complement.
+-/
+theorem threeSphere_twoPointComplement_fullChart_path_loop_projection_bundle
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (basepoint target : (({a} ∪ {b})ᶜ : Set ThreeSphere))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      ∃ chart : (({a} ∪ {b})ᶜ : Set ThreeSphere) ≃ₜ
+          ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        ∃ pathData :
+            PointedPathComponentPathData
+              (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint,
+          ∃ endpointData :
+              PointedChosenPathEndpointData
+                (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint target,
+            ∃ canonicalPath : Path basepoint target,
+              (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+                Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+                PathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+                ConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+                SimplyConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+                pathData.path_to target = canonicalPath ∧
+                endpointData.path = canonicalPath ∧
+                canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+                Joined basepoint target ∧
+                pathComponent basepoint = Set.univ ∧
+                Path.Homotopic chosenPath canonicalPath ∧
+                (⟦chosenPath⟧ :
+                  Path.Homotopic.Quotient basepoint target) =
+                  ⟦canonicalPath⟧ ∧
+                (∀ η : Path basepoint target,
+                  Path.Homotopic canonicalPath η) ∧
+                Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+                loop 0 = basepoint ∧ loop 1 = basepoint ∧
+                Path.Homotopic loop (Path.refl basepoint) ∧
+                FundamentalGroup.fromPath
+                    (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+                  FundamentalGroup.fromPath
+                    (⟦Path.refl basepoint⟧ :
+                      Path.Homotopic.Quotient basepoint basepoint) ∧
+                Subsingleton
+                  (HomotopyGroup.Pi 1
+                    (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint) := by
+  rcases threeSphere_twoPointComplement_topology_package hab with
+    ⟨_, _, hConnected, _⟩
+  rcases
+      threeSphere_twoPointComplement_chart_path_loop_projection_bundle
+        hab basepoint target chosenPath loop with
+    ⟨puncture, chart, pathData, endpointData, canonicalPath, hAvoid,
+      hNonempty, hPath, hSimply, hPathData, hEndpointData, hCanonicalSource,
+      hCanonicalTarget, hJoined, hComponent, hChosenHomotopic,
+      hChosenQuotient, hCanonicalUnique, hQuotientSubsingleton, hLoopSource,
+      hLoopTarget, hLoopHomotopic, hLoopFromPath, hPiOne⟩
+  exact
+    ⟨puncture, chart, pathData, endpointData, canonicalPath, hAvoid,
+      hNonempty, hPath, hConnected, hSimply, hPathData, hEndpointData,
+      hCanonicalSource, hCanonicalTarget, hJoined, hComponent,
+      hChosenHomotopic, hChosenQuotient, hCanonicalUnique,
+      hQuotientSubsingleton, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+
+/-- Theorem contract for `threeSphere_twoPointComplement_fullChart_path_loop_projection_bundle`. -/
+theorem threeSphere_twoPointComplement_fullChart_path_loop_projection_bundle_eq :
+    @Poincare.threeSphere_twoPointComplement_fullChart_path_loop_projection_bundle =
+      @Poincare.threeSphere_twoPointComplement_fullChart_path_loop_projection_bundle :=
+  rfl
+
 end Poincare
