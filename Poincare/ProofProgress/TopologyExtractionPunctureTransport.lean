@@ -4278,6 +4278,93 @@ theorem singletonChosenPathLoop_and_twoPointFullChartPathLoopProjection_of_homeo
   rfl
 
 /--
+Recognition as `ThreeSphere` exposes the singleton and two-puncture
+endpoint-data paths directly in the full-chart path/loop package. This is the
+`ThreeSphere` recognition form of the endpoint-data coherence payload for both
+selected paths.
+-/
+theorem singletonChosenPathLoop_and_twoPointFullChartEndpointDataPathCoherence_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (chosenSinglePath : Path singleBase singleTarget)
+    (singleLoop : Path singleBase singleBase)
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path twoBase twoTarget)
+    (loop : Path twoBase twoBase) :
+    let C := (({x} ∪ {y})ᶜ : Set M)
+    ∃ singlePathData :
+        PointedPathComponentPathData ({x}ᶜ : Set M) singleBase,
+      ∃ singleEndpointData :
+          PointedChosenPathEndpointData ({x}ᶜ : Set M)
+            singleBase singleTarget,
+        singlePathData.path_to singleTarget = singleEndpointData.path ∧
+          singleEndpointData.path 0 = singleBase ∧
+          singleEndpointData.path 1 = singleTarget ∧
+          Joined singleBase singleTarget ∧
+          pathComponent singleBase = Set.univ ∧
+          Path.Homotopic chosenSinglePath singleEndpointData.path ∧
+          (⟦chosenSinglePath⟧ :
+            Path.Homotopic.Quotient singleBase singleTarget) =
+            ⟦singleEndpointData.path⟧ ∧
+          (∀ ζ : Path singleBase singleTarget,
+            Path.Homotopic singleEndpointData.path ζ) ∧
+          Subsingleton (Path.Homotopic.Quotient singleBase singleTarget) ∧
+          singleLoop 0 = singleBase ∧ singleLoop 1 = singleBase ∧
+          Path.Homotopic singleLoop (Path.refl singleBase) ∧
+          FundamentalGroup.fromPath
+              (⟦singleLoop⟧ :
+                Path.Homotopic.Quotient singleBase singleBase) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl singleBase⟧ :
+                Path.Homotopic.Quotient singleBase singleBase) ∧
+          Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBase) ∧
+          ∃ puncture : EuclideanSpace ℝ (Fin 3),
+            ∃ chart : C ≃ₜ ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+              ∃ twoPathData : PointedPathComponentPathData C twoBase,
+                ∃ twoEndpointData :
+                    PointedChosenPathEndpointData C twoBase twoTarget,
+                  (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+                    Nonempty C ∧
+                    PathConnectedSpace C ∧
+                    ConnectedSpace C ∧
+                    SimplyConnectedSpace C ∧
+                    twoPathData.path_to twoTarget = twoEndpointData.path ∧
+                    twoEndpointData.path 0 = twoBase ∧
+                    twoEndpointData.path 1 = twoTarget ∧
+                    Joined twoBase twoTarget ∧
+                    pathComponent twoBase = Set.univ ∧
+                    Path.Homotopic chosenPath twoEndpointData.path ∧
+                    (⟦chosenPath⟧ :
+                      Path.Homotopic.Quotient twoBase twoTarget) =
+                      ⟦twoEndpointData.path⟧ ∧
+                    (∀ ζ : Path twoBase twoTarget,
+                      Path.Homotopic twoEndpointData.path ζ) ∧
+                    Subsingleton (Path.Homotopic.Quotient twoBase twoTarget) ∧
+                    loop 0 = twoBase ∧ loop 1 = twoBase ∧
+                    Path.Homotopic loop (Path.refl twoBase) ∧
+                    FundamentalGroup.fromPath
+                        (⟦loop⟧ :
+                          Path.Homotopic.Quotient twoBase twoBase) =
+                      FundamentalGroup.fromPath
+                        (⟦Path.refl twoBase⟧ :
+                          Path.Homotopic.Quotient twoBase twoBase) ∧
+                    Subsingleton (HomotopyGroup.Pi 1 C twoBase) :=
+  singletonChosenPathLoop_and_twoPointFullChartEndpointDataPathCoherence_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+    singleBase singleTarget chosenSinglePath singleLoop twoBase twoTarget
+    chosenPath loop
+
+/--
+Theorem contract for
+`singletonChosenPathLoop_and_twoPointFullChartEndpointDataPathCoherence_of_homeomorph_to_threeSphere`.
+-/
+theorem singletonChosenPathLoop_and_twoPointFullChartEndpointDataPathCoherence_of_homeomorph_to_threeSphere_eq :
+    @Poincare.singletonChosenPathLoop_and_twoPointFullChartEndpointDataPathCoherence_of_homeomorph_to_threeSphere =
+      @Poincare.singletonChosenPathLoop_and_twoPointFullChartEndpointDataPathCoherence_of_homeomorph_to_threeSphere :=
+  rfl
+
+/--
 Recognition as `ThreeSphere` gives the actual Euclidean chart on a singleton
 complement together with explicit singleton chosen-path data, singleton
 path/loop collapse, and the synchronized two-puncture chart/path-loop
