@@ -17239,6 +17239,183 @@ theorem no_perelman_singularity_model_blowup_classification_of_current_interface
   cases singularityModelBlowupClassification
 
 /--
+Payload-backed surgery construction plus the currently available Perelman
+control legs already give the finite-extinction-facing certificate: a
+theorem-shaped surgery construction statement, its sub-obligation payload, the
+aggregate surgery witness, no-local-collapsing, reduced-volume monotonicity,
+canonical-neighborhood control, singularity-model classification, and the
+remaining blowup-classification blocker.
+-/
+theorem surgery_perelman_finite_extinction_control_certificate_of_payloads
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (constructionPackage :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow)
+    (fFunctionalPayload : PerelmanFFunctionalSetupPayload flow)
+    (entropyNormalizationPayload :
+      PerelmanEntropyNormalizationPayload fFunctionalPayload)
+    (entropyMinimizerPayload :
+      PerelmanEntropyMinimizerExistencePayload
+        entropyNormalizationPayload)
+    (entropyLogSobolevPayload :
+      PerelmanEntropyLogSobolevControlPayload
+        entropyMinimizerPayload)
+    (conjugateHeatPayload :
+      ConjugateHeatEquationTheoryPayload entropyLogSobolevPayload)
+    (adjointHeatPayload :
+      AdjointHeatKernelConstructionPayload conjugateHeatPayload)
+    (conjugateHeatKernelEstimatesPayload :
+      PerelmanConjugateHeatKernelEstimatesPayload adjointHeatPayload)
+    (wFunctionalPayload :
+      PerelmanWFunctionalSetupPayload
+        conjugateHeatKernelEstimatesPayload)
+    (entropyGradientPayload :
+      PerelmanEntropyGradientFormulaPayload wFunctionalPayload)
+    (entropyFirstVariationPayload :
+      PerelmanEntropyFirstVariationPayload entropyGradientPayload)
+    (entropyMonotonicityPayload :
+      PerelmanEntropyMonotonicityPayload
+        entropyFirstVariationPayload)
+    (entropyLowerBoundPropagationPayload :
+      PerelmanEntropyLowerBoundPropagationPayload
+        entropyMonotonicityPayload)
+    (entropyFunctionalPayload :
+      PerelmanEntropyFunctionalPayload
+        entropyLowerBoundPropagationPayload)
+    (reducedLengthFirstVariationPayload :
+      PerelmanReducedLengthFirstVariationPayload
+        entropyFunctionalPayload)
+    (reducedDistanceExistencePayload :
+      PerelmanReducedDistanceExistencePayload
+        reducedLengthFirstVariationPayload)
+    (reducedDistanceDifferentialInequalityPayload :
+      PerelmanReducedDistanceDifferentialInequalityPayload
+        reducedDistanceExistencePayload)
+    (reducedDistanceEstimatesPayload :
+      PerelmanReducedDistanceEstimatesPayload
+        reducedDistanceDifferentialInequalityPayload)
+    (reducedDistanceCutLocusControlPayload :
+      PerelmanReducedDistanceCutLocusControlPayload
+        reducedDistanceEstimatesPayload)
+    (reducedJacobianComparisonPayload :
+      PerelmanReducedJacobianComparisonPayload
+        reducedDistanceCutLocusControlPayload)
+    (reducedDistanceTheoryPayload :
+      PerelmanReducedDistanceTheoryPayload
+        reducedJacobianComparisonPayload)
+    (reducedVolumeDefinitionPayload :
+      PerelmanReducedVolumeDefinitionPayload
+        reducedDistanceTheoryPayload)
+    (reducedVolumeDerivativeFormulaPayload :
+      PerelmanReducedVolumeDerivativeFormulaPayload
+        reducedVolumeDefinitionPayload)
+    (reducedVolumeRigidityPayload :
+      PerelmanReducedVolumeRigidityPayload
+        reducedVolumeDerivativeFormulaPayload)
+    (reducedVolumePositiveLowerBoundPayload :
+      PerelmanReducedVolumePositiveLowerBoundPayload
+        reducedVolumeRigidityPayload)
+    (reducedVolumeLimitRigidityPayload :
+      PerelmanReducedVolumeLimitRigidityPayload
+        reducedVolumePositiveLowerBoundPayload)
+    (reducedVolumeNonincreasingPayload :
+      PerelmanReducedVolumeNonincreasingPayload
+        reducedVolumeLimitRigidityPayload)
+    (reducedVolumeMonotonicityPayload :
+      PerelmanReducedVolumeMonotonicityPayload
+        reducedVolumeNonincreasingPayload)
+    (kappaNoncollapsingFromReducedVolumePayload :
+      PerelmanKappaNoncollapsingFromReducedVolumePayload
+        reducedVolumeNonincreasingPayload)
+    (noLocalCollapsingContradictionSetupPayload :
+      PerelmanNoLocalCollapsingContradictionSetupPayload
+        kappaNoncollapsingFromReducedVolumePayload)
+    (collapsedBallBlowupPayload :
+      PerelmanCollapsedBallBlowupPayload
+        noLocalCollapsingContradictionSetupPayload)
+    (hamiltonCompactnessPayload :
+      HamiltonCompactnessPayload collapsedBallBlowupPayload)
+    (ancientKappaSolutionCompactnessPayload :
+      AncientKappaSolutionCompactnessPayload
+        hamiltonCompactnessPayload)
+    (ancientKappaSolutionLimitExtractionPayload :
+      AncientKappaSolutionLimitExtractionPayload
+        hamiltonCompactnessPayload)
+    (kappaSolutionPointedRescalingPayload :
+      KappaSolutionPointedRescalingPayload
+        ancientKappaSolutionLimitExtractionPayload)
+    (kappaSolutionCurvatureNormalizationPayload :
+      KappaSolutionCurvatureNormalizationPayload
+        kappaSolutionPointedRescalingPayload)
+    (kappaSolutionStructurePayload :
+      KappaSolutionStructureTheoryPayload
+        kappaSolutionCurvatureNormalizationPayload)
+    (kappaSolutionNonnegativeCurvatureOperatorPayload :
+      KappaSolutionNonnegativeCurvatureOperatorPayload
+        kappaSolutionStructurePayload)
+    (kappaSolutionAsymptoticSolitonPayload :
+      KappaSolutionAsymptoticSolitonPayload
+        kappaSolutionNonnegativeCurvatureOperatorPayload)
+    (canonicalNeighborhoodScaleControlPayload :
+      CanonicalNeighborhoodScaleControlPayload
+        ancientKappaSolutionCompactnessPayload)
+    (canonicalNeighborhoodStabilityPayload :
+      CanonicalNeighborhoodStabilityPayload
+        canonicalNeighborhoodScaleControlPayload)
+    (canonicalNeighborhoodPersistenceAcrossScalesPayload :
+      CanonicalNeighborhoodPersistenceAcrossScalesPayload
+        canonicalNeighborhoodStabilityPayload)
+    (canonicalNeighborhoodNeckCapDichotomyPayload :
+      CanonicalNeighborhoodNeckCapDichotomyPayload
+        canonicalNeighborhoodPersistenceAcrossScalesPayload)
+    (canonicalNeighborhoodClassificationPayload :
+      CanonicalNeighborhoodClassificationPayload
+        canonicalNeighborhoodNeckCapDichotomyPayload)
+    (canonicalNeighborhoodTheoremPayload :
+      CanonicalNeighborhoodTheoremPayload
+        canonicalNeighborhoodClassificationPayload)
+    (singularityModelClassificationPayload :
+      SingularityModelClassificationPayload
+        kappaSolutionAsymptoticSolitonPayload
+        canonicalNeighborhoodTheoremPayload)
+    (noLocalCollapsingPayload :
+      PerelmanNoLocalCollapsingPayload
+        noLocalCollapsingContradictionSetupPayload) :
+    ∃ _constructionStatement :
+      RicciFlowWithSurgeryConstructionStatement flow,
+    ∃ _constructionSubobligations :
+      RicciFlowWithSurgeryConstructionSubobligationsPayload flow,
+    ∃ _withSurgery : HasRicciFlowWithSurgery n M,
+    ∃ _noLocalCollapsing : HasPerelmanNoLocalCollapsing flow,
+    ∃ _reducedVolume : HasPerelmanReducedVolumeMonotonicity flow,
+    ∃ _canonicalNeighborhood : HasCanonicalNeighborhoodTheorem flow,
+    ∃ _singularityModelClassification :
+      HasSingularityModelClassification flow,
+      ¬ HasSingularityModelBlowupClassification flow := by
+  rcases surgery_construction_payload_of_construction_package
+      constructionPackage with
+    ⟨constructionStatement, constructionSubobligations, withSurgery⟩
+  exact
+    ⟨constructionStatement, constructionSubobligations, withSurgery,
+      perelman_no_local_collapsing_of_payload noLocalCollapsingPayload,
+      perelman_reduced_volume_monotonicity_of_payload
+        reducedVolumeMonotonicityPayload,
+      canonical_neighborhood_theorem_of_payload
+        canonicalNeighborhoodTheoremPayload,
+      singularity_model_classification_of_payload
+        singularityModelClassificationPayload,
+      no_perelman_singularity_model_blowup_classification_of_current_interface
+        flow⟩
+
+/-- Theorem contract for `surgery_perelman_finite_extinction_control_certificate_of_payloads`. -/
+theorem surgery_perelman_finite_extinction_control_certificate_of_payloads_eq :
+    @Poincare.surgery_perelman_finite_extinction_control_certificate_of_payloads =
+      @Poincare.surgery_perelman_finite_extinction_control_certificate_of_payloads :=
+  rfl
+
+/--
 Consequently, no direct Perelman singularity-control package can be inhabited
 under the current local API: any package would still contain constructorless
 singularity-model blowup classification evidence.
