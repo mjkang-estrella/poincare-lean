@@ -34377,4 +34377,48 @@ theorem dependency_only_reserved_named_final_conclusion_bundle_of_equation_bound
       @Poincare.dependency_only_reserved_named_final_conclusion_bundle_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved named final conclusion at a witness.
+
+This is the selected-witness form of the final conclusion bundle: besides the
+canonical theorem name, checked certificate, nonempty certificate, final
+statements, and canonical target, it exposes the concrete completion criterion
+at the chosen witness.
+-/
+theorem dependency_only_reserved_named_final_conclusion_at_witness_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (witness : Type u) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      PoincareConjectureStatement.{u} ∧
+      MathlibTopologicalPoincareThreeStatement.{u} ∧
+      canonicalCompletionTarget.{u} ∧
+      CompletionCriterionAtUniverse witness := by
+  rcases
+      dependency_only_reserved_named_final_statement_tuple_completionCriterion_of_equation_boundary_dependencies
+        dependencies witness with
+    ⟨theoremName, certificate, nonemptyCertificate, projectStatement,
+      mathlibStatement, canonicalTarget, _completionCriterionFamily,
+      criterion, hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      _hNonemptyCertificate, _hProjectStatementCertificate,
+      _hMathlibStatementProject, _hCanonicalTarget, _hCriterionFamily,
+      _hCriterionReserved⟩
+  exact
+    ⟨theoremName, certificate, hTheoremNameCanonical, hTheoremNameLiteral,
+      hCertificate, nonemptyCertificate, projectStatement, mathlibStatement,
+      canonicalTarget, criterion⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_named_final_conclusion_at_witness_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_named_final_conclusion_at_witness_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_named_final_conclusion_at_witness_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_named_final_conclusion_at_witness_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
