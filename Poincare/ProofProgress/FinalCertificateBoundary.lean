@@ -30147,4 +30147,86 @@ theorem dependency_only_canonical_reserved_theorem_named_dependency_fields_of_eq
       @Poincare.dependency_only_canonical_reserved_theorem_named_dependency_fields_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only canonical reserved-theorem endpoint with target-family surgery
+witnesses opened at an arbitrary closed simply connected three-manifold.
+
+This specializes the named dependency fields to the finite-extinction surgery
+inputs needed by the Ricci-flow-with-surgery part of the boundary, preserving
+both the strengthened equation-boundary witness and the ordinary forgetful
+witness.
+-/
+theorem dependency_only_canonical_reserved_theorem_target_surgery_witnesses_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ theoremName : String,
+    ∃ remainingDependencies : RemainingDependencyPackage.{u},
+    ∃ ordinarySurgeryWitness :
+      Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M),
+    ∃ equationBoundarySurgeryWitness :
+      Nonempty
+        (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      remainingDependencies =
+        dependencies_of_equation_boundary_dependencies dependencies ∧
+      ordinarySurgeryWitness = remainingDependencies.surgery M ∧
+      equationBoundarySurgeryWitness = dependencies.surgery M ∧
+      ordinarySurgeryWitness =
+        surgery_packages_of_equation_boundary_dependencies dependencies M ∧
+      equationBoundarySurgeryWitness =
+        surgery_packages_with_equation_boundary_of_remaining_dependency_package
+          dependencies M := by
+  rcases
+      dependency_only_canonical_reserved_theorem_named_dependency_fields_of_equation_boundary_dependencies
+        dependencies with
+    ⟨theoremName, remainingDependencies, _ordinarySmoothability,
+      ordinarySurgery, _ordinaryTopology, _equationBoundarySmoothability,
+      equationBoundarySurgery, _equationBoundaryTopology,
+      hTheoremNameCanonical, hTheoremNameLiteral, hRemainingDependencies,
+      _hOrdinarySmoothability, hOrdinarySurgery, _hOrdinaryTopology,
+      _hEquationBoundarySmoothability, hEquationBoundarySurgery,
+      _hEquationBoundaryTopology, _hOrdinaryPayloadFields,
+      _hEquationBoundaryPayloadFields⟩
+  let ordinarySurgeryWitness :
+      Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M) :=
+    ordinarySurgery M
+  let equationBoundarySurgeryWitness :
+      Nonempty
+        (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackageWithEquationBoundary n M) :=
+    equationBoundarySurgery M
+  have hOrdinarySurgeryWitness :
+      ordinarySurgeryWitness = remainingDependencies.surgery M := by
+    change ordinarySurgery M = remainingDependencies.surgery M
+    rw [hOrdinarySurgery]
+  have hEquationBoundarySurgeryWitness :
+      equationBoundarySurgeryWitness = dependencies.surgery M := by
+    change equationBoundarySurgery M = dependencies.surgery M
+    rw [hEquationBoundarySurgery]
+  have hOrdinarySurgeryForgetful :
+      ordinarySurgeryWitness =
+        surgery_packages_of_equation_boundary_dependencies dependencies M := by
+    rw [hOrdinarySurgeryWitness]
+  have hEquationBoundarySurgeryProjection :
+      equationBoundarySurgeryWitness =
+        surgery_packages_with_equation_boundary_of_remaining_dependency_package
+          dependencies M := by
+    rw [hEquationBoundarySurgeryWitness]
+  exact
+    ⟨theoremName, remainingDependencies, ordinarySurgeryWitness,
+      equationBoundarySurgeryWitness, hTheoremNameCanonical,
+      hTheoremNameLiteral, hRemainingDependencies, hOrdinarySurgeryWitness,
+      hEquationBoundarySurgeryWitness, hOrdinarySurgeryForgetful,
+      hEquationBoundarySurgeryProjection⟩
+
+/-- Theorem contract for
+`dependency_only_canonical_reserved_theorem_target_surgery_witnesses_of_equation_boundary_dependencies`. -/
+theorem dependency_only_canonical_reserved_theorem_target_surgery_witnesses_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_canonical_reserved_theorem_target_surgery_witnesses_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_canonical_reserved_theorem_target_surgery_witnesses_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
