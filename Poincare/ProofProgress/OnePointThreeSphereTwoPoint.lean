@@ -2096,6 +2096,59 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_mapped_loops_fromPath_
   rfl
 
 /--
+The transported loop-triviality payload also carries the connectedness of both
+the source one-point complement and the target standard `ThreeSphere`
+complement used by the explicit two-puncture bridge.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_mapped_loops_fullTopology_fromPath_eq_refl
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (sourceBase :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (sourceLoop : Path sourceBase sourceBase)
+    (targetBase :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere))
+    (targetLoop : Path targetBase targetBase) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    let Source :=
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    let Target :=
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)
+    ConnectedSpace Source ∧
+      ConnectedSpace Target ∧
+      FundamentalGroup.fromPath
+          (⟦sourceLoop.map H.continuous⟧ :
+            Path.Homotopic.Quotient (H sourceBase) (H sourceBase)) =
+        FundamentalGroup.fromPath
+          (⟦Path.refl (H sourceBase)⟧ :
+            Path.Homotopic.Quotient (H sourceBase) (H sourceBase)) ∧
+      FundamentalGroup.fromPath
+          (⟦targetLoop.map H.symm.continuous⟧ :
+            Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetBase)) =
+        FundamentalGroup.fromPath
+          (⟦Path.refl (H.symm targetBase)⟧ :
+            Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetBase)) := by
+  dsimp
+  rcases onePoint_threeSpace_twoPointComplement_homeomorph_topology_packages hqp with
+    ⟨_, _, hSourceConnected, _, _, _, hTargetConnected, _⟩
+  rcases
+      onePoint_threeSpace_twoPointComplement_homeomorph_mapped_loops_fromPath_eq_refl
+        hqp sourceBase sourceLoop targetBase targetLoop with
+    ⟨hSourceLoop, hTargetLoop⟩
+  exact ⟨hSourceConnected, hTargetConnected, hSourceLoop, hTargetLoop⟩
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_mapped_loops_fullTopology_fromPath_eq_refl`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_mapped_loops_fullTopology_fromPath_eq_refl_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_mapped_loops_fullTopology_fromPath_eq_refl =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_mapped_loops_fullTopology_fromPath_eq_refl :=
+  rfl
+
+/--
 The transported basepoints supplied by the explicit two-puncture complement
 homeomorphism have subsingleton first homotopy groups on both sides. This
 packages the source one-point and target `ThreeSphere` pi-one triviality
