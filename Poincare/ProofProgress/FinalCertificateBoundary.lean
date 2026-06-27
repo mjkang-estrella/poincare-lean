@@ -32092,4 +32092,78 @@ theorem dependency_only_mathlib_selected_target_certificate_payload_of_equation_
       @Poincare.dependency_only_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only agreement between the direct mathlib final endpoint and the
+selected-target certificate payload.
+
+The file already exposes a direct dependency-only mathlib-shaped final
+statement.  This theorem applies that direct statement at the selected target
+and records that it agrees with the selected target payload, the project
+statement, completion criterion, reconstructed final statement, direct expanded
+conclusion, and checked certificate equality.
+-/
+theorem dependency_only_direct_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ directMathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ selectedConclusion : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ finalStatement : PoincareConjectureStatement.{u},
+    ∃ expandedConclusion :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          Nonempty (N ≃ₜ ThreeSphere),
+    ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+      directMathlibStatement M = selectedConclusion ∧
+      projectStatement M = selectedConclusion ∧
+      completionCriterionFamily M M = selectedConclusion ∧
+      finalStatement M = selectedConclusion ∧
+      expandedConclusion M = selectedConclusion ∧
+      selectedConclusion =
+        (⟨projectHomeomorphism⟩ : Nonempty (M ≃ₜ ThreeSphere)) ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies := by
+  rcases
+      dependency_only_mathlib_topological_final_statement_completion_certificate_of_equation_boundary_dependencies
+        dependencies with
+    ⟨directMathlibStatement, _directProjectStatement,
+      _directExpandedConclusion, _directCompletionCriterionFamily,
+      _directCertificate, _hDirectCertificate, _hDirectCanonicalPayload,
+      _hDirectProjectPayload⟩
+  rcases
+      dependency_only_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨_inducedMathlibStatement, projectStatement, selectedConclusion,
+      completionCriterionFamily, finalStatement, expandedConclusion,
+      projectHomeomorphism, certificate, _hProjectStatement,
+      _hInducedMathlibStatement, _hInducedMathlibStatementApplication,
+      hProjectStatementApplication, hCompletionCriterionApplication,
+      hFinalStatementApplication, hExpandedConclusionApplication,
+      hProjectPayloadTarget, hCertificate⟩
+  have hDirectMathlibStatementApplication :
+      directMathlibStatement M = selectedConclusion := by
+    apply Subsingleton.elim
+  exact
+    ⟨directMathlibStatement, selectedConclusion, projectStatement,
+      completionCriterionFamily, finalStatement, expandedConclusion,
+      projectHomeomorphism, certificate, hDirectMathlibStatementApplication,
+      hProjectStatementApplication, hCompletionCriterionApplication,
+      hFinalStatementApplication, hExpandedConclusionApplication,
+      hProjectPayloadTarget, hCertificate⟩
+
+/-- Theorem contract for
+`dependency_only_direct_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies`. -/
+theorem dependency_only_direct_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_direct_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_direct_mathlib_selected_target_certificate_payload_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
