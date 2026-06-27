@@ -842,6 +842,70 @@ theorem onePoint_threeSpace_compl_singleton_simplyConnectedSpace
     (onePoint_threeSpace_compl_singleton_homeomorph_euclidean p).toHomotopyEquiv.simplyConnectedSpace
 
 /--
+The complement of a point in the one-point compactification model is
+path-connected as a consequence of its simple-connectedness.
+-/
+theorem onePoint_threeSpace_compl_singleton_pathConnectedSpace_of_model_simpleConnected
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    PathConnectedSpace
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  letI : SimplyConnectedSpace
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_compl_singleton_simplyConnectedSpace p
+  infer_instance
+
+/--
+The complement of a point in the one-point compactification model is connected.
+-/
+theorem onePoint_threeSpace_compl_singleton_connectedSpace_of_model_simpleConnected
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    ConnectedSpace
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  letI : PathConnectedSpace
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_compl_singleton_pathConnectedSpace_of_model_simpleConnected p
+  infer_instance
+
+/--
+The complement of a point in the one-point compactification model is nonempty.
+-/
+theorem onePoint_threeSpace_compl_singleton_nonempty_of_model_simpleConnected
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    Nonempty
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  letI : PathConnectedSpace
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_compl_singleton_pathConnectedSpace_of_model_simpleConnected p
+  infer_instance
+
+/--
+Any two paths with the same endpoints in a one-point complement of
+compactified three-space are homotopic.  The proof consumes the Euclidean
+chart simple-connectedness of the punctured compactification model.
+-/
+theorem onePoint_threeSpace_compl_singleton_any_paths_homotopic
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    ∀ {x y : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+      (γ η : Path x y), Path.Homotopic γ η := by
+  intro x y γ η
+  letI : SimplyConnectedSpace
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_compl_singleton_simplyConnectedSpace p
+  exact SimplyConnectedSpace.paths_homotopic γ η
+
+/-- The single-complement path-homotopy theorem is exactly the stated proof. -/
+theorem onePoint_threeSpace_compl_singleton_any_paths_homotopic_eq
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    @onePoint_threeSpace_compl_singleton_any_paths_homotopic p =
+      (fun {x y : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+        (γ η : Path x y) => by
+        letI : SimplyConnectedSpace
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+          onePoint_threeSpace_compl_singleton_simplyConnectedSpace p
+        exact SimplyConnectedSpace.paths_homotopic γ η) := by
+  apply Subsingleton.elim
+
+/--
 The Euclidean chart embeds a one-point compactification complement as the whole
 Euclidean model.
 -/
@@ -1143,6 +1207,42 @@ theorem onePoint_threeSpace_twoPointComplement_locPathConnectedSpace
   exact
     (onePoint_threeSpace_twoPointComplement_puncturedEuclidean_isOpenEmbedding
       hqp).locPathConnectedSpace
+
+/--
+The complement of two distinct compactification points is path-connected.
+-/
+theorem onePoint_threeSpace_twoPointComplement_pathConnectedSpace_of_model_simpleConnected
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    PathConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  letI : SimplyConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_twoPointComplement_simplyConnectedSpace hqp
+  infer_instance
+
+/--
+The complement of two distinct compactification points is connected.
+-/
+theorem onePoint_threeSpace_twoPointComplement_connectedSpace_of_model_simpleConnected
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    ConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  letI : PathConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_twoPointComplement_pathConnectedSpace_of_model_simpleConnected hqp
+  infer_instance
+
+/--
+The complement of two distinct compactification points is nonempty.
+-/
+theorem onePoint_threeSpace_twoPointComplement_nonempty_of_model_simpleConnected
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    Nonempty
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  letI : PathConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_twoPointComplement_pathConnectedSpace_of_model_simpleConnected hqp
+  infer_instance
 
 /--
 Simple-connectedness of the actual two-point compactification complement
@@ -22975,20 +23075,52 @@ structure ExtinctionTopologyDecompositionData
     ExtinctionTopologyDecompositionRealization M extinction componentIndex
 
 /--
-Interface for the decomposition information obtained from finite extinction.
+Proof-bearing interface for the decomposition information obtained from finite
+extinction.
 
 This stands for the topological output of the extinction argument before the
-final recognition theorem is applied.
+final recognition theorem is applied. The interface stores existence of
+certified finite-extinction decomposition data instead of exposing a free local
+constructor.
 -/
-inductive HasExtinctionTopologyDecomposition
+structure HasExtinctionTopologyDecomposition
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M) : Prop where
-  /-- Certified finite-extinction decomposition data inhabits the interface. -/
-  | ofData :
-      ExtinctionTopologyDecompositionData M extinction →
-      HasExtinctionTopologyDecomposition M extinction
+  /-- Certified finite-extinction decomposition data carried by the interface. -/
+  data : Nonempty (ExtinctionTopologyDecompositionData M extinction)
+
+/--
+Compatibility constructor for the proof-bearing decomposition interface.
+-/
+def HasExtinctionTopologyDecomposition.ofData
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    (data : ExtinctionTopologyDecompositionData M extinction) :
+    HasExtinctionTopologyDecomposition M extinction where
+  data := ⟨data⟩
+
+/--
+A proof-bearing extinction decomposition exposes its finite component index
+and the realization certificate carried by the stored decomposition data.
+-/
+theorem extinction_topology_decomposition_realization_of_decomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    ∃ componentIndex : Type u,
+      Nonempty (Fintype componentIndex) ∧
+        ExtinctionTopologyDecompositionRealization
+          M extinction componentIndex := by
+  rcases decomposition.data with ⟨data⟩
+  exact
+    ⟨data.componentIndex, ⟨data.finiteComponentIndex⟩,
+      data.realization⟩
 
 /--
 Proof-bearing one-point compactification recognition payload after a concrete
@@ -23133,6 +23265,23 @@ structure ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
   /-- The inverse map is a right inverse to the forward map. -/
   right_inv :
     Function.RightInverse invFun toFun
+
+/--
+Raw forward/inverse map data exposes both inverse laws for the same selected
+forward map and inverse map.
+-/
+theorem extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_leftRightInverse
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition) :
+    Function.LeftInverse mapData.invFun mapData.toFun ∧
+      Function.RightInverse mapData.invFun mapData.toFun :=
+  ⟨mapData.left_inv, mapData.right_inv⟩
 
 /--
 Continuity data for raw forward/inverse maps used to construct the
@@ -23478,6 +23627,43 @@ structure ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition
       M extinction decomposition mapData
 
 /--
+Bundled point-set data exposes continuity, injectivity, and surjectivity for
+the same selected raw forward map.
+-/
+theorem extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_pointSetProofs
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition
+        M extinction decomposition) :
+    Continuous pointSetData.mapData.toFun ∧
+      Function.Injective pointSetData.mapData.toFun ∧
+        Function.Surjective pointSetData.mapData.toFun :=
+  ⟨pointSetData.continuityData.continuous_toFun,
+    pointSetData.injectivityData.injective_toFun,
+    pointSetData.surjectivityData.surjective_toFun⟩
+
+/--
+Bundled point-set data exposes bijectivity for the same selected raw forward
+map.
+-/
+theorem extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_bijective_toFun
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition
+        M extinction decomposition) :
+    Function.Bijective pointSetData.mapData.toFun :=
+  ⟨pointSetData.injectivityData.injective_toFun,
+    pointSetData.surjectivityData.surjective_toFun⟩
+
+/--
 Point-set proof data for a fixed selected raw forward map.
 
 This is the proof-only half below `ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition`:
@@ -23648,6 +23834,60 @@ theorem extinctionOnePointThreeSpaceForwardMapPointSetProofDataAfterDecompositio
   rfl
 
 /--
+Raw forward/inverse map data makes the selected forward map injective by the
+stored left-inverse law.
+-/
+theorem extinctionOnePointThreeSpaceForwardMap_injective_of_forwardInverseMapData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition) :
+    Function.Injective mapData.toFun := by
+  intro x y hxy
+  calc
+    x = mapData.invFun (mapData.toFun x) := (mapData.left_inv x).symm
+    _ = mapData.invFun (mapData.toFun y) := congrArg mapData.invFun hxy
+    _ = y := mapData.left_inv y
+
+/--
+Raw forward/inverse map data makes the selected forward map surjective by the
+stored right-inverse law.
+-/
+theorem extinctionOnePointThreeSpaceForwardMap_surjective_of_forwardInverseMapData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition) :
+    Function.Surjective mapData.toFun := by
+  intro y
+  exact ⟨mapData.invFun y, mapData.right_inv y⟩
+
+/--
+Split continuous-forward-map, injectivity, and surjectivity data exposes the
+bijectivity proof stored in the continuous-bijective forward-map payload.
+-/
+theorem extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition_bijective_toFun
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (injectiveSurjectiveData :
+      ExtinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition
+        M extinction decomposition) :
+    Function.Bijective injectiveSurjectiveData.mapData.toFun :=
+  ⟨injectiveSurjectiveData.injectivityData.injective_toFun,
+    injectiveSurjectiveData.surjectivityData.surjective_toFun⟩
+
+/--
 Raw forward/inverse map data plus forward continuity supplies point-set data
 for the projected raw forward map.
 -/
@@ -23760,6 +24000,78 @@ structure ExtinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDeco
   bijective_toFun : Function.Bijective toFun
 
 /--
+Continuous-bijective forward-map data exposes continuity and bijectivity for
+the same selected forward map.
+-/
+theorem extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_continuous_and_bijective_toFun
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (data :
+      ExtinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition
+        M extinction decomposition) :
+    Continuous data.toFun ∧ Function.Bijective data.toFun :=
+  ⟨data.continuous_toFun, data.bijective_toFun⟩
+
+/--
+Continuous-bijective forward-map data has a continuous inverse by the
+compact-to-Hausdorff inverse-continuity theorem.
+-/
+theorem extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_continuous_invFun
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (data :
+      ExtinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition
+        M extinction decomposition) :
+    Continuous
+      (Equiv.ofBijective data.toFun data.bijective_toFun).symm := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_t2Space
+  let e : M ≃ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    Equiv.ofBijective data.toFun data.bijective_toFun
+  have he : Continuous e := by
+    simpa [e] using data.continuous_toFun
+  change Continuous e.symm
+  exact he.continuous_symm_of_equiv_compact_to_t2
+
+/--
+Continuous-bijective forward-map data builds a one-point compactification
+homeomorphism whose underlying equivalence is the bijective forward map.
+-/
+theorem extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_homeomorphism_exists
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (data :
+      ExtinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition
+        M extinction decomposition) :
+    ∃ homeomorphism : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)),
+      homeomorphism.toEquiv =
+        Equiv.ofBijective data.toFun data.bijective_toFun := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_t2Space
+  let e : M ≃ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    Equiv.ofBijective data.toFun data.bijective_toFun
+  have he : Continuous e := by
+    simpa [e] using data.continuous_toFun
+  exact
+    ⟨{ toFun := e
+       invFun := e.symm
+       left_inv := e.left_inv
+       right_inv := e.right_inv
+       continuous_toFun := he
+       continuous_invFun := by
+        exact he.continuous_symm_of_equiv_compact_to_t2 },
+      rfl⟩
+
+/--
 Explicit continuous-map, injectivity, and surjectivity data supplies the
 continuous-bijective forward-map payload.
 -/
@@ -23861,6 +24173,36 @@ theorem extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_o
         M extinction decomposition mapData forwardContinuityData =
       { mapData := mapData,
         forwardContinuityData := forwardContinuityData } :=
+  rfl
+
+/--
+Paired forward-continuous map data has the same selected forward function when
+projected as raw forward-map data and when wrapped as continuous-forward-map
+data. This is the field-level coherence below the statement-level
+`Classical.choice` projection boundary.
+-/
+theorem extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_projected_toFun_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (data :
+      ExtinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition
+        M extinction decomposition) :
+    (extinctionOnePointThreeSpaceForwardMapDataAfterDecomposition_of_forwardInverseMapData
+        M extinction decomposition data.mapData).toFun =
+      (extinctionOnePointThreeSpaceContinuousForwardMapDataAfterDecomposition_of_forwardMapData
+        M extinction decomposition
+        (extinctionOnePointThreeSpaceForwardMapDataAfterDecomposition_of_forwardInverseMapData
+          M extinction decomposition data.mapData)
+        { continuous_toFun := data.forwardContinuityData.continuous_toFun }).toFun :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_projected_toFun_eq`. -/
+theorem extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_projected_toFun_eq_eq :
+    @Poincare.extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_projected_toFun_eq =
+      @Poincare.extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_projected_toFun_eq :=
   rfl
 
 /--
@@ -24120,6 +24462,314 @@ theorem extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecompos
           exact he.continuous_symm_of_equiv_compact_to_t2 } :=
   rfl
 
+/--
+Raw forward/inverse map data plus forward continuity builds the corresponding
+one-point compactification homeomorphism. The inverse continuity is supplied by
+the compact-to-Hausdorff theorem.
+-/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_homeomorphism_exists
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    ∃ homeomorphism : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)),
+      homeomorphism.toEquiv =
+        { toFun := mapData.toFun
+          invFun := mapData.invFun
+          left_inv := mapData.left_inv
+          right_inv := mapData.right_inv } := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_t2Space
+  let e : M ≃ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := mapData.toFun
+      invFun := mapData.invFun
+      left_inv := mapData.left_inv
+      right_inv := mapData.right_inv }
+  have he : Continuous e := by
+    simpa [e] using forwardContinuityData.continuous_toFun
+  exact
+    ⟨{ toFun := e
+       invFun := e.symm
+       left_inv := e.left_inv
+       right_inv := e.right_inv
+       continuous_toFun := he
+       continuous_invFun := he.continuous_symm_of_equiv_compact_to_t2 },
+      rfl⟩
+
+/--
+Raw forward/inverse map data plus forward continuity makes the selected map an
+open embedding. The proof upgrades the same data to a homeomorphism using
+compact-to-Hausdorff inverse continuity.
+-/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isOpenEmbedding
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    Topology.IsOpenEmbedding mapData.toFun := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_t2Space
+  let e : M ≃ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := mapData.toFun
+      invFun := mapData.invFun
+      left_inv := mapData.left_inv
+      right_inv := mapData.right_inv }
+  have he : Continuous e := by
+    simpa [e] using forwardContinuityData.continuous_toFun
+  let h : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := e
+      invFun := e.symm
+      left_inv := e.left_inv
+      right_inv := e.right_inv
+      continuous_toFun := he
+      continuous_invFun := he.continuous_symm_of_equiv_compact_to_t2 }
+  simpa [e, h] using h.isOpenEmbedding
+
+/--
+Raw forward/inverse map data plus forward continuity makes the selected map a
+closed embedding. This is the closed-embedding consequence of the same
+homeomorphism used for the open-embedding route.
+-/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isClosedEmbedding
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    Topology.IsClosedEmbedding mapData.toFun := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_t2Space
+  let e : M ≃ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := mapData.toFun
+      invFun := mapData.invFun
+      left_inv := mapData.left_inv
+      right_inv := mapData.right_inv }
+  have he : Continuous e := by
+    simpa [e] using forwardContinuityData.continuous_toFun
+  let h : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := e
+      invFun := e.symm
+      left_inv := e.left_inv
+      right_inv := e.right_inv
+      continuous_toFun := he
+      continuous_invFun := he.continuous_symm_of_equiv_compact_to_t2 }
+  simpa [e, h] using h.isClosedEmbedding
+
+/--
+Raw forward/inverse map data plus forward continuity makes the selected map an
+open map.
+-/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isOpenMap
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    IsOpenMap mapData.toFun := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_t2Space
+  let e : M ≃ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := mapData.toFun
+      invFun := mapData.invFun
+      left_inv := mapData.left_inv
+      right_inv := mapData.right_inv }
+  have he : Continuous e := by
+    simpa [e] using forwardContinuityData.continuous_toFun
+  let h : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := e
+      invFun := e.symm
+      left_inv := e.left_inv
+      right_inv := e.right_inv
+      continuous_toFun := he
+      continuous_invFun := he.continuous_symm_of_equiv_compact_to_t2 }
+  simpa [e, h] using h.isOpenMap
+
+/--
+Raw forward/inverse map data plus forward continuity makes the selected map a
+closed map.
+-/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isClosedMap
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    IsClosedMap mapData.toFun := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_t2Space
+  let e : M ≃ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := mapData.toFun
+      invFun := mapData.invFun
+      left_inv := mapData.left_inv
+      right_inv := mapData.right_inv }
+  have he : Continuous e := by
+    simpa [e] using forwardContinuityData.continuous_toFun
+  let h : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := e
+      invFun := e.symm
+      left_inv := e.left_inv
+      right_inv := e.right_inv
+      continuous_toFun := he
+      continuous_invFun := he.continuous_symm_of_equiv_compact_to_t2 }
+  simpa [e, h] using h.isClosedMap
+
+/--
+Raw forward/inverse map data plus forward continuity makes the selected map an
+inducing map.
+-/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isInducing
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    Topology.IsInducing mapData.toFun := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_t2Space
+  let e : M ≃ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := mapData.toFun
+      invFun := mapData.invFun
+      left_inv := mapData.left_inv
+      right_inv := mapData.right_inv }
+  have he : Continuous e := by
+    simpa [e] using forwardContinuityData.continuous_toFun
+  let h : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := e
+      invFun := e.symm
+      left_inv := e.left_inv
+      right_inv := e.right_inv
+      continuous_toFun := he
+      continuous_invFun := he.continuous_symm_of_equiv_compact_to_t2 }
+  simpa [e, h] using h.isInducing
+
+/--
+Raw forward/inverse map data plus forward continuity makes the selected map a
+quotient map.
+-/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isQuotientMap
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    Topology.IsQuotientMap mapData.toFun := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_t2Space
+  let e : M ≃ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := mapData.toFun
+      invFun := mapData.invFun
+      left_inv := mapData.left_inv
+      right_inv := mapData.right_inv }
+  have he : Continuous e := by
+    simpa [e] using forwardContinuityData.continuous_toFun
+  let h : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := e
+      invFun := e.symm
+      left_inv := e.left_inv
+      right_inv := e.right_inv
+      continuous_toFun := he
+      continuous_invFun := he.continuous_symm_of_equiv_compact_to_t2 }
+  simpa [e, h] using h.isQuotientMap
+
+/--
+Raw forward/inverse map data plus forward continuity makes the selected map's
+range all of the one-point compactification.
+-/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_range_eq_univ
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    Set.range mapData.toFun = Set.univ := by
+  letI : T2Space (OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    onePoint_threeSpace_t2Space
+  let e : M ≃ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := mapData.toFun
+      invFun := mapData.invFun
+      left_inv := mapData.left_inv
+      right_inv := mapData.right_inv }
+  have he : Continuous e := by
+    simpa [e] using forwardContinuityData.continuous_toFun
+  let h : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := e
+      invFun := e.symm
+      left_inv := e.left_inv
+      right_inv := e.right_inv
+      continuous_toFun := he
+      continuous_invFun := he.continuous_symm_of_equiv_compact_to_t2 }
+  simpa [e, h] using (Set.range_eq_univ.mpr h.surjective)
+
+/--
+Raw forward/inverse map data plus forward continuity makes the selected map an
+embedding.
+-/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isEmbedding
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    Topology.IsEmbedding mapData.toFun :=
+  (extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isOpenEmbedding
+    M extinction decomposition mapData forwardContinuityData).isEmbedding
+
 /-- Definitional equality for the raw-map-continuity-to-equivalence-continuity wrapper. -/
 theorem extinctionOnePointThreeSpaceEquivalenceContinuityDataAfterDecomposition_of_forwardInverseMapContinuityData_eq
     (M : Type u) [TopologicalSpace M] [T2Space M]
@@ -24159,6 +24809,26 @@ theorem extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecompos
         M extinction decomposition mapData forwardContinuityData).continuous_toFun =
       forwardContinuityData.continuous_toFun :=
   rfl
+
+/--
+Forward continuity of raw forward/inverse map data gives inverse-map
+continuity by the compact-to-Hausdorff inverse-continuity theorem.
+-/
+theorem extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData_invFun
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    Continuous mapData.invFun :=
+  (extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData
+    M extinction decomposition mapData forwardContinuityData).continuous_invFun
 
 /--
 Paired forward-continuous map data exposes its raw forward/inverse map datum.
@@ -24898,6 +25568,238 @@ theorem extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecomposition_o
   rfl
 
 /--
+Selected equivalence-with-continuity data carries continuity of the selected
+forward equivalence map.
+-/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_continuous_toFun
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    Continuous selectedData.equivalenceData.toEquiv :=
+  selectedData.continuityData.continuous_toFun
+
+/--
+Selected equivalence-with-continuity data carries continuity of the selected
+inverse equivalence map.
+-/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_continuous_invFun
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    Continuous selectedData.equivalenceData.toEquiv.symm :=
+  selectedData.continuityData.continuous_invFun
+
+/--
+Selected equivalence-with-continuity data directly supplies the concrete
+one-point compactification homeomorphism built from the selected equivalence
+and both selected continuity proofs.
+-/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_homeomorphism_exists
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    ∃ homeomorphism : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)),
+      homeomorphism =
+        { toFun := selectedData.equivalenceData.toEquiv,
+          invFun := selectedData.equivalenceData.toEquiv.symm,
+          left_inv := selectedData.equivalenceData.toEquiv.left_inv,
+          right_inv := selectedData.equivalenceData.toEquiv.right_inv,
+          continuous_toFun := selectedData.continuityData.continuous_toFun,
+          continuous_invFun := selectedData.continuityData.continuous_invFun } :=
+  ⟨{ toFun := selectedData.equivalenceData.toEquiv,
+      invFun := selectedData.equivalenceData.toEquiv.symm,
+      left_inv := selectedData.equivalenceData.toEquiv.left_inv,
+      right_inv := selectedData.equivalenceData.toEquiv.right_inv,
+      continuous_toFun := selectedData.continuityData.continuous_toFun,
+      continuous_invFun := selectedData.continuityData.continuous_invFun }, rfl⟩
+
+/--
+Selected equivalence-with-continuity data makes the selected equivalence an
+open embedding.
+-/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isOpenEmbedding
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    Topology.IsOpenEmbedding selectedData.equivalenceData.toEquiv := by
+  let e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := selectedData.equivalenceData.toEquiv
+      invFun := selectedData.equivalenceData.toEquiv.symm
+      left_inv := selectedData.equivalenceData.toEquiv.left_inv
+      right_inv := selectedData.equivalenceData.toEquiv.right_inv
+      continuous_toFun := selectedData.continuityData.continuous_toFun
+      continuous_invFun := selectedData.continuityData.continuous_invFun }
+  simpa [e] using e.isOpenEmbedding
+
+/--
+Selected equivalence-with-continuity data makes the selected equivalence a
+closed embedding.
+-/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isClosedEmbedding
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    Topology.IsClosedEmbedding selectedData.equivalenceData.toEquiv := by
+  let e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := selectedData.equivalenceData.toEquiv
+      invFun := selectedData.equivalenceData.toEquiv.symm
+      left_inv := selectedData.equivalenceData.toEquiv.left_inv
+      right_inv := selectedData.equivalenceData.toEquiv.right_inv
+      continuous_toFun := selectedData.continuityData.continuous_toFun
+      continuous_invFun := selectedData.continuityData.continuous_invFun }
+  simpa [e] using e.isClosedEmbedding
+
+/--
+Selected equivalence-with-continuity data makes the selected equivalence an
+open map.
+-/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isOpenMap
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    IsOpenMap selectedData.equivalenceData.toEquiv := by
+  let e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := selectedData.equivalenceData.toEquiv
+      invFun := selectedData.equivalenceData.toEquiv.symm
+      left_inv := selectedData.equivalenceData.toEquiv.left_inv
+      right_inv := selectedData.equivalenceData.toEquiv.right_inv
+      continuous_toFun := selectedData.continuityData.continuous_toFun
+      continuous_invFun := selectedData.continuityData.continuous_invFun }
+  simpa [e] using e.isOpenMap
+
+/--
+Selected equivalence-with-continuity data makes the selected equivalence a
+closed map.
+-/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isClosedMap
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    IsClosedMap selectedData.equivalenceData.toEquiv := by
+  let e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := selectedData.equivalenceData.toEquiv
+      invFun := selectedData.equivalenceData.toEquiv.symm
+      left_inv := selectedData.equivalenceData.toEquiv.left_inv
+      right_inv := selectedData.equivalenceData.toEquiv.right_inv
+      continuous_toFun := selectedData.continuityData.continuous_toFun
+      continuous_invFun := selectedData.continuityData.continuous_invFun }
+  simpa [e] using e.isClosedMap
+
+/--
+Selected equivalence-with-continuity data makes the selected equivalence an
+inducing map.
+-/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isInducing
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    Topology.IsInducing selectedData.equivalenceData.toEquiv := by
+  let e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := selectedData.equivalenceData.toEquiv
+      invFun := selectedData.equivalenceData.toEquiv.symm
+      left_inv := selectedData.equivalenceData.toEquiv.left_inv
+      right_inv := selectedData.equivalenceData.toEquiv.right_inv
+      continuous_toFun := selectedData.continuityData.continuous_toFun
+      continuous_invFun := selectedData.continuityData.continuous_invFun }
+  simpa [e] using e.isInducing
+
+/--
+Selected equivalence-with-continuity data makes the selected equivalence a
+quotient map.
+-/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isQuotientMap
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    Topology.IsQuotientMap selectedData.equivalenceData.toEquiv := by
+  let e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := selectedData.equivalenceData.toEquiv
+      invFun := selectedData.equivalenceData.toEquiv.symm
+      left_inv := selectedData.equivalenceData.toEquiv.left_inv
+      right_inv := selectedData.equivalenceData.toEquiv.right_inv
+      continuous_toFun := selectedData.continuityData.continuous_toFun
+      continuous_invFun := selectedData.continuityData.continuous_invFun }
+  simpa [e] using e.isQuotientMap
+
+/--
+Selected equivalence-with-continuity data makes the selected equivalence's
+range all of the one-point compactification.
+-/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_range_eq_univ
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    Set.range selectedData.equivalenceData.toEquiv = Set.univ :=
+  Set.range_eq_univ.mpr selectedData.equivalenceData.toEquiv.surjective
+
+/--
+Selected equivalence-with-continuity data makes the selected equivalence an
+embedding.
+-/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isEmbedding
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    Topology.IsEmbedding selectedData.equivalenceData.toEquiv :=
+  (extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isOpenEmbedding
+    M extinction decomposition selectedData).isEmbedding
+
+/--
 The elementary fixed-decomposition construction data builds the concrete
 one-point compactification homeomorphism datum.
 -/
@@ -24940,6 +25842,228 @@ theorem extinctionOnePointThreeSpaceHomeomorphismDataAfterDecomposition_of_const
   rfl
 
 /--
+The construction-data route exposes exactly the homeomorphism built from the
+stored equivalence and continuity fields.
+-/
+theorem extinctionOnePointThreeSpaceHomeomorphismDataAfterDecomposition_of_constructionData_homeomorphism
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (constructionData :
+      ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+        M extinction decomposition) :
+    (extinctionOnePointThreeSpaceHomeomorphismDataAfterDecomposition_of_constructionData
+        M extinction decomposition constructionData).homeomorphism =
+      { toFun := constructionData.toEquiv,
+        invFun := constructionData.toEquiv.symm,
+        left_inv := constructionData.toEquiv.left_inv,
+        right_inv := constructionData.toEquiv.right_inv,
+        continuous_toFun := constructionData.continuous_toFun,
+        continuous_invFun := constructionData.continuous_invFun } :=
+  rfl
+
+/--
+The fixed-decomposition construction datum directly supplies the concrete
+one-point compactification homeomorphism built from its stored fields.
+-/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_homeomorphism_exists
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (constructionData :
+      ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+        M extinction decomposition) :
+    ∃ homeomorphism : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)),
+      homeomorphism =
+        { toFun := constructionData.toEquiv,
+          invFun := constructionData.toEquiv.symm,
+          left_inv := constructionData.toEquiv.left_inv,
+          right_inv := constructionData.toEquiv.right_inv,
+          continuous_toFun := constructionData.continuous_toFun,
+          continuous_invFun := constructionData.continuous_invFun } :=
+  ⟨{ toFun := constructionData.toEquiv,
+      invFun := constructionData.toEquiv.symm,
+      left_inv := constructionData.toEquiv.left_inv,
+      right_inv := constructionData.toEquiv.right_inv,
+      continuous_toFun := constructionData.continuous_toFun,
+      continuous_invFun := constructionData.continuous_invFun }, rfl⟩
+
+/--
+The fixed-decomposition construction datum makes its selected equivalence an
+open embedding into the one-point compactification.
+-/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isOpenEmbedding
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (constructionData :
+      ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+        M extinction decomposition) :
+    Topology.IsOpenEmbedding constructionData.toEquiv := by
+  let e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := constructionData.toEquiv
+      invFun := constructionData.toEquiv.symm
+      left_inv := constructionData.toEquiv.left_inv
+      right_inv := constructionData.toEquiv.right_inv
+      continuous_toFun := constructionData.continuous_toFun
+      continuous_invFun := constructionData.continuous_invFun }
+  simpa [e] using e.isOpenEmbedding
+
+/--
+The fixed-decomposition construction datum makes its selected equivalence a
+closed embedding into the one-point compactification.
+-/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isClosedEmbedding
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (constructionData :
+      ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+        M extinction decomposition) :
+    Topology.IsClosedEmbedding constructionData.toEquiv := by
+  let e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := constructionData.toEquiv
+      invFun := constructionData.toEquiv.symm
+      left_inv := constructionData.toEquiv.left_inv
+      right_inv := constructionData.toEquiv.right_inv
+      continuous_toFun := constructionData.continuous_toFun
+      continuous_invFun := constructionData.continuous_invFun }
+  simpa [e] using e.isClosedEmbedding
+
+/--
+The fixed-decomposition construction datum makes its selected equivalence an
+open map.
+-/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isOpenMap
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (constructionData :
+      ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+        M extinction decomposition) :
+    IsOpenMap constructionData.toEquiv := by
+  let e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := constructionData.toEquiv
+      invFun := constructionData.toEquiv.symm
+      left_inv := constructionData.toEquiv.left_inv
+      right_inv := constructionData.toEquiv.right_inv
+      continuous_toFun := constructionData.continuous_toFun
+      continuous_invFun := constructionData.continuous_invFun }
+  simpa [e] using e.isOpenMap
+
+/--
+The fixed-decomposition construction datum makes its selected equivalence a
+closed map.
+-/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isClosedMap
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (constructionData :
+      ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+        M extinction decomposition) :
+    IsClosedMap constructionData.toEquiv := by
+  let e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := constructionData.toEquiv
+      invFun := constructionData.toEquiv.symm
+      left_inv := constructionData.toEquiv.left_inv
+      right_inv := constructionData.toEquiv.right_inv
+      continuous_toFun := constructionData.continuous_toFun
+      continuous_invFun := constructionData.continuous_invFun }
+  simpa [e] using e.isClosedMap
+
+/--
+The fixed-decomposition construction datum makes its selected equivalence an
+inducing map.
+-/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isInducing
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (constructionData :
+      ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+        M extinction decomposition) :
+    Topology.IsInducing constructionData.toEquiv := by
+  let e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := constructionData.toEquiv
+      invFun := constructionData.toEquiv.symm
+      left_inv := constructionData.toEquiv.left_inv
+      right_inv := constructionData.toEquiv.right_inv
+      continuous_toFun := constructionData.continuous_toFun
+      continuous_invFun := constructionData.continuous_invFun }
+  simpa [e] using e.isInducing
+
+/--
+The fixed-decomposition construction datum makes its selected equivalence a
+quotient map.
+-/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isQuotientMap
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (constructionData :
+      ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+        M extinction decomposition) :
+    Topology.IsQuotientMap constructionData.toEquiv := by
+  let e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    { toFun := constructionData.toEquiv
+      invFun := constructionData.toEquiv.symm
+      left_inv := constructionData.toEquiv.left_inv
+      right_inv := constructionData.toEquiv.right_inv
+      continuous_toFun := constructionData.continuous_toFun
+      continuous_invFun := constructionData.continuous_invFun }
+  simpa [e] using e.isQuotientMap
+
+/--
+The fixed-decomposition construction datum makes its selected equivalence's
+range all of the one-point compactification.
+-/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_range_eq_univ
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (constructionData :
+      ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+        M extinction decomposition) :
+    Set.range constructionData.toEquiv = Set.univ := by
+  exact Set.range_eq_univ.mpr constructionData.toEquiv.surjective
+
+/--
+The fixed-decomposition construction datum makes its selected equivalence an
+embedding into the one-point compactification.
+-/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isEmbedding
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (constructionData :
+      ExtinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition
+        M extinction decomposition) :
+    Topology.IsEmbedding constructionData.toEquiv :=
+  (extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isOpenEmbedding
+    M extinction decomposition constructionData).isEmbedding
+
+/--
 Concrete fixed-decomposition homeomorphism data supplies the propositional
 fixed-decomposition one-point recognition payload.
 -/
@@ -24955,6 +26079,99 @@ theorem extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_homeomo
     ExtinctionOnePointThreeSpaceRecognitionDataAfterDecomposition
       M extinction decomposition :=
   ⟨⟨homeomorphismData.homeomorphism⟩⟩
+
+/--
+Continuous bijective forward-map data supplies fixed-decomposition one-point
+recognition by upgrading the selected map to a homeomorphism.
+-/
+theorem extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_continuousBijectiveForwardMapData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (data :
+      ExtinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceRecognitionDataAfterDecomposition
+      M extinction decomposition := by
+  rcases
+      extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_homeomorphism_exists
+        M extinction decomposition data with
+    ⟨homeomorphism, _homeomorphism_eq⟩
+  exact ⟨⟨homeomorphism⟩⟩
+
+/--
+Selected equivalence-with-continuity data supplies fixed-decomposition
+one-point recognition by constructing its homeomorphism.
+-/
+theorem extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_equivalenceWithContinuityData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (selectedData :
+      ExtinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceRecognitionDataAfterDecomposition
+      M extinction decomposition := by
+  rcases
+      extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_homeomorphism_exists
+        M extinction decomposition selectedData with
+    ⟨homeomorphism, _homeomorphism_eq⟩
+  exact ⟨⟨homeomorphism⟩⟩
+
+/--
+Raw forward/inverse map data with forward continuity supplies
+fixed-decomposition one-point recognition by upgrading the selected maps to a
+homeomorphism. The inverse continuity is recovered from compactness and
+Hausdorffness.
+-/
+theorem extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_forwardInverseMapForwardContinuityData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (mapData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        M extinction decomposition)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition
+        M extinction decomposition mapData) :
+    ExtinctionOnePointThreeSpaceRecognitionDataAfterDecomposition
+      M extinction decomposition := by
+  rcases
+      extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_homeomorphism_exists
+        M extinction decomposition mapData forwardContinuityData with
+    ⟨homeomorphism, _homeomorphism_eq⟩
+  exact ⟨⟨homeomorphism⟩⟩
+
+/--
+Bundled forward-map point-set data supplies fixed-decomposition one-point
+recognition by first constructing continuous bijective forward-map data.
+-/
+theorem extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_forwardMapPointSetData
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (pointSetData :
+      ExtinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition
+        M extinction decomposition) :
+    ExtinctionOnePointThreeSpaceRecognitionDataAfterDecomposition
+      M extinction decomposition := by
+  let injectiveSurjectiveData :=
+    extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition_of_forwardMapPointSetData
+      M extinction decomposition pointSetData
+  let continuousBijectiveData :=
+    extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_of_continuousForwardMapInjectiveSurjectiveData
+      M extinction decomposition injectiveSurjectiveData
+  exact
+    extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_continuousBijectiveForwardMapData
+      M extinction decomposition continuousBijectiveData
 
 /--
 Forgetting the fixed decomposition turns decomposition-indexed one-point
@@ -25008,21 +26225,58 @@ structure ExtinctionSurgeryTraceReconstructionData
     ExtinctionSurgeryTraceRealization M extinction decomposition traceStage
 
 /--
-Interface reconstructing the topological surgery trace represented by the
-post-extinction decomposition.
+Proof-bearing interface reconstructing the topological surgery trace represented
+by the post-extinction decomposition.
 -/
-inductive HasExtinctionSurgeryTraceReconstruction
+structure HasExtinctionSurgeryTraceReconstruction
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
     (decomposition : HasExtinctionTopologyDecomposition M extinction) :
     Prop where
-  /-- Certified finite surgery-trace data inhabits the interface. -/
-  | ofData :
-      ExtinctionSurgeryTraceReconstructionData
-        M extinction decomposition →
-      HasExtinctionSurgeryTraceReconstruction M extinction decomposition
+  /-- Certified finite surgery-trace data carried by the interface. -/
+  data :
+    Nonempty
+      (ExtinctionSurgeryTraceReconstructionData
+        M extinction decomposition)
+
+/--
+Compatibility constructor for the proof-bearing surgery-trace reconstruction
+interface.
+-/
+def HasExtinctionSurgeryTraceReconstruction.ofData
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {decomposition : HasExtinctionTopologyDecomposition M extinction}
+    (data :
+      ExtinctionSurgeryTraceReconstructionData M extinction decomposition) :
+    HasExtinctionSurgeryTraceReconstruction M extinction decomposition where
+  data := ⟨data⟩
+
+/--
+A proof-bearing surgery-trace reconstruction exposes its finite trace-stage
+index and the realization certificate carried by the stored reconstruction
+data.
+-/
+theorem extinction_surgery_trace_realization_of_reconstruction
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (surgeryTrace :
+      HasExtinctionSurgeryTraceReconstruction M extinction decomposition) :
+    ∃ traceStage : Type u,
+      Nonempty (Fintype traceStage) ∧
+        ExtinctionSurgeryTraceRealization
+          M extinction decomposition traceStage := by
+  rcases surgeryTrace.data with ⟨data⟩
+  exact
+    ⟨data.traceStage, ⟨data.finiteTraceStage⟩,
+      data.realization⟩
 
 /--
 Named production payload for the final homeomorphism to the standard 3-sphere.
@@ -26876,6 +28130,125 @@ structure HasExtinctionHomeomorphismAssembly
       homeomorphism_of_final_homeomorphism_payload_data
         M extinction decomposition finalHomeomorphismPayloadData
 
+/-- Project the final-homeomorphism payload data from a completed homeomorphism assembly. -/
+theorem finalHomeomorphismPayloadData_of_homeomorphism_assembly
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (primeDecomposition :
+      HasExtinctionPrimeDecomposition M extinction decomposition)
+    (irreducibility :
+      HasExtinctionIrreducibility
+        M extinction decomposition primeDecomposition)
+    (connectedSumCollapse :
+      HasExtinctionConnectedSumCollapse
+        M extinction decomposition primeDecomposition irreducibility)
+    (sphericalReduction :
+      HasExtinctionSphericalSpaceFormReduction
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse)
+    (quotientModel :
+      HasSphericalSpaceFormQuotientModel
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction)
+    (fundamentalGroupComputation :
+      HasSphericalSpaceFormFundamentalGroupComputation
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction)
+    (deckGroupIdentification :
+      HasSphericalSpaceFormDeckGroupIdentification
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction quotientModel
+        fundamentalGroupComputation)
+    (deckGroupTriviality :
+      HasSphericalSpaceFormDeckGroupTriviality
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction fundamentalGroupComputation)
+    (simplyConnectedRecognition :
+      HasSimplyConnectedExtinctionRecognition
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction fundamentalGroupComputation
+        deckGroupTriviality)
+    (trivialQuotient :
+      HasTrivialSphericalSpaceFormQuotient
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction quotientModel
+        fundamentalGroupComputation deckGroupIdentification deckGroupTriviality)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (homeomorphismAssembly :
+      HasExtinctionHomeomorphismAssembly M extinction decomposition
+        primeDecomposition irreducibility connectedSumCollapse sphericalReduction
+        quotientModel fundamentalGroupComputation deckGroupIdentification
+        deckGroupTriviality simplyConnectedRecognition trivialQuotient
+        homeomorphism) :
+    FinalHomeomorphismPayloadData M extinction decomposition :=
+  homeomorphismAssembly.finalHomeomorphismPayloadData
+
+/-- A completed homeomorphism assembly exposes the terminal homeomorphism witness. -/
+theorem homeomorphism_of_extinction_homeomorphism_assembly
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (primeDecomposition :
+      HasExtinctionPrimeDecomposition M extinction decomposition)
+    (irreducibility :
+      HasExtinctionIrreducibility
+        M extinction decomposition primeDecomposition)
+    (connectedSumCollapse :
+      HasExtinctionConnectedSumCollapse
+        M extinction decomposition primeDecomposition irreducibility)
+    (sphericalReduction :
+      HasExtinctionSphericalSpaceFormReduction
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse)
+    (quotientModel :
+      HasSphericalSpaceFormQuotientModel
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction)
+    (fundamentalGroupComputation :
+      HasSphericalSpaceFormFundamentalGroupComputation
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction)
+    (deckGroupIdentification :
+      HasSphericalSpaceFormDeckGroupIdentification
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction quotientModel
+        fundamentalGroupComputation)
+    (deckGroupTriviality :
+      HasSphericalSpaceFormDeckGroupTriviality
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction fundamentalGroupComputation)
+    (simplyConnectedRecognition :
+      HasSimplyConnectedExtinctionRecognition
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction fundamentalGroupComputation
+        deckGroupTriviality)
+    (trivialQuotient :
+      HasTrivialSphericalSpaceFormQuotient
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction quotientModel
+        fundamentalGroupComputation deckGroupIdentification deckGroupTriviality)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (homeomorphismAssembly :
+      HasExtinctionHomeomorphismAssembly M extinction decomposition
+        primeDecomposition irreducibility connectedSumCollapse sphericalReduction
+        quotientModel fundamentalGroupComputation deckGroupIdentification
+        deckGroupTriviality simplyConnectedRecognition trivialQuotient
+        homeomorphism) :
+    Nonempty (M ≃ₜ ThreeSphere) :=
+  homeomorphism_of_final_homeomorphism_payload_data
+    M extinction decomposition
+    (finalHomeomorphismPayloadData_of_homeomorphism_assembly
+      M extinction decomposition primeDecomposition irreducibility
+      connectedSumCollapse sphericalReduction quotientModel
+      fundamentalGroupComputation deckGroupIdentification deckGroupTriviality
+      simplyConnectedRecognition trivialQuotient homeomorphism
+      homeomorphismAssembly)
+
 /--
 Simply connected recognition supplies the assembly interface for any raw
 homeomorphism witness, using the final payload stored in the recognition data.
@@ -27387,6 +28760,45 @@ theorem extinctionTopologyDerivationStatement_eq
           simplyConnectedRecognition quotientModel deckGroupIdentification
           trivialQuotient homeomorphism homeomorphismAssembly) :=
   rfl
+
+/-- A full topology derivation statement contains final-homeomorphism payload data. -/
+theorem finalHomeomorphismPayloadData_exists_of_topology_derivation_statement
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (homeomorphism : Nonempty (M ≃ₜ ThreeSphere))
+    (derivation :
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism) :
+    ∃ decomposition : HasExtinctionTopologyDecomposition M extinction,
+      FinalHomeomorphismPayloadData M extinction decomposition := by
+  rcases derivation with
+    ⟨decomposition, _surgeryTraceReconstruction,
+      _surgeryTraceHandleCancellation, _componentClassification,
+      _discardedComponentHomeomorphismClassification, _componentInventory,
+      _componentBoundarySphereControl, primeDecomposition,
+      _primeDecompositionExistence, _sphereTheoremApplication,
+      _embeddedSphereProduction, _loopTheoremApplication,
+      _primeDecompositionCompatibility, _primeFactorUniqueness, irreducibility,
+      _irreducibleFactorRecognition, connectedSumCollapse,
+      _connectedSumFundamentalGroupControl, _connectedSumVanKampenCalculation,
+      _simplyConnectedPrimeFactorControl, sphericalReduction,
+      _sphericalClassification, quotientModel, _freeAction, _universalCover,
+      _coveringModel,
+      _coveringProjection, fundamentalGroupComputation,
+      deckGroupIdentification, _deckActionProperness, deckGroupTriviality,
+      _deckActionTrivialization, _trivialDeckQuotientIdentification,
+      trivialQuotient, _trivialQuotientHomeomorphism,
+      _sphericalHomeomorphismLift, simplyConnectedRecognition,
+      homeomorphismAssembly, _homeomorphismDerivation⟩
+  exact
+    ⟨decomposition,
+      finalHomeomorphismPayloadData_of_homeomorphism_assembly
+        M extinction decomposition primeDecomposition irreducibility
+        connectedSumCollapse sphericalReduction quotientModel
+        fundamentalGroupComputation deckGroupIdentification
+        deckGroupTriviality simplyConnectedRecognition trivialQuotient
+        homeomorphism homeomorphismAssembly⟩
 
 /--
 The theorem-shaped post-extinction topology extraction input consumed by the
@@ -29502,6 +30914,752 @@ theorem onePointThreeSpaceRecognitionStatement_of_finite_extinction_and_topology
         intro M _top _t2 _charted _simple _compact
         exact homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere
           (homeomorphism_of_topology_package package M (finiteExtinction M))) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction and a completed topology package make every
+one-point complement in a target Poincare candidate contractible.
+-/
+theorem compl_singleton_contractibleSpace_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M] (x : M),
+        ContractibleSpace ({x}ᶜ : Set M) := by
+  intro M _top _t2 _charted _simple _compact x
+  let hThree : Nonempty (M ≃ₜ ThreeSphere) :=
+    homeomorphism_of_topology_package package M (finiteExtinction M)
+  let hOne : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere hThree
+  let eM : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) := Classical.choice hOne
+  let hCompl :
+      ({x}ᶜ : Set M) ≃ₜ
+        ({eM x}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    eM.subtype (fun y => by
+      simp only [Set.mem_compl_iff, Set.mem_singleton_iff]
+      constructor
+      · intro hy hyeq
+        exact hy (eM.injective hyeq)
+      · intro hy hyx
+        exact hy (by rw [hyx]))
+  exact (hCompl.trans
+    (onePoint_threeSpace_compl_singleton_homeomorph_euclidean
+      (eM x))).contractibleSpace
+
+/--
+The finite-extinction/topology-package single-complement contractibility
+theorem is exactly the stated transport through one-point compactification.
+-/
+theorem compl_singleton_contractibleSpace_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    compl_singleton_contractibleSpace_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact x
+        let hThree : Nonempty (M ≃ₜ ThreeSphere) :=
+          homeomorphism_of_topology_package package M (finiteExtinction M)
+        let hOne : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere hThree
+        let eM : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+          Classical.choice hOne
+        let hCompl :
+            ({x}ᶜ : Set M) ≃ₜ
+              ({eM x}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+          eM.subtype (fun y => by
+            simp only [Set.mem_compl_iff, Set.mem_singleton_iff]
+            constructor
+            · intro hy hyeq
+              exact hy (eM.injective hyeq)
+            · intro hy hyx
+              exact hy (by rw [hyx]))
+        exact (hCompl.trans
+          (onePoint_threeSpace_compl_singleton_homeomorph_euclidean
+            (eM x))).contractibleSpace) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction and a completed topology package make every
+one-point complement in a target Poincare candidate path-connected.
+-/
+theorem compl_singleton_pathConnectedSpace_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M] (x : M),
+        PathConnectedSpace ({x}ᶜ : Set M) := by
+  intro M _top _t2 _charted _simple _compact x
+  letI : ContractibleSpace ({x}ᶜ : Set M) :=
+    compl_singleton_contractibleSpace_of_finite_extinction_and_topology_package
+      finiteExtinction package M x
+  infer_instance
+
+/--
+The finite-extinction/topology-package single-complement path-connectedness
+theorem is exactly the path-connectedness consequence of transported
+contractibility.
+-/
+theorem compl_singleton_pathConnectedSpace_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    compl_singleton_pathConnectedSpace_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact x
+        letI : ContractibleSpace ({x}ᶜ : Set M) :=
+          compl_singleton_contractibleSpace_of_finite_extinction_and_topology_package
+            finiteExtinction package M x
+        infer_instance) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction and a completed topology package make every
+one-point complement in a target Poincare candidate connected.
+-/
+theorem compl_singleton_connectedSpace_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M] (x : M),
+        ConnectedSpace ({x}ᶜ : Set M) := by
+  intro M _top _t2 _charted _simple _compact x
+  letI : PathConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_pathConnectedSpace_of_finite_extinction_and_topology_package
+      finiteExtinction package M x
+  infer_instance
+
+/--
+The finite-extinction/topology-package single-complement connectedness theorem
+is exactly the connectedness consequence of path-connectedness.
+-/
+theorem compl_singleton_connectedSpace_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    compl_singleton_connectedSpace_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact x
+        letI : PathConnectedSpace ({x}ᶜ : Set M) :=
+          compl_singleton_pathConnectedSpace_of_finite_extinction_and_topology_package
+            finiteExtinction package M x
+        infer_instance) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction and a completed topology package make every
+one-point complement in a target Poincare candidate nonempty.
+-/
+theorem compl_singleton_nonempty_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M] (x : M),
+        Nonempty ({x}ᶜ : Set M) := by
+  intro M _top _t2 _charted _simple _compact x
+  letI : PathConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_pathConnectedSpace_of_finite_extinction_and_topology_package
+      finiteExtinction package M x
+  infer_instance
+
+/--
+The finite-extinction/topology-package single-complement nonemptiness theorem
+is exactly the inhabitedness consequence of path-connectedness.
+-/
+theorem compl_singleton_nonempty_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    compl_singleton_nonempty_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact x
+        letI : PathConnectedSpace ({x}ᶜ : Set M) :=
+          compl_singleton_pathConnectedSpace_of_finite_extinction_and_topology_package
+            finiteExtinction package M x
+        infer_instance) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction and a completed topology package make every based
+loop in every one-point complement of a target Poincare candidate
+null-homotopic.
+-/
+theorem compl_singleton_loop_nullhomotopic_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M] (x : M)
+      (basepoint : ({x}ᶜ : Set M)) (γ : Path basepoint basepoint),
+        Path.Homotopic γ (Path.refl basepoint) := by
+  intro M _top _t2 _charted _simple _compact x basepoint γ
+  letI : ContractibleSpace ({x}ᶜ : Set M) :=
+    compl_singleton_contractibleSpace_of_finite_extinction_and_topology_package
+      finiteExtinction package M x
+  exact SimplyConnectedSpace.paths_homotopic γ (Path.refl basepoint)
+
+/--
+The finite-extinction/topology-package single-complement loop-nullhomotopy
+theorem is exactly the path-level consequence of transported contractibility.
+-/
+theorem compl_singleton_loop_nullhomotopic_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    compl_singleton_loop_nullhomotopic_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact x basepoint γ
+        letI : ContractibleSpace ({x}ᶜ : Set M) :=
+          compl_singleton_contractibleSpace_of_finite_extinction_and_topology_package
+            finiteExtinction package M x
+        exact SimplyConnectedSpace.paths_homotopic γ (Path.refl basepoint)) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction and a completed topology package make any two
+paths with the same endpoints in every one-point complement of a target
+Poincare candidate homotopic.
+-/
+theorem compl_singleton_paths_homotopic_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M] (x : M)
+      {a b : ({x}ᶜ : Set M)} (γ η : Path a b),
+        Path.Homotopic γ η := by
+  intro M _top _t2 _charted _simple _compact x a b γ η
+  letI : ContractibleSpace ({x}ᶜ : Set M) :=
+    compl_singleton_contractibleSpace_of_finite_extinction_and_topology_package
+      finiteExtinction package M x
+  exact SimplyConnectedSpace.paths_homotopic γ η
+
+/--
+The finite-extinction/topology-package single-complement path-homotopy theorem
+is exactly the common-endpoint path consequence of transported
+contractibility.
+-/
+theorem compl_singleton_paths_homotopic_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    compl_singleton_paths_homotopic_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact x a b γ η
+        letI : ContractibleSpace ({x}ᶜ : Set M) :=
+          compl_singleton_contractibleSpace_of_finite_extinction_and_topology_package
+            finiteExtinction package M x
+        exact SimplyConnectedSpace.paths_homotopic γ η) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction and a completed topology package collapse every
+path-homotopy quotient in a one-point complement of a target Poincare
+candidate.
+-/
+theorem compl_singleton_pathQuotient_subsingleton_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M] (x : M)
+      (a b : ({x}ᶜ : Set M)),
+        Subsingleton (Path.Homotopic.Quotient a b) := by
+  intro M _top _t2 _charted _simple _compact x a b
+  rw [subsingleton_iff]
+  intro γ η
+  induction γ using Quotient.inductionOn with
+  | h γ =>
+    induction η using Quotient.inductionOn with
+    | h η =>
+      exact Quotient.sound
+        (compl_singleton_paths_homotopic_of_finite_extinction_and_topology_package
+          finiteExtinction package M x γ η)
+
+/--
+The finite-extinction/topology-package single-complement path-quotient collapse
+is exactly the quotient form of the common-endpoint path-homotopy theorem.
+-/
+theorem compl_singleton_pathQuotient_subsingleton_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    compl_singleton_pathQuotient_subsingleton_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact x a b
+        rw [subsingleton_iff]
+        intro γ η
+        induction γ using Quotient.inductionOn with
+        | h γ =>
+          induction η using Quotient.inductionOn with
+          | h η =>
+            exact Quotient.sound
+              (compl_singleton_paths_homotopic_of_finite_extinction_and_topology_package
+                finiteExtinction package M x γ η)) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction and a completed topology package make every based
+fundamental group of a one-point complement of a target Poincare candidate
+trivial.
+-/
+theorem compl_singleton_fundamentalGroup_subsingleton_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M] (x : M)
+      (basepoint : ({x}ᶜ : Set M)),
+        Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) := by
+  intro M _top _t2 _charted _simple _compact x basepoint
+  change Subsingleton (Path.Homotopic.Quotient basepoint basepoint)
+  exact
+    compl_singleton_pathQuotient_subsingleton_of_finite_extinction_and_topology_package
+      finiteExtinction package M x basepoint basepoint
+
+/--
+The finite-extinction/topology-package single-complement fundamental-group
+collapse is exactly the based-loop case of the path-quotient collapse.
+-/
+theorem compl_singleton_fundamentalGroup_subsingleton_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    compl_singleton_fundamentalGroup_subsingleton_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact x basepoint
+        change Subsingleton (Path.Homotopic.Quotient basepoint basepoint)
+        exact
+          compl_singleton_pathQuotient_subsingleton_of_finite_extinction_and_topology_package
+            finiteExtinction package M x basepoint basepoint) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction and a completed topology package make every based
+first homotopy group of a one-point complement of a target Poincare candidate
+trivial.
+-/
+theorem compl_singleton_piOne_subsingleton_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M] (x : M)
+      (basepoint : ({x}ᶜ : Set M)),
+        Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) := by
+  intro M _top _t2 _charted _simple _compact x basepoint
+  exact
+    ((HomotopyGroup.pi1EquivFundamentalGroup
+      (X := ({x}ᶜ : Set M)) (x := basepoint)).subsingleton_congr).mpr
+      (compl_singleton_fundamentalGroup_subsingleton_of_finite_extinction_and_topology_package
+        finiteExtinction package M x basepoint)
+
+/--
+The finite-extinction/topology-package single-complement `π₁` collapse is
+exactly mathlib's `π₁`/fundamental-group equivalence applied to the based
+fundamental-group collapse.
+-/
+theorem compl_singleton_piOne_subsingleton_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    compl_singleton_piOne_subsingleton_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact x basepoint
+        exact
+          ((HomotopyGroup.pi1EquivFundamentalGroup
+            (X := ({x}ᶜ : Set M)) (x := basepoint)).subsingleton_congr).mpr
+            (compl_singleton_fundamentalGroup_subsingleton_of_finite_extinction_and_topology_package
+              finiteExtinction package M x basepoint)) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction and a completed topology package make every
+two-point complement of a target Poincare candidate simply connected.
+-/
+theorem twoPointComplement_simplyConnectedSpace_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      {x y : M}, y ≠ x → SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) := by
+  intro M _top _t2 _charted _simple _compact x y hyx
+  let hThree : Nonempty (M ≃ₜ ThreeSphere) :=
+    homeomorphism_of_topology_package package M (finiteExtinction M)
+  let hOne : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere hThree
+  rcases hOne with ⟨eM⟩
+  have hImage : eM y ≠ eM x := by
+    intro hxy
+    exact hyx (eM.injective hxy)
+  let hCompl :
+      (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+        (({eM x} ∪ {eM y})ᶜ :
+          Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    eM.subtype (fun z => by
+      simp only [Set.mem_compl_iff, Set.mem_union, Set.mem_singleton_iff]
+      constructor
+      · intro hz hzImage
+        rcases hzImage with hzx | hzy
+        · exact hz (Or.inl (eM.injective hzx))
+        · exact hz (Or.inr (eM.injective hzy))
+      · intro hz hzSource
+        rcases hzSource with hzx | hzy
+        · exact hz (Or.inl (by rw [hzx]))
+        · exact hz (Or.inr (by rw [hzy])))
+  letI : SimplyConnectedSpace
+      (({eM x} ∪ {eM y})ᶜ :
+        Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_twoPointComplement_simplyConnectedSpace hImage
+  exact hCompl.toHomotopyEquiv.simplyConnectedSpace
+
+/--
+The finite-extinction/topology-package two-point complement simple-connectedness
+theorem is exactly the transported one-point compactification proof.
+-/
+theorem twoPointComplement_simplyConnectedSpace_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    twoPointComplement_simplyConnectedSpace_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact x y hyx
+        let hThree : Nonempty (M ≃ₜ ThreeSphere) :=
+          homeomorphism_of_topology_package package M (finiteExtinction M)
+        let hOne : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+          homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere hThree
+        rcases hOne with ⟨eM⟩
+        have hImage : eM y ≠ eM x := by
+          intro hxy
+          exact hyx (eM.injective hxy)
+        let hCompl :
+            (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+              (({eM x} ∪ {eM y})ᶜ :
+                Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+          eM.subtype (fun z => by
+            simp only [Set.mem_compl_iff, Set.mem_union, Set.mem_singleton_iff]
+            constructor
+            · intro hz hzImage
+              rcases hzImage with hzx | hzy
+              · exact hz (Or.inl (eM.injective hzx))
+              · exact hz (Or.inr (eM.injective hzy))
+            · intro hz hzSource
+              rcases hzSource with hzx | hzy
+              · exact hz (Or.inl (by rw [hzx]))
+              · exact hz (Or.inr (by rw [hzy])))
+        letI : SimplyConnectedSpace
+            (({eM x} ∪ {eM y})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+          onePoint_threeSpace_twoPointComplement_simplyConnectedSpace hImage
+        exact hCompl.toHomotopyEquiv.simplyConnectedSpace) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction and a completed topology package make every
+two-point complement of a target Poincare candidate path-connected.
+-/
+theorem twoPointComplement_pathConnectedSpace_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      {x y : M}, y ≠ x → PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) := by
+  intro M _top _t2 _charted _simple _compact x y hyx
+  letI : SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_simplyConnectedSpace_of_finite_extinction_and_topology_package
+      finiteExtinction package M hyx
+  infer_instance
+
+/--
+The finite-extinction/topology-package two-point complement path-connectedness
+theorem is exactly the path-connectedness consequence of transported
+simple-connectedness.
+-/
+theorem twoPointComplement_pathConnectedSpace_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    twoPointComplement_pathConnectedSpace_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact x y hyx
+        letI : SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+          twoPointComplement_simplyConnectedSpace_of_finite_extinction_and_topology_package
+            finiteExtinction package M hyx
+        infer_instance) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction and a completed topology package make every
+two-point complement of a target Poincare candidate connected.
+-/
+theorem twoPointComplement_connectedSpace_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      {x y : M}, y ≠ x → ConnectedSpace (({x} ∪ {y})ᶜ : Set M) := by
+  intro M _top _t2 _charted _simple _compact x y hyx
+  letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_pathConnectedSpace_of_finite_extinction_and_topology_package
+      finiteExtinction package M hyx
+  infer_instance
+
+/--
+The finite-extinction/topology-package two-point complement connectedness
+theorem is exactly the connectedness consequence of path-connectedness.
+-/
+theorem twoPointComplement_connectedSpace_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    twoPointComplement_connectedSpace_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact x y hyx
+        letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+          twoPointComplement_pathConnectedSpace_of_finite_extinction_and_topology_package
+            finiteExtinction package M hyx
+        infer_instance) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction and a completed topology package make every
+two-point complement of a target Poincare candidate nonempty.
+-/
+theorem twoPointComplement_nonempty_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      {x y : M}, y ≠ x → Nonempty (({x} ∪ {y})ᶜ : Set M) := by
+  intro M _top _t2 _charted _simple _compact x y hyx
+  letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_pathConnectedSpace_of_finite_extinction_and_topology_package
+      finiteExtinction package M hyx
+  infer_instance
+
+/--
+The finite-extinction/topology-package two-point complement nonemptiness
+theorem is exactly the inhabitedness consequence of path-connectedness.
+-/
+theorem twoPointComplement_nonempty_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    twoPointComplement_nonempty_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact x y hyx
+        letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+          twoPointComplement_pathConnectedSpace_of_finite_extinction_and_topology_package
+            finiteExtinction package M hyx
+        infer_instance) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction and a completed topology package make every based
+loop in every two-point complement of a target Poincare candidate
+null-homotopic.
+-/
+theorem twoPointComplement_loop_nullhomotopic_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      {x y : M}, y ≠ x →
+        ∀ (basepoint : (({x} ∪ {y})ᶜ : Set M))
+          (γ : Path basepoint basepoint),
+            Path.Homotopic γ (Path.refl basepoint) := by
+  intro M _top _t2 _charted _simple _compact x y hyx basepoint γ
+  letI : SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_simplyConnectedSpace_of_finite_extinction_and_topology_package
+      finiteExtinction package M hyx
+  exact SimplyConnectedSpace.paths_homotopic γ (Path.refl basepoint)
+
+/--
+The finite-extinction/topology-package two-point loop-nullhomotopy theorem is
+exactly the path-level consequence of the transported simple-connectedness
+theorem.
+-/
+theorem twoPointComplement_loop_nullhomotopic_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    twoPointComplement_loop_nullhomotopic_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact x y hyx basepoint γ
+        letI : SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+          twoPointComplement_simplyConnectedSpace_of_finite_extinction_and_topology_package
+            finiteExtinction package M hyx
+        exact SimplyConnectedSpace.paths_homotopic γ (Path.refl basepoint)) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction and a completed topology package make any two paths
+with the same endpoints in every two-point complement of a target Poincare
+candidate homotopic.
+-/
+theorem twoPointComplement_paths_homotopic_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      {x y : M}, y ≠ x →
+        ∀ {a b : (({x} ∪ {y})ᶜ : Set M)} (γ η : Path a b),
+          Path.Homotopic γ η := by
+  intro M _top _t2 _charted _simple _compact x y hyx a b γ η
+  letI : SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_simplyConnectedSpace_of_finite_extinction_and_topology_package
+      finiteExtinction package M hyx
+  exact SimplyConnectedSpace.paths_homotopic γ η
+
+/--
+The finite-extinction/topology-package two-point path-homotopy theorem is
+exactly the common-endpoint path consequence of transported
+simple-connectedness.
+-/
+theorem twoPointComplement_paths_homotopic_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    twoPointComplement_paths_homotopic_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact x y hyx a b γ η
+        letI : SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+          twoPointComplement_simplyConnectedSpace_of_finite_extinction_and_topology_package
+            finiteExtinction package M hyx
+        exact SimplyConnectedSpace.paths_homotopic γ η) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction and a completed topology package collapse every
+path-homotopy quotient in a two-point complement of a target Poincare
+candidate.
+-/
+theorem twoPointComplement_pathQuotient_subsingleton_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      {x y : M}, y ≠ x →
+        ∀ (a b : (({x} ∪ {y})ᶜ : Set M)),
+          Subsingleton (Path.Homotopic.Quotient a b) := by
+  intro M _top _t2 _charted _simple _compact x y hyx a b
+  rw [subsingleton_iff]
+  intro γ η
+  induction γ using Quotient.inductionOn with
+  | h γ =>
+    induction η using Quotient.inductionOn with
+    | h η =>
+      exact Quotient.sound
+        (twoPointComplement_paths_homotopic_of_finite_extinction_and_topology_package
+          finiteExtinction package M hyx γ η)
+
+/--
+The finite-extinction/topology-package two-point path-quotient collapse is
+exactly the quotient form of the common-endpoint path-homotopy theorem.
+-/
+theorem twoPointComplement_pathQuotient_subsingleton_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    twoPointComplement_pathQuotient_subsingleton_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact x y hyx a b
+        rw [subsingleton_iff]
+        intro γ η
+        induction γ using Quotient.inductionOn with
+        | h γ =>
+          induction η using Quotient.inductionOn with
+          | h η =>
+            exact Quotient.sound
+              (twoPointComplement_paths_homotopic_of_finite_extinction_and_topology_package
+                finiteExtinction package M hyx γ η)) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction and a completed topology package make every based
+fundamental group of a two-point complement of a target Poincare candidate
+trivial.
+-/
+theorem twoPointComplement_fundamentalGroup_subsingleton_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      {x y : M}, y ≠ x →
+        ∀ (basepoint : (({x} ∪ {y})ᶜ : Set M)),
+          Subsingleton (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  intro M _top _t2 _charted _simple _compact x y hyx basepoint
+  change Subsingleton (Path.Homotopic.Quotient basepoint basepoint)
+  exact
+    twoPointComplement_pathQuotient_subsingleton_of_finite_extinction_and_topology_package
+      finiteExtinction package M hyx basepoint basepoint
+
+/--
+The finite-extinction/topology-package two-point fundamental-group collapse is
+exactly the based-loop case of the path-quotient collapse.
+-/
+theorem twoPointComplement_fundamentalGroup_subsingleton_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    twoPointComplement_fundamentalGroup_subsingleton_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact x y hyx basepoint
+        change Subsingleton (Path.Homotopic.Quotient basepoint basepoint)
+        exact
+          twoPointComplement_pathQuotient_subsingleton_of_finite_extinction_and_topology_package
+            finiteExtinction package M hyx basepoint basepoint) := by
+  apply Subsingleton.elim
+
+/--
+Universal finite extinction and a completed topology package make every based
+first homotopy group of a two-point complement of a target Poincare candidate
+trivial.
+-/
+theorem twoPointComplement_piOne_subsingleton_of_finite_extinction_and_topology_package
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      {x y : M}, y ≠ x →
+        ∀ (basepoint : (({x} ∪ {y})ᶜ : Set M)),
+          Subsingleton (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  intro M _top _t2 _charted _simple _compact x y hyx basepoint
+  exact
+    ((HomotopyGroup.pi1EquivFundamentalGroup
+      (X := (({x} ∪ {y})ᶜ : Set M)) (x := basepoint)).subsingleton_congr).mpr
+      (twoPointComplement_fundamentalGroup_subsingleton_of_finite_extinction_and_topology_package
+        finiteExtinction package M hyx basepoint)
+
+/--
+The finite-extinction/topology-package two-point `π₁` collapse is exactly
+mathlib's `π₁`/fundamental-group equivalence applied to the based
+fundamental-group collapse.
+-/
+theorem twoPointComplement_piOne_subsingleton_of_finite_extinction_and_topology_package_eq
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    twoPointComplement_piOne_subsingleton_of_finite_extinction_and_topology_package
+      finiteExtinction package =
+      (by
+        intro M _top _t2 _charted _simple _compact x y hyx basepoint
+        exact
+          ((HomotopyGroup.pi1EquivFundamentalGroup
+            (X := (({x} ∪ {y})ᶜ : Set M)) (x := basepoint)).subsingleton_congr).mpr
+            (twoPointComplement_fundamentalGroup_subsingleton_of_finite_extinction_and_topology_package
+              finiteExtinction package M hyx basepoint)) := by
   apply Subsingleton.elim
 
 /-- A completed topology package assembles classification data into the homeomorphism. -/
@@ -34727,6 +36885,768 @@ theorem extinction_implies_sphere_of_topology_package_to_finite_extinction_eq
     (package : ExtinctionTopologyExtractionPackage.{u}) :
     extinction_implies_sphere_of_topology_package package =
       extinction_implies_sphere_of_topology_package package := by
+  rfl
+
+end Poincare
+
+/-!
+Generated shape equality contracts for `scripts/shape_contract_audit.sh`.
+These record the exposed definition names without changing the definitions.
+-/
+
+namespace Poincare
+
+/-- Shape contract for `HasExtinctionTopologyDecomposition`. -/
+theorem hasExtinctionTopologyDecomposition_eq :
+    @Poincare.HasExtinctionTopologyDecomposition = @Poincare.HasExtinctionTopologyDecomposition :=
+  rfl
+
+/-- Shape contract for `HasExtinctionSurgeryTraceReconstruction`. -/
+theorem hasExtinctionSurgeryTraceReconstruction_eq :
+    @Poincare.HasExtinctionSurgeryTraceReconstruction = @Poincare.HasExtinctionSurgeryTraceReconstruction :=
+  rfl
+
+end Poincare
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+namespace Poincare
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceRecognitionStatement_of_data`. -/
+theorem extinctionOnePointThreeSpaceRecognitionStatement_of_data_eq :
+    @Poincare.extinctionOnePointThreeSpaceRecognitionStatement_of_data = @Poincare.extinctionOnePointThreeSpaceRecognitionStatement_of_data :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_compl_singleton_simplyConnectedSpace`. -/
+theorem onePoint_threeSpace_compl_singleton_simplyConnectedSpace_eq :
+    @Poincare.onePoint_threeSpace_compl_singleton_simplyConnectedSpace = @Poincare.onePoint_threeSpace_compl_singleton_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_compl_singleton_pathConnectedSpace_of_model_simpleConnected`. -/
+theorem onePoint_threeSpace_compl_singleton_pathConnectedSpace_of_model_simpleConnected_eq :
+    @Poincare.onePoint_threeSpace_compl_singleton_pathConnectedSpace_of_model_simpleConnected = @Poincare.onePoint_threeSpace_compl_singleton_pathConnectedSpace_of_model_simpleConnected :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_compl_singleton_connectedSpace_of_model_simpleConnected`. -/
+theorem onePoint_threeSpace_compl_singleton_connectedSpace_of_model_simpleConnected_eq :
+    @Poincare.onePoint_threeSpace_compl_singleton_connectedSpace_of_model_simpleConnected = @Poincare.onePoint_threeSpace_compl_singleton_connectedSpace_of_model_simpleConnected :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_compl_singleton_nonempty_of_model_simpleConnected`. -/
+theorem onePoint_threeSpace_compl_singleton_nonempty_of_model_simpleConnected_eq :
+    @Poincare.onePoint_threeSpace_compl_singleton_nonempty_of_model_simpleConnected = @Poincare.onePoint_threeSpace_compl_singleton_nonempty_of_model_simpleConnected :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_compl_singleton_euclidean_isOpenEmbedding`. -/
+theorem onePoint_threeSpace_compl_singleton_euclidean_isOpenEmbedding_eq :
+    @Poincare.onePoint_threeSpace_compl_singleton_euclidean_isOpenEmbedding = @Poincare.onePoint_threeSpace_compl_singleton_euclidean_isOpenEmbedding :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_compl_singleton_locPathConnectedSpace`. -/
+theorem onePoint_threeSpace_compl_singleton_locPathConnectedSpace_eq :
+    @Poincare.onePoint_threeSpace_compl_singleton_locPathConnectedSpace = @Poincare.onePoint_threeSpace_compl_singleton_locPathConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_compl_singleton_smoothManifold_via_euclidean`. -/
+theorem onePoint_threeSpace_compl_singleton_smoothManifold_via_euclidean_eq :
+    @Poincare.onePoint_threeSpace_compl_singleton_smoothManifold_via_euclidean = @Poincare.onePoint_threeSpace_compl_singleton_smoothManifold_via_euclidean :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_simplyConnectedSpace`. -/
+theorem onePoint_threeSpace_twoPointComplement_simplyConnectedSpace_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_simplyConnectedSpace = @Poincare.onePoint_threeSpace_twoPointComplement_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_puncturedEuclidean_isOpenEmbedding`. -/
+theorem onePoint_threeSpace_twoPointComplement_puncturedEuclidean_isOpenEmbedding_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_puncturedEuclidean_isOpenEmbedding = @Poincare.onePoint_threeSpace_twoPointComplement_puncturedEuclidean_isOpenEmbedding :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_locPathConnectedSpace`. -/
+theorem onePoint_threeSpace_twoPointComplement_locPathConnectedSpace_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_locPathConnectedSpace = @Poincare.onePoint_threeSpace_twoPointComplement_locPathConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_pathConnectedSpace_of_model_simpleConnected`. -/
+theorem onePoint_threeSpace_twoPointComplement_pathConnectedSpace_of_model_simpleConnected_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_pathConnectedSpace_of_model_simpleConnected = @Poincare.onePoint_threeSpace_twoPointComplement_pathConnectedSpace_of_model_simpleConnected :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_connectedSpace_of_model_simpleConnected`. -/
+theorem onePoint_threeSpace_twoPointComplement_connectedSpace_of_model_simpleConnected_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_connectedSpace_of_model_simpleConnected = @Poincare.onePoint_threeSpace_twoPointComplement_connectedSpace_of_model_simpleConnected :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_nonempty_of_model_simpleConnected`. -/
+theorem onePoint_threeSpace_twoPointComplement_nonempty_of_model_simpleConnected_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_nonempty_of_model_simpleConnected = @Poincare.onePoint_threeSpace_twoPointComplement_nonempty_of_model_simpleConnected :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_fundamentalGroup_subsingleton`. -/
+theorem onePoint_threeSpace_twoPointComplement_fundamentalGroup_subsingleton_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_fundamentalGroup_subsingleton = @Poincare.onePoint_threeSpace_twoPointComplement_fundamentalGroup_subsingleton :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_smoothManifold_via_puncturedEuclidean`. -/
+theorem onePoint_threeSpace_twoPointComplement_smoothManifold_via_puncturedEuclidean_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_smoothManifold_via_puncturedEuclidean = @Poincare.onePoint_threeSpace_twoPointComplement_smoothManifold_via_puncturedEuclidean :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_simplyConnectedSpace_of_sourceChoiceCollapse`. -/
+theorem onePoint_threeSpace_simplyConnectedSpace_of_sourceChoiceCollapse_eq :
+    @Poincare.onePoint_threeSpace_simplyConnectedSpace_of_sourceChoiceCollapse = @Poincare.onePoint_threeSpace_simplyConnectedSpace_of_sourceChoiceCollapse :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_pathHomotopyStatement_of_sourceChoiceCollapse`. -/
+theorem onePoint_threeSpace_pathHomotopyStatement_of_sourceChoiceCollapse_eq :
+    @Poincare.onePoint_threeSpace_pathHomotopyStatement_of_sourceChoiceCollapse = @Poincare.onePoint_threeSpace_pathHomotopyStatement_of_sourceChoiceCollapse :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_pathQuotientSubsingletonStatement_of_basedFundamentalGroupSubsingleton`. -/
+theorem onePoint_threeSpace_pathQuotientSubsingletonStatement_of_basedFundamentalGroupSubsingleton_eq :
+    @Poincare.onePoint_threeSpace_pathQuotientSubsingletonStatement_of_basedFundamentalGroupSubsingleton = @Poincare.onePoint_threeSpace_pathQuotientSubsingletonStatement_of_basedFundamentalGroupSubsingleton :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_basedFundamentalGroupSubsingleton`. -/
+theorem onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_basedFundamentalGroupSubsingleton_eq :
+    @Poincare.onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_basedFundamentalGroupSubsingleton = @Poincare.onePoint_threeSpace_fundamentalGroupSubsingletonStatement_of_basedFundamentalGroupSubsingleton :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_piOneSubsingletonStatement_of_sourceChoiceCollapse`. -/
+theorem onePoint_threeSpace_piOneSubsingletonStatement_of_sourceChoiceCollapse_eq :
+    @Poincare.onePoint_threeSpace_piOneSubsingletonStatement_of_sourceChoiceCollapse = @Poincare.onePoint_threeSpace_piOneSubsingletonStatement_of_sourceChoiceCollapse :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_localInverseSphere_hasGroupoid`. -/
+theorem onePoint_threeSpace_localInverseSphere_hasGroupoid_eq :
+    @Poincare.onePoint_threeSpace_localInverseSphere_hasGroupoid = @Poincare.onePoint_threeSpace_localInverseSphere_hasGroupoid :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_idRestr_liftPropOn_localStructomorph`. -/
+theorem onePoint_threeSpace_idRestr_liftPropOn_localStructomorph_eq :
+    @Poincare.onePoint_threeSpace_idRestr_liftPropOn_localStructomorph = @Poincare.onePoint_threeSpace_idRestr_liftPropOn_localStructomorph :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_smoothManifold_oldChartedSpace`. -/
+theorem onePoint_threeSpace_smoothManifold_oldChartedSpace_eq :
+    @Poincare.onePoint_threeSpace_smoothManifold_oldChartedSpace = @Poincare.onePoint_threeSpace_smoothManifold_oldChartedSpace :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_smoothManifold`. -/
+theorem onePoint_threeSpace_smoothManifold_eq :
+    @Poincare.onePoint_threeSpace_smoothManifold = @Poincare.onePoint_threeSpace_smoothManifold :=
+  rfl
+
+/-- Theorem contract for `idRestr_liftPropOn_localStructomorph_of_isManifold`. -/
+theorem idRestr_liftPropOn_localStructomorph_of_isManifold_eq :
+    @Poincare.idRestr_liftPropOn_localStructomorph_of_isManifold = @Poincare.idRestr_liftPropOn_localStructomorph_of_isManifold :=
+  rfl
+
+/-- Theorem contract for `homeomorph_localInverse_hasGroupoid`. -/
+theorem homeomorph_localInverse_hasGroupoid_eq :
+    @Poincare.homeomorph_localInverse_hasGroupoid = @Poincare.homeomorph_localInverse_hasGroupoid :=
+  rfl
+
+/-- Theorem contract for `isManifold_of_homeomorph_transportedChartedSpace`. -/
+theorem isManifold_of_homeomorph_transportedChartedSpace_eq :
+    @Poincare.isManifold_of_homeomorph_transportedChartedSpace = @Poincare.isManifold_of_homeomorph_transportedChartedSpace :=
+  rfl
+
+/-- Theorem contract for `smoothManifold_of_homeomorph_transportedChartedSpace`. -/
+theorem smoothManifold_of_homeomorph_transportedChartedSpace_eq :
+    @Poincare.smoothManifold_of_homeomorph_transportedChartedSpace = @Poincare.smoothManifold_of_homeomorph_transportedChartedSpace :=
+  rfl
+
+/-- Theorem contract for `topological_manifold_prerequisites_of_homeomorph`. -/
+theorem topological_manifold_prerequisites_of_homeomorph_eq :
+    @Poincare.topological_manifold_prerequisites_of_homeomorph = @Poincare.topological_manifold_prerequisites_of_homeomorph :=
+  rfl
+
+/-- Theorem contract for `smooth_manifold_prerequisites_of_homeomorph`. -/
+theorem smooth_manifold_prerequisites_of_homeomorph_eq :
+    @Poincare.smooth_manifold_prerequisites_of_homeomorph = @Poincare.smooth_manifold_prerequisites_of_homeomorph :=
+  rfl
+
+/-- Theorem contract for `simplyConnectedSpace_of_homeomorph`. -/
+theorem simplyConnectedSpace_of_homeomorph_eq :
+    @Poincare.simplyConnectedSpace_of_homeomorph = @Poincare.simplyConnectedSpace_of_homeomorph :=
+  rfl
+
+/-- Theorem contract for `homotopy_manifold_prerequisites_of_homeomorph`. -/
+theorem homotopy_manifold_prerequisites_of_homeomorph_eq :
+    @Poincare.homotopy_manifold_prerequisites_of_homeomorph = @Poincare.homotopy_manifold_prerequisites_of_homeomorph :=
+  rfl
+
+/-- Theorem contract for `diffeomorph_payload_to_threeSphere_of_smoothPoincareConjectureStatement_and_homeomorph`. -/
+theorem diffeomorph_payload_to_threeSphere_of_smoothPoincareConjectureStatement_and_homeomorph_eq :
+    @Poincare.diffeomorph_payload_to_threeSphere_of_smoothPoincareConjectureStatement_and_homeomorph = @Poincare.diffeomorph_payload_to_threeSphere_of_smoothPoincareConjectureStatement_and_homeomorph :=
+  rfl
+
+/-- Theorem contract for `smooth_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace`. -/
+theorem smooth_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace_eq :
+    @Poincare.smooth_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace = @Poincare.smooth_manifold_prerequisites_of_homeomorph_to_onePoint_threeSpace :=
+  rfl
+
+/-- Theorem contract for `smooth_manifold_prerequisites_of_homeomorph_to_threeSphere`. -/
+theorem smooth_manifold_prerequisites_of_homeomorph_to_threeSphere_eq :
+    @Poincare.smooth_manifold_prerequisites_of_homeomorph_to_threeSphere = @Poincare.smooth_manifold_prerequisites_of_homeomorph_to_threeSphere :=
+  rfl
+
+/-- Theorem contract for `preconnectedSpace_of_homeomorph_to_threeSphere`. -/
+theorem preconnectedSpace_of_homeomorph_to_threeSphere_eq :
+    @Poincare.preconnectedSpace_of_homeomorph_to_threeSphere = @Poincare.preconnectedSpace_of_homeomorph_to_threeSphere :=
+  rfl
+
+/-- Theorem contract for `locPathConnectedSpace_of_homeomorph_to_threeSphere`. -/
+theorem locPathConnectedSpace_of_homeomorph_to_threeSphere_eq :
+    @Poincare.locPathConnectedSpace_of_homeomorph_to_threeSphere = @Poincare.locPathConnectedSpace_of_homeomorph_to_threeSphere :=
+  rfl
+
+/-- Theorem contract for `t2Space_of_homeomorph_to_threeSphere`. -/
+theorem t2Space_of_homeomorph_to_threeSphere_eq :
+    @Poincare.t2Space_of_homeomorph_to_threeSphere = @Poincare.t2Space_of_homeomorph_to_threeSphere :=
+  rfl
+
+/-- Theorem contract for `compactSpace_of_homeomorph_to_threeSphere`. -/
+theorem compactSpace_of_homeomorph_to_threeSphere_eq :
+    @Poincare.compactSpace_of_homeomorph_to_threeSphere = @Poincare.compactSpace_of_homeomorph_to_threeSphere :=
+  rfl
+
+/-- Theorem contract for `locallyCompactSpace_of_homeomorph_to_threeSphere`. -/
+theorem locallyCompactSpace_of_homeomorph_to_threeSphere_eq :
+    @Poincare.locallyCompactSpace_of_homeomorph_to_threeSphere = @Poincare.locallyCompactSpace_of_homeomorph_to_threeSphere :=
+  rfl
+
+/-- Theorem contract for `diffeomorph_payload_to_threeSphere_of_smoothPoincareConjectureStatement_and_homeomorph_to_onePoint_threeSpace`. -/
+theorem diffeomorph_payload_to_threeSphere_of_smoothPoincareConjectureStatement_and_homeomorph_to_onePoint_threeSpace_eq :
+    @Poincare.diffeomorph_payload_to_threeSphere_of_smoothPoincareConjectureStatement_and_homeomorph_to_onePoint_threeSpace = @Poincare.diffeomorph_payload_to_threeSphere_of_smoothPoincareConjectureStatement_and_homeomorph_to_onePoint_threeSpace :=
+  rfl
+
+/-- Theorem contract for `covering_homeomorph_total_of_simplyConnected_base`. -/
+theorem covering_homeomorph_total_of_simplyConnected_base_eq :
+    @Poincare.covering_homeomorph_total_of_simplyConnected_base = @Poincare.covering_homeomorph_total_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `coveringMap_injective_of_simplyConnected_base`. -/
+theorem coveringMap_injective_of_simplyConnected_base_eq :
+    @Poincare.coveringMap_injective_of_simplyConnected_base = @Poincare.coveringMap_injective_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `coveringMap_existsUnique_preimage_of_simplyConnected_base`. -/
+theorem coveringMap_existsUnique_preimage_of_simplyConnected_base_eq :
+    @Poincare.coveringMap_existsUnique_preimage_of_simplyConnected_base = @Poincare.coveringMap_existsUnique_preimage_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `coveringMap_bijective_of_simplyConnected_base`. -/
+theorem coveringMap_bijective_of_simplyConnected_base_eq :
+    @Poincare.coveringMap_bijective_of_simplyConnected_base = @Poincare.coveringMap_bijective_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `coveringMap_isHomeomorph_of_simplyConnected_base`. -/
+theorem coveringMap_isHomeomorph_of_simplyConnected_base_eq :
+    @Poincare.coveringMap_isHomeomorph_of_simplyConnected_base = @Poincare.coveringMap_isHomeomorph_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `coveringMap_homeomorph_to_threeSphere_of_simplyConnected_base`. -/
+theorem coveringMap_homeomorph_to_threeSphere_of_simplyConnected_base_eq :
+    @Poincare.coveringMap_homeomorph_to_threeSphere_of_simplyConnected_base = @Poincare.coveringMap_homeomorph_to_threeSphere_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `quotientCovering_smul_eq_self_of_simplyConnected_base`. -/
+theorem quotientCovering_smul_eq_self_of_simplyConnected_base_eq :
+    @Poincare.quotientCovering_smul_eq_self_of_simplyConnected_base = @Poincare.quotientCovering_smul_eq_self_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `quotientCovering_mem_orbit_iff_eq_of_simplyConnected_base`. -/
+theorem quotientCovering_mem_orbit_iff_eq_of_simplyConnected_base_eq :
+    @Poincare.quotientCovering_mem_orbit_iff_eq_of_simplyConnected_base = @Poincare.quotientCovering_mem_orbit_iff_eq_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `quotientCovering_orbitRel_iff_eq_of_simplyConnected_base`. -/
+theorem quotientCovering_orbitRel_iff_eq_of_simplyConnected_base_eq :
+    @Poincare.quotientCovering_orbitRel_iff_eq_of_simplyConnected_base = @Poincare.quotientCovering_orbitRel_iff_eq_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `quotientCovering_orbitRel_eq_bot_of_simplyConnected_base`. -/
+theorem quotientCovering_orbitRel_eq_bot_of_simplyConnected_base_eq :
+    @Poincare.quotientCovering_orbitRel_eq_bot_of_simplyConnected_base = @Poincare.quotientCovering_orbitRel_eq_bot_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `quotientCovering_orbit_eq_singleton_of_simplyConnected_base`. -/
+theorem quotientCovering_orbit_eq_singleton_of_simplyConnected_base_eq :
+    @Poincare.quotientCovering_orbit_eq_singleton_of_simplyConnected_base = @Poincare.quotientCovering_orbit_eq_singleton_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `quotientCovering_fiber_eq_orbit_singleton_of_simplyConnected_base`. -/
+theorem quotientCovering_fiber_eq_orbit_singleton_of_simplyConnected_base_eq :
+    @Poincare.quotientCovering_fiber_eq_orbit_singleton_of_simplyConnected_base = @Poincare.quotientCovering_fiber_eq_orbit_singleton_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `quotientCovering_group_trivial_of_simplyConnected_base`. -/
+theorem quotientCovering_group_trivial_of_simplyConnected_base_eq :
+    @Poincare.quotientCovering_group_trivial_of_simplyConnected_base = @Poincare.quotientCovering_group_trivial_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `quotientCovering_group_subsingleton_of_simplyConnected_base`. -/
+theorem quotientCovering_group_subsingleton_of_simplyConnected_base_eq :
+    @Poincare.quotientCovering_group_subsingleton_of_simplyConnected_base = @Poincare.quotientCovering_group_subsingleton_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `quotientCovering_injective_of_subsingleton_group`. -/
+theorem quotientCovering_injective_of_subsingleton_group_eq :
+    @Poincare.quotientCovering_injective_of_subsingleton_group = @Poincare.quotientCovering_injective_of_subsingleton_group :=
+  rfl
+
+/-- Theorem contract for `quotientCovering_isHomeomorph_of_subsingleton_group`. -/
+theorem quotientCovering_isHomeomorph_of_subsingleton_group_eq :
+    @Poincare.quotientCovering_isHomeomorph_of_subsingleton_group = @Poincare.quotientCovering_isHomeomorph_of_subsingleton_group :=
+  rfl
+
+/-- Theorem contract for `quotientCovering_homeomorph_base_total_of_subsingleton_group`. -/
+theorem quotientCovering_homeomorph_base_total_of_subsingleton_group_eq :
+    @Poincare.quotientCovering_homeomorph_base_total_of_subsingleton_group = @Poincare.quotientCovering_homeomorph_base_total_of_subsingleton_group :=
+  rfl
+
+/-- Theorem contract for `quotientCovering_isHomeomorph_of_simplyConnected_base`. -/
+theorem quotientCovering_isHomeomorph_of_simplyConnected_base_eq :
+    @Poincare.quotientCovering_isHomeomorph_of_simplyConnected_base = @Poincare.quotientCovering_isHomeomorph_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `quotientCovering_homeomorph_base_total_of_simplyConnected_base`. -/
+theorem quotientCovering_homeomorph_base_total_of_simplyConnected_base_eq :
+    @Poincare.quotientCovering_homeomorph_base_total_of_simplyConnected_base = @Poincare.quotientCovering_homeomorph_base_total_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `quotientCovering_homeomorph_to_threeSphere_of_simplyConnected_base`. -/
+theorem quotientCovering_homeomorph_to_threeSphere_of_simplyConnected_base_eq :
+    @Poincare.quotientCovering_homeomorph_to_threeSphere_of_simplyConnected_base = @Poincare.quotientCovering_homeomorph_to_threeSphere_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `orbitRelQuotient_topological_manifold_prerequisites_of_homeomorph_to_threeSphere`. -/
+theorem orbitRelQuotient_topological_manifold_prerequisites_of_homeomorph_to_threeSphere_eq :
+    @Poincare.orbitRelQuotient_topological_manifold_prerequisites_of_homeomorph_to_threeSphere = @Poincare.orbitRelQuotient_topological_manifold_prerequisites_of_homeomorph_to_threeSphere :=
+  rfl
+
+/-- Theorem contract for `threeSphere_quotient_trivial_of_simplyConnected_quotient`. -/
+theorem threeSphere_quotient_trivial_of_simplyConnected_quotient_eq :
+    @Poincare.threeSphere_quotient_trivial_of_simplyConnected_quotient = @Poincare.threeSphere_quotient_trivial_of_simplyConnected_quotient :=
+  rfl
+
+/-- Theorem contract for `orbitRelQuotient_homeomorph_total_of_simplyConnected_target`. -/
+theorem orbitRelQuotient_homeomorph_total_of_simplyConnected_target_eq :
+    @Poincare.orbitRelQuotient_homeomorph_total_of_simplyConnected_target = @Poincare.orbitRelQuotient_homeomorph_total_of_simplyConnected_target :=
+  rfl
+
+/-- Theorem contract for `orbitRelQuotient_homeomorph_total_of_simplyConnected_quotient`. -/
+theorem orbitRelQuotient_homeomorph_total_of_simplyConnected_quotient_eq :
+    @Poincare.orbitRelQuotient_homeomorph_total_of_simplyConnected_quotient = @Poincare.orbitRelQuotient_homeomorph_total_of_simplyConnected_quotient :=
+  rfl
+
+/-- Theorem contract for `orbitRelQuotient_group_trivial_of_simplyConnected_target`. -/
+theorem orbitRelQuotient_group_trivial_of_simplyConnected_target_eq :
+    @Poincare.orbitRelQuotient_group_trivial_of_simplyConnected_target = @Poincare.orbitRelQuotient_group_trivial_of_simplyConnected_target :=
+  rfl
+
+/-- Theorem contract for `orbitRelQuotient_model_trivial_of_simplyConnected_target`. -/
+theorem orbitRelQuotient_model_trivial_of_simplyConnected_target_eq :
+    @Poincare.orbitRelQuotient_model_trivial_of_simplyConnected_target = @Poincare.orbitRelQuotient_model_trivial_of_simplyConnected_target :=
+  rfl
+
+/-- Theorem contract for `orbitRelQuotient_model_smooth_recognition_of_simplyConnected_target`. -/
+theorem orbitRelQuotient_model_smooth_recognition_of_simplyConnected_target_eq :
+    @Poincare.orbitRelQuotient_model_smooth_recognition_of_simplyConnected_target = @Poincare.orbitRelQuotient_model_smooth_recognition_of_simplyConnected_target :=
+  rfl
+
+/-- Theorem contract for `orbitRelQuotient_target_projection_orbit_rigidity_of_homeomorph_to_threeSphere`. -/
+theorem orbitRelQuotient_target_projection_orbit_rigidity_of_homeomorph_to_threeSphere_eq :
+    @Poincare.orbitRelQuotient_target_projection_orbit_rigidity_of_homeomorph_to_threeSphere = @Poincare.orbitRelQuotient_target_projection_orbit_rigidity_of_homeomorph_to_threeSphere :=
+  rfl
+
+/-- Theorem contract for `orbitRelQuotient_target_projection_smooth_rigidity_of_homeomorph_to_threeSphere`. -/
+theorem orbitRelQuotient_target_projection_smooth_rigidity_of_homeomorph_to_threeSphere_eq :
+    @Poincare.orbitRelQuotient_target_projection_smooth_rigidity_of_homeomorph_to_threeSphere = @Poincare.orbitRelQuotient_target_projection_smooth_rigidity_of_homeomorph_to_threeSphere :=
+  rfl
+
+/-- Theorem contract for `orbitRelQuotient_model_trivial_of_simplyConnected_quotient`. -/
+theorem orbitRelQuotient_model_trivial_of_simplyConnected_quotient_eq :
+    @Poincare.orbitRelQuotient_model_trivial_of_simplyConnected_quotient = @Poincare.orbitRelQuotient_model_trivial_of_simplyConnected_quotient :=
+  rfl
+
+/-- Theorem contract for `orbitRelQuotient_mk_isHomeomorph_and_orbitRel_eq_bot_of_simplyConnected_quotient`. -/
+theorem orbitRelQuotient_mk_isHomeomorph_and_orbitRel_eq_bot_of_simplyConnected_quotient_eq :
+    @Poincare.orbitRelQuotient_mk_isHomeomorph_and_orbitRel_eq_bot_of_simplyConnected_quotient = @Poincare.orbitRelQuotient_mk_isHomeomorph_and_orbitRel_eq_bot_of_simplyConnected_quotient :=
+  rfl
+
+/-- Theorem contract for `orbitRelQuotient_sphere_recognition_and_poincare_candidate_prerequisites_of_homeomorph_to_threeSphere`. -/
+theorem orbitRelQuotient_sphere_recognition_and_poincare_candidate_prerequisites_of_homeomorph_to_threeSphere_eq :
+    @Poincare.orbitRelQuotient_sphere_recognition_and_poincare_candidate_prerequisites_of_homeomorph_to_threeSphere = @Poincare.orbitRelQuotient_sphere_recognition_and_poincare_candidate_prerequisites_of_homeomorph_to_threeSphere :=
+  rfl
+
+/-- Theorem contract for `orbitRelQuotient_smooth_sphere_recognition_and_prerequisites_of_homeomorph_to_threeSphere`. -/
+theorem orbitRelQuotient_smooth_sphere_recognition_and_prerequisites_of_homeomorph_to_threeSphere_eq :
+    @Poincare.orbitRelQuotient_smooth_sphere_recognition_and_prerequisites_of_homeomorph_to_threeSphere = @Poincare.orbitRelQuotient_smooth_sphere_recognition_and_prerequisites_of_homeomorph_to_threeSphere :=
+  rfl
+
+/-- Theorem contract for `covering_deckTransform_eq_of_eq_at`. -/
+theorem covering_deckTransform_eq_of_eq_at_eq :
+    @Poincare.covering_deckTransform_eq_of_eq_at = @Poincare.covering_deckTransform_eq_of_eq_at :=
+  rfl
+
+/-- Theorem contract for `covering_deckTransform_eq_refl_of_fixed`. -/
+theorem covering_deckTransform_eq_refl_of_fixed_eq :
+    @Poincare.covering_deckTransform_eq_refl_of_fixed = @Poincare.covering_deckTransform_eq_refl_of_fixed :=
+  rfl
+
+/-- Theorem contract for `covering_deckTransform_eq_refl_of_simplyConnected_base`. -/
+theorem covering_deckTransform_eq_refl_of_simplyConnected_base_eq :
+    @Poincare.covering_deckTransform_eq_refl_of_simplyConnected_base = @Poincare.covering_deckTransform_eq_refl_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `quotientCovering_smulDeckTransform_eq_refl_of_simplyConnected_base`. -/
+theorem quotientCovering_smulDeckTransform_eq_refl_of_simplyConnected_base_eq :
+    @Poincare.quotientCovering_smulDeckTransform_eq_refl_of_simplyConnected_base = @Poincare.quotientCovering_smulDeckTransform_eq_refl_of_simplyConnected_base :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData_toFun`. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData_toFun_eq :
+    @Poincare.extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData_toFun = @Poincare.extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData_toFun :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceForwardMap_injective_of_forwardInverseMapData`. -/
+theorem extinctionOnePointThreeSpaceForwardMap_injective_of_forwardInverseMapData_eq :
+    @Poincare.extinctionOnePointThreeSpaceForwardMap_injective_of_forwardInverseMapData =
+      @Poincare.extinctionOnePointThreeSpaceForwardMap_injective_of_forwardInverseMapData :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceForwardMap_surjective_of_forwardInverseMapData`. -/
+theorem extinctionOnePointThreeSpaceForwardMap_surjective_of_forwardInverseMapData_eq :
+    @Poincare.extinctionOnePointThreeSpaceForwardMap_surjective_of_forwardInverseMapData =
+      @Poincare.extinctionOnePointThreeSpaceForwardMap_surjective_of_forwardInverseMapData :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition_bijective_toFun`. -/
+theorem extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition_bijective_toFun_eq :
+    @Poincare.extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition_bijective_toFun =
+      @Poincare.extinctionOnePointThreeSpaceContinuousForwardMapInjectiveSurjectiveDataAfterDecomposition_bijective_toFun :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData_invFun`. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData_invFun_eq :
+    @Poincare.extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData_invFun =
+      @Poincare.extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecomposition_of_forwardContinuityData_invFun :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceHomeomorphismDataAfterDecomposition_of_constructionData_homeomorphism`. -/
+theorem extinctionOnePointThreeSpaceHomeomorphismDataAfterDecomposition_of_constructionData_homeomorphism_eq :
+    @Poincare.extinctionOnePointThreeSpaceHomeomorphismDataAfterDecomposition_of_constructionData_homeomorphism =
+      @Poincare.extinctionOnePointThreeSpaceHomeomorphismDataAfterDecomposition_of_constructionData_homeomorphism :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_homeomorphism_exists`. -/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_homeomorphism_exists_eq :
+    @Poincare.extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_homeomorphism_exists =
+      @Poincare.extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_homeomorphism_exists :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isOpenEmbedding`. -/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isOpenEmbedding_eq :
+    @Poincare.extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isOpenEmbedding =
+      @Poincare.extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isOpenEmbedding :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isClosedEmbedding`. -/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isClosedEmbedding_eq :
+    @Poincare.extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isClosedEmbedding =
+      @Poincare.extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isClosedEmbedding :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isOpenMap`. -/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isOpenMap_eq :
+    @Poincare.extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isOpenMap =
+      @Poincare.extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isOpenMap :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isClosedMap`. -/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isClosedMap_eq :
+    @Poincare.extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isClosedMap =
+      @Poincare.extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isClosedMap :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isInducing`. -/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isInducing_eq :
+    @Poincare.extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isInducing =
+      @Poincare.extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isInducing :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isQuotientMap`. -/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isQuotientMap_eq :
+    @Poincare.extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isQuotientMap =
+      @Poincare.extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isQuotientMap :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_range_eq_univ`. -/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_range_eq_univ_eq :
+    @Poincare.extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_range_eq_univ =
+      @Poincare.extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_range_eq_univ :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isEmbedding`. -/
+theorem extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isEmbedding_eq :
+    @Poincare.extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isEmbedding =
+      @Poincare.extinctionOnePointThreeSpaceHomeomorphismConstructionDataAfterDecomposition_isEmbedding :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_continuous_toFun`. -/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_continuous_toFun_eq :
+    @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_continuous_toFun =
+      @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_continuous_toFun :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_continuous_invFun`. -/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_continuous_invFun_eq :
+    @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_continuous_invFun =
+      @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_continuous_invFun :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_homeomorphism_exists`. -/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_homeomorphism_exists_eq :
+    @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_homeomorphism_exists =
+      @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_homeomorphism_exists :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isOpenEmbedding`. -/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isOpenEmbedding_eq :
+    @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isOpenEmbedding =
+      @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isOpenEmbedding :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isClosedEmbedding`. -/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isClosedEmbedding_eq :
+    @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isClosedEmbedding =
+      @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isClosedEmbedding :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isOpenMap`. -/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isOpenMap_eq :
+    @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isOpenMap =
+      @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isOpenMap :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isClosedMap`. -/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isClosedMap_eq :
+    @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isClosedMap =
+      @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isClosedMap :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isInducing`. -/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isInducing_eq :
+    @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isInducing =
+      @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isInducing :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isQuotientMap`. -/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isQuotientMap_eq :
+    @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isQuotientMap =
+      @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isQuotientMap :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_range_eq_univ`. -/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_range_eq_univ_eq :
+    @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_range_eq_univ =
+      @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_range_eq_univ :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isEmbedding`. -/
+theorem extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isEmbedding_eq :
+    @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isEmbedding =
+      @Poincare.extinctionOnePointThreeSpaceEquivalenceWithContinuityDataAfterDecomposition_isEmbedding :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_leftRightInverse`. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_leftRightInverse_eq :
+    @Poincare.extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_leftRightInverse =
+      @Poincare.extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition_leftRightInverse :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_pointSetProofs`. -/
+theorem extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_pointSetProofs_eq :
+    @Poincare.extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_pointSetProofs =
+      @Poincare.extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_pointSetProofs :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_bijective_toFun`. -/
+theorem extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_bijective_toFun_eq :
+    @Poincare.extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_bijective_toFun =
+      @Poincare.extinctionOnePointThreeSpaceForwardMapPointSetDataAfterDecomposition_bijective_toFun :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_continuous_and_bijective_toFun`. -/
+theorem extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_continuous_and_bijective_toFun_eq :
+    @Poincare.extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_continuous_and_bijective_toFun =
+      @Poincare.extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_continuous_and_bijective_toFun :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_continuous_invFun`. -/
+theorem extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_continuous_invFun_eq :
+    @Poincare.extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_continuous_invFun =
+      @Poincare.extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_continuous_invFun :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_homeomorphism_exists`. -/
+theorem extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_homeomorphism_exists_eq :
+    @Poincare.extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_homeomorphism_exists =
+      @Poincare.extinctionOnePointThreeSpaceContinuousBijectiveForwardMapDataAfterDecomposition_homeomorphism_exists :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_homeomorphism_exists`. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_homeomorphism_exists_eq :
+    @Poincare.extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_homeomorphism_exists =
+      @Poincare.extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_homeomorphism_exists :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isOpenEmbedding`. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isOpenEmbedding_eq :
+    @Poincare.extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isOpenEmbedding =
+      @Poincare.extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isOpenEmbedding :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isClosedEmbedding`. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isClosedEmbedding_eq :
+    @Poincare.extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isClosedEmbedding =
+      @Poincare.extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isClosedEmbedding :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isOpenMap`. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isOpenMap_eq :
+    @Poincare.extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isOpenMap =
+      @Poincare.extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isOpenMap :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isClosedMap`. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isClosedMap_eq :
+    @Poincare.extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isClosedMap =
+      @Poincare.extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isClosedMap :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isInducing`. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isInducing_eq :
+    @Poincare.extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isInducing =
+      @Poincare.extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isInducing :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isQuotientMap`. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isQuotientMap_eq :
+    @Poincare.extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isQuotientMap =
+      @Poincare.extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isQuotientMap :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_range_eq_univ`. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_range_eq_univ_eq :
+    @Poincare.extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_range_eq_univ =
+      @Poincare.extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_range_eq_univ :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isEmbedding`. -/
+theorem extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isEmbedding_eq :
+    @Poincare.extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isEmbedding =
+      @Poincare.extinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecomposition_isEmbedding :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_homeomorphismData`. -/
+theorem extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_homeomorphismData_eq :
+    @Poincare.extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_homeomorphismData = @Poincare.extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_homeomorphismData :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_continuousBijectiveForwardMapData`. -/
+theorem extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_continuousBijectiveForwardMapData_eq :
+    @Poincare.extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_continuousBijectiveForwardMapData =
+      @Poincare.extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_continuousBijectiveForwardMapData :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_equivalenceWithContinuityData`. -/
+theorem extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_equivalenceWithContinuityData_eq :
+    @Poincare.extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_equivalenceWithContinuityData =
+      @Poincare.extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_equivalenceWithContinuityData :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_forwardInverseMapForwardContinuityData`. -/
+theorem extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_forwardInverseMapForwardContinuityData_eq :
+    @Poincare.extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_forwardInverseMapForwardContinuityData =
+      @Poincare.extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_forwardInverseMapForwardContinuityData :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_forwardMapPointSetData`. -/
+theorem extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_forwardMapPointSetData_eq :
+    @Poincare.extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_forwardMapPointSetData =
+      @Poincare.extinctionOnePointThreeSpaceRecognitionDataAfterDecomposition_of_forwardMapPointSetData :=
+  rfl
+
+/-- Theorem contract for `extinctionOnePointThreeSpaceRecognitionData_of_afterDecompositionData`. -/
+theorem extinctionOnePointThreeSpaceRecognitionData_of_afterDecompositionData_eq :
+    @Poincare.extinctionOnePointThreeSpaceRecognitionData_of_afterDecompositionData = @Poincare.extinctionOnePointThreeSpaceRecognitionData_of_afterDecompositionData :=
+  rfl
+
+/-- Theorem contract for `extinction_topology_decomposition_realization_of_decomposition`. -/
+theorem extinction_topology_decomposition_realization_of_decomposition_eq :
+    @Poincare.extinction_topology_decomposition_realization_of_decomposition =
+      @Poincare.extinction_topology_decomposition_realization_of_decomposition :=
+  rfl
+
+/-- Theorem contract for `extinction_surgery_trace_realization_of_reconstruction`. -/
+theorem extinction_surgery_trace_realization_of_reconstruction_eq :
+    @Poincare.extinction_surgery_trace_realization_of_reconstruction =
+      @Poincare.extinction_surgery_trace_realization_of_reconstruction :=
+  rfl
+
+/-- Theorem contract for `homeomorphism_of_final_homeomorphism_payload_data`. -/
+theorem homeomorphism_of_final_homeomorphism_payload_data_eq :
+    @Poincare.homeomorphism_of_final_homeomorphism_payload_data = @Poincare.homeomorphism_of_final_homeomorphism_payload_data :=
+  rfl
+
+/-- Theorem contract for `homeomorphism_of_extract_homeomorphism_data`. -/
+theorem homeomorphism_of_extract_homeomorphism_data_eq :
+    @Poincare.homeomorphism_of_extract_homeomorphism_data = @Poincare.homeomorphism_of_extract_homeomorphism_data :=
+  rfl
+
+/-- Theorem contract for `homeomorphism_of_simply_connected_extinction_recognition_data`. -/
+theorem homeomorphism_of_simply_connected_extinction_recognition_data_eq :
+    @Poincare.homeomorphism_of_simply_connected_extinction_recognition_data = @Poincare.homeomorphism_of_simply_connected_extinction_recognition_data :=
+  rfl
+
+/-- Theorem contract for `homeomorphism_of_simply_connected_extinction_recognition`. -/
+theorem homeomorphism_of_simply_connected_extinction_recognition_eq :
+    @Poincare.homeomorphism_of_simply_connected_extinction_recognition = @Poincare.homeomorphism_of_simply_connected_extinction_recognition :=
+  rfl
+
+/-- Theorem contract for `finalHomeomorphismPayloadData_of_homeomorphism_assembly`. -/
+theorem finalHomeomorphismPayloadData_of_homeomorphism_assembly_eq :
+    @Poincare.finalHomeomorphismPayloadData_of_homeomorphism_assembly =
+      @Poincare.finalHomeomorphismPayloadData_of_homeomorphism_assembly :=
+  rfl
+
+/-- Theorem contract for `homeomorphism_of_extinction_homeomorphism_assembly`. -/
+theorem homeomorphism_of_extinction_homeomorphism_assembly_eq :
+    @Poincare.homeomorphism_of_extinction_homeomorphism_assembly =
+      @Poincare.homeomorphism_of_extinction_homeomorphism_assembly :=
+  rfl
+
+/-- Theorem contract for `extinction_homeomorphism_assembly_of_simply_connected_extinction_recognition`. -/
+theorem extinction_homeomorphism_assembly_of_simply_connected_extinction_recognition_eq :
+    @Poincare.extinction_homeomorphism_assembly_of_simply_connected_extinction_recognition = @Poincare.extinction_homeomorphism_assembly_of_simply_connected_extinction_recognition :=
+  rfl
+
+/-- Theorem contract for `extinction_homeomorphism_derivation_of_homeomorphism_assembly`. -/
+theorem extinction_homeomorphism_derivation_of_homeomorphism_assembly_eq :
+    @Poincare.extinction_homeomorphism_derivation_of_homeomorphism_assembly = @Poincare.extinction_homeomorphism_derivation_of_homeomorphism_assembly :=
+  rfl
+
+/-- Theorem contract for `finalHomeomorphismPayloadData_exists_of_topology_derivation_statement`. -/
+theorem finalHomeomorphismPayloadData_exists_of_topology_derivation_statement_eq :
+    @Poincare.finalHomeomorphismPayloadData_exists_of_topology_derivation_statement =
+      @Poincare.finalHomeomorphismPayloadData_exists_of_topology_derivation_statement :=
   rfl
 
 end Poincare
