@@ -26266,6 +26266,80 @@ theorem conditional_root_selected_threeSphere_direct_terminal_endpointData_chart
   rfl
 
 /--
+Canonical completion payload bundled with the concrete terminal endpoint-data
+summary.
+
+This keeps the canonical completion target, the canonical/project completion
+payloads, and a proof object for the fully unpacked terminal endpoint-data
+summary together.  It gives final-certificate consumers one theorem route from
+canonical completion data to the concrete chart/path-loop and arbitrary
+loop-collapse fields.
+-/
+theorem canonical_completion_payload_and_terminal_endpointData_summary_proof_of_full_terminal_certificate_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {x y : M} (hyx : y ≠ x)
+    {a b : ({x}ᶜ : Set M)} (γ η : Path a b)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (chosenSinglePath : Path singleBase singleTarget)
+    (singleLoop : Path singleBase singleBase)
+    {c d : (({x} ∪ {y})ᶜ : Set M)} (γTwo ηTwo : Path c d)
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path twoBase twoTarget)
+    (loop : Path twoBase twoBase) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      ∃ endpointSummary,
+        endpointSummary =
+          conditional_root_selected_threeSphere_direct_terminal_endpointData_chartPathLoop_and_arbitraryLoop_summary_of_full_terminal_certificate_of_equation_boundary_dependencies
+            dependencies smoothability grounded topology smoothabilityPayload M
+            hyx γ η singleBase singleTarget chosenSinglePath singleLoop γTwo
+            ηTwo twoBase twoTarget chosenPath loop := by
+  let endpointSummary :=
+    conditional_root_selected_threeSphere_direct_terminal_endpointData_chartPathLoop_and_arbitraryLoop_summary_of_full_terminal_certificate_of_equation_boundary_dependencies
+      dependencies smoothability grounded topology smoothabilityPayload M
+      hyx γ η singleBase singleTarget chosenSinglePath singleLoop γTwo
+      ηTwo twoBase twoTarget chosenPath loop
+  let canonicalTarget : canonicalCompletionTarget.{u} := endpointSummary.1
+  let canonicalPayload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    canonical_completion_payload_of_canonical_completion_target canonicalTarget
+  let projectPayload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    ⟨endpointSummary.1, endpointSummary.2.2.1⟩
+  exact
+    ⟨canonicalTarget,
+      canonicalPayload,
+      projectPayload,
+      endpointSummary,
+      rfl⟩
+
+/-- Theorem contract for
+`canonical_completion_payload_and_terminal_endpointData_summary_proof_of_full_terminal_certificate_of_equation_boundary_dependencies`. -/
+theorem canonical_completion_payload_and_terminal_endpointData_summary_proof_of_full_terminal_certificate_of_equation_boundary_dependencies_eq :
+    @Poincare.canonical_completion_payload_and_terminal_endpointData_summary_proof_of_full_terminal_certificate_of_equation_boundary_dependencies =
+      @Poincare.canonical_completion_payload_and_terminal_endpointData_summary_proof_of_full_terminal_certificate_of_equation_boundary_dependencies :=
+  rfl
+
+/--
 Canonical completion target collapsed from the full terminal direct endpoint.
 
 The combined terminal selected-topology endpoint already proves the project
