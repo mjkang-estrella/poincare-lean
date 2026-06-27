@@ -664,4 +664,44 @@ theorem threeSphere_twoPointComplement_fullChart_path_loop_projection_bundle_eq 
       @Poincare.threeSphere_twoPointComplement_fullChart_path_loop_projection_bundle :=
   rfl
 
+/--
+The standard `ThreeSphere` two-puncture complement exposes its full
+punctured-Euclidean chart together with endpoint-level collapse data. This is
+the path/`π₁` recognition payload that does not require a chosen path or loop.
+-/
+theorem threeSphere_twoPointComplement_fullChart_endpoint_collapse_package
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (basepoint target : (({a} ∪ {b})ᶜ : Set ThreeSphere)) :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      ∃ chart : (({a} ∪ {b})ᶜ : Set ThreeSphere) ≃ₜ
+          ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+          Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+          PathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+          ConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+          SimplyConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+          pathComponent basepoint = Set.univ ∧
+          Joined basepoint target ∧
+          Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1 (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint) := by
+  rcases threeSphere_twoPointComplement_puncturedEuclidean_fullChart_package hab with
+    ⟨puncture, chart, hAvoid, hNonempty, hPathConnected, hConnected,
+      hSimplyConnected⟩
+  letI : PathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) :=
+    hPathConnected
+  exact
+    ⟨puncture, chart, hAvoid, hNonempty, hPathConnected, hConnected,
+      hSimplyConnected, threeSphere_twoPointComplement_pathComponent_eq_univ
+        hab basepoint, PathConnectedSpace.joined basepoint target,
+      threeSphere_twoPointComplement_pathQuotient_subsingleton
+        hab basepoint target,
+      threeSphere_twoPointComplement_piOne_subsingleton hab basepoint⟩
+
+/-- Theorem contract for `threeSphere_twoPointComplement_fullChart_endpoint_collapse_package`. -/
+theorem threeSphere_twoPointComplement_fullChart_endpoint_collapse_package_eq :
+    @Poincare.threeSphere_twoPointComplement_fullChart_endpoint_collapse_package =
+      @Poincare.threeSphere_twoPointComplement_fullChart_endpoint_collapse_package :=
+  rfl
+
 end Poincare
