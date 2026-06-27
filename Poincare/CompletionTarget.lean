@@ -7159,6 +7159,118 @@ theorem remainingDependencyPackage_iff_poincareProofDependencies_eq :
   apply Subsingleton.elim
 
 /--
+Component requirements reconstruct the remaining dependency package exactly
+through the dependency crosswalk.
+-/
+theorem remaining_dependency_package_of_component_requirements_payload
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    RemainingDependencyPackage.{u} :=
+  poincareProofDependencies_of_component_requirements_payload payload
+
+/-- The component-requirement remaining-dependency route is the crosswalk constructor. -/
+theorem remaining_dependency_package_of_component_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.smoothabilityComponent,
+      ∃ _surgery :
+        dependencyComponentRequirement.{u} DependencyComponentSlot.surgeryComponent,
+        dependencyComponentRequirement.{u} DependencyComponentSlot.topologyComponent) :
+    remaining_dependency_package_of_component_requirements_payload payload =
+      poincareProofDependencies_of_component_requirements_payload payload := by
+  rfl
+
+/--
+Package-layer requirements reconstruct the remaining dependency package exactly
+through the dependency crosswalk.
+-/
+theorem remaining_dependency_package_of_package_layer_requirements_payload
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    RemainingDependencyPackage.{u} :=
+  poincareProofDependencies_of_package_layer_requirements_payload payload
+
+/-- The package-layer remaining-dependency route is the crosswalk constructor. -/
+theorem remaining_dependency_package_of_package_layer_requirements_payload_eq
+    (payload :
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _analytic :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage,
+      ∃ _surgery :
+        dependencyPackageLayerRequirement.{u} DependencyPackageLayer.surgeryPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) :
+    remaining_dependency_package_of_package_layer_requirements_payload payload =
+      poincareProofDependencies_of_package_layer_requirements_payload payload := by
+  rfl
+
+/--
+Milestone requirements reconstruct the remaining dependency package exactly
+through the dependency crosswalk.
+-/
+theorem remaining_dependency_package_of_milestone_requirements_payload
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    RemainingDependencyPackage.{u} :=
+  poincareProofDependencies_of_milestone_requirements_payload payload
+
+/-- The milestone remaining-dependency route is the crosswalk constructor. -/
+theorem remaining_dependency_package_of_milestone_requirements_payload_eq
+    (payload :
+      ∃ _smoothabilityBridge :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.smoothabilityBridge,
+      ∃ _ricciFlowAnalyticFoundation :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation,
+      ∃ _ricciFlowWithSurgery :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.ricciFlowWithSurgery,
+      ∃ _perelmanSingularityControl :
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl,
+      ∃ _finiteExtinction :
+        dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.extinctionToSphereHomeomorphism) :
+    remaining_dependency_package_of_milestone_requirements_payload payload =
+      poincareProofDependencies_of_milestone_requirements_payload payload := by
+  rfl
+
+/--
 Optional strengthened remaining dependency package whose surgery input carries
 an explicit Ricci-flow equation boundary package at each target manifold.
 -/
@@ -92552,6 +92664,180 @@ theorem poincareCompletionCertificate_milestone_requirements_payload_of_completi
     poincareCompletionCertificate_milestone_requirements_payload
       (completion_certificate_of_milestone_requirements_payload payload) =
       payload := by
+  apply Subsingleton.elim
+
+/--
+The direct component-slot requirement-payload endpoint agrees with the
+remaining-dependency endpoint reconstructed from that payload.
+-/
+theorem poincare_conjecture_of_component_requirements_payload_to_remaining_dependency_eq
+    (payload : _) :
+    poincare_conjecture_of_component_requirements_payload payload =
+      poincare_conjecture_of_remainingDependencyPackage
+        (remaining_dependency_package_of_component_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The direct component-slot requirement-payload endpoint agrees with projecting
+the checked certificate reconstructed from that payload.
+-/
+theorem poincare_conjecture_of_component_requirements_payload_to_checked_certificate_eq
+    (payload : _) :
+    poincare_conjecture_of_component_requirements_payload payload =
+      poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_component_requirements_payload payload) := by
+  apply Subsingleton.elim
+
+/--
+The reserved-name payload route from component-slot requirements agrees with
+the payload route projected from the checked certificate.
+-/
+theorem poincare_conjecture_payload_of_component_requirements_payload_to_checked_certificate_eq
+    (payload : _) :
+    poincare_conjecture_payload_of_component_requirements_payload payload =
+      poincare_conjecture_payload_of_completion_certificate
+        (completion_certificate_of_component_requirements_payload payload) := by
+  apply Subsingleton.elim
+
+/--
+The completion payload route from component-slot requirements agrees with the
+payload route projected from the checked certificate.
+-/
+theorem poincare_completion_payload_of_component_requirements_payload_to_checked_certificate_eq
+    (payload : _) :
+    poincare_completion_payload_of_component_requirements_payload payload =
+      poincare_completion_payload_of_completion_certificate
+        (completion_certificate_of_component_requirements_payload payload) := by
+  apply Subsingleton.elim
+
+/--
+The direct component-slot requirement-payload endpoint agrees with the
+nonempty-certificate reduction for the same payload.
+-/
+theorem poincare_conjecture_of_component_requirements_payload_to_nonempty_certificate_eq
+    (payload : _) :
+    poincare_conjecture_of_component_requirements_payload payload =
+      poincare_conjecture_of_nonempty_completion_certificate
+        (nonempty_completion_certificate_of_component_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The direct package-layer requirement-payload endpoint agrees with the
+remaining-dependency endpoint reconstructed from that payload.
+-/
+theorem poincare_conjecture_of_package_layer_requirements_payload_to_remaining_dependency_eq
+    (payload : _) :
+    poincare_conjecture_of_package_layer_requirements_payload payload =
+      poincare_conjecture_of_remainingDependencyPackage
+        (remaining_dependency_package_of_package_layer_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The direct package-layer requirement-payload endpoint agrees with projecting
+the checked certificate reconstructed from that payload.
+-/
+theorem poincare_conjecture_of_package_layer_requirements_payload_to_checked_certificate_eq
+    (payload : _) :
+    poincare_conjecture_of_package_layer_requirements_payload payload =
+      poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_package_layer_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The reserved-name payload route from package-layer requirements agrees with
+the payload route projected from the checked certificate.
+-/
+theorem poincare_conjecture_payload_of_package_layer_requirements_payload_to_checked_certificate_eq
+    (payload : _) :
+    poincare_conjecture_payload_of_package_layer_requirements_payload payload =
+      poincare_conjecture_payload_of_completion_certificate
+        (completion_certificate_of_package_layer_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The completion payload route from package-layer requirements agrees with the
+payload route projected from the checked certificate.
+-/
+theorem poincare_completion_payload_of_package_layer_requirements_payload_to_checked_certificate_eq
+    (payload : _) :
+    poincare_completion_payload_of_package_layer_requirements_payload payload =
+      poincare_completion_payload_of_completion_certificate
+        (completion_certificate_of_package_layer_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The direct package-layer requirement-payload endpoint agrees with the
+nonempty-certificate reduction for the same payload.
+-/
+theorem poincare_conjecture_of_package_layer_requirements_payload_to_nonempty_certificate_eq
+    (payload : _) :
+    poincare_conjecture_of_package_layer_requirements_payload payload =
+      poincare_conjecture_of_nonempty_completion_certificate
+        (nonempty_completion_certificate_of_package_layer_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The direct milestone requirement-payload endpoint agrees with the
+remaining-dependency endpoint reconstructed from that payload.
+-/
+theorem poincare_conjecture_of_milestone_requirements_payload_to_remaining_dependency_eq
+    (payload : _) :
+    poincare_conjecture_of_milestone_requirements_payload payload =
+      poincare_conjecture_of_remainingDependencyPackage
+        (remaining_dependency_package_of_milestone_requirements_payload
+          payload) := by
+  apply Subsingleton.elim
+
+/--
+The direct milestone requirement-payload endpoint agrees with projecting the
+checked certificate reconstructed from that payload.
+-/
+theorem poincare_conjecture_of_milestone_requirements_payload_to_checked_certificate_eq
+    (payload : _) :
+    poincare_conjecture_of_milestone_requirements_payload payload =
+      poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_milestone_requirements_payload payload) := by
+  apply Subsingleton.elim
+
+/--
+The reserved-name payload route from milestone requirements agrees with the
+payload route projected from the checked certificate.
+-/
+theorem poincare_conjecture_payload_of_milestone_requirements_payload_to_checked_certificate_eq
+    (payload : _) :
+    poincare_conjecture_payload_of_milestone_requirements_payload payload =
+      poincare_conjecture_payload_of_completion_certificate
+        (completion_certificate_of_milestone_requirements_payload payload) := by
+  apply Subsingleton.elim
+
+/--
+The completion payload route from milestone requirements agrees with the
+payload route projected from the checked certificate.
+-/
+theorem poincare_completion_payload_of_milestone_requirements_payload_to_checked_certificate_eq
+    (payload : _) :
+    poincare_completion_payload_of_milestone_requirements_payload payload =
+      poincare_completion_payload_of_completion_certificate
+        (completion_certificate_of_milestone_requirements_payload payload) := by
+  apply Subsingleton.elim
+
+/--
+The direct milestone requirement-payload endpoint agrees with the
+nonempty-certificate reduction for the same payload.
+-/
+theorem poincare_conjecture_of_milestone_requirements_payload_to_nonempty_certificate_eq
+    (payload : _) :
+    poincare_conjecture_of_milestone_requirements_payload payload =
+      poincare_conjecture_of_nonempty_completion_certificate
+        (nonempty_completion_certificate_of_milestone_requirements_payload
+          payload) := by
   apply Subsingleton.elim
 
 /--
