@@ -236,6 +236,165 @@ theorem finite_extinction_volume_differential_inequality_of_scalar_curvature_fro
     surgeryVolumeFrontier.surgeryVolumeNonincrease
     scalarCurvatureFrontier.scalarCurvatureDifferentialInequality
 
+/-- The scalar-curvature frontier supplies both scalar and volume differential inequalities. -/
+theorem finite_extinction_scalar_and_volume_differential_inequalities_of_scalar_curvature_frontier
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl)
+    (volumeFrontier :
+      FiniteExtinctionProductionVolumeEvolutionFrontier
+        analyticFoundation surgeryConstruction perelmanControl curvatureFrontier)
+    (surgeryVolumeFrontier :
+      FiniteExtinctionProductionSurgeryVolumeFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier volumeFrontier)
+    (scalarCurvatureFrontier :
+      FiniteExtinctionProductionScalarCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier volumeFrontier surgeryVolumeFrontier) :
+    HasFiniteExtinctionScalarCurvatureDifferentialInequality
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching curvatureFrontier.componentControl ∧
+      HasFiniteExtinctionVolumeDifferentialInequality
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching curvatureFrontier.componentControl := by
+  exact
+    ⟨scalarCurvatureFrontier.scalarCurvatureDifferentialInequality,
+      finite_extinction_volume_differential_inequality_of_scalar_curvature_frontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier volumeFrontier surgeryVolumeFrontier
+        scalarCurvatureFrontier⟩
+
+/--
+Payload endpoint after the scalar-curvature production step: from the
+curvature frontier alone, construct the volume-evolution, surgery-volume, and
+scalar-curvature frontiers, then expose the concrete scalar source, volume
+differential inequality, and volume-inequality source record carried by that
+chain.
+-/
+theorem finite_extinction_scalar_curvature_frontier_chain_volume_differential_source_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl) :
+    ∃ volumeFrontier :
+        FiniteExtinctionProductionVolumeEvolutionFrontier
+          analyticFoundation surgeryConstruction perelmanControl
+          curvatureFrontier,
+      ∃ surgeryVolumeFrontier :
+        FiniteExtinctionProductionSurgeryVolumeFrontier
+          analyticFoundation surgeryConstruction perelmanControl
+          curvatureFrontier volumeFrontier,
+      ∃ scalarCurvatureFrontier :
+        FiniteExtinctionProductionScalarCurvatureFrontier
+          analyticFoundation surgeryConstruction perelmanControl
+          curvatureFrontier volumeFrontier surgeryVolumeFrontier,
+      ∃ scalarSource :
+        FiniteExtinctionScalarCurvatureDifferentialInequalitySource
+          (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+          surgeryConstruction.withSurgery perelmanControl.control
+          curvatureFrontier.curvaturePinching
+          curvatureFrontier.componentControl,
+      ∃ volumeDifferentialInequality :
+        HasFiniteExtinctionVolumeDifferentialInequality
+          (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+          surgeryConstruction.withSurgery perelmanControl.control
+          curvatureFrontier.curvaturePinching
+          curvatureFrontier.componentControl,
+      ∃ volumeSource :
+        FiniteExtinctionVolumeDifferentialInequalitySource
+          (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+          surgeryConstruction.withSurgery perelmanControl.control
+          curvatureFrontier.curvaturePinching
+          curvatureFrontier.componentControl,
+        (volumeSource.volumeEvolutionFormula =
+            volumeFrontier.volumeEvolutionFormula) ∧
+          (volumeSource.surgeryVolumeNonincrease =
+            surgeryVolumeFrontier.surgeryVolumeNonincrease) ∧
+          (volumeSource.scalarCurvatureDifferentialInequality =
+            scalarCurvatureFrontier.scalarCurvatureDifferentialInequality) ∧
+          (volumeDifferentialInequality.finiteExtinctionVolumeDifferentialInequality_source =
+            ⟨volumeSource⟩) ∧
+          (scalarSource.positiveScalarCurvatureLowerBound =
+            curvatureFrontier.positiveScalarCurvatureLowerBound) ∧
+          (scalarSource.positiveScalarCurvaturePersistence =
+            curvatureFrontier.positiveScalarCurvaturePersistence) := by
+  let volumeFrontier :=
+    finite_extinction_volume_evolution_frontier_of_curvature_frontier
+      analyticFoundation surgeryConstruction perelmanControl curvatureFrontier
+  let surgeryVolumeFrontier :=
+    finite_extinction_surgery_volume_frontier_of_volume_frontier
+      analyticFoundation surgeryConstruction perelmanControl curvatureFrontier
+      volumeFrontier
+  let scalarSource :
+      FiniteExtinctionScalarCurvatureDifferentialInequalitySource
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching curvatureFrontier.componentControl :=
+    { positiveScalarCurvatureLowerBound :=
+        curvatureFrontier.positiveScalarCurvatureLowerBound
+      positiveScalarCurvaturePersistence :=
+        curvatureFrontier.positiveScalarCurvaturePersistence }
+  let scalarCurvatureDifferentialInequality :
+      HasFiniteExtinctionScalarCurvatureDifferentialInequality
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching curvatureFrontier.componentControl :=
+    { finiteExtinctionScalarCurvatureDifferentialInequality_source :=
+        ⟨scalarSource⟩ }
+  let scalarCurvatureFrontier :
+      FiniteExtinctionProductionScalarCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier volumeFrontier surgeryVolumeFrontier :=
+    { scalarCurvatureDifferentialInequality :=
+        scalarCurvatureDifferentialInequality }
+  let volumeSource :
+      FiniteExtinctionVolumeDifferentialInequalitySource
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching curvatureFrontier.componentControl :=
+    { volumeEvolutionFormula := volumeFrontier.volumeEvolutionFormula
+      surgeryVolumeNonincrease :=
+        surgeryVolumeFrontier.surgeryVolumeNonincrease
+      scalarCurvatureDifferentialInequality :=
+        scalarCurvatureFrontier.scalarCurvatureDifferentialInequality }
+  let volumeDifferentialInequality :
+      HasFiniteExtinctionVolumeDifferentialInequality
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching curvatureFrontier.componentControl :=
+    { finiteExtinctionVolumeDifferentialInequality_source :=
+        ⟨volumeSource⟩ }
+  exact
+    ⟨volumeFrontier, surgeryVolumeFrontier, scalarCurvatureFrontier,
+      scalarSource, volumeDifferentialInequality, volumeSource, by
+        simp⟩
+
 /--
 Convert the post-scalar-curvature production boundary into the existing
 post-surgery-volume remainder interface.
@@ -340,5 +499,111 @@ theorem finite_extinction_surgery_package_nonempty_of_width_curvature_volume_sur
     (finite_extinction_production_remainder_after_surgery_volume_of_scalar_curvature_frontier
       analyticFoundation surgeryConstruction perelmanControl curvatureFrontier
       volumeFrontier surgeryVolumeFrontier scalarCurvatureFrontier remainder)
+
+/--
+**Step 3695 source.** The scalar-curvature frontier now produces a finite
+extinction surgery package together with scalar/volume source coherence.
+
+The proof uses
+`finite_extinction_volume_differential_inequality_of_scalar_curvature_frontier`
+to package the volume differential inequality together with the exact
+volume-evolution, surgery-volume, and scalar-curvature sources.
+
+It also uses
+`finite_extinction_surgery_package_nonempty_of_width_curvature_volume_surgery_volume_and_scalar_curvature_frontiers`
+and exposes the converted post-surgery-volume remainder, so downstream
+researchers can verify both the finite-extinction package and the scalar/volume
+coherence data from one endpoint.
+-/
+theorem finite_extinction_surgery_package_with_scalar_volume_sources_of_scalar_curvature_frontier
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (widthStatement :
+      FiniteExtinctionWidthSubobligationsStatement
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control)
+    (curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl)
+    (volumeFrontier :
+      FiniteExtinctionProductionVolumeEvolutionFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier)
+    (surgeryVolumeFrontier :
+      FiniteExtinctionProductionSurgeryVolumeFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier volumeFrontier)
+    (scalarCurvatureFrontier :
+      FiniteExtinctionProductionScalarCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier volumeFrontier surgeryVolumeFrontier)
+    (remainder :
+      FiniteExtinctionProductionPackageRemainderAfterScalarCurvature
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier) :
+    ∃ volumeDifferentialInequality :
+        HasFiniteExtinctionVolumeDifferentialInequality
+          (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+          surgeryConstruction.withSurgery perelmanControl.control
+          curvatureFrontier.curvaturePinching curvatureFrontier.componentControl,
+      ∃ volumeSource :
+        FiniteExtinctionVolumeDifferentialInequalitySource
+          (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+          surgeryConstruction.withSurgery perelmanControl.control
+          curvatureFrontier.curvaturePinching curvatureFrontier.componentControl,
+      ∃ convertedRemainder :
+        FiniteExtinctionProductionPackageRemainderAfterSurgeryVolume
+          analyticFoundation surgeryConstruction perelmanControl
+          curvatureFrontier,
+        Nonempty (FiniteExtinctionSurgeryPackage n M) ∧
+          (volumeSource.volumeEvolutionFormula =
+            volumeFrontier.volumeEvolutionFormula) ∧
+          (volumeSource.surgeryVolumeNonincrease =
+            surgeryVolumeFrontier.surgeryVolumeNonincrease) ∧
+          (volumeSource.scalarCurvatureDifferentialInequality =
+            scalarCurvatureFrontier.scalarCurvatureDifferentialInequality) ∧
+          (volumeDifferentialInequality.finiteExtinctionVolumeDifferentialInequality_source =
+            ⟨volumeSource⟩) ∧
+          (convertedRemainder.scalarCurvatureDifferentialInequality =
+            scalarCurvatureFrontier.scalarCurvatureDifferentialInequality) ∧
+          (convertedRemainder.volumeDifferentialInequality =
+            remainder.volumeDifferentialInequality) := by
+  let volumeDifferentialInequality :=
+    finite_extinction_volume_differential_inequality_of_scalar_curvature_frontier
+      analyticFoundation surgeryConstruction perelmanControl
+      curvatureFrontier volumeFrontier surgeryVolumeFrontier
+      scalarCurvatureFrontier
+  let volumeSource :
+      FiniteExtinctionVolumeDifferentialInequalitySource
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching curvatureFrontier.componentControl :=
+    { volumeEvolutionFormula := volumeFrontier.volumeEvolutionFormula
+      surgeryVolumeNonincrease :=
+        surgeryVolumeFrontier.surgeryVolumeNonincrease
+      scalarCurvatureDifferentialInequality :=
+        scalarCurvatureFrontier.scalarCurvatureDifferentialInequality }
+  let convertedRemainder :=
+    finite_extinction_production_remainder_after_surgery_volume_of_scalar_curvature_frontier
+      analyticFoundation surgeryConstruction perelmanControl curvatureFrontier
+      volumeFrontier surgeryVolumeFrontier scalarCurvatureFrontier remainder
+  let packageNonempty :=
+    finite_extinction_surgery_package_nonempty_of_width_curvature_volume_surgery_volume_and_scalar_curvature_frontiers
+      analyticFoundation surgeryConstruction perelmanControl widthStatement
+      curvatureFrontier volumeFrontier surgeryVolumeFrontier
+      scalarCurvatureFrontier remainder
+  exact
+    ⟨volumeDifferentialInequality, volumeSource, convertedRemainder,
+      packageNonempty, by simp⟩
 
 end Poincare
