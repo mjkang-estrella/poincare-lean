@@ -1387,6 +1387,131 @@ theorem twoPointComplement_chosen_path_loop_projection_bundle_of_topology_packag
   rfl
 
 /--
+The topology package exposes synchronized canonical path/loop projection
+bundles for both the singleton and two-puncture complements.
+
+This combines the two compact projection routes into one proof object carrying
+canonical paths, endpoint equations, path-component collapse, homotopy
+uniqueness, quotient collapse, arbitrary-loop nullhomotopy, fundamental-group
+representative equality, and `π₁` collapse at both puncture levels.
+-/
+theorem singleton_and_twoPoint_chosen_path_loop_projection_bundles_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (chosenSinglePath : Path singleBase singleTarget)
+    (singleLoop : Path singleBase singleBase)
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path twoBase twoTarget)
+    (loop : Path twoBase twoBase) :
+    ∃ canonicalSinglePath : Path singleBase singleTarget,
+      ∃ canonicalTwoPath : Path twoBase twoTarget,
+        Nonempty ({x}ᶜ : Set M) ∧
+        pathComponent singleBase = Set.univ ∧
+        canonicalSinglePath 0 = singleBase ∧
+        canonicalSinglePath 1 = singleTarget ∧
+        Joined singleBase singleTarget ∧
+        Path.Homotopic chosenSinglePath canonicalSinglePath ∧
+        (⟦chosenSinglePath⟧ :
+          Path.Homotopic.Quotient singleBase singleTarget) =
+          ⟦canonicalSinglePath⟧ ∧
+        (∀ η : Path singleBase singleTarget,
+          Path.Homotopic canonicalSinglePath η) ∧
+        Subsingleton
+          (Path.Homotopic.Quotient singleBase singleTarget) ∧
+        singleLoop 0 = singleBase ∧
+        singleLoop 1 = singleBase ∧
+        Path.Homotopic singleLoop (Path.refl singleBase) ∧
+        FundamentalGroup.fromPath
+            (⟦singleLoop⟧ :
+              Path.Homotopic.Quotient singleBase singleBase) =
+          FundamentalGroup.fromPath
+            (⟦Path.refl singleBase⟧ :
+              Path.Homotopic.Quotient singleBase singleBase) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBase) ∧
+        Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+        pathComponent twoBase = Set.univ ∧
+        canonicalTwoPath 0 = twoBase ∧
+        canonicalTwoPath 1 = twoTarget ∧
+        Joined twoBase twoTarget ∧
+        Path.Homotopic chosenPath canonicalTwoPath ∧
+        (⟦chosenPath⟧ :
+          Path.Homotopic.Quotient twoBase twoTarget) =
+          ⟦canonicalTwoPath⟧ ∧
+        (∀ η : Path twoBase twoTarget,
+          Path.Homotopic canonicalTwoPath η) ∧
+        Subsingleton (Path.Homotopic.Quotient twoBase twoTarget) ∧
+        loop 0 = twoBase ∧
+        loop 1 = twoBase ∧
+        Path.Homotopic loop (Path.refl twoBase) ∧
+        FundamentalGroup.fromPath
+            (⟦loop⟧ : Path.Homotopic.Quotient twoBase twoBase) =
+          FundamentalGroup.fromPath
+            (⟦Path.refl twoBase⟧ :
+              Path.Homotopic.Quotient twoBase twoBase) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBase) := by
+  rcases
+      compl_singleton_chosen_path_loop_projection_bundle_of_topology_package
+        package M extinction x singleBase singleTarget chosenSinglePath
+        singleLoop with
+    ⟨canonicalSinglePath, hSingleNonempty, hSingleComponent,
+      hSingleSource, hSingleTarget, hSingleJoined, hChosenSingle,
+      hChosenSingleQuotient, hSingleUnique, hSingleQuotientSubsingleton,
+      hSingleLoopSource, hSingleLoopTarget, hSingleLoopHomotopic,
+      hSingleLoopFromPath, hSinglePiOne⟩
+  rcases
+      twoPointComplement_chosen_path_loop_projection_bundle_of_topology_package
+        package M extinction hyx twoBase twoTarget chosenPath loop with
+    ⟨canonicalTwoPath, hTwoNonempty, hTwoComponent, hTwoSource,
+      hTwoTarget, hTwoJoined, hChosenTwo, hChosenTwoQuotient,
+      hTwoUnique, hTwoQuotientSubsingleton, hLoopSource, hLoopTarget,
+      hLoopHomotopic, hLoopFromPath, hTwoPiOne⟩
+  exact
+    ⟨canonicalSinglePath,
+      canonicalTwoPath,
+      hSingleNonempty,
+      hSingleComponent,
+      hSingleSource,
+      hSingleTarget,
+      hSingleJoined,
+      hChosenSingle,
+      hChosenSingleQuotient,
+      hSingleUnique,
+      hSingleQuotientSubsingleton,
+      hSingleLoopSource,
+      hSingleLoopTarget,
+      hSingleLoopHomotopic,
+      hSingleLoopFromPath,
+      hSinglePiOne,
+      hTwoNonempty,
+      hTwoComponent,
+      hTwoSource,
+      hTwoTarget,
+      hTwoJoined,
+      hChosenTwo,
+      hChosenTwoQuotient,
+      hTwoUnique,
+      hTwoQuotientSubsingleton,
+      hLoopSource,
+      hLoopTarget,
+      hLoopHomotopic,
+      hLoopFromPath,
+      hTwoPiOne⟩
+
+/-- Theorem contract for
+`singleton_and_twoPoint_chosen_path_loop_projection_bundles_of_topology_package`. -/
+theorem singleton_and_twoPoint_chosen_path_loop_projection_bundles_of_topology_package_eq :
+    @Poincare.singleton_and_twoPoint_chosen_path_loop_projection_bundles_of_topology_package =
+      @Poincare.singleton_and_twoPoint_chosen_path_loop_projection_bundles_of_topology_package :=
+  rfl
+
+/--
 A single topology-package endpoint bundles the path-homotopy payloads, chosen
 path source equations, and chosen-loop payloads for both one- and two-puncture
 complements.
