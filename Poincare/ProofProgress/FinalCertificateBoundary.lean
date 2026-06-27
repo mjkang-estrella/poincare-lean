@@ -24869,4 +24869,75 @@ theorem canonical_completion_payload_and_direct_terminal_selected_payload_of_ful
       @Poincare.canonical_completion_payload_and_direct_terminal_selected_payload_of_full_terminal_certificate_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Canonical completion payload bundled with the full direct terminal endpoint.
+
+This records the canonical target and payload together with a proof object of
+the full combined direct terminal selected-topology endpoint, so downstream
+consumers can recover both the synchronized chart/path-loop package and the
+arbitrary path-loop collapse fields from the same theorem route.
+-/
+theorem canonical_completion_payload_and_full_direct_terminal_endpoint_proof_of_full_terminal_certificate_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {x y : M} (hyx : y ≠ x)
+    {a b : ({x}ᶜ : Set M)} (γ η : Path a b)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (chosenSinglePath : Path singleBase singleTarget)
+    (singleLoop : Path singleBase singleBase)
+    {c d : (({x} ∪ {y})ᶜ : Set M)} (γTwo ηTwo : Path c d)
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path twoBase twoTarget)
+    (loop : Path twoBase twoBase) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      ∃ endpointProof,
+        endpointProof =
+          conditional_root_selected_threeSphere_direct_homeomorphism_completionCriterion_chartPathLoop_and_arbitraryPathLoop_payloads_of_full_terminal_certificate_of_equation_boundary_dependencies
+            dependencies smoothability grounded topology smoothabilityPayload M
+            hyx γ η singleBase singleTarget chosenSinglePath singleLoop γTwo
+            ηTwo twoBase twoTarget chosenPath loop := by
+  let endpointProof :=
+    conditional_root_selected_threeSphere_direct_homeomorphism_completionCriterion_chartPathLoop_and_arbitraryPathLoop_payloads_of_full_terminal_certificate_of_equation_boundary_dependencies
+      dependencies smoothability grounded topology smoothabilityPayload M
+      hyx γ η singleBase singleTarget chosenSinglePath singleLoop γTwo
+      ηTwo twoBase twoTarget chosenPath loop
+  let canonicalTarget : canonicalCompletionTarget.{u} := endpointProof.1
+  let canonicalPayload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    canonical_completion_payload_of_canonical_completion_target canonicalTarget
+  let projectPayload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    ⟨endpointProof.1, endpointProof.2.2.1⟩
+  exact
+    ⟨canonicalTarget,
+      canonicalPayload,
+      projectPayload,
+      endpointProof,
+      rfl⟩
+
+/-- Theorem contract for `canonical_completion_payload_and_full_direct_terminal_endpoint_proof_of_full_terminal_certificate_of_equation_boundary_dependencies`. -/
+theorem canonical_completion_payload_and_full_direct_terminal_endpoint_proof_of_full_terminal_certificate_of_equation_boundary_dependencies_eq :
+    @Poincare.canonical_completion_payload_and_full_direct_terminal_endpoint_proof_of_full_terminal_certificate_of_equation_boundary_dependencies =
+      @Poincare.canonical_completion_payload_and_full_direct_terminal_endpoint_proof_of_full_terminal_certificate_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
