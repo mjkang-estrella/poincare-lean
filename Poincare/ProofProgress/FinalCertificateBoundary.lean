@@ -32608,4 +32608,72 @@ theorem dependency_only_reserved_statement_certificate_payload_of_equation_bound
       @Poincare.dependency_only_reserved_statement_certificate_payload_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved project completion payload.
+
+This projects the reserved statement/certificate payload to the final project
+completion payload expected by certificate-collapse consumers, while retaining
+the checked certificate and nonempty-certificate bridge used to produce the
+reserved Poincare statement.
+-/
+theorem dependency_only_reserved_project_completion_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ projectPayload :
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u},
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+      projectPayload =
+        poincare_completion_payload_of_poincareConjectureStatement
+          projectStatement ∧
+      projectStatement =
+        dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies
+          dependencies ∧
+      projectStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      completionCriterionFamily =
+        (fun witness =>
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness projectStatement) ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      nonemptyCertificate =
+        nonempty_completion_certificate_of_completion_certificate
+          certificate := by
+  rcases
+      dependency_only_reserved_statement_certificate_payload_of_equation_boundary_dependencies
+        dependencies with
+    ⟨_theoremName, certificate, nonemptyCertificate, projectStatement,
+      _mathlibStatement, completionCriterionFamily, _hTheoremNameCanonical,
+      _hTheoremNameLiteral, hCertificate, hNonemptyCertificate,
+      hProjectStatement, hProjectStatementCertificate, _hMathlibStatement,
+      _hMathlibStatementProject, hCompletionCriterionFamily⟩
+  let projectPayload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    poincare_completion_payload_of_poincareConjectureStatement
+      projectStatement
+  have hProjectPayload :
+      projectPayload =
+        poincare_completion_payload_of_poincareConjectureStatement
+          projectStatement :=
+    rfl
+  exact
+    ⟨projectPayload, certificate, nonemptyCertificate, projectStatement,
+      completionCriterionFamily, hProjectPayload, hProjectStatement,
+      hProjectStatementCertificate, hCompletionCriterionFamily,
+      hCertificate, hNonemptyCertificate⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_project_completion_payload_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_project_completion_payload_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_project_completion_payload_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_project_completion_payload_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
