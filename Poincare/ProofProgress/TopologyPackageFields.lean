@@ -49,6 +49,27 @@ theorem compl_singleton_contractibleSpace_of_topology_package
       package M extinction) x
 
 /--
+The package-level homeomorphism projection transports local path-connectedness
+of the Euclidean singleton-complement chart.
+-/
+theorem compl_singleton_locPathConnectedSpace_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M) :
+    LocPathConnectedSpace ({x}ᶜ : Set M) :=
+  compl_singleton_locPathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_topology_package
+      package M extinction) x
+
+/-- Theorem contract for `compl_singleton_locPathConnectedSpace_of_topology_package`. -/
+theorem compl_singleton_locPathConnectedSpace_of_topology_package_eq :
+    @Poincare.compl_singleton_locPathConnectedSpace_of_topology_package =
+      @Poincare.compl_singleton_locPathConnectedSpace_of_topology_package :=
+  rfl
+
+/--
 The package-level single-puncture complement is simply connected as a
 class-level consequence of the transported contractible Euclidean chart.
 -/

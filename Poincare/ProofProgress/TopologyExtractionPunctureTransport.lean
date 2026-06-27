@@ -143,6 +143,24 @@ theorem compl_singleton_contractibleSpace_of_homeomorph_to_onePoint_threeSpace
     h x).contractibleSpace
 
 /--
+Every single-puncture complement of a space recognized as the one-point
+compactification of `R^3` is locally path-connected, transported through its
+Euclidean chart.
+-/
+theorem compl_singleton_locPathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M) :
+    LocPathConnectedSpace ({x}ᶜ : Set M) :=
+  (homeomorph_compl_singleton_euclidean_of_homeomorph_to_onePoint_threeSpace
+    h x).isOpenEmbedding.locPathConnectedSpace
+
+/-- Theorem contract for `compl_singleton_locPathConnectedSpace_of_homeomorph_to_onePoint_threeSpace`. -/
+theorem compl_singleton_locPathConnectedSpace_of_homeomorph_to_onePoint_threeSpace_eq :
+    @Poincare.compl_singleton_locPathConnectedSpace_of_homeomorph_to_onePoint_threeSpace =
+      @Poincare.compl_singleton_locPathConnectedSpace_of_homeomorph_to_onePoint_threeSpace :=
+  rfl
+
+/--
 Every based loop in a single-puncture complement of a recognized one-point
 compactification target is null-homotopic.
 -/
