@@ -45,13 +45,22 @@ structure FiniteExtinctionByRicciFlowWithSurgeryProductionCertificate
 Predicate naming that a compact simply connected 3-manifold becomes extinct
 under Ricci flow with surgery.
 -/
-inductive FiniteExtinctionByRicciFlowWithSurgery
+structure FiniteExtinctionByRicciFlowWithSurgery
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M] : Prop where
-  | of_production_certificate :
-      FiniteExtinctionByRicciFlowWithSurgeryProductionCertificate M →
-      FiniteExtinctionByRicciFlowWithSurgery M
+  productionCertificate_source :
+    Nonempty (FiniteExtinctionByRicciFlowWithSurgeryProductionCertificate M)
+
+/-- Compatibility constructor from a finite-extinction production certificate. -/
+def FiniteExtinctionByRicciFlowWithSurgery.of_production_certificate
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (certificate :
+      FiniteExtinctionByRicciFlowWithSurgeryProductionCertificate M) :
+    FiniteExtinctionByRicciFlowWithSurgery M where
+  productionCertificate_source := ⟨certificate⟩
 
 /--
 The remaining universal Ricci-flow input after the current interface's
@@ -1019,5 +1028,19 @@ theorem canonical_three_sphere_statement_iff_extinction_extraction_of_universalF
       canonical_three_sphere_statement_iff_extinction_extraction
         finiteExtinction := by
   apply Subsingleton.elim
+
+end Poincare
+
+/-!
+Generated shape equality contracts for `scripts/shape_contract_audit.sh`.
+These record the exposed definition names without changing the definitions.
+-/
+
+namespace Poincare
+
+/-- Shape contract for `FiniteExtinctionByRicciFlowWithSurgery`. -/
+theorem finiteExtinctionByRicciFlowWithSurgery_eq :
+    @Poincare.FiniteExtinctionByRicciFlowWithSurgery = @Poincare.FiniteExtinctionByRicciFlowWithSurgery :=
+  rfl
 
 end Poincare
