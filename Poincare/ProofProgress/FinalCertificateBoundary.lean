@@ -15755,4 +15755,103 @@ theorem conditional_poincare_conjecture_expanded_of_equation_boundary_dependenci
       @Poincare.conditional_poincare_conjecture_expanded_of_equation_boundary_dependencies :=
   rfl
 
+/--
+The strengthened dependency package supplies the conditional root-style
+universal conclusion, while the grounded terminal smoothability tail supplies
+the concrete target-manifold conclusion with its checked certificate and
+fixed two-puncture endpoint core.
+
+This theorem keeps those two final surfaces together without defining the
+reserved unconditional theorem name.
+-/
+theorem conditional_root_conclusion_and_concrete_endpoint_core_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    (∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+      [SimplyConnectedSpace N] [CompactSpace N],
+        Nonempty (N ≃ₜ ThreeSphere)) ∧
+      PoincareConjectureStatement.{u} ∧
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+      ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+      ∃ _onePointHomeomorphism :
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      ∃ _recoveredThreeSphereHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        ExtinctionFinalHomeomorphismProjectorPayload
+          topology M extinction ∧
+        FinalHomeomorphismPayloadData M extinction
+          (extinction_decomposition_of_topology_package topology M extinction) ∧
+        ∃ pathData :
+            PointedPathComponentPathData (({x} ∪ {y})ᶜ : Set M) basepoint,
+          ∃ endpointData :
+              PointedChosenPathEndpointData
+                (({x} ∪ {y})ᶜ : Set M) basepoint target,
+            pathData.path_to target = endpointData.path ∧
+              endpointData.path 0 = basepoint ∧
+              endpointData.path 1 = target ∧
+              Joined basepoint target ∧
+              pathComponent basepoint = Set.univ ∧
+              Path.Homotopic chosenPath endpointData.path ∧
+              (⟦chosenPath⟧ : Path.Homotopic.Quotient basepoint target) =
+                ⟦endpointData.path⟧ ∧
+              (∀ η : Path basepoint target,
+                Path.Homotopic endpointData.path η) ∧
+              Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+              loop 0 = basepoint ∧
+              loop 1 = basepoint ∧
+              Path.Homotopic loop (Path.refl basepoint) ∧
+              FundamentalGroup.fromPath
+                  (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+                FundamentalGroup.fromPath
+                  (⟦Path.refl basepoint⟧ :
+                    Path.Homotopic.Quotient basepoint basepoint) ∧
+              Subsingleton
+                (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  let rootConclusion :=
+    conditional_poincare_conjecture_expanded_of_equation_boundary_dependencies
+      dependencies
+  rcases
+      concrete_threeSphere_homeomorphism_with_checked_certificate_endpoint_core_of_grounded_terminal_onePoint_core_smoothability_consumer
+        smoothability grounded topology smoothabilityPayload M hyx basepoint
+        target chosenPath loop with
+    ⟨projectStatement, concreteHomeomorphism, checkedCertificate,
+      onePointHomeomorphism, extinction, recoveredThreeSphereHomeomorphism,
+      finalHomeomorphismProjector, finalHomeomorphismPayloadData,
+      endpointCore⟩
+  exact
+    ⟨rootConclusion,
+      projectStatement,
+      concreteHomeomorphism,
+      checkedCertificate,
+      onePointHomeomorphism,
+      extinction,
+      recoveredThreeSphereHomeomorphism,
+      finalHomeomorphismProjector,
+      finalHomeomorphismPayloadData,
+      endpointCore⟩
+
+/-- Theorem contract for `conditional_root_conclusion_and_concrete_endpoint_core_of_equation_boundary_dependencies`. -/
+theorem conditional_root_conclusion_and_concrete_endpoint_core_of_equation_boundary_dependencies_eq :
+    @Poincare.conditional_root_conclusion_and_concrete_endpoint_core_of_equation_boundary_dependencies =
+      @Poincare.conditional_root_conclusion_and_concrete_endpoint_core_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
