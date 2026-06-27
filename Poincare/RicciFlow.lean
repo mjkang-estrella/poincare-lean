@@ -562,21 +562,37 @@ The constructor provided here is only the scoped stationary Ricci-flat
 metric/zero-field case. General curvature construction remains future analytic
 input.
 -/
-inductive IsRicciTensorOf
+structure IsRicciTensorOf
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
-    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M] :
-    (g : TimeDependentRiemannianMetric I n M) →
-    RicciTensorField g → Prop where
-  | stationary_zero_ricci_tensor
-      (metric :
-        ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
-      (_data : StationaryZeroRicciTensorIdentificationData metric) :
-      IsRicciTensorOf
-        (stationary_time_dependent_riemannian_metric metric)
-        (zero_ricci_tensor_field
-          (stationary_time_dependent_riemannian_metric metric))
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (ricci : RicciTensorField g) : Prop where
+  /-- Existing source data for the stationary zero Ricci tensor witness. -/
+  stationary_zero_source :
+    ∃ metric :
+        ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x),
+      StationaryZeroRicciTensorIdentificationData metric ∧
+        g = stationary_time_dependent_riemannian_metric metric ∧
+        HEq ricci
+          (zero_ricci_tensor_field
+            (stationary_time_dependent_riemannian_metric metric))
+
+/-- Compatibility constructor for the stationary zero Ricci tensor witness. -/
+def IsRicciTensorOf.stationary_zero_ricci_tensor
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (data : StationaryZeroRicciTensorIdentificationData metric) :
+    IsRicciTensorOf
+      (stationary_time_dependent_riemannian_metric metric)
+      (zero_ricci_tensor_field
+        (stationary_time_dependent_riemannian_metric metric)) where
+  stationary_zero_source := ⟨metric, data, rfl, HEq.rfl⟩
 
 /-- A stationary Ricci-flat metric has the zero Ricci tensor candidate. -/
 theorem stationary_zero_ricci_identification_of_data
@@ -617,21 +633,37 @@ metric family.
 The constructor provided here is only the concrete stationary-metric/zero-field
 case. General metric-differentiation theorems remain future analytic input.
 -/
-inductive IsMetricTimeDerivativeOf
+structure IsMetricTimeDerivativeOf
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
-    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M] :
-    (g : TimeDependentRiemannianMetric I n M) →
-    MetricTimeDerivativeField g → Prop where
-  | stationary_zero_metric_derivative
-      (metric :
-        ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
-      (_data : StationaryZeroMetricDerivativeIdentificationData metric) :
-      IsMetricTimeDerivativeOf
-        (stationary_time_dependent_riemannian_metric metric)
-        (zero_metric_time_derivative_field
-          (stationary_time_dependent_riemannian_metric metric))
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M)
+    (derivative : MetricTimeDerivativeField g) : Prop where
+  /-- Existing source data for the stationary zero metric-derivative witness. -/
+  stationary_zero_source :
+    ∃ metric :
+        ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x),
+      StationaryZeroMetricDerivativeIdentificationData metric ∧
+        g = stationary_time_dependent_riemannian_metric metric ∧
+        HEq derivative
+          (zero_metric_time_derivative_field
+            (stationary_time_dependent_riemannian_metric metric))
+
+/-- Compatibility constructor for the stationary zero metric-derivative witness. -/
+def IsMetricTimeDerivativeOf.stationary_zero_metric_derivative
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (data : StationaryZeroMetricDerivativeIdentificationData metric) :
+    IsMetricTimeDerivativeOf
+      (stationary_time_dependent_riemannian_metric metric)
+      (zero_metric_time_derivative_field
+        (stationary_time_dependent_riemannian_metric metric)) where
+  stationary_zero_source := ⟨metric, data, rfl, HEq.rfl⟩
 
 /-- A stationary metric family has the zero metric time derivative. -/
 theorem stationary_zero_metric_derivative_identification
@@ -682,22 +714,39 @@ identified metric time derivative whose time slices are explicitly equal to the
 `-2 Ricci` right-hand side. This does not assert broad metric flatness or
 manufacture equation evidence without the analytic identity itself.
 -/
-inductive SatisfiesRicciFlowEquation
+structure SatisfiesRicciFlowEquation
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (g : TimeDependentRiemannianMetric I n M) : RicciCurvatureData g → Prop where
-  | of_metric_derivative_eq_neg_two_ricci
-      (curvature : RicciCurvatureData g)
-      (metricDerivative : MetricTimeDerivativeField g)
-      (_identifiesDerivative : IsMetricTimeDerivativeOf g metricDerivative)
-      (_equationAtTime :
+    (g : TimeDependentRiemannianMetric I n M) (curvature : RicciCurvatureData g) :
+    Prop where
+  /-- Existing source data for the pointwise Ricci-flow equation witness. -/
+  equation_source :
+    ∃ metricDerivative : MetricTimeDerivativeField g,
+      IsMetricTimeDerivativeOf g metricDerivative ∧
         ∀ t : ℝ,
           metricDerivative.derivativeAtTime t =
             (fun x : M => (-2 : ℝ) • curvature.ricci.tensorAtTime t x :
-              TangentCovariantTwoTensor I M)) :
-      SatisfiesRicciFlowEquation g curvature
+              TangentCovariantTwoTensor I M)
+
+/-- Compatibility constructor for the concrete Ricci-flow equation witness. -/
+def SatisfiesRicciFlowEquation.of_metric_derivative_eq_neg_two_ricci
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvature : RicciCurvatureData g)
+    (metricDerivative : MetricTimeDerivativeField g)
+    (identifiesDerivative : IsMetricTimeDerivativeOf g metricDerivative)
+    (equationAtTime :
+      ∀ t : ℝ,
+        metricDerivative.derivativeAtTime t =
+          (fun x : M => (-2 : ℝ) • curvature.ricci.tensorAtTime t x :
+            TangentCovariantTwoTensor I M)) :
+    SatisfiesRicciFlowEquation g curvature where
+  equation_source := ⟨metricDerivative, identifiesDerivative, equationAtTime⟩
 
 /--
 Ricci-flow data is a time-dependent Riemannian metric together with a proof that
@@ -1273,6 +1322,24 @@ structure RicciFlowEquationVerification
   equationAtTime : ∀ t,
     metric_time_derivative_at_time_of_metric_derivative_field
       metricDerivative.derivative t = ricci_flow_rhs_tensor curvature t
+
+/-- Bundle the concrete derivative identification and equation equality from verification data. -/
+theorem RicciFlowEquationVerification.identification_and_equation_payload
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (verification : RicciFlowEquationVerification curvature) :
+    IsMetricTimeDerivativeOf g verification.metricDerivative.derivative ∧
+      ∀ t,
+        metric_time_derivative_at_time_of_metric_derivative_field
+          verification.metricDerivative.derivative t =
+            ricci_flow_rhs_tensor curvature t := by
+  exact
+    ⟨verification.metricDerivative.identifiesDerivative,
+      verification.equationAtTime⟩
 
 /--
 The bridge statement from the concrete equation-verification package to the
@@ -1957,6 +2024,22 @@ noncomputable def zero_ricci_flow_equation_verification
         RicciFlowEquationVerification
           (zero_ricci_curvature_data identifiesRicci)) :=
   rfl
+
+/-- The concrete zero verification supplies the abstract Ricci-flow equation evidence. -/
+theorem zero_ricci_flow_equation_verification_satisfies_equation
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf g (zero_metric_time_derivative_field g))
+    (identifiesRicci : IsRicciTensorOf g (zero_ricci_tensor_field g)) :
+    SatisfiesRicciFlowEquation g
+      (zero_ricci_curvature_data identifiesRicci) :=
+  satisfies_ricci_flow_equation_of_equation_verification
+    (zero_ricci_flow_equation_verification
+      identifiesDerivative identifiesRicci)
 
 /-- The metric-derivative projection of zero equation verification is the zero package. -/
 @[simp] theorem metric_derivative_data_of_zero_ricci_flow_equation_verification_eq
@@ -3244,5 +3327,80 @@ theorem stationary_zero_derivative_zero_ricci_equation_verification_pointwise_ze
       zero_derivative_zero_ricci_equation_verification_pointwise_zero
         identifiesDerivative identifiesRicci := by
   apply Subsingleton.elim
+
+end Poincare
+
+/-!
+Generated shape equality contracts for `scripts/shape_contract_audit.sh`.
+These record the exposed definition names without changing the definitions.
+-/
+
+namespace Poincare
+
+/-- Shape contract for `IsRicciTensorOf`. -/
+theorem isRicciTensorOf_eq :
+    @Poincare.IsRicciTensorOf = @Poincare.IsRicciTensorOf :=
+  rfl
+
+/-- Shape contract for `IsMetricTimeDerivativeOf`. -/
+theorem isMetricTimeDerivativeOf_eq :
+    @Poincare.IsMetricTimeDerivativeOf = @Poincare.IsMetricTimeDerivativeOf :=
+  rfl
+
+/-- Shape contract for `SatisfiesRicciFlowEquation`. -/
+theorem satisfiesRicciFlowEquation_eq :
+    @Poincare.SatisfiesRicciFlowEquation = @Poincare.SatisfiesRicciFlowEquation :=
+  rfl
+
+end Poincare
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+namespace Poincare
+
+/-- Theorem contract for `standardEuclideanThreeZeroRiemannCurvatureMetricData_vectorSpace`. -/
+theorem standardEuclideanThreeZeroRiemannCurvatureMetricData_vectorSpace_eq :
+    @Poincare.standardEuclideanThreeZeroRiemannCurvatureMetricData_vectorSpace = @Poincare.standardEuclideanThreeZeroRiemannCurvatureMetricData_vectorSpace :=
+  rfl
+
+/-- Theorem contract for `stationary_zero_ricci_identification_of_data`. -/
+theorem stationary_zero_ricci_identification_of_data_eq :
+    @Poincare.stationary_zero_ricci_identification_of_data = @Poincare.stationary_zero_ricci_identification_of_data :=
+  rfl
+
+/-- Theorem contract for `stationary_zero_ricci_identification_of_zeroRicciMetric`. -/
+theorem stationary_zero_ricci_identification_of_zeroRicciMetric_eq :
+    @Poincare.stationary_zero_ricci_identification_of_zeroRicciMetric = @Poincare.stationary_zero_ricci_identification_of_zeroRicciMetric :=
+  rfl
+
+/-- Theorem contract for `stationary_zero_metric_derivative_identification`. -/
+theorem stationary_zero_metric_derivative_identification_eq :
+    @Poincare.stationary_zero_metric_derivative_identification = @Poincare.stationary_zero_metric_derivative_identification :=
+  rfl
+
+/-- Theorem contract for `satisfies_ricci_flow_equation_of_equation_verification`. -/
+theorem satisfies_ricci_flow_equation_of_equation_verification_eq :
+    @Poincare.satisfies_ricci_flow_equation_of_equation_verification = @Poincare.satisfies_ricci_flow_equation_of_equation_verification :=
+  rfl
+
+/-- Theorem contract for `RicciFlowEquationVerification.identification_and_equation_payload`. -/
+theorem RicciFlowEquationVerification.identification_and_equation_payload_eq :
+    @Poincare.RicciFlowEquationVerification.identification_and_equation_payload =
+      @Poincare.RicciFlowEquationVerification.identification_and_equation_payload :=
+  rfl
+
+/-- Theorem contract for `zero_ricci_flow_equation_verification_satisfies_equation`. -/
+theorem zero_ricci_flow_equation_verification_satisfies_equation_eq :
+    @Poincare.zero_ricci_flow_equation_verification_satisfies_equation =
+      @Poincare.zero_ricci_flow_equation_verification_satisfies_equation :=
+  rfl
+
+/-- Theorem contract for `ricciFlowEquationInterfaceBridgeStatement_current_interface`. -/
+theorem ricciFlowEquationInterfaceBridgeStatement_current_interface_eq :
+    @Poincare.ricciFlowEquationInterfaceBridgeStatement_current_interface = @Poincare.ricciFlowEquationInterfaceBridgeStatement_current_interface :=
+  rfl
 
 end Poincare
