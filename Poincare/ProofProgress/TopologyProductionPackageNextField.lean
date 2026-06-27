@@ -27708,6 +27708,101 @@ theorem final_homeomorphism_consumer_payload_of_final_homeomorphism_with_decompo
   rfl
 
 /--
+Selected raw-map, forward-continuity, and projection statement-choice data expose
+the final-homeomorphism payload in the consumer order used by downstream
+certificate assembly.
+-/
+theorem final_homeomorphism_consumer_payload_of_final_homeomorphism_with_decomposition_statement_derivation_payload_and_topology_derivation_statement_of_simply_connected_recognition_bundle_of_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    let onePointRecognition :=
+      onePointCompactificationRecognitionAfterDecompositionStatement_of_extinctionOnePointThreeSpaceSelectedRawMapData_forwardContinuity_projectionStatementChoiceData
+        mapSelectionData selectedRawMapData forwardContinuityData
+        rawStatementChoiceData continuousStatementChoiceData
+    let recognitionPrefix :=
+      extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+        surgeryTracePrefix onePointRecognition
+    ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+      ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+      ∃ homeomorphismAssembly :
+        HasExtinctionHomeomorphismAssembly M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          homeomorphism,
+        HasExtinctionHomeomorphismDerivation M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.simplyConnectedRecognition M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          homeomorphism homeomorphismAssembly ∧
+        HasSphericalSpaceFormHomeomorphismLift M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalUniversalCover M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.trivialSphericalQuotient M extinction)
+          (recognitionPrefix.trivialQuotientHomeomorphism M extinction) ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u} := by
+  dsimp
+  exact
+    final_homeomorphism_consumer_payload_of_final_homeomorphism_with_decomposition_statement_derivation_payload_and_topology_derivation_statement_of_simply_connected_recognition_bundle_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+      surgeryTracePrefix
+      (onePointCompactificationRecognitionAfterDecompositionStatement_of_extinctionOnePointThreeSpaceSelectedRawMapData_forwardContinuity_projectionStatementChoiceData
+        mapSelectionData selectedRawMapData forwardContinuityData
+        rawStatementChoiceData continuousStatementChoiceData)
+      M extinction
+
+/-- Theorem contract for `final_homeomorphism_consumer_payload_of_final_homeomorphism_with_decomposition_statement_derivation_payload_and_topology_derivation_statement_of_simply_connected_recognition_bundle_of_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData`. -/
+theorem final_homeomorphism_consumer_payload_of_final_homeomorphism_with_decomposition_statement_derivation_payload_and_topology_derivation_statement_of_simply_connected_recognition_bundle_of_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData_eq :
+    @Poincare.final_homeomorphism_consumer_payload_of_final_homeomorphism_with_decomposition_statement_derivation_payload_and_topology_derivation_statement_of_simply_connected_recognition_bundle_of_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData =
+      @Poincare.final_homeomorphism_consumer_payload_of_final_homeomorphism_with_decomposition_statement_derivation_payload_and_topology_derivation_statement_of_simply_connected_recognition_bundle_of_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData :=
+  rfl
+
+/--
 Strengthened consumer endpoint for the same simply-connected recognition
 route: after choosing the final homeomorphism, expose the same-route
 one-point compactification homeomorphism and the final-homeomorphism payload
