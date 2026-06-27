@@ -1196,6 +1196,54 @@ theorem twoPointComplement_fullChart_path_loop_projection_bundle_of_homeomorph_t
   rfl
 
 /--
+The one-point compactification recognition route supplies the transported
+two-puncture Euclidean chart together with endpoint-level path and `π₁`
+collapse, without requiring a chosen path or based loop.
+-/
+theorem twoPointComplement_fullChart_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M)) :
+    let C := (({x} ∪ {y})ᶜ : Set M)
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      ∃ chart : C ≃ₜ ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+          Nonempty C ∧
+          PathConnectedSpace C ∧
+          ConnectedSpace C ∧
+          SimplyConnectedSpace C ∧
+          pathComponent basepoint = Set.univ ∧
+          Joined basepoint target ∧
+          Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+          Subsingleton (HomotopyGroup.Pi 1 C basepoint) := by
+  dsimp
+  rcases exists_puncture_homeomorph_twoPointComplement_puncturedEuclidean_fullTopologyPayload
+      h hyx with
+    ⟨puncture, chart, hAvoid, hNonempty, hPathConnected, hConnected,
+      hSimplyConnected⟩
+  exact
+    ⟨puncture, chart, hAvoid, hNonempty, hPathConnected, hConnected,
+      hSimplyConnected,
+      twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint,
+      twoPointComplement_joined_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint target,
+      twoPointComplement_pathQuotient_subsingleton_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint target,
+      twoPointComplement_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint⟩
+
+/--
+Theorem contract for
+`twoPointComplement_fullChart_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace`.
+-/
+theorem twoPointComplement_fullChart_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace_eq :
+    @Poincare.twoPointComplement_fullChart_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace =
+      @Poincare.twoPointComplement_fullChart_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace :=
+  rfl
+
+/--
 Recognition as a one-point compactification exposes the singleton-complement
 path/loop collapse and the synchronized two-puncture chart/path-loop projection
 payload together. This is the transport-layer form of the puncture data that
@@ -2709,6 +2757,40 @@ Theorem contract for
 theorem twoPointComplement_fullChart_path_loop_projection_bundle_of_homeomorph_to_threeSphere_eq :
     @Poincare.twoPointComplement_fullChart_path_loop_projection_bundle_of_homeomorph_to_threeSphere =
       @Poincare.twoPointComplement_fullChart_path_loop_projection_bundle_of_homeomorph_to_threeSphere :=
+  rfl
+
+/--
+For a space recognized as `ThreeSphere`, the transported two-puncture
+Euclidean chart and endpoint-level path/`π₁` collapse payload are available
+without requiring a chosen path or based loop.
+-/
+theorem twoPointComplement_fullChart_endpoint_collapse_package_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M)) :
+    let C := (({x} ∪ {y})ᶜ : Set M)
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      ∃ chart : C ≃ₜ ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+          Nonempty C ∧
+          PathConnectedSpace C ∧
+          ConnectedSpace C ∧
+          SimplyConnectedSpace C ∧
+          pathComponent basepoint = Set.univ ∧
+          Joined basepoint target ∧
+          Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+          Subsingleton (HomotopyGroup.Pi 1 C basepoint) :=
+  twoPointComplement_fullChart_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+    basepoint target
+
+/--
+Theorem contract for
+`twoPointComplement_fullChart_endpoint_collapse_package_of_homeomorph_to_threeSphere`.
+-/
+theorem twoPointComplement_fullChart_endpoint_collapse_package_of_homeomorph_to_threeSphere_eq :
+    @Poincare.twoPointComplement_fullChart_endpoint_collapse_package_of_homeomorph_to_threeSphere =
+      @Poincare.twoPointComplement_fullChart_endpoint_collapse_package_of_homeomorph_to_threeSphere :=
   rfl
 
 /--
