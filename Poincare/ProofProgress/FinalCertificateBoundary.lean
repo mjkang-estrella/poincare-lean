@@ -27301,4 +27301,77 @@ theorem dependency_only_canonical_target_expanded_statement_direct_threeSphere_w
       @Poincare.dependency_only_canonical_target_expanded_statement_direct_threeSphere_witness_payloads_certificate_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only coherence between the expanded statement and selected witness.
+
+The direct `M ≃ₜ ThreeSphere` witness exported by the dependency-only endpoint
+is propositionally the same as instantiating the global expanded topological
+Poincare conclusion at `M`.  This records the route equality together with the
+canonical target, completion criterion, canonical/project payloads,
+mathlib-shaped statement, project statement, and checked certificate
+equalities.
+-/
+theorem dependency_only_expanded_statement_direct_threeSphere_witness_coherence_payloads_certificate_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    canonicalCompletionTarget.{u} ∧
+      ∃ expandedStatement :
+        (∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+          [SimplyConnectedSpace N] [CompactSpace N],
+            Nonempty (N ≃ₜ ThreeSphere)),
+      ∃ directWitness : Nonempty (M ≃ₜ ThreeSphere),
+        directWitness = expandedStatement M ∧
+        CompletionCriterionAtUniverse M ∧
+        (∃ canonicalPayload :
+            (∃ _target : canonicalCompletionTarget.{u},
+              ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+          canonicalPayload =
+            canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+              dependencies) ∧
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        MathlibTopologicalPoincareThreeStatement.{u} ∧
+        PoincareConjectureStatement.{u} ∧
+        ∃ certificate : PoincareCompletionCertificate.{u},
+          certificate =
+            completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+              dependencies ∧
+          canonical_completion_payload_of_completion_certificate certificate =
+            canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+              dependencies ∧
+          poincare_completion_payload_of_completion_certificate certificate =
+            poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+              dependencies := by
+  rcases
+      dependency_only_canonical_target_expanded_statement_direct_threeSphere_witness_payloads_certificate_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨canonicalTarget, expandedStatement, directWitness,
+      completionCriterion, canonicalPayload, projectPayload,
+      mathlibStatement, projectStatement, certificate, hCertificate,
+      hCanonicalPayload, hProjectPayload⟩
+  exact
+    ⟨canonicalTarget,
+      expandedStatement,
+      directWitness,
+      by apply Subsingleton.elim,
+      completionCriterion,
+      canonicalPayload,
+      projectPayload,
+      mathlibStatement,
+      projectStatement,
+      certificate,
+      hCertificate,
+      hCanonicalPayload,
+      hProjectPayload⟩
+
+/-- Theorem contract for
+`dependency_only_expanded_statement_direct_threeSphere_witness_coherence_payloads_certificate_of_equation_boundary_dependencies`. -/
+theorem dependency_only_expanded_statement_direct_threeSphere_witness_coherence_payloads_certificate_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_expanded_statement_direct_threeSphere_witness_coherence_payloads_certificate_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_expanded_statement_direct_threeSphere_witness_coherence_payloads_certificate_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
