@@ -2233,6 +2233,38 @@ theorem moiseHauptvermutungDimensionThreeFields_of_onePointRecognition
     moiseTriangulationUniqueness_of_onePointRecognition h,
     moiseHauptvermutungDimensionThree_of_onePointRecognition h⟩
 
+/--
+One-point recognition supplies a compact Moise core spine through
+PL-manifold recognition and Hauptvermutung, keeping the first two witnesses
+coherent with the originating recognition proof.
+-/
+theorem onePointRecognition_moiseCoreSpineEvidence
+    {M : Type u} [TopologicalSpace M]
+    [T2Space M] [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+    ∃ triangulation : HasMoiseTriangulation M,
+    ∃ linkCompatibility : HasMoiseLinkCompatibility M triangulation,
+    ∃ triangulationUniqueness : HasMoiseTriangulationUniqueness M triangulation,
+      HasMoisePLManifoldRecognition M triangulation linkCompatibility ∧
+      HasMoiseTriangulationHomeomorphism M localCharts triangulation ∧
+      HasMoiseTriangulationCompatibility M localCharts triangulation ∧
+      HasMoiseHauptvermutungDimensionThree M
+        triangulation triangulationUniqueness ∧
+      localCharts.onePointRecognition = h ∧
+      triangulation.onePointRecognition = h := by
+  exact
+    ⟨moiseLocalCharts_of_onePointRecognition h,
+      moiseTriangulation_of_onePointRecognition h,
+      moiseLinkCompatibility_of_onePointRecognition h,
+      moiseTriangulationUniqueness_of_onePointRecognition h,
+      moisePLManifoldRecognition_of_onePointRecognition h,
+      moiseTriangulationHomeomorphism_of_onePointRecognition h,
+      moiseTriangulationCompatibility_of_onePointRecognition h,
+      moiseHauptvermutungDimensionThree_of_onePointRecognition h,
+      rfl, rfl⟩
+
 /-- The first sixteen Moise fields of `SmoothabilityPackage`. -/
 structure SmoothabilityPackageMoiseHauptvermutungDimensionThreeFields where
   moiseLocalCharts :
@@ -2872,6 +2904,42 @@ theorem compatiblePLAtlasFields_of_onePointRecognition
     plTransitionCompatibility_of_onePointRecognition h,
     compatiblePLAtlas_of_onePointRecognition h⟩
 
+/-- One-point recognition projects the Moise-to-PL frontier directly. -/
+theorem moiseToPLFrontier_of_onePointRecognition
+    {M : Type u} [TopologicalSpace M]
+    [T2Space M] [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+    ∃ simplicialComplex : HasMoiseSimplicialComplex M localCharts,
+    ∃ triangulation : HasMoiseTriangulation M,
+    ∃ linkCompatibility : HasMoiseLinkCompatibility M triangulation,
+    ∃ triangulationUniqueness : HasMoiseTriangulationUniqueness M triangulation,
+    ∃ plStructure : HasCompatiblePLStructure M triangulation,
+      HasMoiseLocallyFiniteCoverRefinement M localCharts ∧
+      HasMoiseCompatibleChartTriangulations M localCharts simplicialComplex ∧
+      HasMoisePLManifoldRecognition M triangulation linkCompatibility ∧
+      HasMoiseTriangulationHomeomorphism M localCharts triangulation ∧
+      HasMoiseTriangulationCompatibility M localCharts triangulation ∧
+      HasMoiseHauptvermutungDimensionThree M triangulation triangulationUniqueness ∧
+      HasPLTransitionCompatibility M triangulation plStructure ∧
+      HasCompatiblePLAtlas M triangulation plStructure := by
+  exact
+    ⟨moiseLocalCharts_of_onePointRecognition h,
+      moiseSimplicialComplex_of_onePointRecognition h,
+      moiseTriangulation_of_onePointRecognition h,
+      moiseLinkCompatibility_of_onePointRecognition h,
+      moiseTriangulationUniqueness_of_onePointRecognition h,
+      compatiblePLStructure_of_onePointRecognition h,
+      moiseLocallyFiniteCoverRefinement_of_onePointRecognition h,
+      moiseCompatibleChartTriangulations_of_onePointRecognition h,
+      moisePLManifoldRecognition_of_onePointRecognition h,
+      moiseTriangulationHomeomorphism_of_onePointRecognition h,
+      moiseTriangulationCompatibility_of_onePointRecognition h,
+      moiseHauptvermutungDimensionThree_of_onePointRecognition h,
+      plTransitionCompatibility_of_onePointRecognition h,
+      compatiblePLAtlas_of_onePointRecognition h⟩
+
 /-- The smoothability package fields through compatible PL-atlas construction. -/
 structure SmoothabilityPackageCompatiblePLAtlasFields extends
     SmoothabilityPackagePLTransitionCompatibilityFields.{u} where
@@ -2895,6 +2963,42 @@ theorem smoothabilityPackageCompatiblePLAtlasFields_of_onePointRecognition
       recognize
   plAtlas := fun M _top _t2 _charted _simple _compact =>
     compatiblePLAtlas_of_onePointRecognition (recognize M)
+
+/-- Compatible PL-atlas field records project the Moise-to-PL frontier. -/
+theorem moiseToPLFrontier_of_compatiblePLAtlasFields
+    (fields : SmoothabilityPackageCompatiblePLAtlasFields.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+    ∃ simplicialComplex : HasMoiseSimplicialComplex M localCharts,
+    ∃ triangulation : HasMoiseTriangulation M,
+    ∃ linkCompatibility : HasMoiseLinkCompatibility M triangulation,
+    ∃ triangulationUniqueness : HasMoiseTriangulationUniqueness M triangulation,
+    ∃ plStructure : HasCompatiblePLStructure M triangulation,
+      HasMoiseLocallyFiniteCoverRefinement M localCharts ∧
+      HasMoiseCompatibleChartTriangulations M localCharts simplicialComplex ∧
+      HasMoisePLManifoldRecognition M triangulation linkCompatibility ∧
+      HasMoiseTriangulationHomeomorphism M localCharts triangulation ∧
+      HasMoiseTriangulationCompatibility M localCharts triangulation ∧
+      HasMoiseHauptvermutungDimensionThree M triangulation triangulationUniqueness ∧
+      HasPLTransitionCompatibility M triangulation plStructure ∧
+      HasCompatiblePLAtlas M triangulation plStructure := by
+  exact
+    ⟨fields.moiseLocalCharts M,
+      fields.moiseSimplicialComplex M,
+      fields.moiseTriangulation M,
+      fields.moiseLinkCompatibility M,
+      fields.moiseTriangulationUniqueness M,
+      fields.plStructure M,
+      fields.moiseLocallyFiniteCoverRefinement M,
+      fields.moiseCompatibleChartTriangulations M,
+      fields.moisePLManifoldRecognition M,
+      fields.moiseTriangulationHomeomorphism M,
+      fields.moiseCompatibility M,
+      fields.moiseHauptvermutungDimensionThree M,
+      fields.plTransitionCompatibility M,
+      fields.plAtlas M⟩
 
 /--
 With compatible PL-atlas construction supplied on the one-point route, the next
@@ -6284,7 +6388,7 @@ def OnePointRecognitionAmbientSmoothabilityBridgePayload : Prop :=
 
 /--
 The ambient one-point smoothability payload supplies the theorem-shaped package
-bridge by eliminating the stored smooth-structure constructor.
+bridge by reading the stored smooth-structure recognition witness.
 -/
 theorem smoothabilityBridgeStatement_of_onePointRecognitionAmbientSmoothabilityBridgePayload
     (payload :
@@ -6292,9 +6396,7 @@ theorem smoothabilityBridgeStatement_of_onePointRecognitionAmbientSmoothabilityB
     SmoothabilityBridgeStatement.{u} := by
   intro M _top _t2 _charted _simple _compact smoothStructure
     _smoothStructureDerivation
-  cases smoothStructure with
-  | ofOnePointRecognition h =>
-      exact payload h
+  exact payload smoothStructure.onePointRecognition
 
 /--
 Conversely, the theorem-shaped bridge supplies the exact ambient one-point
@@ -12374,6 +12476,20 @@ theorem onePointRecognitionAmbientChartInTransportedMaximalAtlasPayload_of_chart
   exact payload e hc hd
 
 /--
+Ambient atlas inclusion in the transported charted-space atlas is enough to put
+the ambient atlas in the transported smooth maximal atlas.
+-/
+theorem onePointRecognitionAmbientAtlasInTransportedMaximalAtlasPayload_of_ambientAtlasSubsetTransportedAtlas
+    (payload :
+      OnePointRecognitionAmbientAtlasSubsetTransportedAtlasPayload.{u}) :
+    OnePointRecognitionAmbientAtlasInTransportedMaximalAtlasPayload.{u} :=
+  onePointRecognitionAmbientAtlasInTransportedMaximalAtlasPayload_of_chartInTransportedMaximalAtlas
+    (onePointRecognitionAmbientChartInTransportedMaximalAtlasPayload_of_chartTransportedAtlasCompatibility
+      (onePointRecognitionAmbientChartTransportedAtlasCompatibilityPayload_of_chartInTransportedAtlas
+        (onePointRecognitionAmbientChartInTransportedAtlasPayload_of_ambientAtlasSubsetTransportedAtlas
+          payload)))
+
+/--
 The one-directional forward cross-atlas transition theorem is enough to put
 each ambient chart in the transported smooth maximal atlas.
 -/
@@ -12722,6 +12838,21 @@ theorem onePointRecognitionAmbientAtlasTransitionCompatibilityPayload_of_ambient
       payload)
 
 /--
+An ambient-atlas subset witness is enough to construct raw ambient transition
+compatibility: each ambient chart is first recognized as a transported-atlas
+chart and then the chart-level transported-atlas compatibility payload supplies
+the transition proof.
+-/
+theorem onePointRecognitionAmbientAtlasTransitionCompatibilityPayload_of_ambientAtlasSubsetTransportedAtlas
+    (payload :
+      OnePointRecognitionAmbientAtlasSubsetTransportedAtlasPayload.{u}) :
+    OnePointRecognitionAmbientAtlasTransitionCompatibilityPayload.{u} :=
+  onePointRecognitionAmbientAtlasTransitionCompatibilityPayload_of_chartTransportedAtlasCompatibility
+    (onePointRecognitionAmbientChartTransportedAtlasCompatibilityPayload_of_chartInTransportedAtlas
+      (onePointRecognitionAmbientChartInTransportedAtlasPayload_of_ambientAtlasSubsetTransportedAtlas
+        payload))
+
+/--
 The ambient transition compatibility payload is the lower-level datum needed to
 build the ambient `HasGroupoid` instance.
 -/
@@ -12731,6 +12862,73 @@ theorem onePointRecognitionTransportedToAmbientHasGroupoidTransferPayload_of_atl
     OnePointRecognitionTransportedToAmbientHasGroupoidTransferPayload.{u} := by
   intro M _top _t2 _charted _simple _compact e transported
   exact ⟨fun hc hc' => payload e transported hc hc'⟩
+
+/--
+Ambient maximal-atlas containment directly supplies the transported-to-ambient
+`HasGroupoid` transfer payload.
+-/
+theorem onePointRecognitionTransportedToAmbientHasGroupoidTransferPayload_of_ambientAtlasInTransportedMaximalAtlas
+    (payload :
+      OnePointRecognitionAmbientAtlasInTransportedMaximalAtlasPayload.{u}) :
+    OnePointRecognitionTransportedToAmbientHasGroupoidTransferPayload.{u} := by
+  intro M top _t2 _charted _simple _compact e _transported
+  have hSubset := payload e
+  refine ⟨?_⟩
+  intro c d hc hd
+  have hcMax :
+      c ∈
+        @IsManifold.maximalAtlas ℝ _ ThreeManifoldModel _ _
+          ThreeManifoldModel _ ThreeManifoldModelWithCorners 1 M
+          inferInstance
+          (homeomorphToOnePoint_threeSpace_smoothChartedSpace e) :=
+    hSubset hc
+  have hdMax :
+      d ∈
+        @IsManifold.maximalAtlas ℝ _ ThreeManifoldModel _ _
+          ThreeManifoldModel _ ThreeManifoldModelWithCorners 1 M
+          inferInstance
+          (homeomorphToOnePoint_threeSpace_smoothChartedSpace e) :=
+    hSubset hd
+  exact @IsManifold.compatible_of_mem_maximalAtlas ℝ _
+    ThreeManifoldModel _ _ ThreeManifoldModel _
+    ThreeManifoldModelWithCorners 1 M top
+    (homeomorphToOnePoint_threeSpace_smoothChartedSpace e) c d
+    hcMax hdMax
+
+/--
+An ambient-atlas subset witness also supplies the primitive
+transported-to-ambient `HasGroupoid` transfer payload.  This keeps the route at
+the constructor level: first obtain raw ambient transition compatibility, then
+build the ambient structure groupoid instance from those transitions.
+-/
+theorem onePointRecognitionTransportedToAmbientHasGroupoidTransferPayload_of_ambientAtlasSubsetTransportedAtlas
+    (payload :
+      OnePointRecognitionAmbientAtlasSubsetTransportedAtlasPayload.{u}) :
+    OnePointRecognitionTransportedToAmbientHasGroupoidTransferPayload.{u} :=
+  onePointRecognitionTransportedToAmbientHasGroupoidTransferPayload_of_atlasTransitionCompatibility
+    (onePointRecognitionAmbientAtlasTransitionCompatibilityPayload_of_ambientAtlasSubsetTransportedAtlas
+      payload)
+
+/--
+Ambient maximal-atlas containment directly closes the transported-to-ambient
+`IsManifold` transfer theorem by rebuilding the ambient `HasGroupoid` from
+maximal-atlas compatibility.
+-/
+theorem onePointRecognitionTransportedToAmbientIsManifoldTransferTheorem_of_ambientAtlasInTransportedMaximalAtlas_direct
+    (payload :
+      OnePointRecognitionAmbientAtlasInTransportedMaximalAtlasPayload.{u}) :
+    OnePointRecognitionTransportedToAmbientIsManifoldTransferTheorem.{u} := by
+  intro M top _t2 _charted _simple _compact e _transported
+  have hSubset := payload e
+  haveI : HasGroupoid M (contDiffGroupoid 1 ThreeManifoldModelWithCorners) := by
+    refine ⟨?_⟩
+    intro c c' hc hc'
+    exact @IsManifold.compatible_of_mem_maximalAtlas ℝ _
+      ThreeManifoldModel _ _ ThreeManifoldModel _
+      ThreeManifoldModelWithCorners 1 M top
+      (homeomorphToOnePoint_threeSpace_smoothChartedSpace e) c c'
+      (hSubset hc) (hSubset hc')
+  exact IsManifold.mk' ThreeManifoldModelWithCorners 1 M
 
 /--
 The groupoid transfer payload closes the current transported-to-ambient
@@ -12755,6 +12953,19 @@ theorem onePointRecognitionTransportedToAmbientIsManifoldTransferTheorem_of_atla
     OnePointRecognitionTransportedToAmbientIsManifoldTransferTheorem.{u} :=
   onePointRecognitionTransportedToAmbientIsManifoldTransferTheorem_of_hasGroupoidTransfer
     (onePointRecognitionTransportedToAmbientHasGroupoidTransferPayload_of_atlasTransitionCompatibility
+      payload)
+
+/--
+An ambient-atlas subset witness directly closes the transported-to-ambient
+`IsManifold` transfer by producing the raw transition compatibility required
+for the ambient `HasGroupoid` instance.
+-/
+theorem onePointRecognitionTransportedToAmbientIsManifoldTransferTheorem_of_ambientAtlasSubsetTransportedAtlas
+    (payload :
+      OnePointRecognitionAmbientAtlasSubsetTransportedAtlasPayload.{u}) :
+    OnePointRecognitionTransportedToAmbientIsManifoldTransferTheorem.{u} :=
+  onePointRecognitionTransportedToAmbientIsManifoldTransferTheorem_of_atlasTransitionCompatibility
+    (onePointRecognitionAmbientAtlasTransitionCompatibilityPayload_of_ambientAtlasSubsetTransportedAtlas
       payload)
 
 /--
@@ -12835,6 +13046,28 @@ theorem smoothabilityBridgeStatement_of_onePointRecognitionAmbientChartedSpaceCo
     (onePointRecognitionAmbientSmoothabilityBridgePayload_of_chartedSpaceCompatibility
       compat)
 
+/--
+The primitive transported-to-ambient `HasGroupoid` transfer payload is already
+enough for the theorem-shaped smoothability bridge: the transported one-point
+smooth structure supplies the source `IsManifold` evidence, and the payload
+rebuilds the ambient groupoid instance used by `IsManifold.mk'`.
+-/
+theorem smoothabilityBridgeStatement_of_onePointRecognitionTransportedToAmbientHasGroupoidTransfer
+    (payload :
+      OnePointRecognitionTransportedToAmbientHasGroupoidTransferPayload.{u}) :
+    SmoothabilityBridgeStatement.{u} := by
+  intro M _top _t2 _charted _simple _compact smoothStructure
+    _smoothStructureDerivation
+  rcases smoothStructure.onePointRecognition with ⟨e⟩
+  have transported :
+      @IsManifold ℝ _ ThreeManifoldModel _ _ ThreeManifoldModel _
+        ThreeManifoldModelWithCorners 1 M inferInstance
+        (homeomorphToOnePoint_threeSpace_smoothChartedSpace e) :=
+    onePointRecognitionTransportedSmoothabilityBridgePayload e
+  haveI : HasGroupoid M (contDiffGroupoid 1 ThreeManifoldModelWithCorners) :=
+    payload e transported
+  exact IsManifold.mk' ThreeManifoldModelWithCorners 1 M
+
 /-- The smoothability package fields through the theorem-shaped bridge. -/
 structure SmoothabilityPackageBridgeFields extends
     SmoothabilityPackageSmoothStructureDerivationFields.{u} where
@@ -12913,6 +13146,49 @@ theorem smoothabilityPackageBridgeFields_of_onePointRecognitionAmbientAtlasTrans
       payload)
 
 /--
+Uniform one-point recognition plus the raw transported-to-ambient
+`HasGroupoid` constructor datum directly constructs the package fields through
+the bridge.  This avoids assuming the higher-level `IsManifold` transfer theorem:
+the bridge proof rebuilds the ambient `IsManifold` instance with `IsManifold.mk'`
+from the primitive groupoid evidence.
+-/
+theorem smoothabilityPackageBridgeFields_of_onePointRecognitionTransportedToAmbientHasGroupoidTransfer
+    (recognize : OnePointThreeSpaceRecognitionStatement.{u})
+    (payload :
+      OnePointRecognitionTransportedToAmbientHasGroupoidTransferPayload.{u}) :
+    SmoothabilityPackageBridgeFields.{u} where
+  toSmoothabilityPackageSmoothStructureDerivationFields :=
+    smoothabilityPackageSmoothStructureDerivationFields_of_onePointRecognition
+      recognize
+  bridge := by
+    intro M _top _t2 _charted _simple _compact smoothStructure
+      _smoothStructureDerivation
+    rcases smoothStructure.onePointRecognition with ⟨e⟩
+    have transported :
+        @IsManifold ℝ _ ThreeManifoldModel _ _ ThreeManifoldModel _
+          ThreeManifoldModelWithCorners 1 M inferInstance
+          (homeomorphToOnePoint_threeSpace_smoothChartedSpace e) :=
+      onePointRecognitionTransportedSmoothabilityBridgePayload e
+    haveI : HasGroupoid M (contDiffGroupoid 1 ThreeManifoldModelWithCorners) :=
+      payload e transported
+    exact IsManifold.mk' ThreeManifoldModelWithCorners 1 M
+
+/--
+Uniform one-point recognition plus one-sided ambient-atlas inclusion into the
+transported atlas constructs the package fields through the primitive
+`HasGroupoid` transfer route.
+-/
+theorem smoothabilityPackageBridgeFields_of_onePointRecognitionAmbientAtlasSubsetTransportedAtlas
+    (recognize : OnePointThreeSpaceRecognitionStatement.{u})
+    (payload :
+      OnePointRecognitionAmbientAtlasSubsetTransportedAtlasPayload.{u}) :
+    SmoothabilityPackageBridgeFields.{u} :=
+  smoothabilityPackageBridgeFields_of_onePointRecognitionTransportedToAmbientHasGroupoidTransfer
+    recognize
+    (onePointRecognitionTransportedToAmbientHasGroupoidTransferPayload_of_ambientAtlasSubsetTransportedAtlas
+      payload)
+
+/--
 Uniform one-point recognition plus pointwise membership of each ambient chart
 in the transported maximal atlas constructs the package fields through the
 bridge.
@@ -12926,6 +13202,33 @@ theorem smoothabilityPackageBridgeFields_of_onePointRecognitionAmbientChartInTra
     recognize
     (onePointRecognitionAmbientAtlasInTransportedMaximalAtlasPayload_of_chartInTransportedMaximalAtlas
       payload)
+
+/--
+Uniform one-point recognition plus pointwise ambient-chart membership in the
+transported maximal atlas constructs the bridge fields by rebuilding the
+ambient `HasGroupoid` instance directly.
+-/
+theorem smoothabilityPackageBridgeFields_of_onePointRecognitionAmbientChartInTransportedMaximalAtlas_directHasGroupoid
+    (recognize : OnePointThreeSpaceRecognitionStatement.{u})
+    (payload :
+      OnePointRecognitionAmbientChartInTransportedMaximalAtlasPayload.{u}) :
+    SmoothabilityPackageBridgeFields.{u} where
+  toSmoothabilityPackageSmoothStructureDerivationFields :=
+    smoothabilityPackageSmoothStructureDerivationFields_of_onePointRecognition
+      recognize
+  bridge := by
+    intro M top _t2 _charted _simple _compact smoothStructure
+      _smoothStructureDerivation
+    rcases smoothStructure.onePointRecognition with ⟨e⟩
+    haveI : HasGroupoid M (contDiffGroupoid 1 ThreeManifoldModelWithCorners) := by
+      refine ⟨?_⟩
+      intro c c' hc hc'
+      exact @IsManifold.compatible_of_mem_maximalAtlas ℝ _
+        ThreeManifoldModel _ _ ThreeManifoldModel _
+        ThreeManifoldModelWithCorners 1 M top
+        (homeomorphToOnePoint_threeSpace_smoothChartedSpace e) c c'
+        (payload e hc) (payload e hc')
+    exact IsManifold.mk' ThreeManifoldModelWithCorners 1 M
 
 /--
 Uniform one-point recognition plus cross-atlas compatibility constructs the
@@ -18868,6 +19171,24 @@ theorem onePointTransportedFiniteExtinctionPayload_of_transportedSmoothManifoldF
       surgeryPackages)
 
 /--
+Uniform one-point recognition supplies the transported smoothability fields
+needed by the concrete one-point finite-extinction route.
+-/
+theorem onePointTransportedFiniteExtinctionPayload_of_onePointRecognition_and_surgeryPackages
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0})
+    (surgeryPackages :
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    OnePointTransportedFiniteExtinctionPayload :=
+  onePointTransportedFiniteExtinctionPayload_of_transportedSmoothManifoldFields_and_surgeryPackages
+    (smoothabilityPackageTransportedSmoothManifoldFields_of_onePointRecognition
+      recognize)
+    surgeryPackages
+
+/--
 The stronger charted-space comparison API can instantiate the explicit
 atlas-compatible bridge inputs.
 -/
@@ -18920,6 +19241,272 @@ theorem smoothabilityBridgeStatement_currently_blocked_at_onePointRecognitionAmb
       comparisonUnavailable)
 
 /--
+Bridge fields alone already carry the exact transported-to-ambient `IsManifold`
+transfer theorem; the later package fields are not needed to expose this
+comparison.
+-/
+theorem onePointRecognitionTransportedToAmbientIsManifoldTransferTheorem_of_smoothabilityPackageBridgeFields
+    (fields : SmoothabilityPackageBridgeFields.{u}) :
+    OnePointRecognitionTransportedToAmbientIsManifoldTransferTheorem.{u} :=
+  onePointRecognitionAmbientChartedSpaceComparisonPayload_of_ambientSmoothabilityBridgePayload
+    (onePointRecognitionAmbientSmoothabilityBridgePayload_of_smoothabilityBridgeStatement
+      fields.bridge)
+
+/--
+Bridge fields therefore expose the raw ambient atlas transition compatibility
+payload required to rebuild the ambient `HasGroupoid`.
+-/
+theorem onePointRecognitionAmbientAtlasTransitionCompatibilityPayload_of_smoothabilityPackageBridgeFields
+    (fields : SmoothabilityPackageBridgeFields.{u}) :
+    OnePointRecognitionAmbientAtlasTransitionCompatibilityPayload.{u} := by
+  intro M _top _t2 _charted _simple _compact e transported c c' hc hc'
+  have ambient :
+      IsManifold ThreeManifoldModelWithCorners 1 M :=
+    onePointRecognitionTransportedToAmbientIsManifoldTransferTheorem_of_smoothabilityPackageBridgeFields
+      fields e transported
+  letI : IsManifold ThreeManifoldModelWithCorners 1 M := ambient
+  exact HasGroupoid.compatible hc hc'
+
+/--
+Bridge fields already rebuild the actual ambient `HasGroupoid` instance from
+their transported-to-ambient `IsManifold` transfer.  This is the constructor
+datum required by `IsManifold.mk'`, one level below the transfer theorem itself.
+-/
+theorem onePointRecognitionTransportedToAmbientHasGroupoidTransferPayload_of_smoothabilityPackageBridgeFields
+    (fields : SmoothabilityPackageBridgeFields.{u}) :
+    OnePointRecognitionTransportedToAmbientHasGroupoidTransferPayload.{u} :=
+  onePointRecognitionTransportedToAmbientHasGroupoidTransferPayload_of_atlasTransitionCompatibility
+    (onePointRecognitionAmbientAtlasTransitionCompatibilityPayload_of_smoothabilityPackageBridgeFields
+      fields)
+
+/--
+Bridge fields expose all transfer layers needed by downstream smoothability
+assembly from the same witness: the transported-to-ambient `IsManifold`
+transfer, the raw ambient transition compatibility, the constructor-level
+`HasGroupoid` transfer, and the theorem-shaped smoothability bridge.
+-/
+theorem smoothabilityPackageBridgeFields_transfer_payload_bundle
+    (fields : SmoothabilityPackageBridgeFields.{u}) :
+    OnePointRecognitionTransportedToAmbientIsManifoldTransferTheorem.{u} ∧
+      OnePointRecognitionAmbientAtlasTransitionCompatibilityPayload.{u} ∧
+      OnePointRecognitionTransportedToAmbientHasGroupoidTransferPayload.{u} ∧
+      SmoothabilityBridgeStatement.{u} :=
+  ⟨onePointRecognitionTransportedToAmbientIsManifoldTransferTheorem_of_smoothabilityPackageBridgeFields
+      fields,
+    onePointRecognitionAmbientAtlasTransitionCompatibilityPayload_of_smoothabilityPackageBridgeFields
+      fields,
+    onePointRecognitionTransportedToAmbientHasGroupoidTransferPayload_of_smoothabilityPackageBridgeFields
+      fields,
+    fields.bridge⟩
+
+/-- Theorem contract for `smoothabilityPackageBridgeFields_transfer_payload_bundle`. -/
+theorem smoothabilityPackageBridgeFields_transfer_payload_bundle_eq :
+    @Poincare.smoothabilityPackageBridgeFields_transfer_payload_bundle =
+      @Poincare.smoothabilityPackageBridgeFields_transfer_payload_bundle :=
+  rfl
+
+/--
+Pointwise form of the same extraction: for a recognized ambient target and the
+transported one-point `IsManifold` witness, bridge fields supply the ambient
+`HasGroupoid` instance directly.
+-/
+theorem ambientHasGroupoid_of_smoothabilityPackageBridgeFields
+    (fields : SmoothabilityPackageBridgeFields.{u})
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (transported :
+      @IsManifold ℝ _ ThreeManifoldModel _ _ ThreeManifoldModel _
+        ThreeManifoldModelWithCorners 1 M inferInstance
+        (homeomorphToOnePoint_threeSpace_smoothChartedSpace e)) :
+    HasGroupoid M (contDiffGroupoid 1 ThreeManifoldModelWithCorners) :=
+  onePointRecognitionTransportedToAmbientHasGroupoidTransferPayload_of_smoothabilityPackageBridgeFields
+    fields e transported
+
+/--
+Concrete chart-transition form of the bridge-field extraction: once the bridge
+fields rebuild the ambient `HasGroupoid`, any two ambient atlas charts have
+their coordinate transition in the surgery-model structure groupoid.
+-/
+theorem ambientAtlasTransition_mem_groupoid_of_smoothabilityPackageBridgeFields
+    (fields : SmoothabilityPackageBridgeFields.{u})
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (transported :
+      @IsManifold ℝ _ ThreeManifoldModel _ _ ThreeManifoldModel _
+        ThreeManifoldModelWithCorners 1 M inferInstance
+        (homeomorphToOnePoint_threeSpace_smoothChartedSpace e))
+    {c c' : OpenPartialHomeomorph M ThreeManifoldModel}
+    (hc : c ∈ atlas ThreeManifoldModel M)
+    (hc' : c' ∈ atlas ThreeManifoldModel M) :
+    c.symm ≫ₕ c' ∈ contDiffGroupoid 1 ThreeManifoldModelWithCorners := by
+  haveI : HasGroupoid M (contDiffGroupoid 1 ThreeManifoldModelWithCorners) :=
+    ambientHasGroupoid_of_smoothabilityPackageBridgeFields
+      fields e transported
+  exact HasGroupoid.compatible hc hc'
+
+/--
+The same fixed coordinate transition gives its inverse transition in the model
+structure groupoid by groupoid symmetry.  This uses the concrete transition
+membership rather than reconstructing the ambient `HasGroupoid` surface again.
+-/
+theorem ambientAtlasTransition_symm_mem_groupoid_of_smoothabilityPackageBridgeFields
+    (fields : SmoothabilityPackageBridgeFields.{u})
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (transported :
+      @IsManifold ℝ _ ThreeManifoldModel _ _ ThreeManifoldModel _
+        ThreeManifoldModelWithCorners 1 M inferInstance
+        (homeomorphToOnePoint_threeSpace_smoothChartedSpace e))
+    {c c' : OpenPartialHomeomorph M ThreeManifoldModel}
+    (hc : c ∈ atlas ThreeManifoldModel M)
+    (hc' : c' ∈ atlas ThreeManifoldModel M) :
+    (c.symm ≫ₕ c').symm ∈ contDiffGroupoid 1 ThreeManifoldModelWithCorners := by
+  exact StructureGroupoid.symm (contDiffGroupoid 1 ThreeManifoldModelWithCorners)
+    (ambientAtlasTransition_mem_groupoid_of_smoothabilityPackageBridgeFields
+      fields e transported hc hc')
+
+/--
+The concrete coordinate transition is not merely compatible with the ambient
+atlas: as a model-space partial homeomorphism it lies in the maximal atlas of
+the surgery smooth groupoid.
+-/
+theorem ambientAtlasTransition_mem_maximalAtlas_of_smoothabilityPackageBridgeFields
+    (fields : SmoothabilityPackageBridgeFields.{u})
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (transported :
+      @IsManifold ℝ _ ThreeManifoldModel _ _ ThreeManifoldModel _
+        ThreeManifoldModelWithCorners 1 M inferInstance
+        (homeomorphToOnePoint_threeSpace_smoothChartedSpace e))
+    {c c' : OpenPartialHomeomorph M ThreeManifoldModel}
+    (hc : c ∈ atlas ThreeManifoldModel M)
+    (hc' : c' ∈ atlas ThreeManifoldModel M) :
+    c.symm ≫ₕ c' ∈
+      (contDiffGroupoid 1 ThreeManifoldModelWithCorners).maximalAtlas
+        ThreeManifoldModel := by
+  exact StructureGroupoid.mem_maximalAtlas_of_mem_groupoid
+    (contDiffGroupoid 1 ThreeManifoldModelWithCorners)
+    (ambientAtlasTransition_mem_groupoid_of_smoothabilityPackageBridgeFields
+      fields e transported hc hc')
+
+/--
+For a fixed recognized ambient target and chart pair, the bridge-field surface
+is also blocked at the inverse coordinate-transition membership obtained from
+the already extracted transition membership.
+-/
+theorem smoothabilityPackageBridgeFields_currently_blocked_at_ambientAtlasTransition_symm_mem_groupoid
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (transported :
+      @IsManifold ℝ _ ThreeManifoldModel _ _ ThreeManifoldModel _
+        ThreeManifoldModelWithCorners 1 M inferInstance
+        (homeomorphToOnePoint_threeSpace_smoothChartedSpace e))
+    {c c' : OpenPartialHomeomorph M ThreeManifoldModel}
+    (hc : c ∈ atlas ThreeManifoldModel M)
+    (hc' : c' ∈ atlas ThreeManifoldModel M)
+    (transitionUnavailable :
+      (c.symm ≫ₕ c').symm ∈ contDiffGroupoid 1 ThreeManifoldModelWithCorners →
+        False) :
+    SmoothabilityPackageBridgeFields.{u} → False := by
+  intro fields
+  exact transitionUnavailable
+    (ambientAtlasTransition_symm_mem_groupoid_of_smoothabilityPackageBridgeFields
+      fields e transported hc hc')
+
+/--
+The same fixed chart pair can be exposed as a model-space maximal-atlas datum,
+which is still below the packaged ambient `HasGroupoid` transfer.
+-/
+theorem smoothabilityPackageBridgeFields_currently_blocked_at_ambientAtlasTransition_mem_maximalAtlas
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (transported :
+      @IsManifold ℝ _ ThreeManifoldModel _ _ ThreeManifoldModel _
+        ThreeManifoldModelWithCorners 1 M inferInstance
+        (homeomorphToOnePoint_threeSpace_smoothChartedSpace e))
+    {c c' : OpenPartialHomeomorph M ThreeManifoldModel}
+    (hc : c ∈ atlas ThreeManifoldModel M)
+    (hc' : c' ∈ atlas ThreeManifoldModel M)
+    (transitionMaximalAtlasUnavailable :
+      c.symm ≫ₕ c' ∈
+        (contDiffGroupoid 1 ThreeManifoldModelWithCorners).maximalAtlas
+          ThreeManifoldModel →
+        False) :
+    SmoothabilityPackageBridgeFields.{u} → False := by
+  intro fields
+  exact transitionMaximalAtlasUnavailable
+    (ambientAtlasTransition_mem_maximalAtlas_of_smoothabilityPackageBridgeFields
+      fields e transported hc hc')
+
+/--
+For a fixed recognized ambient target and a fixed pair of ambient atlas charts,
+the bridge-field surface is already blocked at the single coordinate-transition
+membership fact, below the packaged `HasGroupoid` transfer payload.
+-/
+theorem smoothabilityPackageBridgeFields_currently_blocked_at_ambientAtlasTransition_mem_groupoid
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (transported :
+      @IsManifold ℝ _ ThreeManifoldModel _ _ ThreeManifoldModel _
+        ThreeManifoldModelWithCorners 1 M inferInstance
+        (homeomorphToOnePoint_threeSpace_smoothChartedSpace e))
+    {c c' : OpenPartialHomeomorph M ThreeManifoldModel}
+    (hc : c ∈ atlas ThreeManifoldModel M)
+    (hc' : c' ∈ atlas ThreeManifoldModel M)
+    (transitionUnavailable :
+      c.symm ≫ₕ c' ∈ contDiffGroupoid 1 ThreeManifoldModelWithCorners →
+        False) :
+    SmoothabilityPackageBridgeFields.{u} → False := by
+  intro fields
+  exact transitionUnavailable
+    (ambientAtlasTransition_mem_groupoid_of_smoothabilityPackageBridgeFields
+      fields e transported hc hc')
+
+/--
+Consequently, the bridge-field package surface is already blocked at the
+ambient `HasGroupoid` transfer payload, a smaller constructor-level datum than
+the transported-to-ambient `IsManifold` transfer theorem.
+-/
+theorem smoothabilityPackageBridgeFields_currently_blocked_at_hasGroupoidTransfer
+    (hasGroupoidTransferUnavailable :
+      OnePointRecognitionTransportedToAmbientHasGroupoidTransferPayload.{u} →
+        False) :
+    SmoothabilityPackageBridgeFields.{u} → False := by
+  intro fields
+  exact hasGroupoidTransferUnavailable
+    (onePointRecognitionTransportedToAmbientHasGroupoidTransferPayload_of_smoothabilityPackageBridgeFields
+      fields)
+
+/--
+Consequently, the bridge-field package surface is already blocked at the raw
+ambient atlas transition compatibility; no later smoothability package field is
+needed to identify this obstruction.
+-/
+theorem smoothabilityPackageBridgeFields_currently_blocked_at_ambientAtlasTransitionCompatibility
+    (transitionUnavailable :
+      OnePointRecognitionAmbientAtlasTransitionCompatibilityPayload.{u} →
+        False) :
+    SmoothabilityPackageBridgeFields.{u} → False := by
+  intro fields
+  exact transitionUnavailable
+    (onePointRecognitionAmbientAtlasTransitionCompatibilityPayload_of_smoothabilityPackageBridgeFields
+      fields)
+
+/--
 A completed package supplies the exact transported-to-ambient `IsManifold`
 transfer theorem by projecting its bridge back to the one-point ambient payload.
 -/
@@ -18945,6 +19532,44 @@ theorem onePointRecognitionAmbientAtlasTransitionCompatibilityPayload_of_smootha
       package e transported
   letI : IsManifold ThreeManifoldModelWithCorners 1 M := ambient
   exact HasGroupoid.compatible hc hc'
+
+/--
+A completed smoothability package also supplies the constructor-level
+transported-to-ambient `HasGroupoid` transfer payload obtained from its raw
+ambient atlas transition compatibility.
+-/
+theorem onePointRecognitionTransportedToAmbientHasGroupoidTransferPayload_of_smoothabilityPackage
+    (package : SmoothabilityPackage.{u}) :
+    OnePointRecognitionTransportedToAmbientHasGroupoidTransferPayload.{u} :=
+  onePointRecognitionTransportedToAmbientHasGroupoidTransferPayload_of_atlasTransitionCompatibility
+    (onePointRecognitionAmbientAtlasTransitionCompatibilityPayload_of_smoothabilityPackage
+      package)
+
+/--
+The completed package projects the full transfer stack used by downstream
+smoothability assembly: transported-to-ambient `IsManifold` transfer, raw
+ambient transition compatibility, constructor-level `HasGroupoid` transfer,
+and the theorem-shaped bridge stored in the package.
+-/
+theorem smoothabilityPackage_transfer_payload_bundle
+    (package : SmoothabilityPackage.{u}) :
+    OnePointRecognitionTransportedToAmbientIsManifoldTransferTheorem.{u} ∧
+      OnePointRecognitionAmbientAtlasTransitionCompatibilityPayload.{u} ∧
+      OnePointRecognitionTransportedToAmbientHasGroupoidTransferPayload.{u} ∧
+      SmoothabilityBridgeStatement.{u} :=
+  ⟨onePointRecognitionTransportedToAmbientIsManifoldTransferTheorem_of_smoothabilityPackage
+      package,
+    onePointRecognitionAmbientAtlasTransitionCompatibilityPayload_of_smoothabilityPackage
+      package,
+    onePointRecognitionTransportedToAmbientHasGroupoidTransferPayload_of_smoothabilityPackage
+      package,
+    package.bridge⟩
+
+/-- Theorem contract for `smoothabilityPackage_transfer_payload_bundle`. -/
+theorem smoothabilityPackage_transfer_payload_bundle_eq :
+    @Poincare.smoothabilityPackage_transfer_payload_bundle =
+      @Poincare.smoothabilityPackage_transfer_payload_bundle :=
+  rfl
 
 /--
 Thus the current transfer theorem is blocked at the raw ambient atlas
