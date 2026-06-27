@@ -2159,6 +2159,181 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_inverse_mapped_path_lo
   rfl
 
 /--
+The explicit complement homeomorphism carries both mapped path/loop
+full-topology payloads at once: source paths and loops mapped forward to the
+standard `ThreeSphere` complement, target paths and loops mapped back to the
+one-point compactification complement, and the pointwise round-trip equations
+for all four transported paths.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_fullTopology_payloads_and_roundtrip
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    {sourceBase sourceTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    (sourcePath : Path sourceBase sourceTarget)
+    (sourceLoop : Path sourceBase sourceBase)
+    {targetBase targetTarget :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)}
+    (targetPath : Path targetBase targetTarget)
+    (targetLoop : Path targetBase targetBase) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    let Source :=
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+    let Target :=
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)
+    (∃ mappedTargetPath : Path (H sourceBase) (H sourceTarget),
+      ∃ mappedTargetLoop : Path (H sourceBase) (H sourceBase),
+        mappedTargetPath = sourcePath.map H.continuous ∧
+          mappedTargetLoop = sourceLoop.map H.continuous ∧
+          ∃ targetCanonical : Path (H sourceBase) (H sourceTarget),
+            Nonempty Target ∧
+              PathConnectedSpace Target ∧
+              ConnectedSpace Target ∧
+              SimplyConnectedSpace Target ∧
+              pathComponent (H sourceBase) = Set.univ ∧
+              targetCanonical 0 = H sourceBase ∧
+              targetCanonical 1 = H sourceTarget ∧
+              Joined (H sourceBase) (H sourceTarget) ∧
+              Path.Homotopic mappedTargetPath targetCanonical ∧
+              (⟦mappedTargetPath⟧ :
+                Path.Homotopic.Quotient (H sourceBase) (H sourceTarget)) =
+                ⟦targetCanonical⟧ ∧
+              (∀ η : Path (H sourceBase) (H sourceTarget),
+                Path.Homotopic targetCanonical η) ∧
+              Subsingleton
+                (Path.Homotopic.Quotient (H sourceBase) (H sourceTarget)) ∧
+              mappedTargetLoop 0 = H sourceBase ∧
+              mappedTargetLoop 1 = H sourceBase ∧
+              Path.Homotopic mappedTargetLoop (Path.refl (H sourceBase)) ∧
+              FundamentalGroup.fromPath
+                  (⟦mappedTargetLoop⟧ :
+                    Path.Homotopic.Quotient (H sourceBase) (H sourceBase)) =
+                FundamentalGroup.fromPath
+                  (⟦Path.refl (H sourceBase)⟧ :
+                    Path.Homotopic.Quotient (H sourceBase) (H sourceBase)) ∧
+              Subsingleton (HomotopyGroup.Pi 1 Target (H sourceBase))) ∧
+      (∃ mappedSourcePath : Path (H.symm targetBase) (H.symm targetTarget),
+        ∃ mappedSourceLoop : Path (H.symm targetBase) (H.symm targetBase),
+          mappedSourcePath = targetPath.map H.symm.continuous ∧
+            mappedSourceLoop = targetLoop.map H.symm.continuous ∧
+            ∃ sourceCanonical : Path (H.symm targetBase) (H.symm targetTarget),
+              Nonempty Source ∧
+                PathConnectedSpace Source ∧
+                ConnectedSpace Source ∧
+                SimplyConnectedSpace Source ∧
+                pathComponent (H.symm targetBase) = Set.univ ∧
+                sourceCanonical 0 = H.symm targetBase ∧
+                sourceCanonical 1 = H.symm targetTarget ∧
+                Joined (H.symm targetBase) (H.symm targetTarget) ∧
+                Path.Homotopic mappedSourcePath sourceCanonical ∧
+                (⟦mappedSourcePath⟧ :
+                  Path.Homotopic.Quotient
+                    (H.symm targetBase) (H.symm targetTarget)) =
+                  ⟦sourceCanonical⟧ ∧
+                (∀ η : Path (H.symm targetBase) (H.symm targetTarget),
+                  Path.Homotopic sourceCanonical η) ∧
+                Subsingleton
+                  (Path.Homotopic.Quotient
+                    (H.symm targetBase) (H.symm targetTarget)) ∧
+                mappedSourceLoop 0 = H.symm targetBase ∧
+                mappedSourceLoop 1 = H.symm targetBase ∧
+                Path.Homotopic mappedSourceLoop (Path.refl (H.symm targetBase)) ∧
+                FundamentalGroup.fromPath
+                    (⟦mappedSourceLoop⟧ :
+                      Path.Homotopic.Quotient
+                        (H.symm targetBase) (H.symm targetBase)) =
+                  FundamentalGroup.fromPath
+                    (⟦Path.refl (H.symm targetBase)⟧ :
+                      Path.Homotopic.Quotient
+                        (H.symm targetBase) (H.symm targetBase)) ∧
+                Subsingleton (HomotopyGroup.Pi 1 Source (H.symm targetBase))) ∧
+      (∀ t, H.symm ((sourcePath.map H.continuous) t) = sourcePath t) ∧
+      (∀ t, H.symm ((sourceLoop.map H.continuous) t) = sourceLoop t) ∧
+      (∀ t, H ((targetPath.map H.symm.continuous) t) = targetPath t) ∧
+      (∀ t, H ((targetLoop.map H.symm.continuous) t) = targetLoop t) := by
+  dsimp
+  let H :=
+    onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+      hqp
+  rcases
+      onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_target_fullTopology_payload
+        hqp sourceBase sourceTarget sourcePath sourceLoop with
+    ⟨mappedTargetPath, mappedTargetLoop, hMappedTargetPath,
+      hMappedTargetLoop, targetCanonical, hTargetNonempty,
+      hTargetPathConnected, hTargetConnected, hTargetSimplyConnected,
+      hTargetComponent, hTargetCanonicalSource, hTargetCanonicalTarget,
+      hTargetJoined, hTargetHomotopic, hTargetQuotient,
+      hTargetCanonicalUnique, hTargetQuotientSubsingleton,
+      hMappedTargetLoopSource, hMappedTargetLoopTarget,
+      hMappedTargetLoopHomotopic, hMappedTargetLoopFromPath,
+      hTargetPiOne⟩
+  rcases
+      onePoint_threeSpace_twoPointComplement_homeomorph_inverse_mapped_path_loop_source_fullTopology_payload
+        hqp targetBase targetTarget targetPath targetLoop with
+    ⟨mappedSourcePath, mappedSourceLoop, hMappedSourcePath,
+      hMappedSourceLoop, sourceCanonical, hSourceNonempty,
+      hSourcePathConnected, hSourceConnected, hSourceSimplyConnected,
+      hSourceComponent, hSourceCanonicalSource, hSourceCanonicalTarget,
+      hSourceJoined, hSourceHomotopic, hSourceQuotient,
+      hSourceCanonicalUnique, hSourceQuotientSubsingleton,
+      hMappedSourceLoopSource, hMappedSourceLoopTarget,
+      hMappedSourceLoopHomotopic, hMappedSourceLoopFromPath,
+      hSourcePiOne⟩
+  have hSourcePathRoundtrip :
+      ∀ t, H.symm ((sourcePath.map H.continuous) t) = sourcePath t := by
+    intro t
+    change H.symm (H (sourcePath t)) = sourcePath t
+    exact H.left_inv (sourcePath t)
+  have hSourceLoopRoundtrip :
+      ∀ t, H.symm ((sourceLoop.map H.continuous) t) = sourceLoop t := by
+    intro t
+    change H.symm (H (sourceLoop t)) = sourceLoop t
+    exact H.left_inv (sourceLoop t)
+  have hTargetPathRoundtrip :
+      ∀ t, H ((targetPath.map H.symm.continuous) t) = targetPath t := by
+    intro t
+    change H (H.symm (targetPath t)) = targetPath t
+    exact H.right_inv (targetPath t)
+  have hTargetLoopRoundtrip :
+      ∀ t, H ((targetLoop.map H.symm.continuous) t) = targetLoop t := by
+    intro t
+    change H (H.symm (targetLoop t)) = targetLoop t
+    exact H.right_inv (targetLoop t)
+  exact
+    ⟨⟨mappedTargetPath, mappedTargetLoop, hMappedTargetPath,
+        hMappedTargetLoop, targetCanonical, hTargetNonempty,
+        hTargetPathConnected, hTargetConnected, hTargetSimplyConnected,
+        hTargetComponent, hTargetCanonicalSource, hTargetCanonicalTarget,
+        hTargetJoined, hTargetHomotopic, hTargetQuotient,
+        hTargetCanonicalUnique, hTargetQuotientSubsingleton,
+        hMappedTargetLoopSource, hMappedTargetLoopTarget,
+        hMappedTargetLoopHomotopic, hMappedTargetLoopFromPath,
+        hTargetPiOne⟩,
+      ⟨mappedSourcePath, mappedSourceLoop, hMappedSourcePath,
+        hMappedSourceLoop, sourceCanonical, hSourceNonempty,
+        hSourcePathConnected, hSourceConnected, hSourceSimplyConnected,
+        hSourceComponent, hSourceCanonicalSource, hSourceCanonicalTarget,
+        hSourceJoined, hSourceHomotopic, hSourceQuotient,
+        hSourceCanonicalUnique, hSourceQuotientSubsingleton,
+        hMappedSourceLoopSource, hMappedSourceLoopTarget,
+        hMappedSourceLoopHomotopic, hMappedSourceLoopFromPath,
+        hSourcePiOne⟩,
+      hSourcePathRoundtrip, hSourceLoopRoundtrip,
+      hTargetPathRoundtrip, hTargetLoopRoundtrip⟩
+
+/-- Theorem contract for
+`onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_fullTopology_payloads_and_roundtrip`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_fullTopology_payloads_and_roundtrip_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_fullTopology_payloads_and_roundtrip =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_mapped_path_loop_fullTopology_payloads_and_roundtrip :=
+  rfl
+
+/--
 The inverse of the explicit complement homeomorphism transports a target
 standard `ThreeSphere` path and based loop back to concrete source paths, and
 the one-point compactification complement supplies the full
