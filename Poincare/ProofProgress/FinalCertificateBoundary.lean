@@ -1438,6 +1438,71 @@ theorem poincare_statement_and_payload_of_grounded_terminal_completion_criterion
   rfl
 
 /--
+The grounded terminal certificate route now exposes the aggregate reserved-name
+payload and the consumed criterion endpoint together: the checked certificate's
+aggregate payload, the target Poincare statement, the project completion
+payload, and the evaluated `CompletionCriterionAtUniverse M`.
+-/
+theorem aggregate_payload_statement_payload_and_criterion_of_grounded_terminal_route
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    (∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      PoincareProofDependencies.{u} ∧
+      canonicalCompletionTarget.{u} ∧
+      (∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          Nonempty (N ≃ₜ ThreeSphere)) ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+    PoincareConjectureStatement.{u} ∧
+    (∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+    ∃ completionCriterion : CompletionCriterionAtUniverse M,
+      completionCriterion =
+        completionCriterionAtUniverse_of_poincareConjectureStatement
+          M
+          (poincareConjectureStatement_of_completionCriterionAtUniverse
+            M completionCriterion) ∧
+      PoincareConjectureStatement.{u} := by
+  rcases
+      poincare_statement_and_payload_of_grounded_terminal_completion_criterion
+        dependencies smoothability grounded topologyStatement M with
+    ⟨_primitiveInputs, _packageRequirement, _certificate,
+      _reconstructedCertificate, _finalStatement, _projectStatement,
+      _projectCompletion, completionCriterion, statementFromCriterion,
+      payloadFromCriterion, _hPackageRequirement, _hCertificate,
+      _hReconstructedCertificate, _hFinalStatementProject,
+      _hCompletionCriterion, _hStatementFromCriterion,
+      _hStatementFromCriterionFinal, _hPayloadFromCriterion⟩
+  exact
+    ⟨poincareCompletionCertificate_aggregate_canonical_statement_payload_of_remainingDependencyPackage_and_grounded_terminal_package_payload
+        dependencies smoothability grounded topologyStatement M,
+      statementFromCriterion, payloadFromCriterion, completionCriterion,
+      Subsingleton.elim completionCriterion
+        (completionCriterionAtUniverse_of_poincareConjectureStatement
+          M
+          (poincareConjectureStatement_of_completionCriterionAtUniverse
+            M completionCriterion)),
+      poincareConjectureStatement_of_completionCriterionAtUniverse
+        M completionCriterion⟩
+
+/-- Theorem contract for
+`aggregate_payload_statement_payload_and_criterion_of_grounded_terminal_route`. -/
+theorem aggregate_payload_statement_payload_and_criterion_of_grounded_terminal_route_eq :
+    @Poincare.aggregate_payload_statement_payload_and_criterion_of_grounded_terminal_route =
+      @Poincare.aggregate_payload_statement_payload_and_criterion_of_grounded_terminal_route :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
