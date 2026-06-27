@@ -34561,4 +34561,73 @@ theorem dependency_only_reserved_named_target_homeomorphism_of_equation_boundary
       @Poincare.dependency_only_reserved_named_target_homeomorphism_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved named expanded root conclusion.
+
+This packages the reserved theorem name and checked certificate with the full
+expanded root conclusion function.  It also exposes the target-level
+homeomorphism conclusion obtained by applying that expanded function to an
+arbitrary compact simply connected Euclidean-charted 3-manifold.
+-/
+theorem dependency_only_reserved_named_expanded_root_conclusion_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ expandedConclusion :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      expandedConclusion =
+        conditional_poincare_conjecture_expanded_of_equation_boundary_dependencies
+          dependencies ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          ∃ targetConclusion : Nonempty (M ≃ₜ ThreeSphere),
+            targetConclusion = expandedConclusion M) := by
+  rcases
+      dependency_only_reserved_named_final_conclusion_bundle_of_equation_boundary_dependencies
+        dependencies with
+    ⟨theoremName, certificate, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, _nonemptyCertificate,
+      _projectStatement, _mathlibStatement, _canonicalTarget,
+      _completionCriterionFamily⟩
+  let expandedConclusion :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere) :=
+    conditional_poincare_conjecture_expanded_of_equation_boundary_dependencies
+      dependencies
+  have hExpandedConclusion :
+      expandedConclusion =
+        conditional_poincare_conjecture_expanded_of_equation_boundary_dependencies
+          dependencies :=
+    rfl
+  have hTargetConclusion :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          ∃ targetConclusion : Nonempty (M ≃ₜ ThreeSphere),
+            targetConclusion = expandedConclusion M := by
+    intro M _ _ _ _ _
+    exact ⟨expandedConclusion M, rfl⟩
+  exact
+    ⟨theoremName, certificate, expandedConclusion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hExpandedConclusion, hTargetConclusion⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_named_expanded_root_conclusion_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_named_expanded_root_conclusion_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_named_expanded_root_conclusion_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_named_expanded_root_conclusion_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
