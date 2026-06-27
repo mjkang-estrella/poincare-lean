@@ -1,3 +1,4 @@
+import Poincare.ProofProgress.TopologyExtractionPunctureTransport
 import Poincare.TopologyExtraction
 
 open scoped Manifold ContDiff
@@ -276,6 +277,86 @@ theorem onePoint_threeSpace_compl_singleton_path_loop_topology_certificate
 theorem onePoint_threeSpace_compl_singleton_path_loop_topology_certificate_eq :
     @Poincare.onePoint_threeSpace_compl_singleton_path_loop_topology_certificate =
       @Poincare.onePoint_threeSpace_compl_singleton_path_loop_topology_certificate :=
+  rfl
+
+/--
+The one-point complement in compactified three-space supplies concrete
+path-component and endpoint-data objects for the selected endpoint path, while
+retaining homotopy uniqueness, path-quotient collapse, based-loop collapse,
+and triviality of `π₁`.
+-/
+theorem onePoint_threeSpace_compl_singleton_endpointData_loopCollapse_core
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (basepoint target :
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (loop : Path basepoint basepoint) :
+    ∃ pathData :
+        PointedPathComponentPathData
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) basepoint,
+      ∃ endpointData :
+          PointedChosenPathEndpointData
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint target,
+        pathData.path_to target = endpointData.path ∧
+          endpointData.path 0 = basepoint ∧
+          endpointData.path 1 = target ∧
+          Joined basepoint target ∧
+          pathComponent basepoint = Set.univ ∧
+          (∀ η : Path basepoint target,
+            Path.Homotopic endpointData.path η) ∧
+          Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+          loop 0 = basepoint ∧
+          loop 1 = basepoint ∧
+          Path.Homotopic loop (Path.refl basepoint) ∧
+          FundamentalGroup.fromPath
+              (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl basepoint⟧ :
+                Path.Homotopic.Quotient basepoint basepoint) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1
+              ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              basepoint) := by
+  let hComponent :
+      pathComponent basepoint = Set.univ :=
+    onePoint_threeSpace_compl_singleton_pathComponent_eq_univ p basepoint
+  let pathData :
+      PointedPathComponentPathData
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) basepoint :=
+    pointedPathComponentPathData_of_pathComponent_eq_univ basepoint hComponent
+  let endpointData :
+      PointedChosenPathEndpointData
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint target :=
+    chosenPathEndpointData_of_pathComponent_eq_univ
+      basepoint hComponent target
+  rcases onePoint_threeSpace_compl_singleton_loop_payload
+      p basepoint loop with
+    ⟨hLoopSource, hLoopTarget, hLoopHomotopic, hLoopFromPath⟩
+  exact
+    ⟨pathData,
+      endpointData,
+      rfl,
+      endpointData.source_eq,
+      endpointData.target_eq,
+      endpointData.joined,
+      hComponent,
+      fun η =>
+        onePoint_threeSpace_compl_singleton_paths_homotopic
+          p endpointData.path η,
+      onePoint_threeSpace_compl_singleton_pathQuotient_subsingleton
+        p basepoint target,
+      hLoopSource,
+      hLoopTarget,
+      hLoopHomotopic,
+      hLoopFromPath,
+      onePoint_threeSpace_compl_singleton_piOne_subsingleton
+        p basepoint⟩
+
+/-- Theorem contract for `onePoint_threeSpace_compl_singleton_endpointData_loopCollapse_core`. -/
+theorem onePoint_threeSpace_compl_singleton_endpointData_loopCollapse_core_eq :
+    @Poincare.onePoint_threeSpace_compl_singleton_endpointData_loopCollapse_core =
+      @Poincare.onePoint_threeSpace_compl_singleton_endpointData_loopCollapse_core :=
   rfl
 
 end Poincare
