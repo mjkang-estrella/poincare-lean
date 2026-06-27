@@ -1337,6 +1337,108 @@ theorem singletonAndTwoPoint_endpoint_collapse_package_of_homeomorph_to_onePoint
   rfl
 
 /--
+Recognition as a one-point compactification exposes concrete chosen endpoint
+data for both the singleton complement and the associated two-puncture
+complement while retaining the endpoint-level chart, topology, path-quotient,
+and `π₁` collapse payloads.
+-/
+theorem singletonAndTwoPoint_chosenEndpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M)) :
+    let C := (({x} ∪ {y})ᶜ : Set M)
+    (∃ singlePathData :
+        PointedPathComponentPathData ({x}ᶜ : Set M) singleBase,
+      ∃ singleEndpointData :
+          PointedChosenPathEndpointData ({x}ᶜ : Set M)
+            singleBase singleTarget,
+        ∃ canonicalSinglePath : Path singleBase singleTarget,
+          Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+            ContractibleSpace ({x}ᶜ : Set M) ∧
+            PathConnectedSpace ({x}ᶜ : Set M) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            singlePathData.path_to singleTarget = canonicalSinglePath ∧
+            singleEndpointData.path = canonicalSinglePath ∧
+            canonicalSinglePath 0 = singleBase ∧
+            canonicalSinglePath 1 = singleTarget ∧
+            Joined singleBase singleTarget ∧
+            pathComponent singleBase = Set.univ ∧
+            Subsingleton (Path.Homotopic.Quotient singleBase singleTarget) ∧
+            Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBase)) ∧
+      (∃ puncture : EuclideanSpace ℝ (Fin 3),
+        ∃ chart : C ≃ₜ ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+          ∃ twoPathData : PointedPathComponentPathData C twoBase,
+            ∃ twoEndpointData :
+                PointedChosenPathEndpointData C twoBase twoTarget,
+              ∃ canonicalPath : Path twoBase twoTarget,
+                (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+                  Nonempty C ∧
+                  PathConnectedSpace C ∧
+                  ConnectedSpace C ∧
+                  SimplyConnectedSpace C ∧
+                  twoPathData.path_to twoTarget = canonicalPath ∧
+                  twoEndpointData.path = canonicalPath ∧
+                  canonicalPath 0 = twoBase ∧
+                  canonicalPath 1 = twoTarget ∧
+                  Joined twoBase twoTarget ∧
+                  pathComponent twoBase = Set.univ ∧
+                  Subsingleton (Path.Homotopic.Quotient twoBase twoTarget) ∧
+                  Subsingleton (HomotopyGroup.Pi 1 C twoBase)) := by
+  dsimp
+  let singlePathData :
+      PointedPathComponentPathData ({x}ᶜ : Set M) singleBase :=
+    compl_singleton_pointedPathComponentPathData_of_homeomorph_to_onePoint_threeSpace
+      h x singleBase
+  let singleEndpointData :
+      PointedChosenPathEndpointData ({x}ᶜ : Set M) singleBase singleTarget :=
+    compl_singleton_chosenPathEndpointData_of_homeomorph_to_onePoint_threeSpace
+      h x singleBase singleTarget
+  let canonicalSinglePath : Path singleBase singleTarget :=
+    singleEndpointData.path
+  rcases
+      compl_singleton_euclidean_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace
+        h x singleBase singleTarget with
+    ⟨hSingleChart, hSingleContractible, hSinglePathConnected,
+      hSingleConnected, hSingleSimplyConnected, hSingleComponent,
+      hSingleJoined, hSingleQuotient, hSinglePiOne⟩
+  rcases exists_puncture_homeomorph_twoPointComplement_chosenPathTopologyPayload
+      h hyx twoBase twoTarget with
+    ⟨puncture, chart, twoPathData, twoEndpointData, canonicalPath, hAvoid,
+      hTwoNonempty, hTwoPathConnected, hTwoSimplyConnected, hTwoPathData,
+      hTwoEndpointPath, hTwoSource, hTwoTarget, hTwoJoined⟩
+  rcases twoPointComplement_topology_package_of_homeomorph_to_onePoint_threeSpace
+      h hyx with
+    ⟨_, _, hTwoConnected, _⟩
+  exact
+    ⟨⟨singlePathData, singleEndpointData, canonicalSinglePath,
+        hSingleChart, hSingleContractible, hSinglePathConnected,
+        hSingleConnected, hSingleSimplyConnected, rfl, rfl,
+        singleEndpointData.source_eq, singleEndpointData.target_eq,
+        hSingleJoined, hSingleComponent, hSingleQuotient, hSinglePiOne⟩,
+      ⟨puncture, chart, twoPathData, twoEndpointData, canonicalPath,
+        hAvoid, hTwoNonempty, hTwoPathConnected, hTwoConnected,
+        hTwoSimplyConnected, hTwoPathData, hTwoEndpointPath, hTwoSource,
+        hTwoTarget, hTwoJoined,
+        twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
+          h hyx twoBase,
+        twoPointComplement_pathQuotient_subsingleton_of_homeomorph_to_onePoint_threeSpace
+          h hyx twoBase twoTarget,
+        twoPointComplement_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
+          h hyx twoBase⟩⟩
+
+/--
+Theorem contract for
+`singletonAndTwoPoint_chosenEndpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace`.
+-/
+theorem singletonAndTwoPoint_chosenEndpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace_eq :
+    @Poincare.singletonAndTwoPoint_chosenEndpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace =
+      @Poincare.singletonAndTwoPoint_chosenEndpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace :=
+  rfl
+
+/--
 Recognition as a one-point compactification exposes the singleton-complement
 path/loop collapse and the synchronized two-puncture chart/path-loop projection
 payload together. This is the transport-layer form of the puncture data that
@@ -2958,6 +3060,69 @@ Theorem contract for
 theorem singletonAndTwoPoint_endpoint_collapse_package_of_homeomorph_to_threeSphere_eq :
     @Poincare.singletonAndTwoPoint_endpoint_collapse_package_of_homeomorph_to_threeSphere =
       @Poincare.singletonAndTwoPoint_endpoint_collapse_package_of_homeomorph_to_threeSphere :=
+  rfl
+
+/--
+Recognition as `ThreeSphere` exposes concrete chosen endpoint data for both
+the singleton complement and the associated two-puncture complement while
+retaining the endpoint-level chart, topology, path-quotient, and `π₁` collapse
+payloads.
+-/
+theorem singletonAndTwoPoint_chosenEndpoint_collapse_package_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M)) :
+    let C := (({x} ∪ {y})ᶜ : Set M)
+    (∃ singlePathData :
+        PointedPathComponentPathData ({x}ᶜ : Set M) singleBase,
+      ∃ singleEndpointData :
+          PointedChosenPathEndpointData ({x}ᶜ : Set M)
+            singleBase singleTarget,
+        ∃ canonicalSinglePath : Path singleBase singleTarget,
+          Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+            ContractibleSpace ({x}ᶜ : Set M) ∧
+            PathConnectedSpace ({x}ᶜ : Set M) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            singlePathData.path_to singleTarget = canonicalSinglePath ∧
+            singleEndpointData.path = canonicalSinglePath ∧
+            canonicalSinglePath 0 = singleBase ∧
+            canonicalSinglePath 1 = singleTarget ∧
+            Joined singleBase singleTarget ∧
+            pathComponent singleBase = Set.univ ∧
+            Subsingleton (Path.Homotopic.Quotient singleBase singleTarget) ∧
+            Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBase)) ∧
+      (∃ puncture : EuclideanSpace ℝ (Fin 3),
+        ∃ chart : C ≃ₜ ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+          ∃ twoPathData : PointedPathComponentPathData C twoBase,
+            ∃ twoEndpointData :
+                PointedChosenPathEndpointData C twoBase twoTarget,
+              ∃ canonicalPath : Path twoBase twoTarget,
+                (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+                  Nonempty C ∧
+                  PathConnectedSpace C ∧
+                  ConnectedSpace C ∧
+                  SimplyConnectedSpace C ∧
+                  twoPathData.path_to twoTarget = canonicalPath ∧
+                  twoEndpointData.path = canonicalPath ∧
+                  canonicalPath 0 = twoBase ∧
+                  canonicalPath 1 = twoTarget ∧
+                  Joined twoBase twoTarget ∧
+                  pathComponent twoBase = Set.univ ∧
+                  Subsingleton (Path.Homotopic.Quotient twoBase twoTarget) ∧
+                  Subsingleton (HomotopyGroup.Pi 1 C twoBase)) :=
+  singletonAndTwoPoint_chosenEndpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+    singleBase singleTarget twoBase twoTarget
+
+/--
+Theorem contract for
+`singletonAndTwoPoint_chosenEndpoint_collapse_package_of_homeomorph_to_threeSphere`.
+-/
+theorem singletonAndTwoPoint_chosenEndpoint_collapse_package_of_homeomorph_to_threeSphere_eq :
+    @Poincare.singletonAndTwoPoint_chosenEndpoint_collapse_package_of_homeomorph_to_threeSphere =
+      @Poincare.singletonAndTwoPoint_chosenEndpoint_collapse_package_of_homeomorph_to_threeSphere :=
   rfl
 
 /--
