@@ -910,4 +910,128 @@ theorem onePoint_threeSpace_singleton_and_twoPointComplement_endpointData_bidire
       @Poincare.onePoint_threeSpace_singleton_and_twoPointComplement_endpointData_bidirectional_pathClass_payload :=
   rfl
 
+/--
+Full-topology endpoint-data certificate for the singleton and two-point
+compactification complements.  It packages nonemptiness, path-connectedness,
+connectedness, simple-connectedness, bidirectional endpoint path-class
+identification, loop endpoint equations, loop nullhomotopies, `fromPath`
+collapse, and `π₁` collapse for both complements.
+-/
+theorem onePoint_threeSpace_singleton_and_twoPointComplement_fullTopology_endpointData_bidirectional_pathClass_certificate
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (singleBase singleTarget :
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (singlePath : Path singleBase singleTarget)
+    (singleLoop : Path singleBase singleBase)
+    (twoBase twoTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (twoPath : Path twoBase twoTarget)
+    (twoLoop : Path twoBase twoBase) :
+    (Nonempty ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      PathConnectedSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      ConnectedSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      SimplyConnectedSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      ∃ singlePathData :
+          PointedPathComponentPathData
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) singleBase,
+        ∃ singleEndpointData :
+            PointedChosenPathEndpointData
+              ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              singleBase singleTarget,
+          singlePathData.path_to singleTarget = singleEndpointData.path ∧
+            singleEndpointData.path 0 = singleBase ∧
+            singleEndpointData.path 1 = singleTarget ∧
+            Joined singleBase singleTarget ∧
+            pathComponent singleBase = Set.univ ∧
+            Path.Homotopic singlePath singleEndpointData.path ∧
+            Path.Homotopic singleEndpointData.path singlePath ∧
+            (⟦singlePath⟧ :
+              Path.Homotopic.Quotient singleBase singleTarget) =
+                ⟦singleEndpointData.path⟧ ∧
+            (⟦singleEndpointData.path⟧ :
+              Path.Homotopic.Quotient singleBase singleTarget) =
+                ⟦singlePath⟧ ∧
+            Subsingleton (Path.Homotopic.Quotient singleBase singleTarget) ∧
+            singleLoop 0 = singleBase ∧
+            singleLoop 1 = singleBase ∧
+            Path.Homotopic singleLoop (Path.refl singleBase) ∧
+            FundamentalGroup.fromPath
+                (⟦singleLoop⟧ :
+                  Path.Homotopic.Quotient singleBase singleBase) =
+              FundamentalGroup.fromPath
+                (⟦Path.refl singleBase⟧ :
+                  Path.Homotopic.Quotient singleBase singleBase) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 1
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                singleBase)) ∧
+    (Nonempty
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      PathConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      ConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      SimplyConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      ∃ twoPathData :
+          PointedPathComponentPathData
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            twoBase,
+        ∃ twoEndpointData :
+            PointedChosenPathEndpointData
+              (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              twoBase twoTarget,
+          twoPathData.path_to twoTarget = twoEndpointData.path ∧
+            twoEndpointData.path 0 = twoBase ∧
+            twoEndpointData.path 1 = twoTarget ∧
+            Joined twoBase twoTarget ∧
+            pathComponent twoBase = Set.univ ∧
+            Path.Homotopic twoPath twoEndpointData.path ∧
+            Path.Homotopic twoEndpointData.path twoPath ∧
+            (⟦twoPath⟧ :
+              Path.Homotopic.Quotient twoBase twoTarget) =
+                ⟦twoEndpointData.path⟧ ∧
+            (⟦twoEndpointData.path⟧ :
+              Path.Homotopic.Quotient twoBase twoTarget) = ⟦twoPath⟧ ∧
+            Subsingleton (Path.Homotopic.Quotient twoBase twoTarget) ∧
+            twoLoop 0 = twoBase ∧
+            twoLoop 1 = twoBase ∧
+            Path.Homotopic twoLoop (Path.refl twoBase) ∧
+            FundamentalGroup.fromPath
+                (⟦twoLoop⟧ : Path.Homotopic.Quotient twoBase twoBase) =
+              FundamentalGroup.fromPath
+                (⟦Path.refl twoBase⟧ :
+                  Path.Homotopic.Quotient twoBase twoBase) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 1
+                (({p} ∪ {q})ᶜ :
+                  Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                twoBase)) := by
+  rcases
+    onePoint_threeSpace_singleton_and_twoPointComplement_endpointData_bidirectional_pathClass_payload
+      hqp singleBase singleTarget singlePath singleLoop
+      twoBase twoTarget twoPath twoLoop with
+    ⟨singlePayload, twoPayload⟩
+  exact
+    ⟨⟨onePoint_threeSpace_compl_singleton_nonempty p,
+        onePoint_threeSpace_compl_singleton_pathConnectedSpace p,
+        onePoint_threeSpace_compl_singleton_connectedSpace p,
+        onePoint_threeSpace_compl_singleton_simplyConnectedSpace p,
+        singlePayload⟩,
+      onePoint_threeSpace_twoPointComplement_nonempty hqp,
+      onePoint_threeSpace_twoPointComplement_pathConnectedSpace hqp,
+      onePoint_threeSpace_twoPointComplement_connectedSpace hqp,
+      onePoint_threeSpace_twoPointComplement_simplyConnectedSpace hqp,
+      twoPayload⟩
+
+/-- Theorem contract for
+`onePoint_threeSpace_singleton_and_twoPointComplement_fullTopology_endpointData_bidirectional_pathClass_certificate`. -/
+theorem onePoint_threeSpace_singleton_and_twoPointComplement_fullTopology_endpointData_bidirectional_pathClass_certificate_eq :
+    @Poincare.onePoint_threeSpace_singleton_and_twoPointComplement_fullTopology_endpointData_bidirectional_pathClass_certificate =
+      @Poincare.onePoint_threeSpace_singleton_and_twoPointComplement_fullTopology_endpointData_bidirectional_pathClass_certificate :=
+  rfl
+
 end Poincare
