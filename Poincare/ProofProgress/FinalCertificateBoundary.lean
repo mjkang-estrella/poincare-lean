@@ -33040,4 +33040,85 @@ theorem dependency_only_reserved_completionCriterion_project_payload_of_equation
       @Poincare.dependency_only_reserved_completionCriterion_project_payload_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved canonical/project payload equivalence.
+
+This records that the reserved certificate-collapse route also exposes the
+canonical completion target, and that the canonical and project completion
+payloads are the two certificate projections of the same checked certificate.
+-/
+theorem dependency_only_reserved_canonical_project_payload_equivalence_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ canonicalTarget : canonicalCompletionTarget.{u},
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ canonicalPayload :
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ projectPayload :
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u},
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      canonicalTarget =
+        canonical_completion_target_of_completion_certificate certificate ∧
+      projectStatement =
+        target_statement_of_completion_certificate certificate ∧
+      projectStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      canonicalPayload =
+        canonical_completion_payload_of_completion_certificate certificate ∧
+      projectPayload =
+        poincare_completion_payload_of_completion_certificate certificate ∧
+      canonicalPayload = projectPayload ∧
+      projectPayload = canonicalPayload := by
+  rcases
+      dependency_only_reserved_final_statement_collapse_of_equation_boundary_dependencies
+        dependencies with
+    ⟨nonemptyCertificate, projectStatement, _mathlibStatement,
+      projectPayload, canonicalPayload, certificate,
+      hProjectStatementCertificate, _hMathlibStatementProject,
+      _hProjectPayload, hCanonicalPayload, hCertificate,
+      _hNonemptyCertificate⟩
+  let canonicalTarget : canonicalCompletionTarget.{u} :=
+    canonical_completion_target_of_completion_certificate certificate
+  have hCanonicalTarget :
+      canonicalTarget =
+        canonical_completion_target_of_completion_certificate certificate :=
+    rfl
+  have hProjectStatementTarget :
+      projectStatement =
+        target_statement_of_completion_certificate certificate := by
+    apply Subsingleton.elim
+  have hProjectPayloadCertificate :
+      projectPayload =
+        poincare_completion_payload_of_completion_certificate certificate := by
+    apply Subsingleton.elim
+  have hCanonicalProjectPayload :
+      canonicalPayload = projectPayload := by
+    exact
+      Eq.trans hCanonicalPayload
+        (hProjectPayloadCertificate.symm.trans
+          (poincare_completion_payload_of_completion_certificate_to_canonical_payload_eq
+            certificate).symm)
+  have hProjectCanonicalPayload :
+      projectPayload = canonicalPayload :=
+    hCanonicalProjectPayload.symm
+  exact
+    ⟨certificate, canonicalTarget, projectStatement, canonicalPayload,
+      projectPayload, nonemptyCertificate, hCertificate, hCanonicalTarget,
+      hProjectStatementTarget, hProjectStatementCertificate,
+      hCanonicalPayload, hProjectPayloadCertificate,
+      hCanonicalProjectPayload, hProjectCanonicalPayload⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_canonical_project_payload_equivalence_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_canonical_project_payload_equivalence_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_canonical_project_payload_equivalence_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_canonical_project_payload_equivalence_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
