@@ -1287,6 +1287,56 @@ theorem twoPointComplement_fullChart_endpoint_collapse_package_of_homeomorph_to_
   rfl
 
 /--
+Recognition as a one-point compactification exposes endpoint-level collapse
+for both a singleton complement and the associated two-puncture complement at
+once: the singleton side has its Euclidean chart and contractible topology,
+while the two-puncture side has its full punctured-Euclidean chart and
+path/`π₁` collapse payload.
+-/
+theorem singletonAndTwoPoint_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M)) :
+    let C := (({x} ∪ {y})ᶜ : Set M)
+    (Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+      ContractibleSpace ({x}ᶜ : Set M) ∧
+      PathConnectedSpace ({x}ᶜ : Set M) ∧
+      ConnectedSpace ({x}ᶜ : Set M) ∧
+      SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+      pathComponent singleBase = Set.univ ∧
+      Joined singleBase singleTarget ∧
+      Subsingleton (Path.Homotopic.Quotient singleBase singleTarget) ∧
+      Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBase)) ∧
+      (∃ puncture : EuclideanSpace ℝ (Fin 3),
+        ∃ chart : C ≃ₜ ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+          (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+            Nonempty C ∧
+            PathConnectedSpace C ∧
+            ConnectedSpace C ∧
+            SimplyConnectedSpace C ∧
+            pathComponent twoBase = Set.univ ∧
+            Joined twoBase twoTarget ∧
+            Subsingleton (Path.Homotopic.Quotient twoBase twoTarget) ∧
+            Subsingleton (HomotopyGroup.Pi 1 C twoBase)) := by
+  dsimp
+  exact
+    ⟨compl_singleton_euclidean_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace
+        h x singleBase singleTarget,
+      twoPointComplement_fullChart_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace
+        h hyx twoBase twoTarget⟩
+
+/--
+Theorem contract for
+`singletonAndTwoPoint_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace`.
+-/
+theorem singletonAndTwoPoint_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace_eq :
+    @Poincare.singletonAndTwoPoint_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace =
+      @Poincare.singletonAndTwoPoint_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace :=
+  rfl
+
+/--
 Recognition as a one-point compactification exposes the singleton-complement
 path/loop collapse and the synchronized two-puncture chart/path-loop projection
 payload together. This is the transport-layer form of the puncture data that
@@ -2865,6 +2915,49 @@ Theorem contract for
 theorem twoPointComplement_fullChart_endpoint_collapse_package_of_homeomorph_to_threeSphere_eq :
     @Poincare.twoPointComplement_fullChart_endpoint_collapse_package_of_homeomorph_to_threeSphere =
       @Poincare.twoPointComplement_fullChart_endpoint_collapse_package_of_homeomorph_to_threeSphere :=
+  rfl
+
+/--
+Recognition as `ThreeSphere` exposes endpoint-level collapse for both a
+singleton complement and the associated two-puncture complement at once.
+-/
+theorem singletonAndTwoPoint_endpoint_collapse_package_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M)) :
+    let C := (({x} ∪ {y})ᶜ : Set M)
+    (Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+      ContractibleSpace ({x}ᶜ : Set M) ∧
+      PathConnectedSpace ({x}ᶜ : Set M) ∧
+      ConnectedSpace ({x}ᶜ : Set M) ∧
+      SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+      pathComponent singleBase = Set.univ ∧
+      Joined singleBase singleTarget ∧
+      Subsingleton (Path.Homotopic.Quotient singleBase singleTarget) ∧
+      Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBase)) ∧
+      (∃ puncture : EuclideanSpace ℝ (Fin 3),
+        ∃ chart : C ≃ₜ ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+          (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+            Nonempty C ∧
+            PathConnectedSpace C ∧
+            ConnectedSpace C ∧
+            SimplyConnectedSpace C ∧
+            pathComponent twoBase = Set.univ ∧
+            Joined twoBase twoTarget ∧
+            Subsingleton (Path.Homotopic.Quotient twoBase twoTarget) ∧
+            Subsingleton (HomotopyGroup.Pi 1 C twoBase)) :=
+  singletonAndTwoPoint_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+    singleBase singleTarget twoBase twoTarget
+
+/--
+Theorem contract for
+`singletonAndTwoPoint_endpoint_collapse_package_of_homeomorph_to_threeSphere`.
+-/
+theorem singletonAndTwoPoint_endpoint_collapse_package_of_homeomorph_to_threeSphere_eq :
+    @Poincare.singletonAndTwoPoint_endpoint_collapse_package_of_homeomorph_to_threeSphere =
+      @Poincare.singletonAndTwoPoint_endpoint_collapse_package_of_homeomorph_to_threeSphere :=
   rfl
 
 /--
