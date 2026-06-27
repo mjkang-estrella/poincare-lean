@@ -939,6 +939,131 @@ theorem onePoint_threeSpace_twoPointComplement_chart_path_loop_projection_bundle
 
 /--
 The standard one-point compactification model two-puncture complement carries
+the full topology package together with a concrete chosen path, homotopy
+quotient collapse, loop nullhomotopy, and trivial first homotopy group.
+-/
+theorem onePoint_threeSpace_twoPointComplement_fullTopology_chosen_path_loop_projection_bundle
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint target :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ canonicalPath : Path basepoint target,
+      Nonempty
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        PathConnectedSpace
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        ConnectedSpace
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        SimplyConnectedSpace
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        pathComponent basepoint = Set.univ ∧
+        canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+        Joined basepoint target ∧
+        Path.Homotopic chosenPath canonicalPath ∧
+        (⟦chosenPath⟧ :
+          Path.Homotopic.Quotient basepoint target) =
+          ⟦canonicalPath⟧ ∧
+        (∀ η : Path basepoint target,
+          Path.Homotopic canonicalPath η) ∧
+        Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+        loop 0 = basepoint ∧ loop 1 = basepoint ∧
+        Path.Homotopic loop (Path.refl basepoint) ∧
+        FundamentalGroup.fromPath
+            (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+          FundamentalGroup.fromPath
+            (⟦Path.refl basepoint⟧ :
+              Path.Homotopic.Quotient basepoint basepoint) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint) := by
+  rcases onePoint_threeSpace_twoPointComplement_topology_package hqp with
+    ⟨_, _, hConnected, _⟩
+  rcases
+      onePoint_threeSpace_twoPointComplement_chart_path_loop_projection_bundle
+        hqp basepoint target chosenPath loop with
+    ⟨_puncture, _chart, _pathData, _endpointData, canonicalPath, _hAvoid,
+      hNonempty, hPathConnected, hSimplyConnected, _hPathData,
+      _hEndpointData, hCanonicalSource, hCanonicalTarget, hJoined,
+      hComponent, hChosenHomotopic, hChosenQuotient, hCanonicalUnique,
+      hQuotientSubsingleton, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+  exact
+    ⟨canonicalPath, hNonempty, hPathConnected, hConnected,
+      hSimplyConnected, hComponent, hCanonicalSource, hCanonicalTarget,
+      hJoined, hChosenHomotopic, hChosenQuotient, hCanonicalUnique,
+      hQuotientSubsingleton, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+
+/-- Theorem contract for
+`onePoint_threeSpace_twoPointComplement_fullTopology_chosen_path_loop_projection_bundle`. -/
+theorem onePoint_threeSpace_twoPointComplement_fullTopology_chosen_path_loop_projection_bundle_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_fullTopology_chosen_path_loop_projection_bundle =
+      @Poincare.onePoint_threeSpace_twoPointComplement_fullTopology_chosen_path_loop_projection_bundle :=
+  rfl
+
+/--
+The one-point compactification two-puncture model exposes both its explicit
+homeomorphism to the corresponding standard `ThreeSphere` two-puncture
+complement and its full-topology chosen path/loop projection payload.
+-/
+theorem onePoint_threeSpace_twoPointComplement_threeSphere_homeomorph_and_fullTopology_chosen_path_loop_projection_bundle
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint target :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    Nonempty
+      ((({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere)) ∧
+      ∃ canonicalPath : Path basepoint target,
+        Nonempty
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          PathConnectedSpace
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          ConnectedSpace
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          SimplyConnectedSpace
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          pathComponent basepoint = Set.univ ∧
+          canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+          Joined basepoint target ∧
+          Path.Homotopic chosenPath canonicalPath ∧
+          (⟦chosenPath⟧ :
+            Path.Homotopic.Quotient basepoint target) =
+            ⟦canonicalPath⟧ ∧
+          (∀ η : Path basepoint target,
+            Path.Homotopic canonicalPath η) ∧
+          Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+          loop 0 = basepoint ∧ loop 1 = basepoint ∧
+          Path.Homotopic loop (Path.refl basepoint) ∧
+          FundamentalGroup.fromPath
+              (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl basepoint⟧ :
+                Path.Homotopic.Quotient basepoint basepoint) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1
+              (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              basepoint) := by
+  exact
+    ⟨⟨onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp⟩,
+      onePoint_threeSpace_twoPointComplement_fullTopology_chosen_path_loop_projection_bundle
+        hqp basepoint target chosenPath loop⟩
+
+/-- Theorem contract for
+`onePoint_threeSpace_twoPointComplement_threeSphere_homeomorph_and_fullTopology_chosen_path_loop_projection_bundle`. -/
+theorem onePoint_threeSpace_twoPointComplement_threeSphere_homeomorph_and_fullTopology_chosen_path_loop_projection_bundle_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_threeSphere_homeomorph_and_fullTopology_chosen_path_loop_projection_bundle =
+      @Poincare.onePoint_threeSpace_twoPointComplement_threeSphere_homeomorph_and_fullTopology_chosen_path_loop_projection_bundle :=
+  rfl
+
+/--
+The standard one-point compactification model two-puncture complement carries
 the transported punctured-Euclidean chart together with the full topology,
 canonical path, endpoint-data, homotopy quotient collapse, loop nullhomotopy,
 and `π₁` collapse payload.
