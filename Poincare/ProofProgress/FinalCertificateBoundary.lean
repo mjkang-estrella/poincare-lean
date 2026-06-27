@@ -34630,4 +34630,72 @@ theorem dependency_only_reserved_named_expanded_root_conclusion_of_equation_boun
       @Poincare.dependency_only_reserved_named_expanded_root_conclusion_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved target/expanded-root conclusion coherence.
+
+The target-specific named homeomorphism endpoint and the expanded-root
+endpoint expose the same target conclusion at any chosen compact simply
+connected Euclidean-charted 3-manifold, with the reserved theorem name and
+checked certificate synchronized.
+-/
+theorem dependency_only_reserved_named_target_expanded_root_conclusion_coherence_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ targetTheoremName : String,
+    ∃ expandedTheoremName : String,
+    ∃ targetCertificate : PoincareCompletionCertificate.{u},
+    ∃ expandedCertificate : PoincareCompletionCertificate.{u},
+    ∃ expandedConclusion :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          Nonempty (N ≃ₜ ThreeSphere),
+    ∃ targetConclusion : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ expandedTargetConclusion : Nonempty (M ≃ₜ ThreeSphere),
+      targetTheoremName = expandedTheoremName ∧
+      targetCertificate = expandedCertificate ∧
+      targetTheoremName = canonicalCompletionTheoremName ∧
+      targetTheoremName = "poincare_conjecture" ∧
+      targetConclusion = expandedTargetConclusion ∧
+      expandedTargetConclusion = expandedConclusion M := by
+  rcases
+      dependency_only_reserved_named_target_homeomorphism_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨targetTheoremName, targetCertificate, _bundledStatement,
+      _conditionalRootStatement, targetConclusion, hTargetTheoremNameCanonical,
+      hTargetTheoremNameLiteral, hTargetCertificate, _hBundledConditional,
+      _hTargetConclusion⟩
+  rcases
+      dependency_only_reserved_named_expanded_root_conclusion_of_equation_boundary_dependencies
+        dependencies with
+    ⟨expandedTheoremName, expandedCertificate, expandedConclusion,
+      hExpandedTheoremNameCanonical, _hExpandedTheoremNameLiteral,
+      hExpandedCertificate, _hExpandedConclusion, hExpandedTargets⟩
+  rcases hExpandedTargets M with
+    ⟨expandedTargetConclusion, hExpandedTargetConclusion⟩
+  have hTheoremNames :
+      targetTheoremName = expandedTheoremName :=
+    hTargetTheoremNameCanonical.trans hExpandedTheoremNameCanonical.symm
+  have hCertificates :
+      targetCertificate = expandedCertificate :=
+    hTargetCertificate.trans hExpandedCertificate.symm
+  have hTargetExpanded :
+      targetConclusion = expandedTargetConclusion := by
+    apply Subsingleton.elim
+  exact
+    ⟨targetTheoremName, expandedTheoremName, targetCertificate,
+      expandedCertificate, expandedConclusion, targetConclusion,
+      expandedTargetConclusion, hTheoremNames, hCertificates,
+      hTargetTheoremNameCanonical, hTargetTheoremNameLiteral,
+      hTargetExpanded, hExpandedTargetConclusion⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_named_target_expanded_root_conclusion_coherence_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_named_target_expanded_root_conclusion_coherence_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_named_target_expanded_root_conclusion_coherence_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_named_target_expanded_root_conclusion_coherence_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
