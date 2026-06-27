@@ -754,4 +754,44 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_loop_fromPath_transpor
       @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_loop_fromPath_transport :=
   rfl
 
+/--
+Nullhomotopic based loops remain nullhomotopic after transport through the
+explicit two-puncture complement homeomorphism and after transport back through
+its inverse.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_loop_nullhomotopy_transport
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    {sourceBase :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    (sourceLoop : Path sourceBase sourceBase)
+    {targetBase :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)}
+    (targetLoop : Path targetBase targetBase)
+    (hSourceLoop : Path.Homotopic sourceLoop (Path.refl sourceBase))
+    (hTargetLoop : Path.Homotopic targetLoop (Path.refl targetBase)) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    Path.Homotopic
+        (sourceLoop.map H.continuous)
+        (Path.refl (H sourceBase)) ∧
+      Path.Homotopic
+        (targetLoop.map H.symm.continuous)
+        (Path.refl (H.symm targetBase)) := by
+  dsimp
+  let H :=
+    onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+      hqp
+  refine ⟨?_, ?_⟩
+  · simpa using hSourceLoop.map (⟨H, H.continuous⟩)
+  · simpa using hTargetLoop.map (⟨H.symm, H.symm.continuous⟩)
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_loop_nullhomotopy_transport`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_loop_nullhomotopy_transport_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_loop_nullhomotopy_transport =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_loop_nullhomotopy_transport :=
+  rfl
+
 end Poincare
