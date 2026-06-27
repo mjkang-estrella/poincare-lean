@@ -33855,4 +33855,58 @@ theorem dependency_only_reserved_final_completionCriterion_projection_of_equatio
       @Poincare.dependency_only_reserved_final_completionCriterion_projection_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved final completion-family projection.
+
+This projects the family-level final statement route collapse to the certificate,
+project statement, mathlib statement, canonical target, and full reserved
+completion-criterion family.
+-/
+theorem dependency_only_reserved_final_completion_family_projection_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ canonicalTarget : canonicalCompletionTarget.{u},
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      projectStatement =
+        dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies
+          dependencies ∧
+      mathlibStatement =
+        dependency_only_reserved_mathlib_statement_of_equation_boundary_dependencies
+          dependencies ∧
+      canonicalTarget =
+        canonical_completion_target_of_completion_certificate certificate ∧
+      (∀ witness : Type u,
+        completionCriterionFamily witness =
+          dependency_only_reserved_completionCriterionAtUniverse_of_equation_boundary_dependencies
+            dependencies witness) := by
+  rcases
+      dependency_only_reserved_final_statement_completion_family_routes_of_equation_boundary_dependencies
+        dependencies with
+    ⟨projectStatement, mathlibStatement, canonicalTarget,
+      _nonemptyCertificate, statementCertificate, _routeCertificate,
+      completionCriterionFamily, _canonicalPayloadCompletion,
+      _projectPayloadCompletion, hProjectStatement,
+      _hProjectStatementCertificate, hMathlibStatement,
+      _hMathlibStatementProject, hCanonicalTarget, hStatementCertificate,
+      _hRouteCertificate, _hStatementRouteCertificate, _hCompletionCanonical,
+      _hCompletionProject, hCompletionReserved⟩
+  exact
+    ⟨statementCertificate, projectStatement, mathlibStatement,
+      canonicalTarget, completionCriterionFamily, hStatementCertificate,
+      hProjectStatement, hMathlibStatement, hCanonicalTarget,
+      hCompletionReserved⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_final_completion_family_projection_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_final_completion_family_projection_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_final_completion_family_projection_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_final_completion_family_projection_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
