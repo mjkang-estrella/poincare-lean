@@ -512,6 +512,47 @@ theorem twoPointComplement_simplyConnectedSpace_of_homeomorph_to_onePoint_threeS
   exact hCompl.toHomotopyEquiv.simplyConnectedSpace
 
 /--
+Every two-puncture complement of a space recognized as the one-point
+compactification of `R^3` is locally path-connected, transported from the
+model two-puncture complement through the recognition homeomorphism.
+-/
+theorem twoPointComplement_locPathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x) :
+    LocPathConnectedSpace (({x} ∪ {y})ᶜ : Set M) := by
+  rcases h with ⟨eM⟩
+  have hImage : eM y ≠ eM x := by
+    intro hxy
+    exact hyx (eM.injective hxy)
+  let hCompl :
+      (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+        (({eM x} ∪ {eM y})ᶜ :
+          Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    eM.subtype (fun z => by
+      simp only [Set.mem_compl_iff, Set.mem_union, Set.mem_singleton_iff]
+      constructor
+      · intro hz hzImage
+        rcases hzImage with hzx | hzy
+        · exact hz (Or.inl (eM.injective hzx))
+        · exact hz (Or.inr (eM.injective hzy))
+      · intro hz hzSource
+        rcases hzSource with hzx | hzy
+        · exact hz (Or.inl (by rw [hzx]))
+        · exact hz (Or.inr (by rw [hzy])))
+  letI : LocPathConnectedSpace
+      (({eM x} ∪ {eM y})ᶜ :
+        Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_twoPointComplement_locPathConnectedSpace hImage
+  exact hCompl.isOpenEmbedding.locPathConnectedSpace
+
+/-- Theorem contract for `twoPointComplement_locPathConnectedSpace_of_homeomorph_to_onePoint_threeSpace`. -/
+theorem twoPointComplement_locPathConnectedSpace_of_homeomorph_to_onePoint_threeSpace_eq :
+    @Poincare.twoPointComplement_locPathConnectedSpace_of_homeomorph_to_onePoint_threeSpace =
+      @Poincare.twoPointComplement_locPathConnectedSpace_of_homeomorph_to_onePoint_threeSpace :=
+  rfl
+
+/--
 Every two-puncture complement of a recognized one-point compactification
 target is path-connected.
 -/

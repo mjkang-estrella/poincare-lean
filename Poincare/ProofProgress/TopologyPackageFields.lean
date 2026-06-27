@@ -619,6 +619,28 @@ theorem twoPointComplement_simplyConnectedSpace_of_topology_package
       package M extinction) hyx
 
 /--
+The package-level homeomorphism projection transports local path-connectedness
+of the model two-puncture complement.
+-/
+theorem twoPointComplement_locPathConnectedSpace_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x) :
+    LocPathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+  twoPointComplement_locPathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_topology_package
+      package M extinction) hyx
+
+/-- Theorem contract for `twoPointComplement_locPathConnectedSpace_of_topology_package`. -/
+theorem twoPointComplement_locPathConnectedSpace_of_topology_package_eq :
+    @Poincare.twoPointComplement_locPathConnectedSpace_of_topology_package =
+      @Poincare.twoPointComplement_locPathConnectedSpace_of_topology_package :=
+  rfl
+
+/--
 The package-level two-puncture complement is path-connected as a direct
 consequence of its transported simple-connectedness.
 -/
@@ -1810,6 +1832,59 @@ theorem twoPointComplement_endpointData_pathCoherence_loopCollapse_core_of_topol
   rfl
 
 /--
+The compact two-puncture endpoint-data core can be consumed together with the
+local path-connectedness instance transported by the same topology package.
+-/
+theorem twoPointComplement_locPath_endpointData_pathCoherence_loopCollapse_core_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    LocPathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+      ∃ pathData :
+          PointedPathComponentPathData (({x} ∪ {y})ᶜ : Set M) basepoint,
+        ∃ endpointData :
+            PointedChosenPathEndpointData
+              (({x} ∪ {y})ᶜ : Set M) basepoint target,
+          pathData.path_to target = endpointData.path ∧
+            endpointData.path 0 = basepoint ∧
+            endpointData.path 1 = target ∧
+            Joined basepoint target ∧
+            pathComponent basepoint = Set.univ ∧
+            Path.Homotopic chosenPath endpointData.path ∧
+            (⟦chosenPath⟧ : Path.Homotopic.Quotient basepoint target) =
+              ⟦endpointData.path⟧ ∧
+            (∀ η : Path basepoint target,
+              Path.Homotopic endpointData.path η) ∧
+            Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+            loop 0 = basepoint ∧
+            loop 1 = basepoint ∧
+            Path.Homotopic loop (Path.refl basepoint) ∧
+            FundamentalGroup.fromPath
+                (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+              FundamentalGroup.fromPath
+                (⟦Path.refl basepoint⟧ :
+                  Path.Homotopic.Quotient basepoint basepoint) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+  ⟨twoPointComplement_locPathConnectedSpace_of_topology_package
+      package M extinction hyx,
+    twoPointComplement_endpointData_pathCoherence_loopCollapse_core_of_topology_package
+      package M extinction hyx basepoint target chosenPath loop⟩
+
+/-- Theorem contract for
+`twoPointComplement_locPath_endpointData_pathCoherence_loopCollapse_core_of_topology_package`. -/
+theorem twoPointComplement_locPath_endpointData_pathCoherence_loopCollapse_core_of_topology_package_eq :
+    @Poincare.twoPointComplement_locPath_endpointData_pathCoherence_loopCollapse_core_of_topology_package =
+      @Poincare.twoPointComplement_locPath_endpointData_pathCoherence_loopCollapse_core_of_topology_package :=
+  rfl
+
+/--
 The final-homeomorphism package route exposes the compact two-puncture
 endpoint-data path-coherence core from the same topology package inputs.
 -/
@@ -1863,6 +1938,65 @@ theorem topologyPackage_finalHomeomorphism_and_twoPointEndpointDataPathCoherence
 theorem topologyPackage_finalHomeomorphism_and_twoPointEndpointDataPathCoherenceCore_eq :
     @Poincare.topologyPackage_finalHomeomorphism_and_twoPointEndpointDataPathCoherenceCore =
       @Poincare.topologyPackage_finalHomeomorphism_and_twoPointEndpointDataPathCoherenceCore :=
+  rfl
+
+/--
+The final-homeomorphism route also exposes local path-connectedness alongside
+the compact two-puncture endpoint-data path-coherence core.
+-/
+theorem topologyPackage_finalHomeomorphism_and_twoPointLocPathEndpointDataPathCoherenceCore
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      FinalHomeomorphismPayloadData M extinction
+        (extinction_decomposition_of_topology_package package M extinction) ∧
+      LocPathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+      ∃ pathData :
+          PointedPathComponentPathData (({x} ∪ {y})ᶜ : Set M) basepoint,
+        ∃ endpointData :
+            PointedChosenPathEndpointData
+              (({x} ∪ {y})ᶜ : Set M) basepoint target,
+          pathData.path_to target = endpointData.path ∧
+            endpointData.path 0 = basepoint ∧
+            endpointData.path 1 = target ∧
+            Joined basepoint target ∧
+            pathComponent basepoint = Set.univ ∧
+            Path.Homotopic chosenPath endpointData.path ∧
+            (⟦chosenPath⟧ : Path.Homotopic.Quotient basepoint target) =
+              ⟦endpointData.path⟧ ∧
+            (∀ η : Path basepoint target,
+              Path.Homotopic endpointData.path η) ∧
+            Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+            loop 0 = basepoint ∧
+            loop 1 = basepoint ∧
+            Path.Homotopic loop (Path.refl basepoint) ∧
+            FundamentalGroup.fromPath
+                (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+              FundamentalGroup.fromPath
+                (⟦Path.refl basepoint⟧ :
+                  Path.Homotopic.Quotient basepoint basepoint) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+  ⟨homeomorph_to_onePoint_threeSpace_of_topology_package
+      package M extinction,
+    finalHomeomorphismPayloadData_of_topology_package package M extinction,
+    twoPointComplement_locPathConnectedSpace_of_topology_package
+      package M extinction hyx,
+    twoPointComplement_endpointData_pathCoherence_loopCollapse_core_of_topology_package
+      package M extinction hyx basepoint target chosenPath loop⟩
+
+/-- Theorem contract for
+`topologyPackage_finalHomeomorphism_and_twoPointLocPathEndpointDataPathCoherenceCore`. -/
+theorem topologyPackage_finalHomeomorphism_and_twoPointLocPathEndpointDataPathCoherenceCore_eq :
+    @Poincare.topologyPackage_finalHomeomorphism_and_twoPointLocPathEndpointDataPathCoherenceCore =
+      @Poincare.topologyPackage_finalHomeomorphism_and_twoPointLocPathEndpointDataPathCoherenceCore :=
   rfl
 
 /--
