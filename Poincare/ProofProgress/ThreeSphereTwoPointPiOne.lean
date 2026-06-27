@@ -767,4 +767,78 @@ theorem threeSphere_twoPointComplement_fullChart_canonicalPath_loopCollapse_pack
       @Poincare.threeSphere_twoPointComplement_fullChart_canonicalPath_loopCollapse_package :=
   rfl
 
+/--
+The standard `ThreeSphere` two-puncture complement exposes its full
+punctured-Euclidean chart, the concrete path-component and endpoint-data
+objects selecting a canonical endpoint path, homotopy uniqueness for that path,
+and collapse of any supplied based loop. This is the endpoint-data version of
+the canonical full-chart loop package, still before an arbitrary chosen path is
+supplied by a downstream consumer.
+-/
+theorem threeSphere_twoPointComplement_fullChart_endpointData_loopCollapse_package
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (basepoint target : (({a} ∪ {b})ᶜ : Set ThreeSphere))
+    (loop : Path basepoint basepoint) :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      ∃ chart : (({a} ∪ {b})ᶜ : Set ThreeSphere) ≃ₜ
+          ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        ∃ pathData :
+            PointedPathComponentPathData
+              (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint,
+          ∃ endpointData :
+              PointedChosenPathEndpointData
+                (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint target,
+            ∃ canonicalPath : Path basepoint target,
+              (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+                Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+                PathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+                ConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+                SimplyConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+                pathData.path_to target = canonicalPath ∧
+                endpointData.path = canonicalPath ∧
+                canonicalPath 0 = basepoint ∧
+                canonicalPath 1 = target ∧
+                Joined basepoint target ∧
+                pathComponent basepoint = Set.univ ∧
+                (∀ η : Path basepoint target,
+                  Path.Homotopic canonicalPath η) ∧
+                Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+                loop 0 = basepoint ∧
+                loop 1 = basepoint ∧
+                Path.Homotopic loop (Path.refl basepoint) ∧
+                FundamentalGroup.fromPath
+                    (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+                  FundamentalGroup.fromPath
+                    (⟦Path.refl basepoint⟧ :
+                      Path.Homotopic.Quotient basepoint basepoint) ∧
+                Subsingleton
+                  (HomotopyGroup.Pi 1
+                    (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint) := by
+  rcases
+      threeSphere_twoPointComplement_exists_path_with_endpoints_and_homotopy_unique
+        hab basepoint target with
+    ⟨seedPath, _seedSource, _seedTarget, _seedJoined, _seedUnique⟩
+  rcases
+      threeSphere_twoPointComplement_fullChart_path_loop_projection_bundle
+        hab basepoint target seedPath loop with
+    ⟨puncture, chart, pathData, endpointData, canonicalPath, hAvoid,
+      hNonempty, hPathConnected, hConnected, hSimplyConnected, hPathData,
+      hEndpointData, hCanonicalSource, hCanonicalTarget, hJoined, hComponent,
+      _hChosenHomotopic, _hChosenQuotient, hCanonicalUnique,
+      hQuotientSubsingleton, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+  exact
+    ⟨puncture, chart, pathData, endpointData, canonicalPath, hAvoid,
+      hNonempty, hPathConnected, hConnected, hSimplyConnected, hPathData,
+      hEndpointData, hCanonicalSource, hCanonicalTarget, hJoined, hComponent,
+      hCanonicalUnique, hQuotientSubsingleton, hLoopSource, hLoopTarget,
+      hLoopHomotopic, hLoopFromPath, hPiOne⟩
+
+/-- Theorem contract for
+`threeSphere_twoPointComplement_fullChart_endpointData_loopCollapse_package`. -/
+theorem threeSphere_twoPointComplement_fullChart_endpointData_loopCollapse_package_eq :
+    @Poincare.threeSphere_twoPointComplement_fullChart_endpointData_loopCollapse_package =
+      @Poincare.threeSphere_twoPointComplement_fullChart_endpointData_loopCollapse_package :=
+  rfl
+
 end Poincare
