@@ -33197,4 +33197,79 @@ theorem dependency_only_reserved_canonical_target_collapse_of_equation_boundary_
       @Poincare.dependency_only_reserved_canonical_target_collapse_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved canonical payload completion criterion.
+
+This opens the canonical payload produced by the checked certificate and
+extracts its completion criterion at an arbitrary universe witness, while
+retaining the certificate identity and the final project-statement bridge.
+-/
+theorem dependency_only_reserved_canonical_payload_completionCriterion_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (witness : Type u) :
+    ∃ criterion : CompletionCriterionAtUniverse witness,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ canonicalPayload :
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ canonicalPayloadTarget : canonicalCompletionTarget.{u},
+    ∃ canonicalPayloadCompletion :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ canonicalTarget : canonicalCompletionTarget.{u},
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u},
+      criterion = canonicalPayloadCompletion witness ∧
+      canonicalPayload =
+        ⟨canonicalPayloadTarget, canonicalPayloadCompletion⟩ ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      canonicalPayload =
+        canonical_completion_payload_of_completion_certificate certificate ∧
+      canonicalTarget =
+        canonical_completion_target_of_completion_certificate certificate ∧
+      projectStatement =
+        target_statement_of_completion_certificate certificate ∧
+      projectStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate := by
+  rcases
+      dependency_only_reserved_canonical_target_collapse_of_equation_boundary_dependencies
+        dependencies with
+    ⟨certificate, nonemptyCertificate, canonicalTarget, projectStatement,
+      _mathlibStatement, canonicalPayload, _projectPayload, hCertificate,
+      _hNonemptyCertificate, hCanonicalTarget, hProjectStatementTarget,
+      hProjectStatementCertificate, _hMathlibStatement, hCanonicalPayload,
+      _hProjectPayload, _hCanonicalProjectPayload⟩
+  rcases canonicalPayload with
+    ⟨canonicalPayloadTarget, canonicalPayloadCompletion⟩
+  let criterion : CompletionCriterionAtUniverse witness :=
+    canonicalPayloadCompletion witness
+  have hCriterion :
+      criterion = canonicalPayloadCompletion witness :=
+    rfl
+  have hCanonicalPayloadComponents :
+      (⟨canonicalPayloadTarget, canonicalPayloadCompletion⟩ :
+        ∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) =
+        ⟨canonicalPayloadTarget, canonicalPayloadCompletion⟩ :=
+    rfl
+  exact
+    ⟨criterion, certificate,
+      (⟨canonicalPayloadTarget, canonicalPayloadCompletion⟩ :
+        ∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+      canonicalPayloadTarget, canonicalPayloadCompletion, canonicalTarget,
+      projectStatement, nonemptyCertificate, hCriterion,
+      hCanonicalPayloadComponents, hCertificate, hCanonicalPayload,
+      hCanonicalTarget, hProjectStatementTarget,
+      hProjectStatementCertificate⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_canonical_payload_completionCriterion_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_canonical_payload_completionCriterion_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_canonical_payload_completionCriterion_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_canonical_payload_completionCriterion_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
