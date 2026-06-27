@@ -17121,4 +17121,118 @@ theorem conditional_root_projector_all_endpoint_paths_homotopy_and_quotient_coll
       @Poincare.conditional_root_projector_all_endpoint_paths_homotopy_and_quotient_collapse_of_equation_boundary_dependencies :=
   rfl
 
+/--
+The endpoint collapse extends from represented paths to arbitrary path-homotopy
+quotient elements.
+
+This theorem is the quotient-level form needed by downstream recognition
+consumers: every endpoint-path quotient class is equal to every other, and
+every based-loop quotient class is equal to every other, while the same final
+certificate package keeps the concrete homotopy and loop-collapse routes.
+-/
+theorem conditional_root_projector_endpoint_and_loop_quotient_element_collapse_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    PoincareConjectureStatement.{u} ∧
+      ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      ∃ _pathData :
+          PointedPathComponentPathData (({x} ∪ {y})ᶜ : Set M) basepoint,
+      ∃ _endpointData :
+          PointedChosenPathEndpointData
+            (({x} ∪ {y})ᶜ : Set M) basepoint target,
+        ExtinctionFinalHomeomorphismProjectorPayload
+          topology M extinction ∧
+        FinalHomeomorphismPayloadData M extinction
+          (extinction_decomposition_of_topology_package topology M extinction) ∧
+        Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+        (∀ q r : Path.Homotopic.Quotient basepoint target, q = r) ∧
+        Subsingleton (Path.Homotopic.Quotient basepoint basepoint) ∧
+        (∀ q r : Path.Homotopic.Quotient basepoint basepoint, q = r) ∧
+        (∀ η ζ : Path basepoint target, Path.Homotopic η ζ) ∧
+        (∀ γ : Path basepoint basepoint,
+          FundamentalGroup.fromPath
+              (⟦γ⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl basepoint⟧ :
+                Path.Homotopic.Quotient basepoint basepoint)) := by
+  rcases
+      conditional_root_projector_homeomorphism_coherence_and_endpoint_fields_of_equation_boundary_dependencies
+        dependencies smoothability grounded topology smoothabilityPayload M
+        hyx basepoint target chosenPath loop with
+    ⟨projectStatement, _rootHomeomorphism, _projectHomeomorphism,
+      _recoveredHomeomorphism, _hrootProject, _hprojectRecovered,
+      checkedCertificate, _onePointHomeomorphism, extinction, pathData,
+      endpointData, finalHomeomorphismProjector,
+      finalHomeomorphismPayloadData, _hpathData, _hendpointZero,
+      _hendpointOne, _hjoined, _hpathComponent, hchosenHomotopic,
+      _hquotient, hendpointUnique, endpointQuotientSubsingleton,
+      _hloopZero, _hloopOne, _hloopHomotopic, _hfundamentalGroup,
+      _hpiOneSubsingleton⟩
+  rcases
+      conditional_root_projector_all_based_loop_quotient_and_fromPath_collapse_of_equation_boundary_dependencies
+        dependencies smoothability grounded topology smoothabilityPayload M
+        hyx basepoint target chosenPath loop with
+    ⟨_loopProjectStatement, _loopCheckedCertificate, _loopExtinction,
+      _loopPathData, _loopEndpointData, _loopFinalHomeomorphismProjector,
+      _loopFinalHomeomorphismPayloadData, loopQuotientSubsingleton,
+      _allLoopQuotientCollapse, allLoopFromPathCollapse,
+      _loopPiOneCollapse⟩
+  let endpointQuotientElementCollapse :
+      ∀ q r : Path.Homotopic.Quotient basepoint target, q = r :=
+    fun q r =>
+      @Subsingleton.elim
+        (Path.Homotopic.Quotient basepoint target)
+        endpointQuotientSubsingleton q r
+  let loopQuotientElementCollapse :
+      ∀ q r : Path.Homotopic.Quotient basepoint basepoint, q = r :=
+    fun q r =>
+      @Subsingleton.elim
+        (Path.Homotopic.Quotient basepoint basepoint)
+        loopQuotientSubsingleton q r
+  let chosenPathHomotopyCollapse :
+      ∀ η : Path basepoint target, Path.Homotopic chosenPath η :=
+    fun η => hchosenHomotopic.trans (hendpointUnique η)
+  let endpointPathHomotopyCollapse :
+      ∀ η ζ : Path basepoint target, Path.Homotopic η ζ :=
+    fun η ζ => (chosenPathHomotopyCollapse η).symm.trans
+      (chosenPathHomotopyCollapse ζ)
+  exact
+    ⟨projectStatement,
+      checkedCertificate,
+      extinction,
+      pathData,
+      endpointData,
+      finalHomeomorphismProjector,
+      finalHomeomorphismPayloadData,
+      endpointQuotientSubsingleton,
+      endpointQuotientElementCollapse,
+      loopQuotientSubsingleton,
+      loopQuotientElementCollapse,
+      endpointPathHomotopyCollapse,
+      allLoopFromPathCollapse⟩
+
+/-- Theorem contract for `conditional_root_projector_endpoint_and_loop_quotient_element_collapse_of_equation_boundary_dependencies`. -/
+theorem conditional_root_projector_endpoint_and_loop_quotient_element_collapse_of_equation_boundary_dependencies_eq :
+    @Poincare.conditional_root_projector_endpoint_and_loop_quotient_element_collapse_of_equation_boundary_dependencies =
+      @Poincare.conditional_root_projector_endpoint_and_loop_quotient_element_collapse_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
