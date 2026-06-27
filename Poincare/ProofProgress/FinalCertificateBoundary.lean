@@ -33446,4 +33446,79 @@ theorem dependency_only_reserved_canonical_project_completion_family_equivalence
       @Poincare.dependency_only_reserved_canonical_project_completion_family_equivalence_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved completion family route collapse.
+
+This identifies the direct reserved completion-criterion family with both
+opened payload-completion families from the same checked certificate, so final
+consumers can use any of the three routes without another payload destruct.
+-/
+theorem dependency_only_reserved_completion_family_routes_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ canonicalPayloadCompletion :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ projectPayloadCompletion :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ canonicalPayload :
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ projectPayload :
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ certificate : PoincareCompletionCertificate.{u},
+      completionCriterionFamily = canonicalPayloadCompletion ∧
+      completionCriterionFamily = projectPayloadCompletion ∧
+      (∀ witness : Type u,
+        completionCriterionFamily witness =
+          dependency_only_reserved_completionCriterionAtUniverse_of_equation_boundary_dependencies
+            dependencies witness) ∧
+      canonicalPayload =
+        canonical_completion_payload_of_completion_certificate certificate ∧
+      projectPayload =
+        poincare_completion_payload_of_completion_certificate certificate ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies := by
+  rcases
+      dependency_only_reserved_canonical_project_completion_family_equivalence_of_equation_boundary_dependencies
+        dependencies with
+    ⟨canonicalPayload, _canonicalPayloadTarget, canonicalPayloadCompletion,
+      projectPayload, _projectPayloadTarget, projectPayloadCompletion,
+      certificate, _hCanonicalPayloadComponents, _hProjectPayloadComponents,
+      hCanonicalPayload, hProjectPayload, hCertificate,
+      hCanonicalProjectCompletionFamily, _hCanonicalProjectCompletionPointwise⟩
+  let completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    fun witness =>
+      dependency_only_reserved_completionCriterionAtUniverse_of_equation_boundary_dependencies
+        dependencies witness
+  have hCompletionCanonical :
+      completionCriterionFamily = canonicalPayloadCompletion := by
+    funext witness
+    apply Subsingleton.elim
+  have hCompletionProject :
+      completionCriterionFamily = projectPayloadCompletion :=
+    hCompletionCanonical.trans hCanonicalProjectCompletionFamily
+  have hCompletionReserved :
+      ∀ witness : Type u,
+        completionCriterionFamily witness =
+          dependency_only_reserved_completionCriterionAtUniverse_of_equation_boundary_dependencies
+            dependencies witness := by
+    intro witness
+    rfl
+  exact
+    ⟨completionCriterionFamily, canonicalPayloadCompletion,
+      projectPayloadCompletion, canonicalPayload, projectPayload, certificate,
+      hCompletionCanonical, hCompletionProject, hCompletionReserved,
+      hCanonicalPayload, hProjectPayload, hCertificate⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_completion_family_routes_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_completion_family_routes_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_completion_family_routes_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_completion_family_routes_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
