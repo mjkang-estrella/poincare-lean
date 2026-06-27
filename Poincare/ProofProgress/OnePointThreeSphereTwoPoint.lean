@@ -116,4 +116,81 @@ theorem onePoint_threeSpace_twoPointComplement_chart_path_loop_projection_bundle
       @Poincare.onePoint_threeSpace_twoPointComplement_chart_path_loop_projection_bundle :=
   rfl
 
+/--
+The one-point compactification two-puncture model exposes both its explicit
+homeomorphism to the corresponding standard `ThreeSphere` two-puncture
+complement and its transported punctured-Euclidean chart/path-loop projection
+payload.
+-/
+theorem onePoint_threeSpace_twoPointComplement_threeSphere_homeomorph_and_chart_path_loop_projection_bundle
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint target :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    Nonempty
+      ((({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere)) ∧
+      ∃ puncture : EuclideanSpace ℝ (Fin 3),
+        ∃ chart :
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+              ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+          ∃ pathData :
+              PointedPathComponentPathData
+                (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                basepoint,
+            ∃ endpointData :
+                PointedChosenPathEndpointData
+                  (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                  basepoint target,
+              ∃ canonicalPath : Path basepoint target,
+                (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+                  Nonempty
+                    (({p} ∪ {q})ᶜ :
+                      Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+                  PathConnectedSpace
+                    (({p} ∪ {q})ᶜ :
+                      Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+                  SimplyConnectedSpace
+                    (({p} ∪ {q})ᶜ :
+                      Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+                  pathData.path_to target = canonicalPath ∧
+                  endpointData.path = canonicalPath ∧
+                  canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+                  Joined basepoint target ∧
+                  pathComponent basepoint = Set.univ ∧
+                  Path.Homotopic chosenPath canonicalPath ∧
+                  (⟦chosenPath⟧ :
+                    Path.Homotopic.Quotient basepoint target) =
+                    ⟦canonicalPath⟧ ∧
+                  (∀ η : Path basepoint target,
+                    Path.Homotopic canonicalPath η) ∧
+                  Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+                  loop 0 = basepoint ∧ loop 1 = basepoint ∧
+                  Path.Homotopic loop (Path.refl basepoint) ∧
+                  FundamentalGroup.fromPath
+                      (⟦loop⟧ :
+                        Path.Homotopic.Quotient basepoint basepoint) =
+                    FundamentalGroup.fromPath
+                      (⟦Path.refl basepoint⟧ :
+                        Path.Homotopic.Quotient basepoint basepoint) ∧
+                  Subsingleton
+                    (HomotopyGroup.Pi 1
+                      (({p} ∪ {q})ᶜ :
+                        Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                      basepoint) := by
+  exact
+    ⟨⟨onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp⟩,
+      onePoint_threeSpace_twoPointComplement_chart_path_loop_projection_bundle
+        hqp basepoint target chosenPath loop⟩
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_threeSphere_homeomorph_and_chart_path_loop_projection_bundle`. -/
+theorem onePoint_threeSpace_twoPointComplement_threeSphere_homeomorph_and_chart_path_loop_projection_bundle_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_threeSphere_homeomorph_and_chart_path_loop_projection_bundle =
+      @Poincare.onePoint_threeSpace_twoPointComplement_threeSphere_homeomorph_and_chart_path_loop_projection_bundle :=
+  rfl
+
 end Poincare
