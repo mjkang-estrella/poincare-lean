@@ -390,6 +390,117 @@ theorem target_finite_extinction_sweepout_interface_bundle_of_surgery_package_pa
     package
 
 /--
+A package-level target sweepout certificate keeps the selected surgery package,
+the canonical target sweepout-frontier bundle it induces, and the five projected
+sweepout witnesses needed by later finite-extinction arguments.
+-/
+def TargetFiniteExtinctionSweepoutPackageCertificate
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] : Prop :=
+  ∃ n : ℕ∞ω,
+  ∃ package : FiniteExtinctionSurgeryPackage n M,
+  ∃ bundle : TargetFiniteExtinctionSweepoutInterfaceBundle M,
+    bundle =
+        target_finite_extinction_sweepout_interface_bundle_of_surgery_package
+          package ∧
+    HasFiniteExtinctionSweepoutExistence M
+        finite_extinction_fundamental_group_input_of_target ∧
+    HasFiniteExtinctionSweepoutParameterSpace M
+        finite_extinction_fundamental_group_input_of_target ∧
+    HasFiniteExtinctionSweepoutContinuity M
+        finite_extinction_fundamental_group_input_of_target
+        (finite_extinction_sweepout_existence_of_interface_bundle bundle) ∧
+    HasFiniteExtinctionSweepoutAreaBound M
+        finite_extinction_fundamental_group_input_of_target
+        (finite_extinction_sweepout_existence_of_interface_bundle bundle) ∧
+    HasFiniteExtinctionSweepoutNontriviality M
+        finite_extinction_fundamental_group_input_of_target
+        (finite_extinction_sweepout_existence_of_interface_bundle bundle)
+
+/--
+The package-level target sweepout certificate is exactly a selected surgery
+package, its canonical target sweepout-frontier bundle, and the projected
+sweepout witness stack.
+-/
+theorem TargetFiniteExtinctionSweepoutPackageCertificate_eq
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    TargetFiniteExtinctionSweepoutPackageCertificate M =
+      (∃ n : ℕ∞ω,
+      ∃ package : FiniteExtinctionSurgeryPackage n M,
+      ∃ bundle : TargetFiniteExtinctionSweepoutInterfaceBundle M,
+        bundle =
+            target_finite_extinction_sweepout_interface_bundle_of_surgery_package
+              package ∧
+        HasFiniteExtinctionSweepoutExistence M
+            finite_extinction_fundamental_group_input_of_target ∧
+        HasFiniteExtinctionSweepoutParameterSpace M
+            finite_extinction_fundamental_group_input_of_target ∧
+        HasFiniteExtinctionSweepoutContinuity M
+            finite_extinction_fundamental_group_input_of_target
+            (finite_extinction_sweepout_existence_of_interface_bundle bundle) ∧
+        HasFiniteExtinctionSweepoutAreaBound M
+            finite_extinction_fundamental_group_input_of_target
+            (finite_extinction_sweepout_existence_of_interface_bundle bundle) ∧
+        HasFiniteExtinctionSweepoutNontriviality M
+            finite_extinction_fundamental_group_input_of_target
+            (finite_extinction_sweepout_existence_of_interface_bundle bundle)) :=
+  rfl
+
+/--
+The finite-extinction package-layer requirement yields a reusable target
+sweepout certificate: the selected surgery package, its transported target
+bundle, and the bundle's existence, parameter-space, continuity, area-bound, and
+nontriviality projections.
+-/
+theorem target_finite_extinction_sweepout_package_certificate_of_finiteExtinctionPackage_requirement
+    (requirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    TargetFiniteExtinctionSweepoutPackageCertificate M := by
+  rcases requirement M with ⟨⟨n, package⟩⟩
+  let bundle :=
+    target_finite_extinction_sweepout_interface_bundle_of_surgery_package
+      package
+  exact ⟨n, package, bundle, rfl,
+    finite_extinction_sweepout_existence_of_interface_bundle bundle,
+    finite_extinction_sweepout_parameter_space_of_interface_bundle bundle,
+    finite_extinction_sweepout_continuity_of_interface_bundle bundle,
+    finite_extinction_sweepout_area_bound_of_interface_bundle bundle,
+    finite_extinction_sweepout_nontriviality_of_interface_bundle bundle⟩
+
+/--
+The package-layer target sweepout certificate theorem has the constructor shape
+that destructures the selected package and projects its transported bundle.
+-/
+theorem target_finite_extinction_sweepout_package_certificate_of_finiteExtinctionPackage_requirement_eq
+    (requirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    target_finite_extinction_sweepout_package_certificate_of_finiteExtinctionPackage_requirement
+        requirement M =
+      (by
+        rcases requirement M with ⟨⟨n, package⟩⟩
+        let bundle :=
+          target_finite_extinction_sweepout_interface_bundle_of_surgery_package
+            package
+        exact ⟨n, package, bundle, rfl,
+          finite_extinction_sweepout_existence_of_interface_bundle bundle,
+          finite_extinction_sweepout_parameter_space_of_interface_bundle bundle,
+          finite_extinction_sweepout_continuity_of_interface_bundle bundle,
+          finite_extinction_sweepout_area_bound_of_interface_bundle bundle,
+          finite_extinction_sweepout_nontriviality_of_interface_bundle bundle⟩) := by
+  apply Subsingleton.elim
+
+/--
 Pointwise crosswalk form: the finite-extinction package-layer requirement
 discharges the target sweepout-frontier bundle for each target manifold.
 -/
@@ -403,6 +514,59 @@ theorem target_finite_extinction_sweepout_interface_bundle_of_finiteExtinctionPa
     TargetFiniteExtinctionSweepoutInterfaceBundle M :=
   target_finite_extinction_sweepout_interface_bundle_of_surgery_package_payload
     (requirement M)
+
+/--
+The finite-extinction package-layer requirement supplies both the package
+certificate and the crosswalk target sweepout bundle, with all five target
+sweepout projections available from the same bundle.
+-/
+theorem target_finite_extinction_sweepout_certificate_and_interface_projection_bundle_of_finiteExtinctionPackage_requirement
+    (requirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ certificate : TargetFiniteExtinctionSweepoutPackageCertificate M,
+    ∃ bundle : TargetFiniteExtinctionSweepoutInterfaceBundle M,
+      certificate =
+          target_finite_extinction_sweepout_package_certificate_of_finiteExtinctionPackage_requirement
+            requirement M ∧
+      bundle =
+          target_finite_extinction_sweepout_interface_bundle_of_finiteExtinctionPackage_requirement
+            requirement M ∧
+      HasFiniteExtinctionSweepoutExistence M
+          finite_extinction_fundamental_group_input_of_target ∧
+      HasFiniteExtinctionSweepoutParameterSpace M
+          finite_extinction_fundamental_group_input_of_target ∧
+      HasFiniteExtinctionSweepoutContinuity M
+          finite_extinction_fundamental_group_input_of_target
+          (finite_extinction_sweepout_existence_of_interface_bundle bundle) ∧
+      HasFiniteExtinctionSweepoutAreaBound M
+          finite_extinction_fundamental_group_input_of_target
+          (finite_extinction_sweepout_existence_of_interface_bundle bundle) ∧
+      HasFiniteExtinctionSweepoutNontriviality M
+          finite_extinction_fundamental_group_input_of_target
+          (finite_extinction_sweepout_existence_of_interface_bundle bundle) := by
+  let certificate :=
+    target_finite_extinction_sweepout_package_certificate_of_finiteExtinctionPackage_requirement
+      requirement M
+  let bundle :=
+    target_finite_extinction_sweepout_interface_bundle_of_finiteExtinctionPackage_requirement
+      requirement M
+  exact
+    ⟨certificate, bundle, rfl, rfl,
+      finite_extinction_sweepout_existence_of_interface_bundle bundle,
+      finite_extinction_sweepout_parameter_space_of_interface_bundle bundle,
+      finite_extinction_sweepout_continuity_of_interface_bundle bundle,
+      finite_extinction_sweepout_area_bound_of_interface_bundle bundle,
+      finite_extinction_sweepout_nontriviality_of_interface_bundle bundle⟩
+
+/-- Theorem contract for `target_finite_extinction_sweepout_certificate_and_interface_projection_bundle_of_finiteExtinctionPackage_requirement`. -/
+theorem target_finite_extinction_sweepout_certificate_and_interface_projection_bundle_of_finiteExtinctionPackage_requirement_eq :
+    @Poincare.target_finite_extinction_sweepout_certificate_and_interface_projection_bundle_of_finiteExtinctionPackage_requirement =
+      @Poincare.target_finite_extinction_sweepout_certificate_and_interface_projection_bundle_of_finiteExtinctionPackage_requirement :=
+  rfl
 
 /--
 The target sweepout-frontier bundle is exactly what is still missing for the
