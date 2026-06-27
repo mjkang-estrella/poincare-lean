@@ -29360,4 +29360,168 @@ theorem dependency_only_reserved_certificate_payload_application_final_map_coher
       @Poincare.dependency_only_reserved_certificate_payload_application_final_map_coherence_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only certificate-aware payload coherence with full map data.
+
+This strengthens the certificate-aware payload/application endpoint by keeping
+all recognition-facing topological data of the selected project and literal
+mathlib final homeomorphisms: open and closed map properties, inducing and
+embedding data, bijectivity, continuity of forward and inverse maps, and
+two-sided inverse laws.  The certificate and payload identities remain present
+in the same theorem.
+-/
+theorem dependency_only_reserved_certificate_payload_full_final_map_coherence_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ canonicalPayload :
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ canonicalPayloadTarget : canonicalCompletionTarget.{u},
+    ∃ canonicalPayloadCompletion :
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ projectPayload :
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ projectPayloadTarget : PoincareConjectureStatement.{u},
+    ∃ projectPayloadCompletion :
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ mathlibTarget : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ canonicalTarget : canonicalCompletionTarget.{u},
+    ∃ projectTarget : PoincareConjectureStatement.{u},
+      canonicalPayload =
+        canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      projectPayload =
+        poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      canonicalPayload = ⟨canonicalPayloadTarget, canonicalPayloadCompletion⟩ ∧
+      projectPayload = ⟨projectPayloadTarget, projectPayloadCompletion⟩ ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      canonical_completion_payload_of_completion_certificate certificate =
+        canonical_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      poincare_completion_payload_of_completion_certificate certificate =
+        poincare_completion_payload_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      canonicalPayloadTarget = canonicalTarget ∧
+      projectPayloadTarget = projectTarget ∧
+      canonicalPayloadCompletion = projectPayloadCompletion ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+        ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+        ∃ mathlibHomeomorphism :
+          M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+          projectPayloadTarget M = (⟨projectHomeomorphism⟩ :
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+          mathlibTarget M = (⟨mathlibHomeomorphism⟩ :
+            Nonempty
+              (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) ∧
+          projectHomeomorphism = mathlibHomeomorphism ∧
+          IsOpenMap projectHomeomorphism ∧
+          IsOpenMap mathlibHomeomorphism ∧
+          IsClosedMap projectHomeomorphism ∧
+          IsClosedMap mathlibHomeomorphism ∧
+          Topology.IsInducing projectHomeomorphism ∧
+          Topology.IsInducing mathlibHomeomorphism ∧
+          Topology.IsEmbedding projectHomeomorphism ∧
+          Topology.IsEmbedding mathlibHomeomorphism ∧
+          Function.Bijective projectHomeomorphism ∧
+          Function.Bijective mathlibHomeomorphism ∧
+          Continuous projectHomeomorphism ∧
+          Continuous mathlibHomeomorphism ∧
+          Continuous projectHomeomorphism.symm ∧
+          Continuous mathlibHomeomorphism.symm ∧
+          Function.LeftInverse projectHomeomorphism.symm projectHomeomorphism ∧
+          Function.RightInverse projectHomeomorphism.symm projectHomeomorphism ∧
+          Function.LeftInverse mathlibHomeomorphism.symm mathlibHomeomorphism ∧
+          Function.RightInverse mathlibHomeomorphism.symm mathlibHomeomorphism ∧
+          ∃ completionCriterion : CompletionCriterionAtUniverse M,
+            projectPayloadCompletion M = completionCriterion) := by
+  rcases
+      dependency_only_reserved_certificate_payload_application_final_map_coherence_of_equation_boundary_dependencies
+        dependencies with
+    ⟨canonicalPayload, canonicalPayloadTarget, canonicalPayloadCompletion,
+      projectPayload, projectPayloadTarget, projectPayloadCompletion,
+      mathlibTarget, certificate, canonicalTarget, projectTarget,
+      hCanonicalPayload_eq, hProjectPayload_eq, hCanonicalPayload_components,
+      hProjectPayload_components, hCertificate, hCanonicalPayload,
+      hProjectPayload, hCanonicalTarget, hProjectTarget, hCompletionTargets,
+      _shortFinalMaps⟩
+  rcases
+      dependency_only_reserved_payload_application_final_map_coherence_of_equation_boundary_dependencies
+        dependencies with
+    ⟨_applicationProjectTarget, _applicationMathlibTarget,
+      _applicationCompletion, fullFinalMaps, _universalCompletion⟩
+  refine
+    ⟨canonicalPayload,
+      canonicalPayloadTarget,
+      canonicalPayloadCompletion,
+      projectPayload,
+      projectPayloadTarget,
+      projectPayloadCompletion,
+      mathlibTarget,
+      certificate,
+      canonicalTarget,
+      projectTarget,
+      hCanonicalPayload_eq,
+      hProjectPayload_eq,
+      hCanonicalPayload_components,
+      hProjectPayload_components,
+      hCertificate,
+      hCanonicalPayload,
+      hProjectPayload,
+      hCanonicalTarget,
+      hProjectTarget,
+      hCompletionTargets,
+      ?_⟩
+  intro M _ _ _ _ _
+  rcases fullFinalMaps M with
+    ⟨projectHomeomorphism, mathlibHomeomorphism, hProjectApplication,
+      hMathlibApplication, hHomeomorphism, hProjectOpen, hMathlibOpen,
+      hProjectClosed, hMathlibClosed, hProjectInducing, hMathlibInducing,
+      hProjectEmbedding, hMathlibEmbedding, hProjectBijective,
+      hMathlibBijective, hProjectContinuous, hMathlibContinuous,
+      hProjectSymmContinuous, hMathlibSymmContinuous, hProjectLeftInverse,
+      hProjectRightInverse, hMathlibLeftInverse, hMathlibRightInverse,
+      completionCriterion, hCompletionApplication⟩
+  have hProjectCompletionApplication :
+      projectPayloadCompletion M = completionCriterion := by
+    apply Subsingleton.elim
+  exact
+    ⟨projectHomeomorphism,
+      mathlibHomeomorphism,
+      hProjectApplication,
+      hMathlibApplication,
+      hHomeomorphism,
+      hProjectOpen,
+      hMathlibOpen,
+      hProjectClosed,
+      hMathlibClosed,
+      hProjectInducing,
+      hMathlibInducing,
+      hProjectEmbedding,
+      hMathlibEmbedding,
+      hProjectBijective,
+      hMathlibBijective,
+      hProjectContinuous,
+      hMathlibContinuous,
+      hProjectSymmContinuous,
+      hMathlibSymmContinuous,
+      hProjectLeftInverse,
+      hProjectRightInverse,
+      hMathlibLeftInverse,
+      hMathlibRightInverse,
+      completionCriterion,
+      hProjectCompletionApplication⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_certificate_payload_full_final_map_coherence_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_certificate_payload_full_final_map_coherence_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_certificate_payload_full_final_map_coherence_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_certificate_payload_full_final_map_coherence_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
