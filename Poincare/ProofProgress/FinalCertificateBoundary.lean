@@ -1161,6 +1161,107 @@ theorem completion_certificate_project_payload_reconstruction_of_remainingDepend
   rfl
 
 /--
+Unpacked project-statement payload of the reconstructed grounded terminal
+certificate.  This exposes the reserved theorem name, dependency payload,
+project statement, and completion criterion carried by the certificate's
+project payload, and records that the final statement obtained from the
+reconstructed nonempty certificate lands on the same project statement surface.
+-/
+theorem final_statement_project_payload_of_grounded_terminal_certificate_reconstruction
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ primitiveInputs : FinalCertificatePrimitiveInputs.{u},
+    ∃ packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ certificateProjectPayload :
+      (∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        PoincareConjectureStatement.{u} ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ reconstructedCertificate : PoincareCompletionCertificate.{u},
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u},
+    ∃ finalStatement : PoincareConjectureStatement.{u},
+    ∃ theoremName : String,
+    ∃ projectDependencies : PoincareProofDependencies.{u},
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ projectCompletion :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ hTheoremName : theoremName = "poincare_conjecture",
+      packageRequirement =
+        (grounded_universal_finite_extinction_package_statement_terminal_full_equality_payload
+          grounded M).2.1 ∧
+      certificate =
+        completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+          dependencies primitiveInputs ∧
+      certificateProjectPayload =
+        ⟨theoremName, hTheoremName, projectDependencies, projectStatement,
+          projectCompletion⟩ ∧
+      reconstructedCertificate = certificate ∧
+      nonemptyCertificate =
+        nonempty_completion_certificate_of_project_statement_payload
+          certificateProjectPayload ∧
+      finalStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      finalStatement = projectStatement ∧
+      projectCompletion =
+        (poincareCompletionCertificate_project_statement_payload
+          reconstructedCertificate).choose_spec.2.2.2 := by
+  rcases
+      completion_certificate_project_payload_reconstruction_of_remainingDependencyPackage_and_grounded_terminal_package_payload
+        dependencies smoothability grounded topologyStatement M with
+    ⟨primitiveInputs, packageRequirement, certificate,
+      certificateProjectPayload, reconstructedCertificate,
+      nonemptyCertificate, finalStatement, hPackageRequirement,
+      hCertificate, hCertificateProjectPayload, _hReconstructedCertificate,
+      hReconstructedCertificate_eq, hNonemptyCertificate,
+      hReconstructedProjectPayload, hFinalStatement,
+      _hFinalStatementCertificate⟩
+  rcases hPayload : certificateProjectPayload with
+    ⟨theoremName, hTheoremName, projectDependencies, projectStatement,
+      projectCompletion⟩
+  have hCertificateProjectPayloadUnpacked :
+      certificateProjectPayload =
+        ⟨theoremName, hTheoremName, projectDependencies, projectStatement,
+          projectCompletion⟩ := by
+    exact hPayload
+  have hFinalStatementProject :
+      finalStatement = projectStatement := by
+    apply Subsingleton.elim
+  have hProjectCompletion :
+      projectCompletion =
+        (poincareCompletionCertificate_project_statement_payload
+          reconstructedCertificate).choose_spec.2.2.2 := by
+    rw [hReconstructedProjectPayload]
+  exact
+    ⟨primitiveInputs, packageRequirement, certificate,
+      certificateProjectPayload, reconstructedCertificate,
+      nonemptyCertificate, finalStatement, theoremName, projectDependencies,
+      projectStatement, projectCompletion, hTheoremName,
+      hPackageRequirement, hCertificate, hCertificateProjectPayloadUnpacked,
+      hReconstructedCertificate_eq, hNonemptyCertificate, hFinalStatement,
+      hFinalStatementProject,
+      hProjectCompletion⟩
+
+/-- Theorem contract for
+`final_statement_project_payload_of_grounded_terminal_certificate_reconstruction`. -/
+theorem final_statement_project_payload_of_grounded_terminal_certificate_reconstruction_eq :
+    @Poincare.final_statement_project_payload_of_grounded_terminal_certificate_reconstruction =
+      @Poincare.final_statement_project_payload_of_grounded_terminal_certificate_reconstruction :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
