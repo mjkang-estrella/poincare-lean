@@ -218,6 +218,159 @@ theorem finalCertificateSubobligationInputs_of_grounded_certificates_with_packag
   rfl
 
 /--
+The grounded final-certificate subobligation boundary also carries the terminal
+finite-extinction production certificate, its time-bound and derivation data,
+and the source equalities that identify the terminal conclusion with the
+production certificate.  This exposes the terminal half of the grounded package
+payload at the final-certificate boundary.
+-/
+theorem finalCertificateSubobligationInputs_of_grounded_certificates_with_terminal_production_source_witness
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ inputs : FinalCertificateSubobligationInputs.{u},
+      (inputs =
+        finalCertificateSubobligationInputs_of_smoothability_and_grounded_certificates
+          smoothability grounded) ∧
+        ((inputs.smoothability = smoothability) ∧
+          ((inputs.finiteExtinctionSubobligations =
+            finalAssemblyFiniteExtinctionSubobligationFamily_of_grounded_certificates
+              grounded) ∧
+            (∃ n : ℕ∞ω,
+            ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+            ∃ analyticFoundation :
+              RicciFlowAnalyticFoundationPackage
+                ThreeManifoldModelWithCorners n M,
+            ∃ surgeryConstruction :
+              RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+                (ricci_flow_data_of_analytic_foundation_package
+                  analyticFoundation),
+            ∃ perelmanControl :
+              PerelmanSingularityControlPackage (n := n) (M := M)
+                (ricci_flow_data_of_analytic_foundation_package
+                  analyticFoundation),
+            ∃ widthStatement :
+              FiniteExtinctionWidthSubobligationsStatement
+                (ricci_flow_data_of_analytic_foundation_package
+                  analyticFoundation)
+                surgeryConstruction.withSurgery perelmanControl.control,
+            ∃ curvatureFrontier :
+              FiniteExtinctionProductionCurvatureFrontier
+                analyticFoundation surgeryConstruction perelmanControl,
+            ∃ volumeFrontier :
+              FiniteExtinctionProductionVolumeEvolutionFrontier
+                analyticFoundation surgeryConstruction perelmanControl
+                curvatureFrontier,
+            ∃ surgeryVolumeFrontier :
+              FiniteExtinctionProductionSurgeryVolumeFrontier
+                analyticFoundation surgeryConstruction perelmanControl
+                curvatureFrontier volumeFrontier,
+            ∃ scalarCurvatureFrontier :
+              FiniteExtinctionProductionScalarCurvatureFrontier
+                analyticFoundation surgeryConstruction perelmanControl
+                curvatureFrontier volumeFrontier surgeryVolumeFrontier,
+            ∃ volumeDifferentialFrontier :
+              FiniteExtinctionProductionVolumeDifferentialFrontier
+                analyticFoundation surgeryConstruction perelmanControl
+                curvatureFrontier volumeFrontier surgeryVolumeFrontier
+                scalarCurvatureFrontier,
+            ∃ productionCertificate :
+              FiniteExtinctionByRicciFlowWithSurgeryProductionCertificate M,
+            ∃ terminalFiniteExtinction :
+              FiniteExtinctionByRicciFlowWithSurgery M,
+            ∃ timeBound :
+              HasFiniteExtinctionTimeBound
+                (ricci_flow_data_of_analytic_foundation_package
+                  analyticFoundation)
+                surgeryConstruction.withSurgery perelmanControl.control
+                curvatureFrontier.curvaturePinching
+                curvatureFrontier.componentControl,
+            ∃ derivation :
+              HasFiniteExtinctionDerivation
+                (ricci_flow_data_of_analytic_foundation_package
+                  analyticFoundation)
+                surgeryConstruction.withSurgery perelmanControl.control,
+            ∃ source :
+              FiniteExtinctionConclusionDerivationSource
+                (ricci_flow_data_of_analytic_foundation_package
+                  analyticFoundation)
+                surgeryConstruction.withSurgery perelmanControl.control
+                curvatureFrontier.curvaturePinching
+                curvatureFrontier.componentControl timeBound derivation
+                terminalFiniteExtinction,
+              productionCertificate =
+                finite_extinction_production_certificate_of_volume_differential_frontier
+                  analyticFoundation surgeryConstruction perelmanControl
+                  widthStatement curvatureFrontier volumeFrontier
+                  surgeryVolumeFrontier scalarCurvatureFrontier
+                  volumeDifferentialFrontier ∧
+              terminalFiniteExtinction =
+                FiniteExtinctionByRicciFlowWithSurgery.of_production_certificate
+                  productionCertificate ∧
+              timeBound =
+                finite_extinction_time_bound_of_volume_differential_frontier
+                  analyticFoundation surgeryConstruction perelmanControl
+                  curvatureFrontier volumeFrontier surgeryVolumeFrontier
+                  scalarCurvatureFrontier volumeDifferentialFrontier ∧
+              derivation =
+                finite_extinction_derivation_of_width_statement
+                  analyticFoundation surgeryConstruction perelmanControl
+                  widthStatement ∧
+              source.conclusionCertificate = productionCertificate ∧
+              FiniteExtinctionByRicciFlowWithSurgery.of_production_certificate
+                source.conclusionCertificate = terminalFiniteExtinction ∧
+              Nonempty
+                (FiniteExtinctionTimeBoundSource
+                  (ricci_flow_data_of_analytic_foundation_package
+                    analyticFoundation)
+                  surgeryConstruction.withSurgery perelmanControl.control
+                  curvatureFrontier.curvaturePinching
+                  curvatureFrontier.componentControl) ∧
+              Nonempty
+                (FiniteExtinctionDerivationSource
+                  (ricci_flow_data_of_analytic_foundation_package
+                    analyticFoundation)
+                  surgeryConstruction.withSurgery perelmanControl.control)))) := by
+  let inputs :=
+    finalCertificateSubobligationInputs_of_smoothability_and_grounded_certificates
+      smoothability grounded
+  rcases
+      grounded_universal_finite_extinction_package_statement_terminal_full_equality_payload
+        grounded M with
+    ⟨_universalStatement, _packageRequirement, _packageWitness,
+      _packageWitnessNonempty, _packageOutput, _packageStatement,
+      _packageFiniteExtinction, n, smooth, analyticFoundation,
+      surgeryConstruction, perelmanControl, widthStatement, curvatureFrontier,
+      volumeFrontier, surgeryVolumeFrontier, scalarCurvatureFrontier,
+      volumeDifferentialFrontier, productionCertificate,
+      terminalFiniteExtinction, timeBound, derivation, source,
+      _packageStatementEq, _packageFiniteExtinctionEq, productionEq,
+      terminalFiniteExtinctionEq, timeBoundEq, derivationEq,
+      sourceCertificateEq, sourceConclusionEq, timeBoundSource,
+      derivationSource⟩
+  exact
+    ⟨inputs, rfl, rfl, rfl, n, smooth, analyticFoundation,
+      surgeryConstruction, perelmanControl, widthStatement, curvatureFrontier,
+      volumeFrontier, surgeryVolumeFrontier, scalarCurvatureFrontier,
+      volumeDifferentialFrontier, productionCertificate,
+      terminalFiniteExtinction, timeBound, derivation, source, productionEq,
+      terminalFiniteExtinctionEq, timeBoundEq, derivationEq,
+      sourceCertificateEq, sourceConclusionEq, timeBoundSource,
+      derivationSource⟩
+
+/-- Theorem contract for
+`finalCertificateSubobligationInputs_of_grounded_certificates_with_terminal_production_source_witness`. -/
+theorem finalCertificateSubobligationInputs_of_grounded_certificates_with_terminal_production_source_witness_eq :
+    @Poincare.finalCertificateSubobligationInputs_of_grounded_certificates_with_terminal_production_source_witness =
+      @Poincare.finalCertificateSubobligationInputs_of_grounded_certificates_with_terminal_production_source_witness :=
+  rfl
+
+/--
 Primitive named input for the canonical completion route after the production
 packages have already assembled finite extinction for topological targets.
 -/
