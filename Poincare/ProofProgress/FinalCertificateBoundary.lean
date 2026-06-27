@@ -30807,4 +30807,164 @@ theorem dependency_only_canonical_reserved_theorem_selected_finite_extinction_de
       @Poincare.dependency_only_canonical_reserved_theorem_selected_finite_extinction_derivation_spine_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only canonical reserved-theorem endpoint with the selected
+post-extinction recognition tail opened through the topology package.
+
+This exposes the prime-decomposition, irreducibility, connected-sum collapse,
+spherical-space-form reduction, deck-group triviality, simply-connected
+recognition, and final homeomorphism extraction fields for the selected
+finite-extinction proof.
+-/
+theorem dependency_only_canonical_reserved_theorem_selected_topology_recognition_tail_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ theoremName : String,
+    ∃ n : ℕ∞ω,
+    ∃ ordinaryPackage : FiniteExtinctionSurgeryPackage n M,
+    ∃ finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+    ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ primeDecomposition :
+      HasExtinctionPrimeDecomposition M finiteExtinction
+        (topologyPackage.decomposition M finiteExtinction),
+    ∃ irreducibility :
+      HasExtinctionIrreducibility M finiteExtinction
+        (topologyPackage.decomposition M finiteExtinction)
+        (topologyPackage.primeDecomposition M finiteExtinction),
+    ∃ connectedSumCollapse :
+      HasExtinctionConnectedSumCollapse M finiteExtinction
+        (topologyPackage.decomposition M finiteExtinction)
+        (topologyPackage.primeDecomposition M finiteExtinction)
+        (topologyPackage.irreducibility M finiteExtinction),
+    ∃ sphericalSpaceFormReduction :
+      HasExtinctionSphericalSpaceFormReduction M finiteExtinction
+        (topologyPackage.decomposition M finiteExtinction)
+        (topologyPackage.primeDecomposition M finiteExtinction)
+        (topologyPackage.irreducibility M finiteExtinction)
+        (topologyPackage.connectedSumCollapse M finiteExtinction),
+    ∃ sphericalFundamentalGroup :
+      HasSphericalSpaceFormFundamentalGroupComputation M finiteExtinction
+        (topologyPackage.decomposition M finiteExtinction)
+        (topologyPackage.primeDecomposition M finiteExtinction)
+        (topologyPackage.irreducibility M finiteExtinction)
+        (topologyPackage.connectedSumCollapse M finiteExtinction)
+        (topologyPackage.sphericalSpaceFormReduction M finiteExtinction),
+    ∃ deckGroupTriviality :
+      HasSphericalSpaceFormDeckGroupTriviality M finiteExtinction
+        (topologyPackage.decomposition M finiteExtinction)
+        (topologyPackage.primeDecomposition M finiteExtinction)
+        (topologyPackage.irreducibility M finiteExtinction)
+        (topologyPackage.connectedSumCollapse M finiteExtinction)
+        (topologyPackage.sphericalSpaceFormReduction M finiteExtinction)
+        (topologyPackage.sphericalFundamentalGroup M finiteExtinction),
+    ∃ simplyConnectedRecognition :
+      HasSimplyConnectedExtinctionRecognition M finiteExtinction
+        (topologyPackage.decomposition M finiteExtinction)
+        (topologyPackage.primeDecomposition M finiteExtinction)
+        (topologyPackage.irreducibility M finiteExtinction)
+        (topologyPackage.connectedSumCollapse M finiteExtinction)
+        (topologyPackage.sphericalSpaceFormReduction M finiteExtinction)
+        (topologyPackage.sphericalFundamentalGroup M finiteExtinction)
+        (topologyPackage.deckGroupTriviality M finiteExtinction),
+    ∃ extractedHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      finiteExtinction = ordinaryPackage.finiteExtinction ∧
+      topologyPackage =
+        (dependencies_of_equation_boundary_dependencies dependencies).topology ∧
+      primeDecomposition =
+        topologyPackage.primeDecomposition M finiteExtinction ∧
+      irreducibility = topologyPackage.irreducibility M finiteExtinction ∧
+      connectedSumCollapse =
+        topologyPackage.connectedSumCollapse M finiteExtinction ∧
+      sphericalSpaceFormReduction =
+        topologyPackage.sphericalSpaceFormReduction M finiteExtinction ∧
+      sphericalFundamentalGroup =
+        topologyPackage.sphericalFundamentalGroup M finiteExtinction ∧
+      deckGroupTriviality =
+        topologyPackage.deckGroupTriviality M finiteExtinction ∧
+      simplyConnectedRecognition =
+        topologyPackage.simplyConnectedRecognition M finiteExtinction ∧
+      extractedHomeomorphism =
+        topologyPackage.extractHomeomorphism M finiteExtinction := by
+  rcases
+      dependency_only_canonical_reserved_theorem_selected_extinction_topology_data_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨theoremName, n, _equationBoundaryPackage, ordinaryPackage,
+      finiteExtinction, topologyPackage, _decomposition,
+      _surgeryTraceReconstruction, _surgeryTraceHandleCancellation,
+      _componentClassification, _recognition, hTheoremNameCanonical,
+      hTheoremNameLiteral, _hOrdinaryPackage, hFiniteExtinction,
+      hTopologyPackage, _hDecomposition, _hSurgeryTraceReconstruction,
+      _hSurgeryTraceHandleCancellation, _hComponentClassification,
+      _hRecognition⟩
+  let primeDecomposition :
+      HasExtinctionPrimeDecomposition M finiteExtinction
+        (topologyPackage.decomposition M finiteExtinction) :=
+    topologyPackage.primeDecomposition M finiteExtinction
+  let irreducibility :
+      HasExtinctionIrreducibility M finiteExtinction
+        (topologyPackage.decomposition M finiteExtinction)
+        (topologyPackage.primeDecomposition M finiteExtinction) :=
+    topologyPackage.irreducibility M finiteExtinction
+  let connectedSumCollapse :
+      HasExtinctionConnectedSumCollapse M finiteExtinction
+        (topologyPackage.decomposition M finiteExtinction)
+        (topologyPackage.primeDecomposition M finiteExtinction)
+        (topologyPackage.irreducibility M finiteExtinction) :=
+    topologyPackage.connectedSumCollapse M finiteExtinction
+  let sphericalSpaceFormReduction :
+      HasExtinctionSphericalSpaceFormReduction M finiteExtinction
+        (topologyPackage.decomposition M finiteExtinction)
+        (topologyPackage.primeDecomposition M finiteExtinction)
+        (topologyPackage.irreducibility M finiteExtinction)
+        (topologyPackage.connectedSumCollapse M finiteExtinction) :=
+    topologyPackage.sphericalSpaceFormReduction M finiteExtinction
+  let sphericalFundamentalGroup :
+      HasSphericalSpaceFormFundamentalGroupComputation M finiteExtinction
+        (topologyPackage.decomposition M finiteExtinction)
+        (topologyPackage.primeDecomposition M finiteExtinction)
+        (topologyPackage.irreducibility M finiteExtinction)
+        (topologyPackage.connectedSumCollapse M finiteExtinction)
+        (topologyPackage.sphericalSpaceFormReduction M finiteExtinction) :=
+    topologyPackage.sphericalFundamentalGroup M finiteExtinction
+  let deckGroupTriviality :
+      HasSphericalSpaceFormDeckGroupTriviality M finiteExtinction
+        (topologyPackage.decomposition M finiteExtinction)
+        (topologyPackage.primeDecomposition M finiteExtinction)
+        (topologyPackage.irreducibility M finiteExtinction)
+        (topologyPackage.connectedSumCollapse M finiteExtinction)
+        (topologyPackage.sphericalSpaceFormReduction M finiteExtinction)
+        (topologyPackage.sphericalFundamentalGroup M finiteExtinction) :=
+    topologyPackage.deckGroupTriviality M finiteExtinction
+  let simplyConnectedRecognition :
+      HasSimplyConnectedExtinctionRecognition M finiteExtinction
+        (topologyPackage.decomposition M finiteExtinction)
+        (topologyPackage.primeDecomposition M finiteExtinction)
+        (topologyPackage.irreducibility M finiteExtinction)
+        (topologyPackage.connectedSumCollapse M finiteExtinction)
+        (topologyPackage.sphericalSpaceFormReduction M finiteExtinction)
+        (topologyPackage.sphericalFundamentalGroup M finiteExtinction)
+        (topologyPackage.deckGroupTriviality M finiteExtinction) :=
+    topologyPackage.simplyConnectedRecognition M finiteExtinction
+  let extractedHomeomorphism : Nonempty (M ≃ₜ ThreeSphere) :=
+    topologyPackage.extractHomeomorphism M finiteExtinction
+  exact
+    ⟨theoremName, n, ordinaryPackage, finiteExtinction, topologyPackage,
+      primeDecomposition, irreducibility, connectedSumCollapse,
+      sphericalSpaceFormReduction, sphericalFundamentalGroup,
+      deckGroupTriviality, simplyConnectedRecognition, extractedHomeomorphism,
+      hTheoremNameCanonical, hTheoremNameLiteral, hFiniteExtinction,
+      hTopologyPackage, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩
+
+/-- Theorem contract for
+`dependency_only_canonical_reserved_theorem_selected_topology_recognition_tail_of_equation_boundary_dependencies`. -/
+theorem dependency_only_canonical_reserved_theorem_selected_topology_recognition_tail_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_canonical_reserved_theorem_selected_topology_recognition_tail_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_canonical_reserved_theorem_selected_topology_recognition_tail_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
