@@ -34119,4 +34119,72 @@ theorem dependency_only_reserved_final_statement_tuple_completion_family_of_equa
       @Poincare.dependency_only_reserved_final_statement_tuple_completion_family_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved final statement tuple with selected criterion.
+
+This specializes the final statement tuple with completion family to a selected
+witness, keeping the full family and the selected criterion synchronized with
+the direct reserved completion criterion.
+-/
+theorem dependency_only_reserved_final_statement_tuple_completionCriterion_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (witness : Type u) :
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u},
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ canonicalTarget : canonicalCompletionTarget.{u},
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ criterion : CompletionCriterionAtUniverse witness,
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      nonemptyCertificate =
+        nonempty_completion_certificate_of_completion_certificate
+          certificate ∧
+      projectStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement ∧
+      canonicalTarget =
+        canonical_completion_target_of_completion_certificate certificate ∧
+      criterion = completionCriterionFamily witness ∧
+      criterion =
+        dependency_only_reserved_completionCriterionAtUniverse_of_equation_boundary_dependencies
+          dependencies witness := by
+  rcases
+      dependency_only_reserved_final_statement_tuple_completion_family_of_equation_boundary_dependencies
+        dependencies with
+    ⟨certificate, nonemptyCertificate, projectStatement, mathlibStatement,
+      canonicalTarget, completionCriterionFamily, hCertificate,
+      hNonemptyCertificate, hProjectStatementCertificate,
+      _hProjectStatementDirect, hMathlibStatementProject,
+      _hMathlibStatementDirect, hCanonicalTarget, hCompletionReserved⟩
+  let criterion : CompletionCriterionAtUniverse witness :=
+    completionCriterionFamily witness
+  have hCriterionFamily :
+      criterion = completionCriterionFamily witness :=
+    rfl
+  have hCriterionReserved :
+      criterion =
+        dependency_only_reserved_completionCriterionAtUniverse_of_equation_boundary_dependencies
+          dependencies witness :=
+    hCriterionFamily.trans (hCompletionReserved witness)
+  exact
+    ⟨certificate, nonemptyCertificate, projectStatement, mathlibStatement,
+      canonicalTarget, completionCriterionFamily, criterion, hCertificate,
+      hNonemptyCertificate, hProjectStatementCertificate,
+      hMathlibStatementProject, hCanonicalTarget, hCriterionFamily,
+      hCriterionReserved⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_final_statement_tuple_completionCriterion_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_final_statement_tuple_completionCriterion_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_final_statement_tuple_completionCriterion_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_final_statement_tuple_completionCriterion_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
