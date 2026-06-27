@@ -1208,6 +1208,79 @@ theorem twoPointComplement_chart_path_loop_projection_bundle_of_homeomorph_to_on
   rfl
 
 /--
+The chart/path-loop projection bundle can be consumed together with the
+transported local path-connectedness instance for the same two-puncture
+complement.
+-/
+theorem twoPointComplement_locPath_chart_path_loop_projection_bundle_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      ∃ chart : (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+          ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        ∃ pathData :
+            PointedPathComponentPathData (({x} ∪ {y})ᶜ : Set M) basepoint,
+          ∃ endpointData :
+              PointedChosenPathEndpointData
+                (({x} ∪ {y})ᶜ : Set M) basepoint target,
+            ∃ canonicalPath : Path basepoint target,
+              (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+                Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+                LocPathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                pathData.path_to target = canonicalPath ∧
+                endpointData.path = canonicalPath ∧
+                canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+                Joined basepoint target ∧
+                pathComponent basepoint = Set.univ ∧
+                Path.Homotopic chosenPath canonicalPath ∧
+                (⟦chosenPath⟧ :
+                  Path.Homotopic.Quotient basepoint target) =
+                  ⟦canonicalPath⟧ ∧
+                (∀ η : Path basepoint target,
+                  Path.Homotopic canonicalPath η) ∧
+                Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+                loop 0 = basepoint ∧ loop 1 = basepoint ∧
+                Path.Homotopic loop (Path.refl basepoint) ∧
+                FundamentalGroup.fromPath
+                    (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+                  FundamentalGroup.fromPath
+                    (⟦Path.refl basepoint⟧ :
+                      Path.Homotopic.Quotient basepoint basepoint) ∧
+                Subsingleton
+                  (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  rcases
+      twoPointComplement_chart_path_loop_projection_bundle_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint target chosenPath loop with
+    ⟨puncture, chart, pathData, endpointData, canonicalPath,
+      hAvoidsPuncture, hNonempty, hPathConnected, hSimplyConnected,
+      hPathData, hEndpointPath, hSource, hTarget, hJoined, hComponent,
+      hChosenHomotopic, hChosenQuotient, hCanonicalUnique,
+      hQuotientSubsingleton, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+  exact
+    ⟨puncture, chart, pathData, endpointData, canonicalPath,
+      hAvoidsPuncture, hNonempty,
+      twoPointComplement_locPathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+        h hyx,
+      hPathConnected, hSimplyConnected, hPathData, hEndpointPath, hSource,
+      hTarget, hJoined, hComponent, hChosenHomotopic, hChosenQuotient,
+      hCanonicalUnique, hQuotientSubsingleton, hLoopSource, hLoopTarget,
+      hLoopHomotopic, hLoopFromPath, hPiOne⟩
+
+/-- Theorem contract for
+`twoPointComplement_locPath_chart_path_loop_projection_bundle_of_homeomorph_to_onePoint_threeSpace`. -/
+theorem twoPointComplement_locPath_chart_path_loop_projection_bundle_of_homeomorph_to_onePoint_threeSpace_eq :
+    @Poincare.twoPointComplement_locPath_chart_path_loop_projection_bundle_of_homeomorph_to_onePoint_threeSpace =
+      @Poincare.twoPointComplement_locPath_chart_path_loop_projection_bundle_of_homeomorph_to_onePoint_threeSpace :=
+  rfl
+
+/--
 The one-point compactification recognition route supplies the transported
 two-puncture Euclidean chart and the path/loop projection payload with the full
 topology package, including connectedness of the complement.
