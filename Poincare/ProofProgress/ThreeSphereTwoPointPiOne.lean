@@ -1304,4 +1304,76 @@ theorem threeSphere_twoPointComplement_endpointData_bidirectional_pathClass_payl
       @Poincare.threeSphere_twoPointComplement_endpointData_bidirectional_pathClass_payload :=
   rfl
 
+/--
+Target-side full-topology and local-path-connected endpoint-data certificate
+for a standard `ThreeSphere` two-puncture complement.  This packages local path
+connectedness, the ordinary topology instances, endpoint-data witnesses,
+bidirectional path-class equalities, loop endpoint equations, nullhomotopy,
+`fromPath` collapse, and `π₁` collapse at the chosen basepoint.
+-/
+theorem threeSphere_twoPointComplement_fullTopology_locPath_endpointData_bidirectional_pathClass_certificate
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (basepoint target : (({a} ∪ {b})ᶜ : Set ThreeSphere))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    LocPathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+      Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+      PathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+      ConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+      SimplyConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+      ∃ pathData :
+          PointedPathComponentPathData
+            (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint,
+        ∃ endpointData :
+            PointedChosenPathEndpointData
+              (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint target,
+          pathData.path_to target = endpointData.path ∧
+            endpointData.path 0 = basepoint ∧
+            endpointData.path 1 = target ∧
+            Joined basepoint target ∧
+            pathComponent basepoint = Set.univ ∧
+            Path.Homotopic chosenPath endpointData.path ∧
+            Path.Homotopic endpointData.path chosenPath ∧
+            (⟦chosenPath⟧ :
+              Path.Homotopic.Quotient basepoint target) =
+                ⟦endpointData.path⟧ ∧
+            (⟦endpointData.path⟧ :
+              Path.Homotopic.Quotient basepoint target) = ⟦chosenPath⟧ ∧
+            Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+            loop 0 = basepoint ∧
+            loop 1 = basepoint ∧
+            Path.Homotopic loop (Path.refl basepoint) ∧
+            FundamentalGroup.fromPath
+                (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+              FundamentalGroup.fromPath
+                (⟦Path.refl basepoint⟧ :
+                  Path.Homotopic.Quotient basepoint basepoint) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 1
+                (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint) := by
+  rcases threeSphere_twoPointComplement_topology_package hab with
+    ⟨hNonempty, hPathConnected, hConnected, hSimplyConnected⟩
+  rcases
+      threeSphere_twoPointComplement_endpointData_bidirectional_pathClass_payload
+        hab basepoint target chosenPath loop with
+    ⟨pathData, endpointData, hPathData, hEndpointSource,
+      hEndpointTarget, hJoined, hComponent, hChosenHomotopic,
+      hEndpointHomotopic, hChosenQuotient, hEndpointQuotient,
+      hQuotientSubsingleton, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+  exact
+    ⟨threeSphere_twoPointComplement_locPathConnectedSpace hab,
+      hNonempty, hPathConnected, hConnected, hSimplyConnected,
+      pathData, endpointData, hPathData, hEndpointSource, hEndpointTarget,
+      hJoined, hComponent, hChosenHomotopic, hEndpointHomotopic,
+      hChosenQuotient, hEndpointQuotient, hQuotientSubsingleton,
+      hLoopSource, hLoopTarget, hLoopHomotopic, hLoopFromPath, hPiOne⟩
+
+/-- Theorem contract for
+`threeSphere_twoPointComplement_fullTopology_locPath_endpointData_bidirectional_pathClass_certificate`. -/
+theorem threeSphere_twoPointComplement_fullTopology_locPath_endpointData_bidirectional_pathClass_certificate_eq :
+    @Poincare.threeSphere_twoPointComplement_fullTopology_locPath_endpointData_bidirectional_pathClass_certificate =
+      @Poincare.threeSphere_twoPointComplement_fullTopology_locPath_endpointData_bidirectional_pathClass_certificate :=
+  rfl
+
 end Poincare
