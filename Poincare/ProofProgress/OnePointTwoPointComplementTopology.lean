@@ -594,6 +594,90 @@ theorem onePoint_threeSpace_twoPointComplement_fullTopology_endpointData_loopCol
   rfl
 
 /--
+The two-point complement full-topology endpoint-data certificate with
+bidirectional path-class comparison for a supplied path.  This is the
+standalone two-puncture analogue of the singleton-complement payload, exposing
+the selected endpoint-data path, both path homotopies to a supplied path, both
+path-quotient equalities, loop collapse, and `π₁` collapse together with the
+local/full topology instances.
+-/
+theorem onePoint_threeSpace_twoPointComplement_fullTopology_endpointData_bidirectional_pathClass_payload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint target :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ pathData :
+        PointedPathComponentPathData
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+      ∃ endpointData :
+          PointedChosenPathEndpointData
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint target,
+        LocPathConnectedSpace
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          Nonempty
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          PathConnectedSpace
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          ConnectedSpace
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          SimplyConnectedSpace
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+          pathData.path_to target = endpointData.path ∧
+          endpointData.path 0 = basepoint ∧
+          endpointData.path 1 = target ∧
+          Joined basepoint target ∧
+          pathComponent basepoint = Set.univ ∧
+          Path.Homotopic chosenPath endpointData.path ∧
+          Path.Homotopic endpointData.path chosenPath ∧
+          (⟦chosenPath⟧ :
+            Path.Homotopic.Quotient basepoint target) =
+              ⟦endpointData.path⟧ ∧
+          (⟦endpointData.path⟧ :
+            Path.Homotopic.Quotient basepoint target) = ⟦chosenPath⟧ ∧
+          Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+          loop 0 = basepoint ∧
+          loop 1 = basepoint ∧
+          Path.Homotopic loop (Path.refl basepoint) ∧
+          FundamentalGroup.fromPath
+              (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl basepoint⟧ :
+                Path.Homotopic.Quotient basepoint basepoint) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1
+              (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              basepoint) := by
+  rcases
+      onePoint_threeSpace_twoPointComplement_fullTopology_endpointData_loopCollapse_core
+        hqp basepoint target loop with
+    ⟨pathData, endpointData, hLocPath, hNonempty, hPathConnected,
+      hConnected, hSimplyConnected, hPathData, hSource, hTarget, hJoined,
+      hComponent, hEndpointUnique, hPathQuotient, hLoopSource,
+      hLoopTarget, hLoopHomotopic, hLoopFromPath, hPiOne⟩
+  let hChosenEndpoint : Path.Homotopic chosenPath endpointData.path :=
+    onePoint_threeSpace_twoPointComplement_paths_homotopic
+      hqp chosenPath endpointData.path
+  let hEndpointChosen : Path.Homotopic endpointData.path chosenPath :=
+    hEndpointUnique chosenPath
+  exact
+    ⟨pathData, endpointData, hLocPath, hNonempty, hPathConnected,
+      hConnected, hSimplyConnected, hPathData, hSource, hTarget, hJoined,
+      hComponent, hChosenEndpoint, hEndpointChosen,
+      Quotient.sound hChosenEndpoint, Quotient.sound hEndpointChosen,
+      hPathQuotient, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+
+/-- Theorem contract for
+`onePoint_threeSpace_twoPointComplement_fullTopology_endpointData_bidirectional_pathClass_payload`. -/
+theorem onePoint_threeSpace_twoPointComplement_fullTopology_endpointData_bidirectional_pathClass_payload_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_fullTopology_endpointData_bidirectional_pathClass_payload =
+      @Poincare.onePoint_threeSpace_twoPointComplement_fullTopology_endpointData_bidirectional_pathClass_payload :=
+  rfl
+
+/--
 The selected endpoint-data path and any supplied path in the two-point
 complement of compactified three-space have the same path-homotopy class in
 both directions, while retaining loop-collapse and `π₁` evidence.
