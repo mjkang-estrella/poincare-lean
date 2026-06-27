@@ -17583,6 +17583,131 @@ theorem poincare_statement_certificate_selectedRawMap_instantiated_endpoint_fina
   rfl
 
 /--
+Instantiated selected endpoint with the selected extraction package fields.
+This keeps the statement-instantiated `ThreeSphere` endpoint, topology
+derivation, one-point endpoint, final-homeomorphism statement, selected
+topology package identity, package lift chain, extraction statement, direct
+final-payload comparison, and complete selected control chain together.
+-/
+theorem poincare_statement_certificate_selectedRawMap_instantiated_endpoint_package_fields_final_homeomorphism_and_controls_of_finalCertificateSubobligationInputs_projectionStatementChoice
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      (let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_extinctionOnePointThreeSpaceSelectedRawMapData_forwardContinuity_projectionStatementChoiceData
+          mapSelectionData selectedRawMapData forwardContinuityData
+          rawStatementChoiceData continuousStatementChoiceData
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       ∃ statementHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+       ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        ExtinctionTopologyDerivationStatement
+          M extinction statementHomeomorphism ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        ∃ assemblyPayload :
+          FinalHomeomorphismPayloadData M extinction
+            (recognitionPrefix.decomposition M extinction),
+          FinalHomeomorphismAfterDecompositionStatement.{u} ∧
+          topologyPackage =
+            extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+              surgeryTracePrefix onePointRecognition ∧
+          ExtinctionTopologyPackageLiftChainPayload
+            topologyPackage M extinction ∧
+          ExtinctionTopologyExtractionStatement.{u} ∧
+          homeomorphism_of_final_homeomorphism_payload_data
+              M extinction (recognitionPrefix.decomposition M extinction)
+              assemblyPayload =
+            homeomorphism_of_final_homeomorphism_payload_data
+              M extinction
+              (extinction_decomposition_of_topology_package
+                topologyPackage M extinction)
+              (finalHomeomorphismPayloadData_of_topology_package
+                topologyPackage M extinction) ∧
+          ExtinctionSelectedRawMapTraceCoveringDeckControlPayload
+            surgeryTracePrefix mapSelectionData selectedRawMapData
+            forwardContinuityData rawStatementChoiceData
+            continuousStatementChoiceData M extinction ∧
+          ExtinctionSelectedRawMapFinalHomeomorphismProjectorPayload
+            surgeryTracePrefix mapSelectionData selectedRawMapData
+            forwardContinuityData rawStatementChoiceData
+            continuousStatementChoiceData M extinction ∧
+          ExtinctionSelectedRawMapFullSphericalSpaceFormDerivationPayload
+            surgeryTracePrefix mapSelectionData selectedRawMapData
+            forwardContinuityData rawStatementChoiceData
+            continuousStatementChoiceData M extinction ∧
+          ExtinctionSelectedRawMapSphericalCoveringActionChainPayload
+            surgeryTracePrefix mapSelectionData selectedRawMapData
+            forwardContinuityData rawStatementChoiceData
+            continuousStatementChoiceData M extinction ∧
+          ExtinctionSelectedRawMapDeckTrivialQuotientChainPayload
+            surgeryTracePrefix mapSelectionData selectedRawMapData
+            forwardContinuityData rawStatementChoiceData
+            continuousStatementChoiceData M extinction) := by
+  rcases
+      poincare_statement_certificate_selectedRawMap_instantiated_endpoint_final_homeomorphism_and_controls_of_finalCertificateSubobligationInputs_projectionStatementChoice
+        inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData rawStatementChoiceData
+        continuousStatementChoiceData M extinction with
+    ⟨poincareStatement, checkedCertificate, statementHomeomorphism,
+      statementTopologyDerivation, onePointHomeomorphism,
+      finalHomeomorphismStatement, selectedControls, selectedProjector,
+      fullSphericalDerivation, coveringActionChain,
+      deckTrivialQuotientChain⟩
+  rcases
+      poincare_statement_certificate_selectedRawMap_final_payload_homeomorphism_comparison_of_finalCertificateSubobligationInputs_projectionStatementChoice
+        inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData rawStatementChoiceData
+        continuousStatementChoiceData M extinction with
+    ⟨_poincareStatement, _checkedCertificate, _endpointHomeomorphism,
+      topologyPackage, _endpointPackageHomeomorphism_eq,
+      _packageTopologyDerivation, _onePointHomeomorphism,
+      _finalHomeomorphismPayloadData, assemblyPayload,
+      _endpointHomeomorphism_eq, _finalHomeomorphismStatement,
+      topologyPackage_eq, topologyLiftChain, extractionStatement,
+      selectedFinalPayloads_eq, _packageFinalHomeomorphismProjector_eq,
+      _selectedControls, _selectedProjector, _fullSphericalDerivation,
+      _coveringActionChain, _deckTrivialQuotientChain⟩
+  exact
+    ⟨poincareStatement, checkedCertificate, statementHomeomorphism,
+      topologyPackage, statementTopologyDerivation, onePointHomeomorphism,
+      assemblyPayload, finalHomeomorphismStatement,
+      topologyPackage_eq, topologyLiftChain, extractionStatement,
+      selectedFinalPayloads_eq, selectedControls, selectedProjector,
+      fullSphericalDerivation, coveringActionChain,
+      deckTrivialQuotientChain⟩
+
+/-- Theorem contract for `poincare_statement_certificate_selectedRawMap_instantiated_endpoint_package_fields_final_homeomorphism_and_controls_of_finalCertificateSubobligationInputs_projectionStatementChoice`. -/
+theorem poincare_statement_certificate_selectedRawMap_instantiated_endpoint_package_fields_final_homeomorphism_and_controls_of_finalCertificateSubobligationInputs_projectionStatementChoice_eq :
+    @Poincare.poincare_statement_certificate_selectedRawMap_instantiated_endpoint_package_fields_final_homeomorphism_and_controls_of_finalCertificateSubobligationInputs_projectionStatementChoice =
+      @Poincare.poincare_statement_certificate_selectedRawMap_instantiated_endpoint_package_fields_final_homeomorphism_and_controls_of_finalCertificateSubobligationInputs_projectionStatementChoice :=
+  rfl
+
+/--
 Named final-homeomorphism projector payload. It records the actual recovered
 homeomorphism to `ThreeSphere`, the recognition and assembly payloads, the
 topology package identification, package lift chain, extraction and topology
