@@ -24132,4 +24132,61 @@ theorem conditional_root_selected_threeSphere_homeomorphism_coherence_full_termi
       @Poincare.conditional_root_selected_threeSphere_homeomorphism_coherence_full_terminal_certificate_and_poincare_payload_of_equation_boundary_dependencies :=
   rfl
 
+/--
+The full terminal selected-topology endpoint projects all the way to the
+completion criterion family carried by the checked certificate.
+
+This removes the existential wrapper around the reserved-name payload for this
+conditional route: the same endpoint now exposes the project Poincare statement
+and the concrete `CompletionCriterionAtUniverse` proof for every witness.
+-/
+theorem conditional_root_selected_threeSphere_completionCriterion_of_full_terminal_certificate_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {x y : M} (hyx : y ≠ x)
+    {a b : ({x}ᶜ : Set M)} (γ η : Path a b)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (chosenSinglePath : Path singleBase singleTarget)
+    (singleLoop : Path singleBase singleBase)
+    {c d : (({x} ∪ {y})ᶜ : Set M)} (γTwo ηTwo : Path c d)
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path twoBase twoTarget)
+    (loop : Path twoBase twoBase) :
+    PoincareConjectureStatement.{u} ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      conditional_root_selected_threeSphere_homeomorphism_coherence_full_terminal_certificate_and_poincare_payload_of_equation_boundary_dependencies
+        dependencies smoothability grounded topology smoothabilityPayload M
+        hyx γ η singleBase singleTarget chosenSinglePath singleLoop γTwo
+        ηTwo twoBase twoTarget chosenPath loop with
+    ⟨payload, projectStatement, _rootHomeomorphism, _selectedHomeomorphism,
+      _hHomeomorphism_eq, _checkedCertificate, _extinction, _pathData,
+      _endpointData, _finalHomeomorphismProjector, _decomposition,
+      _hDecompositionData, _hTrace, _hTraceData, _hFinalPayload,
+      _hOnePoint, _hSingletonChart, _chartPathLoopPayload,
+      _singleHomotopy, _singleQuotient, _singleSource,
+      _singleLoopPayload, _twoHomotopy, _twoQuotient, _twoSource,
+      _twoLoopPayload⟩
+  rcases payload with ⟨_target, completionCriterion⟩
+  exact ⟨projectStatement, completionCriterion⟩
+
+/-- Theorem contract for `conditional_root_selected_threeSphere_completionCriterion_of_full_terminal_certificate_of_equation_boundary_dependencies`. -/
+theorem conditional_root_selected_threeSphere_completionCriterion_of_full_terminal_certificate_of_equation_boundary_dependencies_eq :
+    @Poincare.conditional_root_selected_threeSphere_completionCriterion_of_full_terminal_certificate_of_equation_boundary_dependencies =
+      @Poincare.conditional_root_selected_threeSphere_completionCriterion_of_full_terminal_certificate_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
