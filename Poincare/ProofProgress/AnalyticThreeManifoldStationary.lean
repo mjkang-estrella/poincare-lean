@@ -449,6 +449,35 @@ noncomputable def stationary_zero_ricci_flow_data_current_api
     (stationary_zero_satisfies_ricci_flow_equation_current_api
       metric identifiesDerivative identifiesRicci)
 
+/--
+The general stationary zero Ricci-flow data carries the analytic package
+equation-derivation field from the concrete zero equation verification.
+-/
+theorem stationary_zero_ricci_flow_equation_derivation_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric))) :
+    HasRicciFlowEquationDerivation
+      (stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci) :=
+  hasRicciFlowEquationDerivation_of_ricciFlowEquationVerification
+    (zero_ricci_flow_equation_verification
+      identifiesDerivative identifiesRicci)
+
 /-- The standard stationary zero Ricci-flow data is now constructible. -/
 noncomputable def three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api :
     RicciFlowData ThreeManifoldModelWithCorners ω ThreeManifoldModel :=
@@ -457,6 +486,89 @@ noncomputable def three_manifold_model_standard_stationary_zero_ricci_flow_data_
     (stationary_zero_metric_derivative_identification_current_api
       three_manifold_model_standard_riemannian_metric)
     three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+
+/--
+The concrete stationary zero Ricci-flow data carries the analytic package
+equation-derivation field. This packages the actual zero-derivative/zero-Ricci
+equation verification, so the field is discharged from proof data rather than
+left as a separate analytic assumption.
+-/
+theorem three_manifold_model_standard_stationary_zero_ricci_flow_equation_derivation_current_api :
+    HasRicciFlowEquationDerivation
+      three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api :=
+  stationary_zero_ricci_flow_equation_derivation_current_api
+    three_manifold_model_standard_riemannian_metric
+    (stationary_zero_metric_derivative_identification_current_api
+      three_manifold_model_standard_riemannian_metric)
+    three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+
+/--
+The concrete standard stationary-zero Ricci flow carries the explicit
+zero-derivative/zero-Ricci equation verification object.
+-/
+noncomputable def three_manifold_model_standard_stationary_zero_ricci_flow_equation_verification_current_api :
+    RicciFlowEquationVerification
+      (curvature_data_of_ricci_flow_data
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api) :=
+  zero_ricci_flow_equation_verification
+    (stationary_zero_metric_derivative_identification_current_api
+      three_manifold_model_standard_riemannian_metric)
+    three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+
+/--
+The concrete standard stationary-zero Ricci flow carries the explicit
+equation-boundary package built from the same verification object.
+-/
+noncomputable def three_manifold_model_standard_stationary_zero_ricci_flow_equation_boundary_package_current_api :
+    RicciFlowEquationBoundaryPackage
+      three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api :=
+  stationary_zero_ricci_flow_equation_boundary_package
+    three_manifold_model_standard_riemannian_metric
+    (stationary_zero_metric_derivative_identification_current_api
+      three_manifold_model_standard_riemannian_metric)
+    three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+    three_manifold_model_standard_stationary_zero_satisfies_ricci_flow_equation_current_api
+
+/--
+The standard stationary-zero equation-boundary package exposes its boundary
+statement, metric-time-derivative identification, tensor equation, and
+pointwise Ricci-flow equation.
+-/
+theorem three_manifold_model_standard_stationary_zero_equation_boundary_payload_current_api :
+    ∃ boundary :
+        RicciFlowEquationBoundaryPackage
+          three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api,
+      RicciFlowEquationBoundaryStatement
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+      IsMetricTimeDerivativeOf
+        (metric_of_ricci_flow_data
+          three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api)
+        (metric_time_derivative_field_of_metric_derivative_data
+          (metric_derivative_data_of_equation_boundary_package boundary)) ∧
+      (∀ t : ℝ,
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary)) t =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data
+              three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api) t) ∧
+      ∀ (t : ℝ) (x : ThreeManifoldModel)
+        (v w : TangentSpace ThreeManifoldModelWithCorners x),
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary)) t x v w =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data
+              three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api) t x v w := by
+  let boundary :
+      RicciFlowEquationBoundaryPackage
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api :=
+    three_manifold_model_standard_stationary_zero_ricci_flow_equation_boundary_package_current_api
+  exact
+    ⟨boundary, ⟨boundary⟩,
+      metric_time_derivative_identification_of_equation_boundary_package boundary,
+      equation_at_time_of_equation_boundary_package_projection boundary,
+      equation_at_time_apply_of_equation_boundary_package_projection boundary⟩
 
 /--
 The commutator right-hand side used by a concrete Riemann-curvature
@@ -13468,6 +13580,48 @@ structure StationaryZeroAnalyticFoundationProductionDataCurrentApi
               metric identifiesDerivative identifiesRicci)
 
 /--
+Concrete stationary-zero production data exposes the pointwise zero identity
+for the second-Bianchi-nested Riemann-curvature tensor field.
+-/
+theorem stationary_zero_riemann_curvature_pointwise_zero_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    let secondBianchiAtTime :=
+      data.riemannCurvatureVanishingAtTime.secondBianchiAtTime
+    let curvatureAtTime :=
+      secondBianchiAtTime.firstBianchiAtTime.curvatureSymmetryAtTime.curvatureConstructionAtTime.curvatureAtTime
+    ∀ (t : ℝ) {x : M}
+      (X Y Z : TangentSpace ThreeManifoldModelWithCorners x),
+        curvatureAtTime t x X Y Z = 0 := by
+  dsimp
+  exact
+    stationary_zero_riemann_curvature_eq_zero_of_tensor_field_vanishing_current_api
+      metric identifiesDerivative identifiesRicci
+      data.riemannCurvatureVanishingAtTime.secondBianchiAtTime
+      (stationary_zero_riemann_curvature_tensor_field_vanishing_of_riemann_vanishing_current_api
+        metric identifiesDerivative identifiesRicci
+        data.riemannCurvatureVanishingAtTime)
+
+/--
 Stationary-zero Riemann-curvature vanishing data supplies the Ricci tensor
 contraction-formula payload by using the zero curvature endomorphism and zero
 trace functional.
@@ -13587,6 +13741,155 @@ noncomputable def stationary_zero_scalar_contraction_formula_data_of_riemann_van
       metric identifiesDerivative identifiesRicci riemannCurvatureVanishingAtTime)
 
 /--
+Concrete stationary-zero production data closes the Ricci-contraction theory
+interface for the derived stationary zero Ricci flow.
+
+The proof extracts the Riemann-curvature vanishing payload, rebuilds the
+stationary-zero scalar-contraction formula, and converts it to the downstream
+Ricci-contraction theory field.
+-/
+theorem stationary_zero_ricci_contraction_theory_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasRicciContractionTheory
+      (curvature_data_of_ricci_flow_data
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci)) :=
+  hasRicciContractionTheory_of_contractionTheoryData
+    (ricciContractionTheoryData_of_scalarContractionFormulaData
+      (stationary_zero_scalar_contraction_formula_data_of_riemann_vanishing_current_api
+        metric identifiesDerivative identifiesRicci
+        data.riemannCurvatureVanishingAtTime))
+
+/--
+Concrete stationary-zero production data closes the Ricci tensor contraction
+formula interface for the derived stationary zero Ricci flow.
+-/
+theorem stationary_zero_ricci_tensor_contraction_formula_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasRicciTensorContractionFormula
+      (curvature_data_of_ricci_flow_data
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci)) :=
+  hasRicciTensorContractionFormula_of_contractionFormulaData
+    (stationary_zero_ricci_contraction_formula_data_of_riemann_vanishing_current_api
+      metric identifiesDerivative identifiesRicci
+      data.riemannCurvatureVanishingAtTime)
+
+/--
+Concrete stationary-zero production data closes the scalar-curvature
+contraction formula interface for the derived stationary zero Ricci flow.
+-/
+theorem stationary_zero_scalar_curvature_contraction_formula_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasScalarCurvatureContractionFormula
+      (curvature_data_of_ricci_flow_data
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci)) :=
+  hasScalarCurvatureContractionFormula_of_contractionFormulaData
+    (stationary_zero_scalar_contraction_formula_data_of_riemann_vanishing_current_api
+      metric identifiesDerivative identifiesRicci
+      data.riemannCurvatureVanishingAtTime)
+
+/--
+Concrete stationary-zero production data exposes the Ricci and scalar
+contraction formula interfaces directly from the stored Riemann-curvature
+vanishing payload.
+-/
+theorem stationary_zero_ricci_scalar_contraction_formula_interfaces_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    let flow :=
+      stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci
+    HasRicciTensorContractionFormula (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula (curvature_data_of_ricci_flow_data flow) := by
+  dsimp
+  exact
+    ⟨stationary_zero_ricci_tensor_contraction_formula_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_scalar_curvature_contraction_formula_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data⟩
+
+/--
 Ricci contraction-formula data supplies the stationary-zero scalar-curvature
 theory payload through the reconstructed scalar-contraction formula and local
 canonical contraction constructors.
@@ -13660,6 +13963,1097 @@ noncomputable def stationary_zero_scalar_curvature_theory_data_of_riemann_vanish
       metric identifiesDerivative identifiesRicci riemannCurvatureVanishingAtTime)
 
 /--
+Concrete stationary-zero production data closes the scalar-curvature theory
+interface for the derived stationary zero Ricci flow.
+
+This removes the intermediate caller obligation to provide Riemann-vanishing
+data at the scalar-curvature-theory boundary: the production-data package
+stores that lower-level curvature payload and rebuilds the Ricci and scalar
+contraction chain here.
+-/
+theorem stationary_zero_scalar_curvature_theory_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasScalarCurvatureTheory
+      (curvature_data_of_ricci_flow_data
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci)) :=
+  hasScalarCurvatureTheory_of_scalarCurvatureTheoryData
+    (stationary_zero_scalar_curvature_theory_data_of_riemann_vanishing_current_api
+      metric identifiesDerivative identifiesRicci
+      data.riemannCurvatureVanishingAtTime)
+
+/--
+Concrete stationary-zero production data closes Hamilton's maximum-principle
+interface for the derived stationary zero Ricci flow.
+
+The proof rebuilds the same DeTurck and scalar-curvature chain needed by the
+analytic production package, but stops at the Hamilton maximum-principle field
+instead of requiring the whole analytic sub-obligation payload from callers.
+-/
+theorem stationary_zero_hamilton_maximum_principle_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasHamiltonMaximumPrinciple
+      (stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci) := by
+  let flow :=
+    stationary_zero_ricci_flow_data_current_api
+      metric identifiesDerivative identifiesRicci
+  let odeAtTime := data.pullbackIdentityAtTime.odeAtTime
+  let regularityAtTime := odeAtTime.regularityAtTime
+  let shortTimeAtTime := regularityAtTime.shortTimeAtTime
+  let fixedPointAtTime := shortTimeAtTime.fixedPointAtTime
+  let linearTheoryAtTime := fixedPointAtTime.linearTheoryAtTime
+  let strictParabolicAtTime := linearTheoryAtTime.strictParabolicAtTime
+  let linearizationAtTime := strictParabolicAtTime.linearizationAtTime
+  let ricciDeTurckEquationAtTime := linearizationAtTime.equationAtTime
+  let scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow) :=
+    stationary_zero_scalar_curvature_theory_data_of_riemann_vanishing_current_api
+      metric identifiesDerivative identifiesRicci data.riemannCurvatureVanishingAtTime
+  have firstFortyOne :=
+    analyticProductionPackage_firstFortyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      (flow := flow)
+      scalarCurvatureTheoryAtTime
+      (zero_ricci_flow_equation_verification identifiesDerivative identifiesRicci)
+      odeAtTime.vectorFieldAtTime
+      ricciDeTurckEquationAtTime
+      linearizationAtTime
+      strictParabolicAtTime
+      linearTheoryAtTime
+      fixedPointAtTime
+      shortTimeAtTime
+      regularityAtTime
+      odeAtTime
+      data.pullbackIdentityAtTime
+  exact firstFortyOne.2
+
+/--
+Concrete stationary-zero production data closes the Ricci-flow uniqueness
+interface for the derived stationary zero Ricci flow.
+
+The proof rebuilds the analytic chain through Hamilton's maximum principle from
+the stored DeTurck pullback identity, then uses the production-data
+initial-metric uniqueness field to close `HasRicciFlowUniquenessTheory`.
+-/
+theorem stationary_zero_ricci_flow_uniqueness_theory_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasRicciFlowUniquenessTheory
+      (stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci) := by
+  let flow :=
+    stationary_zero_ricci_flow_data_current_api
+      metric identifiesDerivative identifiesRicci
+  let odeAtTime := data.pullbackIdentityAtTime.odeAtTime
+  let regularityAtTime := odeAtTime.regularityAtTime
+  let shortTimeAtTime := regularityAtTime.shortTimeAtTime
+  let fixedPointAtTime := shortTimeAtTime.fixedPointAtTime
+  let linearTheoryAtTime := fixedPointAtTime.linearTheoryAtTime
+  let strictParabolicAtTime := linearTheoryAtTime.strictParabolicAtTime
+  let linearizationAtTime := strictParabolicAtTime.linearizationAtTime
+  let ricciDeTurckEquationAtTime := linearizationAtTime.equationAtTime
+  let scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow) :=
+    stationary_zero_scalar_curvature_theory_data_of_riemann_vanishing_current_api
+      metric identifiesDerivative identifiesRicci data.riemannCurvatureVanishingAtTime
+  have firstFortyTwo :=
+    analyticProductionPackage_firstFortyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      (flow := flow)
+      scalarCurvatureTheoryAtTime
+      (zero_ricci_flow_equation_verification identifiesDerivative identifiesRicci)
+      odeAtTime.vectorFieldAtTime
+      ricciDeTurckEquationAtTime
+      linearizationAtTime
+      strictParabolicAtTime
+      linearTheoryAtTime
+      fixedPointAtTime
+      shortTimeAtTime
+      regularityAtTime
+      odeAtTime
+      data.pullbackIdentityAtTime
+      data.uniquenessByInitialMetric
+  exact firstFortyTwo.2
+
+/--
+Concrete stationary-zero production data closes the short-time Ricci-flow
+solution interface for the derived stationary zero Ricci flow.
+
+This uses the stored DeTurck pullback equation identity directly, avoiding the
+broad analytic sub-obligation payload required by generic projection lemmas.
+-/
+theorem stationary_zero_short_time_ricci_flow_solution_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasShortTimeRicciFlowSolution
+      (stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci) :=
+  analyticProductionPackage_shortTimeRicciFlowSolution_of_deturckPullbackEquationIdentityData
+    data.pullbackIdentityAtTime
+
+/--
+Concrete stationary-zero production data closes the maximal-time interval
+interface for the derived stationary zero Ricci flow.
+
+This is the flow-level continuation interval, obtained directly from the
+stored DeTurck pullback equation identity rather than from a broad analytic
+payload.
+-/
+theorem stationary_zero_ricci_flow_maximal_time_interval_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasRicciFlowMaximalTimeInterval
+      (stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci) :=
+  analyticProductionPackage_ricciFlowMaximalTimeInterval_of_deturckPullbackEquationIdentityData
+    data.pullbackIdentityAtTime
+
+/--
+Concrete stationary-zero production data closes the continuation and regularity
+spine for the derived stationary zero Ricci flow itself.
+
+The proof rebuilds the scalar-curvature theory and Ricci-flow equation
+verification for the stationary-zero flow, then uses the stored DeTurck
+pullback identity and short-time regularity data to close the continuation
+criterion, curvature blow-up criterion, maximal extension, Schauder estimates,
+and Ricci-flow parabolic regularity without requiring a broad analytic payload.
+-/
+theorem stationary_zero_ricci_flow_continuation_regularity_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasRicciFlowContinuationCriterion
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) ∧
+      HasCurvatureBlowUpContinuationCriterion
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) ∧
+      HasMaximalSolutionExtension
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) ∧
+      HasParabolicSchauderEstimates
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) ∧
+      HasRicciFlowParabolicRegularity
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) := by
+  let flow :=
+    stationary_zero_ricci_flow_data_current_api
+      metric identifiesDerivative identifiesRicci
+  let scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow) :=
+    stationary_zero_scalar_curvature_theory_data_of_riemann_vanishing_current_api
+      metric identifiesDerivative identifiesRicci
+      data.riemannCurvatureVanishingAtTime
+  let equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow) :=
+    zero_ricci_flow_equation_verification identifiesDerivative identifiesRicci
+  let regularityAtTime := data.pullbackIdentityAtTime.odeAtTime.regularityAtTime
+  have continuation :
+      HasRicciFlowContinuationCriterion flow :=
+    analyticProductionPackage_ricciFlowContinuationCriterion_of_deturckPullbackEquationIdentityData
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      data.pullbackIdentityAtTime
+  have blowUp :
+      HasCurvatureBlowUpContinuationCriterion flow :=
+    analyticProductionPackage_curvatureBlowUpContinuationCriterion_of_deturckPullbackEquationIdentityData
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      data.pullbackIdentityAtTime
+  have maximalExtension :
+      HasMaximalSolutionExtension flow :=
+    analyticProductionPackage_maximalSolutionExtension_of_deturckPullbackEquationIdentityData
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      data.pullbackIdentityAtTime
+  have schauder :
+      HasParabolicSchauderEstimates flow :=
+    analyticProductionPackage_parabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_deturckPullbackEquationIdentityData
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      regularityAtTime data.pullbackIdentityAtTime
+  have parabolicRegularity :
+      HasRicciFlowParabolicRegularity flow :=
+    analyticProductionPackage_ricciFlowParabolicRegularity_of_parabolicSchauderEstimates
+      schauder
+  exact ⟨continuation, blowUp, maximalExtension, schauder, parabolicRegularity⟩
+
+/--
+Concrete stationary-zero production data closes the derivative-estimate tail
+for the derived stationary zero Ricci flow.
+
+The proof extends the direct continuation/regularity payload to Shi derivative
+estimates and the curvature-derivative bootstrap on the actual flow.
+-/
+theorem stationary_zero_ricci_flow_derivative_estimates_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasShiDerivativeEstimates
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) ∧
+      HasCurvatureDerivativeBootstrap
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) := by
+  let flow :=
+    stationary_zero_ricci_flow_data_current_api
+      metric identifiesDerivative identifiesRicci
+  let scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow) :=
+    stationary_zero_scalar_curvature_theory_data_of_riemann_vanishing_current_api
+      metric identifiesDerivative identifiesRicci
+      data.riemannCurvatureVanishingAtTime
+  have continuationRegularity :=
+    stationary_zero_ricci_flow_continuation_regularity_payload_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data
+  have shi : HasShiDerivativeEstimates flow :=
+    hasShiDerivativeEstimates_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularity
+      scalarCurvatureTheoryAtTime continuationRegularity.2.2.2.2
+  exact ⟨shi, hasCurvatureDerivativeBootstrap_of_shiDerivativeEstimates shi⟩
+
+/--
+Concrete stationary-zero production data closes the direct continuation,
+regularity, derivative-estimate, maximum-principle, and uniqueness tail on the
+derived stationary zero Ricci flow.
+
+This packages the tail after short-time existence directly on the concrete
+flow, using the production-data consequences rather than projecting through an
+existential analytic-foundation package.
+-/
+theorem stationary_zero_continuation_uniqueness_tail_direct_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    let flow :=
+      stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci
+    HasShortTimeRicciFlowSolution flow ∧
+      HasRicciFlowMaximalTimeInterval flow ∧
+      HasRicciFlowContinuationCriterion flow ∧
+      HasCurvatureBlowUpContinuationCriterion flow ∧
+      HasMaximalSolutionExtension flow ∧
+      HasParabolicSchauderEstimates flow ∧
+      HasRicciFlowParabolicRegularity flow ∧
+      HasShiDerivativeEstimates flow ∧
+      HasCurvatureDerivativeBootstrap flow ∧
+      HasHamiltonMaximumPrinciple flow ∧
+      HasRicciFlowUniquenessTheory flow := by
+  dsimp
+  have continuationRegularity :=
+    stationary_zero_ricci_flow_continuation_regularity_payload_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data
+  have derivativeEstimates :=
+    stationary_zero_ricci_flow_derivative_estimates_payload_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data
+  exact
+    ⟨stationary_zero_short_time_ricci_flow_solution_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_ricci_flow_maximal_time_interval_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      continuationRegularity.1,
+      continuationRegularity.2.1,
+      continuationRegularity.2.2.1,
+      continuationRegularity.2.2.2.1,
+      continuationRegularity.2.2.2.2,
+      derivativeEstimates.1,
+      derivativeEstimates.2,
+      stationary_zero_hamilton_maximum_principle_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_ricci_flow_uniqueness_theory_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data⟩
+
+/--
+Concrete stationary-zero production data closes the upstream DeTurck
+gauge-boundary interfaces directly on the derived stationary zero Ricci flow.
+
+The proof extracts the background metric data from the stored pullback/ODE/
+vector-field chain and discharges the two gauge-boundary `Has*` fields without
+constructing the full analytic package.
+-/
+theorem stationary_zero_ricci_flow_deturck_gauge_boundary_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasDeTurckGaugeFixing
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) ∧
+      HasDeTurckBackgroundMetricCompatibility
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) := by
+  let backgroundMetricAtTime :=
+    data.pullbackIdentityAtTime.odeAtTime.vectorFieldAtTime.backgroundMetricAtTime
+  exact
+    ⟨hasDeTurckGaugeFixing_of_backgroundMetricData backgroundMetricAtTime,
+      hasDeTurckBackgroundMetricCompatibility_of_backgroundMetricData
+        backgroundMetricAtTime⟩
+
+/--
+Concrete stationary-zero production data exposes the DeTurck and parabolic
+construction spine directly on the derived stationary zero Ricci flow.
+
+The proof unpacks the stored pullback-identity data chain rather than first
+constructing the full analytic foundation package.
+-/
+theorem stationary_zero_ricci_flow_deturck_parabolic_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasDeTurckVectorFieldConstruction
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) ∧
+      HasDeTurckEquationDerivation
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) ∧
+      HasRicciDeTurckLinearization
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) ∧
+      HasStrictlyParabolicDeTurckSystem
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) ∧
+      HasParabolicLinearTheory
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) ∧
+      HasParabolicFixedPointArgument
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) ∧
+      HasDeTurckShortTimeExistence
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) ∧
+      HasShortTimeRegularityBootstrap
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) ∧
+      HasDeTurckDiffeomorphismODE
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) ∧
+      HasDeTurckPullbackEquationIdentity
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) ∧
+      HasDeTurckPullbackToRicciFlow
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) := by
+  let odeAtTime := data.pullbackIdentityAtTime.odeAtTime
+  let regularityAtTime := odeAtTime.regularityAtTime
+  let shortTimeAtTime := regularityAtTime.shortTimeAtTime
+  let fixedPointAtTime := shortTimeAtTime.fixedPointAtTime
+  let linearTheoryAtTime := fixedPointAtTime.linearTheoryAtTime
+  let strictParabolicAtTime := linearTheoryAtTime.strictParabolicAtTime
+  let linearizationAtTime := strictParabolicAtTime.linearizationAtTime
+  let ricciDeTurckEquationAtTime := linearizationAtTime.equationAtTime
+  exact
+    ⟨hasDeTurckVectorFieldConstruction_of_vectorFieldConstructionData
+        odeAtTime.vectorFieldAtTime,
+      hasDeTurckEquationDerivation_of_ricciDeTurckEquationDerivationData
+        ricciDeTurckEquationAtTime,
+      hasRicciDeTurckLinearization_of_ricciDeTurckLinearizationData
+        linearizationAtTime,
+      hasStrictlyParabolicDeTurckSystem_of_strictlyParabolicDeTurckSystemData
+        strictParabolicAtTime,
+      hasParabolicLinearTheory_of_parabolicLinearTheoryData
+        linearTheoryAtTime,
+      hasParabolicFixedPointArgument_of_parabolicFixedPointArgumentData
+        fixedPointAtTime,
+      hasDeTurckShortTimeExistence_of_deturckShortTimeExistenceData
+        shortTimeAtTime,
+      hasShortTimeRegularityBootstrap_of_shortTimeRegularityBootstrapData
+        regularityAtTime,
+      hasDeTurckDiffeomorphismODE_of_deturckDiffeomorphismODEData
+        odeAtTime,
+      hasDeTurckPullbackEquationIdentity_of_deturckPullbackEquationIdentityData
+        data.pullbackIdentityAtTime,
+      hasDeTurckPullbackToRicciFlow_of_deturckPullbackEquationIdentityData
+        data.pullbackIdentityAtTime⟩
+
+/--
+Concrete stationary-zero production data closes the metric-evolution equation
+interface directly on the derived stationary zero Ricci flow.
+
+The proof rebuilds the scalar-curvature theory and DeTurck/uniqueness chain
+from the stored production data and stops at the first evolution-equation
+field, instead of projecting it from the constructed analytic package.
+-/
+theorem stationary_zero_metric_evolution_equation_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasMetricEvolutionEquation
+      (stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci) := by
+  let flow :=
+    stationary_zero_ricci_flow_data_current_api
+      metric identifiesDerivative identifiesRicci
+  let odeAtTime := data.pullbackIdentityAtTime.odeAtTime
+  let regularityAtTime := odeAtTime.regularityAtTime
+  let shortTimeAtTime := regularityAtTime.shortTimeAtTime
+  let fixedPointAtTime := shortTimeAtTime.fixedPointAtTime
+  let linearTheoryAtTime := fixedPointAtTime.linearTheoryAtTime
+  let strictParabolicAtTime := linearTheoryAtTime.strictParabolicAtTime
+  let linearizationAtTime := strictParabolicAtTime.linearizationAtTime
+  let ricciDeTurckEquationAtTime := linearizationAtTime.equationAtTime
+  let scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow) :=
+    stationary_zero_scalar_curvature_theory_data_of_riemann_vanishing_current_api
+      metric identifiesDerivative identifiesRicci
+      data.riemannCurvatureVanishingAtTime
+  have firstFortyThree :=
+    analyticProductionPackage_firstFortyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      (flow := flow)
+      scalarCurvatureTheoryAtTime
+      (zero_ricci_flow_equation_verification identifiesDerivative identifiesRicci)
+      odeAtTime.vectorFieldAtTime
+      ricciDeTurckEquationAtTime
+      linearizationAtTime
+      strictParabolicAtTime
+      linearTheoryAtTime
+      fixedPointAtTime
+      shortTimeAtTime
+      regularityAtTime
+      odeAtTime
+      data.pullbackIdentityAtTime
+      data.uniquenessByInitialMetric
+  exact firstFortyThree.2
+
+/--
+Concrete stationary-zero production data closes the Ricci-tensor evolution
+equation directly on the derived stationary zero Ricci flow.
+
+The stationary-zero route supplies zero tensor derivative and RHS witnesses;
+the proof rebuilds the scalar-curvature theory and DeTurck/uniqueness chain
+from the concrete production data.
+-/
+theorem stationary_zero_ricci_tensor_evolution_equation_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasRicciTensorEvolutionEquation
+      (stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci) := by
+  let flow :=
+    stationary_zero_ricci_flow_data_current_api
+      metric identifiesDerivative identifiesRicci
+  let odeAtTime := data.pullbackIdentityAtTime.odeAtTime
+  let regularityAtTime := odeAtTime.regularityAtTime
+  let shortTimeAtTime := regularityAtTime.shortTimeAtTime
+  let fixedPointAtTime := shortTimeAtTime.fixedPointAtTime
+  let linearTheoryAtTime := fixedPointAtTime.linearTheoryAtTime
+  let strictParabolicAtTime := linearTheoryAtTime.strictParabolicAtTime
+  let linearizationAtTime := strictParabolicAtTime.linearizationAtTime
+  let ricciDeTurckEquationAtTime := linearizationAtTime.equationAtTime
+  let zeroTwoTensorAtTime :
+      ℝ → TangentCovariantTwoTensor ThreeManifoldModelWithCorners M :=
+    fun _ => zero_tangent_covariant_two_tensor ThreeManifoldModelWithCorners M
+  let scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow) :=
+    stationary_zero_scalar_curvature_theory_data_of_riemann_vanishing_current_api
+      metric identifiesDerivative identifiesRicci
+      data.riemannCurvatureVanishingAtTime
+  have firstFortyFour :=
+    analyticProductionPackage_firstFortyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      (flow := flow)
+      scalarCurvatureTheoryAtTime
+      (zero_ricci_flow_equation_verification identifiesDerivative identifiesRicci)
+      odeAtTime.vectorFieldAtTime
+      ricciDeTurckEquationAtTime
+      linearizationAtTime
+      strictParabolicAtTime
+      linearTheoryAtTime
+      fixedPointAtTime
+      shortTimeAtTime
+      regularityAtTime
+      odeAtTime
+      data.pullbackIdentityAtTime
+      data.uniquenessByInitialMetric
+      zeroTwoTensorAtTime
+      zeroTwoTensorAtTime
+      (by intro t; rfl)
+  exact firstFortyFour.2
+
+/--
+Concrete stationary-zero production data closes the scalar-curvature evolution
+equation directly on the derived stationary zero Ricci flow.
+
+The stationary-zero route supplies zero Ricci-tensor and scalar evolution
+witnesses; the proof rebuilds the scalar-curvature theory and DeTurck chain
+from the concrete production data.
+-/
+theorem stationary_zero_scalar_curvature_evolution_equation_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasScalarCurvatureEvolutionEquation
+      (stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci) := by
+  let flow :=
+    stationary_zero_ricci_flow_data_current_api
+      metric identifiesDerivative identifiesRicci
+  let odeAtTime := data.pullbackIdentityAtTime.odeAtTime
+  let regularityAtTime := odeAtTime.regularityAtTime
+  let shortTimeAtTime := regularityAtTime.shortTimeAtTime
+  let fixedPointAtTime := shortTimeAtTime.fixedPointAtTime
+  let linearTheoryAtTime := fixedPointAtTime.linearTheoryAtTime
+  let strictParabolicAtTime := linearTheoryAtTime.strictParabolicAtTime
+  let linearizationAtTime := strictParabolicAtTime.linearizationAtTime
+  let ricciDeTurckEquationAtTime := linearizationAtTime.equationAtTime
+  let zeroTwoTensorAtTime :
+      ℝ → TangentCovariantTwoTensor ThreeManifoldModelWithCorners M :=
+    fun _ => zero_tangent_covariant_two_tensor ThreeManifoldModelWithCorners M
+  let zeroScalarAtTime : ℝ → M → ℝ := fun _ _ => 0
+  let scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow) :=
+    stationary_zero_scalar_curvature_theory_data_of_riemann_vanishing_current_api
+      metric identifiesDerivative identifiesRicci
+      data.riemannCurvatureVanishingAtTime
+  have firstFortyFive :=
+    analyticProductionPackage_firstFortyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      (flow := flow)
+      scalarCurvatureTheoryAtTime
+      (zero_ricci_flow_equation_verification identifiesDerivative identifiesRicci)
+      odeAtTime.vectorFieldAtTime
+      ricciDeTurckEquationAtTime
+      linearizationAtTime
+      strictParabolicAtTime
+      linearTheoryAtTime
+      fixedPointAtTime
+      shortTimeAtTime
+      regularityAtTime
+      odeAtTime
+      data.pullbackIdentityAtTime
+      data.uniquenessByInitialMetric
+      zeroTwoTensorAtTime
+      zeroTwoTensorAtTime
+      (by intro t; rfl)
+      zeroScalarAtTime
+      zeroScalarAtTime
+      (by intro t; rfl)
+  exact firstFortyFive.2
+
+/--
+Concrete stationary-zero production data closes the curvature-norm evolution
+inequality directly on the derived stationary zero Ricci flow.
+
+The curvature norm, its derivative, and the RHS are all realized by the zero
+scalar function in the stationary-zero route, making the inequality field
+pointwise reflexive.
+-/
+theorem stationary_zero_curvature_norm_evolution_inequality_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasCurvatureNormEvolutionInequality
+      (stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci) := by
+  let flow :=
+    stationary_zero_ricci_flow_data_current_api
+      metric identifiesDerivative identifiesRicci
+  let odeAtTime := data.pullbackIdentityAtTime.odeAtTime
+  let regularityAtTime := odeAtTime.regularityAtTime
+  let shortTimeAtTime := regularityAtTime.shortTimeAtTime
+  let fixedPointAtTime := shortTimeAtTime.fixedPointAtTime
+  let linearTheoryAtTime := fixedPointAtTime.linearTheoryAtTime
+  let strictParabolicAtTime := linearTheoryAtTime.strictParabolicAtTime
+  let linearizationAtTime := strictParabolicAtTime.linearizationAtTime
+  let ricciDeTurckEquationAtTime := linearizationAtTime.equationAtTime
+  let zeroTwoTensorAtTime :
+      ℝ → TangentCovariantTwoTensor ThreeManifoldModelWithCorners M :=
+    fun _ => zero_tangent_covariant_two_tensor ThreeManifoldModelWithCorners M
+  let zeroScalarAtTime : ℝ → M → ℝ := fun _ _ => 0
+  let scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow) :=
+    stationary_zero_scalar_curvature_theory_data_of_riemann_vanishing_current_api
+      metric identifiesDerivative identifiesRicci
+      data.riemannCurvatureVanishingAtTime
+  have firstFortySix :=
+    analyticProductionPackage_firstFortySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      (flow := flow)
+      scalarCurvatureTheoryAtTime
+      (zero_ricci_flow_equation_verification identifiesDerivative identifiesRicci)
+      odeAtTime.vectorFieldAtTime
+      ricciDeTurckEquationAtTime
+      linearizationAtTime
+      strictParabolicAtTime
+      linearTheoryAtTime
+      fixedPointAtTime
+      shortTimeAtTime
+      regularityAtTime
+      odeAtTime
+      data.pullbackIdentityAtTime
+      data.uniquenessByInitialMetric
+      zeroTwoTensorAtTime
+      zeroTwoTensorAtTime
+      (by intro t; rfl)
+      zeroScalarAtTime
+      zeroScalarAtTime
+      (by intro t; rfl)
+      zeroScalarAtTime
+      (by intro t x; exact le_rfl)
+      zeroScalarAtTime
+      zeroScalarAtTime
+      (by intro t x; exact le_rfl)
+  exact firstFortySix.2
+
+/--
+Concrete stationary-zero production data closes the full curvature-evolution
+equations interface directly on the derived stationary zero Ricci flow.
+
+The proof uses zero Ricci, scalar, norm, and Riemann-curvature evolution
+witnesses together with the second-Bianchi data already stored in the
+stationary-zero Riemann-vanishing payload.
+-/
+theorem stationary_zero_curvature_evolution_equations_direct_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasCurvatureEvolutionEquations
+      (stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci) := by
+  let flow :=
+    stationary_zero_ricci_flow_data_current_api
+      metric identifiesDerivative identifiesRicci
+  let odeAtTime := data.pullbackIdentityAtTime.odeAtTime
+  let regularityAtTime := odeAtTime.regularityAtTime
+  let shortTimeAtTime := regularityAtTime.shortTimeAtTime
+  let fixedPointAtTime := shortTimeAtTime.fixedPointAtTime
+  let linearTheoryAtTime := fixedPointAtTime.linearTheoryAtTime
+  let strictParabolicAtTime := linearTheoryAtTime.strictParabolicAtTime
+  let linearizationAtTime := strictParabolicAtTime.linearizationAtTime
+  let ricciDeTurckEquationAtTime := linearizationAtTime.equationAtTime
+  let zeroTwoTensorAtTime :
+      ℝ → TangentCovariantTwoTensor ThreeManifoldModelWithCorners M :=
+    fun _ => zero_tangent_covariant_two_tensor ThreeManifoldModelWithCorners M
+  let zeroScalarAtTime : ℝ → M → ℝ := fun _ _ => 0
+  let scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow) :=
+    stationary_zero_scalar_curvature_theory_data_of_riemann_vanishing_current_api
+      metric identifiesDerivative identifiesRicci
+      data.riemannCurvatureVanishingAtTime
+  let riemannSecondBianchiAtTime :
+      RiemannCurvatureSecondBianchiData
+        (metric_of_ricci_flow_data flow) :=
+    data.riemannCurvatureVanishingAtTime.secondBianchiAtTime
+  let riemannCurvatureAtTime :
+      TimeDependentRiemannCurvatureTensorField
+        (metric_of_ricci_flow_data flow) :=
+    riemannSecondBianchiAtTime.firstBianchiAtTime.curvatureSymmetryAtTime.curvatureConstructionAtTime.curvatureAtTime
+  have firstFortySeven :=
+    analyticProductionPackage_firstFortySeven_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      (flow := flow)
+      scalarCurvatureTheoryAtTime
+      (zero_ricci_flow_equation_verification identifiesDerivative identifiesRicci)
+      odeAtTime.vectorFieldAtTime
+      ricciDeTurckEquationAtTime
+      linearizationAtTime
+      strictParabolicAtTime
+      linearTheoryAtTime
+      fixedPointAtTime
+      shortTimeAtTime
+      regularityAtTime
+      odeAtTime
+      data.pullbackIdentityAtTime
+      data.uniquenessByInitialMetric
+      zeroTwoTensorAtTime
+      zeroTwoTensorAtTime
+      (by intro t; rfl)
+      zeroScalarAtTime
+      zeroScalarAtTime
+      (by intro t; rfl)
+      zeroScalarAtTime
+      (by intro t x; exact le_rfl)
+      zeroScalarAtTime
+      zeroScalarAtTime
+      (by intro t x; exact le_rfl)
+      riemannSecondBianchiAtTime
+      riemannCurvatureAtTime
+      riemannCurvatureAtTime
+      (by intro t; rfl)
+  exact firstFortySeven.2
+
+/--
+Concrete stationary-zero production data exposes the full direct
+evolution-equation block on the derived stationary zero Ricci flow.
+
+This is package-free: each field is proved directly on
+`stationary_zero_ricci_flow_data_current_api` from the narrowed production-data
+object.
+-/
+theorem stationary_zero_evolution_fields_direct_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    let flow :=
+      stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci
+    HasMetricEvolutionEquation flow ∧
+      HasRicciTensorEvolutionEquation flow ∧
+      HasScalarCurvatureEvolutionEquation flow ∧
+      HasCurvatureNormEvolutionInequality flow ∧
+      HasCurvatureEvolutionEquations flow := by
+  dsimp
+  exact
+    ⟨stationary_zero_metric_evolution_equation_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_ricci_tensor_evolution_equation_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_scalar_curvature_evolution_equation_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_curvature_norm_evolution_inequality_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_curvature_evolution_equations_direct_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data⟩
+
+/--
+Concrete stationary-zero production data exposes the Ricci-flow equation
+derivation together with the full direct evolution-equation block on the
+derived stationary zero Ricci flow.
+
+This combines the equation-boundary proof and all evolution interfaces on the
+concrete flow without constructing an analytic-foundation package.
+-/
+theorem stationary_zero_equation_and_evolution_fields_direct_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    let flow :=
+      stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci
+    HasRicciFlowEquationDerivation flow ∧
+      HasMetricEvolutionEquation flow ∧
+      HasRicciTensorEvolutionEquation flow ∧
+      HasScalarCurvatureEvolutionEquation flow ∧
+      HasCurvatureNormEvolutionInequality flow ∧
+      HasCurvatureEvolutionEquations flow := by
+  dsimp
+  exact
+    ⟨stationary_zero_ricci_flow_equation_derivation_current_api
+        metric identifiesDerivative identifiesRicci,
+      stationary_zero_metric_evolution_equation_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_ricci_tensor_evolution_equation_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_scalar_curvature_evolution_equation_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_curvature_norm_evolution_inequality_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_curvature_evolution_equations_direct_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data⟩
+
+/--
 The Ricci contraction formula already contains the Riemann second-Bianchi data.
 -/
 noncomputable def stationary_zero_riemann_second_bianchi_data_of_ricci_contraction_formula_current_api
@@ -13721,9 +15115,256 @@ noncomputable def stationary_zero_riemann_second_bianchi_data_of_riemann_vanishi
         metric identifiesDerivative identifiesRicci) :
     RiemannCurvatureSecondBianchiData
       (metric_of_ricci_flow_data
+    (stationary_zero_ricci_flow_data_current_api
+      metric identifiesDerivative identifiesRicci)) :=
+  riemannCurvatureVanishingAtTime.secondBianchiAtTime
+
+/--
+Concrete stationary-zero production data exposes the Levi-Civita connection
+theory directly from the second-Bianchi-nested curvature construction payload.
+-/
+theorem stationary_zero_levi_civita_connection_theory_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasLeviCivitaConnectionTheory
+      (metric_of_ricci_flow_data
         (stationary_zero_ricci_flow_data_current_api
           metric identifiesDerivative identifiesRicci)) :=
-  riemannCurvatureVanishingAtTime.secondBianchiAtTime
+  hasLeviCivitaConnectionTheory_of_connectionTheoryData
+    data.riemannCurvatureVanishingAtTime.secondBianchiAtTime.firstBianchiAtTime.curvatureSymmetryAtTime.curvatureConstructionAtTime.connectionTheoryAtTime
+
+/--
+Concrete stationary-zero production data exposes the full Levi-Civita
+first-five interface block directly from the second-Bianchi-nested curvature
+construction payload.
+-/
+theorem stationary_zero_levi_civita_first_five_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    let flow :=
+      stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci
+    HasLeviCivitaConnectionExistence (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory (metric_of_ricci_flow_data flow) := by
+  dsimp
+  exact
+    leviCivitaFirstFive_of_curvatureConstructionData
+      data.riemannCurvatureVanishingAtTime.secondBianchiAtTime.firstBianchiAtTime.curvatureSymmetryAtTime.curvatureConstructionAtTime
+
+/--
+Concrete stationary-zero production data exposes the basic Riemann-curvature
+interfaces directly from the stored second-Bianchi payload.
+-/
+theorem stationary_zero_riemann_curvature_basic_interfaces_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)) := by
+  let secondBianchiAtTime := data.riemannCurvatureVanishingAtTime.secondBianchiAtTime
+  let firstBianchiAtTime := secondBianchiAtTime.firstBianchiAtTime
+  let symmetryAtTime := firstBianchiAtTime.curvatureSymmetryAtTime
+  let constructionAtTime := symmetryAtTime.curvatureConstructionAtTime
+  exact
+    ⟨hasRiemannCurvatureTensorConstruction_of_curvatureConstructionData
+        constructionAtTime,
+      hasRiemannCurvatureTensorSymmetries_of_curvatureSymmetryData
+        symmetryAtTime,
+      hasFirstBianchiIdentity_of_firstBianchiData firstBianchiAtTime,
+      hasSecondBianchiIdentity_of_secondBianchiData secondBianchiAtTime⟩
+
+/--
+Concrete stationary-zero production data proves the Riemann-curvature tensor
+theory obligation through its second-Bianchi component.
+-/
+theorem stationary_zero_riemann_curvature_tensor_theory_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasRiemannCurvatureTensorTheory
+      (metric_of_ricci_flow_data
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci)) :=
+  hasRiemannCurvatureTensorTheory_of_secondBianchiData
+    data.riemannCurvatureVanishingAtTime.secondBianchiAtTime
+
+/--
+Concrete stationary-zero production data closes the direct geometric and metric
+core for the derived stationary zero Ricci flow without constructing the broad
+analytic-foundation package.
+-/
+theorem stationary_zero_direct_geometric_metric_core_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    let flow :=
+      stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci
+    HasLeviCivitaConnectionExistence (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow) ∧
+      HasInitialMetricCompatibility flow ∧
+      HasRicciFlowEquationDerivation flow := by
+  dsimp
+  let flow :=
+    stationary_zero_ricci_flow_data_current_api
+      metric identifiesDerivative identifiesRicci
+  let basicCurvature :=
+    stationary_zero_riemann_curvature_basic_interfaces_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data
+  let leviCivita :=
+    stationary_zero_levi_civita_first_five_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data
+  let contractionFormula :=
+    stationary_zero_ricci_scalar_contraction_formula_interfaces_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data
+  exact
+    ⟨leviCivita.1,
+      leviCivita.2.1,
+      leviCivita.2.2.1,
+      leviCivita.2.2.2.1,
+      leviCivita.2.2.2.2,
+      basicCurvature.1,
+      basicCurvature.2.1,
+      basicCurvature.2.2.1,
+      basicCurvature.2.2.2,
+      stationary_zero_riemann_curvature_tensor_theory_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      contractionFormula.1,
+      contractionFormula.2,
+      stationary_zero_ricci_contraction_theory_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_scalar_curvature_theory_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      hasTimeDependentMetricRegularity_of_metric (metric_of_ricci_flow_data flow),
+      hasMetricTimeDerivativeTheory_of_metricTimeDerivativeData
+        (metric_derivative_data_of_ricci_flow_equation_verification
+          (zero_ricci_flow_equation_verification identifiesDerivative identifiesRicci)),
+      hasInitialMetricCompatibility_of_flow flow,
+      stationary_zero_ricci_flow_equation_derivation_current_api
+        metric identifiesDerivative identifiesRicci⟩
 
 /--
 Concrete stationary-zero production data supplies the full analytic
@@ -13818,6 +15459,340 @@ theorem stationary_zero_analytic_foundation_subobligations_payload_of_production
   tauto
 
 /--
+Concrete stationary-zero production data builds the actual analytic-foundation
+package for the derived stationary zero Ricci flow.
+
+This lowers the package constructor boundary from the broad
+`AnalyticFoundationSubobligationsPayload` conjunction to the narrowed
+production-data object: the sub-obligations are rebuilt internally from the
+stored curvature-vanishing, DeTurck pullback, and uniqueness data.
+-/
+noncomputable def stationary_zero_analytic_foundation_package_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M :=
+  stationary_zero_ricci_flow_analytic_foundation_package
+    metric identifiesRicci
+    (stationary_zero_satisfies_ricci_flow_equation_current_api
+      metric identifiesDerivative identifiesRicci)
+    (stationary_zero_analytic_foundation_subobligations_payload_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data)
+
+/--
+The production-data analytic package stores the derived stationary zero Ricci
+flow.
+-/
+@[simp] theorem stationary_zero_analytic_foundation_package_of_production_data_current_api_eq
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    ricci_flow_data_of_analytic_foundation_package
+      (stationary_zero_analytic_foundation_package_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data) =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci :=
+  stationary_zero_ricci_flow_analytic_foundation_package_eq
+    metric identifiesRicci
+    (stationary_zero_satisfies_ricci_flow_equation_current_api
+      metric identifiesDerivative identifiesRicci)
+    (stationary_zero_analytic_foundation_subobligations_payload_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data)
+
+/--
+Concrete stationary-zero production data supplies the full theorem-shaped
+analytic derivation statement for the derived stationary zero Ricci flow.
+-/
+theorem stationary_zero_analytic_foundation_derivation_statement_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    AnalyticFoundationDerivationStatement
+      (stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci) :=
+  analytic_foundation_derivation_statement_of_subobligations_payload
+    (stationary_zero_ricci_flow_data_current_api
+      metric identifiesDerivative identifiesRicci)
+    (stationary_zero_analytic_foundation_subobligations_payload_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data)
+
+/--
+Concrete stationary-zero production data supplies the theorem-shaped analytic
+foundation statement, with the derived stationary zero Ricci flow as witness.
+-/
+theorem stationary_zero_analytic_foundation_statement_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    RicciFlowAnalyticFoundationStatement ThreeManifoldModelWithCorners n M :=
+  ⟨stationary_zero_ricci_flow_data_current_api
+      metric identifiesDerivative identifiesRicci,
+    stationary_zero_analytic_foundation_derivation_statement_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data⟩
+
+/--
+Concrete stationary-zero production data exposes the full analytic-foundation
+payload for the derived stationary zero Ricci flow.
+
+This is the package-level handoff used by downstream assemblers: it produces
+the theorem-shaped analytic statement, fixed-flow derivation statement, rebuilt
+sub-obligation payload, and Ricci-flow equation evidence directly from the
+narrow production-data object.
+-/
+theorem stationary_zero_analytic_foundation_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    ∃ _statement :
+      RicciFlowAnalyticFoundationStatement ThreeManifoldModelWithCorners n M,
+    ∃ _derivationStatement :
+      AnalyticFoundationDerivationStatement
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci),
+    ∃ _subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci),
+      SatisfiesRicciFlowEquation
+        (metric_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci))
+        (curvature_data_of_ricci_flow_data
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci)) := by
+  refine
+    ⟨stationary_zero_analytic_foundation_statement_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_analytic_foundation_derivation_statement_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_analytic_foundation_subobligations_payload_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      ?_⟩
+  exact
+    stationary_zero_satisfies_ricci_flow_equation_current_api
+      metric identifiesDerivative identifiesRicci
+
+/--
+For the actual standard three-manifold model, stationary-zero production data
+supplies the full analytic sub-obligation payload for the concrete standard
+stationary-zero Ricci flow.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_foundation_subobligations_payload_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    AnalyticFoundationSubobligationsPayload
+      three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api :=
+  stationary_zero_analytic_foundation_subobligations_payload_of_production_data_current_api
+    three_manifold_model_standard_riemannian_metric
+    (stationary_zero_metric_derivative_identification_current_api
+      three_manifold_model_standard_riemannian_metric)
+    three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+    data
+
+/--
+For the actual standard three-manifold model, stationary-zero production data
+supplies the fixed-flow analytic derivation statement for the concrete standard
+stationary-zero Ricci flow.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_foundation_derivation_statement_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    AnalyticFoundationDerivationStatement
+      three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api :=
+  stationary_zero_analytic_foundation_derivation_statement_of_production_data_current_api
+    three_manifold_model_standard_riemannian_metric
+    (stationary_zero_metric_derivative_identification_current_api
+      three_manifold_model_standard_riemannian_metric)
+    three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+    data
+
+/--
+For the actual standard three-manifold model, stationary-zero production data
+supplies the theorem-shaped analytic foundation statement with the concrete
+standard stationary-zero Ricci flow as witness.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_foundation_statement_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    RicciFlowAnalyticFoundationStatement ThreeManifoldModelWithCorners ⊤
+      ThreeManifoldModel :=
+  stationary_zero_analytic_foundation_statement_of_production_data_current_api
+    three_manifold_model_standard_riemannian_metric
+    (stationary_zero_metric_derivative_identification_current_api
+      three_manifold_model_standard_riemannian_metric)
+    three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+    data
+
+/--
+For the actual standard three-manifold model, stationary-zero production data
+packages the concrete standard analytic foundation statement, fixed-flow
+derivation statement, sub-obligation payload, and Ricci-flow equation evidence.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_foundation_payload_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    ∃ (_ : RicciFlowAnalyticFoundationStatement ThreeManifoldModelWithCorners ⊤
+          ThreeManifoldModel)
+      (_ : AnalyticFoundationDerivationStatement
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api)
+      (_ : AnalyticFoundationSubobligationsPayload
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api),
+      SatisfiesRicciFlowEquation
+        (metric_of_ricci_flow_data
+          three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api)
+        (curvature_data_of_ricci_flow_data
+          three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api) :=
+  stationary_zero_analytic_foundation_payload_of_production_data_current_api
+    three_manifold_model_standard_riemannian_metric
+    (stationary_zero_metric_derivative_identification_current_api
+      three_manifold_model_standard_riemannian_metric)
+    three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+    data
+
+/--
+Concrete stationary-zero production data supplies the strengthened analytic
+foundation statement with the explicit Ricci-flow equation boundary.
+-/
+theorem stationary_zero_analytic_foundation_with_equation_boundary_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    AnalyticFoundationWithEquationBoundaryStatement
+      (stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci) :=
+  analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification
+    (stationary_zero_ricci_flow_data_current_api
+      metric identifiesDerivative identifiesRicci)
+    (stationary_zero_analytic_foundation_subobligations_payload_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data)
+    (zero_ricci_flow_equation_verification
+      identifiesDerivative identifiesRicci)
+
+/--
 The analytic sub-obligation payload now exposes the final explicit curvature
 evolution field.
 -/
@@ -13840,6 +15815,482 @@ theorem analytic_foundation_subobligations_payload_curvature_evolution_current_a
   change HasCurvatureEvolutionEquations package.flow at result
   rw [hflow] at result
   exact result
+
+/--
+Concrete stationary-zero production data closes the final explicit curvature
+evolution obligation for the derived stationary zero Ricci flow.
+
+This is stronger than merely rebuilding the analytic sub-obligation payload:
+the frontier-facing curvature evolution interface is extracted directly from
+the narrowed production data.
+-/
+theorem stationary_zero_curvature_evolution_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    HasCurvatureEvolutionEquations
+      (stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci) :=
+  analytic_foundation_subobligations_payload_curvature_evolution_current_api
+    (stationary_zero_ricci_flow_data_current_api
+      metric identifiesDerivative identifiesRicci)
+    (stationary_zero_analytic_foundation_subobligations_payload_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data)
+
+/--
+Concrete stationary-zero production data exposes the final high-value analytic
+fields directly on the derived stationary zero Ricci flow.
+
+Unlike package-level payloads, this theorem does not introduce an existential
+analytic-foundation package and then project fields from it; it proves the
+equation-boundary, maximum-principle, uniqueness, and curvature-evolution
+interfaces on the concrete stationary-zero flow.
+-/
+theorem stationary_zero_final_fields_direct_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    let flow :=
+      stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci
+    AnalyticFoundationWithEquationBoundaryStatement flow ∧
+      HasHamiltonMaximumPrinciple flow ∧
+      HasRicciFlowUniquenessTheory flow ∧
+      HasCurvatureEvolutionEquations flow := by
+  dsimp
+  exact
+    ⟨stationary_zero_analytic_foundation_with_equation_boundary_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_hamilton_maximum_principle_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_ricci_flow_uniqueness_theory_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_curvature_evolution_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data⟩
+
+/--
+For the actual standard three-manifold model, stationary-zero production data
+supplies the strengthened analytic-foundation statement with an explicit
+equation boundary for the concrete standard flow.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_foundation_with_equation_boundary_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    AnalyticFoundationWithEquationBoundaryStatement
+      three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api :=
+  stationary_zero_analytic_foundation_with_equation_boundary_of_production_data_current_api
+    three_manifold_model_standard_riemannian_metric
+    (stationary_zero_metric_derivative_identification_current_api
+      three_manifold_model_standard_riemannian_metric)
+    three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+    data
+
+/--
+For the actual standard three-manifold model, the strengthened analytic
+foundation with equation boundary is assembled directly from the concrete
+sub-obligation payload and the zero Ricci-flow equation verification.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_foundation_with_equation_boundary_direct_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    AnalyticFoundationWithEquationBoundaryStatement
+      three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api :=
+  analytic_foundation_with_equation_boundary_of_subobligations_payload_and_ricci_flow_equation_verification
+    three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api
+    (three_manifold_model_standard_stationary_zero_analytic_foundation_subobligations_payload_of_production_data_current_api
+      data)
+    (zero_ricci_flow_equation_verification
+      (stationary_zero_metric_derivative_identification_current_api
+        three_manifold_model_standard_riemannian_metric)
+      three_manifold_model_standard_stationary_zero_ricci_identification_current_api)
+
+/--
+For the actual standard three-manifold model, the strengthened analytic
+foundation statement yields both the fixed-flow derivation stack and the
+concrete equation-boundary payload.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_foundation_derivation_and_boundary_payload_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    AnalyticFoundationDerivationStatement
+      three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+    ∃ boundary :
+        RicciFlowEquationBoundaryPackage
+          three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api,
+      RicciFlowEquationBoundaryStatement
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+      IsMetricTimeDerivativeOf
+        (metric_of_ricci_flow_data
+          three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api)
+        (metric_time_derivative_field_of_metric_derivative_data
+          (metric_derivative_data_of_equation_boundary_package boundary)) ∧
+      (∀ t : ℝ,
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary)) t =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data
+              three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api) t) ∧
+      ∀ (t : ℝ) (x : ThreeManifoldModel)
+        (v w : TangentSpace ThreeManifoldModelWithCorners x),
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary)) t x v w =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data
+              three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api) t x v w :=
+  analytic_foundation_derivation_and_boundary_payload_of_with_equation_boundary
+    (three_manifold_model_standard_stationary_zero_analytic_foundation_with_equation_boundary_of_production_data_current_api
+      data)
+
+/--
+For the actual standard three-manifold model, stationary-zero production data
+supplies the analytic derivation, the strengthened equation-boundary statement,
+the extracted boundary statement, and the concrete zero Ricci-flow equation
+verification in one payload.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_derivation_with_equation_boundary_payload_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    AnalyticFoundationDerivationStatement
+      three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+    AnalyticFoundationWithEquationBoundaryStatement
+      three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+    RicciFlowEquationBoundaryStatement
+      three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+    Nonempty
+      (RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api)) := by
+  let foundation :=
+    three_manifold_model_standard_stationary_zero_analytic_foundation_with_equation_boundary_direct_of_production_data_current_api
+      data
+  exact
+    ⟨analytic_foundation_derivation_of_with_equation_boundary foundation,
+      foundation,
+      equation_boundary_of_analytic_foundation_with_equation_boundary
+        foundation,
+      ⟨zero_ricci_flow_equation_verification
+          (stationary_zero_metric_derivative_identification_current_api
+            three_manifold_model_standard_riemannian_metric)
+          three_manifold_model_standard_stationary_zero_ricci_identification_current_api⟩⟩
+
+/--
+For the actual standard three-manifold model, stationary-zero production data
+exposes the concrete equation-boundary package and its tensor-level equation
+projections.
+-/
+theorem three_manifold_model_standard_stationary_zero_equation_boundary_payload_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    ∃ boundary :
+        RicciFlowEquationBoundaryPackage
+          three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api,
+      RicciFlowEquationBoundaryStatement
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+      IsMetricTimeDerivativeOf
+        (metric_of_ricci_flow_data
+          three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api)
+        (metric_time_derivative_field_of_metric_derivative_data
+          (metric_derivative_data_of_equation_boundary_package boundary)) ∧
+      (∀ t : ℝ,
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary)) t =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data
+              three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api) t) ∧
+      ∀ (t : ℝ) (x : ThreeManifoldModel)
+        (v w : TangentSpace ThreeManifoldModelWithCorners x),
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary)) t x v w =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data
+              three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api) t x v w :=
+  equation_boundary_payload_of_analytic_foundation_with_equation_boundary
+    (three_manifold_model_standard_stationary_zero_analytic_foundation_with_equation_boundary_of_production_data_current_api
+      data)
+
+/--
+For the actual standard three-manifold model, stationary-zero production data
+closes the curvature-evolution interface directly on the concrete standard
+flow.
+-/
+theorem three_manifold_model_standard_stationary_zero_curvature_evolution_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    HasCurvatureEvolutionEquations
+      three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api :=
+  stationary_zero_curvature_evolution_of_production_data_current_api
+    three_manifold_model_standard_riemannian_metric
+    (stationary_zero_metric_derivative_identification_current_api
+      three_manifold_model_standard_riemannian_metric)
+    three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+    data
+
+/--
+For the actual standard three-manifold model, stationary-zero production data
+exposes the final direct analytic field block on the concrete standard flow.
+-/
+theorem three_manifold_model_standard_stationary_zero_final_fields_direct_payload_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    let flow := three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api
+    AnalyticFoundationWithEquationBoundaryStatement flow ∧
+      HasHamiltonMaximumPrinciple flow ∧
+      HasRicciFlowUniquenessTheory flow ∧
+      HasCurvatureEvolutionEquations flow :=
+  stationary_zero_final_fields_direct_payload_of_production_data_current_api
+    three_manifold_model_standard_riemannian_metric
+    (stationary_zero_metric_derivative_identification_current_api
+      three_manifold_model_standard_riemannian_metric)
+    three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+    data
+
+/--
+Concrete stationary-zero production data exposes the main analytic proof-field
+surface directly on the derived stationary zero Ricci flow.
+
+The payload is grouped by proof spine: geometric/metric core, DeTurck
+gauge-boundary fields, DeTurck/parabolic construction, continuation/uniqueness
+tail, equation/evolution fields, and final analytic boundary fields.  Each
+group is proved directly on the concrete stationary-zero flow from production
+data.
+-/
+theorem stationary_zero_full_direct_analytic_fields_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    let flow :=
+      stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci
+    (HasLeviCivitaConnectionExistence (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow) ∧
+      HasInitialMetricCompatibility flow ∧
+      HasRicciFlowEquationDerivation flow) ∧
+    (HasDeTurckGaugeFixing flow ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+    (HasDeTurckVectorFieldConstruction flow ∧
+      HasDeTurckEquationDerivation flow ∧
+      HasRicciDeTurckLinearization flow ∧
+      HasStrictlyParabolicDeTurckSystem flow ∧
+      HasParabolicLinearTheory flow ∧
+      HasParabolicFixedPointArgument flow ∧
+      HasDeTurckShortTimeExistence flow ∧
+      HasShortTimeRegularityBootstrap flow ∧
+      HasDeTurckDiffeomorphismODE flow ∧
+      HasDeTurckPullbackEquationIdentity flow ∧
+      HasDeTurckPullbackToRicciFlow flow) ∧
+    (HasShortTimeRicciFlowSolution flow ∧
+      HasRicciFlowMaximalTimeInterval flow ∧
+      HasRicciFlowContinuationCriterion flow ∧
+      HasCurvatureBlowUpContinuationCriterion flow ∧
+      HasMaximalSolutionExtension flow ∧
+      HasParabolicSchauderEstimates flow ∧
+      HasRicciFlowParabolicRegularity flow ∧
+      HasShiDerivativeEstimates flow ∧
+      HasCurvatureDerivativeBootstrap flow ∧
+      HasHamiltonMaximumPrinciple flow ∧
+      HasRicciFlowUniquenessTheory flow) ∧
+    (HasRicciFlowEquationDerivation flow ∧
+      HasMetricEvolutionEquation flow ∧
+      HasRicciTensorEvolutionEquation flow ∧
+      HasScalarCurvatureEvolutionEquation flow ∧
+      HasCurvatureNormEvolutionInequality flow ∧
+      HasCurvatureEvolutionEquations flow) ∧
+    (AnalyticFoundationWithEquationBoundaryStatement flow ∧
+      HasHamiltonMaximumPrinciple flow ∧
+      HasRicciFlowUniquenessTheory flow ∧
+      HasCurvatureEvolutionEquations flow) := by
+  dsimp
+  exact
+    ⟨stationary_zero_direct_geometric_metric_core_payload_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_ricci_flow_deturck_gauge_boundary_payload_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_ricci_flow_deturck_parabolic_payload_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_continuation_uniqueness_tail_direct_payload_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_equation_and_evolution_fields_direct_payload_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data,
+      stationary_zero_final_fields_direct_payload_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data⟩
+
+/--
+For the actual standard three-manifold model, stationary-zero production data
+exposes the complete direct analytic field surface on the concrete standard
+stationary-zero Ricci flow.
+
+This is a non-parametric specialization of the direct-field theorem above: the
+Levi-Civita/curvature core, DeTurck and parabolic construction spine,
+continuation/regularity tail, evolution equations, equation boundary, maximum
+principle, uniqueness, and curvature-evolution interfaces are all proved on
+`three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api`.
+-/
+theorem three_manifold_model_standard_stationary_zero_full_direct_analytic_fields_payload_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    let flow := three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api
+    (HasLeviCivitaConnectionExistence (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow) ∧
+      HasInitialMetricCompatibility flow ∧
+      HasRicciFlowEquationDerivation flow) ∧
+    (HasDeTurckGaugeFixing flow ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+    (HasDeTurckVectorFieldConstruction flow ∧
+      HasDeTurckEquationDerivation flow ∧
+      HasRicciDeTurckLinearization flow ∧
+      HasStrictlyParabolicDeTurckSystem flow ∧
+      HasParabolicLinearTheory flow ∧
+      HasParabolicFixedPointArgument flow ∧
+      HasDeTurckShortTimeExistence flow ∧
+      HasShortTimeRegularityBootstrap flow ∧
+      HasDeTurckDiffeomorphismODE flow ∧
+      HasDeTurckPullbackEquationIdentity flow ∧
+      HasDeTurckPullbackToRicciFlow flow) ∧
+    (HasShortTimeRicciFlowSolution flow ∧
+      HasRicciFlowMaximalTimeInterval flow ∧
+      HasRicciFlowContinuationCriterion flow ∧
+      HasCurvatureBlowUpContinuationCriterion flow ∧
+      HasMaximalSolutionExtension flow ∧
+      HasParabolicSchauderEstimates flow ∧
+      HasRicciFlowParabolicRegularity flow ∧
+      HasShiDerivativeEstimates flow ∧
+      HasCurvatureDerivativeBootstrap flow ∧
+      HasHamiltonMaximumPrinciple flow ∧
+      HasRicciFlowUniquenessTheory flow) ∧
+    (HasRicciFlowEquationDerivation flow ∧
+      HasMetricEvolutionEquation flow ∧
+      HasRicciTensorEvolutionEquation flow ∧
+      HasScalarCurvatureEvolutionEquation flow ∧
+      HasCurvatureNormEvolutionInequality flow ∧
+      HasCurvatureEvolutionEquations flow) ∧
+    (AnalyticFoundationWithEquationBoundaryStatement flow ∧
+      HasHamiltonMaximumPrinciple flow ∧
+      HasRicciFlowUniquenessTheory flow ∧
+      HasCurvatureEvolutionEquations flow) :=
+  stationary_zero_full_direct_analytic_fields_payload_of_production_data_current_api
+    three_manifold_model_standard_riemannian_metric
+    (stationary_zero_metric_derivative_identification_current_api
+      three_manifold_model_standard_riemannian_metric)
+    three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+    data
 
 /--
 For the actual three-manifold model, the stationary zero analytic-boundary route
@@ -14020,5 +16471,1356 @@ theorem three_manifold_stationary_zero_analytic_foundation_surface_payload_of_pr
     metric identifiesDerivative identifiesRicci
     (stationary_zero_analytic_foundation_subobligations_payload_of_production_data_current_api
       metric identifiesDerivative identifiesRicci data)
+
+/--
+For the standard three-manifold model, stationary-zero production data also
+constructs the analytic foundation package with the concrete zero-equation
+surface: the stored flow is the standard stationary-zero flow, the metric is
+time-independent, the metric derivative, Ricci tensor, scalar curvature, and
+Ricci-flow right-hand side all evaluate to zero, and the equation boundary
+identifies the two sides.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_foundation_surface_payload_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    ∃ package :
+        RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners ω
+          ThreeManifoldModel,
+      ricci_flow_data_of_analytic_foundation_package package =
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+      AnalyticFoundationWithEquationBoundaryStatement
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+      (∀ t,
+        metric_at_time_of_ricci_flow_data
+          three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api t =
+          three_manifold_model_standard_riemannian_metric) ∧
+      (∀ t x (v w : TangentSpace ThreeManifoldModelWithCorners x),
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package
+              (stationary_zero_ricci_flow_equation_boundary_package
+                three_manifold_model_standard_riemannian_metric
+                (stationary_zero_metric_derivative_identification_current_api
+                  three_manifold_model_standard_riemannian_metric)
+                three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+                three_manifold_model_standard_stationary_zero_satisfies_ricci_flow_equation_current_api)))
+            t x v w = 0 ∧
+        ricci_tensor_at_time_of_ricci_flow_data
+          three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api t x v w = 0 ∧
+        scalar_curvature_at_time_of_ricci_flow_data
+          three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api t x = 0 ∧
+        ricci_flow_rhs_tensor
+          (curvature_data_of_ricci_flow_data
+            three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api) t x v w = 0 ∧
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package
+              (stationary_zero_ricci_flow_equation_boundary_package
+                three_manifold_model_standard_riemannian_metric
+                (stationary_zero_metric_derivative_identification_current_api
+                  three_manifold_model_standard_riemannian_metric)
+                three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+                three_manifold_model_standard_stationary_zero_satisfies_ricci_flow_equation_current_api)))
+            t x v w =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data
+              three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api) t x v w) :=
+  three_manifold_stationary_zero_analytic_foundation_surface_payload_of_production_data_current_api
+    three_manifold_model_standard_riemannian_metric
+    (stationary_zero_metric_derivative_identification_current_api
+      three_manifold_model_standard_riemannian_metric)
+    three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+    data
+
+/--
+Concrete stationary-zero production data exposes the analytic package together
+with its final high-value fields.
+
+This provides downstream assembly code a package-level payload containing the
+stored flow equality, equation-boundary statement, Hamilton maximum principle,
+Ricci-flow uniqueness, and curvature-evolution interface, all reconstructed
+from the narrowed production-data object.
+-/
+theorem stationary_zero_analytic_foundation_package_final_fields_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    ∃ package : RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M,
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci ∧
+      AnalyticFoundationWithEquationBoundaryStatement
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasHamiltonMaximumPrinciple
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasRicciFlowUniquenessTheory
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasCurvatureEvolutionEquations
+        (ricci_flow_data_of_analytic_foundation_package package) := by
+  let package :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data
+  have hflow :
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api_eq
+      metric identifiesDerivative identifiesRicci data
+  refine ⟨package, hflow, ?_, ?_, ?_, ?_⟩
+  · rw [hflow]
+    exact
+      stationary_zero_analytic_foundation_with_equation_boundary_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data
+  · rw [hflow]
+    exact
+      stationary_zero_hamilton_maximum_principle_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data
+  · rw [hflow]
+    exact
+      stationary_zero_ricci_flow_uniqueness_theory_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data
+  · rw [hflow]
+    exact
+      stationary_zero_curvature_evolution_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci data
+
+/--
+For the actual standard three-manifold model, stationary-zero production data
+makes the constructed Riemann-curvature tensor field vanish pointwise.
+-/
+theorem three_manifold_model_standard_stationary_zero_riemann_curvature_pointwise_zero_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    let secondBianchiAtTime :=
+      data.riemannCurvatureVanishingAtTime.secondBianchiAtTime
+    let curvatureAtTime :=
+      secondBianchiAtTime.firstBianchiAtTime.curvatureSymmetryAtTime.curvatureConstructionAtTime.curvatureAtTime
+    ∀ (t : ℝ) {x : ThreeManifoldModel}
+      (X Y Z : TangentSpace ThreeManifoldModelWithCorners x),
+        curvatureAtTime t x X Y Z = 0 :=
+  stationary_zero_riemann_curvature_pointwise_zero_of_production_data_current_api
+    three_manifold_model_standard_riemannian_metric
+    (stationary_zero_metric_derivative_identification_current_api
+      three_manifold_model_standard_riemannian_metric)
+    three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+    data
+
+/--
+For the actual standard three-manifold model, stationary-zero production data
+constructs the analytic foundation package and exposes its final analytic
+fields with the stored flow identified as the concrete standard stationary-zero
+Ricci flow.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_foundation_package_final_fields_payload_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    ∃ package :
+        RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners ω
+          ThreeManifoldModel,
+      ricci_flow_data_of_analytic_foundation_package package =
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+      AnalyticFoundationWithEquationBoundaryStatement
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasHamiltonMaximumPrinciple
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasRicciFlowUniquenessTheory
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasCurvatureEvolutionEquations
+        (ricci_flow_data_of_analytic_foundation_package package) :=
+  stationary_zero_analytic_foundation_package_final_fields_payload_of_production_data_current_api
+    three_manifold_model_standard_riemannian_metric
+    (stationary_zero_metric_derivative_identification_current_api
+      three_manifold_model_standard_riemannian_metric)
+    three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+    data
+
+/--
+For the actual standard three-manifold model, the final analytic fields are
+projected from the concrete package built from stationary-zero production data.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_foundation_package_final_fields_projection_payload_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    ∃ package :
+        RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners ω
+          ThreeManifoldModel,
+      ricci_flow_data_of_analytic_foundation_package package =
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+      AnalyticFoundationWithEquationBoundaryStatement
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasHamiltonMaximumPrinciple
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasRicciFlowUniquenessTheory
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasCurvatureEvolutionEquations
+        (ricci_flow_data_of_analytic_foundation_package package) := by
+  let package :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api
+      three_manifold_model_standard_riemannian_metric
+      (stationary_zero_metric_derivative_identification_current_api
+        three_manifold_model_standard_riemannian_metric)
+      three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+      data
+  have hflow :
+      ricci_flow_data_of_analytic_foundation_package package =
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api_eq
+      three_manifold_model_standard_riemannian_metric
+      (stationary_zero_metric_derivative_identification_current_api
+        three_manifold_model_standard_riemannian_metric)
+      three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+      data
+  have verification :
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) := by
+    rw [hflow]
+    exact
+      zero_ricci_flow_equation_verification
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+  exact
+    ⟨package, hflow,
+      analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification
+        package verification,
+      hamilton_maximum_principle_of_analytic_foundation_package package,
+      uniqueness_theory_of_analytic_foundation_package package,
+      curvature_evolution_of_analytic_foundation_package package⟩
+
+/--
+Concrete stationary-zero production data exposes the complete evolution-equation
+block of the constructed analytic foundation package.
+
+The proof builds the actual package from production data and projects the
+metric, Ricci tensor, scalar curvature, curvature norm, and final curvature
+evolution interfaces from that package, avoiding any caller-supplied broad
+analytic sub-obligation payload.
+-/
+theorem stationary_zero_analytic_foundation_package_evolution_fields_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    ∃ package : RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M,
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci ∧
+      HasMetricEvolutionEquation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasRicciTensorEvolutionEquation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasScalarCurvatureEvolutionEquation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasCurvatureNormEvolutionInequality
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasCurvatureEvolutionEquations
+        (ricci_flow_data_of_analytic_foundation_package package) := by
+  let package :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data
+  have hflow :
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api_eq
+      metric identifiesDerivative identifiesRicci data
+  exact
+    ⟨package, hflow,
+      metric_evolution_equation_of_analytic_foundation_package package,
+      ricci_tensor_evolution_equation_of_analytic_foundation_package package,
+      scalar_curvature_evolution_equation_of_analytic_foundation_package package,
+      curvature_norm_evolution_inequality_of_analytic_foundation_package package,
+      curvature_evolution_of_analytic_foundation_package package⟩
+
+/--
+For the actual standard three-manifold model, stationary-zero production data
+constructs the analytic foundation package and exposes the complete
+evolution-equation field block on that package.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_foundation_package_evolution_fields_payload_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    ∃ package :
+        RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners ω
+          ThreeManifoldModel,
+      ricci_flow_data_of_analytic_foundation_package package =
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+      HasMetricEvolutionEquation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasRicciTensorEvolutionEquation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasScalarCurvatureEvolutionEquation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasCurvatureNormEvolutionInequality
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasCurvatureEvolutionEquations
+        (ricci_flow_data_of_analytic_foundation_package package) :=
+  stationary_zero_analytic_foundation_package_evolution_fields_payload_of_production_data_current_api
+    three_manifold_model_standard_riemannian_metric
+    (stationary_zero_metric_derivative_identification_current_api
+      three_manifold_model_standard_riemannian_metric)
+    three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+    data
+
+/--
+For the actual standard three-manifold model, the complete evolution-equation
+field block is projected from the concrete package built from production data.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_foundation_package_evolution_fields_projection_payload_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    ∃ package :
+        RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners ω
+          ThreeManifoldModel,
+      ricci_flow_data_of_analytic_foundation_package package =
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+      HasMetricEvolutionEquation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasRicciTensorEvolutionEquation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasScalarCurvatureEvolutionEquation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasCurvatureNormEvolutionInequality
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasCurvatureEvolutionEquations
+        (ricci_flow_data_of_analytic_foundation_package package) := by
+  let package :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api
+      three_manifold_model_standard_riemannian_metric
+      (stationary_zero_metric_derivative_identification_current_api
+        three_manifold_model_standard_riemannian_metric)
+      three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+      data
+  have hflow :
+      ricci_flow_data_of_analytic_foundation_package package =
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api_eq
+      three_manifold_model_standard_riemannian_metric
+      (stationary_zero_metric_derivative_identification_current_api
+        three_manifold_model_standard_riemannian_metric)
+      three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+      data
+  exact
+    ⟨package, hflow,
+      metric_evolution_equation_of_analytic_foundation_package package,
+      ricci_tensor_evolution_equation_of_analytic_foundation_package package,
+      scalar_curvature_evolution_equation_of_analytic_foundation_package package,
+      curvature_norm_evolution_inequality_of_analytic_foundation_package
+        package,
+      curvature_evolution_of_analytic_foundation_package package⟩
+
+/--
+Concrete stationary-zero production data exposes the geometric core and
+equation-derivation fields of the constructed analytic foundation package.
+
+This packages the Levi-Civita, curvature, contraction, metric-regularity,
+scalar-curvature, Ricci-flow equation, and initial-compatibility interfaces
+after constructing the actual package from production data.
+-/
+theorem stationary_zero_analytic_foundation_package_geometric_core_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    ∃ package : RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M,
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasRicciFlowEquationDerivation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasInitialMetricCompatibility
+        (ricci_flow_data_of_analytic_foundation_package package) := by
+  let package :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data
+  have hflow :
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api_eq
+      metric identifiesDerivative identifiesRicci data
+  exact
+    ⟨package, hflow,
+      levi_civita_theory_of_analytic_foundation_package package,
+      riemann_curvature_theory_of_analytic_foundation_package package,
+      ricci_contraction_theory_of_analytic_foundation_package package,
+      metric_regularity_of_analytic_foundation_package package,
+      metric_time_derivative_of_analytic_foundation_package package,
+      scalar_curvature_theory_of_analytic_foundation_package package,
+      equation_derivation_of_analytic_foundation_package package,
+      initial_metric_compatibility_of_analytic_foundation_package package⟩
+
+/--
+For the actual standard three-manifold model, stationary-zero production data
+constructs the analytic foundation package and exposes its geometric core:
+Levi-Civita theory, Riemann-curvature theory, Ricci contraction, metric
+regularity, metric time-derivative theory, scalar-curvature theory,
+Ricci-flow equation derivation, and initial metric compatibility.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_foundation_package_geometric_core_payload_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    ∃ package :
+        RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners ω
+          ThreeManifoldModel,
+      ricci_flow_data_of_analytic_foundation_package package =
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasRicciFlowEquationDerivation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasInitialMetricCompatibility
+        (ricci_flow_data_of_analytic_foundation_package package) :=
+  stationary_zero_analytic_foundation_package_geometric_core_payload_of_production_data_current_api
+    three_manifold_model_standard_riemannian_metric
+    (stationary_zero_metric_derivative_identification_current_api
+      three_manifold_model_standard_riemannian_metric)
+    three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+    data
+
+/--
+For the actual standard three-manifold model, the geometric core is projected
+from the concrete package built from stationary-zero production data.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_foundation_package_geometric_core_projection_payload_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    ∃ package :
+        RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners ω
+          ThreeManifoldModel,
+      ricci_flow_data_of_analytic_foundation_package package =
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasRicciFlowEquationDerivation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasInitialMetricCompatibility
+        (ricci_flow_data_of_analytic_foundation_package package) := by
+  let package :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api
+      three_manifold_model_standard_riemannian_metric
+      (stationary_zero_metric_derivative_identification_current_api
+        three_manifold_model_standard_riemannian_metric)
+      three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+      data
+  have hflow :
+      ricci_flow_data_of_analytic_foundation_package package =
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api_eq
+      three_manifold_model_standard_riemannian_metric
+      (stationary_zero_metric_derivative_identification_current_api
+        three_manifold_model_standard_riemannian_metric)
+      three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+      data
+  exact
+    ⟨package, hflow,
+      levi_civita_theory_of_analytic_foundation_package package,
+      riemann_curvature_theory_of_analytic_foundation_package package,
+      ricci_contraction_theory_of_analytic_foundation_package package,
+      metric_regularity_of_analytic_foundation_package package,
+      metric_time_derivative_of_analytic_foundation_package package,
+      scalar_curvature_theory_of_analytic_foundation_package package,
+      equation_derivation_of_analytic_foundation_package package,
+      initial_metric_compatibility_of_analytic_foundation_package package⟩
+
+/--
+Concrete stationary-zero production data exposes the DeTurck and parabolic
+construction spine of the constructed analytic foundation package.
+
+This packages the gauge-fixing, Ricci-DeTurck, strict-parabolicity,
+linear-theory, fixed-point, short-time, regularity-bootstrap, ODE, pullback,
+and pullback-to-Ricci-flow interfaces after constructing the actual package.
+-/
+theorem stationary_zero_analytic_foundation_package_deturck_parabolic_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    ∃ package : RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M,
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci ∧
+      HasDeTurckGaugeFixing
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckBackgroundMetricCompatibility
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckVectorFieldConstruction
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckEquationDerivation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasRicciDeTurckLinearization
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasStrictlyParabolicDeTurckSystem
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasParabolicLinearTheory
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasParabolicFixedPointArgument
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckShortTimeExistence
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasShortTimeRegularityBootstrap
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckDiffeomorphismODE
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckPullbackEquationIdentity
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckPullbackToRicciFlow
+        (ricci_flow_data_of_analytic_foundation_package package) := by
+  let package :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data
+  have hflow :
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api_eq
+      metric identifiesDerivative identifiesRicci data
+  exact
+    ⟨package, hflow,
+      deturck_gauge_fixing_of_analytic_foundation_package package,
+      deturck_background_metric_compatibility_of_analytic_foundation_package package,
+      deturck_vector_field_construction_of_analytic_foundation_package package,
+      deturck_equation_derivation_of_analytic_foundation_package package,
+      ricci_deturck_linearization_of_analytic_foundation_package package,
+      strictly_parabolic_deturck_of_analytic_foundation_package package,
+      parabolic_linear_theory_of_analytic_foundation_package package,
+      parabolic_fixed_point_argument_of_analytic_foundation_package package,
+      deturck_short_time_existence_of_analytic_foundation_package package,
+      short_time_regularity_bootstrap_of_analytic_foundation_package package,
+      deturck_diffeomorphism_ode_of_analytic_foundation_package package,
+      deturck_pullback_equation_identity_of_analytic_foundation_package package,
+      deturck_pullback_to_ricci_flow_of_analytic_foundation_package package⟩
+
+/--
+Concrete stationary-zero production data exposes the continuation and
+regularity spine of the constructed analytic foundation package.
+
+This proof constructs the package from production data and projects the
+maximal-time, continuation, blow-up, extension, Schauder, parabolic-regularity,
+Shi-estimate, and curvature-derivative interfaces from that package.  It lowers
+another broad analytic payload route to the actual stationary-zero production
+object.
+-/
+theorem stationary_zero_analytic_foundation_package_continuation_regularity_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    ∃ package : RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M,
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci ∧
+      HasRicciFlowMaximalTimeInterval
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasRicciFlowContinuationCriterion
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasCurvatureBlowUpContinuationCriterion
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasMaximalSolutionExtension
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasParabolicSchauderEstimates
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasRicciFlowParabolicRegularity
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasShiDerivativeEstimates
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasCurvatureDerivativeBootstrap
+        (ricci_flow_data_of_analytic_foundation_package package) := by
+  let package :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data
+  have hflow :
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api_eq
+      metric identifiesDerivative identifiesRicci data
+  exact
+    ⟨package, hflow,
+      maximal_time_interval_of_analytic_foundation_package package,
+      continuation_criterion_of_analytic_foundation_package package,
+      curvature_blowup_criterion_of_analytic_foundation_package package,
+      maximal_solution_extension_of_analytic_foundation_package package,
+      parabolic_schauder_estimates_of_analytic_foundation_package package,
+      parabolic_regularity_of_analytic_foundation_package package,
+      shi_derivative_estimates_of_analytic_foundation_package package,
+      curvature_derivative_bootstrap_of_analytic_foundation_package package⟩
+
+/--
+For the actual standard three-manifold model, stationary-zero production data
+constructs the analytic foundation package and exposes the DeTurck/parabolic
+construction spine on that concrete package.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_foundation_package_deturck_parabolic_payload_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    ∃ package :
+        RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners ⊤
+          ThreeManifoldModel,
+      ricci_flow_data_of_analytic_foundation_package package =
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+      HasDeTurckGaugeFixing
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckBackgroundMetricCompatibility
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckVectorFieldConstruction
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckEquationDerivation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasRicciDeTurckLinearization
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasStrictlyParabolicDeTurckSystem
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasParabolicLinearTheory
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasParabolicFixedPointArgument
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckShortTimeExistence
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasShortTimeRegularityBootstrap
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckDiffeomorphismODE
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckPullbackEquationIdentity
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckPullbackToRicciFlow
+        (ricci_flow_data_of_analytic_foundation_package package) :=
+  stationary_zero_analytic_foundation_package_deturck_parabolic_payload_of_production_data_current_api
+    three_manifold_model_standard_riemannian_metric
+    (stationary_zero_metric_derivative_identification_current_api
+      three_manifold_model_standard_riemannian_metric)
+    three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+    data
+
+/--
+For the actual standard three-manifold model, the DeTurck/parabolic
+construction spine is projected from the concrete package built from
+stationary-zero production data.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_foundation_package_deturck_parabolic_projection_payload_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    ∃ package :
+        RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners ⊤
+          ThreeManifoldModel,
+      ricci_flow_data_of_analytic_foundation_package package =
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+      HasDeTurckGaugeFixing
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckBackgroundMetricCompatibility
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckVectorFieldConstruction
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckEquationDerivation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasRicciDeTurckLinearization
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasStrictlyParabolicDeTurckSystem
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasParabolicLinearTheory
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasParabolicFixedPointArgument
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckShortTimeExistence
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasShortTimeRegularityBootstrap
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckDiffeomorphismODE
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckPullbackEquationIdentity
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasDeTurckPullbackToRicciFlow
+        (ricci_flow_data_of_analytic_foundation_package package) := by
+  let package :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api
+      three_manifold_model_standard_riemannian_metric
+      (stationary_zero_metric_derivative_identification_current_api
+        three_manifold_model_standard_riemannian_metric)
+      three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+      data
+  have hflow :
+      ricci_flow_data_of_analytic_foundation_package package =
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api_eq
+      three_manifold_model_standard_riemannian_metric
+      (stationary_zero_metric_derivative_identification_current_api
+        three_manifold_model_standard_riemannian_metric)
+      three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+      data
+  exact
+    ⟨package, hflow,
+      deturck_gauge_fixing_of_analytic_foundation_package package,
+      deturck_background_metric_compatibility_of_analytic_foundation_package
+        package,
+      deturck_vector_field_construction_of_analytic_foundation_package package,
+      deturck_equation_derivation_of_analytic_foundation_package package,
+      ricci_deturck_linearization_of_analytic_foundation_package package,
+      strictly_parabolic_deturck_of_analytic_foundation_package package,
+      parabolic_linear_theory_of_analytic_foundation_package package,
+      parabolic_fixed_point_argument_of_analytic_foundation_package package,
+      deturck_short_time_existence_of_analytic_foundation_package package,
+      short_time_regularity_bootstrap_of_analytic_foundation_package package,
+      deturck_diffeomorphism_ode_of_analytic_foundation_package package,
+      deturck_pullback_equation_identity_of_analytic_foundation_package
+        package,
+      deturck_pullback_to_ricci_flow_of_analytic_foundation_package package⟩
+
+/--
+For the actual standard three-manifold model, stationary-zero production data
+constructs the analytic foundation package and exposes the continuation and
+regularity spine on that concrete package.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_foundation_package_continuation_regularity_payload_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    ∃ package :
+        RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners ⊤
+          ThreeManifoldModel,
+      ricci_flow_data_of_analytic_foundation_package package =
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+      HasRicciFlowMaximalTimeInterval
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasRicciFlowContinuationCriterion
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasCurvatureBlowUpContinuationCriterion
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasMaximalSolutionExtension
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasParabolicSchauderEstimates
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasRicciFlowParabolicRegularity
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasShiDerivativeEstimates
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasCurvatureDerivativeBootstrap
+        (ricci_flow_data_of_analytic_foundation_package package) :=
+  stationary_zero_analytic_foundation_package_continuation_regularity_payload_of_production_data_current_api
+    three_manifold_model_standard_riemannian_metric
+    (stationary_zero_metric_derivative_identification_current_api
+      three_manifold_model_standard_riemannian_metric)
+    three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+    data
+
+/--
+For the actual standard three-manifold model, the continuation and regularity
+spine is projected from the concrete package built from stationary-zero
+production data.
+-/
+theorem three_manifold_model_standard_stationary_zero_analytic_foundation_package_continuation_regularity_projection_payload_of_production_data_current_api
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        three_manifold_model_standard_riemannian_metric
+        (stationary_zero_metric_derivative_identification_current_api
+          three_manifold_model_standard_riemannian_metric)
+        three_manifold_model_standard_stationary_zero_ricci_identification_current_api) :
+    ∃ package :
+        RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners ⊤
+          ThreeManifoldModel,
+      ricci_flow_data_of_analytic_foundation_package package =
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api ∧
+      HasRicciFlowMaximalTimeInterval
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasRicciFlowContinuationCriterion
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasCurvatureBlowUpContinuationCriterion
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasMaximalSolutionExtension
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasParabolicSchauderEstimates
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasRicciFlowParabolicRegularity
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasShiDerivativeEstimates
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasCurvatureDerivativeBootstrap
+        (ricci_flow_data_of_analytic_foundation_package package) := by
+  let package :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api
+      three_manifold_model_standard_riemannian_metric
+      (stationary_zero_metric_derivative_identification_current_api
+        three_manifold_model_standard_riemannian_metric)
+      three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+      data
+  have hflow :
+      ricci_flow_data_of_analytic_foundation_package package =
+        three_manifold_model_standard_stationary_zero_ricci_flow_data_current_api :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api_eq
+      three_manifold_model_standard_riemannian_metric
+      (stationary_zero_metric_derivative_identification_current_api
+        three_manifold_model_standard_riemannian_metric)
+      three_manifold_model_standard_stationary_zero_ricci_identification_current_api
+      data
+  exact
+    ⟨package, hflow,
+      maximal_time_interval_of_analytic_foundation_package package,
+      continuation_criterion_of_analytic_foundation_package package,
+      curvature_blowup_criterion_of_analytic_foundation_package package,
+      maximal_solution_extension_of_analytic_foundation_package package,
+      parabolic_schauder_estimates_of_analytic_foundation_package package,
+      parabolic_regularity_of_analytic_foundation_package package,
+      shi_derivative_estimates_of_analytic_foundation_package package,
+      curvature_derivative_bootstrap_of_analytic_foundation_package package⟩
+
+/--
+For stationary-zero Ricci-flow data, existence of an analytic-foundation package
+with the correct stored flow is equivalent to the actual analytic
+sub-obligation payload for that flow.
+-/
+theorem stationary_zero_analytic_foundation_package_exists_iff_subobligations_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric))) :
+    (∃ package : RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) ↔
+      AnalyticFoundationSubobligationsPayload
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) := by
+  constructor
+  · rintro ⟨package, hflow⟩
+    rw [← hflow]
+    exact
+      analytic_foundation_subobligations_of_analytic_foundation_package
+        package
+  · intro subobligations
+    let equationEvidence :=
+      stationary_zero_satisfies_ricci_flow_equation_current_api
+        metric identifiesDerivative identifiesRicci
+    exact
+      ⟨stationary_zero_ricci_flow_analytic_foundation_package
+          metric identifiesRicci equationEvidence subobligations,
+        stationary_zero_ricci_flow_analytic_foundation_package_eq
+          metric identifiesRicci equationEvidence subobligations⟩
+
+/--
+Stationary-zero production data constructs the analytic-foundation package and
+projects its statement, derivation, sub-obligation payload, and equation
+evidence fields.
+-/
+theorem stationary_zero_analytic_foundation_package_statement_projection_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    ∃ package : RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci ∧
+      RicciFlowAnalyticFoundationStatement ThreeManifoldModelWithCorners n M ∧
+      AnalyticFoundationDerivationStatement
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      AnalyticFoundationSubobligationsPayload
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      SatisfiesRicciFlowEquation
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package))
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) := by
+  let package :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data
+  have hflow :
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api_eq
+      metric identifiesDerivative identifiesRicci data
+  exact
+    ⟨package, hflow,
+      analytic_foundation_statement_of_analytic_foundation_package package,
+      analytic_foundation_derivation_statement_of_analytic_foundation_package
+        package,
+      analytic_foundation_subobligations_of_analytic_foundation_package
+        package,
+      equation_evidence_of_analytic_foundation_package package⟩
+
+/--
+Stationary-zero production data constructs the analytic-foundation package and
+the concrete equation-boundary package for the package's stored flow, then
+projects the derivative identification and tensor-level equation payload.
+-/
+theorem stationary_zero_analytic_foundation_package_boundary_projection_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    ∃ package : RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci ∧
+      ∃ boundary :
+        RicciFlowEquationBoundaryPackage
+          (ricci_flow_data_of_analytic_foundation_package package),
+        RicciFlowEquationBoundaryStatement
+          (ricci_flow_data_of_analytic_foundation_package package) ∧
+        IsMetricTimeDerivativeOf
+          (metric_of_ricci_flow_data
+            (ricci_flow_data_of_analytic_foundation_package package))
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package
+              boundary)) ∧
+        (∀ t : ℝ,
+          metric_time_derivative_at_time_of_metric_derivative_field
+            (metric_time_derivative_field_of_metric_derivative_data
+              (metric_derivative_data_of_equation_boundary_package
+                boundary)) t =
+            ricci_flow_rhs_tensor
+              (curvature_data_of_ricci_flow_data
+                (ricci_flow_data_of_analytic_foundation_package
+                  package)) t) ∧
+        ∀ (t : ℝ) (x : M)
+          (v w : TangentSpace ThreeManifoldModelWithCorners x),
+          metric_time_derivative_at_time_of_metric_derivative_field
+            (metric_time_derivative_field_of_metric_derivative_data
+              (metric_derivative_data_of_equation_boundary_package
+                boundary)) t x v w =
+            ricci_flow_rhs_tensor
+              (curvature_data_of_ricci_flow_data
+                (ricci_flow_data_of_analytic_foundation_package
+                  package)) t x v w := by
+  let package :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data
+  have hflow :
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api_eq
+      metric identifiesDerivative identifiesRicci data
+  have verification :
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) := by
+    rw [hflow]
+    exact zero_ricci_flow_equation_verification
+      identifiesDerivative identifiesRicci
+  let boundary :
+      RicciFlowEquationBoundaryPackage
+        (ricci_flow_data_of_analytic_foundation_package package) :=
+    equation_boundary_package_of_ricci_flow_equation_verification
+      (ricci_flow_data_of_analytic_foundation_package package)
+      verification
+  exact
+    ⟨package, hflow, boundary, ⟨boundary⟩,
+      metric_time_derivative_identification_of_equation_boundary_package
+        boundary,
+      equation_at_time_of_equation_boundary_package_projection boundary,
+      equation_at_time_apply_of_equation_boundary_package_projection
+        boundary⟩
+
+/--
+Stationary-zero production data constructs the analytic-foundation package,
+reconstructs the package-level equation-boundary statement, and projects the
+final analytic surface from the same package.
+-/
+theorem stationary_zero_analytic_foundation_package_final_surface_projection_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    ∃ package : RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci ∧
+      RicciFlowAnalyticFoundationStatement ThreeManifoldModelWithCorners n M ∧
+      AnalyticFoundationWithEquationBoundaryStatement
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasHamiltonMaximumPrinciple
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasRicciFlowUniquenessTheory
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasCurvatureEvolutionEquations
+        (ricci_flow_data_of_analytic_foundation_package package) := by
+  let package :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data
+  have hflow :
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api_eq
+      metric identifiesDerivative identifiesRicci data
+  have verification :
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) := by
+    rw [hflow]
+    exact zero_ricci_flow_equation_verification
+      identifiesDerivative identifiesRicci
+  exact
+    ⟨package, hflow,
+      analytic_foundation_statement_of_analytic_foundation_package package,
+      analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification
+        package verification,
+      hamilton_maximum_principle_of_analytic_foundation_package package,
+      uniqueness_theory_of_analytic_foundation_package package,
+      curvature_evolution_of_analytic_foundation_package package⟩
+
+/--
+**Step 3691 source.** Stationary-zero production data now closes a single
+package witness carrying the final analytic boundary, evolution-equation block,
+and geometric core.
+
+Reference source: this proof constructs the package with
+`stationary_zero_analytic_foundation_package_of_production_data_current_api` and
+then projects the compiled fields supplied by
+`analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification`,
+`*_of_analytic_foundation_package`, and the zero Ricci-flow equation
+verification.  It is not an alias: the proof fixes one package witness and
+assembles the final, evolution, and geometric-core interfaces on that same
+witness for downstream assembly checking.
+-/
+theorem stationary_zero_analytic_foundation_package_final_evolution_geometric_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    ∃ package : RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M,
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci ∧
+      AnalyticFoundationWithEquationBoundaryStatement
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasHamiltonMaximumPrinciple
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasRicciFlowUniquenessTheory
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasMetricEvolutionEquation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasRicciTensorEvolutionEquation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasScalarCurvatureEvolutionEquation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasCurvatureNormEvolutionInequality
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasCurvatureEvolutionEquations
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      HasRicciFlowEquationDerivation
+        (ricci_flow_data_of_analytic_foundation_package package) ∧
+      HasInitialMetricCompatibility
+        (ricci_flow_data_of_analytic_foundation_package package) := by
+  let package :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data
+  have hflow :
+      ricci_flow_data_of_analytic_foundation_package package =
+        stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci :=
+    stationary_zero_analytic_foundation_package_of_production_data_current_api_eq
+      metric identifiesDerivative identifiesRicci data
+  have verification :
+      RicciFlowEquationVerification
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)) := by
+    rw [hflow]
+    exact
+      zero_ricci_flow_equation_verification
+        identifiesDerivative identifiesRicci
+  exact
+    ⟨package, hflow,
+      analytic_foundation_with_equation_boundary_of_package_and_ricci_flow_equation_verification
+        package verification,
+      hamilton_maximum_principle_of_analytic_foundation_package package,
+      uniqueness_theory_of_analytic_foundation_package package,
+      metric_evolution_equation_of_analytic_foundation_package package,
+      ricci_tensor_evolution_equation_of_analytic_foundation_package package,
+      scalar_curvature_evolution_equation_of_analytic_foundation_package package,
+      curvature_norm_evolution_inequality_of_analytic_foundation_package
+        package,
+      curvature_evolution_of_analytic_foundation_package package,
+      levi_civita_theory_of_analytic_foundation_package package,
+      riemann_curvature_theory_of_analytic_foundation_package package,
+      ricci_contraction_theory_of_analytic_foundation_package package,
+      metric_regularity_of_analytic_foundation_package package,
+      metric_time_derivative_of_analytic_foundation_package package,
+      scalar_curvature_theory_of_analytic_foundation_package package,
+      equation_derivation_of_analytic_foundation_package package,
+      initial_metric_compatibility_of_analytic_foundation_package package⟩
 
 end Poincare
