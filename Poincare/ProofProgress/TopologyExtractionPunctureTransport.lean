@@ -3463,6 +3463,23 @@ theorem compl_singleton_contractibleSpace_of_homeomorph_to_threeSphere
     h x).contractibleSpace
 
 /--
+Every single-puncture complement of a space recognized as `ThreeSphere` is
+locally path-connected.
+-/
+theorem compl_singleton_locPathConnectedSpace_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M) :
+    LocPathConnectedSpace ({x}ᶜ : Set M) :=
+  compl_singleton_locPathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+
+/-- Theorem contract for `compl_singleton_locPathConnectedSpace_of_homeomorph_to_threeSphere`. -/
+theorem compl_singleton_locPathConnectedSpace_of_homeomorph_to_threeSphere_eq :
+    @Poincare.compl_singleton_locPathConnectedSpace_of_homeomorph_to_threeSphere =
+      @Poincare.compl_singleton_locPathConnectedSpace_of_homeomorph_to_threeSphere :=
+  rfl
+
+/--
 Every based loop in a single-puncture complement of a recognized `ThreeSphere`
 is null-homotopic.
 -/
@@ -3607,6 +3624,35 @@ theorem compl_singleton_euclidean_endpoint_collapse_package_of_homeomorph_to_thr
   rfl
 
 /--
+Recognizing a space as `ThreeSphere` exposes singleton local path-connectedness
+together with the Euclidean endpoint-collapse payload.
+-/
+theorem compl_singleton_locPath_euclidean_endpoint_collapse_package_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M)
+    (basepoint target : ({x}ᶜ : Set M)) :
+    LocPathConnectedSpace ({x}ᶜ : Set M) ∧
+      Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+      ContractibleSpace ({x}ᶜ : Set M) ∧
+      PathConnectedSpace ({x}ᶜ : Set M) ∧
+      ConnectedSpace ({x}ᶜ : Set M) ∧
+      SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+      pathComponent basepoint = Set.univ ∧
+      Joined basepoint target ∧
+      Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+      Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) :=
+  compl_singleton_locPath_euclidean_endpoint_collapse_package_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+    basepoint target
+
+/-- Theorem contract for
+`compl_singleton_locPath_euclidean_endpoint_collapse_package_of_homeomorph_to_threeSphere`. -/
+theorem compl_singleton_locPath_euclidean_endpoint_collapse_package_of_homeomorph_to_threeSphere_eq :
+    @Poincare.compl_singleton_locPath_euclidean_endpoint_collapse_package_of_homeomorph_to_threeSphere =
+      @Poincare.compl_singleton_locPath_euclidean_endpoint_collapse_package_of_homeomorph_to_threeSphere :=
+  rfl
+
+/--
 Every two-puncture complement of a space recognized as `ThreeSphere` is simply
 connected.
 -/
@@ -3616,6 +3662,23 @@ theorem twoPointComplement_simplyConnectedSpace_of_homeomorph_to_threeSphere
     SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
   twoPointComplement_simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+
+/--
+Every two-puncture complement of a space recognized as `ThreeSphere` is
+locally path-connected.
+-/
+theorem twoPointComplement_locPathConnectedSpace_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x) :
+    LocPathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+  twoPointComplement_locPathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+
+/-- Theorem contract for `twoPointComplement_locPathConnectedSpace_of_homeomorph_to_threeSphere`. -/
+theorem twoPointComplement_locPathConnectedSpace_of_homeomorph_to_threeSphere_eq :
+    @Poincare.twoPointComplement_locPathConnectedSpace_of_homeomorph_to_threeSphere =
+      @Poincare.twoPointComplement_locPathConnectedSpace_of_homeomorph_to_threeSphere :=
+  rfl
 
 /--
 Every two-puncture complement of a space recognized as `ThreeSphere` is
@@ -3671,6 +3734,33 @@ theorem twoPointComplement_topology_package_of_homeomorph_to_threeSphere
 theorem twoPointComplement_topology_package_of_homeomorph_to_threeSphere_eq :
     @Poincare.twoPointComplement_topology_package_of_homeomorph_to_threeSphere =
       @Poincare.twoPointComplement_topology_package_of_homeomorph_to_threeSphere :=
+  rfl
+
+/--
+The local-topology package for every two-puncture complement of a space
+recognized as `ThreeSphere`: nonemptiness, local path-connectedness,
+path-connectedness, connectedness, and simple connectedness.
+-/
+theorem twoPointComplement_locPath_topology_package_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x) :
+    Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+      LocPathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+      PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+      ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+      SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+  ⟨twoPointComplement_nonempty_of_homeomorph_to_threeSphere h hyx,
+    twoPointComplement_locPathConnectedSpace_of_homeomorph_to_threeSphere
+      h hyx,
+    twoPointComplement_pathConnectedSpace_of_homeomorph_to_threeSphere h hyx,
+    twoPointComplement_connectedSpace_of_homeomorph_to_threeSphere h hyx,
+    twoPointComplement_simplyConnectedSpace_of_homeomorph_to_threeSphere
+      h hyx⟩
+
+/-- Theorem contract for `twoPointComplement_locPath_topology_package_of_homeomorph_to_threeSphere`. -/
+theorem twoPointComplement_locPath_topology_package_of_homeomorph_to_threeSphere_eq :
+    @Poincare.twoPointComplement_locPath_topology_package_of_homeomorph_to_threeSphere =
+      @Poincare.twoPointComplement_locPath_topology_package_of_homeomorph_to_threeSphere :=
   rfl
 
 /--
