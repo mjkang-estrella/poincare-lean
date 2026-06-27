@@ -30654,4 +30654,157 @@ theorem dependency_only_canonical_reserved_theorem_target_bridge_extinction_topo
       @Poincare.dependency_only_canonical_reserved_theorem_target_bridge_extinction_topology_route_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only canonical reserved-theorem endpoint with the selected
+finite-extinction derivation spine opened from the target surgery package.
+
+This exposes the width-theory, curvature-pinching, component-control,
+time-bound, derivation, and conclusion-derivation fields that turn the
+Ricci-flow-with-surgery package into the finite-extinction conclusion consumed
+by topology extraction.
+-/
+theorem dependency_only_canonical_reserved_theorem_selected_finite_extinction_derivation_spine_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ theoremName : String,
+    ∃ n : ℕ∞ω,
+    ∃ equationBoundaryPackage :
+      FiniteExtinctionSurgeryPackageWithEquationBoundary n M,
+    ∃ ordinaryPackage : FiniteExtinctionSurgeryPackage n M,
+    ∃ finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+    ∃ extinctionWidthTheory :
+      HasFiniteExtinctionWidthTheory
+        (ricci_flow_data_of_analytic_foundation_package
+          ordinaryPackage.analyticFoundation)
+        ordinaryPackage.surgeryConstruction.withSurgery
+        ordinaryPackage.perelmanControl.control,
+    ∃ extinctionCurvaturePinching :
+      HasFiniteExtinctionCurvaturePinching
+        (ricci_flow_data_of_analytic_foundation_package
+          ordinaryPackage.analyticFoundation)
+        ordinaryPackage.surgeryConstruction.withSurgery
+        ordinaryPackage.perelmanControl.control,
+    ∃ extinctionComponentControl :
+      HasFiniteExtinctionComponentControl
+        (ricci_flow_data_of_analytic_foundation_package
+          ordinaryPackage.analyticFoundation)
+        ordinaryPackage.surgeryConstruction.withSurgery
+        ordinaryPackage.perelmanControl.control
+        ordinaryPackage.extinctionCurvaturePinching,
+    ∃ extinctionTimeBound :
+      HasFiniteExtinctionTimeBound
+        (ricci_flow_data_of_analytic_foundation_package
+          ordinaryPackage.analyticFoundation)
+        ordinaryPackage.surgeryConstruction.withSurgery
+        ordinaryPackage.perelmanControl.control
+        ordinaryPackage.extinctionCurvaturePinching
+        ordinaryPackage.extinctionComponentControl,
+    ∃ extinctionDerivation :
+      HasFiniteExtinctionDerivation
+        (ricci_flow_data_of_analytic_foundation_package
+          ordinaryPackage.analyticFoundation)
+        ordinaryPackage.surgeryConstruction.withSurgery
+        ordinaryPackage.perelmanControl.control,
+    ∃ extinctionConclusionDerivation :
+      HasFiniteExtinctionConclusionDerivation
+        (ricci_flow_data_of_analytic_foundation_package
+          ordinaryPackage.analyticFoundation)
+        ordinaryPackage.surgeryConstruction.withSurgery
+        ordinaryPackage.perelmanControl.control
+        ordinaryPackage.extinctionCurvaturePinching
+        ordinaryPackage.extinctionComponentControl
+        ordinaryPackage.extinctionTimeBound
+        ordinaryPackage.extinctionDerivation
+        finiteExtinction,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      ordinaryPackage =
+        surgery_package_of_equation_boundary_surgery_package
+          equationBoundaryPackage ∧
+      finiteExtinction = ordinaryPackage.finiteExtinction ∧
+      extinctionWidthTheory = ordinaryPackage.extinctionWidthTheory ∧
+      extinctionCurvaturePinching =
+        ordinaryPackage.extinctionCurvaturePinching ∧
+      extinctionComponentControl = ordinaryPackage.extinctionComponentControl ∧
+      extinctionTimeBound = ordinaryPackage.extinctionTimeBound ∧
+      extinctionDerivation = ordinaryPackage.extinctionDerivation ∧
+      extinctionConclusionDerivation =
+        ordinaryPackage.extinctionConclusionDerivation := by
+  rcases
+      dependency_only_canonical_reserved_theorem_target_analytic_surgery_fields_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨theoremName, n, equationBoundaryPackage, ordinaryPackage,
+      _analyticFoundation, _surgeryConstruction, _perelmanControl,
+      _equationBoundary, finiteExtinction, hTheoremNameCanonical,
+      hTheoremNameLiteral, hOrdinaryPackage, _hOrdinaryPackageField,
+      _hAnalyticFoundation, _hSurgeryConstruction, _hPerelmanControl,
+      _hEquationBoundary, hFiniteExtinction⟩
+  let extinctionWidthTheory :
+      HasFiniteExtinctionWidthTheory
+        (ricci_flow_data_of_analytic_foundation_package
+          ordinaryPackage.analyticFoundation)
+        ordinaryPackage.surgeryConstruction.withSurgery
+        ordinaryPackage.perelmanControl.control :=
+    ordinaryPackage.extinctionWidthTheory
+  let extinctionCurvaturePinching :
+      HasFiniteExtinctionCurvaturePinching
+        (ricci_flow_data_of_analytic_foundation_package
+          ordinaryPackage.analyticFoundation)
+        ordinaryPackage.surgeryConstruction.withSurgery
+        ordinaryPackage.perelmanControl.control :=
+    ordinaryPackage.extinctionCurvaturePinching
+  let extinctionComponentControl :
+      HasFiniteExtinctionComponentControl
+        (ricci_flow_data_of_analytic_foundation_package
+          ordinaryPackage.analyticFoundation)
+        ordinaryPackage.surgeryConstruction.withSurgery
+        ordinaryPackage.perelmanControl.control
+        ordinaryPackage.extinctionCurvaturePinching :=
+    ordinaryPackage.extinctionComponentControl
+  let extinctionTimeBound :
+      HasFiniteExtinctionTimeBound
+        (ricci_flow_data_of_analytic_foundation_package
+          ordinaryPackage.analyticFoundation)
+        ordinaryPackage.surgeryConstruction.withSurgery
+        ordinaryPackage.perelmanControl.control
+        ordinaryPackage.extinctionCurvaturePinching
+        ordinaryPackage.extinctionComponentControl :=
+    ordinaryPackage.extinctionTimeBound
+  let extinctionDerivation :
+      HasFiniteExtinctionDerivation
+        (ricci_flow_data_of_analytic_foundation_package
+          ordinaryPackage.analyticFoundation)
+        ordinaryPackage.surgeryConstruction.withSurgery
+        ordinaryPackage.perelmanControl.control :=
+    ordinaryPackage.extinctionDerivation
+  let extinctionConclusionDerivation :
+      HasFiniteExtinctionConclusionDerivation
+        (ricci_flow_data_of_analytic_foundation_package
+          ordinaryPackage.analyticFoundation)
+        ordinaryPackage.surgeryConstruction.withSurgery
+        ordinaryPackage.perelmanControl.control
+        ordinaryPackage.extinctionCurvaturePinching
+        ordinaryPackage.extinctionComponentControl
+        ordinaryPackage.extinctionTimeBound
+        ordinaryPackage.extinctionDerivation
+        finiteExtinction :=
+    ordinaryPackage.extinctionConclusionDerivation
+  exact
+    ⟨theoremName, n, equationBoundaryPackage, ordinaryPackage,
+      finiteExtinction, extinctionWidthTheory, extinctionCurvaturePinching,
+      extinctionComponentControl, extinctionTimeBound, extinctionDerivation,
+      extinctionConclusionDerivation, hTheoremNameCanonical,
+      hTheoremNameLiteral, hOrdinaryPackage, hFiniteExtinction, rfl, rfl, rfl,
+      rfl, rfl, rfl⟩
+
+/-- Theorem contract for
+`dependency_only_canonical_reserved_theorem_selected_finite_extinction_derivation_spine_of_equation_boundary_dependencies`. -/
+theorem dependency_only_canonical_reserved_theorem_selected_finite_extinction_derivation_spine_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_canonical_reserved_theorem_selected_finite_extinction_derivation_spine_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_canonical_reserved_theorem_selected_finite_extinction_derivation_spine_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
