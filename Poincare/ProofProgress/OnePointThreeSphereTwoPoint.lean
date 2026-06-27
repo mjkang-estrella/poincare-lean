@@ -652,4 +652,57 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_homotopy_tra
       @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_homotopy_transport :=
   rfl
 
+/--
+The explicit complement homeomorphism transports path-homotopy quotient classes
+in both directions. This is the quotient-level form used by fundamental-group
+and path-component consumers after paths and loops have crossed the
+one-point-to-`ThreeSphere` two-puncture chart.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_quotient_transport
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    {sourceBase sourceTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    {sourcePath₀ sourcePath₁ : Path sourceBase sourceTarget}
+    {sourceLoop₀ sourceLoop₁ : Path sourceBase sourceBase}
+    {targetBase targetTarget :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)}
+    {targetPath₀ targetPath₁ : Path targetBase targetTarget}
+    {targetLoop₀ targetLoop₁ : Path targetBase targetBase}
+    (hSourcePath : Path.Homotopic sourcePath₀ sourcePath₁)
+    (hSourceLoop : Path.Homotopic sourceLoop₀ sourceLoop₁)
+    (hTargetPath : Path.Homotopic targetPath₀ targetPath₁)
+    (hTargetLoop : Path.Homotopic targetLoop₀ targetLoop₁) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    (⟦sourcePath₀.map H.continuous⟧ :
+        Path.Homotopic.Quotient (H sourceBase) (H sourceTarget)) =
+        ⟦sourcePath₁.map H.continuous⟧ ∧
+      (⟦sourceLoop₀.map H.continuous⟧ :
+        Path.Homotopic.Quotient (H sourceBase) (H sourceBase)) =
+        ⟦sourceLoop₁.map H.continuous⟧ ∧
+      (⟦targetPath₀.map H.symm.continuous⟧ :
+        Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetTarget)) =
+        ⟦targetPath₁.map H.symm.continuous⟧ ∧
+      (⟦targetLoop₀.map H.symm.continuous⟧ :
+        Path.Homotopic.Quotient (H.symm targetBase) (H.symm targetBase)) =
+        ⟦targetLoop₁.map H.symm.continuous⟧ := by
+  dsimp
+  let H :=
+    onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+      hqp
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · exact Quotient.sound (hSourcePath.map (⟨H, H.continuous⟩))
+  · exact Quotient.sound (hSourceLoop.map (⟨H, H.continuous⟩))
+  · exact Quotient.sound (hTargetPath.map (⟨H.symm, H.symm.continuous⟩))
+  · exact Quotient.sound (hTargetLoop.map (⟨H.symm, H.symm.continuous⟩))
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_quotient_transport`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_quotient_transport_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_quotient_transport =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_quotient_transport :=
+  rfl
+
 end Poincare
