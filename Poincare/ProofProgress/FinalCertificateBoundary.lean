@@ -23361,6 +23361,85 @@ theorem conditional_root_selected_chosenEndpoint_completionCriterion_and_endpoin
   rfl
 
 /--
+Direct homeomorphism form of the compact selected chosen-endpoint route.
+
+This keeps the direct `M ≃ₜ ThreeSphere` conclusion, the project Poincare
+statement, the completion criterion family, and the exact no-chart endpoint
+proof object together with coherence between the root and selected
+`ThreeSphere` witnesses.
+-/
+theorem conditional_root_selected_chosenEndpoint_direct_homeomorphism_completionCriterion_and_endpoint_proof_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {x y : M} (hyx : y ≠ x)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (chosenSinglePath : Path singleBase singleTarget)
+    (singleLoop : Path singleBase singleBase)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    PoincareConjectureStatement.{u} ∧
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      ∃ rootHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+      ∃ selectedHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        rootHomeomorphism = selectedHomeomorphism ∧
+        ∃ endpointProof,
+          endpointProof =
+            conditional_root_projector_selected_decomposition_trace_finalHomeomorphism_recognition_and_singletonTwoPointLocPathChosenEndpointCoherence_certificate_of_equation_boundary_dependencies
+              dependencies smoothability grounded topology smoothabilityPayload M
+              hyx singleBase singleTarget chosenSinglePath singleLoop
+              basepoint target chosenPath loop := by
+  rcases
+      conditional_root_selected_chosenEndpoint_completionCriterion_and_endpoint_proof_of_equation_boundary_dependencies
+        dependencies smoothability grounded topology smoothabilityPayload M
+        hyx singleBase singleTarget chosenSinglePath singleLoop
+        basepoint target chosenPath loop with
+    ⟨projectStatement, completionCriterion, endpointProof, hEndpointProof⟩
+  rcases endpointProof with
+    ⟨_endpointProjectStatement, _checkedCertificate, _extinction,
+      _pathData, _endpointData, _finalHomeomorphismProjector,
+      selectedCertificate⟩
+  rcases selectedCertificate with
+    ⟨_decomposition, _hDecompositionData, _hTrace, _hTraceData,
+      _hFinalPayload, selectedHomeomorphism, _hOnePoint, _endpointCore⟩
+  let rootHomeomorphism : Nonempty (M ≃ₜ ThreeSphere) :=
+    conditional_poincare_conjecture_expanded_of_equation_boundary_dependencies
+      dependencies M
+  exact
+    ⟨projectStatement,
+      rootHomeomorphism,
+      completionCriterion,
+      rootHomeomorphism,
+      selectedHomeomorphism,
+      Subsingleton.elim rootHomeomorphism selectedHomeomorphism,
+      conditional_root_projector_selected_decomposition_trace_finalHomeomorphism_recognition_and_singletonTwoPointLocPathChosenEndpointCoherence_certificate_of_equation_boundary_dependencies
+        dependencies smoothability grounded topology smoothabilityPayload M
+        hyx singleBase singleTarget chosenSinglePath singleLoop
+        basepoint target chosenPath loop,
+      hEndpointProof⟩
+
+/-- Theorem contract for
+`conditional_root_selected_chosenEndpoint_direct_homeomorphism_completionCriterion_and_endpoint_proof_of_equation_boundary_dependencies`. -/
+theorem conditional_root_selected_chosenEndpoint_direct_homeomorphism_completionCriterion_and_endpoint_proof_of_equation_boundary_dependencies_eq :
+    @Poincare.conditional_root_selected_chosenEndpoint_direct_homeomorphism_completionCriterion_and_endpoint_proof_of_equation_boundary_dependencies =
+      @Poincare.conditional_root_selected_chosenEndpoint_direct_homeomorphism_completionCriterion_and_endpoint_proof_of_equation_boundary_dependencies :=
+  rfl
+
+/--
 The final-certificate boundary exposes the selected decomposition, surgery
 trace, final recognition, synchronized two-puncture chart/path-loop projection,
 and transported local path-connectedness certificate.
