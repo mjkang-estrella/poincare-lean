@@ -599,4 +599,57 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_roundtrip_ev
       @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_roundtrip_eval :=
   rfl
 
+/--
+Path homotopies and based-loop homotopies are transported by the explicit
+one-point-to-`ThreeSphere` two-puncture complement homeomorphism and by its
+inverse. This is the homotopy-level bridge underlying the path/loop payload
+transport theorems above.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_homotopy_transport
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    {sourceBase sourceTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    {sourcePath₀ sourcePath₁ : Path sourceBase sourceTarget}
+    {sourceLoop₀ sourceLoop₁ : Path sourceBase sourceBase}
+    {targetBase targetTarget :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)}
+    {targetPath₀ targetPath₁ : Path targetBase targetTarget}
+    {targetLoop₀ targetLoop₁ : Path targetBase targetBase}
+    (hSourcePath : Path.Homotopic sourcePath₀ sourcePath₁)
+    (hSourceLoop : Path.Homotopic sourceLoop₀ sourceLoop₁)
+    (hTargetPath : Path.Homotopic targetPath₀ targetPath₁)
+    (hTargetLoop : Path.Homotopic targetLoop₀ targetLoop₁) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    Path.Homotopic
+        (sourcePath₀.map H.continuous)
+        (sourcePath₁.map H.continuous) ∧
+      Path.Homotopic
+        (sourceLoop₀.map H.continuous)
+        (sourceLoop₁.map H.continuous) ∧
+      Path.Homotopic
+        (targetPath₀.map H.symm.continuous)
+        (targetPath₁.map H.symm.continuous) ∧
+      Path.Homotopic
+        (targetLoop₀.map H.symm.continuous)
+        (targetLoop₁.map H.symm.continuous) := by
+  dsimp
+  let H :=
+    onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+      hqp
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · exact hSourcePath.map (⟨H, H.continuous⟩)
+  · exact hSourceLoop.map (⟨H, H.continuous⟩)
+  · exact hTargetPath.map (⟨H.symm, H.symm.continuous⟩)
+  · exact hTargetLoop.map (⟨H.symm, H.symm.continuous⟩)
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_homotopy_transport`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_homotopy_transport_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_homotopy_transport =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_path_loop_homotopy_transport :=
+  rfl
+
 end Poincare
