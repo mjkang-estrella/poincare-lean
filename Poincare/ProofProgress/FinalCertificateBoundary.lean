@@ -33602,4 +33602,102 @@ theorem dependency_only_reserved_completionCriterion_all_routes_of_equation_boun
       @Poincare.dependency_only_reserved_completionCriterion_all_routes_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved final statement and completion-route collapse.
+
+This combines the final project/mathlib statements and canonical target with
+the fixed-witness all-routes criterion collapse.  The package keeps the
+statement route and the criterion routes synchronized through the same checked
+completion certificate.
+-/
+theorem dependency_only_reserved_final_statement_completion_routes_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (witness : Type u) :
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ canonicalTarget : canonicalCompletionTarget.{u},
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u},
+    ∃ statementCertificate : PoincareCompletionCertificate.{u},
+    ∃ routeCertificate : PoincareCompletionCertificate.{u},
+    ∃ directCriterion : CompletionCriterionAtUniverse witness,
+    ∃ canonicalCriterion : CompletionCriterionAtUniverse witness,
+    ∃ projectCriterion : CompletionCriterionAtUniverse witness,
+      projectStatement =
+        dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies
+          dependencies ∧
+      projectStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      mathlibStatement =
+        dependency_only_reserved_mathlib_statement_of_equation_boundary_dependencies
+          dependencies ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement ∧
+      canonicalTarget =
+        canonical_completion_target_of_completion_certificate
+          statementCertificate ∧
+      statementCertificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      routeCertificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      statementCertificate = routeCertificate ∧
+      directCriterion =
+        dependency_only_reserved_completionCriterionAtUniverse_of_equation_boundary_dependencies
+          dependencies witness ∧
+      directCriterion = canonicalCriterion ∧
+      directCriterion = projectCriterion := by
+  rcases
+      dependency_only_reserved_canonical_target_collapse_of_equation_boundary_dependencies
+        dependencies with
+    ⟨statementCertificate, nonemptyCertificate, canonicalTarget,
+      projectStatement, mathlibStatement, _canonicalPayload, _projectPayload,
+      hStatementCertificate, _hNonemptyCertificate, hCanonicalTarget,
+      _hProjectStatementTarget, hProjectStatementCertificate,
+      _hMathlibStatementProject, _hCanonicalPayload, _hProjectPayload,
+      _hCanonicalProjectPayload⟩
+  rcases
+      dependency_only_reserved_completionCriterion_all_routes_of_equation_boundary_dependencies
+        dependencies witness with
+    ⟨directCriterion, canonicalCriterion, projectCriterion,
+      _completionCriterionFamily, _canonicalPayloadCompletion,
+      _projectPayloadCompletion, routeCertificate, hDirectCriterion,
+      _hCanonicalCriterion, _hProjectCriterion, _hDirectFamily,
+      hDirectCanonical, hDirectProject, hRouteCertificate⟩
+  have hProjectStatementDirect :
+      projectStatement =
+        dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies
+          dependencies := by
+    apply Subsingleton.elim
+  have hMathlibStatementDirect :
+      mathlibStatement =
+        dependency_only_reserved_mathlib_statement_of_equation_boundary_dependencies
+          dependencies := by
+    apply Subsingleton.elim
+  have hMathlibStatementProject :
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement := by
+    apply Subsingleton.elim
+  have hStatementRouteCertificate :
+      statementCertificate = routeCertificate :=
+    hStatementCertificate.trans hRouteCertificate.symm
+  exact
+    ⟨projectStatement, mathlibStatement, canonicalTarget,
+      nonemptyCertificate, statementCertificate, routeCertificate,
+      directCriterion, canonicalCriterion, projectCriterion,
+      hProjectStatementDirect, hProjectStatementCertificate,
+      hMathlibStatementDirect, hMathlibStatementProject, hCanonicalTarget,
+      hStatementCertificate, hRouteCertificate, hStatementRouteCertificate,
+      hDirectCriterion, hDirectCanonical, hDirectProject⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_final_statement_completion_routes_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_final_statement_completion_routes_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_final_statement_completion_routes_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_final_statement_completion_routes_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
