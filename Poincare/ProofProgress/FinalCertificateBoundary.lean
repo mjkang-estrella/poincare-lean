@@ -34748,4 +34748,51 @@ theorem reserved_named_expanded_root_conclusion_of_nonempty_equation_boundary_de
       @Poincare.reserved_named_expanded_root_conclusion_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Reserved project Poincare statement from an inhabited dependency package.
+
+This is the direct proposition-level form of the remaining boundary: an
+inhabited strengthened equation-boundary dependency package is enough to prove
+the project Poincare conjecture statement.
+-/
+theorem reserved_poincare_statement_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u}) :
+    PoincareConjectureStatement.{u} := by
+  rcases
+      reserved_named_expanded_root_conclusion_of_nonempty_equation_boundary_dependencies
+        dependencies with
+    ⟨_theoremName, _certificate, expandedConclusion,
+      _hTheoremNameCanonical, _hTheoremNameLiteral, _nonemptyDependencies,
+      _hExpandedConclusion, _hCertificate, _hTargetConclusion⟩
+  exact expandedConclusion
+
+/-- Theorem contract for
+`reserved_poincare_statement_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_poincare_statement_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_poincare_statement_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_poincare_statement_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
+/--
+Reserved expanded root conclusion from an inhabited dependency package.
+
+This expands `reserved_poincare_statement_of_nonempty_equation_boundary_dependencies`
+to the target-manifold conclusion shape.
+-/
+theorem reserved_expanded_root_conclusion_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) :=
+  reserved_poincare_statement_of_nonempty_equation_boundary_dependencies
+    dependencies
+
+/-- Theorem contract for
+`reserved_expanded_root_conclusion_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_expanded_root_conclusion_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_expanded_root_conclusion_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_expanded_root_conclusion_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
