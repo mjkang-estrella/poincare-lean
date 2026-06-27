@@ -1161,4 +1161,68 @@ theorem threeSphere_twoPointComplement_endpointData_pathClass_payload_eq :
       @Poincare.threeSphere_twoPointComplement_endpointData_pathClass_payload :=
   rfl
 
+/--
+The selected endpoint-data path and any supplied endpoint path in the standard
+`ThreeSphere` two-puncture complement have the same path-homotopy class in both
+directions.
+-/
+theorem threeSphere_twoPointComplement_endpointData_bidirectional_pathClass_payload
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (basepoint target : (({a} ∪ {b})ᶜ : Set ThreeSphere))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ pathData :
+        PointedPathComponentPathData
+          (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint,
+      ∃ endpointData :
+          PointedChosenPathEndpointData
+            (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint target,
+        pathData.path_to target = endpointData.path ∧
+          endpointData.path 0 = basepoint ∧
+          endpointData.path 1 = target ∧
+          Joined basepoint target ∧
+          pathComponent basepoint = Set.univ ∧
+          Path.Homotopic chosenPath endpointData.path ∧
+          Path.Homotopic endpointData.path chosenPath ∧
+          (⟦chosenPath⟧ :
+            Path.Homotopic.Quotient basepoint target) =
+              ⟦endpointData.path⟧ ∧
+          (⟦endpointData.path⟧ :
+            Path.Homotopic.Quotient basepoint target) = ⟦chosenPath⟧ ∧
+          Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+          loop 0 = basepoint ∧
+          loop 1 = basepoint ∧
+          Path.Homotopic loop (Path.refl basepoint) ∧
+          FundamentalGroup.fromPath
+              (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl basepoint⟧ :
+                Path.Homotopic.Quotient basepoint basepoint) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1
+              (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint) := by
+  rcases
+      threeSphere_twoPointComplement_endpointData_pathClass_payload
+        hab basepoint target chosenPath loop with
+    ⟨pathData, endpointData, hPathData, hEndpointSource, hEndpointTarget,
+      hJoined, hComponent, hEndpointHomotopic, hEndpointQuotient,
+      hQuotientSubsingleton, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+  let hChosenPath : Path.Homotopic chosenPath endpointData.path :=
+    threeSphere_twoPointComplement_paths_homotopic
+      hab chosenPath endpointData.path
+  exact
+    ⟨pathData, endpointData, hPathData, hEndpointSource, hEndpointTarget,
+      hJoined, hComponent, hChosenPath, hEndpointHomotopic,
+      Quotient.sound hChosenPath, hEndpointQuotient,
+      hQuotientSubsingleton, hLoopSource, hLoopTarget, hLoopHomotopic,
+      hLoopFromPath, hPiOne⟩
+
+/-- Theorem contract for
+`threeSphere_twoPointComplement_endpointData_bidirectional_pathClass_payload`. -/
+theorem threeSphere_twoPointComplement_endpointData_bidirectional_pathClass_payload_eq :
+    @Poincare.threeSphere_twoPointComplement_endpointData_bidirectional_pathClass_payload =
+      @Poincare.threeSphere_twoPointComplement_endpointData_bidirectional_pathClass_payload :=
+  rfl
+
 end Poincare
