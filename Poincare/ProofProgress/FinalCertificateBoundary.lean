@@ -995,6 +995,49 @@ theorem completion_certificate_of_remainingDependencyPackage_and_grounded_termin
   rfl
 
 /--
+The checked certificate built from the grounded terminal package payload also
+exposes the aggregate reserved-name Poincare artifact: theorem name,
+dependency payload, canonical completion target, topological conclusion family,
+and completion criterion.  This is the aggregate-certificate projection of the
+terminal package payload route.
+-/
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_remainingDependencyPackage_and_grounded_terminal_package_payload
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+      PoincareProofDependencies.{u} ∧
+      canonicalCompletionTarget.{u} ∧
+      (∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          Nonempty (N ≃ₜ ThreeSphere)) ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      completion_certificate_of_remainingDependencyPackage_and_grounded_terminal_package_payload
+        dependencies smoothability grounded topologyStatement M with
+    ⟨_primitiveInputs, _packageRequirement, certificate,
+      _packageRequirementEq, _primitiveInputsEq, _certificateEq,
+      _canonicalPayloadEq, _poincareStatement, _poincarePayload⟩
+  exact poincareCompletionCertificate_aggregate_canonical_statement_payload
+    certificate
+
+/-- Theorem contract for
+`poincareCompletionCertificate_aggregate_canonical_statement_payload_of_remainingDependencyPackage_and_grounded_terminal_package_payload`. -/
+theorem poincareCompletionCertificate_aggregate_canonical_statement_payload_of_remainingDependencyPackage_and_grounded_terminal_package_payload_eq :
+    @Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_of_remainingDependencyPackage_and_grounded_terminal_package_payload =
+      @Poincare.poincareCompletionCertificate_aggregate_canonical_statement_payload_of_remainingDependencyPackage_and_grounded_terminal_package_payload :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
