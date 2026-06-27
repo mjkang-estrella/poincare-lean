@@ -70,6 +70,34 @@ theorem threeSphere_twoPointComplement_puncturedEuclidean_chart_package_eq :
   rfl
 
 /--
+The standard three-sphere two-puncture complement carries a concrete
+punctured-Euclidean chart together with the full topology payload used by the
+recognition bridge.
+-/
+theorem threeSphere_twoPointComplement_puncturedEuclidean_fullChart_package
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      ∃ chart : (({a} ∪ {b})ᶜ : Set ThreeSphere) ≃ₜ
+          ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+        (∀ z, (chart z : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+          Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+          PathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+          ConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+          SimplyConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) := by
+  rcases threeSphere_twoPointComplement_topology_package hab with
+    ⟨_, _, hConnected, _⟩
+  rcases threeSphere_twoPointComplement_puncturedEuclidean_chart_package hab with
+    ⟨puncture, chart, hAvoid, hNonempty, hPath, hSimply⟩
+  exact
+    ⟨puncture, chart, hAvoid, hNonempty, hPath, hConnected, hSimply⟩
+
+/-- Theorem contract for `threeSphere_twoPointComplement_puncturedEuclidean_fullChart_package`. -/
+theorem threeSphere_twoPointComplement_puncturedEuclidean_fullChart_package_eq :
+    @Poincare.threeSphere_twoPointComplement_puncturedEuclidean_fullChart_package =
+      @Poincare.threeSphere_twoPointComplement_puncturedEuclidean_fullChart_package :=
+  rfl
+
+/--
 Every point of a standard three-sphere two-puncture complement lies in the
 path component of any chosen basepoint.
 -/
