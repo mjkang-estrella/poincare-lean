@@ -49,6 +49,42 @@ theorem onePoint_threeSpace_twoPointComplement_simplyConnectedSpace_via_threeSph
       hqp).toHomotopyEquiv.simplyConnectedSpace
 
 /--
+The standard one-point compactification model two-puncture complement is
+nonempty, path-connected, connected, and simply connected. This exposes the
+topological core of the chart/path-loop payload without requiring consumers to
+unpack the larger projection bundle.
+-/
+theorem onePoint_threeSpace_twoPointComplement_topology_package
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    Nonempty (({p} ∪ {q})ᶜ :
+      Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      PathConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      ConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      SimplyConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  exact
+    ⟨twoPointComplement_nonempty_of_homeomorph_to_onePoint_threeSpace
+        (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+        ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩ hqp,
+      twoPointComplement_pathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+        (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+        ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩ hqp,
+      twoPointComplement_connectedSpace_of_homeomorph_to_onePoint_threeSpace
+        (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+        ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩ hqp,
+      twoPointComplement_simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+        (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+        ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩ hqp⟩
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_topology_package`. -/
+theorem onePoint_threeSpace_twoPointComplement_topology_package_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_topology_package =
+      @Poincare.onePoint_threeSpace_twoPointComplement_topology_package :=
+  rfl
+
+/--
 The standard one-point compactification model two-puncture complement carries
 the transported punctured-Euclidean chart together with the canonical path,
 endpoint-data, homotopy quotient collapse, loop nullhomotopy, and `π₁`
