@@ -568,6 +568,41 @@ theorem canonical_and_poincare_payloads_of_grounded_terminal_package_payload_eq 
   rfl
 
 /--
+Project-level endpoint of the grounded terminal package payload route.  This
+forgets the canonical target/payload fields from
+`canonical_and_poincare_payloads_of_grounded_terminal_package_payload` and
+exposes exactly the Poincare statement plus project-level completion payload
+that downstream final-certificate consumers need.
+-/
+theorem poincare_statement_and_payload_of_grounded_terminal_package_payload
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} ∧
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      canonical_and_poincare_payloads_of_grounded_terminal_package_payload
+        smoothability grounded topologyStatement M with
+    ⟨_primitiveInputs, _packageRequirement, _packageRequirementEq,
+      _primitiveInputsEq, _canonicalTarget, _canonicalPayload,
+      poincareStatement, poincarePayload⟩
+  exact ⟨poincareStatement, poincarePayload⟩
+
+/-- Theorem contract for
+`poincare_statement_and_payload_of_grounded_terminal_package_payload`. -/
+theorem poincare_statement_and_payload_of_grounded_terminal_package_payload_eq :
+    @Poincare.poincare_statement_and_payload_of_grounded_terminal_package_payload =
+      @Poincare.poincare_statement_and_payload_of_grounded_terminal_package_payload :=
+  rfl
+
+/--
 The two minimal package inputs prove the canonical completion target by first
 assembling the primitive universal finite-extinction statement.
 -/
