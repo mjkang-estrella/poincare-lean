@@ -23602,4 +23602,129 @@ theorem conditional_root_instantiated_selected_decomposition_trace_finalHomeomor
       @Poincare.conditional_root_instantiated_selected_decomposition_trace_finalHomeomorphism_recognition_chartPathLoop_and_arbitraryPathLoop_certificate_of_equation_boundary_dependencies :=
   rfl
 
+/--
+The root-instantiated `ThreeSphere` witness and the selected terminal
+`ThreeSphere` witness are coherent at the same final-certificate endpoint.
+
+This projects the terminal selected-topology certificate down to its most
+reviewable final data: checked certificate, final-homeomorphism projector,
+selected decomposition/trace data, one-point and singleton chart witnesses,
+and the arbitrary singleton and two-puncture path-loop collapse fields.
+-/
+theorem conditional_root_selected_threeSphere_homeomorphism_coherence_and_terminal_pathLoop_fields_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {x y : M} (hyx : y ≠ x)
+    {a b : ({x}ᶜ : Set M)} (γ η : Path a b)
+    (singleBase singleTarget : ({x}ᶜ : Set M))
+    (chosenSinglePath : Path singleBase singleTarget)
+    (singleLoop : Path singleBase singleBase)
+    {c d : (({x} ∪ {y})ᶜ : Set M)} (γTwo ηTwo : Path c d)
+    (twoBase twoTarget : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path twoBase twoTarget)
+    (loop : Path twoBase twoBase) :
+    PoincareConjectureStatement.{u} ∧
+      ∃ rootHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+      ∃ selectedHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        rootHomeomorphism = selectedHomeomorphism ∧
+        ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+        ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        ∃ _pathData :
+            PointedPathComponentPathData (({x} ∪ {y})ᶜ : Set M) twoBase,
+        ∃ _endpointData :
+            PointedChosenPathEndpointData
+              (({x} ∪ {y})ᶜ : Set M) twoBase twoTarget,
+          ExtinctionFinalHomeomorphismProjectorPayload
+            topology M extinction ∧
+          ∃ decomposition : HasExtinctionTopologyDecomposition M extinction,
+            Nonempty (ExtinctionTopologyDecompositionData M extinction) ∧
+            HasExtinctionSurgeryTraceReconstruction M extinction
+              decomposition ∧
+            Nonempty
+              (ExtinctionSurgeryTraceReconstructionData M extinction
+                decomposition) ∧
+            FinalHomeomorphismPayloadData M extinction decomposition ∧
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+            Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+            Path.Homotopic γ η ∧
+            (⟦γ⟧ : Path.Homotopic.Quotient a b) = ⟦η⟧ ∧
+            compl_singleton_chosenPath_of_topology_package
+              topology M extinction x singleBase singleTarget 0 = singleBase ∧
+            (∃ δ : Path singleBase singleBase,
+              δ 0 = singleBase ∧ δ 1 = singleBase ∧
+                Path.Homotopic δ (Path.refl singleBase) ∧
+                FundamentalGroup.fromPath
+                    (⟦δ⟧ : Path.Homotopic.Quotient singleBase singleBase) =
+                  FundamentalGroup.fromPath
+                    (⟦Path.refl singleBase⟧ :
+                      Path.Homotopic.Quotient singleBase singleBase)) ∧
+            Path.Homotopic γTwo ηTwo ∧
+            (⟦γTwo⟧ : Path.Homotopic.Quotient c d) = ⟦ηTwo⟧ ∧
+            twoPointComplement_chosenPath_of_topology_package
+              topology M extinction hyx twoBase twoTarget 0 = twoBase ∧
+            (∃ δ : Path twoBase twoBase,
+              δ 0 = twoBase ∧ δ 1 = twoBase ∧
+                Path.Homotopic δ (Path.refl twoBase) ∧
+                FundamentalGroup.fromPath
+                    (⟦δ⟧ : Path.Homotopic.Quotient twoBase twoBase) =
+                  FundamentalGroup.fromPath
+                    (⟦Path.refl twoBase⟧ :
+                      Path.Homotopic.Quotient twoBase twoBase)) := by
+  rcases
+      conditional_root_instantiated_selected_decomposition_trace_finalHomeomorphism_recognition_chartPathLoop_and_arbitraryPathLoop_certificate_of_equation_boundary_dependencies
+        dependencies smoothability grounded topology smoothabilityPayload M
+        hyx γ η singleBase singleTarget chosenSinglePath singleLoop γTwo
+        ηTwo twoBase twoTarget chosenPath loop with
+    ⟨rootHomeomorphism, projectStatement, checkedCertificate, extinction,
+      pathData, endpointData, finalHomeomorphismProjector, decomposition,
+      hDecompositionData, hTrace, hTraceData, hFinalPayload,
+      selectedHomeomorphism, hOnePoint, hSingletonChart,
+      _chartPathLoopPayload, _twoPointPayload, singleHomotopy,
+      singleQuotient, singleSource, singleLoopPayload, twoHomotopy,
+      twoQuotient, twoSource, twoLoopPayload⟩
+  exact
+    ⟨projectStatement,
+      rootHomeomorphism,
+      selectedHomeomorphism,
+      Subsingleton.elim rootHomeomorphism selectedHomeomorphism,
+      checkedCertificate,
+      extinction,
+      pathData,
+      endpointData,
+      finalHomeomorphismProjector,
+      decomposition,
+      hDecompositionData,
+      hTrace,
+      hTraceData,
+      hFinalPayload,
+      hOnePoint,
+      hSingletonChart,
+      singleHomotopy,
+      singleQuotient,
+      singleSource,
+      singleLoopPayload,
+      twoHomotopy,
+      twoQuotient,
+      twoSource,
+      twoLoopPayload⟩
+
+/-- Theorem contract for `conditional_root_selected_threeSphere_homeomorphism_coherence_and_terminal_pathLoop_fields_of_equation_boundary_dependencies`. -/
+theorem conditional_root_selected_threeSphere_homeomorphism_coherence_and_terminal_pathLoop_fields_of_equation_boundary_dependencies_eq :
+    @Poincare.conditional_root_selected_threeSphere_homeomorphism_coherence_and_terminal_pathLoop_fields_of_equation_boundary_dependencies =
+      @Poincare.conditional_root_selected_threeSphere_homeomorphism_coherence_and_terminal_pathLoop_fields_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
