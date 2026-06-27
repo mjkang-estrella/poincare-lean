@@ -16288,4 +16288,86 @@ theorem conditional_root_projector_endpoint_path_and_piOne_collapse_of_equation_
       @Poincare.conditional_root_projector_endpoint_path_and_piOne_collapse_of_equation_boundary_dependencies :=
   rfl
 
+/--
+The endpoint `π₁` collapse gives a based-loop consumer that keeps both the
+arbitrary `HomotopyGroup.Pi 1` element collapse and the selected-loop
+`FundamentalGroup.fromPath` equality carried by the endpoint core.
+
+This keeps the checked certificate, final-homeomorphism payload data,
+path-quotient collapse, `π₁` element collapse, and selected-loop
+fundamental-group collapse in one theorem without identifying the separate
+`FundamentalGroup` and `HomotopyGroup.Pi 1` types.
+-/
+theorem conditional_root_projector_based_loop_piOne_and_fromPath_collapse_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    PoincareConjectureStatement.{u} ∧
+      ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      ∃ _pathData :
+          PointedPathComponentPathData (({x} ∪ {y})ᶜ : Set M) basepoint,
+      ∃ _endpointData :
+          PointedChosenPathEndpointData
+            (({x} ∪ {y})ᶜ : Set M) basepoint target,
+        ExtinctionFinalHomeomorphismProjectorPayload
+          topology M extinction ∧
+        FinalHomeomorphismPayloadData M extinction
+          (extinction_decomposition_of_topology_package topology M extinction) ∧
+        (∀ η : Path basepoint target,
+          (⟦chosenPath⟧ : Path.Homotopic.Quotient basepoint target) =
+            ⟦η⟧) ∧
+        (∀ α β :
+          HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+            α = β) ∧
+        FundamentalGroup.fromPath
+            (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+          FundamentalGroup.fromPath
+            (⟦Path.refl basepoint⟧ :
+              Path.Homotopic.Quotient basepoint basepoint) := by
+  rcases
+      conditional_root_projector_endpoint_path_and_piOne_collapse_of_equation_boundary_dependencies
+        dependencies smoothability grounded topology smoothabilityPayload M
+        hyx basepoint target chosenPath loop with
+    ⟨projectStatement, _rootHomeomorphism, _projectHomeomorphism,
+      _recoveredHomeomorphism, _hrootProject, _hprojectRecovered,
+      checkedCertificate, extinction, pathData, endpointData,
+      finalHomeomorphismProjector, finalHomeomorphismPayloadData,
+      _hpathData, pathQuotientCollapse, _hendpointUnique,
+      _hpathQuotientSubsingleton, _hloopHomotopic, _hfundamentalGroup,
+      _hpiOneSubsingleton, piOneCollapse⟩
+  exact
+    ⟨projectStatement,
+      checkedCertificate,
+      extinction,
+      pathData,
+      endpointData,
+      finalHomeomorphismProjector,
+      finalHomeomorphismPayloadData,
+      pathQuotientCollapse,
+      piOneCollapse,
+      _hfundamentalGroup⟩
+
+/-- Theorem contract for `conditional_root_projector_based_loop_piOne_and_fromPath_collapse_of_equation_boundary_dependencies`. -/
+theorem conditional_root_projector_based_loop_piOne_and_fromPath_collapse_of_equation_boundary_dependencies_eq :
+    @Poincare.conditional_root_projector_based_loop_piOne_and_fromPath_collapse_of_equation_boundary_dependencies =
+      @Poincare.conditional_root_projector_based_loop_piOne_and_fromPath_collapse_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
