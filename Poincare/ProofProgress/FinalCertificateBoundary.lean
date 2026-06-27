@@ -33355,4 +33355,95 @@ theorem dependency_only_reserved_canonical_project_completionCriterion_equivalen
       @Poincare.dependency_only_reserved_canonical_project_completionCriterion_equivalence_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved canonical/project completion family equivalence.
+
+This opens both final payloads from the checked certificate and proves that
+their universal completion functions are definitionally aligned up to proof
+irrelevance, both as functions and pointwise at every witness.
+-/
+theorem dependency_only_reserved_canonical_project_completion_family_equivalence_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ canonicalPayload :
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ canonicalPayloadTarget : canonicalCompletionTarget.{u},
+    ∃ canonicalPayloadCompletion :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ projectPayload :
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ projectPayloadTarget : PoincareConjectureStatement.{u},
+    ∃ projectPayloadCompletion :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+      canonicalPayload =
+        ⟨canonicalPayloadTarget, canonicalPayloadCompletion⟩ ∧
+      projectPayload =
+        ⟨projectPayloadTarget, projectPayloadCompletion⟩ ∧
+      canonicalPayload =
+        canonical_completion_payload_of_completion_certificate certificate ∧
+      projectPayload =
+        poincare_completion_payload_of_completion_certificate certificate ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      canonicalPayloadCompletion = projectPayloadCompletion ∧
+      (∀ witness : Type u,
+        canonicalPayloadCompletion witness =
+          projectPayloadCompletion witness) := by
+  rcases
+      dependency_only_reserved_canonical_target_collapse_of_equation_boundary_dependencies
+        dependencies with
+    ⟨certificate, _nonemptyCertificate, _canonicalTarget, _projectStatement,
+      _mathlibStatement, canonicalPayload, projectPayload, hCertificate,
+      _hNonemptyCertificate, _hCanonicalTarget, _hProjectStatementTarget,
+      _hProjectStatementCertificate, _hMathlibStatement, hCanonicalPayload,
+      hProjectPayload, _hCanonicalProjectPayload⟩
+  rcases canonicalPayload with
+    ⟨canonicalPayloadTarget, canonicalPayloadCompletion⟩
+  rcases projectPayload with
+    ⟨projectPayloadTarget, projectPayloadCompletion⟩
+  have hCanonicalPayloadComponents :
+      (⟨canonicalPayloadTarget, canonicalPayloadCompletion⟩ :
+        ∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) =
+        ⟨canonicalPayloadTarget, canonicalPayloadCompletion⟩ :=
+    rfl
+  have hProjectPayloadComponents :
+      (⟨projectPayloadTarget, projectPayloadCompletion⟩ :
+        ∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) =
+        ⟨projectPayloadTarget, projectPayloadCompletion⟩ :=
+    rfl
+  have hCompletionFamily :
+      canonicalPayloadCompletion = projectPayloadCompletion := by
+    funext witness
+    apply Subsingleton.elim
+  have hCompletionFamilyPointwise :
+      ∀ witness : Type u,
+        canonicalPayloadCompletion witness =
+          projectPayloadCompletion witness := by
+    intro witness
+    exact congrFun hCompletionFamily witness
+  exact
+    ⟨(⟨canonicalPayloadTarget, canonicalPayloadCompletion⟩ :
+        ∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+      canonicalPayloadTarget, canonicalPayloadCompletion,
+      (⟨projectPayloadTarget, projectPayloadCompletion⟩ :
+        ∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+      projectPayloadTarget, projectPayloadCompletion, certificate,
+      hCanonicalPayloadComponents, hProjectPayloadComponents,
+      hCanonicalPayload, hProjectPayload, hCertificate, hCompletionFamily,
+      hCompletionFamilyPointwise⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_canonical_project_completion_family_equivalence_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_canonical_project_completion_family_equivalence_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_canonical_project_completion_family_equivalence_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_canonical_project_completion_family_equivalence_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
