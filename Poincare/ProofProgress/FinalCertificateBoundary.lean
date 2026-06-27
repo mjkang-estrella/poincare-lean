@@ -31811,4 +31811,69 @@ theorem dependency_only_selected_target_homeomorphism_of_equation_boundary_depen
       @Poincare.dependency_only_selected_target_homeomorphism_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only endpoint applying the completion criterion family itself to the
+selected target.
+
+The completion criterion is definitionally the project Poincare statement, but
+downstream certificate consumers still need the target-level payload exposed.
+This theorem records that the witness-indexed criterion at `M`, applied back to
+`M`, produces the same selected extracted homeomorphism as the reconstructed
+final statement and the direct expanded conclusion.
+-/
+theorem dependency_only_completion_criterion_selected_target_application_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ finalStatement : PoincareConjectureStatement.{u},
+    ∃ expandedConclusion :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          Nonempty (N ≃ₜ ThreeSphere),
+    ∃ extractedHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+      completionCriterionFamily M = finalStatement ∧
+      completionCriterionFamily M M = extractedHomeomorphism ∧
+      finalStatement M = extractedHomeomorphism ∧
+      expandedConclusion M = extractedHomeomorphism ∧
+      extractedHomeomorphism =
+        (⟨projectHomeomorphism⟩ : Nonempty (M ≃ₜ ThreeSphere)) ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies := by
+  rcases
+      dependency_only_direct_final_statement_selected_extraction_application_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨_projectStatement, expandedConclusion, completionCriterionFamily,
+      certificate, finalStatement, extractedHomeomorphism,
+      projectHomeomorphism, _topologyPackage, _finiteExtinction,
+      _hProjectStatementFinal, _hExpandedProject, hCompletionCriterionFamily,
+      _hProjectStatementApplication, hExpandedConclusionApplication,
+      hFinalStatementApplication, hProjectPayloadTarget,
+      _hExtractedHomeomorphism, hCertificate⟩
+  have hCompletionCriterionApplication :
+      completionCriterionFamily M M = extractedHomeomorphism := by
+    exact
+      Eq.trans (congrArg (fun statement => statement M) hCompletionCriterionFamily)
+        hFinalStatementApplication
+  exact
+    ⟨completionCriterionFamily, finalStatement, expandedConclusion,
+      extractedHomeomorphism, projectHomeomorphism, certificate,
+      hCompletionCriterionFamily, hCompletionCriterionApplication,
+      hFinalStatementApplication, hExpandedConclusionApplication,
+      hProjectPayloadTarget, hCertificate⟩
+
+/-- Theorem contract for
+`dependency_only_completion_criterion_selected_target_application_of_equation_boundary_dependencies`. -/
+theorem dependency_only_completion_criterion_selected_target_application_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_completion_criterion_selected_target_application_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_completion_criterion_selected_target_application_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
