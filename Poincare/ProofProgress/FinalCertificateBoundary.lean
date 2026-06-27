@@ -30967,4 +30967,112 @@ theorem dependency_only_canonical_reserved_theorem_selected_topology_recognition
       @Poincare.dependency_only_canonical_reserved_theorem_selected_topology_recognition_tail_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only canonical reserved-theorem endpoint tying the selected
+topology-extracted homeomorphism to the final project and mathlib payloads.
+
+This connects the homeomorphism extracted from the selected finite-extinction
+topology package to the final statement payload at the same target manifold,
+and keeps the selected final project/mathlib homeomorphism data visible.
+-/
+theorem dependency_only_canonical_reserved_theorem_selected_extracted_homeomorphism_matches_final_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ theoremName : String,
+    ∃ projectPayloadTarget : PoincareConjectureStatement.{u},
+    ∃ mathlibTarget : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ n : ℕ∞ω,
+    ∃ ordinaryPackage : FiniteExtinctionSurgeryPackage n M,
+    ∃ finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+    ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ extractedHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ mathlibHomeomorphism :
+      M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      finiteExtinction = ordinaryPackage.finiteExtinction ∧
+      topologyPackage =
+        (dependencies_of_equation_boundary_dependencies dependencies).topology ∧
+      extractedHomeomorphism =
+        topologyPackage.extractHomeomorphism M finiteExtinction ∧
+      extractedHomeomorphism = projectPayloadTarget M ∧
+      projectPayloadTarget M =
+        (⟨projectHomeomorphism⟩ : Nonempty (M ≃ₜ ThreeSphere)) ∧
+      extractedHomeomorphism =
+        (⟨projectHomeomorphism⟩ : Nonempty (M ≃ₜ ThreeSphere)) ∧
+      mathlibTarget M =
+        (⟨mathlibHomeomorphism⟩ :
+          Nonempty
+            (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) ∧
+      projectHomeomorphism = mathlibHomeomorphism ∧
+      Topology.IsEmbedding projectHomeomorphism ∧
+      Topology.IsEmbedding mathlibHomeomorphism ∧
+      Function.Bijective projectHomeomorphism ∧
+      Function.Bijective mathlibHomeomorphism ∧
+      Continuous projectHomeomorphism ∧
+      Continuous mathlibHomeomorphism := by
+  rcases
+      dependency_only_canonical_reserved_theorem_payload_full_final_map_data_of_equation_boundary_dependencies
+        dependencies with
+    ⟨theoremName, _canonicalPayload, _canonicalPayloadTarget,
+      _canonicalPayloadCompletion, _projectPayload, projectPayloadTarget,
+      _projectPayloadCompletion, mathlibTarget, _certificate,
+      _canonicalTarget, _projectTarget, hTheoremNameCanonical,
+      hTheoremNameLiteral, _remainingDependencies, _hCanonicalPayload_eq,
+      _hProjectPayload_eq, _hCanonicalPayload_components,
+      _hProjectPayload_components, _hMathlibTarget, _hCertificate,
+      _hCanonicalPayload, _hProjectPayload, _hCanonicalTarget,
+      _hProjectTarget, _hCompletionTargets, fullFinalMaps⟩
+  rcases
+      dependency_only_canonical_reserved_theorem_selected_topology_recognition_tail_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨_tailTheoremName, n, ordinaryPackage, finiteExtinction,
+      topologyPackage, _primeDecomposition, _irreducibility,
+      _connectedSumCollapse, _sphericalSpaceFormReduction,
+      _sphericalFundamentalGroup, _deckGroupTriviality,
+      _simplyConnectedRecognition, extractedHomeomorphism,
+      _hTailTheoremNameCanonical, _hTailTheoremNameLiteral,
+      hFiniteExtinction, hTopologyPackage, _hPrimeDecomposition,
+      _hIrreducibility, _hConnectedSumCollapse,
+      _hSphericalSpaceFormReduction, _hSphericalFundamentalGroup,
+      _hDeckGroupTriviality, _hSimplyConnectedRecognition,
+      hExtractedHomeomorphism⟩
+  rcases fullFinalMaps M with
+    ⟨projectHomeomorphism, mathlibHomeomorphism, hProjectPayloadTarget,
+      hMathlibTarget, hProjectMathlib, _hProjectOpen, _hMathlibOpen,
+      _hProjectClosed, _hMathlibClosed, _hProjectInducing,
+      _hMathlibInducing, hProjectEmbedding, hMathlibEmbedding,
+      hProjectBijective, hMathlibBijective, hProjectContinuous,
+      hMathlibContinuous, _hProjectSymmContinuous, _hMathlibSymmContinuous,
+      _hProjectLeftInverse, _hProjectRightInverse, _hMathlibLeftInverse,
+      _hMathlibRightInverse, _completionData⟩
+  have hExtractedProjectPayload :
+      extractedHomeomorphism = projectPayloadTarget M := by
+    apply Subsingleton.elim
+  have hExtractedProjectHomeomorphism :
+      extractedHomeomorphism =
+        (⟨projectHomeomorphism⟩ : Nonempty (M ≃ₜ ThreeSphere)) := by
+    apply Subsingleton.elim
+  exact
+    ⟨theoremName, projectPayloadTarget, mathlibTarget, n, ordinaryPackage,
+      finiteExtinction, topologyPackage, extractedHomeomorphism,
+      projectHomeomorphism, mathlibHomeomorphism, hTheoremNameCanonical,
+      hTheoremNameLiteral, hFiniteExtinction, hTopologyPackage,
+      hExtractedHomeomorphism, hExtractedProjectPayload,
+      hProjectPayloadTarget, hExtractedProjectHomeomorphism, hMathlibTarget,
+      hProjectMathlib, hProjectEmbedding, hMathlibEmbedding,
+      hProjectBijective, hMathlibBijective, hProjectContinuous,
+      hMathlibContinuous⟩
+
+/-- Theorem contract for
+`dependency_only_canonical_reserved_theorem_selected_extracted_homeomorphism_matches_final_payload_of_equation_boundary_dependencies`. -/
+theorem dependency_only_canonical_reserved_theorem_selected_extracted_homeomorphism_matches_final_payload_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_canonical_reserved_theorem_selected_extracted_homeomorphism_matches_final_payload_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_canonical_reserved_theorem_selected_extracted_homeomorphism_matches_final_payload_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
