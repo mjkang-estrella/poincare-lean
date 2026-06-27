@@ -34334,4 +34334,47 @@ theorem dependency_only_reserved_named_final_statement_tuple_completionCriterion
       @Poincare.dependency_only_reserved_named_final_statement_tuple_completionCriterion_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only reserved named final conclusion bundle.
+
+This projects the named final statement tuple to the actual final proposition
+bundle: the canonical theorem name, checked certificate, nonempty certificate,
+project and mathlib statements, canonical target, and the universal completion
+criterion family.
+-/
+theorem dependency_only_reserved_named_final_conclusion_bundle_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u}) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      PoincareConjectureStatement.{u} ∧
+      MathlibTopologicalPoincareThreeStatement.{u} ∧
+      canonicalCompletionTarget.{u} ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  rcases
+      dependency_only_reserved_named_final_statement_tuple_completion_family_of_equation_boundary_dependencies
+        dependencies with
+    ⟨theoremName, certificate, nonemptyCertificate, projectStatement,
+      mathlibStatement, canonicalTarget, completionCriterionFamily,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      _hNonemptyCertificate, _hProjectStatementCertificate,
+      _hProjectStatementDirect, _hMathlibStatementProject,
+      _hMathlibStatementDirect, _hCanonicalTarget, _hCompletionReserved⟩
+  exact
+    ⟨theoremName, certificate, hTheoremNameCanonical, hTheoremNameLiteral,
+      hCertificate, nonemptyCertificate, projectStatement, mathlibStatement,
+      canonicalTarget, completionCriterionFamily⟩
+
+/-- Theorem contract for
+`dependency_only_reserved_named_final_conclusion_bundle_of_equation_boundary_dependencies`. -/
+theorem dependency_only_reserved_named_final_conclusion_bundle_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_reserved_named_final_conclusion_bundle_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_reserved_named_final_conclusion_bundle_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
