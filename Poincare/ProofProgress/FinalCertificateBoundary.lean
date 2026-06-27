@@ -17675,4 +17675,112 @@ theorem conditional_root_projector_twoPointComplement_simplyConnected_with_loop_
       @Poincare.conditional_root_projector_twoPointComplement_simplyConnected_with_loop_nullhomotopy_endpoint_data_of_equation_boundary_dependencies :=
   rfl
 
+/--
+The final endpoint can also expose the package-level connectivity data for the
+two-puncture complement: simple-connectedness, path-connectedness,
+connectedness, nonemptiness, an actual path between the selected endpoints,
+and the corresponding `Joined` relation.
+
+The theorem keeps this topological connectivity payload beside the checked
+certificate, final-homeomorphism payload data, all-loop nullhomotopy, and
+same-endpoint path homotopy supplied by the topology package.
+-/
+theorem conditional_root_projector_twoPointComplement_connectivity_path_payload_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    PoincareConjectureStatement.{u} ∧
+      ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      ∃ _pathData :
+          PointedPathComponentPathData (({x} ∪ {y})ᶜ : Set M) basepoint,
+      ∃ _endpointData :
+          PointedChosenPathEndpointData
+            (({x} ∪ {y})ᶜ : Set M) basepoint target,
+        ExtinctionFinalHomeomorphismProjectorPayload
+          topology M extinction ∧
+        FinalHomeomorphismPayloadData M extinction
+          (extinction_decomposition_of_topology_package topology M extinction) ∧
+        SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+        Nonempty (Path basepoint target) ∧
+        Joined basepoint target ∧
+        (∀ η ζ : Path basepoint target, Path.Homotopic η ζ) ∧
+        (∀ γ : Path basepoint basepoint,
+          Path.Homotopic γ (Path.refl basepoint)) := by
+  rcases
+      conditional_root_projector_twoPointComplement_simplyConnected_with_loop_nullhomotopy_endpoint_data_of_equation_boundary_dependencies
+        dependencies smoothability grounded topology smoothabilityPayload M
+        hyx basepoint target chosenPath loop with
+    ⟨projectStatement, checkedCertificate, extinction, pathData,
+      endpointData, finalHomeomorphismProjector,
+      finalHomeomorphismPayloadData, twoPointComplementSimplyConnected,
+      allLoopNullhomotopic, _allLoopQuotientCollapse,
+      _allLoopFromPathCollapse, _endpointQuotientUnique,
+      _loopQuotientUnique, _fundamentalGroupUnique,
+      _endpointCanonicalCollapse⟩
+  let twoPointComplementPathConnected :
+      PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_pathConnectedSpace_of_topology_package
+      topology M extinction hyx
+  let twoPointComplementConnected :
+      ConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_connectedSpace_of_topology_package
+      topology M extinction hyx
+  let twoPointComplementNonempty :
+      Nonempty (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_nonempty_of_topology_package
+      topology M extinction hyx
+  let endpointPathNonempty : Nonempty (Path basepoint target) :=
+    twoPointComplement_path_nonempty_of_topology_package
+      topology M extinction hyx basepoint target
+  let endpointJoined : Joined basepoint target :=
+    twoPointComplement_joined_of_topology_package
+      topology M extinction hyx basepoint target
+  let endpointPathHomotopy :
+      ∀ η ζ : Path basepoint target, Path.Homotopic η ζ :=
+    fun η ζ =>
+      twoPointComplement_paths_homotopic_of_topology_package
+        topology M extinction hyx η ζ
+  exact
+    ⟨projectStatement,
+      checkedCertificate,
+      extinction,
+      pathData,
+      endpointData,
+      finalHomeomorphismProjector,
+      finalHomeomorphismPayloadData,
+      twoPointComplementSimplyConnected,
+      twoPointComplementPathConnected,
+      twoPointComplementConnected,
+      twoPointComplementNonempty,
+      endpointPathNonempty,
+      endpointJoined,
+      endpointPathHomotopy,
+      allLoopNullhomotopic⟩
+
+/-- Theorem contract for `conditional_root_projector_twoPointComplement_connectivity_path_payload_of_equation_boundary_dependencies`. -/
+theorem conditional_root_projector_twoPointComplement_connectivity_path_payload_of_equation_boundary_dependencies_eq :
+    @Poincare.conditional_root_projector_twoPointComplement_connectivity_path_payload_of_equation_boundary_dependencies =
+      @Poincare.conditional_root_projector_twoPointComplement_connectivity_path_payload_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
