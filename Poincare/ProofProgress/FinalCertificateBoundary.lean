@@ -22925,6 +22925,124 @@ theorem conditional_root_projector_selected_decomposition_trace_finalHomeomorphi
   rfl
 
 /--
+The final-certificate boundary exposes the selected decomposition, surgery
+trace, final recognition, synchronized two-puncture chart/path-loop projection,
+and transported local path-connectedness certificate.
+-/
+theorem conditional_root_projector_selected_decomposition_trace_finalHomeomorphism_recognition_and_twoPointLocPathChartPathLoop_certificate_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    PoincareConjectureStatement.{u} ∧
+      ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+      ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      ∃ _pathData :
+          PointedPathComponentPathData (({x} ∪ {y})ᶜ : Set M) basepoint,
+      ∃ _endpointData :
+          PointedChosenPathEndpointData
+            (({x} ∪ {y})ᶜ : Set M) basepoint target,
+        ExtinctionFinalHomeomorphismProjectorPayload
+          topology M extinction ∧
+        ∃ decomposition : HasExtinctionTopologyDecomposition M extinction,
+          Nonempty (ExtinctionTopologyDecompositionData M extinction) ∧
+          HasExtinctionSurgeryTraceReconstruction M extinction
+            decomposition ∧
+          Nonempty
+            (ExtinctionSurgeryTraceReconstructionData M extinction
+              decomposition) ∧
+          FinalHomeomorphismPayloadData M extinction decomposition ∧
+          Nonempty (M ≃ₜ ThreeSphere) ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          ∃ puncture : EuclideanSpace ℝ (Fin 3),
+            ∃ chart : (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+                ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+              ∃ packagePathData :
+                  PointedPathComponentPathData
+                    (({x} ∪ {y})ᶜ : Set M) basepoint,
+                ∃ packageEndpointData :
+                    PointedChosenPathEndpointData
+                      (({x} ∪ {y})ᶜ : Set M) basepoint target,
+                  ∃ canonicalPath : Path basepoint target,
+                    (∀ w,
+                      (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+                    Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+                    LocPathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                    PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                    SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                    packagePathData.path_to target = canonicalPath ∧
+                    packageEndpointData.path = canonicalPath ∧
+                    canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+                    Joined basepoint target ∧
+                    pathComponent basepoint = Set.univ ∧
+                    Path.Homotopic chosenPath canonicalPath ∧
+                    (⟦chosenPath⟧ :
+                      Path.Homotopic.Quotient basepoint target) =
+                      ⟦canonicalPath⟧ ∧
+                    (∀ η : Path basepoint target,
+                      Path.Homotopic canonicalPath η) ∧
+                    Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+                    loop 0 = basepoint ∧ loop 1 = basepoint ∧
+                    Path.Homotopic loop (Path.refl basepoint) ∧
+                    FundamentalGroup.fromPath
+                        (⟦loop⟧ :
+                          Path.Homotopic.Quotient basepoint basepoint) =
+                      FundamentalGroup.fromPath
+                        (⟦Path.refl basepoint⟧ :
+                          Path.Homotopic.Quotient basepoint basepoint) ∧
+                    Subsingleton
+                      (HomotopyGroup.Pi 1
+                        (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  rcases
+      conditional_root_projector_finalHomeomorphism_twoPointLocPathChartPathLoopProjection_payload_of_equation_boundary_dependencies
+        dependencies smoothability grounded topology smoothabilityPayload M
+        hyx basepoint target chosenPath loop with
+    ⟨projectStatement, checkedCertificate, extinction, pathData,
+      endpointData, finalHomeomorphismProjector, _finalHomeomorphism,
+      _finalHomeomorphismPayloadData, _chartPayload⟩
+  rcases
+      topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_twoPointLocPathChartPathLoopProjection_certificate
+        topology M extinction hyx basepoint target chosenPath loop with
+    ⟨decomposition, hDecompositionData, hTrace, hTraceData,
+      hFinalPayload, hThreeSphere, hOnePoint, chartPayload⟩
+  exact
+    ⟨projectStatement,
+      checkedCertificate,
+      extinction,
+      pathData,
+      endpointData,
+      finalHomeomorphismProjector,
+      decomposition,
+      hDecompositionData,
+      hTrace,
+      hTraceData,
+      hFinalPayload,
+      hThreeSphere,
+      hOnePoint,
+      chartPayload⟩
+
+/-- Theorem contract for `conditional_root_projector_selected_decomposition_trace_finalHomeomorphism_recognition_and_twoPointLocPathChartPathLoop_certificate_of_equation_boundary_dependencies`. -/
+theorem conditional_root_projector_selected_decomposition_trace_finalHomeomorphism_recognition_and_twoPointLocPathChartPathLoop_certificate_of_equation_boundary_dependencies_eq :
+    @Poincare.conditional_root_projector_selected_decomposition_trace_finalHomeomorphism_recognition_and_twoPointLocPathChartPathLoop_certificate_of_equation_boundary_dependencies =
+      @Poincare.conditional_root_projector_selected_decomposition_trace_finalHomeomorphism_recognition_and_twoPointLocPathChartPathLoop_certificate_of_equation_boundary_dependencies :=
+  rfl
+
+/--
 The final-certificate boundary exposes the selected decomposition and trace
 certificate together with the singleton Euclidean chart and synchronized
 two-puncture chart/path-loop payload.

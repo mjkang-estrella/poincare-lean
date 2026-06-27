@@ -2807,6 +2807,87 @@ theorem topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognit
 
 /--
 The selected topology-package decomposition certificate can be consumed with
+the synchronized two-puncture chart/path-loop projection bundle and the
+transported local path-connectedness instance.
+-/
+theorem topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_twoPointLocPathChartPathLoopProjection_certificate
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    ∃ decomposition : HasExtinctionTopologyDecomposition M extinction,
+      Nonempty (ExtinctionTopologyDecompositionData M extinction) ∧
+        HasExtinctionSurgeryTraceReconstruction M extinction decomposition ∧
+        Nonempty
+          (ExtinctionSurgeryTraceReconstructionData M extinction decomposition) ∧
+        FinalHomeomorphismPayloadData M extinction decomposition ∧
+        Nonempty (M ≃ₜ ThreeSphere) ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        ∃ puncture : EuclideanSpace ℝ (Fin 3),
+          ∃ chart : (({x} ∪ {y})ᶜ : Set M) ≃ₜ
+              ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))),
+            ∃ pathData :
+                PointedPathComponentPathData
+                  (({x} ∪ {y})ᶜ : Set M) basepoint,
+              ∃ endpointData :
+                  PointedChosenPathEndpointData
+                    (({x} ∪ {y})ᶜ : Set M) basepoint target,
+                ∃ canonicalPath : Path basepoint target,
+                  (∀ w, (chart w : EuclideanSpace ℝ (Fin 3)) ≠ puncture) ∧
+                    Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+                    LocPathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                    PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                    SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                    pathData.path_to target = canonicalPath ∧
+                    endpointData.path = canonicalPath ∧
+                    canonicalPath 0 = basepoint ∧ canonicalPath 1 = target ∧
+                    Joined basepoint target ∧
+                    pathComponent basepoint = Set.univ ∧
+                    Path.Homotopic chosenPath canonicalPath ∧
+                    (⟦chosenPath⟧ :
+                      Path.Homotopic.Quotient basepoint target) =
+                      ⟦canonicalPath⟧ ∧
+                    (∀ η : Path basepoint target,
+                      Path.Homotopic canonicalPath η) ∧
+                    Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+                    loop 0 = basepoint ∧ loop 1 = basepoint ∧
+                    Path.Homotopic loop (Path.refl basepoint) ∧
+                    FundamentalGroup.fromPath
+                        (⟦loop⟧ :
+                          Path.Homotopic.Quotient basepoint basepoint) =
+                      FundamentalGroup.fromPath
+                        (⟦Path.refl basepoint⟧ :
+                          Path.Homotopic.Quotient basepoint basepoint) ∧
+                    Subsingleton
+                      (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M)
+                        basepoint) := by
+  rcases
+      topologyPackage_selected_decomposition_trace_finalHomeomorphism_and_recognition_certificate
+        package M extinction with
+    ⟨decomposition, hDecompositionData, hTrace, hTraceData,
+      hFinalPayload, hThreeSphere, hOnePoint⟩
+  rcases
+      topologyPackage_finalHomeomorphism_and_twoPointLocPathChartPathLoopProjectionBundle
+        package M extinction hyx basepoint target chosenPath loop with
+    ⟨_hOnePoint, _hFinal, chartPayload⟩
+  exact
+    ⟨decomposition, hDecompositionData, hTrace, hTraceData,
+      hFinalPayload, hThreeSphere, hOnePoint, chartPayload⟩
+
+/-- Theorem contract for
+`topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_twoPointLocPathChartPathLoopProjection_certificate`. -/
+theorem topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_twoPointLocPathChartPathLoopProjection_certificate_eq :
+    @Poincare.topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_twoPointLocPathChartPathLoopProjection_certificate =
+      @Poincare.topologyPackage_selected_decomposition_trace_finalHomeomorphism_recognition_and_twoPointLocPathChartPathLoopProjection_certificate :=
+  rfl
+
+/--
+The selected topology-package decomposition certificate can be consumed with
 the compact two-puncture endpoint-data path-coherence core.  This keeps the
 selected decomposition and trace data, final-homeomorphism payload, both final
 recognition homeomorphisms, and the endpoint-data homotopy/loop-collapse core
