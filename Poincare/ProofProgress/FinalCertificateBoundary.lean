@@ -16047,4 +16047,122 @@ theorem conditional_root_projector_homeomorphism_coherence_with_endpoint_core_of
       @Poincare.conditional_root_projector_homeomorphism_coherence_with_endpoint_core_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Unpack the fixed two-puncture endpoint core at the same endpoint where the
+root-instantiated, project-statement, and recovered projector homeomorphism
+witnesses have already been compared.
+
+This exposes the actual chosen endpoint-data path equations, path-component
+collapse, homotopy uniqueness, loop collapse, and `π₁` subsingleton evidence
+directly next to the checked certificate and final-homeomorphism payload data.
+-/
+theorem conditional_root_projector_homeomorphism_coherence_and_endpoint_fields_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (smoothabilityPayload :
+      OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {x y : M} (hyx : y ≠ x)
+    (basepoint target : (({x} ∪ {y})ᶜ : Set M))
+    (chosenPath : Path basepoint target)
+    (loop : Path basepoint basepoint) :
+    PoincareConjectureStatement.{u} ∧
+      ∃ rootHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+      ∃ projectHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+      ∃ recoveredHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+      rootHomeomorphism = projectHomeomorphism ∧
+        projectHomeomorphism = recoveredHomeomorphism ∧
+        ∃ _checkedCertificate : PoincareCompletionCertificate.{u},
+        ∃ _onePointHomeomorphism :
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+        ∃ extinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        ∃ pathData :
+            PointedPathComponentPathData (({x} ∪ {y})ᶜ : Set M) basepoint,
+        ∃ endpointData :
+            PointedChosenPathEndpointData
+              (({x} ∪ {y})ᶜ : Set M) basepoint target,
+          ExtinctionFinalHomeomorphismProjectorPayload
+            topology M extinction ∧
+          FinalHomeomorphismPayloadData M extinction
+            (extinction_decomposition_of_topology_package topology M extinction) ∧
+          pathData.path_to target = endpointData.path ∧
+          endpointData.path 0 = basepoint ∧
+          endpointData.path 1 = target ∧
+          Joined basepoint target ∧
+          pathComponent basepoint = Set.univ ∧
+          Path.Homotopic chosenPath endpointData.path ∧
+          (⟦chosenPath⟧ : Path.Homotopic.Quotient basepoint target) =
+            ⟦endpointData.path⟧ ∧
+          (∀ η : Path basepoint target,
+            Path.Homotopic endpointData.path η) ∧
+          Subsingleton (Path.Homotopic.Quotient basepoint target) ∧
+          loop 0 = basepoint ∧
+          loop 1 = basepoint ∧
+          Path.Homotopic loop (Path.refl basepoint) ∧
+          FundamentalGroup.fromPath
+              (⟦loop⟧ : Path.Homotopic.Quotient basepoint basepoint) =
+            FundamentalGroup.fromPath
+              (⟦Path.refl basepoint⟧ :
+                Path.Homotopic.Quotient basepoint basepoint) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  rcases
+      conditional_root_projector_homeomorphism_coherence_with_endpoint_core_of_equation_boundary_dependencies
+        dependencies smoothability grounded topology smoothabilityPayload M
+        hyx basepoint target chosenPath loop with
+    ⟨projectStatement, rootHomeomorphism, projectHomeomorphism,
+      recoveredHomeomorphism, hrootProject, hprojectRecovered,
+      checkedCertificate, onePointHomeomorphism, extinction,
+      finalHomeomorphismProjector, finalHomeomorphismPayloadData,
+      endpointCore⟩
+  rcases endpointCore with
+    ⟨pathData, endpointData, hpathData, hendpointZero, hendpointOne,
+      hjoined, hpathComponent, hchosenHomotopic, hquotient, hendpointUnique,
+      hpathQuotientSubsingleton, hloopZero, hloopOne, hloopHomotopic,
+      hfundamentalGroup, hpiOneSubsingleton⟩
+  exact
+    ⟨projectStatement,
+      rootHomeomorphism,
+      projectHomeomorphism,
+      recoveredHomeomorphism,
+      hrootProject,
+      hprojectRecovered,
+      checkedCertificate,
+      onePointHomeomorphism,
+      extinction,
+      pathData,
+      endpointData,
+      finalHomeomorphismProjector,
+      finalHomeomorphismPayloadData,
+      hpathData,
+      hendpointZero,
+      hendpointOne,
+      hjoined,
+      hpathComponent,
+      hchosenHomotopic,
+      hquotient,
+      hendpointUnique,
+      hpathQuotientSubsingleton,
+      hloopZero,
+      hloopOne,
+      hloopHomotopic,
+      hfundamentalGroup,
+      hpiOneSubsingleton⟩
+
+/-- Theorem contract for `conditional_root_projector_homeomorphism_coherence_and_endpoint_fields_of_equation_boundary_dependencies`. -/
+theorem conditional_root_projector_homeomorphism_coherence_and_endpoint_fields_of_equation_boundary_dependencies_eq :
+    @Poincare.conditional_root_projector_homeomorphism_coherence_and_endpoint_fields_of_equation_boundary_dependencies =
+      @Poincare.conditional_root_projector_homeomorphism_coherence_and_endpoint_fields_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
