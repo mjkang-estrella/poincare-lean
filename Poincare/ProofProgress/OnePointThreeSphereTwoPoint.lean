@@ -136,6 +136,79 @@ theorem onePoint_threeSpace_twoPointComplement_homeomorph_topology_packages_eq :
   rfl
 
 /--
+The explicit two-puncture complement bridge supplies path-component collapse
+and concrete joined/path witnesses at the source endpoints, at their
+forward-transported `ThreeSphere` endpoints, and at target endpoints transported
+back to the one-point compactification complement.
+-/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_path_component_packages
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (sourceBase sourceTarget :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (targetBase targetTarget :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)) :
+    let H :=
+      onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+        hqp
+    pathComponent sourceBase = Set.univ ∧
+      Joined sourceBase sourceTarget ∧
+      Nonempty (Path sourceBase sourceTarget) ∧
+      pathComponent (H sourceBase) = Set.univ ∧
+      Joined (H sourceBase) (H sourceTarget) ∧
+      Nonempty (Path (H sourceBase) (H sourceTarget)) ∧
+      pathComponent (H.symm targetBase) = Set.univ ∧
+      Joined (H.symm targetBase) (H.symm targetTarget) ∧
+      Nonempty (Path (H.symm targetBase) (H.symm targetTarget)) := by
+  dsimp
+  let H :=
+    onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+      hqp
+  let e : OnePoint (EuclideanSpace ℝ (Fin 3)) ≃ₜ ThreeSphere :=
+    Classical.choice onePoint_threeSpace_homeomorph_threeSphere
+  have hImage : e q ≠ e p := by
+    intro h
+    exact hqp (e.injective h)
+  exact
+    ⟨twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
+        (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+        ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩
+        hqp sourceBase,
+      twoPointComplement_joined_of_homeomorph_to_onePoint_threeSpace
+        (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+        ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩
+        hqp sourceBase sourceTarget,
+      twoPointComplement_path_nonempty_of_homeomorph_to_onePoint_threeSpace
+        (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+        ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩
+        hqp sourceBase sourceTarget,
+      threeSphere_twoPointComplement_pathComponent_eq_univ
+        hImage (H sourceBase),
+      threeSphere_twoPointComplement_path_nonempty
+        hImage (H sourceBase) (H sourceTarget),
+      threeSphere_twoPointComplement_path_nonempty
+        hImage (H sourceBase) (H sourceTarget),
+      twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
+        (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+        ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩
+        hqp (H.symm targetBase),
+      twoPointComplement_joined_of_homeomorph_to_onePoint_threeSpace
+        (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+        ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩
+        hqp (H.symm targetBase) (H.symm targetTarget),
+      twoPointComplement_path_nonempty_of_homeomorph_to_onePoint_threeSpace
+        (M := OnePoint (EuclideanSpace ℝ (Fin 3)))
+        ⟨Homeomorph.refl (OnePoint (EuclideanSpace ℝ (Fin 3)))⟩
+        hqp (H.symm targetBase) (H.symm targetTarget)⟩
+
+/-- Theorem contract for `onePoint_threeSpace_twoPointComplement_homeomorph_path_component_packages`. -/
+theorem onePoint_threeSpace_twoPointComplement_homeomorph_path_component_packages_eq :
+    @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_path_component_packages =
+      @Poincare.onePoint_threeSpace_twoPointComplement_homeomorph_path_component_packages :=
+  rfl
+
+/--
 The standard one-point compactification model two-puncture complement carries
 the transported punctured-Euclidean chart together with the canonical path,
 endpoint-data, homotopy quotient collapse, loop nullhomotopy, and `π₁`
