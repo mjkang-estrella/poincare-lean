@@ -14413,6 +14413,127 @@ theorem finalCertificateSubobligationInputs_selectedRawMap_projectionStatementCh
   rfl
 
 /--
+The selected raw-map final-certificate boundary also carries the joined trace,
+covering, and deck-control payload for the same projection statement-choice
+data. This exposes the checked certificate bundle together with the trace
+reconstruction, handle cancellation, covering projection, deck-action
+properness, trivial deck quotient identification, and final-homeomorphism
+statement used downstream by topology recognition consumers.
+-/
+theorem finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_trace_derivation_covering_and_deck_control_payload
+    (inputs : FinalCertificateSubobligationInputs.{u})
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (rawStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceForwardInverseProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (continuousStatementChoiceData :
+      let forwardContinuousMapData :=
+        extinctionOnePointThreeSpaceForwardContinuousMapDataAfterDecompositionStatement_of_selectedRawMapData_and_forwardContinuityDataAfterDecompositionStatement
+          mapSelectionData selectedRawMapData forwardContinuityData
+      ExtinctionOnePointThreeSpaceContinuousForwardProjectionStatementChoiceDataAfterForwardContinuousStatement
+        forwardContinuousMapData)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} ∧
+      (let onePointRecognition :=
+        onePointCompactificationRecognitionAfterDecompositionStatement_of_extinctionOnePointThreeSpaceSelectedRawMapData_forwardContinuity_projectionStatementChoiceData
+          mapSelectionData selectedRawMapData forwardContinuityData
+          rawStatementChoiceData continuousStatementChoiceData
+       let recognitionPrefix :=
+        extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let package :=
+        extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_onePointCompactificationRecognition
+          surgeryTracePrefix onePointRecognition
+       let handleCancellationPrefix :=
+        extinctionTopologyHandleCancellationPrefixPackage_of_topology_package
+          package
+       ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        ExtinctionTopologyDerivationStatement M extinction homeomorphism ∧
+        HasExtinctionSurgeryTraceReconstruction M extinction
+          (extinction_decomposition_of_topology_package
+            package M extinction) ∧
+        HasExtinctionSurgeryTraceHandleCancellation M extinction
+          (handleCancellationPrefix.decomposition M extinction)
+          (handleCancellationPrefix.surgeryTraceReconstruction M extinction) ∧
+        HasSphericalSpaceFormCoveringProjection M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalUniversalCover M extinction)
+          (recognitionPrefix.sphericalCoveringModel M extinction) ∧
+        HasSphericalSpaceFormDeckActionProperness M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction) ∧
+        HasSphericalSpaceFormTrivialDeckQuotientIdentification M extinction
+          (recognitionPrefix.decomposition M extinction)
+          (recognitionPrefix.primeDecomposition M extinction)
+          (recognitionPrefix.irreducibility M extinction)
+          (recognitionPrefix.connectedSumCollapse M extinction)
+          (recognitionPrefix.sphericalSpaceFormReduction M extinction)
+          (recognitionPrefix.sphericalQuotientModel M extinction)
+          (recognitionPrefix.sphericalFundamentalGroup M extinction)
+          (recognitionPrefix.deckGroupIdentification M extinction)
+          (recognitionPrefix.deckGroupTriviality M extinction)
+          (recognitionPrefix.deckActionTrivialization M extinction) ∧
+        FinalHomeomorphismAfterDecompositionStatement.{u}) := by
+  let certificateBundle :=
+    canonical_and_poincare_payloads_and_final_certificate_of_finalCertificateSubobligationInputs_surgeryTracePrefix_and_selectedRawMapData_forwardContinuity_projectionStatementChoiceData
+      inputs surgeryTracePrefix mapSelectionData selectedRawMapData
+      forwardContinuityData rawStatementChoiceData
+      continuousStatementChoiceData
+  dsimp
+  rcases
+      selectedRawMap_projectionStatementChoice_trace_derivation_covering_and_deck_control_payload
+        surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData rawStatementChoiceData
+        continuousStatementChoiceData M extinction with
+    ⟨homeomorphism, topologyDerivation, traceProjection,
+      handleCancellation, sphericalCoveringProjection,
+      deckActionProperness, trivialDeckQuotientIdentification,
+      finalHomeomorphismStatement⟩
+  exact
+    ⟨certificateBundle.1, certificateBundle.2.1,
+      certificateBundle.2.2.1, certificateBundle.2.2.2.1,
+      certificateBundle.2.2.2.2, homeomorphism,
+      topologyDerivation, traceProjection, handleCancellation,
+      sphericalCoveringProjection, deckActionProperness,
+      trivialDeckQuotientIdentification, finalHomeomorphismStatement⟩
+
+/-- Theorem contract for `finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_trace_derivation_covering_and_deck_control_payload`. -/
+theorem finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_trace_derivation_covering_and_deck_control_payload_eq :
+    @Poincare.finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_trace_derivation_covering_and_deck_control_payload =
+      @Poincare.finalCertificateSubobligationInputs_selectedRawMap_projectionStatementChoice_certificate_trace_derivation_covering_and_deck_control_payload :=
+  rfl
+
+/--
 Named final-homeomorphism projector payload. It records the actual recovered
 homeomorphism to `ThreeSphere`, the recognition and assembly payloads, the
 topology package identification, package lift chain, extraction and topology
