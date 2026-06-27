@@ -30229,4 +30229,62 @@ theorem dependency_only_canonical_reserved_theorem_target_surgery_witnesses_of_e
       @Poincare.dependency_only_canonical_reserved_theorem_target_surgery_witnesses_of_equation_boundary_dependencies :=
   rfl
 
+/--
+Dependency-only canonical reserved-theorem endpoint with the smoothability
+bridge tail opened at an arbitrary closed simply connected target.
+
+This specializes the final dependency fields to the smoothability bridge data
+needed before the Ricci-flow-with-surgery route can be applied to a topological
+three-manifold.
+-/
+theorem dependency_only_canonical_reserved_theorem_smoothability_bridge_tail_of_equation_boundary_dependencies
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ theoremName : String,
+    ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+    ∃ smoothDerivationStatement :
+      SmoothStructureDerivationStatement M smoothStructure,
+    ∃ manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ bridgeDerivation :
+      HasSmoothabilityBridgeDerivation
+        M smoothStructure smoothDerivationStatement manifoldEvidence,
+    ∃ modelCompatibility :
+      HasSmoothManifoldModelCompatibility
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      HasSmoothChartCompatibility
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation modelCompatibility := by
+  rcases
+      dependency_only_canonical_reserved_theorem_named_dependency_fields_of_equation_boundary_dependencies
+        dependencies with
+    ⟨theoremName, _remainingDependencies, _ordinarySmoothability,
+      _ordinarySurgery, _ordinaryTopology, _equationBoundarySmoothability,
+      _equationBoundarySurgery, _equationBoundaryTopology,
+      hTheoremNameCanonical, hTheoremNameLiteral, _hRemainingDependencies,
+      _hOrdinarySmoothability, _hOrdinarySurgery, _hOrdinaryTopology,
+      _hEquationBoundarySmoothability, _hEquationBoundarySurgery,
+      _hEquationBoundaryTopology, _hOrdinaryPayloadFields,
+      _hEquationBoundaryPayloadFields⟩
+  rcases
+      smoothability_bridge_tail_payload_of_poincareProofDependenciesWithEquationBoundary
+        dependencies M with
+    ⟨smoothStructure, smoothDerivationStatement, manifoldEvidence,
+      bridgeDerivation, modelCompatibility, chartCompatibility⟩
+  exact
+    ⟨theoremName, smoothStructure, smoothDerivationStatement,
+      manifoldEvidence, bridgeDerivation, modelCompatibility,
+      hTheoremNameCanonical, hTheoremNameLiteral, chartCompatibility⟩
+
+/-- Theorem contract for
+`dependency_only_canonical_reserved_theorem_smoothability_bridge_tail_of_equation_boundary_dependencies`. -/
+theorem dependency_only_canonical_reserved_theorem_smoothability_bridge_tail_of_equation_boundary_dependencies_eq :
+    @Poincare.dependency_only_canonical_reserved_theorem_smoothability_bridge_tail_of_equation_boundary_dependencies =
+      @Poincare.dependency_only_canonical_reserved_theorem_smoothability_bridge_tail_of_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
