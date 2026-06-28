@@ -111,6 +111,38 @@ theorem homeomorph_to_onePoint_threeSpace_of_finalAssemblyPackageBoundaryInputs
       inputs.topology M (finiteExtinction M)
 
 /--
+The final package boundary transports every single-puncture complement to the
+Euclidean chart of the one-point compactification model.
+-/
+theorem homeomorph_compl_singleton_euclidean_of_finalAssemblyPackageBoundaryInputs
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (x : M) :
+    Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) :=
+  ⟨homeomorph_compl_singleton_euclidean_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_finalAssemblyPackageBoundaryInputs
+      inputs M) x⟩
+
+/--
+The final package boundary transports every two-puncture complement to a
+punctured Euclidean chart.
+-/
+theorem exists_homeomorph_twoPointComplement_puncturedEuclidean_of_finalAssemblyPackageBoundaryInputs
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {x y : M} (hyx : y ≠ x) :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+        ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3)))) :=
+  exists_homeomorph_twoPointComplement_puncturedEuclidean_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_finalAssemblyPackageBoundaryInputs
+      inputs M) hyx
+
+/--
 The final package boundary exposes the stronger singleton-complement
 contractibility structure supplied by topology extraction.
 -/
@@ -526,6 +558,38 @@ theorem homeomorph_to_onePoint_threeSpace_of_finalAssemblySubobligationBoundaryI
   homeomorph_to_onePoint_threeSpace_of_finalAssemblyPackageBoundaryInputs
     (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
     M
+
+/--
+The sub-obligation boundary inherits the concrete Euclidean chart
+homeomorphism for single-puncture complements.
+-/
+theorem homeomorph_compl_singleton_euclidean_of_finalAssemblySubobligationBoundaryInputs
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (x : M) :
+    Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) :=
+  homeomorph_compl_singleton_euclidean_of_finalAssemblyPackageBoundaryInputs
+    (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
+    M x
+
+/--
+The sub-obligation boundary inherits the concrete punctured-Euclidean chart
+homeomorphism for two-puncture complements.
+-/
+theorem exists_homeomorph_twoPointComplement_puncturedEuclidean_of_finalAssemblySubobligationBoundaryInputs
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {x y : M} (hyx : y ≠ x) :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+        ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3)))) :=
+  exists_homeomorph_twoPointComplement_puncturedEuclidean_of_finalAssemblyPackageBoundaryInputs
+    (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
+    M hyx
 
 /--
 The sub-obligation boundary inherits singleton-complement contractibility
