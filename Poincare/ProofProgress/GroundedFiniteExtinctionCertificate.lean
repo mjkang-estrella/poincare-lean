@@ -740,6 +740,55 @@ theorem groundedUniversalFiniteExtinction_flowPackageFamily_of_grounded
     (groundedUniversalFiniteExtinctionDetailedAssemblyPayload grounded)
 
 /--
+The detailed finite-extinction assembly payload also exposes a package-first
+certificate family: every smooth target has a finite-extinction package and
+statement, a final extinction witness, and an explicit derivation witness
+retained under an inner flow/surgery/control existential.
+-/
+theorem groundedUniversalFiniteExtinctionDetailedAssemblyPayload_packageStatementDerivationFamily
+    (payload : GroundedUniversalFiniteExtinctionDetailedAssemblyPayload.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ _package : FiniteExtinctionSurgeryPackage n M,
+          FiniteExtinctionStatement n M ∧
+            FiniteExtinctionByRicciFlowWithSurgery M ∧
+            ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+            ∃ surgery : HasRicciFlowWithSurgery n M,
+            ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+              HasFiniteExtinctionDerivation flow surgery control := by
+  intro M _top _t2 _charted _simple _compact _manifold
+  rcases payload.statementPayloadFamily M with
+    ⟨n, flow, surgery, control, package, packageStatement, derivation,
+      finiteExtinction⟩
+  exact
+    ⟨n, package, packageStatement, finiteExtinction, flow, surgery, control,
+      derivation⟩
+
+/--
+Construct the package-first finite-extinction certificate family directly from
+the grounded universal finite-extinction statement.
+-/
+theorem groundedUniversalFiniteExtinction_packageStatementDerivationFamily_of_grounded
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ _package : FiniteExtinctionSurgeryPackage n M,
+          FiniteExtinctionStatement n M ∧
+            FiniteExtinctionByRicciFlowWithSurgery M ∧
+            ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+            ∃ surgery : HasRicciFlowWithSurgery n M,
+            ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+              HasFiniteExtinctionDerivation flow surgery control :=
+  groundedUniversalFiniteExtinctionDetailedAssemblyPayload_packageStatementDerivationFamily
+    (groundedUniversalFiniteExtinctionDetailedAssemblyPayload grounded)
+
+/--
 Grounded universal finite extinction plus theorem-shaped topology extraction
 proves the project-level Poincare statement through the universal
 finite-extinction topology-extraction route.
