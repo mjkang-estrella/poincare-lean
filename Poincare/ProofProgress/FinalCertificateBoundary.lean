@@ -710,6 +710,86 @@ theorem project_payload_and_final_certificate_of_finalCertificateMinimalPackageI
   apply Subsingleton.elim
 
 /--
+The minimal final-certificate inputs plus a topology package discharge each
+universe-indexed completion criterion directly, by projecting the canonical
+completion payload carried by the same package inputs.
+-/
+theorem completion_criterion_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    (witness : Type u)
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    CompletionCriterionAtUniverse witness :=
+  (canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+    inputs (extinction_implies_sphere_of_topology_package topology)).choose_spec
+      witness
+
+/--
+The minimal-input topology-package criterion theorem is exactly the witness
+projection from the canonical completion payload over those same inputs.
+-/
+theorem completion_criterion_of_finalCertificateMinimalPackageInputs_and_topologyPackage_eq
+    (witness : Type u)
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    completion_criterion_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+        witness inputs topology =
+      (canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+        inputs
+        (extinction_implies_sphere_of_topology_package topology)).choose_spec
+        witness := by
+  apply Subsingleton.elim
+
+/--
+The three named final package-layer requirements discharge each
+universe-indexed completion criterion directly.
+-/
+theorem completion_criterion_of_smoothability_finiteExtinctionPackage_and_topologyPackage
+    (witness : Type u)
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    CompletionCriterionAtUniverse witness :=
+  completion_criterion_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    witness
+    { smoothability := smoothability
+      finiteExtinction := finiteExtinction }
+    topology
+
+/--
+The named package-layer criterion theorem is exactly the minimal-input
+criterion theorem after packing smoothability and finite extinction.
+-/
+theorem completion_criterion_of_smoothability_finiteExtinctionPackage_and_topologyPackage_eq
+    (witness : Type u)
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    completion_criterion_of_smoothability_finiteExtinctionPackage_and_topologyPackage
+        witness smoothability finiteExtinction topology =
+      completion_criterion_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+        witness
+        { smoothability := smoothability
+          finiteExtinction := finiteExtinction }
+        topology := by
+  rfl
+
+/--
 The simply connected extinction-recognition prefix now supplies the topology
 package-layer requirement consumed by final assembly.
 -/
