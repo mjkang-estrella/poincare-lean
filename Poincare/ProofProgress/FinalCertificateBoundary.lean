@@ -49354,4 +49354,55 @@ theorem constructed_boundary_root_route_coherence_of_dependencies_and_verificati
       @Poincare.constructed_boundary_root_route_coherence_of_dependencies_and_verification_family :=
   rfl
 
+/--
+Ordinary dependencies plus equation verification inherit the compact
+dependency-only final certificate collapse.
+
+The dependency-only route already collapses an equation-boundary dependency
+package to a nonempty completion certificate, project statement, mathlib-shaped
+statement, project completion payload, canonical completion payload, and the
+canonical reserved theorem name.  This theorem applies that whole collapse to
+the equation-boundary package constructed from ordinary dependencies and the
+Ricci-flow equation verification family.
+-/
+theorem constructed_boundary_dependency_only_final_certificate_collapse_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    Nonempty PoincareCompletionCertificate.{0} ∧
+      PoincareConjectureStatement.{0} ∧
+      MathlibTopologicalPoincareThreeStatement.{0} ∧
+      (∃ _target : PoincareConjectureStatement.{0},
+        ∀ witness : Type, CompletionCriterionAtUniverse witness) ∧
+      (∃ _target : canonicalCompletionTarget.{0},
+        ∀ witness : Type, CompletionCriterionAtUniverse witness) ∧
+      ∃ theoremName : String,
+      ∃ certificate : PoincareCompletionCertificate.{0},
+        theoremName = canonicalCompletionTheoremName ∧
+        theoremName = "poincare_conjecture" ∧
+        certificate =
+          completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+            (equation_boundary_dependencies_of_dependencies_and_verification_family
+              dependencies verificationFamily) ∧
+        nonempty_completion_certificate_of_completion_certificate
+            certificate =
+          (⟨certificate⟩ : Nonempty PoincareCompletionCertificate.{0}) :=
+  dependency_only_reserved_final_certificate_collapse_of_equation_boundary_dependencies
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily)
+
+/-- Theorem contract for
+`constructed_boundary_dependency_only_final_certificate_collapse_of_dependencies_and_verification_family`. -/
+theorem constructed_boundary_dependency_only_final_certificate_collapse_of_dependencies_and_verification_family_eq :
+    @Poincare.constructed_boundary_dependency_only_final_certificate_collapse_of_dependencies_and_verification_family =
+      @Poincare.constructed_boundary_dependency_only_final_certificate_collapse_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
