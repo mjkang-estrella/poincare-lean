@@ -42823,4 +42823,75 @@ theorem reserved_named_certificate_criterion_target_statement_package_of_final_c
       @Poincare.reserved_named_certificate_criterion_target_statement_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Standard-sphere anchored certificate criterion package from the final
+completion criterion.
+
+The final certificate criterion package can be instantiated at the concrete
+standard `ThreeSphere` anchor using the repository's proved compactness,
+charted-space, smooth-manifold, and simple-connectedness instances for the
+target sphere.  This removes the arbitrary anchor manifold argument from this
+consumer endpoint while preserving the same checked certificate criterion
+coherence.
+-/
+theorem threeSphere_reserved_named_certificate_criterion_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary)
+    (witness : Type) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate,
+    ∃ targetStatement : PoincareConjectureStatement,
+    ∃ projectStatement : PoincareConjectureStatement,
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement,
+    ∃ projectPayload :
+      (∃ _target : PoincareConjectureStatement,
+        ∀ witness : Type, CompletionCriterionAtUniverse witness),
+    ∃ criterion : CompletionCriterionAtUniverse witness,
+    ∃ certificateCriterion : CompletionCriterionAtUniverse witness,
+    ∃ canonicalCertificateCriterion : CompletionCriterionAtUniverse witness,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      targetStatement =
+        target_statement_of_completion_certificate certificate ∧
+      projectStatement = targetStatement ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement ∧
+      projectPayload =
+        poincare_completion_payload_of_completion_certificate certificate ∧
+      criterion =
+        completionCriterionAtUniverse_of_poincare_completion_payload
+          witness projectPayload ∧
+      certificateCriterion =
+        completion_criterion_of_completion_certificate witness certificate ∧
+      canonicalCertificateCriterion =
+        canonical_completion_criterion_of_completion_certificate
+          witness certificate ∧
+      criterion = certificateCriterion ∧
+      certificateCriterion = canonicalCertificateCriterion ∧
+      criterion =
+        reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+          dependencies witness := by
+  letI : T2Space ThreeSphere := threeSphere_t2Space
+  letI : ChartedSpace ThreeManifoldModel ThreeSphere :=
+    threeSphere_chartedSpace
+  letI : SimplyConnectedSpace ThreeSphere :=
+    threeSphere_instSimplyConnectedSpace
+  letI : CompactSpace ThreeSphere := threeSphere_compactSpace
+  letI : IsManifold ThreeManifoldModelWithCorners 1 ThreeSphere :=
+    surgeryModel_isManifold_of_smoothManifold
+      ThreeSphere threeSphere_smoothManifold
+  exact
+    reserved_named_certificate_criterion_target_statement_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies
+      dependencies ThreeSphere witness
+
+/-- Theorem contract for
+`threeSphere_reserved_named_certificate_criterion_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies`. -/
+theorem threeSphere_reserved_named_certificate_criterion_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.threeSphere_reserved_named_certificate_criterion_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies =
+      @Poincare.threeSphere_reserved_named_certificate_criterion_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
