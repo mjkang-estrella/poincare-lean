@@ -120,6 +120,115 @@ theorem compl_singleton_nonempty_of_topology_package
   infer_instance
 
 /--
+The zeroth homotopy quotient of a package-selected single-puncture complement
+has only one class.
+-/
+theorem compl_singleton_zerothHomotopy_subsingleton_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M) :
+    Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) := by
+  letI : PathConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_pathConnectedSpace_of_topology_package
+      package M extinction x
+  infer_instance
+
+/--
+Any two zeroth-homotopy classes in a package-selected single-puncture
+complement agree.
+-/
+theorem compl_singleton_zerothHomotopy_mk_eq_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M)
+    (a b : ({x}ᶜ : Set M)) :
+    ZerothHomotopy.mk a = ZerothHomotopy.mk b := by
+  letI : Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) :=
+    compl_singleton_zerothHomotopy_subsingleton_of_topology_package
+      package M extinction x
+  exact Subsingleton.elim _ _
+
+/--
+The zeroth homotopy quotient of a package-selected single-puncture complement
+has a unique class.
+-/
+theorem compl_singleton_zerothHomotopy_exists_unique_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M) :
+    ∃ baseClass : ZerothHomotopy ({x}ᶜ : Set M),
+      ∀ homotopyClass : ZerothHomotopy ({x}ᶜ : Set M),
+        homotopyClass = baseClass := by
+  letI : PathConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_pathConnectedSpace_of_topology_package
+      package M extinction x
+  let basePoint : ({x}ᶜ : Set M) :=
+    Classical.choice (PathConnectedSpace.nonempty (X := ({x}ᶜ : Set M)))
+  exact ⟨ZerothHomotopy.mk basePoint, fun homotopyClass => Subsingleton.elim _ _⟩
+
+/--
+The zeroth homotopy group of a package-selected single-puncture complement has
+only one class.
+-/
+theorem compl_singleton_piZero_subsingleton_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) := by
+  exact
+    ((HomotopyGroup.pi0EquivZerothHomotopy
+      (X := ({x}ᶜ : Set M))
+      (x := basepoint)).subsingleton_congr).mpr
+        (compl_singleton_zerothHomotopy_subsingleton_of_topology_package
+          package M extinction x)
+
+/--
+Any two zeroth homotopy group classes in a package-selected single-puncture
+complement agree.
+-/
+theorem compl_singleton_piZero_eq_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M)
+    (basepoint : ({x}ᶜ : Set M))
+    (a b : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) :
+    a = b := by
+  letI : Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) :=
+    compl_singleton_piZero_subsingleton_of_topology_package
+      package M extinction x basepoint
+  exact Subsingleton.elim _ _
+
+/--
+The zeroth homotopy group of a package-selected single-puncture complement has
+a unique class.
+-/
+theorem compl_singleton_piZero_exists_unique_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    ∃ baseClass : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint,
+      ∀ homotopyClass : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint,
+        homotopyClass = baseClass := by
+  letI : Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) :=
+    compl_singleton_piZero_subsingleton_of_topology_package
+      package M extinction x basepoint
+  exact ⟨Classical.choice inferInstance, fun homotopyClass => Subsingleton.elim _ _⟩
+
+/--
 The package-level single-puncture contractibility projection gives simple
 connectedness of every single-puncture complement.
 -/
@@ -351,6 +460,128 @@ theorem twoPointComplement_nonempty_of_topology_package
     twoPointComplement_pathConnectedSpace_of_topology_package
       package M extinction hyx
   infer_instance
+
+/--
+The zeroth homotopy quotient of a package-selected two-puncture complement has
+only one class.
+-/
+theorem twoPointComplement_zerothHomotopy_subsingleton_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x) :
+    Subsingleton (ZerothHomotopy (({x} ∪ {y})ᶜ : Set M)) := by
+  letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_pathConnectedSpace_of_topology_package
+      package M extinction hyx
+  infer_instance
+
+/--
+Any two zeroth-homotopy classes in a package-selected two-puncture complement
+agree.
+-/
+theorem twoPointComplement_zerothHomotopy_mk_eq_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (a b : (({x} ∪ {y})ᶜ : Set M)) :
+    ZerothHomotopy.mk a = ZerothHomotopy.mk b := by
+  letI : Subsingleton (ZerothHomotopy (({x} ∪ {y})ᶜ : Set M)) :=
+    twoPointComplement_zerothHomotopy_subsingleton_of_topology_package
+      package M extinction hyx
+  exact Subsingleton.elim _ _
+
+/--
+The zeroth homotopy quotient of a package-selected two-puncture complement has
+a unique class.
+-/
+theorem twoPointComplement_zerothHomotopy_exists_unique_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x) :
+    ∃ baseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+      ∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+        homotopyClass = baseClass := by
+  letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_pathConnectedSpace_of_topology_package
+      package M extinction hyx
+  let basePoint : (({x} ∪ {y})ᶜ : Set M) :=
+    Classical.choice
+      (PathConnectedSpace.nonempty (X := (({x} ∪ {y})ᶜ : Set M)))
+  exact ⟨ZerothHomotopy.mk basePoint, fun homotopyClass => Subsingleton.elim _ _⟩
+
+/--
+The zeroth homotopy group of a package-selected two-puncture complement has
+only one class.
+-/
+theorem twoPointComplement_piZero_subsingleton_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Subsingleton
+      (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  exact
+    ((HomotopyGroup.pi0EquivZerothHomotopy
+      (X := (({x} ∪ {y})ᶜ : Set M))
+      (x := basepoint)).subsingleton_congr).mpr
+        (twoPointComplement_zerothHomotopy_subsingleton_of_topology_package
+          package M extinction hyx)
+
+/--
+Any two zeroth homotopy group classes in a package-selected two-puncture
+complement agree.
+-/
+theorem twoPointComplement_piZero_eq_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M))
+    (a b :
+      HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) :
+    a = b := by
+  letI : Subsingleton
+      (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+    twoPointComplement_piZero_subsingleton_of_topology_package
+      package M extinction hyx basepoint
+  exact Subsingleton.elim _ _
+
+/--
+The zeroth homotopy group of a package-selected two-puncture complement has a
+unique class.
+-/
+theorem twoPointComplement_piZero_exists_unique_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ baseClass :
+      HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+      ∀ homotopyClass :
+        HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+        homotopyClass = baseClass := by
+  letI : Subsingleton
+      (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+    twoPointComplement_piZero_subsingleton_of_topology_package
+      package M extinction hyx basepoint
+  exact ⟨Classical.choice inferInstance, fun homotopyClass => Subsingleton.elim _ _⟩
 
 /--
 Consequently, every based fundamental group of a two-puncture complement
