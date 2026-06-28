@@ -2082,6 +2082,55 @@ theorem finalCertificateTopologyAssemblyPayload_fields
     ⟩
 
 /--
+A checked remaining-dependency package plus the simply connected recognition
+prefix constructs the generic final-certificate topology assembly payload.  The
+remaining-dependency package supplies the smoothability and finite-extinction
+package inputs, while the recognition prefix supplies the topology package.
+-/
+def finalCertificateTopologyAssemblyPayload_of_remainingDependencyPackage_and_recognitionPrefix
+    (dependencies : RemainingDependencyPackage.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    FinalCertificateTopologyAssemblyPayload
+      (finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+        (finalAssemblyPackageBoundaryInputs_of_remainingDependencyPackage
+          dependencies))
+      (topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+        recognitionPrefix) :=
+  finalCertificateTopologyAssemblyPayload
+    (finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+      (finalAssemblyPackageBoundaryInputs_of_remainingDependencyPackage
+        dependencies))
+    (topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+      recognitionPrefix)
+
+/--
+The remaining-dependency recognition-prefix route exposes the same public
+statement, checked certificate, inhabited certificate, canonical target, public
+payload, canonical payload, and completion criteria as the generic topology
+assembly payload.
+-/
+theorem finalCertificateTopologyAssemblyPayload_fields_of_remainingDependencyPackage_and_recognitionPrefix
+    (dependencies : RemainingDependencyPackage.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      canonicalCompletionTarget.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) :=
+  finalCertificateTopologyAssemblyPayload_fields
+    (finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+      (finalAssemblyPackageBoundaryInputs_of_remainingDependencyPackage
+        dependencies))
+    (topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+      recognitionPrefix)
+
+/--
 For fixed smoothability and finite-extinction inputs, existence of the complete
 topology assembly payload is exactly the topology-package requirement.  The
 reverse direction constructs the checked final certificate and all completion
