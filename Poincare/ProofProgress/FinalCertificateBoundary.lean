@@ -47023,4 +47023,193 @@ theorem final_certificate_shared_complete_recognition_of_dependencies_and_verifi
       @Poincare.final_certificate_shared_complete_recognition_of_dependencies_and_verification_family :=
   rfl
 
+/--
+Ordinary dependencies plus equation verification synchronize the standard
+`ThreeSphere` final-statement application with the complete arbitrary-manifold
+recognition package.
+
+The two routes may expose their own selected homeomorphism witnesses, but this
+endpoint proves that they pass through the same constructed equation-boundary
+dependency package and therefore select the same checked completion
+certificate, reserved Poincare statement, and mathlib-shaped final statement.
+It then records the standard application at `ThreeSphere` and the arbitrary
+application at `M` together with their recognition witnesses.
+-/
+theorem final_certificate_standard_and_arbitrary_application_coherence_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ checkedReservedStatement : PoincareConjectureStatement.{0},
+    ∃ checkedMathlibStatement : MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ standardForwardHomeomorphism :
+      ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ standardInverseHomeomorphism :
+      Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ ThreeSphere,
+    ∃ standardForwardConclusion :
+      Nonempty
+        (ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)),
+    ∃ standardInverseConclusion :
+      Nonempty
+        (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ ThreeSphere),
+    ∃ projectConclusion : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ arbitraryForwardHomeomorphism :
+      ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ composedMathlibHomeomorphism :
+      M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ inverseComposedMathlibHomeomorphism :
+      Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ M,
+    ∃ composedMathlibConclusion :
+      Nonempty
+        (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)),
+    ∃ inverseComposedMathlibConclusion :
+      Nonempty
+        (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ M),
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          boundaryDependencies ∧
+      checkedReservedStatement =
+        poincare_conjecture_of_completion_certificate certificate ∧
+      checkedMathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          checkedReservedStatement ∧
+      standardForwardConclusion = checkedMathlibStatement ThreeSphere ∧
+      standardForwardConclusion =
+        (⟨standardForwardHomeomorphism⟩ :
+          Nonempty
+            (ThreeSphere ≃ₜ
+              Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) ∧
+      standardInverseHomeomorphism = standardForwardHomeomorphism.symm ∧
+      standardInverseConclusion =
+        (⟨standardInverseHomeomorphism⟩ :
+          Nonempty
+            (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ
+              ThreeSphere)) ∧
+      (∀ x : ThreeSphere,
+        standardInverseHomeomorphism (standardForwardHomeomorphism x) = x) ∧
+      (∀ y : Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+        standardForwardHomeomorphism (standardInverseHomeomorphism y) = y) ∧
+      projectConclusion = checkedReservedStatement M ∧
+      projectHomeomorphism = Classical.choice projectConclusion ∧
+      composedMathlibHomeomorphism =
+        projectHomeomorphism.trans arbitraryForwardHomeomorphism ∧
+      inverseComposedMathlibHomeomorphism =
+        composedMathlibHomeomorphism.symm ∧
+      inverseComposedMathlibHomeomorphism =
+        arbitraryForwardHomeomorphism.symm.trans projectHomeomorphism.symm ∧
+      composedMathlibConclusion =
+        (⟨composedMathlibHomeomorphism⟩ :
+          Nonempty
+            (M ≃ₜ
+              Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) ∧
+      composedMathlibConclusion = checkedMathlibStatement M ∧
+      inverseComposedMathlibConclusion =
+        (⟨inverseComposedMathlibHomeomorphism⟩ :
+          Nonempty
+            (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ M)) ∧
+      (∀ x : M,
+        inverseComposedMathlibHomeomorphism
+          (composedMathlibHomeomorphism x) = x) ∧
+      (∀ y : Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+        composedMathlibHomeomorphism
+          (inverseComposedMathlibHomeomorphism y) = y) ∧
+      Topology.IsEmbedding composedMathlibHomeomorphism ∧
+      Function.Bijective composedMathlibHomeomorphism ∧
+      Continuous composedMathlibHomeomorphism ∧
+      Topology.IsEmbedding inverseComposedMathlibHomeomorphism ∧
+      Function.Bijective inverseComposedMathlibHomeomorphism ∧
+      Continuous inverseComposedMathlibHomeomorphism := by
+  rcases
+      threeSphere_final_statement_application_bidirectional_conclusions_of_dependencies_and_verification_family
+        dependencies verificationFamily with
+    ⟨standardBoundaryDependencies, standardNonemptyBoundaryDependencies,
+      _standardTheoremName, standardCertificate, standardReservedStatement,
+      standardMathlibStatement, standardForwardHomeomorphism,
+      standardInverseHomeomorphism, standardForwardConclusion,
+      standardInverseConclusion, hStandardBoundaryDependencies,
+      hStandardNonemptyBoundaryDependencies, _hStandardTheoremNameCanonical,
+      _hStandardTheoremNameLiteral, hStandardCertificate,
+      hStandardReservedStatement, hStandardMathlibStatement,
+      hStandardMathlibApplication, hStandardForwardConclusion,
+      hStandardInverseHomeomorphism, hStandardInverseConclusion,
+      hStandardLeft, hStandardRight⟩
+  rcases
+      final_certificate_shared_complete_recognition_of_dependencies_and_verification_family
+        dependencies verificationFamily M with
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies, certificate,
+      checkedReservedStatement, checkedMathlibStatement, projectConclusion,
+      projectHomeomorphism, arbitraryForwardHomeomorphism,
+      composedMathlibHomeomorphism, inverseComposedMathlibHomeomorphism,
+      composedMathlibConclusion, inverseComposedMathlibConclusion,
+      hBoundaryDependencies, hNonemptyBoundaryDependencies, hCertificate,
+      hCheckedReservedStatement, hCheckedMathlibStatement,
+      hProjectConclusion, hProjectHomeomorphism,
+      hComposedMathlibHomeomorphism, hInverseComposedMathlibHomeomorphism,
+      hInverseDecomposition, hComposedMathlibConclusion,
+      hComposedMathlibStatement, hInverseComposedMathlibConclusion, hLeft,
+      hRight, hComposedEmbedding, hComposedBijective, hComposedContinuous,
+      hInverseComposedEmbedding, hInverseComposedBijective,
+      hInverseComposedContinuous⟩
+  have hBoundarySame :
+      standardBoundaryDependencies = boundaryDependencies := by
+    rw [hStandardBoundaryDependencies, hBoundaryDependencies]
+  have hCertificateSame :
+      standardCertificate = certificate := by
+    rw [hStandardCertificate, hCertificate, hBoundarySame]
+  have hReservedStatementSame :
+      standardReservedStatement = checkedReservedStatement := by
+    rw [hStandardReservedStatement, hCheckedReservedStatement,
+      hCertificateSame]
+  have hMathlibStatementSame :
+      standardMathlibStatement = checkedMathlibStatement := by
+    rw [hStandardMathlibStatement, hCheckedMathlibStatement,
+      hReservedStatementSame]
+  have hStandardForwardConclusionChecked :
+      standardForwardConclusion = checkedMathlibStatement ThreeSphere := by
+    rw [← hMathlibStatementSame]
+  exact
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies, certificate,
+      checkedReservedStatement, checkedMathlibStatement,
+      standardForwardHomeomorphism, standardInverseHomeomorphism,
+      standardForwardConclusion, standardInverseConclusion, projectConclusion,
+      projectHomeomorphism, arbitraryForwardHomeomorphism,
+      composedMathlibHomeomorphism, inverseComposedMathlibHomeomorphism,
+      composedMathlibConclusion, inverseComposedMathlibConclusion,
+      hBoundaryDependencies, hNonemptyBoundaryDependencies, hCertificate,
+      hCheckedReservedStatement, hCheckedMathlibStatement,
+      hStandardForwardConclusionChecked, hStandardForwardConclusion,
+      hStandardInverseHomeomorphism, hStandardInverseConclusion,
+      hStandardLeft, hStandardRight, hProjectConclusion,
+      hProjectHomeomorphism, hComposedMathlibHomeomorphism,
+      hInverseComposedMathlibHomeomorphism, hInverseDecomposition,
+      hComposedMathlibConclusion, hComposedMathlibStatement,
+      hInverseComposedMathlibConclusion, hLeft, hRight, hComposedEmbedding,
+      hComposedBijective, hComposedContinuous, hInverseComposedEmbedding,
+      hInverseComposedBijective, hInverseComposedContinuous⟩
+
+/-- Theorem contract for
+`final_certificate_standard_and_arbitrary_application_coherence_of_dependencies_and_verification_family`. -/
+theorem final_certificate_standard_and_arbitrary_application_coherence_of_dependencies_and_verification_family_eq :
+    @Poincare.final_certificate_standard_and_arbitrary_application_coherence_of_dependencies_and_verification_family =
+      @Poincare.final_certificate_standard_and_arbitrary_application_coherence_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
