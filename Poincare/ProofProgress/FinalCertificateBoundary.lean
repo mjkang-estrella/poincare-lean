@@ -3473,6 +3473,100 @@ theorem completion_payload_of_reserved_named_statement_payload_target_witness_pa
   rfl
 
 /--
+Direct project statement projection from the reserved-name statement/payload/
+target/criterion package of the grounded terminal aggregate route.
+-/
+theorem poincare_statement_of_reserved_named_statement_payload_target_witness_package
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (N : Type u) [TopologicalSpace N] [T2Space N]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+    [SimplyConnectedSpace N] [CompactSpace N]
+    (witness : Type u) :
+    PoincareConjectureStatement.{u} := by
+  rcases
+      reserved_named_statement_payload_target_witness_package_of_unpacked_aggregate_completion
+        dependencies smoothability grounded topologyStatement M N witness with
+    ⟨_theoremName, projectStatement, _projectPayload, _directTarget,
+      _directCriterion, _hTheoremNameCanonical, _hTheoremNameLiteral,
+      _hProjectStatement, _hProjectPayload, _hDirectTarget,
+      _hDirectCriterion⟩
+  exact projectStatement
+
+/-- Theorem contract for
+`poincare_statement_of_reserved_named_statement_payload_target_witness_package`. -/
+theorem poincare_statement_of_reserved_named_statement_payload_target_witness_package_eq :
+    @Poincare.poincare_statement_of_reserved_named_statement_payload_target_witness_package =
+      @Poincare.poincare_statement_of_reserved_named_statement_payload_target_witness_package :=
+  rfl
+
+/--
+The project statement projected from the reserved-name statement/payload/
+target/criterion package agrees with the direct aggregate project statement.
+-/
+theorem poincare_statement_package_projection_coherence_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (N : Type u) [TopologicalSpace N] [T2Space N]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+    [SimplyConnectedSpace N] [CompactSpace N]
+    (witness : Type u) :
+    ∃ packageStatement : PoincareConjectureStatement.{u},
+    ∃ directStatement : PoincareConjectureStatement.{u},
+      packageStatement =
+        poincare_statement_of_reserved_named_statement_payload_target_witness_package
+          dependencies smoothability grounded topologyStatement M N witness ∧
+      directStatement =
+        poincare_statement_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M ∧
+      packageStatement = directStatement := by
+  let packageStatement : PoincareConjectureStatement.{u} :=
+    poincare_statement_of_reserved_named_statement_payload_target_witness_package
+      dependencies smoothability grounded topologyStatement M N witness
+  let directStatement : PoincareConjectureStatement.{u} :=
+    poincare_statement_of_unpacked_aggregate_completion
+      dependencies smoothability grounded topologyStatement M
+  have hPackageStatement :
+      packageStatement =
+        poincare_statement_of_reserved_named_statement_payload_target_witness_package
+          dependencies smoothability grounded topologyStatement M N witness :=
+    rfl
+  have hDirectStatement :
+      directStatement =
+        poincare_statement_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M :=
+    rfl
+  have hStatements :
+      packageStatement = directStatement := by
+    apply Subsingleton.elim
+  exact
+    ⟨packageStatement, directStatement, hPackageStatement,
+      hDirectStatement, hStatements⟩
+
+/-- Theorem contract for
+`poincare_statement_package_projection_coherence_of_unpacked_aggregate_completion`. -/
+theorem poincare_statement_package_projection_coherence_of_unpacked_aggregate_completion_eq :
+    @Poincare.poincare_statement_package_projection_coherence_of_unpacked_aggregate_completion =
+      @Poincare.poincare_statement_package_projection_coherence_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
