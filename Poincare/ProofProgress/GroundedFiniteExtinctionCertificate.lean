@@ -689,6 +689,57 @@ theorem groundedUniversalFiniteExtinctionDetailedAssemblyPayload_fields
     ⟩
 
 /--
+Any inhabited detailed grounded finite-extinction assembly payload exposes the
+same package-layer, milestone, compact witness-family, and full
+flow/surgery/control/derivation-family data without requiring consumers to
+reconstruct it from the original grounded universal statement.
+-/
+theorem groundedUniversalFiniteExtinctionDetailedAssemblyPayload_fields_of_nonempty
+    (payload :
+      Nonempty GroundedUniversalFiniteExtinctionDetailedAssemblyPayload.{u}) :
+    UniversalFiniteExtinctionStatement.{u} ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.finiteExtinction ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+            FiniteExtinctionStatement n M ∧
+              FiniteExtinctionByRicciFlowWithSurgery M) ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          ∃ surgery : HasRicciFlowWithSurgery n M,
+          ∃ control :
+            HasPerelmanSingularityControl (n := n) (M := M) flow,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+          ∃ _packageStatement : FiniteExtinctionStatement n M,
+          ∃ _derivation :
+            HasFiniteExtinctionDerivation flow surgery control,
+            FiniteExtinctionByRicciFlowWithSurgery M) := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ payload.universalStatement
+    , payload.finiteExtinctionPackageRequirement
+    , payload.ricciFlowWithSurgeryMilestone
+    , payload.perelmanSingularityControlMilestone
+    , payload.finiteExtinctionMilestone
+    , payload.packageStatementWitnessFamily
+    , payload.statementPayloadFamily
+    ⟩
+
+/--
 The detailed finite-extinction assembly payload exposes the compact
 flow/surgery/control/package family retained inside its full statement payload.
 This projection is the finite-extinction analogue of the analytic
