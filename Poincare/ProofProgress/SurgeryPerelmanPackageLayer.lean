@@ -325,6 +325,39 @@ theorem finiteExtinctionSurgeryPerelmanProjectionPayload_target_at_of_finiteExti
         package⟩
     ⟩
 
+/--
+The finite-extinction package layer simultaneously supplies the surgery package
+layer, the two surgery/Perelman milestones, and a pointwise named
+surgery/Perelman projection payload for every target.
+-/
+theorem surgeryPackage_milestones_and_projectionPayload_of_finiteExtinctionPackage_requirement
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.surgeryPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ package : FiniteExtinctionSurgeryPackage n M,
+            Nonempty
+              (FiniteExtinctionSurgeryPerelmanProjectionPayload package)) :=
+  ⟨ surgeryPackage_requirement_of_finiteExtinctionPackage_requirement
+      finiteExtinctionRequirement
+  , ricciFlowWithSurgery_milestone_requirement_of_finiteExtinctionPackage_requirement
+      finiteExtinctionRequirement
+  , perelmanSingularityControl_milestone_requirement_of_finiteExtinctionPackage_requirement
+      finiteExtinctionRequirement
+  , finiteExtinctionSurgeryPerelmanProjectionPayload_target_at_of_finiteExtinctionPackage_requirement
+      finiteExtinctionRequirement
+  ⟩
+
 /-- Concrete surgery-scale payloads produce the first construction-package field. -/
 theorem surgery_scale_function_of_payload
     {n : ℕ∞ω}
