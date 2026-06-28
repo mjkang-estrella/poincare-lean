@@ -49819,4 +49819,96 @@ theorem constructed_boundary_dependency_only_named_target_expanded_root_conclusi
       @Poincare.constructed_boundary_dependency_only_named_target_expanded_root_conclusion_coherence_of_dependencies_and_verification_family :=
   rfl
 
+/--
+Ordinary dependencies plus equation verification inherit the named final
+conclusion at a selected witness.
+
+This specializes the named final conclusion bundle for the constructed
+equation-boundary package, exposing the canonical theorem name, checked
+certificate, proposition-level final statements, canonical target, and concrete
+completion criterion at the chosen witness.
+-/
+theorem constructed_boundary_dependency_only_named_final_conclusion_at_witness_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (witness : Type) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          (equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily) ∧
+      Nonempty PoincareCompletionCertificate.{0} ∧
+      PoincareConjectureStatement.{0} ∧
+      MathlibTopologicalPoincareThreeStatement.{0} ∧
+      canonicalCompletionTarget.{0} ∧
+      CompletionCriterionAtUniverse witness :=
+  dependency_only_reserved_named_final_conclusion_at_witness_of_equation_boundary_dependencies
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily) witness
+
+/-- Theorem contract for
+`constructed_boundary_dependency_only_named_final_conclusion_at_witness_of_dependencies_and_verification_family`. -/
+theorem constructed_boundary_dependency_only_named_final_conclusion_at_witness_of_dependencies_and_verification_family_eq :
+    @Poincare.constructed_boundary_dependency_only_named_final_conclusion_at_witness_of_dependencies_and_verification_family =
+      @Poincare.constructed_boundary_dependency_only_named_final_conclusion_at_witness_of_dependencies_and_verification_family :=
+  rfl
+
+/--
+Ordinary dependencies plus equation verification inherit the named target
+homeomorphism conclusion.
+
+This instantiates the named final-conclusion/conditional-root route at an
+arbitrary compact simply connected Euclidean-charted target after constructing
+the equation-boundary package, returning the concrete `M ≃ₜ ThreeSphere`
+conclusion with the canonical theorem name and checked certificate.
+-/
+theorem constructed_boundary_dependency_only_named_target_homeomorphism_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ bundledStatement : PoincareConjectureStatement.{0},
+    ∃ conditionalRootStatement : PoincareConjectureStatement.{0},
+    ∃ targetConclusion : Nonempty (M ≃ₜ ThreeSphere),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          (equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily) ∧
+      bundledStatement = conditionalRootStatement ∧
+      targetConclusion = conditionalRootStatement M :=
+  dependency_only_reserved_named_target_homeomorphism_of_equation_boundary_dependencies
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily) M
+
+/-- Theorem contract for
+`constructed_boundary_dependency_only_named_target_homeomorphism_of_dependencies_and_verification_family`. -/
+theorem constructed_boundary_dependency_only_named_target_homeomorphism_of_dependencies_and_verification_family_eq :
+    @Poincare.constructed_boundary_dependency_only_named_target_homeomorphism_of_dependencies_and_verification_family =
+      @Poincare.constructed_boundary_dependency_only_named_target_homeomorphism_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
