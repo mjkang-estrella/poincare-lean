@@ -343,4 +343,48 @@ theorem onePoint_threeSpace_twoPointComplement_source_recognition_and_target_pat
     , payload.targetCompleteLowHomotopy.pathComponentEqUniv
     ⟩
 
+/--
+The transported two-puncture route carries complete low-homotopy payloads on
+both sides of the one-point-to-`ThreeSphere` comparison: the source complement
+has the one-point model collapse package, and the target complement has the
+transported `ThreeSphere` collapse package at the transported basepoint.
+-/
+theorem onePoint_threeSpace_twoPointComplement_source_and_target_lowHomotopy_payloads
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    let payload :=
+      onePoint_threeSpace_twoPointComplement_transport_payload hqp basepoint
+    let targetBasepoint := payload.complementHomeomorph basepoint
+    Nonempty (OnePointTwoPointComplementLowHomotopyUniquePayload hqp basepoint) ∧
+      Nonempty
+        (ThreeSphereTwoPointComplementCompleteLowHomotopyUniquePayload
+          payload.imageDistinct targetBasepoint) ∧
+      SimplyConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      SimplyConnectedSpace
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere) ∧
+      (∀ x y :
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          Nonempty (Path x y)) ∧
+      (∀ x y :
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere),
+          Nonempty (Path x y)) := by
+  intro payload targetBasepoint
+  let sourcePayload :=
+    onePoint_threeSpace_twoPointComplement_lowHomotopyUnique_payload
+      hqp basepoint
+  exact
+    ⟨ ⟨sourcePayload⟩
+    , ⟨payload.targetCompleteLowHomotopy⟩
+    , payload.sourceSimplyConnected
+    , payload.targetSimplyConnected
+    , sourcePayload.pathNonempty
+    , payload.targetCompleteLowHomotopy.pathNonempty
+    ⟩
+
 end Poincare
