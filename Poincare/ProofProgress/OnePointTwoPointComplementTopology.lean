@@ -55,6 +55,19 @@ theorem onePoint_threeSpace_twoPointComplement_pathComponent_eq_univ
     exact PathConnectedSpace.joined x y
 
 /--
+The zeroth homotopy quotient of the two-point complement has only one class.
+-/
+theorem onePoint_threeSpace_twoPointComplement_zerothHomotopy_subsingleton
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    Subsingleton
+      (ZerothHomotopy
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) := by
+  letI : PathConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_twoPointComplement_pathConnectedSpace hqp
+  infer_instance
+
+/--
 The two-point complement is connected as a direct consequence of the named
 path-connectedness theorem above.
 -/
