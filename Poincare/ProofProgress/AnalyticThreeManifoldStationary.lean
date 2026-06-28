@@ -15985,6 +15985,42 @@ theorem stationaryZeroAnalyticFoundation_compactFamilies_of_completeConsumerPayl
     ⟩
 
 /--
+For a fixed target manifold, a complete analytic consumer payload exposes the
+selected stationary-zero Ricci-flow data, analytic foundation package,
+sub-obligation payload, package-flow identity, theorem-shaped analytic
+statement, equation-boundary statement, Ricci/scalar contraction theories, all
+individual evolution equations, and the aggregate curvature-evolution field.
+-/
+theorem stationaryZeroAnalyticFoundation_fixedTarget_fullPackageEvolution_of_completeConsumerPayload
+    (payload :
+      Nonempty StationaryZeroAnalyticFoundationCompleteConsumerPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ n : ℕ∞ω,
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+    ∃ package :
+      RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners n M,
+      AnalyticFoundationSubobligationsPayload flow ∧
+        ricci_flow_data_of_analytic_foundation_package package = flow ∧
+        RicciFlowAnalyticFoundationStatement
+          ThreeManifoldModelWithCorners n M ∧
+        AnalyticFoundationWithEquationBoundaryStatement flow ∧
+        HasRicciContractionTheory
+          (curvature_data_of_ricci_flow_data flow) ∧
+        HasScalarCurvatureTheory
+          (curvature_data_of_ricci_flow_data flow) ∧
+        HasMetricEvolutionEquation flow ∧
+        HasRicciTensorEvolutionEquation flow ∧
+        HasScalarCurvatureEvolutionEquation flow ∧
+        HasCurvatureNormEvolutionInequality flow ∧
+        HasCurvatureEvolutionEquations flow := by
+  rcases payload with ⟨payload⟩
+  exact payload.fullPackageEvolutionFamily M
+
+/--
 The complete analytic consumer payload is equivalent to the inhabited detailed
 stationary-zero assembly payload: the forward direction projects the stored
 detailed payload, while the reverse direction rebuilds the complete consumer
