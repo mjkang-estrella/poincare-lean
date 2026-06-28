@@ -20,6 +20,39 @@ theorem homeomorph_to_onePoint_threeSpace_of_topology_package
     (homeomorphism_of_topology_package package M extinction)
 
 /--
+The package-level one-point compactification recognition transports each
+single-puncture complement to the Euclidean chart.
+-/
+theorem homeomorph_compl_singleton_euclidean_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M) :
+    Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) :=
+  ⟨homeomorph_compl_singleton_euclidean_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_topology_package
+      package M extinction) x⟩
+
+/--
+The package-level one-point compactification recognition transports each
+two-puncture complement to a punctured Euclidean chart.
+-/
+theorem exists_homeomorph_twoPointComplement_puncturedEuclidean_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x) :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+        ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3)))) :=
+  exists_homeomorph_twoPointComplement_puncturedEuclidean_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_topology_package
+      package M extinction) hyx
+
+/--
 The package-level homeomorphism projection transports each single-puncture
 complement to Euclidean space, hence makes it contractible.
 -/
