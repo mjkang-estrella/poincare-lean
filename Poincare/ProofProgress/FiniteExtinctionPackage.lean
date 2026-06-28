@@ -233,6 +233,69 @@ theorem finite_extinction_package_nonempty_of_subobligations
   exact ⟨⟨n, package⟩⟩
 
 /--
+A target-family supply of analytic/surgery/Perelman packages and full
+finite-extinction sub-obligation statements supplies the theorem-shaped
+finite-extinction payload for each target: the flow, surgery, control,
+constructed package, package statement, sub-obligation statement route,
+derivation certificate, and extinction witness.
+-/
+theorem finite_extinction_statement_payload_family_of_subobligations_family
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ surgery : HasRicciFlowWithSurgery n M,
+        ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+        ∃ _package : FiniteExtinctionSurgeryPackage n M,
+        ∃ _packageStatement : FiniteExtinctionStatement n M,
+        ∃ _viaSubobligationsStatement : FiniteExtinctionStatement n M,
+        ∃ _derivation : HasFiniteExtinctionDerivation flow surgery control,
+          FiniteExtinctionByRicciFlowWithSurgery M := by
+  intro M _top _t2 _charted _simple _compact _manifold
+  rcases h M with
+    ⟨n, analyticFoundation, surgeryConstruction, perelmanControl,
+      subobligations⟩
+  rcases finite_extinction_statement_payload_of_subobligations
+      analyticFoundation surgeryConstruction perelmanControl
+      subobligations with
+    ⟨package, packageStatement, viaSubobligationsStatement, derivation,
+      finiteExtinction⟩
+  exact
+    ⟨ n
+    , ricci_flow_data_of_analytic_foundation_package analyticFoundation
+    , surgeryConstruction.withSurgery
+    , perelmanControl.control
+    , package
+    , packageStatement
+    , viaSubobligationsStatement
+    , derivation
+    , finiteExtinction
+    ⟩
+
+/--
 Conditional bridge: a target-family supply of analytic/surgery/Perelman
 packages plus the full finite-extinction sub-obligation payload discharges the
 finite-extinction package-layer requirement in `DependencyCrosswalk`.
