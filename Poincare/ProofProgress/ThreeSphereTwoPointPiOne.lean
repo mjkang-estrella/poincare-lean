@@ -180,6 +180,68 @@ complement is a `Unique` type.
       uniq := fun homotopyClass => Subsingleton.elim _ _ }
 
 /--
+The zeroth homotopy group formulation of the standard three-sphere
+two-puncture complement collapse.
+-/
+theorem threeSphere_twoPointComplement_piZero_subsingleton
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (x : (({a} ∪ {b})ᶜ : Set ThreeSphere)) :
+    Subsingleton
+      (HomotopyGroup.Pi 0 (({a} ∪ {b})ᶜ : Set ThreeSphere) x) := by
+  exact
+    ((HomotopyGroup.pi0EquivZerothHomotopy
+      (X := (({a} ∪ {b})ᶜ : Set ThreeSphere))
+      (x := x)).subsingleton_congr).mpr
+        (threeSphere_twoPointComplement_zerothHomotopy_subsingleton hab)
+
+/--
+Any two zeroth homotopy group classes in the standard three-sphere
+two-puncture complement agree.
+-/
+theorem threeSphere_twoPointComplement_piZero_eq
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (x : (({a} ∪ {b})ᶜ : Set ThreeSphere))
+    (g h : HomotopyGroup.Pi 0 (({a} ∪ {b})ᶜ : Set ThreeSphere) x) :
+    g = h := by
+  letI : Subsingleton
+      (HomotopyGroup.Pi 0 (({a} ∪ {b})ᶜ : Set ThreeSphere) x) :=
+    threeSphere_twoPointComplement_piZero_subsingleton hab x
+  exact Subsingleton.elim _ _
+
+/--
+The zeroth homotopy group of the standard three-sphere two-puncture complement
+has a unique class at every basepoint.
+-/
+theorem threeSphere_twoPointComplement_piZero_exists_unique
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (x : (({a} ∪ {b})ᶜ : Set ThreeSphere)) :
+    ∃ baseClass :
+      HomotopyGroup.Pi 0 (({a} ∪ {b})ᶜ : Set ThreeSphere) x,
+      ∀ homotopyClass :
+        HomotopyGroup.Pi 0 (({a} ∪ {b})ᶜ : Set ThreeSphere) x,
+        homotopyClass = baseClass := by
+  letI : Subsingleton
+      (HomotopyGroup.Pi 0 (({a} ∪ {b})ᶜ : Set ThreeSphere) x) :=
+    threeSphere_twoPointComplement_piZero_subsingleton hab x
+  exact ⟨Classical.choice inferInstance, fun homotopyClass =>
+    Subsingleton.elim _ _⟩
+
+/--
+The zeroth homotopy group of the standard three-sphere two-puncture complement
+is a `Unique` type at every basepoint.
+-/
+@[reducible] noncomputable def threeSphere_twoPointComplement_piZero_unique
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (x : (({a} ∪ {b})ᶜ : Set ThreeSphere)) :
+    Unique (HomotopyGroup.Pi 0 (({a} ∪ {b})ᶜ : Set ThreeSphere) x) := by
+  letI : Subsingleton
+      (HomotopyGroup.Pi 0 (({a} ∪ {b})ᶜ : Set ThreeSphere) x) :=
+    threeSphere_twoPointComplement_piZero_subsingleton hab x
+  exact
+    { default := Classical.choice inferInstance
+      uniq := fun homotopyClass => Subsingleton.elim _ _ }
+
+/--
 Any two points in the standard three-sphere two-puncture complement are joined
 by a path.
 -/
@@ -291,6 +353,9 @@ structure ThreeSphereTwoPointComplementCompleteLowHomotopyUniquePayload
   piOneUnique :
     Unique
       (HomotopyGroup.Pi 1 (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint)
+  piZeroUnique :
+    Unique
+      (HomotopyGroup.Pi 0 (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint)
   zerothUnique :
     Unique (ZerothHomotopy (({a} ∪ {b})ᶜ : Set ThreeSphere))
   pathNonempty :
@@ -312,6 +377,7 @@ noncomputable def threeSphere_twoPointComplement_completeLowHomotopyUnique_paylo
   fundamentalGroupUnique :=
     threeSphere_twoPointComplement_fundamentalGroup_unique hab basepoint
   piOneUnique := threeSphere_twoPointComplement_piOne_unique hab basepoint
+  piZeroUnique := threeSphere_twoPointComplement_piZero_unique hab basepoint
   zerothUnique := threeSphere_twoPointComplement_zerothHomotopy_unique hab
   pathNonempty := threeSphere_twoPointComplement_path_nonempty hab
   pathComponentEqUniv := threeSphere_twoPointComplement_pathComponent_eq_univ hab
