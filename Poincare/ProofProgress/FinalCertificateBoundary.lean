@@ -46480,4 +46480,112 @@ theorem closed_three_manifold_project_homeomorphism_recovered_from_mathlib_route
       @Poincare.closed_three_manifold_project_homeomorphism_recovered_from_mathlib_route_of_dependencies_and_verification_family :=
   rfl
 
+/--
+Ordinary dependencies plus equation verification recover the literal-sphere
+inverse from the arbitrary inverse route.
+
+This lifts the sphere-inverse recovery endpoint through the analytic
+verification-family constructor.  It records that the selected composed inverse
+route `Metric.sphere ... 1 ≃ₜ M`, followed by the selected project
+homeomorphism `M ≃ₜ ThreeSphere`, recovers the selected literal-sphere inverse
+`Metric.sphere ... 1 ≃ₜ ThreeSphere`.
+-/
+theorem closed_three_manifold_sphere_inverse_recovered_from_composed_inverse_route_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ checkedReservedStatement : PoincareConjectureStatement.{0},
+    ∃ projectConclusion : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ forwardHomeomorphism :
+      ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ inverseComposedMathlibHomeomorphism :
+      Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ M,
+    ∃ recoveredSphereInverseHomeomorphism :
+      Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ ThreeSphere,
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ ∧
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          boundaryDependencies ∧
+      checkedReservedStatement =
+        poincare_conjecture_of_completion_certificate certificate ∧
+      projectConclusion = checkedReservedStatement M ∧
+      projectHomeomorphism = Classical.choice projectConclusion ∧
+      inverseComposedMathlibHomeomorphism =
+        forwardHomeomorphism.symm.trans projectHomeomorphism.symm ∧
+      recoveredSphereInverseHomeomorphism =
+        inverseComposedMathlibHomeomorphism.trans projectHomeomorphism ∧
+      recoveredSphereInverseHomeomorphism = forwardHomeomorphism.symm ∧
+      Topology.IsEmbedding recoveredSphereInverseHomeomorphism ∧
+      Function.Bijective recoveredSphereInverseHomeomorphism ∧
+      Continuous recoveredSphereInverseHomeomorphism := by
+  let boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0} :=
+    equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily
+  let nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0} :=
+    ⟨boundaryDependencies⟩
+  rcases
+      closed_three_manifold_sphere_inverse_recovered_from_composed_inverse_route_of_reserved_final_certificate
+        nonemptyBoundaryDependencies M with
+    ⟨theoremName, certificate, checkedReservedStatement, projectConclusion,
+      projectHomeomorphism, forwardHomeomorphism,
+      inverseComposedMathlibHomeomorphism, recoveredSphereInverseHomeomorphism,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hCheckedReservedStatement, hProjectConclusion, hProjectHomeomorphism,
+      hInverseDecomposition, hRecoveredSphereInverseHomeomorphism,
+      hRecoveredSphereInverse, hRecoveredSphereInverseEmbedding,
+      hRecoveredSphereInverseBijective, hRecoveredSphereInverseContinuous⟩
+  have hBoundaryDependencies :
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily :=
+    rfl
+  have hNonemptyBoundaryDependencies :
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ :=
+    rfl
+  have hCertificateBoundary :
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          boundaryDependencies := by
+    simp at hCertificate ⊢
+  exact
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies, theoremName,
+      certificate, checkedReservedStatement, projectConclusion,
+      projectHomeomorphism, forwardHomeomorphism,
+      inverseComposedMathlibHomeomorphism, recoveredSphereInverseHomeomorphism,
+      hBoundaryDependencies, hNonemptyBoundaryDependencies,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificateBoundary,
+      hCheckedReservedStatement, hProjectConclusion, hProjectHomeomorphism,
+      hInverseDecomposition, hRecoveredSphereInverseHomeomorphism,
+      hRecoveredSphereInverse, hRecoveredSphereInverseEmbedding,
+      hRecoveredSphereInverseBijective, hRecoveredSphereInverseContinuous⟩
+
+/-- Theorem contract for
+`closed_three_manifold_sphere_inverse_recovered_from_composed_inverse_route_of_dependencies_and_verification_family`. -/
+theorem closed_three_manifold_sphere_inverse_recovered_from_composed_inverse_route_of_dependencies_and_verification_family_eq :
+    @Poincare.closed_three_manifold_sphere_inverse_recovered_from_composed_inverse_route_of_dependencies_and_verification_family =
+      @Poincare.closed_three_manifold_sphere_inverse_recovered_from_composed_inverse_route_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
