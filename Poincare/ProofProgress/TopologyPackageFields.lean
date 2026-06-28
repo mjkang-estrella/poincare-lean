@@ -190,6 +190,72 @@ theorem topology_package_extraction_derivation_and_puncture_payload
   ⟩
 
 /--
+Target-family form of the concrete topology derivation and puncture payload:
+one completed topology package exposes the classification/recognition/lifted
+homeomorphism stack, one-point recognition, every singleton-complement
+contractibility instance, and every two-puncture simple-connectedness/trivial
+fundamental-group instance for all finite-extinction targets.
+-/
+theorem topology_package_extraction_derivation_and_puncture_payload_family
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      (_extinction : FiniteExtinctionByRicciFlowWithSurgery M),
+        ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+          homeomorphism =
+              homeomorphism_of_topology_package package M _extinction ∧
+          ExtinctionTopologyClassificationSubobligationsPayload
+            M _extinction ∧
+          ExtinctionTopologySimplyConnectedRecognitionStatement
+            M _extinction ∧
+          ExtinctionTopologySphericalTrivialQuotientStatement M _extinction ∧
+          ExtinctionTopologySphericalHomeomorphismLiftStatement M _extinction ∧
+          ExtinctionTopologyHomeomorphismAssemblyStatement
+            M _extinction homeomorphism ∧
+          ExtinctionTopologyHomeomorphismDerivationStatement
+            M _extinction homeomorphism ∧
+          ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+            M _extinction homeomorphism ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          (∀ x : M, ContractibleSpace ({x}ᶜ : Set M)) ∧
+          (∀ {x y : M} (_hyx : y ≠ x)
+            (basepoint : (({x} ∪ {y})ᶜ : Set M)),
+              SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                Subsingleton
+                  (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint)) := by
+  intro M _top _t2 _charted _simple _compact extinction
+  exact
+    ⟨ homeomorphism_of_topology_package package M extinction
+    , rfl
+    , topology_classification_subobligations_of_topology_package
+        package M extinction
+    , topology_simply_connected_recognition_statement_of_topology_package
+        package M extinction
+    , topology_spherical_trivial_quotient_statement_of_topology_package
+        package M extinction
+    , topology_spherical_homeomorphism_lift_statement_of_topology_package
+        package M extinction
+    , topology_homeomorphism_assembly_statement_of_topology_package
+        package M extinction
+    , topology_homeomorphism_derivation_statement_of_topology_package
+        package M extinction
+    , topology_lifted_homeomorphism_derivation_statement_of_topology_package
+        package M extinction
+    , homeomorph_to_onePoint_threeSpace_of_topology_package
+        package M extinction
+    , fun x =>
+        compl_singleton_contractibleSpace_of_topology_package
+          package M extinction x
+    , fun hyx basepoint =>
+        ⟨ twoPointComplement_simplyConnectedSpace_of_topology_package
+            package M extinction hyx
+        , twoPointComplement_fundamentalGroup_subsingleton_of_topology_package
+            package M extinction hyx basepoint
+        ⟩
+    ⟩
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
