@@ -52755,4 +52755,84 @@ theorem constructed_boundary_reserved_named_final_conclusions_completionCriterio
       @Poincare.constructed_boundary_reserved_named_final_conclusions_completionCriterion_of_dependencies_and_verification_family :=
   rfl
 
+/--
+Ordinary dependencies plus equation verification inherit the quantified final
+conclusions and completion criteria.
+
+This turns the constructed pointwise final-conclusion projection into a
+quantified conditional statement over every compact simply connected charted
+three-manifold in the final-certificate surface, while keeping the constructed
+equation-boundary package explicit.
+-/
+theorem constructed_boundary_reserved_named_quantified_final_conclusions_completionCriterion_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (witness : Type) :
+    ∃ boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0},
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ ∧
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (M ≃ₜ ThreeSphere) ∧
+            Nonempty
+              (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) ∧
+            CompletionCriterionAtUniverse M ∧
+            CompletionCriterionAtUniverse witness := by
+  let boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0} :=
+    equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily
+  let nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0} :=
+    ⟨boundaryDependencies⟩
+  have hBoundaryDependencies :
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily :=
+    rfl
+  have hNonemptyBoundaryDependencies :
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ :=
+    rfl
+  have hFinal :
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (M ≃ₜ ThreeSphere) ∧
+            Nonempty
+              (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) ∧
+            CompletionCriterionAtUniverse M ∧
+            CompletionCriterionAtUniverse witness := by
+    intro M _ _ _ _ _ _
+    rcases
+        constructed_boundary_reserved_named_final_conclusions_completionCriterion_of_dependencies_and_verification_family
+          dependencies verificationFamily M witness with
+      ⟨_boundaryDependencies, _nonemptyBoundaryDependencies,
+        _hBoundaryDependencies, _hNonemptyBoundaryDependencies,
+        hProject, hMathlib, hCompletionAtM, hCriterion⟩
+    exact ⟨hProject, hMathlib, hCompletionAtM, hCriterion⟩
+  exact
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies,
+      hBoundaryDependencies, hNonemptyBoundaryDependencies, hFinal⟩
+
+/-- Theorem contract for
+`constructed_boundary_reserved_named_quantified_final_conclusions_completionCriterion_of_dependencies_and_verification_family`. -/
+theorem constructed_boundary_reserved_named_quantified_final_conclusions_completionCriterion_of_dependencies_and_verification_family_eq :
+    @Poincare.constructed_boundary_reserved_named_quantified_final_conclusions_completionCriterion_of_dependencies_and_verification_family =
+      @Poincare.constructed_boundary_reserved_named_quantified_final_conclusions_completionCriterion_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
