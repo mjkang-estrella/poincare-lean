@@ -17629,6 +17629,71 @@ theorem no_surgeryPackage_requirement_at_of_current_interface
       surgeryRequirement M
 
 /--
+The same direct package-layer blocker rules out the Ricci-flow-with-surgery
+milestone requirement at any target in the dependency-package class, because
+that milestone is routed through the surgery package layer.
+-/
+theorem ricciFlowWithSurgery_milestone_requirement_false_at_of_current_interface
+    (milestoneRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    False :=
+  no_direct_surgery_perelman_package_target_of_current_interface M
+    (milestoneRequirement M)
+
+/--
+Equivalently, the current local interface refutes the
+Ricci-flow-with-surgery milestone requirement at any target in the
+dependency-package class.
+-/
+theorem no_ricciFlowWithSurgery_milestone_requirement_at_of_current_interface
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ¬ dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery := by
+  intro milestoneRequirement
+  exact
+    ricciFlowWithSurgery_milestone_requirement_false_at_of_current_interface
+      milestoneRequirement M
+
+/--
+The same direct package-layer blocker rules out the Perelman
+singularity-control milestone requirement at any target in the
+dependency-package class, because that milestone is also routed through the
+surgery package layer.
+-/
+theorem perelmanSingularityControl_milestone_requirement_false_at_of_current_interface
+    (milestoneRequirement :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    False :=
+  no_direct_surgery_perelman_package_target_of_current_interface M
+    (milestoneRequirement M)
+
+/--
+Equivalently, the current local interface refutes the Perelman
+singularity-control milestone requirement at any target in the
+dependency-package class.
+-/
+theorem no_perelmanSingularityControl_milestone_requirement_at_of_current_interface
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ¬ dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl := by
+  intro milestoneRequirement
+  exact
+    perelmanSingularityControl_milestone_requirement_false_at_of_current_interface
+      milestoneRequirement M
+
+/--
 The same current-interface blocker rules out a finite-extinction surgery
 package: such a package would project to the direct surgery/Perelman target
 above, whose Perelman side still requires constructorless blowup
