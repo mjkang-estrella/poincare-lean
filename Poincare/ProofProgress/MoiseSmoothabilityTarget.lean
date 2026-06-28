@@ -475,4 +475,38 @@ theorem moiseSmoothability_nonemptyAssemblyPayload_targets_and_family_of_threeSp
     , moiseSmoothabilityRecognitionAssemblyPayload_targetFamily payload
     ⟩
 
+/--
+An inhabited Moise assembly payload projects to the theorem-shaped
+`ThreeSphere` recognition input, both Moise targets, and the transported
+recognition/smoothability/prerequisite family.
+-/
+theorem threeSphereRecognition_targets_and_family_of_nonemptyMoiseAssemblyPayload
+    (payload : Nonempty (MoiseSmoothabilityRecognitionAssemblyPayload.{u})) :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) ∧
+      MoiseSmoothThreeManifoldStatement.{u} ∧
+      MoiseSmoothabilityStatement.{u} ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere) ∧
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+            AdmitsSmoothThreeManifoldStructure M ∧
+            AdmitsSurgeryModelSmoothStructure M ∧
+            (∃ _t2 : T2Space M,
+              ∃ _charted : ChartedSpace ThreeManifoldModel M,
+              ∃ _simple : SimplyConnectedSpace M,
+              ∃ _compact : CompactSpace M,
+              ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+                Nonempty M)) := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ payload.recognizedSphere
+    , payload.smoothMoise
+    , payload.surgeryMoise
+    , moiseSmoothabilityRecognitionAssemblyPayload_targetFamily payload
+    ⟩
+
 end Poincare
