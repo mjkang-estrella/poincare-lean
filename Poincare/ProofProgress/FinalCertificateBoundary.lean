@@ -191,6 +191,49 @@ theorem canonical_completion_payload_of_completion_certificate_of_remainingDepen
       dependencies inputs.universalFiniteExtinction
 
 /--
+Grounded universal finite extinction closes the checked certificate through the
+same remaining-dependency constructor after converting the grounded pillar to
+the legacy universal finite-extinction interface.
+-/
+theorem completion_certificate_of_remainingDependencyPackage_and_groundedUniversalFiniteExtinctionStatement
+    (dependencies : RemainingDependencyPackage.{u})
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+    dependencies (universalFiniteExtinctionStatement_of_grounded grounded)
+
+/--
+The grounded certificate constructor is definitionally the existing
+remaining-dependency/universal finite-extinction constructor after the grounded
+pillar is converted to the legacy interface.
+-/
+theorem completion_certificate_of_remainingDependencyPackage_and_groundedUniversalFiniteExtinctionStatement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    completion_certificate_of_remainingDependencyPackage_and_groundedUniversalFiniteExtinctionStatement
+        dependencies grounded =
+      completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+        dependencies (universalFiniteExtinctionStatement_of_grounded grounded) := by
+  apply Subsingleton.elim
+
+/--
+The canonical payload extracted from the grounded certificate constructor is
+the payload of the converted universal finite-extinction statement.
+-/
+theorem canonical_completion_payload_of_completion_certificate_of_remainingDependencyPackage_and_groundedUniversalFiniteExtinctionStatement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    canonical_completion_payload_of_completion_certificate
+        (completion_certificate_of_remainingDependencyPackage_and_groundedUniversalFiniteExtinctionStatement
+          dependencies grounded) =
+      canonical_completion_payload_of_universalFiniteExtinctionStatement
+        (universalFiniteExtinctionStatement_of_grounded grounded)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
+  exact
+    canonical_completion_payload_of_completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement_eq
+      dependencies (universalFiniteExtinctionStatement_of_grounded grounded)
+
+/--
 The primitive finite-extinction input and the current remaining-dependency
 package together expose the full canonical certificate-facing payload:
 canonical target, canonical completion payload, and checked completion
@@ -283,9 +326,15 @@ theorem canonical_payload_and_final_certificate_of_remainingDependencyPackage_gr
       (∃ _target : canonicalCompletionTarget.{u},
         ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
       PoincareCompletionCertificate.{u} :=
-  canonical_payload_and_final_certificate_of_remainingDependencyPackage_universalFiniteExtinctionStatement_and_topologyExtractionStatement
-    dependencies (universalFiniteExtinctionStatement_of_grounded grounded)
-    topologyStatement
+  ⟨ canonical_completion_target_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+      (universalFiniteExtinctionStatement_of_grounded grounded)
+      topologyStatement
+  , canonical_completion_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+      (universalFiniteExtinctionStatement_of_grounded grounded)
+      topologyStatement
+  , completion_certificate_of_remainingDependencyPackage_and_groundedUniversalFiniteExtinctionStatement
+      dependencies grounded
+  ⟩
 
 /--
 The grounded finite-extinction final payload is exactly the
@@ -301,6 +350,28 @@ theorem canonical_payload_and_final_certificate_of_remainingDependencyPackage_gr
       canonical_payload_and_final_certificate_of_remainingDependencyPackage_universalFiniteExtinctionStatement_and_topologyExtractionStatement
         dependencies (universalFiniteExtinctionStatement_of_grounded grounded)
         topologyStatement := by
+  apply Subsingleton.elim
+
+/--
+The grounded finite-extinction final payload is the tuple of the canonical
+target route, canonical payload route, and direct grounded certificate
+constructor.
+-/
+theorem canonical_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement_tuple_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonical_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+        dependencies grounded topologyStatement =
+      ⟨ canonical_completion_target_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+          (universalFiniteExtinctionStatement_of_grounded grounded)
+          topologyStatement
+      , canonical_completion_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+          (universalFiniteExtinctionStatement_of_grounded grounded)
+          topologyStatement
+      , completion_certificate_of_remainingDependencyPackage_and_groundedUniversalFiniteExtinctionStatement
+          dependencies grounded
+      ⟩ := by
   apply Subsingleton.elim
 
 /--
