@@ -875,6 +875,34 @@ def topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPac
     recognitionPrefix
 
 /--
+A completed topology package projects back to the simply connected
+extinction-recognition prefix.  This is the reverse boundary needed to state
+the final-certificate route directly against the recognition prefix rather
+than only against the full topology package.
+-/
+def simplyConnectedExtinctionRecognitionPrefixPackage_of_topologyPackage
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u} :=
+  extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_topology_package
+    topology
+
+/--
+The topology-package projection to the recognition prefix is exactly the
+package-level prefix projection from the topology production package.
+-/
+theorem simplyConnectedExtinctionRecognitionPrefixPackage_of_topologyPackage_eq
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    simplyConnectedExtinctionRecognitionPrefixPackage_of_topologyPackage
+        topology =
+      extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_topology_package
+        topology := by
+  rfl
+
+/--
 The two non-topology final-certificate package inputs plus the simply connected
 recognition prefix reconstruct the old three-input final assembly boundary.
 -/
@@ -1485,6 +1513,69 @@ theorem topologyPackage_requirement_of_final_certificate
       certificate with
     ⟨_smoothability, _finiteExtinction, topology⟩
   exact topology
+
+/--
+After the two canonical non-topology package inputs are fixed, a checked final
+certificate is equivalent to the simply connected extinction-recognition
+prefix.  The forward direction projects the certificate to the topology
+package and then to the recognition prefix; the reverse direction constructs
+the topology package from the prefix and assembles the certificate.
+-/
+theorem final_certificate_iff_recognitionPrefix_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u}) :
+    PoincareCompletionCertificate.{u} ↔
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u} := by
+  constructor
+  · intro certificate
+    exact
+      simplyConnectedExtinctionRecognitionPrefixPackage_of_topologyPackage
+        (topologyPackage_requirement_of_final_certificate certificate)
+  · intro recognitionPrefix
+    exact
+      completion_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+        inputs recognitionPrefix
+
+/--
+The inhabited-certificate form of the same fixed-input recognition-prefix
+boundary.  This is the shape consumed by the standard nonempty-certificate
+bridge to the public Poincare statement.
+-/
+theorem nonempty_final_certificate_iff_recognitionPrefix_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u}) :
+    Nonempty PoincareCompletionCertificate.{u} ↔
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u} := by
+  constructor
+  · rintro ⟨certificate⟩
+    exact
+      (final_certificate_iff_recognitionPrefix_of_finalCertificateMinimalPackageInputs
+        inputs).1 certificate
+  · intro recognitionPrefix
+    exact
+      ⟨ (final_certificate_iff_recognitionPrefix_of_finalCertificateMinimalPackageInputs
+          inputs).2 recognitionPrefix ⟩
+
+/--
+After the two canonical non-topology package inputs are fixed, the final
+statement-level endpoint with an inhabited checked certificate and one
+universe-indexed completion criterion is equivalent to the simply connected
+extinction-recognition prefix.
+-/
+theorem poincare_statement_nonempty_final_certificate_and_completion_criterion_iff_recognitionPrefix_of_finalCertificateMinimalPackageInputs
+    (witness : Type u)
+    (inputs : FinalCertificateMinimalPackageInputs.{u}) :
+    (PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      CompletionCriterionAtUniverse witness) ↔
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u} := by
+  constructor
+  · intro payload
+    exact
+      (nonempty_final_certificate_iff_recognitionPrefix_of_finalCertificateMinimalPackageInputs
+        inputs).1 payload.2.1
+  · intro recognitionPrefix
+    exact
+      poincare_statement_final_certificate_and_completion_criterion_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+        witness inputs recognitionPrefix
 
 /--
 Exact remaining certificate boundary as named package-layer requirements.  This
