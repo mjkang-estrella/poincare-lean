@@ -42216,4 +42216,42 @@ theorem reserved_named_conditional_project_mathlib_final_statements_of_nonempty_
       @Poincare.reserved_named_conditional_project_mathlib_final_statements_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Reserved named project and mathlib Poincare statements from the final
+completion criterion.
+
+The final compact endpoint already carries a selected
+`CompletionCriterionAtUniverse witness`; by definition this is the project
+`PoincareConjectureStatement`.  This theorem exposes that statement-level
+consequence and its mathlib-shaped counterpart from the checked final
+certificate route, still conditional on the equation-boundary dependency
+package and an anchored final manifold surface.
+-/
+theorem reserved_named_project_mathlib_statements_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (witness : Type u) :
+    PoincareConjectureStatement.{u} ∧
+      MathlibTopologicalPoincareThreeStatement.{u} := by
+  have hCriterion : CompletionCriterionAtUniverse witness :=
+    (reserved_named_final_conclusions_completionCriterion_of_nonempty_equation_boundary_dependencies
+      dependencies M witness).2.2.2
+  have hProject : PoincareConjectureStatement.{u} :=
+    poincareConjectureStatement_of_completionCriterionAtUniverse
+      witness hCriterion
+  exact
+    ⟨hProject,
+      mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+        hProject⟩
+
+/-- Theorem contract for
+`reserved_named_project_mathlib_statements_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_named_project_mathlib_statements_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_named_project_mathlib_statements_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_named_project_mathlib_statements_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
