@@ -15926,4 +15926,19 @@ theorem stationaryZeroAnalyticFoundation_requirements_fullPackageEvolution_and_r
     , payload.rawFullStatementPayloadFamily
     ⟩
 
+/--
+The complete analytic consumer payload is equivalent to the inhabited detailed
+stationary-zero assembly payload: the forward direction projects the stored
+detailed payload, while the reverse direction rebuilds the complete consumer
+payload from it.
+-/
+theorem stationaryZeroAnalyticFoundation_nonemptyCompleteConsumerPayload_iff_nonemptyDetailedAssemblyPayload :
+    Nonempty StationaryZeroAnalyticFoundationCompleteConsumerPayload.{u} ↔
+      Nonempty StationaryZeroAnalyticFoundationDetailedAssemblyPayload.{u} := by
+  constructor
+  · rintro ⟨payload⟩
+    exact ⟨payload.detailedPayload⟩
+  · exact
+      stationaryZeroAnalyticFoundation_completeConsumerPayload_of_nonemptyDetailedAssemblyPayload
+
 end Poincare
