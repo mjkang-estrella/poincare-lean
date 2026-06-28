@@ -14227,6 +14227,53 @@ theorem stationary_zero_analytic_foundation_package_boundary_and_curvature_of_pr
     ⟩
 
 /--
+Production data exposes both the analytic sub-obligation payload it constructs
+and the compact package/equation-boundary/curvature-evolution boundary for the
+same derived stationary-zero Ricci flow.
+-/
+theorem stationary_zero_subobligations_package_boundary_and_curvature_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    AnalyticFoundationSubobligationsPayload
+        (stationary_zero_ricci_flow_data_current_api
+          metric identifiesDerivative identifiesRicci) ∧
+      ∃ package :
+          RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M,
+        ricci_flow_data_of_analytic_foundation_package package =
+          stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci ∧
+        AnalyticFoundationWithEquationBoundaryStatement
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci) ∧
+        HasCurvatureEvolutionEquations
+          (stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci) :=
+  ⟨ stationary_zero_analytic_foundation_subobligations_payload_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data
+  , stationary_zero_analytic_foundation_package_boundary_and_curvature_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data
+  ⟩
+
+/--
 Concrete stationary-zero production data supplies the full analytic surface
 payload, including the stored package, equation boundary, pointwise stationary
 zero equations, and curvature-evolution evidence for the same derived flow.
