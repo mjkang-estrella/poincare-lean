@@ -438,4 +438,41 @@ theorem moiseSmoothability_targets_and_family_of_nonemptyAssemblyPayload
     , moiseSmoothabilityRecognitionAssemblyPayload_targetFamily payload
     ⟩
 
+/--
+`ThreeSphere` recognition constructs an inhabited Moise assembly payload and
+simultaneously exposes both Moise targets and the transported
+recognition/smoothability/prerequisite family.
+-/
+theorem moiseSmoothability_nonemptyAssemblyPayload_targets_and_family_of_threeSphereRecognition
+    (recognize :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere)) :
+    Nonempty (MoiseSmoothabilityRecognitionAssemblyPayload.{u}) ∧
+      MoiseSmoothThreeManifoldStatement.{u} ∧
+      MoiseSmoothabilityStatement.{u} ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere) ∧
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+            AdmitsSmoothThreeManifoldStructure M ∧
+            AdmitsSurgeryModelSmoothStructure M ∧
+            (∃ _t2 : T2Space M,
+              ∃ _charted : ChartedSpace ThreeManifoldModel M,
+              ∃ _simple : SimplyConnectedSpace M,
+              ∃ _compact : CompactSpace M,
+              ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+                Nonempty M)) := by
+  let payload :=
+    moiseSmoothabilityRecognitionAssemblyPayload_of_threeSphereRecognition
+      recognize
+  exact
+    ⟨ ⟨payload⟩
+    , payload.smoothMoise
+    , payload.surgeryMoise
+    , moiseSmoothabilityRecognitionAssemblyPayload_targetFamily payload
+    ⟩
+
 end Poincare
