@@ -39063,4 +39063,67 @@ theorem reserved_named_selected_extraction_final_statement_application_of_nonemp
       @Poincare.reserved_named_selected_extraction_final_statement_application_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Reserved named selected target homeomorphism from inhabited equation-boundary
+dependencies.
+
+This is the inhabited-dependency consumer form of the selected-extraction
+route: it returns the concrete `M ≃ₜ ThreeSphere` conclusion selected by the
+final-statement application, while keeping the reserved theorem name, checked
+certificate, and dependency-only selected target theorem synchronized.
+-/
+theorem reserved_named_selected_target_homeomorphism_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ finalStatement : PoincareConjectureStatement.{u},
+    ∃ selectedTarget : Nonempty (M ≃ₜ ThreeSphere),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{u} ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      finalStatement M = selectedTarget ∧
+      selectedTarget =
+        dependency_only_selected_target_homeomorphism_of_equation_boundary_dependencies
+          dependencies.some M := by
+  rcases
+      reserved_named_selected_extraction_final_statement_application_of_nonempty_equation_boundary_dependencies
+        dependencies M with
+    ⟨theoremName, certificate, _nonemptyCertificate, finalStatement,
+      _projectPayloadTarget, _projectPayloadCompletion, _n,
+      _ordinaryPackage, _finiteExtinction, _topologyPackage,
+      extractedHomeomorphism, _projectHomeomorphism, _completionCriterion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hNonemptyDependencies,
+      _hFinalStatement, _hFinalStatementProject, hFinalStatementApplication,
+      _hExtractedProjectPayload, _hProjectPayloadTarget,
+      _hCompletionCriterion, hCertificate, _hFiniteExtinction,
+      _hTopologyPackage, _hExtractedHomeomorphism⟩
+  let selectedTarget : Nonempty (M ≃ₜ ThreeSphere) :=
+    extractedHomeomorphism
+  have hFinalStatementSelected :
+      finalStatement M = selectedTarget :=
+    hFinalStatementApplication
+  have hSelectedDependencyOnly :
+      selectedTarget =
+        dependency_only_selected_target_homeomorphism_of_equation_boundary_dependencies
+          dependencies.some M := by
+    apply Subsingleton.elim
+  exact
+    ⟨theoremName, certificate, finalStatement, selectedTarget,
+      hTheoremNameCanonical, hTheoremNameLiteral, hNonemptyDependencies,
+      hCertificate, hFinalStatementSelected, hSelectedDependencyOnly⟩
+
+/-- Theorem contract for
+`reserved_named_selected_target_homeomorphism_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_named_selected_target_homeomorphism_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_named_selected_target_homeomorphism_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_named_selected_target_homeomorphism_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
