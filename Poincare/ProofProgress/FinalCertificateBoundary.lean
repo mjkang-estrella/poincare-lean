@@ -38551,4 +38551,77 @@ theorem reserved_named_mathlib_target_homeomorphism_of_nonempty_equation_boundar
       @Poincare.reserved_named_mathlib_target_homeomorphism_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Reserved named checked-certificate mathlib target homeomorphism.
+
+This combines the checked completion certificate from the final conclusion
+bundle with the direct mathlib target consumer at the chosen manifold.  It is a
+certificate-aware final-collapse endpoint: the same reserved theorem name
+identifies the certificate and the literal mathlib sphere homeomorphism
+selected by the final mathlib-shaped payload.
+-/
+theorem reserved_named_certificate_mathlib_target_homeomorphism_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ mathlibTarget : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ mathlibConclusion :
+      Nonempty
+        (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)),
+    ∃ mathlibHomeomorphism :
+      M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      mathlibTarget =
+        reserved_mathlib_statement_of_nonempty_equation_boundary_dependencies
+          dependencies ∧
+      mathlibConclusion = mathlibTarget M ∧
+      mathlibConclusion =
+        (⟨mathlibHomeomorphism⟩ :
+          Nonempty
+            (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) ∧
+      Topology.IsEmbedding mathlibHomeomorphism ∧
+      Function.Bijective mathlibHomeomorphism ∧
+      Continuous mathlibHomeomorphism := by
+  rcases
+      reserved_named_final_conclusion_bundle_of_nonempty_equation_boundary_dependencies
+        dependencies with
+    ⟨theoremName, certificate, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, _nonemptyCertificate,
+      _projectStatement, _bundleMathlibStatement, _canonicalTarget,
+      _completionCriterionFamily⟩
+  rcases
+      reserved_named_mathlib_target_homeomorphism_of_nonempty_equation_boundary_dependencies
+        dependencies M with
+    ⟨_targetTheoremName, mathlibTarget, mathlibConclusion,
+      mathlibHomeomorphism, _hTargetTheoremNameCanonical,
+      _hTargetTheoremNameLiteral, hMathlibConclusionTarget,
+      hMathlibConclusionHomeomorphism, hMathlibEmbedding,
+      hMathlibBijective, hMathlibContinuous⟩
+  have hMathlibTarget :
+      mathlibTarget =
+        reserved_mathlib_statement_of_nonempty_equation_boundary_dependencies
+          dependencies := by
+    apply Subsingleton.elim
+  exact
+    ⟨theoremName, certificate, mathlibTarget, mathlibConclusion,
+      mathlibHomeomorphism, hTheoremNameCanonical, hTheoremNameLiteral,
+      hCertificate, hMathlibTarget, hMathlibConclusionTarget,
+      hMathlibConclusionHomeomorphism, hMathlibEmbedding,
+      hMathlibBijective, hMathlibContinuous⟩
+
+/-- Theorem contract for
+`reserved_named_certificate_mathlib_target_homeomorphism_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_named_certificate_mathlib_target_homeomorphism_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_named_certificate_mathlib_target_homeomorphism_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_named_certificate_mathlib_target_homeomorphism_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
