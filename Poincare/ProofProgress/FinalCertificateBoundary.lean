@@ -963,6 +963,49 @@ theorem project_payload_and_final_certificate_of_finalCertificateMinimalPackageI
   rfl
 
 /--
+The simply connected recognition prefix directly yields the public Poincare
+statement over the fixed non-topology package inputs, by first manufacturing
+the topology package consumed by the final-certificate route.
+-/
+theorem poincare_conjecture_statement_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  (project_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    inputs recognitionPrefix).1
+
+/--
+The same recognition prefix also produces an inhabited checked completion
+certificate over the fixed smoothability and finite-extinction package inputs.
+-/
+theorem nonempty_final_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    Nonempty PoincareCompletionCertificate.{u} :=
+  ⟨ completion_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+      inputs recognitionPrefix ⟩
+
+/--
+Bundled endpoint projection from the concrete recognition prefix: the prefix
+closes both the public Poincare statement and the inhabited checked completion
+certificate once the smoothability and finite-extinction package inputs are
+fixed.
+-/
+theorem poincare_statement_and_nonempty_final_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} :=
+  ⟨ poincare_conjecture_statement_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+      inputs recognitionPrefix
+  , nonempty_final_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+      inputs recognitionPrefix
+  ⟩
+
+/--
 The smoothability and finite-extinction package requirements plus a simply
 connected extinction-recognition prefix close the complete final-certificate
 payload.  This avoids requiring downstream code to separately manufacture the
