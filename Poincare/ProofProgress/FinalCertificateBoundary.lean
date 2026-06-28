@@ -3202,6 +3202,45 @@ theorem reserved_named_target_and_witness_conclusion_of_unpacked_aggregate_compl
   rfl
 
 /--
+Direct target conclusion projected from the combined target/witness aggregate
+consumer.  The proof still records the selected witness criterion internally,
+so this target-level endpoint remains tied to the completion-criterion
+surface of the grounded terminal aggregate route.
+-/
+theorem target_homeomorphism_of_reserved_named_target_and_witness_conclusion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (N : Type u) [TopologicalSpace N] [T2Space N]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+    [SimplyConnectedSpace N] [CompactSpace N]
+    (witness : Type u) :
+    Nonempty (N ≃ₜ ThreeSphere) := by
+  rcases
+      reserved_named_target_and_witness_conclusion_of_unpacked_aggregate_completion
+        dependencies smoothability grounded topologyStatement M N witness with
+    ⟨_theoremName, _projectStatement, _expandedConclusion,
+      targetConclusion, _completionCriterionFamily, _selectedCriterion,
+      _hTheoremNameCanonical, _hTheoremNameLiteral, _hProjectStatement,
+      _hExpandedConclusion, _hTargetExpanded, _hTargetDirect,
+      _hSelectedFamily, _hSelectedDirect⟩
+  exact targetConclusion
+
+/-- Theorem contract for
+`target_homeomorphism_of_reserved_named_target_and_witness_conclusion`. -/
+theorem target_homeomorphism_of_reserved_named_target_and_witness_conclusion_eq :
+    @Poincare.target_homeomorphism_of_reserved_named_target_and_witness_conclusion =
+      @Poincare.target_homeomorphism_of_reserved_named_target_and_witness_conclusion :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
