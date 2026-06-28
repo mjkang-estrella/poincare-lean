@@ -1231,6 +1231,54 @@ theorem twoPointComplement_piOne_exists_unique_of_homeomorph_to_threeSphere
     basepoint
 
 /--
+Recognizing a space as `ThreeSphere` gives the full two-puncture collapse
+payload by first converting to one-point compactification recognition.
+-/
+theorem twoPointComplement_collapse_payload_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    (∃ puncture : EuclideanSpace ℝ (Fin 3),
+      Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+        ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+      SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+      ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+      Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+      Subsingleton (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+      Subsingleton (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+      (∀ a b : (({x} ∪ {y})ᶜ : Set M),
+        ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+      (∀ a b : HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+        a = b) ∧
+      (∀ a b : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+        a = b) ∧
+      (∀ a b : HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+        a = b) ∧
+      (∃ baseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+        ∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+          homotopyClass = baseClass) ∧
+      (∃ baseClass :
+        HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+        ∀ homotopyClass :
+          HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          homotopyClass = baseClass) ∧
+      (∃ baseClass : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+        ∀ fundamentalClass :
+          FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+          fundamentalClass = baseClass) ∧
+      (∃ baseClass :
+        HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+        ∀ homotopyClass :
+          HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          homotopyClass = baseClass) ∧
+      (∀ a b : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path a b)) ∧
+      (∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+        pathComponent basepoint = Set.univ) :=
+  twoPointComplement_collapse_payload_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+    basepoint
+
+/--
 Recognizing a space as the one-point compactification of `R^3` supplies the
 core complement chart, connectedness, and low-dimensional homotopy-collapse
 payloads for both one and two punctures.
