@@ -3241,6 +3241,44 @@ theorem target_homeomorphism_of_reserved_named_target_and_witness_conclusion_eq 
   rfl
 
 /--
+Direct selected-witness criterion projected from the combined target/witness
+aggregate consumer.  This is the criterion-level companion to
+`target_homeomorphism_of_reserved_named_target_and_witness_conclusion`.
+-/
+theorem completion_criterion_of_reserved_named_target_and_witness_conclusion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (N : Type u) [TopologicalSpace N] [T2Space N]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+    [SimplyConnectedSpace N] [CompactSpace N]
+    (witness : Type u) :
+    CompletionCriterionAtUniverse witness := by
+  rcases
+      reserved_named_target_and_witness_conclusion_of_unpacked_aggregate_completion
+        dependencies smoothability grounded topologyStatement M N witness with
+    ⟨_theoremName, _projectStatement, _expandedConclusion,
+      _targetConclusion, _completionCriterionFamily, selectedCriterion,
+      _hTheoremNameCanonical, _hTheoremNameLiteral, _hProjectStatement,
+      _hExpandedConclusion, _hTargetExpanded, _hTargetDirect,
+      _hSelectedFamily, _hSelectedDirect⟩
+  exact selectedCriterion
+
+/-- Theorem contract for
+`completion_criterion_of_reserved_named_target_and_witness_conclusion`. -/
+theorem completion_criterion_of_reserved_named_target_and_witness_conclusion_eq :
+    @Poincare.completion_criterion_of_reserved_named_target_and_witness_conclusion =
+      @Poincare.completion_criterion_of_reserved_named_target_and_witness_conclusion :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
