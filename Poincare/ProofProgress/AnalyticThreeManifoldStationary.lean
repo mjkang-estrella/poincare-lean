@@ -14780,4 +14780,45 @@ theorem analytic_package_and_milestone_requirements_of_stationaryZeroProductionD
       data
   ⟩
 
+/--
+Universal stationary-zero production data also exposes, for each target, an
+actual analytic-foundation package together with its theorem-shaped analytic
+statement and explicit curvature-evolution field.
+-/
+theorem analyticFoundationPackage_statement_and_curvature_payload_of_stationaryZeroProductionData_current_api
+    (data :
+      StationaryZeroAnalyticFoundationPackageLayerProductionData.{u}) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ package :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+            RicciFlowAnalyticFoundationStatement
+              ThreeManifoldModelWithCorners n M ∧
+              HasCurvatureEvolutionEquations
+                (ricci_flow_data_of_analytic_foundation_package
+                  package)) := by
+  let packageRequirement :=
+    analyticFoundationPackage_requirement_of_stationaryZeroProductionData_current_api
+      data
+  refine
+    ⟨ packageRequirement
+    , ricciFlowAnalyticFoundation_milestone_requirement_of_stationaryZeroProductionData_current_api
+        data
+    , ?_ ⟩
+  intro M _top _t2 _charted _simple _compact _smooth1
+  rcases packageRequirement M with ⟨⟨n, package⟩⟩
+  exact
+    ⟨ n, package
+    , analytic_foundation_statement_of_analytic_foundation_package package
+    , curvature_evolution_of_analytic_foundation_package package
+    ⟩
+
 end Poincare
