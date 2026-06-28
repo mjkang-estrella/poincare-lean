@@ -513,4 +513,68 @@ noncomputable def onePoint_threeSpace_twoPointComplement_lowHomotopyUnique_paylo
   pathComponentEqUniv :=
     onePoint_threeSpace_twoPointComplement_pathComponent_eq_univ hqp
 
+/--
+Recognition-facing payload for the one-point compactification model
+two-puncture complement: a concrete punctured-Euclidean chart, simple
+connectedness, and the complete low-homotopy uniqueness payload.
+-/
+structure OnePointTwoPointComplementRecognitionPayload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) where
+  puncturedEuclideanChart :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      Nonempty
+        ((({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+          ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))
+  simplyConnected :
+    SimplyConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+  lowHomotopy :
+    OnePointTwoPointComplementLowHomotopyUniquePayload hqp basepoint
+
+/--
+The one-point model two-puncture complement provides the chart, simple
+connectedness, and low-homotopy uniqueness data needed by recognition
+consumers in one field-based object.
+-/
+noncomputable def onePoint_threeSpace_twoPointComplement_recognition_payload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    OnePointTwoPointComplementRecognitionPayload hqp basepoint where
+  puncturedEuclideanChart :=
+    ⟨ onePoint_threeSpace_compl_singleton_homeomorph_euclidean p
+        (onePoint_threeSpace_pointInComplement hqp)
+    , ⟨onePoint_threeSpace_twoPointComplement_homeomorph_puncturedEuclidean
+        hqp⟩ ⟩
+  simplyConnected :=
+    onePoint_threeSpace_twoPointComplement_simplyConnectedSpace hqp
+  lowHomotopy :=
+    onePoint_threeSpace_twoPointComplement_lowHomotopyUnique_payload
+      hqp basepoint
+
+/--
+Tuple form of the one-point model recognition payload for theorem consumers
+that do not want to destruct the structure.
+-/
+theorem onePoint_threeSpace_twoPointComplement_recognition_payload_tuple
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    (∃ puncture : EuclideanSpace ℝ (Fin 3),
+      Nonempty
+        ((({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+          ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+      SimplyConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      Nonempty
+        (OnePointTwoPointComplementLowHomotopyUniquePayload hqp basepoint) :=
+  let payload :=
+    onePoint_threeSpace_twoPointComplement_recognition_payload
+      hqp basepoint
+  ⟨ payload.puncturedEuclideanChart
+  , payload.simplyConnected
+  , ⟨payload.lowHomotopy⟩ ⟩
+
 end Poincare
