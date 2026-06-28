@@ -48599,4 +48599,77 @@ theorem named_conditional_statement_certificate_package_of_dependencies_and_veri
       @Poincare.named_conditional_statement_certificate_package_of_dependencies_and_verification_family :=
   rfl
 
+/--
+The theorem-level conditional statements are exactly the statements selected
+by the checked completion certificate.
+
+This removes the intermediate checked/conditional statement witnesses from the
+named final-statement package and exposes the direct equalities needed by
+consumers: the conditional project statement is the reserved Poincare
+statement of the selected certificate, and the conditional mathlib-shaped
+statement is the mathlib translation of that selected reserved statement.
+-/
+theorem conditional_statement_certificate_direct_equalities_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    ∃ theoremName : String,
+    ∃ boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ certificate : PoincareCompletionCertificate.{0},
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          boundaryDependencies ∧
+      poincare_statement_of_dependencies_and_verification_family
+          dependencies verificationFamily =
+        poincare_conjecture_of_completion_certificate certificate ∧
+      mathlib_sphere_statement_of_dependencies_and_verification_family
+          dependencies verificationFamily =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          (poincare_conjecture_of_completion_certificate certificate) := by
+  rcases
+      named_conditional_statement_certificate_package_of_dependencies_and_verification_family
+        dependencies verificationFamily with
+    ⟨theoremName, boundaryDependencies, _nonemptyBoundaryDependencies,
+      certificate, checkedReservedStatement, _checkedMathlibStatement,
+      conditionalReservedStatement, _conditionalMathlibStatement,
+      hTheoremNameCanonical, hTheoremNameLiteral, hBoundaryDependencies,
+      _hNonemptyBoundaryDependencies, hCertificate, hCheckedReservedStatement,
+      _hCheckedMathlibStatement, hConditionalReservedStatement,
+      _hConditionalMathlibStatement, hCheckedReservedConditional,
+      _hCheckedMathlibConditional⟩
+  have hConditionalReservedCertificate :
+      poincare_statement_of_dependencies_and_verification_family
+          dependencies verificationFamily =
+        poincare_conjecture_of_completion_certificate certificate := by
+    rw [← hConditionalReservedStatement]
+  have hConditionalMathlibCertificate :
+      mathlib_sphere_statement_of_dependencies_and_verification_family
+          dependencies verificationFamily =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          (poincare_conjecture_of_completion_certificate certificate) :=
+    Subsingleton.elim _ _
+  exact
+    ⟨theoremName, boundaryDependencies, certificate, hTheoremNameCanonical,
+      hTheoremNameLiteral, hBoundaryDependencies, hCertificate,
+      hConditionalReservedCertificate, hConditionalMathlibCertificate⟩
+
+/-- Theorem contract for
+`conditional_statement_certificate_direct_equalities_of_dependencies_and_verification_family`. -/
+theorem conditional_statement_certificate_direct_equalities_of_dependencies_and_verification_family_eq :
+    @Poincare.conditional_statement_certificate_direct_equalities_of_dependencies_and_verification_family =
+      @Poincare.conditional_statement_certificate_direct_equalities_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
