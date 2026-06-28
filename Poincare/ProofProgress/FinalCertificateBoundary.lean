@@ -1312,4 +1312,30 @@ theorem canonical_payload_and_final_certificate_iff_topologyPackage_of_finalCert
           inputs topology
       ⟩
 
+/--
+Exact remaining boundary for the full public-plus-canonical final payload over
+fixed smoothability and finite-extinction inputs: the only remaining package
+field is the topology package.  The forward direction extracts that package
+from the checked certificate component; the reverse direction assembles both
+payload layers and the checked certificate from the same topology field.
+-/
+theorem project_and_canonical_payload_and_final_certificate_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u}) :
+    (PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u}) ↔
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage := by
+  constructor
+  · intro payload
+    exact topologyPackage_requirement_of_final_certificate payload.2.2.2.2
+  · intro topology
+    exact
+      project_and_canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_topologyPackage
+        inputs.smoothability inputs.finiteExtinction topology
+
 end Poincare
