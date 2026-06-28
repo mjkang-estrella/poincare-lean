@@ -16021,6 +16021,63 @@ theorem stationaryZeroAnalyticFoundation_fixedTarget_fullPackageEvolution_of_com
   exact payload.fullPackageEvolutionFamily M
 
 /--
+For a fixed target, the complete analytic consumer payload also retains the raw
+stationary-zero production witnesses: the promoted smoothness instance, metric,
+metric-derivative/Ricci identifications, production data, subobligations, and
+analytic package/evolution fields.
+-/
+theorem stationaryZeroAnalyticFoundation_fixedTarget_rawProductionPayload_of_completeConsumerPayload
+    (payload :
+      Nonempty StationaryZeroAnalyticFoundationCompleteConsumerPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ n : ℕ∞ω,
+    ∃ smooth2 : IsManifold ThreeManifoldModelWithCorners 2 M,
+    letI : IsManifold ThreeManifoldModelWithCorners 2 M := smooth2
+    ∃ metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x),
+    ∃ identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)),
+    ∃ identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)),
+    ∃ _productionData :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci,
+    let flow :=
+      stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci
+    AnalyticFoundationSubobligationsPayload flow ∧
+      ∃ package :
+          RicciFlowAnalyticFoundationPackage
+            ThreeManifoldModelWithCorners n M,
+        ricci_flow_data_of_analytic_foundation_package package =
+          flow ∧
+        RicciFlowAnalyticFoundationStatement
+          ThreeManifoldModelWithCorners n M ∧
+        AnalyticFoundationWithEquationBoundaryStatement flow ∧
+        HasRicciContractionTheory
+          (curvature_data_of_ricci_flow_data flow) ∧
+        HasScalarCurvatureTheory
+          (curvature_data_of_ricci_flow_data flow) ∧
+        HasMetricEvolutionEquation flow ∧
+        HasRicciTensorEvolutionEquation flow ∧
+        HasScalarCurvatureEvolutionEquation flow ∧
+        HasCurvatureNormEvolutionInequality flow ∧
+        HasCurvatureEvolutionEquations flow := by
+  rcases payload with ⟨payload⟩
+  exact payload.rawFullStatementPayloadFamily M
+
+/--
 The complete analytic consumer payload is equivalent to the inhabited detailed
 stationary-zero assembly payload: the forward direction projects the stored
 detailed payload, while the reverse direction rebuilds the complete consumer
