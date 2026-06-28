@@ -804,6 +804,95 @@ theorem onePoint_threeSpace_twoPointComplement_topology_and_lowHomotopy_of_flatR
     ⟩
 
 /--
+The flat recognition payload exposes concrete low-homotopy equality
+eliminators and chosen unique classes for the two-puncture complement.
+-/
+theorem onePoint_threeSpace_twoPointComplement_lowHomotopy_eq_package_of_flatRecognition
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} {hqp : q ≠ p}
+    {basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    (payload : OnePointTwoPointComplementFlatRecognitionPayload hqp basepoint) :
+    (∀ a b :
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+      (∀ a b :
+        HomotopyGroup.Pi 0
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+        a = b) ∧
+      (∀ a b : FundamentalGroup
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint,
+        a = b) ∧
+      (∀ a b :
+        HomotopyGroup.Pi 1
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+        a = b) ∧
+      (∃ baseClass :
+        ZerothHomotopy
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        ∀ homotopyClass :
+          ZerothHomotopy
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          homotopyClass = baseClass) ∧
+      (∃ baseClass :
+        HomotopyGroup.Pi 0
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+        ∀ homotopyClass :
+          HomotopyGroup.Pi 0
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          homotopyClass = baseClass) ∧
+      (∃ baseClass : FundamentalGroup
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint,
+        ∀ fundamentalClass :
+          FundamentalGroup
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          fundamentalClass = baseClass) ∧
+      (∃ baseClass :
+        HomotopyGroup.Pi 1
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+        ∀ homotopyClass :
+          HomotopyGroup.Pi 1
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          homotopyClass = baseClass) := by
+  letI : Unique
+      (ZerothHomotopy
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :=
+    payload.zerothUnique
+  letI : Unique
+      (HomotopyGroup.Pi 0
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint) :=
+    payload.piZeroUnique
+  letI : Unique
+      (FundamentalGroup
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint) :=
+    payload.fundamentalGroupUnique
+  letI : Unique
+      (HomotopyGroup.Pi 1
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint) :=
+    payload.piOneUnique
+  exact
+    ⟨ fun _a _b => Subsingleton.elim _ _
+    , fun _a _b => Subsingleton.elim _ _
+    , fun _a _b => Subsingleton.elim _ _
+    , fun _a _b => Subsingleton.elim _ _
+    , ⟨default, fun _homotopyClass => Subsingleton.elim _ _⟩
+    , ⟨default, fun _homotopyClass => Subsingleton.elim _ _⟩
+    , ⟨default, fun _fundamentalClass => Subsingleton.elim _ _⟩
+    , ⟨default, fun _homotopyClass => Subsingleton.elim _ _⟩
+    ⟩
+
+/--
 The flat one-point two-puncture recognition payload discharges the legacy
 collapse tuple, including the low-homotopy subsingleton and unique-class
 conclusions, without reconstructing the punctured-Euclidean chart or path
