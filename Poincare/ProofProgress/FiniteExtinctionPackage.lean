@@ -359,4 +359,65 @@ theorem finiteExtinctionPackage_requirement_of_subobligations_family_eq
         exact finite_extinction_package_nonempty_of_subobligations (h M)) := by
   rfl
 
+/--
+The same sub-obligation family discharges the finite-extinction milestone
+requirement, not just the package-layer requirement.  The crosswalk assigns the
+finite-extinction milestone to the finite-extinction package layer, so the
+package payload constructed above is already the required milestone payload.
+-/
+theorem finiteExtinction_requirement_of_subobligations_family
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control) :
+    dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction := by
+  exact finiteExtinctionPackage_requirement_of_subobligations_family h
+
+/--
+The sub-obligation route to the finite-extinction milestone is definitionally
+the package-layer route through the milestone/package-layer crosswalk.
+-/
+theorem finiteExtinction_requirement_of_subobligations_family_to_package_layer_eq
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control) :
+    finiteExtinction_requirement_of_subobligations_family h =
+      finiteExtinctionPackage_requirement_of_subobligations_family h := by
+  rfl
+
 end Poincare
