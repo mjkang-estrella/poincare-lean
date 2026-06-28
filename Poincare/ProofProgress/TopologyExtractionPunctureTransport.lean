@@ -36,6 +36,52 @@ theorem compl_singleton_contractibleSpace_of_homeomorph_to_onePoint_threeSpace
     h x).contractibleSpace
 
 /--
+Every single-puncture complement of a space recognized as the one-point
+compactification of `R^3` is path-connected.
+-/
+theorem compl_singleton_pathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M) :
+    PathConnectedSpace ({x}ᶜ : Set M) := by
+  letI : ContractibleSpace ({x}ᶜ : Set M) :=
+    compl_singleton_contractibleSpace_of_homeomorph_to_onePoint_threeSpace
+      h x
+  infer_instance
+
+/--
+Any two points in the single-puncture complement of a recognized one-point
+compactification target are joined by a path.
+-/
+theorem compl_singleton_path_nonempty_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M) :
+    ∀ (a b : ({x}ᶜ : Set M)), Nonempty (Path a b) := by
+  intro a b
+  letI : PathConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_pathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+      h x
+  exact PathConnectedSpace.joined a b
+
+/--
+The path component of any point in the single-puncture complement of a
+recognized one-point compactification target is the whole complement.
+-/
+theorem compl_singleton_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    pathComponent basepoint = Set.univ := by
+  letI : PathConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_pathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+      h x
+  ext z
+  constructor
+  · intro _hz
+    exact Set.mem_univ z
+  · intro _hz
+    exact PathConnectedSpace.joined basepoint z
+
+/--
 Transport a recognized one-point compactification target's two-puncture
 complement to the punctured Euclidean chart of the model compactification.
 -/
@@ -196,6 +242,41 @@ theorem compl_singleton_contractibleSpace_of_homeomorph_to_threeSphere
     ContractibleSpace ({x}ᶜ : Set M) :=
   (homeomorph_compl_singleton_euclidean_of_homeomorph_to_threeSphere
     h x).contractibleSpace
+
+/--
+Every single-puncture complement of a space recognized as `ThreeSphere` is
+path-connected.
+-/
+theorem compl_singleton_pathConnectedSpace_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M) :
+    PathConnectedSpace ({x}ᶜ : Set M) :=
+  compl_singleton_pathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+
+/--
+Any two points in the single-puncture complement of a `ThreeSphere`-recognized
+space are joined by a path.
+-/
+theorem compl_singleton_path_nonempty_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M) :
+    ∀ (a b : ({x}ᶜ : Set M)), Nonempty (Path a b) :=
+  compl_singleton_path_nonempty_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+
+/--
+The path component of any point in the single-puncture complement of a
+`ThreeSphere`-recognized space is the whole complement.
+-/
+theorem compl_singleton_pathComponent_eq_univ_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    pathComponent basepoint = Set.univ :=
+  compl_singleton_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+    basepoint
 
 /--
 Every two-puncture complement of a space recognized as `ThreeSphere` is
