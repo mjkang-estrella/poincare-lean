@@ -43460,4 +43460,33 @@ theorem threeSphere_nonempty_certificate_reserved_mathlib_package_of_reserved_fi
       @Poincare.threeSphere_nonempty_certificate_reserved_mathlib_package_of_reserved_final_certificate :=
   rfl
 
+/--
+Direct final statements from the standard nonempty-certificate reduction for
+the concrete `ThreeSphere` certificate.
+
+This is the compact consumer endpoint for the nonempty-certificate route:
+from the checked equation-boundary dependencies it exposes both the project
+reserved statement and its mathlib-shaped counterpart without requiring
+callers to unpack the named certificate package.
+-/
+theorem threeSphere_final_statements_of_nonempty_certificate_of_reserved_final_certificate
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{0}) :
+    PoincareConjectureStatement.{0} ∧
+      MathlibTopologicalPoincareThreeStatement.{0} := by
+  rcases
+      threeSphere_nonempty_certificate_reserved_mathlib_package_of_reserved_final_certificate
+        dependencies with
+    ⟨_theoremName, _certificate, _nonemptyCertificate,
+      nonemptyReservedStatement, mathlibStatement, _hTheoremNameCanonical,
+      _hTheoremNameLiteral, _hCertificate, _hNonemptyCertificate,
+      _hNonemptyReservedStatement, _hMathlibStatement⟩
+  exact ⟨nonemptyReservedStatement, mathlibStatement⟩
+
+/-- Theorem contract for
+`threeSphere_final_statements_of_nonempty_certificate_of_reserved_final_certificate`. -/
+theorem threeSphere_final_statements_of_nonempty_certificate_of_reserved_final_certificate_eq :
+    @Poincare.threeSphere_final_statements_of_nonempty_certificate_of_reserved_final_certificate =
+      @Poincare.threeSphere_final_statements_of_nonempty_certificate_of_reserved_final_certificate :=
+  rfl
+
 end Poincare
