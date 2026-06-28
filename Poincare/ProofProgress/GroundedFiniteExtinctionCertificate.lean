@@ -1066,4 +1066,49 @@ theorem remaining_dependency_package_and_completion_certificate_of_smoothability
   , completion_certificate_of_smoothability_grounded_and_topology_package
       smoothability grounded topologyPackage ⟩
 
+/--
+The smoothability package, grounded finite extinction, and topology package
+also project the checked certificate to the public Poincare statement.
+-/
+theorem poincare_statement_and_completion_certificate_of_smoothability_grounded_and_topology_package
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    PoincareConjectureStatement.{u} ∧ PoincareCompletionCertificate.{u} := by
+  let certificate :=
+    completion_certificate_of_smoothability_grounded_and_topology_package
+      smoothability grounded topologyPackage
+  exact
+    ⟨ poincare_conjecture_of_completion_certificate certificate
+    , certificate ⟩
+
+/--
+The same three inputs close the checked certificate, its public statement
+projection, and the full universe-indexed completion-criterion family through
+the standard certificate projection.
+-/
+theorem poincare_statement_completion_certificate_and_completion_criteria_of_smoothability_grounded_and_topology_package
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let certificate :=
+    completion_certificate_of_smoothability_grounded_and_topology_package
+      smoothability grounded topologyPackage
+  exact
+    ⟨ poincare_conjecture_of_completion_certificate certificate
+    , certificate
+    , fun witness => completion_criterion_of_completion_certificate
+        witness certificate ⟩
+
 end Poincare
