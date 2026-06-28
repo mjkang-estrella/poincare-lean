@@ -415,6 +415,49 @@ theorem extinctionTopology_package_statement_and_liftedDerivation_of_completeCon
       ⟩
 
 /--
+An inhabited complete topology consumer payload also exposes the full
+recognition/puncture target family retained by the same concrete topology
+package.  This keeps the one-point compactification and two-puncture
+recognition obligations available to final-certificate consumers without
+reconstructing the topology package.
+-/
+theorem extinctionTopology_derivationPunctureFamily_of_completeConsumerPayload
+    (payload : Nonempty (ExtinctionTopologyCompleteConsumerPayload.{u})) :
+    ∃ package : ExtinctionTopologyExtractionPackage.{u},
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        (_extinction : FiniteExtinctionByRicciFlowWithSurgery M),
+          ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+            homeomorphism =
+                homeomorphism_of_topology_package package M
+                  _extinction ∧
+            ExtinctionTopologyClassificationSubobligationsPayload
+              M _extinction ∧
+            ExtinctionTopologySimplyConnectedRecognitionStatement
+              M _extinction ∧
+            ExtinctionTopologySphericalTrivialQuotientStatement
+              M _extinction ∧
+            ExtinctionTopologySphericalHomeomorphismLiftStatement
+              M _extinction ∧
+            ExtinctionTopologyHomeomorphismAssemblyStatement
+              M _extinction homeomorphism ∧
+            ExtinctionTopologyHomeomorphismDerivationStatement
+              M _extinction homeomorphism ∧
+            ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+              M _extinction homeomorphism ∧
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+            (∀ x : M, ContractibleSpace ({x}ᶜ : Set M)) ∧
+            (∀ {x y : M} (_hyx : y ≠ x)
+              (basepoint : (({x} ∪ {y})ᶜ : Set M)),
+                SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                  Subsingleton
+                    (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+                      basepoint)) := by
+  rcases payload with ⟨payload⟩
+  exact ⟨payload.topologyPackage, payload.derivationPunctureFamily⟩
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
