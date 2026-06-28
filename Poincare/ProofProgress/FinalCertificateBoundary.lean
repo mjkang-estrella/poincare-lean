@@ -2758,6 +2758,74 @@ theorem nonempty_finalCertificateNamedPackageLayerConsumerPayload_iff_named_pack
         smoothability finiteExtinction topology
 
 /--
+The complete final named-package consumer payload is exactly the three named
+package-layer requirements together with a concrete topology-assembly payload
+and the checked endpoint fields.  The reverse direction rebuilds the complete
+consumer payload from those fields without reopening the package constructors.
+-/
+theorem nonempty_finalCertificateNamedPackageLayerConsumerPayload_iff_requirements_topologyAssembly_and_endpoint_fields :
+    Nonempty FinalCertificateNamedPackageLayerConsumerPayload.{u} ↔
+      ∃ smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+      ∃ topology :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage,
+      ∃ _topologyAssemblyPayload :
+        FinalCertificateTopologyAssemblyPayload
+          { smoothability := smoothability
+            finiteExtinction := finiteExtinction }
+          topology,
+        PoincareConjectureStatement.{u} ∧
+          PoincareCompletionCertificate.{u} ∧
+          canonicalCompletionTarget.{u} ∧
+          (∃ _target : PoincareConjectureStatement.{u},
+            ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+          (∃ _target : canonicalCompletionTarget.{u},
+            ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+          (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  constructor
+  · rintro ⟨payload⟩
+    exact
+      ⟨ payload.smoothability
+      , payload.finiteExtinction
+      , payload.topology
+      , payload.topologyAssemblyPayload
+      , payload.publicStatement
+      , payload.checkedCertificate
+      , payload.canonicalTarget
+      , payload.publicPayload
+      , payload.canonicalPayload
+      , payload.completionCriteria
+      ⟩
+  · rintro
+      ⟨ smoothability
+      , finiteExtinction
+      , topology
+      , topologyAssemblyPayload
+      , publicStatement
+      , checkedCertificate
+      , canonicalTarget
+      , publicPayload
+      , canonicalPayload
+      , completionCriteria
+      ⟩
+    exact
+      ⟨ { smoothability := smoothability
+          finiteExtinction := finiteExtinction
+          topology := topology
+          topologyAssemblyPayload := topologyAssemblyPayload
+          publicStatement := publicStatement
+          checkedCertificate := checkedCertificate
+          canonicalTarget := canonicalTarget
+          publicPayload := publicPayload
+          canonicalPayload := canonicalPayload
+          completionCriteria := completionCriteria } ⟩
+
+/--
 Final checked endpoint through the complete consumer payload: the public
 Poincare statement, a concrete checked completion certificate, and all
 completion criteria are equivalent to inhabiting the named-package consumer
