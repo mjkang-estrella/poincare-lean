@@ -420,4 +420,246 @@ theorem finiteExtinction_requirement_of_subobligations_family_to_package_layer_e
       finiteExtinctionPackage_requirement_of_subobligations_family h := by
   rfl
 
+/--
+Smoothability installs the with-corners manifold evidence needed to consume the
+finite-extinction sub-obligation family for an arbitrary compact simply
+connected charted three-manifold.  The result keeps the constructed package and
+the theorem-shaped extinction evidence visible at each target.
+-/
+theorem finite_extinction_statement_payload_of_smoothability_and_subobligations_family
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        ∃ _manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M,
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ surgery : HasRicciFlowWithSurgery n M,
+        ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+        ∃ _package : FiniteExtinctionSurgeryPackage n M,
+        ∃ _packageStatement : FiniteExtinctionStatement n M,
+        ∃ _viaSubobligationsStatement : FiniteExtinctionStatement n M,
+        ∃ _derivation : HasFiniteExtinctionDerivation flow surgery control,
+          FiniteExtinctionByRicciFlowWithSurgery M := by
+  intro M _top _t2 _charted _simple _compact
+  let manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M :=
+    smoothable_of_smoothability_package smoothabilityPackage M
+  letI : IsManifold ThreeManifoldModelWithCorners 1 M := manifoldEvidence
+  rcases finite_extinction_statement_payload_family_of_subobligations_family
+      h M with
+    ⟨n, flow, surgery, control, package, packageStatement,
+      viaSubobligationsStatement, derivation, finiteExtinction⟩
+  exact
+    ⟨ manifoldEvidence
+    , n
+    , flow
+    , surgery
+    , control
+    , package
+    , packageStatement
+    , viaSubobligationsStatement
+    , derivation
+    , finiteExtinction
+    ⟩
+
+/--
+The smoothability-plus-sub-obligation-family route supplies the finite
+extinction input consumed by the universal finite-extinction boundary.
+-/
+theorem finite_extinction_input_of_smoothability_and_subobligations_family
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        FiniteExtinctionByRicciFlowWithSurgery M := by
+  intro M _top _t2 _charted _simple _compact
+  rcases
+      finite_extinction_statement_payload_of_smoothability_and_subobligations_family
+        smoothabilityPackage h M with
+    ⟨_manifoldEvidence, _n, _flow, _surgery, _control, _package,
+      _packageStatement, _viaSubobligationsStatement, _derivation,
+      finiteExtinction⟩
+  exact finiteExtinction
+
+/--
+Smoothability plus the full finite-extinction sub-obligation family supplies
+the named universal finite-extinction boundary used by the final completion
+route.
+-/
+theorem universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control) :
+    UniversalFiniteExtinctionStatement.{u} :=
+  finite_extinction_input_of_smoothability_and_subobligations_family
+    smoothabilityPackage h
+
+/--
+The universal finite-extinction boundary obtained from smoothability and the
+sub-obligation family is exactly the finite-extinction input projected from the
+same theorem-shaped payload.
+-/
+theorem universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control) :
+    universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+        smoothabilityPackage h =
+      finite_extinction_input_of_smoothability_and_subobligations_family
+        smoothabilityPackage h := by
+  apply Subsingleton.elim
+
+/--
+The smoothability-plus-sub-obligation-family route reaches the conditional
+Poincare endpoint through the named universal finite-extinction boundary and
+the post-extinction extraction theorem still explicit on the current main
+interface.
+-/
+theorem poincare_conjecture_of_smoothability_and_subobligations_family
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_universalFiniteExtinctionStatement
+    (universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+      smoothabilityPackage h)
+    extractSphere
+
+/--
+The smoothability/sub-obligation-family endpoint is exactly the universal
+finite-extinction endpoint applied to the boundary produced above and the
+explicit post-extinction extraction theorem.
+-/
+theorem poincare_conjecture_of_smoothability_and_subobligations_family_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    poincare_conjecture_of_smoothability_and_subobligations_family
+        smoothabilityPackage h extractSphere =
+      poincare_conjecture_of_universalFiniteExtinctionStatement
+        (universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+          smoothabilityPackage h)
+        extractSphere := by
+  apply Subsingleton.elim
+
 end Poincare
