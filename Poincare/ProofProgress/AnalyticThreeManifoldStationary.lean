@@ -15927,6 +15927,64 @@ theorem stationaryZeroAnalyticFoundation_requirements_fullPackageEvolution_and_r
     ⟩
 
 /--
+An inhabited complete analytic consumer payload also exposes the compact
+package/curvature family, package/subobligation family, and evolution-field
+family retained alongside the normalized full package/evolution route.
+-/
+theorem stationaryZeroAnalyticFoundation_compactFamilies_of_completeConsumerPayload
+    (payload :
+      Nonempty StationaryZeroAnalyticFoundationCompleteConsumerPayload.{u}) :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package :
+          RicciFlowAnalyticFoundationPackage
+            ThreeManifoldModelWithCorners n M,
+          RicciFlowAnalyticFoundationStatement
+            ThreeManifoldModelWithCorners n M ∧
+            HasCurvatureEvolutionEquations
+              (ricci_flow_data_of_analytic_foundation_package package)) ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          ∃ package :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+            AnalyticFoundationSubobligationsPayload flow ∧
+              ricci_flow_data_of_analytic_foundation_package package = flow ∧
+              RicciFlowAnalyticFoundationStatement
+                ThreeManifoldModelWithCorners n M ∧
+              AnalyticFoundationWithEquationBoundaryStatement flow ∧
+              HasCurvatureEvolutionEquations flow) ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+            AnalyticFoundationWithEquationBoundaryStatement flow ∧
+              HasRicciContractionTheory
+                (curvature_data_of_ricci_flow_data flow) ∧
+              HasScalarCurvatureTheory
+                (curvature_data_of_ricci_flow_data flow) ∧
+              HasMetricEvolutionEquation flow ∧
+              HasRicciTensorEvolutionEquation flow ∧
+              HasScalarCurvatureEvolutionEquation flow ∧
+              HasCurvatureNormEvolutionInequality flow ∧
+              HasCurvatureEvolutionEquations flow) := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ payload.packageStatementCurvatureFamily
+    , payload.packageSubobligationsFamily
+    , payload.evolutionFieldsFamily
+    ⟩
+
+/--
 The complete analytic consumer payload is equivalent to the inhabited detailed
 stationary-zero assembly payload: the forward direction projects the stored
 detailed payload, while the reverse direction rebuilds the complete consumer
