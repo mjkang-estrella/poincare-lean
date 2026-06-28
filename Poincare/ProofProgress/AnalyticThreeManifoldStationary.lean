@@ -9,6 +9,7 @@ stationary zero Ricci-flow equation evidence; analytic sub-obligations remain
 explicit inputs.
 -/
 
+import Poincare.DependencyCrosswalk
 import Poincare.Surgery
 import Poincare.ProofProgress.AnalyticProductionPackageLeviCivita
 
@@ -14697,5 +14698,86 @@ theorem stationary_zero_full_analytic_foundation_statement_payload_of_production
       hBoundary, hRicciContraction, hScalarCurvature, hMetricEvolution,
       hRicciTensorEvolution, hScalarCurvatureEvolution,
       hCurvatureNormEvolution, hCurvatureEvolution ⟩
+
+/--
+Universal stationary-zero production data for the analytic package layer.  For
+each target in the dependency-package class, this supplies a smoothness-2
+upgrade, a stationary-zero metric/Ricci-flow equation boundary, and the concrete
+production data needed to build a `RicciFlowAnalyticFoundationPackage`.
+-/
+def StationaryZeroAnalyticFoundationPackageLayerProductionData : Prop :=
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M],
+      ∃ n : ℕ∞ω,
+      ∃ smooth2 : IsManifold ThreeManifoldModelWithCorners 2 M,
+        letI : IsManifold ThreeManifoldModelWithCorners 2 M := smooth2
+        ∃ metric :
+          ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+            ThreeManifoldModel
+            (fun x : M => TangentSpace ThreeManifoldModelWithCorners x),
+        ∃ identifiesDerivative :
+          IsMetricTimeDerivativeOf
+            (stationary_time_dependent_riemannian_metric metric)
+            (zero_metric_time_derivative_field
+              (stationary_time_dependent_riemannian_metric metric)),
+        ∃ identifiesRicci :
+          IsRicciTensorOf
+            (stationary_time_dependent_riemannian_metric metric)
+            (zero_ricci_tensor_field
+              (stationary_time_dependent_riemannian_metric metric)),
+          Nonempty
+            (StationaryZeroAnalyticFoundationProductionDataCurrentApi
+              metric identifiesDerivative identifiesRicci)
+
+/--
+Universal stationary-zero production data discharges the analytic package-layer
+requirement by constructing the stored analytic-foundation package for each
+target.
+-/
+theorem analyticFoundationPackage_requirement_of_stationaryZeroProductionData_current_api
+    (data :
+      StationaryZeroAnalyticFoundationPackageLayerProductionData.{u}) :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.analyticFoundationPackage := by
+  intro M _top _t2 _chart _simplyConnected _compact _smooth1
+  rcases data M with ⟨n, smooth2, targetData⟩
+  letI : IsManifold ThreeManifoldModelWithCorners 2 M := smooth2
+  rcases targetData with
+    ⟨metric, identifiesDerivative, identifiesRicci, ⟨productionData⟩⟩
+  exact
+    ⟨⟨n,
+      stationary_zero_analytic_foundation_package_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci productionData⟩⟩
+
+/--
+The same universal stationary-zero production data discharges the analytic
+foundation milestone, whose crosswalk is the analytic package-layer
+requirement.
+-/
+theorem ricciFlowAnalyticFoundation_milestone_requirement_of_stationaryZeroProductionData_current_api
+    (data :
+      StationaryZeroAnalyticFoundationPackageLayerProductionData.{u}) :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.ricciFlowAnalyticFoundation :=
+  analyticFoundationPackage_requirement_of_stationaryZeroProductionData_current_api
+    data
+
+/--
+Combined package-layer and milestone endpoint for the universal stationary-zero
+analytic production-data boundary.
+-/
+theorem analytic_package_and_milestone_requirements_of_stationaryZeroProductionData_current_api
+    (data :
+      StationaryZeroAnalyticFoundationPackageLayerProductionData.{u}) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation :=
+  ⟨ analyticFoundationPackage_requirement_of_stationaryZeroProductionData_current_api
+      data
+  , ricciFlowAnalyticFoundation_milestone_requirement_of_stationaryZeroProductionData_current_api
+      data
+  ⟩
 
 end Poincare
