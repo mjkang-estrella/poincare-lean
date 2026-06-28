@@ -44753,4 +44753,119 @@ theorem closed_three_manifold_final_statement_application_bidirectional_recognit
       @Poincare.closed_three_manifold_final_statement_application_bidirectional_recognition_of_reserved_final_certificate :=
   rfl
 
+/--
+Concrete arbitrary-manifold map to the literal mathlib sphere.
+
+The checked final project statement gives a selected homeomorphism
+`M ≃ₜ ThreeSphere`; the final recognition package gives a selected
+homeomorphism from `ThreeSphere` to the literal mathlib unit sphere.  This
+endpoint composes those two maps, producing an actual homeomorphism from an
+arbitrary closed simply connected 3-manifold surface `M` to the literal
+mathlib sphere, with the same certificate and theorem name still attached.
+-/
+theorem closed_three_manifold_selected_mathlib_homeomorphism_of_reserved_final_certificate
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{0})
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ checkedReservedStatement : PoincareConjectureStatement.{0},
+    ∃ checkedMathlibStatement : MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ projectConclusion : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ forwardHomeomorphism :
+      ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ composedMathlibHomeomorphism :
+      M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ composedMathlibConclusion :
+      Nonempty
+        (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      checkedReservedStatement =
+        poincare_conjecture_of_completion_certificate certificate ∧
+      checkedMathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          checkedReservedStatement ∧
+      projectConclusion = checkedReservedStatement M ∧
+      projectHomeomorphism = Classical.choice projectConclusion ∧
+      composedMathlibHomeomorphism =
+        projectHomeomorphism.trans forwardHomeomorphism ∧
+      composedMathlibConclusion =
+        (⟨composedMathlibHomeomorphism⟩ :
+          Nonempty
+            (M ≃ₜ
+              Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) ∧
+      composedMathlibConclusion = checkedMathlibStatement M ∧
+      Topology.IsEmbedding composedMathlibHomeomorphism ∧
+      Function.Bijective composedMathlibHomeomorphism ∧
+      Continuous composedMathlibHomeomorphism := by
+  rcases
+      closed_three_manifold_final_statement_application_bidirectional_recognition_of_reserved_final_certificate
+        dependencies M with
+    ⟨theoremName, certificate, checkedReservedStatement,
+      checkedMathlibStatement, projectConclusion, mathlibConclusion,
+      forwardHomeomorphism, _inverseHomeomorphism, _forwardConclusion,
+      _inverseConclusion, hTheoremNameCanonical, hTheoremNameLiteral,
+      hCertificate, hCheckedReservedStatement, hCheckedMathlibStatement,
+      hProjectConclusion, hMathlibConclusion, _hCheckedMathlibApplication,
+      _hForwardConclusion, _hInverseHomeomorphism, _hInverseConclusion,
+      _hLeft, _hRight⟩
+  let projectHomeomorphism : M ≃ₜ ThreeSphere :=
+    Classical.choice projectConclusion
+  let composedMathlibHomeomorphism :
+      M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) :=
+    projectHomeomorphism.trans forwardHomeomorphism
+  let composedMathlibConclusion :
+      Nonempty
+        (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) :=
+    ⟨composedMathlibHomeomorphism⟩
+  have hProjectHomeomorphism :
+      projectHomeomorphism = Classical.choice projectConclusion :=
+    rfl
+  have hComposedMathlibHomeomorphism :
+      composedMathlibHomeomorphism =
+        projectHomeomorphism.trans forwardHomeomorphism :=
+    rfl
+  have hComposedMathlibConclusion :
+      composedMathlibConclusion =
+        (⟨composedMathlibHomeomorphism⟩ :
+          Nonempty
+            (M ≃ₜ
+              Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) :=
+    rfl
+  have hComposedMathlibStatement :
+      composedMathlibConclusion = checkedMathlibStatement M := by
+    apply Subsingleton.elim
+  have hComposedEmbedding :
+      Topology.IsEmbedding composedMathlibHomeomorphism :=
+    composedMathlibHomeomorphism.isEmbedding
+  have hComposedBijective :
+      Function.Bijective composedMathlibHomeomorphism :=
+    composedMathlibHomeomorphism.bijective
+  have hComposedContinuous :
+      Continuous composedMathlibHomeomorphism :=
+    composedMathlibHomeomorphism.continuous
+  exact
+    ⟨theoremName, certificate, checkedReservedStatement,
+      checkedMathlibStatement, projectConclusion, projectHomeomorphism,
+      forwardHomeomorphism, composedMathlibHomeomorphism,
+      composedMathlibConclusion, hTheoremNameCanonical, hTheoremNameLiteral,
+      hCertificate, hCheckedReservedStatement, hCheckedMathlibStatement,
+      hProjectConclusion, hProjectHomeomorphism,
+      hComposedMathlibHomeomorphism, hComposedMathlibConclusion,
+      hComposedMathlibStatement, hComposedEmbedding, hComposedBijective,
+      hComposedContinuous⟩
+
+/-- Theorem contract for
+`closed_three_manifold_selected_mathlib_homeomorphism_of_reserved_final_certificate`. -/
+theorem closed_three_manifold_selected_mathlib_homeomorphism_of_reserved_final_certificate_eq :
+    @Poincare.closed_three_manifold_selected_mathlib_homeomorphism_of_reserved_final_certificate =
+      @Poincare.closed_three_manifold_selected_mathlib_homeomorphism_of_reserved_final_certificate :=
+  rfl
+
 end Poincare
