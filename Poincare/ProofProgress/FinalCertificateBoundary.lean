@@ -42143,4 +42143,37 @@ theorem reserved_named_final_conclusions_completionCriterion_of_nonempty_equatio
       @Poincare.reserved_named_final_conclusions_completionCriterion_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Reserved named quantified final conclusions on the current manifold surface.
+
+This turns the pointwise final-conclusion projection into a quantified
+conditional statement over every compact simply connected charted
+three-manifold in the final-certificate surface.  It still depends on the
+nonempty equation-boundary dependency package, so it does not declare the
+unconditional reserved theorem.
+-/
+theorem reserved_named_quantified_final_conclusions_completionCriterion_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u})
+    (witness : Type u) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty (M ≃ₜ ThreeSphere) ∧
+          Nonempty
+            (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) ∧
+          CompletionCriterionAtUniverse M ∧
+          CompletionCriterionAtUniverse witness := by
+  intro M _ _ _ _ _ _
+  exact
+    reserved_named_final_conclusions_completionCriterion_of_nonempty_equation_boundary_dependencies
+      dependencies M witness
+
+/-- Theorem contract for
+`reserved_named_quantified_final_conclusions_completionCriterion_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_named_quantified_final_conclusions_completionCriterion_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_named_quantified_final_conclusions_completionCriterion_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_named_quantified_final_conclusions_completionCriterion_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
