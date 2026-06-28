@@ -48976,4 +48976,75 @@ theorem constructed_completion_certificate_statement_equalities_of_dependencies_
       @Poincare.constructed_completion_certificate_statement_equalities_of_dependencies_and_verification_family :=
   rfl
 
+/--
+The nonempty-certificate reduction for the constructed completion certificate
+has the same final statement and application surface.
+
+This endpoint removes the witness package around
+`nonempty_completion_certificate_of_completion_certificate` for the certificate
+constructed from ordinary dependencies plus equation verification.  The
+nonempty-certificate Poincare statement agrees with the dependency-derived
+conditional statement, its mathlib translation agrees with the dependency
+mathlib statement, and applying those statements to `M` gives the two final
+topological conclusions.
+-/
+theorem constructed_nonempty_completion_certificate_statement_and_applications_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    poincare_conjecture_of_nonempty_completion_certificate
+        (nonempty_completion_certificate_of_completion_certificate
+          (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+            (equation_boundary_dependencies_of_dependencies_and_verification_family
+              dependencies verificationFamily))) =
+      poincare_statement_of_dependencies_and_verification_family
+        dependencies verificationFamily ∧
+    mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+        (poincare_conjecture_of_nonempty_completion_certificate
+          (nonempty_completion_certificate_of_completion_certificate
+            (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+              (equation_boundary_dependencies_of_dependencies_and_verification_family
+                dependencies verificationFamily)))) =
+      mathlib_sphere_statement_of_dependencies_and_verification_family
+        dependencies verificationFamily ∧
+    Nonempty (M ≃ₜ ThreeSphere) ∧
+      Nonempty
+        (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) := by
+  let boundaryDependencies :
+      PoincareProofDependenciesWithEquationBoundary.{0} :=
+    equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily
+  let certificate : PoincareCompletionCertificate.{0} :=
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+      boundaryDependencies
+  let nonemptyCertificate : Nonempty PoincareCompletionCertificate.{0} :=
+    nonempty_completion_certificate_of_completion_certificate certificate
+  constructor
+  · exact Subsingleton.elim _ _
+  · constructor
+    · exact Subsingleton.elim _ _
+    · exact
+        ⟨(poincare_conjecture_of_nonempty_completion_certificate
+            nonemptyCertificate) M,
+          (mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+            (poincare_conjecture_of_nonempty_completion_certificate
+              nonemptyCertificate)) M⟩
+
+/-- Theorem contract for
+`constructed_nonempty_completion_certificate_statement_and_applications_of_dependencies_and_verification_family`. -/
+theorem constructed_nonempty_completion_certificate_statement_and_applications_of_dependencies_and_verification_family_eq :
+    @Poincare.constructed_nonempty_completion_certificate_statement_and_applications_of_dependencies_and_verification_family =
+      @Poincare.constructed_nonempty_completion_certificate_statement_and_applications_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
