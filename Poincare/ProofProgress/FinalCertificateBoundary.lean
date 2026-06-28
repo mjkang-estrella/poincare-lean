@@ -967,6 +967,45 @@ theorem project_and_canonical_payload_and_final_certificate_of_smoothability_fin
   apply Subsingleton.elim
 
 /--
+The direct recognition-prefix boundary discharges each universe-indexed
+completion criterion, by projecting the canonical payload component from the
+same package-layer inputs.
+-/
+theorem completion_criterion_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+    (witness : Type u)
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    CompletionCriterionAtUniverse witness :=
+  (canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+    smoothability finiteExtinction recognitionPrefix).2.1.choose_spec witness
+
+/--
+The direct criterion theorem is exactly the witness projection from the
+canonical payload route over the same recognition-prefix package inputs.
+-/
+theorem completion_criterion_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix_eq
+    (witness : Type u)
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    completion_criterion_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+        witness smoothability finiteExtinction recognitionPrefix =
+      (canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+        smoothability finiteExtinction recognitionPrefix).2.1.choose_spec witness := by
+  apply Subsingleton.elim
+
+/--
 Projecting the remaining dependency package out of the certificate built from
 the three package inputs recovers the same repackaged dependency field.
 -/
