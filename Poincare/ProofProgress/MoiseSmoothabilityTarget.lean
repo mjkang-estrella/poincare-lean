@@ -390,4 +390,52 @@ theorem moiseSmoothability_targetFamily_of_threeSphereRecognition
     (moiseSmoothabilityRecognitionAssemblyPayload_of_threeSphereRecognition
       recognize)
 
+/--
+The field-based Moise smoothability assembly payload is equivalent to the
+theorem-shaped `ThreeSphere` recognition input: the payload projects recognition
+back out, and recognition constructs the full smoothability assembly payload.
+-/
+theorem nonempty_moiseSmoothabilityRecognitionAssemblyPayload_iff_threeSphereRecognition :
+    Nonempty (MoiseSmoothabilityRecognitionAssemblyPayload.{u}) ↔
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere)) := by
+  constructor
+  · intro payload
+    exact payload.some.recognizedSphere
+  · intro recognize
+    exact
+      ⟨moiseSmoothabilityRecognitionAssemblyPayload_of_threeSphereRecognition
+        recognize⟩
+
+/--
+Any inhabited Moise smoothability assembly payload supplies the two Moise
+targets and the full target-by-target recognition/smoothability/prerequisite
+family.
+-/
+theorem moiseSmoothability_targets_and_family_of_nonemptyAssemblyPayload
+    (payload : Nonempty (MoiseSmoothabilityRecognitionAssemblyPayload.{u})) :
+    MoiseSmoothThreeManifoldStatement.{u} ∧
+      MoiseSmoothabilityStatement.{u} ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere) ∧
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+            AdmitsSmoothThreeManifoldStructure M ∧
+            AdmitsSurgeryModelSmoothStructure M ∧
+            (∃ _t2 : T2Space M,
+              ∃ _charted : ChartedSpace ThreeManifoldModel M,
+              ∃ _simple : SimplyConnectedSpace M,
+              ∃ _compact : CompactSpace M,
+              ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+                Nonempty M)) := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ payload.smoothMoise
+    , payload.surgeryMoise
+    , moiseSmoothabilityRecognitionAssemblyPayload_targetFamily payload
+    ⟩
+
 end Poincare
