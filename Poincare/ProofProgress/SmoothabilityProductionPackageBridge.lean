@@ -117,6 +117,51 @@ theorem smoothabilityPackage_firstTwoMoiseFields_of_subobligationsPayload
   smoothabilityPackageInitialMoiseFieldsOfSubobligationsPayload payload
 
 /--
+A completed smoothability package projects to the same first-two-Moise-field
+prefix used by this bridge file.  This identifies the local frontier object as
+the actual opening segment of `SmoothabilityPackage`.
+-/
+def smoothabilityPackageInitialMoiseFieldsOfSmoothabilityPackage
+    (package : SmoothabilityPackage.{u}) :
+    SmoothabilityPackageInitialMoiseFields.{u} where
+  moiseLocalCharts := fun M _ _ _ _ _ =>
+    moise_local_charts_of_smoothability_package package M
+  moiseLocallyFiniteCoverRefinement := fun M _ _ _ _ _ =>
+    moise_locally_finite_cover_refinement_of_smoothability_package package M
+
+/--
+The package projection supplies exactly the local-chart and locally finite
+cover-refinement fields stored in `SmoothabilityPackage`.
+-/
+theorem smoothabilityPackageInitialMoiseFieldsOfSmoothabilityPackage_fields
+    (package : SmoothabilityPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    (smoothabilityPackageInitialMoiseFieldsOfSmoothabilityPackage
+        package).moiseLocalCharts M =
+        moise_local_charts_of_smoothability_package package M ∧
+      (smoothabilityPackageInitialMoiseFieldsOfSmoothabilityPackage
+        package).moiseLocallyFiniteCoverRefinement M =
+        moise_locally_finite_cover_refinement_of_smoothability_package
+          package M := by
+  constructor <;> rfl
+
+/--
+Both available routes to the initial Moise frontier are exposed together:
+completed smoothability packages project to the prefix, while a uniform
+sub-obligation payload constructs that same prefix directly.
+-/
+theorem smoothabilityPackage_initialMoiseFields_package_and_subobligationsPayload
+    (package : SmoothabilityPackage.{u})
+    (payload : UniformSmoothabilitySubobligationsPayload.{u}) :
+    SmoothabilityPackageInitialMoiseFields.{u} ∧
+      SmoothabilityPackageInitialMoiseFields.{u} :=
+  ⟨ smoothabilityPackageInitialMoiseFieldsOfSmoothabilityPackage package
+  , smoothabilityPackageInitialMoiseFieldsOfSubobligationsPayload payload
+  ⟩
+
+/--
 One-point recognition plus the smoothability sub-obligation payload supplies
 the first Moise field on the recognized source.
 -/
