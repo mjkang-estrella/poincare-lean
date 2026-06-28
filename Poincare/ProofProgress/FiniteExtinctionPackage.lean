@@ -156,6 +156,50 @@ theorem finite_extinction_surgery_package_nonempty_of_subobligations
       extinctionConclusionDerivation := conclusionDerivation }⟩
 
 /--
+The same shared analytic/surgery/Perelman package tuple and full
+finite-extinction sub-obligation statement also exposes the theorem-shaped
+finite-extinction payload: the constructed surgery package, its package
+statement, the statement rebuilt through the sub-obligation route, the
+derivation certificate, and the resulting finite-extinction witness.
+-/
+theorem finite_extinction_statement_payload_of_subobligations
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (subobligations :
+      FiniteExtinctionSubobligationsStatement
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control) :
+    ∃ _package : FiniteExtinctionSurgeryPackage n M,
+    ∃ _packageStatement : FiniteExtinctionStatement n M,
+    ∃ _viaSubobligationsStatement : FiniteExtinctionStatement n M,
+    ∃ _derivation :
+      HasFiniteExtinctionDerivation
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control,
+      FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases finite_extinction_surgery_package_nonempty_of_subobligations
+      analyticFoundation surgeryConstruction perelmanControl
+      subobligations with
+    ⟨package⟩
+  exact
+    ⟨ package
+    , finite_extinction_statement_of_surgery_package package
+    , finite_extinction_statement_of_subobligations_statement subobligations
+    , finite_extinction_derivation_of_subobligations_statement subobligations
+    , finite_extinction_via_statement_of_surgery_package package
+    ⟩
+
+/--
 Conditional bridge: the finite-extinction package-layer witness follows from
 one analytic package, one surgery construction package, one Perelman-control
 package, and the full finite-extinction sub-obligation payload for their shared
