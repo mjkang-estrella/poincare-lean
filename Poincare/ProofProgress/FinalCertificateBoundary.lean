@@ -1397,4 +1397,48 @@ theorem nonempty_final_certificate_iff_topologyPackage_of_finalCertificateMinima
       ⟨ completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
           inputs topology ⟩
 
+/--
+The fixed minimal package inputs plus a topology package discharge the public
+Poincare statement through the nonempty checked-certificate route.  This keeps
+the final projection aligned with the reserved endpoint reduction while still
+leaving the unconditional reserved theorem undeclared.
+-/
+theorem poincare_conjecture_statement_of_nonempty_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_nonempty_completion_certificate
+    ((nonempty_final_certificate_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+      inputs).2 topology)
+
+/--
+After the two canonical non-topology package inputs are fixed, the public
+Poincare statement together with an inhabited checked certificate is equivalent
+to the topology package.  The reverse direction constructs the nonempty
+certificate first, then projects the public statement through the standard
+nonempty-certificate endpoint bridge.
+-/
+theorem poincare_statement_and_nonempty_final_certificate_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u}) :
+    (PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u}) ↔
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage := by
+  constructor
+  · intro payload
+    exact
+      (nonempty_final_certificate_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+        inputs).1 payload.2
+  · intro topology
+    let nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u} :=
+      (nonempty_final_certificate_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+        inputs).2 topology
+    exact
+      ⟨ poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate
+      , nonemptyCertificate
+      ⟩
+
 end Poincare
