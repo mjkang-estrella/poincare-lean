@@ -3111,6 +3111,97 @@ theorem reserved_named_final_conclusion_at_witness_of_unpacked_aggregate_complet
   rfl
 
 /--
+Combined target and selected-witness conclusion from the grounded terminal
+aggregate bundle.  This is the compact consumer surface that carries both the
+target homeomorphism for a chosen compact simply connected Euclidean-charted
+3-manifold and the completion criterion for a chosen witness, under the
+reserved canonical theorem name.
+-/
+theorem reserved_named_target_and_witness_conclusion_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (N : Type u) [TopologicalSpace N] [T2Space N]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+    [SimplyConnectedSpace N] [CompactSpace N]
+    (witness : Type u) :
+    ∃ theoremName : String,
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ expandedConclusion :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          Nonempty (N ≃ₜ ThreeSphere),
+    ∃ targetConclusion : Nonempty (N ≃ₜ ThreeSphere),
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ selectedCriterion : CompletionCriterionAtUniverse witness,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      projectStatement =
+        poincare_statement_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M ∧
+      expandedConclusion =
+        expanded_root_conclusion_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M ∧
+      targetConclusion = expandedConclusion N ∧
+      targetConclusion =
+        target_homeomorphism_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M N ∧
+      selectedCriterion = completionCriterionFamily witness ∧
+      selectedCriterion =
+        completion_criterion_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M witness := by
+  rcases
+      reserved_named_final_conclusion_bundle_of_unpacked_aggregate_completion
+        dependencies smoothability grounded topologyStatement M with
+    ⟨theoremName, projectStatement, _mathlibStatement, expandedConclusion,
+      _canonicalPayload, _projectPayload, completionCriterionFamily,
+      hTheoremNameCanonical, hTheoremNameLiteral, hProjectStatement,
+      _hMathlibStatement, hExpandedConclusion, _hCanonicalPayload,
+      _hProjectPayload, hCompletionFamily⟩
+  let targetConclusion : Nonempty (N ≃ₜ ThreeSphere) :=
+    expandedConclusion N
+  let selectedCriterion : CompletionCriterionAtUniverse witness :=
+    completionCriterionFamily witness
+  have hTargetConclusionExpanded :
+      targetConclusion = expandedConclusion N :=
+    rfl
+  have hTargetConclusionDirect :
+      targetConclusion =
+        target_homeomorphism_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M N := by
+    apply Subsingleton.elim
+  have hSelectedFamily :
+      selectedCriterion = completionCriterionFamily witness :=
+    rfl
+  have hSelectedDirect :
+      selectedCriterion =
+        completion_criterion_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M witness :=
+    hSelectedFamily.trans (hCompletionFamily witness)
+  exact
+    ⟨theoremName, projectStatement, expandedConclusion, targetConclusion,
+      completionCriterionFamily, selectedCriterion, hTheoremNameCanonical,
+      hTheoremNameLiteral, hProjectStatement, hExpandedConclusion,
+      hTargetConclusionExpanded, hTargetConclusionDirect, hSelectedFamily,
+      hSelectedDirect⟩
+
+/-- Theorem contract for
+`reserved_named_target_and_witness_conclusion_of_unpacked_aggregate_completion`. -/
+theorem reserved_named_target_and_witness_conclusion_of_unpacked_aggregate_completion_eq :
+    @Poincare.reserved_named_target_and_witness_conclusion_of_unpacked_aggregate_completion =
+      @Poincare.reserved_named_target_and_witness_conclusion_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
