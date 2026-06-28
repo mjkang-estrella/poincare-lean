@@ -17761,4 +17761,62 @@ theorem no_finiteExtinctionPackage_requirement_at_of_current_interface
     finiteExtinctionPackage_requirement_false_at_of_current_interface
       finiteExtinctionRequirement M
 
+/--
+At any target in the dependency-package class, the current local interface also
+refutes a completed aggregate dependency package: its stored surgery component
+would provide exactly the finite-extinction package-layer target ruled out
+above.
+-/
+theorem poincareProofDependencies_false_at_of_current_interface
+    (dependencies : PoincareProofDependencies.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    False :=
+  no_finiteExtinctionPackage_target_at_of_current_interface M
+    (dependencies.surgery M)
+
+/--
+Equivalently, at any target in the dependency-package class, the current local
+interface proves that no ordinary aggregate dependency package is inhabited.
+-/
+theorem no_poincareProofDependencies_at_of_current_interface
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ¬ Nonempty PoincareProofDependencies.{u} := by
+  rintro ⟨dependencies⟩
+  exact
+    poincareProofDependencies_false_at_of_current_interface
+      dependencies M
+
+/--
+The strengthened equation-boundary aggregate dependency package is refuted by
+the same current-interface surgery blocker after forgetting its extra equation
+boundary data.
+-/
+theorem poincareProofDependenciesWithEquationBoundary_false_at_of_current_interface
+    (dependencies : PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    False :=
+  poincareProofDependencies_false_at_of_current_interface
+    (dependencies_of_equation_boundary_dependencies dependencies) M
+
+/--
+Equivalently, at any target in the dependency-package class, no strengthened
+equation-boundary aggregate dependency package is inhabited under the current
+local interface.
+-/
+theorem no_poincareProofDependenciesWithEquationBoundary_at_of_current_interface
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ¬ Nonempty PoincareProofDependenciesWithEquationBoundary.{u} := by
+  rintro ⟨dependencies⟩
+  exact
+    poincareProofDependenciesWithEquationBoundary_false_at_of_current_interface
+      dependencies M
+
 end Poincare
