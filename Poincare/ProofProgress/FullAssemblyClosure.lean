@@ -111,6 +111,46 @@ theorem homeomorph_to_onePoint_threeSpace_of_finalAssemblyPackageBoundaryInputs
       inputs.topology M (finiteExtinction M)
 
 /--
+The final package boundary exposes the stronger singleton-complement
+contractibility structure supplied by topology extraction.
+-/
+theorem compl_singleton_contractibleSpace_of_finalAssemblyPackageBoundaryInputs
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (x : M) :
+    ContractibleSpace ({x}ᶜ : Set M) := by
+  let finiteExtinction :=
+    finite_extinction_input_of_smoothability_and_surgery_packages
+      inputs.smoothability inputs.finiteExtinction
+  exact
+    compl_singleton_contractibleSpace_of_topology_package
+      inputs.topology M (finiteExtinction M) x
+
+/--
+The same final package boundary gives simple connectedness for both singleton
+and two-point complements.
+-/
+theorem complement_simplyConnectedSpace_payload_of_finalAssemblyPackageBoundaryInputs
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (x : M) {y : M} (hyx : y ≠ x) :
+    SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+      SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) := by
+  let finiteExtinction :=
+    finite_extinction_input_of_smoothability_and_surgery_packages
+      inputs.smoothability inputs.finiteExtinction
+  exact
+    ⟨ compl_singleton_simplyConnectedSpace_of_topology_package
+        inputs.topology M (finiteExtinction M) x
+    , twoPointComplement_simplyConnectedSpace_of_topology_package
+        inputs.topology M (finiteExtinction M) hyx
+    ⟩
+
+/--
 The final package boundary now exposes the single-puncture first-homotopy
 collapse that the topology package proves from finite extinction.
 -/
@@ -486,6 +526,37 @@ theorem homeomorph_to_onePoint_threeSpace_of_finalAssemblySubobligationBoundaryI
   homeomorph_to_onePoint_threeSpace_of_finalAssemblyPackageBoundaryInputs
     (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
     M
+
+/--
+The sub-obligation boundary inherits singleton-complement contractibility
+through the package-boundary conversion.
+-/
+theorem compl_singleton_contractibleSpace_of_finalAssemblySubobligationBoundaryInputs
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (x : M) :
+    ContractibleSpace ({x}ᶜ : Set M) :=
+  compl_singleton_contractibleSpace_of_finalAssemblyPackageBoundaryInputs
+    (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
+    M x
+
+/--
+The sub-obligation boundary inherits simple connectedness for both singleton
+and two-point complements.
+-/
+theorem complement_simplyConnectedSpace_payload_of_finalAssemblySubobligationBoundaryInputs
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (x : M) {y : M} (hyx : y ≠ x) :
+    SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+      SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+  complement_simplyConnectedSpace_payload_of_finalAssemblyPackageBoundaryInputs
+    (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
+    M x hyx
 
 /--
 The sub-obligation boundary inherits the single-puncture first-homotopy
