@@ -35,6 +35,56 @@ theorem compl_singleton_contractibleSpace_of_topology_package
       package M extinction) x
 
 /--
+The package-level single-puncture contractibility projection gives
+path-connectedness of every single-puncture complement.
+-/
+theorem compl_singleton_pathConnectedSpace_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M) :
+    PathConnectedSpace ({x}ᶜ : Set M) := by
+  letI : ContractibleSpace ({x}ᶜ : Set M) :=
+    compl_singleton_contractibleSpace_of_topology_package
+      package M extinction x
+  infer_instance
+
+/--
+The package-level single-puncture contractibility projection gives simple
+connectedness of every single-puncture complement.
+-/
+theorem compl_singleton_simplyConnectedSpace_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M) :
+    SimplyConnectedSpace ({x}ᶜ : Set M) := by
+  letI : ContractibleSpace ({x}ᶜ : Set M) :=
+    compl_singleton_contractibleSpace_of_topology_package
+      package M extinction x
+  infer_instance
+
+/--
+Consequently, every based fundamental group of a single-puncture complement
+selected by the topology package is trivial.
+-/
+theorem compl_singleton_fundamentalGroup_subsingleton_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) := by
+  letI : SimplyConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_simplyConnectedSpace_of_topology_package
+      package M extinction x
+  change Subsingleton (Path.Homotopic.Quotient basepoint basepoint)
+  infer_instance
+
+/--
 The package-level homeomorphism projection transports any two-puncture
 complement to a punctured Euclidean chart, hence makes it simply connected.
 -/
@@ -66,6 +116,27 @@ theorem twoPointComplement_fundamentalGroup_subsingleton_of_topology_package
   twoPointComplement_fundamentalGroup_subsingleton_of_homeomorph_to_onePoint_threeSpace
     (homeomorph_to_onePoint_threeSpace_of_topology_package
       package M extinction) hyx basepoint
+
+/--
+The same package-level two-puncture collapse, stated for the first homotopy
+group.
+-/
+theorem twoPointComplement_piOne_subsingleton_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Subsingleton
+      (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  exact
+    ((HomotopyGroup.pi1EquivFundamentalGroup
+      (X := (({x} ∪ {y})ᶜ : Set M))
+      (x := basepoint)).subsingleton_congr).mpr
+        (twoPointComplement_fundamentalGroup_subsingleton_of_topology_package
+          package M extinction hyx basepoint)
 
 /--
 Named production input for the first topology-package field: each finite
