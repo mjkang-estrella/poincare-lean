@@ -833,4 +833,51 @@ theorem package_requirements_and_project_canonical_payload_of_grounded_and_topol
       grounded topologyPackage
   ⟩
 
+/--
+Grounded finite extinction and a concrete topology package expose the finite
+Ricci-flow milestone requirements, the package-layer requirements, the compact
+finite-extinction package/statement/witness family, and both public/canonical
+certificate-facing payload layers in one theorem-shaped endpoint.
+-/
+theorem milestone_requirements_package_requirements_and_project_canonical_payload_of_grounded_and_topology_package
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.finiteExtinction ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+            FiniteExtinctionStatement n M ∧
+              FiniteExtinctionByRicciFlowWithSurgery M) ∧
+      PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let milestonePayload :=
+    milestone_requirements_and_package_statement_witness_family_of_grounded
+      grounded
+  exact
+    ⟨ milestonePayload.1
+    , milestonePayload.2.1
+    , milestonePayload.2.2.1
+    , finiteExtinctionPackage_requirement_of_grounded grounded
+    , topologyPackage
+    , milestonePayload.2.2.2
+    , project_and_canonical_certificate_payload_of_grounded_and_topology_package
+        grounded topologyPackage
+    ⟩
+
 end Poincare
