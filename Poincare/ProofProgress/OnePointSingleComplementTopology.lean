@@ -157,6 +157,36 @@ theorem onePoint_threeSpace_compl_singleton_piZero_exists_unique
   exact ⟨Classical.choice inferInstance, fun homotopyClass => Subsingleton.elim _ _⟩
 
 /--
+Simple-connectedness of the singleton complement collapses its based
+fundamental group.
+-/
+theorem onePoint_threeSpace_compl_singleton_fundamentalGroup_subsingleton
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (x : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    Subsingleton (FundamentalGroup
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) := by
+  letI : SimplyConnectedSpace
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_compl_singleton_simplyConnectedSpace p
+  change Subsingleton (Path.Homotopic.Quotient x x)
+  infer_instance
+
+/--
+The equivalent first homotopy group formulation of singleton-complement
+triviality.
+-/
+theorem onePoint_threeSpace_compl_singleton_piOne_subsingleton
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (x : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    Subsingleton (HomotopyGroup.Pi 1
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) := by
+  exact
+    ((HomotopyGroup.pi1EquivFundamentalGroup
+      (X := ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+      (x := x)).subsingleton_congr).mpr
+        (onePoint_threeSpace_compl_singleton_fundamentalGroup_subsingleton p x)
+
+/--
 The singleton complement is connected as a direct consequence of the named
 path-connectedness theorem above.
 -/
