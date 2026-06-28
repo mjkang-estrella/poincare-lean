@@ -364,4 +364,79 @@ theorem onePoint_threeSpace_compl_singleton_euclidean_topology_package
     , onePoint_threeSpace_compl_singleton_pathComponent_eq_univ_of_contractible p
     ⟩
 
+/--
+The singleton complement package with both the concrete Euclidean chart and the
+canonical low-homotopy uniqueness data at a chosen basepoint.  This is the
+combined endpoint needed by puncture-topology consumers that require ordinary
+topology, simple/local path-connectedness, path-component collapse, and
+canonical trivial `π₀`/`π₁` objects from one source.
+-/
+theorem onePoint_threeSpace_compl_singleton_euclidean_lowHomotopy_unique_package
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (basepoint : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    Nonempty
+        (({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+          EuclideanSpace ℝ (Fin 3)) ∧
+      ContractibleSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      Nonempty
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      PathConnectedSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      ConnectedSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      SimplyConnectedSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      LocPathConnectedSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      Nonempty (Unique
+        (ZerothHomotopy
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))) ∧
+      Nonempty (Unique
+        (HomotopyGroup.Pi 0
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint)) ∧
+      Nonempty (Unique
+        (FundamentalGroup
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint)) ∧
+      Nonempty (Unique
+        (HomotopyGroup.Pi 1
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint)) ∧
+      (∀ x y : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty (Path x y)) ∧
+      (∀ x : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        pathComponent x = Set.univ) := by
+  rcases onePoint_threeSpace_compl_singleton_euclidean_topology_package p with
+    ⟨ chart
+    , contractible
+    , nonempty
+    , pathConnected
+    , connected
+    , simplyConnected
+    , locPathConnected
+    , pathNonempty
+    , pathComponentEqUniv
+    ⟩
+  rcases
+    onePoint_threeSpace_compl_singleton_lowHomotopy_unique_package
+      p basepoint with
+    ⟨zerothUnique, piZeroUnique, fundamentalGroupUnique, piOneUnique⟩
+  exact
+    ⟨ chart
+    , contractible
+    , nonempty
+    , pathConnected
+    , connected
+    , simplyConnected
+    , locPathConnected
+    , zerothUnique
+    , piZeroUnique
+    , fundamentalGroupUnique
+    , piOneUnique
+    , pathNonempty
+    , pathComponentEqUniv
+    ⟩
+
 end Poincare
