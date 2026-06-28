@@ -535,4 +535,138 @@ theorem project_and_canonical_certificate_payload_of_grounded_and_topology_extra
       ⟩ := by
   apply Subsingleton.elim
 
+/--
+A concrete topology extraction package supplies the theorem-shaped topology
+extraction statement needed by the grounded finite-extinction project route.
+-/
+theorem poincare_statement_of_grounded_and_topology_package
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_grounded_and_topology_extraction_statement
+    grounded
+    (extinction_topology_extraction_statement_of_topology_package
+      topologyPackage)
+
+/-- The topology-package project route is the extraction-statement route after projection. -/
+theorem poincare_statement_of_grounded_and_topology_package_eq
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_statement_of_grounded_and_topology_package grounded topologyPackage =
+      poincare_statement_of_grounded_and_topology_extraction_statement
+        grounded
+        (extinction_topology_extraction_statement_of_topology_package
+          topologyPackage) := by
+  apply Subsingleton.elim
+
+/--
+A concrete topology extraction package supplies the project-level payload from
+grounded universal finite extinction.
+-/
+theorem poincare_payload_of_grounded_and_topology_package
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_payload_of_grounded_and_topology_extraction_statement
+    grounded
+    (extinction_topology_extraction_statement_of_topology_package
+      topologyPackage)
+
+/-- The topology-package project payload is the extraction-statement payload after projection. -/
+theorem poincare_payload_of_grounded_and_topology_package_eq
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    poincare_payload_of_grounded_and_topology_package grounded topologyPackage =
+      poincare_payload_of_grounded_and_topology_extraction_statement
+        grounded
+        (extinction_topology_extraction_statement_of_topology_package
+          topologyPackage) := by
+  apply Subsingleton.elim
+
+/--
+A concrete topology extraction package supplies the canonical payload from
+grounded universal finite extinction.
+-/
+theorem canonical_certificate_payload_of_grounded_and_topology_package
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  canonical_certificate_payload_of_grounded_and_topology_extraction_statement
+    grounded
+    (extinction_topology_extraction_statement_of_topology_package
+      topologyPackage)
+
+/-- The topology-package canonical payload is the extraction-statement payload after projection. -/
+theorem canonical_certificate_payload_of_grounded_and_topology_package_eq
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_certificate_payload_of_grounded_and_topology_package
+        grounded topologyPackage =
+      canonical_certificate_payload_of_grounded_and_topology_extraction_statement
+        grounded
+        (extinction_topology_extraction_statement_of_topology_package
+          topologyPackage) := by
+  apply Subsingleton.elim
+
+/--
+Grounded universal finite extinction and a concrete topology extraction package
+close both public payload layers: project-level Poincare payload and canonical
+completion payload.
+-/
+theorem project_and_canonical_certificate_payload_of_grounded_and_topology_package
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :=
+  project_and_canonical_certificate_payload_of_grounded_and_topology_extraction_statement
+    grounded
+    (extinction_topology_extraction_statement_of_topology_package
+      topologyPackage)
+
+/-- The concrete-package bundle is exactly the extraction-statement bundle after projection. -/
+theorem project_and_canonical_certificate_payload_of_grounded_and_topology_package_eq
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    project_and_canonical_certificate_payload_of_grounded_and_topology_package
+        grounded topologyPackage =
+      project_and_canonical_certificate_payload_of_grounded_and_topology_extraction_statement
+        grounded
+        (extinction_topology_extraction_statement_of_topology_package
+          topologyPackage) := by
+  apply Subsingleton.elim
+
+/--
+The grounded/topology-package route discharges each universe-indexed completion
+criterion through the package-projected topology extraction statement.
+-/
+theorem canonical_completion_criterion_of_grounded_and_topology_package
+    (witness : Type u)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    CompletionCriterionAtUniverse witness :=
+  canonical_completion_criterion_of_grounded_and_topology_extraction_statement
+    witness grounded
+    (extinction_topology_extraction_statement_of_topology_package
+      topologyPackage)
+
+/-- The topology-package criterion route is the extraction-statement criterion after projection. -/
+theorem canonical_completion_criterion_of_grounded_and_topology_package_eq
+    (witness : Type u)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    canonical_completion_criterion_of_grounded_and_topology_package
+        witness grounded topologyPackage =
+      canonical_completion_criterion_of_grounded_and_topology_extraction_statement
+        witness grounded
+        (extinction_topology_extraction_statement_of_topology_package
+          topologyPackage) := by
+  apply Subsingleton.elim
+
 end Poincare
