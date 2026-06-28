@@ -2224,6 +2224,61 @@ theorem canonical_named_mathlib_payload_of_unpacked_aggregate_completion_eq :
   rfl
 
 /--
+The canonical named aggregate payload specializes to an arbitrary target
+manifold conclusion.  This is the user-facing homeomorphism projection of the
+grounded terminal aggregate route: the project statement carried by the
+reserved-name payload yields `N ≃ₜ ThreeSphere` for every compact simply
+connected Euclidean-charted 3-manifold target.
+-/
+theorem canonical_named_target_homeomorphism_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (N : Type u) [TopologicalSpace N] [T2Space N]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+    [SimplyConnectedSpace N] [CompactSpace N] :
+    ∃ theoremName : String,
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ targetConclusion : Nonempty (N ≃ₜ ThreeSphere),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement ∧
+      targetConclusion = projectStatement N := by
+  rcases
+      canonical_named_mathlib_payload_of_unpacked_aggregate_completion
+        dependencies smoothability grounded topologyStatement M with
+    ⟨theoremName, _aggregateCanonicalTarget, projectStatement,
+      mathlibStatement, _aggregateCompletion, _canonicalPayload,
+      hTheoremNameCanonical, hTheoremNameLiteral, _hProjectStatement,
+      hMathlibStatement, _hCanonicalPayload, _hCompletionCanonical⟩
+  let targetConclusion : Nonempty (N ≃ₜ ThreeSphere) :=
+    projectStatement N
+  have hTargetConclusion :
+      targetConclusion = projectStatement N :=
+    rfl
+  exact
+    ⟨theoremName, projectStatement, mathlibStatement, targetConclusion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hMathlibStatement,
+      hTargetConclusion⟩
+
+/-- Theorem contract for
+`canonical_named_target_homeomorphism_of_unpacked_aggregate_completion`. -/
+theorem canonical_named_target_homeomorphism_of_unpacked_aggregate_completion_eq :
+    @Poincare.canonical_named_target_homeomorphism_of_unpacked_aggregate_completion =
+      @Poincare.canonical_named_target_homeomorphism_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
