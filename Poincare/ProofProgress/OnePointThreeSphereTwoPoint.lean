@@ -308,4 +308,39 @@ theorem onePoint_threeSpace_twoPointComplement_nonempty_transport_payload_and_co
         hqp basepoint
     ⟩
 
+/--
+Consumer-facing topology collapse of the transported two-puncture route:
+the source complement is simply connected and recognized as a punctured
+Euclidean three-space, while the transported `ThreeSphere` complement retains
+its path-nonempty and path-component collapse fields.
+-/
+theorem onePoint_threeSpace_twoPointComplement_source_recognition_and_target_path_fields
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    SimplyConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      (∃ puncture : EuclideanSpace ℝ (Fin 3),
+        Nonempty
+          ((({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+      (∀ x y :
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere),
+          Nonempty (Path x y)) ∧
+      (∀ x :
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere),
+          pathComponent x = Set.univ) := by
+  let payload :=
+    onePoint_threeSpace_twoPointComplement_transport_payload hqp basepoint
+  exact
+    ⟨ payload.sourceSimplyConnected
+    , payload.sourceFlatRecognition.puncturedEuclideanChart
+    , payload.targetCompleteLowHomotopy.pathNonempty
+    , payload.targetCompleteLowHomotopy.pathComponentEqUniv
+    ⟩
+
 end Poincare
