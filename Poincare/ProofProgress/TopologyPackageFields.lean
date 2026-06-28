@@ -307,6 +307,78 @@ theorem topology_package_final_extractor_lifted_derivation_and_puncture_payload_
   ⟩
 
 /--
+Consumer payload for the topology-extraction pillar.  It retains the concrete
+topology extraction package, its package-layer requirement, the final extractor
+statement, the lifted-homeomorphism derivation route, and the target-family
+recognition/puncture payload produced from that same package.
+-/
+structure ExtinctionTopologyCompleteConsumerPayload where
+  topologyPackage : ExtinctionTopologyExtractionPackage.{u}
+  topologyPackageRequirement : ExtinctionTopologyExtractionPackage.{u}
+  topologyStatement : ExtinctionTopologyExtractionStatement.{u}
+  topologyStatement_eq :
+    topologyStatement =
+      extinction_topology_extraction_statement_of_topology_package
+        topologyPackage
+  extinctionImpliesSphere : ExtinctionImpliesSphereStatement.{u}
+  liftedHomeomorphismDerivation :
+    ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u}
+  derivationPunctureFamily :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      (_extinction : FiniteExtinctionByRicciFlowWithSurgery M),
+        ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+          homeomorphism =
+              homeomorphism_of_topology_package topologyPackage M
+                _extinction ∧
+          ExtinctionTopologyClassificationSubobligationsPayload
+            M _extinction ∧
+          ExtinctionTopologySimplyConnectedRecognitionStatement
+            M _extinction ∧
+          ExtinctionTopologySphericalTrivialQuotientStatement
+            M _extinction ∧
+          ExtinctionTopologySphericalHomeomorphismLiftStatement
+            M _extinction ∧
+          ExtinctionTopologyHomeomorphismAssemblyStatement
+            M _extinction homeomorphism ∧
+          ExtinctionTopologyHomeomorphismDerivationStatement
+            M _extinction homeomorphism ∧
+          ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+            M _extinction homeomorphism ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          (∀ x : M, ContractibleSpace ({x}ᶜ : Set M)) ∧
+          (∀ {x y : M} (_hyx : y ≠ x)
+            (basepoint : (({x} ∪ {y})ᶜ : Set M)),
+              SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                Subsingleton
+                  (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+                    basepoint))
+
+/--
+A completed topology extraction package constructs the complete topology
+consumer payload, without forcing downstream final-certificate code to reopen
+the final extractor and puncture-transport projections separately.
+-/
+theorem extinctionTopology_completeConsumerPayload_of_topologyPackage
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    Nonempty (ExtinctionTopologyCompleteConsumerPayload.{u}) :=
+  ⟨ { topologyPackage := package
+      topologyPackageRequirement := package
+      topologyStatement :=
+        extinction_topology_extraction_statement_of_topology_package
+          package
+      topologyStatement_eq := rfl
+      extinctionImpliesSphere :=
+        extinction_implies_sphere_of_topology_package package
+      liftedHomeomorphismDerivation :=
+        topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+          package
+      derivationPunctureFamily :=
+        topology_package_extraction_derivation_and_puncture_payload_family
+          package } ⟩
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
