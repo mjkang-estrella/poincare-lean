@@ -14640,4 +14640,62 @@ theorem stationary_zero_full_analytic_foundation_payload_of_production_data_curr
       hScalarCurvatureEvolution, hCurvatureNormEvolution,
       hCurvatureEvolution ⟩
 
+/--
+Concrete stationary-zero production data also exposes the theorem-shaped
+analytic-foundation statement projected from the same stored package, together
+with the full downstream boundary payload for the derived stationary-zero flow.
+-/
+theorem stationary_zero_full_analytic_foundation_statement_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    let flow :=
+      stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci
+    AnalyticFoundationSubobligationsPayload flow ∧
+      ∃ package :
+          RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M,
+        ricci_flow_data_of_analytic_foundation_package package = flow ∧
+        RicciFlowAnalyticFoundationStatement
+          ThreeManifoldModelWithCorners n M ∧
+        AnalyticFoundationWithEquationBoundaryStatement flow ∧
+        HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow) ∧
+        HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow) ∧
+        HasMetricEvolutionEquation flow ∧
+        HasRicciTensorEvolutionEquation flow ∧
+        HasScalarCurvatureEvolutionEquation flow ∧
+        HasCurvatureNormEvolutionInequality flow ∧
+        HasCurvatureEvolutionEquations flow := by
+  rcases
+    stationary_zero_full_analytic_foundation_payload_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data with
+    ⟨ hSubobligations, package, hflow, hBoundary, hRicciContraction,
+      hScalarCurvature, hMetricEvolution, hRicciTensorEvolution,
+      hScalarCurvatureEvolution, hCurvatureNormEvolution,
+      hCurvatureEvolution ⟩
+  exact
+    ⟨ hSubobligations, package, hflow,
+      analytic_foundation_statement_of_analytic_foundation_package package,
+      hBoundary, hRicciContraction, hScalarCurvature, hMetricEvolution,
+      hRicciTensorEvolution, hScalarCurvatureEvolution,
+      hCurvatureNormEvolution, hCurvatureEvolution ⟩
+
 end Poincare
