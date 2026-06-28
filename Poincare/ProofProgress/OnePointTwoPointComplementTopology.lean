@@ -119,6 +119,58 @@ theorem onePoint_threeSpace_twoPointComplement_piZero_exists_unique
   exact ⟨Classical.choice inferInstance, fun homotopyClass => Subsingleton.elim _ _⟩
 
 /--
+The first homotopy group formulation of the two-point complement fundamental
+group collapse.
+-/
+theorem onePoint_threeSpace_twoPointComplement_piOne_subsingleton
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (x : (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    Subsingleton (HomotopyGroup.Pi 1
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) := by
+  exact
+    ((HomotopyGroup.pi1EquivFundamentalGroup
+      (X := (({p} ∪ {q})ᶜ :
+        Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+      (x := x)).subsingleton_congr).mpr
+        (onePoint_threeSpace_twoPointComplement_fundamentalGroup_subsingleton
+          hqp x)
+
+/--
+Any two first homotopy group classes in the two-point complement agree.
+-/
+theorem onePoint_threeSpace_twoPointComplement_piOne_eq
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (x : (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (a b :
+      HomotopyGroup.Pi 1
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) :
+    a = b := by
+  letI : Subsingleton
+      (HomotopyGroup.Pi 1
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) :=
+    onePoint_threeSpace_twoPointComplement_piOne_subsingleton hqp x
+  exact Subsingleton.elim _ _
+
+/--
+The first homotopy group of the two-point complement has a unique class.
+-/
+theorem onePoint_threeSpace_twoPointComplement_piOne_exists_unique
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (x : (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    ∃ baseClass :
+      HomotopyGroup.Pi 1
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x,
+      ∀ homotopyClass :
+        HomotopyGroup.Pi 1
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x,
+        homotopyClass = baseClass := by
+  letI : Subsingleton
+      (HomotopyGroup.Pi 1
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) :=
+    onePoint_threeSpace_twoPointComplement_piOne_subsingleton hqp x
+  exact ⟨Classical.choice inferInstance, fun homotopyClass => Subsingleton.elim _ _⟩
+
+/--
 Any two zeroth-homotopy classes in the two-point complement agree.
 -/
 theorem onePoint_threeSpace_twoPointComplement_zerothHomotopy_mk_eq
