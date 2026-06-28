@@ -1411,4 +1411,66 @@ theorem poincare_statement_completion_certificate_and_completion_criteria_of_smo
     , fun witness => completion_criterion_of_completion_certificate
         witness certificate ⟩
 
+/--
+The smoothability package, grounded finite-extinction pillar, and topology
+package expose the full finite-extinction milestone route together with the
+reconstructed remaining dependency package, inhabited checked certificate,
+public statement, and completion-criterion family used by final assembly.
+-/
+theorem milestone_requirements_remaining_dependency_certificate_and_completion_criteria_of_smoothability_grounded_and_topology_package
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.finiteExtinction ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+            FiniteExtinctionStatement n M ∧
+              FiniteExtinctionByRicciFlowWithSurgery M) ∧
+      RemainingDependencyPackage.{u} ∧
+      PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let milestonePayload :=
+    milestone_requirements_and_package_statement_witness_family_of_grounded
+      grounded
+  let remaining :=
+    remainingDependencyPackage_of_smoothability_grounded_and_topology_package
+      smoothability grounded topologyPackage
+  let certificate :=
+    completion_certificate_of_smoothability_grounded_and_topology_package
+      smoothability grounded topologyPackage
+  exact
+    ⟨ milestonePayload.1
+    , milestonePayload.2.1
+    , milestonePayload.2.2.1
+    , smoothability
+    , finiteExtinctionPackage_requirement_of_grounded grounded
+    , topologyPackage
+    , milestonePayload.2.2.2
+    , remaining
+    , poincare_conjecture_of_completion_certificate certificate
+    , ⟨certificate⟩
+    , fun witness => completion_criterion_of_completion_certificate
+        witness certificate
+    ⟩
+
 end Poincare
