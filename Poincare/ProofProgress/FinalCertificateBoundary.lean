@@ -48332,4 +48332,66 @@ theorem mathlib_sphere_conclusion_of_dependencies_and_verification_family_eq :
       @Poincare.mathlib_sphere_conclusion_of_dependencies_and_verification_family :=
   rfl
 
+/--
+Conditional project Poincare statement from ordinary dependencies plus
+equation verification.
+
+This abstracts the direct per-manifold conclusion into the theorem-level
+statement surface used by the reserved final certificate.
+-/
+theorem poincare_statement_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    PoincareConjectureStatement.{0} := by
+  intro M _ _ _ _ _
+  exact
+    poincare_conclusion_of_dependencies_and_verification_family
+      dependencies verificationFamily M
+
+/-- Theorem contract for
+`poincare_statement_of_dependencies_and_verification_family`. -/
+theorem poincare_statement_of_dependencies_and_verification_family_eq :
+    @Poincare.poincare_statement_of_dependencies_and_verification_family =
+      @Poincare.poincare_statement_of_dependencies_and_verification_family :=
+  rfl
+
+/--
+Conditional mathlib-shaped Poincare statement from ordinary dependencies plus
+equation verification.
+
+This abstracts the direct mathlib-sphere conclusion into the theorem-level
+mathlib-shaped statement surface selected by the final certificate.
+-/
+theorem mathlib_sphere_statement_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    MathlibTopologicalPoincareThreeStatement.{0} := by
+  intro M _ _ _ _ _
+  exact
+    mathlib_sphere_conclusion_of_dependencies_and_verification_family
+      dependencies verificationFamily M
+
+/-- Theorem contract for
+`mathlib_sphere_statement_of_dependencies_and_verification_family`. -/
+theorem mathlib_sphere_statement_of_dependencies_and_verification_family_eq :
+    @Poincare.mathlib_sphere_statement_of_dependencies_and_verification_family =
+      @Poincare.mathlib_sphere_statement_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
