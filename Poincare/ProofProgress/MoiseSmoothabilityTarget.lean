@@ -132,4 +132,38 @@ theorem moiseSmoothabilityStatement_and_recognized_smoothStructure_family_of_thr
         ⟨h, admitsSurgeryModelSmoothStructure_of_homeomorph_threeSphere h⟩
     ⟩
 
+/--
+`ThreeSphere` recognition exposes the corrected Moise statement, the recognized
+smooth-structure payload, and the full transported surgery-prerequisite package
+for every compact simply connected target.
+-/
+theorem moiseSmoothabilityStatement_recognized_smoothStructure_and_surgeryPrerequisites_family_of_threeSphereRecognition
+    (recognize :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere)) :
+    MoiseSmoothabilityStatement.{u} ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere) ∧
+            AdmitsSurgeryModelSmoothStructure M ∧
+            (∃ _t2 : T2Space M,
+              ∃ _charted : ChartedSpace ThreeManifoldModel M,
+              ∃ _simple : SimplyConnectedSpace M,
+              ∃ _compact : CompactSpace M,
+              ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+                Nonempty M)) := by
+  exact
+    ⟨ moiseSmoothabilityStatement_of_threeSphereRecognition recognize
+    , fun M _top _t2 _charted _simple _compact =>
+        let h := recognize M
+        ⟨ h
+        , admitsSurgeryModelSmoothStructure_of_homeomorph_threeSphere h
+        , smoothability_surgery_prerequisites_of_homeomorph_to_onePoint_threeSpace
+            (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h)
+        ⟩
+    ⟩
+
 end Poincare
