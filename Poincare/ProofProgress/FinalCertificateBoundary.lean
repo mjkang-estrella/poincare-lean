@@ -655,6 +655,61 @@ theorem canonical_payload_and_final_certificate_of_smoothability_finiteExtinctio
   apply Subsingleton.elim
 
 /--
+The two canonical package inputs plus the topology package also close the
+project-level payload: the Poincare statement, its completion payload, and the
+checked completion certificate.  This packages the topology extraction
+statement supplied by the topology package with the universal finite-extinction
+statement assembled from smoothability and finite extinction.
+-/
+theorem project_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let finiteExtinction : UniversalFiniteExtinctionStatement.{u} :=
+    universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+      inputs.smoothability inputs.finiteExtinction
+  let topologyStatement : ExtinctionTopologyExtractionStatement.{u} :=
+    extinction_topology_extraction_statement_of_topology_package topology
+  ⟨ poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+      finiteExtinction topologyStatement
+  , poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+      finiteExtinction topologyStatement
+  , completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+      inputs topology
+  ⟩
+
+/--
+The minimal-input/topology-package project payload is exactly the tuple formed
+from the assembled universal finite-extinction statement, the topology
+package's extraction statement, and the checked certificate constructor.
+-/
+theorem project_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage_eq
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    project_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+        inputs topology =
+      (let finiteExtinction : UniversalFiniteExtinctionStatement.{u} :=
+        universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+          inputs.smoothability inputs.finiteExtinction
+      let topologyStatement : ExtinctionTopologyExtractionStatement.{u} :=
+        extinction_topology_extraction_statement_of_topology_package topology
+      ⟨ poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+          finiteExtinction topologyStatement
+      , poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+          finiteExtinction topologyStatement
+      , completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          inputs topology
+      ⟩) := by
+  apply Subsingleton.elim
+
+/--
 The simply connected extinction-recognition prefix now supplies the topology
 package-layer requirement consumed by final assembly.
 -/
