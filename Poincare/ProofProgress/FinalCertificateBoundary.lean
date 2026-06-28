@@ -313,6 +313,48 @@ theorem canonical_payload_and_final_certificate_of_remainingDependencyPackage_un
   apply Subsingleton.elim
 
 /--
+The remaining dependency package, universal finite extinction, and a
+theorem-shaped topology extraction statement also close the project-level
+certificate-facing payload: the Poincare project statement, its completion
+payload, and the checked completion certificate.
+-/
+theorem project_payload_and_final_certificate_of_remainingDependencyPackage_universalFiniteExtinctionStatement_and_topologyExtractionStatement
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  ⟨ poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+      finiteExtinction topologyStatement
+  , poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+      finiteExtinction topologyStatement
+  , completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+      dependencies finiteExtinction
+  ⟩
+
+/--
+The project-level topology-extraction-statement final payload is exactly the
+tuple of the project statement route, project payload route, and checked
+certificate constructor using the same universal finite-extinction statement.
+-/
+theorem project_payload_and_final_certificate_of_remainingDependencyPackage_universalFiniteExtinctionStatement_and_topologyExtractionStatement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    project_payload_and_final_certificate_of_remainingDependencyPackage_universalFiniteExtinctionStatement_and_topologyExtractionStatement
+        dependencies finiteExtinction topologyStatement =
+      ⟨ poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+          finiteExtinction topologyStatement
+      , poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+          finiteExtinction topologyStatement
+      , completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+          dependencies finiteExtinction
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
 Grounded universal finite extinction and a theorem-shaped topology extraction
 statement close the same canonical certificate-facing payload, with the
 grounded pillar first converted to the legacy universal finite-extinction
@@ -367,6 +409,66 @@ theorem canonical_payload_and_final_certificate_of_remainingDependencyPackage_gr
           (universalFiniteExtinctionStatement_of_grounded grounded)
           topologyStatement
       , canonical_completion_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+          (universalFiniteExtinctionStatement_of_grounded grounded)
+          topologyStatement
+      , completion_certificate_of_remainingDependencyPackage_and_groundedUniversalFiniteExtinctionStatement
+          dependencies grounded
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
+Grounded universal finite extinction and theorem-shaped topology extraction
+close the project-level certificate-facing payload, with the checked
+certificate built from the direct grounded certificate constructor.
+-/
+theorem project_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+    (dependencies : RemainingDependencyPackage.{u})
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  ⟨ poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+      (universalFiniteExtinctionStatement_of_grounded grounded)
+      topologyStatement
+  , poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+      (universalFiniteExtinctionStatement_of_grounded grounded)
+      topologyStatement
+  , completion_certificate_of_remainingDependencyPackage_and_groundedUniversalFiniteExtinctionStatement
+      dependencies grounded
+  ⟩
+
+/--
+The grounded project-level final payload is exactly the universal
+finite-extinction/topology-extraction project payload after converting the
+grounded statement to the legacy universal finite-extinction interface.
+-/
+theorem project_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    project_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+        dependencies grounded topologyStatement =
+      project_payload_and_final_certificate_of_remainingDependencyPackage_universalFiniteExtinctionStatement_and_topologyExtractionStatement
+        dependencies (universalFiniteExtinctionStatement_of_grounded grounded)
+        topologyStatement := by
+  apply Subsingleton.elim
+
+/--
+The grounded project-level final payload is the tuple of the project statement
+route, project payload route, and direct grounded certificate constructor.
+-/
+theorem project_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement_tuple_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    project_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+        dependencies grounded topologyStatement =
+      ⟨ poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+          (universalFiniteExtinctionStatement_of_grounded grounded)
+          topologyStatement
+      , poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
           (universalFiniteExtinctionStatement_of_grounded grounded)
           topologyStatement
       , completion_certificate_of_remainingDependencyPackage_and_groundedUniversalFiniteExtinctionStatement
