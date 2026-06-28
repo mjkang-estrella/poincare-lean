@@ -17595,6 +17595,40 @@ theorem no_direct_surgery_perelman_package_target_of_current_interface
   exact no_surgery_perelman_package_payload_of_current_interface flow payload
 
 /--
+Any asserted surgery package-layer requirement contradicts the current local
+interface as soon as it is evaluated at a target in the dependency-package
+class.  This is the direct package-layer form of the singularity-model blowup
+classification blocker, before passing through finite extinction.
+-/
+theorem surgeryPackage_requirement_false_at_of_current_interface
+    (surgeryRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.surgeryPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    False :=
+  no_direct_surgery_perelman_package_target_of_current_interface M
+    (surgeryRequirement M)
+
+/--
+Equivalently, the current local interface refutes the direct surgery
+package-layer requirement at any target in the dependency-package class.  This
+records the blocker at the package layer shared by both Ricci-flow-with-surgery
+and Perelman singularity-control milestones.
+-/
+theorem no_surgeryPackage_requirement_at_of_current_interface
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ¬ dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.surgeryPackage := by
+  intro surgeryRequirement
+  exact
+    surgeryPackage_requirement_false_at_of_current_interface
+      surgeryRequirement M
+
+/--
 The same current-interface blocker rules out a finite-extinction surgery
 package: such a package would project to the direct surgery/Perelman target
 above, whose Perelman side still requires constructorless blowup
