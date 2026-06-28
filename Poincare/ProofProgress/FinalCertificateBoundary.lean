@@ -43120,4 +43120,67 @@ theorem threeSphere_named_final_statement_criterion_package_of_reserved_final_ce
       @Poincare.threeSphere_named_final_statement_criterion_package_of_reserved_final_certificate :=
   rfl
 
+/--
+Witness-free reserved-bridge standard-sphere final statement package.
+
+This makes the reserved bridge
+`poincare_conjecture_of_completion_certificate certificate` explicit inside
+the concrete `ThreeSphere` final statement package and proves that the project
+statement exposed by the package is the same endpoint.
+-/
+theorem threeSphere_reserved_bridge_statement_package_of_reserved_final_certificate
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{0}) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ projectStatement : PoincareConjectureStatement.{0},
+    ∃ reservedStatement : PoincareConjectureStatement.{0},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{0},
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      reservedStatement =
+        poincare_conjecture_of_completion_certificate certificate ∧
+      projectStatement = reservedStatement ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          reservedStatement := by
+  rcases
+      threeSphere_named_final_statement_package_of_reserved_final_certificate
+        dependencies with
+    ⟨theoremName, certificate, projectStatement, _mathlibStatement,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hProjectStatement, _hMathlibStatement⟩
+  let reservedStatement : PoincareConjectureStatement.{0} :=
+    poincare_conjecture_of_completion_certificate certificate
+  let mathlibStatement : MathlibTopologicalPoincareThreeStatement.{0} :=
+    mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+      reservedStatement
+  have hReservedStatement :
+      reservedStatement =
+        poincare_conjecture_of_completion_certificate certificate :=
+    rfl
+  have hProjectReserved : projectStatement = reservedStatement := by
+    exact
+      hProjectStatement.trans
+        ((target_statement_of_completion_certificate_to_poincare_conjecture_eq
+          certificate).trans hReservedStatement.symm)
+  have hMathlibStatement :
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          reservedStatement :=
+    rfl
+  exact
+    ⟨theoremName, certificate, projectStatement, reservedStatement,
+      mathlibStatement, hTheoremNameCanonical, hTheoremNameLiteral,
+      hCertificate, hReservedStatement, hProjectReserved, hMathlibStatement⟩
+
+/-- Theorem contract for
+`threeSphere_reserved_bridge_statement_package_of_reserved_final_certificate`. -/
+theorem threeSphere_reserved_bridge_statement_package_of_reserved_final_certificate_eq :
+    @Poincare.threeSphere_reserved_bridge_statement_package_of_reserved_final_certificate =
+      @Poincare.threeSphere_reserved_bridge_statement_package_of_reserved_final_certificate :=
+  rfl
+
 end Poincare
