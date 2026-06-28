@@ -489,6 +489,90 @@ theorem universal_package_milestones_and_package_statement_witness_family_of_gro
     ⟩
 
 /--
+Single proof object for the grounded finite-extinction pillar as consumed by
+later assembly: the legacy universal statement, the finite-extinction package
+layer, the Ricci-flow/Perelman/finite-extinction milestones, and the concrete
+package/statement/witness family all come from the same grounded input.
+-/
+structure GroundedUniversalFiniteExtinctionAssemblyPayload where
+  universalStatement :
+    UniversalFiniteExtinctionStatement.{u}
+  finiteExtinctionPackageRequirement :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.finiteExtinctionPackage
+  ricciFlowWithSurgeryMilestone :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.ricciFlowWithSurgery
+  perelmanSingularityControlMilestone :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.perelmanSingularityControl
+  finiteExtinctionMilestone :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.finiteExtinction
+  packageStatementWitnessFamily :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ _package : FiniteExtinctionSurgeryPackage n M,
+          FiniteExtinctionStatement n M ∧
+            FiniteExtinctionByRicciFlowWithSurgery M
+
+/--
+The grounded universal finite-extinction statement constructs the single
+assembly payload for the finite-extinction pillar.
+-/
+def groundedUniversalFiniteExtinctionAssemblyPayload
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    GroundedUniversalFiniteExtinctionAssemblyPayload.{u} where
+  universalStatement :=
+    universalFiniteExtinctionStatement_of_grounded grounded
+  finiteExtinctionPackageRequirement :=
+    finiteExtinctionPackage_requirement_of_grounded grounded
+  ricciFlowWithSurgeryMilestone :=
+    ricciFlowWithSurgery_milestone_requirement_of_grounded grounded
+  perelmanSingularityControlMilestone :=
+    perelmanSingularityControl_milestone_requirement_of_grounded grounded
+  finiteExtinctionMilestone :=
+    finiteExtinction_milestone_requirement_of_grounded grounded
+  packageStatementWitnessFamily :=
+    finite_extinction_package_statement_and_witness_family_of_grounded grounded
+
+/--
+The single assembly payload unpacks to exactly the previously exposed tuple of
+grounded finite-extinction outputs.
+-/
+theorem groundedUniversalFiniteExtinctionAssemblyPayload_fields
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    UniversalFiniteExtinctionStatement.{u} ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.finiteExtinction ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+            FiniteExtinctionStatement n M ∧
+              FiniteExtinctionByRicciFlowWithSurgery M) := by
+  let payload := groundedUniversalFiniteExtinctionAssemblyPayload grounded
+  exact
+    ⟨ payload.universalStatement
+    , payload.finiteExtinctionPackageRequirement
+    , payload.ricciFlowWithSurgeryMilestone
+    , payload.perelmanSingularityControlMilestone
+    , payload.finiteExtinctionMilestone
+    , payload.packageStatementWitnessFamily
+    ⟩
+
+/--
 Grounded universal finite extinction plus theorem-shaped topology extraction
 proves the project-level Poincare statement through the universal
 finite-extinction topology-extraction route.
