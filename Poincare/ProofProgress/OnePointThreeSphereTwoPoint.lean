@@ -228,4 +228,84 @@ theorem onePoint_threeSpace_twoPointComplement_transport_payload_complete_fields
     , payload.targetCompleteLowHomotopy.pathComponentEqUniv
     ⟩
 
+/--
+The transported two-puncture route constructs the named transport payload and
+exposes the complete theorem-shaped topology fields from that same payload.
+-/
+theorem onePoint_threeSpace_twoPointComplement_nonempty_transport_payload_and_complete_fields
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    let payload :=
+      onePoint_threeSpace_twoPointComplement_transport_payload hqp basepoint
+    let targetBasepoint := payload.complementHomeomorph basepoint
+    Nonempty
+        (OnePointThreeSphereTwoPointComplementTransportPayload hqp basepoint) ∧
+      Nonempty
+        ((({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+          (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+              {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+            Set ThreeSphere)) ∧
+      (∃ puncture : EuclideanSpace ℝ (Fin 3),
+        Nonempty
+          ((({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+      SimplyConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      SimplyConnectedSpace
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere) ∧
+      ConnectedSpace
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere) ∧
+      Nonempty
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere) ∧
+      Nonempty
+        (Unique
+          (FundamentalGroup
+            (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+              Set ThreeSphere)
+            targetBasepoint)) ∧
+      Nonempty
+        (Unique
+          (HomotopyGroup.Pi 1
+            (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+              Set ThreeSphere)
+            targetBasepoint)) ∧
+      Nonempty
+        (Unique
+          (HomotopyGroup.Pi 0
+            (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+              Set ThreeSphere)
+            targetBasepoint)) ∧
+      Nonempty
+        (Unique
+          (ZerothHomotopy
+            (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+              Set ThreeSphere))) ∧
+      (∀ x y :
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere),
+          Nonempty (Path x y)) ∧
+      (∀ x :
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere),
+          pathComponent x = Set.univ) := by
+  intro payload targetBasepoint
+  exact
+    ⟨ ⟨payload⟩
+    , onePoint_threeSpace_twoPointComplement_transport_payload_complete_fields
+        hqp basepoint
+    ⟩
+
 end Poincare
