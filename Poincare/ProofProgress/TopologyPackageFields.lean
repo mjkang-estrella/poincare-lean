@@ -62,10 +62,11 @@ theorem compl_singleton_contractibleSpace_of_topology_package
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M) :
-    ContractibleSpace ({x}ᶜ : Set M) :=
-  compl_singleton_contractibleSpace_of_homeomorph_to_onePoint_threeSpace
-    (homeomorph_to_onePoint_threeSpace_of_topology_package
-      package M extinction) x
+    ContractibleSpace ({x}ᶜ : Set M) := by
+  rcases
+    homeomorph_compl_singleton_euclidean_of_topology_package
+      package M extinction x with ⟨chart⟩
+  exact chart.contractibleSpace
 
 /--
 The package-level single-puncture contractibility projection gives
