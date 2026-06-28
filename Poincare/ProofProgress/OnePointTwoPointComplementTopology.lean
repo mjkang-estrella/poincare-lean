@@ -743,6 +743,67 @@ theorem onePoint_threeSpace_twoPointComplement_lowHomotopy_of_flatRecognition
     payload.pathNonempty, payload.pathComponentEqUniv⟩
 
 /--
+The flat recognition payload exposes the ordinary topology and low-homotopy
+collapse surface together, so downstream topology extraction can consume one
+endpoint instead of recombining separate path-connected and homotopy packages.
+-/
+theorem onePoint_threeSpace_twoPointComplement_topology_and_lowHomotopy_of_flatRecognition
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} {hqp : q ≠ p}
+    {basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    (payload : OnePointTwoPointComplementFlatRecognitionPayload hqp basepoint) :
+    Nonempty
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      PathConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      ConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      SimplyConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      Nonempty (Unique
+        (ZerothHomotopy
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))) ∧
+      Nonempty (Unique
+        (HomotopyGroup.Pi 0
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint)) ∧
+      Nonempty (Unique
+        (FundamentalGroup
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint)) ∧
+      Nonempty (Unique
+        (HomotopyGroup.Pi 1
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint)) ∧
+      (∀ a b :
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty (Path a b)) ∧
+      (∀ x :
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        pathComponent x = Set.univ) := by
+  rcases
+    onePoint_threeSpace_twoPointComplement_ordinaryTopology_of_flatRecognition
+      payload with
+    ⟨hNonempty, hPathConnected, hConnected⟩
+  rcases
+    onePoint_threeSpace_twoPointComplement_lowHomotopy_of_flatRecognition
+      payload with
+    ⟨hSimplyConnected, hZeroth, hPiZero, hFundamentalGroup, hPiOne,
+      hPathNonempty, hPathComponent⟩
+  exact
+    ⟨ hNonempty
+    , hPathConnected
+    , hConnected
+    , hSimplyConnected
+    , hZeroth
+    , hPiZero
+    , hFundamentalGroup
+    , hPiOne
+    , hPathNonempty
+    , hPathComponent
+    ⟩
+
+/--
 The flat one-point two-puncture recognition payload discharges the legacy
 collapse tuple, including the low-homotopy subsingleton and unique-class
 conclusions, without reconstructing the punctured-Euclidean chart or path
