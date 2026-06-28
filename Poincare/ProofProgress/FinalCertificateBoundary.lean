@@ -3038,6 +3038,79 @@ theorem reserved_named_final_conclusion_bundle_of_unpacked_aggregate_completion_
   rfl
 
 /--
+Selected-witness final conclusion from the grounded terminal aggregate bundle.
+This specializes the bundled completion criterion family to one witness while
+keeping the reserved theorem name, project statement, mathlib statement, and
+project completion payload available.
+-/
+theorem reserved_named_final_conclusion_at_witness_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (witness : Type u) :
+    ∃ theoremName : String,
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ projectPayload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ selectedCriterion : CompletionCriterionAtUniverse witness,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      projectStatement =
+        poincare_statement_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement ∧
+      projectPayload =
+        completion_payload_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M ∧
+      selectedCriterion = completionCriterionFamily witness ∧
+      selectedCriterion =
+        completion_criterion_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M witness := by
+  rcases
+      reserved_named_final_conclusion_bundle_of_unpacked_aggregate_completion
+        dependencies smoothability grounded topologyStatement M with
+    ⟨theoremName, projectStatement, mathlibStatement, _expandedConclusion,
+      _canonicalPayload, projectPayload, completionCriterionFamily,
+      hTheoremNameCanonical, hTheoremNameLiteral, hProjectStatement,
+      hMathlibStatement, _hExpandedConclusion, _hCanonicalPayload,
+      hProjectPayload, hCompletionFamily⟩
+  let selectedCriterion : CompletionCriterionAtUniverse witness :=
+    completionCriterionFamily witness
+  have hSelectedFamily :
+      selectedCriterion = completionCriterionFamily witness :=
+    rfl
+  have hSelectedDirect :
+      selectedCriterion =
+        completion_criterion_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M witness :=
+    hSelectedFamily.trans (hCompletionFamily witness)
+  exact
+    ⟨theoremName, projectStatement, mathlibStatement, projectPayload,
+      completionCriterionFamily, selectedCriterion, hTheoremNameCanonical,
+      hTheoremNameLiteral, hProjectStatement, hMathlibStatement,
+      hProjectPayload, hSelectedFamily, hSelectedDirect⟩
+
+/-- Theorem contract for
+`reserved_named_final_conclusion_at_witness_of_unpacked_aggregate_completion`. -/
+theorem reserved_named_final_conclusion_at_witness_of_unpacked_aggregate_completion_eq :
+    @Poincare.reserved_named_final_conclusion_at_witness_of_unpacked_aggregate_completion =
+      @Poincare.reserved_named_final_conclusion_at_witness_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
