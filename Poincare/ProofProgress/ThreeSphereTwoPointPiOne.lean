@@ -16,6 +16,56 @@ theorem threeSphere_twoPointComplement_fundamentalGroup_subsingleton
   infer_instance
 
 /--
+The standard three-sphere two-puncture complement is connected.
+-/
+theorem threeSphere_twoPointComplement_connectedSpace
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    ConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) := by
+  letI : PathConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) :=
+    threeSphere_twoPointComplement_pathConnectedSpace hab
+  infer_instance
+
+/--
+The standard three-sphere two-puncture complement is nonempty.
+-/
+theorem threeSphere_twoPointComplement_nonempty
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) := by
+  exact (threeSphere_twoPointComplement_pathConnectedSpace hab).nonempty
+
+/--
+The fundamental group of the standard three-sphere two-puncture complement has
+a unique class at every basepoint.
+-/
+theorem threeSphere_twoPointComplement_fundamentalGroup_exists_unique
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (x : (({a} ∪ {b})ᶜ : Set ThreeSphere)) :
+    ∃ baseClass : FundamentalGroup (({a} ∪ {b})ᶜ : Set ThreeSphere) x,
+      ∀ fundamentalClass :
+        FundamentalGroup (({a} ∪ {b})ᶜ : Set ThreeSphere) x,
+        fundamentalClass = baseClass := by
+  letI : Subsingleton
+      (FundamentalGroup (({a} ∪ {b})ᶜ : Set ThreeSphere) x) :=
+    threeSphere_twoPointComplement_fundamentalGroup_subsingleton hab x
+  exact ⟨Classical.choice inferInstance, fun fundamentalClass =>
+    Subsingleton.elim _ _⟩
+
+/--
+The fundamental group of the standard three-sphere two-puncture complement is a
+`Unique` type at every basepoint.
+-/
+@[reducible] noncomputable def threeSphere_twoPointComplement_fundamentalGroup_unique
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (x : (({a} ∪ {b})ᶜ : Set ThreeSphere)) :
+    Unique (FundamentalGroup (({a} ∪ {b})ᶜ : Set ThreeSphere) x) := by
+  letI : Subsingleton
+      (FundamentalGroup (({a} ∪ {b})ᶜ : Set ThreeSphere) x) :=
+    threeSphere_twoPointComplement_fundamentalGroup_subsingleton hab x
+  exact
+    { default := Classical.choice inferInstance
+      uniq := fun fundamentalClass => Subsingleton.elim _ _ }
+
+/--
 The equivalent first homotopy group formulation of the two-puncture complement
 triviality.
 -/
@@ -221,6 +271,46 @@ noncomputable def threeSphere_twoPointComplement_lowHomotopyUnique_payload
     {a b : ThreeSphere} (hab : b ≠ a)
     (basepoint : (({a} ∪ {b})ᶜ : Set ThreeSphere)) :
     ThreeSphereTwoPointComplementLowHomotopyUniquePayload hab basepoint where
+  piOneUnique := threeSphere_twoPointComplement_piOne_unique hab basepoint
+  zerothUnique := threeSphere_twoPointComplement_zerothHomotopy_unique hab
+  pathNonempty := threeSphere_twoPointComplement_path_nonempty hab
+  pathComponentEqUniv := threeSphere_twoPointComplement_pathComponent_eq_univ hab
+
+/--
+Broader data-valued form of the standard-sphere two-puncture low-homotopy
+collapse, including connectedness, nonemptiness, and fundamental-group
+uniqueness alongside the pi1 and pi0 uniqueness payload.
+-/
+structure ThreeSphereTwoPointComplementCompleteLowHomotopyUniquePayload
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (basepoint : (({a} ∪ {b})ᶜ : Set ThreeSphere)) where
+  connected : ConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere)
+  nonempty : Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere)
+  fundamentalGroupUnique :
+    Unique (FundamentalGroup (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint)
+  piOneUnique :
+    Unique
+      (HomotopyGroup.Pi 1 (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint)
+  zerothUnique :
+    Unique (ZerothHomotopy (({a} ∪ {b})ᶜ : Set ThreeSphere))
+  pathNonempty :
+    ∀ x y : (({a} ∪ {b})ᶜ : Set ThreeSphere), Nonempty (Path x y)
+  pathComponentEqUniv :
+    ∀ x : (({a} ∪ {b})ᶜ : Set ThreeSphere), pathComponent x = Set.univ
+
+/--
+Complete unique-instance payload for the standard three-sphere two-puncture
+complement.
+-/
+noncomputable def threeSphere_twoPointComplement_completeLowHomotopyUnique_payload
+    {a b : ThreeSphere} (hab : b ≠ a)
+    (basepoint : (({a} ∪ {b})ᶜ : Set ThreeSphere)) :
+    ThreeSphereTwoPointComplementCompleteLowHomotopyUniquePayload
+      hab basepoint where
+  connected := threeSphere_twoPointComplement_connectedSpace hab
+  nonempty := threeSphere_twoPointComplement_nonempty hab
+  fundamentalGroupUnique :=
+    threeSphere_twoPointComplement_fundamentalGroup_unique hab basepoint
   piOneUnique := threeSphere_twoPointComplement_piOne_unique hab basepoint
   zerothUnique := threeSphere_twoPointComplement_zerothHomotopy_unique hab
   pathNonempty := threeSphere_twoPointComplement_path_nonempty hab
