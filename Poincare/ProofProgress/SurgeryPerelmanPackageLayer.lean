@@ -1167,6 +1167,39 @@ theorem surgeryPerelman_projection_scale_and_extinctionFamilies_of_completeConsu
 
 /--
 For a fixed target manifold, a complete surgery/Perelman consumer payload
+exposes the selected surgery flow with the construction package, Perelman
+control, surgery-scale payload, and blowup classification, together with the
+package-layer and milestone requirements that justify those fields.
+-/
+theorem surgeryPerelman_requirements_and_fixedTarget_scaleBlowup_of_completeConsumerPayload
+    (payload :
+      Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.surgeryPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      ∃ n : ℕ∞ω,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+        PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+        Nonempty (SurgeryScaleFunctionPayload flow) ∧
+        HasSingularityModelBlowupClassification flow := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ payload.surgeryPackageRequirement
+    , payload.ricciFlowWithSurgeryMilestone
+    , payload.perelmanSingularityControlMilestone
+    , payload.selectedFlowScaleBlowupFamily M
+    ⟩
+
+/--
+For a fixed target manifold, a complete surgery/Perelman consumer payload
 exposes the concrete combined payload object together with the selected flow,
 construction package, Perelman control package, surgery-scale payload, blowup
 classification, finite-extinction statement, and extinction witness.
