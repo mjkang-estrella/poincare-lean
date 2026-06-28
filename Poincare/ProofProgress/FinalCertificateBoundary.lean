@@ -2359,4 +2359,41 @@ theorem nonempty_finalCertificateTopologyAssemblyPayload_iff_topologyPackage_of_
       , ⟨finalCertificateTopologyAssemblyPayload inputs topology⟩
       ⟩
 
+/--
+For fixed smoothability and finite-extinction inputs, an inhabited topology
+assembly payload is equivalent to the final public endpoint tuple: the Poincare
+statement, an inhabited checked completion certificate, and the full universe
+completion-criterion family.  This collapses the existential assembly payload
+surface directly to the consumer-facing final-certificate endpoint while still
+keeping the theorem conditional on the topology package boundary.
+-/
+theorem poincare_statement_nonempty_final_certificate_and_completion_criteria_iff_nonempty_finalCertificateTopologyAssemblyPayload_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u}) :
+    (PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness) ↔
+      (∃ topology :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage,
+          Nonempty (FinalCertificateTopologyAssemblyPayload inputs topology)) := by
+  constructor
+  · intro endpoint
+    have topology :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage :=
+      (poincare_statement_nonempty_final_certificate_and_completion_criteria_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+        inputs).1 endpoint
+    exact
+      (nonempty_finalCertificateTopologyAssemblyPayload_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+        inputs).2 topology
+  · intro payload
+    have topology :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage :=
+      (nonempty_finalCertificateTopologyAssemblyPayload_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+        inputs).1 payload
+    exact
+      (poincare_statement_nonempty_final_certificate_and_completion_criteria_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+        inputs).2 topology
+
 end Poincare
