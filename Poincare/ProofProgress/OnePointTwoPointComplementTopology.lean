@@ -664,6 +664,49 @@ theorem onePoint_threeSpace_twoPointComplement_pathConnectedSpace_of_flatRecogni
   joined := payload.pathNonempty
 
 /--
+The flat two-puncture recognition payload directly supplies connectedness.
+-/
+theorem onePoint_threeSpace_twoPointComplement_connectedSpace_of_flatRecognition
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} {hqp : q ≠ p}
+    {basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    (payload : OnePointTwoPointComplementFlatRecognitionPayload hqp basepoint) :
+    ConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+  payload.connected
+
+/--
+The flat two-puncture recognition payload directly supplies nonemptiness.
+-/
+theorem onePoint_threeSpace_twoPointComplement_nonempty_of_flatRecognition
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} {hqp : q ≠ p}
+    {basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    (payload : OnePointTwoPointComplementFlatRecognitionPayload hqp basepoint) :
+    Nonempty
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+  payload.nonempty
+
+/--
+The flat recognition payload reconstructs the ordinary topology facts needed
+before the low-homotopy collapse package is consumed.
+-/
+theorem onePoint_threeSpace_twoPointComplement_ordinaryTopology_of_flatRecognition
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} {hqp : q ≠ p}
+    {basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    (payload : OnePointTwoPointComplementFlatRecognitionPayload hqp basepoint) :
+    Nonempty
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      PathConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      ConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+  ⟨onePoint_threeSpace_twoPointComplement_nonempty_of_flatRecognition payload,
+    onePoint_threeSpace_twoPointComplement_pathConnectedSpace_of_flatRecognition payload,
+    onePoint_threeSpace_twoPointComplement_connectedSpace_of_flatRecognition payload⟩
+
+/--
 The flat one-point two-puncture recognition payload discharges the legacy
 collapse tuple, including the low-homotopy subsingleton and unique-class
 conclusions, without reconstructing the punctured-Euclidean chart or path
