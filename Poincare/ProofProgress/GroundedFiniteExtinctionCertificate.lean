@@ -314,6 +314,63 @@ theorem universalFiniteExtinctionStatement_of_grounded
 
 /--
 Grounded universal finite extinction plus theorem-shaped topology extraction
+proves the project-level Poincare statement through the universal
+finite-extinction topology-extraction route.
+-/
+theorem poincare_statement_of_grounded_and_topology_extraction_statement
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+    (universalFiniteExtinctionStatement_of_grounded grounded)
+    topologyStatement
+
+/--
+The grounded/topology-extraction project statement is exactly the universal
+finite-extinction/topology-extraction project statement after projecting
+grounded finite extinction to the legacy universal statement.
+-/
+theorem poincare_statement_of_grounded_and_topology_extraction_statement_eq
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    poincare_statement_of_grounded_and_topology_extraction_statement
+        grounded topologyStatement =
+      poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+        (universalFiniteExtinctionStatement_of_grounded grounded)
+        topologyStatement := by
+  apply Subsingleton.elim
+
+/--
+Grounded universal finite extinction plus theorem-shaped topology extraction
+exposes the project-level Poincare payload: the statement itself and all
+universe-indexed completion criteria.
+-/
+theorem poincare_payload_of_grounded_and_topology_extraction_statement
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+    (universalFiniteExtinctionStatement_of_grounded grounded)
+    topologyStatement
+
+/--
+The grounded/topology-extraction project payload is exactly the universal
+finite-extinction/topology-extraction project payload after projecting grounded
+finite extinction to the legacy universal statement.
+-/
+theorem poincare_payload_of_grounded_and_topology_extraction_statement_eq
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    poincare_payload_of_grounded_and_topology_extraction_statement
+        grounded topologyStatement =
+      poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+        (universalFiniteExtinctionStatement_of_grounded grounded)
+        topologyStatement := by
+  apply Subsingleton.elim
+
+/--
+Grounded universal finite extinction plus theorem-shaped topology extraction
 proves the canonical completion target through the same universal
 finite-extinction interface consumed by the completion boundary.
 -/
