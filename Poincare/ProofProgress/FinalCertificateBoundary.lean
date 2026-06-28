@@ -53004,4 +53004,101 @@ theorem constructed_boundary_reserved_named_project_mathlib_statements_of_final_
       @Poincare.constructed_boundary_reserved_named_project_mathlib_statements_of_final_completionCriterion_of_dependencies_and_verification_family :=
   rfl
 
+/--
+Ordinary dependencies plus equation verification inherit the statement package
+from the final completion criterion.
+
+This is the theorem-name and certificate anchored constructed-boundary version
+of the statement-level projection: it exposes the checked completion
+certificate identity, the project and mathlib statements, and the selected
+target/witness completion criteria.
+-/
+theorem constructed_boundary_reserved_named_statement_package_of_final_completionCriterion_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (witness : Type) :
+    ∃ boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ projectStatement : PoincareConjectureStatement.{0},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ completionCriterionAtM : CompletionCriterionAtUniverse M,
+    ∃ criterion : CompletionCriterionAtUniverse witness,
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ ∧
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          nonemptyBoundaryDependencies.some ∧
+      projectStatement =
+        poincareConjectureStatement_of_completionCriterionAtUniverse
+          witness criterion ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement ∧
+      completionCriterionAtM =
+        reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+          nonemptyBoundaryDependencies M ∧
+      criterion =
+        reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+          nonemptyBoundaryDependencies witness := by
+  rcases
+      constructed_boundary_reserved_named_final_homeomorphisms_completionCriterion_certificateTarget_application_of_dependencies_and_verification_family
+        dependencies verificationFamily M witness with
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies, theoremName,
+      certificate, _certificateTargetStatement, _mathlibTarget,
+      _topologyPackage, _finiteExtinction, _projectHomeomorphism,
+      _mathlibHomeomorphism, completionCriterionAtM, criterion,
+      _completionCriterionFamily, hBoundaryDependencies,
+      hNonemptyBoundaryDependencies, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, _hCertificateTargetStatement,
+      _hMathlibTargetStatement, _hMathlibTarget,
+      _hMathlibTargetCertificateTarget, _hTopologyCertificateTarget,
+      _hProjectHomeomorphismCertificate, _hMathlibHomeomorphismCertificate,
+      _hProjectMathlib, _hCompletionCriterionAtMFamily,
+      _hCompletionCriterionAtMConditionalRoot,
+      hCompletionCriterionAtMReserved, _hCriterionFamily,
+      _hCriterionConditionalRoot, hCriterionReserved,
+      _hCompletionCriterionFamilyConditionalRoot,
+      _hCompletionCriterionFamilyReserved, _hProjectEmbedding,
+      _hMathlibEmbedding, _hProjectBijective, _hMathlibBijective,
+      _hProjectContinuous, _hMathlibContinuous⟩
+  let projectStatement : PoincareConjectureStatement.{0} :=
+    poincareConjectureStatement_of_completionCriterionAtUniverse
+      witness criterion
+  let mathlibStatement : MathlibTopologicalPoincareThreeStatement.{0} :=
+    mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+      projectStatement
+  exact
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies, theoremName,
+      certificate, projectStatement, mathlibStatement,
+      completionCriterionAtM, criterion, hBoundaryDependencies,
+      hNonemptyBoundaryDependencies, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, rfl, rfl,
+      hCompletionCriterionAtMReserved, hCriterionReserved⟩
+
+/-- Theorem contract for
+`constructed_boundary_reserved_named_statement_package_of_final_completionCriterion_of_dependencies_and_verification_family`. -/
+theorem constructed_boundary_reserved_named_statement_package_of_final_completionCriterion_of_dependencies_and_verification_family_eq :
+    @Poincare.constructed_boundary_reserved_named_statement_package_of_final_completionCriterion_of_dependencies_and_verification_family =
+      @Poincare.constructed_boundary_reserved_named_statement_package_of_final_completionCriterion_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
