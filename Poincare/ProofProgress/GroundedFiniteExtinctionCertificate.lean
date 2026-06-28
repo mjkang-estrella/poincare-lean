@@ -1901,6 +1901,43 @@ theorem groundedUniversalFiniteExtinction_requirements_and_packageDerivationFami
     ⟩
 
 /--
+An inhabited complete finite-extinction consumer payload also exposes the
+legacy universal statement, the compact package/statement witness family, and
+the full flow/surgery/control statement payload family carried by the same
+detailed grounded assembly object.
+-/
+theorem groundedUniversalFiniteExtinction_statementFamilies_of_completeConsumerPayload
+    (payload :
+      Nonempty GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u}) :
+    UniversalFiniteExtinctionStatement.{u} ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+            FiniteExtinctionStatement n M ∧
+              FiniteExtinctionByRicciFlowWithSurgery M) ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          ∃ surgery : HasRicciFlowWithSurgery n M,
+          ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+          ∃ _packageStatement : FiniteExtinctionStatement n M,
+          ∃ _derivation : HasFiniteExtinctionDerivation flow surgery control,
+            FiniteExtinctionByRicciFlowWithSurgery M) := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ payload.universalStatement
+    , payload.packageStatementWitnessFamily
+    , payload.statementPayloadFamily
+    ⟩
+
+/--
 The complete finite-extinction consumer payload is equivalent to the inhabited
 detailed grounded finite-extinction assembly payload: the forward direction
 projects the stored detailed payload, while the reverse direction rebuilds the
