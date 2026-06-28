@@ -2279,6 +2279,79 @@ theorem canonical_named_target_homeomorphism_of_unpacked_aggregate_completion_eq
   rfl
 
 /--
+The canonical named aggregate payload exposes the whole expanded root
+conclusion function, not only a selected target.  This packages the reserved
+theorem name, project statement, mathlib statement, and the target-level
+projection of the expanded conclusion in one route from the grounded terminal
+aggregate payload.
+-/
+theorem canonical_named_expanded_root_conclusion_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ theoremName : String,
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ expandedConclusion :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          Nonempty (N ≃ₜ ThreeSphere),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement ∧
+      expandedConclusion = projectStatement ∧
+      (∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          ∃ targetConclusion : Nonempty (N ≃ₜ ThreeSphere),
+            targetConclusion = expandedConclusion N) := by
+  rcases
+      canonical_named_mathlib_payload_of_unpacked_aggregate_completion
+        dependencies smoothability grounded topologyStatement M with
+    ⟨theoremName, _aggregateCanonicalTarget, projectStatement,
+      mathlibStatement, _aggregateCompletion, _canonicalPayload,
+      hTheoremNameCanonical, hTheoremNameLiteral, _hProjectStatement,
+      hMathlibStatement, _hCanonicalPayload, _hCompletionCanonical⟩
+  let expandedConclusion :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          Nonempty (N ≃ₜ ThreeSphere) :=
+    projectStatement
+  have hExpandedConclusion :
+      expandedConclusion = projectStatement :=
+    rfl
+  have hTargetConclusions :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          ∃ targetConclusion : Nonempty (N ≃ₜ ThreeSphere),
+            targetConclusion = expandedConclusion N := by
+    intro N
+    exact ⟨expandedConclusion N, rfl⟩
+  exact
+    ⟨theoremName, projectStatement, mathlibStatement, expandedConclusion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hMathlibStatement,
+      hExpandedConclusion, hTargetConclusions⟩
+
+/-- Theorem contract for
+`canonical_named_expanded_root_conclusion_of_unpacked_aggregate_completion`. -/
+theorem canonical_named_expanded_root_conclusion_of_unpacked_aggregate_completion_eq :
+    @Poincare.canonical_named_expanded_root_conclusion_of_unpacked_aggregate_completion =
+      @Poincare.canonical_named_expanded_root_conclusion_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
