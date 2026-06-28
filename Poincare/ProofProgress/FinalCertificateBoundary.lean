@@ -2490,4 +2490,35 @@ theorem poincare_statement_final_certificate_and_completion_criteria_iff_nonempt
       (poincare_statement_final_certificate_and_completion_criterion_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
         inputs).2 topology
 
+/--
+Exact named-package boundary for the full checked final endpoint: the public
+Poincare statement, a concrete checked completion certificate, and all
+universe-indexed completion criteria are equivalent to the three package-layer
+requirements currently carried by `RemainingDependencyPackage`.
+-/
+theorem poincare_statement_final_certificate_and_completion_criteria_iff_named_package_layer_requirements :
+    (PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness) ↔
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage := by
+  constructor
+  · intro endpoint
+    exact
+      (final_certificate_iff_named_package_layer_requirements).1
+        endpoint.2.1
+  · rintro ⟨smoothability, finiteExtinction, topology⟩
+    let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+      { smoothability := smoothability
+        finiteExtinction := finiteExtinction }
+    exact
+      (poincare_statement_final_certificate_and_completion_criterion_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+        inputs).2 topology
+
 end Poincare
