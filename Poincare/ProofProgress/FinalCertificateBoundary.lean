@@ -46738,4 +46738,164 @@ theorem threeSphere_final_statements_bidirectional_recognition_certificate_of_de
       @Poincare.threeSphere_final_statements_bidirectional_recognition_certificate_of_dependencies_and_verification_family :=
   rfl
 
+/--
+Ordinary dependencies plus equation verification use the same checked
+certificate for `ThreeSphere` final statements and arbitrary-manifold
+recognition.
+
+This coherence endpoint ties together the two main dependency-verification
+surfaces: the synchronized `ThreeSphere` final-statement package and the
+arbitrary closed-manifold recognition package.  Both routes are forced through
+the same constructed equation-boundary dependency package and therefore select
+the same checked completion certificate, reserved Poincare statement, and
+mathlib-shaped statement.
+-/
+theorem final_certificate_shared_statement_coherence_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ threeSphereCertificate : PoincareCompletionCertificate.{0},
+    ∃ arbitraryCertificate : PoincareCompletionCertificate.{0},
+    ∃ threeSphereReservedStatement : PoincareConjectureStatement.{0},
+    ∃ arbitraryReservedStatement : PoincareConjectureStatement.{0},
+    ∃ threeSphereMathlibStatement :
+      MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ arbitraryMathlibStatement :
+      MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ projectConclusion : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ mathlibConclusion :
+      Nonempty
+        (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)),
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ ∧
+      threeSphereCertificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          boundaryDependencies ∧
+      arbitraryCertificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          boundaryDependencies ∧
+      threeSphereCertificate = arbitraryCertificate ∧
+      threeSphereReservedStatement =
+        poincare_conjecture_of_completion_certificate
+          threeSphereCertificate ∧
+      arbitraryReservedStatement =
+        poincare_conjecture_of_completion_certificate
+          arbitraryCertificate ∧
+      threeSphereReservedStatement = arbitraryReservedStatement ∧
+      threeSphereMathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          threeSphereReservedStatement ∧
+      arbitraryMathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          arbitraryReservedStatement ∧
+      threeSphereMathlibStatement = arbitraryMathlibStatement ∧
+      projectConclusion = arbitraryReservedStatement M ∧
+      mathlibConclusion = arbitraryMathlibStatement M := by
+  let boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0} :=
+    equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily
+  let nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0} :=
+    ⟨boundaryDependencies⟩
+  rcases
+      threeSphere_final_statements_bidirectional_recognition_certificate_of_reserved_final_certificate
+        nonemptyBoundaryDependencies with
+    ⟨_threeSphereTheoremName, threeSphereCertificate,
+      _nonemptyCertificate, threeSphereReservedStatement,
+      _nonemptyReservedStatement, threeSphereMathlibStatement,
+      _nonemptyMathlibStatement, _mathlibTarget, _forwardHomeomorphism,
+      _inverseHomeomorphism, _forwardConclusion, _inverseConclusion,
+      _hThreeSphereTheoremNameCanonical, _hThreeSphereTheoremNameLiteral,
+      hThreeSphereCertificate, _hNonemptyCertificate,
+      hThreeSphereReservedStatement, _hNonemptyReservedStatement,
+      _hNonemptyReserved, hThreeSphereMathlibStatement,
+      _hNonemptyMathlibStatement, _hMathlibStatements,
+      _hMathlibTargetReserved, _hMathlibTargetChecked,
+      _hForwardConclusion, _hForwardConclusionTarget,
+      _hInverseHomeomorphism, _hInverseConclusion, _hLeft, _hRight,
+      _hForwardEmbedding, _hForwardBijective, _hForwardContinuous,
+      _hInverseEmbedding, _hInverseBijective, _hInverseContinuous⟩
+  rcases
+      closed_three_manifold_final_statement_application_bidirectional_recognition_of_reserved_final_certificate
+        nonemptyBoundaryDependencies M with
+    ⟨_arbitraryTheoremName, arbitraryCertificate, arbitraryReservedStatement,
+      arbitraryMathlibStatement, projectConclusion, mathlibConclusion,
+      _forwardHomeomorphismForM, _inverseHomeomorphismForM,
+      _forwardConclusionForM, _inverseConclusionForM,
+      _hArbitraryTheoremNameCanonical, _hArbitraryTheoremNameLiteral,
+      hArbitraryCertificate, hArbitraryReservedStatement,
+      hArbitraryMathlibStatement, hProjectConclusion, hMathlibConclusion,
+      _hCheckedMathlibApplication, _hForwardConclusionForM,
+      _hInverseHomeomorphismForM, _hInverseConclusionForM,
+      _hLeftForM, _hRightForM⟩
+  have hBoundaryDependencies :
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily :=
+    rfl
+  have hNonemptyBoundaryDependencies :
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ :=
+    rfl
+  have hThreeSphereCertificateBoundary :
+      threeSphereCertificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          boundaryDependencies := by
+    simp at hThreeSphereCertificate ⊢
+  have hArbitraryCertificateBoundary :
+      arbitraryCertificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          boundaryDependencies := by
+    simp at hArbitraryCertificate ⊢
+  have hCertificates :
+      threeSphereCertificate = arbitraryCertificate := by
+    rw [hThreeSphereCertificateBoundary, hArbitraryCertificateBoundary]
+  have hReservedStatements :
+      threeSphereReservedStatement = arbitraryReservedStatement := by
+    rw [hThreeSphereReservedStatement, hArbitraryReservedStatement,
+      hCertificates]
+  have hMathlibStatements :
+      threeSphereMathlibStatement = arbitraryMathlibStatement := by
+    rw [hThreeSphereMathlibStatement, hArbitraryMathlibStatement,
+      hReservedStatements]
+  have hProjectConclusionArbitrary :
+      projectConclusion = arbitraryReservedStatement M :=
+    hProjectConclusion
+  have hMathlibConclusionArbitrary :
+      mathlibConclusion = arbitraryMathlibStatement M :=
+    hMathlibConclusion
+  exact
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies,
+      threeSphereCertificate, arbitraryCertificate, threeSphereReservedStatement,
+      arbitraryReservedStatement, threeSphereMathlibStatement,
+      arbitraryMathlibStatement, projectConclusion, mathlibConclusion,
+      hBoundaryDependencies, hNonemptyBoundaryDependencies,
+      hThreeSphereCertificateBoundary, hArbitraryCertificateBoundary,
+      hCertificates, hThreeSphereReservedStatement,
+      hArbitraryReservedStatement, hReservedStatements,
+      hThreeSphereMathlibStatement, hArbitraryMathlibStatement,
+      hMathlibStatements, hProjectConclusionArbitrary,
+      hMathlibConclusionArbitrary⟩
+
+/-- Theorem contract for
+`final_certificate_shared_statement_coherence_of_dependencies_and_verification_family`. -/
+theorem final_certificate_shared_statement_coherence_of_dependencies_and_verification_family_eq :
+    @Poincare.final_certificate_shared_statement_coherence_of_dependencies_and_verification_family =
+      @Poincare.final_certificate_shared_statement_coherence_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
