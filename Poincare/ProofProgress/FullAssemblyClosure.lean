@@ -155,6 +155,71 @@ theorem complement_piOne_collapse_payload_of_finalAssemblyPackageBoundaryInputs
     ⟩
 
 /--
+Stronger final-boundary complement-collapse payload: the same three package
+inputs give path-connectedness, zeroth-homotopy collapse, and first-homotopy
+collapse for both single-puncture and two-puncture complements.
+-/
+theorem complement_path_and_homotopy_collapse_payload_of_finalAssemblyPackageBoundaryInputs
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (x : M) {y : M} (hyx : y ≠ x)
+    (singleBasepoint : ({x}ᶜ : Set M))
+    (twoBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    PathConnectedSpace ({x}ᶜ : Set M) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint) ∧
+      PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint) := by
+  let finiteExtinction :=
+    finite_extinction_input_of_smoothability_and_surgery_packages
+      inputs.smoothability inputs.finiteExtinction
+  let singlePathConnected :
+      PathConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_pathConnectedSpace_of_topology_package
+      inputs.topology M (finiteExtinction M) x
+  let twoPointPathConnected :
+      PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_pathConnectedSpace_of_topology_package
+      inputs.topology M (finiteExtinction M) hyx
+  have singlePiZero :
+      Subsingleton
+        (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint) := by
+    letI : PathConnectedSpace ({x}ᶜ : Set M) := singlePathConnected
+    exact
+      ((HomotopyGroup.pi0EquivZerothHomotopy
+        (X := ({x}ᶜ : Set M))
+        (x := singleBasepoint)).subsingleton_congr).mpr
+          (inferInstance : Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)))
+  have twoPointPiZero :
+      Subsingleton
+        (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint) := by
+    letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+      twoPointPathConnected
+    exact
+      ((HomotopyGroup.pi0EquivZerothHomotopy
+        (X := (({x} ∪ {y})ᶜ : Set M))
+        (x := twoBasepoint)).subsingleton_congr).mpr
+          (inferInstance :
+            Subsingleton (ZerothHomotopy (({x} ∪ {y})ᶜ : Set M)))
+  exact
+    ⟨ singlePathConnected
+    , singlePiZero
+    , compl_singleton_piOne_subsingleton_of_topology_package
+        inputs.topology M (finiteExtinction M) x singleBasepoint
+    , twoPointPathConnected
+    , twoPointPiZero
+    , twoPointComplement_piOne_subsingleton_of_topology_package
+        inputs.topology M (finiteExtinction M) hyx twoBasepoint
+    ⟩
+
+/--
 The three-input boundary supplies all five package-layer requirements in the
 crosswalk order; the analytic and surgery/Perelman entries are projections from
 the finite-extinction package entry.
@@ -383,6 +448,32 @@ theorem complement_piOne_collapse_payload_of_finalAssemblySubobligationBoundaryI
       Subsingleton
         (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint) :=
   complement_piOne_collapse_payload_of_finalAssemblyPackageBoundaryInputs
+    (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
+    M x hyx singleBasepoint twoBasepoint
+
+/--
+The sub-obligation boundary inherits the stronger path, `Pi 0`, and `Pi 1`
+complement-collapse payload through the package-boundary conversion.
+-/
+theorem complement_path_and_homotopy_collapse_payload_of_finalAssemblySubobligationBoundaryInputs
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (x : M) {y : M} (hyx : y ≠ x)
+    (singleBasepoint : ({x}ᶜ : Set M))
+    (twoBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    PathConnectedSpace ({x}ᶜ : Set M) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint) ∧
+      PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint) :=
+  complement_path_and_homotopy_collapse_payload_of_finalAssemblyPackageBoundaryInputs
     (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
     M x hyx singleBasepoint twoBasepoint
 
