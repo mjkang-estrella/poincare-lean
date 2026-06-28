@@ -12,6 +12,7 @@ import Poincare.ProofProgress.OnePointSingleComplementTopology
 import Poincare.ProofProgress.OnePointTwoPointComplementTopology
 import Poincare.ProofProgress.OnePointThreeSphereTwoPoint
 import Poincare.ProofProgress.ThreeSphereTwoPointPiOne
+import Poincare.ProofProgress.TopologyExtractionPunctureTransport
 import Poincare.FullAssembly
 import Poincare.Dependencies
 import Poincare.DependencyProjections
