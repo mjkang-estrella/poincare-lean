@@ -1377,4 +1377,24 @@ theorem poincare_statement_and_final_certificate_iff_topologyPackage_of_finalCer
           inputs topology
       ⟩
 
+/--
+The same fixed-input boundary stated in the inhabitance form consumed by
+completion-certificate collapse routes: a nonempty checked certificate is
+equivalent to the topology package.  The forward direction extracts the package
+from the chosen certificate; the reverse direction builds that certificate from
+the topology package and wraps it as an inhabitant.
+-/
+theorem nonempty_final_certificate_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u}) :
+    Nonempty PoincareCompletionCertificate.{u} ↔
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage := by
+  constructor
+  · rintro ⟨certificate⟩
+    exact topologyPackage_requirement_of_final_certificate certificate
+  · intro topology
+    exact
+      ⟨ completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          inputs topology ⟩
+
 end Poincare
