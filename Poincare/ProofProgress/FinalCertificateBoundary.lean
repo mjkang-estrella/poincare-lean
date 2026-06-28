@@ -1737,4 +1737,35 @@ theorem poincare_statement_final_certificate_and_completion_criterion_iff_topolo
             witness inputs topology
       ⟩
 
+/--
+After the two canonical non-topology package inputs are fixed, the
+statement-level endpoint using an inhabited checked certificate and the full
+universe completion-criterion family is equivalent to the topology package.
+This is the nonempty-certificate collapse form of the same final boundary.
+-/
+theorem poincare_statement_nonempty_final_certificate_and_completion_criteria_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u}) :
+    (PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness) ↔
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage := by
+  constructor
+  · intro payload
+    exact
+      (nonempty_final_certificate_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+        inputs).1 payload.2.1
+  · intro topology
+    let nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u} :=
+      (nonempty_final_certificate_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+        inputs).2 topology
+    exact
+      ⟨ poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate
+      , nonemptyCertificate
+      , fun witness =>
+          completion_criterion_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+            witness inputs topology
+      ⟩
+
 end Poincare
