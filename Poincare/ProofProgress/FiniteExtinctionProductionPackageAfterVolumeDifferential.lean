@@ -1340,4 +1340,60 @@ theorem finite_extinction_surgery_package_nonempty_of_width_statement_and_contro
     analyticFoundation surgeryConstruction perelmanControl widthStatement
     curvatureFrontier
 
+/--
+The width statement plus the analytic/surgery/Perelman control frontier
+construct a completed finite-extinction surgery package, hence the
+theorem-shaped finite-extinction statement.
+-/
+theorem finite_extinction_statement_of_width_statement_and_control_frontier
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (widthStatement :
+      FiniteExtinctionWidthSubobligationsStatement
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control) :
+    FiniteExtinctionStatement n M := by
+  rcases finite_extinction_surgery_package_nonempty_of_width_statement_and_control_frontier
+      analyticFoundation surgeryConstruction perelmanControl widthStatement with
+    ⟨package⟩
+  exact finite_extinction_statement_of_surgery_package package
+
+/--
+The same width/control frontier directly exposes the finite-extinction witness
+for the target manifold by projecting it from the theorem-shaped statement
+constructed above.
+-/
+theorem finite_extinction_by_ricci_flow_with_surgery_of_width_statement_and_control_frontier
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (widthStatement :
+      FiniteExtinctionWidthSubobligationsStatement
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control) :
+    FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases finite_extinction_statement_of_width_statement_and_control_frontier
+      analyticFoundation surgeryConstruction perelmanControl widthStatement with
+    ⟨_flow, _surgery, _control, finiteExtinction, _conclusion⟩
+  exact finiteExtinction
+
 end Poincare
