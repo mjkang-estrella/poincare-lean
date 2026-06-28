@@ -238,6 +238,69 @@ theorem onePoint_threeSpace_compl_singleton_lowHomotopy_eq_package
     ⟩
 
 /--
+The singleton-complement low-homotopy collapse as canonical uniqueness data:
+the path-component quotient, `π₀`, the fundamental group, and `π₁` each have a
+unique element at every basepoint.
+-/
+theorem onePoint_threeSpace_compl_singleton_lowHomotopy_unique_package
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (basepoint : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    Nonempty (Unique
+        (ZerothHomotopy
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))) ∧
+      Nonempty (Unique
+        (HomotopyGroup.Pi 0
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint)) ∧
+      Nonempty (Unique
+        (FundamentalGroup
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint)) ∧
+      Nonempty (Unique
+        (HomotopyGroup.Pi 1
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint)) := by
+  letI : Subsingleton
+      (ZerothHomotopy
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :=
+    onePoint_threeSpace_compl_singleton_zerothHomotopy_subsingleton p
+  letI : Subsingleton
+      (HomotopyGroup.Pi 0
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint) :=
+    onePoint_threeSpace_compl_singleton_piZero_subsingleton p basepoint
+  letI : Subsingleton
+      (FundamentalGroup
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint) :=
+    onePoint_threeSpace_compl_singleton_fundamentalGroup_subsingleton
+      p basepoint
+  letI : Subsingleton
+      (HomotopyGroup.Pi 1
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint) :=
+    onePoint_threeSpace_compl_singleton_piOne_subsingleton p basepoint
+  let componentPoint :
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    Classical.choice
+      (onePoint_threeSpace_compl_singleton_nonempty_of_contractible p)
+  exact
+    ⟨ ⟨uniqueOfSubsingleton (ZerothHomotopy.mk componentPoint)⟩
+    , ⟨uniqueOfSubsingleton (default :
+        HomotopyGroup.Pi 0
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint)⟩
+    , ⟨uniqueOfSubsingleton (default :
+        FundamentalGroup
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint)⟩
+    , ⟨uniqueOfSubsingleton (default :
+        HomotopyGroup.Pi 1
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint)⟩
+    ⟩
+
+/--
 The singleton complement package needed by downstream puncture topology:
 contractibility, ordinary connectedness consequences, and the already
 transported simple/local path-connected structures.
