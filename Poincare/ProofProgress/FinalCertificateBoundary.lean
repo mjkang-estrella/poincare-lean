@@ -3279,6 +3279,85 @@ theorem completion_criterion_of_reserved_named_target_and_witness_conclusion_eq 
   rfl
 
 /--
+Coherence package for the two direct projections from the combined
+target/witness aggregate consumer.  It records that the direct target
+homeomorphism and direct selected-witness criterion are exactly the target and
+criterion fields carried by the combined reserved-name package.
+-/
+theorem target_and_witness_projection_coherence_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (N : Type u) [TopologicalSpace N] [T2Space N]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+    [SimplyConnectedSpace N] [CompactSpace N]
+    (witness : Type u) :
+    ∃ theoremName : String,
+    ∃ packagedTarget : Nonempty (N ≃ₜ ThreeSphere),
+    ∃ packagedCriterion : CompletionCriterionAtUniverse witness,
+    ∃ directTarget : Nonempty (N ≃ₜ ThreeSphere),
+    ∃ directCriterion : CompletionCriterionAtUniverse witness,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      directTarget =
+        target_homeomorphism_of_reserved_named_target_and_witness_conclusion
+          dependencies smoothability grounded topologyStatement M N witness ∧
+      directCriterion =
+        completion_criterion_of_reserved_named_target_and_witness_conclusion
+          dependencies smoothability grounded topologyStatement M N witness ∧
+      directTarget = packagedTarget ∧
+      directCriterion = packagedCriterion := by
+  rcases
+      reserved_named_target_and_witness_conclusion_of_unpacked_aggregate_completion
+        dependencies smoothability grounded topologyStatement M N witness with
+    ⟨theoremName, _projectStatement, _expandedConclusion, packagedTarget,
+      _completionCriterionFamily, packagedCriterion, hTheoremNameCanonical,
+      hTheoremNameLiteral, _hProjectStatement, _hExpandedConclusion,
+      _hTargetExpanded, _hTargetDirect, _hSelectedFamily,
+      _hSelectedDirect⟩
+  let directTarget : Nonempty (N ≃ₜ ThreeSphere) :=
+    target_homeomorphism_of_reserved_named_target_and_witness_conclusion
+      dependencies smoothability grounded topologyStatement M N witness
+  let directCriterion : CompletionCriterionAtUniverse witness :=
+    completion_criterion_of_reserved_named_target_and_witness_conclusion
+      dependencies smoothability grounded topologyStatement M N witness
+  have hDirectTarget :
+      directTarget =
+        target_homeomorphism_of_reserved_named_target_and_witness_conclusion
+          dependencies smoothability grounded topologyStatement M N witness :=
+    rfl
+  have hDirectCriterion :
+      directCriterion =
+        completion_criterion_of_reserved_named_target_and_witness_conclusion
+          dependencies smoothability grounded topologyStatement M N witness :=
+    rfl
+  have hTargetPackaged :
+      directTarget = packagedTarget := by
+    apply Subsingleton.elim
+  have hCriterionPackaged :
+      directCriterion = packagedCriterion := by
+    apply Subsingleton.elim
+  exact
+    ⟨theoremName, packagedTarget, packagedCriterion, directTarget,
+      directCriterion, hTheoremNameCanonical, hTheoremNameLiteral,
+      hDirectTarget, hDirectCriterion, hTargetPackaged,
+      hCriterionPackaged⟩
+
+/-- Theorem contract for
+`target_and_witness_projection_coherence_of_unpacked_aggregate_completion`. -/
+theorem target_and_witness_projection_coherence_of_unpacked_aggregate_completion_eq :
+    @Poincare.target_and_witness_projection_coherence_of_unpacked_aggregate_completion =
+      @Poincare.target_and_witness_projection_coherence_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
