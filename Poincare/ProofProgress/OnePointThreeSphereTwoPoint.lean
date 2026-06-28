@@ -460,4 +460,115 @@ theorem onePoint_threeSpace_twoPointComplement_source_and_target_unique_lowHomot
     , ⟨payload.targetCompleteLowHomotopy.zerothUnique⟩
     ⟩
 
+/--
+Complete consumer payload for the transported one-point/two-puncture route.  It
+retains the concrete transport payload, the source one-point low-homotopy
+collapse payload, the transported target `ThreeSphere` low-homotopy payload,
+and the theorem-shaped simple-connectedness/path fields used by downstream
+topology extraction.
+-/
+structure OnePointThreeSphereTwoPointCompleteTransportConsumerPayload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) where
+  transportPayload :
+    OnePointThreeSphereTwoPointComplementTransportPayload hqp basepoint
+  sourceLowHomotopy :
+    OnePointTwoPointComplementLowHomotopyUniquePayload hqp basepoint
+  targetLowHomotopy :
+    ThreeSphereTwoPointComplementCompleteLowHomotopyUniquePayload
+      transportPayload.imageDistinct
+      (transportPayload.complementHomeomorph basepoint)
+  sourceSimplyConnected :
+    SimplyConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+  targetSimplyConnected :
+    SimplyConnectedSpace
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)
+  sourcePathNonempty :
+    ∀ x y : (({p} ∪ {q})ᶜ :
+      Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty (Path x y)
+  targetPathNonempty :
+    ∀ x y :
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere),
+        Nonempty (Path x y)
+
+/--
+The named one-point-to-`ThreeSphere` transport route constructs the complete
+consumer payload, retaining both concrete low-homotopy payload objects rather
+than projecting only their theorem-shaped fields.
+-/
+noncomputable def onePoint_threeSpace_twoPointComplement_completeTransportConsumerPayload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    OnePointThreeSphereTwoPointCompleteTransportConsumerPayload
+      hqp basepoint := by
+  let transportPayload :=
+    onePoint_threeSpace_twoPointComplement_transport_payload hqp basepoint
+  let sourceLowHomotopy :=
+    onePoint_threeSpace_twoPointComplement_lowHomotopyUnique_payload
+      hqp basepoint
+  exact
+    { transportPayload := transportPayload
+      sourceLowHomotopy := sourceLowHomotopy
+      targetLowHomotopy := transportPayload.targetCompleteLowHomotopy
+      sourceSimplyConnected := transportPayload.sourceSimplyConnected
+      targetSimplyConnected := transportPayload.targetSimplyConnected
+      sourcePathNonempty := sourceLowHomotopy.pathNonempty
+      targetPathNonempty :=
+        transportPayload.targetCompleteLowHomotopy.pathNonempty }
+
+/--
+The complete transport consumer payload exposes the concrete transport object,
+both low-homotopy payload objects, and the paired source/target
+simple-connectedness and path-collapse fields at the same endpoint.
+-/
+theorem onePoint_threeSpace_twoPointComplement_completeTransportConsumerPayload_fields
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    let payload :=
+      onePoint_threeSpace_twoPointComplement_completeTransportConsumerPayload
+        hqp basepoint
+    Nonempty
+        (OnePointThreeSphereTwoPointComplementTransportPayload hqp
+          basepoint) ∧
+      Nonempty
+        (OnePointTwoPointComplementLowHomotopyUniquePayload hqp
+          basepoint) ∧
+      Nonempty
+        (ThreeSphereTwoPointComplementCompleteLowHomotopyUniquePayload
+          payload.transportPayload.imageDistinct
+          (payload.transportPayload.complementHomeomorph basepoint)) ∧
+      SimplyConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      SimplyConnectedSpace
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere) ∧
+      (∀ x y : (({p} ∪ {q})ᶜ :
+        Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          Nonempty (Path x y)) ∧
+      (∀ x y :
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere),
+          Nonempty (Path x y)) := by
+  intro payload
+  exact
+    ⟨ ⟨payload.transportPayload⟩
+    , ⟨payload.sourceLowHomotopy⟩
+    , ⟨payload.targetLowHomotopy⟩
+    , payload.sourceSimplyConnected
+    , payload.targetSimplyConnected
+    , payload.sourcePathNonempty
+    , payload.targetPathNonempty
+    ⟩
+
 end Poincare
