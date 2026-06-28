@@ -1900,4 +1900,19 @@ theorem groundedUniversalFiniteExtinction_requirements_and_packageDerivationFami
     , payload.packageStatementDerivationFamily
     ⟩
 
+/--
+The complete finite-extinction consumer payload is equivalent to the inhabited
+detailed grounded finite-extinction assembly payload: the forward direction
+projects the stored detailed payload, while the reverse direction rebuilds the
+complete consumer payload from it.
+-/
+theorem groundedUniversalFiniteExtinction_nonemptyCompleteConsumerPayload_iff_nonemptyDetailedAssemblyPayload :
+    Nonempty GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u} ↔
+      Nonempty GroundedUniversalFiniteExtinctionDetailedAssemblyPayload.{u} := by
+  constructor
+  · rintro ⟨payload⟩
+    exact ⟨payload.detailedPayload⟩
+  · exact
+      groundedUniversalFiniteExtinction_completeConsumerPayload_of_nonemptyDetailedAssemblyPayload
+
 end Poincare
