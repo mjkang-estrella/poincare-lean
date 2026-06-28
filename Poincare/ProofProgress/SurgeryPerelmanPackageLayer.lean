@@ -17628,4 +17628,38 @@ theorem no_finiteExtinctionPackage_target_at_of_current_interface
     (isEmpty_finite_extinction_surgery_package_of_current_interface :
       IsEmpty (FiniteExtinctionSurgeryPackage n M)).false package
 
+/--
+Any asserted finite-extinction package-layer requirement contradicts the
+current local interface as soon as it is evaluated at a target in the
+dependency-package class.  The contradiction is exactly the constructorless
+singularity-model blowup classification blocker propagated through the
+finite-extinction package projection.
+-/
+theorem finiteExtinctionPackage_requirement_false_at_of_current_interface
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    False :=
+  no_finiteExtinctionPackage_target_at_of_current_interface M
+    (finiteExtinctionRequirement M)
+
+/--
+Equivalently, the current local interface refutes the pointwise proposition
+that the finite-extinction package-layer requirement can be evaluated at a
+target without hitting the singularity-model blowup blocker.
+-/
+theorem no_finiteExtinctionPackage_requirement_at_of_current_interface
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ¬ dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage := by
+  intro finiteExtinctionRequirement
+  exact
+    finiteExtinctionPackage_requirement_false_at_of_current_interface
+      finiteExtinctionRequirement M
+
 end Poincare
