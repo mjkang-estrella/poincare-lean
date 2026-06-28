@@ -25,6 +25,16 @@ noncomputable def homeomorph_compl_singleton_euclidean_of_homeomorph_to_onePoint
     (onePoint_threeSpace_compl_singleton_homeomorph_euclidean (eM x))
 
 /--
+The same single-puncture Euclidean chart transport, packaged as a nonempty
+homeomorphism payload for downstream consumers.
+-/
+theorem nonempty_homeomorph_compl_singleton_euclidean_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M) :
+    Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) :=
+  ⟨homeomorph_compl_singleton_euclidean_of_homeomorph_to_onePoint_threeSpace h x⟩
+
+/--
 Every single-puncture complement of a space recognized as the one-point
 compactification of `R^3` is contractible.
 -/
@@ -663,6 +673,29 @@ noncomputable def homeomorph_compl_singleton_euclidean_of_homeomorph_to_threeSph
     ({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3) :=
   homeomorph_compl_singleton_euclidean_of_homeomorph_to_onePoint_threeSpace
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+
+/--
+The same `ThreeSphere` single-puncture Euclidean chart transport, packaged as a
+nonempty homeomorphism payload for downstream consumers.
+-/
+theorem nonempty_homeomorph_compl_singleton_euclidean_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M) :
+    Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) :=
+  ⟨homeomorph_compl_singleton_euclidean_of_homeomorph_to_threeSphere h x⟩
+
+/--
+Transport a `ThreeSphere`-recognized target's two-puncture complement to a
+punctured Euclidean chart.
+-/
+theorem exists_homeomorph_twoPointComplement_puncturedEuclidean_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x) :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+        ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3)))) :=
+  exists_homeomorph_twoPointComplement_puncturedEuclidean_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
 
 /--
 Every single-puncture complement of a space recognized as `ThreeSphere` is
