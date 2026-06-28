@@ -45213,4 +45213,100 @@ theorem closed_three_manifold_complete_mathlib_recognition_certificate_of_reserv
       @Poincare.closed_three_manifold_complete_mathlib_recognition_certificate_of_reserved_final_certificate :=
   rfl
 
+/--
+Project recognition recovered from the arbitrary mathlib-sphere route.
+
+The complete arbitrary-manifold certificate gives both the selected project
+homeomorphism `M ≃ₜ ThreeSphere` and the composed mathlib-sphere map
+`M ≃ₜ Metric.sphere ... 1`.  This theorem proves that composing the latter
+with the inverse of the selected `ThreeSphere` literal-sphere recognition map
+recovers exactly the selected project homeomorphism.
+-/
+theorem closed_three_manifold_project_homeomorphism_recovered_from_mathlib_route_of_reserved_final_certificate
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{0})
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ checkedReservedStatement : PoincareConjectureStatement.{0},
+    ∃ projectConclusion : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ forwardHomeomorphism :
+      ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ composedMathlibHomeomorphism :
+      M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ recoveredProjectHomeomorphism : M ≃ₜ ThreeSphere,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      checkedReservedStatement =
+        poincare_conjecture_of_completion_certificate certificate ∧
+      projectConclusion = checkedReservedStatement M ∧
+      projectHomeomorphism = Classical.choice projectConclusion ∧
+      composedMathlibHomeomorphism =
+        projectHomeomorphism.trans forwardHomeomorphism ∧
+      recoveredProjectHomeomorphism =
+        composedMathlibHomeomorphism.trans forwardHomeomorphism.symm ∧
+      recoveredProjectHomeomorphism = projectHomeomorphism ∧
+      Topology.IsEmbedding recoveredProjectHomeomorphism ∧
+      Function.Bijective recoveredProjectHomeomorphism ∧
+      Continuous recoveredProjectHomeomorphism := by
+  rcases
+      closed_three_manifold_complete_mathlib_recognition_certificate_of_reserved_final_certificate
+        dependencies M with
+    ⟨theoremName, certificate, checkedReservedStatement,
+      _checkedMathlibStatement, projectConclusion, projectHomeomorphism,
+      forwardHomeomorphism, composedMathlibHomeomorphism,
+      _inverseComposedMathlibHomeomorphism, _composedMathlibConclusion,
+      _inverseComposedMathlibConclusion, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, hCheckedReservedStatement,
+      _hCheckedMathlibStatement, hProjectConclusion, hProjectHomeomorphism,
+      hComposedMathlibHomeomorphism, _hInverseComposedMathlibHomeomorphism,
+      _hInverseDecomposition, _hComposedMathlibConclusion,
+      _hComposedMathlibStatement, _hInverseComposedMathlibConclusion,
+      _hLeft, _hRight, _hComposedEmbedding, _hComposedBijective,
+      _hComposedContinuous, _hInverseComposedEmbedding,
+      _hInverseComposedBijective, _hInverseComposedContinuous⟩
+  let recoveredProjectHomeomorphism : M ≃ₜ ThreeSphere :=
+    composedMathlibHomeomorphism.trans forwardHomeomorphism.symm
+  have hRecoveredProjectHomeomorphism :
+      recoveredProjectHomeomorphism =
+        composedMathlibHomeomorphism.trans forwardHomeomorphism.symm :=
+    rfl
+  have hRecoveredProject :
+      recoveredProjectHomeomorphism = projectHomeomorphism := by
+    rw [hRecoveredProjectHomeomorphism, hComposedMathlibHomeomorphism]
+    ext x
+    simp
+  have hRecoveredEmbedding :
+      Topology.IsEmbedding recoveredProjectHomeomorphism := by
+    rw [hRecoveredProject]
+    exact projectHomeomorphism.isEmbedding
+  have hRecoveredBijective :
+      Function.Bijective recoveredProjectHomeomorphism := by
+    rw [hRecoveredProject]
+    exact projectHomeomorphism.bijective
+  have hRecoveredContinuous :
+      Continuous recoveredProjectHomeomorphism := by
+    rw [hRecoveredProject]
+    exact projectHomeomorphism.continuous
+  exact
+    ⟨theoremName, certificate, checkedReservedStatement, projectConclusion,
+      projectHomeomorphism, forwardHomeomorphism, composedMathlibHomeomorphism,
+      recoveredProjectHomeomorphism, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, hCheckedReservedStatement,
+      hProjectConclusion, hProjectHomeomorphism, hComposedMathlibHomeomorphism,
+      hRecoveredProjectHomeomorphism, hRecoveredProject, hRecoveredEmbedding,
+      hRecoveredBijective, hRecoveredContinuous⟩
+
+/-- Theorem contract for
+`closed_three_manifold_project_homeomorphism_recovered_from_mathlib_route_of_reserved_final_certificate`. -/
+theorem closed_three_manifold_project_homeomorphism_recovered_from_mathlib_route_of_reserved_final_certificate_eq :
+    @Poincare.closed_three_manifold_project_homeomorphism_recovered_from_mathlib_route_of_reserved_final_certificate =
+      @Poincare.closed_three_manifold_project_homeomorphism_recovered_from_mathlib_route_of_reserved_final_certificate :=
+  rfl
+
 end Poincare
