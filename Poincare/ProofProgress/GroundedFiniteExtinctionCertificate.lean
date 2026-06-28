@@ -1473,4 +1473,67 @@ theorem milestone_requirements_remaining_dependency_certificate_and_completion_c
         witness certificate
     ⟩
 
+/--
+The same smoothability/grounded/topology route constructs the detailed grounded
+finite-extinction assembly payload and carries it through to the reconstructed
+remaining dependency package, inhabited checked certificate, public statement,
+and completion-criterion family.
+-/
+theorem detailed_grounded_payload_remaining_dependency_certificate_and_completion_criteria_of_smoothability_grounded_and_topology_package
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    Nonempty GroundedUniversalFiniteExtinctionDetailedAssemblyPayload.{u} ∧
+      UniversalFiniteExtinctionStatement.{u} ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.finiteExtinction ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          ∃ surgery : HasRicciFlowWithSurgery n M,
+          ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+          ∃ _packageStatement : FiniteExtinctionStatement n M,
+          ∃ _derivation : HasFiniteExtinctionDerivation flow surgery control,
+            FiniteExtinctionByRicciFlowWithSurgery M) ∧
+      RemainingDependencyPackage.{u} ∧
+      PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let detailedPayload :=
+    groundedUniversalFiniteExtinctionDetailedAssemblyPayload grounded
+  let remaining :=
+    remainingDependencyPackage_of_smoothability_grounded_and_topology_package
+      smoothability grounded topologyPackage
+  let certificate :=
+    completion_certificate_of_smoothability_grounded_and_topology_package
+      smoothability grounded topologyPackage
+  exact
+    ⟨ ⟨detailedPayload⟩
+    , detailedPayload.universalStatement
+    , detailedPayload.finiteExtinctionPackageRequirement
+    , detailedPayload.ricciFlowWithSurgeryMilestone
+    , detailedPayload.perelmanSingularityControlMilestone
+    , detailedPayload.finiteExtinctionMilestone
+    , detailedPayload.statementPayloadFamily
+    , remaining
+    , poincare_conjecture_of_completion_certificate certificate
+    , ⟨certificate⟩
+    , fun witness => completion_criterion_of_completion_certificate
+        witness certificate
+    ⟩
+
 end Poincare
