@@ -1826,6 +1826,30 @@ noncomputable def twoPointComplement_lowHomotopyUnique_payload_of_topology_packa
       package M extinction hyx
 
 /--
+The topology package simultaneously supplies sphere recognition, one-point
+compactification recognition, and data-valued two-puncture low-homotopy
+uniqueness for a chosen two-puncture basepoint.
+-/
+theorem recognition_and_twoPointComplement_lowHomotopyUnique_payload_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) {y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Nonempty (M ≃ₜ ThreeSphere) ∧
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      Nonempty
+        (TopologyPackageTwoPointComplementLowHomotopyUniquePayload
+          package M extinction hyx basepoint) :=
+  ⟨ homeomorphism_of_topology_package package M extinction
+  , homeomorph_to_onePoint_threeSpace_of_topology_package package M extinction
+  , ⟨twoPointComplement_lowHomotopyUnique_payload_of_topology_package
+      package M extinction x hyx basepoint⟩
+  ⟩
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
