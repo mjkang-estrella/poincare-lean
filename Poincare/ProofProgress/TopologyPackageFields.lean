@@ -405,8 +405,9 @@ theorem twoPointComplement_simplyConnectedSpace_of_topology_package
       package M extinction) hyx
 
 /--
-The package-level two-puncture simple-connectedness projection gives
-path-connectedness of every selected two-puncture complement.
+The package-level two-puncture chart projection gives path-connectedness of
+every selected two-puncture complement by transporting it from a punctured
+Euclidean chart.
 -/
 theorem twoPointComplement_pathConnectedSpace_of_topology_package
     (package : ExtinctionTopologyExtractionPackage.{u})
@@ -416,10 +417,13 @@ theorem twoPointComplement_pathConnectedSpace_of_topology_package
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
     {x y : M} (hyx : y ≠ x) :
     PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) := by
-  letI : SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
-    twoPointComplement_simplyConnectedSpace_of_topology_package
-      package M extinction hyx
-  infer_instance
+  rcases
+    exists_homeomorph_twoPointComplement_puncturedEuclidean_of_topology_package
+      package M extinction hyx with ⟨puncture, chartNonempty⟩
+  rcases chartNonempty with ⟨chart⟩
+  letI : PathConnectedSpace ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+    euclideanThree_compl_singleton_pathConnectedSpace puncture
+  exact chart.symm.surjective.pathConnectedSpace chart.symm.continuous
 
 /--
 Any two points in a package-selected two-puncture complement are joined by a
