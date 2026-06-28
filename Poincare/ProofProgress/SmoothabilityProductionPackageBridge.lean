@@ -203,4 +203,94 @@ theorem onePointRecognition_surgeryPrerequisites_and_moiseLocalCharts
     ⟨smoothability_surgery_prerequisites_of_homeomorph_to_onePoint_threeSpace h,
       moiseLocalCharts_of_onePointRecognition_subobligationsPayload payload h⟩
 
+/--
+Uniform smoothability sub-obligation payload for sources recognized as
+`ThreeSphere`, matching the topology-recognition output form.
+-/
+def ThreeSphereRecognitionSmoothabilitySubobligationsPayload : Prop :=
+  ∀ {M : Type u} [TopologicalSpace M],
+    Nonempty (M ≃ₜ ThreeSphere) →
+      ∃ _t2 : T2Space M,
+      ∃ _charted : ChartedSpace ThreeManifoldModel M,
+      ∃ _simple : SimplyConnectedSpace M,
+      ∃ _compact : CompactSpace M,
+        SmoothabilitySubobligationsPayload M
+
+/--
+`ThreeSphere` recognition plus its recognized-source payload exposes the first
+Moise package field on the source.
+-/
+theorem moiseLocalCharts_of_threeSphereRecognition_subobligationsPayload
+    (payload : ThreeSphereRecognitionSmoothabilitySubobligationsPayload.{u})
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace ThreeManifoldModel M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+      HasMoiseLocalTriangulationCharts M := by
+  rcases payload h with ⟨t2, charted, simple, compact, subobligations⟩
+  letI : T2Space M := t2
+  letI : ChartedSpace ThreeManifoldModel M := charted
+  letI : SimplyConnectedSpace M := simple
+  letI : CompactSpace M := compact
+  exact
+    ⟨t2, charted, simple, compact,
+      moiseLocalChartsOfSmoothabilitySubobligationsPayload
+        M subobligations⟩
+
+/--
+The same `ThreeSphere` recognized-source payload exposes the first two Moise
+package fields on the source.
+-/
+theorem moiseInitialFields_of_threeSphereRecognition_subobligationsPayload
+    (payload : ThreeSphereRecognitionSmoothabilitySubobligationsPayload.{u})
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace ThreeManifoldModel M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+      HasMoiseLocallyFiniteCoverRefinement M localCharts := by
+  rcases payload h with ⟨t2, charted, simple, compact, subobligations⟩
+  letI : T2Space M := t2
+  letI : ChartedSpace ThreeManifoldModel M := charted
+  letI : SimplyConnectedSpace M := simple
+  letI : CompactSpace M := compact
+  let localCharts :=
+    moiseLocalChartsOfSmoothabilitySubobligationsPayload M subobligations
+  let locallyFiniteCoverRefinement :=
+    moiseLocallyFiniteCoverRefinementOfSmoothabilitySubobligationsPayload
+      M subobligations
+  exact
+    ⟨t2, charted, simple, compact, localCharts,
+      locallyFiniteCoverRefinement⟩
+
+/--
+For the topology route stated as `ThreeSphere` recognition, the transported
+one-point smooth atlas supplies surgery prerequisites while the
+recognized-source payload supplies the first Moise package field.
+-/
+theorem threeSphereRecognition_surgeryPrerequisites_and_moiseLocalCharts
+    (payload : ThreeSphereRecognitionSmoothabilitySubobligationsPayload.{u})
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    (∃ _t2 : T2Space M,
+      ∃ _charted : ChartedSpace ThreeManifoldModel M,
+      ∃ _simple : SimplyConnectedSpace M,
+      ∃ _compact : CompactSpace M,
+      ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+        Nonempty M) ∧
+    (∃ _t2 : T2Space M,
+      ∃ _charted : ChartedSpace ThreeManifoldModel M,
+      ∃ _simple : SimplyConnectedSpace M,
+      ∃ _compact : CompactSpace M,
+        HasMoiseLocalTriangulationCharts M) := by
+  exact
+    ⟨smoothability_surgery_prerequisites_of_homeomorph_to_onePoint_threeSpace
+        (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h),
+      moiseLocalCharts_of_threeSphereRecognition_subobligationsPayload
+        payload h⟩
+
 end Poincare
