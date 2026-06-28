@@ -2271,6 +2271,40 @@ theorem groundedRecognitionPrefixPayload_and_finalCertificateTopologyAssemblyPay
     ⟩
 
 /--
+Consumer-facing collapse of the joined grounded recognition-prefix and topology
+assembly route: the same inputs produce the public Poincare statement,
+inhabited checked certificate, and all completion criteria.
+-/
+theorem poincare_statement_nonempty_certificate_and_completion_criteria_of_groundedRecognitionPrefix_and_finalCertificateTopologyAssembly
+    (dependencies : RemainingDependencyPackage.{u})
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  rcases
+    groundedRecognitionPrefixPayload_and_finalCertificateTopologyAssemblyPayload_route_fields
+      dependencies grounded recognitionPrefix with
+    ⟨ _groundedPayload
+    , _topologyPayload
+    , _topologyPackage
+    , _topologyStatement
+    , publicStatement
+    , _checkedCertificate
+    , nonemptyCertificate
+    , _canonicalTarget
+    , _publicPayload
+    , _canonicalPayload
+    , completionCriteria
+    ⟩
+  exact
+    ⟨ publicStatement
+    , nonemptyCertificate
+    , completionCriteria
+    ⟩
+
+/--
 For fixed smoothability and finite-extinction inputs, existence of the complete
 topology assembly payload is exactly the topology-package requirement.  The
 reverse direction constructs the checked final certificate and all completion
