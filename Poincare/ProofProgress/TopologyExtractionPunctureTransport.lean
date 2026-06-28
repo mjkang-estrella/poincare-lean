@@ -75,6 +75,58 @@ theorem exists_homeomorph_twoPointComplement_puncturedEuclidean_of_homeomorph_to
 
 /--
 Every two-puncture complement of a space recognized as the one-point
+compactification of `R^3` is path-connected.
+-/
+theorem twoPointComplement_pathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x) :
+    PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) := by
+  rcases
+    exists_homeomorph_twoPointComplement_puncturedEuclidean_of_homeomorph_to_onePoint_threeSpace
+      h hyx with ⟨puncture, chartNonempty⟩
+  rcases chartNonempty with ⟨chart⟩
+  letI : PathConnectedSpace ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+    euclideanThree_compl_singleton_pathConnectedSpace puncture
+  exact chart.symm.surjective.pathConnectedSpace chart.symm.continuous
+
+/--
+Any two points in the two-puncture complement of a recognized one-point
+compactification target are joined by a path.
+-/
+theorem twoPointComplement_path_nonempty_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x) :
+    ∀ (a b : (({x} ∪ {y})ᶜ : Set M)), Nonempty (Path a b) := by
+  intro a b
+  letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_pathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+      h hyx
+  exact PathConnectedSpace.joined a b
+
+/--
+The path component of any point in the two-puncture complement of a recognized
+one-point compactification target is the whole complement.
+-/
+theorem twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    pathComponent basepoint = Set.univ := by
+  letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_pathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+      h hyx
+  ext z
+  constructor
+  · intro _hz
+    exact Set.mem_univ z
+  · intro _hz
+    exact PathConnectedSpace.joined basepoint z
+
+/--
+Every two-puncture complement of a space recognized as the one-point
 compactification of `R^3` is simply connected.
 -/
 theorem twoPointComplement_simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace
@@ -144,6 +196,41 @@ theorem compl_singleton_contractibleSpace_of_homeomorph_to_threeSphere
     ContractibleSpace ({x}ᶜ : Set M) :=
   (homeomorph_compl_singleton_euclidean_of_homeomorph_to_threeSphere
     h x).contractibleSpace
+
+/--
+Every two-puncture complement of a space recognized as `ThreeSphere` is
+path-connected.
+-/
+theorem twoPointComplement_pathConnectedSpace_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x) :
+    PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+  twoPointComplement_pathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+
+/--
+Any two points in the two-puncture complement of a `ThreeSphere`-recognized
+space are joined by a path.
+-/
+theorem twoPointComplement_path_nonempty_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x) :
+    ∀ (a b : (({x} ∪ {y})ᶜ : Set M)), Nonempty (Path a b) :=
+  twoPointComplement_path_nonempty_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+
+/--
+The path component of any point in the two-puncture complement of a
+`ThreeSphere`-recognized space is the whole complement.
+-/
+theorem twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    pathComponent basepoint = Set.univ :=
+  twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+    basepoint
 
 /--
 Every two-puncture complement of a space recognized as `ThreeSphere` is simply
