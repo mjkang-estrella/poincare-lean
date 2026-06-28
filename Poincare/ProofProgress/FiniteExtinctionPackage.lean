@@ -662,4 +662,76 @@ theorem poincare_conjecture_of_smoothability_and_subobligations_family_eq
         extractSphere := by
   apply Subsingleton.elim
 
+/--
+The smoothability/sub-obligation-family route exposes the reserved endpoint
+and all universe-indexed completion criteria through the universal
+finite-extinction completion payload.
+-/
+theorem poincare_conjecture_payload_of_smoothability_and_subobligations_family
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  universalFiniteExtinctionStatement_completion_payload
+    (universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+      smoothabilityPackage h)
+    extractSphere
+
+/--
+The smoothability/sub-obligation-family completion payload is exactly the
+universal finite-extinction completion payload for its named boundary.
+-/
+theorem poincare_conjecture_payload_of_smoothability_and_subobligations_family_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    poincare_conjecture_payload_of_smoothability_and_subobligations_family
+        smoothabilityPackage h extractSphere =
+      universalFiniteExtinctionStatement_completion_payload
+        (universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+          smoothabilityPackage h)
+        extractSphere := by
+  apply Subsingleton.elim
+
 end Poincare
