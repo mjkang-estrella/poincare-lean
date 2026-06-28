@@ -927,6 +927,41 @@ theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackag
   ⟩
 
 /--
+The fixed minimal final-certificate inputs plus a simply connected
+extinction-recognition prefix discharge each universe-indexed completion
+criterion. This projects the topology package from the recognition prefix and
+then applies the minimal-input topology-package criterion theorem.
+-/
+theorem completion_criterion_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    (witness : Type u)
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    CompletionCriterionAtUniverse witness :=
+  completion_criterion_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    witness inputs
+    (topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+      recognitionPrefix)
+
+/--
+The minimal-input recognition-prefix criterion theorem is definitionally the
+topology-package criterion theorem after projecting the topology package from
+the recognition prefix.
+-/
+theorem completion_criterion_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix_eq
+    (witness : Type u)
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    completion_criterion_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+        witness inputs recognitionPrefix =
+      completion_criterion_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+        witness inputs
+        (topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+          recognitionPrefix) := by
+  rfl
+
+/--
 The same recognition prefix also closes the project-level final payload by
 first constructing the topology package requirement and then using the
 minimal-input/topology-package project route.
