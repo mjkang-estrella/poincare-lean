@@ -303,6 +303,44 @@ noncomputable def finiteExtinctionSurgeryPerelmanProjectionPayload_of_finite_ext
       package
 
 /--
+Finite-extinction-aware surgery/Perelman projection payload.  It keeps the
+field-based surgery/Perelman projection tied to the selected finite-extinction
+package and also records the finite-extinction statement and witness produced
+by that same package.
+-/
+structure FiniteExtinctionSurgeryPerelmanAndExtinctionPayload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) where
+  projectionPayload :
+    FiniteExtinctionSurgeryPerelmanProjectionPayload package
+  finiteExtinctionStatement : FiniteExtinctionStatement n M
+  finiteExtinctionWitness : FiniteExtinctionByRicciFlowWithSurgery M
+
+/--
+Every completed finite-extinction surgery package yields a combined
+surgery/Perelman and finite-extinction payload.
+-/
+noncomputable def finiteExtinctionSurgeryPerelmanAndExtinctionPayload_of_finite_extinction_surgery_package
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package where
+  projectionPayload :=
+    finiteExtinctionSurgeryPerelmanProjectionPayload_of_finite_extinction_surgery_package
+      package
+  finiteExtinctionStatement :=
+    finite_extinction_statement_of_surgery_package package
+  finiteExtinctionWitness :=
+    finite_extinction_of_surgery_package package
+
+/--
 Pointwise named-payload projection from the finite-extinction package-layer
 requirement.  This exposes the actual finite-extinction witness together with a
 stable field-based surgery/Perelman payload for downstream assembly.
@@ -322,6 +360,31 @@ theorem finiteExtinctionSurgeryPerelmanProjectionPayload_target_at_of_finiteExti
     ⟨ n
     , package
     , ⟨finiteExtinctionSurgeryPerelmanProjectionPayload_of_finite_extinction_surgery_package
+        package⟩
+    ⟩
+
+/--
+Pointwise combined projection from the finite-extinction package-layer
+requirement.  This retains the same finite-extinction package witness while
+exposing both the surgery/Perelman projection payload and the finite-extinction
+statement/witness projected from it.
+-/
+theorem finiteExtinctionSurgeryPerelmanAndExtinctionPayload_target_at_of_finiteExtinctionPackage_requirement
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ n : ℕ∞ω,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+      Nonempty
+        (FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package) := by
+  rcases finiteExtinctionRequirement M with ⟨⟨n, package⟩⟩
+  exact
+    ⟨ n
+    , package
+    , ⟨finiteExtinctionSurgeryPerelmanAndExtinctionPayload_of_finite_extinction_surgery_package
         package⟩
     ⟩
 
@@ -506,6 +569,93 @@ theorem surgeryPerelmanAssemblyPayload_fields_of_finiteExtinctionPackage_require
     , payload.perelmanSingularityControlMilestone
     , payload.projectionPayloadFamily
     , payload.selectedFlowScaleBlowupFamily
+    ⟩
+
+/--
+Detailed surgery/Perelman assembly payload projected from the
+finite-extinction package layer.  It extends the basic assembly payload with a
+pointwise combined payload carrying both surgery/Perelman data and the
+finite-extinction statement/witness from the same package.
+-/
+structure SurgeryPerelmanDetailedAssemblyPayloadFromFiniteExtinction where
+  basePayload : SurgeryPerelmanAssemblyPayloadFromFiniteExtinction.{u}
+  projectionAndExtinctionFamily :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackage n M,
+          Nonempty
+            (FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package)
+
+/--
+The finite-extinction package-layer requirement constructs the detailed
+surgery/Perelman assembly payload.
+-/
+def surgeryPerelmanDetailedAssemblyPayload_of_finiteExtinctionPackage_requirement
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage) :
+    SurgeryPerelmanDetailedAssemblyPayloadFromFiniteExtinction.{u} where
+  basePayload :=
+    surgeryPerelmanAssemblyPayload_of_finiteExtinctionPackage_requirement
+      finiteExtinctionRequirement
+  projectionAndExtinctionFamily :=
+    finiteExtinctionSurgeryPerelmanAndExtinctionPayload_target_at_of_finiteExtinctionPackage_requirement
+      finiteExtinctionRequirement
+
+/--
+The detailed surgery/Perelman assembly payload unpacks to the basic assembly
+fields together with the combined surgery/Perelman and finite-extinction
+projection family.
+-/
+theorem surgeryPerelmanDetailedAssemblyPayload_fields_of_finiteExtinctionPackage_requirement
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.surgeryPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ package : FiniteExtinctionSurgeryPackage n M,
+            Nonempty
+              (FiniteExtinctionSurgeryPerelmanProjectionPayload package)) ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+            PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+            Nonempty (SurgeryScaleFunctionPayload flow) ∧
+            HasSingularityModelBlowupClassification flow) ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ package : FiniteExtinctionSurgeryPackage n M,
+            Nonempty
+              (FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package)) := by
+  let payload :=
+    surgeryPerelmanDetailedAssemblyPayload_of_finiteExtinctionPackage_requirement
+      finiteExtinctionRequirement
+  exact
+    ⟨ payload.basePayload.surgeryPackageRequirement
+    , payload.basePayload.ricciFlowWithSurgeryMilestone
+    , payload.basePayload.perelmanSingularityControlMilestone
+    , payload.basePayload.projectionPayloadFamily
+    , payload.basePayload.selectedFlowScaleBlowupFamily
+    , payload.projectionAndExtinctionFamily
     ⟩
 
 /-- Concrete surgery-scale payloads produce the first construction-package field. -/
