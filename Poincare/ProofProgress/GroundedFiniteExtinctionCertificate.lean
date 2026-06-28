@@ -689,6 +689,57 @@ theorem groundedUniversalFiniteExtinctionDetailedAssemblyPayload_fields
     ⟩
 
 /--
+The detailed finite-extinction assembly payload exposes the compact
+flow/surgery/control/package family retained inside its full statement payload.
+This projection is the finite-extinction analogue of the analytic
+package-plus-subobligations projection: it keeps the actual Ricci flow,
+surgery construction, Perelman control, finite-extinction package, theorem
+statement, derivation, and final extinction witness for every smooth target.
+-/
+theorem groundedUniversalFiniteExtinctionDetailedAssemblyPayload_flowPackageFamily
+    (payload : GroundedUniversalFiniteExtinctionDetailedAssemblyPayload.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ surgery : HasRicciFlowWithSurgery n M,
+        ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+        ∃ _package : FiniteExtinctionSurgeryPackage n M,
+          FiniteExtinctionStatement n M ∧
+            HasFiniteExtinctionDerivation flow surgery control ∧
+            FiniteExtinctionByRicciFlowWithSurgery M := by
+  intro M _top _t2 _charted _simple _compact _manifold
+  rcases payload.statementPayloadFamily M with
+    ⟨n, flow, surgery, control, package, packageStatement, derivation,
+      finiteExtinction⟩
+  exact
+    ⟨n, flow, surgery, control, package, packageStatement, derivation,
+      finiteExtinction⟩
+
+/--
+Construct the compact flow/surgery/control/package family directly from the
+grounded universal finite-extinction statement.
+-/
+theorem groundedUniversalFiniteExtinction_flowPackageFamily_of_grounded
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ surgery : HasRicciFlowWithSurgery n M,
+        ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+        ∃ _package : FiniteExtinctionSurgeryPackage n M,
+          FiniteExtinctionStatement n M ∧
+            HasFiniteExtinctionDerivation flow surgery control ∧
+            FiniteExtinctionByRicciFlowWithSurgery M :=
+  groundedUniversalFiniteExtinctionDetailedAssemblyPayload_flowPackageFamily
+    (groundedUniversalFiniteExtinctionDetailedAssemblyPayload grounded)
+
+/--
 Grounded universal finite extinction plus theorem-shaped topology extraction
 proves the project-level Poincare statement through the universal
 finite-extinction topology-extraction route.
