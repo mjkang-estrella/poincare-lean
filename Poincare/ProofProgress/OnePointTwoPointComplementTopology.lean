@@ -84,6 +84,22 @@ theorem onePoint_threeSpace_twoPointComplement_piZero_subsingleton
         (onePoint_threeSpace_twoPointComplement_zerothHomotopy_subsingleton hqp)
 
 /--
+Any two zeroth homotopy group classes in the two-point complement agree.
+-/
+theorem onePoint_threeSpace_twoPointComplement_piZero_eq
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (x : (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (a b :
+      HomotopyGroup.Pi 0
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) :
+    a = b := by
+  letI : Subsingleton
+      (HomotopyGroup.Pi 0
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) :=
+    onePoint_threeSpace_twoPointComplement_piZero_subsingleton hqp x
+  exact Subsingleton.elim _ _
+
+/--
 Any two zeroth-homotopy classes in the two-point complement agree.
 -/
 theorem onePoint_threeSpace_twoPointComplement_zerothHomotopy_mk_eq
