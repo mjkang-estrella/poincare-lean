@@ -2152,6 +2152,78 @@ theorem canonical_named_payload_of_unpacked_aggregate_completion_eq :
   rfl
 
 /--
+The canonical named aggregate payload also supplies the mathlib-shaped
+topological Poincare statement.  This keeps the reserved theorem-name route,
+the project statement, the mathlib statement, the canonical payload, and the
+canonical completion family in one final-certificate package.
+-/
+theorem canonical_named_mathlib_payload_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ theoremName : String,
+    ∃ aggregateCanonicalTarget : canonicalCompletionTarget.{u},
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ aggregateCompletion :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ canonicalPayload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      projectStatement = aggregateCanonicalTarget ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement ∧
+      canonicalPayload =
+        canonical_completion_payload_of_canonical_completion_target
+          aggregateCanonicalTarget ∧
+      (∀ witness : Type u,
+        aggregateCompletion witness =
+          completion_criterion_of_canonical_completion_target
+            witness aggregateCanonicalTarget) := by
+  rcases
+      canonical_named_payload_of_unpacked_aggregate_completion
+        dependencies smoothability grounded topologyStatement M with
+    ⟨theoremName, aggregateCanonicalTarget, aggregateCompletion,
+      canonicalPayload, hTheoremNameCanonical, hTheoremNameLiteral,
+      _hCanonicalPayloadUnpacked, hCanonicalPayloadCanonical,
+      hCompletionCanonical⟩
+  let projectStatement : PoincareConjectureStatement.{u} :=
+    aggregateCanonicalTarget
+  let mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u} :=
+    mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+      projectStatement
+  have hProjectStatement :
+      projectStatement = aggregateCanonicalTarget :=
+    rfl
+  have hMathlibStatement :
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement :=
+    rfl
+  exact
+    ⟨theoremName, aggregateCanonicalTarget, projectStatement,
+      mathlibStatement, aggregateCompletion, canonicalPayload,
+      hTheoremNameCanonical, hTheoremNameLiteral, hProjectStatement,
+      hMathlibStatement, hCanonicalPayloadCanonical, hCompletionCanonical⟩
+
+/-- Theorem contract for
+`canonical_named_mathlib_payload_of_unpacked_aggregate_completion`. -/
+theorem canonical_named_mathlib_payload_of_unpacked_aggregate_completion_eq :
+    @Poincare.canonical_named_mathlib_payload_of_unpacked_aggregate_completion =
+      @Poincare.canonical_named_mathlib_payload_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
