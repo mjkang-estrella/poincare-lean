@@ -68,6 +68,19 @@ theorem onePoint_threeSpace_twoPointComplement_zerothHomotopy_subsingleton
   infer_instance
 
 /--
+Any two zeroth-homotopy classes in the two-point complement agree.
+-/
+theorem onePoint_threeSpace_twoPointComplement_zerothHomotopy_mk_eq
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (x y : (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    ZerothHomotopy.mk x = ZerothHomotopy.mk y := by
+  letI : Subsingleton
+      (ZerothHomotopy
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :=
+    onePoint_threeSpace_twoPointComplement_zerothHomotopy_subsingleton hqp
+  exact Subsingleton.elim _ _
+
+/--
 The two-point complement is connected as a direct consequence of the named
 path-connectedness theorem above.
 -/
