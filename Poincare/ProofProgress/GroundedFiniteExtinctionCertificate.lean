@@ -229,6 +229,28 @@ theorem finite_extinction_statement_payload_of_grounded_eq
   apply Subsingleton.elim
 
 /--
+A compact grounded finite-extinction payload: the grounded certificate exposes
+the chosen time parameter, the completed surgery package at that parameter, the
+theorem-shaped finite-extinction statement, and the resulting extinction
+witness without requiring downstream consumers to reopen the full analytic and
+frontier chain.
+-/
+theorem finite_extinction_package_statement_and_witness_of_grounded
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (grounded : GroundedFiniteExtinctionProductionCertificate M) :
+    ∃ n : ℕ∞ω,
+    ∃ _package : FiniteExtinctionSurgeryPackage n M,
+      FiniteExtinctionStatement n M ∧
+        FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases finite_extinction_statement_payload_of_grounded grounded with
+    ⟨n, _flow, _surgery, _control, package, statement, _derivation,
+      finiteExtinction⟩
+  exact ⟨n, package, statement, finiteExtinction⟩
+
+/--
 The grounded universal finite-extinction statement: every compact simply
 connected topological 3-manifold carries a grounded certificate.  This is the
 honest restatement of the Ricci-flow pillar — unlike
@@ -277,6 +299,25 @@ theorem finite_extinction_statement_payload_family_of_grounded_eq
   apply Subsingleton.elim
 
 /--
+Family-level compact grounded finite-extinction payload: every smooth target
+receives a concrete time parameter, completed finite-extinction surgery
+package, theorem-shaped statement, and extinction witness.
+-/
+theorem finite_extinction_package_statement_and_witness_family_of_grounded
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ _package : FiniteExtinctionSurgeryPackage n M,
+          FiniteExtinctionStatement n M ∧
+            FiniteExtinctionByRicciFlowWithSurgery M := by
+  intro M _top _t2 _charted _simple _compact _manifold
+  exact finite_extinction_package_statement_and_witness_of_grounded
+    (grounded M)
+
+/--
 The grounded universal statement supplies the finite-extinction package-layer
 requirement consumed by the dependency crosswalk.
 -/
@@ -301,6 +342,26 @@ theorem finiteExtinctionPackage_requirement_of_grounded_eq
         exact finite_extinction_surgery_package_nonempty_of_grounded
           (grounded M)) := by
   apply Subsingleton.elim
+
+/--
+The grounded package-layer requirement and the compact statement/witness family
+come from the same grounded universal finite-extinction input.
+-/
+theorem finiteExtinctionPackage_requirement_and_package_statement_witness_family_of_grounded
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+            FiniteExtinctionStatement n M ∧
+              FiniteExtinctionByRicciFlowWithSurgery M) :=
+  ⟨ finiteExtinctionPackage_requirement_of_grounded grounded
+  , finite_extinction_package_statement_and_witness_family_of_grounded grounded
+  ⟩
 
 /--
 The grounded pillar implies the legacy pillar, so the existing assembly route
