@@ -2521,4 +2521,103 @@ theorem poincare_statement_final_certificate_and_completion_criteria_iff_named_p
       (poincare_statement_final_certificate_and_completion_criterion_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
         inputs).2 topology
 
+/--
+Complete consumer payload for the named package-layer final endpoint.  It
+retains the three package requirements, the concrete topology assembly payload
+they construct, the public statement, checked certificate, canonical target,
+both public/canonical completion payloads, and the full completion-criterion
+family.
+-/
+structure FinalCertificateNamedPackageLayerConsumerPayload where
+  smoothability :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.smoothabilityPackage
+  finiteExtinction :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.finiteExtinctionPackage
+  topology :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.topologyPackage
+  topologyAssemblyPayload :
+    FinalCertificateTopologyAssemblyPayload
+      { smoothability := smoothability
+        finiteExtinction := finiteExtinction }
+      topology
+  publicStatement : PoincareConjectureStatement.{u}
+  checkedCertificate : PoincareCompletionCertificate.{u}
+  canonicalTarget : canonicalCompletionTarget.{u}
+  publicPayload :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness
+  canonicalPayload :
+    ∃ _target : canonicalCompletionTarget.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness
+  completionCriteria :
+    ∀ witness : Type u, CompletionCriterionAtUniverse witness
+
+/--
+The three named package-layer requirements construct the complete final
+consumer payload while retaining the intermediate topology assembly payload
+used to produce the checked certificate.
+-/
+def finalCertificateNamedPackageLayerConsumerPayload
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    FinalCertificateNamedPackageLayerConsumerPayload.{u} := by
+  let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+    { smoothability := smoothability
+      finiteExtinction := finiteExtinction }
+  let payload := finalCertificateTopologyAssemblyPayload inputs topology
+  exact
+    { smoothability := smoothability
+      finiteExtinction := finiteExtinction
+      topology := topology
+      topologyAssemblyPayload := payload
+      publicStatement := payload.publicStatement
+      checkedCertificate := payload.checkedCertificate
+      canonicalTarget := payload.canonicalTarget
+      publicPayload := payload.publicPayload
+      canonicalPayload := payload.canonicalPayload
+      completionCriteria := payload.completionCriteria }
+
+/--
+The complete named-package consumer payload projects to the final checked
+endpoint tuple: public Poincare statement, checked certificate, and all
+completion criteria.
+-/
+theorem poincare_statement_final_certificate_and_completion_criteria_of_namedPackageLayerConsumerPayload
+    (payload : FinalCertificateNamedPackageLayerConsumerPayload.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  ⟨ payload.publicStatement
+  , payload.checkedCertificate
+  , payload.completionCriteria
+  ⟩
+
+/--
+Equivalently, the three named package-layer requirements construct an inhabited
+complete final consumer payload.
+-/
+theorem nonempty_finalCertificateNamedPackageLayerConsumerPayload_of_named_package_layer_requirements
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    Nonempty FinalCertificateNamedPackageLayerConsumerPayload.{u} :=
+  ⟨finalCertificateNamedPackageLayerConsumerPayload
+    smoothability finiteExtinction topology⟩
+
 end Poincare
