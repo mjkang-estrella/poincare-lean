@@ -759,4 +759,37 @@ theorem moiseSmoothability_assembly_targets_and_family_of_completeConsumerPayloa
     , payload.targetFamily
     ⟩
 
+/--
+An inhabited complete Moise smoothability consumer payload exposes the
+smoothability package requirement together with both recognition families
+carried by the same detailed Moise assembly.
+-/
+theorem moiseSmoothability_package_recognition_and_targetFamily_of_completeConsumerPayload
+    (payload : Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u})) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere)) ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere) ∧
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+            AdmitsSmoothThreeManifoldStructure M ∧
+            AdmitsSurgeryModelSmoothStructure M ∧
+            (∃ _t2 : T2Space M,
+              ∃ _charted : ChartedSpace ThreeManifoldModel M,
+              ∃ _simple : SimplyConnectedSpace M,
+              ∃ _compact : CompactSpace M,
+              ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+                Nonempty M)) := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ payload.smoothabilityPackageRequirement
+    , payload.recognizedSphereFamily
+    , payload.targetFamily
+    ⟩
+
 end Poincare
