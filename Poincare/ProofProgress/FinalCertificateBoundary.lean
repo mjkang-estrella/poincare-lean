@@ -3436,6 +3436,43 @@ theorem reserved_named_statement_payload_target_witness_package_of_unpacked_aggr
   rfl
 
 /--
+Direct project payload projection from the reserved-name statement/payload/
+target/criterion package of the grounded terminal aggregate route.
+-/
+theorem completion_payload_of_reserved_named_statement_payload_target_witness_package
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (N : Type u) [TopologicalSpace N] [T2Space N]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+    [SimplyConnectedSpace N] [CompactSpace N]
+    (witness : Type u) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness := by
+  rcases
+      reserved_named_statement_payload_target_witness_package_of_unpacked_aggregate_completion
+        dependencies smoothability grounded topologyStatement M N witness with
+    ⟨_theoremName, _projectStatement, projectPayload, _directTarget,
+      _directCriterion, _hTheoremNameCanonical, _hTheoremNameLiteral,
+      _hProjectStatement, _hProjectPayload, _hDirectTarget,
+      _hDirectCriterion⟩
+  exact projectPayload
+
+/-- Theorem contract for
+`completion_payload_of_reserved_named_statement_payload_target_witness_package`. -/
+theorem completion_payload_of_reserved_named_statement_payload_target_witness_package_eq :
+    @Poincare.completion_payload_of_reserved_named_statement_payload_target_witness_package =
+      @Poincare.completion_payload_of_reserved_named_statement_payload_target_witness_package :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
