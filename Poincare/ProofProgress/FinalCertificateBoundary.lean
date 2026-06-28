@@ -2513,6 +2513,79 @@ theorem target_homeomorphism_of_unpacked_aggregate_completion_eq :
   rfl
 
 /--
+Coherence between the direct selected-target endpoint and the expanded root
+conclusion endpoint of the grounded terminal aggregate route.  The selected
+target conclusion exposed by `target_homeomorphism_of_unpacked_aggregate_completion`
+is the same proposition as applying
+`expanded_root_conclusion_of_unpacked_aggregate_completion` to that target,
+with the reserved canonical theorem name kept in the package.
+-/
+theorem target_homeomorphism_expanded_root_coherence_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (N : Type u) [TopologicalSpace N] [T2Space N]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+    [SimplyConnectedSpace N] [CompactSpace N] :
+    ∃ theoremName : String,
+    ∃ expandedConclusion :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          Nonempty (N ≃ₜ ThreeSphere),
+    ∃ directConclusion : Nonempty (N ≃ₜ ThreeSphere),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      expandedConclusion =
+        expanded_root_conclusion_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M ∧
+      directConclusion =
+        target_homeomorphism_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M N ∧
+      directConclusion = expandedConclusion N := by
+  rcases
+      canonical_named_expanded_root_conclusion_of_unpacked_aggregate_completion
+        dependencies smoothability grounded topologyStatement M with
+    ⟨theoremName, _projectStatement, _mathlibStatement,
+      expandedConclusion, hTheoremNameCanonical, hTheoremNameLiteral,
+      _hMathlibStatement, _hExpandedConclusion, _hTargetConclusions⟩
+  let directConclusion : Nonempty (N ≃ₜ ThreeSphere) :=
+    target_homeomorphism_of_unpacked_aggregate_completion
+      dependencies smoothability grounded topologyStatement M N
+  have hExpandedConclusionDirect :
+      expandedConclusion =
+        expanded_root_conclusion_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M := by
+    funext N
+    apply Subsingleton.elim
+  have hDirectConclusion :
+      directConclusion =
+        target_homeomorphism_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M N :=
+    rfl
+  have hDirectExpanded :
+      directConclusion = expandedConclusion N := by
+    apply Subsingleton.elim
+  exact
+    ⟨theoremName, expandedConclusion, directConclusion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hExpandedConclusionDirect,
+      hDirectConclusion, hDirectExpanded⟩
+
+/-- Theorem contract for
+`target_homeomorphism_expanded_root_coherence_of_unpacked_aggregate_completion`. -/
+theorem target_homeomorphism_expanded_root_coherence_of_unpacked_aggregate_completion_eq :
+    @Poincare.target_homeomorphism_expanded_root_coherence_of_unpacked_aggregate_completion =
+      @Poincare.target_homeomorphism_expanded_root_coherence_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
