@@ -2352,6 +2352,46 @@ theorem canonical_named_expanded_root_conclusion_of_unpacked_aggregate_completio
   rfl
 
 /--
+Direct project and mathlib statement projections from the grounded terminal
+aggregate route.  This is the statement-level consumer of the canonical named
+expanded conclusion above: it exposes the project Poincare statement and its
+mathlib-shaped counterpart without requiring downstream users to unpack the
+target-indexed conclusion package.
+-/
+theorem poincare_statement_and_mathlib_statement_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ theoremName : String,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      PoincareConjectureStatement.{u} ∧
+      MathlibTopologicalPoincareThreeStatement.{u} := by
+  rcases
+      canonical_named_expanded_root_conclusion_of_unpacked_aggregate_completion
+        dependencies smoothability grounded topologyStatement M with
+    ⟨theoremName, projectStatement, mathlibStatement, _expandedConclusion,
+      hTheoremNameCanonical, hTheoremNameLiteral, _hMathlibStatement,
+      _hExpandedConclusion, _hTargetConclusions⟩
+  exact
+    ⟨theoremName, hTheoremNameCanonical, hTheoremNameLiteral,
+      projectStatement, mathlibStatement⟩
+
+/-- Theorem contract for
+`poincare_statement_and_mathlib_statement_of_unpacked_aggregate_completion`. -/
+theorem poincare_statement_and_mathlib_statement_of_unpacked_aggregate_completion_eq :
+    @Poincare.poincare_statement_and_mathlib_statement_of_unpacked_aggregate_completion =
+      @Poincare.poincare_statement_and_mathlib_statement_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
