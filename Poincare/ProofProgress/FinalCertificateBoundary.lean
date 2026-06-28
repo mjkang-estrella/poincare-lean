@@ -2603,6 +2603,21 @@ theorem poincare_statement_final_certificate_and_completion_criteria_of_namedPac
   ⟩
 
 /--
+The same complete named-package consumer payload also supplies the
+inhabited-certificate final endpoint used by nonempty-certificate collapse
+routes.
+-/
+theorem poincare_statement_nonempty_certificate_and_completion_criteria_of_namedPackageLayerConsumerPayload
+    (payload : FinalCertificateNamedPackageLayerConsumerPayload.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  ⟨ payload.publicStatement
+  , ⟨payload.checkedCertificate⟩
+  , payload.completionCriteria
+  ⟩
+
+/--
 The complete named-package consumer payload also retains the concrete topology
 assembly payload and both the public and canonical completion payloads used to
 produce the checked final endpoint.
