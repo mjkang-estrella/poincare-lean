@@ -68,6 +68,37 @@ theorem twoPointComplement_fundamentalGroup_subsingleton_of_topology_package
       package M extinction) hyx basepoint
 
 /--
+Consumer-facing recognition and puncture payload from one completed topology
+package: the same finite-extinction witness supplies sphere recognition,
+one-point compactification recognition, singleton-complement contractibility,
+two-puncture simple connectedness, and trivial based fundamental groups for
+two-puncture complements.
+-/
+theorem topology_package_recognition_and_puncture_payload
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Nonempty (M ≃ₜ ThreeSphere) ∧
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      ContractibleSpace ({x}ᶜ : Set M) ∧
+      SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+      Subsingleton (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+  ⟨ homeomorphism_of_topology_package package M extinction
+  , homeomorph_to_onePoint_threeSpace_of_topology_package
+      package M extinction
+  , compl_singleton_contractibleSpace_of_topology_package
+      package M extinction x
+  , twoPointComplement_simplyConnectedSpace_of_topology_package
+      package M extinction hyx
+  , twoPointComplement_fundamentalGroup_subsingleton_of_topology_package
+      package M extinction hyx basepoint
+  ⟩
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
