@@ -1124,6 +1124,21 @@ theorem surgeryPerelman_requirements_selectedFlowExtinction_and_combinedPayloadF
     , payload.combinedPayloadAndSelectedFlowFamily
     ⟩
 
+/--
+The complete surgery/Perelman consumer payload is equivalent to the inhabited
+detailed surgery/Perelman assembly payload: the forward direction projects the
+stored detailed payload, while the reverse direction rebuilds the complete
+consumer payload from it.
+-/
+theorem surgeryPerelman_nonemptyCompleteConsumerPayload_iff_nonemptyDetailedAssemblyPayload :
+    Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u} ↔
+      Nonempty SurgeryPerelmanDetailedAssemblyPayloadFromFiniteExtinction.{u} := by
+  constructor
+  · rintro ⟨payload⟩
+    exact ⟨payload.detailedPayload⟩
+  · exact
+      surgeryPerelman_completeConsumerPayload_of_nonemptyDetailedAssemblyPayload
+
 /-- Concrete surgery-scale payloads produce the first construction-package field. -/
 theorem surgery_scale_function_of_payload
     {n : ℕ∞ω}
