@@ -10,6 +10,7 @@ certificate cannot be discharged without supplying that data, and it refines
 the legacy certificate through the existing production route.
 -/
 
+import Poincare.CanonicalBridges
 import Poincare.CompletionTarget
 import Poincare.DependencyCrosswalk
 import Poincare.ProofProgress.FiniteExtinctionProductionPackageAfterVolumeDifferential
@@ -1009,5 +1010,60 @@ theorem milestone_requirements_package_requirements_project_canonical_payload_an
     ⟨ hRicci, hPerelman, hFinite, hFinitePackage, hTopologyPackage,
       hWitnessFamily, hStatement, hProjectPayload, hCanonicalTarget,
       hCanonicalPayload, hCanonicalPayload.choose_spec ⟩
+
+/--
+Smoothability together with grounded finite extinction and the concrete
+topology package reconstructs the remaining aggregate dependency package used
+by the checked completion-certificate constructor.
+-/
+theorem remainingDependencyPackage_of_smoothability_grounded_and_topology_package
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    RemainingDependencyPackage.{u} where
+  smoothability := smoothability
+  surgery := finiteExtinctionPackage_requirement_of_grounded grounded
+  topology := topologyPackage
+
+/--
+The smoothability package, grounded finite extinction, and topology package
+close the current checked completion certificate through the existing
+remaining-dependency/universal-finite-extinction route.
+-/
+theorem completion_certificate_of_smoothability_grounded_and_topology_package
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    PoincareCompletionCertificate.{u} :=
+  completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+    (remainingDependencyPackage_of_smoothability_grounded_and_topology_package
+      smoothability grounded topologyPackage)
+    (universalFiniteExtinctionStatement_of_grounded grounded)
+
+/--
+The same three inputs expose both the reconstructed remaining dependency
+package and the checked certificate it feeds.
+-/
+theorem remaining_dependency_package_and_completion_certificate_of_smoothability_grounded_and_topology_package
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    RemainingDependencyPackage.{u} ∧ PoincareCompletionCertificate.{u} :=
+  ⟨ remainingDependencyPackage_of_smoothability_grounded_and_topology_package
+      smoothability grounded topologyPackage
+  , completion_certificate_of_smoothability_grounded_and_topology_package
+      smoothability grounded topologyPackage ⟩
 
 end Poincare
