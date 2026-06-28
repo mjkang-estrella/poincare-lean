@@ -1587,4 +1587,78 @@ theorem detailed_grounded_payload_remaining_dependency_certificate_and_completio
         witness certificate
     ⟩
 
+/--
+An inhabited detailed grounded finite-extinction payload is enough to feed the
+final certificate route directly once smoothability and topology-package inputs
+are supplied.  This endpoint no longer requires consumers to retain the
+original grounded statement: it reconstructs the remaining dependency package
+from the payload's finite-extinction package requirement and universal
+finite-extinction statement, then exposes the checked certificate endpoint and
+the retained flow/surgery/control witness families.
+-/
+theorem detailed_grounded_payload_remaining_dependency_certificate_and_completion_criteria_of_nonempty_payload_and_topology_package
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (payload :
+      Nonempty GroundedUniversalFiniteExtinctionDetailedAssemblyPayload.{u})
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    UniversalFiniteExtinctionStatement.{u} ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.finiteExtinction ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+            FiniteExtinctionStatement n M ∧
+              FiniteExtinctionByRicciFlowWithSurgery M) ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          ∃ surgery : HasRicciFlowWithSurgery n M,
+          ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+          ∃ _packageStatement : FiniteExtinctionStatement n M,
+          ∃ _derivation : HasFiniteExtinctionDerivation flow surgery control,
+            FiniteExtinctionByRicciFlowWithSurgery M) ∧
+      RemainingDependencyPackage.{u} ∧
+      PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  rcases payload with ⟨payload⟩
+  let remaining : RemainingDependencyPackage.{u} :=
+    { smoothability := smoothability
+      surgery := payload.finiteExtinctionPackageRequirement
+      topology := topologyPackage }
+  let certificate : PoincareCompletionCertificate.{u} :=
+    completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+      remaining payload.universalStatement
+  exact
+    ⟨ payload.universalStatement
+    , payload.finiteExtinctionPackageRequirement
+    , payload.ricciFlowWithSurgeryMilestone
+    , payload.perelmanSingularityControlMilestone
+    , payload.finiteExtinctionMilestone
+    , payload.packageStatementWitnessFamily
+    , payload.statementPayloadFamily
+    , remaining
+    , poincare_conjecture_of_completion_certificate certificate
+    , ⟨certificate⟩
+    , fun witness => completion_criterion_of_completion_certificate
+        witness certificate
+    ⟩
+
 end Poincare
