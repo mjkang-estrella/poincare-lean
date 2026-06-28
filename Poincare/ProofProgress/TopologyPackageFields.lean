@@ -399,10 +399,14 @@ theorem twoPointComplement_simplyConnectedSpace_of_topology_package
     [SimplyConnectedSpace M] [CompactSpace M]
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
     {x y : M} (hyx : y ≠ x) :
-    SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
-  twoPointComplement_simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace
-    (homeomorph_to_onePoint_threeSpace_of_topology_package
-      package M extinction) hyx
+    SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) := by
+  rcases
+    exists_homeomorph_twoPointComplement_puncturedEuclidean_of_topology_package
+      package M extinction hyx with ⟨puncture, chartNonempty⟩
+  rcases chartNonempty with ⟨chart⟩
+  letI : SimplyConnectedSpace ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+    euclideanThree_compl_singleton_simplyConnectedSpace puncture
+  exact chart.toHomotopyEquiv.simplyConnectedSpace
 
 /--
 The package-level two-puncture chart projection gives path-connectedness of
