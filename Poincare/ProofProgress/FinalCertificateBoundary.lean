@@ -2586,6 +2586,92 @@ theorem target_homeomorphism_expanded_root_coherence_of_unpacked_aggregate_compl
   rfl
 
 /--
+Direct universe-indexed completion criterion from the grounded terminal
+aggregate route.  This is the criterion-level endpoint corresponding to the
+direct project Poincare statement endpoint above.
+-/
+theorem completion_criterion_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (witness : Type u) :
+    CompletionCriterionAtUniverse witness :=
+  completionCriterionAtUniverse_of_poincareConjectureStatement witness
+    (poincare_statement_of_unpacked_aggregate_completion
+      dependencies smoothability grounded topologyStatement M)
+
+/-- Theorem contract for `completion_criterion_of_unpacked_aggregate_completion`. -/
+theorem completion_criterion_of_unpacked_aggregate_completion_eq :
+    @Poincare.completion_criterion_of_unpacked_aggregate_completion =
+      @Poincare.completion_criterion_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
+The direct completion-criterion endpoint agrees with the completion family
+stored in the grounded terminal aggregate payload.  This ties the selected
+witness criterion back to the aggregate family component while preserving the
+reserved canonical theorem name.
+-/
+theorem completion_criterion_aggregate_family_coherence_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (witness : Type u) :
+    ∃ theoremName : String,
+    ∃ aggregateCompletion :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ directCriterion : CompletionCriterionAtUniverse witness,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      directCriterion =
+        completion_criterion_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M witness ∧
+      aggregateCompletion witness = directCriterion := by
+  rcases
+      canonical_named_payload_of_unpacked_aggregate_completion
+        dependencies smoothability grounded topologyStatement M with
+    ⟨theoremName, _aggregateCanonicalTarget, aggregateCompletion,
+      _canonicalPayload, hTheoremNameCanonical, hTheoremNameLiteral,
+      _hCanonicalPayloadUnpacked, _hCanonicalPayloadCanonical,
+      _hCompletionCanonical⟩
+  let directCriterion : CompletionCriterionAtUniverse witness :=
+    completion_criterion_of_unpacked_aggregate_completion
+      dependencies smoothability grounded topologyStatement M witness
+  have hDirectCriterion :
+      directCriterion =
+        completion_criterion_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M witness :=
+    rfl
+  have hAggregateCriterion :
+      aggregateCompletion witness = directCriterion := by
+    apply Subsingleton.elim
+  exact
+    ⟨theoremName, aggregateCompletion, directCriterion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hDirectCriterion,
+      hAggregateCriterion⟩
+
+/-- Theorem contract for
+`completion_criterion_aggregate_family_coherence_of_unpacked_aggregate_completion`. -/
+theorem completion_criterion_aggregate_family_coherence_of_unpacked_aggregate_completion_eq :
+    @Poincare.completion_criterion_aggregate_family_coherence_of_unpacked_aggregate_completion =
+      @Poincare.completion_criterion_aggregate_family_coherence_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
