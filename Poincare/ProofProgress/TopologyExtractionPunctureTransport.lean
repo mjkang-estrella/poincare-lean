@@ -539,30 +539,13 @@ theorem twoPointComplement_simplyConnectedSpace_of_homeomorph_to_onePoint_threeS
     (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
     {x y : M} (hyx : y ≠ x) :
     SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) := by
-  rcases h with ⟨eM⟩
-  have hImage : eM y ≠ eM x := by
-    intro hxy
-    exact hyx (eM.injective hxy)
-  let hCompl :
-      (({x} ∪ {y})ᶜ : Set M) ≃ₜ
-        (({eM x} ∪ {eM y})ᶜ :
-          Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
-    eM.subtype (fun z => by
-      simp only [Set.mem_compl_iff, Set.mem_union, Set.mem_singleton_iff]
-      constructor
-      · intro hz hzImage
-        rcases hzImage with hzx | hzy
-        · exact hz (Or.inl (eM.injective hzx))
-        · exact hz (Or.inr (eM.injective hzy))
-      · intro hz hzSource
-        rcases hzSource with hzx | hzy
-        · exact hz (Or.inl (by rw [hzx]))
-        · exact hz (Or.inr (by rw [hzy])))
-  letI : SimplyConnectedSpace
-      (({eM x} ∪ {eM y})ᶜ :
-        Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
-    onePoint_threeSpace_twoPointComplement_simplyConnectedSpace hImage
-  exact hCompl.toHomotopyEquiv.simplyConnectedSpace
+  rcases
+    exists_homeomorph_twoPointComplement_puncturedEuclidean_of_homeomorph_to_onePoint_threeSpace
+      h hyx with ⟨puncture, chartNonempty⟩
+  rcases chartNonempty with ⟨chart⟩
+  letI : SimplyConnectedSpace ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))) :=
+    euclideanThree_compl_singleton_simplyConnectedSpace puncture
+  exact chart.toHomotopyEquiv.simplyConnectedSpace
 
 /--
 The based fundamental group of every two-puncture complement of a recognized
