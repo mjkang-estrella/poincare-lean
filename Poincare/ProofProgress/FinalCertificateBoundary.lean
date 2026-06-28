@@ -49459,4 +49459,77 @@ theorem constructed_boundary_dependency_only_completionCriterion_all_routes_of_d
       @Poincare.constructed_boundary_dependency_only_completionCriterion_all_routes_of_dependencies_and_verification_family :=
   rfl
 
+/--
+Ordinary dependencies plus equation verification inherit the fixed-witness
+dependency-only final statement and completion-route collapse.
+
+This lifts the dependency-only package that keeps the project statement,
+mathlib statement, canonical target, checked certificates, and the
+direct/canonical/project completion criteria synchronized through the same
+constructed equation-boundary dependency package.
+-/
+theorem constructed_boundary_dependency_only_final_statement_completion_routes_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (witness : Type) :
+    ∃ projectStatement : PoincareConjectureStatement.{0},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ canonicalTarget : canonicalCompletionTarget.{0},
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{0},
+    ∃ statementCertificate : PoincareCompletionCertificate.{0},
+    ∃ routeCertificate : PoincareCompletionCertificate.{0},
+    ∃ directCriterion : CompletionCriterionAtUniverse witness,
+    ∃ canonicalCriterion : CompletionCriterionAtUniverse witness,
+    ∃ projectCriterion : CompletionCriterionAtUniverse witness,
+      projectStatement =
+        dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies
+          (equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily) ∧
+      projectStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      mathlibStatement =
+        dependency_only_reserved_mathlib_statement_of_equation_boundary_dependencies
+          (equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily) ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement ∧
+      canonicalTarget =
+        canonical_completion_target_of_completion_certificate
+          statementCertificate ∧
+      statementCertificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          (equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily) ∧
+      routeCertificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          (equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily) ∧
+      statementCertificate = routeCertificate ∧
+      directCriterion =
+        dependency_only_reserved_completionCriterionAtUniverse_of_equation_boundary_dependencies
+          (equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily) witness ∧
+      directCriterion = canonicalCriterion ∧
+      directCriterion = projectCriterion :=
+  dependency_only_reserved_final_statement_completion_routes_of_equation_boundary_dependencies
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily) witness
+
+/-- Theorem contract for
+`constructed_boundary_dependency_only_final_statement_completion_routes_of_dependencies_and_verification_family`. -/
+theorem constructed_boundary_dependency_only_final_statement_completion_routes_of_dependencies_and_verification_family_eq :
+    @Poincare.constructed_boundary_dependency_only_final_statement_completion_routes_of_dependencies_and_verification_family =
+      @Poincare.constructed_boundary_dependency_only_final_statement_completion_routes_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
