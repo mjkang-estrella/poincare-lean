@@ -90,6 +90,30 @@ theorem smoothability_surgery_prerequisites_of_homeomorph_to_onePoint_threeSpace
   exact ⟨e.symm.t2Space, charted, simple, e.symm.compactSpace, smooth, nonempty⟩
 
 /--
+One-point recognition closes the theorem-shaped transported smoothability
+bridge: it supplies the transported charted-space witness and the corresponding
+surgery-model manifold evidence for every recognized compact simply connected
+source.
+-/
+theorem smoothabilityTransportedBridgeStatement_of_onePointRecognition :
+    SmoothabilityTransportedBridgeStatement.{u} := by
+  intro M _top _t2 _simple _compact h
+  rcases h with ⟨e⟩
+  refine ⟨homeomorphToOnePoint_threeSpace_smoothChartedSpace e, ?_⟩
+  exact homeomorphToOnePoint_threeSpace_surgeryModel_isManifold e
+
+/--
+One-point recognition also closes the transported `C∞` smooth-manifold
+statement before lowering regularity to the surgery model.
+-/
+theorem smoothabilityTransportedSmoothManifoldStatement_of_onePointRecognition :
+    SmoothabilityTransportedSmoothManifoldStatement.{u} := by
+  intro M _top _t2 _simple _compact h
+  rcases h with ⟨e⟩
+  refine ⟨homeomorphToOnePoint_threeSpace_smoothChartedSpace e, ?_⟩
+  exact homeomorphToOnePoint_threeSpace_smoothManifold e
+
+/--
 Recognition as `ThreeSphere` gives the same transported smoothability and
 surgery-model prerequisites by first converting the recognized sphere to the
 one-point compactification model.  This is the smoothability-side consumer
@@ -107,6 +131,38 @@ theorem smoothability_surgery_prerequisites_of_homeomorph_to_threeSphere
       Nonempty M :=
   smoothability_surgery_prerequisites_of_homeomorph_to_onePoint_threeSpace
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h)
+
+/--
+Sphere recognition closes the same transported smoothability bridge by
+converting the recognized sphere to the one-point compactification model.
+-/
+theorem smoothabilityTransportedBridgeStatement_of_threeSphereRecognition :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) →
+          ∃ charted : ChartedSpace ThreeManifoldModel M,
+            letI : ChartedSpace ThreeManifoldModel M := charted
+            IsManifold ThreeManifoldModelWithCorners 1 M := by
+  intro M _top _t2 _simple _compact h
+  exact
+    smoothabilityTransportedBridgeStatement_of_onePointRecognition M
+      (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h)
+
+/--
+Sphere recognition similarly closes the transported `C∞` smooth-manifold
+statement through the one-point compactification equivalence.
+-/
+theorem smoothabilityTransportedSmoothManifoldStatement_of_threeSphereRecognition :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) →
+          ∃ charted : ChartedSpace ThreeManifoldModel M,
+            letI : ChartedSpace ThreeManifoldModel M := charted
+            IsManifold (𝓡 3) ∞ M := by
+  intro M _top _t2 _simple _compact h
+  exact
+    smoothabilityTransportedSmoothManifoldStatement_of_onePointRecognition M
+      (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h)
 
 /--
 Recognition as `ThreeSphere` directly supplies the smooth structure needed by
