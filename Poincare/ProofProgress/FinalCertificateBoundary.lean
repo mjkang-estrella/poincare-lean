@@ -190,6 +190,42 @@ theorem canonical_completion_payload_of_completion_certificate_of_remainingDepen
       dependencies inputs.universalFiniteExtinction
 
 /--
+The primitive finite-extinction input and the current remaining-dependency
+package together expose the full canonical certificate-facing payload:
+canonical target, canonical completion payload, and checked completion
+certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+    (dependencies : RemainingDependencyPackage.{u})
+    (inputs : FinalCertificatePrimitiveInputs.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  ⟨ canonical_completion_target_of_finalCertificatePrimitiveInputs inputs
+  , canonical_completion_payload_of_finalCertificatePrimitiveInputs inputs
+  , completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+      dependencies inputs
+  ⟩
+
+/--
+The primitive-input/remaining-dependency payload is exactly the tuple of the
+primitive canonical target, primitive canonical payload, and existing checked
+certificate constructor.
+-/
+theorem canonical_payload_and_final_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (inputs : FinalCertificatePrimitiveInputs.{u}) :
+    canonical_payload_and_final_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+        dependencies inputs =
+      ⟨ canonical_completion_target_of_finalCertificatePrimitiveInputs inputs
+      , canonical_completion_payload_of_finalCertificatePrimitiveInputs inputs
+      , completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+          dependencies inputs
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
