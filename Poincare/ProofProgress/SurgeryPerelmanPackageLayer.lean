@@ -17594,4 +17594,38 @@ theorem no_direct_surgery_perelman_package_target_of_current_interface
   rintro ⟨_n, flow, payload⟩
   exact no_surgery_perelman_package_payload_of_current_interface flow payload
 
+/--
+The same current-interface blocker rules out a finite-extinction surgery
+package: such a package would project to the direct surgery/Perelman target
+above, whose Perelman side still requires constructorless blowup
+classification.
+-/
+theorem isEmpty_finite_extinction_surgery_package_of_current_interface
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    IsEmpty (FiniteExtinctionSurgeryPackage n M) := by
+  constructor
+  intro package
+  exact
+    no_direct_surgery_perelman_package_target_of_current_interface M
+      (surgery_perelman_package_target_of_finite_extinction_surgery_package
+        package)
+
+/--
+Pointwise package-layer blocker: under the current local API, the target-family
+finite-extinction package witness cannot be inhabited for any manifold in the
+dependency-package class.
+-/
+theorem no_finiteExtinctionPackage_target_at_of_current_interface
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ¬ Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M) := by
+  rintro ⟨⟨n, package⟩⟩
+  exact
+    (isEmpty_finite_extinction_surgery_package_of_current_interface :
+      IsEmpty (FiniteExtinctionSurgeryPackage n M)).false package
+
 end Poincare
