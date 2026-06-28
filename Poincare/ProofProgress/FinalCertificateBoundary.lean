@@ -43723,4 +43723,94 @@ theorem threeSphere_reserved_mathlib_conclusion_of_reserved_final_certificate_eq
       @Poincare.threeSphere_reserved_mathlib_conclusion_of_reserved_final_certificate :=
   rfl
 
+/--
+Concrete project and mathlib conclusion package at the standard sphere.
+
+This endpoint keeps the two nonempty conclusions selected by the final
+certificate route together: the project self-homeomorphism conclusion for
+`ThreeSphere` and the literal mathlib unit-sphere conclusion.  The package
+records the witnesses that realize both conclusions and ties the mathlib
+conclusion back to the reserved mathlib statement applied at `ThreeSphere`.
+-/
+theorem threeSphere_project_mathlib_conclusions_of_reserved_final_certificate
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{0}) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ mathlibTarget : MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ projectHomeomorphism : ThreeSphere ≃ₜ ThreeSphere,
+    ∃ mathlibHomeomorphism :
+      ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ projectConclusion : Nonempty (ThreeSphere ≃ₜ ThreeSphere),
+    ∃ mathlibConclusion :
+      Nonempty
+        (ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      mathlibTarget =
+        (reserved_mathlib_statement_of_nonempty_equation_boundary_dependencies
+          dependencies) ∧
+      projectConclusion =
+        (⟨projectHomeomorphism⟩ : Nonempty (ThreeSphere ≃ₜ ThreeSphere)) ∧
+      mathlibConclusion =
+        (⟨mathlibHomeomorphism⟩ :
+          Nonempty
+            (ThreeSphere ≃ₜ
+              Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) ∧
+      mathlibConclusion = (mathlibTarget ThreeSphere) ∧
+      projectHomeomorphism = mathlibHomeomorphism ∧
+      Topology.IsEmbedding projectHomeomorphism ∧
+      Topology.IsEmbedding mathlibHomeomorphism ∧
+      Function.Bijective projectHomeomorphism ∧
+      Function.Bijective mathlibHomeomorphism ∧
+      Continuous projectHomeomorphism ∧
+      Continuous mathlibHomeomorphism := by
+  rcases
+      threeSphere_mathlib_homeomorphism_of_reserved_final_certificate
+        dependencies with
+    ⟨theoremName, certificate, mathlibTarget, projectHomeomorphism,
+      mathlibHomeomorphism, hTheoremNameCanonical, hTheoremNameLiteral,
+      hCertificate, hMathlibTargetReserved,
+      _hProjectHomeomorphismMathlibTarget,
+      hMathlibHomeomorphismMathlibTarget, hProjectMathlib,
+      hProjectEmbedding, hMathlibEmbedding, hProjectBijective,
+      hMathlibBijective, hProjectContinuous, hMathlibContinuous⟩
+  let projectConclusion : Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+    ⟨projectHomeomorphism⟩
+  let mathlibConclusion :
+      Nonempty
+        (ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) :=
+    ⟨mathlibHomeomorphism⟩
+  have hProjectConclusion :
+      projectConclusion =
+        (⟨projectHomeomorphism⟩ : Nonempty (ThreeSphere ≃ₜ ThreeSphere)) :=
+    rfl
+  have hMathlibConclusion :
+      mathlibConclusion =
+        (⟨mathlibHomeomorphism⟩ :
+          Nonempty
+            (ThreeSphere ≃ₜ
+              Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) :=
+    rfl
+  have hMathlibConclusionTarget :
+      mathlibConclusion = (mathlibTarget ThreeSphere) :=
+    hMathlibConclusion.trans hMathlibHomeomorphismMathlibTarget
+  exact
+    ⟨theoremName, certificate, mathlibTarget, projectHomeomorphism,
+      mathlibHomeomorphism, projectConclusion, mathlibConclusion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hMathlibTargetReserved, hProjectConclusion, hMathlibConclusion,
+      hMathlibConclusionTarget, hProjectMathlib, hProjectEmbedding,
+      hMathlibEmbedding, hProjectBijective, hMathlibBijective,
+      hProjectContinuous, hMathlibContinuous⟩
+
+/-- Theorem contract for
+`threeSphere_project_mathlib_conclusions_of_reserved_final_certificate`. -/
+theorem threeSphere_project_mathlib_conclusions_of_reserved_final_certificate_eq :
+    @Poincare.threeSphere_project_mathlib_conclusions_of_reserved_final_certificate =
+      @Poincare.threeSphere_project_mathlib_conclusions_of_reserved_final_certificate :=
+  rfl
+
 end Poincare
