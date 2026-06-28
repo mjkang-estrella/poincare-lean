@@ -44033,4 +44033,61 @@ theorem threeSphere_mathlib_forward_inverse_equations_of_reserved_final_certific
       @Poincare.threeSphere_mathlib_forward_inverse_equations_of_reserved_final_certificate :=
   rfl
 
+/--
+Topological facts for the inverse literal-sphere recognition map.
+
+The forward final-certificate endpoint carries embedding, bijective, and
+continuity facts for the selected map from `ThreeSphere` to the literal mathlib
+unit sphere.  This theorem packages the corresponding facts for the inverse
+recognition map, still tied to the same reserved theorem name and checked
+certificate.
+-/
+theorem mathlib_unit_sphere_threeSphere_inverse_topological_facts_of_reserved_final_certificate
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{0}) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ forwardHomeomorphism :
+      ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ inverseHomeomorphism :
+      Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ ThreeSphere,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      inverseHomeomorphism = forwardHomeomorphism.symm ∧
+      Topology.IsEmbedding inverseHomeomorphism ∧
+      Function.Bijective inverseHomeomorphism ∧
+      Continuous inverseHomeomorphism := by
+  rcases
+      threeSphere_mathlib_forward_inverse_homeomorphism_package_of_reserved_final_certificate
+        dependencies with
+    ⟨theoremName, certificate, _mathlibTarget, forwardHomeomorphism,
+      inverseHomeomorphism, _forwardConclusion, _inverseConclusion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      _hMathlibTargetReserved, _hForwardConclusion,
+      _hForwardConclusionTarget, hInverseHomeomorphism, _hInverseConclusion,
+      _hForwardEmbedding, _hForwardBijective, _hForwardContinuous⟩
+  have hInverseEmbedding : Topology.IsEmbedding inverseHomeomorphism := by
+    rw [hInverseHomeomorphism]
+    exact forwardHomeomorphism.symm.isEmbedding
+  have hInverseBijective : Function.Bijective inverseHomeomorphism := by
+    rw [hInverseHomeomorphism]
+    exact forwardHomeomorphism.symm.bijective
+  have hInverseContinuous : Continuous inverseHomeomorphism := by
+    rw [hInverseHomeomorphism]
+    exact forwardHomeomorphism.symm.continuous
+  exact
+    ⟨theoremName, certificate, forwardHomeomorphism, inverseHomeomorphism,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hInverseHomeomorphism, hInverseEmbedding, hInverseBijective,
+      hInverseContinuous⟩
+
+/-- Theorem contract for
+`mathlib_unit_sphere_threeSphere_inverse_topological_facts_of_reserved_final_certificate`. -/
+theorem mathlib_unit_sphere_threeSphere_inverse_topological_facts_of_reserved_final_certificate_eq :
+    @Poincare.mathlib_unit_sphere_threeSphere_inverse_topological_facts_of_reserved_final_certificate =
+      @Poincare.mathlib_unit_sphere_threeSphere_inverse_topological_facts_of_reserved_final_certificate :=
+  rfl
+
 end Poincare
