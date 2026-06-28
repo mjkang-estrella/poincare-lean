@@ -1125,6 +1125,47 @@ theorem surgeryPerelman_requirements_selectedFlowExtinction_and_combinedPayloadF
     ⟩
 
 /--
+An inhabited complete surgery/Perelman consumer payload also exposes the
+package-tied projection family, the selected-flow scale/blowup family, and the
+combined surgery/Perelman/extinction payload family retained by the same
+detailed assembly object.
+-/
+theorem surgeryPerelman_projection_scale_and_extinctionFamilies_of_completeConsumerPayload
+    (payload :
+      Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u}) :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackage n M,
+          Nonempty (FiniteExtinctionSurgeryPerelmanProjectionPayload package)) ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+            PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+            Nonempty (SurgeryScaleFunctionPayload flow) ∧
+            HasSingularityModelBlowupClassification flow) ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ package : FiniteExtinctionSurgeryPackage n M,
+            Nonempty
+              (FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package)) := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ payload.projectionPayloadFamily
+    , payload.selectedFlowScaleBlowupFamily
+    , payload.projectionAndExtinctionFamily
+    ⟩
+
+/--
 The complete surgery/Perelman consumer payload is equivalent to the inhabited
 detailed surgery/Perelman assembly payload: the forward direction projects the
 stored detailed payload, while the reverse direction rebuilds the complete
