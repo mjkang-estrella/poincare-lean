@@ -1567,6 +1567,42 @@ theorem groundedRecognitionPrefixFinalCertificatePayload_fields
     ⟩
 
 /--
+The same grounded recognition-prefix endpoint also exposes the full certificate
+route: topology input, topology extraction statement, public statement,
+inhabited checked certificate, canonical target, and both public and canonical
+completion-criterion families.
+-/
+theorem groundedRecognitionPrefixFinalCertificatePayload_certificate_route_fields
+    (dependencies : RemainingDependencyPackage.{u})
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage ∧
+      ExtinctionTopologyExtractionStatement.{u} ∧
+      PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      canonicalCompletionTarget.{u} ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let payload :=
+    groundedRecognitionPrefixFinalCertificatePayload
+      dependencies grounded recognitionPrefix
+  exact
+    ⟨ payload.topologyPackage
+    , payload.topologyStatement
+    , payload.publicStatement
+    , ⟨payload.checkedCertificate⟩
+    , payload.canonicalTarget
+    , payload.completionCriteria
+    , payload.publicPayload
+    , payload.canonicalPayload
+    ⟩
+
+/--
 Projecting the remaining dependency package out of the certificate built from
 the three package inputs recovers the same repackaged dependency field.
 -/
