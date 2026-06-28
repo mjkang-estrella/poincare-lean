@@ -729,6 +729,39 @@ theorem nonempty_moiseSmoothabilityCompleteConsumerPayload_iff_smoothabilityPack
         payload
 
 /--
+The complete Moise smoothability consumer payload is equivalent to the residual
+smoothability package requirement together with the target-family
+`ThreeSphere` recognition input.  This composes the assembly-payload boundary
+with the exact assembly/recognition equivalence, so downstream final-certificate
+consumers can name the mathematical recognition input directly.
+-/
+theorem nonempty_moiseSmoothabilityCompleteConsumerPayload_iff_smoothabilityPackage_and_threeSphereRecognition :
+    Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u}) ↔
+      dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) := by
+  constructor
+  · intro payload
+    have projected :=
+      (nonempty_moiseSmoothabilityCompleteConsumerPayload_iff_smoothabilityPackage_and_nonemptyAssemblyPayload).1
+        payload
+    exact
+      ⟨ projected.1
+      , (nonempty_moiseSmoothabilityRecognitionAssemblyPayload_iff_threeSphereRecognition).1
+          projected.2
+      ⟩
+  · rintro ⟨smoothability, recognition⟩
+    exact
+      (nonempty_moiseSmoothabilityCompleteConsumerPayload_iff_smoothabilityPackage_and_nonemptyAssemblyPayload).2
+        ⟨ smoothability
+        , (nonempty_moiseSmoothabilityRecognitionAssemblyPayload_iff_threeSphereRecognition).2
+            recognition
+        ⟩
+
+/--
 An inhabited complete Moise smoothability consumer payload exposes the concrete
 assembly object, both theorem-shaped Moise targets, and the target-family
 recognition/smoothability/prerequisite payload carried by that same object.
