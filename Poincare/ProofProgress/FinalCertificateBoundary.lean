@@ -43975,4 +43975,62 @@ theorem threeSphere_mathlib_forward_inverse_homeomorphism_package_of_reserved_fi
       @Poincare.threeSphere_mathlib_forward_inverse_homeomorphism_package_of_reserved_final_certificate :=
   rfl
 
+/--
+Forward and inverse equations for the certified literal-sphere recognition map.
+
+The final certificate route now exposes both the forward map from `ThreeSphere`
+to the literal mathlib unit sphere and the inverse recognition map back to
+`ThreeSphere`.  This endpoint records the actual cancellation equations for
+those maps, so downstream consumers can use the certified homeomorphism as a
+two-sided recognition equivalence without reopening the package.
+-/
+theorem threeSphere_mathlib_forward_inverse_equations_of_reserved_final_certificate
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{0}) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ forwardHomeomorphism :
+      ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ inverseHomeomorphism :
+      Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ ThreeSphere,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      inverseHomeomorphism = forwardHomeomorphism.symm ∧
+      (∀ x : ThreeSphere, inverseHomeomorphism (forwardHomeomorphism x) = x) ∧
+      (∀ y : Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+        forwardHomeomorphism (inverseHomeomorphism y) = y) := by
+  rcases
+      threeSphere_mathlib_forward_inverse_homeomorphism_package_of_reserved_final_certificate
+        dependencies with
+    ⟨theoremName, certificate, _mathlibTarget, forwardHomeomorphism,
+      inverseHomeomorphism, _forwardConclusion, _inverseConclusion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      _hMathlibTargetReserved, _hForwardConclusion,
+      _hForwardConclusionTarget, hInverseHomeomorphism, _hInverseConclusion,
+      _hForwardEmbedding, _hForwardBijective, _hForwardContinuous⟩
+  have hLeft :
+      ∀ x : ThreeSphere, inverseHomeomorphism (forwardHomeomorphism x) = x := by
+    intro x
+    rw [hInverseHomeomorphism]
+    exact forwardHomeomorphism.left_inv x
+  have hRight :
+      ∀ y : Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+        forwardHomeomorphism (inverseHomeomorphism y) = y := by
+    intro y
+    rw [hInverseHomeomorphism]
+    exact forwardHomeomorphism.right_inv y
+  exact
+    ⟨theoremName, certificate, forwardHomeomorphism, inverseHomeomorphism,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hInverseHomeomorphism, hLeft, hRight⟩
+
+/-- Theorem contract for
+`threeSphere_mathlib_forward_inverse_equations_of_reserved_final_certificate`. -/
+theorem threeSphere_mathlib_forward_inverse_equations_of_reserved_final_certificate_eq :
+    @Poincare.threeSphere_mathlib_forward_inverse_equations_of_reserved_final_certificate =
+      @Poincare.threeSphere_mathlib_forward_inverse_equations_of_reserved_final_certificate :=
+  rfl
+
 end Poincare
