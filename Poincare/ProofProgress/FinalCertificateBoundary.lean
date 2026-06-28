@@ -45882,4 +45882,128 @@ theorem threeSphere_final_statement_application_bidirectional_conclusions_of_dep
       @Poincare.threeSphere_final_statement_application_bidirectional_conclusions_of_dependencies_and_verification_family :=
   rfl
 
+/--
+Ordinary dependencies plus equation verification apply the checked final
+statements to an arbitrary closed simply connected 3-manifold.
+
+This lifts the arbitrary-manifold statement-application endpoint through the
+analytic verification-family constructor.  It exposes the project conclusion
+`M ≃ₜ ThreeSphere`, the mathlib-shaped conclusion
+`M ≃ₜ Metric.sphere ... 1`, and the synchronized standard-sphere recognition
+data from the same final certificate package.
+-/
+theorem closed_three_manifold_final_statement_application_bidirectional_recognition_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ checkedReservedStatement : PoincareConjectureStatement.{0},
+    ∃ checkedMathlibStatement : MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ projectConclusion : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ mathlibConclusion :
+      Nonempty
+        (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)),
+    ∃ forwardHomeomorphism :
+      ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ inverseHomeomorphism :
+      Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ ThreeSphere,
+    ∃ forwardConclusion :
+      Nonempty
+        (ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)),
+    ∃ inverseConclusion :
+      Nonempty
+        (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ ThreeSphere),
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ ∧
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          boundaryDependencies ∧
+      checkedReservedStatement =
+        poincare_conjecture_of_completion_certificate certificate ∧
+      checkedMathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          checkedReservedStatement ∧
+      projectConclusion = checkedReservedStatement M ∧
+      mathlibConclusion = checkedMathlibStatement M ∧
+      checkedMathlibStatement ThreeSphere = forwardConclusion ∧
+      forwardConclusion =
+        (⟨forwardHomeomorphism⟩ :
+          Nonempty
+            (ThreeSphere ≃ₜ
+              Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) ∧
+      inverseHomeomorphism = forwardHomeomorphism.symm ∧
+      inverseConclusion =
+        (⟨inverseHomeomorphism⟩ :
+          Nonempty
+            (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ
+              ThreeSphere)) ∧
+      (∀ x : ThreeSphere, inverseHomeomorphism (forwardHomeomorphism x) = x) ∧
+      (∀ y : Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+        forwardHomeomorphism (inverseHomeomorphism y) = y) := by
+  let boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0} :=
+    equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily
+  let nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0} :=
+    ⟨boundaryDependencies⟩
+  rcases
+      closed_three_manifold_final_statement_application_bidirectional_recognition_of_reserved_final_certificate
+        nonemptyBoundaryDependencies M with
+    ⟨theoremName, certificate, checkedReservedStatement,
+      checkedMathlibStatement, projectConclusion, mathlibConclusion,
+      forwardHomeomorphism, inverseHomeomorphism, forwardConclusion,
+      inverseConclusion, hTheoremNameCanonical, hTheoremNameLiteral,
+      hCertificate, hCheckedReservedStatement, hCheckedMathlibStatement,
+      hProjectConclusion, hMathlibConclusion, hCheckedMathlibApplication,
+      hForwardConclusion, hInverseHomeomorphism, hInverseConclusion,
+      hLeft, hRight⟩
+  have hBoundaryDependencies :
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily :=
+    rfl
+  have hNonemptyBoundaryDependencies :
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ :=
+    rfl
+  have hCertificateBoundary :
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          boundaryDependencies := by
+    simp at hCertificate ⊢
+  exact
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies, theoremName,
+      certificate, checkedReservedStatement, checkedMathlibStatement,
+      projectConclusion, mathlibConclusion, forwardHomeomorphism,
+      inverseHomeomorphism, forwardConclusion, inverseConclusion,
+      hBoundaryDependencies, hNonemptyBoundaryDependencies,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificateBoundary,
+      hCheckedReservedStatement, hCheckedMathlibStatement, hProjectConclusion,
+      hMathlibConclusion, hCheckedMathlibApplication, hForwardConclusion,
+      hInverseHomeomorphism, hInverseConclusion, hLeft, hRight⟩
+
+/-- Theorem contract for
+`closed_three_manifold_final_statement_application_bidirectional_recognition_of_dependencies_and_verification_family`. -/
+theorem closed_three_manifold_final_statement_application_bidirectional_recognition_of_dependencies_and_verification_family_eq :
+    @Poincare.closed_three_manifold_final_statement_application_bidirectional_recognition_of_dependencies_and_verification_family =
+      @Poincare.closed_three_manifold_final_statement_application_bidirectional_recognition_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
