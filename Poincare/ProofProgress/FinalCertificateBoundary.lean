@@ -1041,6 +1041,27 @@ theorem poincare_statement_and_nonempty_final_certificate_of_finalCertificateMin
   ⟩
 
 /--
+The minimal final-certificate inputs plus the recognition prefix simultaneously
+expose the public Poincare statement, an inhabited checked certificate, and any
+requested universe-indexed completion criterion.
+-/
+theorem poincare_statement_final_certificate_and_completion_criterion_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    (witness : Type u)
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      CompletionCriterionAtUniverse witness :=
+  ⟨ poincare_conjecture_statement_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+      inputs recognitionPrefix
+  , nonempty_final_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+      inputs recognitionPrefix
+  , completion_criterion_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+      witness inputs recognitionPrefix
+  ⟩
+
+/--
 The smoothability and finite-extinction package requirements plus a simply
 connected extinction-recognition prefix close the complete final-certificate
 payload.  This avoids requiring downstream code to separately manufacture the
@@ -1274,6 +1295,33 @@ theorem completion_criterion_of_smoothability_finiteExtinctionPackage_and_recogn
       (canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
         smoothability finiteExtinction recognitionPrefix).2.1.choose_spec witness := by
   apply Subsingleton.elim
+
+/--
+The named smoothability and finite-extinction package requirements plus the
+recognition prefix simultaneously expose the public Poincare statement, an
+inhabited checked certificate, and any requested universe-indexed completion
+criterion.
+-/
+theorem poincare_statement_final_certificate_and_completion_criterion_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+    (witness : Type u)
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      CompletionCriterionAtUniverse witness :=
+  ⟨ (project_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+      smoothability finiteExtinction recognitionPrefix).1
+  , nonempty_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+      smoothability finiteExtinction recognitionPrefix
+  , completion_criterion_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+      witness smoothability finiteExtinction recognitionPrefix
+  ⟩
 
 /--
 Projecting the remaining dependency package out of the certificate built from
