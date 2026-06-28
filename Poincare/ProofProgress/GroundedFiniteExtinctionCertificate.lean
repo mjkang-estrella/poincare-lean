@@ -10,6 +10,7 @@ certificate cannot be discharged without supplying that data, and it refines
 the legacy certificate through the existing production route.
 -/
 
+import Poincare.CompletionTarget
 import Poincare.DependencyCrosswalk
 import Poincare.ProofProgress.FiniteExtinctionProductionPackageAfterVolumeDifferential
 
@@ -310,5 +311,127 @@ theorem universalFiniteExtinctionStatement_of_grounded
     UniversalFiniteExtinctionStatement.{u} :=
   fun M _ _ _ _ _ =>
     finiteExtinctionByRicciFlowWithSurgery_of_grounded (grounded M)
+
+/--
+Grounded universal finite extinction plus theorem-shaped topology extraction
+proves the canonical completion target through the same universal
+finite-extinction interface consumed by the completion boundary.
+-/
+theorem canonical_completion_target_of_grounded_and_topology_extraction_statement
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonicalCompletionTarget.{u} :=
+  canonical_completion_target_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+    (universalFiniteExtinctionStatement_of_grounded grounded)
+    topologyStatement
+
+/--
+The grounded/topology-extraction canonical target is exactly the universal
+finite-extinction/topology-extraction target after projecting grounded finite
+extinction to the legacy universal statement.
+-/
+theorem canonical_completion_target_of_grounded_and_topology_extraction_statement_eq
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonical_completion_target_of_grounded_and_topology_extraction_statement
+        grounded topologyStatement =
+      canonical_completion_target_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+        (universalFiniteExtinctionStatement_of_grounded grounded)
+        topologyStatement := by
+  apply Subsingleton.elim
+
+/--
+Grounded universal finite extinction plus theorem-shaped topology extraction
+exposes the canonical completion payload: the canonical target together with
+all universe-indexed completion criteria.
+-/
+theorem canonical_completion_payload_of_grounded_and_topology_extraction_statement
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    ∃ _target : canonicalCompletionTarget.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  canonical_completion_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+    (universalFiniteExtinctionStatement_of_grounded grounded)
+    topologyStatement
+
+/--
+The grounded/topology-extraction canonical payload is exactly the universal
+finite-extinction/topology-extraction payload after projecting grounded finite
+extinction to the legacy universal statement.
+-/
+theorem canonical_completion_payload_of_grounded_and_topology_extraction_statement_eq
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonical_completion_payload_of_grounded_and_topology_extraction_statement
+        grounded topologyStatement =
+      canonical_completion_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+        (universalFiniteExtinctionStatement_of_grounded grounded)
+        topologyStatement := by
+  apply Subsingleton.elim
+
+/--
+The grounded/topology-extraction route discharges any universe-indexed
+completion criterion through the canonical completion payload.
+-/
+theorem canonical_completion_criterion_of_grounded_and_topology_extraction_statement
+    (witness : Type u)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    CompletionCriterionAtUniverse witness :=
+  canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+    witness
+    (universalFiniteExtinctionStatement_of_grounded grounded)
+    topologyStatement
+
+/--
+The grounded/topology-extraction criterion route is exactly the universal
+finite-extinction/topology-extraction criterion route after projecting grounded
+finite extinction to the legacy universal statement.
+-/
+theorem canonical_completion_criterion_of_grounded_and_topology_extraction_statement_eq
+    (witness : Type u)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonical_completion_criterion_of_grounded_and_topology_extraction_statement
+        witness grounded topologyStatement =
+      canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+        witness
+        (universalFiniteExtinctionStatement_of_grounded grounded)
+        topologyStatement := by
+  apply Subsingleton.elim
+
+/--
+Grounded universal finite extinction and theorem-shaped topology extraction
+close the finite-extinction side of the canonical certificate payload: the
+canonical target and the canonical completion payload.
+-/
+theorem canonical_certificate_payload_of_grounded_and_topology_extraction_statement
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  ⟨ canonical_completion_target_of_grounded_and_topology_extraction_statement
+      grounded topologyStatement
+  , canonical_completion_payload_of_grounded_and_topology_extraction_statement
+      grounded topologyStatement
+  ⟩
+
+/--
+The grounded/topology-extraction canonical certificate payload is exactly the
+tuple of the grounded canonical target route and grounded canonical payload
+route.
+-/
+theorem canonical_certificate_payload_of_grounded_and_topology_extraction_statement_eq
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonical_certificate_payload_of_grounded_and_topology_extraction_statement
+        grounded topologyStatement =
+      ⟨ canonical_completion_target_of_grounded_and_topology_extraction_statement
+          grounded topologyStatement
+      , canonical_completion_payload_of_grounded_and_topology_extraction_statement
+          grounded topologyStatement
+      ⟩ := by
+  apply Subsingleton.elim
 
 end Poincare
