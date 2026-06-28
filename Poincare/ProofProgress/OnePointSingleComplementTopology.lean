@@ -69,4 +69,39 @@ theorem onePoint_threeSpace_compl_singleton_piZero_subsingleton
       (x := x)).subsingleton_congr).mpr
         (onePoint_threeSpace_compl_singleton_zerothHomotopy_subsingleton p)
 
+/--
+Any two zeroth homotopy group classes in the singleton complement agree.
+-/
+theorem onePoint_threeSpace_compl_singleton_piZero_eq
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (x : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (a b :
+      HomotopyGroup.Pi 0
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) :
+    a = b := by
+  letI : Subsingleton
+      (HomotopyGroup.Pi 0
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) :=
+    onePoint_threeSpace_compl_singleton_piZero_subsingleton p x
+  exact Subsingleton.elim _ _
+
+/--
+The zeroth homotopy group of the singleton complement has a unique class.
+-/
+theorem onePoint_threeSpace_compl_singleton_piZero_exists_unique
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (x : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    ∃ baseClass :
+      HomotopyGroup.Pi 0
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x,
+      ∀ homotopyClass :
+        HomotopyGroup.Pi 0
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x,
+        homotopyClass = baseClass := by
+  letI : Subsingleton
+      (HomotopyGroup.Pi 0
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) :=
+    onePoint_threeSpace_compl_singleton_piZero_subsingleton p x
+  exact ⟨Classical.choice inferInstance, fun homotopyClass => Subsingleton.elim _ _⟩
+
 end Poincare
