@@ -49405,4 +49405,58 @@ theorem constructed_boundary_dependency_only_final_certificate_collapse_of_depen
       @Poincare.constructed_boundary_dependency_only_final_certificate_collapse_of_dependencies_and_verification_family :=
   rfl
 
+/--
+Ordinary dependencies plus equation verification inherit the dependency-only
+completion-criterion all-routes collapse.
+
+For any witness universe target, the constructed equation-boundary package has
+the same direct reserved criterion, canonical-payload criterion, and
+project-payload criterion supplied by the dependency-only certificate route.
+-/
+theorem constructed_boundary_dependency_only_completionCriterion_all_routes_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (witness : Type) :
+    ∃ directCriterion : CompletionCriterionAtUniverse witness,
+    ∃ canonicalCriterion : CompletionCriterionAtUniverse witness,
+    ∃ projectCriterion : CompletionCriterionAtUniverse witness,
+    ∃ completionCriterionFamily :
+      ∀ witness : Type, CompletionCriterionAtUniverse witness,
+    ∃ canonicalPayloadCompletion :
+      ∀ witness : Type, CompletionCriterionAtUniverse witness,
+    ∃ projectPayloadCompletion :
+      ∀ witness : Type, CompletionCriterionAtUniverse witness,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+      directCriterion =
+        dependency_only_reserved_completionCriterionAtUniverse_of_equation_boundary_dependencies
+          (equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily) witness ∧
+      canonicalCriterion = canonicalPayloadCompletion witness ∧
+      projectCriterion = projectPayloadCompletion witness ∧
+      directCriterion = completionCriterionFamily witness ∧
+      directCriterion = canonicalCriterion ∧
+      directCriterion = projectCriterion ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          (equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily) :=
+  dependency_only_reserved_completionCriterion_all_routes_of_equation_boundary_dependencies
+    (equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily) witness
+
+/-- Theorem contract for
+`constructed_boundary_dependency_only_completionCriterion_all_routes_of_dependencies_and_verification_family`. -/
+theorem constructed_boundary_dependency_only_completionCriterion_all_routes_of_dependencies_and_verification_family_eq :
+    @Poincare.constructed_boundary_dependency_only_completionCriterion_all_routes_of_dependencies_and_verification_family =
+      @Poincare.constructed_boundary_dependency_only_completionCriterion_all_routes_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
