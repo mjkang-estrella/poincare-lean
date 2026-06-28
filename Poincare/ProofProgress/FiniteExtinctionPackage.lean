@@ -810,4 +810,94 @@ theorem completion_criterion_of_smoothability_and_subobligations_family_eq
         exact criterion witness) := by
   apply Subsingleton.elim
 
+/--
+The smoothability/sub-obligation-family route exposes all finite-extinction
+evidence consumed by the current certificate boundary: the universal
+finite-extinction statement, the conditional Poincare endpoint, the completion
+payload, and the requested universe-indexed completion criterion.
+-/
+theorem certificate_payload_of_smoothability_and_subobligations_family
+    (witness : Type u)
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    ∃ _finiteExtinction : UniversalFiniteExtinctionStatement.{u},
+    ∃ _target : PoincareConjectureStatement.{u},
+    ∃ _payload :
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+      CompletionCriterionAtUniverse witness :=
+  ⟨ universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+      smoothabilityPackage h
+  , poincare_conjecture_of_smoothability_and_subobligations_family
+      smoothabilityPackage h extractSphere
+  , poincare_conjecture_payload_of_smoothability_and_subobligations_family
+      smoothabilityPackage h extractSphere
+  , completion_criterion_of_smoothability_and_subobligations_family
+      witness smoothabilityPackage h extractSphere
+  ⟩
+
+/--
+The certificate payload above is exactly the tuple of the named universal
+finite-extinction boundary, endpoint, completion payload, and criterion
+projection constructed from the same smoothability/sub-obligation data.
+-/
+theorem certificate_payload_of_smoothability_and_subobligations_family_eq
+    (witness : Type u)
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    certificate_payload_of_smoothability_and_subobligations_family
+        witness smoothabilityPackage h extractSphere =
+      ⟨ universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+          smoothabilityPackage h
+      , poincare_conjecture_of_smoothability_and_subobligations_family
+          smoothabilityPackage h extractSphere
+      , poincare_conjecture_payload_of_smoothability_and_subobligations_family
+          smoothabilityPackage h extractSphere
+      , completion_criterion_of_smoothability_and_subobligations_family
+          witness smoothabilityPackage h extractSphere
+      ⟩ := by
+  apply Subsingleton.elim
+
 end Poincare
