@@ -432,6 +432,52 @@ theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackag
   ⟩
 
 /--
+The smoothability and finite-extinction package requirements plus a simply
+connected extinction-recognition prefix close the complete final-certificate
+payload.  This avoids requiring downstream code to separately manufacture the
+minimal input record before consuming the recognition-prefix topology package.
+-/
+theorem canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    { smoothability := smoothability
+      finiteExtinction := finiteExtinction }
+    recognitionPrefix
+
+/--
+The direct recognition-prefix final-certificate route is exactly the
+minimal-input recognition-prefix theorem after packing the two named
+non-topology package requirements.
+-/
+theorem canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix_eq
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+        smoothability finiteExtinction recognitionPrefix =
+      canonical_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+        { smoothability := smoothability
+          finiteExtinction := finiteExtinction }
+        recognitionPrefix := by
+  apply Subsingleton.elim
+
+/--
 Projecting the remaining dependency package out of the certificate built from
 the three package inputs recovers the same repackaged dependency field.
 -/
