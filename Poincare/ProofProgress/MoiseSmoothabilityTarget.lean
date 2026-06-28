@@ -333,4 +333,61 @@ theorem moiseSmoothabilityRecognitionAssemblyPayload_targets
       MoiseSmoothabilityStatement.{u} :=
   ⟨payload.smoothMoise, payload.surgeryMoise⟩
 
+/--
+The Moise smoothability assembly payload exposes, target-by-target, the
+recognition witnesses in both sphere and one-point models, the stronger `C∞`
+smoothability witness, the lowered surgery-model witness, and the transported
+surgery prerequisites.
+-/
+theorem moiseSmoothabilityRecognitionAssemblyPayload_targetFamily
+    (payload : MoiseSmoothabilityRecognitionAssemblyPayload.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          AdmitsSmoothThreeManifoldStructure M ∧
+          AdmitsSurgeryModelSmoothStructure M ∧
+          (∃ _t2 : T2Space M,
+            ∃ _charted : ChartedSpace ThreeManifoldModel M,
+            ∃ _simple : SimplyConnectedSpace M,
+            ∃ _compact : CompactSpace M,
+            ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+              Nonempty M) := by
+  intro M _top _t2 _charted _simple _compact
+  exact
+    ⟨ payload.recognizedSphere M
+    , payload.recognizedOnePoint M
+    , payload.smoothStructure M
+    , payload.surgeryStructure M
+    , payload.surgeryPrerequisites M
+    ⟩
+
+/--
+`ThreeSphere` recognition constructs the full per-target Moise smoothability
+family directly.
+-/
+theorem moiseSmoothability_targetFamily_of_threeSphereRecognition
+    (recognize :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere)) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          AdmitsSmoothThreeManifoldStructure M ∧
+          AdmitsSurgeryModelSmoothStructure M ∧
+          (∃ _t2 : T2Space M,
+            ∃ _charted : ChartedSpace ThreeManifoldModel M,
+            ∃ _simple : SimplyConnectedSpace M,
+            ∃ _compact : CompactSpace M,
+            ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+              Nonempty M) :=
+  moiseSmoothabilityRecognitionAssemblyPayload_targetFamily
+    (moiseSmoothabilityRecognitionAssemblyPayload_of_threeSphereRecognition
+      recognize)
+
 end Poincare
