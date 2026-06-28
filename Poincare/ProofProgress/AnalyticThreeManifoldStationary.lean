@@ -14503,4 +14503,77 @@ theorem stationary_zero_subobligations_package_boundary_contraction_scalar_and_c
     ⟨ hSubobligations, package, hflow, hBoundary, hRicciContraction,
       hScalarCurvature, hCurvatureEvolution ⟩
 
+/--
+Concrete stationary-zero production data exposes the constructed
+analytic-foundation package together with the explicit evolution-equation
+inputs used downstream: metric evolution, Ricci-tensor evolution,
+scalar-curvature evolution, curvature-norm evolution, and the aggregate
+curvature-evolution package, all for the same derived stationary-zero Ricci
+flow.
+-/
+theorem stationary_zero_analytic_foundation_evolution_payload_of_production_data_current_api
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    [IsManifold ThreeManifoldModelWithCorners 2 M]
+    (metric :
+      ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+        ThreeManifoldModel
+        (fun x : M => TangentSpace ThreeManifoldModelWithCorners x))
+    (identifiesDerivative :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (identifiesRicci :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric)))
+    (data :
+      StationaryZeroAnalyticFoundationProductionDataCurrentApi
+        metric identifiesDerivative identifiesRicci) :
+    let flow :=
+      stationary_zero_ricci_flow_data_current_api
+        metric identifiesDerivative identifiesRicci
+    ∃ package :
+        RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M,
+      ricci_flow_data_of_analytic_foundation_package package = flow ∧
+      HasMetricEvolutionEquation flow ∧
+      HasRicciTensorEvolutionEquation flow ∧
+      HasScalarCurvatureEvolutionEquation flow ∧
+      HasCurvatureNormEvolutionInequality flow ∧
+      HasCurvatureEvolutionEquations flow := by
+  let flow :=
+    stationary_zero_ricci_flow_data_current_api
+      metric identifiesDerivative identifiesRicci
+  rcases
+    stationary_zero_analytic_foundation_package_boundary_and_curvature_of_production_data_current_api
+      metric identifiesDerivative identifiesRicci data with
+    ⟨package, hflow, _hBoundary, hCurvatureEvolution⟩
+  have hMetricEvolution : HasMetricEvolutionEquation flow := by
+    dsimp [flow]
+    rw [← hflow]
+    exact metric_evolution_equation_of_analytic_foundation_package package
+  have hRicciTensorEvolution : HasRicciTensorEvolutionEquation flow := by
+    dsimp [flow]
+    rw [← hflow]
+    exact ricci_tensor_evolution_equation_of_analytic_foundation_package package
+  have hScalarCurvatureEvolution :
+      HasScalarCurvatureEvolutionEquation flow := by
+    dsimp [flow]
+    rw [← hflow]
+    exact scalar_curvature_evolution_equation_of_analytic_foundation_package
+      package
+  have hCurvatureNormEvolution :
+      HasCurvatureNormEvolutionInequality flow := by
+    dsimp [flow]
+    rw [← hflow]
+    exact curvature_norm_evolution_inequality_of_analytic_foundation_package
+      package
+  exact
+    ⟨ package, hflow, hMetricEvolution, hRicciTensorEvolution,
+      hScalarCurvatureEvolution, hCurvatureNormEvolution,
+      hCurvatureEvolution ⟩
+
 end Poincare
