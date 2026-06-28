@@ -964,4 +964,50 @@ theorem milestone_requirements_package_requirements_project_canonical_payload_an
       hWitnessFamily, hStatement, hProjectPayload, hCanonicalTarget,
       hCanonicalPayload, hCanonicalPayload.choose_spec witness ⟩
 
+/--
+Grounded finite extinction and a concrete topology package expose the finite
+Ricci-flow milestone requirements, the package-layer requirements, the compact
+finite-extinction package/statement/witness family, both public/canonical
+certificate-facing payload layers, and the full universe-indexed completion
+criterion family carried by the canonical payload.
+-/
+theorem milestone_requirements_package_requirements_project_canonical_payload_and_completion_criteria_of_grounded_and_topology_package
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.finiteExtinction ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+            FiniteExtinctionStatement n M ∧
+              FiniteExtinctionByRicciFlowWithSurgery M) ∧
+      PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  rcases
+    milestone_requirements_package_requirements_and_project_canonical_payload_of_grounded_and_topology_package
+      grounded topologyPackage with
+    ⟨ hRicci, hPerelman, hFinite, hFinitePackage, hTopologyPackage,
+      hWitnessFamily, hStatement, hProjectPayload, hCanonicalTarget,
+      hCanonicalPayload ⟩
+  exact
+    ⟨ hRicci, hPerelman, hFinite, hFinitePackage, hTopologyPackage,
+      hWitnessFamily, hStatement, hProjectPayload, hCanonicalTarget,
+      hCanonicalPayload, hCanonicalPayload.choose_spec ⟩
+
 end Poincare
