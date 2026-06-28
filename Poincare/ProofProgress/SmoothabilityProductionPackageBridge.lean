@@ -344,4 +344,42 @@ theorem threeSphereRecognition_surgeryPrerequisites_and_moiseInitialFields
       moiseInitialFields_of_threeSphereRecognition_subobligationsPayload
         payload h⟩
 
+/--
+Target-family topology recognition plus recognized-source smoothability
+sub-obligations expose the transported surgery prerequisites and the first two
+Moise package fields for every compact simply connected target.
+-/
+theorem threeSphereRecognition_surgeryPrerequisites_and_moiseInitialFields_family
+    (recognize :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere))
+    (payload : ThreeSphereRecognitionSmoothabilitySubobligationsPayload.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) ∧
+          (∃ _t2 : T2Space M,
+            ∃ _charted : ChartedSpace ThreeManifoldModel M,
+            ∃ _simple : SimplyConnectedSpace M,
+            ∃ _compact : CompactSpace M,
+            ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+              Nonempty M) ∧
+          (∃ _t2 : T2Space M,
+            ∃ _charted : ChartedSpace ThreeManifoldModel M,
+            ∃ _simple : SimplyConnectedSpace M,
+            ∃ _compact : CompactSpace M,
+            ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+              HasMoiseLocallyFiniteCoverRefinement M localCharts) := by
+  intro M _top _t2 _charted _simple _compact
+  let h := recognize M
+  exact
+    ⟨ h
+    , (threeSphereRecognition_surgeryPrerequisites_and_moiseInitialFields
+        payload h).1
+    , (threeSphereRecognition_surgeryPrerequisites_and_moiseInitialFields
+        payload h).2
+    ⟩
+
 end Poincare
