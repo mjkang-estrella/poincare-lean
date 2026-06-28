@@ -48672,4 +48672,138 @@ theorem conditional_statement_certificate_direct_equalities_of_dependencies_and_
       @Poincare.conditional_statement_certificate_direct_equalities_of_dependencies_and_verification_family :=
   rfl
 
+/--
+The named conditional final statements apply directly to every target
+manifold in the Poincare interface.
+
+This endpoint keeps the canonical reserved theorem name, selected
+equation-boundary dependency package, and selected completion certificate in
+scope while applying the project and mathlib-shaped theorem-level conditional
+statements to an arbitrary `M`.  The resulting applications are identified
+both with the certificate-selected statements and with the direct conclusion
+theorems from ordinary dependencies plus equation verification.
+-/
+theorem conditional_named_statement_applications_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ theoremName : String,
+    ∃ boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ conditionalReservedStatement : PoincareConjectureStatement.{0},
+    ∃ conditionalMathlibStatement : MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ projectConclusion : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ mathlibConclusion :
+      Nonempty
+        (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          boundaryDependencies ∧
+      conditionalReservedStatement =
+        poincare_statement_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      conditionalMathlibStatement =
+        mathlib_sphere_statement_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      conditionalReservedStatement =
+        poincare_conjecture_of_completion_certificate certificate ∧
+      conditionalMathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          (poincare_conjecture_of_completion_certificate certificate) ∧
+      projectConclusion = conditionalReservedStatement M ∧
+      mathlibConclusion = conditionalMathlibStatement M ∧
+      projectConclusion =
+        poincare_conclusion_of_dependencies_and_verification_family
+          dependencies verificationFamily M ∧
+      mathlibConclusion =
+        mathlib_sphere_conclusion_of_dependencies_and_verification_family
+          dependencies verificationFamily M := by
+  rcases
+      conditional_statement_certificate_direct_equalities_of_dependencies_and_verification_family
+        dependencies verificationFamily with
+    ⟨theoremName, boundaryDependencies, certificate, hTheoremNameCanonical,
+      hTheoremNameLiteral, hBoundaryDependencies, hCertificate,
+      hReservedCertificate, hMathlibCertificate⟩
+  let conditionalReservedStatement : PoincareConjectureStatement.{0} :=
+    poincare_statement_of_dependencies_and_verification_family
+      dependencies verificationFamily
+  let conditionalMathlibStatement :
+      MathlibTopologicalPoincareThreeStatement.{0} :=
+    mathlib_sphere_statement_of_dependencies_and_verification_family
+      dependencies verificationFamily
+  let projectConclusion : Nonempty (M ≃ₜ ThreeSphere) :=
+    poincare_conclusion_of_dependencies_and_verification_family
+      dependencies verificationFamily M
+  let mathlibConclusion :
+      Nonempty
+        (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) :=
+    mathlib_sphere_conclusion_of_dependencies_and_verification_family
+      dependencies verificationFamily M
+  have hConditionalReservedStatement :
+      conditionalReservedStatement =
+        poincare_statement_of_dependencies_and_verification_family
+          dependencies verificationFamily :=
+    rfl
+  have hConditionalMathlibStatement :
+      conditionalMathlibStatement =
+        mathlib_sphere_statement_of_dependencies_and_verification_family
+          dependencies verificationFamily :=
+    rfl
+  have hConditionalReservedCertificate :
+      conditionalReservedStatement =
+        poincare_conjecture_of_completion_certificate certificate := by
+    rw [hConditionalReservedStatement]
+  have hConditionalMathlibCertificate :
+      conditionalMathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          (poincare_conjecture_of_completion_certificate certificate) := by
+    rw [hConditionalMathlibStatement]
+  have hProjectConclusionStatement :
+      projectConclusion = conditionalReservedStatement M :=
+    Subsingleton.elim _ _
+  have hMathlibConclusionStatement :
+      mathlibConclusion = conditionalMathlibStatement M :=
+    Subsingleton.elim _ _
+  have hProjectConclusionDirect :
+      projectConclusion =
+        poincare_conclusion_of_dependencies_and_verification_family
+          dependencies verificationFamily M :=
+    rfl
+  have hMathlibConclusionDirect :
+      mathlibConclusion =
+        mathlib_sphere_conclusion_of_dependencies_and_verification_family
+          dependencies verificationFamily M :=
+    rfl
+  exact
+    ⟨theoremName, boundaryDependencies, certificate,
+      conditionalReservedStatement, conditionalMathlibStatement,
+      projectConclusion, mathlibConclusion, hTheoremNameCanonical,
+      hTheoremNameLiteral, hBoundaryDependencies, hCertificate,
+      hConditionalReservedStatement, hConditionalMathlibStatement,
+      hConditionalReservedCertificate, hConditionalMathlibCertificate,
+      hProjectConclusionStatement, hMathlibConclusionStatement,
+      hProjectConclusionDirect, hMathlibConclusionDirect⟩
+
+/-- Theorem contract for
+`conditional_named_statement_applications_of_dependencies_and_verification_family`. -/
+theorem conditional_named_statement_applications_of_dependencies_and_verification_family_eq :
+    @Poincare.conditional_named_statement_applications_of_dependencies_and_verification_family =
+      @Poincare.conditional_named_statement_applications_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
