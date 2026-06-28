@@ -81,6 +81,29 @@ theorem onePoint_threeSpace_twoPointComplement_zerothHomotopy_mk_eq
   exact Subsingleton.elim _ _
 
 /--
+The zeroth homotopy quotient of the two-point complement has a unique class.
+-/
+theorem onePoint_threeSpace_twoPointComplement_zerothHomotopy_exists_unique
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    ∃ baseClass :
+      ZerothHomotopy
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+      ∀ homotopyClass :
+        ZerothHomotopy
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        homotopyClass = baseClass := by
+  letI : PathConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_twoPointComplement_pathConnectedSpace hqp
+  let basePoint : (({p} ∪ {q})ᶜ :
+      Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    Classical.choice
+      (PathConnectedSpace.nonempty
+        (X := (({p} ∪ {q})ᶜ :
+          Set (OnePoint (EuclideanSpace ℝ (Fin 3))))))
+  exact ⟨ZerothHomotopy.mk basePoint, fun homotopyClass => Subsingleton.elim _ _⟩
+
+/--
 The two-point complement is connected as a direct consequence of the named
 path-connectedness theorem above.
 -/
