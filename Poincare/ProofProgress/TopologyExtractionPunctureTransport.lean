@@ -95,6 +95,37 @@ theorem compl_singleton_zerothHomotopy_subsingleton_of_homeomorph_to_onePoint_th
   infer_instance
 
 /--
+Any two zeroth-homotopy classes in a single-puncture complement of a recognized
+one-point compactification target agree.
+-/
+theorem compl_singleton_zerothHomotopy_mk_eq_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M)
+    (a b : ({x}ᶜ : Set M)) :
+    ZerothHomotopy.mk a = ZerothHomotopy.mk b := by
+  letI : Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) :=
+    compl_singleton_zerothHomotopy_subsingleton_of_homeomorph_to_onePoint_threeSpace
+      h x
+  exact Subsingleton.elim _ _
+
+/--
+The zeroth homotopy quotient of a single-puncture complement of a recognized
+one-point compactification target has a unique class.
+-/
+theorem compl_singleton_zerothHomotopy_exists_unique_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M) :
+    ∃ baseClass : ZerothHomotopy ({x}ᶜ : Set M),
+      ∀ homotopyClass : ZerothHomotopy ({x}ᶜ : Set M),
+        homotopyClass = baseClass := by
+  letI : PathConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_pathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+      h x
+  let basePoint : ({x}ᶜ : Set M) :=
+    Classical.choice (PathConnectedSpace.nonempty (X := ({x}ᶜ : Set M)))
+  exact ⟨ZerothHomotopy.mk basePoint, fun homotopyClass => Subsingleton.elim _ _⟩
+
+/--
 The zeroth homotopy group formulation of single-puncture complement collapse
 for a recognized one-point compactification target.
 -/
@@ -109,6 +140,37 @@ theorem compl_singleton_piZero_subsingleton_of_homeomorph_to_onePoint_threeSpace
       (x := basepoint)).subsingleton_congr).mpr
         (compl_singleton_zerothHomotopy_subsingleton_of_homeomorph_to_onePoint_threeSpace
           h x)
+
+/--
+Any two zeroth homotopy group classes in a single-puncture complement of a
+recognized one-point compactification target agree.
+-/
+theorem compl_singleton_piZero_eq_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M)
+    (basepoint : ({x}ᶜ : Set M))
+    (a b : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) :
+    a = b := by
+  letI : Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) :=
+    compl_singleton_piZero_subsingleton_of_homeomorph_to_onePoint_threeSpace
+      h x basepoint
+  exact Subsingleton.elim _ _
+
+/--
+The zeroth homotopy group of a single-puncture complement of a recognized
+one-point compactification target has a unique class.
+-/
+theorem compl_singleton_piZero_exists_unique_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    ∃ baseClass : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint,
+      ∀ homotopyClass : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint,
+        homotopyClass = baseClass := by
+  letI : Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) :=
+    compl_singleton_piZero_subsingleton_of_homeomorph_to_onePoint_threeSpace
+      h x basepoint
+  exact ⟨Classical.choice inferInstance, fun homotopyClass => Subsingleton.elim _ _⟩
 
 /--
 Every single-puncture complement of a space recognized as the one-point
@@ -139,6 +201,37 @@ theorem compl_singleton_fundamentalGroup_subsingleton_of_homeomorph_to_onePoint_
   infer_instance
 
 /--
+Any two based fundamental-group classes in a single-puncture complement of a
+recognized one-point compactification target agree.
+-/
+theorem compl_singleton_fundamentalGroup_eq_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M)
+    (basepoint : ({x}ᶜ : Set M))
+    (a b : FundamentalGroup ({x}ᶜ : Set M) basepoint) :
+    a = b := by
+  letI : Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) :=
+    compl_singleton_fundamentalGroup_subsingleton_of_homeomorph_to_onePoint_threeSpace
+      h x basepoint
+  exact Subsingleton.elim _ _
+
+/--
+The based fundamental group of a single-puncture complement of a recognized
+one-point compactification target has a unique class.
+-/
+theorem compl_singleton_fundamentalGroup_exists_unique_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    ∃ baseClass : FundamentalGroup ({x}ᶜ : Set M) basepoint,
+      ∀ fundamentalClass : FundamentalGroup ({x}ᶜ : Set M) basepoint,
+        fundamentalClass = baseClass := by
+  letI : Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) :=
+    compl_singleton_fundamentalGroup_subsingleton_of_homeomorph_to_onePoint_threeSpace
+      h x basepoint
+  exact ⟨Classical.choice inferInstance, fun fundamentalClass => Subsingleton.elim _ _⟩
+
+/--
 The first homotopy group formulation of single-puncture complement collapse for
 a recognized one-point compactification target.
 -/
@@ -153,6 +246,37 @@ theorem compl_singleton_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
       (x := basepoint)).subsingleton_congr).mpr
         (compl_singleton_fundamentalGroup_subsingleton_of_homeomorph_to_onePoint_threeSpace
           h x basepoint)
+
+/--
+Any two first homotopy group classes in a single-puncture complement of a
+recognized one-point compactification target agree.
+-/
+theorem compl_singleton_piOne_eq_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M)
+    (basepoint : ({x}ᶜ : Set M))
+    (a b : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) :
+    a = b := by
+  letI : Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) :=
+    compl_singleton_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
+      h x basepoint
+  exact Subsingleton.elim _ _
+
+/--
+The first homotopy group of a single-puncture complement of a recognized
+one-point compactification target has a unique class.
+-/
+theorem compl_singleton_piOne_exists_unique_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    ∃ baseClass : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint,
+      ∀ homotopyClass : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint,
+        homotopyClass = baseClass := by
+  letI : Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) :=
+    compl_singleton_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
+      h x basepoint
+  exact ⟨Classical.choice inferInstance, fun homotopyClass => Subsingleton.elim _ _⟩
 
 /--
 Transport a recognized one-point compactification target's two-puncture
@@ -259,6 +383,40 @@ theorem twoPointComplement_zerothHomotopy_subsingleton_of_homeomorph_to_onePoint
   infer_instance
 
 /--
+Any two zeroth-homotopy classes in a two-puncture complement of a recognized
+one-point compactification target agree.
+-/
+theorem twoPointComplement_zerothHomotopy_mk_eq_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (a b : (({x} ∪ {y})ᶜ : Set M)) :
+    ZerothHomotopy.mk a = ZerothHomotopy.mk b := by
+  letI : Subsingleton (ZerothHomotopy (({x} ∪ {y})ᶜ : Set M)) :=
+    twoPointComplement_zerothHomotopy_subsingleton_of_homeomorph_to_onePoint_threeSpace
+      h hyx
+  exact Subsingleton.elim _ _
+
+/--
+The zeroth homotopy quotient of a two-puncture complement of a recognized
+one-point compactification target has a unique class.
+-/
+theorem twoPointComplement_zerothHomotopy_exists_unique_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x) :
+    ∃ baseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+      ∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+        homotopyClass = baseClass := by
+  letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_pathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+      h hyx
+  let basePoint : (({x} ∪ {y})ᶜ : Set M) :=
+    Classical.choice
+      (PathConnectedSpace.nonempty (X := (({x} ∪ {y})ᶜ : Set M)))
+  exact ⟨ZerothHomotopy.mk basePoint, fun homotopyClass => Subsingleton.elim _ _⟩
+
+/--
 The zeroth homotopy group formulation of two-puncture complement collapse for a
 recognized one-point compactification target.
 -/
@@ -274,6 +432,39 @@ theorem twoPointComplement_piZero_subsingleton_of_homeomorph_to_onePoint_threeSp
       (x := basepoint)).subsingleton_congr).mpr
         (twoPointComplement_zerothHomotopy_subsingleton_of_homeomorph_to_onePoint_threeSpace
           h hyx)
+
+/--
+Any two zeroth homotopy group classes in a two-puncture complement of a
+recognized one-point compactification target agree.
+-/
+theorem twoPointComplement_piZero_eq_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M))
+    (a b : HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) :
+    a = b := by
+  letI : Subsingleton (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+    twoPointComplement_piZero_subsingleton_of_homeomorph_to_onePoint_threeSpace
+      h hyx basepoint
+  exact Subsingleton.elim _ _
+
+/--
+The zeroth homotopy group of a two-puncture complement of a recognized
+one-point compactification target has a unique class.
+-/
+theorem twoPointComplement_piZero_exists_unique_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ baseClass : HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+      ∀ homotopyClass : HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+        homotopyClass = baseClass := by
+  letI : Subsingleton (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+    twoPointComplement_piZero_subsingleton_of_homeomorph_to_onePoint_threeSpace
+      h hyx basepoint
+  exact ⟨Classical.choice inferInstance, fun homotopyClass => Subsingleton.elim _ _⟩
 
 /--
 Every two-puncture complement of a space recognized as the one-point
@@ -326,6 +517,39 @@ theorem twoPointComplement_fundamentalGroup_subsingleton_of_homeomorph_to_onePoi
   infer_instance
 
 /--
+Any two based fundamental-group classes in a two-puncture complement of a
+recognized one-point compactification target agree.
+-/
+theorem twoPointComplement_fundamentalGroup_eq_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M))
+    (a b : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) :
+    a = b := by
+  letI : Subsingleton (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+    twoPointComplement_fundamentalGroup_subsingleton_of_homeomorph_to_onePoint_threeSpace
+      h hyx basepoint
+  exact Subsingleton.elim _ _
+
+/--
+The based fundamental group of a two-puncture complement of a recognized
+one-point compactification target has a unique class.
+-/
+theorem twoPointComplement_fundamentalGroup_exists_unique_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ baseClass : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+      ∀ fundamentalClass : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+        fundamentalClass = baseClass := by
+  letI : Subsingleton (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+    twoPointComplement_fundamentalGroup_subsingleton_of_homeomorph_to_onePoint_threeSpace
+      h hyx basepoint
+  exact ⟨Classical.choice inferInstance, fun fundamentalClass => Subsingleton.elim _ _⟩
+
+/--
 The first homotopy group formulation of two-puncture complement collapse for a
 recognized one-point compactification target.
 -/
@@ -341,6 +565,39 @@ theorem twoPointComplement_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpa
       (x := basepoint)).subsingleton_congr).mpr
         (twoPointComplement_fundamentalGroup_subsingleton_of_homeomorph_to_onePoint_threeSpace
           h hyx basepoint)
+
+/--
+Any two first homotopy group classes in a two-puncture complement of a
+recognized one-point compactification target agree.
+-/
+theorem twoPointComplement_piOne_eq_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M))
+    (a b : HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) :
+    a = b := by
+  letI : Subsingleton (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+    twoPointComplement_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
+      h hyx basepoint
+  exact Subsingleton.elim _ _
+
+/--
+The first homotopy group of a two-puncture complement of a recognized
+one-point compactification target has a unique class.
+-/
+theorem twoPointComplement_piOne_exists_unique_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ baseClass : HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+      ∀ homotopyClass : HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+        homotopyClass = baseClass := by
+  letI : Subsingleton (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+    twoPointComplement_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
+      h hyx basepoint
+  exact ⟨Classical.choice inferInstance, fun homotopyClass => Subsingleton.elim _ _⟩
 
 /--
 The same single-puncture Euclidean chart transport, stated from recognition as
@@ -411,6 +668,31 @@ theorem compl_singleton_zerothHomotopy_subsingleton_of_homeomorph_to_threeSphere
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
 
 /--
+Any two zeroth-homotopy classes in a single-puncture complement of a
+`ThreeSphere`-recognized space agree.
+-/
+theorem compl_singleton_zerothHomotopy_mk_eq_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M)
+    (a b : ({x}ᶜ : Set M)) :
+    ZerothHomotopy.mk a = ZerothHomotopy.mk b :=
+  compl_singleton_zerothHomotopy_mk_eq_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x a b
+
+/--
+The zeroth homotopy quotient of a single-puncture complement of a
+`ThreeSphere`-recognized space has a unique class.
+-/
+theorem compl_singleton_zerothHomotopy_exists_unique_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M) :
+    ∃ baseClass : ZerothHomotopy ({x}ᶜ : Set M),
+      ∀ homotopyClass : ZerothHomotopy ({x}ᶜ : Set M),
+        homotopyClass = baseClass :=
+  compl_singleton_zerothHomotopy_exists_unique_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+
+/--
 The zeroth homotopy group formulation of single-puncture complement collapse
 for a `ThreeSphere`-recognized space.
 -/
@@ -420,6 +702,35 @@ theorem compl_singleton_piZero_subsingleton_of_homeomorph_to_threeSphere
     (basepoint : ({x}ᶜ : Set M)) :
     Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) :=
   compl_singleton_piZero_subsingleton_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+    basepoint
+
+/--
+Any two zeroth homotopy group classes in a single-puncture complement of a
+`ThreeSphere`-recognized space agree.
+-/
+theorem compl_singleton_piZero_eq_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M)
+    (basepoint : ({x}ᶜ : Set M))
+    (a b : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) :
+    a = b :=
+  compl_singleton_piZero_eq_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+    basepoint a b
+
+/--
+The zeroth homotopy group of a single-puncture complement of a
+`ThreeSphere`-recognized space has a unique class.
+-/
+theorem compl_singleton_piZero_exists_unique_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    ∃ baseClass : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint,
+      ∀ homotopyClass : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint,
+        homotopyClass = baseClass :=
+  compl_singleton_piZero_exists_unique_of_homeomorph_to_onePoint_threeSpace
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
     basepoint
 
@@ -448,6 +759,35 @@ theorem compl_singleton_fundamentalGroup_subsingleton_of_homeomorph_to_threeSphe
     basepoint
 
 /--
+Any two based fundamental-group classes in a single-puncture complement of a
+`ThreeSphere`-recognized space agree.
+-/
+theorem compl_singleton_fundamentalGroup_eq_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M)
+    (basepoint : ({x}ᶜ : Set M))
+    (a b : FundamentalGroup ({x}ᶜ : Set M) basepoint) :
+    a = b :=
+  compl_singleton_fundamentalGroup_eq_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+    basepoint a b
+
+/--
+The based fundamental group of a single-puncture complement of a
+`ThreeSphere`-recognized space has a unique class.
+-/
+theorem compl_singleton_fundamentalGroup_exists_unique_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    ∃ baseClass : FundamentalGroup ({x}ᶜ : Set M) basepoint,
+      ∀ fundamentalClass : FundamentalGroup ({x}ᶜ : Set M) basepoint,
+        fundamentalClass = baseClass :=
+  compl_singleton_fundamentalGroup_exists_unique_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+    basepoint
+
+/--
 The first homotopy group formulation of single-puncture complement collapse for
 a `ThreeSphere`-recognized space.
 -/
@@ -457,6 +797,35 @@ theorem compl_singleton_piOne_subsingleton_of_homeomorph_to_threeSphere
     (basepoint : ({x}ᶜ : Set M)) :
     Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) :=
   compl_singleton_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+    basepoint
+
+/--
+Any two first homotopy group classes in a single-puncture complement of a
+`ThreeSphere`-recognized space agree.
+-/
+theorem compl_singleton_piOne_eq_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M)
+    (basepoint : ({x}ᶜ : Set M))
+    (a b : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) :
+    a = b :=
+  compl_singleton_piOne_eq_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+    basepoint a b
+
+/--
+The first homotopy group of a single-puncture complement of a
+`ThreeSphere`-recognized space has a unique class.
+-/
+theorem compl_singleton_piOne_exists_unique_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    ∃ baseClass : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint,
+      ∀ homotopyClass : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint,
+        homotopyClass = baseClass :=
+  compl_singleton_piOne_exists_unique_of_homeomorph_to_onePoint_threeSpace
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
     basepoint
 
@@ -507,6 +876,31 @@ theorem twoPointComplement_zerothHomotopy_subsingleton_of_homeomorph_to_threeSph
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
 
 /--
+Any two zeroth-homotopy classes in a two-puncture complement of a
+`ThreeSphere`-recognized space agree.
+-/
+theorem twoPointComplement_zerothHomotopy_mk_eq_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x)
+    (a b : (({x} ∪ {y})ᶜ : Set M)) :
+    ZerothHomotopy.mk a = ZerothHomotopy.mk b :=
+  twoPointComplement_zerothHomotopy_mk_eq_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx a b
+
+/--
+The zeroth homotopy quotient of a two-puncture complement of a
+`ThreeSphere`-recognized space has a unique class.
+-/
+theorem twoPointComplement_zerothHomotopy_exists_unique_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x) :
+    ∃ baseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+      ∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+        homotopyClass = baseClass :=
+  twoPointComplement_zerothHomotopy_exists_unique_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+
+/--
 The zeroth homotopy group formulation of two-puncture complement collapse for a
 `ThreeSphere`-recognized space.
 -/
@@ -516,6 +910,35 @@ theorem twoPointComplement_piZero_subsingleton_of_homeomorph_to_threeSphere
     (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
     Subsingleton (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) :=
   twoPointComplement_piZero_subsingleton_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+    basepoint
+
+/--
+Any two zeroth homotopy group classes in a two-puncture complement of a
+`ThreeSphere`-recognized space agree.
+-/
+theorem twoPointComplement_piZero_eq_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M))
+    (a b : HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) :
+    a = b :=
+  twoPointComplement_piZero_eq_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+    basepoint a b
+
+/--
+The zeroth homotopy group of a two-puncture complement of a
+`ThreeSphere`-recognized space has a unique class.
+-/
+theorem twoPointComplement_piZero_exists_unique_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ baseClass : HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+      ∀ homotopyClass : HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+        homotopyClass = baseClass :=
+  twoPointComplement_piZero_exists_unique_of_homeomorph_to_onePoint_threeSpace
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
     basepoint
 
@@ -544,6 +967,35 @@ theorem twoPointComplement_fundamentalGroup_subsingleton_of_homeomorph_to_threeS
     basepoint
 
 /--
+Any two based fundamental-group classes in a two-puncture complement of a
+`ThreeSphere`-recognized space agree.
+-/
+theorem twoPointComplement_fundamentalGroup_eq_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M))
+    (a b : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) :
+    a = b :=
+  twoPointComplement_fundamentalGroup_eq_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+    basepoint a b
+
+/--
+The based fundamental group of a two-puncture complement of a
+`ThreeSphere`-recognized space has a unique class.
+-/
+theorem twoPointComplement_fundamentalGroup_exists_unique_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ baseClass : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+      ∀ fundamentalClass : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+        fundamentalClass = baseClass :=
+  twoPointComplement_fundamentalGroup_exists_unique_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+    basepoint
+
+/--
 The first homotopy group formulation of two-puncture complement collapse for a
 `ThreeSphere`-recognized space.
 -/
@@ -553,6 +1005,35 @@ theorem twoPointComplement_piOne_subsingleton_of_homeomorph_to_threeSphere
     (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
     Subsingleton (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) :=
   twoPointComplement_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+    basepoint
+
+/--
+Any two first homotopy group classes in a two-puncture complement of a
+`ThreeSphere`-recognized space agree.
+-/
+theorem twoPointComplement_piOne_eq_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M))
+    (a b : HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) :
+    a = b :=
+  twoPointComplement_piOne_eq_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+    basepoint a b
+
+/--
+The first homotopy group of a two-puncture complement of a
+`ThreeSphere`-recognized space has a unique class.
+-/
+theorem twoPointComplement_piOne_exists_unique_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ baseClass : HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+      ∀ homotopyClass : HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+        homotopyClass = baseClass :=
+  twoPointComplement_piOne_exists_unique_of_homeomorph_to_onePoint_threeSpace
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
     basepoint
 
