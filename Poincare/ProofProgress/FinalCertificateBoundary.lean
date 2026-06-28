@@ -43841,4 +43841,35 @@ theorem threeSphere_mathlib_unit_sphere_conclusion_of_reserved_final_certificate
       @Poincare.threeSphere_mathlib_unit_sphere_conclusion_of_reserved_final_certificate :=
   rfl
 
+/--
+Direct inverse literal sphere recognition from the final certificate route.
+
+The concrete final route supplies a homeomorphism from the project
+`ThreeSphere` to the literal mathlib unit sphere.  This endpoint turns that
+same certified homeomorphism around, exposing the recognition direction from
+the mathlib unit sphere back to the project's standard `ThreeSphere`.
+-/
+theorem mathlib_unit_sphere_threeSphere_conclusion_of_reserved_final_certificate
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{0}) :
+    Nonempty
+      (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ ThreeSphere) := by
+  rcases
+      threeSphere_mathlib_homeomorphism_of_reserved_final_certificate
+        dependencies with
+    ⟨_theoremName, _certificate, _mathlibTarget, _projectHomeomorphism,
+      mathlibHomeomorphism, _hTheoremNameCanonical, _hTheoremNameLiteral,
+      _hCertificate, _hMathlibTargetReserved,
+      _hProjectHomeomorphismMathlibTarget,
+      _hMathlibHomeomorphismMathlibTarget, _hProjectMathlib,
+      _hProjectEmbedding, _hMathlibEmbedding, _hProjectBijective,
+      _hMathlibBijective, _hProjectContinuous, _hMathlibContinuous⟩
+  exact ⟨mathlibHomeomorphism.symm⟩
+
+/-- Theorem contract for
+`mathlib_unit_sphere_threeSphere_conclusion_of_reserved_final_certificate`. -/
+theorem mathlib_unit_sphere_threeSphere_conclusion_of_reserved_final_certificate_eq :
+    @Poincare.mathlib_unit_sphere_threeSphere_conclusion_of_reserved_final_certificate =
+      @Poincare.mathlib_unit_sphere_threeSphere_conclusion_of_reserved_final_certificate :=
+  rfl
+
 end Poincare
