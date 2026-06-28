@@ -573,6 +573,122 @@ theorem groundedUniversalFiniteExtinctionAssemblyPayload_fields
     ⟩
 
 /--
+Detailed proof object for the grounded finite-extinction pillar.  In addition
+to the package-layer and milestone outputs, this retains the selected Ricci
+flow, surgery construction, Perelman control, finite-extinction package,
+statement, derivation, and final extinction witness for every smooth target.
+-/
+structure GroundedUniversalFiniteExtinctionDetailedAssemblyPayload where
+  universalStatement :
+    UniversalFiniteExtinctionStatement.{u}
+  finiteExtinctionPackageRequirement :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.finiteExtinctionPackage
+  ricciFlowWithSurgeryMilestone :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.ricciFlowWithSurgery
+  perelmanSingularityControlMilestone :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.perelmanSingularityControl
+  finiteExtinctionMilestone :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.finiteExtinction
+  packageStatementWitnessFamily :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ _package : FiniteExtinctionSurgeryPackage n M,
+          FiniteExtinctionStatement n M ∧
+            FiniteExtinctionByRicciFlowWithSurgery M
+  statementPayloadFamily :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ surgery : HasRicciFlowWithSurgery n M,
+        ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+        ∃ _package : FiniteExtinctionSurgeryPackage n M,
+        ∃ _packageStatement : FiniteExtinctionStatement n M,
+        ∃ _derivation : HasFiniteExtinctionDerivation flow surgery control,
+          FiniteExtinctionByRicciFlowWithSurgery M
+
+/--
+Grounded universal finite extinction constructs the detailed finite-extinction
+assembly payload, retaining both the compact package/statement/witness family
+and the full flow/surgery/control/derivation family.
+-/
+def groundedUniversalFiniteExtinctionDetailedAssemblyPayload
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    GroundedUniversalFiniteExtinctionDetailedAssemblyPayload.{u} where
+  universalStatement :=
+    universalFiniteExtinctionStatement_of_grounded grounded
+  finiteExtinctionPackageRequirement :=
+    finiteExtinctionPackage_requirement_of_grounded grounded
+  ricciFlowWithSurgeryMilestone :=
+    ricciFlowWithSurgery_milestone_requirement_of_grounded grounded
+  perelmanSingularityControlMilestone :=
+    perelmanSingularityControl_milestone_requirement_of_grounded grounded
+  finiteExtinctionMilestone :=
+    finiteExtinction_milestone_requirement_of_grounded grounded
+  packageStatementWitnessFamily :=
+    finite_extinction_package_statement_and_witness_family_of_grounded grounded
+  statementPayloadFamily :=
+    finite_extinction_statement_payload_family_of_grounded grounded
+
+/--
+The detailed assembly payload unpacks to the package-layer outputs together
+with both grounded finite-extinction witness families.
+-/
+theorem groundedUniversalFiniteExtinctionDetailedAssemblyPayload_fields
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    UniversalFiniteExtinctionStatement.{u} ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.finiteExtinction ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+            FiniteExtinctionStatement n M ∧
+              FiniteExtinctionByRicciFlowWithSurgery M) ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          ∃ surgery : HasRicciFlowWithSurgery n M,
+          ∃ control :
+            HasPerelmanSingularityControl (n := n) (M := M) flow,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+          ∃ _packageStatement : FiniteExtinctionStatement n M,
+          ∃ _derivation :
+            HasFiniteExtinctionDerivation flow surgery control,
+            FiniteExtinctionByRicciFlowWithSurgery M) := by
+  let payload :=
+    groundedUniversalFiniteExtinctionDetailedAssemblyPayload grounded
+  exact
+    ⟨ payload.universalStatement
+    , payload.finiteExtinctionPackageRequirement
+    , payload.ricciFlowWithSurgeryMilestone
+    , payload.perelmanSingularityControlMilestone
+    , payload.finiteExtinctionMilestone
+    , payload.packageStatementWitnessFamily
+    , payload.statementPayloadFamily
+    ⟩
+
+/--
 Grounded universal finite extinction plus theorem-shaped topology extraction
 proves the project-level Poincare statement through the universal
 finite-extinction topology-extraction route.
