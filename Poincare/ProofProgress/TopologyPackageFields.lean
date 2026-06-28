@@ -379,6 +379,42 @@ theorem extinctionTopology_completeConsumerPayload_of_topologyPackage
           package } ⟩
 
 /--
+The complete topology consumer payload is equivalent to the concrete topology
+extraction package: the payload stores the package in one direction, while the
+reverse direction constructs all final extractor and puncture-transport fields
+from that package.
+-/
+theorem nonempty_extinctionTopologyCompleteConsumerPayload_iff_topologyPackage :
+    Nonempty (ExtinctionTopologyCompleteConsumerPayload.{u}) ↔
+      ExtinctionTopologyExtractionPackage.{u} := by
+  constructor
+  · rintro ⟨payload⟩
+    exact payload.topologyPackage
+  · intro package
+    exact extinctionTopology_completeConsumerPayload_of_topologyPackage package
+
+/--
+An inhabited complete topology consumer payload exposes the concrete topology
+package, the final extraction statement, the extinction-implies-sphere
+endpoint, and the lifted-homeomorphism derivation route carried by the same
+package object.
+-/
+theorem extinctionTopology_package_statement_and_liftedDerivation_of_completeConsumerPayload
+    (payload : Nonempty (ExtinctionTopologyCompleteConsumerPayload.{u})) :
+    ∃ _package : ExtinctionTopologyExtractionPackage.{u},
+      ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionImpliesSphereStatement.{u} ∧
+        ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} :=
+  by
+    rcases payload with ⟨payload⟩
+    exact
+      ⟨ payload.topologyPackage
+      , payload.topologyStatement
+      , payload.extinctionImpliesSphere
+      , payload.liftedHomeomorphismDerivation
+      ⟩
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
