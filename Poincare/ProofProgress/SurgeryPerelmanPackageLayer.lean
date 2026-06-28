@@ -118,6 +118,57 @@ theorem perelmanSingularityControl_milestone_requirement_of_finiteExtinctionPack
   surgeryPackage_requirement_of_finiteExtinctionPackage_requirement
     finiteExtinctionRequirement
 
+/--
+The current surgery interface no longer blocks at the scale-function field:
+a construction package contains nonempty concrete surgery-scale payload data.
+-/
+theorem surgery_scale_function_payload_of_construction_package
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (package : RicciFlowWithSurgeryConstructionPackage
+      (n := n) (M := M) flow) :
+    Nonempty (SurgeryScaleFunctionPayload flow) :=
+  package.scaleFunction.scaleFunctionPayload_source
+
+/--
+A finite-extinction surgery package therefore carries explicit nonempty
+surgery-scale payload data for its projected Ricci-flow-with-surgery flow.
+-/
+theorem surgery_scale_function_payload_of_finite_extinction_surgery_package
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    Nonempty (SurgeryScaleFunctionPayload
+      (ricci_flow_data_of_surgery_package package)) :=
+  surgery_scale_function_payload_of_construction_package
+    (surgery_construction_package_of_surgery_package package)
+
+/--
+Pointwise conditional form of the same payload projection: a completed
+finite-extinction package family selects a flow with concrete surgery-scale
+payload data.
+-/
+theorem surgery_scale_function_payload_target_at_of_finiteExtinctionPackage_requirement
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ n : ℕ∞ω,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        Nonempty (SurgeryScaleFunctionPayload flow) := by
+  rcases finiteExtinctionRequirement M with ⟨⟨n, package⟩⟩
+  exact
+    ⟨n, ricci_flow_data_of_surgery_package package,
+      surgery_scale_function_payload_of_finite_extinction_surgery_package
+        package⟩
+
 /-- Concrete surgery-scale payloads produce the first construction-package field. -/
 theorem surgery_scale_function_of_payload
     {n : ℕ∞ω}
