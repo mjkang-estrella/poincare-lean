@@ -55,6 +55,40 @@ theorem onePoint_threeSpace_compl_singleton_zerothHomotopy_subsingleton
   infer_instance
 
 /--
+Any two zeroth-homotopy classes in the singleton complement agree.
+-/
+theorem onePoint_threeSpace_compl_singleton_zerothHomotopy_mk_eq
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (x y : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    ZerothHomotopy.mk x = ZerothHomotopy.mk y := by
+  letI : Subsingleton
+      (ZerothHomotopy
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :=
+    onePoint_threeSpace_compl_singleton_zerothHomotopy_subsingleton p
+  exact Subsingleton.elim _ _
+
+/--
+The zeroth homotopy quotient of the singleton complement has a unique class.
+-/
+theorem onePoint_threeSpace_compl_singleton_zerothHomotopy_exists_unique
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    ∃ baseClass :
+      ZerothHomotopy
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+      ∀ homotopyClass :
+        ZerothHomotopy
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        homotopyClass = baseClass := by
+  letI : PathConnectedSpace
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_compl_singleton_pathConnectedSpace p
+  let basePoint : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    Classical.choice
+      (PathConnectedSpace.nonempty
+        (X := ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))))
+  exact ⟨ZerothHomotopy.mk basePoint, fun homotopyClass => Subsingleton.elim _ _⟩
+
+/--
 The zeroth homotopy group formulation of the singleton-complement collapse.
 -/
 theorem onePoint_threeSpace_compl_singleton_piZero_subsingleton
