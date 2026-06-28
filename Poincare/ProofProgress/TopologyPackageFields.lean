@@ -256,6 +256,57 @@ theorem topology_package_extraction_derivation_and_puncture_payload_family
     ⟩
 
 /--
+A completed topology package supplies the theorem-shaped extraction statement,
+the final extractor consumed by the assembly layer, the lifted-homeomorphism
+derivation package, and the target-family recognition/puncture payload.
+-/
+theorem topology_package_final_extractor_lifted_derivation_and_puncture_payload_family
+    (package : ExtinctionTopologyExtractionPackage.{u}) :
+    ∃ topologyStatement : ExtinctionTopologyExtractionStatement.{u},
+      topologyStatement =
+          extinction_topology_extraction_statement_of_topology_package
+            package ∧
+      ExtinctionImpliesSphereStatement.{u} ∧
+      ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        (_extinction : FiniteExtinctionByRicciFlowWithSurgery M),
+          ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+            homeomorphism =
+                homeomorphism_of_topology_package package M _extinction ∧
+            ExtinctionTopologyClassificationSubobligationsPayload
+              M _extinction ∧
+            ExtinctionTopologySimplyConnectedRecognitionStatement
+              M _extinction ∧
+            ExtinctionTopologySphericalTrivialQuotientStatement
+              M _extinction ∧
+            ExtinctionTopologySphericalHomeomorphismLiftStatement
+              M _extinction ∧
+            ExtinctionTopologyHomeomorphismAssemblyStatement
+              M _extinction homeomorphism ∧
+            ExtinctionTopologyHomeomorphismDerivationStatement
+              M _extinction homeomorphism ∧
+            ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+              M _extinction homeomorphism ∧
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+            (∀ x : M, ContractibleSpace ({x}ᶜ : Set M)) ∧
+            (∀ {x y : M} (_hyx : y ≠ x)
+              (basepoint : (({x} ∪ {y})ᶜ : Set M)),
+                SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                  Subsingleton
+                    (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+                      basepoint))) :=
+  ⟨ extinction_topology_extraction_statement_of_topology_package package
+  , rfl
+  , extinction_implies_sphere_of_topology_package package
+  , topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+      package
+  , topology_package_extraction_derivation_and_puncture_payload_family
+      package
+  ⟩
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
