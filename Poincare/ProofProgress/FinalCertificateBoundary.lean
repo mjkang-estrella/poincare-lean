@@ -49911,4 +49911,114 @@ theorem constructed_boundary_dependency_only_named_target_homeomorphism_of_depen
       @Poincare.constructed_boundary_dependency_only_named_target_homeomorphism_of_dependencies_and_verification_family :=
   rfl
 
+/--
+Ordinary dependencies plus equation verification inherit the certificate-aware
+project/mathlib target homeomorphism coherence package.
+
+This lifts the inhabited-boundary final-collapse endpoint through the
+constructed equation-boundary package.  For a closed simply connected
+3-manifold target carrying the surgery/topology extraction interface, the same
+checked certificate selects the project `M ≃ₜ ThreeSphere` route and the
+literal mathlib unit-sphere route, and the selected homeomorphisms are
+identified with their embedding, bijectivity, and continuity facts.
+-/
+theorem constructed_boundary_reserved_named_certificate_project_mathlib_target_homeomorphism_coherence_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ projectPayloadTarget : PoincareConjectureStatement.{0},
+    ∃ mathlibTarget : MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ extractedHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ mathlibHomeomorphism :
+      M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ ∧
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          boundaryDependencies ∧
+      mathlibTarget =
+        reserved_mathlib_statement_of_nonempty_equation_boundary_dependencies
+          nonemptyBoundaryDependencies ∧
+      extractedHomeomorphism = projectPayloadTarget M ∧
+      projectPayloadTarget M =
+        (⟨projectHomeomorphism⟩ : Nonempty (M ≃ₜ ThreeSphere)) ∧
+      mathlibTarget M =
+        (⟨mathlibHomeomorphism⟩ :
+          Nonempty
+            (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) ∧
+      projectHomeomorphism = mathlibHomeomorphism ∧
+      Topology.IsEmbedding projectHomeomorphism ∧
+      Topology.IsEmbedding mathlibHomeomorphism ∧
+      Function.Bijective projectHomeomorphism ∧
+      Function.Bijective mathlibHomeomorphism ∧
+      Continuous projectHomeomorphism ∧
+      Continuous mathlibHomeomorphism := by
+  let boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0} :=
+    equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily
+  let nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0} :=
+    ⟨boundaryDependencies⟩
+  rcases
+      reserved_named_certificate_project_mathlib_target_homeomorphism_coherence_of_nonempty_equation_boundary_dependencies
+        nonemptyBoundaryDependencies M with
+    ⟨theoremName, certificate, projectPayloadTarget, mathlibTarget,
+      extractedHomeomorphism, projectHomeomorphism, mathlibHomeomorphism,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hMathlibTarget, hExtractedHomeomorphism, hProjectPayloadTarget,
+      hMathlibTargetApplication, hProjectMathlib, hProjectEmbedding,
+      hMathlibEmbedding, hProjectBijective, hMathlibBijective,
+      hProjectContinuous, hMathlibContinuous⟩
+  have hBoundaryDependencies :
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily :=
+    rfl
+  have hNonemptyBoundaryDependencies :
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ :=
+    rfl
+  have hCertificateBoundary :
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          boundaryDependencies := by
+    simp at hCertificate ⊢
+  exact
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies, theoremName,
+      certificate, projectPayloadTarget, mathlibTarget, extractedHomeomorphism,
+      projectHomeomorphism, mathlibHomeomorphism, hBoundaryDependencies,
+      hNonemptyBoundaryDependencies, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificateBoundary, hMathlibTarget,
+      hExtractedHomeomorphism, hProjectPayloadTarget,
+      hMathlibTargetApplication, hProjectMathlib, hProjectEmbedding,
+      hMathlibEmbedding, hProjectBijective, hMathlibBijective,
+      hProjectContinuous, hMathlibContinuous⟩
+
+/-- Theorem contract for
+`constructed_boundary_reserved_named_certificate_project_mathlib_target_homeomorphism_coherence_of_dependencies_and_verification_family`. -/
+theorem constructed_boundary_reserved_named_certificate_project_mathlib_target_homeomorphism_coherence_of_dependencies_and_verification_family_eq :
+    @Poincare.constructed_boundary_reserved_named_certificate_project_mathlib_target_homeomorphism_coherence_of_dependencies_and_verification_family =
+      @Poincare.constructed_boundary_reserved_named_certificate_project_mathlib_target_homeomorphism_coherence_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
