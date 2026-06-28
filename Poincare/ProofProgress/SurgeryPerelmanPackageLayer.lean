@@ -1981,6 +1981,91 @@ theorem ricci_flow_with_surgery_of_payload
   HasRicciFlowWithSurgery.of_ricci_flow_with_surgery_payload payload
 
 /--
+The terminal concrete Ricci-flow-with-surgery payload also exposes the initial
+surgery-scale construction chain used to build it: scale function, scale
+continuity, scale separation, and the aggregate surgery construction field.
+-/
+theorem surgery_scale_chain_and_ricci_flow_with_surgery_of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload : SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload
+        neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload
+        neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload :
+      StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload
+        capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload
+        capMetricInterpolationPayload}
+    {capConstructionPayload :
+      SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
+    {postSurgeryCurvaturePinchingPayload :
+      PostSurgeryCurvaturePinchingPayload capConstructionPayload}
+    {postSurgeryNoncollapsingPayload :
+      PostSurgeryNoncollapsingControlPayload
+        postSurgeryCurvaturePinchingPayload}
+    {postSurgeryDerivativeBoundsPayload :
+      PostSurgeryDerivativeBoundsPayload
+        postSurgeryNoncollapsingPayload}
+    {postSurgeryCanonicalNeighborhoodPersistencePayload :
+      PostSurgeryCanonicalNeighborhoodPersistencePayload
+        postSurgeryDerivativeBoundsPayload}
+    {postSurgeryMetricControlPayload :
+      PostSurgeryMetricControlPayload
+        postSurgeryCanonicalNeighborhoodPersistencePayload}
+    {surgeryTimeDiscretenessPayload :
+      SurgeryTimeDiscretenessPayload postSurgeryMetricControlPayload}
+    {surgeryTimeLocalFinitenessPayload :
+      SurgeryTimeLocalFinitenessPayload
+        surgeryTimeDiscretenessPayload}
+    {longTimeExistenceIterationPayload :
+      LongTimeExistenceIterationPayload
+        surgeryTimeLocalFinitenessPayload}
+    {longTimeSurgeryParameterCoherencePayload :
+      LongTimeSurgeryParameterCoherencePayload
+        longTimeExistenceIterationPayload}
+    {longTimeNonaccumulationPayload :
+      LongTimeNonaccumulationPayload
+        longTimeSurgeryParameterCoherencePayload}
+    {longTimeSurgeryContinuationPayload :
+      LongTimeSurgeryContinuationPayload
+        longTimeNonaccumulationPayload}
+    (payload :
+      RicciFlowWithSurgeryPayload
+        longTimeSurgeryContinuationPayload) :
+    HasSurgeryScaleFunction flow ∧
+      HasSurgeryScaleContinuity flow ∧
+      HasSurgeryScaleSeparation flow ∧
+      HasRicciFlowWithSurgery n M :=
+  ⟨ surgery_scale_function_of_payload scalePayload
+  , surgery_scale_continuity_of_payload continuityPayload
+  , surgery_scale_separation_of_payload separationPayload
+  , ricci_flow_with_surgery_of_payload payload
+  ⟩
+
+/--
 The remaining Ricci-flow-with-surgery construction fields after the surgery
 scale function has been selected.
 -/
