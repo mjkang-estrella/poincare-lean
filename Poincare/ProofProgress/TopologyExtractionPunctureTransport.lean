@@ -1369,4 +1369,47 @@ theorem complement_unique_class_payload_of_homeomorph_to_threeSphere
       h hyx twoBasepoint
   ⟩
 
+/--
+Recognizing a space as the one-point compactification of `R^3` supplies the
+joined-path and path-component-collapse payloads for both one and two punctures.
+-/
+theorem complement_path_component_payload_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (x : M) {y : M} (hyx : y ≠ x) :
+    (∀ a b : ({x}ᶜ : Set M), Nonempty (Path a b)) ∧
+      (∀ basepoint : ({x}ᶜ : Set M),
+        pathComponent basepoint = Set.univ) ∧
+      (∀ a b : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path a b)) ∧
+      (∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+        pathComponent basepoint = Set.univ) :=
+  ⟨ compl_singleton_path_nonempty_of_homeomorph_to_onePoint_threeSpace h x
+  , compl_singleton_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
+      h x
+  , twoPointComplement_path_nonempty_of_homeomorph_to_onePoint_threeSpace
+      h hyx
+  , twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
+      h hyx
+  ⟩
+
+/--
+The same joined-path and path-component-collapse payload, stated from
+`ThreeSphere` recognition.
+-/
+theorem complement_path_component_payload_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere))
+    (x : M) {y : M} (hyx : y ≠ x) :
+    (∀ a b : ({x}ᶜ : Set M), Nonempty (Path a b)) ∧
+      (∀ basepoint : ({x}ᶜ : Set M),
+        pathComponent basepoint = Set.univ) ∧
+      (∀ a b : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path a b)) ∧
+      (∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+        pathComponent basepoint = Set.univ) :=
+  ⟨ compl_singleton_path_nonempty_of_homeomorph_to_threeSphere h x
+  , compl_singleton_pathComponent_eq_univ_of_homeomorph_to_threeSphere h x
+  , twoPointComplement_path_nonempty_of_homeomorph_to_threeSphere h hyx
+  , twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_threeSphere h hyx
+  ⟩
+
 end Poincare
