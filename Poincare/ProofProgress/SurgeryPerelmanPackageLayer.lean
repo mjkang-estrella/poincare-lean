@@ -169,6 +169,42 @@ theorem surgery_scale_function_payload_target_at_of_finiteExtinctionPackage_requ
       surgery_scale_function_payload_of_finite_extinction_surgery_package
         package⟩
 
+/--
+A finite-extinction surgery package also contains the singularity-model blowup
+classification evidence that remains the direct Perelman blocker.
+-/
+theorem singularity_model_blowup_classification_of_finite_extinction_surgery_package
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    HasSingularityModelBlowupClassification
+      (ricci_flow_data_of_surgery_package package) :=
+  singularity_model_blowup_classification_of_surgery_package package
+
+/--
+Pointwise conditional blocker discharge: assuming the finite-extinction package
+layer, every target manifold gets a selected flow carrying singularity-model
+blowup classification evidence.
+-/
+theorem singularity_model_blowup_classification_target_at_of_finiteExtinctionPackage_requirement
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ n : ℕ∞ω,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        HasSingularityModelBlowupClassification flow := by
+  rcases finiteExtinctionRequirement M with ⟨⟨n, package⟩⟩
+  exact
+    ⟨n, ricci_flow_data_of_surgery_package package,
+      singularity_model_blowup_classification_of_finite_extinction_surgery_package
+        package⟩
+
 /-- Concrete surgery-scale payloads produce the first construction-package field. -/
 theorem surgery_scale_function_of_payload
     {n : ℕ∞ω}
