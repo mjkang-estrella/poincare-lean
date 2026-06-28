@@ -1279,6 +1279,79 @@ theorem surgeryPerelman_nonemptyCompleteConsumerPayload_iff_nonemptyDetailedAsse
   · exact
       surgeryPerelman_completeConsumerPayload_of_nonemptyDetailedAssemblyPayload
 
+/--
+The complete surgery/Perelman consumer payload is exactly the surgery package
+requirement, both surgery milestones, the package-tied projection family, the
+selected-flow scale/blowup family, and the combined surgery/Perelman/extinction
+family.  The reverse direction rebuilds the basic and detailed assembly
+payloads before using the existing complete-consumer constructor.
+-/
+theorem surgeryPerelman_nonemptyCompleteConsumerPayload_iff_requirements_projection_and_extinctionFamilies :
+    Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u} ↔
+      dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.surgeryPackage ∧
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery ∧
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            ∃ n : ℕ∞ω,
+            ∃ package : FiniteExtinctionSurgeryPackage n M,
+              Nonempty
+                (FiniteExtinctionSurgeryPerelmanProjectionPayload package)) ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            ∃ n : ℕ∞ω,
+            ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+              RicciFlowWithSurgeryConstructionPackage
+                (n := n) (M := M) flow ∧
+              PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+              Nonempty (SurgeryScaleFunctionPayload flow) ∧
+              HasSingularityModelBlowupClassification flow) ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            ∃ n : ℕ∞ω,
+            ∃ package : FiniteExtinctionSurgeryPackage n M,
+              Nonempty
+                (FiniteExtinctionSurgeryPerelmanAndExtinctionPayload
+                  package)) := by
+  constructor
+  · rintro ⟨payload⟩
+    exact
+      ⟨ payload.surgeryPackageRequirement
+      , payload.ricciFlowWithSurgeryMilestone
+      , payload.perelmanSingularityControlMilestone
+      , payload.projectionPayloadFamily
+      , payload.selectedFlowScaleBlowupFamily
+      , payload.projectionAndExtinctionFamily
+      ⟩
+  · rintro
+      ⟨ surgeryPackageRequirement
+      , ricciFlowWithSurgeryMilestone
+      , perelmanSingularityControlMilestone
+      , projectionPayloadFamily
+      , selectedFlowScaleBlowupFamily
+      , projectionAndExtinctionFamily
+      ⟩
+    let basePayload : SurgeryPerelmanAssemblyPayloadFromFiniteExtinction.{u} :=
+      { surgeryPackageRequirement := surgeryPackageRequirement
+        ricciFlowWithSurgeryMilestone := ricciFlowWithSurgeryMilestone
+        perelmanSingularityControlMilestone :=
+          perelmanSingularityControlMilestone
+        projectionPayloadFamily := projectionPayloadFamily
+        selectedFlowScaleBlowupFamily := selectedFlowScaleBlowupFamily }
+    exact
+      surgeryPerelman_completeConsumerPayload_of_nonemptyDetailedAssemblyPayload
+        ⟨ { basePayload := basePayload
+            projectionAndExtinctionFamily := projectionAndExtinctionFamily } ⟩
+
 /-- Concrete surgery-scale payloads produce the first construction-package field. -/
 theorem surgery_scale_function_of_payload
     {n : ℕ∞ω}
