@@ -2010,6 +2010,49 @@ theorem groundedUniversalFiniteExtinction_requirements_and_fixedTarget_statement
     ⟩
 
 /--
+For a fixed target manifold, a complete grounded finite-extinction consumer
+payload exposes the legacy universal finite-extinction statement, all named
+package/milestone requirements, and the concrete finite-extinction statement
+payload at the same endpoint.
+-/
+theorem groundedUniversalFiniteExtinction_universal_requirements_and_fixedTarget_statementPayload_of_completeConsumerPayload
+    (payload :
+      Nonempty GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    UniversalFiniteExtinctionStatement.{u} ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.finiteExtinction ∧
+      ∃ n : ℕ∞ω,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      ∃ surgery : HasRicciFlowWithSurgery n M,
+      ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+      ∃ _package : FiniteExtinctionSurgeryPackage n M,
+      ∃ _packageStatement : FiniteExtinctionStatement n M,
+      ∃ _derivation : HasFiniteExtinctionDerivation flow surgery control,
+        FiniteExtinctionStatement n M ∧
+          HasFiniteExtinctionDerivation flow surgery control ∧
+          FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ payload.universalStatement
+    , payload.finiteExtinctionPackageRequirement
+    , payload.ricciFlowWithSurgeryMilestone
+    , payload.perelmanSingularityControlMilestone
+    , payload.finiteExtinctionMilestone
+    , groundedUniversalFiniteExtinction_fixedTarget_statementPayload_of_completeConsumerPayload
+        ⟨payload⟩ M
+    ⟩
+
+/--
 The complete finite-extinction consumer payload is equivalent to the inhabited
 detailed grounded finite-extinction assembly payload: the forward direction
 projects the stored detailed payload, while the reverse direction rebuilds the
