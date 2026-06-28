@@ -94,6 +94,67 @@ theorem topologyPackage_requirement_of_finalAssemblyPackageBoundaryInputs
   inputs.topology
 
 /--
+The final package boundary now exposes the single-puncture first-homotopy
+collapse that the topology package proves from finite extinction.
+-/
+theorem compl_singleton_piOne_subsingleton_of_finalAssemblyPackageBoundaryInputs
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (x : M) (basepoint : ({x}ᶜ : Set M)) :
+    Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) := by
+  let finiteExtinction :=
+    finite_extinction_input_of_smoothability_and_surgery_packages
+      inputs.smoothability inputs.finiteExtinction
+  exact
+    compl_singleton_piOne_subsingleton_of_topology_package
+      inputs.topology M (finiteExtinction M) x basepoint
+
+/--
+The final package boundary also exposes the two-puncture first-homotopy
+collapse used by recognition routes after puncture transport.
+-/
+theorem twoPointComplement_piOne_subsingleton_of_finalAssemblyPackageBoundaryInputs
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Subsingleton
+      (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  let finiteExtinction :=
+    finite_extinction_input_of_smoothability_and_surgery_packages
+      inputs.smoothability inputs.finiteExtinction
+  exact
+    twoPointComplement_piOne_subsingleton_of_topology_package
+      inputs.topology M (finiteExtinction M) hyx basepoint
+
+/--
+Combined complement-collapse payload at the final assembly boundary: once the
+three package inputs are supplied, both the single-puncture and two-puncture
+first homotopy groups are trivial at arbitrary basepoints.
+-/
+theorem complement_piOne_collapse_payload_of_finalAssemblyPackageBoundaryInputs
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (x : M) {y : M} (hyx : y ≠ x)
+    (singleBasepoint : ({x}ᶜ : Set M))
+    (twoBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint) := by
+  exact
+    ⟨ compl_singleton_piOne_subsingleton_of_finalAssemblyPackageBoundaryInputs
+        inputs M x singleBasepoint
+    , twoPointComplement_piOne_subsingleton_of_finalAssemblyPackageBoundaryInputs
+        inputs M hyx twoBasepoint
+    ⟩
+
+/--
 The three-input boundary supplies all five package-layer requirements in the
 crosswalk order; the analytic and surgery/Perelman entries are projections from
 the finite-extinction package entry.
