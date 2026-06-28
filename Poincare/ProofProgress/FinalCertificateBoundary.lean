@@ -48203,4 +48203,133 @@ theorem final_certificate_full_topological_recovery_package_of_dependencies_and_
       @Poincare.final_certificate_full_topological_recovery_package_of_dependencies_and_verification_family :=
   rfl
 
+/--
+Conditional Poincare conclusion from ordinary dependencies plus equation
+verification.
+
+This is the direct consumer theorem extracted from the final-certificate
+package: once ordinary proof dependencies and the Ricci-flow equation
+verification family are supplied, every closed simply connected 3-manifold
+surface `M` in the statement interface has the selected project homeomorphism
+conclusion `M ≃ₜ ThreeSphere`.
+-/
+theorem poincare_conclusion_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    Nonempty (M ≃ₜ ThreeSphere) := by
+  rcases
+      final_certificate_full_topological_recovery_package_of_dependencies_and_verification_family
+        dependencies verificationFamily M with
+    ⟨_boundaryDependencies, _nonemptyBoundaryDependencies, _certificate,
+      _checkedReservedStatement, _checkedMathlibStatement,
+      _standardForwardHomeomorphism, _standardInverseHomeomorphism,
+      _standardForwardConclusion, _standardInverseConclusion,
+      projectConclusion, _projectHomeomorphism, _arbitraryForwardHomeomorphism,
+      _composedMathlibHomeomorphism, _inverseComposedMathlibHomeomorphism,
+      _composedMathlibConclusion, _inverseComposedMathlibConclusion,
+      _recoveredProjectHomeomorphism, _recoveredSphereInverseHomeomorphism,
+      _hBoundaryDependencies, _hNonemptyBoundaryDependencies, _hCertificate,
+      _hCheckedReservedStatement, _hCheckedMathlibStatement,
+      _hStandardForwardConclusionChecked, _hStandardForwardConclusion,
+      _hStandardInverseHomeomorphism, _hStandardInverseConclusion,
+      _hStandardLeft, _hStandardRight, _hStandardForwardEmbedding,
+      _hStandardForwardBijective, _hStandardForwardContinuous,
+      _hStandardInverseEmbedding, _hStandardInverseBijective,
+      _hStandardInverseContinuous, _hProjectConclusion,
+      _hProjectHomeomorphism, _hComposedMathlibHomeomorphism,
+      _hInverseComposedMathlibHomeomorphism, _hInverseDecomposition,
+      _hComposedMathlibConclusion, _hComposedMathlibStatement,
+      _hInverseComposedMathlibConclusion, _hLeft, _hRight,
+      _hComposedEmbedding, _hComposedBijective, _hComposedContinuous,
+      _hInverseComposedEmbedding, _hInverseComposedBijective,
+      _hInverseComposedContinuous, _hRecoveredProjectHomeomorphism,
+      _hRecoveredProject, _hRecoveredProjectEmbedding,
+      _hRecoveredProjectBijective, _hRecoveredProjectContinuous,
+      _hRecoveredSphereInverseHomeomorphism, _hRecoveredSphereInverse,
+      _hRecoveredSphereInverseEmbedding, _hRecoveredSphereInverseBijective,
+      _hRecoveredSphereInverseContinuous⟩
+  exact projectConclusion
+
+/-- Theorem contract for
+`poincare_conclusion_of_dependencies_and_verification_family`. -/
+theorem poincare_conclusion_of_dependencies_and_verification_family_eq :
+    @Poincare.poincare_conclusion_of_dependencies_and_verification_family =
+      @Poincare.poincare_conclusion_of_dependencies_and_verification_family :=
+  rfl
+
+/--
+Conditional mathlib-sphere conclusion from ordinary dependencies plus
+equation verification.
+
+This extracts the mathlib-shaped final statement conclusion
+`M ≃ₜ Metric.sphere 0 1` from the same checked final certificate package used
+for the project Poincare conclusion.
+-/
+theorem mathlib_sphere_conclusion_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    Nonempty
+      (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) := by
+  rcases
+      final_certificate_full_topological_recovery_package_of_dependencies_and_verification_family
+        dependencies verificationFamily M with
+    ⟨_boundaryDependencies, _nonemptyBoundaryDependencies, _certificate,
+      _checkedReservedStatement, _checkedMathlibStatement,
+      _standardForwardHomeomorphism, _standardInverseHomeomorphism,
+      _standardForwardConclusion, _standardInverseConclusion,
+      _projectConclusion, _projectHomeomorphism, _arbitraryForwardHomeomorphism,
+      _composedMathlibHomeomorphism, _inverseComposedMathlibHomeomorphism,
+      composedMathlibConclusion, _inverseComposedMathlibConclusion,
+      _recoveredProjectHomeomorphism, _recoveredSphereInverseHomeomorphism,
+      _hBoundaryDependencies, _hNonemptyBoundaryDependencies, _hCertificate,
+      _hCheckedReservedStatement, _hCheckedMathlibStatement,
+      _hStandardForwardConclusionChecked, _hStandardForwardConclusion,
+      _hStandardInverseHomeomorphism, _hStandardInverseConclusion,
+      _hStandardLeft, _hStandardRight, _hStandardForwardEmbedding,
+      _hStandardForwardBijective, _hStandardForwardContinuous,
+      _hStandardInverseEmbedding, _hStandardInverseBijective,
+      _hStandardInverseContinuous, _hProjectConclusion,
+      _hProjectHomeomorphism, _hComposedMathlibHomeomorphism,
+      _hInverseComposedMathlibHomeomorphism, _hInverseDecomposition,
+      _hComposedMathlibConclusion, _hComposedMathlibStatement,
+      _hInverseComposedMathlibConclusion, _hLeft, _hRight,
+      _hComposedEmbedding, _hComposedBijective, _hComposedContinuous,
+      _hInverseComposedEmbedding, _hInverseComposedBijective,
+      _hInverseComposedContinuous, _hRecoveredProjectHomeomorphism,
+      _hRecoveredProject, _hRecoveredProjectEmbedding,
+      _hRecoveredProjectBijective, _hRecoveredProjectContinuous,
+      _hRecoveredSphereInverseHomeomorphism, _hRecoveredSphereInverse,
+      _hRecoveredSphereInverseEmbedding, _hRecoveredSphereInverseBijective,
+      _hRecoveredSphereInverseContinuous⟩
+  exact composedMathlibConclusion
+
+/-- Theorem contract for
+`mathlib_sphere_conclusion_of_dependencies_and_verification_family`. -/
+theorem mathlib_sphere_conclusion_of_dependencies_and_verification_family_eq :
+    @Poincare.mathlib_sphere_conclusion_of_dependencies_and_verification_family =
+      @Poincare.mathlib_sphere_conclusion_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
