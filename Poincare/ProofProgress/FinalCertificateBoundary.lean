@@ -2740,6 +2740,111 @@ theorem completion_criterion_statement_coherence_of_unpacked_aggregate_completio
   rfl
 
 /--
+Direct project completion payload from the grounded terminal aggregate route.
+This packages the direct project statement endpoint with its universe-indexed
+completion criterion family.
+-/
+theorem completion_payload_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_poincareConjectureStatement
+    (poincare_statement_of_unpacked_aggregate_completion
+      dependencies smoothability grounded topologyStatement M)
+
+/-- Theorem contract for `completion_payload_of_unpacked_aggregate_completion`. -/
+theorem completion_payload_of_unpacked_aggregate_completion_eq :
+    @Poincare.completion_payload_of_unpacked_aggregate_completion =
+      @Poincare.completion_payload_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
+The direct completion payload agrees with the payload reconstructed from the
+direct completion criterion at a selected witness.  This closes the local loop
+between statement, criterion, and project-payload endpoints of the grounded
+terminal aggregate route.
+-/
+theorem completion_payload_criterion_coherence_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (witness : Type u) :
+    ∃ directCriterion : CompletionCriterionAtUniverse witness,
+    ∃ statementPayload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ criterionPayload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+      directCriterion =
+        completion_criterion_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M witness ∧
+      statementPayload =
+        completion_payload_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M ∧
+      criterionPayload =
+        poincare_completion_payload_of_completionCriterionAtUniverse
+          witness directCriterion ∧
+      statementPayload = criterionPayload := by
+  let directCriterion : CompletionCriterionAtUniverse witness :=
+    completion_criterion_of_unpacked_aggregate_completion
+      dependencies smoothability grounded topologyStatement M witness
+  let statementPayload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    completion_payload_of_unpacked_aggregate_completion
+      dependencies smoothability grounded topologyStatement M
+  let criterionPayload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    poincare_completion_payload_of_completionCriterionAtUniverse
+      witness directCriterion
+  have hDirectCriterion :
+      directCriterion =
+        completion_criterion_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M witness :=
+    rfl
+  have hStatementPayload :
+      statementPayload =
+        completion_payload_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M :=
+    rfl
+  have hCriterionPayload :
+      criterionPayload =
+        poincare_completion_payload_of_completionCriterionAtUniverse
+          witness directCriterion :=
+    rfl
+  have hPayloads :
+      statementPayload = criterionPayload := by
+    apply Subsingleton.elim
+  exact
+    ⟨directCriterion, statementPayload, criterionPayload, hDirectCriterion,
+      hStatementPayload, hCriterionPayload, hPayloads⟩
+
+/-- Theorem contract for
+`completion_payload_criterion_coherence_of_unpacked_aggregate_completion`. -/
+theorem completion_payload_criterion_coherence_of_unpacked_aggregate_completion_eq :
+    @Poincare.completion_payload_criterion_coherence_of_unpacked_aggregate_completion =
+      @Poincare.completion_payload_criterion_coherence_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
