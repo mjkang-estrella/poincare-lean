@@ -1362,6 +1362,37 @@ theorem project_and_canonical_payload_and_final_certificate_of_remainingDependen
     ⟩
 
 /--
+The grounded remaining-dependency recognition-prefix route also discharges any
+requested universe-indexed completion criterion by projecting the canonical
+payload carried in the same bundled final-certificate endpoint.
+-/
+theorem project_canonical_final_certificate_and_completion_criterion_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_recognitionPrefix
+    (witness : Type u)
+    (dependencies : RemainingDependencyPackage.{u})
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} ∧
+      CompletionCriterionAtUniverse witness := by
+  let payload :=
+    project_and_canonical_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_recognitionPrefix
+      dependencies grounded recognitionPrefix
+  exact
+    ⟨ payload.1
+    , payload.2.1
+    , payload.2.2.1
+    , payload.2.2.2.1
+    , payload.2.2.2.2
+    , payload.2.2.2.1.choose_spec witness
+    ⟩
+
+/--
 Projecting the remaining dependency package out of the certificate built from
 the three package inputs recovers the same repackaged dependency field.
 -/
