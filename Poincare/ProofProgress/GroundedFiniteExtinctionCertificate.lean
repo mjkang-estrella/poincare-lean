@@ -451,6 +451,43 @@ theorem universalFiniteExtinctionStatement_of_grounded
     finiteExtinctionByRicciFlowWithSurgery_of_grounded (grounded M)
 
 /--
+Grounded universal finite extinction exposes the legacy universal statement,
+the finite-extinction package layer, the Ricci-flow/Perelman/finite-extinction
+milestones, and the compact package/statement/witness family without requiring
+the topology-extraction package.
+-/
+theorem universal_package_milestones_and_package_statement_witness_family_of_grounded
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    UniversalFiniteExtinctionStatement.{u} ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.finiteExtinction ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+            FiniteExtinctionStatement n M ∧
+              FiniteExtinctionByRicciFlowWithSurgery M) := by
+  let milestonePayload :=
+    milestone_requirements_and_package_statement_witness_family_of_grounded
+      grounded
+  exact
+    ⟨ universalFiniteExtinctionStatement_of_grounded grounded
+    , finiteExtinctionPackage_requirement_of_grounded grounded
+    , milestonePayload.1
+    , milestonePayload.2.1
+    , milestonePayload.2.2.1
+    , milestonePayload.2.2.2
+    ⟩
+
+/--
 Grounded universal finite extinction plus theorem-shaped topology extraction
 proves the project-level Poincare statement through the universal
 finite-extinction topology-extraction route.
