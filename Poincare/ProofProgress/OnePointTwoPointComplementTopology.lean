@@ -68,6 +68,22 @@ theorem onePoint_threeSpace_twoPointComplement_zerothHomotopy_subsingleton
   infer_instance
 
 /--
+The zeroth homotopy group formulation of the two-point complement collapse.
+-/
+theorem onePoint_threeSpace_twoPointComplement_piZero_subsingleton
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (x : (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    Subsingleton
+      (HomotopyGroup.Pi 0
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) := by
+  exact
+    ((HomotopyGroup.pi0EquivZerothHomotopy
+      (X := (({p} ∪ {q})ᶜ :
+        Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+      (x := x)).subsingleton_congr).mpr
+        (onePoint_threeSpace_twoPointComplement_zerothHomotopy_subsingleton hqp)
+
+/--
 Any two zeroth-homotopy classes in the two-point complement agree.
 -/
 theorem onePoint_threeSpace_twoPointComplement_zerothHomotopy_mk_eq
