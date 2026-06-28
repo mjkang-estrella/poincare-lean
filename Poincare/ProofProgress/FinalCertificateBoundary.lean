@@ -48931,4 +48931,49 @@ theorem constructed_completion_certificate_applications_of_dependencies_and_veri
       @Poincare.constructed_completion_certificate_applications_of_dependencies_and_verification_family :=
   rfl
 
+/--
+The constructed completion certificate directly supplies the theorem-level
+project and mathlib final statements.
+
+This removes the last existential witness layer from the statement-level
+certificate route: the exact certificate constructed from ordinary
+dependencies plus equation verification is itself a proof of the project
+Poincare statement, and its mathlib translation agrees with the
+dependency-derived mathlib-shaped statement.
+-/
+theorem constructed_completion_certificate_statement_equalities_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          (equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily)) =
+      poincare_statement_of_dependencies_and_verification_family
+        dependencies verificationFamily ∧
+    mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+        (poincare_conjecture_of_completion_certificate
+          (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+            (equation_boundary_dependencies_of_dependencies_and_verification_family
+              dependencies verificationFamily))) =
+      mathlib_sphere_statement_of_dependencies_and_verification_family
+        dependencies verificationFamily := by
+  constructor
+  · exact Subsingleton.elim _ _
+  · exact Subsingleton.elim _ _
+
+/-- Theorem contract for
+`constructed_completion_certificate_statement_equalities_of_dependencies_and_verification_family`. -/
+theorem constructed_completion_certificate_statement_equalities_of_dependencies_and_verification_family_eq :
+    @Poincare.constructed_completion_certificate_statement_equalities_of_dependencies_and_verification_family =
+      @Poincare.constructed_completion_certificate_statement_equalities_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
