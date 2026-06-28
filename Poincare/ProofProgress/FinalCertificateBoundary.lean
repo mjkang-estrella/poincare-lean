@@ -43403,4 +43403,61 @@ theorem threeSphere_poincare_conjecture_of_nonempty_certificate_of_reserved_fina
       @Poincare.threeSphere_poincare_conjecture_of_nonempty_certificate_of_reserved_final_certificate :=
   rfl
 
+/--
+Direct nonempty-certificate reserved and mathlib final statement package for
+the standard sphere.
+
+This projects the nonempty-certificate reserved endpoint together with its
+mathlib-shaped statement, so the concrete `ThreeSphere` final-certificate
+route exposes the same final statement surface used by downstream consumers.
+-/
+theorem threeSphere_nonempty_certificate_reserved_mathlib_package_of_reserved_final_certificate
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{0}) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{0},
+    ∃ nonemptyReservedStatement : PoincareConjectureStatement.{0},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{0},
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      nonemptyCertificate =
+        nonempty_completion_certificate_of_completion_certificate
+          certificate ∧
+      nonemptyReservedStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          nonemptyReservedStatement := by
+  rcases
+      threeSphere_poincare_conjecture_of_nonempty_certificate_of_reserved_final_certificate
+        dependencies with
+    ⟨theoremName, certificate, nonemptyCertificate, _reservedStatement,
+      nonemptyReservedStatement, hTheoremNameCanonical, hTheoremNameLiteral,
+      hCertificate, hNonemptyCertificate, _hReservedStatement,
+      hNonemptyReservedStatement, _hNonemptyReserved⟩
+  let mathlibStatement : MathlibTopologicalPoincareThreeStatement.{0} :=
+    mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+      nonemptyReservedStatement
+  have hMathlibStatement :
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          nonemptyReservedStatement :=
+    rfl
+  exact
+    ⟨theoremName, certificate, nonemptyCertificate,
+      nonemptyReservedStatement, mathlibStatement, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, hNonemptyCertificate,
+      hNonemptyReservedStatement, hMathlibStatement⟩
+
+/-- Theorem contract for
+`threeSphere_nonempty_certificate_reserved_mathlib_package_of_reserved_final_certificate`. -/
+theorem threeSphere_nonempty_certificate_reserved_mathlib_package_of_reserved_final_certificate_eq :
+    @Poincare.threeSphere_nonempty_certificate_reserved_mathlib_package_of_reserved_final_certificate =
+      @Poincare.threeSphere_nonempty_certificate_reserved_mathlib_package_of_reserved_final_certificate :=
+  rfl
+
 end Poincare
