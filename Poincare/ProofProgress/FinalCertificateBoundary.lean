@@ -42894,4 +42894,75 @@ theorem threeSphere_reserved_named_certificate_criterion_package_of_final_comple
       @Poincare.threeSphere_reserved_named_certificate_criterion_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Projected standard-sphere final statement and criterion certificate.
+
+This is the compact consumer-facing projection of the concrete `ThreeSphere`
+certificate criterion package: it exposes the project and mathlib final
+statements together with the selected, project-certificate, and
+canonical-certificate criteria, all tied to the same reserved named
+completion certificate.
+-/
+theorem threeSphere_project_mathlib_statements_certificate_criteria_of_final_completionCriterion
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary)
+    (witness : Type) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate,
+    ∃ projectStatement : PoincareConjectureStatement,
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement,
+    ∃ criterion : CompletionCriterionAtUniverse witness,
+    ∃ certificateCriterion : CompletionCriterionAtUniverse witness,
+    ∃ canonicalCertificateCriterion : CompletionCriterionAtUniverse witness,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      projectStatement =
+        target_statement_of_completion_certificate certificate ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement ∧
+      criterion =
+        reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+          dependencies witness ∧
+      certificateCriterion =
+        completion_criterion_of_completion_certificate witness certificate ∧
+      canonicalCertificateCriterion =
+        canonical_completion_criterion_of_completion_certificate
+          witness certificate ∧
+      criterion = certificateCriterion ∧
+      criterion = canonicalCertificateCriterion := by
+  rcases
+      threeSphere_reserved_named_certificate_criterion_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies
+        dependencies witness with
+    ⟨theoremName, certificate, targetStatement, projectStatement,
+      mathlibStatement, _projectPayload, criterion, certificateCriterion,
+      canonicalCertificateCriterion, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, hTargetStatement, hProjectTarget,
+      hMathlibStatement, _hProjectPayload, _hCriterionPayload,
+      hCertificateCriterion, hCanonicalCertificateCriterion,
+      hCriterionCertificate, hCertificateCanonical, hCriterionReserved⟩
+  have hProjectStatement :
+      projectStatement =
+        target_statement_of_completion_certificate certificate :=
+    hProjectTarget.trans hTargetStatement
+  have hCriterionCanonical :
+      criterion = canonicalCertificateCriterion :=
+    hCriterionCertificate.trans hCertificateCanonical
+  exact
+    ⟨theoremName, certificate, projectStatement, mathlibStatement,
+      criterion, certificateCriterion, canonicalCertificateCriterion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hProjectStatement, hMathlibStatement, hCriterionReserved,
+      hCertificateCriterion, hCanonicalCertificateCriterion,
+      hCriterionCertificate, hCriterionCanonical⟩
+
+/-- Theorem contract for
+`threeSphere_project_mathlib_statements_certificate_criteria_of_final_completionCriterion`. -/
+theorem threeSphere_project_mathlib_statements_certificate_criteria_of_final_completionCriterion_eq :
+    @Poincare.threeSphere_project_mathlib_statements_certificate_criteria_of_final_completionCriterion =
+      @Poincare.threeSphere_project_mathlib_statements_certificate_criteria_of_final_completionCriterion :=
+  rfl
+
 end Poincare
