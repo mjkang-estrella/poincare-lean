@@ -364,6 +364,83 @@ theorem finiteExtinctionPackage_requirement_and_package_statement_witness_family
   ⟩
 
 /--
+The grounded finite-extinction pillar discharges the finite-extinction milestone
+requirement, whose dependency crosswalk target is the finite-extinction package
+layer.
+-/
+theorem finiteExtinction_milestone_requirement_of_grounded
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.finiteExtinction :=
+  finiteExtinctionPackage_requirement_of_grounded grounded
+
+/--
+The grounded finite-extinction pillar also supplies the Ricci-flow-with-surgery
+milestone: each grounded target yields a finite-extinction surgery package, and
+that package stores the selected flow together with surgery construction and
+Perelman control.
+-/
+theorem ricciFlowWithSurgery_milestone_requirement_of_grounded
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.ricciFlowWithSurgery := by
+  intro M _top _t2 _charted _simple _compact _manifold
+  rcases finiteExtinctionPackage_requirement_of_grounded grounded M with
+    ⟨⟨n, package⟩⟩
+  exact
+    ⟨ n
+    , ricci_flow_data_of_surgery_package package
+    , surgery_construction_package_of_surgery_package package
+    , perelman_control_package_of_surgery_package package
+    ⟩
+
+/--
+The same grounded package projection discharges the Perelman singularity-control
+milestone, whose dependency crosswalk currently shares the fixed-flow
+surgery/Perelman package target.
+-/
+theorem perelmanSingularityControl_milestone_requirement_of_grounded
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.perelmanSingularityControl := by
+  intro M _top _t2 _charted _simple _compact _manifold
+  rcases finiteExtinctionPackage_requirement_of_grounded grounded M with
+    ⟨⟨n, package⟩⟩
+  exact
+    ⟨ n
+    , ricci_flow_data_of_surgery_package package
+    , surgery_construction_package_of_surgery_package package
+    , perelman_control_package_of_surgery_package package
+    ⟩
+
+/--
+Grounded finite extinction closes the surgery, Perelman-control, and
+finite-extinction milestones while retaining the compact package/statement/
+witness family used by final assembly.
+-/
+theorem milestone_requirements_and_package_statement_witness_family_of_grounded
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.finiteExtinction ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+            FiniteExtinctionStatement n M ∧
+              FiniteExtinctionByRicciFlowWithSurgery M) :=
+  ⟨ ricciFlowWithSurgery_milestone_requirement_of_grounded grounded
+  , perelmanSingularityControl_milestone_requirement_of_grounded grounded
+  , finiteExtinction_milestone_requirement_of_grounded grounded
+  , finite_extinction_package_statement_and_witness_family_of_grounded grounded
+  ⟩
+
+/--
 The grounded pillar implies the legacy pillar, so the existing assembly route
 to the Poincare statement remains available from grounded data.
 -/
