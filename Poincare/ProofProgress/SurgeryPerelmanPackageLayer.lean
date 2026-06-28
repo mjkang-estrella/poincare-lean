@@ -259,6 +259,72 @@ theorem surgery_perelman_scale_and_blowup_payload_target_at_of_finiteExtinctionP
         package
     ⟩
 
+/--
+Named data-valued projection of the surgery/Perelman evidence carried by a
+finite-extinction surgery package.  The payload keeps the selected flow and all
+projected packages tied to the same finite-extinction witness.
+-/
+structure FiniteExtinctionSurgeryPerelmanProjectionPayload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) where
+  flow : RicciFlowData ThreeManifoldModelWithCorners n M
+  flow_eq : flow = ricci_flow_data_of_surgery_package package
+  constructionPackage :
+    RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow
+  perelmanPackage :
+    PerelmanSingularityControlPackage (n := n) (M := M) flow
+  scalePayload : Nonempty (SurgeryScaleFunctionPayload flow)
+  blowupClassification : HasSingularityModelBlowupClassification flow
+
+/--
+Every completed finite-extinction surgery package yields the named
+surgery/Perelman projection payload.
+-/
+noncomputable def finiteExtinctionSurgeryPerelmanProjectionPayload_of_finite_extinction_surgery_package
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    FiniteExtinctionSurgeryPerelmanProjectionPayload package where
+  flow := ricci_flow_data_of_surgery_package package
+  flow_eq := rfl
+  constructionPackage := surgery_construction_package_of_surgery_package package
+  perelmanPackage := perelman_control_package_of_surgery_package package
+  scalePayload :=
+    surgery_scale_function_payload_of_finite_extinction_surgery_package package
+  blowupClassification :=
+    singularity_model_blowup_classification_of_finite_extinction_surgery_package
+      package
+
+/--
+Pointwise named-payload projection from the finite-extinction package-layer
+requirement.  This exposes the actual finite-extinction witness together with a
+stable field-based surgery/Perelman payload for downstream assembly.
+-/
+theorem finiteExtinctionSurgeryPerelmanProjectionPayload_target_at_of_finiteExtinctionPackage_requirement
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ n : ℕ∞ω,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+      Nonempty (FiniteExtinctionSurgeryPerelmanProjectionPayload package) := by
+  rcases finiteExtinctionRequirement M with ⟨⟨n, package⟩⟩
+  exact
+    ⟨ n
+    , package
+    , ⟨finiteExtinctionSurgeryPerelmanProjectionPayload_of_finite_extinction_surgery_package
+        package⟩
+    ⟩
+
 /-- Concrete surgery-scale payloads produce the first construction-package field. -/
 theorem surgery_scale_function_of_payload
     {n : ℕ∞ω}
