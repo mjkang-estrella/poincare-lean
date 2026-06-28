@@ -43271,4 +43271,87 @@ theorem threeSphere_reserved_bridge_statement_criterion_package_of_reserved_fina
       @Poincare.threeSphere_reserved_bridge_statement_criterion_package_of_reserved_final_certificate :=
   rfl
 
+/--
+Witness-free nonempty-certificate reserved bridge package for the standard
+sphere.
+
+This packages the same checked concrete `ThreeSphere` completion certificate
+as a `Nonempty PoincareCompletionCertificate` and records that the standard
+nonempty-certificate reduction returns the same reserved bridge statement.
+-/
+theorem threeSphere_nonempty_certificate_reserved_bridge_package_of_reserved_final_certificate
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{0}) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{0},
+    ∃ reservedStatement : PoincareConjectureStatement.{0},
+    ∃ nonemptyReservedStatement : PoincareConjectureStatement.{0},
+    ∃ criterion : CompletionCriterionAtUniverse Unit,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      nonemptyCertificate =
+        nonempty_completion_certificate_of_completion_certificate
+          certificate ∧
+      reservedStatement =
+        poincare_conjecture_of_completion_certificate certificate ∧
+      nonemptyReservedStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      nonemptyReservedStatement = reservedStatement ∧
+      criterion =
+        reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+          dependencies Unit ∧
+      criterion =
+        completion_criterion_of_completion_certificate Unit certificate := by
+  rcases
+      threeSphere_reserved_bridge_statement_criterion_package_of_reserved_final_certificate
+        dependencies with
+    ⟨theoremName, certificate, reservedStatement, _mathlibStatement,
+      criterion, certificateCriterion, _canonicalCertificateCriterion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hReservedStatement, _hMathlibStatement, hCriterionReserved,
+      hCertificateCriterion, _hCanonicalCertificateCriterion,
+      hCriterionCertificate, _hCriterionCanonical⟩
+  let nonemptyCertificate : Nonempty PoincareCompletionCertificate.{0} :=
+    nonempty_completion_certificate_of_completion_certificate certificate
+  let nonemptyReservedStatement : PoincareConjectureStatement.{0} :=
+    poincare_conjecture_of_nonempty_completion_certificate
+      nonemptyCertificate
+  have hNonemptyCertificate :
+      nonemptyCertificate =
+        nonempty_completion_certificate_of_completion_certificate
+          certificate :=
+    rfl
+  have hNonemptyReservedStatement :
+      nonemptyReservedStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate :=
+    rfl
+  have hNonemptyReserved :
+      nonemptyReservedStatement = reservedStatement := by
+    exact
+      hNonemptyReservedStatement.trans
+        ((poincare_conjecture_of_completion_certificate_to_nonempty_completion_certificate_eq
+          certificate).trans hReservedStatement.symm)
+  have hCriterionCertificateDirect :
+      criterion =
+        completion_criterion_of_completion_certificate Unit certificate :=
+    hCriterionCertificate.trans hCertificateCriterion
+  exact
+    ⟨theoremName, certificate, nonemptyCertificate, reservedStatement,
+      nonemptyReservedStatement, criterion, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, hNonemptyCertificate,
+      hReservedStatement, hNonemptyReservedStatement, hNonemptyReserved,
+      hCriterionReserved, hCriterionCertificateDirect⟩
+
+/-- Theorem contract for
+`threeSphere_nonempty_certificate_reserved_bridge_package_of_reserved_final_certificate`. -/
+theorem threeSphere_nonempty_certificate_reserved_bridge_package_of_reserved_final_certificate_eq :
+    @Poincare.threeSphere_nonempty_certificate_reserved_bridge_package_of_reserved_final_certificate =
+      @Poincare.threeSphere_nonempty_certificate_reserved_bridge_package_of_reserved_final_certificate :=
+  rfl
+
 end Poincare
