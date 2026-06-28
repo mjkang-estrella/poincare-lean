@@ -2638,6 +2638,41 @@ theorem finalCertificateNamedPackageLayerConsumerPayload_topologyAssembly_and_en
     ⟩
 
 /--
+The complete named-package consumer payload exposes all three package-layer
+requirements together with the inhabited topology assembly payload and the
+checked final endpoint data carried by that same assembly.
+-/
+theorem finalCertificateNamedPackageLayerConsumerPayload_requirements_topologyAssembly_and_checkedEndpoint
+    (payload : FinalCertificateNamedPackageLayerConsumerPayload.{u}) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      ∃ inputs : FinalCertificateMinimalPackageInputs.{u},
+      ∃ topology :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage,
+        Nonempty (FinalCertificateTopologyAssemblyPayload inputs topology) ∧
+          PoincareConjectureStatement.{u} ∧
+          PoincareCompletionCertificate.{u} ∧
+          canonicalCompletionTarget.{u} ∧
+          (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+    { smoothability := payload.smoothability
+      finiteExtinction := payload.finiteExtinction }
+  exact
+    ⟨ payload.smoothability
+    , payload.finiteExtinction
+    , inputs
+    , payload.topology
+    , ⟨payload.topologyAssemblyPayload⟩
+    , payload.publicStatement
+    , payload.checkedCertificate
+    , payload.canonicalTarget
+    , payload.completionCriteria
+    ⟩
+
+/--
 Equivalently, the three named package-layer requirements construct an inhabited
 complete final consumer payload.
 -/
