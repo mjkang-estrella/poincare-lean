@@ -49170,4 +49170,74 @@ theorem constructed_direct_and_nonempty_certificate_application_coherence_of_dep
       @Poincare.constructed_direct_and_nonempty_certificate_application_coherence_of_dependencies_and_verification_family :=
   rfl
 
+/--
+The direct and nonempty reductions of the constructed completion certificate
+select the same theorem-level final statements.
+
+This is the statement-level companion to
+`constructed_direct_and_nonempty_certificate_application_coherence_of_dependencies_and_verification_family`:
+before applying to any manifold, the direct completion-certificate Poincare
+statement and the nonempty-certificate Poincare statement agree, their mathlib
+translations agree, and both direct statements match the dependency-derived
+conditional final statement surfaces.
+-/
+theorem constructed_direct_and_nonempty_certificate_statement_coherence_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          (equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily)) =
+      poincare_conjecture_of_nonempty_completion_certificate
+        (nonempty_completion_certificate_of_completion_certificate
+          (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+            (equation_boundary_dependencies_of_dependencies_and_verification_family
+              dependencies verificationFamily))) ∧
+    mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+        (poincare_conjecture_of_completion_certificate
+          (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+            (equation_boundary_dependencies_of_dependencies_and_verification_family
+              dependencies verificationFamily))) =
+      mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+        (poincare_conjecture_of_nonempty_completion_certificate
+          (nonempty_completion_certificate_of_completion_certificate
+            (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+              (equation_boundary_dependencies_of_dependencies_and_verification_family
+                dependencies verificationFamily)))) ∧
+    poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          (equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily)) =
+      poincare_statement_of_dependencies_and_verification_family
+        dependencies verificationFamily ∧
+    mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+        (poincare_conjecture_of_completion_certificate
+          (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+            (equation_boundary_dependencies_of_dependencies_and_verification_family
+              dependencies verificationFamily))) =
+      mathlib_sphere_statement_of_dependencies_and_verification_family
+        dependencies verificationFamily := by
+  constructor
+  · exact Subsingleton.elim _ _
+  · constructor
+    · exact Subsingleton.elim _ _
+    · constructor
+      · exact Subsingleton.elim _ _
+      · exact Subsingleton.elim _ _
+
+/-- Theorem contract for
+`constructed_direct_and_nonempty_certificate_statement_coherence_of_dependencies_and_verification_family`. -/
+theorem constructed_direct_and_nonempty_certificate_statement_coherence_of_dependencies_and_verification_family_eq :
+    @Poincare.constructed_direct_and_nonempty_certificate_statement_coherence_of_dependencies_and_verification_family =
+      @Poincare.constructed_direct_and_nonempty_certificate_statement_coherence_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
