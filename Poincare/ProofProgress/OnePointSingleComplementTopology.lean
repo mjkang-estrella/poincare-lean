@@ -187,6 +187,41 @@ theorem onePoint_threeSpace_compl_singleton_piOne_subsingleton
         (onePoint_threeSpace_compl_singleton_fundamentalGroup_subsingleton p x)
 
 /--
+Any two first homotopy group classes in the singleton complement agree.
+-/
+theorem onePoint_threeSpace_compl_singleton_piOne_eq
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (x : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (a b :
+      HomotopyGroup.Pi 1
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) :
+    a = b := by
+  letI : Subsingleton
+      (HomotopyGroup.Pi 1
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) :=
+    onePoint_threeSpace_compl_singleton_piOne_subsingleton p x
+  exact Subsingleton.elim _ _
+
+/--
+The first homotopy group of the singleton complement has a unique class.
+-/
+theorem onePoint_threeSpace_compl_singleton_piOne_exists_unique
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (x : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    ∃ baseClass :
+      HomotopyGroup.Pi 1
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x,
+      ∀ homotopyClass :
+        HomotopyGroup.Pi 1
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x,
+        homotopyClass = baseClass := by
+  letI : Subsingleton
+      (HomotopyGroup.Pi 1
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) :=
+    onePoint_threeSpace_compl_singleton_piOne_subsingleton p x
+  exact ⟨Classical.choice inferInstance, fun homotopyClass => Subsingleton.elim _ _⟩
+
+/--
 The singleton complement is connected as a direct consequence of the named
 path-connectedness theorem above.
 -/
