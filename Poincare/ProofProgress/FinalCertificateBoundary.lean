@@ -2216,6 +2216,61 @@ theorem nonempty_finalCertificateTopologyAssemblyPayload_and_fields_of_remaining
     ⟩
 
 /--
+The grounded recognition-prefix route and the generic final-certificate
+topology assembly route can be consumed together from the same
+remaining-dependency package and recognition prefix.  This endpoint constructs
+both inhabited payloads and exposes the topology input, topology extraction
+statement, checked certificate, inhabited certificate, canonical target, and
+full completion-criterion family.
+-/
+theorem groundedRecognitionPrefixPayload_and_finalCertificateTopologyAssemblyPayload_route_fields
+    (dependencies : RemainingDependencyPackage.{u})
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    Nonempty
+        (GroundedRecognitionPrefixFinalCertificatePayload
+          dependencies grounded recognitionPrefix) ∧
+      Nonempty
+        (FinalCertificateTopologyAssemblyPayload
+          (finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+            (finalAssemblyPackageBoundaryInputs_of_remainingDependencyPackage
+              dependencies))
+          (topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+            recognitionPrefix)) ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage ∧
+      ExtinctionTopologyExtractionStatement.{u} ∧
+      PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      canonicalCompletionTarget.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let groundedPayload :=
+    groundedRecognitionPrefixFinalCertificatePayload
+      dependencies grounded recognitionPrefix
+  let topologyPayload :=
+    finalCertificateTopologyAssemblyPayload_of_remainingDependencyPackage_and_recognitionPrefix
+      dependencies recognitionPrefix
+  exact
+    ⟨ ⟨groundedPayload⟩
+    , ⟨topologyPayload⟩
+    , groundedPayload.topologyPackage
+    , groundedPayload.topologyStatement
+    , topologyPayload.publicStatement
+    , topologyPayload.checkedCertificate
+    , topologyPayload.nonemptyCertificate
+    , topologyPayload.canonicalTarget
+    , topologyPayload.publicPayload
+    , topologyPayload.canonicalPayload
+    , topologyPayload.completionCriteria
+    ⟩
+
+/--
 For fixed smoothability and finite-extinction inputs, existence of the complete
 topology assembly payload is exactly the topology-package requirement.  The
 reverse direction constructs the checked final certificate and all completion
