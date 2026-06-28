@@ -2118,6 +2118,37 @@ theorem finalCertificateTopologyAssemblyPayload_fields
     ⟩
 
 /--
+Any inhabited final-certificate topology assembly payload is already enough
+for downstream final-certificate consumers: it exposes the public Poincare
+statement, the checked certificate in inhabited form, the canonical target,
+both public and canonical payloads, and the full completion-criterion family.
+-/
+theorem finalCertificateTopologyAssemblyPayload_fields_of_nonempty
+    {inputs : FinalCertificateMinimalPackageInputs.{u}}
+    {topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage}
+    (payload :
+      Nonempty (FinalCertificateTopologyAssemblyPayload inputs topology)) :
+    PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      canonicalCompletionTarget.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ payload.publicStatement
+    , payload.nonemptyCertificate
+    , payload.canonicalTarget
+    , payload.publicPayload
+    , payload.canonicalPayload
+    , payload.completionCriteria
+    ⟩
+
+/--
 A checked remaining-dependency package plus the simply connected recognition
 prefix constructs the generic final-certificate topology assembly payload.  The
 remaining-dependency package supplies the smoothability and finite-extinction
