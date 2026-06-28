@@ -240,6 +240,42 @@ def GroundedUniversalFiniteExtinctionStatement : Prop :=
       GroundedFiniteExtinctionProductionCertificate M
 
 /--
+The grounded universal statement exposes theorem-shaped finite-extinction
+payloads for every smooth target: a flow, surgery construction, Perelman
+control, concrete surgery package, finite-extinction statement, derivation, and
+finite-extinction witness.
+-/
+theorem finite_extinction_statement_payload_family_of_grounded
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ surgery : HasRicciFlowWithSurgery n M,
+        ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+        ∃ _package : FiniteExtinctionSurgeryPackage n M,
+        ∃ _packageStatement : FiniteExtinctionStatement n M,
+        ∃ _derivation : HasFiniteExtinctionDerivation flow surgery control,
+          FiniteExtinctionByRicciFlowWithSurgery M := by
+  intro M _top _t2 _charted _simple _compact _manifold
+  exact finite_extinction_statement_payload_of_grounded (grounded M)
+
+/--
+The family-level grounded payload is exactly pointwise projection from each
+grounded target certificate.
+-/
+theorem finite_extinction_statement_payload_family_of_grounded_eq
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    finite_extinction_statement_payload_family_of_grounded grounded =
+      (by
+        intro M _top _t2 _charted _simple _compact _manifold
+        exact finite_extinction_statement_payload_of_grounded
+          (grounded M)) := by
+  apply Subsingleton.elim
+
+/--
 The grounded universal statement supplies the finite-extinction package-layer
 requirement consumed by the dependency crosswalk.
 -/
