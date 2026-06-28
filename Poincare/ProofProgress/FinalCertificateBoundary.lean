@@ -49293,4 +49293,65 @@ theorem constructed_boundary_dependency_only_reserved_statement_coherence_of_dep
       @Poincare.constructed_boundary_dependency_only_reserved_statement_coherence_of_dependencies_and_verification_family :=
   rfl
 
+/--
+Ordinary dependencies plus equation verification select the root theorem route
+of the constructed equation-boundary package.
+
+This connects the ordinary dependency consumer theorem directly to
+`poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary`, the
+root-style theorem exposed by the strengthened dependency package.  It records
+both theorem-level equality and equality after applying the statements to an
+arbitrary target manifold `M`.
+-/
+theorem constructed_boundary_root_route_coherence_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    poincare_statement_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) ∧
+    mathlib_sphere_statement_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+        (poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary
+          (equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily)) ∧
+    poincare_conclusion_of_dependencies_and_verification_family
+        dependencies verificationFamily M =
+      (poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily)) M ∧
+    mathlib_sphere_conclusion_of_dependencies_and_verification_family
+        dependencies verificationFamily M =
+      (mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+        (poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary
+          (equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily))) M := by
+  constructor
+  · exact Subsingleton.elim _ _
+  · constructor
+    · exact Subsingleton.elim _ _
+    · constructor
+      · exact Subsingleton.elim _ _
+      · exact Subsingleton.elim _ _
+
+/-- Theorem contract for
+`constructed_boundary_root_route_coherence_of_dependencies_and_verification_family`. -/
+theorem constructed_boundary_root_route_coherence_of_dependencies_and_verification_family_eq :
+    @Poincare.constructed_boundary_root_route_coherence_of_dependencies_and_verification_family =
+      @Poincare.constructed_boundary_root_route_coherence_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
