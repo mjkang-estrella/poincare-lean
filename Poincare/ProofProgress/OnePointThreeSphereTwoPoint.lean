@@ -1,3 +1,5 @@
+import Poincare.ProofProgress.OnePointTwoPointComplementTopology
+import Poincare.ProofProgress.ThreeSphereTwoPointPiOne
 import Poincare.TopologyExtraction
 
 namespace Poincare
@@ -28,6 +30,18 @@ noncomputable def onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_
       · exact hx (Or.inr (by rw [hxq])))
 
 /--
+Distinct compactification points remain distinct after applying the named
+homeomorphism to `ThreeSphere`.
+-/
+theorem onePoint_threeSpace_twoPointComplement_threeSphere_image_distinct
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    (Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q ≠
+      (Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p := by
+  intro h
+  exact hqp
+    ((Classical.choice onePoint_threeSpace_homeomorph_threeSphere).injective h)
+
+/--
 The two-puncture compactification complement is simply connected by transporting
 it to the corresponding `ThreeSphere` two-puncture complement.
 -/
@@ -45,5 +59,84 @@ theorem onePoint_threeSpace_twoPointComplement_simplyConnectedSpace_via_threeSph
   exact
     (onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
       hqp).toHomotopyEquiv.simplyConnectedSpace
+
+/--
+Transport package from the one-point compactification two-puncture complement
+to the corresponding `ThreeSphere` two-puncture complement.  It retains the
+source flat-recognition payload and the target complete low-homotopy collapse
+payload at the transported basepoint.
+-/
+structure OnePointThreeSphereTwoPointComplementTransportPayload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) where
+  imageDistinct :
+    (Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q ≠
+      (Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p
+  complementHomeomorph :
+    (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)
+  sourceFlatRecognition :
+    OnePointTwoPointComplementFlatRecognitionPayload hqp basepoint
+  targetCompleteLowHomotopy :
+    ThreeSphereTwoPointComplementCompleteLowHomotopyUniquePayload
+      imageDistinct (complementHomeomorph basepoint)
+  targetSimplyConnected :
+    SimplyConnectedSpace
+      (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+          {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+        Set ThreeSphere)
+  sourceSimplyConnected :
+    SimplyConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+
+/--
+The named one-point-to-`ThreeSphere` homeomorphism constructs the complete
+two-puncture transport payload.
+-/
+noncomputable def onePoint_threeSpace_twoPointComplement_transport_payload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    OnePointThreeSphereTwoPointComplementTransportPayload hqp basepoint := by
+  let hImage :=
+    onePoint_threeSpace_twoPointComplement_threeSphere_image_distinct hqp
+  let complementHomeomorph :=
+    onePoint_threeSpace_twoPointComplement_homeomorph_threeSphere_twoPointComplement
+      hqp
+  exact
+    { imageDistinct := hImage
+      complementHomeomorph := complementHomeomorph
+      sourceFlatRecognition :=
+        onePoint_threeSpace_twoPointComplement_flatRecognition_payload
+          hqp basepoint
+      targetCompleteLowHomotopy :=
+        threeSphere_twoPointComplement_completeLowHomotopyUnique_payload
+          hImage (complementHomeomorph basepoint)
+      targetSimplyConnected :=
+        threeSphere_twoPointComplement_simplyConnectedSpace hImage
+      sourceSimplyConnected :=
+        onePoint_threeSpace_twoPointComplement_simplyConnectedSpace_via_threeSphere
+          hqp }
+
+/--
+The transport payload exposes the target complete low-homotopy package and the
+source flat-recognition package together.
+-/
+theorem onePoint_threeSpace_twoPointComplement_transport_payload_fields
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    let payload :=
+      onePoint_threeSpace_twoPointComplement_transport_payload hqp basepoint
+    Nonempty
+        (ThreeSphereTwoPointComplementCompleteLowHomotopyUniquePayload
+          payload.imageDistinct (payload.complementHomeomorph basepoint)) ∧
+      Nonempty
+        (OnePointTwoPointComplementFlatRecognitionPayload hqp basepoint) := by
+  intro payload
+  exact ⟨⟨payload.targetCompleteLowHomotopy⟩, ⟨payload.sourceFlatRecognition⟩⟩
 
 end Poincare
