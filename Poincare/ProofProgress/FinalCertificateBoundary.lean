@@ -43183,4 +43183,92 @@ theorem threeSphere_reserved_bridge_statement_package_of_reserved_final_certific
       @Poincare.threeSphere_reserved_bridge_statement_package_of_reserved_final_certificate :=
   rfl
 
+/--
+Witness-free reserved-bridge statement and criterion package for the standard
+sphere.
+
+This combines the reserved bridge statement
+`poincare_conjecture_of_completion_certificate certificate` with the selected
+`Unit` completion criterion and the project/canonical certificate criterion
+projections, all from the same checked concrete `ThreeSphere` certificate.
+-/
+theorem threeSphere_reserved_bridge_statement_criterion_package_of_reserved_final_certificate
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{0}) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ reservedStatement : PoincareConjectureStatement.{0},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ criterion : CompletionCriterionAtUniverse Unit,
+    ∃ certificateCriterion : CompletionCriterionAtUniverse Unit,
+    ∃ canonicalCertificateCriterion : CompletionCriterionAtUniverse Unit,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      reservedStatement =
+        poincare_conjecture_of_completion_certificate certificate ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          reservedStatement ∧
+      criterion =
+        reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+          dependencies Unit ∧
+      certificateCriterion =
+        completion_criterion_of_completion_certificate Unit certificate ∧
+      canonicalCertificateCriterion =
+        canonical_completion_criterion_of_completion_certificate
+          Unit certificate ∧
+      criterion = certificateCriterion ∧
+      criterion = canonicalCertificateCriterion := by
+  rcases
+      threeSphere_reserved_bridge_statement_package_of_reserved_final_certificate
+        dependencies with
+    ⟨theoremName, certificate, _projectStatement, reservedStatement,
+      mathlibStatement, hTheoremNameCanonical, hTheoremNameLiteral,
+      hCertificate, hReservedStatement, _hProjectReserved,
+      hMathlibStatement⟩
+  rcases
+      threeSphere_named_final_statement_criterion_package_of_reserved_final_certificate
+        dependencies with
+    ⟨_criterionTheoremName, criterionCertificate, _criterionProjectStatement,
+      _criterionMathlibStatement, criterion, certificateCriterion,
+      canonicalCertificateCriterion, _hCriterionTheoremNameCanonical,
+      _hCriterionTheoremNameLiteral, hCriterionCertificate,
+      _hCriterionProjectStatement, _hCriterionMathlibStatement,
+      hCriterionReserved, hCertificateCriterion,
+      hCanonicalCertificateCriterion, hCriterionCertificateEq,
+      hCriterionCanonical⟩
+  have hCriterionCertificateSame : criterionCertificate = certificate := by
+    exact hCriterionCertificate.trans hCertificate.symm
+  have hCertificateCriterionForCertificate :
+      certificateCriterion =
+        completion_criterion_of_completion_certificate Unit certificate := by
+    exact
+      hCertificateCriterion.trans
+        (by
+          rw [hCriterionCertificateSame])
+  have hCanonicalCriterionForCertificate :
+      canonicalCertificateCriterion =
+        canonical_completion_criterion_of_completion_certificate
+          Unit certificate := by
+    exact
+      hCanonicalCertificateCriterion.trans
+        (by
+          rw [hCriterionCertificateSame])
+  exact
+    ⟨theoremName, certificate, reservedStatement, mathlibStatement,
+      criterion, certificateCriterion, canonicalCertificateCriterion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hReservedStatement, hMathlibStatement, hCriterionReserved,
+      hCertificateCriterionForCertificate, hCanonicalCriterionForCertificate,
+      hCriterionCertificateEq, hCriterionCanonical⟩
+
+/-- Theorem contract for
+`threeSphere_reserved_bridge_statement_criterion_package_of_reserved_final_certificate`. -/
+theorem threeSphere_reserved_bridge_statement_criterion_package_of_reserved_final_certificate_eq :
+    @Poincare.threeSphere_reserved_bridge_statement_criterion_package_of_reserved_final_certificate =
+      @Poincare.threeSphere_reserved_bridge_statement_criterion_package_of_reserved_final_certificate :=
+  rfl
+
 end Poincare
