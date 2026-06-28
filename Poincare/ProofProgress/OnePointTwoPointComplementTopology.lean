@@ -23,6 +23,20 @@ theorem onePoint_threeSpace_twoPointComplement_pathConnectedSpace
   exact e.symm.surjective.pathConnectedSpace e.symm.continuous
 
 /--
+Any two points in the two-point complement are joined by a path.
+-/
+theorem onePoint_threeSpace_twoPointComplement_path_nonempty
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    ∀ (x y : (({p} ∪ {q})ᶜ :
+      Set (OnePoint (EuclideanSpace ℝ (Fin 3))))),
+        Nonempty (Path x y) := by
+  intro x y
+  letI : PathConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_twoPointComplement_pathConnectedSpace hqp
+  exact PathConnectedSpace.joined x y
+
+/--
 The two-point complement is connected as a direct consequence of the named
 path-connectedness theorem above.
 -/
