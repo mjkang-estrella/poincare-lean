@@ -1194,6 +1194,44 @@ theorem surgeryPerelman_fixedTarget_combinedPayload_of_completeConsumerPayload
   exact payload.combinedPayloadAndSelectedFlowFamily M
 
 /--
+For a fixed target manifold, a complete surgery/Perelman consumer payload
+simultaneously exposes the package-layer requirement, both analytic milestones,
+and the concrete combined payload object tied to the selected surgery flow.
+-/
+theorem surgeryPerelman_requirements_and_fixedTarget_combinedPayload_of_completeConsumerPayload
+    (payload :
+      Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.surgeryPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      ∃ n : ℕ∞ω,
+      ∃ package : FiniteExtinctionSurgeryPackage n M,
+      ∃ _combinedPayload :
+        FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        flow = ricci_flow_data_of_surgery_package package ∧
+          RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+          PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+          Nonempty (SurgeryScaleFunctionPayload flow) ∧
+          HasSingularityModelBlowupClassification flow ∧
+          FiniteExtinctionStatement n M ∧
+          FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ payload.surgeryPackageRequirement
+    , payload.ricciFlowWithSurgeryMilestone
+    , payload.perelmanSingularityControlMilestone
+    , payload.combinedPayloadAndSelectedFlowFamily M
+    ⟩
+
+/--
 The complete surgery/Perelman consumer payload is equivalent to the inhabited
 detailed surgery/Perelman assembly payload: the forward direction projects the
 stored detailed payload, while the reverse direction rebuilds the complete
