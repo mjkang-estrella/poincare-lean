@@ -303,6 +303,33 @@ noncomputable def finiteExtinctionSurgeryPerelmanProjectionPayload_of_finite_ext
       package
 
 /--
+The named surgery/Perelman projection payload exposes the concrete selected
+flow, its equality with the finite-extinction package flow, the construction
+package, Perelman package, surgery-scale payload, and blowup classification.
+-/
+theorem finiteExtinctionSurgeryPerelmanProjectionPayload_fields
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackage n M}
+    (payload : FiniteExtinctionSurgeryPerelmanProjectionPayload package) :
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      flow = ricci_flow_data_of_surgery_package package ∧
+        RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+        PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+        Nonempty (SurgeryScaleFunctionPayload flow) ∧
+        HasSingularityModelBlowupClassification flow :=
+  ⟨ payload.flow
+  , payload.flow_eq
+  , payload.constructionPackage
+  , payload.perelmanPackage
+  , payload.scalePayload
+  , payload.blowupClassification
+  ⟩
+
+/--
 Finite-extinction-aware surgery/Perelman projection payload.  It keeps the
 field-based surgery/Perelman projection tied to the selected finite-extinction
 package and also records the finite-extinction statement and witness produced
@@ -339,6 +366,37 @@ noncomputable def finiteExtinctionSurgeryPerelmanAndExtinctionPayload_of_finite_
     finite_extinction_statement_of_surgery_package package
   finiteExtinctionWitness :=
     finite_extinction_of_surgery_package package
+
+/--
+The combined surgery/Perelman and finite-extinction payload exposes the
+selected-flow construction/control data together with the finite-extinction
+statement and final extinction witness from the same package.
+-/
+theorem finiteExtinctionSurgeryPerelmanAndExtinctionPayload_fields
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackage n M}
+    (payload : FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package) :
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      flow = ricci_flow_data_of_surgery_package package ∧
+        RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+        PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+        Nonempty (SurgeryScaleFunctionPayload flow) ∧
+        HasSingularityModelBlowupClassification flow ∧
+        FiniteExtinctionStatement n M ∧
+        FiniteExtinctionByRicciFlowWithSurgery M :=
+  ⟨ payload.projectionPayload.flow
+  , payload.projectionPayload.flow_eq
+  , payload.projectionPayload.constructionPackage
+  , payload.projectionPayload.perelmanPackage
+  , payload.projectionPayload.scalePayload
+  , payload.projectionPayload.blowupClassification
+  , payload.finiteExtinctionStatement
+  , payload.finiteExtinctionWitness
+  ⟩
 
 /--
 Pointwise named-payload projection from the finite-extinction package-layer
