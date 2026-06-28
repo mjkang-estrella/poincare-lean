@@ -42094,4 +42094,53 @@ theorem reserved_named_final_homeomorphisms_completionCriterion_certificateTarge
       @Poincare.reserved_named_final_homeomorphisms_completionCriterion_certificateTarget_application_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Reserved named final conclusions from the compact certificate route.
+
+This projects the compact final-certificate endpoint to the actual conclusion
+propositions needed downstream: the project `ThreeSphere` homeomorphism
+statement, the literal mathlib unit-sphere homeomorphism statement, the
+target-manifold completion criterion, and the selected witness completion
+criterion.
+-/
+theorem reserved_named_final_conclusions_completionCriterion_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (witness : Type u) :
+    Nonempty (M ≃ₜ ThreeSphere) ∧
+      Nonempty
+        (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) ∧
+      CompletionCriterionAtUniverse M ∧
+      CompletionCriterionAtUniverse witness := by
+  rcases
+      reserved_named_final_homeomorphisms_completionCriterion_certificateTarget_application_of_nonempty_equation_boundary_dependencies
+        dependencies M witness with
+    ⟨_theoremName, _certificate, _certificateTargetStatement,
+      _mathlibTarget, _topologyPackage, _finiteExtinction,
+      projectHomeomorphism, mathlibHomeomorphism, completionCriterionAtM,
+      criterion, _completionCriterionFamily, _hTheoremNameCanonical,
+      _hTheoremNameLiteral, _hNonemptyDependencies, _hCertificate,
+      _hCertificateTargetStatement, _hMathlibTargetStatement,
+      _hMathlibTargetReserved, _hMathlibTargetCertificateTarget,
+      _hTopologyCertificateTarget, _hProjectHomeomorphismCertificate,
+      _hMathlibHomeomorphismCertificate, _hProjectMathlib,
+      _hCompletionCriterionAtMFamily, _hCompletionCriterionAtMReserved,
+      _hCriterionFamily, _hCriterionReserved,
+      _hCompletionCriterionFamilyReserved, _hProjectEmbedding,
+      _hMathlibEmbedding, _hProjectBijective, _hMathlibBijective,
+      _hProjectContinuous, _hMathlibContinuous⟩
+  exact
+    ⟨⟨projectHomeomorphism⟩, ⟨mathlibHomeomorphism⟩,
+      completionCriterionAtM, criterion⟩
+
+/-- Theorem contract for
+`reserved_named_final_conclusions_completionCriterion_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_named_final_conclusions_completionCriterion_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_named_final_conclusions_completionCriterion_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_named_final_conclusions_completionCriterion_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
