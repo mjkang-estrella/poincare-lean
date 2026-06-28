@@ -15276,4 +15276,91 @@ theorem stationaryZeroAnalyticFoundation_evolutionFieldsFamily_of_stationaryZero
   stationaryZeroAnalyticFoundationDetailedAssemblyPayload_evolutionFieldsFamily
     (stationaryZeroAnalyticFoundationDetailedAssemblyPayload data)
 
+/--
+The detailed analytic assembly payload also exposes a normalized full analytic
+package family.  Compared with the raw stationary-zero production family, this
+projection keeps the actual flow and package at the front while retaining the
+sub-obligation payload, package-flow identity, analytic statement, equation
+boundary, Ricci/scalar contraction theories, all individual evolution
+equations, and the aggregate curvature-evolution field.
+-/
+theorem stationaryZeroAnalyticFoundationDetailedAssemblyPayload_fullPackageEvolutionFamily
+    (payload : StationaryZeroAnalyticFoundationDetailedAssemblyPayload.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ package :
+          RicciFlowAnalyticFoundationPackage
+            ThreeManifoldModelWithCorners n M,
+          AnalyticFoundationSubobligationsPayload flow ∧
+            ricci_flow_data_of_analytic_foundation_package package = flow ∧
+            RicciFlowAnalyticFoundationStatement
+              ThreeManifoldModelWithCorners n M ∧
+            AnalyticFoundationWithEquationBoundaryStatement flow ∧
+            HasRicciContractionTheory
+              (curvature_data_of_ricci_flow_data flow) ∧
+            HasScalarCurvatureTheory
+              (curvature_data_of_ricci_flow_data flow) ∧
+            HasMetricEvolutionEquation flow ∧
+            HasRicciTensorEvolutionEquation flow ∧
+            HasScalarCurvatureEvolutionEquation flow ∧
+            HasCurvatureNormEvolutionInequality flow ∧
+            HasCurvatureEvolutionEquations flow := by
+  intro M _top _t2 _charted _simple _compact _smooth1
+  rcases payload.fullStatementPayloadFamily M with
+    ⟨n, smooth2, targetPayload⟩
+  letI : IsManifold ThreeManifoldModelWithCorners 2 M := smooth2
+  rcases targetPayload with
+    ⟨metric, identifiesDerivative, identifiesRicci, _productionData,
+      fullPayload⟩
+  let flow :=
+    stationary_zero_ricci_flow_data_current_api
+      metric identifiesDerivative identifiesRicci
+  rcases fullPayload with
+    ⟨subobligations, package, packageFlow, statement, boundary,
+      ricciContraction, scalarCurvature, metricEvolution,
+      ricciTensorEvolution, scalarCurvatureEvolution,
+      curvatureNormEvolution, curvatureEvolution⟩
+  exact
+    ⟨ n, flow, package, subobligations, packageFlow, statement, boundary,
+      ricciContraction, scalarCurvature, metricEvolution,
+      ricciTensorEvolution, scalarCurvatureEvolution, curvatureNormEvolution,
+      curvatureEvolution ⟩
+
+/--
+Universal stationary-zero production data directly constructs the normalized
+full analytic package/evolution family.
+-/
+theorem stationaryZeroAnalyticFoundation_fullPackageEvolutionFamily_of_stationaryZeroProductionData
+    (data :
+      StationaryZeroAnalyticFoundationPackageLayerProductionData.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ package :
+          RicciFlowAnalyticFoundationPackage
+            ThreeManifoldModelWithCorners n M,
+          AnalyticFoundationSubobligationsPayload flow ∧
+            ricci_flow_data_of_analytic_foundation_package package = flow ∧
+            RicciFlowAnalyticFoundationStatement
+              ThreeManifoldModelWithCorners n M ∧
+            AnalyticFoundationWithEquationBoundaryStatement flow ∧
+            HasRicciContractionTheory
+              (curvature_data_of_ricci_flow_data flow) ∧
+            HasScalarCurvatureTheory
+              (curvature_data_of_ricci_flow_data flow) ∧
+            HasMetricEvolutionEquation flow ∧
+            HasRicciTensorEvolutionEquation flow ∧
+            HasScalarCurvatureEvolutionEquation flow ∧
+            HasCurvatureNormEvolutionInequality flow ∧
+            HasCurvatureEvolutionEquations flow :=
+  stationaryZeroAnalyticFoundationDetailedAssemblyPayload_fullPackageEvolutionFamily
+    (stationaryZeroAnalyticFoundationDetailedAssemblyPayload data)
+
 end Poincare
