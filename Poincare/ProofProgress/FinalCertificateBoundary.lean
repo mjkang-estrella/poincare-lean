@@ -306,6 +306,68 @@ theorem completion_certificate_of_smoothability_finiteExtinctionPackage_and_topo
     topology
 
 /--
+The three named final package-layer requirements close the complete canonical
+certificate-facing payload: canonical target, canonical completion payload, and
+the checked completion certificate.  The topology package supplies the
+post-extinction extractor needed by the two-input canonical boundary and also
+reconstructs the remaining dependency package for the checked certificate.
+-/
+theorem canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_topologyPackage
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} := by
+  let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+    { smoothability := smoothability
+      finiteExtinction := finiteExtinction }
+  exact
+    ⟨ canonical_completion_target_of_finalCertificateMinimalPackageInputs
+        inputs (extinction_implies_sphere_of_topology_package topology)
+    , canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+        inputs (extinction_implies_sphere_of_topology_package topology)
+    , completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+        inputs topology
+    ⟩
+
+/--
+The named package-layer canonical payload is exactly the tuple obtained by
+projecting through the minimal two-input canonical boundary and the topology
+package certificate constructor.
+-/
+theorem canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_topologyPackage_eq
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_topologyPackage
+        smoothability finiteExtinction topology =
+      (let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+        { smoothability := smoothability
+          finiteExtinction := finiteExtinction }
+      ⟨ canonical_completion_target_of_finalCertificateMinimalPackageInputs
+          inputs (extinction_implies_sphere_of_topology_package topology)
+      , canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+          inputs (extinction_implies_sphere_of_topology_package topology)
+      , completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          inputs topology
+      ⟩) := by
+  apply Subsingleton.elim
+
+/--
 The simply connected extinction-recognition prefix now supplies the topology
 package-layer requirement consumed by final assembly.
 -/
