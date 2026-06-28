@@ -2396,4 +2396,41 @@ theorem poincare_statement_nonempty_final_certificate_and_completion_criteria_if
       (poincare_statement_nonempty_final_certificate_and_completion_criteria_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
         inputs).2 topology
 
+/--
+For fixed smoothability and finite-extinction inputs, an inhabited topology
+assembly payload is also equivalent to the checked-certificate final endpoint:
+the public Poincare statement, an actual checked completion certificate, and
+the full universe completion-criterion family.  This strengthens the preceding
+inhabited-certificate collapse by exposing the concrete checked certificate
+carried by the topology assembly route.
+-/
+theorem poincare_statement_final_certificate_and_completion_criteria_iff_nonempty_finalCertificateTopologyAssemblyPayload_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u}) :
+    (PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness) ↔
+      (∃ topology :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage,
+          Nonempty (FinalCertificateTopologyAssemblyPayload inputs topology)) := by
+  constructor
+  · intro endpoint
+    have topology :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage :=
+      (poincare_statement_final_certificate_and_completion_criterion_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+        inputs).1 endpoint
+    exact
+      (nonempty_finalCertificateTopologyAssemblyPayload_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+        inputs).2 topology
+  · intro payload
+    have topology :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage :=
+      (nonempty_finalCertificateTopologyAssemblyPayload_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+        inputs).1 payload
+    exact
+      (poincare_statement_final_certificate_and_completion_criterion_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+        inputs).2 topology
+
 end Poincare
