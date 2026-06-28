@@ -943,6 +943,131 @@ theorem surgeryPerelmanDetailedAssemblyPayload_combinedPayload_and_selectedFlowE
     , combinedPayload.finiteExtinctionWitness
     ⟩
 
+/--
+Consumer payload for the surgery/Perelman pillar projected from finite
+extinction.  It retains the detailed assembly payload, package-layer and
+milestone requirements, package-tied projection families, selected-flow
+scale/blowup and finite-extinction families, and the concrete combined payload
+objects for downstream users that need field-level access.
+-/
+structure SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction where
+  detailedPayload :
+    SurgeryPerelmanDetailedAssemblyPayloadFromFiniteExtinction.{u}
+  surgeryPackageRequirement :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.surgeryPackage
+  ricciFlowWithSurgeryMilestone :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.ricciFlowWithSurgery
+  perelmanSingularityControlMilestone :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.perelmanSingularityControl
+  projectionPayloadFamily :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackage n M,
+          Nonempty (FiniteExtinctionSurgeryPerelmanProjectionPayload package)
+  selectedFlowScaleBlowupFamily :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+          PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+          Nonempty (SurgeryScaleFunctionPayload flow) ∧
+          HasSingularityModelBlowupClassification flow
+  projectionAndExtinctionFamily :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackage n M,
+          Nonempty
+            (FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package)
+  selectedFlowExtinctionFamily :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackage n M,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          flow = ricci_flow_data_of_surgery_package package ∧
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+            PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+            Nonempty (SurgeryScaleFunctionPayload flow) ∧
+            HasSingularityModelBlowupClassification flow ∧
+            FiniteExtinctionStatement n M ∧
+            FiniteExtinctionByRicciFlowWithSurgery M
+  combinedPayloadAndSelectedFlowFamily :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackage n M,
+        ∃ _combinedPayload :
+          FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          flow = ricci_flow_data_of_surgery_package package ∧
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+            PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+            Nonempty (SurgeryScaleFunctionPayload flow) ∧
+            HasSingularityModelBlowupClassification flow ∧
+            FiniteExtinctionStatement n M ∧
+            FiniteExtinctionByRicciFlowWithSurgery M
+
+/--
+An inhabited detailed surgery/Perelman assembly payload constructs the complete
+surgery/Perelman consumer payload without requiring downstream code to keep the
+original finite-extinction package-layer source.
+-/
+theorem surgeryPerelman_completeConsumerPayload_of_nonemptyDetailedAssemblyPayload
+    (payload :
+      Nonempty SurgeryPerelmanDetailedAssemblyPayloadFromFiniteExtinction.{u}) :
+    Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u} := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ { detailedPayload := payload
+        surgeryPackageRequirement :=
+          payload.basePayload.surgeryPackageRequirement
+        ricciFlowWithSurgeryMilestone :=
+          payload.basePayload.ricciFlowWithSurgeryMilestone
+        perelmanSingularityControlMilestone :=
+          payload.basePayload.perelmanSingularityControlMilestone
+        projectionPayloadFamily :=
+          payload.basePayload.projectionPayloadFamily
+        selectedFlowScaleBlowupFamily :=
+          payload.basePayload.selectedFlowScaleBlowupFamily
+        projectionAndExtinctionFamily :=
+          payload.projectionAndExtinctionFamily
+        selectedFlowExtinctionFamily :=
+          surgeryPerelmanDetailedAssemblyPayload_selectedFlowExtinctionFamily
+            payload
+        combinedPayloadAndSelectedFlowFamily :=
+          surgeryPerelmanDetailedAssemblyPayload_combinedPayload_and_selectedFlowExtinctionFamily_of_nonempty
+            ⟨payload⟩ } ⟩
+
+/--
+The finite-extinction package-layer requirement constructs the complete
+surgery/Perelman consumer payload, retaining both field-level package-tied
+payloads and normalized selected-flow projections.
+-/
+theorem surgeryPerelman_completeConsumerPayload_of_finiteExtinctionPackage_requirement
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage) :
+    Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u} :=
+  surgeryPerelman_completeConsumerPayload_of_nonemptyDetailedAssemblyPayload
+    ⟨surgeryPerelmanDetailedAssemblyPayload_of_finiteExtinctionPackage_requirement
+      finiteExtinctionRequirement⟩
+
 /-- Concrete surgery-scale payloads produce the first construction-package field. -/
 theorem surgery_scale_function_of_payload
     {n : ℕ∞ω}
