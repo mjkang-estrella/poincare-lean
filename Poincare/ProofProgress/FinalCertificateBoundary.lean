@@ -2811,4 +2811,34 @@ theorem poincare_statement_nonempty_certificate_and_completion_criteria_iff_none
       poincare_statement_nonempty_certificate_and_completion_criteria_of_namedPackageLayerConsumerPayload
         payload
 
+/--
+Inhabited-certificate final endpoint directly through the named package-layer
+requirements: the public Poincare statement, an inhabited checked completion
+certificate, and all completion criteria are equivalent to the three named
+package-layer requirements.
+-/
+theorem poincare_statement_nonempty_certificate_and_completion_criteria_iff_named_package_layer_requirements :
+    (PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness) ↔
+      ∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage := by
+  constructor
+  · rintro ⟨statement, ⟨certificate⟩, completionCriteria⟩
+    exact
+      (poincare_statement_final_certificate_and_completion_criteria_iff_named_package_layer_requirements).1
+        ⟨statement, certificate, completionCriteria⟩
+  · intro requirements
+    rcases
+      (poincare_statement_final_certificate_and_completion_criteria_iff_named_package_layer_requirements).2
+        requirements with
+      ⟨statement, certificate, completionCriteria⟩
+    exact ⟨statement, ⟨certificate⟩, completionCriteria⟩
+
 end Poincare
