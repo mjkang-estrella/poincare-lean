@@ -220,6 +220,62 @@ theorem complement_path_and_homotopy_collapse_payload_of_finalAssemblyPackageBou
     ⟩
 
 /--
+Path-level final-boundary complement payload: the package inputs give explicit
+joined paths and path-component collapse for both single-puncture and
+two-puncture complements.
+-/
+theorem complement_path_component_payload_of_finalAssemblyPackageBoundaryInputs
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (x : M) {y : M} (hyx : y ≠ x) :
+    (∀ a b : ({x}ᶜ : Set M), Nonempty (Path a b)) ∧
+      (∀ basepoint : ({x}ᶜ : Set M),
+        pathComponent basepoint = Set.univ) ∧
+      (∀ a b : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path a b)) ∧
+      (∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+        pathComponent basepoint = Set.univ) := by
+  let finiteExtinction :=
+    finite_extinction_input_of_smoothability_and_surgery_packages
+      inputs.smoothability inputs.finiteExtinction
+  let singlePathConnected :
+      PathConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_pathConnectedSpace_of_topology_package
+      inputs.topology M (finiteExtinction M) x
+  let twoPointPathConnected :
+      PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_pathConnectedSpace_of_topology_package
+      inputs.topology M (finiteExtinction M) hyx
+  constructor
+  · intro a b
+    letI : PathConnectedSpace ({x}ᶜ : Set M) := singlePathConnected
+    exact PathConnectedSpace.joined a b
+  constructor
+  · intro basepoint
+    letI : PathConnectedSpace ({x}ᶜ : Set M) := singlePathConnected
+    ext z
+    constructor
+    · intro _hz
+      exact Set.mem_univ z
+    · intro _hz
+      exact PathConnectedSpace.joined basepoint z
+  constructor
+  · intro a b
+    letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+      twoPointPathConnected
+    exact PathConnectedSpace.joined a b
+  · intro basepoint
+    letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+      twoPointPathConnected
+    ext z
+    constructor
+    · intro _hz
+      exact Set.mem_univ z
+    · intro _hz
+      exact PathConnectedSpace.joined basepoint z
+
+/--
 The three-input boundary supplies all five package-layer requirements in the
 crosswalk order; the analytic and surgery/Perelman entries are projections from
 the finite-extinction package entry.
@@ -476,5 +532,25 @@ theorem complement_path_and_homotopy_collapse_payload_of_finalAssemblySubobligat
   complement_path_and_homotopy_collapse_payload_of_finalAssemblyPackageBoundaryInputs
     (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
     M x hyx singleBasepoint twoBasepoint
+
+/--
+The sub-obligation boundary inherits the explicit joined-path and
+path-component-collapse payload through the package-boundary conversion.
+-/
+theorem complement_path_component_payload_of_finalAssemblySubobligationBoundaryInputs
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (x : M) {y : M} (hyx : y ≠ x) :
+    (∀ a b : ({x}ᶜ : Set M), Nonempty (Path a b)) ∧
+      (∀ basepoint : ({x}ᶜ : Set M),
+        pathComponent basepoint = Set.univ) ∧
+      (∀ a b : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path a b)) ∧
+      (∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+        pathComponent basepoint = Set.univ) :=
+  complement_path_component_payload_of_finalAssemblyPackageBoundaryInputs
+    (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
+    M x hyx
 
 end Poincare
