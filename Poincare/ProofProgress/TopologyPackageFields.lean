@@ -1680,6 +1680,152 @@ theorem twoPointComplement_lowHomotopyCollapse_payload_of_topology_package_at_ba
       package M extinction x hyx singleBasepoint twoBasepoint
 
 /--
+The zeroth homotopy quotient of a topology-package two-puncture complement is a
+`Unique` type.
+-/
+@[reducible] noncomputable def twoPointComplement_zerothHomotopy_unique_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x) :
+    Unique (ZerothHomotopy (({x} ∪ {y})ᶜ : Set M)) := by
+  let witness :=
+    twoPointComplement_zerothHomotopy_exists_unique_of_topology_package
+      package M extinction hyx
+  exact
+    { default := Classical.choose witness
+      uniq := fun homotopyClass => Classical.choose_spec witness homotopyClass }
+
+/--
+The zeroth homotopy group of a topology-package two-puncture complement is a
+`Unique` type at every basepoint.
+-/
+@[reducible] noncomputable def twoPointComplement_piZero_unique_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Unique (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  let witness :=
+    twoPointComplement_piZero_exists_unique_of_topology_package
+      package M extinction hyx basepoint
+  exact
+    { default := Classical.choose witness
+      uniq := fun homotopyClass => Classical.choose_spec witness homotopyClass }
+
+/--
+The fundamental group of a topology-package two-puncture complement is a
+`Unique` type at every basepoint.
+-/
+@[reducible] noncomputable def twoPointComplement_fundamentalGroup_unique_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Unique (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  let witness :=
+    twoPointComplement_fundamentalGroup_exists_unique_of_topology_package
+      package M extinction hyx basepoint
+  exact
+    { default := Classical.choose witness
+      uniq := fun fundamentalClass =>
+        Classical.choose_spec witness fundamentalClass }
+
+/--
+The first homotopy group of a topology-package two-puncture complement is a
+`Unique` type at every basepoint.
+-/
+@[reducible] noncomputable def twoPointComplement_piOne_unique_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Unique (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  let witness :=
+    twoPointComplement_piOne_exists_unique_of_topology_package
+      package M extinction hyx basepoint
+  exact
+    { default := Classical.choose witness
+      uniq := fun homotopyClass => Classical.choose_spec witness homotopyClass }
+
+/--
+Data-valued unique-instance form of the topology-package two-puncture
+low-homotopy collapse, including path-component collapse.
+-/
+structure TopologyPackageTwoPointComplementLowHomotopyUniquePayload
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) where
+  connected : ConnectedSpace (({x} ∪ {y})ᶜ : Set M)
+  nonempty : Nonempty (({x} ∪ {y})ᶜ : Set M)
+  zerothUnique : Unique (ZerothHomotopy (({x} ∪ {y})ᶜ : Set M))
+  piZeroUnique :
+    Unique (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint)
+  fundamentalGroupUnique :
+    Unique (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint)
+  piOneUnique :
+    Unique (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint)
+  pathNonempty :
+    ∀ a b : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path a b)
+  pathComponentEqUniv :
+    ∀ point : (({x} ∪ {y})ᶜ : Set M), pathComponent point = Set.univ
+
+/--
+Unique-instance form of the topology-package two-puncture low-homotopy
+collapse.  This packages the same collapsed zeroth/fundamental homotopy data as
+canonical uniqueness objects for downstream final-certificate consumers.
+-/
+noncomputable def twoPointComplement_lowHomotopyUnique_payload_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) {y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    TopologyPackageTwoPointComplementLowHomotopyUniquePayload
+      package M extinction hyx basepoint where
+  connected :=
+    twoPointComplement_connectedSpace_of_topology_package
+      package M extinction hyx
+  nonempty :=
+    twoPointComplement_nonempty_of_topology_package
+      package M extinction hyx
+  zerothUnique :=
+    twoPointComplement_zerothHomotopy_unique_of_topology_package
+      package M extinction hyx
+  piZeroUnique :=
+    twoPointComplement_piZero_unique_of_topology_package
+      package M extinction hyx basepoint
+  fundamentalGroupUnique :=
+    twoPointComplement_fundamentalGroup_unique_of_topology_package
+      package M extinction hyx basepoint
+  piOneUnique :=
+    twoPointComplement_piOne_unique_of_topology_package
+      package M extinction hyx basepoint
+  pathNonempty :=
+    twoPointComplement_path_nonempty_of_topology_package
+      package M extinction hyx
+  pathComponentEqUniv :=
+    twoPointComplement_pathComponent_eq_univ_of_topology_package
+      package M extinction hyx
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
