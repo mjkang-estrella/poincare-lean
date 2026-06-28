@@ -886,6 +886,55 @@ theorem complement_unique_class_payload_of_topology_package
   ⟩
 
 /--
+The completed topology package supplies equality of arbitrary low-dimensional
+homotopy classes for both one and two punctures.
+-/
+theorem complement_class_equality_payload_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) {y : M} (hyx : y ≠ x)
+    (singleBasepoint : ({x}ᶜ : Set M))
+    (twoBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    (∀ a b : ({x}ᶜ : Set M),
+      ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+      (∀ a b : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint,
+        a = b) ∧
+      (∀ a b : FundamentalGroup ({x}ᶜ : Set M) singleBasepoint,
+        a = b) ∧
+      (∀ a b : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint,
+        a = b) ∧
+      (∀ a b : (({x} ∪ {y})ᶜ : Set M),
+        ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+      (∀ a b :
+        HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+        a = b) ∧
+      (∀ a b : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+        a = b) ∧
+      (∀ a b :
+        HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+        a = b) :=
+  ⟨ compl_singleton_zerothHomotopy_mk_eq_of_topology_package
+      package M extinction x
+  , compl_singleton_piZero_eq_of_topology_package
+      package M extinction x singleBasepoint
+  , compl_singleton_fundamentalGroup_eq_of_topology_package
+      package M extinction x singleBasepoint
+  , compl_singleton_piOne_eq_of_topology_package
+      package M extinction x singleBasepoint
+  , twoPointComplement_zerothHomotopy_mk_eq_of_topology_package
+      package M extinction hyx
+  , twoPointComplement_piZero_eq_of_topology_package
+      package M extinction hyx twoBasepoint
+  , twoPointComplement_fundamentalGroup_eq_of_topology_package
+      package M extinction hyx twoBasepoint
+  , twoPointComplement_piOne_eq_of_topology_package
+      package M extinction hyx twoBasepoint
+  ⟩
+
+/--
 The completed topology package supplies joined-path and path-component-collapse
 payloads for both one and two punctures.
 -/
