@@ -54682,4 +54682,350 @@ theorem threeSphere_constructed_boundary_checked_nonempty_final_statement_cohere
       @Poincare.threeSphere_constructed_boundary_checked_nonempty_final_statement_coherence_of_reserved_final_certificate :=
   rfl
 
+/--
+Constructed concrete mathlib-sphere homeomorphism selected by the final
+certificate route.
+
+This specializes the constructed certificate-target application collapse to
+the standard `ThreeSphere` itself.  The result is an actual homeomorphism from
+the project standard sphere to the literal mathlib unit sphere, tied to the
+constructed equation-boundary package, reserved theorem name, checked
+completion certificate, reserved mathlib statement, and the topological facts
+carried by the final-certificate endpoint.
+-/
+theorem threeSphere_constructed_boundary_mathlib_homeomorphism_of_reserved_final_certificate
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    ∃ boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ mathlibTarget : MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ projectHomeomorphism : ThreeSphere ≃ₜ ThreeSphere,
+    ∃ mathlibHomeomorphism :
+      ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ ∧
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          nonemptyBoundaryDependencies.some ∧
+      mathlibTarget =
+        reserved_mathlib_statement_of_nonempty_equation_boundary_dependencies
+          nonemptyBoundaryDependencies ∧
+      (⟨projectHomeomorphism⟩ : Nonempty (ThreeSphere ≃ₜ ThreeSphere)) =
+        mathlibTarget ThreeSphere ∧
+      (⟨mathlibHomeomorphism⟩ :
+        Nonempty
+          (ThreeSphere ≃ₜ
+            Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) =
+        mathlibTarget ThreeSphere ∧
+      projectHomeomorphism = mathlibHomeomorphism ∧
+      Topology.IsEmbedding projectHomeomorphism ∧
+      Topology.IsEmbedding mathlibHomeomorphism ∧
+      Function.Bijective projectHomeomorphism ∧
+      Function.Bijective mathlibHomeomorphism ∧
+      Continuous projectHomeomorphism ∧
+      Continuous mathlibHomeomorphism := by
+  let boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0} :=
+    equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily
+  let nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0} :=
+    ⟨boundaryDependencies⟩
+  rcases
+      threeSphere_mathlib_homeomorphism_of_reserved_final_certificate
+        nonemptyBoundaryDependencies with
+    ⟨theoremName, certificate, mathlibTarget, projectHomeomorphism,
+      mathlibHomeomorphism, hTheoremNameCanonical, hTheoremNameLiteral,
+      hCertificate, hMathlibTargetReserved,
+      hProjectHomeomorphismMathlibTarget,
+      hMathlibHomeomorphismMathlibTarget, hProjectMathlib,
+      hProjectEmbedding, hMathlibEmbedding, hProjectBijective,
+      hMathlibBijective, hProjectContinuous, hMathlibContinuous⟩
+  have hBoundaryDependencies :
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily :=
+    rfl
+  have hNonemptyBoundaryDependencies :
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ :=
+    rfl
+  exact
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies, theoremName,
+      certificate, mathlibTarget, projectHomeomorphism,
+      mathlibHomeomorphism, hBoundaryDependencies, hNonemptyBoundaryDependencies,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hMathlibTargetReserved, hProjectHomeomorphismMathlibTarget,
+      hMathlibHomeomorphismMathlibTarget, hProjectMathlib,
+      hProjectEmbedding, hMathlibEmbedding, hProjectBijective,
+      hMathlibBijective, hProjectContinuous, hMathlibContinuous⟩
+
+/-- Theorem contract for
+`threeSphere_constructed_boundary_mathlib_homeomorphism_of_reserved_final_certificate`. -/
+theorem threeSphere_constructed_boundary_mathlib_homeomorphism_of_reserved_final_certificate_eq :
+    @Poincare.threeSphere_constructed_boundary_mathlib_homeomorphism_of_reserved_final_certificate =
+      @Poincare.threeSphere_constructed_boundary_mathlib_homeomorphism_of_reserved_final_certificate :=
+  rfl
+
+/--
+Constructed concrete reserved mathlib conclusion at the standard sphere.
+
+This is the proposition-level consumer endpoint for the constructed concrete
+homeomorphism extracted above: it packages the reserved mathlib statement, its
+application to `ThreeSphere`, and a selected homeomorphism witnessing that
+application, while retaining the constructed equation-boundary package,
+reserved theorem name, and checked certificate identity.
+-/
+theorem threeSphere_constructed_boundary_reserved_mathlib_conclusion_of_reserved_final_certificate
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    ∃ boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ mathlibTarget : MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ mathlibHomeomorphism :
+      ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ ∧
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          nonemptyBoundaryDependencies.some ∧
+      mathlibTarget =
+        reserved_mathlib_statement_of_nonempty_equation_boundary_dependencies
+          nonemptyBoundaryDependencies ∧
+      Nonempty
+        (ThreeSphere ≃ₜ
+          Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) ∧
+      (⟨mathlibHomeomorphism⟩ :
+        Nonempty
+          (ThreeSphere ≃ₜ
+            Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) =
+        (mathlibTarget ThreeSphere) ∧
+      Topology.IsEmbedding mathlibHomeomorphism ∧
+      Function.Bijective mathlibHomeomorphism ∧
+      Continuous mathlibHomeomorphism := by
+  rcases
+      threeSphere_constructed_boundary_mathlib_homeomorphism_of_reserved_final_certificate
+        dependencies verificationFamily with
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies, theoremName,
+      certificate, mathlibTarget, _projectHomeomorphism,
+      mathlibHomeomorphism, hBoundaryDependencies,
+      hNonemptyBoundaryDependencies, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, hMathlibTargetReserved,
+      _hProjectHomeomorphismMathlibTarget,
+      hMathlibHomeomorphismMathlibTarget, _hProjectMathlib,
+      _hProjectEmbedding, hMathlibEmbedding, _hProjectBijective,
+      hMathlibBijective, _hProjectContinuous, hMathlibContinuous⟩
+  have hMathlibConclusion :
+      Nonempty
+        (ThreeSphere ≃ₜ
+          Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) := by
+    exact ⟨mathlibHomeomorphism⟩
+  exact
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies, theoremName,
+      certificate, mathlibTarget, mathlibHomeomorphism,
+      hBoundaryDependencies, hNonemptyBoundaryDependencies,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hMathlibTargetReserved, hMathlibConclusion,
+      hMathlibHomeomorphismMathlibTarget, hMathlibEmbedding,
+      hMathlibBijective, hMathlibContinuous⟩
+
+/-- Theorem contract for
+`threeSphere_constructed_boundary_reserved_mathlib_conclusion_of_reserved_final_certificate`. -/
+theorem threeSphere_constructed_boundary_reserved_mathlib_conclusion_of_reserved_final_certificate_eq :
+    @Poincare.threeSphere_constructed_boundary_reserved_mathlib_conclusion_of_reserved_final_certificate =
+      @Poincare.threeSphere_constructed_boundary_reserved_mathlib_conclusion_of_reserved_final_certificate :=
+  rfl
+
+/--
+Constructed concrete project and mathlib conclusion package at the standard
+sphere.
+
+This endpoint keeps the two nonempty conclusions selected by the constructed
+final certificate route together: the project self-homeomorphism conclusion
+for `ThreeSphere` and the literal mathlib unit-sphere conclusion.  The package
+records the witnesses that realize both conclusions and ties the mathlib
+conclusion back to the reserved mathlib statement applied at `ThreeSphere`.
+-/
+theorem threeSphere_constructed_boundary_project_mathlib_conclusions_of_reserved_final_certificate
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    ∃ boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ mathlibTarget : MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ projectHomeomorphism : ThreeSphere ≃ₜ ThreeSphere,
+    ∃ mathlibHomeomorphism :
+      ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ projectConclusion : Nonempty (ThreeSphere ≃ₜ ThreeSphere),
+    ∃ mathlibConclusion :
+      Nonempty
+        (ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)),
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ ∧
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          nonemptyBoundaryDependencies.some ∧
+      mathlibTarget =
+        reserved_mathlib_statement_of_nonempty_equation_boundary_dependencies
+          nonemptyBoundaryDependencies ∧
+      projectConclusion =
+        (⟨projectHomeomorphism⟩ : Nonempty (ThreeSphere ≃ₜ ThreeSphere)) ∧
+      mathlibConclusion =
+        (⟨mathlibHomeomorphism⟩ :
+          Nonempty
+            (ThreeSphere ≃ₜ
+              Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) ∧
+      mathlibConclusion = (mathlibTarget ThreeSphere) ∧
+      projectHomeomorphism = mathlibHomeomorphism ∧
+      Topology.IsEmbedding projectHomeomorphism ∧
+      Topology.IsEmbedding mathlibHomeomorphism ∧
+      Function.Bijective projectHomeomorphism ∧
+      Function.Bijective mathlibHomeomorphism ∧
+      Continuous projectHomeomorphism ∧
+      Continuous mathlibHomeomorphism := by
+  rcases
+      threeSphere_constructed_boundary_mathlib_homeomorphism_of_reserved_final_certificate
+        dependencies verificationFamily with
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies, theoremName,
+      certificate, mathlibTarget, projectHomeomorphism,
+      mathlibHomeomorphism, hBoundaryDependencies,
+      hNonemptyBoundaryDependencies, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, hMathlibTargetReserved,
+      _hProjectHomeomorphismMathlibTarget,
+      hMathlibHomeomorphismMathlibTarget, hProjectMathlib,
+      hProjectEmbedding, hMathlibEmbedding, hProjectBijective,
+      hMathlibBijective, hProjectContinuous, hMathlibContinuous⟩
+  let projectConclusion : Nonempty (ThreeSphere ≃ₜ ThreeSphere) :=
+    ⟨projectHomeomorphism⟩
+  let mathlibConclusion :
+      Nonempty
+        (ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) :=
+    ⟨mathlibHomeomorphism⟩
+  have hProjectConclusion :
+      projectConclusion =
+        (⟨projectHomeomorphism⟩ : Nonempty (ThreeSphere ≃ₜ ThreeSphere)) :=
+    rfl
+  have hMathlibConclusion :
+      mathlibConclusion =
+        (⟨mathlibHomeomorphism⟩ :
+          Nonempty
+            (ThreeSphere ≃ₜ
+              Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) :=
+    rfl
+  have hMathlibConclusionTarget :
+      mathlibConclusion = (mathlibTarget ThreeSphere) :=
+    hMathlibConclusion.trans hMathlibHomeomorphismMathlibTarget
+  exact
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies, theoremName,
+      certificate, mathlibTarget, projectHomeomorphism, mathlibHomeomorphism,
+      projectConclusion, mathlibConclusion, hBoundaryDependencies,
+      hNonemptyBoundaryDependencies, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, hMathlibTargetReserved,
+      hProjectConclusion, hMathlibConclusion, hMathlibConclusionTarget,
+      hProjectMathlib, hProjectEmbedding, hMathlibEmbedding,
+      hProjectBijective, hMathlibBijective, hProjectContinuous,
+      hMathlibContinuous⟩
+
+/-- Theorem contract for
+`threeSphere_constructed_boundary_project_mathlib_conclusions_of_reserved_final_certificate`. -/
+theorem threeSphere_constructed_boundary_project_mathlib_conclusions_of_reserved_final_certificate_eq :
+    @Poincare.threeSphere_constructed_boundary_project_mathlib_conclusions_of_reserved_final_certificate =
+      @Poincare.threeSphere_constructed_boundary_project_mathlib_conclusions_of_reserved_final_certificate :=
+  rfl
+
+/--
+Constructed direct literal mathlib unit-sphere conclusion at the standard
+sphere.
+
+This strips the constructed concrete conclusion package down to the exact
+proposition a consumer needs from the mathlib-shaped final route: the
+existence of a homeomorphism from `ThreeSphere` to the literal mathlib unit
+sphere, together with the constructed equation-boundary package that produced
+it.
+-/
+theorem threeSphere_constructed_boundary_mathlib_unit_sphere_conclusion_of_reserved_final_certificate
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    ∃ boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0},
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ ∧
+      Nonempty
+        (ThreeSphere ≃ₜ
+          Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) := by
+  rcases
+      threeSphere_constructed_boundary_reserved_mathlib_conclusion_of_reserved_final_certificate
+        dependencies verificationFamily with
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies, _theoremName,
+      _certificate, _mathlibTarget, _mathlibHomeomorphism,
+      hBoundaryDependencies, hNonemptyBoundaryDependencies,
+      _hTheoremNameCanonical, _hTheoremNameLiteral, _hCertificate,
+      _hMathlibTargetReserved, hMathlibConclusion,
+      _hMathlibHomeomorphismMathlibTarget, _hMathlibEmbedding,
+      _hMathlibBijective, _hMathlibContinuous⟩
+  exact
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies,
+      hBoundaryDependencies, hNonemptyBoundaryDependencies,
+      hMathlibConclusion⟩
+
+/-- Theorem contract for
+`threeSphere_constructed_boundary_mathlib_unit_sphere_conclusion_of_reserved_final_certificate`. -/
+theorem threeSphere_constructed_boundary_mathlib_unit_sphere_conclusion_of_reserved_final_certificate_eq :
+    @Poincare.threeSphere_constructed_boundary_mathlib_unit_sphere_conclusion_of_reserved_final_certificate =
+      @Poincare.threeSphere_constructed_boundary_mathlib_unit_sphere_conclusion_of_reserved_final_certificate :=
+  rfl
+
 end Poincare
