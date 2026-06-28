@@ -491,4 +491,48 @@ theorem canonical_certificate_payload_of_grounded_and_topology_extraction_statem
       ⟩ := by
   apply Subsingleton.elim
 
+/--
+Grounded universal finite extinction and theorem-shaped topology extraction
+close both public payload layers at once: the project-level Poincare statement
+and payload, plus the canonical completion target and payload.
+-/
+theorem project_and_canonical_certificate_payload_of_grounded_and_topology_extraction_statement
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :=
+  ⟨ poincare_statement_of_grounded_and_topology_extraction_statement
+      grounded topologyStatement
+  , poincare_payload_of_grounded_and_topology_extraction_statement
+      grounded topologyStatement
+  , canonical_completion_target_of_grounded_and_topology_extraction_statement
+      grounded topologyStatement
+  , canonical_completion_payload_of_grounded_and_topology_extraction_statement
+      grounded topologyStatement
+  ⟩
+
+/--
+The combined grounded project/canonical payload is exactly the tuple of the
+four already-proved grounded topology-extraction routes.
+-/
+theorem project_and_canonical_certificate_payload_of_grounded_and_topology_extraction_statement_eq
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    project_and_canonical_certificate_payload_of_grounded_and_topology_extraction_statement
+        grounded topologyStatement =
+      ⟨ poincare_statement_of_grounded_and_topology_extraction_statement
+          grounded topologyStatement
+      , poincare_payload_of_grounded_and_topology_extraction_statement
+          grounded topologyStatement
+      , canonical_completion_target_of_grounded_and_topology_extraction_statement
+          grounded topologyStatement
+      , canonical_completion_payload_of_grounded_and_topology_extraction_statement
+          grounded topologyStatement
+      ⟩ := by
+  apply Subsingleton.elim
+
 end Poincare
