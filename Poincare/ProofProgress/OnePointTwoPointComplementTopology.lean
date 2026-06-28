@@ -577,4 +577,88 @@ theorem onePoint_threeSpace_twoPointComplement_recognition_payload_tuple
   , payload.simplyConnected
   , ⟨payload.lowHomotopy⟩ ⟩
 
+/--
+Flat recognition certificate for the one-point model two-puncture complement.
+This expands the field-based recognition object into the exact topological and
+low-homotopy witnesses that downstream recognition code typically consumes.
+-/
+structure OnePointTwoPointComplementFlatRecognitionPayload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) where
+  puncturedEuclideanChart :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+      Nonempty
+        ((({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+          ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))
+  simplyConnected :
+    SimplyConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+  connected :
+    ConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+  nonempty :
+    Nonempty
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+  zerothUnique :
+    Unique
+      (ZerothHomotopy
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+  piZeroUnique :
+    Unique
+      (HomotopyGroup.Pi 0
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint)
+  fundamentalGroupUnique :
+    Unique
+      (FundamentalGroup
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint)
+  piOneUnique :
+    Unique
+      (HomotopyGroup.Pi 1
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint)
+  pathNonempty :
+    ∀ a b :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty (Path a b)
+  pathComponentEqUniv :
+    ∀ point :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        pathComponent point = Set.univ
+
+/--
+The field-based recognition payload discharges the flat topological certificate
+without reusing the larger legacy tuple.
+-/
+noncomputable def onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} {hqp : q ≠ p}
+    {basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    (payload : OnePointTwoPointComplementRecognitionPayload hqp basepoint) :
+    OnePointTwoPointComplementFlatRecognitionPayload hqp basepoint where
+  puncturedEuclideanChart := payload.puncturedEuclideanChart
+  simplyConnected := payload.simplyConnected
+  connected := payload.lowHomotopy.connected
+  nonempty := payload.lowHomotopy.nonempty
+  zerothUnique := payload.lowHomotopy.zerothUnique
+  piZeroUnique := payload.lowHomotopy.piZeroUnique
+  fundamentalGroupUnique := payload.lowHomotopy.fundamentalGroupUnique
+  piOneUnique := payload.lowHomotopy.piOneUnique
+  pathNonempty := payload.lowHomotopy.pathNonempty
+  pathComponentEqUniv := payload.lowHomotopy.pathComponentEqUniv
+
+/--
+Concrete flat certificate for the one-point compactification model
+two-puncture complement.
+-/
+noncomputable def onePoint_threeSpace_twoPointComplement_flatRecognition_payload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    OnePointTwoPointComplementFlatRecognitionPayload hqp basepoint :=
+  onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition
+    (onePoint_threeSpace_twoPointComplement_recognition_payload hqp basepoint)
+
 end Poincare
