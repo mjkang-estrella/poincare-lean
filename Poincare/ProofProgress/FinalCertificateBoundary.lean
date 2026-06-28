@@ -43038,4 +43038,38 @@ theorem threeSphere_final_statements_of_reserved_final_certificate_eq :
       @Poincare.threeSphere_final_statements_of_reserved_final_certificate :=
   rfl
 
+/--
+Witness-free named standard-sphere final statement package.
+
+This keeps the reserved theorem name and checked certificate identity attached
+to the witness-free project/mathlib final statements by evaluating the
+concrete standard-sphere certificate statement route at `Unit`.
+-/
+theorem threeSphere_named_final_statement_package_of_reserved_final_certificate
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{0}) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ projectStatement : PoincareConjectureStatement.{0},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{0},
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      projectStatement =
+        target_statement_of_completion_certificate certificate ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement := by
+  exact
+    threeSphere_project_mathlib_statements_of_reserved_final_certificate
+      dependencies Unit
+
+/-- Theorem contract for
+`threeSphere_named_final_statement_package_of_reserved_final_certificate`. -/
+theorem threeSphere_named_final_statement_package_of_reserved_final_certificate_eq :
+    @Poincare.threeSphere_named_final_statement_package_of_reserved_final_certificate =
+      @Poincare.threeSphere_named_final_statement_package_of_reserved_final_certificate :=
+  rfl
+
 end Poincare
