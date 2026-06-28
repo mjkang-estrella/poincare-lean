@@ -139,4 +139,93 @@ theorem onePoint_threeSpace_twoPointComplement_transport_payload_fields
   intro payload
   exact ⟨⟨payload.targetCompleteLowHomotopy⟩, ⟨payload.sourceFlatRecognition⟩⟩
 
+/--
+Complete theorem-shaped projection of the transported two-puncture topology
+payload.  It exposes the complement homeomorphism, source punctured-Euclidean
+recognition, source and target simple-connectedness, and the complete target
+low-homotopy collapse fields at the transported basepoint.
+-/
+theorem onePoint_threeSpace_twoPointComplement_transport_payload_complete_fields
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    let payload :=
+      onePoint_threeSpace_twoPointComplement_transport_payload hqp basepoint
+    let targetBasepoint := payload.complementHomeomorph basepoint
+    Nonempty
+        ((({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+          (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+              {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+            Set ThreeSphere)) ∧
+      (∃ puncture : EuclideanSpace ℝ (Fin 3),
+        Nonempty
+          ((({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+      SimplyConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      SimplyConnectedSpace
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere) ∧
+      ConnectedSpace
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere) ∧
+      Nonempty
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere) ∧
+      Nonempty
+        (Unique
+          (FundamentalGroup
+            (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+              Set ThreeSphere)
+            targetBasepoint)) ∧
+      Nonempty
+        (Unique
+          (HomotopyGroup.Pi 1
+            (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+              Set ThreeSphere)
+            targetBasepoint)) ∧
+      Nonempty
+        (Unique
+          (HomotopyGroup.Pi 0
+            (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+              Set ThreeSphere)
+            targetBasepoint)) ∧
+      Nonempty
+        (Unique
+          (ZerothHomotopy
+            (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+                {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+              Set ThreeSphere))) ∧
+      (∀ x y :
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere),
+          Nonempty (Path x y)) ∧
+      (∀ x :
+        (({(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) p} ∪
+            {(Classical.choice onePoint_threeSpace_homeomorph_threeSphere) q})ᶜ :
+          Set ThreeSphere),
+          pathComponent x = Set.univ) := by
+  intro payload targetBasepoint
+  exact
+    ⟨ ⟨payload.complementHomeomorph⟩
+    , payload.sourceFlatRecognition.puncturedEuclideanChart
+    , payload.sourceSimplyConnected
+    , payload.targetSimplyConnected
+    , payload.targetCompleteLowHomotopy.connected
+    , payload.targetCompleteLowHomotopy.nonempty
+    , ⟨payload.targetCompleteLowHomotopy.fundamentalGroupUnique⟩
+    , ⟨payload.targetCompleteLowHomotopy.piOneUnique⟩
+    , ⟨payload.targetCompleteLowHomotopy.piZeroUnique⟩
+    , ⟨payload.targetCompleteLowHomotopy.zerothUnique⟩
+    , payload.targetCompleteLowHomotopy.pathNonempty
+    , payload.targetCompleteLowHomotopy.pathComponentEqUniv
+    ⟩
+
 end Poincare
