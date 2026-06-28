@@ -703,4 +703,60 @@ theorem moiseSmoothability_completeConsumerPayload_of_smoothabilityPackage_and_t
     ⟨moiseSmoothabilityRecognitionAssemblyPayload_of_threeSphereRecognition
       recognize⟩
 
+/--
+The complete Moise smoothability consumer payload is equivalent to the residual
+smoothability package requirement together with an inhabited concrete Moise
+recognition assembly payload.  The forward direction projects both fields from
+the consumer object; the reverse direction rebuilds the consumer object without
+reconstructing recognition data.
+-/
+theorem nonempty_moiseSmoothabilityCompleteConsumerPayload_iff_smoothabilityPackage_and_nonemptyAssemblyPayload :
+    Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u}) ↔
+      dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage ∧
+        Nonempty (MoiseSmoothabilityRecognitionAssemblyPayload.{u}) := by
+  constructor
+  · rintro ⟨payload⟩
+    exact
+      ⟨ payload.smoothabilityPackageRequirement
+      , ⟨payload.detailedPayload⟩
+      ⟩
+  · rintro ⟨smoothability, payload⟩
+    exact
+      moiseSmoothability_completeConsumerPayload_of_smoothabilityPackage_and_nonemptyAssemblyPayload
+        (by
+          simpa [dependencyPackageLayerRequirement] using smoothability)
+        payload
+
+/--
+An inhabited complete Moise smoothability consumer payload exposes the concrete
+assembly object, both theorem-shaped Moise targets, and the target-family
+recognition/smoothability/prerequisite payload carried by that same object.
+-/
+theorem moiseSmoothability_assembly_targets_and_family_of_completeConsumerPayload
+    (payload : Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u})) :
+    ∃ _assemblyPayload : MoiseSmoothabilityRecognitionAssemblyPayload.{u},
+      MoiseSmoothThreeManifoldStatement.{u} ∧
+        MoiseSmoothabilityStatement.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere) ∧
+              Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+              AdmitsSmoothThreeManifoldStructure M ∧
+              AdmitsSurgeryModelSmoothStructure M ∧
+              (∃ _t2 : T2Space M,
+                ∃ _charted : ChartedSpace ThreeManifoldModel M,
+                ∃ _simple : SimplyConnectedSpace M,
+                ∃ _compact : CompactSpace M,
+                ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+                  Nonempty M)) := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ payload.detailedPayload
+    , payload.smoothMoise
+    , payload.surgeryMoise
+    , payload.targetFamily
+    ⟩
+
 end Poincare
