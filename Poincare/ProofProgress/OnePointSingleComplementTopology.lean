@@ -187,6 +187,57 @@ theorem onePoint_threeSpace_compl_singleton_lowHomotopy_package
     ⟩
 
 /--
+The singleton-complement low-homotopy collapse as explicit equality
+eliminators for path components, `π₀`, the fundamental group, and `π₁`.
+-/
+theorem onePoint_threeSpace_compl_singleton_lowHomotopy_eq_package
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (basepoint : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    (∀ x y : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+      ZerothHomotopy.mk x = ZerothHomotopy.mk y) ∧
+      (∀ a b :
+        HomotopyGroup.Pi 0
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+        a = b) ∧
+      (∀ a b :
+        FundamentalGroup
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+        a = b) ∧
+      (∀ a b :
+        HomotopyGroup.Pi 1
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+        a = b) := by
+  letI : Subsingleton
+      (ZerothHomotopy
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :=
+    onePoint_threeSpace_compl_singleton_zerothHomotopy_subsingleton p
+  letI : Subsingleton
+      (HomotopyGroup.Pi 0
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint) :=
+    onePoint_threeSpace_compl_singleton_piZero_subsingleton p basepoint
+  letI : Subsingleton
+      (FundamentalGroup
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint) :=
+    onePoint_threeSpace_compl_singleton_fundamentalGroup_subsingleton
+      p basepoint
+  letI : Subsingleton
+      (HomotopyGroup.Pi 1
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint) :=
+    onePoint_threeSpace_compl_singleton_piOne_subsingleton p basepoint
+  exact
+    ⟨ fun _x _y => Subsingleton.elim _ _
+    , fun _a _b => Subsingleton.elim _ _
+    , fun _a _b => Subsingleton.elim _ _
+    , fun _a _b => Subsingleton.elim _ _
+    ⟩
+
+/--
 The singleton complement package needed by downstream puncture topology:
 contractibility, ordinary connectedness consequences, and the already
 transported simple/local path-connected structures.
