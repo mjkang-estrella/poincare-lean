@@ -172,6 +172,40 @@ theorem onePoint_threeSpace_compl_singleton_fundamentalGroup_subsingleton
   infer_instance
 
 /--
+Any two based fundamental-group classes in the singleton complement agree.
+-/
+theorem onePoint_threeSpace_compl_singleton_fundamentalGroup_eq
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (x : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (a b : FundamentalGroup
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) :
+    a = b := by
+  letI : Subsingleton
+      (FundamentalGroup
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) :=
+    onePoint_threeSpace_compl_singleton_fundamentalGroup_subsingleton p x
+  exact Subsingleton.elim _ _
+
+/--
+The based fundamental group of the singleton complement has a unique class.
+-/
+theorem onePoint_threeSpace_compl_singleton_fundamentalGroup_exists_unique
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (x : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    ∃ baseClass :
+      FundamentalGroup
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x,
+      ∀ fundamentalClass :
+        FundamentalGroup
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x,
+        fundamentalClass = baseClass := by
+  letI : Subsingleton
+      (FundamentalGroup
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) :=
+    onePoint_threeSpace_compl_singleton_fundamentalGroup_subsingleton p x
+  exact ⟨Classical.choice inferInstance, fun fundamentalClass => Subsingleton.elim _ _⟩
+
+/--
 The equivalent first homotopy group formulation of singleton-complement
 triviality.
 -/

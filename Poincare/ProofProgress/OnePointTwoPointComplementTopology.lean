@@ -119,6 +119,40 @@ theorem onePoint_threeSpace_twoPointComplement_piZero_exists_unique
   exact ⟨Classical.choice inferInstance, fun homotopyClass => Subsingleton.elim _ _⟩
 
 /--
+Any two based fundamental-group classes in the two-point complement agree.
+-/
+theorem onePoint_threeSpace_twoPointComplement_fundamentalGroup_eq
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (x : (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+    (a b : FundamentalGroup
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) :
+    a = b := by
+  letI : Subsingleton
+      (FundamentalGroup
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) :=
+    onePoint_threeSpace_twoPointComplement_fundamentalGroup_subsingleton hqp x
+  exact Subsingleton.elim _ _
+
+/--
+The based fundamental group of the two-point complement has a unique class.
+-/
+theorem onePoint_threeSpace_twoPointComplement_fundamentalGroup_exists_unique
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (x : (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    ∃ baseClass :
+      FundamentalGroup
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x,
+      ∀ fundamentalClass :
+        FundamentalGroup
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x,
+        fundamentalClass = baseClass := by
+  letI : Subsingleton
+      (FundamentalGroup
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) :=
+    onePoint_threeSpace_twoPointComplement_fundamentalGroup_subsingleton hqp x
+  exact ⟨Classical.choice inferInstance, fun fundamentalClass => Subsingleton.elim _ _⟩
+
+/--
 The first homotopy group formulation of the two-point complement fundamental
 group collapse.
 -/
