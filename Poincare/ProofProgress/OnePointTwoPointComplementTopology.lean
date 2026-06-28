@@ -37,6 +37,24 @@ theorem onePoint_threeSpace_twoPointComplement_path_nonempty
   exact PathConnectedSpace.joined x y
 
 /--
+The path component of any point in the two-point complement is the whole
+two-point complement.
+-/
+theorem onePoint_threeSpace_twoPointComplement_pathComponent_eq_univ
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (x : (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    pathComponent x = Set.univ := by
+  letI : PathConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_twoPointComplement_pathConnectedSpace hqp
+  ext y
+  constructor
+  · intro _hy
+    exact Set.mem_univ y
+  · intro _hy
+    exact PathConnectedSpace.joined x y
+
+/--
 The two-point complement is connected as a direct consequence of the named
 path-connectedness theorem above.
 -/
