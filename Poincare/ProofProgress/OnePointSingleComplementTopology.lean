@@ -42,6 +42,24 @@ theorem onePoint_threeSpace_compl_singleton_path_nonempty
   exact PathConnectedSpace.joined x y
 
 /--
+The path component of any point in the singleton complement is the whole
+singleton complement.
+-/
+theorem onePoint_threeSpace_compl_singleton_pathComponent_eq_univ
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (x : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    pathComponent x = Set.univ := by
+  letI : PathConnectedSpace
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_compl_singleton_pathConnectedSpace p
+  ext y
+  constructor
+  · intro _hy
+    exact Set.mem_univ y
+  · intro _hy
+    exact PathConnectedSpace.joined x y
+
+/--
 The zeroth homotopy quotient of the singleton complement has only one class.
 -/
 theorem onePoint_threeSpace_compl_singleton_zerothHomotopy_subsingleton
@@ -137,5 +155,30 @@ theorem onePoint_threeSpace_compl_singleton_piZero_exists_unique
         ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) x) :=
     onePoint_threeSpace_compl_singleton_piZero_subsingleton p x
   exact ⟨Classical.choice inferInstance, fun homotopyClass => Subsingleton.elim _ _⟩
+
+/--
+The singleton complement is connected as a direct consequence of the named
+path-connectedness theorem above.
+-/
+theorem onePoint_threeSpace_compl_singleton_connectedSpace
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    ConnectedSpace
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  letI : PathConnectedSpace
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_compl_singleton_pathConnectedSpace p
+  infer_instance
+
+/--
+The singleton complement is nonempty, witnessed by its path-connected topology.
+-/
+theorem onePoint_threeSpace_compl_singleton_nonempty
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    Nonempty
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  letI : PathConnectedSpace
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    onePoint_threeSpace_compl_singleton_pathConnectedSpace p
+  infer_instance
 
 end Poincare
