@@ -1,4 +1,5 @@
 import Poincare.ProofProgress.TopologyExtractionPunctureTransport
+import Poincare.ProofProgress.TopologyDecompositionInterface
 
 namespace Poincare
 
@@ -1178,6 +1179,16 @@ def ExtinctionTopologyDecompositionDataStatement : Prop :=
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M),
       Nonempty (ExtinctionTopologyDecompositionData M extinction)
 
+/-- The decomposition-data statement is exactly its theorem-shaped family. -/
+theorem extinctionTopologyDecompositionDataStatement_eq :
+    ExtinctionTopologyDecompositionDataStatement.{u} =
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        (extinction : FiniteExtinctionByRicciFlowWithSurgery M),
+          Nonempty (ExtinctionTopologyDecompositionData M extinction)) :=
+  rfl
+
 /--
 Certified finite-extinction decomposition data now constructs the first
 topology-package field for that fixed extinction witness.
@@ -1207,5 +1218,24 @@ theorem extinction_topology_decomposition_statement_of_decomposition_data_curren
   rcases decompositionData M extinction with ⟨data⟩
   exact extinction_topology_decomposition_of_decomposition_data_current_interface
     M extinction data
+
+/--
+The concrete decomposition-data production input discharges the standalone
+first-field witness statement used by the topology package interface.
+-/
+theorem extinctionTopologyDecompositionWitnessStatement_of_decomposition_data_current_interface
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u}) :
+    ExtinctionTopologyDecompositionWitnessStatement.{u} :=
+  extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+    decompositionData
+
+/-- This bridge is definitionally the data-to-first-field projection above. -/
+theorem extinctionTopologyDecompositionWitnessStatement_of_decomposition_data_current_interface_eq
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u}) :
+    extinctionTopologyDecompositionWitnessStatement_of_decomposition_data_current_interface
+        decompositionData =
+      extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+        decompositionData :=
+  rfl
 
 end Poincare
