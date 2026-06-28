@@ -2167,6 +2167,55 @@ theorem finalCertificateTopologyAssemblyPayload_fields_of_remainingDependencyPac
       recognitionPrefix)
 
 /--
+The remaining-dependency recognition-prefix route constructs an inhabited
+final-certificate topology assembly payload, not only its unpacked field tuple.
+-/
+theorem nonempty_finalCertificateTopologyAssemblyPayload_of_remainingDependencyPackage_and_recognitionPrefix
+    (dependencies : RemainingDependencyPackage.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    Nonempty
+      (FinalCertificateTopologyAssemblyPayload
+        (finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+          (finalAssemblyPackageBoundaryInputs_of_remainingDependencyPackage
+            dependencies))
+        (topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+          recognitionPrefix)) :=
+  ⟨finalCertificateTopologyAssemblyPayload_of_remainingDependencyPackage_and_recognitionPrefix
+    dependencies recognitionPrefix⟩
+
+/--
+The same route exposes both the inhabited assembly payload and the standard
+public/certificate/canonical/criterion tuple extracted from it.
+-/
+theorem nonempty_finalCertificateTopologyAssemblyPayload_and_fields_of_remainingDependencyPackage_and_recognitionPrefix
+    (dependencies : RemainingDependencyPackage.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    Nonempty
+      (FinalCertificateTopologyAssemblyPayload
+        (finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+          (finalAssemblyPackageBoundaryInputs_of_remainingDependencyPackage
+            dependencies))
+        (topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+          recognitionPrefix)) ∧
+      PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      canonicalCompletionTarget.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  exact
+    ⟨ nonempty_finalCertificateTopologyAssemblyPayload_of_remainingDependencyPackage_and_recognitionPrefix
+        dependencies recognitionPrefix
+    , finalCertificateTopologyAssemblyPayload_fields_of_remainingDependencyPackage_and_recognitionPrefix
+        dependencies recognitionPrefix
+    ⟩
+
+/--
 For fixed smoothability and finite-extinction inputs, existence of the complete
 topology assembly payload is exactly the topology-package requirement.  The
 reverse direction constructs the checked final certificate and all completion
