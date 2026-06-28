@@ -2001,6 +2001,96 @@ theorem canonical_target_completion_family_of_unpacked_aggregate_completion_eq :
   rfl
 
 /--
+The grounded terminal aggregate payload reconstructs the standard canonical
+completion payload from its canonical target and completion family.  Together
+with the previous theorem, this turns the aggregate fields into the exact
+payload shape consumed by final certificate projections.
+-/
+theorem canonical_payload_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ aggregatePayload :
+      (∃ theoremName : String,
+        theoremName = "poincare_conjecture" ∧
+        PoincareProofDependencies.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+          [SimplyConnectedSpace N] [CompactSpace N],
+            Nonempty (N ≃ₜ ThreeSphere)) ∧
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ theoremName : String,
+    ∃ hTheoremName : theoremName = "poincare_conjecture",
+    ∃ aggregateDependencies : PoincareProofDependencies.{u},
+    ∃ aggregateCanonicalTarget : canonicalCompletionTarget.{u},
+    ∃ aggregateTopologicalConclusion :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+        [SimplyConnectedSpace N] [CompactSpace N],
+          Nonempty (N ≃ₜ ThreeSphere),
+    ∃ aggregateCompletion :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ canonicalPayload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+      aggregatePayload =
+        ⟨theoremName, hTheoremName, aggregateDependencies,
+          aggregateCanonicalTarget, aggregateTopologicalConclusion,
+          aggregateCompletion⟩ ∧
+      aggregatePayload =
+        poincareCompletionCertificate_aggregate_canonical_statement_payload_of_remainingDependencyPackage_and_grounded_terminal_package_payload
+          dependencies smoothability grounded topologyStatement M ∧
+      canonicalPayload =
+        ⟨aggregateCanonicalTarget, aggregateCompletion⟩ ∧
+      canonicalPayload =
+        canonical_completion_payload_of_canonical_completion_target
+          aggregateCanonicalTarget ∧
+      (∀ witness : Type u,
+        aggregateCompletion witness =
+          completion_criterion_of_canonical_completion_target
+            witness aggregateCanonicalTarget) := by
+  rcases
+      canonical_target_completion_family_of_unpacked_aggregate_completion
+        dependencies smoothability grounded topologyStatement M with
+    ⟨aggregatePayload, theoremName, hTheoremName, aggregateDependencies,
+      aggregateCanonicalTarget, aggregateTopologicalConclusion,
+      aggregateCompletion, hAggregatePayloadUnpacked, hAggregatePayloadRoute,
+      hCompletionCanonical⟩
+  let canonicalPayload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    ⟨aggregateCanonicalTarget, aggregateCompletion⟩
+  have hCanonicalPayloadUnpacked :
+      canonicalPayload =
+        ⟨aggregateCanonicalTarget, aggregateCompletion⟩ :=
+    rfl
+  have hCanonicalPayloadCanonical :
+      canonicalPayload =
+        canonical_completion_payload_of_canonical_completion_target
+          aggregateCanonicalTarget := by
+    apply Subsingleton.elim
+  exact
+    ⟨aggregatePayload, theoremName, hTheoremName, aggregateDependencies,
+      aggregateCanonicalTarget, aggregateTopologicalConclusion,
+      aggregateCompletion, canonicalPayload, hAggregatePayloadUnpacked,
+      hAggregatePayloadRoute, hCanonicalPayloadUnpacked,
+      hCanonicalPayloadCanonical, hCompletionCanonical⟩
+
+/-- Theorem contract for `canonical_payload_of_unpacked_aggregate_completion`. -/
+theorem canonical_payload_of_unpacked_aggregate_completion_eq :
+    @Poincare.canonical_payload_of_unpacked_aggregate_completion =
+      @Poincare.canonical_payload_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
