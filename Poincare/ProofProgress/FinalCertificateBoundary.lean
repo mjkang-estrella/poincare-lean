@@ -1111,6 +1111,29 @@ theorem poincare_statement_final_certificate_and_completion_criteria_of_finalCer
   ⟩
 
 /--
+The minimal final-certificate inputs plus the recognition prefix expose the
+same final endpoint with the concrete checked completion certificate, not only
+an inhabited certificate wrapper.  This is the recognition-prefix analogue of
+the topology-assembly checked-certificate endpoint.
+-/
+theorem poincare_statement_checked_certificate_and_completion_criteria_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  exact
+    ⟨ poincare_conjecture_statement_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+        inputs recognitionPrefix
+    , completion_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+        inputs recognitionPrefix
+    , fun witness =>
+        completion_criterion_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+          witness inputs recognitionPrefix
+    ⟩
+
+/--
 The smoothability and finite-extinction package requirements plus a simply
 connected extinction-recognition prefix close the complete final-certificate
 payload.  This avoids requiring downstream code to separately manufacture the
