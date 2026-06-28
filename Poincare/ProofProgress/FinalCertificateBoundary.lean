@@ -52835,4 +52835,77 @@ theorem constructed_boundary_reserved_named_quantified_final_conclusions_complet
       @Poincare.constructed_boundary_reserved_named_quantified_final_conclusions_completionCriterion_of_dependencies_and_verification_family :=
   rfl
 
+/--
+Ordinary dependencies plus equation verification inherit the quantified
+project and mathlib final statements.
+
+This projects the constructed quantified final-conclusion endpoint to the two
+homeomorphism conclusions themselves: the project `ThreeSphere` statement and
+the literal mathlib unit-sphere statement, while keeping the constructed
+equation-boundary dependency package explicit.
+-/
+theorem constructed_boundary_reserved_named_conditional_project_mathlib_final_statements_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (witness : Type) :
+    ∃ boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0},
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ ∧
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (M ≃ₜ ThreeSphere)) ∧
+      (∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) := by
+  rcases
+      constructed_boundary_reserved_named_quantified_final_conclusions_completionCriterion_of_dependencies_and_verification_family
+        dependencies verificationFamily witness with
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies,
+      hBoundaryDependencies, hNonemptyBoundaryDependencies, hFinal⟩
+  have hProject :
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (M ≃ₜ ThreeSphere) := by
+    intro M _ _ _ _ _ _
+    exact (hFinal M).1
+  have hMathlib :
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) := by
+    intro M _ _ _ _ _ _
+    exact (hFinal M).2.1
+  exact
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies,
+      hBoundaryDependencies, hNonemptyBoundaryDependencies,
+      hProject, hMathlib⟩
+
+/-- Theorem contract for
+`constructed_boundary_reserved_named_conditional_project_mathlib_final_statements_of_dependencies_and_verification_family`. -/
+theorem constructed_boundary_reserved_named_conditional_project_mathlib_final_statements_of_dependencies_and_verification_family_eq :
+    @Poincare.constructed_boundary_reserved_named_conditional_project_mathlib_final_statements_of_dependencies_and_verification_family =
+      @Poincare.constructed_boundary_reserved_named_conditional_project_mathlib_final_statements_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
