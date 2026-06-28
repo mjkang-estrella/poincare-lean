@@ -2392,6 +2392,127 @@ theorem poincare_statement_and_mathlib_statement_of_unpacked_aggregate_completio
   rfl
 
 /--
+Direct project Poincare statement from the grounded terminal aggregate route.
+This is the statement-level endpoint of the unpacked aggregate completion chain.
+-/
+theorem poincare_statement_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    PoincareConjectureStatement.{u} := by
+  rcases
+      poincare_statement_and_mathlib_statement_of_unpacked_aggregate_completion
+        dependencies smoothability grounded topologyStatement M with
+    ⟨_theoremName, _hTheoremNameCanonical, _hTheoremNameLiteral,
+      projectStatement, _mathlibStatement⟩
+  exact projectStatement
+
+/-- Theorem contract for `poincare_statement_of_unpacked_aggregate_completion`. -/
+theorem poincare_statement_of_unpacked_aggregate_completion_eq :
+    @Poincare.poincare_statement_of_unpacked_aggregate_completion =
+      @Poincare.poincare_statement_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
+Direct mathlib-shaped topological Poincare statement from the grounded
+terminal aggregate route.
+-/
+theorem mathlib_statement_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    MathlibTopologicalPoincareThreeStatement.{u} := by
+  rcases
+      poincare_statement_and_mathlib_statement_of_unpacked_aggregate_completion
+        dependencies smoothability grounded topologyStatement M with
+    ⟨_theoremName, _hTheoremNameCanonical, _hTheoremNameLiteral,
+      _projectStatement, mathlibStatement⟩
+  exact mathlibStatement
+
+/-- Theorem contract for `mathlib_statement_of_unpacked_aggregate_completion`. -/
+theorem mathlib_statement_of_unpacked_aggregate_completion_eq :
+    @Poincare.mathlib_statement_of_unpacked_aggregate_completion =
+      @Poincare.mathlib_statement_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
+Direct expanded root conclusion from the grounded terminal aggregate route.
+This exposes the target-indexed final conclusion function without the
+reserved-name packaging.
+-/
+theorem expanded_root_conclusion_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+      [SimplyConnectedSpace N] [CompactSpace N],
+        Nonempty (N ≃ₜ ThreeSphere) := by
+  rcases
+      canonical_named_expanded_root_conclusion_of_unpacked_aggregate_completion
+        dependencies smoothability grounded topologyStatement M with
+    ⟨_theoremName, _projectStatement, _mathlibStatement,
+      expandedConclusion, _hTheoremNameCanonical, _hTheoremNameLiteral,
+      _hMathlibStatement, _hExpandedConclusion, _hTargetConclusions⟩
+  exact expandedConclusion
+
+/-- Theorem contract for `expanded_root_conclusion_of_unpacked_aggregate_completion`. -/
+theorem expanded_root_conclusion_of_unpacked_aggregate_completion_eq :
+    @Poincare.expanded_root_conclusion_of_unpacked_aggregate_completion =
+      @Poincare.expanded_root_conclusion_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
+Direct target homeomorphism conclusion from the grounded terminal aggregate
+route for a selected compact simply connected Euclidean-charted 3-manifold.
+-/
+theorem target_homeomorphism_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (N : Type u) [TopologicalSpace N] [T2Space N]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+    [SimplyConnectedSpace N] [CompactSpace N] :
+    Nonempty (N ≃ₜ ThreeSphere) := by
+  exact
+    expanded_root_conclusion_of_unpacked_aggregate_completion
+      dependencies smoothability grounded topologyStatement M N
+
+/-- Theorem contract for `target_homeomorphism_of_unpacked_aggregate_completion`. -/
+theorem target_homeomorphism_of_unpacked_aggregate_completion_eq :
+    @Poincare.target_homeomorphism_of_unpacked_aggregate_completion =
+      @Poincare.target_homeomorphism_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
