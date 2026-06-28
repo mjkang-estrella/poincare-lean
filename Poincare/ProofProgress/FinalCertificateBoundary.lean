@@ -1163,6 +1163,45 @@ theorem project_and_canonical_payload_and_final_certificate_of_smoothability_fin
   apply Subsingleton.elim
 
 /--
+The named smoothability and finite-extinction package requirements plus a
+recognition prefix produce an inhabited checked completion certificate directly.
+-/
+theorem nonempty_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    Nonempty PoincareCompletionCertificate.{u} :=
+  ⟨ (project_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+      smoothability finiteExtinction recognitionPrefix).2.2 ⟩
+
+/--
+Bundled public endpoint projection from named package requirements plus the
+recognition prefix: this gives the Poincare statement and an inhabited checked
+certificate without requiring callers to pack minimal inputs first.
+-/
+theorem poincare_statement_and_nonempty_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} :=
+  ⟨ (project_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+      smoothability finiteExtinction recognitionPrefix).1
+  , nonempty_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+      smoothability finiteExtinction recognitionPrefix
+  ⟩
+
+/--
 The direct recognition-prefix boundary discharges each universe-indexed
 completion criterion, by projecting the canonical payload component from the
 same package-layer inputs.
