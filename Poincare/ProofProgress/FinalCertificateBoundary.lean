@@ -1090,6 +1090,27 @@ theorem poincare_statement_final_certificate_and_completion_criterion_of_finalCe
   ⟩
 
 /--
+The minimal final-certificate inputs plus the recognition prefix expose the
+public Poincare statement, an inhabited checked certificate, and the full
+universe-indexed completion-criterion family.
+-/
+theorem poincare_statement_final_certificate_and_completion_criteria_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) :=
+  ⟨ poincare_conjecture_statement_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+      inputs recognitionPrefix
+  , nonempty_final_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+      inputs recognitionPrefix
+  , fun witness =>
+      completion_criterion_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+        witness inputs recognitionPrefix
+  ⟩
+
+/--
 The smoothability and finite-extinction package requirements plus a simply
 connected extinction-recognition prefix close the complete final-certificate
 payload.  This avoids requiring downstream code to separately manufacture the
@@ -1576,6 +1597,28 @@ theorem poincare_statement_nonempty_final_certificate_and_completion_criterion_i
     exact
       poincare_statement_final_certificate_and_completion_criterion_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
         witness inputs recognitionPrefix
+
+/--
+After the two canonical non-topology package inputs are fixed, the final
+statement-level endpoint with an inhabited checked certificate and the full
+universe-indexed completion-criterion family is equivalent to the simply
+connected extinction-recognition prefix.
+-/
+theorem poincare_statement_nonempty_final_certificate_and_completion_criteria_iff_recognitionPrefix_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u}) :
+    (PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness) ↔
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u} := by
+  constructor
+  · intro payload
+    exact
+      (nonempty_final_certificate_iff_recognitionPrefix_of_finalCertificateMinimalPackageInputs
+        inputs).1 payload.2.1
+  · intro recognitionPrefix
+    exact
+      poincare_statement_final_certificate_and_completion_criteria_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+        inputs recognitionPrefix
 
 /--
 Exact remaining certificate boundary as named package-layer requirements.  This
