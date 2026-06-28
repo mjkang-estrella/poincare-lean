@@ -85,6 +85,99 @@ theorem compl_singleton_fundamentalGroup_subsingleton_of_topology_package
   infer_instance
 
 /--
+Any two based fundamental-group classes in a package-selected
+single-puncture complement agree.
+-/
+theorem compl_singleton_fundamentalGroup_eq_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M)
+    (basepoint : ({x}ᶜ : Set M))
+    (a b : FundamentalGroup ({x}ᶜ : Set M) basepoint) :
+    a = b := by
+  letI : Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) :=
+    compl_singleton_fundamentalGroup_subsingleton_of_topology_package
+      package M extinction x basepoint
+  exact Subsingleton.elim _ _
+
+/--
+The based fundamental group of a package-selected single-puncture complement
+has a unique class.
+-/
+theorem compl_singleton_fundamentalGroup_exists_unique_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    ∃ baseClass : FundamentalGroup ({x}ᶜ : Set M) basepoint,
+      ∀ fundamentalClass : FundamentalGroup ({x}ᶜ : Set M) basepoint,
+        fundamentalClass = baseClass := by
+  letI : Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) :=
+    compl_singleton_fundamentalGroup_subsingleton_of_topology_package
+      package M extinction x basepoint
+  exact ⟨Classical.choice inferInstance, fun fundamentalClass => Subsingleton.elim _ _⟩
+
+/--
+The same package-level single-puncture collapse, stated for the first homotopy
+group.
+-/
+theorem compl_singleton_piOne_subsingleton_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) := by
+  exact
+    ((HomotopyGroup.pi1EquivFundamentalGroup
+      (X := ({x}ᶜ : Set M))
+      (x := basepoint)).subsingleton_congr).mpr
+        (compl_singleton_fundamentalGroup_subsingleton_of_topology_package
+          package M extinction x basepoint)
+
+/--
+Any two first homotopy group classes in a package-selected single-puncture
+complement agree.
+-/
+theorem compl_singleton_piOne_eq_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M)
+    (basepoint : ({x}ᶜ : Set M))
+    (a b : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) :
+    a = b := by
+  letI : Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) :=
+    compl_singleton_piOne_subsingleton_of_topology_package
+      package M extinction x basepoint
+  exact Subsingleton.elim _ _
+
+/--
+The first homotopy group of a package-selected single-puncture complement has
+a unique class.
+-/
+theorem compl_singleton_piOne_exists_unique_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    ∃ baseClass : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint,
+      ∀ homotopyClass : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint,
+        homotopyClass = baseClass := by
+  letI : Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) :=
+    compl_singleton_piOne_subsingleton_of_topology_package
+      package M extinction x basepoint
+  exact ⟨Classical.choice inferInstance, fun homotopyClass => Subsingleton.elim _ _⟩
+
+/--
 The package-level homeomorphism projection transports any two-puncture
 complement to a punctured Euclidean chart, hence makes it simply connected.
 -/
@@ -118,6 +211,48 @@ theorem twoPointComplement_fundamentalGroup_subsingleton_of_topology_package
       package M extinction) hyx basepoint
 
 /--
+Any two based fundamental-group classes in a package-selected two-puncture
+complement agree.
+-/
+theorem twoPointComplement_fundamentalGroup_eq_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M))
+    (a b : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) :
+    a = b := by
+  letI : Subsingleton
+      (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+    twoPointComplement_fundamentalGroup_subsingleton_of_topology_package
+      package M extinction hyx basepoint
+  exact Subsingleton.elim _ _
+
+/--
+The based fundamental group of a package-selected two-puncture complement has
+a unique class.
+-/
+theorem twoPointComplement_fundamentalGroup_exists_unique_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ baseClass : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+      ∀ fundamentalClass :
+        FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+        fundamentalClass = baseClass := by
+  letI : Subsingleton
+      (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+    twoPointComplement_fundamentalGroup_subsingleton_of_topology_package
+      package M extinction hyx basepoint
+  exact ⟨Classical.choice inferInstance, fun fundamentalClass => Subsingleton.elim _ _⟩
+
+/--
 The same package-level two-puncture collapse, stated for the first homotopy
 group.
 -/
@@ -137,6 +272,50 @@ theorem twoPointComplement_piOne_subsingleton_of_topology_package
       (x := basepoint)).subsingleton_congr).mpr
         (twoPointComplement_fundamentalGroup_subsingleton_of_topology_package
           package M extinction hyx basepoint)
+
+/--
+Any two first homotopy group classes in a package-selected two-puncture
+complement agree.
+-/
+theorem twoPointComplement_piOne_eq_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M))
+    (a b :
+      HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) :
+    a = b := by
+  letI : Subsingleton
+      (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+    twoPointComplement_piOne_subsingleton_of_topology_package
+      package M extinction hyx basepoint
+  exact Subsingleton.elim _ _
+
+/--
+The first homotopy group of a package-selected two-puncture complement has a
+unique class.
+-/
+theorem twoPointComplement_piOne_exists_unique_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ baseClass :
+      HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+      ∀ homotopyClass :
+        HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+        homotopyClass = baseClass := by
+  letI : Subsingleton
+      (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+    twoPointComplement_piOne_subsingleton_of_topology_package
+      package M extinction hyx basepoint
+  exact ⟨Classical.choice inferInstance, fun homotopyClass => Subsingleton.elim _ _⟩
 
 /--
 Named production input for the first topology-package field: each finite
