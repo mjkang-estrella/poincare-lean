@@ -108,4 +108,36 @@ theorem smoothability_surgery_prerequisites_of_homeomorph_to_threeSphere
   smoothability_surgery_prerequisites_of_homeomorph_to_onePoint_threeSpace
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h)
 
+/--
+Recognition as `ThreeSphere` directly supplies the smooth structure needed by
+the surgery model: a transported `ThreeManifoldModel` charted space together
+with the corresponding `C¹` manifold witness.
+-/
+theorem smoothability_surgery_model_smooth_structure_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ _charted : ChartedSpace ThreeManifoldModel M,
+      IsManifold ThreeManifoldModelWithCorners 1 M := by
+  rcases smoothability_surgery_prerequisites_of_homeomorph_to_threeSphere h with
+    ⟨_t2, charted, _simple, _compact, smooth, _nonempty⟩
+  exact ⟨charted, smooth⟩
+
+/--
+A target-family `ThreeSphere` recognition theorem therefore gives a
+target-family supply of surgery-model smooth structures.  This is the
+smoothability-side family payload expected after topology recognition has
+collapsed each target to `ThreeSphere`.
+-/
+theorem smoothability_surgery_model_smooth_structure_family_of_homeomorph_to_threeSphere
+    (recognize :
+      ∀ (M : Type u) [TopologicalSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    ∀ (M : Type u) [TopologicalSpace M],
+      ∃ _charted : ChartedSpace ThreeManifoldModel M,
+        IsManifold ThreeManifoldModelWithCorners 1 M := by
+  intro M _top
+  exact
+    smoothability_surgery_model_smooth_structure_of_homeomorph_to_threeSphere
+      (recognize M)
+
 end Poincare
