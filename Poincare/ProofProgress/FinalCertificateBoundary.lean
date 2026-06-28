@@ -1902,4 +1902,91 @@ theorem poincare_statement_nonempty_final_certificate_and_completion_criteria_if
             witness inputs topology
       ⟩
 
+/--
+Single assembly payload for the final-certificate topology boundary over fixed
+smoothability and finite-extinction inputs.  A topology package yields the
+public Poincare statement, the checked certificate, its inhabited form, the
+canonical target, and both public/canonical completion payloads from the same
+input.
+-/
+structure FinalCertificateTopologyAssemblyPayload
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) where
+  publicStatement : PoincareConjectureStatement.{u}
+  checkedCertificate : PoincareCompletionCertificate.{u}
+  nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u}
+  canonicalTarget : canonicalCompletionTarget.{u}
+  publicPayload :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness
+  canonicalPayload :
+    ∃ _target : canonicalCompletionTarget.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness
+  completionCriteria :
+    ∀ witness : Type u, CompletionCriterionAtUniverse witness
+
+/--
+Fixed minimal package inputs plus a topology package construct the complete
+final-certificate assembly payload.
+-/
+def finalCertificateTopologyAssemblyPayload
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    FinalCertificateTopologyAssemblyPayload inputs topology where
+  publicStatement :=
+    poincare_conjecture_statement_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+      inputs topology
+  checkedCertificate :=
+    completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+      inputs topology
+  nonemptyCertificate :=
+    (nonempty_final_certificate_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+      inputs).2 topology
+  canonicalTarget :=
+    canonical_completion_target_of_finalCertificateMinimalPackageInputs
+      inputs (extinction_implies_sphere_of_topology_package topology)
+  publicPayload :=
+    (project_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+      inputs topology).2.1
+  canonicalPayload :=
+    canonical_completion_payload_of_finalCertificateMinimalPackageInputs
+      inputs (extinction_implies_sphere_of_topology_package topology)
+  completionCriteria :=
+    fun witness =>
+      completion_criterion_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+        witness inputs topology
+
+/--
+The topology assembly payload unpacks to the standard public/certificate/
+canonical/criterion tuple.
+-/
+theorem finalCertificateTopologyAssemblyPayload_fields
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      canonicalCompletionTarget.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let payload := finalCertificateTopologyAssemblyPayload inputs topology
+  exact
+    ⟨ payload.publicStatement
+    , payload.checkedCertificate
+    , payload.nonemptyCertificate
+    , payload.canonicalTarget
+    , payload.publicPayload
+    , payload.canonicalPayload
+    , payload.completionCriteria
+    ⟩
+
 end Poincare
