@@ -40107,4 +40107,187 @@ theorem reserved_named_certificate_statement_conditionalRoot_topologyPackage_bij
       @Poincare.reserved_named_certificate_statement_conditionalRoot_topologyPackage_bijective_completionCriterion_family_coherence_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Reserved named conditional-root target conclusion from the topology-package
+route.
+
+This applies the conditional root statement produced by the checked
+certificate route to the selected target manifold and identifies that target
+conclusion with the topology package's extracted homeomorphism, the project
+payload target, the selected target, and the paired project/mathlib final-map
+payload.
+-/
+theorem reserved_named_conditionalRoot_targetConclusion_topologyPackage_bijective_completionCriterion_family_coherence_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (witness : Type u) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u},
+    ∃ finalStatement : PoincareConjectureStatement.{u},
+    ∃ conditionalRootStatement : PoincareConjectureStatement.{u},
+    ∃ projectPayloadTarget : PoincareConjectureStatement.{u},
+    ∃ n : ℕ∞ω,
+    ∃ ordinaryPackage : FiniteExtinctionSurgeryPackage n M,
+    ∃ finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+    ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ extractedHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ targetConclusion : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ selectedTarget : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ mathlibTarget : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ mathlibConclusion :
+      Nonempty
+        (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)),
+    ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ mathlibHomeomorphism :
+      M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ completionCriterionAtM : CompletionCriterionAtUniverse M,
+    ∃ criterion : CompletionCriterionAtUniverse witness,
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{u} ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      finalStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      conditionalRootStatement =
+        conditional_poincare_conjecture_of_equation_boundary_dependencies
+          dependencies.some ∧
+      finalStatement = conditionalRootStatement ∧
+      targetConclusion = conditionalRootStatement M ∧
+      targetConclusion = finalStatement M ∧
+      targetConclusion = extractedHomeomorphism ∧
+      targetConclusion = projectPayloadTarget M ∧
+      targetConclusion = selectedTarget ∧
+      targetConclusion =
+        topologyPackage.extractHomeomorphism M finiteExtinction ∧
+      targetConclusion =
+        (⟨projectHomeomorphism⟩ : Nonempty (M ≃ₜ ThreeSphere)) ∧
+      finiteExtinction = ordinaryPackage.finiteExtinction ∧
+      topologyPackage =
+        (dependencies_of_equation_boundary_dependencies
+          dependencies.some).topology ∧
+      mathlibTarget =
+        reserved_mathlib_statement_of_nonempty_equation_boundary_dependencies
+          dependencies ∧
+      mathlibConclusion = mathlibTarget M ∧
+      mathlibConclusion =
+        (⟨mathlibHomeomorphism⟩ :
+          Nonempty
+            (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) ∧
+      projectHomeomorphism = mathlibHomeomorphism ∧
+      criterion = completionCriterionFamily witness ∧
+      criterion =
+        completionCriterionAtUniverse_of_poincareConjectureStatement
+          witness conditionalRootStatement ∧
+      criterion =
+        reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+          dependencies witness ∧
+      (∀ witness : Type u,
+        completionCriterionFamily witness =
+          completionCriterionAtUniverse_of_poincareConjectureStatement
+            witness conditionalRootStatement) ∧
+      (∀ witness : Type u,
+        completionCriterionFamily witness =
+          reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+            dependencies witness) ∧
+      completionCriterionAtM =
+        completionCriterionAtUniverse_of_poincareConjectureStatement
+          M conditionalRootStatement ∧
+      Topology.IsEmbedding projectHomeomorphism ∧
+      Topology.IsEmbedding mathlibHomeomorphism ∧
+      Function.Bijective projectHomeomorphism ∧
+      Function.Bijective mathlibHomeomorphism ∧
+      Continuous projectHomeomorphism ∧
+      Continuous mathlibHomeomorphism := by
+  rcases
+      reserved_named_certificate_statement_conditionalRoot_topologyPackage_bijective_completionCriterion_family_coherence_of_nonempty_equation_boundary_dependencies
+        dependencies M witness with
+    ⟨theoremName, certificate, nonemptyCertificate, finalStatement,
+      conditionalRootStatement, projectPayloadTarget, projectPayloadCompletion,
+      n, ordinaryPackage, finiteExtinction, topologyPackage,
+      extractedHomeomorphism, selectedTarget, mathlibTarget, mathlibConclusion,
+      projectHomeomorphism, mathlibHomeomorphism, completionCriterionAtM,
+      criterion, completionCriterionFamily, hTheoremNameCanonical,
+      hTheoremNameLiteral, hNonemptyDependencies, hCertificate,
+      hFinalStatement, hConditionalRootStatement, hFinalConditional,
+      hFinalStatementProject, hFinalStatementApplication,
+      hExtractedProjectPayload, hExtractedSelected, hSelectedProject,
+      hCompletionCriterionAtM, hFiniteExtinction, hTopologyPackage,
+      hExtractedHomeomorphism, hMathlibTargetReserved,
+      hMathlibConclusionTarget, hMathlibConclusionHomeomorphism,
+      hProjectMathlib, hCriterionFamily, hCriterionConditional,
+      hCriterionReserved, hCompletionCriterionFamilyConditional,
+      hCompletionCriterionFamilyReserved, hProjectEmbedding,
+      hMathlibEmbedding, hProjectBijective, hMathlibBijective,
+      hProjectContinuous, hMathlibContinuous⟩
+  let targetConclusion : Nonempty (M ≃ₜ ThreeSphere) :=
+    conditionalRootStatement M
+  have hTargetConditional :
+      targetConclusion = conditionalRootStatement M :=
+    rfl
+  have hTargetFinal :
+      targetConclusion = finalStatement M := by
+    rw [hTargetConditional, ← hFinalConditional]
+  have hTargetExtracted :
+      targetConclusion = extractedHomeomorphism :=
+    hTargetFinal.trans hFinalStatementApplication
+  have hTargetProjectPayload :
+      targetConclusion = projectPayloadTarget M :=
+    hTargetExtracted.trans hExtractedProjectPayload
+  have hTargetSelected :
+      targetConclusion = selectedTarget :=
+    hTargetExtracted.trans hExtractedSelected
+  have hTargetTopology :
+      targetConclusion =
+        topologyPackage.extractHomeomorphism M finiteExtinction :=
+    hTargetExtracted.trans hExtractedHomeomorphism
+  have hTargetProjectHomeomorphism :
+      targetConclusion =
+        (⟨projectHomeomorphism⟩ : Nonempty (M ≃ₜ ThreeSphere)) :=
+    hTargetSelected.trans hSelectedProject
+  have hCompletionCriterionAtMConditional :
+      completionCriterionAtM =
+        completionCriterionAtUniverse_of_poincareConjectureStatement
+          M conditionalRootStatement := by
+    calc
+      completionCriterionAtM = projectPayloadCompletion M :=
+        hCompletionCriterionAtM.symm
+      _ = completionCriterionAtUniverse_of_poincareConjectureStatement
+            M conditionalRootStatement := by
+        apply Subsingleton.elim
+  exact
+    ⟨theoremName, certificate, nonemptyCertificate, finalStatement,
+      conditionalRootStatement, projectPayloadTarget, n, ordinaryPackage,
+      finiteExtinction, topologyPackage, extractedHomeomorphism,
+      targetConclusion, selectedTarget, mathlibTarget, mathlibConclusion,
+      projectHomeomorphism, mathlibHomeomorphism, completionCriterionAtM,
+      criterion, completionCriterionFamily, hTheoremNameCanonical,
+      hTheoremNameLiteral, hNonemptyDependencies, hCertificate,
+      hFinalStatement, hConditionalRootStatement, hFinalConditional,
+      hTargetConditional, hTargetFinal, hTargetExtracted,
+      hTargetProjectPayload, hTargetSelected, hTargetTopology,
+      hTargetProjectHomeomorphism, hFiniteExtinction, hTopologyPackage,
+      hMathlibTargetReserved, hMathlibConclusionTarget,
+      hMathlibConclusionHomeomorphism, hProjectMathlib, hCriterionFamily,
+      hCriterionConditional, hCriterionReserved,
+      hCompletionCriterionFamilyConditional,
+      hCompletionCriterionFamilyReserved, hCompletionCriterionAtMConditional,
+      hProjectEmbedding, hMathlibEmbedding, hProjectBijective,
+      hMathlibBijective, hProjectContinuous, hMathlibContinuous⟩
+
+/-- Theorem contract for
+`reserved_named_conditionalRoot_targetConclusion_topologyPackage_bijective_completionCriterion_family_coherence_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_named_conditionalRoot_targetConclusion_topologyPackage_bijective_completionCriterion_family_coherence_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_named_conditionalRoot_targetConclusion_topologyPackage_bijective_completionCriterion_family_coherence_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_named_conditionalRoot_targetConclusion_topologyPackage_bijective_completionCriterion_family_coherence_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
