@@ -1680,6 +1680,183 @@ theorem twoPointComplement_lowHomotopyCollapse_payload_of_topology_package_at_ba
       package M extinction x hyx singleBasepoint twoBasepoint
 
 /--
+The zeroth homotopy quotient of a topology-package singleton complement is a
+`Unique` type.
+-/
+@[reducible] noncomputable def compl_singleton_zerothHomotopy_unique_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) :
+    Unique (ZerothHomotopy ({x}ᶜ : Set M)) := by
+  let witness :=
+    compl_singleton_zerothHomotopy_exists_unique_of_topology_package
+      package M extinction x
+  exact
+    { default := Classical.choose witness
+      uniq := fun homotopyClass => Classical.choose_spec witness homotopyClass }
+
+/--
+The zeroth homotopy group of a topology-package singleton complement is a
+`Unique` type at every basepoint.
+-/
+@[reducible] noncomputable def compl_singleton_piZero_unique_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) (basepoint : ({x}ᶜ : Set M)) :
+    Unique (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) := by
+  let witness :=
+    compl_singleton_piZero_exists_unique_of_topology_package
+      package M extinction x basepoint
+  exact
+    { default := Classical.choose witness
+      uniq := fun homotopyClass => Classical.choose_spec witness homotopyClass }
+
+/--
+The fundamental group of a topology-package singleton complement is a `Unique`
+type at every basepoint.
+-/
+@[reducible] noncomputable def compl_singleton_fundamentalGroup_unique_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) (basepoint : ({x}ᶜ : Set M)) :
+    Unique (FundamentalGroup ({x}ᶜ : Set M) basepoint) := by
+  let witness :=
+    compl_singleton_fundamentalGroup_exists_unique_of_topology_package
+      package M extinction x basepoint
+  exact
+    { default := Classical.choose witness
+      uniq := fun fundamentalClass =>
+        Classical.choose_spec witness fundamentalClass }
+
+/--
+The first homotopy group of a topology-package singleton complement is a
+`Unique` type at every basepoint.
+-/
+@[reducible] noncomputable def compl_singleton_piOne_unique_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) (basepoint : ({x}ᶜ : Set M)) :
+    Unique (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) := by
+  let witness :=
+    compl_singleton_piOne_exists_unique_of_topology_package
+      package M extinction x basepoint
+  exact
+    { default := Classical.choose witness
+      uniq := fun homotopyClass => Classical.choose_spec witness homotopyClass }
+
+/--
+Data-valued recognition form of the topology-package singleton-complement
+collapse.  It bundles the Euclidean chart, contractibility, simple
+connectedness, connectedness, low-homotopy uniqueness, and path-component
+collapse selected by a finite-extinction witness.
+-/
+structure TopologyPackageSingletonComplementRecognitionPayload
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) (basepoint : ({x}ᶜ : Set M)) where
+  euclideanChart : Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3))
+  contractible : ContractibleSpace ({x}ᶜ : Set M)
+  pathConnected : PathConnectedSpace ({x}ᶜ : Set M)
+  simplyConnected : SimplyConnectedSpace ({x}ᶜ : Set M)
+  connected : ConnectedSpace ({x}ᶜ : Set M)
+  nonempty : Nonempty ({x}ᶜ : Set M)
+  zerothUnique : Unique (ZerothHomotopy ({x}ᶜ : Set M))
+  piZeroUnique : Unique (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint)
+  fundamentalGroupUnique : Unique (FundamentalGroup ({x}ᶜ : Set M) basepoint)
+  piOneUnique : Unique (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint)
+  pathNonempty : ∀ a b : ({x}ᶜ : Set M), Nonempty (Path a b)
+  pathComponentEqUniv :
+    ∀ point : ({x}ᶜ : Set M), pathComponent point = Set.univ
+
+/--
+The topology package supplies a field-based singleton-complement recognition
+payload at each chosen basepoint.
+-/
+noncomputable def singletonComplement_recognition_payload_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) (basepoint : ({x}ᶜ : Set M)) :
+    TopologyPackageSingletonComplementRecognitionPayload
+      package M extinction x basepoint where
+  euclideanChart :=
+    homeomorph_compl_singleton_euclidean_of_topology_package
+      package M extinction x
+  contractible :=
+    compl_singleton_contractibleSpace_of_topology_package
+      package M extinction x
+  pathConnected :=
+    compl_singleton_pathConnectedSpace_of_topology_package
+      package M extinction x
+  simplyConnected :=
+    compl_singleton_simplyConnectedSpace_of_topology_package
+      package M extinction x
+  connected :=
+    compl_singleton_connectedSpace_of_topology_package
+      package M extinction x
+  nonempty :=
+    compl_singleton_nonempty_of_topology_package
+      package M extinction x
+  zerothUnique :=
+    compl_singleton_zerothHomotopy_unique_of_topology_package
+      package M extinction x
+  piZeroUnique :=
+    compl_singleton_piZero_unique_of_topology_package
+      package M extinction x basepoint
+  fundamentalGroupUnique :=
+    compl_singleton_fundamentalGroup_unique_of_topology_package
+      package M extinction x basepoint
+  piOneUnique :=
+    compl_singleton_piOne_unique_of_topology_package
+      package M extinction x basepoint
+  pathNonempty :=
+    compl_singleton_path_nonempty_of_topology_package
+      package M extinction x
+  pathComponentEqUniv :=
+    compl_singleton_pathComponent_eq_univ_of_topology_package
+      package M extinction x
+
+/--
+The topology package simultaneously supplies sphere recognition, one-point
+compactification recognition, and data-valued singleton-complement recognition
+for a chosen singleton-complement basepoint.
+-/
+theorem recognition_and_singletonComplement_payload_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) (basepoint : ({x}ᶜ : Set M)) :
+    Nonempty (M ≃ₜ ThreeSphere) ∧
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      Nonempty
+        (TopologyPackageSingletonComplementRecognitionPayload
+          package M extinction x basepoint) :=
+  ⟨ homeomorphism_of_topology_package package M extinction
+  , homeomorph_to_onePoint_threeSpace_of_topology_package package M extinction
+  , ⟨singletonComplement_recognition_payload_of_topology_package
+      package M extinction x basepoint⟩
+  ⟩
+
+/--
 The zeroth homotopy quotient of a topology-package two-puncture complement is a
 `Unique` type.
 -/
@@ -1944,6 +2121,36 @@ theorem recognition_completeComplement_and_twoPointComplement_lowHomotopyUnique_
   , homeomorph_to_onePoint_threeSpace_of_topology_package package M extinction
   , complete_complement_collapse_payload_of_topology_package
       package M extinction x hyx singleBasepoint twoBasepoint
+  , ⟨twoPointComplement_lowHomotopyUnique_payload_of_topology_package
+      package M extinction x hyx twoBasepoint⟩
+  ⟩
+
+/--
+The topology package supplies the singleton recognition payload and the
+two-puncture low-homotopy uniqueness payload together at the same
+point-selected endpoint.
+-/
+theorem recognition_singletonComplement_and_twoPointComplement_lowHomotopyUnique_payload_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) {y : M} (hyx : y ≠ x)
+    (singleBasepoint : ({x}ᶜ : Set M))
+    (twoBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Nonempty (M ≃ₜ ThreeSphere) ∧
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      Nonempty
+        (TopologyPackageSingletonComplementRecognitionPayload
+          package M extinction x singleBasepoint) ∧
+      Nonempty
+        (TopologyPackageTwoPointComplementLowHomotopyUniquePayload
+          package M extinction hyx twoBasepoint) :=
+  ⟨ homeomorphism_of_topology_package package M extinction
+  , homeomorph_to_onePoint_threeSpace_of_topology_package package M extinction
+  , ⟨singletonComplement_recognition_payload_of_topology_package
+      package M extinction x singleBasepoint⟩
   , ⟨twoPointComplement_lowHomotopyUnique_payload_of_topology_package
       package M extinction x hyx twoBasepoint⟩
   ⟩
