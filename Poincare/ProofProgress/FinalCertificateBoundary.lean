@@ -42328,4 +42328,101 @@ theorem reserved_named_statement_package_of_final_completionCriterion_of_nonempt
       @Poincare.reserved_named_statement_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Reserved named project completion payload from the final statement package.
+
+This opens the statement-level endpoint through the repository's standard
+project completion payload interface.  It keeps the reserved theorem name,
+checked completion certificate, project/mathlib statement proofs, payload
+projection, and selected completion criteria synchronized.
+-/
+theorem reserved_named_project_payload_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (witness : Type u) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ projectPayload :
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ completionCriterionAtM : CompletionCriterionAtUniverse M,
+    ∃ criterion : CompletionCriterionAtUniverse witness,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      projectPayload =
+        poincare_completion_payload_of_poincareConjectureStatement
+          projectStatement ∧
+      projectStatement =
+        poincareConjectureStatement_of_poincare_completion_payload
+          projectPayload ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement ∧
+      completionCriterionAtM =
+        completionCriterionAtUniverse_of_poincare_completion_payload
+          M projectPayload ∧
+      criterion =
+        completionCriterionAtUniverse_of_poincare_completion_payload
+          witness projectPayload ∧
+      completionCriterionAtM =
+        reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+          dependencies M ∧
+      criterion =
+        reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+          dependencies witness := by
+  rcases
+      reserved_named_statement_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies
+        dependencies M witness with
+    ⟨theoremName, certificate, projectStatement, mathlibStatement,
+      completionCriterionAtM, criterion, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, _hProjectStatementCriterion,
+      hMathlibStatement, hCompletionCriterionAtMReserved,
+      hCriterionReserved⟩
+  let projectPayload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    poincare_completion_payload_of_poincareConjectureStatement projectStatement
+  have hProjectPayload :
+      projectPayload =
+        poincare_completion_payload_of_poincareConjectureStatement
+          projectStatement :=
+    rfl
+  have hProjectStatementPayload :
+      projectStatement =
+        poincareConjectureStatement_of_poincare_completion_payload
+          projectPayload := by
+    apply Subsingleton.elim
+  have hCompletionCriterionAtMPayload :
+      completionCriterionAtM =
+        completionCriterionAtUniverse_of_poincare_completion_payload
+          M projectPayload := by
+    apply Subsingleton.elim
+  have hCriterionPayload :
+      criterion =
+        completionCriterionAtUniverse_of_poincare_completion_payload
+          witness projectPayload := by
+    apply Subsingleton.elim
+  exact
+    ⟨theoremName, certificate, projectStatement, mathlibStatement,
+      projectPayload, completionCriterionAtM, criterion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hProjectPayload, hProjectStatementPayload, hMathlibStatement,
+      hCompletionCriterionAtMPayload, hCriterionPayload,
+      hCompletionCriterionAtMReserved, hCriterionReserved⟩
+
+/-- Theorem contract for
+`reserved_named_project_payload_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_named_project_payload_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_named_project_payload_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_named_project_payload_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
