@@ -440,6 +440,43 @@ theorem moiseSmoothability_targets_and_family_of_nonemptyAssemblyPayload
     ⟩
 
 /--
+An inhabited Moise smoothability assembly payload exposes the concrete payload
+object together with the two theorem-shaped Moise targets and every per-target
+recognition/smoothability/prerequisite field stored in that same object.
+-/
+theorem moiseSmoothability_payload_object_targets_and_family_of_nonemptyAssemblyPayload
+    (payload : Nonempty (MoiseSmoothabilityRecognitionAssemblyPayload.{u})) :
+    ∃ _assemblyPayload : MoiseSmoothabilityRecognitionAssemblyPayload.{u},
+      MoiseSmoothThreeManifoldStatement.{u} ∧
+        MoiseSmoothabilityStatement.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere) ∧
+              Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+              AdmitsSmoothThreeManifoldStructure M ∧
+              AdmitsSurgeryModelSmoothStructure M ∧
+              (∃ _t2 : T2Space M,
+                ∃ _charted : ChartedSpace ThreeManifoldModel M,
+                ∃ _simple : SimplyConnectedSpace M,
+                ∃ _compact : CompactSpace M,
+                ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+                  Nonempty M)) := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ payload
+    , payload.smoothMoise
+    , payload.surgeryMoise
+    , fun M _top _t2 _charted _simple _compact =>
+        ⟨ payload.recognizedSphere M
+        , payload.recognizedOnePoint M
+        , payload.smoothStructure M
+        , payload.surgeryStructure M
+        , payload.surgeryPrerequisites M
+        ⟩
+    ⟩
+
+/--
 `ThreeSphere` recognition constructs an inhabited Moise assembly payload and
 simultaneously exposes both Moise targets and the transported
 recognition/smoothability/prerequisite family.
