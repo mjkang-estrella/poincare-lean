@@ -774,6 +774,42 @@ theorem canonical_payload_and_final_certificate_of_finalCertificateMinimalPackag
   ⟩
 
 /--
+The same recognition prefix also closes the project-level final payload by
+first constructing the topology package requirement and then using the
+minimal-input/topology-package project route.
+-/
+theorem project_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  let topology :=
+    topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+      recognitionPrefix
+  project_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    inputs topology
+
+/--
+The recognition-prefix project payload is exactly the minimal-input/topology
+package payload after constructing the topology package from the prefix.
+-/
+theorem project_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix_eq
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    project_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_recognitionPrefix
+        inputs recognitionPrefix =
+      (let topology :=
+        topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+          recognitionPrefix
+      project_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+        inputs topology) := by
+  rfl
+
+/--
 The smoothability and finite-extinction package requirements plus a simply
 connected extinction-recognition prefix close the complete final-certificate
 payload.  This avoids requiring downstream code to separately manufacture the
