@@ -10661,6 +10661,74 @@ theorem finite_extinction_by_ricci_flow_with_surgery_of_target_assumptions_and_c
   exact finiteExtinction
 
 /--
+Family-level theorem-shaped finite extinction: the target-family
+control-frontier supply gives each target manifold a time parameter together
+with the finite-extinction statement at that parameter.
+-/
+theorem finite_extinction_statement_family_of_target_assumptions_and_control_frontier_family
+    (controlFrontier :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ _surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ _perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            True) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω, FiniteExtinctionStatement n M := by
+  intro M _top _t2 _charted _simple _compact _manifold
+  exact
+    finite_extinction_statement_nonempty_of_target_assumptions_and_control_frontier
+      (controlFrontier M)
+
+/--
+The same family-level frontier directly supplies the target-family
+finite-extinction witness under the smooth target assumptions used by the
+production package.
+-/
+theorem finite_extinction_by_ricci_flow_with_surgery_family_of_target_assumptions_and_control_frontier
+    (controlFrontier :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ _surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ _perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            True) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        FiniteExtinctionByRicciFlowWithSurgery M := by
+  intro M _top _t2 _charted _simple _compact _manifold
+  exact
+    finite_extinction_by_ricci_flow_with_surgery_of_target_assumptions_and_control_frontier_package
+      (controlFrontier M)
+
+/--
 Family-level finite-to-assembly bridge: a target-family supply of analytic,
 surgery-construction, and Perelman-control frontiers discharges the exact
 finite-extinction package-layer requirement consumed by final assembly.
@@ -10690,6 +10758,35 @@ theorem finiteExtinctionPackage_requirement_of_target_assumptions_and_control_fr
   exact
     finite_extinction_package_nonempty_of_target_assumptions_and_control_frontier
       (controlFrontier M)
+
+/--
+The same target-family control frontier also discharges the finite-extinction
+milestone requirement, via the package-layer route used by the dependency
+crosswalk.
+-/
+theorem finiteExtinction_requirement_of_target_assumptions_and_control_frontier_family
+    (controlFrontier :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ _surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ _perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            True) :
+    dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction := by
+  exact
+    finiteExtinctionPackage_requirement_of_target_assumptions_and_control_frontier_family
+      controlFrontier
 
 /--
 Payload form of the production bridge: a concrete target sweepout payload
