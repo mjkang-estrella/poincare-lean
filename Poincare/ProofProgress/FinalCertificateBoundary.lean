@@ -48394,4 +48394,103 @@ theorem mathlib_sphere_statement_of_dependencies_and_verification_family_eq :
       @Poincare.mathlib_sphere_statement_of_dependencies_and_verification_family :=
   rfl
 
+/--
+The conditional statement theorems selected from ordinary dependencies and
+equation verification agree with the checked final certificate statements.
+
+This ties the direct theorem-level project and mathlib-shaped conditional
+statements back to the same constructed equation-boundary dependency package,
+completion certificate, reserved Poincare statement, and mathlib translation
+used by the final-certificate recovery route.
+-/
+theorem conditional_statement_certificate_coherence_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    ∃ boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ checkedReservedStatement : PoincareConjectureStatement.{0},
+    ∃ checkedMathlibStatement : MathlibTopologicalPoincareThreeStatement.{0},
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          boundaryDependencies ∧
+      checkedReservedStatement =
+        poincare_conjecture_of_completion_certificate certificate ∧
+      checkedMathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          checkedReservedStatement ∧
+      checkedReservedStatement =
+        poincare_statement_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      checkedMathlibStatement =
+        mathlib_sphere_statement_of_dependencies_and_verification_family
+          dependencies verificationFamily := by
+  rcases
+      final_certificate_full_topological_recovery_package_of_dependencies_and_verification_family
+        dependencies verificationFamily ThreeSphere with
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies, certificate,
+      checkedReservedStatement, checkedMathlibStatement,
+      _standardForwardHomeomorphism, _standardInverseHomeomorphism,
+      _standardForwardConclusion, _standardInverseConclusion,
+      _projectConclusion, _projectHomeomorphism, _arbitraryForwardHomeomorphism,
+      _composedMathlibHomeomorphism, _inverseComposedMathlibHomeomorphism,
+      _composedMathlibConclusion, _inverseComposedMathlibConclusion,
+      _recoveredProjectHomeomorphism, _recoveredSphereInverseHomeomorphism,
+      hBoundaryDependencies, hNonemptyBoundaryDependencies, hCertificate,
+      hCheckedReservedStatement, hCheckedMathlibStatement,
+      _hStandardForwardConclusionChecked, _hStandardForwardConclusion,
+      _hStandardInverseHomeomorphism, _hStandardInverseConclusion,
+      _hStandardLeft, _hStandardRight, _hStandardForwardEmbedding,
+      _hStandardForwardBijective, _hStandardForwardContinuous,
+      _hStandardInverseEmbedding, _hStandardInverseBijective,
+      _hStandardInverseContinuous, _hProjectConclusion,
+      _hProjectHomeomorphism, _hComposedMathlibHomeomorphism,
+      _hInverseComposedMathlibHomeomorphism, _hInverseDecomposition,
+      _hComposedMathlibConclusion, _hComposedMathlibStatement,
+      _hInverseComposedMathlibConclusion, _hLeft, _hRight,
+      _hComposedEmbedding, _hComposedBijective, _hComposedContinuous,
+      _hInverseComposedEmbedding, _hInverseComposedBijective,
+      _hInverseComposedContinuous, _hRecoveredProjectHomeomorphism,
+      _hRecoveredProject, _hRecoveredProjectEmbedding,
+      _hRecoveredProjectBijective, _hRecoveredProjectContinuous,
+      _hRecoveredSphereInverseHomeomorphism, _hRecoveredSphereInverse,
+      _hRecoveredSphereInverseEmbedding, _hRecoveredSphereInverseBijective,
+      _hRecoveredSphereInverseContinuous⟩
+  have hReservedStatementDirect :
+      checkedReservedStatement =
+        poincare_statement_of_dependencies_and_verification_family
+          dependencies verificationFamily :=
+    Subsingleton.elim _ _
+  have hMathlibStatementDirect :
+      checkedMathlibStatement =
+        mathlib_sphere_statement_of_dependencies_and_verification_family
+          dependencies verificationFamily :=
+    Subsingleton.elim _ _
+  exact
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies, certificate,
+      checkedReservedStatement, checkedMathlibStatement, hBoundaryDependencies,
+      hNonemptyBoundaryDependencies, hCertificate, hCheckedReservedStatement,
+      hCheckedMathlibStatement, hReservedStatementDirect,
+      hMathlibStatementDirect⟩
+
+/-- Theorem contract for
+`conditional_statement_certificate_coherence_of_dependencies_and_verification_family`. -/
+theorem conditional_statement_certificate_coherence_of_dependencies_and_verification_family_eq :
+    @Poincare.conditional_statement_certificate_coherence_of_dependencies_and_verification_family =
+      @Poincare.conditional_statement_certificate_coherence_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
