@@ -82,6 +82,32 @@ theorem compl_singleton_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpa
     exact PathConnectedSpace.joined basepoint z
 
 /--
+Every single-puncture complement of a recognized one-point compactification
+target is connected.
+-/
+theorem compl_singleton_connectedSpace_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M) :
+    ConnectedSpace ({x}ᶜ : Set M) := by
+  letI : PathConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_pathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+      h x
+  infer_instance
+
+/--
+Every single-puncture complement of a recognized one-point compactification
+target is nonempty.
+-/
+theorem compl_singleton_nonempty_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M) :
+    Nonempty ({x}ᶜ : Set M) := by
+  letI : PathConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_pathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+      h x
+  infer_instance
+
+/--
 The zeroth homotopy quotient of every single-puncture complement of a
 recognized one-point compactification target has only one class.
 -/
@@ -367,6 +393,34 @@ theorem twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_onePoint_three
     exact Set.mem_univ z
   · intro _hz
     exact PathConnectedSpace.joined basepoint z
+
+/--
+Every two-puncture complement of a recognized one-point compactification target
+is connected.
+-/
+theorem twoPointComplement_connectedSpace_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x) :
+    ConnectedSpace (({x} ∪ {y})ᶜ : Set M) := by
+  letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_pathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+      h hyx
+  infer_instance
+
+/--
+Every two-puncture complement of a recognized one-point compactification target
+is nonempty.
+-/
+theorem twoPointComplement_nonempty_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x) :
+    Nonempty (({x} ∪ {y})ᶜ : Set M) := by
+  letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_pathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+      h hyx
+  infer_instance
 
 /--
 The zeroth homotopy quotient of every two-puncture complement of a recognized
@@ -657,6 +711,28 @@ theorem compl_singleton_pathComponent_eq_univ_of_homeomorph_to_threeSphere
     basepoint
 
 /--
+Every single-puncture complement of a `ThreeSphere`-recognized space is
+connected.
+-/
+theorem compl_singleton_connectedSpace_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M) :
+    ConnectedSpace ({x}ᶜ : Set M) :=
+  compl_singleton_connectedSpace_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+
+/--
+Every single-puncture complement of a `ThreeSphere`-recognized space is
+nonempty.
+-/
+theorem compl_singleton_nonempty_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M) :
+    Nonempty ({x}ᶜ : Set M) :=
+  compl_singleton_nonempty_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+
+/--
 The zeroth homotopy quotient of every single-puncture complement of a
 `ThreeSphere`-recognized space has only one class.
 -/
@@ -863,6 +939,26 @@ theorem twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_threeSphere
   twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
     basepoint
+
+/--
+Every two-puncture complement of a `ThreeSphere`-recognized space is connected.
+-/
+theorem twoPointComplement_connectedSpace_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x) :
+    ConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+  twoPointComplement_connectedSpace_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+
+/--
+Every two-puncture complement of a `ThreeSphere`-recognized space is nonempty.
+-/
+theorem twoPointComplement_nonempty_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x) :
+    Nonempty (({x} ∪ {y})ᶜ : Set M) :=
+  twoPointComplement_nonempty_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
 
 /--
 The zeroth homotopy quotient of every two-puncture complement of a
