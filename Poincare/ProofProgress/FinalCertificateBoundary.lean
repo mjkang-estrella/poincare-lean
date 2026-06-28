@@ -38708,4 +38708,89 @@ theorem reserved_named_certificate_project_mathlib_target_homeomorphism_coherenc
       @Poincare.reserved_named_certificate_project_mathlib_target_homeomorphism_coherence_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Reserved named checked-certificate project/mathlib homeomorphism with selected
+completion criterion.
+
+This extends the paired-map final-collapse endpoint by carrying the selected
+universe-indexed completion criterion at `witness`.  The resulting package keeps
+the checked certificate, project target, literal mathlib target, identified
+homeomorphisms, and reserved completion criterion synchronized below the
+reserved theorem name.
+-/
+theorem reserved_named_certificate_project_mathlib_target_homeomorphism_completionCriterion_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (witness : Type u) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ projectPayloadTarget : PoincareConjectureStatement.{u},
+    ∃ mathlibTarget : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ extractedHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ mathlibHomeomorphism :
+      M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ criterion : CompletionCriterionAtUniverse witness,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      mathlibTarget =
+        reserved_mathlib_statement_of_nonempty_equation_boundary_dependencies
+          dependencies ∧
+      extractedHomeomorphism = projectPayloadTarget M ∧
+      projectPayloadTarget M =
+        (⟨projectHomeomorphism⟩ : Nonempty (M ≃ₜ ThreeSphere)) ∧
+      mathlibTarget M =
+        (⟨mathlibHomeomorphism⟩ :
+          Nonempty
+            (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) ∧
+      projectHomeomorphism = mathlibHomeomorphism ∧
+      criterion =
+        reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+          dependencies witness ∧
+      Topology.IsEmbedding projectHomeomorphism ∧
+      Topology.IsEmbedding mathlibHomeomorphism ∧
+      Function.Bijective projectHomeomorphism ∧
+      Function.Bijective mathlibHomeomorphism ∧
+      Continuous projectHomeomorphism ∧
+      Continuous mathlibHomeomorphism := by
+  rcases
+      reserved_named_certificate_project_mathlib_target_homeomorphism_coherence_of_nonempty_equation_boundary_dependencies
+        dependencies M with
+    ⟨theoremName, certificate, projectPayloadTarget, mathlibTarget,
+      extractedHomeomorphism, projectHomeomorphism, mathlibHomeomorphism,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hMathlibTargetReserved, hExtractedProjectPayload,
+      hProjectPayloadTarget, hMathlibTarget, hProjectMathlib,
+      hProjectEmbedding, hMathlibEmbedding, hProjectBijective,
+      hMathlibBijective, hProjectContinuous, hMathlibContinuous⟩
+  let criterion : CompletionCriterionAtUniverse witness :=
+    reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+      dependencies witness
+  have hCriterion :
+      criterion =
+        reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+          dependencies witness :=
+    rfl
+  exact
+    ⟨theoremName, certificate, projectPayloadTarget, mathlibTarget,
+      extractedHomeomorphism, projectHomeomorphism, mathlibHomeomorphism,
+      criterion, hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hMathlibTargetReserved, hExtractedProjectPayload,
+      hProjectPayloadTarget, hMathlibTarget, hProjectMathlib, hCriterion,
+      hProjectEmbedding, hMathlibEmbedding, hProjectBijective,
+      hMathlibBijective, hProjectContinuous, hMathlibContinuous⟩
+
+/-- Theorem contract for
+`reserved_named_certificate_project_mathlib_target_homeomorphism_completionCriterion_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_named_certificate_project_mathlib_target_homeomorphism_completionCriterion_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_named_certificate_project_mathlib_target_homeomorphism_completionCriterion_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_named_certificate_project_mathlib_target_homeomorphism_completionCriterion_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
