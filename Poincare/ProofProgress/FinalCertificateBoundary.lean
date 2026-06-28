@@ -47961,4 +47961,246 @@ theorem final_certificate_statement_recovery_and_cancellation_package_of_depende
       @Poincare.final_certificate_statement_recovery_and_cancellation_package_of_dependencies_and_verification_family :=
   rfl
 
+/--
+Ordinary dependencies plus equation verification expose the full standard and
+arbitrary recognition package with recovered routes.
+
+This extends the standard/arbitrary topological recognition package by adding
+the recovered project route and recovered literal-sphere inverse route.  The
+result keeps, in one checked final-certificate endpoint, the standard
+`ThreeSphere` recognition maps and topological facts, the arbitrary project
+and composed mathlib-sphere recognition maps, the two-sided composed
+cancellation equations, and the recovered routes back to the selected project
+homeomorphism and literal-sphere inverse.
+-/
+theorem final_certificate_full_topological_recovery_package_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ boundaryDependencies : PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ nonemptyBoundaryDependencies :
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{0},
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ checkedReservedStatement : PoincareConjectureStatement.{0},
+    ∃ checkedMathlibStatement : MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ standardForwardHomeomorphism :
+      ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ standardInverseHomeomorphism :
+      Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ ThreeSphere,
+    ∃ standardForwardConclusion :
+      Nonempty
+        (ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)),
+    ∃ standardInverseConclusion :
+      Nonempty
+        (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ ThreeSphere),
+    ∃ projectConclusion : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ arbitraryForwardHomeomorphism :
+      ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ composedMathlibHomeomorphism :
+      M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ inverseComposedMathlibHomeomorphism :
+      Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ M,
+    ∃ composedMathlibConclusion :
+      Nonempty
+        (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)),
+    ∃ inverseComposedMathlibConclusion :
+      Nonempty
+        (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ M),
+    ∃ recoveredProjectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ recoveredSphereInverseHomeomorphism :
+      Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ ThreeSphere,
+      boundaryDependencies =
+        equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily ∧
+      nonemptyBoundaryDependencies = ⟨boundaryDependencies⟩ ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          boundaryDependencies ∧
+      checkedReservedStatement =
+        poincare_conjecture_of_completion_certificate certificate ∧
+      checkedMathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          checkedReservedStatement ∧
+      standardForwardConclusion = checkedMathlibStatement ThreeSphere ∧
+      standardForwardConclusion =
+        (⟨standardForwardHomeomorphism⟩ :
+          Nonempty
+            (ThreeSphere ≃ₜ
+              Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) ∧
+      standardInverseHomeomorphism = standardForwardHomeomorphism.symm ∧
+      standardInverseConclusion =
+        (⟨standardInverseHomeomorphism⟩ :
+          Nonempty
+            (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ
+              ThreeSphere)) ∧
+      (∀ x : ThreeSphere,
+        standardInverseHomeomorphism (standardForwardHomeomorphism x) = x) ∧
+      (∀ y : Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+        standardForwardHomeomorphism (standardInverseHomeomorphism y) = y) ∧
+      Topology.IsEmbedding standardForwardHomeomorphism ∧
+      Function.Bijective standardForwardHomeomorphism ∧
+      Continuous standardForwardHomeomorphism ∧
+      Topology.IsEmbedding standardInverseHomeomorphism ∧
+      Function.Bijective standardInverseHomeomorphism ∧
+      Continuous standardInverseHomeomorphism ∧
+      projectConclusion = checkedReservedStatement M ∧
+      projectHomeomorphism = Classical.choice projectConclusion ∧
+      composedMathlibHomeomorphism =
+        projectHomeomorphism.trans arbitraryForwardHomeomorphism ∧
+      inverseComposedMathlibHomeomorphism =
+        composedMathlibHomeomorphism.symm ∧
+      inverseComposedMathlibHomeomorphism =
+        arbitraryForwardHomeomorphism.symm.trans projectHomeomorphism.symm ∧
+      composedMathlibConclusion =
+        (⟨composedMathlibHomeomorphism⟩ :
+          Nonempty
+            (M ≃ₜ
+              Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) ∧
+      composedMathlibConclusion = checkedMathlibStatement M ∧
+      inverseComposedMathlibConclusion =
+        (⟨inverseComposedMathlibHomeomorphism⟩ :
+          Nonempty
+            (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ M)) ∧
+      (∀ x : M,
+        inverseComposedMathlibHomeomorphism
+          (composedMathlibHomeomorphism x) = x) ∧
+      (∀ y : Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+        composedMathlibHomeomorphism
+          (inverseComposedMathlibHomeomorphism y) = y) ∧
+      Topology.IsEmbedding composedMathlibHomeomorphism ∧
+      Function.Bijective composedMathlibHomeomorphism ∧
+      Continuous composedMathlibHomeomorphism ∧
+      Topology.IsEmbedding inverseComposedMathlibHomeomorphism ∧
+      Function.Bijective inverseComposedMathlibHomeomorphism ∧
+      Continuous inverseComposedMathlibHomeomorphism ∧
+      recoveredProjectHomeomorphism =
+        composedMathlibHomeomorphism.trans arbitraryForwardHomeomorphism.symm ∧
+      recoveredProjectHomeomorphism = projectHomeomorphism ∧
+      Topology.IsEmbedding recoveredProjectHomeomorphism ∧
+      Function.Bijective recoveredProjectHomeomorphism ∧
+      Continuous recoveredProjectHomeomorphism ∧
+      recoveredSphereInverseHomeomorphism =
+        inverseComposedMathlibHomeomorphism.trans projectHomeomorphism ∧
+      recoveredSphereInverseHomeomorphism = arbitraryForwardHomeomorphism.symm ∧
+      Topology.IsEmbedding recoveredSphereInverseHomeomorphism ∧
+      Function.Bijective recoveredSphereInverseHomeomorphism ∧
+      Continuous recoveredSphereInverseHomeomorphism := by
+  rcases
+      final_certificate_standard_and_arbitrary_topological_recognition_coherence_of_dependencies_and_verification_family
+        dependencies verificationFamily M with
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies, certificate,
+      checkedReservedStatement, checkedMathlibStatement,
+      standardForwardHomeomorphism, standardInverseHomeomorphism,
+      standardForwardConclusion, standardInverseConclusion, projectConclusion,
+      projectHomeomorphism, arbitraryForwardHomeomorphism,
+      composedMathlibHomeomorphism, inverseComposedMathlibHomeomorphism,
+      composedMathlibConclusion, inverseComposedMathlibConclusion,
+      hBoundaryDependencies, hNonemptyBoundaryDependencies, hCertificate,
+      hCheckedReservedStatement, hCheckedMathlibStatement,
+      hStandardForwardConclusionChecked, hStandardForwardConclusion,
+      hStandardInverseHomeomorphism, hStandardInverseConclusion,
+      hStandardLeft, hStandardRight, hStandardForwardEmbedding,
+      hStandardForwardBijective, hStandardForwardContinuous,
+      hStandardInverseEmbedding, hStandardInverseBijective,
+      hStandardInverseContinuous, hProjectConclusion, hProjectHomeomorphism,
+      hComposedMathlibHomeomorphism, hInverseComposedMathlibHomeomorphism,
+      hInverseDecomposition, hComposedMathlibConclusion,
+      hComposedMathlibStatement, hInverseComposedMathlibConclusion, hLeft,
+      hRight, hComposedEmbedding, hComposedBijective, hComposedContinuous,
+      hInverseComposedEmbedding, hInverseComposedBijective,
+      hInverseComposedContinuous⟩
+  let recoveredProjectHomeomorphism : M ≃ₜ ThreeSphere :=
+    composedMathlibHomeomorphism.trans arbitraryForwardHomeomorphism.symm
+  let recoveredSphereInverseHomeomorphism :
+      Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ ThreeSphere :=
+    inverseComposedMathlibHomeomorphism.trans projectHomeomorphism
+  have hRecoveredProjectHomeomorphism :
+      recoveredProjectHomeomorphism =
+        composedMathlibHomeomorphism.trans arbitraryForwardHomeomorphism.symm :=
+    rfl
+  have hRecoveredProject :
+      recoveredProjectHomeomorphism = projectHomeomorphism := by
+    rw [hRecoveredProjectHomeomorphism, hComposedMathlibHomeomorphism]
+    ext x
+    simp
+  have hRecoveredProjectEmbedding :
+      Topology.IsEmbedding recoveredProjectHomeomorphism := by
+    rw [hRecoveredProject]
+    exact projectHomeomorphism.isEmbedding
+  have hRecoveredProjectBijective :
+      Function.Bijective recoveredProjectHomeomorphism := by
+    rw [hRecoveredProject]
+    exact projectHomeomorphism.bijective
+  have hRecoveredProjectContinuous :
+      Continuous recoveredProjectHomeomorphism := by
+    rw [hRecoveredProject]
+    exact projectHomeomorphism.continuous
+  have hRecoveredSphereInverseHomeomorphism :
+      recoveredSphereInverseHomeomorphism =
+        inverseComposedMathlibHomeomorphism.trans projectHomeomorphism :=
+    rfl
+  have hRecoveredSphereInverse :
+      recoveredSphereInverseHomeomorphism = arbitraryForwardHomeomorphism.symm := by
+    rw [hRecoveredSphereInverseHomeomorphism, hInverseDecomposition]
+    ext y
+    simp
+  have hRecoveredSphereInverseEmbedding :
+      Topology.IsEmbedding recoveredSphereInverseHomeomorphism := by
+    rw [hRecoveredSphereInverse]
+    exact arbitraryForwardHomeomorphism.symm.isEmbedding
+  have hRecoveredSphereInverseBijective :
+      Function.Bijective recoveredSphereInverseHomeomorphism := by
+    rw [hRecoveredSphereInverse]
+    exact arbitraryForwardHomeomorphism.symm.bijective
+  have hRecoveredSphereInverseContinuous :
+      Continuous recoveredSphereInverseHomeomorphism := by
+    rw [hRecoveredSphereInverse]
+    exact arbitraryForwardHomeomorphism.symm.continuous
+  exact
+    ⟨boundaryDependencies, nonemptyBoundaryDependencies, certificate,
+      checkedReservedStatement, checkedMathlibStatement,
+      standardForwardHomeomorphism, standardInverseHomeomorphism,
+      standardForwardConclusion, standardInverseConclusion, projectConclusion,
+      projectHomeomorphism, arbitraryForwardHomeomorphism,
+      composedMathlibHomeomorphism, inverseComposedMathlibHomeomorphism,
+      composedMathlibConclusion, inverseComposedMathlibConclusion,
+      recoveredProjectHomeomorphism, recoveredSphereInverseHomeomorphism,
+      hBoundaryDependencies, hNonemptyBoundaryDependencies, hCertificate,
+      hCheckedReservedStatement, hCheckedMathlibStatement,
+      hStandardForwardConclusionChecked, hStandardForwardConclusion,
+      hStandardInverseHomeomorphism, hStandardInverseConclusion,
+      hStandardLeft, hStandardRight, hStandardForwardEmbedding,
+      hStandardForwardBijective, hStandardForwardContinuous,
+      hStandardInverseEmbedding, hStandardInverseBijective,
+      hStandardInverseContinuous, hProjectConclusion, hProjectHomeomorphism,
+      hComposedMathlibHomeomorphism, hInverseComposedMathlibHomeomorphism,
+      hInverseDecomposition, hComposedMathlibConclusion,
+      hComposedMathlibStatement, hInverseComposedMathlibConclusion, hLeft,
+      hRight, hComposedEmbedding, hComposedBijective, hComposedContinuous,
+      hInverseComposedEmbedding, hInverseComposedBijective,
+      hInverseComposedContinuous, hRecoveredProjectHomeomorphism,
+      hRecoveredProject, hRecoveredProjectEmbedding,
+      hRecoveredProjectBijective, hRecoveredProjectContinuous,
+      hRecoveredSphereInverseHomeomorphism, hRecoveredSphereInverse,
+      hRecoveredSphereInverseEmbedding, hRecoveredSphereInverseBijective,
+      hRecoveredSphereInverseContinuous⟩
+
+/-- Theorem contract for
+`final_certificate_full_topological_recovery_package_of_dependencies_and_verification_family`. -/
+theorem final_certificate_full_topological_recovery_package_of_dependencies_and_verification_family_eq :
+    @Poincare.final_certificate_full_topological_recovery_package_of_dependencies_and_verification_family =
+      @Poincare.final_certificate_full_topological_recovery_package_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
