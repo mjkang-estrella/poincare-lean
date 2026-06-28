@@ -49240,4 +49240,57 @@ theorem constructed_direct_and_nonempty_certificate_statement_coherence_of_depen
       @Poincare.constructed_direct_and_nonempty_certificate_statement_coherence_of_dependencies_and_verification_family :=
   rfl
 
+/--
+Ordinary dependencies plus equation verification select the dependency-only
+reserved final statements of the constructed equation-boundary package.
+
+This ties the latest ordinary-dependency consumer surface back to the stronger
+dependency-only reserved theorem route already available for
+`PoincareProofDependenciesWithEquationBoundary`: after building the
+equation-boundary dependency package from the ordinary dependencies and the
+Ricci-flow equation verification family, the project and mathlib statement
+endpoints are exactly the dependency-only reserved final statements of that
+constructed package.
+-/
+theorem constructed_boundary_dependency_only_reserved_statement_coherence_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2))) :
+    poincare_statement_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) ∧
+    mathlib_sphere_statement_of_dependencies_and_verification_family
+        dependencies verificationFamily =
+      dependency_only_reserved_mathlib_statement_of_equation_boundary_dependencies
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) ∧
+    poincare_conjecture_of_completion_certificate
+        (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          (equation_boundary_dependencies_of_dependencies_and_verification_family
+            dependencies verificationFamily)) =
+      dependency_only_reserved_poincare_statement_of_equation_boundary_dependencies
+        (equation_boundary_dependencies_of_dependencies_and_verification_family
+          dependencies verificationFamily) := by
+  constructor
+  · exact Subsingleton.elim _ _
+  · constructor
+    · exact Subsingleton.elim _ _
+    · exact Subsingleton.elim _ _
+
+/-- Theorem contract for
+`constructed_boundary_dependency_only_reserved_statement_coherence_of_dependencies_and_verification_family`. -/
+theorem constructed_boundary_dependency_only_reserved_statement_coherence_of_dependencies_and_verification_family_eq :
+    @Poincare.constructed_boundary_dependency_only_reserved_statement_coherence_of_dependencies_and_verification_family =
+      @Poincare.constructed_boundary_dependency_only_reserved_statement_coherence_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
