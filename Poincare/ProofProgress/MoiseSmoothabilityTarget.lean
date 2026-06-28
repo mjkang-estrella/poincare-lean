@@ -628,4 +628,79 @@ theorem smoothabilityPackage_requirement_nonemptyMoiseAssemblyPayload_targets_an
     , moiseSmoothabilityRecognitionAssemblyPayload_targetFamily payload
     ⟩
 
+/--
+Consumer payload for the smoothability/Moise pillar.  It retains the concrete
+Moise recognition assembly payload, the residual smoothability package-layer
+requirement, both theorem-shaped Moise targets, the `ThreeSphere` recognition
+family, and the full target-by-target recognition/smoothability/prerequisite
+family stored in that same payload.
+-/
+structure MoiseSmoothabilityCompleteConsumerPayload where
+  detailedPayload : MoiseSmoothabilityRecognitionAssemblyPayload.{u}
+  smoothabilityPackageRequirement :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.smoothabilityPackage
+  smoothMoise : MoiseSmoothThreeManifoldStatement.{u}
+  surgeryMoise : MoiseSmoothabilityStatement.{u}
+  recognizedSphereFamily :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)
+  targetFamily :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          AdmitsSmoothThreeManifoldStructure M ∧
+          AdmitsSurgeryModelSmoothStructure M ∧
+          (∃ _t2 : T2Space M,
+            ∃ _charted : ChartedSpace ThreeManifoldModel M,
+            ∃ _simple : SimplyConnectedSpace M,
+            ∃ _compact : CompactSpace M,
+            ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+              Nonempty M)
+
+/--
+An inhabited Moise recognition assembly payload and the residual
+`SmoothabilityPackage` construct the complete smoothability consumer payload,
+so downstream certificate code can consume one object rather than rebuilding
+the Moise assembly and package boundary separately.
+-/
+theorem moiseSmoothability_completeConsumerPayload_of_smoothabilityPackage_and_nonemptyAssemblyPayload
+    (smoothability : SmoothabilityPackage.{u})
+    (payload : Nonempty (MoiseSmoothabilityRecognitionAssemblyPayload.{u})) :
+    Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u}) := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ { detailedPayload := payload
+        smoothabilityPackageRequirement := by
+          simpa [dependencyPackageLayerRequirement] using smoothability
+        smoothMoise := payload.smoothMoise
+        surgeryMoise := payload.surgeryMoise
+        recognizedSphereFamily := payload.recognizedSphere
+        targetFamily :=
+          moiseSmoothabilityRecognitionAssemblyPayload_targetFamily
+            payload } ⟩
+
+/--
+The residual `SmoothabilityPackage` and target-family `ThreeSphere`
+recognition construct the complete smoothability consumer payload directly,
+retaining the concrete Moise recognition assembly object for final-certificate
+collapse.
+-/
+theorem moiseSmoothability_completeConsumerPayload_of_smoothabilityPackage_and_threeSphereRecognition
+    (smoothability : SmoothabilityPackage.{u})
+    (recognize :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere)) :
+    Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u}) :=
+  moiseSmoothability_completeConsumerPayload_of_smoothabilityPackage_and_nonemptyAssemblyPayload
+    smoothability
+    ⟨moiseSmoothabilityRecognitionAssemblyPayload_of_threeSphereRecognition
+      recognize⟩
+
 end Poincare
