@@ -707,6 +707,42 @@ theorem onePoint_threeSpace_twoPointComplement_ordinaryTopology_of_flatRecogniti
     onePoint_threeSpace_twoPointComplement_connectedSpace_of_flatRecognition payload⟩
 
 /--
+The flat recognition payload exposes the low-homotopy collapse surface without
+forcing consumers to unpack the larger legacy collapse tuple.
+-/
+theorem onePoint_threeSpace_twoPointComplement_lowHomotopy_of_flatRecognition
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} {hqp : q ≠ p}
+    {basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    (payload : OnePointTwoPointComplementFlatRecognitionPayload hqp basepoint) :
+    SimplyConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      Nonempty (Unique
+        (ZerothHomotopy
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))) ∧
+      Nonempty (Unique
+        (HomotopyGroup.Pi 0
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint)) ∧
+      Nonempty (Unique
+        (FundamentalGroup
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint)) ∧
+      Nonempty (Unique
+        (HomotopyGroup.Pi 1
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint)) ∧
+      (∀ a b :
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty (Path a b)) ∧
+      (∀ x :
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        pathComponent x = Set.univ) :=
+  ⟨payload.simplyConnected, ⟨payload.zerothUnique⟩, ⟨payload.piZeroUnique⟩,
+    ⟨payload.fundamentalGroupUnique⟩, ⟨payload.piOneUnique⟩,
+    payload.pathNonempty, payload.pathComponentEqUniv⟩
+
+/--
 The flat one-point two-puncture recognition payload discharges the legacy
 collapse tuple, including the low-homotopy subsingleton and unique-class
 conclusions, without reconstructing the punctured-Euclidean chart or path
