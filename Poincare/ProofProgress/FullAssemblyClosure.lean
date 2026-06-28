@@ -94,6 +94,23 @@ theorem topologyPackage_requirement_of_finalAssemblyPackageBoundaryInputs
   inputs.topology
 
 /--
+The final package boundary exposes the post-extinction recognition
+homeomorphism to the one-point compactification model.
+-/
+theorem homeomorph_to_onePoint_threeSpace_of_finalAssemblyPackageBoundaryInputs
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  let finiteExtinction :=
+    finite_extinction_input_of_smoothability_and_surgery_packages
+      inputs.smoothability inputs.finiteExtinction
+  exact
+    homeomorph_to_onePoint_threeSpace_of_topology_package
+      inputs.topology M (finiteExtinction M)
+
+/--
 The final package boundary now exposes the single-puncture first-homotopy
 collapse that the topology package proves from finite extinction.
 -/
@@ -455,6 +472,20 @@ theorem canonical_completion_payload_of_finalAssemblySubobligationBoundaryInputs
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
   canonical_completion_payload_of_finalAssemblyPackageBoundaryInputs
     (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
+
+/--
+The sub-obligation boundary inherits one-point compactification recognition
+after the finite-extinction proof-progress bridge constructs the package input.
+-/
+theorem homeomorph_to_onePoint_threeSpace_of_finalAssemblySubobligationBoundaryInputs
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+  homeomorph_to_onePoint_threeSpace_of_finalAssemblyPackageBoundaryInputs
+    (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
+    M
 
 /--
 The sub-obligation boundary inherits the single-puncture first-homotopy
