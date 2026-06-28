@@ -15454,6 +15454,66 @@ theorem stationaryZeroAnalyticFoundation_fullPackageEvolutionFamily_of_stationar
     (stationaryZeroAnalyticFoundationDetailedAssemblyPayload data)
 
 /--
+Any inhabited detailed stationary-zero analytic assembly payload can be
+consumed directly as the analytic package boundary: it exposes the package
+requirement, analytic milestone, compact package/curvature family, and the
+normalized full package/evolution family without retaining the original
+stationary-zero production data.
+-/
+theorem stationaryZeroAnalyticFoundation_nonemptyDetailedAssemblyPayload_fullPackageEvolutionFamily
+    (payload :
+      Nonempty StationaryZeroAnalyticFoundationDetailedAssemblyPayload.{u}) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ package :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+            RicciFlowAnalyticFoundationStatement
+              ThreeManifoldModelWithCorners n M ∧
+              HasCurvatureEvolutionEquations
+                (ricci_flow_data_of_analytic_foundation_package
+                  package)) ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          ∃ package :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+            AnalyticFoundationSubobligationsPayload flow ∧
+              ricci_flow_data_of_analytic_foundation_package package =
+                flow ∧
+              RicciFlowAnalyticFoundationStatement
+                ThreeManifoldModelWithCorners n M ∧
+              AnalyticFoundationWithEquationBoundaryStatement flow ∧
+              HasRicciContractionTheory
+                (curvature_data_of_ricci_flow_data flow) ∧
+              HasScalarCurvatureTheory
+                (curvature_data_of_ricci_flow_data flow) ∧
+              HasMetricEvolutionEquation flow ∧
+              HasRicciTensorEvolutionEquation flow ∧
+              HasScalarCurvatureEvolutionEquation flow ∧
+              HasCurvatureNormEvolutionInequality flow ∧
+              HasCurvatureEvolutionEquations flow) := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ payload.analyticFoundationPackageRequirement
+    , payload.ricciFlowAnalyticFoundationMilestone
+    , payload.packageStatementCurvatureFamily
+    , stationaryZeroAnalyticFoundationDetailedAssemblyPayload_fullPackageEvolutionFamily
+        payload
+    ⟩
+
+/--
 Universal stationary-zero production data constructs the inhabited detailed
 analytic assembly payload and exposes, from that same payload, the package-layer
 requirement, analytic milestone, compact package/statement/curvature family,
