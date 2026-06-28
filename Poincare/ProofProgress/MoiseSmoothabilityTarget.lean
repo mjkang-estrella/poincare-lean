@@ -66,6 +66,19 @@ theorem admitsSurgeryModelSmoothStructure_of_homeomorph_onePoint
   exact ⟨charted, smooth⟩
 
 /--
+The same Moise target is available from `ThreeSphere` recognition: the
+recognized sphere is first converted to the one-point compactification route,
+then the transported smooth compactification atlas supplies the surgery-model
+smooth structure.
+-/
+theorem admitsSurgeryModelSmoothStructure_of_homeomorph_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    AdmitsSurgeryModelSmoothStructure M :=
+  admitsSurgeryModelSmoothStructure_of_homeomorph_onePoint
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h)
+
+/--
 The Moise target follows from one-point recognition of every compact simply
 connected 3-manifold.  This isolates the genuinely open recognition input
 from the already-proved transport step.
@@ -79,5 +92,20 @@ theorem moiseSmoothabilityStatement_of_onePointRecognition
     MoiseSmoothabilityStatement.{u} := by
   intro M _ _ _ _ _
   exact admitsSurgeryModelSmoothStructure_of_homeomorph_onePoint (recognize M)
+
+/--
+The Moise target also follows from `ThreeSphere` recognition of every compact
+simply connected 3-manifold, matching the topology-extraction route whose
+recognized output is stated as a sphere homeomorphism.
+-/
+theorem moiseSmoothabilityStatement_of_threeSphereRecognition
+    (recognize :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere)) :
+    MoiseSmoothabilityStatement.{u} := by
+  intro M _ _ _ _ _
+  exact admitsSurgeryModelSmoothStructure_of_homeomorph_threeSphere (recognize M)
 
 end Poincare
