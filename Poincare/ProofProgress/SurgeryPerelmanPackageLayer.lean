@@ -898,6 +898,51 @@ theorem surgeryPerelmanDetailedAssemblyPayload_fields_of_nonempty
         payload
     ⟩
 
+/--
+An inhabited detailed surgery/Perelman assembly payload exposes the concrete
+combined surgery/Perelman/extinction payload object for every target, together
+with the selected flow and all fields projected from that same object.  This
+keeps the field-based payload available to downstream consumers instead of
+only its `Nonempty` wrapper or its normalized selected-flow projection.
+-/
+theorem surgeryPerelmanDetailedAssemblyPayload_combinedPayload_and_selectedFlowExtinctionFamily_of_nonempty
+    (payload :
+      Nonempty SurgeryPerelmanDetailedAssemblyPayloadFromFiniteExtinction.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackage n M,
+        ∃ _combinedPayload :
+          FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          flow = ricci_flow_data_of_surgery_package package ∧
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+            PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+            Nonempty (SurgeryScaleFunctionPayload flow) ∧
+            HasSingularityModelBlowupClassification flow ∧
+            FiniteExtinctionStatement n M ∧
+            FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases payload with ⟨payload⟩
+  intro M _top _t2 _charted _simple _compact _manifold
+  rcases payload.projectionAndExtinctionFamily M with
+    ⟨n, package, ⟨combinedPayload⟩⟩
+  let projectionPayload := combinedPayload.projectionPayload
+  exact
+    ⟨ n
+    , package
+    , combinedPayload
+    , projectionPayload.flow
+    , projectionPayload.flow_eq
+    , projectionPayload.constructionPackage
+    , projectionPayload.perelmanPackage
+    , projectionPayload.scalePayload
+    , projectionPayload.blowupClassification
+    , combinedPayload.finiteExtinctionStatement
+    , combinedPayload.finiteExtinctionWitness
+    ⟩
+
 /-- Concrete surgery-scale payloads produce the first construction-package field. -/
 theorem surgery_scale_function_of_payload
     {n : ℕ∞ω}
