@@ -647,6 +647,87 @@ theorem twoPointComplement_piOne_exists_unique_of_homeomorph_to_onePoint_threeSp
   exact ⟨Classical.choice inferInstance, fun homotopyClass => Subsingleton.elim _ _⟩
 
 /--
+Recognizing a space as the one-point compactification of `R^3` gives the full
+two-puncture collapse payload at a chosen basepoint: punctured-Euclidean chart,
+simple connectedness, connectedness/nonemptiness, collapsed π₀/π₁ objects,
+unique classes, and path-component collapse.
+-/
+theorem twoPointComplement_collapse_payload_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    (∃ puncture : EuclideanSpace ℝ (Fin 3),
+      Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+        ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+      SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+      ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+      Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+      Subsingleton (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+      Subsingleton (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+      (∀ a b : (({x} ∪ {y})ᶜ : Set M),
+        ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+      (∀ a b : HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+        a = b) ∧
+      (∀ a b : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+        a = b) ∧
+      (∀ a b : HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+        a = b) ∧
+      (∃ baseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+        ∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+          homotopyClass = baseClass) ∧
+      (∃ baseClass :
+        HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+        ∀ homotopyClass :
+          HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          homotopyClass = baseClass) ∧
+      (∃ baseClass : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+        ∀ fundamentalClass :
+          FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+          fundamentalClass = baseClass) ∧
+      (∃ baseClass :
+        HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+        ∀ homotopyClass :
+          HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          homotopyClass = baseClass) ∧
+      (∀ a b : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path a b)) ∧
+      (∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+        pathComponent basepoint = Set.univ) :=
+  ⟨ exists_homeomorph_twoPointComplement_puncturedEuclidean_of_homeomorph_to_onePoint_threeSpace
+      h hyx
+  , twoPointComplement_simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+      h hyx
+  , twoPointComplement_connectedSpace_of_homeomorph_to_onePoint_threeSpace
+      h hyx
+  , twoPointComplement_nonempty_of_homeomorph_to_onePoint_threeSpace
+      h hyx
+  , twoPointComplement_piZero_subsingleton_of_homeomorph_to_onePoint_threeSpace
+      h hyx basepoint
+  , twoPointComplement_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
+      h hyx basepoint
+  , twoPointComplement_zerothHomotopy_mk_eq_of_homeomorph_to_onePoint_threeSpace
+      h hyx
+  , twoPointComplement_piZero_eq_of_homeomorph_to_onePoint_threeSpace
+      h hyx basepoint
+  , twoPointComplement_fundamentalGroup_eq_of_homeomorph_to_onePoint_threeSpace
+      h hyx basepoint
+  , twoPointComplement_piOne_eq_of_homeomorph_to_onePoint_threeSpace
+      h hyx basepoint
+  , twoPointComplement_zerothHomotopy_exists_unique_of_homeomorph_to_onePoint_threeSpace
+      h hyx
+  , twoPointComplement_piZero_exists_unique_of_homeomorph_to_onePoint_threeSpace
+      h hyx basepoint
+  , twoPointComplement_fundamentalGroup_exists_unique_of_homeomorph_to_onePoint_threeSpace
+      h hyx basepoint
+  , twoPointComplement_piOne_exists_unique_of_homeomorph_to_onePoint_threeSpace
+      h hyx basepoint
+  , twoPointComplement_path_nonempty_of_homeomorph_to_onePoint_threeSpace
+      h hyx
+  , twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
+      h hyx
+  ⟩
+
+/--
 The same single-puncture Euclidean chart transport, stated from recognition as
 the project `ThreeSphere`.
 -/
