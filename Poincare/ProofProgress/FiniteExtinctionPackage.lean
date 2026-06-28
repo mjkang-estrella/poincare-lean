@@ -1,3 +1,4 @@
+import Poincare.CompletionTarget
 import Poincare.DependencyCrosswalk
 
 open scoped Manifold ContDiff
@@ -735,6 +736,223 @@ theorem poincare_conjecture_payload_of_smoothability_and_subobligations_family_e
   apply Subsingleton.elim
 
 /--
+The smoothability/sub-obligation-family route directly proves the canonical
+completion target, not only the project statement spelling, by feeding its
+constructed universal finite-extinction statement into the canonical
+completion boundary.
+-/
+theorem canonical_completion_target_of_smoothability_and_subobligations_family
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    canonicalCompletionTarget.{u} :=
+  canonical_completion_target_of_universalFiniteExtinctionStatement
+    (universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+      smoothabilityPackage h)
+    extractSphere
+
+/--
+The canonical target route above is exactly the universal finite-extinction
+canonical route for the named smoothability/sub-obligation-family boundary.
+-/
+theorem canonical_completion_target_of_smoothability_and_subobligations_family_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    canonical_completion_target_of_smoothability_and_subobligations_family
+        smoothabilityPackage h extractSphere =
+      canonical_completion_target_of_universalFiniteExtinctionStatement
+        (universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+          smoothabilityPackage h)
+        extractSphere := by
+  apply Subsingleton.elim
+
+/--
+The smoothability/sub-obligation-family route exposes the canonical completion
+payload, with the canonical target spelling used by final certificate code.
+-/
+theorem canonical_completion_payload_of_smoothability_and_subobligations_family
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    ∃ _target : canonicalCompletionTarget.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  canonical_completion_payload_of_universalFiniteExtinctionStatement
+    (universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+      smoothabilityPackage h)
+    extractSphere
+
+/--
+The canonical payload route above is exactly the universal finite-extinction
+canonical payload for the named smoothability/sub-obligation-family boundary.
+-/
+theorem canonical_completion_payload_of_smoothability_and_subobligations_family_eq
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    canonical_completion_payload_of_smoothability_and_subobligations_family
+        smoothabilityPackage h extractSphere =
+      canonical_completion_payload_of_universalFiniteExtinctionStatement
+        (universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+          smoothabilityPackage h)
+        extractSphere := by
+  apply Subsingleton.elim
+
+/--
+The smoothability/sub-obligation-family route discharges any universe-indexed
+completion criterion through the canonical completion target route.
+-/
+theorem canonical_completion_criterion_of_smoothability_and_subobligations_family
+    (witness : Type u)
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    CompletionCriterionAtUniverse witness :=
+  canonical_completion_criterion_of_universalFiniteExtinctionStatement
+    witness
+    (universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+      smoothabilityPackage h)
+    extractSphere
+
+/--
+The canonical criterion route above is exactly the universal finite-extinction
+canonical criterion for the named smoothability/sub-obligation-family boundary.
+-/
+theorem canonical_completion_criterion_of_smoothability_and_subobligations_family_eq
+    (witness : Type u)
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    canonical_completion_criterion_of_smoothability_and_subobligations_family
+        witness smoothabilityPackage h extractSphere =
+      canonical_completion_criterion_of_universalFiniteExtinctionStatement
+        witness
+        (universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+          smoothabilityPackage h)
+        extractSphere := by
+  apply Subsingleton.elim
+
+/--
 The smoothability/sub-obligation-family route directly discharges any
 universe-indexed completion criterion by extracting the criterion component
 from the completion payload above.
@@ -896,6 +1114,96 @@ theorem certificate_payload_of_smoothability_and_subobligations_family_eq
       , poincare_conjecture_payload_of_smoothability_and_subobligations_family
           smoothabilityPackage h extractSphere
       , completion_criterion_of_smoothability_and_subobligations_family
+          witness smoothabilityPackage h extractSphere
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
+The same smoothability/sub-obligation-family route exposes the canonical
+certificate-facing finite-extinction evidence: universal finite extinction,
+the canonical completion target, the canonical completion payload, and a
+requested canonical completion criterion.
+-/
+theorem canonical_certificate_payload_of_smoothability_and_subobligations_family
+    (witness : Type u)
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    ∃ _finiteExtinction : UniversalFiniteExtinctionStatement.{u},
+    ∃ _target : canonicalCompletionTarget.{u},
+    ∃ _payload :
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+      CompletionCriterionAtUniverse witness :=
+  ⟨ universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+      smoothabilityPackage h
+  , canonical_completion_target_of_smoothability_and_subobligations_family
+      smoothabilityPackage h extractSphere
+  , canonical_completion_payload_of_smoothability_and_subobligations_family
+      smoothabilityPackage h extractSphere
+  , canonical_completion_criterion_of_smoothability_and_subobligations_family
+      witness smoothabilityPackage h extractSphere
+  ⟩
+
+/--
+The canonical certificate payload above is exactly the tuple of the named
+universal finite-extinction boundary, canonical endpoint, canonical completion
+payload, and canonical criterion projection constructed from the same data.
+-/
+theorem canonical_certificate_payload_of_smoothability_and_subobligations_family_eq
+    (witness : Type u)
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    canonical_certificate_payload_of_smoothability_and_subobligations_family
+        witness smoothabilityPackage h extractSphere =
+      ⟨ universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+          smoothabilityPackage h
+      , canonical_completion_target_of_smoothability_and_subobligations_family
+          smoothabilityPackage h extractSphere
+      , canonical_completion_payload_of_smoothability_and_subobligations_family
+          smoothabilityPackage h extractSphere
+      , canonical_completion_criterion_of_smoothability_and_subobligations_family
           witness smoothabilityPackage h extractSphere
       ⟩ := by
   apply Subsingleton.elim
