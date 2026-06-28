@@ -1324,6 +1324,44 @@ theorem poincare_statement_final_certificate_and_completion_criterion_of_smootha
   ⟩
 
 /--
+The checked remaining-dependency package, grounded universal finite extinction,
+and a simply connected recognition prefix close both public and canonical
+payload layers.  The recognition prefix contributes only the topology
+extraction statement; the grounded pillar supplies the universal
+finite-extinction route used by both payloads.
+-/
+theorem project_and_canonical_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_recognitionPrefix
+    (dependencies : RemainingDependencyPackage.{u})
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} := by
+  let topology :=
+    topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+      recognitionPrefix
+  let topologyStatement : ExtinctionTopologyExtractionStatement.{u} :=
+    extinction_topology_extraction_statement_of_topology_package topology
+  let projectPayload :=
+    project_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+      dependencies grounded topologyStatement
+  let canonicalPayload :=
+    canonical_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+      dependencies grounded topologyStatement
+  exact
+    ⟨ projectPayload.1
+    , projectPayload.2.1
+    , canonicalPayload.1
+    , canonicalPayload.2.1
+    , projectPayload.2.2
+    ⟩
+
+/--
 Projecting the remaining dependency package out of the certificate built from
 the three package inputs recovers the same repackaged dependency field.
 -/
