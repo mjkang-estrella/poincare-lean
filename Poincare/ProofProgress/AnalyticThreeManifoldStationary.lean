@@ -14731,6 +14731,96 @@ def StationaryZeroAnalyticFoundationPackageLayerProductionData : Prop :=
               metric identifiesDerivative identifiesRicci)
 
 /--
+Universal stationary-zero production data exposes the concrete stationary-zero
+surface equations for every package-layer target, while retaining the stored
+analytic package and the terminal curvature-evolution field.
+-/
+theorem stationaryZeroAnalyticFoundation_surfaceCurvatureFamily_of_stationaryZeroProductionData_current_api
+    (data :
+      StationaryZeroAnalyticFoundationPackageLayerProductionData.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ smooth2 : IsManifold ThreeManifoldModelWithCorners 2 M,
+        letI : IsManifold ThreeManifoldModelWithCorners 2 M := smooth2
+        ∃ metric :
+          ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+            ThreeManifoldModel
+            (fun x : M => TangentSpace ThreeManifoldModelWithCorners x),
+        ∃ identifiesDerivative :
+          IsMetricTimeDerivativeOf
+            (stationary_time_dependent_riemannian_metric metric)
+            (zero_metric_time_derivative_field
+              (stationary_time_dependent_riemannian_metric metric)),
+        ∃ identifiesRicci :
+          IsRicciTensorOf
+            (stationary_time_dependent_riemannian_metric metric)
+            (zero_ricci_tensor_field
+              (stationary_time_dependent_riemannian_metric metric)),
+        ∃ _productionData :
+          StationaryZeroAnalyticFoundationProductionDataCurrentApi
+            metric identifiesDerivative identifiesRicci,
+        ∃ package :
+          RicciFlowAnalyticFoundationPackage
+            ThreeManifoldModelWithCorners n M,
+          ricci_flow_data_of_analytic_foundation_package package =
+            stationary_zero_ricci_flow_data_current_api
+              metric identifiesDerivative identifiesRicci ∧
+          AnalyticFoundationWithEquationBoundaryStatement
+            (stationary_zero_ricci_flow_data_current_api
+              metric identifiesDerivative identifiesRicci) ∧
+          (∀ t,
+            metric_at_time_of_ricci_flow_data
+              (stationary_zero_ricci_flow_data_current_api
+                metric identifiesDerivative identifiesRicci) t = metric) ∧
+          (∀ t x (v w : TangentSpace ThreeManifoldModelWithCorners x),
+            metric_time_derivative_at_time_of_metric_derivative_field
+              (metric_time_derivative_field_of_metric_derivative_data
+                (metric_derivative_data_of_equation_boundary_package
+                  (stationary_zero_ricci_flow_equation_boundary_package
+                    metric identifiesDerivative identifiesRicci
+                    (stationary_zero_satisfies_ricci_flow_equation_current_api
+                      metric identifiesDerivative identifiesRicci))))
+              t x v w = 0 ∧
+            ricci_tensor_at_time_of_ricci_flow_data
+              (stationary_zero_ricci_flow_data_current_api
+                metric identifiesDerivative identifiesRicci) t x v w = 0 ∧
+            scalar_curvature_at_time_of_ricci_flow_data
+              (stationary_zero_ricci_flow_data_current_api
+                metric identifiesDerivative identifiesRicci) t x = 0 ∧
+            ricci_flow_rhs_tensor
+              (curvature_data_of_ricci_flow_data
+                (stationary_zero_ricci_flow_data_current_api
+                  metric identifiesDerivative identifiesRicci)) t x v w = 0 ∧
+            metric_time_derivative_at_time_of_metric_derivative_field
+              (metric_time_derivative_field_of_metric_derivative_data
+                (metric_derivative_data_of_equation_boundary_package
+                  (stationary_zero_ricci_flow_equation_boundary_package
+                    metric identifiesDerivative identifiesRicci
+                    (stationary_zero_satisfies_ricci_flow_equation_current_api
+                      metric identifiesDerivative identifiesRicci))))
+              t x v w =
+            ricci_flow_rhs_tensor
+              (curvature_data_of_ricci_flow_data
+                (stationary_zero_ricci_flow_data_current_api
+                  metric identifiesDerivative identifiesRicci)) t x v w) ∧
+          HasCurvatureEvolutionEquations
+            (stationary_zero_ricci_flow_data_current_api
+              metric identifiesDerivative identifiesRicci) := by
+  intro M _top _t2 _charted _simple _compact _smooth1
+  rcases data M with ⟨n, smooth2, targetData⟩
+  letI : IsManifold ThreeManifoldModelWithCorners 2 M := smooth2
+  rcases targetData with
+    ⟨metric, identifiesDerivative, identifiesRicci, ⟨productionData⟩⟩
+  exact
+    ⟨n, smooth2, metric, identifiesDerivative, identifiesRicci,
+      productionData,
+      three_manifold_stationary_zero_analytic_foundation_surface_and_curvature_payload_of_production_data_current_api
+        metric identifiesDerivative identifiesRicci productionData⟩
+
+/--
 Universal stationary-zero production data discharges the analytic package-layer
 requirement by constructing the stored analytic-foundation package for each
 target.
