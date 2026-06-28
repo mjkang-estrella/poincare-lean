@@ -752,6 +752,29 @@ theorem twoPointComplement_piOne_exists_unique_of_topology_package
   exact ⟨Classical.choice inferInstance, fun homotopyClass => Subsingleton.elim _ _⟩
 
 /--
+The completed topology package exposes the contractible single-puncture
+complement together with simple connectedness for both the single-puncture and
+two-puncture complements selected by a finite-extinction witness.
+-/
+theorem complement_contractible_and_simplyConnected_payload_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) {y : M} (hyx : y ≠ x) :
+    ContractibleSpace ({x}ᶜ : Set M) ∧
+      SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+      SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+  ⟨ compl_singleton_contractibleSpace_of_topology_package
+      package M extinction x
+  , compl_singleton_simplyConnectedSpace_of_topology_package
+      package M extinction x
+  , twoPointComplement_simplyConnectedSpace_of_topology_package
+      package M extinction hyx
+  ⟩
+
+/--
 The completed topology package supplies the core complement chart,
 connectedness, and low-dimensional homotopy-collapse payloads for both one and
 two punctures, after choosing a finite-extinction witness.
