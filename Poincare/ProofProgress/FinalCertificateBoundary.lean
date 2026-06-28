@@ -1338,4 +1338,43 @@ theorem project_and_canonical_payload_and_final_certificate_iff_topologyPackage_
       project_and_canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_topologyPackage
         inputs.smoothability inputs.finiteExtinction topology
 
+/--
+Over fixed smoothability and finite-extinction package inputs, a topology
+package directly yields the public Poincare statement.  This is the
+statement-level projection of the checked final-certificate payload, without
+requiring downstream code to unpack the larger tuple.
+-/
+theorem poincare_conjecture_statement_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    PoincareConjectureStatement.{u} :=
+  (project_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+    inputs topology).1
+
+/--
+After the two canonical non-topology package inputs are fixed, proving the
+public Poincare statement together with a checked completion certificate is
+equivalent to producing the topology package.  The reverse direction constructs
+both the public statement and certificate from the same topology package; the
+forward direction extracts the topology requirement from the checked
+certificate component.
+-/
+theorem poincare_statement_and_final_certificate_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u}) :
+    (PoincareConjectureStatement.{u} ∧ PoincareCompletionCertificate.{u}) ↔
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage := by
+  constructor
+  · intro payload
+    exact topologyPackage_requirement_of_final_certificate payload.2
+  · intro topology
+    exact
+      ⟨ poincare_conjecture_statement_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          inputs topology
+      , completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          inputs topology
+      ⟩
+
 end Poincare
