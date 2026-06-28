@@ -2845,6 +2845,82 @@ theorem completion_payload_criterion_coherence_of_unpacked_aggregate_completion_
   rfl
 
 /--
+Coherence between the canonical payload endpoint and the project completion
+payload endpoint of the grounded terminal aggregate route.  The two payloads
+live on definitionally equal target propositions, so they carry the same
+statement/criterion family data.
+-/
+theorem canonical_project_payload_coherence_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ canonicalPayload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ projectPayload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+      projectStatement =
+        poincare_statement_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M ∧
+      canonicalPayload =
+        canonical_completion_payload_of_canonical_completion_target
+          projectStatement ∧
+      projectPayload =
+        completion_payload_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M ∧
+      canonicalPayload = projectPayload := by
+  let projectStatement : PoincareConjectureStatement.{u} :=
+    poincare_statement_of_unpacked_aggregate_completion
+      dependencies smoothability grounded topologyStatement M
+  let canonicalPayload :
+      ∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    canonical_completion_payload_of_canonical_completion_target
+      projectStatement
+  let projectPayload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    completion_payload_of_unpacked_aggregate_completion
+      dependencies smoothability grounded topologyStatement M
+  have hProjectStatement :
+      projectStatement =
+        poincare_statement_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M :=
+    rfl
+  have hCanonicalPayload :
+      canonicalPayload =
+        canonical_completion_payload_of_canonical_completion_target
+          projectStatement :=
+    rfl
+  have hProjectPayload :
+      projectPayload =
+        completion_payload_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M :=
+    rfl
+  have hPayloads :
+      canonicalPayload = projectPayload := by
+    apply Subsingleton.elim
+  exact
+    ⟨projectStatement, canonicalPayload, projectPayload,
+      hProjectStatement, hCanonicalPayload, hProjectPayload, hPayloads⟩
+
+/-- Theorem contract for
+`canonical_project_payload_coherence_of_unpacked_aggregate_completion`. -/
+theorem canonical_project_payload_coherence_of_unpacked_aggregate_completion_eq :
+    @Poincare.canonical_project_payload_coherence_of_unpacked_aggregate_completion =
+      @Poincare.canonical_project_payload_coherence_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
