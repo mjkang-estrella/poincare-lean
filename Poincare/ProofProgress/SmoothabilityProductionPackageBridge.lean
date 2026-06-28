@@ -382,4 +382,51 @@ theorem threeSphereRecognition_surgeryPrerequisites_and_moiseInitialFields_famil
         payload h).2
     ⟩
 
+/--
+The same target-family recognition and recognized-source smoothability payload
+can be split into the three component families consumed independently by later
+smoothability assembly: topology recognition, transported surgery
+prerequisites, and the first two Moise package fields.
+-/
+theorem threeSphereRecognition_componentFamilies_of_recognition_and_subobligationsPayload
+    (recognize :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere))
+    (payload : ThreeSphereRecognitionSmoothabilitySubobligationsPayload.{u}) :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          ∃ _t2 : T2Space M,
+          ∃ _charted : ChartedSpace ThreeManifoldModel M,
+          ∃ _simple : SimplyConnectedSpace M,
+          ∃ _compact : CompactSpace M,
+          ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+            Nonempty M) ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          ∃ _t2 : T2Space M,
+          ∃ _charted : ChartedSpace ThreeManifoldModel M,
+          ∃ _simple : SimplyConnectedSpace M,
+          ∃ _compact : CompactSpace M,
+          ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+            HasMoiseLocallyFiniteCoverRefinement M localCharts) := by
+  constructor
+  · exact recognize
+  constructor
+  · intro M _top _t2 _charted _simple _compact
+    exact
+      (threeSphereRecognition_surgeryPrerequisites_and_moiseInitialFields
+        payload (recognize M)).1
+  · intro M _top _t2 _charted _simple _compact
+    exact
+      (threeSphereRecognition_surgeryPrerequisites_and_moiseInitialFields
+        payload (recognize M)).2
+
 end Poincare
