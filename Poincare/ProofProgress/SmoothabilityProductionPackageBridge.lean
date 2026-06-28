@@ -204,6 +204,30 @@ theorem onePointRecognition_surgeryPrerequisites_and_moiseLocalCharts
       moiseLocalCharts_of_onePointRecognition_subobligationsPayload payload h⟩
 
 /--
+One-point recognition plus the recognized-source payload supplies the surgery
+prerequisites and the first two Moise package fields together.
+-/
+theorem onePointRecognition_surgeryPrerequisites_and_moiseInitialFields
+    (payload : OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    (∃ _t2 : T2Space M,
+      ∃ _charted : ChartedSpace ThreeManifoldModel M,
+      ∃ _simple : SimplyConnectedSpace M,
+      ∃ _compact : CompactSpace M,
+      ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+        Nonempty M) ∧
+    (∃ _t2 : T2Space M,
+      ∃ _charted : ChartedSpace ThreeManifoldModel M,
+      ∃ _simple : SimplyConnectedSpace M,
+      ∃ _compact : CompactSpace M,
+      ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+        HasMoiseLocallyFiniteCoverRefinement M localCharts) := by
+  exact
+    ⟨smoothability_surgery_prerequisites_of_homeomorph_to_onePoint_threeSpace h,
+      moiseInitialFields_of_onePointRecognition_subobligationsPayload payload h⟩
+
+/--
 Uniform smoothability sub-obligation payload for sources recognized as
 `ThreeSphere`, matching the topology-recognition output form.
 -/
@@ -291,6 +315,33 @@ theorem threeSphereRecognition_surgeryPrerequisites_and_moiseLocalCharts
     ⟨smoothability_surgery_prerequisites_of_homeomorph_to_onePoint_threeSpace
         (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h),
       moiseLocalCharts_of_threeSphereRecognition_subobligationsPayload
+        payload h⟩
+
+/--
+For the topology route stated as `ThreeSphere` recognition, the transported
+smooth atlas supplies surgery prerequisites while the recognized-source payload
+supplies the first two Moise package fields.
+-/
+theorem threeSphereRecognition_surgeryPrerequisites_and_moiseInitialFields
+    (payload : ThreeSphereRecognitionSmoothabilitySubobligationsPayload.{u})
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    (∃ _t2 : T2Space M,
+      ∃ _charted : ChartedSpace ThreeManifoldModel M,
+      ∃ _simple : SimplyConnectedSpace M,
+      ∃ _compact : CompactSpace M,
+      ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+        Nonempty M) ∧
+    (∃ _t2 : T2Space M,
+      ∃ _charted : ChartedSpace ThreeManifoldModel M,
+      ∃ _simple : SimplyConnectedSpace M,
+      ∃ _compact : CompactSpace M,
+      ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+        HasMoiseLocallyFiniteCoverRefinement M localCharts) := by
+  exact
+    ⟨smoothability_surgery_prerequisites_of_homeomorph_to_onePoint_threeSpace
+        (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h),
+      moiseInitialFields_of_threeSphereRecognition_subobligationsPayload
         payload h⟩
 
 end Poincare
