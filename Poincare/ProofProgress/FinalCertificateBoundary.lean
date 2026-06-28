@@ -39523,4 +39523,114 @@ theorem reserved_named_certificate_statement_selected_target_mathlib_coherence_o
       @Poincare.reserved_named_certificate_statement_selected_target_mathlib_coherence_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Reserved named certificate-derived statement with selected/mathlib targets and
+completion criterion-family coherence.
+
+This is the most compact current consumer endpoint for inhabited
+equation-boundary dependencies: it keeps the final statement identified with
+the statement obtained from the checked certificate, exposes its selected
+project target and literal mathlib target conclusion, and synchronizes the
+selected completion criterion at `witness` with the full reserved completion
+criterion family.
+-/
+theorem reserved_named_certificate_statement_selected_target_mathlib_completionCriterion_family_coherence_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (witness : Type u) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u},
+    ∃ finalStatement : PoincareConjectureStatement.{u},
+    ∃ mathlibTarget : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ selectedTarget : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ mathlibConclusion :
+      Nonempty
+        (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)),
+    ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ mathlibHomeomorphism :
+      M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ criterion : CompletionCriterionAtUniverse witness,
+    ∃ completionCriterionFamily :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      finalStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      finalStatement M = selectedTarget ∧
+      selectedTarget =
+        (⟨projectHomeomorphism⟩ : Nonempty (M ≃ₜ ThreeSphere)) ∧
+      mathlibTarget =
+        reserved_mathlib_statement_of_nonempty_equation_boundary_dependencies
+          dependencies ∧
+      mathlibConclusion = mathlibTarget M ∧
+      mathlibConclusion =
+        (⟨mathlibHomeomorphism⟩ :
+          Nonempty
+            (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) ∧
+      projectHomeomorphism = mathlibHomeomorphism ∧
+      criterion = completionCriterionFamily witness ∧
+      criterion =
+        reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+          dependencies witness ∧
+      (∀ witness : Type u,
+        completionCriterionFamily witness =
+          reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+            dependencies witness) ∧
+      Topology.IsEmbedding projectHomeomorphism ∧
+      Topology.IsEmbedding mathlibHomeomorphism ∧
+      Continuous projectHomeomorphism ∧
+      Continuous mathlibHomeomorphism := by
+  rcases
+      reserved_named_certificate_statement_selected_target_mathlib_coherence_of_nonempty_equation_boundary_dependencies
+        dependencies M with
+    ⟨theoremName, certificate, nonemptyCertificate, finalStatement,
+      mathlibTarget, selectedTarget, mathlibConclusion, projectHomeomorphism,
+      mathlibHomeomorphism, hTheoremNameCanonical, hTheoremNameLiteral,
+      hCertificate, hFinalStatement, hFinalStatementSelected,
+      hSelectedProject, hMathlibTargetReserved, hMathlibConclusionTarget,
+      hMathlibConclusionHomeomorphism, hProjectMathlib, hProjectEmbedding,
+      hMathlibEmbedding, hProjectContinuous, hMathlibContinuous⟩
+  rcases
+      reserved_named_selected_target_mathlib_completionCriterion_family_coherence_of_nonempty_equation_boundary_dependencies
+        dependencies M witness with
+    ⟨_criterionTheoremName, _criterionCertificate,
+      _criterionFinalStatement, _criterionMathlibTarget,
+      _criterionSelectedTarget, _criterionMathlibConclusion,
+      _criterionProjectHomeomorphism, _criterionMathlibHomeomorphism,
+      criterion, completionCriterionFamily,
+      _hCriterionTheoremNameCanonical, _hCriterionTheoremNameLiteral,
+      _hCriterionCertificate, _hCriterionFinalStatementSelected,
+      _hCriterionSelectedProject, _hCriterionMathlibTargetReserved,
+      _hCriterionMathlibConclusionTarget,
+      _hCriterionMathlibConclusionHomeomorphism,
+      _hCriterionProjectMathlib, hCriterionFamily, hCriterion,
+      hCompletionCriterionFamily, _hCriterionProjectEmbedding,
+      _hCriterionMathlibEmbedding, _hCriterionProjectContinuous,
+      _hCriterionMathlibContinuous⟩
+  exact
+    ⟨theoremName, certificate, nonemptyCertificate, finalStatement,
+      mathlibTarget, selectedTarget, mathlibConclusion, projectHomeomorphism,
+      mathlibHomeomorphism, criterion, completionCriterionFamily,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hFinalStatement, hFinalStatementSelected, hSelectedProject,
+      hMathlibTargetReserved, hMathlibConclusionTarget,
+      hMathlibConclusionHomeomorphism, hProjectMathlib, hCriterionFamily,
+      hCriterion, hCompletionCriterionFamily, hProjectEmbedding,
+      hMathlibEmbedding, hProjectContinuous, hMathlibContinuous⟩
+
+/-- Theorem contract for
+`reserved_named_certificate_statement_selected_target_mathlib_completionCriterion_family_coherence_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_named_certificate_statement_selected_target_mathlib_completionCriterion_family_coherence_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_named_certificate_statement_selected_target_mathlib_completionCriterion_family_coherence_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_named_certificate_statement_selected_target_mathlib_completionCriterion_family_coherence_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
