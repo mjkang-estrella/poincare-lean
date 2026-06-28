@@ -53,4 +53,31 @@ theorem onePoint_threeSpace_compl_singleton_nonempty_of_contractible
     onePoint_threeSpace_compl_singleton_pathConnectedSpace_of_contractible p
   infer_instance
 
+/--
+The singleton complement package needed by downstream puncture topology:
+contractibility, ordinary connectedness consequences, and the already
+transported simple/local path-connected structures.
+-/
+theorem onePoint_threeSpace_compl_singleton_contractible_topology_package
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    ContractibleSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      Nonempty
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      PathConnectedSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      ConnectedSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      SimplyConnectedSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      LocPathConnectedSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  exact
+    ⟨onePoint_threeSpace_compl_singleton_contractibleSpace p,
+      onePoint_threeSpace_compl_singleton_nonempty_of_contractible p,
+      onePoint_threeSpace_compl_singleton_pathConnectedSpace_of_contractible p,
+      onePoint_threeSpace_compl_singleton_connectedSpace_of_contractible p,
+      onePoint_threeSpace_compl_singleton_simplyConnectedSpace p,
+      onePoint_threeSpace_compl_singleton_locPathConnectedSpace p⟩
+
 end Poincare
