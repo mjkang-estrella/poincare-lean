@@ -1732,4 +1732,121 @@ theorem detailed_grounded_payload_remaining_dependency_checked_certificate_and_c
         witness certificate
     ⟩
 
+/--
+Consumer payload for the grounded finite-extinction pillar.  It retains the
+detailed assembly payload, the legacy universal statement, package-layer and
+milestone requirements, the compact package/statement/witness family, the full
+flow/surgery/control statement payload family, and the two package-first
+projection families derived from that detailed payload.
+-/
+structure GroundedUniversalFiniteExtinctionCompleteConsumerPayload where
+  detailedPayload :
+    GroundedUniversalFiniteExtinctionDetailedAssemblyPayload.{u}
+  universalStatement :
+    UniversalFiniteExtinctionStatement.{u}
+  finiteExtinctionPackageRequirement :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.finiteExtinctionPackage
+  ricciFlowWithSurgeryMilestone :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.ricciFlowWithSurgery
+  perelmanSingularityControlMilestone :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.perelmanSingularityControl
+  finiteExtinctionMilestone :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.finiteExtinction
+  packageStatementWitnessFamily :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ _package : FiniteExtinctionSurgeryPackage n M,
+          FiniteExtinctionStatement n M ∧
+            FiniteExtinctionByRicciFlowWithSurgery M
+  statementPayloadFamily :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ surgery : HasRicciFlowWithSurgery n M,
+        ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+        ∃ _package : FiniteExtinctionSurgeryPackage n M,
+        ∃ _packageStatement : FiniteExtinctionStatement n M,
+        ∃ _derivation : HasFiniteExtinctionDerivation flow surgery control,
+          FiniteExtinctionByRicciFlowWithSurgery M
+  flowPackageFamily :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ surgery : HasRicciFlowWithSurgery n M,
+        ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+        ∃ _package : FiniteExtinctionSurgeryPackage n M,
+          FiniteExtinctionStatement n M ∧
+            HasFiniteExtinctionDerivation flow surgery control ∧
+            FiniteExtinctionByRicciFlowWithSurgery M
+  packageStatementDerivationFamily :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ _package : FiniteExtinctionSurgeryPackage n M,
+          FiniteExtinctionStatement n M ∧
+            FiniteExtinctionByRicciFlowWithSurgery M ∧
+            ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+            ∃ surgery : HasRicciFlowWithSurgery n M,
+            ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+              HasFiniteExtinctionDerivation flow surgery control
+
+/--
+An inhabited detailed grounded finite-extinction assembly payload constructs
+the complete finite-extinction consumer payload without reopening the original
+grounded certificate family.
+-/
+theorem groundedUniversalFiniteExtinction_completeConsumerPayload_of_nonemptyDetailedAssemblyPayload
+    (payload :
+      Nonempty GroundedUniversalFiniteExtinctionDetailedAssemblyPayload.{u}) :
+    Nonempty
+      GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u} := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ { detailedPayload := payload
+        universalStatement := payload.universalStatement
+        finiteExtinctionPackageRequirement :=
+          payload.finiteExtinctionPackageRequirement
+        ricciFlowWithSurgeryMilestone :=
+          payload.ricciFlowWithSurgeryMilestone
+        perelmanSingularityControlMilestone :=
+          payload.perelmanSingularityControlMilestone
+        finiteExtinctionMilestone :=
+          payload.finiteExtinctionMilestone
+        packageStatementWitnessFamily :=
+          payload.packageStatementWitnessFamily
+        statementPayloadFamily := payload.statementPayloadFamily
+        flowPackageFamily :=
+          groundedUniversalFiniteExtinctionDetailedAssemblyPayload_flowPackageFamily
+            payload
+        packageStatementDerivationFamily :=
+          groundedUniversalFiniteExtinctionDetailedAssemblyPayload_packageStatementDerivationFamily
+            payload } ⟩
+
+/--
+Grounded universal finite extinction constructs the complete finite-extinction
+consumer payload, retaining both the compact package-first data and the full
+flow/surgery/control derivation family.
+-/
+theorem groundedUniversalFiniteExtinction_completeConsumerPayload_of_grounded
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    Nonempty
+      GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u} :=
+  groundedUniversalFiniteExtinction_completeConsumerPayload_of_nonemptyDetailedAssemblyPayload
+    ⟨groundedUniversalFiniteExtinctionDetailedAssemblyPayload grounded⟩
+
 end Poincare
