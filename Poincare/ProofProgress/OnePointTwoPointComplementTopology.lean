@@ -650,6 +650,20 @@ noncomputable def onePoint_threeSpace_twoPointComplement_flatRecognition_payload
   pathComponentEqUniv := payload.lowHomotopy.pathComponentEqUniv
 
 /--
+The flat two-puncture recognition payload reconstructs path-connectedness from
+its stored nonempty witness and explicit paths between all pairs of points.
+-/
+theorem onePoint_threeSpace_twoPointComplement_pathConnectedSpace_of_flatRecognition
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} {hqp : q ≠ p}
+    {basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    (payload : OnePointTwoPointComplementFlatRecognitionPayload hqp basepoint) :
+    PathConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) where
+  nonempty := payload.nonempty
+  joined := payload.pathNonempty
+
+/--
 The flat one-point two-puncture recognition payload discharges the legacy
 collapse tuple, including the low-homotopy subsingleton and unique-class
 conclusions, without reconstructing the punctured-Euclidean chart or path
