@@ -108,4 +108,28 @@ theorem moiseSmoothabilityStatement_of_threeSphereRecognition
   intro M _ _ _ _ _
   exact admitsSurgeryModelSmoothStructure_of_homeomorph_threeSphere (recognize M)
 
+/--
+`ThreeSphere` recognition supplies both the corrected Moise-shaped
+smoothability statement and a recognized smooth-structure payload for every
+target in the compact simply connected family.
+-/
+theorem moiseSmoothabilityStatement_and_recognized_smoothStructure_family_of_threeSphereRecognition
+    (recognize :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere)) :
+    MoiseSmoothabilityStatement.{u} ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere) ∧
+            AdmitsSurgeryModelSmoothStructure M) := by
+  exact
+    ⟨ moiseSmoothabilityStatement_of_threeSphereRecognition recognize
+    , fun M _top _t2 _charted _simple _compact =>
+        let h := recognize M
+        ⟨h, admitsSurgeryModelSmoothStructure_of_homeomorph_threeSphere h⟩
+    ⟩
+
 end Poincare
