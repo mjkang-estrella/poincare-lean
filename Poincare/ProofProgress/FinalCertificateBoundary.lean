@@ -902,6 +902,71 @@ theorem project_payload_and_final_certificate_of_smoothability_finiteExtinctionP
   rfl
 
 /--
+The direct recognition-prefix boundary can expose both final payload layers at
+once: the public Poincare statement/payload, the canonical completion
+target/payload, and the checked certificate.
+-/
+theorem project_and_canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} := by
+  let projectPayload :=
+    project_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+      smoothability finiteExtinction recognitionPrefix
+  let canonicalPayload :=
+    canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+      smoothability finiteExtinction recognitionPrefix
+  exact
+    ⟨ projectPayload.1
+    , projectPayload.2.1
+    , canonicalPayload.1
+    , canonicalPayload.2.1
+    , projectPayload.2.2
+    ⟩
+
+/--
+The bundled recognition-prefix final payload is exactly the tuple assembled
+from the direct project route, the direct canonical route, and the checked
+certificate carried by the project route.
+-/
+theorem project_and_canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix_eq
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    project_and_canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+        smoothability finiteExtinction recognitionPrefix =
+      (let projectPayload :=
+        project_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+          smoothability finiteExtinction recognitionPrefix
+      let canonicalPayload :=
+        canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+          smoothability finiteExtinction recognitionPrefix
+      ⟨ projectPayload.1
+      , projectPayload.2.1
+      , canonicalPayload.1
+      , canonicalPayload.2.1
+      , projectPayload.2.2
+      ⟩) := by
+  apply Subsingleton.elim
+
+/--
 Projecting the remaining dependency package out of the certificate built from
 the three package inputs recovers the same repackaged dependency field.
 -/
