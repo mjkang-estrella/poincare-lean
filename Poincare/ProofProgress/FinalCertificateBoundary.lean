@@ -3358,6 +3358,84 @@ theorem target_and_witness_projection_coherence_of_unpacked_aggregate_completion
   rfl
 
 /--
+Reserved-name statement/payload/target/criterion package from the combined
+aggregate consumer.  This keeps the project statement, project payload, direct
+target homeomorphism, and direct selected-witness criterion synchronized under
+the same grounded terminal aggregate route.
+-/
+theorem reserved_named_statement_payload_target_witness_package_of_unpacked_aggregate_completion
+    (dependencies : RemainingDependencyPackage.{u})
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (N : Type u) [TopologicalSpace N] [T2Space N]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) N]
+    [SimplyConnectedSpace N] [CompactSpace N]
+    (witness : Type u) :
+    ∃ theoremName : String,
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ projectPayload :
+      ∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ directTarget : Nonempty (N ≃ₜ ThreeSphere),
+    ∃ directCriterion : CompletionCriterionAtUniverse witness,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      projectStatement =
+        poincare_statement_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M ∧
+      projectPayload =
+        completion_payload_of_unpacked_aggregate_completion
+          dependencies smoothability grounded topologyStatement M ∧
+      directTarget =
+        target_homeomorphism_of_reserved_named_target_and_witness_conclusion
+          dependencies smoothability grounded topologyStatement M N witness ∧
+      directCriterion =
+        completion_criterion_of_reserved_named_target_and_witness_conclusion
+          dependencies smoothability grounded topologyStatement M N witness := by
+  rcases
+      reserved_named_final_conclusion_at_witness_of_unpacked_aggregate_completion
+        dependencies smoothability grounded topologyStatement M witness with
+    ⟨theoremName, projectStatement, _mathlibStatement, projectPayload,
+      _completionCriterionFamily, _selectedCriterion, hTheoremNameCanonical,
+      hTheoremNameLiteral, hProjectStatement, _hMathlibStatement,
+      hProjectPayload, _hSelectedFamily, _hSelectedDirect⟩
+  let directTarget : Nonempty (N ≃ₜ ThreeSphere) :=
+    target_homeomorphism_of_reserved_named_target_and_witness_conclusion
+      dependencies smoothability grounded topologyStatement M N witness
+  let directCriterion : CompletionCriterionAtUniverse witness :=
+    completion_criterion_of_reserved_named_target_and_witness_conclusion
+      dependencies smoothability grounded topologyStatement M N witness
+  have hDirectTarget :
+      directTarget =
+        target_homeomorphism_of_reserved_named_target_and_witness_conclusion
+          dependencies smoothability grounded topologyStatement M N witness :=
+    rfl
+  have hDirectCriterion :
+      directCriterion =
+        completion_criterion_of_reserved_named_target_and_witness_conclusion
+          dependencies smoothability grounded topologyStatement M N witness :=
+    rfl
+  exact
+    ⟨theoremName, projectStatement, projectPayload, directTarget,
+      directCriterion, hTheoremNameCanonical, hTheoremNameLiteral,
+      hProjectStatement, hProjectPayload, hDirectTarget,
+      hDirectCriterion⟩
+
+/-- Theorem contract for
+`reserved_named_statement_payload_target_witness_package_of_unpacked_aggregate_completion`. -/
+theorem reserved_named_statement_payload_target_witness_package_of_unpacked_aggregate_completion_eq :
+    @Poincare.reserved_named_statement_payload_target_witness_package_of_unpacked_aggregate_completion =
+      @Poincare.reserved_named_statement_payload_target_witness_package_of_unpacked_aggregate_completion :=
+  rfl
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
