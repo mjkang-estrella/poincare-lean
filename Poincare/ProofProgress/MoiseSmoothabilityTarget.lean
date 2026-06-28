@@ -10,6 +10,7 @@ smooth structure.  This module records that existence-shaped target and
 discharges the one-point-recognized case as a genuine theorem.
 -/
 
+import Poincare.DependencyCrosswalk
 import Poincare.ProofProgress.SmoothabilityOnePointRecognition
 
 universe u
@@ -508,5 +509,40 @@ theorem threeSphereRecognition_targets_and_family_of_nonemptyMoiseAssemblyPayloa
     , payload.surgeryMoise
     , moiseSmoothabilityRecognitionAssemblyPayload_targetFamily payload
     ⟩
+
+/--
+The exact smoothability package-layer requirement remains the full
+`SmoothabilityPackage`; an inhabited Moise assembly payload can be carried
+alongside that residual package input without weakening either boundary.
+-/
+theorem smoothabilityPackage_requirement_threeSphereRecognition_targets_and_family_of_smoothabilityPackage_and_nonemptyMoiseAssemblyPayload
+    (smoothability : SmoothabilityPackage.{u})
+    (payload : Nonempty (MoiseSmoothabilityRecognitionAssemblyPayload.{u})) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere)) ∧
+      MoiseSmoothThreeManifoldStatement.{u} ∧
+      MoiseSmoothabilityStatement.{u} ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere) ∧
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+            AdmitsSmoothThreeManifoldStructure M ∧
+            AdmitsSurgeryModelSmoothStructure M ∧
+            (∃ _t2 : T2Space M,
+              ∃ _charted : ChartedSpace ThreeManifoldModel M,
+              ∃ _simple : SimplyConnectedSpace M,
+              ∃ _compact : CompactSpace M,
+              ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+                Nonempty M)) :=
+  ⟨ by
+      simpa [dependencyPackageLayerRequirement] using smoothability
+  , threeSphereRecognition_targets_and_family_of_nonemptyMoiseAssemblyPayload
+      payload
+  ⟩
 
 end Poincare
