@@ -45097,4 +45097,120 @@ theorem closed_three_manifold_inverse_mathlib_homeomorphism_decomposition_of_res
       @Poincare.closed_three_manifold_inverse_mathlib_homeomorphism_decomposition_of_reserved_final_certificate :=
   rfl
 
+/--
+Complete arbitrary-manifold recognition certificate against the mathlib sphere.
+
+This is the compact consumer endpoint for the arbitrary-manifold side of the
+current final-certificate boundary.  It exposes the checked project and
+mathlib final statements, the selected project and literal-sphere
+homeomorphisms, the composed forward and inverse maps, the explicit inverse
+decomposition, both nonempty conclusions, cancellation equations, and
+topological facts for both composed directions.
+-/
+theorem closed_three_manifold_complete_mathlib_recognition_certificate_of_reserved_final_certificate
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{0})
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ checkedReservedStatement : PoincareConjectureStatement.{0},
+    ∃ checkedMathlibStatement : MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ projectConclusion : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ forwardHomeomorphism :
+      ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ composedMathlibHomeomorphism :
+      M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ inverseComposedMathlibHomeomorphism :
+      Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ M,
+    ∃ composedMathlibConclusion :
+      Nonempty
+        (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)),
+    ∃ inverseComposedMathlibConclusion :
+      Nonempty
+        (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ M),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      checkedReservedStatement =
+        poincare_conjecture_of_completion_certificate certificate ∧
+      checkedMathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          checkedReservedStatement ∧
+      projectConclusion = checkedReservedStatement M ∧
+      projectHomeomorphism = Classical.choice projectConclusion ∧
+      composedMathlibHomeomorphism =
+        projectHomeomorphism.trans forwardHomeomorphism ∧
+      inverseComposedMathlibHomeomorphism =
+        composedMathlibHomeomorphism.symm ∧
+      inverseComposedMathlibHomeomorphism =
+        forwardHomeomorphism.symm.trans projectHomeomorphism.symm ∧
+      composedMathlibConclusion =
+        (⟨composedMathlibHomeomorphism⟩ :
+          Nonempty
+            (M ≃ₜ
+              Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) ∧
+      composedMathlibConclusion = checkedMathlibStatement M ∧
+      inverseComposedMathlibConclusion =
+        (⟨inverseComposedMathlibHomeomorphism⟩ :
+          Nonempty
+            (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ M)) ∧
+      (∀ x : M,
+        inverseComposedMathlibHomeomorphism
+          (composedMathlibHomeomorphism x) = x) ∧
+      (∀ y : Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+        composedMathlibHomeomorphism
+          (inverseComposedMathlibHomeomorphism y) = y) ∧
+      Topology.IsEmbedding composedMathlibHomeomorphism ∧
+      Function.Bijective composedMathlibHomeomorphism ∧
+      Continuous composedMathlibHomeomorphism ∧
+      Topology.IsEmbedding inverseComposedMathlibHomeomorphism ∧
+      Function.Bijective inverseComposedMathlibHomeomorphism ∧
+      Continuous inverseComposedMathlibHomeomorphism := by
+  rcases
+      closed_three_manifold_bidirectional_mathlib_homeomorphism_of_reserved_final_certificate
+        dependencies M with
+    ⟨theoremName, certificate, checkedReservedStatement,
+      checkedMathlibStatement, projectConclusion, projectHomeomorphism,
+      forwardHomeomorphism, composedMathlibHomeomorphism,
+      inverseComposedMathlibHomeomorphism, composedMathlibConclusion,
+      inverseComposedMathlibConclusion, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, hCheckedReservedStatement,
+      hCheckedMathlibStatement, hProjectConclusion, hProjectHomeomorphism,
+      hComposedMathlibHomeomorphism, hInverseComposedMathlibHomeomorphism,
+      hComposedMathlibConclusion, hComposedMathlibStatement,
+      hInverseComposedMathlibConclusion, hLeft, hRight, hComposedEmbedding,
+      hComposedBijective, hComposedContinuous, hInverseComposedEmbedding,
+      hInverseComposedBijective, hInverseComposedContinuous⟩
+  have hInverseDecomposition :
+      inverseComposedMathlibHomeomorphism =
+        forwardHomeomorphism.symm.trans projectHomeomorphism.symm := by
+    rw [hInverseComposedMathlibHomeomorphism, hComposedMathlibHomeomorphism]
+    ext y
+    rfl
+  exact
+    ⟨theoremName, certificate, checkedReservedStatement,
+      checkedMathlibStatement, projectConclusion, projectHomeomorphism,
+      forwardHomeomorphism, composedMathlibHomeomorphism,
+      inverseComposedMathlibHomeomorphism, composedMathlibConclusion,
+      inverseComposedMathlibConclusion, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, hCheckedReservedStatement,
+      hCheckedMathlibStatement, hProjectConclusion, hProjectHomeomorphism,
+      hComposedMathlibHomeomorphism, hInverseComposedMathlibHomeomorphism,
+      hInverseDecomposition, hComposedMathlibConclusion,
+      hComposedMathlibStatement, hInverseComposedMathlibConclusion, hLeft,
+      hRight, hComposedEmbedding, hComposedBijective, hComposedContinuous,
+      hInverseComposedEmbedding, hInverseComposedBijective,
+      hInverseComposedContinuous⟩
+
+/-- Theorem contract for
+`closed_three_manifold_complete_mathlib_recognition_certificate_of_reserved_final_certificate`. -/
+theorem closed_three_manifold_complete_mathlib_recognition_certificate_of_reserved_final_certificate_eq :
+    @Poincare.closed_three_manifold_complete_mathlib_recognition_certificate_of_reserved_final_certificate =
+      @Poincare.closed_three_manifold_complete_mathlib_recognition_certificate_of_reserved_final_certificate :=
+  rfl
+
 end Poincare
