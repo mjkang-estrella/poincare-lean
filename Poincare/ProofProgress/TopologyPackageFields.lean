@@ -2178,6 +2178,34 @@ theorem topology_package_extractor_completeComplement_and_twoPointComplement_low
   ⟩
 
 /--
+The topology package exposes the extractor/complete-complement payload together
+with data-valued singleton recognition and two-puncture low-homotopy
+uniqueness at the same point-selected endpoint.
+-/
+theorem topology_package_extractor_completeComplement_singleton_and_twoPointComplement_payload
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) {y : M} (hyx : y ≠ x)
+    (singleBasepoint : ({x}ᶜ : Set M))
+    (twoBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    TopologyPackageExtractorAndCompleteComplementPayloadStatement package ∧
+      Nonempty
+        (TopologyPackageSingletonComplementRecognitionPayload
+          package M extinction x singleBasepoint) ∧
+      Nonempty
+        (TopologyPackageTwoPointComplementLowHomotopyUniquePayload
+          package M extinction hyx twoBasepoint) :=
+  ⟨ topology_package_extractor_and_complete_complement_payload package
+  , ⟨singletonComplement_recognition_payload_of_topology_package
+      package M extinction x singleBasepoint⟩
+  , ⟨twoPointComplement_lowHomotopyUnique_payload_of_topology_package
+      package M extinction x hyx twoBasepoint⟩
+  ⟩
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
