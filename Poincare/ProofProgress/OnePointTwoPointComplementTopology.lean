@@ -371,4 +371,146 @@ theorem onePoint_threeSpace_twoPointComplement_collapse_payload
   , onePoint_threeSpace_twoPointComplement_pathComponent_eq_univ hqp
   ⟩
 
+/--
+The zeroth homotopy quotient of the one-point model two-puncture complement is
+a `Unique` type.
+-/
+@[reducible] noncomputable def onePoint_threeSpace_twoPointComplement_zerothHomotopy_unique
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    Unique
+      (ZerothHomotopy
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) := by
+  let witness :=
+    onePoint_threeSpace_twoPointComplement_zerothHomotopy_exists_unique hqp
+  exact
+    { default := Classical.choose witness
+      uniq := fun homotopyClass =>
+        Classical.choose_spec witness homotopyClass }
+
+/--
+The zeroth homotopy group of the one-point model two-puncture complement is a
+`Unique` type at every basepoint.
+-/
+@[reducible] noncomputable def onePoint_threeSpace_twoPointComplement_piZero_unique
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    Unique
+      (HomotopyGroup.Pi 0
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint) := by
+  let witness :=
+    onePoint_threeSpace_twoPointComplement_piZero_exists_unique hqp basepoint
+  exact
+    { default := Classical.choose witness
+      uniq := fun homotopyClass =>
+        Classical.choose_spec witness homotopyClass }
+
+/--
+The fundamental group of the one-point model two-puncture complement is a
+`Unique` type at every basepoint.
+-/
+@[reducible] noncomputable def onePoint_threeSpace_twoPointComplement_fundamentalGroup_unique
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    Unique
+      (FundamentalGroup
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint) := by
+  let witness :=
+    onePoint_threeSpace_twoPointComplement_fundamentalGroup_exists_unique
+      hqp basepoint
+  exact
+    { default := Classical.choose witness
+      uniq := fun fundamentalClass =>
+        Classical.choose_spec witness fundamentalClass }
+
+/--
+The first homotopy group of the one-point model two-puncture complement is a
+`Unique` type at every basepoint.
+-/
+@[reducible] noncomputable def onePoint_threeSpace_twoPointComplement_piOne_unique
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    Unique
+      (HomotopyGroup.Pi 1
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint) := by
+  let witness :=
+    onePoint_threeSpace_twoPointComplement_piOne_exists_unique hqp basepoint
+  exact
+    { default := Classical.choose witness
+      uniq := fun homotopyClass =>
+        Classical.choose_spec witness homotopyClass }
+
+/--
+Data-valued unique-instance form of the one-point compactification model
+two-puncture low-homotopy collapse, including connectedness, nonemptiness, and
+path-component collapse.
+-/
+structure OnePointTwoPointComplementLowHomotopyUniquePayload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) where
+  connected :
+    ConnectedSpace
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+  nonempty :
+    Nonempty
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+  zerothUnique :
+    Unique
+      (ZerothHomotopy
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))
+  piZeroUnique :
+    Unique
+      (HomotopyGroup.Pi 0
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint)
+  fundamentalGroupUnique :
+    Unique
+      (FundamentalGroup
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint)
+  piOneUnique :
+    Unique
+      (HomotopyGroup.Pi 1
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint)
+  pathNonempty :
+    ∀ a b :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty (Path a b)
+  pathComponentEqUniv :
+    ∀ point :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        pathComponent point = Set.univ
+
+/--
+Unique-instance payload for the one-point compactification model two-puncture
+collapse.  This gives downstream topology extraction a field-based object for
+the model complement rather than a large tuple of individual collapse facts.
+-/
+noncomputable def onePoint_threeSpace_twoPointComplement_lowHomotopyUnique_payload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    OnePointTwoPointComplementLowHomotopyUniquePayload hqp basepoint where
+  connected := onePoint_threeSpace_twoPointComplement_connectedSpace hqp
+  nonempty := onePoint_threeSpace_twoPointComplement_nonempty hqp
+  zerothUnique :=
+    onePoint_threeSpace_twoPointComplement_zerothHomotopy_unique hqp
+  piZeroUnique :=
+    onePoint_threeSpace_twoPointComplement_piZero_unique hqp basepoint
+  fundamentalGroupUnique :=
+    onePoint_threeSpace_twoPointComplement_fundamentalGroup_unique
+      hqp basepoint
+  piOneUnique :=
+    onePoint_threeSpace_twoPointComplement_piOne_unique hqp basepoint
+  pathNonempty := onePoint_threeSpace_twoPointComplement_path_nonempty hqp
+  pathComponentEqUniv :=
+    onePoint_threeSpace_twoPointComplement_pathComponent_eq_univ hqp
+
 end Poincare
