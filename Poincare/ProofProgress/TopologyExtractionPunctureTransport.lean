@@ -82,6 +82,50 @@ theorem compl_singleton_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpa
     exact PathConnectedSpace.joined basepoint z
 
 /--
+Every single-puncture complement of a space recognized as the one-point
+compactification of `R^3` is simply connected.
+-/
+theorem compl_singleton_simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M) :
+    SimplyConnectedSpace ({x}ᶜ : Set M) := by
+  letI : ContractibleSpace ({x}ᶜ : Set M) :=
+    compl_singleton_contractibleSpace_of_homeomorph_to_onePoint_threeSpace
+      h x
+  infer_instance
+
+/--
+The based fundamental group of every single-puncture complement of a recognized
+one-point compactification target is trivial.
+-/
+theorem compl_singleton_fundamentalGroup_subsingleton_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) := by
+  letI : SimplyConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+      h x
+  change Subsingleton (Path.Homotopic.Quotient basepoint basepoint)
+  infer_instance
+
+/--
+The first homotopy group formulation of single-puncture complement collapse for
+a recognized one-point compactification target.
+-/
+theorem compl_singleton_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) := by
+  exact
+    ((HomotopyGroup.pi1EquivFundamentalGroup
+      (X := ({x}ᶜ : Set M))
+      (x := basepoint)).subsingleton_congr).mpr
+        (compl_singleton_fundamentalGroup_subsingleton_of_homeomorph_to_onePoint_threeSpace
+          h x basepoint)
+
+/--
 Transport a recognized one-point compactification target's two-puncture
 complement to the punctured Euclidean chart of the model compactification.
 -/
@@ -222,6 +266,23 @@ theorem twoPointComplement_fundamentalGroup_subsingleton_of_homeomorph_to_onePoi
   infer_instance
 
 /--
+The first homotopy group formulation of two-puncture complement collapse for a
+recognized one-point compactification target.
+-/
+theorem twoPointComplement_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Subsingleton (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  exact
+    ((HomotopyGroup.pi1EquivFundamentalGroup
+      (X := (({x} ∪ {y})ᶜ : Set M))
+      (x := basepoint)).subsingleton_congr).mpr
+        (twoPointComplement_fundamentalGroup_subsingleton_of_homeomorph_to_onePoint_threeSpace
+          h hyx basepoint)
+
+/--
 The same single-puncture Euclidean chart transport, stated from recognition as
 the project `ThreeSphere`.
 -/
@@ -275,6 +336,43 @@ theorem compl_singleton_pathComponent_eq_univ_of_homeomorph_to_threeSphere
     (basepoint : ({x}ᶜ : Set M)) :
     pathComponent basepoint = Set.univ :=
   compl_singleton_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+    basepoint
+
+/--
+Every single-puncture complement of a space recognized as `ThreeSphere` is
+simply connected.
+-/
+theorem compl_singleton_simplyConnectedSpace_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M) :
+    SimplyConnectedSpace ({x}ᶜ : Set M) :=
+  compl_singleton_simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+
+/--
+The based fundamental group of every single-puncture complement of a
+`ThreeSphere`-recognized space is trivial.
+-/
+theorem compl_singleton_fundamentalGroup_subsingleton_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) :=
+  compl_singleton_fundamentalGroup_subsingleton_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+    basepoint
+
+/--
+The first homotopy group formulation of single-puncture complement collapse for
+a `ThreeSphere`-recognized space.
+-/
+theorem compl_singleton_piOne_subsingleton_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) :=
+  compl_singleton_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
     basepoint
 
@@ -334,6 +432,19 @@ theorem twoPointComplement_fundamentalGroup_subsingleton_of_homeomorph_to_threeS
     (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
     Subsingleton (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) :=
   twoPointComplement_fundamentalGroup_subsingleton_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+    basepoint
+
+/--
+The first homotopy group formulation of two-puncture complement collapse for a
+`ThreeSphere`-recognized space.
+-/
+theorem twoPointComplement_piOne_subsingleton_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Subsingleton (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+  twoPointComplement_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
     basepoint
 
