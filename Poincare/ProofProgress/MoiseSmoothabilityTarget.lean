@@ -545,4 +545,50 @@ theorem smoothabilityPackage_requirement_threeSphereRecognition_targets_and_fami
       payload
   ⟩
 
+/--
+The residual full `SmoothabilityPackage` input and target-family
+`ThreeSphere` recognition construct the Moise recognition assembly payload and
+expose the exact package-layer requirement, both Moise targets, and the
+transported recognition/smoothability/prerequisite family.  This is the
+recognition-driven form of the smoothability boundary consumed by final
+assembly: downstream code no longer has to separately build the Moise payload
+before carrying the residual package input.
+-/
+theorem smoothabilityPackage_requirement_nonemptyMoiseAssemblyPayload_targets_and_family_of_smoothabilityPackage_and_threeSphereRecognition
+    (smoothability : SmoothabilityPackage.{u})
+    (recognize :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere)) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage ∧
+      Nonempty (MoiseSmoothabilityRecognitionAssemblyPayload.{u}) ∧
+      MoiseSmoothThreeManifoldStatement.{u} ∧
+      MoiseSmoothabilityStatement.{u} ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere) ∧
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+            AdmitsSmoothThreeManifoldStructure M ∧
+            AdmitsSurgeryModelSmoothStructure M ∧
+            (∃ _t2 : T2Space M,
+              ∃ _charted : ChartedSpace ThreeManifoldModel M,
+              ∃ _simple : SimplyConnectedSpace M,
+              ∃ _compact : CompactSpace M,
+              ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+                Nonempty M)) := by
+  let payload :=
+    moiseSmoothabilityRecognitionAssemblyPayload_of_threeSphereRecognition
+      recognize
+  exact
+    ⟨ by
+        simpa [dependencyPackageLayerRequirement] using smoothability
+    , ⟨payload⟩
+    , payload.smoothMoise
+    , payload.surgeryMoise
+    , moiseSmoothabilityRecognitionAssemblyPayload_targetFamily payload
+    ⟩
+
 end Poincare
