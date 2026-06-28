@@ -43011,4 +43011,31 @@ theorem threeSphere_project_mathlib_statements_of_reserved_final_certificate_eq 
       @Poincare.threeSphere_project_mathlib_statements_of_reserved_final_certificate :=
   rfl
 
+/--
+Direct standard-sphere final statements from the reserved final certificate.
+
+This removes the selected-witness argument from the concrete statement
+projection by evaluating the certificate criterion route at `Unit`, leaving a
+compact endpoint that exposes the project and mathlib-shaped final statements
+from the checked reserved certificate.
+-/
+theorem threeSphere_final_statements_of_reserved_final_certificate
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{0}) :
+    PoincareConjectureStatement.{0} ∧
+      MathlibTopologicalPoincareThreeStatement.{0} := by
+  rcases
+      threeSphere_project_mathlib_statements_of_reserved_final_certificate
+        dependencies Unit with
+    ⟨_theoremName, _certificate, projectStatement, mathlibStatement,
+      _hTheoremNameCanonical, _hTheoremNameLiteral, _hCertificate,
+      _hProjectStatement, _hMathlibStatement⟩
+  exact ⟨projectStatement, mathlibStatement⟩
+
+/-- Theorem contract for
+`threeSphere_final_statements_of_reserved_final_certificate`. -/
+theorem threeSphere_final_statements_of_reserved_final_certificate_eq :
+    @Poincare.threeSphere_final_statements_of_reserved_final_certificate =
+      @Poincare.threeSphere_final_statements_of_reserved_final_certificate :=
+  rfl
+
 end Poincare
