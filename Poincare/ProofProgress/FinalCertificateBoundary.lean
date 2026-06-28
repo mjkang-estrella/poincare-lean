@@ -1324,6 +1324,39 @@ theorem poincare_statement_final_certificate_and_completion_criterion_of_smootha
   ⟩
 
 /--
+The named smoothability and finite-extinction package requirements plus the
+recognition prefix expose both public and canonical final payload layers, the
+checked certificate, and any requested universe-indexed completion criterion in
+one endpoint.
+-/
+theorem project_canonical_final_certificate_and_completion_criterion_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+    (witness : Type u)
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} ∧
+      CompletionCriterionAtUniverse witness := by
+  rcases
+    project_and_canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_recognitionPrefix
+      smoothability finiteExtinction recognitionPrefix with
+    ⟨ hStatement, hProjectPayload, hCanonicalTarget, hCanonicalPayload,
+      hCertificate ⟩
+  exact
+    ⟨ hStatement, hProjectPayload, hCanonicalTarget, hCanonicalPayload,
+      hCertificate, hCanonicalPayload.choose_spec witness ⟩
+
+/--
 The checked remaining-dependency package, grounded universal finite extinction,
 and a simply connected recognition prefix close both public and canonical
 payload layers.  The recognition prefix contributes only the topology
