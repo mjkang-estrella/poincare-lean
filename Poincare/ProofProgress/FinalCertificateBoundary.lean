@@ -1708,4 +1708,33 @@ theorem poincare_statement_and_nonempty_final_certificate_iff_topologyPackage_of
       , nonemptyCertificate
       ⟩
 
+/--
+After the two canonical non-topology package inputs are fixed, the full
+statement-level final endpoint with a checked certificate and the universe
+completion criterion is equivalent to the topology package.  The reverse
+direction constructs the checked certificate and criterion from the same
+topology requirement, so no separate final-certificate hypothesis is hidden in
+the criterion projection.
+-/
+theorem poincare_statement_final_certificate_and_completion_criterion_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u}) :
+    (PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness) ↔
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage := by
+  constructor
+  · intro payload
+    exact topologyPackage_requirement_of_final_certificate payload.2.1
+  · intro topology
+    exact
+      ⟨ poincare_conjecture_statement_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          inputs topology
+      , completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+          inputs topology
+      , fun witness =>
+          completion_criterion_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+            witness inputs topology
+      ⟩
+
 end Poincare
