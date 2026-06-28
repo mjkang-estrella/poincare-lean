@@ -44409,4 +44409,163 @@ theorem threeSphere_mathlib_bidirectional_recognition_certificate_of_reserved_fi
       @Poincare.threeSphere_mathlib_bidirectional_recognition_certificate_of_reserved_final_certificate :=
   rfl
 
+/--
+Final statements synchronized with bidirectional literal-sphere recognition.
+
+This packages the statement-level checked/nonempty final-certificate routes
+with the strongest bidirectional recognition certificate above.  It records
+that the selected mathlib target used to produce the forward conclusion is the
+same mathlib-shaped statement obtained from the checked final project
+statement, and that the nonempty-certificate route selects the same project and
+mathlib statement surface.
+-/
+theorem threeSphere_final_statements_bidirectional_recognition_certificate_of_reserved_final_certificate
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{0}) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{0},
+    ∃ checkedReservedStatement : PoincareConjectureStatement.{0},
+    ∃ nonemptyReservedStatement : PoincareConjectureStatement.{0},
+    ∃ checkedMathlibStatement : MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ nonemptyMathlibStatement : MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ mathlibTarget : MathlibTopologicalPoincareThreeStatement.{0},
+    ∃ forwardHomeomorphism :
+      ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+    ∃ inverseHomeomorphism :
+      Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ ThreeSphere,
+    ∃ forwardConclusion :
+      Nonempty
+        (ThreeSphere ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)),
+    ∃ inverseConclusion :
+      Nonempty
+        (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ ThreeSphere),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      nonemptyCertificate =
+        nonempty_completion_certificate_of_completion_certificate
+          certificate ∧
+      checkedReservedStatement =
+        poincare_conjecture_of_completion_certificate certificate ∧
+      nonemptyReservedStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      nonemptyReservedStatement = checkedReservedStatement ∧
+      checkedMathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          checkedReservedStatement ∧
+      nonemptyMathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          nonemptyReservedStatement ∧
+      nonemptyMathlibStatement = checkedMathlibStatement ∧
+      mathlibTarget =
+        (reserved_mathlib_statement_of_nonempty_equation_boundary_dependencies
+          dependencies) ∧
+      mathlibTarget = checkedMathlibStatement ∧
+      forwardConclusion =
+        (⟨forwardHomeomorphism⟩ :
+          Nonempty
+            (ThreeSphere ≃ₜ
+              Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) ∧
+      forwardConclusion = (mathlibTarget ThreeSphere) ∧
+      inverseHomeomorphism = forwardHomeomorphism.symm ∧
+      inverseConclusion =
+        (⟨inverseHomeomorphism⟩ :
+          Nonempty
+            (Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ) ≃ₜ
+              ThreeSphere)) ∧
+      (∀ x : ThreeSphere, inverseHomeomorphism (forwardHomeomorphism x) = x) ∧
+      (∀ y : Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+        forwardHomeomorphism (inverseHomeomorphism y) = y) ∧
+      Topology.IsEmbedding forwardHomeomorphism ∧
+      Function.Bijective forwardHomeomorphism ∧
+      Continuous forwardHomeomorphism ∧
+      Topology.IsEmbedding inverseHomeomorphism ∧
+      Function.Bijective inverseHomeomorphism ∧
+      Continuous inverseHomeomorphism := by
+  rcases
+      threeSphere_mathlib_bidirectional_recognition_certificate_of_reserved_final_certificate
+        dependencies with
+    ⟨theoremName, certificate, mathlibTarget, forwardHomeomorphism,
+      inverseHomeomorphism, forwardConclusion, inverseConclusion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hMathlibTargetReserved, hForwardConclusion,
+      hForwardConclusionTarget, hInverseHomeomorphism, hInverseConclusion,
+      hLeft, hRight, hForwardEmbedding, hForwardBijective,
+      hForwardContinuous, hInverseEmbedding, hInverseBijective,
+      hInverseContinuous⟩
+  let nonemptyCertificate : Nonempty PoincareCompletionCertificate.{0} :=
+    nonempty_completion_certificate_of_completion_certificate certificate
+  let checkedReservedStatement : PoincareConjectureStatement.{0} :=
+    poincare_conjecture_of_completion_certificate certificate
+  let nonemptyReservedStatement : PoincareConjectureStatement.{0} :=
+    poincare_conjecture_of_nonempty_completion_certificate
+      nonemptyCertificate
+  let checkedMathlibStatement :
+      MathlibTopologicalPoincareThreeStatement.{0} :=
+    mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+      checkedReservedStatement
+  let nonemptyMathlibStatement :
+      MathlibTopologicalPoincareThreeStatement.{0} :=
+    mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+      nonemptyReservedStatement
+  have hNonemptyCertificate :
+      nonemptyCertificate =
+        nonempty_completion_certificate_of_completion_certificate
+          certificate :=
+    rfl
+  have hCheckedReservedStatement :
+      checkedReservedStatement =
+        poincare_conjecture_of_completion_certificate certificate :=
+    rfl
+  have hNonemptyReservedStatement :
+      nonemptyReservedStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate :=
+    rfl
+  have hNonemptyReserved :
+      nonemptyReservedStatement = checkedReservedStatement := by
+    exact
+      hNonemptyReservedStatement.trans
+        ((poincare_conjecture_of_completion_certificate_to_nonempty_completion_certificate_eq
+          certificate).trans hCheckedReservedStatement.symm)
+  have hCheckedMathlibStatement :
+      checkedMathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          checkedReservedStatement :=
+    rfl
+  have hNonemptyMathlibStatement :
+      nonemptyMathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          nonemptyReservedStatement :=
+    rfl
+  have hMathlibStatements :
+      nonemptyMathlibStatement = checkedMathlibStatement := by
+    apply Subsingleton.elim
+  have hMathlibTargetChecked :
+      mathlibTarget = checkedMathlibStatement := by
+    apply Subsingleton.elim
+  exact
+    ⟨theoremName, certificate, nonemptyCertificate,
+      checkedReservedStatement, nonemptyReservedStatement,
+      checkedMathlibStatement, nonemptyMathlibStatement, mathlibTarget,
+      forwardHomeomorphism, inverseHomeomorphism, forwardConclusion,
+      inverseConclusion, hTheoremNameCanonical, hTheoremNameLiteral,
+      hCertificate, hNonemptyCertificate, hCheckedReservedStatement,
+      hNonemptyReservedStatement, hNonemptyReserved, hCheckedMathlibStatement,
+      hNonemptyMathlibStatement, hMathlibStatements, hMathlibTargetReserved,
+      hMathlibTargetChecked, hForwardConclusion, hForwardConclusionTarget,
+      hInverseHomeomorphism, hInverseConclusion, hLeft, hRight,
+      hForwardEmbedding, hForwardBijective, hForwardContinuous,
+      hInverseEmbedding, hInverseBijective, hInverseContinuous⟩
+
+/-- Theorem contract for
+`threeSphere_final_statements_bidirectional_recognition_certificate_of_reserved_final_certificate`. -/
+theorem threeSphere_final_statements_bidirectional_recognition_certificate_of_reserved_final_certificate_eq :
+    @Poincare.threeSphere_final_statements_bidirectional_recognition_certificate_of_reserved_final_certificate =
+      @Poincare.threeSphere_final_statements_bidirectional_recognition_certificate_of_reserved_final_certificate :=
+  rfl
+
 end Poincare
