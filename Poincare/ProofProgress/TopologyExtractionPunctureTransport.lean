@@ -82,6 +82,35 @@ theorem compl_singleton_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpa
     exact PathConnectedSpace.joined basepoint z
 
 /--
+The zeroth homotopy quotient of every single-puncture complement of a
+recognized one-point compactification target has only one class.
+-/
+theorem compl_singleton_zerothHomotopy_subsingleton_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M) :
+    Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) := by
+  letI : PathConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_pathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+      h x
+  infer_instance
+
+/--
+The zeroth homotopy group formulation of single-puncture complement collapse
+for a recognized one-point compactification target.
+-/
+theorem compl_singleton_piZero_subsingleton_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) := by
+  exact
+    ((HomotopyGroup.pi0EquivZerothHomotopy
+      (X := ({x}ᶜ : Set M))
+      (x := basepoint)).subsingleton_congr).mpr
+        (compl_singleton_zerothHomotopy_subsingleton_of_homeomorph_to_onePoint_threeSpace
+          h x)
+
+/--
 Every single-puncture complement of a space recognized as the one-point
 compactification of `R^3` is simply connected.
 -/
@@ -216,6 +245,37 @@ theorem twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_onePoint_three
     exact PathConnectedSpace.joined basepoint z
 
 /--
+The zeroth homotopy quotient of every two-puncture complement of a recognized
+one-point compactification target has only one class.
+-/
+theorem twoPointComplement_zerothHomotopy_subsingleton_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x) :
+    Subsingleton (ZerothHomotopy (({x} ∪ {y})ᶜ : Set M)) := by
+  letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_pathConnectedSpace_of_homeomorph_to_onePoint_threeSpace
+      h hyx
+  infer_instance
+
+/--
+The zeroth homotopy group formulation of two-puncture complement collapse for a
+recognized one-point compactification target.
+-/
+theorem twoPointComplement_piZero_subsingleton_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Subsingleton (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  exact
+    ((HomotopyGroup.pi0EquivZerothHomotopy
+      (X := (({x} ∪ {y})ᶜ : Set M))
+      (x := basepoint)).subsingleton_congr).mpr
+        (twoPointComplement_zerothHomotopy_subsingleton_of_homeomorph_to_onePoint_threeSpace
+          h hyx)
+
+/--
 Every two-puncture complement of a space recognized as the one-point
 compactification of `R^3` is simply connected.
 -/
@@ -340,6 +400,30 @@ theorem compl_singleton_pathComponent_eq_univ_of_homeomorph_to_threeSphere
     basepoint
 
 /--
+The zeroth homotopy quotient of every single-puncture complement of a
+`ThreeSphere`-recognized space has only one class.
+-/
+theorem compl_singleton_zerothHomotopy_subsingleton_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M) :
+    Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) :=
+  compl_singleton_zerothHomotopy_subsingleton_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+
+/--
+The zeroth homotopy group formulation of single-puncture complement collapse
+for a `ThreeSphere`-recognized space.
+-/
+theorem compl_singleton_piZero_subsingleton_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) :=
+  compl_singleton_piZero_subsingleton_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) x
+    basepoint
+
+/--
 Every single-puncture complement of a space recognized as `ThreeSphere` is
 simply connected.
 -/
@@ -408,6 +492,30 @@ theorem twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_threeSphere
     (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
     pathComponent basepoint = Set.univ :=
   twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+    basepoint
+
+/--
+The zeroth homotopy quotient of every two-puncture complement of a
+`ThreeSphere`-recognized space has only one class.
+-/
+theorem twoPointComplement_zerothHomotopy_subsingleton_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x) :
+    Subsingleton (ZerothHomotopy (({x} ∪ {y})ᶜ : Set M)) :=
+  twoPointComplement_zerothHomotopy_subsingleton_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
+
+/--
+The zeroth homotopy group formulation of two-puncture complement collapse for a
+`ThreeSphere`-recognized space.
+-/
+theorem twoPointComplement_piZero_subsingleton_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Subsingleton (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+  twoPointComplement_piZero_subsingleton_of_homeomorph_to_onePoint_threeSpace
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
     basepoint
 
