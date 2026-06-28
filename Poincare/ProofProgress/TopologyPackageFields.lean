@@ -636,10 +636,12 @@ theorem twoPointComplement_fundamentalGroup_subsingleton_of_topology_package
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
     {x y : M} (hyx : y ≠ x)
     (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
-    Subsingleton (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) :=
-  twoPointComplement_fundamentalGroup_subsingleton_of_homeomorph_to_onePoint_threeSpace
-    (homeomorph_to_onePoint_threeSpace_of_topology_package
-      package M extinction) hyx basepoint
+    Subsingleton (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  letI : SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_simplyConnectedSpace_of_topology_package
+      package M extinction hyx
+  change Subsingleton (Path.Homotopic.Quotient basepoint basepoint)
+  infer_instance
 
 /--
 Any two based fundamental-group classes in a package-selected two-puncture
