@@ -42965,4 +42965,50 @@ theorem threeSphere_project_mathlib_statements_certificate_criteria_of_final_com
       @Poincare.threeSphere_project_mathlib_statements_certificate_criteria_of_final_completionCriterion :=
   rfl
 
+/--
+Direct standard-sphere project and mathlib statement projection from the
+reserved final certificate.
+
+This strips the concrete certificate-criteria package down to the final
+statement surface while retaining the reserved theorem name and the checked
+certificate identity that produced those statements.
+-/
+theorem threeSphere_project_mathlib_statements_of_reserved_final_certificate
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{0})
+    (witness : Type) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ projectStatement : PoincareConjectureStatement.{0},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{0},
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      projectStatement =
+        target_statement_of_completion_certificate certificate ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement := by
+  rcases
+      threeSphere_project_mathlib_statements_certificate_criteria_of_final_completionCriterion
+        dependencies witness with
+    ⟨theoremName, certificate, projectStatement, mathlibStatement,
+      _criterion, _certificateCriterion, _canonicalCertificateCriterion,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hProjectStatement, hMathlibStatement, _hCriterionReserved,
+      _hCertificateCriterion, _hCanonicalCertificateCriterion,
+      _hCriterionCertificate, _hCriterionCanonical⟩
+  exact
+    ⟨theoremName, certificate, projectStatement, mathlibStatement,
+      hTheoremNameCanonical, hTheoremNameLiteral, hCertificate,
+      hProjectStatement, hMathlibStatement⟩
+
+/-- Theorem contract for
+`threeSphere_project_mathlib_statements_of_reserved_final_certificate`. -/
+theorem threeSphere_project_mathlib_statements_of_reserved_final_certificate_eq :
+    @Poincare.threeSphere_project_mathlib_statements_of_reserved_final_certificate =
+      @Poincare.threeSphere_project_mathlib_statements_of_reserved_final_certificate :=
+  rfl
+
 end Poincare
