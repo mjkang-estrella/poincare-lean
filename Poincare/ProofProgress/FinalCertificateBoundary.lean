@@ -38401,4 +38401,84 @@ theorem reserved_named_target_homeomorphism_conditional_root_of_nonempty_equatio
       @Poincare.reserved_named_target_homeomorphism_conditional_root_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Reserved named selected extracted homeomorphism with mathlib final map.
+
+This lifts the dependency-only selected topology-recognition endpoint through
+an inhabited strengthened equation-boundary dependency package.  It exposes the
+finite-extinction package chosen for the target, the topology package's
+extracted `ThreeSphere` homeomorphism, and the literal mathlib sphere
+homeomorphism selected by the final payload, with the two homeomorphisms
+identified.
+-/
+theorem reserved_named_selected_extracted_mathlib_homeomorphism_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ theoremName : String,
+    ∃ projectPayloadTarget : PoincareConjectureStatement.{u},
+    ∃ mathlibTarget : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ n : ℕ∞ω,
+    ∃ ordinaryPackage : FiniteExtinctionSurgeryPackage n M,
+    ∃ finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+    ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ extractedHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ projectHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ mathlibHomeomorphism :
+      M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ),
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      Nonempty PoincareProofDependenciesWithEquationBoundary.{u} ∧
+      finiteExtinction = ordinaryPackage.finiteExtinction ∧
+      topologyPackage =
+        (dependencies_of_equation_boundary_dependencies
+          dependencies.some).topology ∧
+      extractedHomeomorphism =
+        topologyPackage.extractHomeomorphism M finiteExtinction ∧
+      extractedHomeomorphism = projectPayloadTarget M ∧
+      projectPayloadTarget M =
+        (⟨projectHomeomorphism⟩ : Nonempty (M ≃ₜ ThreeSphere)) ∧
+      mathlibTarget M =
+        (⟨mathlibHomeomorphism⟩ :
+          Nonempty
+            (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) ∧
+      projectHomeomorphism = mathlibHomeomorphism ∧
+      Topology.IsEmbedding projectHomeomorphism ∧
+      Topology.IsEmbedding mathlibHomeomorphism ∧
+      Function.Bijective projectHomeomorphism ∧
+      Function.Bijective mathlibHomeomorphism ∧
+      Continuous projectHomeomorphism ∧
+      Continuous mathlibHomeomorphism := by
+  rcases dependencies with ⟨dependencies⟩
+  rcases
+      dependency_only_canonical_reserved_theorem_selected_extracted_homeomorphism_matches_final_payload_of_equation_boundary_dependencies
+        dependencies M with
+    ⟨theoremName, projectPayloadTarget, mathlibTarget, n, ordinaryPackage,
+      finiteExtinction, topologyPackage, extractedHomeomorphism,
+      projectHomeomorphism, mathlibHomeomorphism, hTheoremNameCanonical,
+      hTheoremNameLiteral, hFiniteExtinction, hTopologyPackage,
+      hExtractedHomeomorphism, hExtractedProjectPayload,
+      hProjectPayloadTarget, _hExtractedProjectHomeomorphism, hMathlibTarget,
+      hProjectMathlib, hProjectEmbedding, hMathlibEmbedding,
+      hProjectBijective, hMathlibBijective, hProjectContinuous,
+      hMathlibContinuous⟩
+  exact
+    ⟨theoremName, projectPayloadTarget, mathlibTarget, n, ordinaryPackage,
+      finiteExtinction, topologyPackage, extractedHomeomorphism,
+      projectHomeomorphism, mathlibHomeomorphism, hTheoremNameCanonical,
+      hTheoremNameLiteral, ⟨dependencies⟩, hFiniteExtinction,
+      hTopologyPackage, hExtractedHomeomorphism, hExtractedProjectPayload,
+      hProjectPayloadTarget, hMathlibTarget, hProjectMathlib,
+      hProjectEmbedding, hMathlibEmbedding, hProjectBijective,
+      hMathlibBijective, hProjectContinuous, hMathlibContinuous⟩
+
+/-- Theorem contract for
+`reserved_named_selected_extracted_mathlib_homeomorphism_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_named_selected_extracted_mathlib_homeomorphism_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_named_selected_extracted_mathlib_homeomorphism_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_named_selected_extracted_mathlib_homeomorphism_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
