@@ -669,4 +669,30 @@ theorem canonical_completion_criterion_of_grounded_and_topology_package_eq
           topologyPackage) := by
   apply Subsingleton.elim
 
+/--
+Grounded finite extinction and a concrete topology package expose the two
+package-layer requirements they supply, together with both public and canonical
+certificate-facing payload layers.  This keeps the grounded Ricci-flow input
+visible while packaging exactly the data consumed by the final assembly
+boundary.
+-/
+theorem package_requirements_and_project_canonical_payload_of_grounded_and_topology_package
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage : ExtinctionTopologyExtractionPackage.{u}) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage ∧
+      PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :=
+  ⟨ finiteExtinctionPackage_requirement_of_grounded grounded
+  , topologyPackage
+  , project_and_canonical_certificate_payload_of_grounded_and_topology_package
+      grounded topologyPackage
+  ⟩
+
 end Poincare
