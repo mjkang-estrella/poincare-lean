@@ -1275,6 +1275,299 @@ theorem topology_package_extractor_and_complete_complement_payload
       ⟩
 
 /--
+The named topology payload exposes the global finite-extinction-to-sphere
+extractor without requiring downstream files to unpack its product shape.
+-/
+theorem extinction_implies_sphere_of_topologyPackageExtractorAndCompleteComplementPayloadStatement
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (payload : TopologyPackageExtractorAndCompleteComplementPayloadStatement package) :
+    ExtinctionImpliesSphereStatement.{u} :=
+  payload.1
+
+/--
+The named topology payload projects to the point-selected recognition and full
+complement-collapse package for a fixed finite-extinction target.
+-/
+theorem recognition_and_complete_complement_payload_of_topologyPackageExtractorAndCompleteComplementPayloadStatement
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (payload : TopologyPackageExtractorAndCompleteComplementPayloadStatement package)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) {y : M} (hyx : y ≠ x)
+    (singleBasepoint : ({x}ᶜ : Set M))
+    (twoBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Nonempty (M ≃ₜ ThreeSphere) ∧
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      (ContractibleSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M)) ∧
+      (Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+        (∃ puncture : EuclideanSpace ℝ (Fin 3),
+          Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+        ConnectedSpace ({x}ᶜ : Set M) ∧
+        Nonempty ({x}ᶜ : Set M) ∧
+        Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint) ∧
+        Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint) ∧
+        ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint)) ∧
+      ((∀ a b : ({x}ᶜ : Set M),
+        ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+        (∀ a b : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint,
+          a = b) ∧
+        (∀ a b : FundamentalGroup ({x}ᶜ : Set M) singleBasepoint,
+          a = b) ∧
+        (∀ a b : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint,
+          a = b) ∧
+        (∀ a b : (({x} ∪ {y})ᶜ : Set M),
+          ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+          a = b) ∧
+        (∀ a b : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+          a = b) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+          a = b)) ∧
+      ((∃ baseClass : ZerothHomotopy ({x}ᶜ : Set M),
+        ∀ homotopyClass : ZerothHomotopy ({x}ᶜ : Set M),
+          homotopyClass = baseClass) ∧
+        (∃ baseClass : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint,
+          ∀ homotopyClass : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint,
+            homotopyClass = baseClass) ∧
+        (∃ baseClass : FundamentalGroup ({x}ᶜ : Set M) singleBasepoint,
+          ∀ fundamentalClass : FundamentalGroup ({x}ᶜ : Set M) singleBasepoint,
+            fundamentalClass = baseClass) ∧
+        (∃ baseClass : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint,
+          ∀ homotopyClass : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint,
+            homotopyClass = baseClass) ∧
+        (∃ baseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+          ∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+            homotopyClass = baseClass) ∧
+        (∃ baseClass :
+          HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+          ∀ homotopyClass :
+            HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+            homotopyClass = baseClass) ∧
+        (∃ baseClass : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+          ∀ fundamentalClass :
+            FundamentalGroup (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+            fundamentalClass = baseClass) ∧
+        (∃ baseClass :
+          HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+          ∀ homotopyClass :
+            HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+            homotopyClass = baseClass)) ∧
+      ((∀ a b : ({x}ᶜ : Set M), Nonempty (Path a b)) ∧
+        (∀ basepoint : ({x}ᶜ : Set M),
+          pathComponent basepoint = Set.univ) ∧
+        (∀ a b : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path a b)) ∧
+        (∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+          pathComponent basepoint = Set.univ)) :=
+  payload.2 M extinction x hyx singleBasepoint twoBasepoint
+
+/--
+The named topology payload gives the final sphere-recognition certificate for a
+fixed finite-extinction target.
+-/
+theorem homeomorphism_of_topologyPackageExtractorAndCompleteComplementPayloadStatement
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (payload : TopologyPackageExtractorAndCompleteComplementPayloadStatement package)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) {y : M} (hyx : y ≠ x)
+    (singleBasepoint : ({x}ᶜ : Set M))
+    (twoBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Nonempty (M ≃ₜ ThreeSphere) :=
+  (recognition_and_complete_complement_payload_of_topologyPackageExtractorAndCompleteComplementPayloadStatement
+    package payload M extinction x hyx singleBasepoint twoBasepoint).1
+
+/--
+The named topology payload gives the one-point compactification recognition
+used by puncture-transport consumers.
+-/
+theorem onePoint_recognition_of_topologyPackageExtractorAndCompleteComplementPayloadStatement
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (payload : TopologyPackageExtractorAndCompleteComplementPayloadStatement package)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) {y : M} (hyx : y ≠ x)
+    (singleBasepoint : ({x}ᶜ : Set M))
+    (twoBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+  (recognition_and_complete_complement_payload_of_topologyPackageExtractorAndCompleteComplementPayloadStatement
+    package payload M extinction x hyx singleBasepoint twoBasepoint).2.1
+
+/--
+The named topology payload projects to the full complement-collapse certificate
+without exposing the sphere-recognition fields.
+-/
+theorem complete_complement_collapse_payload_of_topologyPackageExtractorAndCompleteComplementPayloadStatement
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (payload : TopologyPackageExtractorAndCompleteComplementPayloadStatement package)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) {y : M} (hyx : y ≠ x)
+    (singleBasepoint : ({x}ᶜ : Set M))
+    (twoBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    (ContractibleSpace ({x}ᶜ : Set M) ∧
+      SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+      SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M)) ∧
+      (Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+        (∃ puncture : EuclideanSpace ℝ (Fin 3),
+          Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+        ConnectedSpace ({x}ᶜ : Set M) ∧
+        Nonempty ({x}ᶜ : Set M) ∧
+        Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint) ∧
+        Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint) ∧
+        ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint)) ∧
+      ((∀ a b : ({x}ᶜ : Set M),
+        ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+        (∀ a b : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint,
+          a = b) ∧
+        (∀ a b : FundamentalGroup ({x}ᶜ : Set M) singleBasepoint,
+          a = b) ∧
+        (∀ a b : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint,
+          a = b) ∧
+        (∀ a b : (({x} ∪ {y})ᶜ : Set M),
+          ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+          a = b) ∧
+        (∀ a b : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+          a = b) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+          a = b)) ∧
+      ((∃ baseClass : ZerothHomotopy ({x}ᶜ : Set M),
+        ∀ homotopyClass : ZerothHomotopy ({x}ᶜ : Set M),
+          homotopyClass = baseClass) ∧
+        (∃ baseClass : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint,
+          ∀ homotopyClass : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint,
+            homotopyClass = baseClass) ∧
+        (∃ baseClass : FundamentalGroup ({x}ᶜ : Set M) singleBasepoint,
+          ∀ fundamentalClass : FundamentalGroup ({x}ᶜ : Set M) singleBasepoint,
+            fundamentalClass = baseClass) ∧
+        (∃ baseClass : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint,
+          ∀ homotopyClass : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint,
+            homotopyClass = baseClass) ∧
+        (∃ baseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+          ∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+            homotopyClass = baseClass) ∧
+        (∃ baseClass :
+          HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+          ∀ homotopyClass :
+            HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+            homotopyClass = baseClass) ∧
+        (∃ baseClass : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+          ∀ fundamentalClass :
+            FundamentalGroup (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+            fundamentalClass = baseClass) ∧
+        (∃ baseClass :
+          HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+          ∀ homotopyClass :
+            HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+            homotopyClass = baseClass)) ∧
+      ((∀ a b : ({x}ᶜ : Set M), Nonempty (Path a b)) ∧
+        (∀ basepoint : ({x}ᶜ : Set M),
+          pathComponent basepoint = Set.univ) ∧
+        (∀ a b : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path a b)) ∧
+        (∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+          pathComponent basepoint = Set.univ)) :=
+  (recognition_and_complete_complement_payload_of_topologyPackageExtractorAndCompleteComplementPayloadStatement
+    package payload M extinction x hyx singleBasepoint twoBasepoint).2.2
+
+/--
+The named topology payload gives a compact two-puncture low-homotopy collapse
+certificate: connectedness, nonemptiness, collapsed π₀/π₁ objects, unique
+classes, and path-component collapse.
+-/
+theorem twoPointComplement_lowHomotopyCollapse_payload_of_topologyPackageExtractorAndCompleteComplementPayloadStatement
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (payload : TopologyPackageExtractorAndCompleteComplementPayloadStatement package)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) {y : M} (hyx : y ≠ x)
+    (singleBasepoint : ({x}ᶜ : Set M))
+    (twoBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+      Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint) ∧
+      (∀ a b : (({x} ∪ {y})ᶜ : Set M),
+        ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+      (∀ a b :
+        HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+        a = b) ∧
+      (∀ a b : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+        a = b) ∧
+      (∀ a b :
+        HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+        a = b) ∧
+      (∃ baseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+        ∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+          homotopyClass = baseClass) ∧
+      (∃ baseClass :
+        HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+        ∀ homotopyClass :
+          HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+          homotopyClass = baseClass) ∧
+      (∃ baseClass : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+        ∀ fundamentalClass :
+          FundamentalGroup (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+          fundamentalClass = baseClass) ∧
+      (∃ baseClass :
+        HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+        ∀ homotopyClass :
+          HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+          homotopyClass = baseClass) ∧
+      (∀ a b : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path a b)) ∧
+      (∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+        pathComponent basepoint = Set.univ) := by
+  rcases
+    complete_complement_collapse_payload_of_topologyPackageExtractorAndCompleteComplementPayloadStatement
+      package payload M extinction x hyx singleBasepoint twoBasepoint with
+    ⟨_, chartAndHomotopy, classEquality, uniqueClass, pathComponentPayload⟩
+  rcases chartAndHomotopy with
+    ⟨_, _, _, _, _, _, connected, nonempty, piZeroSubsingleton,
+      piOneSubsingleton⟩
+  rcases classEquality with
+    ⟨_, _, _, _, zerothMkEq, piZeroEq, fundamentalGroupEq, piOneEq⟩
+  rcases uniqueClass with
+    ⟨_, _, _, _, zerothUnique, piZeroUnique, fundamentalGroupUnique,
+      piOneUnique⟩
+  rcases pathComponentPayload with
+    ⟨_, _, pathNonempty, pathComponentEqUniv⟩
+  exact
+    ⟨ connected, nonempty, piZeroSubsingleton, piOneSubsingleton
+    , zerothMkEq, piZeroEq, fundamentalGroupEq, piOneEq
+    , zerothUnique, piZeroUnique, fundamentalGroupUnique, piOneUnique
+    , pathNonempty, pathComponentEqUniv
+    ⟩
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
