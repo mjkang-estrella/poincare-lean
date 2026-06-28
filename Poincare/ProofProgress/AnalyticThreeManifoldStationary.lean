@@ -14821,4 +14821,82 @@ theorem analyticFoundationPackage_statement_and_curvature_payload_of_stationaryZ
     , curvature_evolution_of_analytic_foundation_package package
     ⟩
 
+/--
+Single assembly payload for the analytic-foundation pillar produced from
+universal stationary-zero production data.  It keeps the package-layer
+requirement, analytic milestone, and pointwise analytic package/statement/
+curvature-evolution family tied to the same production-data source.
+-/
+structure StationaryZeroAnalyticFoundationAssemblyPayload where
+  analyticFoundationPackageRequirement :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.analyticFoundationPackage
+  ricciFlowAnalyticFoundationMilestone :
+    dependencyMilestoneRequirement.{u}
+      DependencyMilestone.ricciFlowAnalyticFoundation
+  packageStatementCurvatureFamily :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package :
+          RicciFlowAnalyticFoundationPackage
+            ThreeManifoldModelWithCorners n M,
+          RicciFlowAnalyticFoundationStatement
+            ThreeManifoldModelWithCorners n M ∧
+            HasCurvatureEvolutionEquations
+              (ricci_flow_data_of_analytic_foundation_package package)
+
+/--
+Universal stationary-zero production data constructs the analytic-foundation
+assembly payload consumed by the dependency crosswalk.
+-/
+def stationaryZeroAnalyticFoundationAssemblyPayload
+    (data :
+      StationaryZeroAnalyticFoundationPackageLayerProductionData.{u}) :
+    StationaryZeroAnalyticFoundationAssemblyPayload.{u} where
+  analyticFoundationPackageRequirement :=
+    analyticFoundationPackage_requirement_of_stationaryZeroProductionData_current_api
+      data
+  ricciFlowAnalyticFoundationMilestone :=
+    ricciFlowAnalyticFoundation_milestone_requirement_of_stationaryZeroProductionData_current_api
+      data
+  packageStatementCurvatureFamily := by
+    intro M _top _t2 _charted _simple _compact _smooth1
+    exact
+      (analyticFoundationPackage_statement_and_curvature_payload_of_stationaryZeroProductionData_current_api
+        data).2.2 M
+
+/--
+The analytic assembly payload unpacks to the already exposed
+package-layer/milestone/curvature tuple.
+-/
+theorem stationaryZeroAnalyticFoundationAssemblyPayload_fields
+    (data :
+      StationaryZeroAnalyticFoundationPackageLayerProductionData.{u}) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ package :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+            RicciFlowAnalyticFoundationStatement
+              ThreeManifoldModelWithCorners n M ∧
+              HasCurvatureEvolutionEquations
+                (ricci_flow_data_of_analytic_foundation_package
+                  package)) := by
+  let payload := stationaryZeroAnalyticFoundationAssemblyPayload data
+  exact
+    ⟨ payload.analyticFoundationPackageRequirement
+    , payload.ricciFlowAnalyticFoundationMilestone
+    , payload.packageStatementCurvatureFamily
+    ⟩
+
 end Poincare
