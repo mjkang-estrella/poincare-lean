@@ -42718,4 +42718,109 @@ theorem reserved_named_certificate_target_statement_package_of_final_completionC
       @Poincare.reserved_named_certificate_target_statement_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Reserved named certificate criterion package from the final target-statement
+package.
+
+This identifies the selected final completion criterion with both the project
+and canonical criterion projections of the same checked completion certificate,
+while preserving the reserved theorem name, target statement, project payload,
+and dependency-reserved criterion route.
+-/
+theorem reserved_named_certificate_criterion_target_statement_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (witness : Type u) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ targetStatement : PoincareConjectureStatement.{u},
+    ∃ projectStatement : PoincareConjectureStatement.{u},
+    ∃ mathlibStatement : MathlibTopologicalPoincareThreeStatement.{u},
+    ∃ projectPayload :
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ criterion : CompletionCriterionAtUniverse witness,
+    ∃ certificateCriterion : CompletionCriterionAtUniverse witness,
+    ∃ canonicalCertificateCriterion : CompletionCriterionAtUniverse witness,
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      targetStatement =
+        target_statement_of_completion_certificate certificate ∧
+      projectStatement = targetStatement ∧
+      mathlibStatement =
+        mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+          projectStatement ∧
+      projectPayload =
+        poincare_completion_payload_of_completion_certificate certificate ∧
+      criterion =
+        completionCriterionAtUniverse_of_poincare_completion_payload
+          witness projectPayload ∧
+      certificateCriterion =
+        completion_criterion_of_completion_certificate witness certificate ∧
+      canonicalCertificateCriterion =
+        canonical_completion_criterion_of_completion_certificate
+          witness certificate ∧
+      criterion = certificateCriterion ∧
+      certificateCriterion = canonicalCertificateCriterion ∧
+      criterion =
+        reserved_completionCriterionAtUniverse_of_nonempty_equation_boundary_dependencies
+          dependencies witness := by
+  rcases
+      reserved_named_certificate_target_statement_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies
+        dependencies M witness with
+    ⟨theoremName, certificate, _canonicalTarget, targetStatement,
+      projectStatement, mathlibStatement, _canonicalPayload, projectPayload,
+      _completionCriterionAtM, criterion, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, _hCanonicalTarget,
+      hTargetStatement, _hTargetCanonical, hProjectTarget,
+      _hCanonicalPayloadCertificate, hProjectPayloadCertificate,
+      _hCanonicalProjectPayload, _hProjectPayloadStatement,
+      hMathlibStatement, _hCompletionCriterionAtMPayload,
+      hCriterionPayload, _hCompletionCriterionAtMReserved,
+      hCriterionReserved⟩
+  let certificateCriterion : CompletionCriterionAtUniverse witness :=
+    completion_criterion_of_completion_certificate witness certificate
+  let canonicalCertificateCriterion : CompletionCriterionAtUniverse witness :=
+    canonical_completion_criterion_of_completion_certificate
+      witness certificate
+  have hCertificateCriterion :
+      certificateCriterion =
+        completion_criterion_of_completion_certificate witness certificate :=
+    rfl
+  have hCanonicalCertificateCriterion :
+      canonicalCertificateCriterion =
+        canonical_completion_criterion_of_completion_certificate
+          witness certificate :=
+    rfl
+  have hCriterionCertificate :
+      criterion = certificateCriterion := by
+    apply Subsingleton.elim
+  have hCertificateCanonical :
+      certificateCriterion = canonicalCertificateCriterion := by
+    exact
+      hCertificateCriterion.trans
+        ((completion_criterion_of_completion_certificate_to_canonical_criterion_eq
+          witness certificate).trans hCanonicalCertificateCriterion.symm)
+  exact
+    ⟨theoremName, certificate, targetStatement, projectStatement,
+      mathlibStatement, projectPayload, criterion, certificateCriterion,
+      canonicalCertificateCriterion, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, hTargetStatement, hProjectTarget,
+      hMathlibStatement, hProjectPayloadCertificate, hCriterionPayload,
+      hCertificateCriterion, hCanonicalCertificateCriterion,
+      hCriterionCertificate, hCertificateCanonical, hCriterionReserved⟩
+
+/-- Theorem contract for
+`reserved_named_certificate_criterion_target_statement_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_named_certificate_criterion_target_statement_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_named_certificate_criterion_target_statement_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_named_certificate_criterion_target_statement_package_of_final_completionCriterion_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
