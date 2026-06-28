@@ -48886,4 +48886,49 @@ theorem conditional_direct_conclusions_are_certificate_applications_of_dependenc
       @Poincare.conditional_direct_conclusions_are_certificate_applications_of_dependencies_and_verification_family :=
   rfl
 
+/--
+The constructed completion certificate directly supplies the final project and
+mathlib conclusions for each target manifold.
+
+Unlike the preceding package theorems, this theorem exposes the actual
+consumer conclusions without existentially packaging the selected certificate.
+The certificate is the one canonically constructed from ordinary dependencies
+and the Ricci-flow equation verification family.
+-/
+theorem constructed_completion_certificate_applications_of_dependencies_and_verification_family
+    (dependencies : PoincareProofDependencies.{0})
+    (verificationFamily :
+      ∀ (N : Type) [TopologicalSpace N] [T2Space N]
+        [ChartedSpace ThreeManifoldModel N]
+        [SimplyConnectedSpace N] [CompactSpace N]
+        [IsManifold ThreeManifoldModelWithCorners 1 N]
+        (payload : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n N),
+          RicciFlowEquationVerification
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_surgery_package payload.2)))
+    (M : Type) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    Nonempty (M ≃ₜ ThreeSphere) ∧
+      Nonempty
+        (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) := by
+  let boundaryDependencies :
+      PoincareProofDependenciesWithEquationBoundary.{0} :=
+    equation_boundary_dependencies_of_dependencies_and_verification_family
+      dependencies verificationFamily
+  let certificate : PoincareCompletionCertificate.{0} :=
+    completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+      boundaryDependencies
+  exact
+    ⟨(poincare_conjecture_of_completion_certificate certificate) M,
+      (mathlibTopologicalPoincareThreeStatement_of_poincareConjectureStatement
+        (poincare_conjecture_of_completion_certificate certificate)) M⟩
+
+/-- Theorem contract for
+`constructed_completion_certificate_applications_of_dependencies_and_verification_family`. -/
+theorem constructed_completion_certificate_applications_of_dependencies_and_verification_family_eq :
+    @Poincare.constructed_completion_certificate_applications_of_dependencies_and_verification_family =
+      @Poincare.constructed_completion_certificate_applications_of_dependencies_and_verification_family :=
+  rfl
+
 end Poincare
