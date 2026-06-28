@@ -1989,4 +1989,28 @@ theorem finalCertificateTopologyAssemblyPayload_fields
     , payload.completionCriteria
     ⟩
 
+/--
+For fixed smoothability and finite-extinction inputs, existence of the complete
+topology assembly payload is exactly the topology-package requirement.  The
+reverse direction constructs the checked final certificate and all completion
+criteria through `finalCertificateTopologyAssemblyPayload`; the forward
+direction exposes the topology witness carried by the existential.
+-/
+theorem nonempty_finalCertificateTopologyAssemblyPayload_iff_topologyPackage_of_finalCertificateMinimalPackageInputs
+    (inputs : FinalCertificateMinimalPackageInputs.{u}) :
+    (∃ topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage,
+        Nonempty (FinalCertificateTopologyAssemblyPayload inputs topology)) ↔
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage := by
+  constructor
+  · intro payload
+    exact payload.1
+  · intro topology
+    exact
+      ⟨ topology
+      , ⟨finalCertificateTopologyAssemblyPayload inputs topology⟩
+      ⟩
+
 end Poincare
