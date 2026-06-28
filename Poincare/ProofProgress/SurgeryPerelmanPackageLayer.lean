@@ -205,6 +205,60 @@ theorem singularity_model_blowup_classification_target_at_of_finiteExtinctionPac
       singularity_model_blowup_classification_of_finite_extinction_surgery_package
         package⟩
 
+/--
+A completed finite-extinction surgery package exposes the common selected flow
+together with the construction package, Perelman control package, concrete
+surgery-scale payload, and singularity-model blowup classification evidence.
+-/
+theorem surgery_perelman_scale_and_blowup_payload_of_finite_extinction_surgery_package
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (package : FiniteExtinctionSurgeryPackage n M) :
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+      PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+      Nonempty (SurgeryScaleFunctionPayload flow) ∧
+      HasSingularityModelBlowupClassification flow := by
+  let flow := ricci_flow_data_of_surgery_package package
+  exact
+    ⟨ flow
+    , surgery_construction_package_of_surgery_package package
+    , perelman_control_package_of_surgery_package package
+    , surgery_scale_function_payload_of_finite_extinction_surgery_package
+        package
+    , singularity_model_blowup_classification_of_finite_extinction_surgery_package
+        package
+    ⟩
+
+/--
+Pointwise compact package-layer projection: assuming the finite-extinction
+package layer, each target receives one selected flow carrying the construction
+package, Perelman package, concrete surgery-scale payload, and blowup
+classification evidence.
+-/
+theorem surgery_perelman_scale_and_blowup_payload_target_at_of_finiteExtinctionPackage_requirement
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ n : ℕ∞ω,
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+      PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+      Nonempty (SurgeryScaleFunctionPayload flow) ∧
+      HasSingularityModelBlowupClassification flow := by
+  rcases finiteExtinctionRequirement M with ⟨⟨n, package⟩⟩
+  exact
+    ⟨ n
+    , surgery_perelman_scale_and_blowup_payload_of_finite_extinction_surgery_package
+        package
+    ⟩
+
 /-- Concrete surgery-scale payloads produce the first construction-package field. -/
 theorem surgery_scale_function_of_payload
     {n : ℕ∞ω}
