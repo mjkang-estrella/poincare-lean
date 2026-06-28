@@ -42176,4 +42176,44 @@ theorem reserved_named_quantified_final_conclusions_completionCriterion_of_nonem
       @Poincare.reserved_named_quantified_final_conclusions_completionCriterion_of_nonempty_equation_boundary_dependencies :=
   rfl
 
+/--
+Reserved named conditional project/mathlib final statements on the current
+manifold surface.
+
+This projects the quantified final-conclusion endpoint to the two quantified
+homeomorphism conclusions themselves: the project `ThreeSphere` statement and
+the literal mathlib unit-sphere statement, both still conditional on the
+nonempty equation-boundary dependency package and the final manifold surface.
+-/
+theorem reserved_named_conditional_project_mathlib_final_statements_of_nonempty_equation_boundary_dependencies
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{u})
+    (witness : Type u) :
+    (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty (M ≃ₜ ThreeSphere)) ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty
+            (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))) := by
+  constructor
+  · intro M _ _ _ _ _ _
+    exact
+      (reserved_named_quantified_final_conclusions_completionCriterion_of_nonempty_equation_boundary_dependencies
+        dependencies witness M).1
+  · intro M _ _ _ _ _ _
+    exact
+      (reserved_named_quantified_final_conclusions_completionCriterion_of_nonempty_equation_boundary_dependencies
+        dependencies witness M).2.1
+
+/-- Theorem contract for
+`reserved_named_conditional_project_mathlib_final_statements_of_nonempty_equation_boundary_dependencies`. -/
+theorem reserved_named_conditional_project_mathlib_final_statements_of_nonempty_equation_boundary_dependencies_eq :
+    @Poincare.reserved_named_conditional_project_mathlib_final_statements_of_nonempty_equation_boundary_dependencies =
+      @Poincare.reserved_named_conditional_project_mathlib_final_statements_of_nonempty_equation_boundary_dependencies :=
+  rfl
+
 end Poincare
