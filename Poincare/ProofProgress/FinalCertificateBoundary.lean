@@ -2688,6 +2688,31 @@ theorem finalCertificateNamedPackageLayerConsumerPayload_requirements_topologyAs
     ⟩
 
 /--
+The inhabited complete named-package consumer payload exposes all three
+package-layer requirements, the inhabited topology assembly payload, and the
+checked final endpoint data carried by the selected payload.
+-/
+theorem finalCertificateNamedPackageLayerConsumerPayload_requirements_topologyAssembly_and_checkedEndpoint_of_nonempty
+    (payload : Nonempty FinalCertificateNamedPackageLayerConsumerPayload.{u}) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      ∃ inputs : FinalCertificateMinimalPackageInputs.{u},
+      ∃ topology :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage,
+        Nonempty (FinalCertificateTopologyAssemblyPayload inputs topology) ∧
+          PoincareConjectureStatement.{u} ∧
+          PoincareCompletionCertificate.{u} ∧
+          canonicalCompletionTarget.{u} ∧
+          (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  rcases payload with ⟨payload⟩
+  exact
+    finalCertificateNamedPackageLayerConsumerPayload_requirements_topologyAssembly_and_checkedEndpoint
+      payload
+
+/--
 Equivalently, the three named package-layer requirements construct an inhabited
 complete final consumer payload.
 -/
@@ -2763,6 +2788,27 @@ theorem poincare_statement_final_certificate_and_completion_criteria_iff_nonempt
     rcases payload with ⟨payload⟩
     exact
       poincare_statement_final_certificate_and_completion_criteria_of_namedPackageLayerConsumerPayload
+        payload
+
+/--
+Inhabited-certificate final endpoint through the complete consumer payload:
+the public Poincare statement, an inhabited checked completion certificate, and
+all completion criteria are equivalent to inhabiting the named-package consumer
+payload.
+-/
+theorem poincare_statement_nonempty_certificate_and_completion_criteria_iff_nonempty_namedPackageLayerConsumerPayload :
+    (PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness) ↔
+      Nonempty FinalCertificateNamedPackageLayerConsumerPayload.{u} := by
+  constructor
+  · rintro ⟨statement, ⟨certificate⟩, completionCriteria⟩
+    exact
+      poincare_statement_final_certificate_and_completion_criteria_iff_nonempty_namedPackageLayerConsumerPayload.1
+        ⟨statement, certificate, completionCriteria⟩
+  · rintro ⟨payload⟩
+    exact
+      poincare_statement_nonempty_certificate_and_completion_criteria_of_namedPackageLayerConsumerPayload
         payload
 
 end Poincare
