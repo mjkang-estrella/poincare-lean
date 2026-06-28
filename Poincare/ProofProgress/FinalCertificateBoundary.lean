@@ -43354,4 +43354,53 @@ theorem threeSphere_nonempty_certificate_reserved_bridge_package_of_reserved_fin
       @Poincare.threeSphere_nonempty_certificate_reserved_bridge_package_of_reserved_final_certificate :=
   rfl
 
+/--
+Direct nonempty-certificate reserved final statement for the standard sphere.
+
+This projects the standard nonempty-certificate reduction endpoint from the
+checked concrete `ThreeSphere` final certificate package and records its
+agreement with the direct checked-certificate reserved bridge.
+-/
+theorem threeSphere_poincare_conjecture_of_nonempty_certificate_of_reserved_final_certificate
+    (dependencies : Nonempty PoincareProofDependenciesWithEquationBoundary.{0}) :
+    ∃ theoremName : String,
+    ∃ certificate : PoincareCompletionCertificate.{0},
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{0},
+    ∃ reservedStatement : PoincareConjectureStatement.{0},
+    ∃ nonemptyReservedStatement : PoincareConjectureStatement.{0},
+      theoremName = canonicalCompletionTheoremName ∧
+      theoremName = "poincare_conjecture" ∧
+      certificate =
+        completion_certificate_of_poincareProofDependenciesWithEquationBoundary
+          dependencies.some ∧
+      nonemptyCertificate =
+        nonempty_completion_certificate_of_completion_certificate
+          certificate ∧
+      reservedStatement =
+        poincare_conjecture_of_completion_certificate certificate ∧
+      nonemptyReservedStatement =
+        poincare_conjecture_of_nonempty_completion_certificate
+          nonemptyCertificate ∧
+      nonemptyReservedStatement = reservedStatement := by
+  rcases
+      threeSphere_nonempty_certificate_reserved_bridge_package_of_reserved_final_certificate
+        dependencies with
+    ⟨theoremName, certificate, nonemptyCertificate, reservedStatement,
+      nonemptyReservedStatement, _criterion, hTheoremNameCanonical,
+      hTheoremNameLiteral, hCertificate, hNonemptyCertificate,
+      hReservedStatement, hNonemptyReservedStatement, hNonemptyReserved,
+      _hCriterionReserved, _hCriterionCertificate⟩
+  exact
+    ⟨theoremName, certificate, nonemptyCertificate, reservedStatement,
+      nonemptyReservedStatement, hTheoremNameCanonical, hTheoremNameLiteral,
+      hCertificate, hNonemptyCertificate, hReservedStatement,
+      hNonemptyReservedStatement, hNonemptyReserved⟩
+
+/-- Theorem contract for
+`threeSphere_poincare_conjecture_of_nonempty_certificate_of_reserved_final_certificate`. -/
+theorem threeSphere_poincare_conjecture_of_nonempty_certificate_of_reserved_final_certificate_eq :
+    @Poincare.threeSphere_poincare_conjecture_of_nonempty_certificate_of_reserved_final_certificate =
+      @Poincare.threeSphere_poincare_conjecture_of_nonempty_certificate_of_reserved_final_certificate :=
+  rfl
+
 end Poincare
