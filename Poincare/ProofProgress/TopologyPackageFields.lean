@@ -51,6 +51,75 @@ theorem compl_singleton_pathConnectedSpace_of_topology_package
   infer_instance
 
 /--
+Any two points in a package-selected single-puncture complement are joined by a
+path.
+-/
+theorem compl_singleton_path_nonempty_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M) :
+    ∀ (a b : ({x}ᶜ : Set M)), Nonempty (Path a b) := by
+  intro a b
+  letI : PathConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_pathConnectedSpace_of_topology_package
+      package M extinction x
+  exact PathConnectedSpace.joined a b
+
+/--
+The path component of any point in a package-selected single-puncture
+complement is the whole complement.
+-/
+theorem compl_singleton_pathComponent_eq_univ_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    pathComponent basepoint = Set.univ := by
+  letI : PathConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_pathConnectedSpace_of_topology_package
+      package M extinction x
+  ext y
+  constructor
+  · intro _hy
+    exact Set.mem_univ y
+  · intro _hy
+    exact PathConnectedSpace.joined basepoint y
+
+/--
+A package-selected single-puncture complement is connected.
+-/
+theorem compl_singleton_connectedSpace_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M) :
+    ConnectedSpace ({x}ᶜ : Set M) := by
+  letI : PathConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_pathConnectedSpace_of_topology_package
+      package M extinction x
+  infer_instance
+
+/--
+A package-selected single-puncture complement is nonempty.
+-/
+theorem compl_singleton_nonempty_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M) :
+    Nonempty ({x}ᶜ : Set M) := by
+  letI : PathConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_pathConnectedSpace_of_topology_package
+      package M extinction x
+  infer_instance
+
+/--
 The package-level single-puncture contractibility projection gives simple
 connectedness of every single-puncture complement.
 -/
@@ -192,6 +261,96 @@ theorem twoPointComplement_simplyConnectedSpace_of_topology_package
   twoPointComplement_simplyConnectedSpace_of_homeomorph_to_onePoint_threeSpace
     (homeomorph_to_onePoint_threeSpace_of_topology_package
       package M extinction) hyx
+
+/--
+The package-level two-puncture simple-connectedness projection gives
+path-connectedness of every selected two-puncture complement.
+-/
+theorem twoPointComplement_pathConnectedSpace_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x) :
+    PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) := by
+  letI : SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_simplyConnectedSpace_of_topology_package
+      package M extinction hyx
+  infer_instance
+
+/--
+Any two points in a package-selected two-puncture complement are joined by a
+path.
+-/
+theorem twoPointComplement_path_nonempty_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x) :
+    ∀ (a b : (({x} ∪ {y})ᶜ : Set M)), Nonempty (Path a b) := by
+  intro a b
+  letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_pathConnectedSpace_of_topology_package
+      package M extinction hyx
+  exact PathConnectedSpace.joined a b
+
+/--
+The path component of any point in a package-selected two-puncture complement
+is the whole complement.
+-/
+theorem twoPointComplement_pathComponent_eq_univ_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    pathComponent basepoint = Set.univ := by
+  letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_pathConnectedSpace_of_topology_package
+      package M extinction hyx
+  ext z
+  constructor
+  · intro _hz
+    exact Set.mem_univ z
+  · intro _hz
+    exact PathConnectedSpace.joined basepoint z
+
+/--
+A package-selected two-puncture complement is connected.
+-/
+theorem twoPointComplement_connectedSpace_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x) :
+    ConnectedSpace (({x} ∪ {y})ᶜ : Set M) := by
+  letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_pathConnectedSpace_of_topology_package
+      package M extinction hyx
+  infer_instance
+
+/--
+A package-selected two-puncture complement is nonempty.
+-/
+theorem twoPointComplement_nonempty_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    {x y : M} (hyx : y ≠ x) :
+    Nonempty (({x} ∪ {y})ᶜ : Set M) := by
+  letI : PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) :=
+    twoPointComplement_pathConnectedSpace_of_topology_package
+      package M extinction hyx
+  infer_instance
 
 /--
 Consequently, every based fundamental group of a two-puncture complement
