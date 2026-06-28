@@ -1849,4 +1849,55 @@ theorem groundedUniversalFiniteExtinction_completeConsumerPayload_of_grounded
   groundedUniversalFiniteExtinction_completeConsumerPayload_of_nonemptyDetailedAssemblyPayload
     ⟨groundedUniversalFiniteExtinctionDetailedAssemblyPayload grounded⟩
 
+/--
+An inhabited complete finite-extinction consumer payload exposes the
+package-layer requirement, all three Ricci-flow/singularity-control/extinction
+milestones, and both package-first derivation families retained by the detailed
+assembly payload.
+-/
+theorem groundedUniversalFiniteExtinction_requirements_and_packageDerivationFamilies_of_completeConsumerPayload
+    (payload :
+      Nonempty GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u}) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.finiteExtinction ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          ∃ surgery : HasRicciFlowWithSurgery n M,
+          ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+            FiniteExtinctionStatement n M ∧
+              HasFiniteExtinctionDerivation flow surgery control ∧
+              FiniteExtinctionByRicciFlowWithSurgery M) ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+            FiniteExtinctionStatement n M ∧
+              FiniteExtinctionByRicciFlowWithSurgery M ∧
+              ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+              ∃ surgery : HasRicciFlowWithSurgery n M,
+              ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+                HasFiniteExtinctionDerivation flow surgery control) := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ payload.finiteExtinctionPackageRequirement
+    , payload.ricciFlowWithSurgeryMilestone
+    , payload.perelmanSingularityControlMilestone
+    , payload.finiteExtinctionMilestone
+    , payload.flowPackageFamily
+    , payload.packageStatementDerivationFamily
+    ⟩
+
 end Poincare
