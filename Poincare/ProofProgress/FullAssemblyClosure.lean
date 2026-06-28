@@ -94,6 +94,22 @@ theorem topologyPackage_requirement_of_finalAssemblyPackageBoundaryInputs
   inputs.topology
 
 /--
+The final package boundary exposes the topology-extraction endpoint as an
+explicit homeomorphism to the project `ThreeSphere`.
+-/
+theorem homeomorph_to_threeSphere_of_finalAssemblyPackageBoundaryInputs
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    Nonempty (M ≃ₜ ThreeSphere) := by
+  let finiteExtinction :=
+    finite_extinction_input_of_smoothability_and_surgery_packages
+      inputs.smoothability inputs.finiteExtinction
+  exact homeomorphism_of_topology_package
+    inputs.topology M (finiteExtinction M)
+
+/--
 The final package boundary exposes the post-extinction recognition
 homeomorphism to the one-point compactification model.
 -/
@@ -544,6 +560,20 @@ theorem canonical_completion_payload_of_finalAssemblySubobligationBoundaryInputs
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
   canonical_completion_payload_of_finalAssemblyPackageBoundaryInputs
     (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
+
+/--
+The sub-obligation boundary inherits the explicit `ThreeSphere` recognition
+endpoint through the package-boundary conversion.
+-/
+theorem homeomorph_to_threeSphere_of_finalAssemblySubobligationBoundaryInputs
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    Nonempty (M ≃ₜ ThreeSphere) :=
+  homeomorph_to_threeSphere_of_finalAssemblyPackageBoundaryInputs
+    (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
+    M
 
 /--
 The sub-obligation boundary inherits one-point compactification recognition
