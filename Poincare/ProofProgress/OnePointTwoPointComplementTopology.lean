@@ -1027,4 +1027,84 @@ noncomputable def onePoint_threeSpace_twoPointComplement_flatRecognition_payload
   onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition
     (onePoint_threeSpace_twoPointComplement_recognition_payload hqp basepoint)
 
+/--
+The flat two-puncture recognition payload is exactly the concrete
+punctured-Euclidean chart, ordinary topology fields, unique low-homotopy
+instances, and path-component collapse fields.  The reverse direction rebuilds
+the field-based flat-recognition payload from those explicit witnesses.
+-/
+theorem nonempty_onePoint_threeSpace_twoPointComplement_flatRecognition_payload_iff_fields
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} {hqp : q ≠ p}
+    {basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))} :
+    Nonempty (OnePointTwoPointComplementFlatRecognitionPayload hqp basepoint) ↔
+      (∃ puncture : EuclideanSpace ℝ (Fin 3),
+        Nonempty
+          ((({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+        SimplyConnectedSpace
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        ConnectedSpace
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        Nonempty
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        Nonempty (Unique
+          (ZerothHomotopy
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))) ∧
+        Nonempty (Unique
+          (HomotopyGroup.Pi 0
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint)) ∧
+        Nonempty (Unique
+          (FundamentalGroup
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint)) ∧
+        Nonempty (Unique
+          (HomotopyGroup.Pi 1
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint)) ∧
+        (∀ a b :
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+            Nonempty (Path a b)) ∧
+        (∀ point :
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+            pathComponent point = Set.univ) := by
+  constructor
+  · rintro ⟨payload⟩
+    exact
+      ⟨ payload.puncturedEuclideanChart
+      , payload.simplyConnected
+      , payload.connected
+      , payload.nonempty
+      , ⟨payload.zerothUnique⟩
+      , ⟨payload.piZeroUnique⟩
+      , ⟨payload.fundamentalGroupUnique⟩
+      , ⟨payload.piOneUnique⟩
+      , payload.pathNonempty
+      , payload.pathComponentEqUniv
+      ⟩
+  · rintro
+      ⟨ puncturedEuclideanChart
+      , simplyConnected
+      , connected
+      , nonempty
+      , ⟨zerothUnique⟩
+      , ⟨piZeroUnique⟩
+      , ⟨fundamentalGroupUnique⟩
+      , ⟨piOneUnique⟩
+      , pathNonempty
+      , pathComponentEqUniv
+      ⟩
+    exact
+      ⟨ { puncturedEuclideanChart := puncturedEuclideanChart
+          simplyConnected := simplyConnected
+          connected := connected
+          nonempty := nonempty
+          zerothUnique := zerothUnique
+          piZeroUnique := piZeroUnique
+          fundamentalGroupUnique := fundamentalGroupUnique
+          piOneUnique := piOneUnique
+          pathNonempty := pathNonempty
+          pathComponentEqUniv := pathComponentEqUniv } ⟩
+
 end Poincare
