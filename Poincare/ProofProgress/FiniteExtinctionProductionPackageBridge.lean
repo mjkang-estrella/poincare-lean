@@ -10606,6 +10606,61 @@ theorem finite_extinction_package_nonempty_of_target_assumptions_and_control_fro
   exact ⟨⟨n, package⟩⟩
 
 /--
+Pointwise theorem-shaped form: the same control-frontier existential supplies a
+time parameter together with the finite-extinction statement for the target
+manifold.
+-/
+theorem finite_extinction_statement_nonempty_of_target_assumptions_and_control_frontier
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (controlFrontier :
+      ∃ n : ℕ∞ω,
+      ∃ analyticFoundation :
+        RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M,
+      ∃ _surgeryConstruction :
+        RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+          (ricci_flow_data_of_analytic_foundation_package analyticFoundation),
+      ∃ _perelmanControl :
+        PerelmanSingularityControlPackage (n := n) (M := M)
+          (ricci_flow_data_of_analytic_foundation_package analyticFoundation),
+        True) :
+    ∃ n : ℕ∞ω, FiniteExtinctionStatement n M := by
+  rcases controlFrontier with
+    ⟨n, analyticFoundation, surgeryConstruction, perelmanControl, _⟩
+  exact
+    ⟨n,
+      finite_extinction_statement_of_target_assumptions_and_control_frontier
+        analyticFoundation surgeryConstruction perelmanControl⟩
+
+/--
+The pointwise control-frontier existential also exposes the final
+finite-extinction witness for the target manifold, by projecting it from the
+theorem-shaped statement above.
+-/
+theorem finite_extinction_by_ricci_flow_with_surgery_of_target_assumptions_and_control_frontier_package
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (controlFrontier :
+      ∃ n : ℕ∞ω,
+      ∃ analyticFoundation :
+        RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M,
+      ∃ _surgeryConstruction :
+        RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+          (ricci_flow_data_of_analytic_foundation_package analyticFoundation),
+      ∃ _perelmanControl :
+        PerelmanSingularityControlPackage (n := n) (M := M)
+          (ricci_flow_data_of_analytic_foundation_package analyticFoundation),
+        True) :
+    FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases finite_extinction_statement_nonempty_of_target_assumptions_and_control_frontier
+      controlFrontier with
+    ⟨_n, statement⟩
+  rcases statement with ⟨_flow, _surgery, _control, finiteExtinction, _conclusion⟩
+  exact finiteExtinction
+
+/--
 Family-level finite-to-assembly bridge: a target-family supply of analytic,
 surgery-construction, and Perelman-control frontiers discharges the exact
 finite-extinction package-layer requirement consumed by final assembly.
