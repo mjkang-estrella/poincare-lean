@@ -358,6 +358,52 @@ theorem surgeryPackage_milestones_and_projectionPayload_of_finiteExtinctionPacka
       finiteExtinctionRequirement
   ⟩
 
+/--
+The finite-extinction package layer exposes both surgery/Perelman projection
+surfaces: the named field-based payload tied to the finite-extinction package
+and the compact selected-flow payload carrying construction, Perelman control,
+scale-function data, and blowup classification.
+-/
+theorem surgeryPackage_milestones_projectionPayload_and_scale_blowup_of_finiteExtinctionPackage_requirement
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.surgeryPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ package : FiniteExtinctionSurgeryPackage n M,
+            Nonempty
+              (FiniteExtinctionSurgeryPerelmanProjectionPayload package)) ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+            PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+            Nonempty (SurgeryScaleFunctionPayload flow) ∧
+            HasSingularityModelBlowupClassification flow) :=
+  ⟨ surgeryPackage_requirement_of_finiteExtinctionPackage_requirement
+      finiteExtinctionRequirement
+  , ricciFlowWithSurgery_milestone_requirement_of_finiteExtinctionPackage_requirement
+      finiteExtinctionRequirement
+  , perelmanSingularityControl_milestone_requirement_of_finiteExtinctionPackage_requirement
+      finiteExtinctionRequirement
+  , finiteExtinctionSurgeryPerelmanProjectionPayload_target_at_of_finiteExtinctionPackage_requirement
+      finiteExtinctionRequirement
+  , surgery_perelman_scale_and_blowup_payload_target_at_of_finiteExtinctionPackage_requirement
+      finiteExtinctionRequirement
+  ⟩
+
 /-- Concrete surgery-scale payloads produce the first construction-package field. -/
 theorem surgery_scale_function_of_payload
     {n : ℕ∞ω}
