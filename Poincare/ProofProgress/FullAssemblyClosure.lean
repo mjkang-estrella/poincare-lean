@@ -335,4 +335,55 @@ theorem canonical_completion_payload_of_finalAssemblySubobligationBoundaryInputs
   canonical_completion_payload_of_finalAssemblyPackageBoundaryInputs
     (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
 
+/--
+The sub-obligation boundary inherits the single-puncture first-homotopy
+collapse after the finite-extinction proof-progress bridge constructs the
+package-level finite-extinction input.
+-/
+theorem compl_singleton_piOne_subsingleton_of_finalAssemblySubobligationBoundaryInputs
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (x : M) (basepoint : ({x}ᶜ : Set M)) :
+    Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) :=
+  compl_singleton_piOne_subsingleton_of_finalAssemblyPackageBoundaryInputs
+    (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
+    M x basepoint
+
+/--
+The sub-obligation boundary also inherits the two-puncture first-homotopy
+collapse through the same package-boundary conversion.
+-/
+theorem twoPointComplement_piOne_subsingleton_of_finalAssemblySubobligationBoundaryInputs
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Subsingleton
+      (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) :=
+  twoPointComplement_piOne_subsingleton_of_finalAssemblyPackageBoundaryInputs
+    (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
+    M hyx basepoint
+
+/--
+Combined complement-collapse payload for the sub-obligation boundary.
+-/
+theorem complement_piOne_collapse_payload_of_finalAssemblySubobligationBoundaryInputs
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (x : M) {y : M} (hyx : y ≠ x)
+    (singleBasepoint : ({x}ᶜ : Set M))
+    (twoBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint) :=
+  complement_piOne_collapse_payload_of_finalAssemblyPackageBoundaryInputs
+    (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
+    M x hyx singleBasepoint twoBasepoint
+
 end Poincare
