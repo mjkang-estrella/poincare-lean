@@ -248,6 +248,7 @@ theorem completion_certificate_of_remaining_dependency_and_universalFiniteExtinc
   let target : canonicalCompletionTarget.{u} :=
     canonical_completion_target_of_universalFiniteExtinctionStatement
       finiteExtinction
+      (extinction_implies_sphere_of_topology_package dependencies.topology)
   exact ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
     fun witness =>
       completion_criterion_of_canonical_completion_target witness target⟩
@@ -266,6 +267,7 @@ theorem completion_certificate_of_remaining_dependency_and_universalFiniteExtinc
         let target : canonicalCompletionTarget.{u} :=
           canonical_completion_target_of_universalFiniteExtinctionStatement
             finiteExtinction
+            (extinction_implies_sphere_of_topology_package dependencies.topology)
         exact ⟨canonicalCompletionTheoremName, rfl, dependencies, target,
           fun witness =>
             completion_criterion_of_canonical_completion_target
@@ -324,7 +326,8 @@ theorem completion_certificate_of_remaining_dependency_and_universalFiniteExtinc
         (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
           dependencies finiteExtinction) =
       canonical_completion_target_of_universalFiniteExtinctionStatement
-        finiteExtinction := by
+        finiteExtinction
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -338,7 +341,8 @@ theorem canonical_three_sphere_statement_of_completion_certificate_of_remaining_
         (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
           dependencies finiteExtinction) =
       canonical_three_sphere_statement_of_universalFiniteExtinctionStatement
-        finiteExtinction := by
+        finiteExtinction
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -352,7 +356,8 @@ theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_an
         (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
           dependencies finiteExtinction) =
       poincare_conjecture_of_universalFiniteExtinctionStatement
-        finiteExtinction := by
+        finiteExtinction
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -366,7 +371,8 @@ theorem target_statement_of_completion_certificate_of_remaining_dependency_and_u
         (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
           dependencies finiteExtinction) =
       poincare_statement_of_universalFiniteExtinctionStatement
-        finiteExtinction := by
+        finiteExtinction
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -380,7 +386,8 @@ theorem canonical_completion_payload_of_completion_certificate_of_remaining_depe
         (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
           dependencies finiteExtinction) =
       canonical_completion_payload_of_universalFiniteExtinctionStatement
-        finiteExtinction := by
+        finiteExtinction
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -394,7 +401,8 @@ theorem canonical_completion_payload_of_completion_certificate_of_remaining_depe
         (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
           dependencies finiteExtinction) =
       universalFiniteExtinctionStatement_completion_payload
-        finiteExtinction := by
+        finiteExtinction
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -409,7 +417,8 @@ theorem canonical_completion_payload_of_completion_certificate_of_remaining_depe
           dependencies finiteExtinction) =
       canonical_completion_payload_of_poincare_completion_payload
         (poincare_payload_of_universalFiniteExtinctionStatement
-          finiteExtinction) := by
+          finiteExtinction
+          (extinction_implies_sphere_of_topology_package dependencies.topology)) := by
   apply Subsingleton.elim
 
 /--
@@ -423,7 +432,8 @@ theorem poincare_completion_payload_of_completion_certificate_of_remaining_depen
         (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
           dependencies finiteExtinction) =
       poincare_payload_of_universalFiniteExtinctionStatement
-        finiteExtinction := by
+        finiteExtinction
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -437,7 +447,8 @@ theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_depen
         (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
           dependencies finiteExtinction) =
       poincare_conjecture_payload_of_universalFiniteExtinctionStatement
-        finiteExtinction := by
+        finiteExtinction
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -453,7 +464,8 @@ theorem completion_criterion_of_completion_certificate_of_remaining_dependency_a
         (completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
           dependencies finiteExtinction) =
       completion_criterion_of_universalFiniteExtinctionStatement
-        witness finiteExtinction := by
+        witness finiteExtinction
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -470,7 +482,8 @@ theorem canonical_completion_criterion_of_completion_certificate_of_remaining_de
           dependencies finiteExtinction) =
       completion_criterion_of_canonical_completion_target witness
         (canonical_completion_target_of_universalFiniteExtinctionStatement
-          finiteExtinction) := by
+          finiteExtinction
+          (extinction_implies_sphere_of_topology_package dependencies.topology)) := by
   apply Subsingleton.elim
 
 /--
@@ -511,7 +524,8 @@ theorem canonical_completion_payload_of_completion_certificate_of_remaining_depe
     canonical_completion_payload_of_completion_certificate
         (completion_certificate_of_remaining_dependency_package dependencies) =
       canonical_completion_payload_of_smoothability_and_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -525,7 +539,8 @@ theorem canonical_completion_payload_of_completion_certificate_of_remaining_depe
         (completion_certificate_of_remaining_dependency_package dependencies) =
       canonical_completion_payload_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -538,7 +553,8 @@ theorem poincare_completion_payload_of_completion_certificate_of_remaining_depen
     poincare_completion_payload_of_completion_certificate
         (completion_certificate_of_remaining_dependency_package dependencies) =
       poincare_conjecture_payload_of_smoothability_and_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -552,7 +568,8 @@ theorem poincare_completion_payload_of_completion_certificate_of_remaining_depen
         (completion_certificate_of_remaining_dependency_package dependencies) =
       poincare_payload_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -565,7 +582,8 @@ theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_depen
     poincare_conjecture_payload_of_completion_certificate
         (completion_certificate_of_remaining_dependency_package dependencies) =
       poincare_conjecture_payload_of_smoothability_and_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -579,7 +597,8 @@ theorem poincare_conjecture_payload_of_completion_certificate_of_remaining_depen
         (completion_certificate_of_remaining_dependency_package dependencies) =
       poincare_conjecture_payload_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -592,7 +611,8 @@ theorem canonical_completion_target_of_completion_certificate_of_remaining_depen
     canonical_completion_target_of_completion_certificate
         (completion_certificate_of_remaining_dependency_package dependencies) =
       canonical_completion_target_of_smoothability_and_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -606,14 +626,15 @@ theorem canonical_three_sphere_statement_of_smoothability_and_surgery_packages
         [ChartedSpace ThreeManifoldModel M]
         [SimplyConnectedSpace M] [CompactSpace M]
         [IsManifold ThreeManifoldModelWithCorners 1 M],
-          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
       [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
       [SimplyConnectedSpace M] [CompactSpace M],
         Nonempty (M ≃ₜ ThreeSphere) :=
   canonical_three_sphere_statement_of_canonical_completion_target
     (canonical_completion_target_of_smoothability_and_surgery_packages
-      smoothabilityPackage surgeryPackages)
+      smoothabilityPackage surgeryPackages extractSphere)
 
 /--
 The smoothability/surgery canonical topological statement is exactly the
@@ -627,12 +648,13 @@ theorem canonical_three_sphere_statement_of_smoothability_and_surgery_packages_e
         [ChartedSpace ThreeManifoldModel M]
         [SimplyConnectedSpace M] [CompactSpace M]
         [IsManifold ThreeManifoldModelWithCorners 1 M],
-          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_three_sphere_statement_of_smoothability_and_surgery_packages
-        smoothabilityPackage surgeryPackages =
+        smoothabilityPackage surgeryPackages extractSphere =
       canonical_three_sphere_statement_of_canonical_completion_target
         (canonical_completion_target_of_smoothability_and_surgery_packages
-          smoothabilityPackage surgeryPackages) := by
+          smoothabilityPackage surgeryPackages extractSphere) := by
   apply Subsingleton.elim
 
 /--
@@ -648,14 +670,15 @@ theorem canonical_three_sphere_statement_of_smoothability_and_boundary_surgery_p
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
       [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
       [SimplyConnectedSpace M] [CompactSpace M],
         Nonempty (M ≃ₜ ThreeSphere) :=
   canonical_three_sphere_statement_of_canonical_completion_target
     (canonical_completion_target_of_smoothability_and_boundary_surgery_packages
-      smoothabilityPackage surgeryPackages)
+      smoothabilityPackage surgeryPackages extractSphere)
 
 /--
 The boundary-carrying package canonical topological statement is exactly the
@@ -671,12 +694,13 @@ theorem canonical_three_sphere_statement_of_smoothability_and_boundary_surgery_p
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_three_sphere_statement_of_smoothability_and_boundary_surgery_packages
-        smoothabilityPackage surgeryPackages =
+        smoothabilityPackage surgeryPackages extractSphere =
       canonical_three_sphere_statement_of_canonical_completion_target
         (canonical_completion_target_of_smoothability_and_boundary_surgery_packages
-          smoothabilityPackage surgeryPackages) := by
+          smoothabilityPackage surgeryPackages extractSphere) := by
   apply Subsingleton.elim
 
 /--
@@ -693,9 +717,10 @@ theorem canonical_three_sphere_statement_of_smoothability_and_boundary_surgery_p
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_three_sphere_statement_of_smoothability_and_boundary_surgery_packages
-        smoothabilityPackage surgeryPackages =
+        smoothabilityPackage surgeryPackages extractSphere =
       canonical_three_sphere_statement_of_smoothability_and_surgery_packages
         smoothabilityPackage
         (fun (M : Type u) [TopologicalSpace M] [T2Space M]
@@ -707,7 +732,8 @@ theorem canonical_three_sphere_statement_of_smoothability_and_boundary_surgery_p
               exact
                 ⟨⟨n,
                   surgery_package_of_equation_boundary_surgery_package
-                    package⟩⟩) := by
+                    package⟩⟩)
+        extractSphere := by
   apply Subsingleton.elim
 
 /--
@@ -720,7 +746,8 @@ theorem canonical_three_sphere_statement_of_completion_certificate_of_remaining_
     canonical_three_sphere_statement_of_completion_certificate
         (completion_certificate_of_remaining_dependency_package dependencies) =
       canonical_three_sphere_statement_of_smoothability_and_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -734,7 +761,8 @@ theorem canonical_three_sphere_statement_of_completion_certificate_of_remaining_
         (completion_certificate_of_remaining_dependency_package dependencies) =
       canonical_three_sphere_statement_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -747,7 +775,8 @@ theorem target_statement_of_completion_certificate_of_remaining_dependency_packa
     target_statement_of_completion_certificate
         (completion_certificate_of_remaining_dependency_package dependencies) =
       poincare_conjecture_of_smoothability_and_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -761,7 +790,8 @@ theorem target_statement_of_completion_certificate_of_remaining_dependency_packa
         (completion_certificate_of_remaining_dependency_package dependencies) =
       poincare_statement_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -775,7 +805,8 @@ theorem canonical_completion_target_of_completion_certificate_of_remaining_depen
         (completion_certificate_of_remaining_dependency_package dependencies) =
       canonical_completion_target_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -788,7 +819,8 @@ theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_pa
     poincare_conjecture_of_completion_certificate
         (completion_certificate_of_remaining_dependency_package dependencies) =
       poincare_conjecture_of_smoothability_and_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -802,7 +834,8 @@ theorem poincare_conjecture_of_completion_certificate_of_remaining_dependency_pa
         (completion_certificate_of_remaining_dependency_package dependencies) =
       poincare_conjecture_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -815,7 +848,8 @@ theorem completion_criterion_of_completion_certificate_of_remaining_dependency_p
     completion_criterion_of_completion_certificate witness
         (completion_certificate_of_remaining_dependency_package dependencies) =
       completion_criterion_of_smoothability_and_surgery_packages
-        witness dependencies.smoothability dependencies.surgery := by
+        witness dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -830,7 +864,8 @@ theorem completion_criterion_of_completion_certificate_of_remaining_dependency_p
       completion_criterion_of_universalFiniteExtinctionStatement
         witness
         (universalFiniteExtinctionStatement_of_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -843,7 +878,8 @@ theorem canonical_completion_criterion_of_completion_certificate_of_remaining_de
     canonical_completion_criterion_of_completion_certificate witness
         (completion_certificate_of_remaining_dependency_package dependencies) =
       canonical_completion_criterion_of_smoothability_and_surgery_packages
-        witness dependencies.smoothability dependencies.surgery := by
+        witness dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -859,7 +895,8 @@ theorem canonical_completion_criterion_of_completion_certificate_of_remaining_de
         witness
         (canonical_completion_target_of_universalFiniteExtinctionStatement
           (universalFiniteExtinctionStatement_of_remaining_dependency_package
-          dependencies)) := by
+          dependencies)
+          (extinction_implies_sphere_of_topology_package dependencies.topology)) := by
   apply Subsingleton.elim
 
 /--
@@ -888,7 +925,8 @@ theorem canonical_completion_payload_of_completion_certificate_of_poincareProofD
         (completion_certificate_of_poincareProofDependencies dependencies) =
       canonical_completion_payload_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_dependencies
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -902,7 +940,8 @@ theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDe
         (completion_certificate_of_poincareProofDependencies dependencies) =
       poincare_payload_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_dependencies
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -916,7 +955,8 @@ theorem target_statement_of_completion_certificate_of_poincareProofDependencies_
         (completion_certificate_of_poincareProofDependencies dependencies) =
       poincare_statement_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_dependencies
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -929,7 +969,8 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     canonical_completion_target_of_completion_certificate
         (completion_certificate_of_poincareProofDependencies dependencies) =
       canonical_completion_target_of_universalFiniteExtinctionStatement
-        (universalFiniteExtinctionStatement_of_dependencies dependencies) := by
+        (universalFiniteExtinctionStatement_of_dependencies dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -943,7 +984,8 @@ theorem completion_criterion_of_completion_certificate_of_poincareProofDependenc
         (completion_certificate_of_poincareProofDependencies dependencies) =
       completion_criterion_of_universalFiniteExtinctionStatement
         witness
-        (universalFiniteExtinctionStatement_of_dependencies dependencies) := by
+        (universalFiniteExtinctionStatement_of_dependencies dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -958,7 +1000,8 @@ theorem canonical_completion_criterion_of_completion_certificate_of_poincareProo
       completion_criterion_of_canonical_completion_target
         witness
         (canonical_completion_target_of_universalFiniteExtinctionStatement
-          (universalFiniteExtinctionStatement_of_dependencies dependencies)) := by
+          (universalFiniteExtinctionStatement_of_dependencies dependencies)
+          (extinction_implies_sphere_of_topology_package dependencies.topology)) := by
   apply Subsingleton.elim
 
 /--
@@ -1018,7 +1061,8 @@ theorem canonical_completion_payload_of_completion_certificate_of_poincareProofD
     canonical_completion_payload_of_completion_certificate
         (completion_certificate_of_poincareProofDependencies dependencies) =
       canonical_completion_payload_of_smoothability_and_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1031,7 +1075,8 @@ theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDe
     poincare_completion_payload_of_completion_certificate
         (completion_certificate_of_poincareProofDependencies dependencies) =
       poincare_conjecture_payload_of_smoothability_and_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1044,7 +1089,8 @@ theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDe
     poincare_conjecture_payload_of_completion_certificate
         (completion_certificate_of_poincareProofDependencies dependencies) =
       poincare_conjecture_payload_of_smoothability_and_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1057,7 +1103,8 @@ theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDe
     poincare_conjecture_payload_of_completion_certificate
         (completion_certificate_of_poincareProofDependencies dependencies) =
       poincare_conjecture_payload_of_universalFiniteExtinctionStatement
-        (universalFiniteExtinctionStatement_of_dependencies dependencies) := by
+        (universalFiniteExtinctionStatement_of_dependencies dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1070,7 +1117,8 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
     canonical_completion_target_of_completion_certificate
         (completion_certificate_of_poincareProofDependencies dependencies) =
       canonical_completion_target_of_smoothability_and_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1083,7 +1131,8 @@ theorem canonical_three_sphere_statement_of_completion_certificate_of_poincarePr
     canonical_three_sphere_statement_of_completion_certificate
         (completion_certificate_of_poincareProofDependencies dependencies) =
       canonical_three_sphere_statement_of_smoothability_and_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1096,7 +1145,8 @@ theorem canonical_three_sphere_statement_of_completion_certificate_of_poincarePr
     canonical_three_sphere_statement_of_completion_certificate
         (completion_certificate_of_poincareProofDependencies dependencies) =
       canonical_three_sphere_statement_of_universalFiniteExtinctionStatement
-        (universalFiniteExtinctionStatement_of_dependencies dependencies) := by
+        (universalFiniteExtinctionStatement_of_dependencies dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1110,7 +1160,8 @@ theorem canonical_three_sphere_statement_of_completion_certificate_of_equation_b
         (completion_certificate_of_equation_boundary_remaining_dependency_package
           dependencies) =
       canonical_three_sphere_statement_of_smoothability_and_boundary_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1125,7 +1176,8 @@ theorem canonical_three_sphere_statement_of_completion_certificate_of_equation_b
           dependencies) =
       canonical_three_sphere_statement_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_equation_boundary_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1139,7 +1191,8 @@ theorem canonical_three_sphere_statement_of_completion_certificate_of_poincarePr
         (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
           dependencies) =
       canonical_three_sphere_statement_of_smoothability_and_boundary_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1154,7 +1207,8 @@ theorem canonical_three_sphere_statement_of_completion_certificate_of_poincarePr
           dependencies) =
       canonical_three_sphere_statement_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_equation_boundary_dependencies
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1167,7 +1221,8 @@ theorem canonical_completion_payload_of_completion_certificate_of_equation_bound
         (completion_certificate_of_equation_boundary_remaining_dependency_package
           dependencies) =
       canonical_completion_payload_of_smoothability_and_boundary_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1182,7 +1237,8 @@ theorem canonical_completion_payload_of_completion_certificate_of_equation_bound
           dependencies) =
       canonical_completion_payload_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_equation_boundary_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1195,7 +1251,8 @@ theorem poincare_completion_payload_of_completion_certificate_of_equation_bounda
         (completion_certificate_of_equation_boundary_remaining_dependency_package
           dependencies) =
       poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1210,7 +1267,8 @@ theorem poincare_completion_payload_of_completion_certificate_of_equation_bounda
           dependencies) =
       poincare_payload_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_equation_boundary_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1223,7 +1281,8 @@ theorem poincare_conjecture_payload_of_completion_certificate_of_equation_bounda
         (completion_certificate_of_equation_boundary_remaining_dependency_package
           dependencies) =
       poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1238,7 +1297,8 @@ theorem poincare_conjecture_payload_of_completion_certificate_of_equation_bounda
           dependencies) =
       poincare_conjecture_payload_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_equation_boundary_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1251,7 +1311,8 @@ theorem canonical_completion_target_of_completion_certificate_of_equation_bounda
         (completion_certificate_of_equation_boundary_remaining_dependency_package
           dependencies) =
       canonical_completion_target_of_smoothability_and_boundary_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1264,7 +1325,8 @@ theorem target_statement_of_completion_certificate_of_equation_boundary_remainin
         (completion_certificate_of_equation_boundary_remaining_dependency_package
           dependencies) =
       poincare_conjecture_of_smoothability_and_boundary_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1279,7 +1341,8 @@ theorem target_statement_of_completion_certificate_of_equation_boundary_remainin
           dependencies) =
       poincare_statement_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_equation_boundary_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1294,7 +1357,8 @@ theorem canonical_completion_target_of_completion_certificate_of_equation_bounda
           dependencies) =
       canonical_completion_target_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_equation_boundary_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1307,7 +1371,8 @@ theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_remai
         (completion_certificate_of_equation_boundary_remaining_dependency_package
           dependencies) =
       poincare_conjecture_of_smoothability_and_boundary_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1322,7 +1387,8 @@ theorem poincare_conjecture_of_completion_certificate_of_equation_boundary_remai
           dependencies) =
       poincare_conjecture_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_equation_boundary_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1336,7 +1402,8 @@ theorem completion_criterion_of_completion_certificate_of_equation_boundary_rema
         (completion_certificate_of_equation_boundary_remaining_dependency_package
           dependencies) =
       completion_criterion_of_smoothability_and_boundary_surgery_packages
-        witness dependencies.smoothability dependencies.surgery := by
+        witness dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1350,7 +1417,8 @@ theorem canonical_completion_criterion_of_completion_certificate_of_equation_bou
         (completion_certificate_of_equation_boundary_remaining_dependency_package
           dependencies) =
       canonical_completion_criterion_of_smoothability_and_boundary_surgery_packages
-        witness dependencies.smoothability dependencies.surgery := by
+        witness dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1367,7 +1435,8 @@ theorem completion_criterion_of_completion_certificate_of_equation_boundary_rema
       completion_criterion_of_universalFiniteExtinctionStatement
         witness
         (universalFiniteExtinctionStatement_of_equation_boundary_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1385,7 +1454,8 @@ theorem canonical_completion_criterion_of_completion_certificate_of_equation_bou
         witness
         (canonical_completion_target_of_universalFiniteExtinctionStatement
           (universalFiniteExtinctionStatement_of_equation_boundary_remaining_dependency_package
-          dependencies)) := by
+          dependencies)
+          (extinction_implies_sphere_of_topology_package dependencies.topology)) := by
   apply Subsingleton.elim
 
 /--
@@ -1398,7 +1468,8 @@ theorem canonical_completion_payload_of_completion_certificate_of_poincareProofD
         (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
           dependencies) =
       canonical_completion_payload_of_smoothability_and_boundary_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1413,7 +1484,8 @@ theorem canonical_completion_payload_of_completion_certificate_of_poincareProofD
           dependencies) =
       canonical_completion_payload_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_equation_boundary_dependencies
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1426,7 +1498,8 @@ theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDe
         (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
           dependencies) =
       poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1441,7 +1514,8 @@ theorem poincare_completion_payload_of_completion_certificate_of_poincareProofDe
           dependencies) =
       poincare_payload_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_equation_boundary_dependencies
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1454,7 +1528,8 @@ theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDe
         (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
           dependencies) =
       poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1469,7 +1544,8 @@ theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDe
           dependencies) =
       poincare_conjecture_payload_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_equation_boundary_dependencies
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1482,7 +1558,8 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
         (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
           dependencies) =
       canonical_completion_target_of_smoothability_and_boundary_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1495,7 +1572,8 @@ theorem target_statement_of_completion_certificate_of_poincareProofDependenciesW
         (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
           dependencies) =
       poincare_conjecture_of_smoothability_and_boundary_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1510,7 +1588,8 @@ theorem target_statement_of_completion_certificate_of_poincareProofDependenciesW
           dependencies) =
       poincare_statement_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_equation_boundary_dependencies
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1525,7 +1604,8 @@ theorem canonical_completion_target_of_completion_certificate_of_poincareProofDe
           dependencies) =
       canonical_completion_target_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_equation_boundary_dependencies
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1538,7 +1618,8 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
         (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
           dependencies) =
       poincare_conjecture_of_smoothability_and_boundary_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1553,7 +1634,8 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
           dependencies) =
       poincare_conjecture_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_equation_boundary_dependencies
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1567,7 +1649,8 @@ theorem completion_criterion_of_completion_certificate_of_poincareProofDependenc
         (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
           dependencies) =
       completion_criterion_of_smoothability_and_boundary_surgery_packages
-        witness dependencies.smoothability dependencies.surgery := by
+        witness dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1581,7 +1664,8 @@ theorem canonical_completion_criterion_of_completion_certificate_of_poincareProo
         (completion_certificate_of_poincareProofDependenciesWithEquationBoundary
           dependencies) =
       canonical_completion_criterion_of_smoothability_and_boundary_surgery_packages
-        witness dependencies.smoothability dependencies.surgery := by
+        witness dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1598,7 +1682,8 @@ theorem completion_criterion_of_completion_certificate_of_poincareProofDependenc
       completion_criterion_of_universalFiniteExtinctionStatement
         witness
         (universalFiniteExtinctionStatement_of_equation_boundary_dependencies
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1616,7 +1701,8 @@ theorem canonical_completion_criterion_of_completion_certificate_of_poincareProo
         witness
         (canonical_completion_target_of_universalFiniteExtinctionStatement
           (universalFiniteExtinctionStatement_of_equation_boundary_dependencies
-          dependencies)) := by
+          dependencies)
+          (extinction_implies_sphere_of_topology_package dependencies.topology)) := by
   apply Subsingleton.elim
 
 /--
@@ -1629,7 +1715,8 @@ theorem target_statement_of_completion_certificate_of_poincareProofDependencies_
     target_statement_of_completion_certificate
         (completion_certificate_of_poincareProofDependencies dependencies) =
       poincare_conjecture_of_smoothability_and_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1642,7 +1729,8 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
     poincare_conjecture_of_completion_certificate
         (completion_certificate_of_poincareProofDependencies dependencies) =
       poincare_conjecture_of_smoothability_and_surgery_packages
-        dependencies.smoothability dependencies.surgery := by
+        dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1655,7 +1743,8 @@ theorem poincare_conjecture_of_completion_certificate_of_poincareProofDependenci
     poincare_conjecture_of_completion_certificate
         (completion_certificate_of_poincareProofDependencies dependencies) =
       poincare_conjecture_of_universalFiniteExtinctionStatement
-        (universalFiniteExtinctionStatement_of_dependencies dependencies) := by
+        (universalFiniteExtinctionStatement_of_dependencies dependencies)
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1668,7 +1757,8 @@ theorem completion_criterion_of_completion_certificate_of_poincareProofDependenc
     completion_criterion_of_completion_certificate witness
         (completion_certificate_of_poincareProofDependencies dependencies) =
       completion_criterion_of_smoothability_and_surgery_packages
-        witness dependencies.smoothability dependencies.surgery := by
+        witness dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -1681,7 +1771,8 @@ theorem canonical_completion_criterion_of_completion_certificate_of_poincareProo
     canonical_completion_criterion_of_completion_certificate witness
         (completion_certificate_of_poincareProofDependencies dependencies) =
       canonical_completion_criterion_of_smoothability_and_surgery_packages
-        witness dependencies.smoothability dependencies.surgery := by
+        witness dependencies.smoothability dependencies.surgery
+        (extinction_implies_sphere_of_topology_package dependencies.topology) := by
   apply Subsingleton.elim
 
 /--

@@ -37,7 +37,7 @@ noncomputable def stationary_time_dependent_riemannian_metric
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
-    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (metric :
       ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x)) :
     TimeDependentRiemannianMetric I n M where
@@ -48,7 +48,7 @@ noncomputable def stationary_time_dependent_riemannian_metric
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
-    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (metric :
       ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x)) :
     stationary_time_dependent_riemannian_metric metric =
@@ -106,7 +106,7 @@ noncomputable def zero_tangent_covariant_two_tensor
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H}
-    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     (x : M) :
     zero_tangent_covariant_two_tensor I M x = 0 :=
   rfl
@@ -176,6 +176,238 @@ noncomputable def zero_ricci_tensor_field
     zero_ricci_tensor_field g =
       ({ tensorAtTime := fun _t => zero_tangent_covariant_two_tensor I M } :
         RicciTensorField g) :=
+  rfl
+
+/--
+Concrete data source asserting that a metric is the standard Euclidean
+three-space vector-space metric.
+
+The comparison is lifted so the certificate can be stated for the universe
+polymorphic metric API without adding a parameterized constructor to the
+curvature predicate.  It is a deliberately narrow flatness source: it does not
+make arbitrary metrics flat.
+-/
+structure StandardEuclideanThreeZeroRiemannCurvatureMetricData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x)) : Prop where
+  /-- The metric is the standard Euclidean three-space vector-space metric. -/
+  metric_ulift_heq_standard_euclidean_three :
+    HEq (ULift.up.{0, max u w} metric)
+      (ULift.up.{max u w, 0}
+        (riemannianMetricVectorSpace (EuclideanSpace ℝ (Fin 3))))
+
+/-- The standard Euclidean three-space metric supplies the scoped flatness data. -/
+theorem standardEuclideanThreeZeroRiemannCurvatureMetricData_vectorSpace :
+    StandardEuclideanThreeZeroRiemannCurvatureMetricData
+      (riemannianMetricVectorSpace (EuclideanSpace ℝ (Fin 3))) where
+  metric_ulift_heq_standard_euclidean_three := HEq.rfl
+
+/--
+Project-owned witness that a Riemannian metric has zero Riemann curvature.
+
+The current constructor is intentionally scoped to the concrete standard
+Euclidean three-space metric data above.  It records the only flatness theorem
+currently available locally, without asserting flatness for arbitrary metrics.
+-/
+structure HasZeroRiemannCurvatureMetric
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x)) : Prop where
+  /-- The currently available zero-curvature source is the standard Euclidean metric. -/
+  standardEuclideanThreeFlatMetric :
+    StandardEuclideanThreeZeroRiemannCurvatureMetricData metric
+
+/-- Standard Euclidean three-space flatness data gives the project zero-curvature witness. -/
+def hasZeroRiemannCurvatureMetric_of_standardEuclideanThreeZeroRiemannCurvatureMetricData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (data : StandardEuclideanThreeZeroRiemannCurvatureMetricData metric) :
+    HasZeroRiemannCurvatureMetric metric where
+  standardEuclideanThreeFlatMetric := data
+
+/-- The standard-data constructor stores exactly the supplied flatness data. -/
+@[simp] theorem hasZeroRiemannCurvatureMetric_of_standardEuclideanThreeZeroRiemannCurvatureMetricData_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (data : StandardEuclideanThreeZeroRiemannCurvatureMetricData metric) :
+    hasZeroRiemannCurvatureMetric_of_standardEuclideanThreeZeroRiemannCurvatureMetricData
+        metric data =
+      ({ standardEuclideanThreeFlatMetric := data } :
+        HasZeroRiemannCurvatureMetric metric) :=
+  rfl
+
+/-- Data source for deriving Ricci-flatness from vanishing Riemann curvature. -/
+structure ZeroRiemannCurvatureMetricData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x)) where
+  /-- The metric has zero Riemann curvature. -/
+  zeroRiemannCurvature : HasZeroRiemannCurvatureMetric metric
+
+/-- A zero Riemann-curvature witness packages as zero-curvature metric data. -/
+def zeroRiemannCurvatureMetricData_of_zeroRiemannCurvature
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (zeroRiemannCurvature : HasZeroRiemannCurvatureMetric metric) :
+    ZeroRiemannCurvatureMetricData metric where
+  zeroRiemannCurvature := zeroRiemannCurvature
+
+/-- The zero Riemann-curvature metric package is its stored witness. -/
+@[simp] theorem zeroRiemannCurvatureMetricData_of_zeroRiemannCurvature_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (zeroRiemannCurvature : HasZeroRiemannCurvatureMetric metric) :
+    zeroRiemannCurvatureMetricData_of_zeroRiemannCurvature
+        metric zeroRiemannCurvature =
+      ({ zeroRiemannCurvature := zeroRiemannCurvature } :
+        ZeroRiemannCurvatureMetricData metric) :=
+  rfl
+
+/--
+Project-owned witness that a Riemannian metric is Ricci-flat.
+
+The constructor is scoped to the standard mathematical implication from zero
+Riemann curvature data to zero Ricci curvature. It does not assert that
+arbitrary metrics are Ricci-flat.
+-/
+inductive HasZeroRicciCurvatureMetric
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x)) :
+    Prop where
+  | of_zeroRiemannCurvature
+      (_data : ZeroRiemannCurvatureMetricData metric) :
+      HasZeroRicciCurvatureMetric metric
+
+/-- Zero Riemann-curvature data gives the Ricci-flat metric witness. -/
+theorem hasZeroRicciCurvatureMetric_of_zeroRiemannCurvatureMetricData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (data : ZeroRiemannCurvatureMetricData metric) :
+    HasZeroRicciCurvatureMetric metric :=
+  HasZeroRicciCurvatureMetric.of_zeroRiemannCurvature data
+
+/-- The zero Riemann-to-Ricci route is exactly the scoped constructor. -/
+@[simp] theorem hasZeroRicciCurvatureMetric_of_zeroRiemannCurvatureMetricData_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (data : ZeroRiemannCurvatureMetricData metric) :
+    hasZeroRicciCurvatureMetric_of_zeroRiemannCurvatureMetricData
+      metric data =
+      HasZeroRicciCurvatureMetric.of_zeroRiemannCurvature data := by
+  apply Subsingleton.elim
+
+/--
+Concrete data identifying the Ricci tensor of a stationary Ricci-flat metric as
+the zero Ricci tensor candidate.
+-/
+structure StationaryZeroRicciTensorIdentificationData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x)) where
+  /-- The non-definitional mathematical input: the metric is Ricci-flat. -/
+  zeroRicciMetric : HasZeroRicciCurvatureMetric metric
+  /-- Every time-slice of the stationary family is the stored metric. -/
+  metricAtTime_eq :
+    ∀ t : ℝ,
+      (stationary_time_dependent_riemannian_metric metric).metricAtTime t =
+        metric
+  /-- The chosen candidate Ricci tensor is timewise the zero tensor. -/
+  ricciTensorAtTime_eq :
+    ∀ t : ℝ,
+      (zero_ricci_tensor_field
+        (stationary_time_dependent_riemannian_metric metric)).tensorAtTime t =
+        zero_tangent_covariant_two_tensor I M
+  /-- Pointwise, the chosen candidate Ricci tensor evaluates to scalar zero. -/
+  ricciTensorAtTime_apply_eq_zero :
+    ∀ (t : ℝ) (x : M) (v w : TangentSpace I x),
+      (zero_ricci_tensor_field
+        (stationary_time_dependent_riemannian_metric metric)).tensorAtTime
+          t x v w = 0
+
+/-- A Ricci-flat metric witness supplies the stationary zero Ricci payload. -/
+noncomputable def stationaryZeroRicciTensorIdentificationData_of_zeroRicciMetric
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (zeroRicciMetric : HasZeroRicciCurvatureMetric metric) :
+    StationaryZeroRicciTensorIdentificationData metric where
+  zeroRicciMetric := zeroRicciMetric
+  metricAtTime_eq := by
+    intro t
+    rfl
+  ricciTensorAtTime_eq := by
+    intro t
+    rfl
+  ricciTensorAtTime_apply_eq_zero := by
+    intro t x v w
+    rfl
+
+/-- The stationary zero Ricci payload is the definitional Ricci-flat data. -/
+@[simp] theorem stationaryZeroRicciTensorIdentificationData_of_zeroRicciMetric_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (zeroRicciMetric : HasZeroRicciCurvatureMetric metric) :
+    stationaryZeroRicciTensorIdentificationData_of_zeroRicciMetric
+        metric zeroRicciMetric =
+      ({ zeroRicciMetric := zeroRicciMetric
+         metricAtTime_eq := by
+           intro t
+           rfl
+         ricciTensorAtTime_eq := by
+           intro t
+           rfl
+         ricciTensorAtTime_apply_eq_zero := by
+           intro t x v w
+           rfl } :
+        StationaryZeroRicciTensorIdentificationData metric) :=
   rfl
 
 /--
@@ -253,32 +485,168 @@ noncomputable def zero_metric_time_derivative_field
   rfl
 
 /--
+Concrete data identifying the zero derivative of a stationary metric family.
+
+This is intentionally specialized to the stationary metric and zero candidate;
+it does not assert that arbitrary metric families have zero time derivative.
+-/
+structure StationaryZeroMetricDerivativeIdentificationData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x)) where
+  /-- Every time-slice of the stationary family is the stored metric. -/
+  metricAtTime_eq :
+    ∀ t : ℝ,
+      (stationary_time_dependent_riemannian_metric metric).metricAtTime t =
+        metric
+  /-- Every time-slice of the candidate derivative is the zero tensor. -/
+  derivativeAtTime_eq :
+    ∀ t : ℝ,
+      (zero_metric_time_derivative_field
+        (stationary_time_dependent_riemannian_metric metric)).derivativeAtTime t =
+        zero_tangent_covariant_two_tensor I M
+  /-- Pointwise, the candidate derivative evaluates to scalar zero. -/
+  derivativeAtTime_apply_eq_zero :
+    ∀ (t : ℝ) (x : M) (v w : TangentSpace I x),
+      (zero_metric_time_derivative_field
+        (stationary_time_dependent_riemannian_metric metric)).derivativeAtTime
+          t x v w = 0
+
+/-- The stationary zero derivative payload is definitionally available. -/
+noncomputable def stationaryZeroMetricDerivativeIdentificationData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x)) :
+    StationaryZeroMetricDerivativeIdentificationData metric where
+  metricAtTime_eq := by
+    intro t
+    rfl
+  derivativeAtTime_eq := by
+    intro t
+    rfl
+  derivativeAtTime_apply_eq_zero := by
+    intro t x v w
+    rfl
+
+/-- The stationary zero metric-derivative data is the definitional payload. -/
+@[simp] theorem stationaryZeroMetricDerivativeIdentificationData_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x)) :
+    stationaryZeroMetricDerivativeIdentificationData metric =
+      ({ metricAtTime_eq := by
+           intro t
+           rfl
+         derivativeAtTime_eq := by
+           intro t
+           rfl
+         derivativeAtTime_apply_eq_zero := by
+           intro t x v w
+           rfl } :
+        StationaryZeroMetricDerivativeIdentificationData metric) :=
+  rfl
+
+/--
 Interface asserting that a candidate tensor is the Ricci tensor of a metric.
 
-This predicate has no constructors in this file; it is the curvature-theory
-boundary that future work must replace with a real definition and theorem.
+The constructor provided here is only the scoped stationary Ricci-flat
+metric/zero-field case. General curvature construction remains future analytic
+input.
 -/
 inductive IsRicciTensorOf
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M] :
+    (g : TimeDependentRiemannianMetric I n M) →
+    RicciTensorField g → Prop where
+  | stationary_zero_ricci_tensor
+      (metric :
+        ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+      (_data : StationaryZeroRicciTensorIdentificationData metric) :
+      IsRicciTensorOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_ricci_tensor_field
+          (stationary_time_dependent_riemannian_metric metric))
+
+/-- A stationary Ricci-flat metric has the zero Ricci tensor candidate. -/
+theorem stationary_zero_ricci_identification_of_data
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (g : TimeDependentRiemannianMetric I n M) (_ricci : RicciTensorField g) : Prop
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (data : StationaryZeroRicciTensorIdentificationData metric) :
+    IsRicciTensorOf
+      (stationary_time_dependent_riemannian_metric metric)
+      (zero_ricci_tensor_field
+        (stationary_time_dependent_riemannian_metric metric)) :=
+  IsRicciTensorOf.stationary_zero_ricci_tensor metric data
+
+/-- A Ricci-flat metric witness gives stationary zero Ricci identification. -/
+theorem stationary_zero_ricci_identification_of_zeroRicciMetric
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+    (zeroRicciMetric : HasZeroRicciCurvatureMetric metric) :
+    IsRicciTensorOf
+      (stationary_time_dependent_riemannian_metric metric)
+      (zero_ricci_tensor_field
+        (stationary_time_dependent_riemannian_metric metric)) :=
+  stationary_zero_ricci_identification_of_data metric
+    (stationaryZeroRicciTensorIdentificationData_of_zeroRicciMetric
+      metric zeroRicciMetric)
 
 /--
 Interface asserting that a candidate tensor field is the time derivative of a
 metric family.
 
-This predicate has no constructors in this file; it is the metric
-differentiation boundary that future analytic formalization must supply.
+The constructor provided here is only the concrete stationary-metric/zero-field
+case. General metric-differentiation theorems remain future analytic input.
 -/
 inductive IsMetricTimeDerivativeOf
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M] :
+    (g : TimeDependentRiemannianMetric I n M) →
+    MetricTimeDerivativeField g → Prop where
+  | stationary_zero_metric_derivative
+      (metric :
+        ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x))
+      (_data : StationaryZeroMetricDerivativeIdentificationData metric) :
+      IsMetricTimeDerivativeOf
+        (stationary_time_dependent_riemannian_metric metric)
+        (zero_metric_time_derivative_field
+          (stationary_time_dependent_riemannian_metric metric))
+
+/-- A stationary metric family has the zero metric time derivative. -/
+theorem stationary_zero_metric_derivative_identification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (g : TimeDependentRiemannianMetric I n M)
-    (_derivative : MetricTimeDerivativeField g) : Prop
+    (metric :
+      ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x)) :
+    IsMetricTimeDerivativeOf
+      (stationary_time_dependent_riemannian_metric metric)
+      (zero_metric_time_derivative_field
+        (stationary_time_dependent_riemannian_metric metric)) :=
+  IsMetricTimeDerivativeOf.stationary_zero_metric_derivative
+    metric (stationaryZeroMetricDerivativeIdentificationData metric)
 
 /-- Metric time-derivative data attached to a time-dependent metric. -/
 structure MetricTimeDerivativeData
@@ -309,16 +677,27 @@ structure RicciCurvatureData
 /--
 Interface for the Ricci flow equation.
 
-This predicate has no constructors in this file. Future curvature formalization
-should replace uses of this interface with a definition in terms of the
-derivative of the metric and the Ricci tensor.
+The only constructor provided here is the concrete equation route: an
+identified metric time derivative whose time slices are explicitly equal to the
+`-2 Ricci` right-hand side. This does not assert broad metric flatness or
+manufacture equation evidence without the analytic identity itself.
 -/
 inductive SatisfiesRicciFlowEquation
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (g : TimeDependentRiemannianMetric I n M) (_curvature : RicciCurvatureData g) : Prop
+    (g : TimeDependentRiemannianMetric I n M) : RicciCurvatureData g → Prop where
+  | of_metric_derivative_eq_neg_two_ricci
+      (curvature : RicciCurvatureData g)
+      (metricDerivative : MetricTimeDerivativeField g)
+      (_identifiesDerivative : IsMetricTimeDerivativeOf g metricDerivative)
+      (_equationAtTime :
+        ∀ t : ℝ,
+          metricDerivative.derivativeAtTime t =
+            (fun x : M => (-2 : ℝ) • curvature.ricci.tensorAtTime t x :
+              TangentCovariantTwoTensor I M)) :
+      SatisfiesRicciFlowEquation g curvature
 
 /--
 Ricci-flow data is a time-dependent Riemannian metric together with a proof that
@@ -878,9 +1257,8 @@ theorem equation_evidence_of_ricci_flow_data_eq
 /--
 Concrete verification data for the equation `∂ₜ g = -2 Ricci`.
 
-This structure does not construct `SatisfiesRicciFlowEquation`; it records the
-explicit analytic equality that a future bridge theorem must connect to that
-interface.
+This structure records the explicit analytic equality consumed by
+`satisfies_ricci_flow_equation_of_equation_verification`.
 -/
 structure RicciFlowEquationVerification
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -897,11 +1275,13 @@ structure RicciFlowEquationVerification
       metricDerivative.derivative t = ricci_flow_rhs_tensor curvature t
 
 /--
-The missing bridge from the concrete equation-verification package to the
+The bridge statement from the concrete equation-verification package to the
 abstract Ricci-flow equation interface.
 
-This is a named theorem target, not an assumption installed globally: downstream
-constructions that use it must receive an explicit proof of this statement.
+The current interface has a proof in
+`ricciFlowEquationInterfaceBridgeStatement_current_interface`; the named
+statement remains useful for older constructions that take the bridge as an
+explicit parameter.
 -/
 def RicciFlowEquationInterfaceBridgeStatement : Prop :=
   ∀ {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -962,6 +1342,38 @@ bridge theorem.
     satisfies_ricci_flow_equation_of_verification bridge verification =
       bridge curvature verification :=
   rfl
+
+/--
+Concrete equation verification now supplies the Ricci-flow equation interface.
+
+The constructor still demands the metric-derivative identification and the
+time-slice equality `∂ₜ g = -2 Ricci`; this theorem only repackages those
+stored fields into the interface predicate.
+-/
+theorem satisfies_ricci_flow_equation_of_equation_verification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (verification : RicciFlowEquationVerification curvature) :
+    SatisfiesRicciFlowEquation g curvature := by
+  refine
+    SatisfiesRicciFlowEquation.of_metric_derivative_eq_neg_two_ricci
+      curvature verification.metricDerivative.derivative
+      verification.metricDerivative.identifiesDerivative ?_
+  intro t
+  simpa [metric_time_derivative_at_time_of_metric_derivative_field,
+    ricci_flow_rhs_tensor, ricci_tensor_field_of_curvature_data,
+    ricci_tensor_at_time_of_ricci_tensor_field]
+    using verification.equationAtTime t
+
+/-- The current interface bridge is closed by concrete equation verification. -/
+theorem ricciFlowEquationInterfaceBridgeStatement_current_interface :
+    RicciFlowEquationInterfaceBridgeStatement.{u, v, w} :=
+  fun _curvature verification =>
+    satisfies_ricci_flow_equation_of_equation_verification verification
 
 /-- Project metric-derivative data from a Ricci-flow equation verification. -/
 def metric_derivative_data_of_ricci_flow_equation_verification

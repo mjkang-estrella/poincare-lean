@@ -103,50 +103,57 @@ theorem canonical_completion_target_of_universalFiniteExtinctionStatement_and_ex
     finiteExtinction extractSphere
 
 /--
-Universal finite extinction alone proves the canonical completion target under
-the current empty extinction-interface encoding.
+Universal finite extinction and the post-extinction extractor prove the
+canonical completion target.
 -/
 theorem canonical_completion_target_of_finite_extinction
     (finiteExtinction :
       ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
         [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
         [SimplyConnectedSpace M] [CompactSpace M],
-          FiniteExtinctionByRicciFlowWithSurgery M) :
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonicalCompletionTarget.{u} :=
-  poincare_conjecture_of_finite_extinction finiteExtinction
+  poincare_conjecture_of_finite_extinction finiteExtinction extractSphere
 
 /--
-The finite-extinction-only canonical completion target is exactly the named
-finite-extinction-only Poincare endpoint.
+The finite-extinction canonical completion target is exactly the named
+finite-extinction Poincare endpoint with the same extractor.
 -/
 theorem canonical_completion_target_of_finite_extinction_eq
     (finiteExtinction :
       ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
         [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
         [SimplyConnectedSpace M] [CompactSpace M],
-          FiniteExtinctionByRicciFlowWithSurgery M) :
-    canonical_completion_target_of_finite_extinction finiteExtinction =
-      poincare_conjecture_of_finite_extinction finiteExtinction := by
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    canonical_completion_target_of_finite_extinction
+        finiteExtinction extractSphere =
+      poincare_conjecture_of_finite_extinction
+        finiteExtinction extractSphere := by
   apply Subsingleton.elim
 
 /--
-The named universal finite-extinction input proves the canonical completion
-target.
+The named universal finite-extinction input and post-extinction extractor prove
+the canonical completion target.
 -/
 theorem canonical_completion_target_of_universalFiniteExtinctionStatement
-    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonicalCompletionTarget.{u} :=
-  canonical_completion_target_of_finite_extinction finiteExtinction
+  canonical_completion_target_of_finite_extinction finiteExtinction extractSphere
 
 /--
 The named universal-finite-extinction route is exactly the
-finite-extinction-only canonical target route.
+finite-extinction canonical target route with the same extractor.
 -/
 theorem canonical_completion_target_of_universalFiniteExtinctionStatement_eq
-    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_target_of_universalFiniteExtinctionStatement
-        finiteExtinction =
-      canonical_completion_target_of_finite_extinction finiteExtinction := by
+        finiteExtinction extractSphere =
+      canonical_completion_target_of_finite_extinction
+        finiteExtinction extractSphere := by
   apply Subsingleton.elim
 
 /--
@@ -154,44 +161,48 @@ The canonical universal-finite-extinction target is the same reserved endpoint
 provided by the Ricci-flow interface layer.
 -/
 theorem canonical_completion_target_of_universalFiniteExtinctionStatement_to_reserved_eq
-    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_target_of_universalFiniteExtinctionStatement
-        finiteExtinction =
+        finiteExtinction extractSphere =
       poincare_conjecture_of_universalFiniteExtinctionStatement
-        finiteExtinction := by
+        finiteExtinction extractSphere := by
   apply Subsingleton.elim
 
 theorem canonical_completion_target_of_universalFiniteExtinctionStatement_to_reserved
-    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_target_of_universalFiniteExtinctionStatement
-        finiteExtinction =
+        finiteExtinction extractSphere =
       poincare_conjecture_of_universalFiniteExtinctionStatement
-        finiteExtinction := by
+        finiteExtinction extractSphere := by
   exact
     canonical_completion_target_of_universalFiniteExtinctionStatement_to_reserved_eq
-      finiteExtinction
+      finiteExtinction extractSphere
 
 /--
 The canonical universal-finite-extinction target is the same named project
 statement route exposed by the Ricci-flow interface layer.
 -/
 theorem canonical_completion_target_of_universalFiniteExtinctionStatement_to_project_statement_eq
-    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_target_of_universalFiniteExtinctionStatement
-        finiteExtinction =
+        finiteExtinction extractSphere =
       poincare_statement_of_universalFiniteExtinctionStatement
-        finiteExtinction := by
+        finiteExtinction extractSphere := by
   apply Subsingleton.elim
 
 theorem canonical_completion_target_of_universalFiniteExtinctionStatement_to_project_statement
-    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_target_of_universalFiniteExtinctionStatement
-        finiteExtinction =
+        finiteExtinction extractSphere =
       poincare_statement_of_universalFiniteExtinctionStatement
-        finiteExtinction := by
+        finiteExtinction extractSphere := by
   exact
     canonical_completion_target_of_universalFiniteExtinctionStatement_to_project_statement_eq
-      finiteExtinction
+      finiteExtinction extractSphere
 
 /--
 Once universal finite extinction is available, the canonical completion target
@@ -240,54 +251,64 @@ theorem canonical_completion_payload_of_canonical_completion_target
     completion_criterion_of_canonical_completion_target witness target⟩
 
 /--
-Universal finite extinction exposes the canonical completion target and
-criterion payload through the finite-extinction-only target route.
+Universal finite extinction and post-extinction extraction expose the canonical
+completion target and criterion payload through the finite-extinction target
+route.
 -/
 theorem canonical_completion_payload_of_finite_extinction
     (finiteExtinction :
       ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
         [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
         [SimplyConnectedSpace M] [CompactSpace M],
-          FiniteExtinctionByRicciFlowWithSurgery M) :
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     ∃ _target : canonicalCompletionTarget.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
   canonical_completion_payload_of_canonical_completion_target
-    (canonical_completion_target_of_finite_extinction finiteExtinction)
+    (canonical_completion_target_of_finite_extinction
+      finiteExtinction extractSphere)
 
 /--
 The finite-extinction canonical payload is the canonical target payload
-constructed from the finite-extinction-only canonical target.
+constructed from the finite-extinction canonical target with the same extractor.
 -/
 theorem canonical_completion_payload_of_finite_extinction_eq
     (finiteExtinction :
       ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
         [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
         [SimplyConnectedSpace M] [CompactSpace M],
-          FiniteExtinctionByRicciFlowWithSurgery M) :
-    canonical_completion_payload_of_finite_extinction finiteExtinction =
+          FiniteExtinctionByRicciFlowWithSurgery M)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    canonical_completion_payload_of_finite_extinction
+        finiteExtinction extractSphere =
       canonical_completion_payload_of_canonical_completion_target
-        (canonical_completion_target_of_finite_extinction finiteExtinction) := by
+        (canonical_completion_target_of_finite_extinction
+          finiteExtinction extractSphere) := by
   apply Subsingleton.elim
 
 /--
-The named universal finite-extinction input exposes the canonical completion
-payload.
+The named universal finite-extinction input and post-extinction extractor expose
+the canonical completion payload.
 -/
 theorem canonical_completion_payload_of_universalFiniteExtinctionStatement
-    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     ∃ _target : canonicalCompletionTarget.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
-  canonical_completion_payload_of_finite_extinction finiteExtinction
+  canonical_completion_payload_of_finite_extinction
+    finiteExtinction extractSphere
 
 /--
 The named universal-finite-extinction canonical payload is exactly the
 finite-extinction-only canonical payload.
 -/
 theorem canonical_completion_payload_of_universalFiniteExtinctionStatement_eq
-    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_payload_of_universalFiniteExtinctionStatement
-        finiteExtinction =
-      canonical_completion_payload_of_finite_extinction finiteExtinction := by
+        finiteExtinction extractSphere =
+      canonical_completion_payload_of_finite_extinction
+        finiteExtinction extractSphere := by
   apply Subsingleton.elim
 
 /--
@@ -295,22 +316,24 @@ The canonical universal-finite-extinction payload is the same completion
 payload exposed by the Ricci-flow interface layer.
 -/
 theorem canonical_completion_payload_of_universalFiniteExtinctionStatement_to_interface_payload_eq
-    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_payload_of_universalFiniteExtinctionStatement
-        finiteExtinction =
+        finiteExtinction extractSphere =
       universalFiniteExtinctionStatement_completion_payload
-        finiteExtinction := by
+        finiteExtinction extractSphere := by
   apply Subsingleton.elim
 
 theorem canonical_completion_payload_of_universalFiniteExtinctionStatement_to_interface_payload
-    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_payload_of_universalFiniteExtinctionStatement
-        finiteExtinction =
+        finiteExtinction extractSphere =
       universalFiniteExtinctionStatement_completion_payload
-        finiteExtinction := by
+        finiteExtinction extractSphere := by
   exact
     canonical_completion_payload_of_universalFiniteExtinctionStatement_to_interface_payload_eq
-      finiteExtinction
+      finiteExtinction extractSphere
 
 /--
 The named universal finite-extinction input discharges the universe-indexed
@@ -318,11 +341,12 @@ completion criterion through its canonical target.
 -/
 theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement
     (witness : Type u)
-    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     CompletionCriterionAtUniverse witness :=
   completion_criterion_of_canonical_completion_target witness
     (canonical_completion_target_of_universalFiniteExtinctionStatement
-      finiteExtinction)
+      finiteExtinction extractSphere)
 
 /--
 The named universal finite-extinction criterion route is the criterion
@@ -330,12 +354,13 @@ projection from its canonical target.
 -/
 theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_eq
     (witness : Type u)
-    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_criterion_of_universalFiniteExtinctionStatement
-        witness finiteExtinction =
+        witness finiteExtinction extractSphere =
       completion_criterion_of_canonical_completion_target witness
         (canonical_completion_target_of_universalFiniteExtinctionStatement
-          finiteExtinction) := by
+          finiteExtinction extractSphere) := by
   apply Subsingleton.elim
 
 /--
@@ -349,11 +374,13 @@ theorem canonical_completion_target_of_smoothability_and_surgery_packages
         [ChartedSpace ThreeManifoldModel M]
         [SimplyConnectedSpace M] [CompactSpace M]
         [IsManifold ThreeManifoldModelWithCorners 1 M],
-          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_universalFiniteExtinctionStatement
     (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
       smoothabilityPackage surgeryPackages)
+    extractSphere
 
 /--
 The smoothability/surgery canonical target is exactly the
@@ -367,12 +394,14 @@ theorem canonical_completion_target_of_smoothability_and_surgery_packages_eq
         [ChartedSpace ThreeManifoldModel M]
         [SimplyConnectedSpace M] [CompactSpace M]
         [IsManifold ThreeManifoldModelWithCorners 1 M],
-          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_target_of_smoothability_and_surgery_packages
-        smoothabilityPackage surgeryPackages =
+        smoothabilityPackage surgeryPackages extractSphere =
       canonical_completion_target_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
-          smoothabilityPackage surgeryPackages) := by
+          smoothabilityPackage surgeryPackages)
+        extractSphere := by
   apply Subsingleton.elim
 
 /--
@@ -386,11 +415,12 @@ theorem canonical_completion_payload_of_smoothability_and_surgery_packages
         [ChartedSpace ThreeManifoldModel M]
         [SimplyConnectedSpace M] [CompactSpace M]
         [IsManifold ThreeManifoldModelWithCorners 1 M],
-          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     ∃ _target : canonicalCompletionTarget.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
   poincare_conjecture_payload_of_smoothability_and_surgery_packages
-    smoothabilityPackage surgeryPackages
+    smoothabilityPackage surgeryPackages extractSphere
 
 /--
 The smoothability/surgery canonical completion payload is exactly the canonical
@@ -403,11 +433,12 @@ theorem canonical_completion_payload_of_smoothability_and_surgery_packages_eq
         [ChartedSpace ThreeManifoldModel M]
         [SimplyConnectedSpace M] [CompactSpace M]
         [IsManifold ThreeManifoldModelWithCorners 1 M],
-          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_payload_of_smoothability_and_surgery_packages
-        smoothabilityPackage surgeryPackages =
+        smoothabilityPackage surgeryPackages extractSphere =
       poincare_conjecture_payload_of_smoothability_and_surgery_packages
-        smoothabilityPackage surgeryPackages := by
+        smoothabilityPackage surgeryPackages extractSphere := by
   apply Subsingleton.elim
 
 /--
@@ -422,11 +453,12 @@ theorem completion_criterion_of_smoothability_and_surgery_packages
         [ChartedSpace ThreeManifoldModel M]
         [SimplyConnectedSpace M] [CompactSpace M]
         [IsManifold ThreeManifoldModelWithCorners 1 M],
-          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     CompletionCriterionAtUniverse witness := by
   rcases
       canonical_completion_payload_of_smoothability_and_surgery_packages
-        smoothabilityPackage surgeryPackages with
+        smoothabilityPackage surgeryPackages extractSphere with
     ⟨_target, criterion⟩
   exact criterion witness
 
@@ -442,13 +474,14 @@ theorem completion_criterion_of_smoothability_and_surgery_packages_eq
         [ChartedSpace ThreeManifoldModel M]
         [SimplyConnectedSpace M] [CompactSpace M]
         [IsManifold ThreeManifoldModelWithCorners 1 M],
-          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     completion_criterion_of_smoothability_and_surgery_packages
-        witness smoothabilityPackage surgeryPackages =
+        witness smoothabilityPackage surgeryPackages extractSphere =
       (by
         rcases
             canonical_completion_payload_of_smoothability_and_surgery_packages
-              smoothabilityPackage surgeryPackages with
+              smoothabilityPackage surgeryPackages extractSphere with
           ⟨_target, criterion⟩
         exact criterion witness) := by
   apply Subsingleton.elim
@@ -465,10 +498,11 @@ theorem canonical_completion_criterion_of_smoothability_and_surgery_packages
         [ChartedSpace ThreeManifoldModel M]
         [SimplyConnectedSpace M] [CompactSpace M]
         [IsManifold ThreeManifoldModelWithCorners 1 M],
-          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     CompletionCriterionAtUniverse witness :=
   completion_criterion_of_smoothability_and_surgery_packages
-    witness smoothabilityPackage surgeryPackages
+    witness smoothabilityPackage surgeryPackages extractSphere
 
 /--
 The smoothability/surgery canonical criterion projection is the direct
@@ -482,11 +516,12 @@ theorem canonical_completion_criterion_of_smoothability_and_surgery_packages_eq
         [ChartedSpace ThreeManifoldModel M]
         [SimplyConnectedSpace M] [CompactSpace M]
         [IsManifold ThreeManifoldModelWithCorners 1 M],
-          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_criterion_of_smoothability_and_surgery_packages
-        witness smoothabilityPackage surgeryPackages =
+        witness smoothabilityPackage surgeryPackages extractSphere =
       completion_criterion_of_smoothability_and_surgery_packages
-        witness smoothabilityPackage surgeryPackages := by
+        witness smoothabilityPackage surgeryPackages extractSphere := by
   apply Subsingleton.elim
 
 /--
@@ -503,11 +538,13 @@ theorem canonical_completion_target_of_smoothability_and_boundary_surgery_packag
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonicalCompletionTarget.{u} :=
   canonical_completion_target_of_universalFiniteExtinctionStatement
     (universalFiniteExtinctionStatement_of_smoothability_and_boundary_surgery_packages
       smoothabilityPackage surgeryPackages)
+    extractSphere
 
 /--
 The boundary-carrying smoothability/surgery canonical target is exactly the
@@ -523,12 +560,14 @@ theorem canonical_completion_target_of_smoothability_and_boundary_surgery_packag
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_target_of_smoothability_and_boundary_surgery_packages
-        smoothabilityPackage surgeryPackages =
+        smoothabilityPackage surgeryPackages extractSphere =
       canonical_completion_target_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_smoothability_and_boundary_surgery_packages
-          smoothabilityPackage surgeryPackages) := by
+          smoothabilityPackage surgeryPackages)
+        extractSphere := by
   apply Subsingleton.elim
 
 /--
@@ -544,11 +583,12 @@ theorem canonical_completion_payload_of_smoothability_and_boundary_surgery_packa
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     ∃ _target : canonicalCompletionTarget.{u},
       ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
   poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packages
-    smoothabilityPackage surgeryPackages
+    smoothabilityPackage surgeryPackages extractSphere
 
 /--
 The boundary-carrying smoothability/surgery canonical completion payload is
@@ -564,11 +604,12 @@ theorem canonical_completion_payload_of_smoothability_and_boundary_surgery_packa
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_payload_of_smoothability_and_boundary_surgery_packages
-        smoothabilityPackage surgeryPackages =
+        smoothabilityPackage surgeryPackages extractSphere =
       poincare_conjecture_payload_of_smoothability_and_boundary_surgery_packages
-        smoothabilityPackage surgeryPackages := by
+        smoothabilityPackage surgeryPackages extractSphere := by
   apply Subsingleton.elim
 
 /--
@@ -586,11 +627,12 @@ theorem completion_criterion_of_smoothability_and_boundary_surgery_packages
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     CompletionCriterionAtUniverse witness := by
   rcases
       canonical_completion_payload_of_smoothability_and_boundary_surgery_packages
-        smoothabilityPackage surgeryPackages with
+        smoothabilityPackage surgeryPackages extractSphere with
     ⟨_target, criterion⟩
   exact criterion witness
 
@@ -609,13 +651,14 @@ theorem completion_criterion_of_smoothability_and_boundary_surgery_packages_eq
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     completion_criterion_of_smoothability_and_boundary_surgery_packages
-        witness smoothabilityPackage surgeryPackages =
+        witness smoothabilityPackage surgeryPackages extractSphere =
       (by
         rcases
             canonical_completion_payload_of_smoothability_and_boundary_surgery_packages
-              smoothabilityPackage surgeryPackages with
+              smoothabilityPackage surgeryPackages extractSphere with
           ⟨_target, criterion⟩
         exact criterion witness) := by
   apply Subsingleton.elim
@@ -634,10 +677,11 @@ theorem canonical_completion_criterion_of_smoothability_and_boundary_surgery_pac
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     CompletionCriterionAtUniverse witness :=
   completion_criterion_of_smoothability_and_boundary_surgery_packages
-    witness smoothabilityPackage surgeryPackages
+    witness smoothabilityPackage surgeryPackages extractSphere
 
 /--
 The boundary-carrying smoothability/surgery canonical criterion projection is
@@ -653,11 +697,12 @@ theorem canonical_completion_criterion_of_smoothability_and_boundary_surgery_pac
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_criterion_of_smoothability_and_boundary_surgery_packages
-        witness smoothabilityPackage surgeryPackages =
+        witness smoothabilityPackage surgeryPackages extractSphere =
       completion_criterion_of_smoothability_and_boundary_surgery_packages
-        witness smoothabilityPackage surgeryPackages := by
+        witness smoothabilityPackage surgeryPackages extractSphere := by
   apply Subsingleton.elim
 
 /--
@@ -674,9 +719,10 @@ theorem canonical_completion_target_of_smoothability_and_boundary_surgery_packag
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_target_of_smoothability_and_boundary_surgery_packages
-        smoothabilityPackage surgeryPackages =
+        smoothabilityPackage surgeryPackages extractSphere =
       canonical_completion_target_of_smoothability_and_surgery_packages
         smoothabilityPackage
         (fun (M : Type u) [TopologicalSpace M] [T2Space M]
@@ -687,8 +733,9 @@ theorem canonical_completion_target_of_smoothability_and_boundary_surgery_packag
               rcases surgeryPackages M with ⟨⟨n, package⟩⟩
               exact
                 ⟨⟨n,
-                  surgery_package_of_equation_boundary_surgery_package
-                    package⟩⟩) := by
+                    surgery_package_of_equation_boundary_surgery_package
+                      package⟩⟩)
+        extractSphere := by
   apply Subsingleton.elim
 
 theorem canonical_completion_target_of_smoothability_and_boundary_surgery_packages_to_ordinary_route
@@ -700,9 +747,10 @@ theorem canonical_completion_target_of_smoothability_and_boundary_surgery_packag
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_target_of_smoothability_and_boundary_surgery_packages
-        smoothabilityPackage surgeryPackages =
+        smoothabilityPackage surgeryPackages extractSphere =
       canonical_completion_target_of_smoothability_and_surgery_packages
         smoothabilityPackage
         (fun (M : Type u) [TopologicalSpace M] [T2Space M]
@@ -713,11 +761,12 @@ theorem canonical_completion_target_of_smoothability_and_boundary_surgery_packag
               rcases surgeryPackages M with ⟨⟨n, package⟩⟩
               exact
                 ⟨⟨n,
-                  surgery_package_of_equation_boundary_surgery_package
-                    package⟩⟩) := by
+                    surgery_package_of_equation_boundary_surgery_package
+                      package⟩⟩)
+        extractSphere := by
   exact
     canonical_completion_target_of_smoothability_and_boundary_surgery_packages_to_ordinary_route_eq
-      smoothabilityPackage surgeryPackages
+      smoothabilityPackage surgeryPackages extractSphere
 
 /--
 Forgetting the equation boundary from strengthened surgery packages gives the
@@ -733,9 +782,10 @@ theorem canonical_completion_payload_of_smoothability_and_boundary_surgery_packa
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_payload_of_smoothability_and_boundary_surgery_packages
-        smoothabilityPackage surgeryPackages =
+        smoothabilityPackage surgeryPackages extractSphere =
       canonical_completion_payload_of_smoothability_and_surgery_packages
         smoothabilityPackage
         (fun (M : Type u) [TopologicalSpace M] [T2Space M]
@@ -746,8 +796,9 @@ theorem canonical_completion_payload_of_smoothability_and_boundary_surgery_packa
               rcases surgeryPackages M with ⟨⟨n, package⟩⟩
               exact
                 ⟨⟨n,
-                  surgery_package_of_equation_boundary_surgery_package
-                    package⟩⟩) := by
+                    surgery_package_of_equation_boundary_surgery_package
+                      package⟩⟩)
+        extractSphere := by
   apply Subsingleton.elim
 
 theorem canonical_completion_payload_of_smoothability_and_boundary_surgery_packages_to_ordinary_route
@@ -759,9 +810,10 @@ theorem canonical_completion_payload_of_smoothability_and_boundary_surgery_packa
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_payload_of_smoothability_and_boundary_surgery_packages
-        smoothabilityPackage surgeryPackages =
+        smoothabilityPackage surgeryPackages extractSphere =
       canonical_completion_payload_of_smoothability_and_surgery_packages
         smoothabilityPackage
         (fun (M : Type u) [TopologicalSpace M] [T2Space M]
@@ -772,11 +824,12 @@ theorem canonical_completion_payload_of_smoothability_and_boundary_surgery_packa
               rcases surgeryPackages M with ⟨⟨n, package⟩⟩
               exact
                 ⟨⟨n,
-                  surgery_package_of_equation_boundary_surgery_package
-                    package⟩⟩) := by
+                    surgery_package_of_equation_boundary_surgery_package
+                      package⟩⟩)
+        extractSphere := by
   exact
     canonical_completion_payload_of_smoothability_and_boundary_surgery_packages_to_ordinary_route_eq
-      smoothabilityPackage surgeryPackages
+      smoothabilityPackage surgeryPackages extractSphere
 
 /--
 Forgetting the equation boundary from strengthened surgery packages gives the
@@ -793,9 +846,10 @@ theorem canonical_completion_criterion_of_smoothability_and_boundary_surgery_pac
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_criterion_of_smoothability_and_boundary_surgery_packages
-        witness smoothabilityPackage surgeryPackages =
+        witness smoothabilityPackage surgeryPackages extractSphere =
       canonical_completion_criterion_of_smoothability_and_surgery_packages
         witness smoothabilityPackage
         (fun (M : Type u) [TopologicalSpace M] [T2Space M]
@@ -806,8 +860,9 @@ theorem canonical_completion_criterion_of_smoothability_and_boundary_surgery_pac
               rcases surgeryPackages M with ⟨⟨n, package⟩⟩
               exact
                 ⟨⟨n,
-                  surgery_package_of_equation_boundary_surgery_package
-                    package⟩⟩) := by
+                    surgery_package_of_equation_boundary_surgery_package
+                      package⟩⟩)
+        extractSphere := by
   apply Subsingleton.elim
 
 theorem canonical_completion_criterion_of_smoothability_and_boundary_surgery_packages_to_ordinary_route
@@ -820,9 +875,10 @@ theorem canonical_completion_criterion_of_smoothability_and_boundary_surgery_pac
         [IsManifold ThreeManifoldModelWithCorners 1 M],
           Nonempty
             (Σ n : ℕ∞ω,
-              FiniteExtinctionSurgeryPackageWithEquationBoundary n M)) :
+              FiniteExtinctionSurgeryPackageWithEquationBoundary n M))
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_criterion_of_smoothability_and_boundary_surgery_packages
-        witness smoothabilityPackage surgeryPackages =
+        witness smoothabilityPackage surgeryPackages extractSphere =
       canonical_completion_criterion_of_smoothability_and_surgery_packages
         witness smoothabilityPackage
         (fun (M : Type u) [TopologicalSpace M] [T2Space M]
@@ -833,11 +889,12 @@ theorem canonical_completion_criterion_of_smoothability_and_boundary_surgery_pac
               rcases surgeryPackages M with ⟨⟨n, package⟩⟩
               exact
                 ⟨⟨n,
-                  surgery_package_of_equation_boundary_surgery_package
-                    package⟩⟩) := by
+                    surgery_package_of_equation_boundary_surgery_package
+                      package⟩⟩)
+        extractSphere := by
   exact
     canonical_completion_criterion_of_smoothability_and_boundary_surgery_packages_to_ordinary_route_eq
-      witness smoothabilityPackage surgeryPackages
+      witness smoothabilityPackage surgeryPackages extractSphere
 
 /--
 A proof of the canonical completion target also exposes the project Poincare
@@ -877,24 +934,26 @@ The canonical universal-finite-extinction payload is the canonical conversion
 of the named project payload exposed by the Ricci-flow interface layer.
 -/
 theorem canonical_completion_payload_of_universalFiniteExtinctionStatement_to_project_payload_eq
-    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_payload_of_universalFiniteExtinctionStatement
-        finiteExtinction =
+        finiteExtinction extractSphere =
       canonical_completion_payload_of_poincare_completion_payload
         (poincare_payload_of_universalFiniteExtinctionStatement
-          finiteExtinction) := by
+          finiteExtinction extractSphere) := by
   apply Subsingleton.elim
 
 theorem canonical_completion_payload_of_universalFiniteExtinctionStatement_to_project_payload
-    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     canonical_completion_payload_of_universalFiniteExtinctionStatement
-        finiteExtinction =
+        finiteExtinction extractSphere =
       canonical_completion_payload_of_poincare_completion_payload
         (poincare_payload_of_universalFiniteExtinctionStatement
-          finiteExtinction) := by
+          finiteExtinction extractSphere) := by
   exact
     canonical_completion_payload_of_universalFiniteExtinctionStatement_to_project_payload_eq
-      finiteExtinction
+      finiteExtinction extractSphere
 
 /--
 The canonical universal-finite-extinction criterion is the criterion projection
@@ -902,15 +961,16 @@ from the named project payload after canonical conversion.
 -/
 theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_to_project_payload_eq
     (witness : Type u)
-    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     completion_criterion_of_canonical_completion_target witness
         (canonical_completion_target_of_universalFiniteExtinctionStatement
-          finiteExtinction) =
+          finiteExtinction extractSphere) =
       (by
         rcases
             canonical_completion_payload_of_poincare_completion_payload
               (poincare_payload_of_universalFiniteExtinctionStatement
-                finiteExtinction) with
+                finiteExtinction extractSphere) with
           ⟨_target, criterion⟩
         exact criterion witness) := by
   apply Subsingleton.elim
@@ -1911,7 +1971,9 @@ theorem canonical_completion_payload_of_universalFiniteExtinctionStatement_and_e
     canonical_completion_payload_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
         finiteExtinction recognize =
       canonical_completion_payload_of_universalFiniteExtinctionStatement
-        finiteExtinction := by
+        finiteExtinction
+        (extinction_implies_sphere_of_extinctionOnePointThreeSpaceRecognitionStatement
+          recognize) := by
   apply Subsingleton.elim
 
 /--
@@ -1980,7 +2042,9 @@ theorem canonical_completion_target_of_universalFiniteExtinctionStatement_and_ex
     canonical_completion_target_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
         finiteExtinction recognize =
       canonical_completion_target_of_universalFiniteExtinctionStatement
-        finiteExtinction := by
+        finiteExtinction
+        (extinction_implies_sphere_of_extinctionOnePointThreeSpaceRecognitionStatement
+          recognize) := by
   apply Subsingleton.elim
 
 /--
@@ -2050,7 +2114,9 @@ theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and
     canonical_completion_criterion_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
         witness finiteExtinction recognize =
       canonical_completion_criterion_of_universalFiniteExtinctionStatement
-        witness finiteExtinction := by
+        witness finiteExtinction
+        (extinction_implies_sphere_of_extinctionOnePointThreeSpaceRecognitionStatement
+          recognize) := by
   apply Subsingleton.elim
 
 /--
@@ -2566,20 +2632,21 @@ theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_and
 
 theorem canonical_completion_criterion_of_universalFiniteExtinctionStatement_to_project_payload
     (witness : Type u)
-    (finiteExtinction : UniversalFiniteExtinctionStatement.{u}) :
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
     completion_criterion_of_canonical_completion_target witness
         (canonical_completion_target_of_universalFiniteExtinctionStatement
-          finiteExtinction) =
+          finiteExtinction extractSphere) =
       (by
         rcases
             canonical_completion_payload_of_poincare_completion_payload
               (poincare_payload_of_universalFiniteExtinctionStatement
-                finiteExtinction) with
+                finiteExtinction extractSphere) with
           ⟨_target, criterion⟩
         exact criterion witness) := by
   exact
     canonical_completion_criterion_of_universalFiniteExtinctionStatement_to_project_payload_eq
-      witness finiteExtinction
+      witness finiteExtinction extractSphere
 
 /--
 The canonical target from an explicit completion criterion is obtained by
@@ -22958,7 +23025,9 @@ theorem canonical_completion_payload_of_dependencies_to_universalFiniteExtinctio
     canonical_completion_payload_of_dependencies dependencies =
       canonical_completion_payload_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package
+          dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -22970,7 +23039,9 @@ theorem canonical_completion_target_of_dependencies_to_universalFiniteExtinction
     canonical_completion_target_of_dependencies dependencies =
       canonical_completion_target_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package
+          dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -22982,7 +23053,9 @@ theorem poincare_statement_of_dependencies_to_universalFiniteExtinctionStatement
     poincare_statement_of_dependencies dependencies =
       poincare_conjecture_of_universalFiniteExtinctionStatement
         (universalFiniteExtinctionStatement_of_remaining_dependency_package
-          dependencies) := by
+          dependencies)
+        (extinction_implies_sphere_of_topology_package
+          dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -30306,7 +30379,9 @@ theorem canonical_completion_payload_of_poincareProofDependencies_to_universalFi
     (dependencies : PoincareProofDependencies.{u}) :
     canonical_completion_payload_of_poincareProofDependencies dependencies =
       canonical_completion_payload_of_universalFiniteExtinctionStatement
-        (universalFiniteExtinctionStatement_of_dependencies dependencies) := by
+        (universalFiniteExtinctionStatement_of_dependencies dependencies)
+        (extinction_implies_sphere_of_topology_package
+          dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -30317,7 +30392,9 @@ theorem poincare_completion_payload_of_poincareProofDependencies_to_universalFin
     (dependencies : PoincareProofDependencies.{u}) :
     poincare_completion_payload_of_poincareProofDependencies dependencies =
       poincare_conjecture_payload_of_universalFiniteExtinctionStatement
-        (universalFiniteExtinctionStatement_of_dependencies dependencies) := by
+        (universalFiniteExtinctionStatement_of_dependencies dependencies)
+        (extinction_implies_sphere_of_topology_package
+          dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -30328,7 +30405,9 @@ theorem poincare_conjecture_payload_of_poincareProofDependencies_to_universalFin
     (dependencies : PoincareProofDependencies.{u}) :
     poincare_conjecture_payload_of_poincareProofDependencies dependencies =
       poincare_conjecture_payload_of_universalFiniteExtinctionStatement
-        (universalFiniteExtinctionStatement_of_dependencies dependencies) := by
+        (universalFiniteExtinctionStatement_of_dependencies dependencies)
+        (extinction_implies_sphere_of_topology_package
+          dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -30339,7 +30418,9 @@ theorem canonical_completion_target_of_poincareProofDependencies_to_universalFin
     (dependencies : PoincareProofDependencies.{u}) :
     canonical_completion_target_of_poincareProofDependencies dependencies =
       canonical_completion_target_of_universalFiniteExtinctionStatement
-        (universalFiniteExtinctionStatement_of_dependencies dependencies) := by
+        (universalFiniteExtinctionStatement_of_dependencies dependencies)
+        (extinction_implies_sphere_of_topology_package
+          dependencies.topology) := by
   apply Subsingleton.elim
 
 /--
@@ -30624,7 +30705,9 @@ theorem poincare_conjecture_of_poincareProofDependencies_to_universalFiniteExtin
     (dependencies : PoincareProofDependencies.{u}) :
     poincare_conjecture_of_poincareProofDependencies dependencies =
       poincare_conjecture_of_universalFiniteExtinctionStatement
-        (universalFiniteExtinctionStatement_of_dependencies dependencies) := by
+        (universalFiniteExtinctionStatement_of_dependencies dependencies)
+        (extinction_implies_sphere_of_topology_package
+          dependencies.topology) := by
   apply Subsingleton.elim
 
 /--

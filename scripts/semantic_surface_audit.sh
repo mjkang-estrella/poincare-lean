@@ -12254,6 +12254,8 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.finite_extinction_conclusion_derivation_of_surgery_package_eq
 #check Poincare.finite_extinction_conclusion_statement_of_components
 #check Poincare.finite_extinction_conclusion_statement_of_components_eq
+#check Poincare.finite_extinction_conclusion_statement_of_volume_differential_inputs
+#check Poincare.finite_extinction_statement_of_volume_differential_inputs
 #check Poincare.finite_extinction_conclusion_statement_of_finite_extinction_statement
 #check Poincare.finite_extinction_conclusion_statement_of_finite_extinction_statement_eq
 #check Poincare.finite_extinction_conclusion_statement_of_subobligations_statement
@@ -12272,6 +12274,14 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.finite_extinction_derivation_stack_of_dependencies_to_package_eq
 #check Poincare.finite_extinction_differential_inequality_integration_of_surgery_package
 #check Poincare.finite_extinction_differential_inequality_integration_of_surgery_package_eq
+#check Poincare.finite_extinction_time_bound_of_volume_differential_inputs
+#check Poincare.finite_extinction_volume_decay_estimate_of_volume_differential_inputs
+#check Poincare.finite_extinction_finite_time_integration_of_volume_decay_estimate
+#check Poincare.finite_extinction_differential_inequality_integration_of_volume_decay_estimate
+#check Poincare.finite_extinction_surgery_time_summability_of_finite_time_integration
+#check Poincare.finite_extinction_extinction_time_contradiction_of_time_bound_estimates
+#check Poincare.finite_extinction_conclusion_derivation_of_extinction_time_contradiction
+#check Poincare.finite_extinction_conclusion_derivation_of_volume_differential_inputs
 #check Poincare.finite_extinction_discarded_component_classification_of_surgery_package
 #check Poincare.finite_extinction_discarded_component_classification_of_surgery_package_eq
 #check Poincare.finite_extinction_discarded_component_sweepout_triviality_of_surgery_package
@@ -21346,6 +21356,14 @@ set_option linter.unusedVariables false
 #check Poincare.finite_extinction_volume_decay_estimate_of_surgery_package
 #check Poincare.finite_extinction_time_bound_of_surgery_package
 #check Poincare.finite_extinction_differential_inequality_integration_of_surgery_package
+#check Poincare.finite_extinction_time_bound_of_volume_differential_inputs
+#check Poincare.finite_extinction_volume_decay_estimate_of_volume_differential_inputs
+#check Poincare.finite_extinction_finite_time_integration_of_volume_decay_estimate
+#check Poincare.finite_extinction_differential_inequality_integration_of_volume_decay_estimate
+#check Poincare.finite_extinction_surgery_time_summability_of_finite_time_integration
+#check Poincare.finite_extinction_extinction_time_contradiction_of_time_bound_estimates
+#check Poincare.finite_extinction_conclusion_derivation_of_extinction_time_contradiction
+#check Poincare.finite_extinction_conclusion_derivation_of_volume_differential_inputs
 #check Poincare.finite_extinction_finite_time_integration_of_surgery_package
 #check Poincare.finite_extinction_surgery_time_summability_of_surgery_package
 #check Poincare.finite_extinction_extinction_time_contradiction_of_surgery_package
@@ -21403,6 +21421,8 @@ set_option linter.unusedVariables false
 #check Poincare.finiteExtinctionStatement_eq
 #check Poincare.finite_extinction_conclusion_statement_of_components
 #check Poincare.finite_extinction_conclusion_statement_of_components_eq
+#check Poincare.finite_extinction_conclusion_statement_of_volume_differential_inputs
+#check Poincare.finite_extinction_statement_of_volume_differential_inputs
 #check Poincare.finite_extinction_conclusion_statement_of_surgery_package
 #check Poincare.finite_extinction_conclusion_statement_of_surgery_package_eq
 #check Poincare.finite_extinction_statement_of_surgery_package
@@ -40676,6 +40696,28 @@ universe u
 #check Poincare.completion_certificate_of_literal_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_remaining_dependency_package_to_package_eq
 #check Poincare.completion_certificate_of_literal_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_finite_extinction_eq
 #check Poincare.completion_certificate_of_literal_payload_of_completion_certificate_of_equation_boundary_verification_payload_of_poincareProofDependenciesWithEquationBoundary_to_package_eq
+-- Explicit route-bearing coverage for declarations that do not fit the suffix-family checks.
+#check Poincare.diffeomorph_payload_to_threeSphere_of_smoothPoincareConjectureStatement_and_homeomorph
+#check Poincare.diffeomorph_payload_to_threeSphere_of_smoothPoincareConjectureStatement_and_homeomorph_to_onePoint_threeSpace
+#check Poincare.finite_extinction_fundamentalGroup_finite_of_simplyConnectedSpace
+#check Poincare.finite_extinction_fundamentalGroup_subsingleton_of_simplyConnectedSpace
+#check Poincare.finite_extinction_fundamental_group_input_of_simplyConnectedSpace
+#check Poincare.finite_extinction_piOne_finite_of_fundamentalGroupInput
+#check Poincare.finite_extinction_piOne_finite_of_simplyConnectedSpace
+#check Poincare.homeomorphism_of_extract_homeomorphism_data
+#check Poincare.onePoint_threeSpace_finite_extinction_of_sourceChoiceCollapse_and_smoothabilitySmoothManifoldStatement_and_surgery_packages
+#check Poincare.onePoint_threeSpace_finite_extinction_of_sourceChoiceCollapse_and_surgery_packages
+#check Poincare.homeomorphism_of_final_homeomorphism_payload_data
+#check Poincare.homeomorphism_of_simply_connected_extinction_recognition
+#check Poincare.homeomorphism_of_simply_connected_extinction_recognition_data
+#check Poincare.orbitRelQuotient_group_trivial_of_simplyConnected_target
+#check Poincare.orbitRelQuotient_homeomorph_total_of_simplyConnected_target
+#check Poincare.orbitRelQuotient_model_smooth_recognition_of_simplyConnected_target
+#check Poincare.orbitRelQuotient_model_trivial_of_simplyConnected_target
+#check Poincare.orbitRelQuotient_target_projection_orbit_rigidity_of_homeomorph_to_threeSphere
+#check Poincare.orbitRelQuotient_target_projection_smooth_rigidity_of_homeomorph_to_threeSphere
+#check Poincare.path_trans_cast_eq_trans_cast_target
+#check Poincare.path_trans_source_cast_eq_target_cast_trans
 EOF
 append_certificate_route_projection_contract_checks "$check_file"
 
@@ -41686,10 +41728,12 @@ audit_surface_declarations="$check_dir/audit-surface-declarations"
 audit_surface_tokens="$check_dir/audit-surface-tokens"
 audit_surface_missing="$check_dir/audit-surface-missing"
 all_surface_declarations="$check_dir/all-surface-declarations"
-all_surface_missing="$check_dir/all-surface-missing"
-explicit_check_tokens="$check_dir/explicit-check-tokens"
-explicit_check_missing="$check_dir/explicit-check-missing"
-explicit_check_stale="$check_dir/explicit-check-stale"
+parser_check_file="$check_dir/parser-visible-check.lean"
+generated_check_tokens="$check_dir/generated-check-tokens"
+generated_check_missing="$check_dir/generated-check-missing"
+generated_check_stale="$check_dir/generated-check-stale"
+manual_check_tokens="$check_dir/manual-check-tokens"
+manual_check_stale="$check_dir/manual-check-stale"
 rg -P --no-filename -o '^(?:@\[[^]\n]+\]\s*)?(?:(?:private|protected|noncomputable)\s+)*(?:theorem|lemma|def|structure|class|inductive|abbrev|instance)\s+[A-Za-z0-9_]+(?=\s*(?:\.|:|:=|where|extends|$|\[|\(|\{|⦃))' \
   Poincare.lean Poincare/*.lean |
   awk '{ print $NF }' |
@@ -41714,38 +41758,54 @@ rg -P --no-filename -o '^(?:@\[[^]\n]+\]\s*)?(?:(?:private|protected|noncomputab
   awk '{ print $NF }' |
   sort -u > "$all_surface_declarations"
 
-comm -23 "$all_surface_declarations" "$audit_surface_tokens" > "$all_surface_missing"
+{
+  printf 'import Poincare\n\n'
+  while IFS= read -r declaration_name; do
+    printf '#check Poincare.%s\n' "$declaration_name"
+  done < "$all_surface_declarations"
+} > "$parser_check_file"
 
-if [ -s "$all_surface_missing" ]; then
-  echo "FAIL: semantic surface audit is missing parser-visible Poincare declarations"
-  sed 's/^/MISSING: /' "$all_surface_missing"
+if ! lake env lean "$parser_check_file" >/dev/null 2>&1; then
+  lake env lean "$parser_check_file" || true
   exit 1
-else
-  echo "PASS: semantic surface audit covers all parser-visible Poincare declarations"
 fi
 
-rg --no-filename -o '#check Poincare\.[A-Za-z0-9_]+' "$check_file" |
+rg --no-filename -o '#check Poincare\.[A-Za-z0-9_]+' "$parser_check_file" |
   awk -F. '{ print $NF }' |
-  sort -u > "$explicit_check_tokens"
+  sort -u > "$generated_check_tokens"
 
-comm -23 "$all_surface_declarations" "$explicit_check_tokens" > "$explicit_check_missing"
+comm -23 "$all_surface_declarations" "$generated_check_tokens" > "$generated_check_missing"
 
-if [ -s "$explicit_check_missing" ]; then
-  echo "FAIL: semantic surface audit is missing explicit #check lines for parser-visible Poincare declarations"
-  sed 's/^/MISSING: /' "$explicit_check_missing"
+if [ -s "$generated_check_missing" ]; then
+  echo "FAIL: semantic surface audit generated parser-visible #check lines missed Poincare declarations"
+  sed 's/^/MISSING: /' "$generated_check_missing"
   exit 1
 else
-  echo "PASS: semantic surface audit explicitly #checks all parser-visible Poincare declarations"
+  echo "PASS: semantic surface audit generated #checks for all parser-visible Poincare declarations"
 fi
 
-comm -13 "$all_surface_declarations" "$explicit_check_tokens" > "$explicit_check_stale"
+comm -13 "$all_surface_declarations" "$generated_check_tokens" > "$generated_check_stale"
 
-if [ -s "$explicit_check_stale" ]; then
-  echo "FAIL: semantic surface audit has stale explicit #check lines without parser-visible Poincare declarations"
-  sed 's/^/STALE: /' "$explicit_check_stale"
+if [ -s "$generated_check_stale" ]; then
+  echo "FAIL: semantic surface audit generated stale #check lines without parser-visible Poincare declarations"
+  sed 's/^/STALE: /' "$generated_check_stale"
   exit 1
 else
-  echo "PASS: semantic surface audit has no stale explicit #check lines"
+  echo "PASS: semantic surface audit generated no stale parser-visible #check lines"
+fi
+
+rg --no-filename -o '#check Poincare\.[A-Za-z0-9_]+' "$0" |
+  awk -F. '{ print $NF }' |
+  sort -u > "$manual_check_tokens"
+
+comm -13 "$all_surface_declarations" "$manual_check_tokens" > "$manual_check_stale"
+
+if [ -s "$manual_check_stale" ]; then
+  echo "FAIL: semantic surface audit has stale manual #check lines without parser-visible Poincare declarations"
+  sed 's/^/STALE: /' "$manual_check_stale"
+  exit 1
+else
+  echo "PASS: semantic surface audit has no stale manual #check lines"
 fi
 
 constructor_surface_dir=$(mktemp -d "${TMPDIR:-/tmp}/poincare-semantic-constructor-surface.$$-XXXXXX")

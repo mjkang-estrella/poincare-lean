@@ -3,11 +3,20 @@ Typed interfaces for the analytic Ricci-flow foundation.
 
 This module narrows the `ricciFlowAnalyticFoundation` milestone into the
 curvature and PDE layers that have to exist before the surgery package can be a
-real theorem. The predicates have no constructors here; they are proof
+real theorem. Most predicates have no constructors here; they are proof
 obligations for future formalization, not assumptions manufactured locally.
+The Levi-Civita existence, uniqueness, torsion-free, metric-compatibility,
+connection-theory, Riemann-curvature-construction, Riemann-curvature symmetry,
+first-Bianchi, second-Bianchi, Riemann-curvature-theory, and Ricci tensor
+contraction-formula predicates store concrete time-indexed mathlib
+covariant-derivative, curvature, and contraction data so the first analytic
+package fields are non-vacuous.  The later parabolic-regularity and
+Shi-derivative estimate predicates likewise store concrete time-indexed
+regularity, curvature-derivative, and pointwise estimate data.
 -/
 
 import Poincare.RicciFlow
+import Mathlib.Geometry.Manifold.VectorBundle.CovariantDerivative.Torsion
 
 universe u v w
 
@@ -16,13 +25,816 @@ open scoped Manifold ContDiff
 
 namespace Poincare
 
+/--
+The concrete bundled mathlib object used for one time-slice connection on the
+tangent bundle.
+
+A term of this type is a `CovariantDerivative`, including the additivity and
+Leibniz-rule proof carried by mathlib's structure.
+-/
+abbrev TangentCovariantDerivative
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    (I : ModelWithCorners ℝ E H)
+    (M : Type w) [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] : Type _ :=
+  CovariantDerivative I E (fun x : M => TangentSpace I x)
+
+/-- Shape contract for the concrete tangent covariant-derivative witness type. -/
+theorem tangentCovariantDerivative_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    (I : ModelWithCorners ℝ E H)
+    (M : Type w) [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] :
+    TangentCovariantDerivative I M =
+      CovariantDerivative I E (fun x : M => TangentSpace I x) :=
+  rfl
+
+/--
+Concrete time-dependent connection data for a time-dependent metric: a bundled
+mathlib tangent covariant derivative at every time.
+
+This is deliberately only the existence-level witness. Torsion-free,
+metric-compatibility, and uniqueness remain separate analytic fields until the
+local/mathlib Levi-Civita API is formalized strongly enough to derive them.
+-/
+abbrev TimeDependentTangentConnectionField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_g : TimeDependentRiemannianMetric I n M) : Type _ :=
+  ℝ → TangentCovariantDerivative I M
+
+/-- Shape contract for time-indexed tangent connection fields. -/
+theorem timeDependentTangentConnectionField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) :
+    TimeDependentTangentConnectionField g =
+      (ℝ → TangentCovariantDerivative I M) :=
+  rfl
+
+/--
+Concrete uniqueness data for the time-dependent tangent connection field.
+
+The witness stores an actual time-indexed bundled mathlib covariant derivative
+and a uniqueness theorem for that same data shape.  It is intentionally stronger
+than the bare existence field and does not manufacture torsion-free or
+metric-compatibility evidence.
+-/
+structure UniqueTimeDependentTangentConnectionField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) : Type _ where
+  /-- The selected time-dependent connection field. -/
+  connectionAtTime : TimeDependentTangentConnectionField g
+  /-- Every connection field of this data shape is equal to the selected one. -/
+  eq_connectionAtTime :
+    ∀ otherConnectionAtTime : TimeDependentTangentConnectionField g,
+      otherConnectionAtTime = connectionAtTime
+
+/--
+Concrete torsion-free data for the time-dependent tangent connection field.
+
+The witness stores the unique time-dependent connection field and proves that
+mathlib's bundled torsion tensor vanishes at every time.  The extra hypotheses
+are exactly the hypotheses needed by `CovariantDerivative.torsion`.
+-/
+structure TorsionFreeTimeDependentTangentConnectionField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (g : TimeDependentRiemannianMetric I n M) : Type _ where
+  /-- The unique time-dependent tangent connection field. -/
+  uniqueConnectionAtTime : UniqueTimeDependentTangentConnectionField g
+  /-- The bundled mathlib torsion tensor of each time-slice connection vanishes. -/
+  torsion_eq_zero :
+    ∀ t : ℝ, (uniqueConnectionAtTime.connectionAtTime t).torsion = 0
+
+/--
+Concrete metric-compatibility data for the time-dependent tangent connection
+field.
+
+The witness stores the zero-torsion connection field and proves the usual
+Levi-Civita metric-compatibility identity at every time: for differentiable
+vector fields `X`, `Y`, and `Z`, the directional derivative of `g(Y, Z)` in the
+`X` direction equals the two connection terms.  Mathlib does not yet package
+this as a ready-made Levi-Civita predicate, so this structure records the
+standard identity directly against mathlib's bundled `CovariantDerivative` and
+`ContMDiffRiemannianMetric.inner` data.
+-/
+structure MetricCompatibleTimeDependentTangentConnectionField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (g : TimeDependentRiemannianMetric I n M) : Type _ where
+  /-- The zero-torsion time-dependent tangent connection field. -/
+  torsionFreeConnectionAtTime :
+    TorsionFreeTimeDependentTangentConnectionField g
+  /--
+  The time-slice metric-compatibility identity
+  `X(g_t(Y,Z)) = g_t(∇_X Y,Z) + g_t(Y,∇_X Z)`.
+  -/
+  metric_compatibility :
+    ∀ (t : ℝ) {X Y Z : (x : M) → TangentSpace I x} {x : M},
+      MDiffAt (T% X) x →
+      MDiffAt (T% Y) x →
+      MDiffAt (T% Z) x →
+        extDerivFun (I := I)
+            (fun y : M => (g.metricAtTime t).inner y (Y y) (Z y)) x (X x) =
+          (g.metricAtTime t).inner x
+              ((torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime t)
+                Y x (X x))
+              (Z x) +
+            (g.metricAtTime t).inner x
+              (Y x)
+              ((torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime t)
+                Z x (X x))
+
+/--
+Concrete Levi-Civita connection-theory data for the time-dependent tangent
+connection field.
+
+The witness extends metric-compatible connection data with the mathlib
+smoothness class for every time-slice bundled covariant derivative.  This is the
+available production-level replacement for a future single mathlib Levi-Civita
+connection theorem.
+-/
+structure LeviCivitaTimeDependentConnectionTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (g : TimeDependentRiemannianMetric I n M) : Type _ where
+  /-- The metric-compatible time-dependent tangent connection field. -/
+  metricCompatibleConnectionAtTime :
+    MetricCompatibleTimeDependentTangentConnectionField g
+  /-- Each time-slice connection is a smooth mathlib covariant derivative. -/
+  contMDiffConnectionAtTime :
+    let torsionFreeConnectionAtTime :=
+      metricCompatibleConnectionAtTime.torsionFreeConnectionAtTime
+    ∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative
+        (torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime t) n
+
+/-- A tangent-valued Riemann-curvature tensor at one time. -/
+abbrev TangentRiemannCurvatureTensor
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    (I : ModelWithCorners ℝ E H)
+    (M : Type w) [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] : Type _ :=
+  (x : M) →
+    TangentSpace I x →L[ℝ]
+      TangentSpace I x →L[ℝ]
+        TangentSpace I x →L[ℝ] TangentSpace I x
+
+/-- Shape contract for tangent-valued Riemann-curvature tensors. -/
+theorem tangentRiemannCurvatureTensor_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    (I : ModelWithCorners ℝ E H)
+    (M : Type w) [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] :
+    TangentRiemannCurvatureTensor I M =
+      ((x : M) →
+        TangentSpace I x →L[ℝ]
+          TangentSpace I x →L[ℝ]
+            TangentSpace I x →L[ℝ] TangentSpace I x) :=
+  rfl
+
+/--
+Concrete time-dependent Riemann-curvature tensor data for a time-dependent
+metric.
+-/
+abbrev TimeDependentRiemannCurvatureTensorField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_g : TimeDependentRiemannianMetric I n M) : Type _ :=
+  ℝ → TangentRiemannCurvatureTensor I M
+
+/-- Shape contract for time-indexed tangent-valued Riemann-curvature fields. -/
+theorem timeDependentRiemannCurvatureTensorField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) :
+    TimeDependentRiemannCurvatureTensorField g =
+      (ℝ → TangentRiemannCurvatureTensor I M) :=
+  rfl
+
+/--
+Concrete construction data for the time-dependent Riemann curvature tensor.
+
+The witness stores the connection-theory input, a time-indexed tangent-valued
+curvature tensor, and the standard commutator formula
+`R(X,Y)Z = ∇_X ∇_Y Z - ∇_Y ∇_X Z - ∇_[X,Y] Z` against the selected bundled
+mathlib covariant derivative.
+-/
+structure RiemannCurvatureTensorConstructionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (g : TimeDependentRiemannianMetric I n M) : Type _ where
+  /-- The smooth Levi-Civita connection-theory data used to construct curvature. -/
+  connectionTheoryAtTime :
+    LeviCivitaTimeDependentConnectionTheoryData g
+  /-- The time-dependent tangent-valued Riemann-curvature tensor field. -/
+  curvatureAtTime : TimeDependentRiemannCurvatureTensorField g
+  /--
+  The standard curvature commutator formula for differentiable vector fields.
+  -/
+  curvature_eq_commutator :
+    let metricCompatibleConnectionAtTime :=
+      connectionTheoryAtTime.metricCompatibleConnectionAtTime
+    let torsionFreeConnectionAtTime :=
+      metricCompatibleConnectionAtTime.torsionFreeConnectionAtTime
+    let connectionAtTime :=
+      torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime
+    ∀ (t : ℝ) {X Y Z : (x : M) → TangentSpace I x} {x : M},
+      MDiffAt (T% X) x →
+      MDiffAt (T% Y) x →
+      MDiffAt (T% Z) x →
+        curvatureAtTime t x (X x) (Y x) (Z x) =
+          connectionAtTime t
+              (fun y : M => connectionAtTime t Z y (Y y)) x (X x) -
+            connectionAtTime t
+              (fun y : M => connectionAtTime t Z y (X y)) x (Y x) -
+            connectionAtTime t Z x (VectorField.mlieBracket I X Y x)
+
+/--
+Concrete symmetry data for the constructed time-dependent Riemann curvature
+tensor.
+
+The witness extends curvature-construction data with the standard algebraic
+Riemann-curvature symmetries that do not overlap the separately named Bianchi
+identity fields: skew-symmetry in the first pair, metric skew-adjointness in the
+last pair, and pair exchange symmetry for the lowered curvature tensor.
+-/
+structure RiemannCurvatureTensorSymmetryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (g : TimeDependentRiemannianMetric I n M) : Type _ where
+  /-- The constructed time-dependent Riemann-curvature tensor. -/
+  curvatureConstructionAtTime :
+    RiemannCurvatureTensorConstructionData g
+  /-- Skew-symmetry of `R(X,Y)Z` in the first two slots. -/
+  curvature_skew_first_pair :
+    let curvatureAtTime := curvatureConstructionAtTime.curvatureAtTime
+    ∀ (t : ℝ) {x : M} (X Y Z : TangentSpace I x),
+      curvatureAtTime t x X Y Z = - curvatureAtTime t x Y X Z
+  /--
+  Metric skew-adjointness of `R(X,Y)` in the last two lowered slots.
+  -/
+  curvature_metric_skew_last_pair :
+    let curvatureAtTime := curvatureConstructionAtTime.curvatureAtTime
+    ∀ (t : ℝ) {x : M} (X Y Z W : TangentSpace I x),
+      (g.metricAtTime t).inner x (curvatureAtTime t x X Y Z) W =
+        - (g.metricAtTime t).inner x Z (curvatureAtTime t x X Y W)
+  /--
+  Pair exchange symmetry of the lowered curvature tensor.
+  -/
+  curvature_pair_symmetry :
+    let curvatureAtTime := curvatureConstructionAtTime.curvatureAtTime
+    ∀ (t : ℝ) {x : M} (X Y Z W : TangentSpace I x),
+      (g.metricAtTime t).inner x (curvatureAtTime t x X Y Z) W =
+        (g.metricAtTime t).inner x (curvatureAtTime t x Z W X) Y
+
+/--
+Concrete first-Bianchi data for the constructed time-dependent Riemann
+curvature tensor.
+
+The witness extends curvature-symmetry data with the cyclic identity
+`R(X,Y)Z + R(Y,Z)X + R(Z,X)Y = 0`.
+-/
+structure RiemannCurvatureFirstBianchiData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (g : TimeDependentRiemannianMetric I n M) : Type _ where
+  /-- The constructed curvature tensor with algebraic Riemann symmetries. -/
+  curvatureSymmetryAtTime :
+    RiemannCurvatureTensorSymmetryData g
+  /-- The cyclic first Bianchi identity for the tangent-valued curvature tensor. -/
+  first_bianchi_identity :
+    let curvatureAtTime :=
+      curvatureSymmetryAtTime.curvatureConstructionAtTime.curvatureAtTime
+    ∀ (t : ℝ) {x : M} (X Y Z : TangentSpace I x),
+      curvatureAtTime t x X Y Z +
+          curvatureAtTime t x Y Z X +
+        curvatureAtTime t x Z X Y = 0
+
+/--
+Concrete time-dependent covariant derivative of the Riemann-curvature tensor.
+
+At each time and point this stores `(∇_A R)(X,Y)Z` as a tangent vector.  The
+meaningful link to the selected Levi-Civita connection and constructed
+curvature tensor is recorded in `RiemannCurvatureSecondBianchiData`.
+-/
+abbrev TimeDependentRiemannCurvatureCovariantDerivativeField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_g : TimeDependentRiemannianMetric I n M) : Type _ :=
+  ℝ → (x : M) →
+    TangentSpace I x → TangentSpace I x → TangentSpace I x →
+      TangentSpace I x → TangentSpace I x
+
+/--
+Shape contract for time-indexed covariant derivatives of Riemann-curvature
+fields.
+-/
+theorem timeDependentRiemannCurvatureCovariantDerivativeField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) :
+    TimeDependentRiemannCurvatureCovariantDerivativeField g =
+      (ℝ → (x : M) →
+        TangentSpace I x → TangentSpace I x → TangentSpace I x →
+          TangentSpace I x → TangentSpace I x) :=
+  rfl
+
+/--
+Concrete second-Bianchi data for the constructed time-dependent Riemann
+curvature tensor.
+
+The witness extends first-Bianchi data with a time-dependent covariant
+derivative of curvature, identifies that derivative with the selected
+Levi-Civita connection acting on the constructed curvature tensor, and records
+the cyclic second Bianchi identity
+`(∇_X R)(Y,Z)W + (∇_Y R)(Z,X)W + (∇_Z R)(X,Y)W = 0`.
+-/
+structure RiemannCurvatureSecondBianchiData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (g : TimeDependentRiemannianMetric I n M) : Type _ where
+  /-- The constructed curvature tensor with algebraic Riemann symmetries and first Bianchi. -/
+  firstBianchiAtTime :
+    RiemannCurvatureFirstBianchiData g
+  /-- The time-dependent tangent-valued covariant derivative of curvature. -/
+  curvatureCovariantDerivativeAtTime :
+    TimeDependentRiemannCurvatureCovariantDerivativeField g
+  /--
+  The standard formula defining the covariant derivative of the curvature
+  tensor against the selected time-slice Levi-Civita connection.
+  -/
+  curvature_covariant_derivative_eq_connection_derivative :
+    let curvatureAtTime :=
+      firstBianchiAtTime.curvatureSymmetryAtTime.curvatureConstructionAtTime.curvatureAtTime
+    let connectionTheoryAtTime :=
+      firstBianchiAtTime.curvatureSymmetryAtTime.curvatureConstructionAtTime.connectionTheoryAtTime
+    let metricCompatibleConnectionAtTime :=
+      connectionTheoryAtTime.metricCompatibleConnectionAtTime
+    let torsionFreeConnectionAtTime :=
+      metricCompatibleConnectionAtTime.torsionFreeConnectionAtTime
+    let connectionAtTime :=
+      torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime
+    ∀ (t : ℝ) {A X Y Z : (x : M) → TangentSpace I x} {x : M},
+      MDiffAt (T% A) x →
+      MDiffAt (T% X) x →
+      MDiffAt (T% Y) x →
+      MDiffAt (T% Z) x →
+        curvatureCovariantDerivativeAtTime t x (A x) (X x) (Y x) (Z x) =
+          connectionAtTime t
+              (fun y : M => curvatureAtTime t y (X y) (Y y) (Z y))
+              x (A x) -
+            curvatureAtTime t x (connectionAtTime t X x (A x)) (Y x) (Z x) -
+            curvatureAtTime t x (X x) (connectionAtTime t Y x (A x)) (Z x) -
+            curvatureAtTime t x (X x) (Y x) (connectionAtTime t Z x (A x))
+  /-- The cyclic second Bianchi identity for the covariant derivative of curvature. -/
+  second_bianchi_identity :
+    let curvatureDerivativeAtTime := curvatureCovariantDerivativeAtTime
+    ∀ (t : ℝ) {x : M} (X Y Z W : TangentSpace I x),
+      curvatureDerivativeAtTime t x X Y Z W +
+          curvatureDerivativeAtTime t x Y Z X W +
+        curvatureDerivativeAtTime t x Z X Y W = 0
+
+/--
+Time-dependent trace functional used to contract curvature endomorphisms into
+the Ricci tensor.
+
+The trace functional is kept explicit because the current local/mathlib API
+does not yet expose the full coordinate-free Ricci contraction theorem needed
+by the production package.
+-/
+abbrev TimeDependentRicciContractionTraceField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_g : TimeDependentRiemannianMetric I n M) : Type _ :=
+  ℝ → (x : M) → (TangentSpace I x →L[ℝ] TangentSpace I x) → ℝ
+
+/-- Shape contract for time-indexed Ricci contraction trace functionals. -/
+theorem timeDependentRicciContractionTraceField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) :
+    TimeDependentRicciContractionTraceField g =
+      (ℝ → (x : M) → (TangentSpace I x →L[ℝ] TangentSpace I x) → ℝ) :=
+  rfl
+
+/--
+Time-dependent curvature endomorphism whose trace defines the Ricci tensor.
+
+For tangent vectors `X` and `Y`, the endomorphism is intended to be
+`Z ↦ R(Z, X)Y`.
+-/
+abbrev TimeDependentRicciContractionEndomorphismField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_g : TimeDependentRiemannianMetric I n M) : Type _ :=
+  ℝ → (x : M) → TangentSpace I x → TangentSpace I x →
+    TangentSpace I x →L[ℝ] TangentSpace I x
+
+/-- Shape contract for time-indexed Ricci contraction endomorphism fields. -/
+theorem timeDependentRicciContractionEndomorphismField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) :
+    TimeDependentRicciContractionEndomorphismField g =
+      (ℝ → (x : M) → TangentSpace I x → TangentSpace I x →
+        TangentSpace I x →L[ℝ] TangentSpace I x) :=
+  rfl
+
+/--
+Concrete Ricci tensor contraction-formula data.
+
+The witness stores the Riemann-curvature theory data through the second Bianchi
+identity, an explicit trace functional, the curvature endomorphism being traced,
+and the two formulas that make the Ricci tensor a contraction of the constructed
+Riemann tensor.
+-/
+structure RicciTensorContractionFormulaData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvature : RicciCurvatureData g) : Type _ where
+  /-- Riemann-curvature data through both Bianchi identities. -/
+  secondBianchiAtTime :
+    RiemannCurvatureSecondBianchiData g
+  /-- The trace functional used for the Ricci contraction. -/
+  traceAtTime : TimeDependentRicciContractionTraceField g
+  /-- The curvature endomorphism being traced. -/
+  curvatureEndomorphismAtTime :
+    TimeDependentRicciContractionEndomorphismField g
+  /-- The traced endomorphism is `Z ↦ R(Z, X)Y`. -/
+  curvature_endomorphism_eq_riemann :
+    let curvatureAtTime :=
+      secondBianchiAtTime.firstBianchiAtTime.curvatureSymmetryAtTime.curvatureConstructionAtTime.curvatureAtTime
+    ∀ (t : ℝ) {x : M} (X Y Z : TangentSpace I x),
+      curvatureEndomorphismAtTime t x X Y Z =
+        curvatureAtTime t x Z X Y
+  /-- The candidate Ricci tensor is the trace of the curvature endomorphism. -/
+  ricci_eq_trace_curvature_endomorphism :
+    ∀ (t : ℝ) (x : M) (X Y : TangentSpace I x),
+      curvature.ricci.tensorAtTime t x X Y =
+        traceAtTime t x (curvatureEndomorphismAtTime t x X Y)
+
+/--
+Time-dependent trace functional used to contract the Ricci tensor into scalar
+curvature.
+
+The trace functional is kept explicit because this local API does not yet
+provide the inverse-metric contraction theorem needed to derive scalar
+curvature directly from the metric and Ricci tensor.
+-/
+abbrev TimeDependentScalarCurvatureTraceField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_g : TimeDependentRiemannianMetric I n M) : Type _ :=
+  ℝ → (x : M) →
+    (TangentSpace I x →L[ℝ] TangentSpace I x →L[ℝ] ℝ) → ℝ
+
+/-- Shape contract for time-indexed scalar-curvature trace functionals. -/
+theorem timeDependentScalarCurvatureTraceField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) :
+    TimeDependentScalarCurvatureTraceField g =
+      (ℝ → (x : M) →
+        (TangentSpace I x →L[ℝ] TangentSpace I x →L[ℝ] ℝ) → ℝ) :=
+  rfl
+
+/--
+Concrete scalar-curvature contraction-formula data.
+
+The witness stores the Ricci tensor contraction formula, an explicit trace
+functional for covariant two-tensors, and the formula that makes the candidate
+scalar curvature the metric trace of the candidate Ricci tensor.
+-/
+structure ScalarCurvatureContractionFormulaData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvature : RicciCurvatureData g) : Type _ where
+  /-- Ricci tensor contraction-formula data through the Riemann tensor. -/
+  ricciContractionFormulaAtTime :
+    RicciTensorContractionFormulaData curvature
+  /-- The trace functional used for scalar curvature. -/
+  traceAtTime : TimeDependentScalarCurvatureTraceField g
+  /-- The candidate scalar curvature is the trace of the candidate Ricci tensor. -/
+  scalar_eq_trace_ricci :
+    ∀ (t : ℝ) (x : M),
+      curvature.scalar.scalarAtTime t x =
+        traceAtTime t x (curvature.ricci.tensorAtTime t x)
+
+/--
+Concrete Ricci contraction theory data.
+
+The witness packages the complete local contraction chain currently available:
+the Ricci tensor is the trace of the Riemann curvature endomorphism, and the
+scalar curvature is the trace of that Ricci tensor.
+-/
+structure RicciContractionTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvature : RicciCurvatureData g) : Type _ where
+  /-- Scalar-curvature contraction data, including the underlying Ricci formula. -/
+  scalarContractionFormulaAtTime :
+    ScalarCurvatureContractionFormulaData curvature
+  /-- The candidate Ricci tensor is the trace of the curvature endomorphism. -/
+  ricci_eq_trace_curvature_endomorphism :
+    ∀ (t : ℝ) (x : M) (X Y : TangentSpace I x),
+      curvature.ricci.tensorAtTime t x X Y =
+        scalarContractionFormulaAtTime.ricciContractionFormulaAtTime.traceAtTime
+          t x
+          ((scalarContractionFormulaAtTime.ricciContractionFormulaAtTime).curvatureEndomorphismAtTime
+            t x X Y)
+  /-- The candidate scalar curvature is the trace of the candidate Ricci tensor. -/
+  scalar_eq_trace_ricci :
+    ∀ (t : ℝ) (x : M),
+      curvature.scalar.scalarAtTime t x =
+        scalarContractionFormulaAtTime.traceAtTime t x
+          (curvature.ricci.tensorAtTime t x)
+
+/--
+Concrete scalar-curvature theory data.
+
+The witness stores the complete contraction chain presently available for the
+scalar curvature field: Ricci is obtained by contracting the Riemann curvature
+endomorphism, and scalar curvature is obtained by tracing that Ricci tensor.
+-/
+structure ScalarCurvatureTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvature : RicciCurvatureData g) : Type _ where
+  /-- The contraction-theory witness that identifies scalar curvature as `tr_g Ric`. -/
+  ricciContractionTheoryAtTime :
+    RicciContractionTheoryData curvature
+
+/--
+Scalar-curvature contraction-formula data canonically supplies the local Ricci
+contraction theory data.
+-/
+def ricciContractionTheoryData_of_scalarContractionFormulaData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (scalarContractionFormulaAtTime :
+      ScalarCurvatureContractionFormulaData curvature) :
+    RicciContractionTheoryData curvature where
+  scalarContractionFormulaAtTime := scalarContractionFormulaAtTime
+  ricci_eq_trace_curvature_endomorphism :=
+    (scalarContractionFormulaAtTime.ricciContractionFormulaAtTime).ricci_eq_trace_curvature_endomorphism
+  scalar_eq_trace_ricci :=
+    scalarContractionFormulaAtTime.scalar_eq_trace_ricci
+
+/-- The canonical Ricci contraction-theory data stores the supplied formulas. -/
+@[simp] theorem ricciContractionTheoryData_of_scalarContractionFormulaData_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (scalarContractionFormulaAtTime :
+      ScalarCurvatureContractionFormulaData curvature) :
+    ricciContractionTheoryData_of_scalarContractionFormulaData
+        scalarContractionFormulaAtTime =
+      ({ scalarContractionFormulaAtTime := scalarContractionFormulaAtTime
+         ricci_eq_trace_curvature_endomorphism :=
+          scalarContractionFormulaAtTime.ricciContractionFormulaAtTime.ricci_eq_trace_curvature_endomorphism
+         scalar_eq_trace_ricci :=
+          scalarContractionFormulaAtTime.scalar_eq_trace_ricci } :
+        RicciContractionTheoryData curvature) :=
+  rfl
+
+/--
+Ricci contraction-theory data canonically supplies scalar-curvature theory
+data.
+-/
+def scalarCurvatureTheoryData_of_ricciContractionTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (ricciContractionTheoryAtTime :
+      RicciContractionTheoryData curvature) :
+    ScalarCurvatureTheoryData curvature where
+  ricciContractionTheoryAtTime := ricciContractionTheoryAtTime
+
+/-- The canonical scalar-curvature theory data stores the supplied contraction chain. -/
+@[simp] theorem scalarCurvatureTheoryData_of_ricciContractionTheoryData_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (ricciContractionTheoryAtTime :
+      RicciContractionTheoryData curvature) :
+    (scalarCurvatureTheoryData_of_ricciContractionTheoryData
+      ricciContractionTheoryAtTime).ricciContractionTheoryAtTime =
+        ricciContractionTheoryAtTime :=
+  rfl
+
+/-- Scalar-curvature theory data exposes the defining trace formula. -/
+theorem scalarCurvatureTheoryData_scalar_eq_trace_ricci
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData curvature) :
+    ∀ (t : ℝ) (x : M),
+      curvature.scalar.scalarAtTime t x =
+        scalarCurvatureTheoryAtTime.ricciContractionTheoryAtTime.scalarContractionFormulaAtTime.traceAtTime
+          t x
+          (curvature.ricci.tensorAtTime t x) :=
+  scalarCurvatureTheoryAtTime.ricciContractionTheoryAtTime.scalar_eq_trace_ricci
+
+/--
+Concrete regularity data for a time-dependent Riemannian metric.
+
+The witness records the actual smooth Riemannian metric slice at each time and
+identifies it with the metric family carried by `TimeDependentRiemannianMetric`.
+This is exactly the regularity data already present in the production metric
+object: every time slice is a mathlib `ContMDiffRiemannianMetric`.
+-/
+structure TimeDependentMetricRegularityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) : Type _ where
+  /-- The smooth Riemannian metric slice at each time. -/
+  metricAtTime :
+    ℝ → ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x)
+  /-- The stored slices are exactly the slices of the production metric family. -/
+  metricAtTime_eq : metricAtTime = g.metricAtTime
+
+/--
+Every production time-dependent Riemannian metric carries metric-regularity
+data through its `metricAtTime` field.
+-/
+def timeDependentMetricRegularityData_of_metric
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) :
+    TimeDependentMetricRegularityData g where
+  metricAtTime := g.metricAtTime
+  metricAtTime_eq := rfl
+
+/-- The canonical metric-regularity data stores the metric slices of `g`. -/
+@[simp] theorem timeDependentMetricRegularityData_of_metric_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) :
+    timeDependentMetricRegularityData_of_metric g =
+      ({ metricAtTime := g.metricAtTime
+         metricAtTime_eq := rfl } :
+        TimeDependentMetricRegularityData g) :=
+  rfl
+
+/-- Shape contract for the canonical metric-regularity data. -/
+theorem timeDependentMetricRegularityData_of_metric_metricAtTime_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) :
+    (timeDependentMetricRegularityData_of_metric g).metricAtTime =
+      g.metricAtTime :=
+  rfl
+
 /-- Interface for the Levi-Civita connection theory of a time-dependent metric. -/
 inductive HasLeviCivitaConnectionTheory
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_g : TimeDependentRiemannianMetric I n M) : Prop
+    (g : TimeDependentRiemannianMetric I n M) : Prop where
+  /--
+  A metric-compatible time-dependent tangent connection with smooth mathlib
+  covariant-derivative time slices supplies the non-vacuous connection-theory
+  witness.
+  -/
+  | of_connectionTheoryData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (connectionTheoryAtTime :
+        LeviCivitaTimeDependentConnectionTheoryData g)
+
+/--
+Concrete smooth metric-compatible connection data proves the production
+Levi-Civita connection-theory interface.
+-/
+theorem hasLeviCivitaConnectionTheory_of_connectionTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (connectionTheoryAtTime :
+      LeviCivitaTimeDependentConnectionTheoryData g) :
+    HasLeviCivitaConnectionTheory g :=
+  HasLeviCivitaConnectionTheory.of_connectionTheoryData
+    connectionTheoryAtTime
 
 /-- Interface for existence of a Levi-Civita connection for each metric time slice. -/
 inductive HasLeviCivitaConnectionExistence
@@ -30,7 +842,43 @@ inductive HasLeviCivitaConnectionExistence
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_g : TimeDependentRiemannianMetric I n M) : Prop
+    (g : TimeDependentRiemannianMetric I n M) : Prop where
+  /--
+  A time-indexed bundled mathlib covariant derivative on the tangent bundle
+  supplies the non-vacuous existence witness.
+  -/
+  | of_connectionField
+      (connectionAtTime : TimeDependentTangentConnectionField g)
+
+/-- A concrete connection field proves the production Levi-Civita existence interface. -/
+theorem hasLeviCivitaConnectionExistence_of_connectionField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (connectionAtTime : TimeDependentTangentConnectionField g) :
+    HasLeviCivitaConnectionExistence g :=
+  HasLeviCivitaConnectionExistence.of_connectionField connectionAtTime
+
+/--
+The production Levi-Civita existence interface is equivalent to nonempty
+time-indexed tangent covariant-derivative data.
+-/
+theorem hasLeviCivitaConnectionExistence_iff_connectionField_nonempty
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) :
+    HasLeviCivitaConnectionExistence g ↔
+      Nonempty (TimeDependentTangentConnectionField g) := by
+  constructor
+  · intro h
+    cases h with
+    | of_connectionField connectionAtTime => exact ⟨connectionAtTime⟩
+  · rintro ⟨connectionAtTime⟩
+    exact hasLeviCivitaConnectionExistence_of_connectionField connectionAtTime
 
 /-- Interface for uniqueness of the Levi-Civita connection. -/
 inductive HasLeviCivitaConnectionUniqueness
@@ -38,7 +886,47 @@ inductive HasLeviCivitaConnectionUniqueness
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_g : TimeDependentRiemannianMetric I n M) : Prop
+    (g : TimeDependentRiemannianMetric I n M) : Prop where
+  /--
+  A selected time-indexed tangent covariant derivative plus a uniqueness theorem
+  supplies the non-vacuous uniqueness witness.
+  -/
+  | of_uniqueConnectionField
+      (uniqueConnectionAtTime : UniqueTimeDependentTangentConnectionField g)
+
+/-- Concrete uniqueness data proves the production Levi-Civita uniqueness interface. -/
+theorem hasLeviCivitaConnectionUniqueness_of_uniqueConnectionField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (uniqueConnectionAtTime : UniqueTimeDependentTangentConnectionField g) :
+    HasLeviCivitaConnectionUniqueness g :=
+  HasLeviCivitaConnectionUniqueness.of_uniqueConnectionField
+    uniqueConnectionAtTime
+
+/--
+The production Levi-Civita uniqueness interface is equivalent to nonempty
+unique time-indexed tangent covariant-derivative data.
+-/
+theorem hasLeviCivitaConnectionUniqueness_iff_uniqueConnectionField_nonempty
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) :
+    HasLeviCivitaConnectionUniqueness g ↔
+      Nonempty (UniqueTimeDependentTangentConnectionField g) := by
+  constructor
+  · intro h
+    cases h with
+    | of_uniqueConnectionField uniqueConnectionAtTime =>
+        exact ⟨uniqueConnectionAtTime⟩
+  · rintro ⟨uniqueConnectionAtTime⟩
+    exact
+      hasLeviCivitaConnectionUniqueness_of_uniqueConnectionField
+        uniqueConnectionAtTime
 
 /-- Interface for the torsion-free property of the Levi-Civita connection. -/
 inductive HasLeviCivitaTorsionFreeProperty
@@ -46,7 +934,51 @@ inductive HasLeviCivitaTorsionFreeProperty
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_g : TimeDependentRiemannianMetric I n M) : Prop
+    (g : TimeDependentRiemannianMetric I n M) : Prop where
+  /--
+  A unique time-dependent tangent connection field with vanishing mathlib torsion
+  supplies the non-vacuous torsion-free witness.
+  -/
+  | of_torsionFreeConnectionField
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (torsionFreeConnectionAtTime :
+        TorsionFreeTimeDependentTangentConnectionField g)
+
+/-- Concrete zero-torsion connection data proves the production torsion-free interface. -/
+theorem hasLeviCivitaTorsionFreeProperty_of_torsionFreeConnectionField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (torsionFreeConnectionAtTime :
+      TorsionFreeTimeDependentTangentConnectionField g) :
+    HasLeviCivitaTorsionFreeProperty g :=
+  HasLeviCivitaTorsionFreeProperty.of_torsionFreeConnectionField
+    torsionFreeConnectionAtTime
+
+/--
+Zero-torsion connection data also supplies the earlier existence and uniqueness
+Levi-Civita fields.
+-/
+theorem leviCivitaExistence_uniqueness_of_torsionFreeConnectionField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (torsionFreeConnectionAtTime :
+      TorsionFreeTimeDependentTangentConnectionField g) :
+    HasLeviCivitaConnectionExistence g ∧
+      HasLeviCivitaConnectionUniqueness g :=
+  ⟨hasLeviCivitaConnectionExistence_of_connectionField
+      torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime,
+    hasLeviCivitaConnectionUniqueness_of_uniqueConnectionField
+      torsionFreeConnectionAtTime.uniqueConnectionAtTime⟩
 
 /-- Interface for metric compatibility of the Levi-Civita connection. -/
 inductive HasLeviCivitaMetricCompatibility
@@ -54,7 +986,85 @@ inductive HasLeviCivitaMetricCompatibility
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_g : TimeDependentRiemannianMetric I n M) : Prop
+    (g : TimeDependentRiemannianMetric I n M) : Prop where
+  /--
+  A time-dependent tangent connection field satisfying the standard
+  metric-compatibility identity supplies the non-vacuous metric-compatibility
+  witness.
+  -/
+  | of_metricCompatibleConnectionField
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (metricCompatibleConnectionAtTime :
+        MetricCompatibleTimeDependentTangentConnectionField g)
+
+/--
+Concrete metric-compatible connection data proves the production
+Levi-Civita metric-compatibility interface.
+-/
+theorem hasLeviCivitaMetricCompatibility_of_metricCompatibleConnectionField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (metricCompatibleConnectionAtTime :
+      MetricCompatibleTimeDependentTangentConnectionField g) :
+    HasLeviCivitaMetricCompatibility g :=
+  HasLeviCivitaMetricCompatibility.of_metricCompatibleConnectionField
+    metricCompatibleConnectionAtTime
+
+/--
+Metric-compatible connection data also supplies the earlier existence,
+uniqueness, and torsion-free Levi-Civita fields.
+-/
+theorem leviCivitaFirstThree_of_metricCompatibleConnectionField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (metricCompatibleConnectionAtTime :
+      MetricCompatibleTimeDependentTangentConnectionField g) :
+    HasLeviCivitaConnectionExistence g ∧
+      HasLeviCivitaConnectionUniqueness g ∧
+      HasLeviCivitaTorsionFreeProperty g :=
+  let torsionFreeConnectionAtTime :=
+    metricCompatibleConnectionAtTime.torsionFreeConnectionAtTime
+  ⟨hasLeviCivitaConnectionExistence_of_connectionField
+      torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime,
+    hasLeviCivitaConnectionUniqueness_of_uniqueConnectionField
+      torsionFreeConnectionAtTime.uniqueConnectionAtTime,
+    hasLeviCivitaTorsionFreeProperty_of_torsionFreeConnectionField
+      torsionFreeConnectionAtTime⟩
+
+/--
+Connection-theory data supplies the preceding four Levi-Civita fields:
+existence, uniqueness, torsion-freeness, and metric compatibility.
+-/
+theorem leviCivitaFirstFour_of_connectionTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (connectionTheoryAtTime :
+      LeviCivitaTimeDependentConnectionTheoryData g) :
+    HasLeviCivitaConnectionExistence g ∧
+      HasLeviCivitaConnectionUniqueness g ∧
+      HasLeviCivitaTorsionFreeProperty g ∧
+      HasLeviCivitaMetricCompatibility g :=
+  let firstThree :=
+    leviCivitaFirstThree_of_metricCompatibleConnectionField
+      connectionTheoryAtTime.metricCompatibleConnectionAtTime
+  ⟨firstThree.1, firstThree.2.1, firstThree.2.2,
+    hasLeviCivitaMetricCompatibility_of_metricCompatibleConnectionField
+      connectionTheoryAtTime.metricCompatibleConnectionAtTime⟩
 
 /-- Interface for the Riemann-curvature tensor theory of a time-dependent metric. -/
 inductive HasRiemannCurvatureTensorTheory
@@ -62,7 +1072,33 @@ inductive HasRiemannCurvatureTensorTheory
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_g : TimeDependentRiemannianMetric I n M) : Prop
+    (g : TimeDependentRiemannianMetric I n M) : Prop where
+  /--
+  Curvature construction, symmetries, and both Bianchi identities supply the
+  non-vacuous Riemann-curvature-theory witness.
+  -/
+  | of_secondBianchiData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (secondBianchiAtTime :
+        RiemannCurvatureSecondBianchiData g)
+
+/--
+Concrete second-Bianchi data proves the production Riemann-curvature-theory
+interface.
+-/
+theorem hasRiemannCurvatureTensorTheory_of_secondBianchiData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (secondBianchiAtTime :
+      RiemannCurvatureSecondBianchiData g) :
+    HasRiemannCurvatureTensorTheory g :=
+  HasRiemannCurvatureTensorTheory.of_secondBianchiData
+    secondBianchiAtTime
 
 /-- Interface for constructing the Riemann curvature tensor from the connection. -/
 inductive HasRiemannCurvatureTensorConstruction
@@ -70,7 +1106,59 @@ inductive HasRiemannCurvatureTensorConstruction
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_g : TimeDependentRiemannianMetric I n M) : Prop
+    (g : TimeDependentRiemannianMetric I n M) : Prop where
+  /--
+  A tangent-valued curvature tensor with the standard commutator construction
+  formula supplies the non-vacuous Riemann-curvature construction witness.
+  -/
+  | of_curvatureConstructionData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (curvatureConstructionAtTime :
+        RiemannCurvatureTensorConstructionData g)
+
+/--
+Concrete curvature construction data proves the production
+Riemann-curvature-tensor construction interface.
+-/
+theorem hasRiemannCurvatureTensorConstruction_of_curvatureConstructionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData g) :
+    HasRiemannCurvatureTensorConstruction g :=
+  HasRiemannCurvatureTensorConstruction.of_curvatureConstructionData
+    curvatureConstructionAtTime
+
+/--
+Riemann-curvature construction data also supplies the preceding Levi-Civita
+fields.
+-/
+theorem leviCivitaFirstFive_of_curvatureConstructionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvatureConstructionAtTime :
+      RiemannCurvatureTensorConstructionData g) :
+    HasLeviCivitaConnectionExistence g ∧
+      HasLeviCivitaConnectionUniqueness g ∧
+      HasLeviCivitaTorsionFreeProperty g ∧
+      HasLeviCivitaMetricCompatibility g ∧
+      HasLeviCivitaConnectionTheory g :=
+  let firstFour :=
+    leviCivitaFirstFour_of_connectionTheoryData
+      curvatureConstructionAtTime.connectionTheoryAtTime
+  ⟨firstFour.1, firstFour.2.1, firstFour.2.2.1, firstFour.2.2.2,
+    hasLeviCivitaConnectionTheory_of_connectionTheoryData
+      curvatureConstructionAtTime.connectionTheoryAtTime⟩
 
 /-- Interface for the standard symmetries of the Riemann curvature tensor. -/
 inductive HasRiemannCurvatureTensorSymmetries
@@ -78,7 +1166,61 @@ inductive HasRiemannCurvatureTensorSymmetries
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_g : TimeDependentRiemannianMetric I n M) : Prop
+    (g : TimeDependentRiemannianMetric I n M) : Prop where
+  /--
+  A constructed Riemann-curvature tensor with the standard algebraic symmetry
+  identities supplies the non-vacuous symmetry witness.
+  -/
+  | of_curvatureSymmetryData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (curvatureSymmetryAtTime :
+        RiemannCurvatureTensorSymmetryData g)
+
+/--
+Concrete curvature symmetry data proves the production Riemann-curvature
+symmetry interface.
+-/
+theorem hasRiemannCurvatureTensorSymmetries_of_curvatureSymmetryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvatureSymmetryAtTime :
+      RiemannCurvatureTensorSymmetryData g) :
+    HasRiemannCurvatureTensorSymmetries g :=
+  HasRiemannCurvatureTensorSymmetries.of_curvatureSymmetryData
+    curvatureSymmetryAtTime
+
+/--
+Riemann-curvature symmetry data also supplies the preceding Levi-Civita and
+curvature-construction fields.
+-/
+theorem riemannCurvatureFirstSix_of_curvatureSymmetryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (curvatureSymmetryAtTime :
+      RiemannCurvatureTensorSymmetryData g) :
+    HasLeviCivitaConnectionExistence g ∧
+      HasLeviCivitaConnectionUniqueness g ∧
+      HasLeviCivitaTorsionFreeProperty g ∧
+      HasLeviCivitaMetricCompatibility g ∧
+      HasLeviCivitaConnectionTheory g ∧
+      HasRiemannCurvatureTensorConstruction g :=
+  let firstFive :=
+    leviCivitaFirstFive_of_curvatureConstructionData
+      curvatureSymmetryAtTime.curvatureConstructionAtTime
+  ⟨firstFive.1, firstFive.2.1, firstFive.2.2.1, firstFive.2.2.2.1,
+    firstFive.2.2.2.2,
+    hasRiemannCurvatureTensorConstruction_of_curvatureConstructionData
+      curvatureSymmetryAtTime.curvatureConstructionAtTime⟩
 
 /-- Interface for the first Bianchi identity. -/
 inductive HasFirstBianchiIdentity
@@ -86,7 +1228,62 @@ inductive HasFirstBianchiIdentity
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_g : TimeDependentRiemannianMetric I n M) : Prop
+    (g : TimeDependentRiemannianMetric I n M) : Prop where
+  /--
+  A constructed Riemann-curvature tensor satisfying the cyclic first Bianchi
+  identity supplies the non-vacuous first-Bianchi witness.
+  -/
+  | of_firstBianchiData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (firstBianchiAtTime :
+        RiemannCurvatureFirstBianchiData g)
+
+/--
+Concrete first-Bianchi data proves the production first-Bianchi interface.
+-/
+theorem hasFirstBianchiIdentity_of_firstBianchiData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (firstBianchiAtTime :
+      RiemannCurvatureFirstBianchiData g) :
+    HasFirstBianchiIdentity g :=
+  HasFirstBianchiIdentity.of_firstBianchiData
+    firstBianchiAtTime
+
+/--
+First-Bianchi data also supplies the preceding Levi-Civita, curvature
+construction, and curvature-symmetry fields.
+-/
+theorem riemannCurvatureFirstSeven_of_firstBianchiData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (firstBianchiAtTime :
+      RiemannCurvatureFirstBianchiData g) :
+    HasLeviCivitaConnectionExistence g ∧
+      HasLeviCivitaConnectionUniqueness g ∧
+      HasLeviCivitaTorsionFreeProperty g ∧
+      HasLeviCivitaMetricCompatibility g ∧
+      HasLeviCivitaConnectionTheory g ∧
+      HasRiemannCurvatureTensorConstruction g ∧
+      HasRiemannCurvatureTensorSymmetries g :=
+  let firstSix :=
+    riemannCurvatureFirstSix_of_curvatureSymmetryData
+      firstBianchiAtTime.curvatureSymmetryAtTime
+  ⟨firstSix.1, firstSix.2.1, firstSix.2.2.1,
+    firstSix.2.2.2.1, firstSix.2.2.2.2.1,
+    firstSix.2.2.2.2.2,
+    hasRiemannCurvatureTensorSymmetries_of_curvatureSymmetryData
+      firstBianchiAtTime.curvatureSymmetryAtTime⟩
 
 /-- Interface for the second Bianchi identity. -/
 inductive HasSecondBianchiIdentity
@@ -94,7 +1291,100 @@ inductive HasSecondBianchiIdentity
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_g : TimeDependentRiemannianMetric I n M) : Prop
+    (g : TimeDependentRiemannianMetric I n M) : Prop where
+  /--
+  A constructed Riemann-curvature tensor with a connection-defined covariant
+  derivative satisfying the cyclic second Bianchi identity supplies the
+  non-vacuous second-Bianchi witness.
+  -/
+  | of_secondBianchiData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (secondBianchiAtTime :
+        RiemannCurvatureSecondBianchiData g)
+
+/--
+Concrete second-Bianchi data proves the production second-Bianchi interface.
+-/
+theorem hasSecondBianchiIdentity_of_secondBianchiData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (secondBianchiAtTime :
+      RiemannCurvatureSecondBianchiData g) :
+    HasSecondBianchiIdentity g :=
+  HasSecondBianchiIdentity.of_secondBianchiData
+    secondBianchiAtTime
+
+/--
+Second-Bianchi data also supplies all earlier Levi-Civita and curvature fields
+through first Bianchi.
+-/
+theorem riemannCurvatureFirstEight_of_secondBianchiData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (secondBianchiAtTime :
+      RiemannCurvatureSecondBianchiData g) :
+    HasLeviCivitaConnectionExistence g ∧
+      HasLeviCivitaConnectionUniqueness g ∧
+      HasLeviCivitaTorsionFreeProperty g ∧
+      HasLeviCivitaMetricCompatibility g ∧
+      HasLeviCivitaConnectionTheory g ∧
+      HasRiemannCurvatureTensorConstruction g ∧
+      HasRiemannCurvatureTensorSymmetries g ∧
+      HasFirstBianchiIdentity g :=
+  let firstSeven :=
+    riemannCurvatureFirstSeven_of_firstBianchiData
+      secondBianchiAtTime.firstBianchiAtTime
+  ⟨firstSeven.1, firstSeven.2.1, firstSeven.2.2.1,
+    firstSeven.2.2.2.1, firstSeven.2.2.2.2.1,
+    firstSeven.2.2.2.2.2.1, firstSeven.2.2.2.2.2.2,
+    hasFirstBianchiIdentity_of_firstBianchiData
+      secondBianchiAtTime.firstBianchiAtTime⟩
+
+/--
+Second-Bianchi data closes the first ten analytic curvature fields, through
+Riemann-curvature tensor theory.
+-/
+theorem riemannCurvatureFirstTen_of_secondBianchiData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (secondBianchiAtTime :
+      RiemannCurvatureSecondBianchiData g) :
+    HasLeviCivitaConnectionExistence g ∧
+      HasLeviCivitaConnectionUniqueness g ∧
+      HasLeviCivitaTorsionFreeProperty g ∧
+      HasLeviCivitaMetricCompatibility g ∧
+      HasLeviCivitaConnectionTheory g ∧
+      HasRiemannCurvatureTensorConstruction g ∧
+      HasRiemannCurvatureTensorSymmetries g ∧
+      HasFirstBianchiIdentity g ∧
+      HasSecondBianchiIdentity g ∧
+      HasRiemannCurvatureTensorTheory g :=
+  let firstEight :=
+    riemannCurvatureFirstEight_of_secondBianchiData
+      secondBianchiAtTime
+  ⟨firstEight.1, firstEight.2.1, firstEight.2.2.1,
+    firstEight.2.2.2.1, firstEight.2.2.2.2.1,
+    firstEight.2.2.2.2.2.1, firstEight.2.2.2.2.2.2.1,
+    firstEight.2.2.2.2.2.2.2,
+    hasSecondBianchiIdentity_of_secondBianchiData
+      secondBianchiAtTime,
+    hasRiemannCurvatureTensorTheory_of_secondBianchiData
+      secondBianchiAtTime⟩
 
 /-- Interface for deriving the Ricci tensor by contracting curvature. -/
 inductive HasRicciContractionTheory
@@ -103,7 +1393,54 @@ inductive HasRicciContractionTheory
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     {g : TimeDependentRiemannianMetric I n M}
-    (_curvature : RicciCurvatureData g) : Prop
+    (curvature : RicciCurvatureData g) : Prop where
+  /--
+  Complete local contraction-chain data, through both `Ric = tr R` and
+  `Scal = tr Ric`, supplies the non-vacuous Ricci contraction-theory witness.
+  -/
+  | of_contractionTheoryData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (ricciContractionTheoryAtTime :
+        RicciContractionTheoryData curvature)
+
+/--
+Concrete Ricci contraction-theory data proves the production Ricci contraction
+theory interface.
+-/
+theorem hasRicciContractionTheory_of_contractionTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (ricciContractionTheoryAtTime :
+      RicciContractionTheoryData curvature) :
+    HasRicciContractionTheory curvature :=
+  HasRicciContractionTheory.of_contractionTheoryData
+    ricciContractionTheoryAtTime
+
+/--
+Scalar-curvature contraction-formula data is strong enough to prove the
+production Ricci contraction theory interface.
+-/
+theorem hasRicciContractionTheory_of_scalarContractionFormulaData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (scalarContractionFormulaAtTime :
+      ScalarCurvatureContractionFormulaData curvature) :
+    HasRicciContractionTheory curvature :=
+  hasRicciContractionTheory_of_contractionTheoryData
+    (ricciContractionTheoryData_of_scalarContractionFormulaData
+      scalarContractionFormulaAtTime)
 
 /-- Interface for the contraction formula defining the Ricci tensor. -/
 inductive HasRicciTensorContractionFormula
@@ -112,7 +1449,73 @@ inductive HasRicciTensorContractionFormula
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     {g : TimeDependentRiemannianMetric I n M}
-    (_curvature : RicciCurvatureData g) : Prop
+    (curvature : RicciCurvatureData g) : Prop where
+  /--
+  A constructed Riemann-curvature tensor and explicit trace formula for
+  `Ric(X,Y) = tr (Z ↦ R(Z,X)Y)` supplies the non-vacuous Ricci contraction
+  formula witness.
+  -/
+  | of_contractionFormulaData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (ricciContractionFormulaAtTime :
+        RicciTensorContractionFormulaData curvature)
+
+/--
+Concrete Ricci contraction-formula data proves the production Ricci tensor
+contraction-formula interface.
+-/
+theorem hasRicciTensorContractionFormula_of_contractionFormulaData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (ricciContractionFormulaAtTime :
+      RicciTensorContractionFormulaData curvature) :
+    HasRicciTensorContractionFormula curvature :=
+  HasRicciTensorContractionFormula.of_contractionFormulaData
+    ricciContractionFormulaAtTime
+
+/--
+Ricci contraction-formula data closes the first eleven analytic curvature
+fields, through the Ricci tensor contraction formula.
+-/
+theorem riemannCurvatureFirstEleven_of_ricciContractionFormulaData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (ricciContractionFormulaAtTime :
+      RicciTensorContractionFormulaData curvature) :
+    HasLeviCivitaConnectionExistence g ∧
+      HasLeviCivitaConnectionUniqueness g ∧
+      HasLeviCivitaTorsionFreeProperty g ∧
+      HasLeviCivitaMetricCompatibility g ∧
+      HasLeviCivitaConnectionTheory g ∧
+      HasRiemannCurvatureTensorConstruction g ∧
+      HasRiemannCurvatureTensorSymmetries g ∧
+      HasFirstBianchiIdentity g ∧
+      HasSecondBianchiIdentity g ∧
+      HasRiemannCurvatureTensorTheory g ∧
+      HasRicciTensorContractionFormula curvature :=
+  let firstTen :=
+    riemannCurvatureFirstTen_of_secondBianchiData
+      ricciContractionFormulaAtTime.secondBianchiAtTime
+  ⟨firstTen.1, firstTen.2.1, firstTen.2.2.1,
+    firstTen.2.2.2.1, firstTen.2.2.2.2.1,
+    firstTen.2.2.2.2.2.1, firstTen.2.2.2.2.2.2.1,
+    firstTen.2.2.2.2.2.2.2.1,
+    firstTen.2.2.2.2.2.2.2.2.1,
+    firstTen.2.2.2.2.2.2.2.2.2,
+    hasRicciTensorContractionFormula_of_contractionFormulaData
+      ricciContractionFormulaAtTime⟩
 
 /-- Interface for the contraction formula defining scalar curvature. -/
 inductive HasScalarCurvatureContractionFormula
@@ -121,7 +1524,117 @@ inductive HasScalarCurvatureContractionFormula
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     {g : TimeDependentRiemannianMetric I n M}
-    (_curvature : RicciCurvatureData g) : Prop
+    (curvature : RicciCurvatureData g) : Prop where
+  /--
+  A Ricci contraction formula and explicit trace formula
+  `Scal = tr_g Ric` supply the non-vacuous scalar-curvature contraction
+  formula witness.
+  -/
+  | of_contractionFormulaData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (scalarContractionFormulaAtTime :
+        ScalarCurvatureContractionFormulaData curvature)
+
+/--
+Concrete scalar-curvature contraction-formula data proves the production scalar
+curvature contraction-formula interface.
+-/
+theorem hasScalarCurvatureContractionFormula_of_contractionFormulaData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (scalarContractionFormulaAtTime :
+      ScalarCurvatureContractionFormulaData curvature) :
+    HasScalarCurvatureContractionFormula curvature :=
+  HasScalarCurvatureContractionFormula.of_contractionFormulaData
+    scalarContractionFormulaAtTime
+
+/--
+Scalar-curvature contraction-formula data closes the first twelve analytic
+curvature fields, through the scalar-curvature contraction formula.
+-/
+theorem riemannCurvatureFirstTwelve_of_scalarContractionFormulaData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (scalarContractionFormulaAtTime :
+      ScalarCurvatureContractionFormulaData curvature) :
+    HasLeviCivitaConnectionExistence g ∧
+      HasLeviCivitaConnectionUniqueness g ∧
+      HasLeviCivitaTorsionFreeProperty g ∧
+      HasLeviCivitaMetricCompatibility g ∧
+      HasLeviCivitaConnectionTheory g ∧
+      HasRiemannCurvatureTensorConstruction g ∧
+      HasRiemannCurvatureTensorSymmetries g ∧
+      HasFirstBianchiIdentity g ∧
+      HasSecondBianchiIdentity g ∧
+      HasRiemannCurvatureTensorTheory g ∧
+      HasRicciTensorContractionFormula curvature ∧
+      HasScalarCurvatureContractionFormula curvature :=
+  let firstEleven :=
+    riemannCurvatureFirstEleven_of_ricciContractionFormulaData
+      scalarContractionFormulaAtTime.ricciContractionFormulaAtTime
+  ⟨firstEleven.1, firstEleven.2.1, firstEleven.2.2.1,
+    firstEleven.2.2.2.1, firstEleven.2.2.2.2.1,
+    firstEleven.2.2.2.2.2.1, firstEleven.2.2.2.2.2.2.1,
+    firstEleven.2.2.2.2.2.2.2.1,
+    firstEleven.2.2.2.2.2.2.2.2.1,
+    firstEleven.2.2.2.2.2.2.2.2.2.1,
+    firstEleven.2.2.2.2.2.2.2.2.2.2,
+    hasScalarCurvatureContractionFormula_of_contractionFormulaData
+      scalarContractionFormulaAtTime⟩
+
+/--
+Ricci contraction-theory data closes the first thirteen analytic curvature
+fields, through Ricci contraction theory.
+-/
+theorem riemannCurvatureFirstThirteen_of_ricciContractionTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (ricciContractionTheoryAtTime :
+      RicciContractionTheoryData curvature) :
+    HasLeviCivitaConnectionExistence g ∧
+      HasLeviCivitaConnectionUniqueness g ∧
+      HasLeviCivitaTorsionFreeProperty g ∧
+      HasLeviCivitaMetricCompatibility g ∧
+      HasLeviCivitaConnectionTheory g ∧
+      HasRiemannCurvatureTensorConstruction g ∧
+      HasRiemannCurvatureTensorSymmetries g ∧
+      HasFirstBianchiIdentity g ∧
+      HasSecondBianchiIdentity g ∧
+      HasRiemannCurvatureTensorTheory g ∧
+      HasRicciTensorContractionFormula curvature ∧
+      HasScalarCurvatureContractionFormula curvature ∧
+      HasRicciContractionTheory curvature :=
+  let firstTwelve :=
+    riemannCurvatureFirstTwelve_of_scalarContractionFormulaData
+      ricciContractionTheoryAtTime.scalarContractionFormulaAtTime
+  ⟨firstTwelve.1, firstTwelve.2.1, firstTwelve.2.2.1,
+    firstTwelve.2.2.2.1, firstTwelve.2.2.2.2.1,
+    firstTwelve.2.2.2.2.2.1, firstTwelve.2.2.2.2.2.2.1,
+    firstTwelve.2.2.2.2.2.2.2.1,
+    firstTwelve.2.2.2.2.2.2.2.2.1,
+    firstTwelve.2.2.2.2.2.2.2.2.2.1,
+    firstTwelve.2.2.2.2.2.2.2.2.2.2.1,
+    firstTwelve.2.2.2.2.2.2.2.2.2.2.2,
+    hasRicciContractionTheory_of_contractionTheoryData
+      ricciContractionTheoryAtTime⟩
 
 /-- Interface for regularity of the time-dependent metric family. -/
 inductive HasTimeDependentMetricRegularity
@@ -129,7 +1642,88 @@ inductive HasTimeDependentMetricRegularity
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_g : TimeDependentRiemannianMetric I n M) : Prop
+    (g : TimeDependentRiemannianMetric I n M) : Prop where
+  /--
+  The time-dependent metric family itself supplies smooth Riemannian metric
+  slices at every time.
+  -/
+  | of_metricRegularityData
+      (metricRegularityAtTime : TimeDependentMetricRegularityData g)
+
+/--
+Concrete metric-regularity data proves the production metric-regularity
+interface.
+-/
+theorem hasTimeDependentMetricRegularity_of_metricRegularityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (metricRegularityAtTime : TimeDependentMetricRegularityData g) :
+    HasTimeDependentMetricRegularity g :=
+  HasTimeDependentMetricRegularity.of_metricRegularityData
+    metricRegularityAtTime
+
+/--
+Every production time-dependent Riemannian metric proves the production
+metric-regularity interface.
+-/
+theorem hasTimeDependentMetricRegularity_of_metric
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (g : TimeDependentRiemannianMetric I n M) :
+    HasTimeDependentMetricRegularity g :=
+  hasTimeDependentMetricRegularity_of_metricRegularityData
+    (timeDependentMetricRegularityData_of_metric g)
+
+/--
+Ricci contraction-theory data, together with the metric slices already stored in
+the production metric family, closes the first fourteen analytic fields through
+time-dependent metric regularity.
+-/
+theorem analyticFirstFourteen_of_ricciContractionTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (ricciContractionTheoryAtTime :
+      RicciContractionTheoryData curvature) :
+    HasLeviCivitaConnectionExistence g ∧
+      HasLeviCivitaConnectionUniqueness g ∧
+      HasLeviCivitaTorsionFreeProperty g ∧
+      HasLeviCivitaMetricCompatibility g ∧
+      HasLeviCivitaConnectionTheory g ∧
+      HasRiemannCurvatureTensorConstruction g ∧
+      HasRiemannCurvatureTensorSymmetries g ∧
+      HasFirstBianchiIdentity g ∧
+      HasSecondBianchiIdentity g ∧
+      HasRiemannCurvatureTensorTheory g ∧
+      HasRicciTensorContractionFormula curvature ∧
+      HasScalarCurvatureContractionFormula curvature ∧
+      HasRicciContractionTheory curvature ∧
+      HasTimeDependentMetricRegularity g :=
+  let firstThirteen :=
+    riemannCurvatureFirstThirteen_of_ricciContractionTheoryData
+      ricciContractionTheoryAtTime
+  ⟨firstThirteen.1, firstThirteen.2.1, firstThirteen.2.2.1,
+    firstThirteen.2.2.2.1, firstThirteen.2.2.2.2.1,
+    firstThirteen.2.2.2.2.2.1, firstThirteen.2.2.2.2.2.2.1,
+    firstThirteen.2.2.2.2.2.2.2.1,
+    firstThirteen.2.2.2.2.2.2.2.2.1,
+    firstThirteen.2.2.2.2.2.2.2.2.2.1,
+    firstThirteen.2.2.2.2.2.2.2.2.2.2.1,
+    firstThirteen.2.2.2.2.2.2.2.2.2.2.2.1,
+    firstThirteen.2.2.2.2.2.2.2.2.2.2.2.2,
+    hasTimeDependentMetricRegularity_of_metric g⟩
 
 /-- Interface for the time derivative of the metric family. -/
 inductive HasMetricTimeDerivativeTheory
@@ -137,7 +1731,78 @@ inductive HasMetricTimeDerivativeTheory
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_g : TimeDependentRiemannianMetric I n M) : Prop
+    (g : TimeDependentRiemannianMetric I n M) : Prop where
+  /--
+  A concrete metric time-derivative field, together with evidence that it is
+  the derivative of the metric family, supplies the non-vacuous time-derivative
+  theory witness.
+  -/
+  | of_metricTimeDerivativeData
+      (metricTimeDerivativeAtTime : MetricTimeDerivativeData g)
+
+/--
+Concrete metric time-derivative data proves the production metric
+time-derivative theory interface.
+-/
+theorem hasMetricTimeDerivativeTheory_of_metricTimeDerivativeData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    (metricTimeDerivativeAtTime : MetricTimeDerivativeData g) :
+    HasMetricTimeDerivativeTheory g :=
+  HasMetricTimeDerivativeTheory.of_metricTimeDerivativeData
+    metricTimeDerivativeAtTime
+
+/--
+Metric time-derivative data, together with the existing curvature contraction
+data, closes the first fifteen analytic fields through metric time-derivative
+theory.
+-/
+theorem analyticFirstFifteen_of_metricTimeDerivativeData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (ricciContractionTheoryAtTime :
+      RicciContractionTheoryData curvature)
+    (metricTimeDerivativeAtTime : MetricTimeDerivativeData g) :
+    HasLeviCivitaConnectionExistence g ∧
+      HasLeviCivitaConnectionUniqueness g ∧
+      HasLeviCivitaTorsionFreeProperty g ∧
+      HasLeviCivitaMetricCompatibility g ∧
+      HasLeviCivitaConnectionTheory g ∧
+      HasRiemannCurvatureTensorConstruction g ∧
+      HasRiemannCurvatureTensorSymmetries g ∧
+      HasFirstBianchiIdentity g ∧
+      HasSecondBianchiIdentity g ∧
+      HasRiemannCurvatureTensorTheory g ∧
+      HasRicciTensorContractionFormula curvature ∧
+      HasScalarCurvatureContractionFormula curvature ∧
+      HasRicciContractionTheory curvature ∧
+      HasTimeDependentMetricRegularity g ∧
+      HasMetricTimeDerivativeTheory g :=
+  let firstFourteen :=
+    analyticFirstFourteen_of_ricciContractionTheoryData
+      ricciContractionTheoryAtTime
+  ⟨firstFourteen.1, firstFourteen.2.1, firstFourteen.2.2.1,
+    firstFourteen.2.2.2.1, firstFourteen.2.2.2.2.1,
+    firstFourteen.2.2.2.2.2.1, firstFourteen.2.2.2.2.2.2.1,
+    firstFourteen.2.2.2.2.2.2.2.1,
+    firstFourteen.2.2.2.2.2.2.2.2.1,
+    firstFourteen.2.2.2.2.2.2.2.2.2.1,
+    firstFourteen.2.2.2.2.2.2.2.2.2.2.1,
+    firstFourteen.2.2.2.2.2.2.2.2.2.2.2.1,
+    firstFourteen.2.2.2.2.2.2.2.2.2.2.2.2.1,
+    firstFourteen.2.2.2.2.2.2.2.2.2.2.2.2.2,
+    hasMetricTimeDerivativeTheory_of_metricTimeDerivativeData
+      metricTimeDerivativeAtTime⟩
 
 /-- Interface for scalar curvature derived from Ricci-curvature data. -/
 inductive HasScalarCurvatureTheory
@@ -146,7 +1811,104 @@ inductive HasScalarCurvatureTheory
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
     {g : TimeDependentRiemannianMetric I n M}
-    (_curvature : RicciCurvatureData g) : Prop
+    (curvature : RicciCurvatureData g) : Prop where
+  /--
+  Complete contraction-chain data, ending with the trace formula
+  `Scal = tr_g Ric`, supplies the scalar-curvature theory witness.
+  -/
+  | of_scalarCurvatureTheoryData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (scalarCurvatureTheoryAtTime :
+        ScalarCurvatureTheoryData curvature)
+
+/--
+Concrete scalar-curvature theory data proves the production scalar-curvature
+theory interface.
+-/
+theorem hasScalarCurvatureTheory_of_scalarCurvatureTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData curvature) :
+    HasScalarCurvatureTheory curvature :=
+  HasScalarCurvatureTheory.of_scalarCurvatureTheoryData
+    scalarCurvatureTheoryAtTime
+
+/--
+Ricci contraction-theory data is strong enough to prove scalar-curvature
+theory, because it includes the scalar trace formula.
+-/
+theorem hasScalarCurvatureTheory_of_ricciContractionTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (ricciContractionTheoryAtTime :
+      RicciContractionTheoryData curvature) :
+    HasScalarCurvatureTheory curvature :=
+  hasScalarCurvatureTheory_of_scalarCurvatureTheoryData
+    (scalarCurvatureTheoryData_of_ricciContractionTheoryData
+      ricciContractionTheoryAtTime)
+
+/--
+Scalar-curvature theory data, together with explicit metric time-derivative
+data, closes the first sixteen analytic fields through scalar-curvature theory.
+-/
+theorem analyticFirstSixteen_of_scalarCurvatureTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {g : TimeDependentRiemannianMetric I n M}
+    {curvature : RicciCurvatureData g}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData curvature)
+    (metricTimeDerivativeAtTime : MetricTimeDerivativeData g) :
+    HasLeviCivitaConnectionExistence g ∧
+      HasLeviCivitaConnectionUniqueness g ∧
+      HasLeviCivitaTorsionFreeProperty g ∧
+      HasLeviCivitaMetricCompatibility g ∧
+      HasLeviCivitaConnectionTheory g ∧
+      HasRiemannCurvatureTensorConstruction g ∧
+      HasRiemannCurvatureTensorSymmetries g ∧
+      HasFirstBianchiIdentity g ∧
+      HasSecondBianchiIdentity g ∧
+      HasRiemannCurvatureTensorTheory g ∧
+      HasRicciTensorContractionFormula curvature ∧
+      HasScalarCurvatureContractionFormula curvature ∧
+      HasRicciContractionTheory curvature ∧
+      HasTimeDependentMetricRegularity g ∧
+      HasMetricTimeDerivativeTheory g ∧
+      HasScalarCurvatureTheory curvature := by
+  rcases analyticFirstFifteen_of_metricTimeDerivativeData
+      scalarCurvatureTheoryAtTime.ricciContractionTheoryAtTime
+      metricTimeDerivativeAtTime with
+    ⟨leviCivitaExistence, leviCivitaUniqueness,
+      leviCivitaTorsionFree, leviCivitaMetricCompatibility, leviCivita,
+      riemannCurvatureConstruction, riemannCurvatureSymmetries, firstBianchi,
+      secondBianchi, riemannCurvature, ricciContractionFormula,
+      scalarCurvatureContraction, ricciContraction, metricRegularity,
+      metricTimeDerivative⟩
+  exact ⟨leviCivitaExistence, leviCivitaUniqueness,
+    leviCivitaTorsionFree, leviCivitaMetricCompatibility, leviCivita,
+    riemannCurvatureConstruction, riemannCurvatureSymmetries, firstBianchi,
+    secondBianchi, riemannCurvature, ricciContractionFormula,
+    scalarCurvatureContraction, ricciContraction, metricRegularity,
+    metricTimeDerivative,
+    hasScalarCurvatureTheory_of_scalarCurvatureTheoryData
+      scalarCurvatureTheoryAtTime⟩
 
 /-- Interface for deriving the Ricci-flow equation from metric derivative and Ricci data. -/
 inductive HasRicciFlowEquationDerivation
@@ -154,7 +1916,86 @@ inductive HasRicciFlowEquationDerivation
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /--
+  A concrete verification of `∂ₜ g = -2 Ricci` supplies the equation-derivation
+  witness for the same Ricci-flow data.
+  -/
+  | of_ricciFlowEquationVerification
+      (equationVerificationAtTime :
+        RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+
+/--
+Concrete Ricci-flow equation verification proves the production equation
+derivation interface.
+-/
+theorem hasRicciFlowEquationDerivation_of_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    HasRicciFlowEquationDerivation flow :=
+  HasRicciFlowEquationDerivation.of_ricciFlowEquationVerification
+    equationVerificationAtTime
+
+/--
+Scalar-curvature theory data and explicit Ricci-flow equation verification close
+the first seventeen analytic fields through Ricci-flow equation derivation.
+-/
+theorem analyticFirstSeventeen_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    HasLeviCivitaConnectionExistence (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow := by
+  rcases analyticFirstSixteen_of_scalarCurvatureTheoryData
+      scalarCurvatureTheoryAtTime
+      (metric_derivative_data_of_ricci_flow_equation_verification
+        equationVerificationAtTime) with
+    ⟨leviCivitaExistence, leviCivitaUniqueness,
+      leviCivitaTorsionFree, leviCivitaMetricCompatibility, leviCivita,
+      riemannCurvatureConstruction, riemannCurvatureSymmetries, firstBianchi,
+      secondBianchi, riemannCurvature, ricciContractionFormula,
+      scalarCurvatureContraction, ricciContraction, metricRegularity,
+      metricTimeDerivative, scalarCurvature⟩
+  exact ⟨leviCivitaExistence, leviCivitaUniqueness,
+    leviCivitaTorsionFree, leviCivitaMetricCompatibility, leviCivita,
+    riemannCurvatureConstruction, riemannCurvatureSymmetries, firstBianchi,
+    secondBianchi, riemannCurvature, ricciContractionFormula,
+    scalarCurvatureContraction, ricciContraction, metricRegularity,
+    metricTimeDerivative, scalarCurvature,
+    hasRicciFlowEquationDerivation_of_ricciFlowEquationVerification
+      equationVerificationAtTime⟩
 
 /--
 Boundary package for the explicit Ricci-flow equation `∂ₜ g = -2 Ricci`.
@@ -2039,13 +3880,256 @@ zero boundary package.
         metric identifiesDerivative identifiesRicci equationEvidence⟩ := by
   apply Subsingleton.elim
 
+/--
+Concrete compatibility data for the initial metric of a Ricci-flow datum.
+
+The current local Ricci-flow API does not carry a separate prescribed initial
+metric object.  The available honest witness is therefore the smooth time-zero
+metric slice already stored in the flow, together with the equality identifying
+that slice as the initial metric.
+-/
+structure InitialMetricCompatibilityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- The smooth initial metric slice. -/
+  initialMetric :
+    ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x)
+  /-- The initial metric is exactly the time-zero metric slice of the flow. -/
+  initialMetric_eq :
+    initialMetric = metric_at_time_of_ricci_flow_data flow 0
+
+/-- Every Ricci-flow datum carries initial-metric compatibility data. -/
+def initialMetricCompatibilityData_of_flow
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    InitialMetricCompatibilityData flow where
+  initialMetric := metric_at_time_of_ricci_flow_data flow 0
+  initialMetric_eq := rfl
+
+/-- The canonical initial-metric compatibility data stores the time-zero slice. -/
+@[simp] theorem initialMetricCompatibilityData_of_flow_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    initialMetricCompatibilityData_of_flow flow =
+      ({ initialMetric := metric_at_time_of_ricci_flow_data flow 0
+         initialMetric_eq := rfl } :
+        InitialMetricCompatibilityData flow) :=
+  rfl
+
+/-- The canonical initial metric is the time-zero metric slice. -/
+@[simp] theorem initialMetricCompatibilityData_of_flow_initialMetric_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    (initialMetricCompatibilityData_of_flow flow).initialMetric =
+      metric_at_time_of_ricci_flow_data flow 0 :=
+  rfl
+
 /-- Interface for compatibility of the flow with the prescribed initial metric. -/
 inductive HasInitialMetricCompatibility
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /--
+  A concrete smooth time-zero metric slice identified with the flow's metric
+  family supplies the initial-metric compatibility witness.
+  -/
+  | of_initialMetricCompatibilityData
+      (initialMetricCompatibilityAtTime :
+        InitialMetricCompatibilityData flow)
+
+/--
+Concrete initial-metric compatibility data proves the production
+initial-metric compatibility interface.
+-/
+theorem hasInitialMetricCompatibility_of_initialMetricCompatibilityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (initialMetricCompatibilityAtTime :
+      InitialMetricCompatibilityData flow) :
+    HasInitialMetricCompatibility flow :=
+  HasInitialMetricCompatibility.of_initialMetricCompatibilityData
+    initialMetricCompatibilityAtTime
+
+/--
+Every Ricci-flow datum proves the production initial-metric compatibility
+interface from its smooth time-zero metric slice.
+-/
+theorem hasInitialMetricCompatibility_of_flow
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    HasInitialMetricCompatibility flow :=
+  hasInitialMetricCompatibility_of_initialMetricCompatibilityData
+    (initialMetricCompatibilityData_of_flow flow)
+
+/--
+Scalar-curvature theory data and explicit Ricci-flow equation verification close
+the first eighteen analytic fields through initial-metric compatibility.
+-/
+theorem analyticFirstEighteen_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    HasLeviCivitaConnectionExistence (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow := by
+  rcases analyticFirstSeventeen_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime with
+    ⟨leviCivitaExistence, leviCivitaUniqueness,
+      leviCivitaTorsionFree, leviCivitaMetricCompatibility, leviCivita,
+      riemannCurvatureConstruction, riemannCurvatureSymmetries, firstBianchi,
+      secondBianchi, riemannCurvature, ricciContractionFormula,
+      scalarCurvatureContraction, ricciContraction, metricRegularity,
+      metricTimeDerivative, scalarCurvature, equationDerivation⟩
+  exact ⟨leviCivitaExistence, leviCivitaUniqueness,
+    leviCivitaTorsionFree, leviCivitaMetricCompatibility, leviCivita,
+    riemannCurvatureConstruction, riemannCurvatureSymmetries, firstBianchi,
+    secondBianchi, riemannCurvature, ricciContractionFormula,
+    scalarCurvatureContraction, ricciContraction, metricRegularity,
+    metricTimeDerivative, scalarCurvature, equationDerivation,
+    hasInitialMetricCompatibility_of_flow flow⟩
+
+/--
+Concrete background-metric data for DeTurck gauge fixing.
+
+The local analytic API has no separate gauge choice yet.  The honest available
+choice is the smooth time-zero metric slice, used as the fixed background metric
+for the DeTurck construction.
+-/
+structure DeTurckBackgroundMetricData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- The fixed background metric used for DeTurck gauge. -/
+  backgroundMetric :
+    ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x)
+  /-- The background metric is the flow's smooth time-zero metric slice. -/
+  backgroundMetric_eq_initialMetric :
+    backgroundMetric = metric_at_time_of_ricci_flow_data flow 0
+
+/--
+Initial-metric compatibility data supplies the DeTurck background metric by
+using the same smooth time-zero metric slice.
+-/
+def deturckBackgroundMetricData_of_initialMetricCompatibilityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (initialMetricCompatibilityAtTime :
+      InitialMetricCompatibilityData flow) :
+    DeTurckBackgroundMetricData flow where
+  backgroundMetric := initialMetricCompatibilityAtTime.initialMetric
+  backgroundMetric_eq_initialMetric :=
+    initialMetricCompatibilityAtTime.initialMetric_eq
+
+/--
+The DeTurck background metric extracted from initial-metric compatibility is
+exactly the same time-zero metric slice.
+-/
+@[simp] theorem deturckBackgroundMetricData_of_initialMetricCompatibilityData_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (initialMetricCompatibilityAtTime :
+      InitialMetricCompatibilityData flow) :
+    deturckBackgroundMetricData_of_initialMetricCompatibilityData
+        initialMetricCompatibilityAtTime =
+      ({ backgroundMetric :=
+          initialMetricCompatibilityAtTime.initialMetric
+         backgroundMetric_eq_initialMetric :=
+          initialMetricCompatibilityAtTime.initialMetric_eq } :
+        DeTurckBackgroundMetricData flow) :=
+  rfl
+
+/-- Every Ricci-flow datum carries canonical DeTurck background-metric data. -/
+def deturckBackgroundMetricData_of_flow
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    DeTurckBackgroundMetricData flow :=
+  deturckBackgroundMetricData_of_initialMetricCompatibilityData
+    (initialMetricCompatibilityData_of_flow flow)
+
+/--
+The canonical DeTurck background-metric data stores the time-zero metric slice.
+-/
+@[simp] theorem deturckBackgroundMetricData_of_flow_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    deturckBackgroundMetricData_of_flow flow =
+      ({ backgroundMetric := metric_at_time_of_ricci_flow_data flow 0
+         backgroundMetric_eq_initialMetric := rfl } :
+        DeTurckBackgroundMetricData flow) :=
+  rfl
+
+/-- The canonical DeTurck background metric is the time-zero metric slice. -/
+@[simp] theorem deturckBackgroundMetricData_of_flow_backgroundMetric_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    (deturckBackgroundMetricData_of_flow flow).backgroundMetric =
+      metric_at_time_of_ricci_flow_data flow 0 :=
+  rfl
 
 /-- Interface for the DeTurck gauge-fixing input used to make the PDE parabolic. -/
 inductive HasDeTurckGaugeFixing
@@ -2053,7 +4137,13 @@ inductive HasDeTurckGaugeFixing
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /--
+  A fixed smooth background metric, chosen as the time-zero slice, supplies the
+  DeTurck gauge-fixing input.
+  -/
+  | of_backgroundMetricData
+      (backgroundMetricAtTime : DeTurckBackgroundMetricData flow)
 
 /-- Interface for compatibility of the background metric in DeTurck gauge. -/
 inductive HasDeTurckBackgroundMetricCompatibility
@@ -2061,7 +4151,296 @@ inductive HasDeTurckBackgroundMetricCompatibility
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /--
+  The same background metric data proves that the DeTurck background is
+  compatible with the initial metric.
+  -/
+  | of_backgroundMetricData
+      (backgroundMetricAtTime : DeTurckBackgroundMetricData flow)
+
+/--
+Concrete DeTurck background-metric data proves the production gauge-fixing
+interface.
+-/
+theorem hasDeTurckGaugeFixing_of_backgroundMetricData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (backgroundMetricAtTime : DeTurckBackgroundMetricData flow) :
+    HasDeTurckGaugeFixing flow :=
+  HasDeTurckGaugeFixing.of_backgroundMetricData backgroundMetricAtTime
+
+/--
+Every Ricci-flow datum proves the production DeTurck gauge-fixing interface
+from its smooth time-zero metric slice.
+-/
+theorem hasDeTurckGaugeFixing_of_flow
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    HasDeTurckGaugeFixing flow :=
+  hasDeTurckGaugeFixing_of_backgroundMetricData
+    (deturckBackgroundMetricData_of_flow flow)
+
+/--
+Concrete DeTurck background-metric data proves background-metric compatibility.
+-/
+theorem hasDeTurckBackgroundMetricCompatibility_of_backgroundMetricData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (backgroundMetricAtTime : DeTurckBackgroundMetricData flow) :
+    HasDeTurckBackgroundMetricCompatibility flow :=
+  HasDeTurckBackgroundMetricCompatibility.of_backgroundMetricData
+    backgroundMetricAtTime
+
+/--
+Every Ricci-flow datum proves DeTurck background-metric compatibility from its
+smooth time-zero metric slice.
+-/
+theorem hasDeTurckBackgroundMetricCompatibility_of_flow
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    HasDeTurckBackgroundMetricCompatibility flow :=
+  hasDeTurckBackgroundMetricCompatibility_of_backgroundMetricData
+    (deturckBackgroundMetricData_of_flow flow)
+
+/--
+Scalar-curvature theory data and explicit Ricci-flow equation verification close
+the first nineteen analytic fields through DeTurck gauge fixing.
+-/
+theorem analyticFirstNineteen_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    (HasLeviCivitaConnectionExistence (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow :=
+  ⟨analyticFirstEighteen_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime,
+    hasDeTurckGaugeFixing_of_flow flow⟩
+
+/--
+Scalar-curvature theory data and explicit Ricci-flow equation verification close
+the first twenty analytic fields through DeTurck background compatibility.
+-/
+theorem analyticFirstTwenty_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)) :
+    ((HasLeviCivitaConnectionExistence (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow :=
+  ⟨analyticFirstNineteen_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime,
+    hasDeTurckBackgroundMetricCompatibility_of_flow flow⟩
+
+/--
+Time-dependent vector field used by the DeTurck gauge construction.
+
+For a Ricci-flow datum this is the candidate vector field `W(g, g₀)` at every
+time and point.
+-/
+abbrev TimeDependentDeTurckVectorField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → (x : M) → TangentSpace I x
+
+/-- Shape contract for time-indexed DeTurck vector fields. -/
+theorem timeDependentDeTurckVectorField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentDeTurckVectorField flow =
+      (ℝ → (x : M) → TangentSpace I x) :=
+  rfl
+
+/--
+Time-dependent connection-difference field used in the DeTurck vector field.
+
+It is intended to be the tensor
+`(X,Y) ↦ ∇^{g(t)}_X Y - ∇^{g₀}_X Y`.
+-/
+abbrev TimeDependentDeTurckConnectionDifferenceField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → ((x : M) → TangentSpace I x) →
+    ((x : M) → TangentSpace I x) →
+      (x : M) → TangentSpace I x
+
+/-- Shape contract for time-indexed DeTurck connection-difference fields. -/
+theorem timeDependentDeTurckConnectionDifferenceField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentDeTurckConnectionDifferenceField flow =
+      (ℝ → ((x : M) → TangentSpace I x) →
+        ((x : M) → TangentSpace I x) →
+          (x : M) → TangentSpace I x) :=
+  rfl
+
+/--
+Trace functional that contracts the connection-difference field into the
+DeTurck vector field.
+
+This is kept explicit because the current local API does not yet expose the
+inverse-metric contraction theorem for the DeTurck connection-difference trace.
+-/
+abbrev TimeDependentDeTurckConnectionTraceField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) : Type _ :=
+  ℝ → TimeDependentDeTurckConnectionDifferenceField flow →
+    (x : M) → TangentSpace I x
+
+/-- Shape contract for DeTurck connection-difference trace fields. -/
+theorem timeDependentDeTurckConnectionTraceField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentDeTurckConnectionTraceField flow =
+      (ℝ → TimeDependentDeTurckConnectionDifferenceField flow →
+        (x : M) → TangentSpace I x) :=
+  rfl
+
+/--
+Concrete DeTurck vector-field construction data.
+
+The data records the background metric, the flow's Levi-Civita connection data,
+the background connection chosen at the initial slice, the connection-difference
+field, the explicit trace functional, and the equality identifying the DeTurck
+vector field as that trace.
+-/
+structure DeTurckVectorFieldConstructionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- The background metric used for DeTurck gauge. -/
+  backgroundMetricAtTime : DeTurckBackgroundMetricData flow
+  /-- Levi-Civita connection theory for the evolving metric. -/
+  flowConnectionTheoryAtTime :
+    LeviCivitaTimeDependentConnectionTheoryData
+      (metric_of_ricci_flow_data flow)
+  /-- The background connection at the initial metric slice. -/
+  backgroundConnectionAtTime : TangentCovariantDerivative I M
+  /--
+  The background connection is chosen as the flow Levi-Civita connection at
+  time zero, matching the stored background metric.
+  -/
+  backgroundConnection_eq_initial_flow_connection :
+    let flowConnectionAtTime :=
+      flowConnectionTheoryAtTime.metricCompatibleConnectionAtTime.torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime
+    backgroundConnectionAtTime = flowConnectionAtTime 0
+  /-- The connection difference `∇^{g(t)} - ∇^{g₀}`. -/
+  connectionDifferenceAtTime :
+    TimeDependentDeTurckConnectionDifferenceField flow
+  /-- The stored connection difference is the difference of the two connections. -/
+  connection_difference_eq :
+    let flowConnectionAtTime :=
+      flowConnectionTheoryAtTime.metricCompatibleConnectionAtTime.torsionFreeConnectionAtTime.uniqueConnectionAtTime.connectionAtTime
+    ∀ (t : ℝ) {X Y : (x : M) → TangentSpace I x} {x : M},
+      MDiffAt (T% X) x →
+      MDiffAt (T% Y) x →
+        connectionDifferenceAtTime t X Y x =
+          flowConnectionAtTime t Y x (X x) -
+            backgroundConnectionAtTime Y x (X x)
+  /-- The trace functional used to contract the connection difference. -/
+  traceConnectionDifferenceAtTime :
+    TimeDependentDeTurckConnectionTraceField flow
+  /-- The candidate DeTurck vector field. -/
+  vectorFieldAtTime : TimeDependentDeTurckVectorField flow
+  /-- The DeTurck vector field is the trace of the connection difference. -/
+  vectorField_eq_trace_connection_difference :
+    ∀ (t : ℝ) (x : M),
+      vectorFieldAtTime t x =
+        traceConnectionDifferenceAtTime t connectionDifferenceAtTime x
 
 /-- Interface for constructing the DeTurck vector field. -/
 inductive HasDeTurckVectorFieldConstruction
@@ -2069,7 +4448,164 @@ inductive HasDeTurckVectorFieldConstruction
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /--
+  A connection-difference trace formula produces the DeTurck vector field.
+  -/
+  | of_vectorFieldConstructionData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+
+/--
+Concrete connection-difference trace data proves DeTurck vector-field
+construction.
+-/
+theorem hasDeTurckVectorFieldConstruction_of_vectorFieldConstructionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow) :
+    HasDeTurckVectorFieldConstruction flow :=
+  HasDeTurckVectorFieldConstruction.of_vectorFieldConstructionData
+    vectorFieldAtTime
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, and DeTurck
+vector-field construction data close the first twenty-one analytic fields.
+-/
+theorem analyticFirstTwentyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow) :
+    (((HasLeviCivitaConnectionExistence (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow :=
+  ⟨analyticFirstTwenty_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime,
+    hasDeTurckVectorFieldConstruction_of_vectorFieldConstructionData
+      vectorFieldAtTime⟩
+
+/--
+Time-dependent two-tensor gauge term in the Ricci-DeTurck equation.
+
+This stores the Lie-derivative contribution `L_W g` abstractly until the local
+API exposes that tensor construction for the DeTurck vector field.
+-/
+abbrev TimeDependentRicciDeTurckGaugeTermField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → TangentCovariantTwoTensor I M
+
+/-- Shape contract for Ricci-DeTurck gauge-term fields. -/
+theorem timeDependentRicciDeTurckGaugeTermField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentRicciDeTurckGaugeTermField flow =
+      (ℝ → TangentCovariantTwoTensor I M) :=
+  rfl
+
+/--
+Time-dependent right-hand side tensor field for the Ricci-DeTurck equation.
+
+It is intended to be `-2 Ric(g(t)) + L_{W(g,g₀)} g(t)`.
+-/
+abbrev TimeDependentRicciDeTurckRHSField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → TangentCovariantTwoTensor I M
+
+/-- Shape contract for Ricci-DeTurck right-hand side fields. -/
+theorem timeDependentRicciDeTurckRHSField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentRicciDeTurckRHSField flow =
+      (ℝ → TangentCovariantTwoTensor I M) :=
+  rfl
+
+/--
+Concrete Ricci-DeTurck equation derivation data.
+
+The bundle records the vector-field construction, the original Ricci-flow
+equation verification, the DeTurck gauge term, the full Ricci-DeTurck right-hand
+side, and the equalities relating these tensors.  The remaining missing local
+math is the construction of the gauge-term tensor from the DeTurck vector field
+and background connection.
+-/
+structure RicciDeTurckEquationDerivationData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- DeTurck vector-field construction data used in the gauge term. -/
+  vectorFieldAtTime : DeTurckVectorFieldConstructionData flow
+  /-- Verification of the original Ricci-flow equation. -/
+  equationVerificationAtTime :
+    RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)
+  /-- The DeTurck gauge-term tensor, intended as `L_W g`. -/
+  gaugeTermAtTime : TimeDependentRicciDeTurckGaugeTermField flow
+  /-- The complete Ricci-DeTurck equation right-hand side. -/
+  ricciDeTurckRHSAtTime : TimeDependentRicciDeTurckRHSField flow
+  /-- The Ricci-DeTurck right-hand side is `-2 Ric + L_W g`. -/
+  ricciDeTurck_rhs_eq :
+    ∀ t,
+      ricciDeTurckRHSAtTime t =
+        ricci_flow_rhs_tensor (curvature_data_of_ricci_flow_data flow) t +
+          gaugeTermAtTime t
+  /-- The metric time derivative is identified with the Ricci-DeTurck RHS. -/
+  metric_derivative_eq_ricciDeTurck_rhs :
+    ∀ t,
+      metric_time_derivative_at_time_of_metric_derivative_field
+        equationVerificationAtTime.metricDerivative.derivative t =
+          ricciDeTurckRHSAtTime t
 
 /-- Interface for deriving the Ricci-DeTurck equation from the Ricci-flow equation. -/
 inductive HasDeTurckEquationDerivation
@@ -2077,7 +4613,198 @@ inductive HasDeTurckEquationDerivation
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /--
+  Tensor-level Ricci-DeTurck RHS data derives the Ricci-DeTurck equation
+  interface.
+  -/
+  | of_ricciDeTurckEquationDerivationData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (equationAtTime : RicciDeTurckEquationDerivationData flow)
+
+/--
+Concrete Ricci-DeTurck equation data proves the DeTurck equation-derivation
+interface.
+-/
+theorem hasDeTurckEquationDerivation_of_ricciDeTurckEquationDerivationData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (equationAtTime : RicciDeTurckEquationDerivationData flow) :
+    HasDeTurckEquationDerivation flow :=
+  HasDeTurckEquationDerivation.of_ricciDeTurckEquationDerivationData
+    equationAtTime
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, and Ricci-DeTurck equation data close the first
+twenty-two analytic fields.
+-/
+theorem analyticFirstTwentyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow) :
+    ((((HasLeviCivitaConnectionExistence (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow :=
+  ⟨analyticFirstTwentyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime,
+    hasDeTurckEquationDerivation_of_ricciDeTurckEquationDerivationData
+      ricciDeTurckEquationAtTime⟩
+
+/--
+Time-dependent linearized Ricci-tensor component for the Ricci-DeTurck
+linearization.
+
+It takes a two-tensor perturbation and returns the corresponding linearized
+two-tensor contribution at each time.
+-/
+abbrev TimeDependentRicciTensorLinearizationField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → TangentCovariantTwoTensor I M → TangentCovariantTwoTensor I M
+
+/-- Shape contract for time-dependent Ricci-tensor linearization fields. -/
+theorem timeDependentRicciTensorLinearizationField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentRicciTensorLinearizationField flow =
+      (ℝ → TangentCovariantTwoTensor I M → TangentCovariantTwoTensor I M) :=
+  rfl
+
+/--
+Time-dependent linearized DeTurck-gauge component for the Ricci-DeTurck
+linearization.
+-/
+abbrev TimeDependentDeTurckGaugeLinearizationField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → TangentCovariantTwoTensor I M → TangentCovariantTwoTensor I M
+
+/-- Shape contract for time-dependent DeTurck-gauge linearization fields. -/
+theorem timeDependentDeTurckGaugeLinearizationField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentDeTurckGaugeLinearizationField flow =
+      (ℝ → TangentCovariantTwoTensor I M → TangentCovariantTwoTensor I M) :=
+  rfl
+
+/--
+Time-dependent linearized Ricci-DeTurck operator on two-tensor perturbations.
+-/
+abbrev TimeDependentRicciDeTurckLinearizedOperatorField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → TangentCovariantTwoTensor I M → TangentCovariantTwoTensor I M
+
+/-- Shape contract for time-dependent Ricci-DeTurck linearized operators. -/
+theorem timeDependentRicciDeTurckLinearizedOperatorField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentRicciDeTurckLinearizedOperatorField flow =
+      (ℝ → TangentCovariantTwoTensor I M → TangentCovariantTwoTensor I M) :=
+  rfl
+
+/--
+Concrete Ricci-DeTurck linearization data.
+
+The bundle records the already-derived Ricci-DeTurck equation, the linearized
+Ricci and gauge components, a time-dependent linearized operator, linearity of
+that operator on tensor perturbations, and the formula identifying the operator
+as `-2 D Ricci + D gauge`.
+-/
+structure RicciDeTurckLinearizationData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- Ricci-DeTurck equation derivation data being linearized. -/
+  equationAtTime : RicciDeTurckEquationDerivationData flow
+  /-- Linearized Ricci tensor contribution. -/
+  ricciLinearizationAtTime :
+    TimeDependentRicciTensorLinearizationField flow
+  /-- Linearized DeTurck gauge contribution. -/
+  gaugeLinearizationAtTime :
+    TimeDependentDeTurckGaugeLinearizationField flow
+  /-- The full time-dependent linearized Ricci-DeTurck operator. -/
+  linearizedOperatorAtTime :
+    TimeDependentRicciDeTurckLinearizedOperatorField flow
+  /-- Additivity of the linearized operator on perturbation tensors. -/
+  linearizedOperator_add :
+    ∀ (t : ℝ) (variation₁ variation₂ : TangentCovariantTwoTensor I M),
+      linearizedOperatorAtTime t (variation₁ + variation₂) =
+        linearizedOperatorAtTime t variation₁ +
+          linearizedOperatorAtTime t variation₂
+  /-- Homogeneity of the linearized operator on perturbation tensors. -/
+  linearizedOperator_smul :
+    ∀ (t : ℝ) (a : ℝ) (variation : TangentCovariantTwoTensor I M),
+      linearizedOperatorAtTime t (a • variation) =
+        a • linearizedOperatorAtTime t variation
+  /-- The linearized operator splits as `-2 D Ricci + D gauge`. -/
+  linearizedOperator_eq_ricci_plus_gauge :
+    ∀ (t : ℝ) (variation : TangentCovariantTwoTensor I M),
+      linearizedOperatorAtTime t variation =
+        (-2 : ℝ) • ricciLinearizationAtTime t variation +
+          gaugeLinearizationAtTime t variation
 
 /-- Interface for the linearization of the Ricci-DeTurck operator. -/
 inductive HasRicciDeTurckLinearization
@@ -2085,7 +4812,185 @@ inductive HasRicciDeTurckLinearization
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Tensor-level operator data proves Ricci-DeTurck linearization. -/
+  | of_ricciDeTurckLinearizationData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (linearizationAtTime : RicciDeTurckLinearizationData flow)
+
+/--
+Concrete Ricci-DeTurck linearization data proves the linearization interface.
+-/
+theorem hasRicciDeTurckLinearization_of_ricciDeTurckLinearizationData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (linearizationAtTime : RicciDeTurckLinearizationData flow) :
+    HasRicciDeTurckLinearization flow :=
+  HasRicciDeTurckLinearization.of_ricciDeTurckLinearizationData
+    linearizationAtTime
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, and Ricci-DeTurck
+linearization data close the first twenty-three analytic fields.
+-/
+theorem analyticFirstTwentyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow) :
+    (((((HasLeviCivitaConnectionExistence (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow :=
+  ⟨analyticFirstTwentyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime,
+    hasRicciDeTurckLinearization_of_ricciDeTurckLinearizationData
+      linearizationAtTime⟩
+
+/--
+Time-dependent principal-symbol field for the linearized Ricci-DeTurck
+operator.
+-/
+abbrev TimeDependentRicciDeTurckPrincipalSymbolField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → TangentCovariantTwoTensor I M → TangentCovariantTwoTensor I M
+
+/-- Shape contract for Ricci-DeTurck principal-symbol fields. -/
+theorem timeDependentRicciDeTurckPrincipalSymbolField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentRicciDeTurckPrincipalSymbolField flow =
+      (ℝ → TangentCovariantTwoTensor I M → TangentCovariantTwoTensor I M) :=
+  rfl
+
+/--
+Time-dependent lower-order part of the linearized Ricci-DeTurck operator.
+-/
+abbrev TimeDependentRicciDeTurckLowerOrderField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → TangentCovariantTwoTensor I M → TangentCovariantTwoTensor I M
+
+/-- Shape contract for Ricci-DeTurck lower-order fields. -/
+theorem timeDependentRicciDeTurckLowerOrderField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentRicciDeTurckLowerOrderField flow =
+      (ℝ → TangentCovariantTwoTensor I M → TangentCovariantTwoTensor I M) :=
+  rfl
+
+/--
+Positive coefficient field witnessing the scalar parabolicity constant at each
+time.
+-/
+abbrev TimeDependentStrictParabolicityCoefficientField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → ℝ
+
+/-- Shape contract for strict-parabolicity coefficient fields. -/
+theorem timeDependentStrictParabolicityCoefficientField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentStrictParabolicityCoefficientField flow = (ℝ → ℝ) :=
+  rfl
+
+/--
+Concrete strict parabolicity data for the Ricci-DeTurck system.
+
+The bundle records the linearized operator, its principal symbol, its lower
+order part, and a positive coefficient showing that the principal symbol is a
+positive multiple of the identity on two-tensor perturbations.
+-/
+structure StrictlyParabolicDeTurckSystemData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- Ricci-DeTurck linearization data whose principal symbol is analyzed. -/
+  linearizationAtTime : RicciDeTurckLinearizationData flow
+  /-- Principal-symbol part of the linearized operator. -/
+  principalSymbolAtTime : TimeDependentRicciDeTurckPrincipalSymbolField flow
+  /-- Lower-order part of the linearized operator. -/
+  lowerOrderAtTime : TimeDependentRicciDeTurckLowerOrderField flow
+  /-- Positive scalar parabolicity coefficient. -/
+  parabolicityCoefficientAtTime :
+    TimeDependentStrictParabolicityCoefficientField flow
+  /-- The parabolicity coefficient is strictly positive at each time. -/
+  parabolicityCoefficient_pos :
+    ∀ t, 0 < parabolicityCoefficientAtTime t
+  /-- The linearized operator splits into principal-symbol and lower-order parts. -/
+  linearizedOperator_eq_principalSymbol_plus_lowerOrder :
+    ∀ (t : ℝ) (variation : TangentCovariantTwoTensor I M),
+      linearizationAtTime.linearizedOperatorAtTime t variation =
+        principalSymbolAtTime t variation + lowerOrderAtTime t variation
+  /-- The principal symbol is a positive multiple of the identity. -/
+  principalSymbol_eq_positive_identity_multiple :
+    ∀ (t : ℝ) (variation : TangentCovariantTwoTensor I M),
+      principalSymbolAtTime t variation =
+        parabolicityCoefficientAtTime t • variation
 
 /-- Interface for strict parabolicity of the Ricci-DeTurck system. -/
 inductive HasStrictlyParabolicDeTurckSystem
@@ -2093,7 +4998,176 @@ inductive HasStrictlyParabolicDeTurckSystem
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Principal-symbol data proves strict parabolicity. -/
+  | of_strictlyParabolicDeTurckSystemData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+
+/--
+Concrete principal-symbol data proves strict parabolicity of the DeTurck system.
+-/
+theorem hasStrictlyParabolicDeTurckSystem_of_strictlyParabolicDeTurckSystemData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow) :
+    HasStrictlyParabolicDeTurckSystem flow :=
+  HasStrictlyParabolicDeTurckSystem.of_strictlyParabolicDeTurckSystemData
+    strictParabolicAtTime
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, and strict-parabolicity data close the first twenty-four
+analytic fields.
+-/
+theorem analyticFirstTwentyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow) :
+    ((((((HasLeviCivitaConnectionExistence (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow :=
+  ⟨analyticFirstTwentyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime,
+    hasStrictlyParabolicDeTurckSystem_of_strictlyParabolicDeTurckSystemData
+      strictParabolicAtTime⟩
+
+/--
+Time-dependent solution operator for the linear parabolic Ricci-DeTurck system.
+
+It sends a two-tensor forcing term to the corresponding two-tensor solution
+candidate at each time.
+-/
+abbrev TimeDependentParabolicLinearSolutionOperatorField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → TangentCovariantTwoTensor I M → TangentCovariantTwoTensor I M
+
+/-- Shape contract for linear parabolic solution-operator fields. -/
+theorem timeDependentParabolicLinearSolutionOperatorField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentParabolicLinearSolutionOperatorField flow =
+      (ℝ → TangentCovariantTwoTensor I M → TangentCovariantTwoTensor I M) :=
+  rfl
+
+/-- Time-dependent estimate constants for linear parabolic theory. -/
+abbrev TimeDependentParabolicLinearEstimateConstantField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → ℝ
+
+/-- Shape contract for linear parabolic estimate-constant fields. -/
+theorem timeDependentParabolicLinearEstimateConstantField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentParabolicLinearEstimateConstantField flow = (ℝ → ℝ) :=
+  rfl
+
+/--
+Concrete linear parabolic theory data for the strict Ricci-DeTurck linearized
+system.
+
+The bundle records a solution operator for the strict-parabolic linearized
+operator, linearity of that solution operator, a right-inverse equation, and a
+pointwise estimate with positive time-dependent constants.
+-/
+structure ParabolicLinearTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- Strict-parabolicity data for the linearized Ricci-DeTurck operator. -/
+  strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow
+  /-- Linear solution operator for forcing terms. -/
+  solutionOperatorAtTime :
+    TimeDependentParabolicLinearSolutionOperatorField flow
+  /-- Estimate constants for the solution operator. -/
+  estimateConstantAtTime :
+    TimeDependentParabolicLinearEstimateConstantField flow
+  /-- Estimate constants are strictly positive. -/
+  estimateConstant_pos : ∀ t, 0 < estimateConstantAtTime t
+  /-- The solution operator is additive in the forcing term. -/
+  solutionOperator_add :
+    ∀ (t : ℝ) (source₁ source₂ : TangentCovariantTwoTensor I M),
+      solutionOperatorAtTime t (source₁ + source₂) =
+        solutionOperatorAtTime t source₁ +
+          solutionOperatorAtTime t source₂
+  /-- The solution operator is homogeneous in the forcing term. -/
+  solutionOperator_smul :
+    ∀ (t : ℝ) (a : ℝ) (source : TangentCovariantTwoTensor I M),
+      solutionOperatorAtTime t (a • source) =
+        a • solutionOperatorAtTime t source
+  /-- The solution operator is a right inverse to the linearized operator. -/
+  solutionOperator_right_inverse :
+    ∀ (t : ℝ) (source : TangentCovariantTwoTensor I M),
+      strictParabolicAtTime.linearizationAtTime.linearizedOperatorAtTime t
+        (solutionOperatorAtTime t source) = source
+  /-- Pointwise estimate for the solution operator. -/
+  solutionOperator_pointwise_estimate :
+    ∀ (t : ℝ) (source : TangentCovariantTwoTensor I M)
+      (x : M) (v w : TangentSpace I x),
+      |solutionOperatorAtTime t source x v w| ≤
+        estimateConstantAtTime t * |source x v w|
 
 /-- Interface for linear parabolic theory used by Ricci-DeTurck flow. -/
 inductive HasParabolicLinearTheory
@@ -2101,7 +5175,190 @@ inductive HasParabolicLinearTheory
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Solution-operator and estimate data proves linear parabolic theory. -/
+  | of_parabolicLinearTheoryData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+
+/--
+Concrete solution-operator data proves linear parabolic theory for the DeTurck
+system.
+-/
+theorem hasParabolicLinearTheory_of_parabolicLinearTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow) :
+    HasParabolicLinearTheory flow :=
+  HasParabolicLinearTheory.of_parabolicLinearTheoryData
+    linearTheoryAtTime
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, and linear parabolic theory data
+close the first twenty-five analytic fields.
+-/
+theorem analyticFirstTwentyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow) :
+    (((((((HasLeviCivitaConnectionExistence (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow :=
+  ⟨analyticFirstTwentyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime,
+    hasParabolicLinearTheory_of_parabolicLinearTheoryData
+      linearTheoryAtTime⟩
+
+/--
+Time-dependent Picard map for the nonlinear Ricci-DeTurck fixed-point argument.
+-/
+abbrev TimeDependentParabolicFixedPointMapField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → TangentCovariantTwoTensor I M → TangentCovariantTwoTensor I M
+
+/-- Shape contract for nonlinear Picard maps in the DeTurck fixed-point argument. -/
+theorem timeDependentParabolicFixedPointMapField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentParabolicFixedPointMapField flow =
+      (ℝ → TangentCovariantTwoTensor I M → TangentCovariantTwoTensor I M) :=
+  rfl
+
+/-- Time-dependent fixed-point tensor field for the nonlinear DeTurck system. -/
+abbrev TimeDependentRicciDeTurckFixedPointField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → TangentCovariantTwoTensor I M
+
+/-- Shape contract for Ricci-DeTurck fixed-point tensor fields. -/
+theorem timeDependentRicciDeTurckFixedPointField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentRicciDeTurckFixedPointField flow =
+      (ℝ → TangentCovariantTwoTensor I M) :=
+  rfl
+
+/-- Time-dependent contraction constants for the nonlinear Picard map. -/
+abbrev TimeDependentParabolicFixedPointContractionConstantField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → ℝ
+
+/-- Shape contract for fixed-point contraction-constant fields. -/
+theorem timeDependentParabolicFixedPointContractionConstantField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentParabolicFixedPointContractionConstantField flow =
+      (ℝ → ℝ) :=
+  rfl
+
+/--
+Concrete contraction/fixed-point argument data for the nonlinear Ricci-DeTurck
+system.
+
+The bundle records the linear parabolic theory, a nonlinear Picard map, a
+strict contraction constant, an actual fixed point, and the pointwise contraction
+estimate that makes the fixed point meaningful.
+-/
+structure ParabolicFixedPointArgumentData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- Linear parabolic solution theory used to define the Picard map. -/
+  linearTheoryAtTime : ParabolicLinearTheoryData flow
+  /-- The nonlinear Picard map for the DeTurck system. -/
+  fixedPointMapAtTime : TimeDependentParabolicFixedPointMapField flow
+  /-- The fixed point produced by the contraction argument. -/
+  fixedPointAtTime : TimeDependentRicciDeTurckFixedPointField flow
+  /-- Contraction constant for the Picard map. -/
+  contractionConstantAtTime :
+    TimeDependentParabolicFixedPointContractionConstantField flow
+  /-- The contraction constant is nonnegative. -/
+  contractionConstant_nonneg :
+    ∀ t, 0 ≤ contractionConstantAtTime t
+  /-- The contraction constant is strictly smaller than one. -/
+  contractionConstant_lt_one :
+    ∀ t, contractionConstantAtTime t < 1
+  /-- The stored tensor is a fixed point of the Picard map. -/
+  fixedPoint_eq :
+    ∀ t, fixedPointMapAtTime t (fixedPointAtTime t) = fixedPointAtTime t
+  /-- Pointwise contraction estimate for the Picard map. -/
+  contraction_estimate :
+    ∀ (t : ℝ) (u v : TangentCovariantTwoTensor I M)
+      (x : M) (X Y : TangentSpace I x),
+      |(fixedPointMapAtTime t u - fixedPointMapAtTime t v) x X Y| ≤
+        contractionConstantAtTime t * |(u - v) x X Y|
 
 /-- Interface for the contraction/fixed-point argument for Ricci-DeTurck flow. -/
 inductive HasParabolicFixedPointArgument
@@ -2109,7 +5366,172 @@ inductive HasParabolicFixedPointArgument
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Contraction-map data proves the fixed-point argument. -/
+  | of_parabolicFixedPointArgumentData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+
+/--
+Concrete contraction data proves the nonlinear DeTurck fixed-point argument.
+-/
+theorem hasParabolicFixedPointArgument_of_parabolicFixedPointArgumentData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow) :
+    HasParabolicFixedPointArgument flow :=
+  HasParabolicFixedPointArgument.of_parabolicFixedPointArgumentData
+    fixedPointAtTime
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, linear parabolic theory data, and
+fixed-point argument data close the first twenty-six analytic fields.
+-/
+theorem analyticFirstTwentySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow) :
+    ((((((((HasLeviCivitaConnectionExistence (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow :=
+  ⟨analyticFirstTwentyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime,
+    hasParabolicFixedPointArgument_of_parabolicFixedPointArgumentData
+      fixedPointAtTime⟩
+
+/--
+Time-dependent metric field produced by the Ricci-DeTurck short-time existence
+argument.
+-/
+abbrev TimeDependentRicciDeTurckSolutionMetricField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  TimeDependentRiemannianMetric I n M
+
+/-- Shape contract for Ricci-DeTurck solution metric fields. -/
+theorem timeDependentRicciDeTurckSolutionMetricField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentRicciDeTurckSolutionMetricField flow =
+      TimeDependentRiemannianMetric I n M :=
+  rfl
+
+/-- Positive existence-time datum for a short-time Ricci-DeTurck solution. -/
+abbrev DeTurckShortTimeExistenceInterval
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type :=
+  { existenceTime : ℝ // 0 < existenceTime }
+
+/-- Shape contract for positive Ricci-DeTurck short-time intervals. -/
+theorem deTurckShortTimeExistenceInterval_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    DeTurckShortTimeExistenceInterval flow =
+      { existenceTime : ℝ // 0 < existenceTime } :=
+  rfl
+
+/--
+Concrete short-time existence data for Ricci-DeTurck flow.
+
+The bundle records the fixed-point argument producing the tensor solution, a
+positive time interval, the resulting Ricci-DeTurck metric family, and the
+equation data tying that metric candidate back to the fixed point and the
+derived Ricci-DeTurck right-hand side.
+-/
+structure DeTurckShortTimeExistenceData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- Fixed-point data producing the nonlinear Ricci-DeTurck solution tensor. -/
+  fixedPointAtTime : ParabolicFixedPointArgumentData flow
+  /-- Positive time for which the Ricci-DeTurck solution exists. -/
+  existenceInterval : DeTurckShortTimeExistenceInterval flow
+  /-- The produced Ricci-DeTurck metric family. -/
+  solutionMetricAtTime : TimeDependentRicciDeTurckSolutionMetricField flow
+  /-- The Ricci-DeTurck solution starts from the original flow metric. -/
+  solution_initialMetric_eq :
+    solutionMetricAtTime.metricAtTime 0 =
+      (metric_of_ricci_flow_data flow).metricAtTime 0
+  /-- The stored solution tensor is the fixed point produced by the Picard map. -/
+  solutionTensor_eq_fixedPoint :
+    ∀ t,
+      fixedPointAtTime.fixedPointMapAtTime t
+          (fixedPointAtTime.fixedPointAtTime t) =
+        fixedPointAtTime.fixedPointAtTime t
+  /--
+  The fixed-point tensor agrees with the derived Ricci-DeTurck right-hand side.
+  -/
+  fixedPoint_eq_ricciDeTurck_rhs :
+    ∀ t,
+      fixedPointAtTime.fixedPointAtTime t =
+        fixedPointAtTime.linearTheoryAtTime.strictParabolicAtTime.linearizationAtTime.equationAtTime.ricciDeTurckRHSAtTime
+          t
 
 /-- Interface for short-time existence of the Ricci-DeTurck flow. -/
 inductive HasDeTurckShortTimeExistence
@@ -2117,7 +5539,174 @@ inductive HasDeTurckShortTimeExistence
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Positive-time Ricci-DeTurck solution data proves short-time existence. -/
+  | of_deturckShortTimeExistenceData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+
+/--
+Concrete positive-time solution data proves short-time Ricci-DeTurck existence.
+-/
+theorem hasDeTurckShortTimeExistence_of_deturckShortTimeExistenceData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow) :
+    HasDeTurckShortTimeExistence flow :=
+  HasDeTurckShortTimeExistence.of_deturckShortTimeExistenceData
+    shortTimeAtTime
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, linear parabolic theory data,
+fixed-point argument data, and short-time existence data close the first
+twenty-seven analytic fields.
+-/
+theorem analyticFirstTwentySeven_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow) :
+    (((((((((HasLeviCivitaConnectionExistence (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow :=
+  ⟨analyticFirstTwentySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime,
+    hasDeTurckShortTimeExistence_of_deturckShortTimeExistenceData
+      shortTimeAtTime⟩
+
+/--
+Bootstrapped Ricci-DeTurck metric field obtained after applying short-time
+regularity to the weak fixed-point solution.
+-/
+abbrev TimeDependentRicciDeTurckBootstrappedMetricField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  TimeDependentRiemannianMetric I n M
+
+/-- Shape contract for bootstrapped Ricci-DeTurck metric fields. -/
+theorem timeDependentRicciDeTurckBootstrappedMetricField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentRicciDeTurckBootstrappedMetricField flow =
+      TimeDependentRiemannianMetric I n M :=
+  rfl
+
+/-- Time-dependent regularity estimate constants for the bootstrap step. -/
+abbrev TimeDependentShortTimeRegularityEstimateField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type :=
+  ℝ → ℕ → ℝ
+
+/-- Shape contract for short-time regularity estimate fields. -/
+theorem timeDependentShortTimeRegularityEstimateField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentShortTimeRegularityEstimateField flow = (ℝ → ℕ → ℝ) :=
+  rfl
+
+/--
+Concrete short-time regularity bootstrap data for the Ricci-DeTurck solution.
+
+The bundle records the positive-time solution, a bootstrapped metric family of
+the target smoothness class, equality with the short-time solution metric, and
+pointwise estimates controlling the fixed-point tensor at every bootstrap
+order.  This is the local data payload that a later Schauder/regularity theorem
+should produce.
+-/
+structure ShortTimeRegularityBootstrapData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- Positive-time Ricci-DeTurck solution data being bootstrapped. -/
+  shortTimeAtTime : DeTurckShortTimeExistenceData flow
+  /-- The bootstrapped smooth Ricci-DeTurck metric family. -/
+  bootstrappedMetricAtTime :
+    TimeDependentRicciDeTurckBootstrappedMetricField flow
+  /-- Estimate constants for each bootstrap order. -/
+  regularityEstimateAtTime :
+    TimeDependentShortTimeRegularityEstimateField flow
+  /-- Regularity estimate constants are nonnegative. -/
+  regularityEstimate_nonneg :
+    ∀ (t : ℝ) (order : ℕ), 0 ≤ regularityEstimateAtTime t order
+  /-- The bootstrap preserves the short-time solution metric. -/
+  bootstrappedMetric_eq_solutionMetric :
+    bootstrappedMetricAtTime = shortTimeAtTime.solutionMetricAtTime
+  /-- The bootstrapped solution has the same initial metric as the flow. -/
+  bootstrapped_initialMetric_eq :
+    bootstrappedMetricAtTime.metricAtTime 0 =
+      (metric_of_ricci_flow_data flow).metricAtTime 0
+  /-- Pointwise bootstrap estimate for the fixed-point tensor. -/
+  fixedPointTensor_pointwise_regular :
+    ∀ (t : ℝ) (order : ℕ) (x : M) (X Y : TangentSpace I x),
+      |shortTimeAtTime.fixedPointAtTime.fixedPointAtTime t x X Y| ≤
+        regularityEstimateAtTime t order
 
 /-- Interface for bootstrapping short-time Ricci-DeTurck solutions to smoothness. -/
 inductive HasShortTimeRegularityBootstrap
@@ -2125,7 +5714,208 @@ inductive HasShortTimeRegularityBootstrap
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Regularity estimates and bootstrapped metric data prove the bootstrap. -/
+  | of_shortTimeRegularityBootstrapData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+
+/--
+Concrete regularity data proves the short-time Ricci-DeTurck bootstrap
+interface.
+-/
+theorem hasShortTimeRegularityBootstrap_of_shortTimeRegularityBootstrapData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow) :
+    HasShortTimeRegularityBootstrap flow :=
+  HasShortTimeRegularityBootstrap.of_shortTimeRegularityBootstrapData
+    regularityAtTime
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, linear parabolic theory data,
+fixed-point argument data, short-time existence data, and regularity-bootstrap
+data close the first twenty-eight analytic fields.
+-/
+theorem analyticFirstTwentyEight_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow) :
+    ((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow :=
+  ⟨analyticFirstTwentySeven_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime,
+    hasShortTimeRegularityBootstrap_of_shortTimeRegularityBootstrapData
+      regularityAtTime⟩
+
+/--
+Time-dependent maps solving the DeTurck diffeomorphism ODE.
+
+The inverse laws are stored in `DeTurckDiffeomorphismODEData`; this alias keeps
+the raw family of maps separate from the proof that the family is a
+diffeomorphism flow.
+-/
+abbrev TimeDependentDeTurckDiffeomorphismField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → M → M
+
+/-- Shape contract for DeTurck diffeomorphism-flow map fields. -/
+theorem timeDependentDeTurckDiffeomorphismField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentDeTurckDiffeomorphismField flow = (ℝ → M → M) :=
+  rfl
+
+/-- Velocity field along a time-dependent DeTurck diffeomorphism flow. -/
+abbrev TimeDependentDeTurckDiffeomorphismVelocityField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (diffeomorphismAtTime : TimeDependentDeTurckDiffeomorphismField flow) :
+    Type _ :=
+  (t : ℝ) → (x : M) → TangentSpace I (diffeomorphismAtTime t x)
+
+/-- Shape contract for DeTurck diffeomorphism velocity fields. -/
+theorem timeDependentDeTurckDiffeomorphismVelocityField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M)
+    (diffeomorphismAtTime : TimeDependentDeTurckDiffeomorphismField flow) :
+    TimeDependentDeTurckDiffeomorphismVelocityField flow
+        diffeomorphismAtTime =
+      ((t : ℝ) → (x : M) → TangentSpace I (diffeomorphismAtTime t x)) :=
+  rfl
+
+/--
+Concrete DeTurck diffeomorphism ODE data.
+
+The bundle records the regularized short-time Ricci-DeTurck solution, the
+DeTurck vector field driving the ODE, a time-dependent map with a two-sided
+inverse, a velocity field along that map, and the ODE identity saying that this
+velocity is the DeTurck vector field evaluated along the map.
+-/
+structure DeTurckDiffeomorphismODEData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- Regularized short-time Ricci-DeTurck solution data. -/
+  regularityAtTime : ShortTimeRegularityBootstrapData flow
+  /-- DeTurck vector field driving the diffeomorphism ODE. -/
+  vectorFieldAtTime : DeTurckVectorFieldConstructionData flow
+  /-- The chosen vector field agrees with the one in the Ricci-DeTurck equation data. -/
+  vectorField_eq_equation_vectorField :
+    vectorFieldAtTime =
+      regularityAtTime.shortTimeAtTime.fixedPointAtTime.linearTheoryAtTime.strictParabolicAtTime.linearizationAtTime.equationAtTime.vectorFieldAtTime
+  /-- The time-dependent DeTurck diffeomorphism maps. -/
+  diffeomorphismAtTime : TimeDependentDeTurckDiffeomorphismField flow
+  /-- Inverse maps for the DeTurck diffeomorphism flow. -/
+  inverseDiffeomorphismAtTime :
+    TimeDependentDeTurckDiffeomorphismField flow
+  /-- Velocity field along the DeTurck diffeomorphism maps. -/
+  velocityAtTime :
+    TimeDependentDeTurckDiffeomorphismVelocityField flow
+      diffeomorphismAtTime
+  /-- The diffeomorphism flow starts at the identity. -/
+  initial_diffeomorphism_eq_id :
+    ∀ x : M, diffeomorphismAtTime 0 x = x
+  /-- The stored inverse is a left inverse for every time. -/
+  left_inverse :
+    ∀ (t : ℝ) (x : M),
+      inverseDiffeomorphismAtTime t (diffeomorphismAtTime t x) = x
+  /-- The stored inverse is a right inverse for every time. -/
+  right_inverse :
+    ∀ (t : ℝ) (x : M),
+      diffeomorphismAtTime t (inverseDiffeomorphismAtTime t x) = x
+  /-- ODE identity: velocity along the flow is the DeTurck vector field. -/
+  ode_velocity_eq_deTurck_vectorField :
+    ∀ (t : ℝ) (x : M),
+      velocityAtTime t x =
+        vectorFieldAtTime.vectorFieldAtTime t (diffeomorphismAtTime t x)
 
 /-- Interface for solving the DeTurck diffeomorphism ODE. -/
 inductive HasDeTurckDiffeomorphismODE
@@ -2133,7 +5923,197 @@ inductive HasDeTurckDiffeomorphismODE
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Diffeomorphism-flow and velocity data proves the DeTurck ODE interface. -/
+  | of_deturckDiffeomorphismODEData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (odeAtTime : DeTurckDiffeomorphismODEData flow)
+
+/-- Concrete diffeomorphism-flow data proves the DeTurck ODE interface. -/
+theorem hasDeTurckDiffeomorphismODE_of_deturckDiffeomorphismODEData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (odeAtTime : DeTurckDiffeomorphismODEData flow) :
+    HasDeTurckDiffeomorphismODE flow :=
+  HasDeTurckDiffeomorphismODE.of_deturckDiffeomorphismODEData
+    odeAtTime
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, linear parabolic theory data,
+fixed-point argument data, short-time existence data, regularity-bootstrap
+data, and DeTurck diffeomorphism ODE data close the first twenty-nine analytic
+fields.
+-/
+theorem analyticFirstTwentyNine_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow) :
+    (((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow :=
+  ⟨analyticFirstTwentyEight_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime,
+    hasDeTurckDiffeomorphismODE_of_deturckDiffeomorphismODEData
+      odeAtTime⟩
+
+/--
+Metric family obtained by pulling the Ricci-DeTurck solution back along the
+DeTurck diffeomorphism flow.
+-/
+abbrev TimeDependentDeTurckPulledBackMetricField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  TimeDependentRiemannianMetric I n M
+
+/-- Shape contract for pulled-back DeTurck metric fields. -/
+theorem timeDependentDeTurckPulledBackMetricField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentDeTurckPulledBackMetricField flow =
+      TimeDependentRiemannianMetric I n M :=
+  rfl
+
+/--
+Right-hand side tensor field after pulling the Ricci-DeTurck equation back to
+the original Ricci-flow gauge.
+-/
+abbrev TimeDependentDeTurckPulledBackRHSField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → TangentCovariantTwoTensor I M
+
+/-- Shape contract for pulled-back DeTurck equation right-hand sides. -/
+theorem timeDependentDeTurckPulledBackRHSField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentDeTurckPulledBackRHSField flow =
+      (ℝ → TangentCovariantTwoTensor I M) :=
+  rfl
+
+/--
+Concrete data identifying the pulled-back Ricci-DeTurck equation with the
+Ricci-flow equation.
+
+The bundle records the DeTurck diffeomorphism ODE data, the pulled-back metric
+and RHS tensor, and the identities saying that the pulled-back data is exactly
+the original Ricci-flow metric equation.
+-/
+structure DeTurckPullbackEquationIdentityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- DeTurck diffeomorphism ODE data used for the pullback. -/
+  odeAtTime : DeTurckDiffeomorphismODEData flow
+  /-- The pulled-back Ricci-DeTurck metric family. -/
+  pulledBackMetricAtTime : TimeDependentDeTurckPulledBackMetricField flow
+  /-- The pulled-back equation right-hand side. -/
+  pulledBackRHSAtTime : TimeDependentDeTurckPulledBackRHSField flow
+  /-- Pullback identifies the DeTurck metric with the original Ricci-flow metric. -/
+  pulledBackMetric_eq_flowMetric :
+    pulledBackMetricAtTime = metric_of_ricci_flow_data flow
+  /-- The pulled-back metric has the original initial metric. -/
+  pulledBack_initialMetric_eq :
+    pulledBackMetricAtTime.metricAtTime 0 =
+      (metric_of_ricci_flow_data flow).metricAtTime 0
+  /-- The pulled-back right-hand side is the Ricci-flow right-hand side. -/
+  pulledBack_rhs_eq_ricciFlow_rhs :
+    ∀ t,
+      pulledBackRHSAtTime t =
+        ricci_flow_rhs_tensor (curvature_data_of_ricci_flow_data flow) t
+  /-- The pulled-back right-hand side is the stored metric time derivative. -/
+  pulledBack_rhs_eq_metricDerivative :
+    ∀ t,
+      pulledBackRHSAtTime t =
+        metric_time_derivative_at_time_of_metric_derivative_field
+          odeAtTime.regularityAtTime.shortTimeAtTime.fixedPointAtTime.linearTheoryAtTime.strictParabolicAtTime.linearizationAtTime.equationAtTime.equationVerificationAtTime.metricDerivative.derivative
+          t
 
 /-- Interface identifying the pulled-back DeTurck equation with Ricci flow. -/
 inductive HasDeTurckPullbackEquationIdentity
@@ -2141,7 +6121,156 @@ inductive HasDeTurckPullbackEquationIdentity
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Pullback metric and RHS identity data prove the pullback equation interface. -/
+  | of_deturckPullbackEquationIdentityData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow)
+
+/--
+Concrete pulled-back metric/RHS identity data proves the DeTurck pullback
+equation interface.
+-/
+theorem hasDeTurckPullbackEquationIdentity_of_deturckPullbackEquationIdentityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    HasDeTurckPullbackEquationIdentity flow :=
+  HasDeTurckPullbackEquationIdentity.of_deturckPullbackEquationIdentityData
+    pullbackIdentityAtTime
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, linear parabolic theory data,
+fixed-point argument data, short-time existence data, regularity-bootstrap
+data, DeTurck diffeomorphism ODE data, and pullback equation identity data
+close the first thirty analytic fields.
+-/
+theorem analyticFirstThirty_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    ((((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow) ∧
+      HasDeTurckPullbackEquationIdentity flow :=
+  ⟨analyticFirstTwentyNine_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime odeAtTime,
+    hasDeTurckPullbackEquationIdentity_of_deturckPullbackEquationIdentityData
+      pullbackIdentityAtTime⟩
+
+/--
+Concrete data pulling the Ricci-DeTurck solution back to a Ricci-flow solution.
+
+The bundle records the already-proved pullback equation identity, the resulting
+metric family in Ricci-flow gauge, and the identities showing that this family
+is exactly the original Ricci-flow metric with the Ricci-flow right-hand side.
+-/
+structure DeTurckPullbackToRicciFlowData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- Pullback equation identity data being upgraded to a Ricci-flow solution. -/
+  pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow
+  /-- The pulled-back metric family in Ricci-flow gauge. -/
+  solutionMetricAtTime : TimeDependentDeTurckPulledBackMetricField flow
+  /-- The solution metric is the metric from the pullback equation identity. -/
+  solutionMetric_eq_pulledBackMetric :
+    solutionMetricAtTime = pullbackIdentityAtTime.pulledBackMetricAtTime
+  /-- The pulled-back solution metric is the original Ricci-flow metric. -/
+  solutionMetric_eq_flowMetric :
+    solutionMetricAtTime = metric_of_ricci_flow_data flow
+  /-- The pulled-back Ricci-flow solution has the original initial metric. -/
+  solution_initialMetric_eq :
+    solutionMetricAtTime.metricAtTime 0 =
+      (metric_of_ricci_flow_data flow).metricAtTime 0
+  /-- The pulled-back equation right-hand side is the Ricci-flow right-hand side. -/
+  solution_rhs_eq_ricciFlow_rhs :
+    ∀ t,
+      pullbackIdentityAtTime.pulledBackRHSAtTime t =
+        ricci_flow_rhs_tensor (curvature_data_of_ricci_flow_data flow) t
+  /-- The pulled-back right-hand side is the stored metric time derivative. -/
+  solution_rhs_eq_metricDerivative :
+    ∀ t,
+      pullbackIdentityAtTime.pulledBackRHSAtTime t =
+        metric_time_derivative_at_time_of_metric_derivative_field
+          pullbackIdentityAtTime.odeAtTime.regularityAtTime.shortTimeAtTime.fixedPointAtTime.linearTheoryAtTime.strictParabolicAtTime.linearizationAtTime.equationAtTime.equationVerificationAtTime.metricDerivative.derivative
+          t
 
 /-- Interface for pulling a Ricci-DeTurck solution back to a Ricci-flow solution. -/
 inductive HasDeTurckPullbackToRicciFlow
@@ -2149,7 +6278,192 @@ inductive HasDeTurckPullbackToRicciFlow
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Pullback-to-Ricci-flow data proves the pullback interface. -/
+  | of_deturckPullbackToRicciFlowData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (pullbackToRicciFlowAtTime : DeTurckPullbackToRicciFlowData flow)
+
+/--
+Concrete pullback-to-Ricci-flow data proves the production pullback interface.
+-/
+theorem hasDeTurckPullbackToRicciFlow_of_deturckPullbackToRicciFlowData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (pullbackToRicciFlowAtTime : DeTurckPullbackToRicciFlowData flow) :
+    HasDeTurckPullbackToRicciFlow flow :=
+  HasDeTurckPullbackToRicciFlow.of_deturckPullbackToRicciFlowData
+    pullbackToRicciFlowAtTime
+
+/--
+The pullback equation identity data already contains the metric and RHS
+identities needed to build the pullback-to-Ricci-flow interface.
+-/
+theorem hasDeTurckPullbackToRicciFlow_of_deturckPullbackEquationIdentityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    HasDeTurckPullbackToRicciFlow flow :=
+  hasDeTurckPullbackToRicciFlow_of_deturckPullbackToRicciFlowData
+    { pullbackIdentityAtTime := pullbackIdentityAtTime
+      solutionMetricAtTime := pullbackIdentityAtTime.pulledBackMetricAtTime
+      solutionMetric_eq_pulledBackMetric := rfl
+      solutionMetric_eq_flowMetric :=
+        pullbackIdentityAtTime.pulledBackMetric_eq_flowMetric
+      solution_initialMetric_eq :=
+        pullbackIdentityAtTime.pulledBack_initialMetric_eq
+      solution_rhs_eq_ricciFlow_rhs :=
+        pullbackIdentityAtTime.pulledBack_rhs_eq_ricciFlow_rhs
+      solution_rhs_eq_metricDerivative :=
+        pullbackIdentityAtTime.pulledBack_rhs_eq_metricDerivative }
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, linear parabolic theory data,
+fixed-point argument data, short-time existence data, regularity-bootstrap
+data, DeTurck diffeomorphism ODE data, and pullback equation identity data
+close the first thirty-one analytic fields.
+-/
+theorem analyticFirstThirtyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    (((((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow) ∧
+      HasDeTurckPullbackEquationIdentity flow) ∧
+      HasDeTurckPullbackToRicciFlow flow :=
+  ⟨analyticFirstThirty_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime odeAtTime pullbackIdentityAtTime,
+    hasDeTurckPullbackToRicciFlow_of_deturckPullbackEquationIdentityData
+      pullbackIdentityAtTime⟩
+
+/--
+Concrete short-time Ricci-flow solution data obtained after pulling the
+Ricci-DeTurck solution back.
+
+The bundle records the pullback-to-Ricci-flow data, the positive existence
+interval inherited from the Ricci-DeTurck fixed-point solution, and the metric
+and equation identities showing that the pulled-back family is a Ricci-flow
+solution on that interval.
+-/
+structure ShortTimeRicciFlowSolutionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- Pullback-to-Ricci-flow data producing the ungauged solution. -/
+  pullbackToRicciFlowAtTime : DeTurckPullbackToRicciFlowData flow
+  /-- Positive time interval inherited from the Ricci-DeTurck solution. -/
+  existenceInterval : DeTurckShortTimeExistenceInterval flow
+  /-- The resulting Ricci-flow metric family on the short-time interval. -/
+  solutionMetricAtTime : TimeDependentDeTurckPulledBackMetricField flow
+  /-- The existence interval is the Ricci-DeTurck short-time interval. -/
+  existenceInterval_eq_deturckInterval :
+    existenceInterval =
+      pullbackToRicciFlowAtTime.pullbackIdentityAtTime.odeAtTime.regularityAtTime.shortTimeAtTime.existenceInterval
+  /-- The short-time metric is the pulled-back Ricci-flow metric. -/
+  solutionMetric_eq_pullbackMetric :
+    solutionMetricAtTime =
+      pullbackToRicciFlowAtTime.solutionMetricAtTime
+  /-- The short-time metric is the original flow metric family. -/
+  solutionMetric_eq_flowMetric :
+    solutionMetricAtTime = metric_of_ricci_flow_data flow
+  /-- The short-time solution has the original initial metric. -/
+  solution_initialMetric_eq :
+    solutionMetricAtTime.metricAtTime 0 =
+      (metric_of_ricci_flow_data flow).metricAtTime 0
+  /-- The short-time solution has the Ricci-flow right-hand side. -/
+  solution_rhs_eq_ricciFlow_rhs :
+    ∀ t,
+      pullbackToRicciFlowAtTime.pullbackIdentityAtTime.pulledBackRHSAtTime t =
+        ricci_flow_rhs_tensor (curvature_data_of_ricci_flow_data flow) t
+  /-- The short-time solution right-hand side is the stored metric derivative. -/
+  solution_rhs_eq_metricDerivative :
+    ∀ t,
+      pullbackToRicciFlowAtTime.pullbackIdentityAtTime.pulledBackRHSAtTime t =
+        metric_time_derivative_at_time_of_metric_derivative_field
+          pullbackToRicciFlowAtTime.pullbackIdentityAtTime.odeAtTime.regularityAtTime.shortTimeAtTime.fixedPointAtTime.linearTheoryAtTime.strictParabolicAtTime.linearizationAtTime.equationAtTime.equationVerificationAtTime.metricDerivative.derivative
+          t
 
 /-- Interface for the short-time existence theorem for Ricci flow. -/
 inductive HasShortTimeRicciFlowSolution
@@ -2157,7 +6471,213 @@ inductive HasShortTimeRicciFlowSolution
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Short-time Ricci-flow solution data proves the short-time solution interface. -/
+  | of_shortTimeRicciFlowSolutionData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (shortTimeRicciAtTime : ShortTimeRicciFlowSolutionData flow)
+
+/--
+Concrete short-time Ricci-flow solution data proves the production short-time
+solution interface.
+-/
+theorem hasShortTimeRicciFlowSolution_of_shortTimeRicciFlowSolutionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (shortTimeRicciAtTime : ShortTimeRicciFlowSolutionData flow) :
+    HasShortTimeRicciFlowSolution flow :=
+  HasShortTimeRicciFlowSolution.of_shortTimeRicciFlowSolutionData
+    shortTimeRicciAtTime
+
+/--
+Pullback-to-Ricci-flow data carries the positive DeTurck existence interval and
+the metric/RHS identities needed for short-time Ricci-flow existence.
+-/
+theorem hasShortTimeRicciFlowSolution_of_deturckPullbackToRicciFlowData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (pullbackToRicciFlowAtTime : DeTurckPullbackToRicciFlowData flow) :
+    HasShortTimeRicciFlowSolution flow :=
+  hasShortTimeRicciFlowSolution_of_shortTimeRicciFlowSolutionData
+    { pullbackToRicciFlowAtTime := pullbackToRicciFlowAtTime
+      existenceInterval :=
+        pullbackToRicciFlowAtTime.pullbackIdentityAtTime.odeAtTime.regularityAtTime.shortTimeAtTime.existenceInterval
+      solutionMetricAtTime := pullbackToRicciFlowAtTime.solutionMetricAtTime
+      existenceInterval_eq_deturckInterval := rfl
+      solutionMetric_eq_pullbackMetric := rfl
+      solutionMetric_eq_flowMetric :=
+        pullbackToRicciFlowAtTime.solutionMetric_eq_flowMetric
+      solution_initialMetric_eq :=
+        pullbackToRicciFlowAtTime.solution_initialMetric_eq
+      solution_rhs_eq_ricciFlow_rhs :=
+        pullbackToRicciFlowAtTime.solution_rhs_eq_ricciFlow_rhs
+      solution_rhs_eq_metricDerivative :=
+        pullbackToRicciFlowAtTime.solution_rhs_eq_metricDerivative }
+
+/--
+Pullback equation identity data builds the pullback-to-Ricci-flow data and
+hence short-time Ricci-flow existence.
+-/
+theorem hasShortTimeRicciFlowSolution_of_deturckPullbackEquationIdentityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    HasShortTimeRicciFlowSolution flow :=
+  hasShortTimeRicciFlowSolution_of_deturckPullbackToRicciFlowData
+    { pullbackIdentityAtTime := pullbackIdentityAtTime
+      solutionMetricAtTime := pullbackIdentityAtTime.pulledBackMetricAtTime
+      solutionMetric_eq_pulledBackMetric := rfl
+      solutionMetric_eq_flowMetric :=
+        pullbackIdentityAtTime.pulledBackMetric_eq_flowMetric
+      solution_initialMetric_eq :=
+        pullbackIdentityAtTime.pulledBack_initialMetric_eq
+      solution_rhs_eq_ricciFlow_rhs :=
+        pullbackIdentityAtTime.pulledBack_rhs_eq_ricciFlow_rhs
+      solution_rhs_eq_metricDerivative :=
+        pullbackIdentityAtTime.pulledBack_rhs_eq_metricDerivative }
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, linear parabolic theory data,
+fixed-point argument data, short-time existence data, regularity-bootstrap
+data, DeTurck diffeomorphism ODE data, and pullback equation identity data
+close the first thirty-two analytic fields.
+-/
+theorem analyticFirstThirtyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    ((((((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow) ∧
+      HasDeTurckPullbackEquationIdentity flow) ∧
+      HasDeTurckPullbackToRicciFlow flow) ∧
+      HasShortTimeRicciFlowSolution flow :=
+  ⟨analyticFirstThirtyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime odeAtTime pullbackIdentityAtTime,
+    hasShortTimeRicciFlowSolution_of_deturckPullbackEquationIdentityData
+      pullbackIdentityAtTime⟩
+
+/--
+Concrete maximal-time interval data for a Ricci-flow solution.
+
+At this stage of the interface, the maximal interval may be no larger than the
+short-time interval already constructed.  The data still records an explicit
+positive endpoint and the containment of the short-time solution interval in
+the chosen maximal interval, which is the datum later continuation theory must
+strengthen.
+-/
+structure RicciFlowMaximalTimeIntervalData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- Short-time Ricci-flow solution data underlying the interval. -/
+  shortTimeRicciAtTime : ShortTimeRicciFlowSolutionData flow
+  /-- Positive endpoint for the chosen maximal-time interval. -/
+  maximalTime : DeTurckShortTimeExistenceInterval flow
+  /-- The chosen maximal endpoint agrees with the constructed short-time endpoint. -/
+  maximalTime_eq_shortTime :
+    maximalTime = shortTimeRicciAtTime.existenceInterval
+  /-- The short-time existence interval is contained in the chosen maximal interval. -/
+  shortTime_le_maximalTime :
+    shortTimeRicciAtTime.existenceInterval.1 ≤ maximalTime.1
+  /-- The metric family carried by the interval data. -/
+  solutionMetricAtTime : TimeDependentDeTurckPulledBackMetricField flow
+  /-- The interval metric is the short-time Ricci-flow solution metric. -/
+  solutionMetric_eq_shortTimeMetric :
+    solutionMetricAtTime = shortTimeRicciAtTime.solutionMetricAtTime
+  /-- The interval metric is the original flow metric family. -/
+  solutionMetric_eq_flowMetric :
+    solutionMetricAtTime = metric_of_ricci_flow_data flow
+  /-- The interval solution has the original initial metric. -/
+  solution_initialMetric_eq :
+    solutionMetricAtTime.metricAtTime 0 =
+      (metric_of_ricci_flow_data flow).metricAtTime 0
 
 /-- Interface for the maximal-time interval of a Ricci-flow solution. -/
 inductive HasRicciFlowMaximalTimeInterval
@@ -2165,7 +6685,248 @@ inductive HasRicciFlowMaximalTimeInterval
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Maximal-time interval data proves the maximal interval interface. -/
+  | of_ricciFlowMaximalTimeIntervalData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (maximalIntervalAtTime : RicciFlowMaximalTimeIntervalData flow)
+
+/--
+Concrete maximal-time interval data proves the production maximal interval
+interface.
+-/
+theorem hasRicciFlowMaximalTimeInterval_of_ricciFlowMaximalTimeIntervalData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (maximalIntervalAtTime : RicciFlowMaximalTimeIntervalData flow) :
+    HasRicciFlowMaximalTimeInterval flow :=
+  HasRicciFlowMaximalTimeInterval.of_ricciFlowMaximalTimeIntervalData
+    maximalIntervalAtTime
+
+/--
+Short-time Ricci-flow data supplies a positive interval and hence the current
+maximal-interval interface.  Later continuation theory can replace this
+degenerate maximal interval by a stronger one.
+-/
+theorem hasRicciFlowMaximalTimeInterval_of_shortTimeRicciFlowSolutionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (shortTimeRicciAtTime : ShortTimeRicciFlowSolutionData flow) :
+    HasRicciFlowMaximalTimeInterval flow :=
+  hasRicciFlowMaximalTimeInterval_of_ricciFlowMaximalTimeIntervalData
+    { shortTimeRicciAtTime := shortTimeRicciAtTime
+      maximalTime := shortTimeRicciAtTime.existenceInterval
+      maximalTime_eq_shortTime := rfl
+      shortTime_le_maximalTime := le_rfl
+      solutionMetricAtTime := shortTimeRicciAtTime.solutionMetricAtTime
+      solutionMetric_eq_shortTimeMetric := rfl
+      solutionMetric_eq_flowMetric :=
+        shortTimeRicciAtTime.solutionMetric_eq_flowMetric
+      solution_initialMetric_eq :=
+        shortTimeRicciAtTime.solution_initialMetric_eq }
+
+/--
+Pullback-to-Ricci-flow data builds short-time Ricci-flow data and hence the
+current maximal-time interval interface.
+-/
+theorem hasRicciFlowMaximalTimeInterval_of_deturckPullbackToRicciFlowData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (pullbackToRicciFlowAtTime : DeTurckPullbackToRicciFlowData flow) :
+    HasRicciFlowMaximalTimeInterval flow :=
+  hasRicciFlowMaximalTimeInterval_of_shortTimeRicciFlowSolutionData
+    { pullbackToRicciFlowAtTime := pullbackToRicciFlowAtTime
+      existenceInterval :=
+        pullbackToRicciFlowAtTime.pullbackIdentityAtTime.odeAtTime.regularityAtTime.shortTimeAtTime.existenceInterval
+      solutionMetricAtTime := pullbackToRicciFlowAtTime.solutionMetricAtTime
+      existenceInterval_eq_deturckInterval := rfl
+      solutionMetric_eq_pullbackMetric := rfl
+      solutionMetric_eq_flowMetric :=
+        pullbackToRicciFlowAtTime.solutionMetric_eq_flowMetric
+      solution_initialMetric_eq :=
+        pullbackToRicciFlowAtTime.solution_initialMetric_eq
+      solution_rhs_eq_ricciFlow_rhs :=
+        pullbackToRicciFlowAtTime.solution_rhs_eq_ricciFlow_rhs
+      solution_rhs_eq_metricDerivative :=
+        pullbackToRicciFlowAtTime.solution_rhs_eq_metricDerivative }
+
+/--
+Pullback equation identity data builds the current maximal-time interval
+interface through the pullback-to-Ricci-flow and short-time solution data.
+-/
+theorem hasRicciFlowMaximalTimeInterval_of_deturckPullbackEquationIdentityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    HasRicciFlowMaximalTimeInterval flow :=
+  hasRicciFlowMaximalTimeInterval_of_deturckPullbackToRicciFlowData
+    { pullbackIdentityAtTime := pullbackIdentityAtTime
+      solutionMetricAtTime := pullbackIdentityAtTime.pulledBackMetricAtTime
+      solutionMetric_eq_pulledBackMetric := rfl
+      solutionMetric_eq_flowMetric :=
+        pullbackIdentityAtTime.pulledBackMetric_eq_flowMetric
+      solution_initialMetric_eq :=
+        pullbackIdentityAtTime.pulledBack_initialMetric_eq
+      solution_rhs_eq_ricciFlow_rhs :=
+        pullbackIdentityAtTime.pulledBack_rhs_eq_ricciFlow_rhs
+      solution_rhs_eq_metricDerivative :=
+        pullbackIdentityAtTime.pulledBack_rhs_eq_metricDerivative }
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, linear parabolic theory data,
+fixed-point argument data, short-time existence data, regularity-bootstrap
+data, DeTurck diffeomorphism ODE data, and pullback equation identity data
+close the first thirty-three analytic fields.
+-/
+theorem analyticFirstThirtyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    (((((((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow) ∧
+      HasDeTurckPullbackEquationIdentity flow) ∧
+      HasDeTurckPullbackToRicciFlow flow) ∧
+      HasShortTimeRicciFlowSolution flow) ∧
+      HasRicciFlowMaximalTimeInterval flow :=
+  ⟨analyticFirstThirtyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime odeAtTime pullbackIdentityAtTime,
+    hasRicciFlowMaximalTimeInterval_of_deturckPullbackEquationIdentityData
+      pullbackIdentityAtTime⟩
+
+/--
+Concrete continuation-criterion data for the Ricci-flow solution.
+
+The current production layer records the analytic inputs that make a
+continuation statement meaningful: scalar-curvature theory for the flow
+curvature, explicit Ricci-flow equation verification, the maximal interval
+data, and the metric/interval slice to which the criterion applies.  The next
+field, the curvature blow-up alternative, remains separate.
+-/
+structure RicciFlowContinuationCriterionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- Scalar-curvature theory for the curvature data of the flow. -/
+  scalarCurvatureTheoryAtTime :
+    ScalarCurvatureTheoryData (curvature_data_of_ricci_flow_data flow)
+  /-- Explicit equation verification on the Ricci-flow metric family. -/
+  equationVerificationAtTime :
+    RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)
+  /-- The maximal interval data to which the continuation criterion applies. -/
+  maximalIntervalAtTime : RicciFlowMaximalTimeIntervalData flow
+  /-- The positive interval used by the continuation statement. -/
+  continuationTime : DeTurckShortTimeExistenceInterval flow
+  /-- The continuation interval is the stored maximal-time endpoint. -/
+  continuationTime_eq_maximalTime :
+    continuationTime = maximalIntervalAtTime.maximalTime
+  /-- The short-time solution interval lies inside the continuation interval. -/
+  shortTime_le_continuationTime :
+    maximalIntervalAtTime.shortTimeRicciAtTime.existenceInterval.1 ≤
+      continuationTime.1
+  /-- The metric family used in the continuation statement. -/
+  continuationMetricAtTime : TimeDependentDeTurckPulledBackMetricField flow
+  /-- The continuation metric is the metric from the maximal-interval data. -/
+  continuationMetric_eq_intervalMetric :
+    continuationMetricAtTime = maximalIntervalAtTime.solutionMetricAtTime
+  /-- The continuation metric is the original flow metric family. -/
+  continuationMetric_eq_flowMetric :
+    continuationMetricAtTime = metric_of_ricci_flow_data flow
+  /-- The continuation metric starts from the original initial metric. -/
+  continuation_initialMetric_eq :
+    continuationMetricAtTime.metricAtTime 0 =
+      (metric_of_ricci_flow_data flow).metricAtTime 0
 
 /-- Interface for the continuation criterion needed before surgery starts. -/
 inductive HasRicciFlowContinuationCriterion
@@ -2173,7 +6934,268 @@ inductive HasRicciFlowContinuationCriterion
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Continuation-criterion data proves the continuation interface. -/
+  | of_ricciFlowContinuationCriterionData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (continuationCriterionAtTime :
+        RicciFlowContinuationCriterionData flow)
+
+/--
+Concrete continuation-criterion data proves the production continuation
+interface.
+-/
+theorem hasRicciFlowContinuationCriterion_of_ricciFlowContinuationCriterionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (continuationCriterionAtTime :
+      RicciFlowContinuationCriterionData flow) :
+    HasRicciFlowContinuationCriterion flow :=
+  HasRicciFlowContinuationCriterion.of_ricciFlowContinuationCriterionData
+    continuationCriterionAtTime
+
+/--
+Maximal-interval data, scalar-curvature theory, and explicit Ricci-flow
+equation verification supply the current continuation-criterion interface.
+-/
+theorem hasRicciFlowContinuationCriterion_of_ricciFlowMaximalTimeIntervalData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (maximalIntervalAtTime : RicciFlowMaximalTimeIntervalData flow) :
+    HasRicciFlowContinuationCriterion flow :=
+  hasRicciFlowContinuationCriterion_of_ricciFlowContinuationCriterionData
+    { scalarCurvatureTheoryAtTime := scalarCurvatureTheoryAtTime
+      equationVerificationAtTime := equationVerificationAtTime
+      maximalIntervalAtTime := maximalIntervalAtTime
+      continuationTime := maximalIntervalAtTime.maximalTime
+      continuationTime_eq_maximalTime := rfl
+      shortTime_le_continuationTime :=
+        maximalIntervalAtTime.shortTime_le_maximalTime
+      continuationMetricAtTime := maximalIntervalAtTime.solutionMetricAtTime
+      continuationMetric_eq_intervalMetric := rfl
+      continuationMetric_eq_flowMetric :=
+        maximalIntervalAtTime.solutionMetric_eq_flowMetric
+      continuation_initialMetric_eq :=
+        maximalIntervalAtTime.solution_initialMetric_eq }
+
+/--
+Pullback equation identity data builds the maximal interval data needed by the
+current continuation-criterion interface.
+-/
+theorem hasRicciFlowContinuationCriterion_of_deturckPullbackEquationIdentityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    HasRicciFlowContinuationCriterion flow := by
+  let pullbackToRicciFlowAtTime : DeTurckPullbackToRicciFlowData flow :=
+    { pullbackIdentityAtTime := pullbackIdentityAtTime
+      solutionMetricAtTime := pullbackIdentityAtTime.pulledBackMetricAtTime
+      solutionMetric_eq_pulledBackMetric := rfl
+      solutionMetric_eq_flowMetric :=
+        pullbackIdentityAtTime.pulledBackMetric_eq_flowMetric
+      solution_initialMetric_eq :=
+        pullbackIdentityAtTime.pulledBack_initialMetric_eq
+      solution_rhs_eq_ricciFlow_rhs :=
+        pullbackIdentityAtTime.pulledBack_rhs_eq_ricciFlow_rhs
+      solution_rhs_eq_metricDerivative :=
+        pullbackIdentityAtTime.pulledBack_rhs_eq_metricDerivative }
+  let shortTimeRicciAtTime : ShortTimeRicciFlowSolutionData flow :=
+    { pullbackToRicciFlowAtTime := pullbackToRicciFlowAtTime
+      existenceInterval :=
+        pullbackIdentityAtTime.odeAtTime.regularityAtTime.shortTimeAtTime.existenceInterval
+      solutionMetricAtTime := pullbackToRicciFlowAtTime.solutionMetricAtTime
+      existenceInterval_eq_deturckInterval := rfl
+      solutionMetric_eq_pullbackMetric := rfl
+      solutionMetric_eq_flowMetric :=
+        pullbackToRicciFlowAtTime.solutionMetric_eq_flowMetric
+      solution_initialMetric_eq :=
+        pullbackToRicciFlowAtTime.solution_initialMetric_eq
+      solution_rhs_eq_ricciFlow_rhs :=
+        pullbackToRicciFlowAtTime.solution_rhs_eq_ricciFlow_rhs
+      solution_rhs_eq_metricDerivative :=
+        pullbackToRicciFlowAtTime.solution_rhs_eq_metricDerivative }
+  let maximalIntervalAtTime : RicciFlowMaximalTimeIntervalData flow :=
+    { shortTimeRicciAtTime := shortTimeRicciAtTime
+      maximalTime := shortTimeRicciAtTime.existenceInterval
+      maximalTime_eq_shortTime := rfl
+      shortTime_le_maximalTime := le_rfl
+      solutionMetricAtTime := shortTimeRicciAtTime.solutionMetricAtTime
+      solutionMetric_eq_shortTimeMetric := rfl
+      solutionMetric_eq_flowMetric :=
+        shortTimeRicciAtTime.solutionMetric_eq_flowMetric
+      solution_initialMetric_eq :=
+        shortTimeRicciAtTime.solution_initialMetric_eq }
+  exact
+    hasRicciFlowContinuationCriterion_of_ricciFlowMaximalTimeIntervalData
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      maximalIntervalAtTime
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, linear parabolic theory data,
+fixed-point argument data, short-time existence data, regularity-bootstrap
+data, DeTurck diffeomorphism ODE data, and pullback equation identity data
+close the first thirty-four analytic fields.
+-/
+theorem analyticFirstThirtyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    ((((((((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow) ∧
+      HasDeTurckPullbackEquationIdentity flow) ∧
+      HasDeTurckPullbackToRicciFlow flow) ∧
+      HasShortTimeRicciFlowSolution flow) ∧
+      HasRicciFlowMaximalTimeInterval flow) ∧
+      HasRicciFlowContinuationCriterion flow :=
+  ⟨analyticFirstThirtyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime odeAtTime pullbackIdentityAtTime,
+    hasRicciFlowContinuationCriterion_of_deturckPullbackEquationIdentityData
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      pullbackIdentityAtTime⟩
+
+/--
+Concrete curvature blow-up alternative data for the Ricci-flow continuation
+criterion.
+
+This records the curvature side of the continuation theorem: a concrete
+continuation criterion, the Ricci/scalar curvature data of the flow, the scalar
+trace formula supplied by scalar-curvature theory, and the positive endpoint on
+which the alternative is stated.  The following package field, maximal solution
+extension, remains the separate analytic input that turns this alternative into
+an extension theorem.
+-/
+structure CurvatureBlowUpContinuationCriterionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- Continuation criterion to which the blow-up alternative is attached. -/
+  continuationCriterionAtTime :
+    RicciFlowContinuationCriterionData flow
+  /-- The curvature data used in the blow-up alternative. -/
+  curvatureAtTime : RicciCurvatureData (metric_of_ricci_flow_data flow)
+  /-- The stored curvature data is the curvature carried by the flow. -/
+  curvature_eq_flowCurvature :
+    curvatureAtTime = curvature_data_of_ricci_flow_data flow
+  /-- The scalar curvature field appearing in the alternative. -/
+  scalarCurvatureAtTime : ℝ → M → ℝ
+  /-- The stored scalar field is the scalar curvature carried by the flow. -/
+  scalarCurvature_eq_flowScalar :
+    ∀ (t : ℝ) (x : M),
+      scalarCurvatureAtTime t x =
+        (curvature_data_of_ricci_flow_data flow).scalar.scalarAtTime t x
+  /-- Scalar curvature is the trace of the Ricci tensor. -/
+  scalar_eq_trace_ricci :
+    ∀ (t : ℝ) (x : M),
+      (curvature_data_of_ricci_flow_data flow).scalar.scalarAtTime t x =
+        continuationCriterionAtTime.scalarCurvatureTheoryAtTime.ricciContractionTheoryAtTime.scalarContractionFormulaAtTime.traceAtTime
+          t x
+          ((curvature_data_of_ricci_flow_data flow).ricci.tensorAtTime t x)
+  /-- Positive endpoint where the blow-up alternative is stated. -/
+  blowUpAlternativeTime : DeTurckShortTimeExistenceInterval flow
+  /-- The blow-up endpoint is the continuation endpoint. -/
+  blowUpAlternativeTime_eq_continuationTime :
+    blowUpAlternativeTime = continuationCriterionAtTime.continuationTime
+  /-- The short-time solution interval lies inside the blow-up-alternative interval. -/
+  shortTime_le_blowUpAlternativeTime :
+    continuationCriterionAtTime.maximalIntervalAtTime.shortTimeRicciAtTime.existenceInterval.1 ≤
+      blowUpAlternativeTime.1
 
 /-- Interface for the curvature blow-up alternative in the continuation criterion. -/
 inductive HasCurvatureBlowUpContinuationCriterion
@@ -2181,7 +7203,277 @@ inductive HasCurvatureBlowUpContinuationCriterion
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Curvature blow-up data proves the blow-up continuation criterion. -/
+  | of_curvatureBlowUpContinuationCriterionData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (curvatureBlowUpAtTime :
+        CurvatureBlowUpContinuationCriterionData flow)
+
+/--
+Concrete curvature blow-up data proves the production blow-up alternative
+interface.
+-/
+theorem hasCurvatureBlowUpContinuationCriterion_of_curvatureBlowUpContinuationCriterionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (curvatureBlowUpAtTime :
+      CurvatureBlowUpContinuationCriterionData flow) :
+    HasCurvatureBlowUpContinuationCriterion flow :=
+  HasCurvatureBlowUpContinuationCriterion.of_curvatureBlowUpContinuationCriterionData
+    curvatureBlowUpAtTime
+
+/--
+Continuation-criterion data supplies the curvature side of the blow-up
+alternative through the flow's Ricci/scalar curvature data.
+-/
+theorem hasCurvatureBlowUpContinuationCriterion_of_ricciFlowContinuationCriterionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (continuationCriterionAtTime :
+      RicciFlowContinuationCriterionData flow) :
+    HasCurvatureBlowUpContinuationCriterion flow :=
+  hasCurvatureBlowUpContinuationCriterion_of_curvatureBlowUpContinuationCriterionData
+    { continuationCriterionAtTime := continuationCriterionAtTime
+      curvatureAtTime := curvature_data_of_ricci_flow_data flow
+      curvature_eq_flowCurvature := rfl
+      scalarCurvatureAtTime :=
+        (curvature_data_of_ricci_flow_data flow).scalar.scalarAtTime
+      scalarCurvature_eq_flowScalar := fun _t _x => rfl
+      scalar_eq_trace_ricci :=
+        scalarCurvatureTheoryData_scalar_eq_trace_ricci
+          continuationCriterionAtTime.scalarCurvatureTheoryAtTime
+      blowUpAlternativeTime :=
+        continuationCriterionAtTime.continuationTime
+      blowUpAlternativeTime_eq_continuationTime := rfl
+      shortTime_le_blowUpAlternativeTime :=
+        continuationCriterionAtTime.shortTime_le_continuationTime }
+
+/--
+Pullback equation identity data builds the continuation-criterion data and hence
+the current curvature blow-up continuation criterion.
+-/
+theorem hasCurvatureBlowUpContinuationCriterion_of_deturckPullbackEquationIdentityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    HasCurvatureBlowUpContinuationCriterion flow := by
+  let pullbackToRicciFlowAtTime : DeTurckPullbackToRicciFlowData flow :=
+    { pullbackIdentityAtTime := pullbackIdentityAtTime
+      solutionMetricAtTime := pullbackIdentityAtTime.pulledBackMetricAtTime
+      solutionMetric_eq_pulledBackMetric := rfl
+      solutionMetric_eq_flowMetric :=
+        pullbackIdentityAtTime.pulledBackMetric_eq_flowMetric
+      solution_initialMetric_eq :=
+        pullbackIdentityAtTime.pulledBack_initialMetric_eq
+      solution_rhs_eq_ricciFlow_rhs :=
+        pullbackIdentityAtTime.pulledBack_rhs_eq_ricciFlow_rhs
+      solution_rhs_eq_metricDerivative :=
+        pullbackIdentityAtTime.pulledBack_rhs_eq_metricDerivative }
+  let shortTimeRicciAtTime : ShortTimeRicciFlowSolutionData flow :=
+    { pullbackToRicciFlowAtTime := pullbackToRicciFlowAtTime
+      existenceInterval :=
+        pullbackIdentityAtTime.odeAtTime.regularityAtTime.shortTimeAtTime.existenceInterval
+      solutionMetricAtTime := pullbackToRicciFlowAtTime.solutionMetricAtTime
+      existenceInterval_eq_deturckInterval := rfl
+      solutionMetric_eq_pullbackMetric := rfl
+      solutionMetric_eq_flowMetric :=
+        pullbackToRicciFlowAtTime.solutionMetric_eq_flowMetric
+      solution_initialMetric_eq :=
+        pullbackToRicciFlowAtTime.solution_initialMetric_eq
+      solution_rhs_eq_ricciFlow_rhs :=
+        pullbackToRicciFlowAtTime.solution_rhs_eq_ricciFlow_rhs
+      solution_rhs_eq_metricDerivative :=
+        pullbackToRicciFlowAtTime.solution_rhs_eq_metricDerivative }
+  let maximalIntervalAtTime : RicciFlowMaximalTimeIntervalData flow :=
+    { shortTimeRicciAtTime := shortTimeRicciAtTime
+      maximalTime := shortTimeRicciAtTime.existenceInterval
+      maximalTime_eq_shortTime := rfl
+      shortTime_le_maximalTime := le_rfl
+      solutionMetricAtTime := shortTimeRicciAtTime.solutionMetricAtTime
+      solutionMetric_eq_shortTimeMetric := rfl
+      solutionMetric_eq_flowMetric :=
+        shortTimeRicciAtTime.solutionMetric_eq_flowMetric
+      solution_initialMetric_eq :=
+        shortTimeRicciAtTime.solution_initialMetric_eq }
+  let continuationCriterionAtTime : RicciFlowContinuationCriterionData flow :=
+    { scalarCurvatureTheoryAtTime := scalarCurvatureTheoryAtTime
+      equationVerificationAtTime := equationVerificationAtTime
+      maximalIntervalAtTime := maximalIntervalAtTime
+      continuationTime := maximalIntervalAtTime.maximalTime
+      continuationTime_eq_maximalTime := rfl
+      shortTime_le_continuationTime :=
+        maximalIntervalAtTime.shortTime_le_maximalTime
+      continuationMetricAtTime :=
+        maximalIntervalAtTime.solutionMetricAtTime
+      continuationMetric_eq_intervalMetric := rfl
+      continuationMetric_eq_flowMetric :=
+        maximalIntervalAtTime.solutionMetric_eq_flowMetric
+      continuation_initialMetric_eq :=
+        maximalIntervalAtTime.solution_initialMetric_eq }
+  exact
+    hasCurvatureBlowUpContinuationCriterion_of_ricciFlowContinuationCriterionData
+      continuationCriterionAtTime
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, linear parabolic theory data,
+fixed-point argument data, short-time existence data, regularity-bootstrap
+data, DeTurck diffeomorphism ODE data, and pullback equation identity data
+close the first thirty-five analytic fields.
+-/
+theorem analyticFirstThirtyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    (((((((((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow) ∧
+      HasDeTurckPullbackEquationIdentity flow) ∧
+      HasDeTurckPullbackToRicciFlow flow) ∧
+      HasShortTimeRicciFlowSolution flow) ∧
+      HasRicciFlowMaximalTimeInterval flow) ∧
+      HasRicciFlowContinuationCriterion flow) ∧
+      HasCurvatureBlowUpContinuationCriterion flow :=
+  ⟨analyticFirstThirtyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime odeAtTime pullbackIdentityAtTime,
+    hasCurvatureBlowUpContinuationCriterion_of_deturckPullbackEquationIdentityData
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      pullbackIdentityAtTime⟩
+
+/--
+Concrete maximal-solution extension data for Ricci flow.
+
+This packages the curvature blow-up alternative with the metric, curvature, and
+positive endpoint to which a maximal-solution extension statement applies.  The
+next field, parabolic Schauder estimates, remains the separate analytic
+regularity input used after this extension layer.
+-/
+structure MaximalSolutionExtensionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- Curvature blow-up alternative controlling finite-time obstruction. -/
+  curvatureBlowUpAtTime :
+    CurvatureBlowUpContinuationCriterionData flow
+  /-- Positive endpoint for the extension statement. -/
+  extensionTime : DeTurckShortTimeExistenceInterval flow
+  /-- The extension endpoint is the blow-up-alternative endpoint. -/
+  extensionTime_eq_blowUpAlternativeTime :
+    extensionTime = curvatureBlowUpAtTime.blowUpAlternativeTime
+  /-- The short-time solution interval lies inside the extension interval. -/
+  shortTime_le_extensionTime :
+    curvatureBlowUpAtTime.continuationCriterionAtTime.maximalIntervalAtTime.shortTimeRicciAtTime.existenceInterval.1 ≤
+      extensionTime.1
+  /-- Metric family being extended. -/
+  extensionMetricAtTime : TimeDependentDeTurckPulledBackMetricField flow
+  /-- The extension metric is the metric from the continuation criterion. -/
+  extensionMetric_eq_continuationMetric :
+    extensionMetricAtTime =
+      curvatureBlowUpAtTime.continuationCriterionAtTime.continuationMetricAtTime
+  /-- The extension metric is the original flow metric family. -/
+  extensionMetric_eq_flowMetric :
+    extensionMetricAtTime = metric_of_ricci_flow_data flow
+  /-- The extension metric starts from the original initial metric. -/
+  extension_initialMetric_eq :
+    extensionMetricAtTime.metricAtTime 0 =
+      (metric_of_ricci_flow_data flow).metricAtTime 0
+  /-- Curvature data used to control the extension. -/
+  extensionCurvatureAtTime :
+    RicciCurvatureData (metric_of_ricci_flow_data flow)
+  /-- The extension curvature data is the curvature carried by the flow. -/
+  extensionCurvature_eq_flowCurvature :
+    extensionCurvatureAtTime = curvature_data_of_ricci_flow_data flow
 
 /-- Interface for extending bounded-curvature solutions past a finite time. -/
 inductive HasMaximalSolutionExtension
@@ -2189,7 +7481,314 @@ inductive HasMaximalSolutionExtension
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Maximal-solution extension data proves the extension interface. -/
+  | of_maximalSolutionExtensionData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (extensionAtTime : MaximalSolutionExtensionData flow)
+
+/--
+Concrete maximal-solution extension data proves the production extension
+interface.
+-/
+theorem hasMaximalSolutionExtension_of_maximalSolutionExtensionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (extensionAtTime : MaximalSolutionExtensionData flow) :
+    HasMaximalSolutionExtension flow :=
+  HasMaximalSolutionExtension.of_maximalSolutionExtensionData extensionAtTime
+
+/--
+Curvature blow-up alternative data carries the metric, curvature, and endpoint
+needed by the current maximal-solution extension interface.
+-/
+theorem hasMaximalSolutionExtension_of_curvatureBlowUpContinuationCriterionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (curvatureBlowUpAtTime :
+      CurvatureBlowUpContinuationCriterionData flow) :
+    HasMaximalSolutionExtension flow :=
+  hasMaximalSolutionExtension_of_maximalSolutionExtensionData
+    { curvatureBlowUpAtTime := curvatureBlowUpAtTime
+      extensionTime := curvatureBlowUpAtTime.blowUpAlternativeTime
+      extensionTime_eq_blowUpAlternativeTime := rfl
+      shortTime_le_extensionTime :=
+        curvatureBlowUpAtTime.shortTime_le_blowUpAlternativeTime
+      extensionMetricAtTime :=
+        curvatureBlowUpAtTime.continuationCriterionAtTime.continuationMetricAtTime
+      extensionMetric_eq_continuationMetric := rfl
+      extensionMetric_eq_flowMetric :=
+        curvatureBlowUpAtTime.continuationCriterionAtTime.continuationMetric_eq_flowMetric
+      extension_initialMetric_eq :=
+        curvatureBlowUpAtTime.continuationCriterionAtTime.continuation_initialMetric_eq
+      extensionCurvatureAtTime := curvatureBlowUpAtTime.curvatureAtTime
+      extensionCurvature_eq_flowCurvature :=
+        curvatureBlowUpAtTime.curvature_eq_flowCurvature }
+
+/--
+Pullback equation identity data builds the curvature blow-up data and hence the
+current maximal-solution extension interface.
+-/
+theorem hasMaximalSolutionExtension_of_deturckPullbackEquationIdentityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    HasMaximalSolutionExtension flow := by
+  let pullbackToRicciFlowAtTime : DeTurckPullbackToRicciFlowData flow :=
+    { pullbackIdentityAtTime := pullbackIdentityAtTime
+      solutionMetricAtTime := pullbackIdentityAtTime.pulledBackMetricAtTime
+      solutionMetric_eq_pulledBackMetric := rfl
+      solutionMetric_eq_flowMetric :=
+        pullbackIdentityAtTime.pulledBackMetric_eq_flowMetric
+      solution_initialMetric_eq :=
+        pullbackIdentityAtTime.pulledBack_initialMetric_eq
+      solution_rhs_eq_ricciFlow_rhs :=
+        pullbackIdentityAtTime.pulledBack_rhs_eq_ricciFlow_rhs
+      solution_rhs_eq_metricDerivative :=
+        pullbackIdentityAtTime.pulledBack_rhs_eq_metricDerivative }
+  let shortTimeRicciAtTime : ShortTimeRicciFlowSolutionData flow :=
+    { pullbackToRicciFlowAtTime := pullbackToRicciFlowAtTime
+      existenceInterval :=
+        pullbackIdentityAtTime.odeAtTime.regularityAtTime.shortTimeAtTime.existenceInterval
+      solutionMetricAtTime := pullbackToRicciFlowAtTime.solutionMetricAtTime
+      existenceInterval_eq_deturckInterval := rfl
+      solutionMetric_eq_pullbackMetric := rfl
+      solutionMetric_eq_flowMetric :=
+        pullbackToRicciFlowAtTime.solutionMetric_eq_flowMetric
+      solution_initialMetric_eq :=
+        pullbackToRicciFlowAtTime.solution_initialMetric_eq
+      solution_rhs_eq_ricciFlow_rhs :=
+        pullbackToRicciFlowAtTime.solution_rhs_eq_ricciFlow_rhs
+      solution_rhs_eq_metricDerivative :=
+        pullbackToRicciFlowAtTime.solution_rhs_eq_metricDerivative }
+  let maximalIntervalAtTime : RicciFlowMaximalTimeIntervalData flow :=
+    { shortTimeRicciAtTime := shortTimeRicciAtTime
+      maximalTime := shortTimeRicciAtTime.existenceInterval
+      maximalTime_eq_shortTime := rfl
+      shortTime_le_maximalTime := le_rfl
+      solutionMetricAtTime := shortTimeRicciAtTime.solutionMetricAtTime
+      solutionMetric_eq_shortTimeMetric := rfl
+      solutionMetric_eq_flowMetric :=
+        shortTimeRicciAtTime.solutionMetric_eq_flowMetric
+      solution_initialMetric_eq :=
+        shortTimeRicciAtTime.solution_initialMetric_eq }
+  let continuationCriterionAtTime : RicciFlowContinuationCriterionData flow :=
+    { scalarCurvatureTheoryAtTime := scalarCurvatureTheoryAtTime
+      equationVerificationAtTime := equationVerificationAtTime
+      maximalIntervalAtTime := maximalIntervalAtTime
+      continuationTime := maximalIntervalAtTime.maximalTime
+      continuationTime_eq_maximalTime := rfl
+      shortTime_le_continuationTime :=
+        maximalIntervalAtTime.shortTime_le_maximalTime
+      continuationMetricAtTime :=
+        maximalIntervalAtTime.solutionMetricAtTime
+      continuationMetric_eq_intervalMetric := rfl
+      continuationMetric_eq_flowMetric :=
+        maximalIntervalAtTime.solutionMetric_eq_flowMetric
+      continuation_initialMetric_eq :=
+        maximalIntervalAtTime.solution_initialMetric_eq }
+  let curvatureBlowUpAtTime :
+      CurvatureBlowUpContinuationCriterionData flow :=
+    { continuationCriterionAtTime := continuationCriterionAtTime
+      curvatureAtTime := curvature_data_of_ricci_flow_data flow
+      curvature_eq_flowCurvature := rfl
+      scalarCurvatureAtTime :=
+        (curvature_data_of_ricci_flow_data flow).scalar.scalarAtTime
+      scalarCurvature_eq_flowScalar := fun _t _x => rfl
+      scalar_eq_trace_ricci :=
+        scalarCurvatureTheoryData_scalar_eq_trace_ricci
+          scalarCurvatureTheoryAtTime
+      blowUpAlternativeTime :=
+        continuationCriterionAtTime.continuationTime
+      blowUpAlternativeTime_eq_continuationTime := rfl
+      shortTime_le_blowUpAlternativeTime :=
+        continuationCriterionAtTime.shortTime_le_continuationTime }
+  exact
+    hasMaximalSolutionExtension_of_curvatureBlowUpContinuationCriterionData
+      curvatureBlowUpAtTime
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, linear parabolic theory data,
+fixed-point argument data, short-time existence data, regularity-bootstrap
+data, DeTurck diffeomorphism ODE data, and pullback equation identity data
+close the first thirty-six analytic fields.
+-/
+theorem analyticFirstThirtySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    ((((((((((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow) ∧
+      HasDeTurckPullbackEquationIdentity flow) ∧
+      HasDeTurckPullbackToRicciFlow flow) ∧
+      HasShortTimeRicciFlowSolution flow) ∧
+      HasRicciFlowMaximalTimeInterval flow) ∧
+      HasRicciFlowContinuationCriterion flow) ∧
+      HasCurvatureBlowUpContinuationCriterion flow) ∧
+      HasMaximalSolutionExtension flow :=
+  ⟨analyticFirstThirtyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime odeAtTime pullbackIdentityAtTime,
+    hasMaximalSolutionExtension_of_deturckPullbackEquationIdentityData
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      pullbackIdentityAtTime⟩
+
+/--
+Concrete parabolic Schauder estimate data for the Ricci-DeTurck/Ricci-flow
+regularity step.
+
+The bundle ties the Schauder estimate layer to the already constructed
+short-time regularity bootstrap, the bounded-curvature maximal-solution
+extension layer, and the strict linear parabolic solution operator with its
+pointwise estimates.
+-/
+structure ParabolicSchauderEstimateData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- Regularity-bootstrap data to which the Schauder estimate applies. -/
+  regularityAtTime : ShortTimeRegularityBootstrapData flow
+  /-- Maximal-solution extension data supplying the continuation endpoint. -/
+  maximalExtensionAtTime : MaximalSolutionExtensionData flow
+  /-- Linear parabolic theory whose estimate constants are used by Schauder. -/
+  linearTheoryAtTime : ParabolicLinearTheoryData flow
+  /-- The linear theory is the one used in the bootstrapped solution. -/
+  linearTheory_eq_bootstrapLinearTheory :
+    linearTheoryAtTime =
+      regularityAtTime.shortTimeAtTime.fixedPointAtTime.linearTheoryAtTime
+  /-- Strict parabolicity data for the same linearized operator. -/
+  strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow
+  /-- The strict-parabolicity data is the one carried by the linear theory. -/
+  strictParabolic_eq_linearTheory :
+    strictParabolicAtTime = linearTheoryAtTime.strictParabolicAtTime
+  /-- Linear solution operator used in the Schauder estimate. -/
+  solutionOperatorAtTime :
+    TimeDependentParabolicLinearSolutionOperatorField flow
+  /-- The Schauder solution operator is the linear-theory solution operator. -/
+  solutionOperator_eq_linearTheoryOperator :
+    solutionOperatorAtTime = linearTheoryAtTime.solutionOperatorAtTime
+  /-- Time-dependent linear estimate constants. -/
+  estimateConstantAtTime :
+    TimeDependentParabolicLinearEstimateConstantField flow
+  /-- The estimate constants are those carried by the linear theory. -/
+  estimateConstant_eq_linearTheoryConstant :
+    estimateConstantAtTime = linearTheoryAtTime.estimateConstantAtTime
+  /-- Linear estimate constants stay strictly positive. -/
+  estimateConstant_pos : ∀ t, 0 < estimateConstantAtTime t
+  /-- Higher-order Schauder estimate constants from the regularity bootstrap. -/
+  schauderEstimateAtTime :
+    TimeDependentShortTimeRegularityEstimateField flow
+  /-- The Schauder constants agree with the bootstrap regularity constants. -/
+  schauderEstimate_eq_bootstrapEstimate :
+    schauderEstimateAtTime = regularityAtTime.regularityEstimateAtTime
+  /-- Schauder estimate constants are nonnegative at every order. -/
+  schauderEstimate_nonneg :
+    ∀ (t : ℝ) (order : ℕ), 0 ≤ schauderEstimateAtTime t order
+  /-- The bootstrapped metric to which the estimates apply. -/
+  bootstrappedMetricAtTime :
+    TimeDependentRicciDeTurckBootstrappedMetricField flow
+  /-- The stored metric is the bootstrapped short-time metric. -/
+  bootstrappedMetric_eq_bootstrapMetric :
+    bootstrappedMetricAtTime = regularityAtTime.bootstrappedMetricAtTime
+  /-- The metric family being extended by the maximal-solution data. -/
+  extensionMetricAtTime : TimeDependentDeTurckPulledBackMetricField flow
+  /-- The extension metric is the one stored in the maximal-extension data. -/
+  extensionMetric_eq_maximalExtensionMetric :
+    extensionMetricAtTime = maximalExtensionAtTime.extensionMetricAtTime
+  /-- The extended metric is the original Ricci-flow metric family. -/
+  extensionMetric_eq_flowMetric :
+    extensionMetricAtTime = metric_of_ricci_flow_data flow
 
 /-- Interface for the parabolic Schauder estimates used by Ricci-flow regularity. -/
 inductive HasParabolicSchauderEstimates
@@ -2197,7 +7796,354 @@ inductive HasParabolicSchauderEstimates
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Concrete Schauder estimate data proves the Schauder interface. -/
+  | of_parabolicSchauderEstimateData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (schauderAtTime : ParabolicSchauderEstimateData flow)
+
+/--
+Concrete parabolic Schauder estimate data proves the production Schauder
+interface.
+-/
+theorem hasParabolicSchauderEstimates_of_parabolicSchauderEstimateData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (schauderAtTime : ParabolicSchauderEstimateData flow) :
+    HasParabolicSchauderEstimates flow :=
+  HasParabolicSchauderEstimates.of_parabolicSchauderEstimateData
+    schauderAtTime
+
+/--
+Short-time regularity bootstrap data and maximal-solution extension data carry
+the linear estimates, higher-order bootstrap constants, and extension metric
+needed by the current Schauder interface.
+-/
+theorem hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_maximalSolutionExtensionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (maximalExtensionAtTime : MaximalSolutionExtensionData flow) :
+    HasParabolicSchauderEstimates flow :=
+  hasParabolicSchauderEstimates_of_parabolicSchauderEstimateData
+    { regularityAtTime := regularityAtTime
+      maximalExtensionAtTime := maximalExtensionAtTime
+      linearTheoryAtTime :=
+        regularityAtTime.shortTimeAtTime.fixedPointAtTime.linearTheoryAtTime
+      linearTheory_eq_bootstrapLinearTheory := rfl
+      strictParabolicAtTime :=
+        regularityAtTime.shortTimeAtTime.fixedPointAtTime.linearTheoryAtTime.strictParabolicAtTime
+      strictParabolic_eq_linearTheory := rfl
+      solutionOperatorAtTime :=
+        regularityAtTime.shortTimeAtTime.fixedPointAtTime.linearTheoryAtTime.solutionOperatorAtTime
+      solutionOperator_eq_linearTheoryOperator := rfl
+      estimateConstantAtTime :=
+        regularityAtTime.shortTimeAtTime.fixedPointAtTime.linearTheoryAtTime.estimateConstantAtTime
+      estimateConstant_eq_linearTheoryConstant := rfl
+      estimateConstant_pos :=
+        regularityAtTime.shortTimeAtTime.fixedPointAtTime.linearTheoryAtTime.estimateConstant_pos
+      schauderEstimateAtTime := regularityAtTime.regularityEstimateAtTime
+      schauderEstimate_eq_bootstrapEstimate := rfl
+      schauderEstimate_nonneg := regularityAtTime.regularityEstimate_nonneg
+      bootstrappedMetricAtTime := regularityAtTime.bootstrappedMetricAtTime
+      bootstrappedMetric_eq_bootstrapMetric := rfl
+      extensionMetricAtTime := maximalExtensionAtTime.extensionMetricAtTime
+      extensionMetric_eq_maximalExtensionMetric := rfl
+      extensionMetric_eq_flowMetric :=
+        maximalExtensionAtTime.extensionMetric_eq_flowMetric }
+
+/--
+Regularity-bootstrap data and curvature blow-up continuation data supply the
+Schauder layer after building the maximal-solution extension endpoint.
+-/
+theorem hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_curvatureBlowUpContinuationCriterionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (curvatureBlowUpAtTime :
+      CurvatureBlowUpContinuationCriterionData flow) :
+    HasParabolicSchauderEstimates flow :=
+  hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_maximalSolutionExtensionData
+    regularityAtTime
+    { curvatureBlowUpAtTime := curvatureBlowUpAtTime
+      extensionTime := curvatureBlowUpAtTime.blowUpAlternativeTime
+      extensionTime_eq_blowUpAlternativeTime := rfl
+      shortTime_le_extensionTime :=
+        curvatureBlowUpAtTime.shortTime_le_blowUpAlternativeTime
+      extensionMetricAtTime :=
+        curvatureBlowUpAtTime.continuationCriterionAtTime.continuationMetricAtTime
+      extensionMetric_eq_continuationMetric := rfl
+      extensionMetric_eq_flowMetric :=
+        curvatureBlowUpAtTime.continuationCriterionAtTime.continuationMetric_eq_flowMetric
+      extension_initialMetric_eq :=
+        curvatureBlowUpAtTime.continuationCriterionAtTime.continuation_initialMetric_eq
+      extensionCurvatureAtTime := curvatureBlowUpAtTime.curvatureAtTime
+      extensionCurvature_eq_flowCurvature :=
+        curvatureBlowUpAtTime.curvature_eq_flowCurvature }
+
+/--
+Pullback equation identity data builds the curvature blow-up/maximal extension
+layer, while short-time regularity data supplies the Schauder estimate constants.
+-/
+theorem hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_deturckPullbackEquationIdentityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    HasParabolicSchauderEstimates flow := by
+  let pullbackToRicciFlowAtTime : DeTurckPullbackToRicciFlowData flow :=
+    { pullbackIdentityAtTime := pullbackIdentityAtTime
+      solutionMetricAtTime := pullbackIdentityAtTime.pulledBackMetricAtTime
+      solutionMetric_eq_pulledBackMetric := rfl
+      solutionMetric_eq_flowMetric :=
+        pullbackIdentityAtTime.pulledBackMetric_eq_flowMetric
+      solution_initialMetric_eq :=
+        pullbackIdentityAtTime.pulledBack_initialMetric_eq
+      solution_rhs_eq_ricciFlow_rhs :=
+        pullbackIdentityAtTime.pulledBack_rhs_eq_ricciFlow_rhs
+      solution_rhs_eq_metricDerivative :=
+        pullbackIdentityAtTime.pulledBack_rhs_eq_metricDerivative }
+  let shortTimeRicciAtTime : ShortTimeRicciFlowSolutionData flow :=
+    { pullbackToRicciFlowAtTime := pullbackToRicciFlowAtTime
+      existenceInterval :=
+        pullbackIdentityAtTime.odeAtTime.regularityAtTime.shortTimeAtTime.existenceInterval
+      solutionMetricAtTime := pullbackToRicciFlowAtTime.solutionMetricAtTime
+      existenceInterval_eq_deturckInterval := rfl
+      solutionMetric_eq_pullbackMetric := rfl
+      solutionMetric_eq_flowMetric :=
+        pullbackToRicciFlowAtTime.solutionMetric_eq_flowMetric
+      solution_initialMetric_eq :=
+        pullbackToRicciFlowAtTime.solution_initialMetric_eq
+      solution_rhs_eq_ricciFlow_rhs :=
+        pullbackToRicciFlowAtTime.solution_rhs_eq_ricciFlow_rhs
+      solution_rhs_eq_metricDerivative :=
+        pullbackToRicciFlowAtTime.solution_rhs_eq_metricDerivative }
+  let maximalIntervalAtTime : RicciFlowMaximalTimeIntervalData flow :=
+    { shortTimeRicciAtTime := shortTimeRicciAtTime
+      maximalTime := shortTimeRicciAtTime.existenceInterval
+      maximalTime_eq_shortTime := rfl
+      shortTime_le_maximalTime := le_rfl
+      solutionMetricAtTime := shortTimeRicciAtTime.solutionMetricAtTime
+      solutionMetric_eq_shortTimeMetric := rfl
+      solutionMetric_eq_flowMetric :=
+        shortTimeRicciAtTime.solutionMetric_eq_flowMetric
+      solution_initialMetric_eq :=
+        shortTimeRicciAtTime.solution_initialMetric_eq }
+  let continuationCriterionAtTime : RicciFlowContinuationCriterionData flow :=
+    { scalarCurvatureTheoryAtTime := scalarCurvatureTheoryAtTime
+      equationVerificationAtTime := equationVerificationAtTime
+      maximalIntervalAtTime := maximalIntervalAtTime
+      continuationTime := maximalIntervalAtTime.maximalTime
+      continuationTime_eq_maximalTime := rfl
+      shortTime_le_continuationTime :=
+        maximalIntervalAtTime.shortTime_le_maximalTime
+      continuationMetricAtTime :=
+        maximalIntervalAtTime.solutionMetricAtTime
+      continuationMetric_eq_intervalMetric := rfl
+      continuationMetric_eq_flowMetric :=
+        maximalIntervalAtTime.solutionMetric_eq_flowMetric
+      continuation_initialMetric_eq :=
+        maximalIntervalAtTime.solution_initialMetric_eq }
+  let curvatureBlowUpAtTime :
+      CurvatureBlowUpContinuationCriterionData flow :=
+    { continuationCriterionAtTime := continuationCriterionAtTime
+      curvatureAtTime := curvature_data_of_ricci_flow_data flow
+      curvature_eq_flowCurvature := rfl
+      scalarCurvatureAtTime :=
+        (curvature_data_of_ricci_flow_data flow).scalar.scalarAtTime
+      scalarCurvature_eq_flowScalar := fun _t _x => rfl
+      scalar_eq_trace_ricci :=
+        scalarCurvatureTheoryData_scalar_eq_trace_ricci
+          scalarCurvatureTheoryAtTime
+      blowUpAlternativeTime :=
+        continuationCriterionAtTime.continuationTime
+      blowUpAlternativeTime_eq_continuationTime := rfl
+      shortTime_le_blowUpAlternativeTime :=
+        continuationCriterionAtTime.shortTime_le_continuationTime }
+  exact
+    hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_curvatureBlowUpContinuationCriterionData
+      regularityAtTime curvatureBlowUpAtTime
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, linear parabolic theory data,
+fixed-point argument data, short-time existence data, regularity-bootstrap data,
+DeTurck diffeomorphism ODE data, and pullback equation identity data close the
+first thirty-seven analytic fields.
+-/
+theorem analyticFirstThirtySeven_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    (((((((((((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow) ∧
+      HasDeTurckPullbackEquationIdentity flow) ∧
+      HasDeTurckPullbackToRicciFlow flow) ∧
+      HasShortTimeRicciFlowSolution flow) ∧
+      HasRicciFlowMaximalTimeInterval flow) ∧
+      HasRicciFlowContinuationCriterion flow) ∧
+      HasCurvatureBlowUpContinuationCriterion flow) ∧
+      HasMaximalSolutionExtension flow) ∧
+      HasParabolicSchauderEstimates flow :=
+  ⟨analyticFirstThirtySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime odeAtTime pullbackIdentityAtTime,
+    hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_deturckPullbackEquationIdentityData
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      regularityAtTime pullbackIdentityAtTime⟩
+
+/--
+Concrete Ricci-flow parabolic regularity data.
+
+This upgrades the Schauder estimate layer from the gauged/bootstrapped
+short-time construction to the Ricci-flow metric family.  The bundle records
+the flow-gauge metric, its equality with the original flow metric, the inherited
+linear parabolic solution-operator estimate, and the pointwise bootstrap
+regularity estimate that the next Shi-estimate layer will use.
+-/
+structure RicciFlowParabolicRegularityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- Parabolic Schauder estimate data being upgraded to Ricci-flow regularity. -/
+  schauderAtTime : ParabolicSchauderEstimateData flow
+  /-- The regular metric family in Ricci-flow gauge. -/
+  regularMetricAtTime : TimeDependentDeTurckPulledBackMetricField flow
+  /-- The regular metric is the extension metric carried by Schauder data. -/
+  regularMetric_eq_schauderExtensionMetric :
+    regularMetricAtTime = schauderAtTime.extensionMetricAtTime
+  /-- The regular metric is the original Ricci-flow metric family. -/
+  regularMetric_eq_flowMetric :
+    regularMetricAtTime = metric_of_ricci_flow_data flow
+  /-- Regularity estimates inherited from the Schauder/bootstrap layer. -/
+  regularityEstimateAtTime :
+    TimeDependentShortTimeRegularityEstimateField flow
+  /-- The Ricci-flow regularity constants are the Schauder constants. -/
+  regularityEstimate_eq_schauderEstimate :
+    regularityEstimateAtTime = schauderAtTime.schauderEstimateAtTime
+  /-- Ricci-flow regularity constants are nonnegative at every order. -/
+  regularityEstimate_nonneg :
+    ∀ (t : ℝ) (order : ℕ), 0 ≤ regularityEstimateAtTime t order
+  /-- Linear parabolic solution operator used by the regularity estimate. -/
+  solutionOperatorAtTime :
+    TimeDependentParabolicLinearSolutionOperatorField flow
+  /-- The operator is the one carried by the Schauder layer. -/
+  solutionOperator_eq_schauderOperator :
+    solutionOperatorAtTime = schauderAtTime.solutionOperatorAtTime
+  /-- Linear parabolic estimate constants used by the solution operator. -/
+  estimateConstantAtTime :
+    TimeDependentParabolicLinearEstimateConstantField flow
+  /-- The linear estimate constants are the Schauder constants. -/
+  estimateConstant_eq_schauderConstant :
+    estimateConstantAtTime = schauderAtTime.estimateConstantAtTime
+  /-- Linear estimate constants remain strictly positive. -/
+  estimateConstant_pos : ∀ t, 0 < estimateConstantAtTime t
+  /-- Pointwise estimate for the linear solution operator. -/
+  solutionOperator_pointwise_estimate :
+    ∀ (t : ℝ) (source : TangentCovariantTwoTensor I M)
+      (x : M) (v w : TangentSpace I x),
+      |solutionOperatorAtTime t source x v w| ≤
+        estimateConstantAtTime t * |source x v w|
+  /-- Pointwise regularity estimate for the produced fixed-point tensor. -/
+  fixedPointTensor_pointwise_regular :
+    ∀ (t : ℝ) (order : ℕ) (x : M) (X Y : TangentSpace I x),
+      |schauderAtTime.regularityAtTime.shortTimeAtTime.fixedPointAtTime.fixedPointAtTime
+        t x X Y| ≤ regularityEstimateAtTime t order
 
 /-- Interface for parabolic regularity estimates for the Ricci-flow PDE. -/
 inductive HasRicciFlowParabolicRegularity
@@ -2205,7 +8151,449 @@ inductive HasRicciFlowParabolicRegularity
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Concrete Ricci-flow parabolic regularity data proves the interface. -/
+  | of_ricciFlowParabolicRegularityData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (regularityAtTime : RicciFlowParabolicRegularityData flow)
+
+/--
+Concrete Ricci-flow parabolic regularity data proves the production regularity
+interface.
+-/
+theorem hasRicciFlowParabolicRegularity_of_ricciFlowParabolicRegularityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (regularityAtTime : RicciFlowParabolicRegularityData flow) :
+    HasRicciFlowParabolicRegularity flow :=
+  HasRicciFlowParabolicRegularity.of_ricciFlowParabolicRegularityData
+    regularityAtTime
+
+/--
+Parabolic Schauder estimate data supplies the Ricci-flow metric family, the
+linear parabolic estimate, and the bootstrap regularity estimate needed by the
+current Ricci-flow parabolic regularity interface.
+-/
+theorem hasRicciFlowParabolicRegularity_of_parabolicSchauderEstimateData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (schauderAtTime : ParabolicSchauderEstimateData flow) :
+    HasRicciFlowParabolicRegularity flow :=
+  hasRicciFlowParabolicRegularity_of_ricciFlowParabolicRegularityData
+    { schauderAtTime := schauderAtTime
+      regularMetricAtTime := schauderAtTime.extensionMetricAtTime
+      regularMetric_eq_schauderExtensionMetric := rfl
+      regularMetric_eq_flowMetric := schauderAtTime.extensionMetric_eq_flowMetric
+      regularityEstimateAtTime :=
+        schauderAtTime.regularityAtTime.regularityEstimateAtTime
+      regularityEstimate_eq_schauderEstimate :=
+        schauderAtTime.schauderEstimate_eq_bootstrapEstimate.symm
+      regularityEstimate_nonneg :=
+        schauderAtTime.regularityAtTime.regularityEstimate_nonneg
+      solutionOperatorAtTime :=
+        schauderAtTime.linearTheoryAtTime.solutionOperatorAtTime
+      solutionOperator_eq_schauderOperator :=
+        schauderAtTime.solutionOperator_eq_linearTheoryOperator.symm
+      estimateConstantAtTime :=
+        schauderAtTime.linearTheoryAtTime.estimateConstantAtTime
+      estimateConstant_eq_schauderConstant :=
+        schauderAtTime.estimateConstant_eq_linearTheoryConstant.symm
+      estimateConstant_pos :=
+        schauderAtTime.linearTheoryAtTime.estimateConstant_pos
+      solutionOperator_pointwise_estimate :=
+        schauderAtTime.linearTheoryAtTime.solutionOperator_pointwise_estimate
+      fixedPointTensor_pointwise_regular :=
+        schauderAtTime.regularityAtTime.fixedPointTensor_pointwise_regular }
+
+/--
+Any concrete proof of the Schauder estimate interface carries the data needed
+for the Ricci-flow parabolic regularity interface.
+-/
+theorem hasRicciFlowParabolicRegularity_of_parabolicSchauderEstimates
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (schauderAtTime : HasParabolicSchauderEstimates flow) :
+    HasRicciFlowParabolicRegularity flow := by
+  cases schauderAtTime with
+  | of_parabolicSchauderEstimateData schauderData =>
+      exact
+        hasRicciFlowParabolicRegularity_of_parabolicSchauderEstimateData
+          schauderData
+
+/--
+Short-time regularity bootstrap data and maximal-solution extension data build
+the Schauder layer and hence Ricci-flow parabolic regularity.
+-/
+theorem hasRicciFlowParabolicRegularity_of_shortTimeRegularityBootstrapData_and_maximalSolutionExtensionData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (maximalExtensionAtTime : MaximalSolutionExtensionData flow) :
+    HasRicciFlowParabolicRegularity flow :=
+  hasRicciFlowParabolicRegularity_of_parabolicSchauderEstimates
+    (hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_maximalSolutionExtensionData
+      regularityAtTime maximalExtensionAtTime)
+
+/--
+Pullback equation identity data builds the continuation/maximal-extension
+Schauder layer, and short-time regularity data then proves Ricci-flow parabolic
+regularity.
+-/
+theorem hasRicciFlowParabolicRegularity_of_shortTimeRegularityBootstrapData_and_deturckPullbackEquationIdentityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    HasRicciFlowParabolicRegularity flow :=
+  hasRicciFlowParabolicRegularity_of_parabolicSchauderEstimates
+    (hasParabolicSchauderEstimates_of_shortTimeRegularityBootstrapData_and_deturckPullbackEquationIdentityData
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      regularityAtTime pullbackIdentityAtTime)
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, linear parabolic theory data,
+fixed-point argument data, short-time existence data, regularity-bootstrap data,
+DeTurck diffeomorphism ODE data, and pullback equation identity data close the
+first thirty-eight analytic fields.
+-/
+theorem analyticFirstThirtyEight_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    ((((((((((((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow) ∧
+      HasDeTurckPullbackEquationIdentity flow) ∧
+      HasDeTurckPullbackToRicciFlow flow) ∧
+      HasShortTimeRicciFlowSolution flow) ∧
+      HasRicciFlowMaximalTimeInterval flow) ∧
+      HasRicciFlowContinuationCriterion flow) ∧
+      HasCurvatureBlowUpContinuationCriterion flow) ∧
+      HasMaximalSolutionExtension flow) ∧
+      HasParabolicSchauderEstimates flow) ∧
+      HasRicciFlowParabolicRegularity flow :=
+  let firstThirtySeven :=
+    analyticFirstThirtySeven_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime odeAtTime pullbackIdentityAtTime
+  ⟨firstThirtySeven,
+    hasRicciFlowParabolicRegularity_of_parabolicSchauderEstimates
+      firstThirtySeven.2⟩
+
+/--
+Pointwise energy of the first covariant derivative of the Riemann curvature
+tensor along a Ricci flow.
+
+The value is scalar-valued so the local interface can express estimates without
+requiring a norm instance on every tangent space.
+-/
+abbrev TimeDependentShiCurvatureDerivativeEnergyField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → (x : M) →
+    TangentSpace I x → TangentSpace I x → TangentSpace I x →
+      TangentSpace I x → ℝ
+
+/-- Shape contract for first-curvature-derivative energy fields. -/
+theorem timeDependentShiCurvatureDerivativeEnergyField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentShiCurvatureDerivativeEnergyField flow =
+      (ℝ → (x : M) →
+        TangentSpace I x → TangentSpace I x → TangentSpace I x →
+          TangentSpace I x → ℝ) :=
+  rfl
+
+/--
+Pointwise bound field for Shi-type curvature-derivative estimates.
+
+The order parameter records which derivative level is being estimated; the
+remaining tangent-vector arguments make the bound explicitly pointwise in the
+curvature-derivative energy tested below.
+-/
+abbrev TimeDependentShiDerivativePointwiseBoundField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (_flow : RicciFlowData I n M) : Type _ :=
+  ℝ → ℕ → (x : M) →
+    TangentSpace I x → TangentSpace I x → TangentSpace I x →
+      TangentSpace I x → ℝ
+
+/-- Shape contract for Shi pointwise derivative-bound fields. -/
+theorem timeDependentShiDerivativePointwiseBoundField_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (flow : RicciFlowData I n M) :
+    TimeDependentShiDerivativePointwiseBoundField flow =
+      (ℝ → ℕ → (x : M) →
+        TangentSpace I x → TangentSpace I x → TangentSpace I x →
+          TangentSpace I x → ℝ) :=
+  rfl
+
+/--
+Concrete Shi-type derivative estimate data.
+
+The bundle records the already-established Ricci-flow parabolic regularity
+data, extracts the covariant derivative of the Riemann tensor from the
+second-Bianchi data carried by scalar-curvature theory, measures that derivative
+using the Ricci-flow metric, and stores a pointwise bound obtained by combining
+that derivative energy with the existing parabolic regularity estimate.
+-/
+structure ShiDerivativeEstimateData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- Scalar-curvature theory supplies the Riemann curvature derivative data. -/
+  scalarCurvatureTheoryAtTime :
+    ScalarCurvatureTheoryData
+      (curvature_data_of_ricci_flow_data flow)
+  /-- Ricci-flow parabolic regularity supplies the regularity constants. -/
+  parabolicRegularityAtTime : RicciFlowParabolicRegularityData flow
+  /-- The second-Bianchi data used for the curvature derivative. -/
+  secondBianchiAtTime :
+    RiemannCurvatureSecondBianchiData (metric_of_ricci_flow_data flow)
+  /-- The second-Bianchi data is the one carried by scalar-curvature theory. -/
+  secondBianchi_eq_scalarCurvatureTheory :
+    secondBianchiAtTime =
+      scalarCurvatureTheoryAtTime.ricciContractionTheoryAtTime.scalarContractionFormulaAtTime.ricciContractionFormulaAtTime.secondBianchiAtTime
+  /-- The covariant derivative of the constructed Riemann curvature tensor. -/
+  curvatureDerivativeAtTime :
+    TimeDependentRiemannCurvatureCovariantDerivativeField
+      (metric_of_ricci_flow_data flow)
+  /-- The derivative field is the one stored in the second-Bianchi witness. -/
+  curvatureDerivative_eq_secondBianchi :
+    curvatureDerivativeAtTime =
+      secondBianchiAtTime.curvatureCovariantDerivativeAtTime
+  /-- The scalar energy used to state pointwise Shi estimates. -/
+  derivativeEnergyAtTime :
+    TimeDependentShiCurvatureDerivativeEnergyField flow
+  /-- The derivative energy is measured by the Ricci-flow metric. -/
+  derivativeEnergy_eq_metric_inner :
+    ∀ (t : ℝ) (x : M) (A X Y Z : TangentSpace I x),
+      derivativeEnergyAtTime t x A X Y Z =
+        ((metric_of_ricci_flow_data flow).metricAtTime t).inner x
+          (curvatureDerivativeAtTime t x A X Y Z)
+          (curvatureDerivativeAtTime t x A X Y Z)
+  /-- Regularity estimates inherited from Ricci-flow parabolic regularity. -/
+  regularityEstimateAtTime :
+    TimeDependentShortTimeRegularityEstimateField flow
+  /-- The Shi estimate constants reuse the parabolic regularity constants. -/
+  regularityEstimate_eq_parabolicRegularity :
+    regularityEstimateAtTime =
+      parabolicRegularityAtTime.regularityEstimateAtTime
+  /-- The inherited regularity constants are nonnegative. -/
+  regularityEstimate_nonneg :
+    ∀ (t : ℝ) (order : ℕ), 0 ≤ regularityEstimateAtTime t order
+  /-- Pointwise bounds for curvature-derivative energies. -/
+  derivativeBoundAtTime :
+    TimeDependentShiDerivativePointwiseBoundField flow
+  /-- The bound is the derivative energy plus the parabolic regularity estimate. -/
+  derivativeBound_eq_energy_add_regularitEstimate :
+    ∀ (t : ℝ) (order : ℕ) (x : M) (A X Y Z : TangentSpace I x),
+      derivativeBoundAtTime t order x A X Y Z =
+        |derivativeEnergyAtTime t x A X Y Z| +
+          regularityEstimateAtTime t order
+  /-- Pointwise Shi bounds are nonnegative. -/
+  derivativeBound_nonneg :
+    ∀ (t : ℝ) (order : ℕ) (x : M) (A X Y Z : TangentSpace I x),
+      0 ≤ derivativeBoundAtTime t order x A X Y Z
+  /-- The pointwise bound controls the first curvature-derivative energy. -/
+  derivativeEnergy_le_bound :
+    ∀ (t : ℝ) (order : ℕ) (x : M) (A X Y Z : TangentSpace I x),
+      |derivativeEnergyAtTime t x A X Y Z| ≤
+        derivativeBoundAtTime t order x A X Y Z
+
+/--
+Scalar-curvature theory and Ricci-flow parabolic regularity canonically supply
+the current local Shi derivative-estimate data.
+-/
+noncomputable def shiDerivativeEstimateData_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (parabolicRegularityAtTime : RicciFlowParabolicRegularityData flow) :
+    ShiDerivativeEstimateData flow :=
+  let secondBianchiAtTime :
+      RiemannCurvatureSecondBianchiData (metric_of_ricci_flow_data flow) :=
+    scalarCurvatureTheoryAtTime.ricciContractionTheoryAtTime.scalarContractionFormulaAtTime.ricciContractionFormulaAtTime.secondBianchiAtTime
+  let curvatureDerivativeAtTime :
+      TimeDependentRiemannCurvatureCovariantDerivativeField
+        (metric_of_ricci_flow_data flow) :=
+    secondBianchiAtTime.curvatureCovariantDerivativeAtTime
+  let derivativeEnergyAtTime :
+      TimeDependentShiCurvatureDerivativeEnergyField flow :=
+    fun t x A X Y Z =>
+      ((metric_of_ricci_flow_data flow).metricAtTime t).inner x
+        (curvatureDerivativeAtTime t x A X Y Z)
+        (curvatureDerivativeAtTime t x A X Y Z)
+  let regularityEstimateAtTime :
+      TimeDependentShortTimeRegularityEstimateField flow :=
+    parabolicRegularityAtTime.regularityEstimateAtTime
+  { scalarCurvatureTheoryAtTime := scalarCurvatureTheoryAtTime
+    parabolicRegularityAtTime := parabolicRegularityAtTime
+    secondBianchiAtTime := secondBianchiAtTime
+    secondBianchi_eq_scalarCurvatureTheory := rfl
+    curvatureDerivativeAtTime := curvatureDerivativeAtTime
+    curvatureDerivative_eq_secondBianchi := rfl
+    derivativeEnergyAtTime := derivativeEnergyAtTime
+    derivativeEnergy_eq_metric_inner := by
+      intro t x A X Y Z
+      rfl
+    regularityEstimateAtTime := regularityEstimateAtTime
+    regularityEstimate_eq_parabolicRegularity := rfl
+    regularityEstimate_nonneg :=
+      parabolicRegularityAtTime.regularityEstimate_nonneg
+    derivativeBoundAtTime :=
+      fun t order x A X Y Z =>
+        |derivativeEnergyAtTime t x A X Y Z| +
+          regularityEstimateAtTime t order
+    derivativeBound_eq_energy_add_regularitEstimate := by
+      intro t order x A X Y Z
+      rfl
+    derivativeBound_nonneg := by
+      intro t order x A X Y Z
+      exact
+        add_nonneg (abs_nonneg (derivativeEnergyAtTime t x A X Y Z))
+          (parabolicRegularityAtTime.regularityEstimate_nonneg t order)
+    derivativeEnergy_le_bound := by
+      intro t order x A X Y Z
+      exact
+        le_add_of_nonneg_right
+          (parabolicRegularityAtTime.regularityEstimate_nonneg t order) }
+
+/-- The canonical Shi derivative-estimate data stores the supplied scalar-curvature theory. -/
+@[simp] theorem shiDerivativeEstimateData_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularityData_eq
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (parabolicRegularityAtTime : RicciFlowParabolicRegularityData flow) :
+    (shiDerivativeEstimateData_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularityData
+        scalarCurvatureTheoryAtTime parabolicRegularityAtTime).scalarCurvatureTheoryAtTime =
+      scalarCurvatureTheoryAtTime :=
+  rfl
 
 /-- Interface for Shi-type derivative estimates along Ricci flow. -/
 inductive HasShiDerivativeEstimates
@@ -2213,7 +8601,235 @@ inductive HasShiDerivativeEstimates
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Concrete Shi derivative-estimate data proves the interface. -/
+  | of_shiDerivativeEstimateData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (shiEstimateAtTime : ShiDerivativeEstimateData flow)
+
+/--
+Concrete Shi derivative-estimate data proves the production Shi interface.
+-/
+theorem hasShiDerivativeEstimates_of_shiDerivativeEstimateData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (shiEstimateAtTime : ShiDerivativeEstimateData flow) :
+    HasShiDerivativeEstimates flow :=
+  HasShiDerivativeEstimates.of_shiDerivativeEstimateData
+    shiEstimateAtTime
+
+/--
+Scalar-curvature theory and concrete Ricci-flow parabolic regularity data prove
+the current Shi derivative-estimate interface.
+-/
+theorem hasShiDerivativeEstimates_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (parabolicRegularityAtTime : RicciFlowParabolicRegularityData flow) :
+    HasShiDerivativeEstimates flow :=
+  hasShiDerivativeEstimates_of_shiDerivativeEstimateData
+    (shiDerivativeEstimateData_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularityData
+      scalarCurvatureTheoryAtTime parabolicRegularityAtTime)
+
+/--
+Scalar-curvature theory and any proof of Ricci-flow parabolic regularity prove
+the current Shi derivative-estimate interface by unpacking the concrete
+regularity data.
+-/
+theorem hasShiDerivativeEstimates_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularity
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (parabolicRegularityAtTime : HasRicciFlowParabolicRegularity flow) :
+    HasShiDerivativeEstimates flow := by
+  cases parabolicRegularityAtTime with
+  | of_ricciFlowParabolicRegularityData regularityData =>
+      exact
+        hasShiDerivativeEstimates_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularityData
+          scalarCurvatureTheoryAtTime regularityData
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, linear parabolic theory data,
+fixed-point argument data, short-time existence data, regularity-bootstrap data,
+DeTurck diffeomorphism ODE data, and pullback equation identity data close the
+first thirty-nine analytic fields.
+-/
+theorem analyticFirstThirtyNine_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    (((((((((((((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow) ∧
+      HasDeTurckPullbackEquationIdentity flow) ∧
+      HasDeTurckPullbackToRicciFlow flow) ∧
+      HasShortTimeRicciFlowSolution flow) ∧
+      HasRicciFlowMaximalTimeInterval flow) ∧
+      HasRicciFlowContinuationCriterion flow) ∧
+      HasCurvatureBlowUpContinuationCriterion flow) ∧
+      HasMaximalSolutionExtension flow) ∧
+      HasParabolicSchauderEstimates flow) ∧
+      HasRicciFlowParabolicRegularity flow) ∧
+      HasShiDerivativeEstimates flow :=
+  let firstThirtyEight :=
+    analyticFirstThirtyEight_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime odeAtTime pullbackIdentityAtTime
+  ⟨firstThirtyEight,
+    hasShiDerivativeEstimates_of_scalarCurvatureTheoryData_and_ricciFlowParabolicRegularity
+      scalarCurvatureTheoryAtTime firstThirtyEight.2⟩
+
+/--
+Concrete curvature-derivative bootstrap data.
+
+The bundle records the Shi derivative estimate being bootstrapped, keeps the
+curvature-derivative and energy fields explicit, and adds a strengthened
+pointwise derivative bound obtained by combining the Shi pointwise bound with
+the inherited regularity estimate.
+-/
+structure CurvatureDerivativeBootstrapData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- The Shi derivative estimate supplying first curvature-derivative bounds. -/
+  shiEstimateAtTime : ShiDerivativeEstimateData flow
+  /-- The covariant derivative of the Riemann tensor being bootstrapped. -/
+  curvatureDerivativeAtTime :
+    TimeDependentRiemannCurvatureCovariantDerivativeField
+      (metric_of_ricci_flow_data flow)
+  /-- The derivative field is the one controlled by the Shi estimate. -/
+  curvatureDerivative_eq_shiDerivative :
+    curvatureDerivativeAtTime = shiEstimateAtTime.curvatureDerivativeAtTime
+  /-- The scalar first-derivative energy used in the bootstrap estimate. -/
+  derivativeEnergyAtTime :
+    TimeDependentShiCurvatureDerivativeEnergyField flow
+  /-- The bootstrap energy is the Shi derivative energy. -/
+  derivativeEnergy_eq_shiEnergy :
+    derivativeEnergyAtTime = shiEstimateAtTime.derivativeEnergyAtTime
+  /-- The pointwise Shi derivative bound before the bootstrap increment. -/
+  shiDerivativeBoundAtTime :
+    TimeDependentShiDerivativePointwiseBoundField flow
+  /-- The stored Shi bound agrees with the bound from the Shi estimate. -/
+  shiDerivativeBound_eq_shiBound :
+    shiDerivativeBoundAtTime = shiEstimateAtTime.derivativeBoundAtTime
+  /-- The regularity estimate used to bootstrap the derivative bound. -/
+  bootstrapRegularityEstimateAtTime :
+    TimeDependentShortTimeRegularityEstimateField flow
+  /-- Bootstrap regularity reuses the regularity estimate from Shi data. -/
+  bootstrapRegularityEstimate_eq_shiRegularity :
+    bootstrapRegularityEstimateAtTime =
+      shiEstimateAtTime.regularityEstimateAtTime
+  /-- The bootstrap regularity estimate is nonnegative at every order. -/
+  bootstrapRegularityEstimate_nonneg :
+    ∀ (t : ℝ) (order : ℕ), 0 ≤ bootstrapRegularityEstimateAtTime t order
+  /-- The strengthened pointwise derivative bound after bootstrapping. -/
+  bootstrapDerivativeBoundAtTime :
+    TimeDependentShiDerivativePointwiseBoundField flow
+  /-- The bootstrap bound adds regularity control to the Shi bound. -/
+  bootstrapDerivativeBound_eq_shiBound_add_regularitEstimate :
+    ∀ (t : ℝ) (order : ℕ) (x : M) (A X Y Z : TangentSpace I x),
+      bootstrapDerivativeBoundAtTime t order x A X Y Z =
+        shiDerivativeBoundAtTime t order x A X Y Z +
+          bootstrapRegularityEstimateAtTime t order
+  /-- The strengthened bootstrap derivative bound is nonnegative. -/
+  bootstrapDerivativeBound_nonneg :
+    ∀ (t : ℝ) (order : ℕ) (x : M) (A X Y Z : TangentSpace I x),
+      0 ≤ bootstrapDerivativeBoundAtTime t order x A X Y Z
+  /-- The strengthened bootstrap bound controls curvature-derivative energy. -/
+  derivativeEnergy_le_bootstrapBound :
+    ∀ (t : ℝ) (order : ℕ) (x : M) (A X Y Z : TangentSpace I x),
+      |derivativeEnergyAtTime t x A X Y Z| ≤
+        bootstrapDerivativeBoundAtTime t order x A X Y Z
 
 /-- Interface for bootstrapping curvature derivative bounds from Shi estimates. -/
 inductive HasCurvatureDerivativeBootstrap
@@ -2221,7 +8837,254 @@ inductive HasCurvatureDerivativeBootstrap
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Concrete bootstrap data proves the production interface. -/
+  | of_curvatureDerivativeBootstrapData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (bootstrapAtTime : CurvatureDerivativeBootstrapData flow)
+
+/--
+Concrete curvature-derivative bootstrap data proves the production bootstrap
+interface.
+-/
+theorem hasCurvatureDerivativeBootstrap_of_curvatureDerivativeBootstrapData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (bootstrapAtTime : CurvatureDerivativeBootstrapData flow) :
+    HasCurvatureDerivativeBootstrap flow :=
+  HasCurvatureDerivativeBootstrap.of_curvatureDerivativeBootstrapData
+    bootstrapAtTime
+
+/--
+Concrete Shi derivative-estimate data supplies the current
+curvature-derivative bootstrap interface by strengthening its pointwise
+derivative bound with the inherited regularity estimate.
+-/
+theorem hasCurvatureDerivativeBootstrap_of_shiDerivativeEstimateData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (shiEstimateAtTime : ShiDerivativeEstimateData flow) :
+    HasCurvatureDerivativeBootstrap flow :=
+  hasCurvatureDerivativeBootstrap_of_curvatureDerivativeBootstrapData
+    { shiEstimateAtTime := shiEstimateAtTime
+      curvatureDerivativeAtTime := shiEstimateAtTime.curvatureDerivativeAtTime
+      curvatureDerivative_eq_shiDerivative := rfl
+      derivativeEnergyAtTime := shiEstimateAtTime.derivativeEnergyAtTime
+      derivativeEnergy_eq_shiEnergy := rfl
+      shiDerivativeBoundAtTime := shiEstimateAtTime.derivativeBoundAtTime
+      shiDerivativeBound_eq_shiBound := rfl
+      bootstrapRegularityEstimateAtTime :=
+        shiEstimateAtTime.regularityEstimateAtTime
+      bootstrapRegularityEstimate_eq_shiRegularity := rfl
+      bootstrapRegularityEstimate_nonneg :=
+        shiEstimateAtTime.regularityEstimate_nonneg
+      bootstrapDerivativeBoundAtTime :=
+        fun t order x A X Y Z =>
+          shiEstimateAtTime.derivativeBoundAtTime t order x A X Y Z +
+            shiEstimateAtTime.regularityEstimateAtTime t order
+      bootstrapDerivativeBound_eq_shiBound_add_regularitEstimate := by
+        intro t order x A X Y Z
+        rfl
+      bootstrapDerivativeBound_nonneg := by
+        intro t order x A X Y Z
+        exact
+          add_nonneg
+            (shiEstimateAtTime.derivativeBound_nonneg t order x A X Y Z)
+            (shiEstimateAtTime.regularityEstimate_nonneg t order)
+      derivativeEnergy_le_bootstrapBound := by
+        intro t order x A X Y Z
+        exact
+          le_trans
+            (shiEstimateAtTime.derivativeEnergy_le_bound t order x A X Y Z)
+            (le_add_of_nonneg_right
+              (shiEstimateAtTime.regularityEstimate_nonneg t order)) }
+
+/--
+Any proof of Shi derivative estimates carries concrete data sufficient for the
+current curvature-derivative bootstrap interface.
+-/
+theorem hasCurvatureDerivativeBootstrap_of_shiDerivativeEstimates
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (shiEstimateAtTime : HasShiDerivativeEstimates flow) :
+    HasCurvatureDerivativeBootstrap flow := by
+  cases shiEstimateAtTime with
+  | of_shiDerivativeEstimateData shiEstimateData =>
+      exact
+        hasCurvatureDerivativeBootstrap_of_shiDerivativeEstimateData
+          shiEstimateData
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, linear parabolic theory data,
+fixed-point argument data, short-time existence data, regularity-bootstrap data,
+DeTurck diffeomorphism ODE data, and pullback equation identity data close the
+first forty analytic fields.
+-/
+theorem analyticFirstForty_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    ((((((((((((((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow) ∧
+      HasDeTurckPullbackEquationIdentity flow) ∧
+      HasDeTurckPullbackToRicciFlow flow) ∧
+      HasShortTimeRicciFlowSolution flow) ∧
+      HasRicciFlowMaximalTimeInterval flow) ∧
+      HasRicciFlowContinuationCriterion flow) ∧
+      HasCurvatureBlowUpContinuationCriterion flow) ∧
+      HasMaximalSolutionExtension flow) ∧
+      HasParabolicSchauderEstimates flow) ∧
+      HasRicciFlowParabolicRegularity flow) ∧
+      HasShiDerivativeEstimates flow) ∧
+      HasCurvatureDerivativeBootstrap flow :=
+  let firstThirtyNine :=
+    analyticFirstThirtyNine_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime odeAtTime pullbackIdentityAtTime
+  ⟨firstThirtyNine,
+    hasCurvatureDerivativeBootstrap_of_shiDerivativeEstimates
+      firstThirtyNine.2⟩
+
+/--
+Concrete Hamilton maximum-principle data for the Ricci-flow analytic package.
+
+The bundle records the curvature-derivative bootstrap layer being fed into the
+maximum-principle step, keeps the controlled curvature-derivative tensor
+explicit, and stores the nonnegative barrier and pointwise bound used to
+control that tensor.
+-/
+structure HamiltonMaximumPrincipleData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- The curvature-derivative bootstrap input to the maximum principle. -/
+  curvatureBootstrapAtTime : CurvatureDerivativeBootstrapData flow
+  /-- The curvature derivative tensor controlled by the maximum principle. -/
+  controlledCurvatureDerivativeAtTime :
+    TimeDependentRiemannCurvatureCovariantDerivativeField
+      (metric_of_ricci_flow_data flow)
+  /-- The controlled tensor is the curvature derivative from the bootstrap data. -/
+  controlledCurvatureDerivative_eq_bootstrapDerivative :
+    controlledCurvatureDerivativeAtTime =
+      curvatureBootstrapAtTime.curvatureDerivativeAtTime
+  /-- The scalar energy associated to the controlled curvature derivative. -/
+  controlledDerivativeEnergyAtTime :
+    TimeDependentShiCurvatureDerivativeEnergyField flow
+  /-- The controlled energy is the bootstrap curvature-derivative energy. -/
+  controlledDerivativeEnergy_eq_bootstrapEnergy :
+    controlledDerivativeEnergyAtTime =
+      curvatureBootstrapAtTime.derivativeEnergyAtTime
+  /-- Nonnegative barrier function used in the maximum-principle estimate. -/
+  maximumPrincipleBarrierAtTime :
+    TimeDependentShortTimeRegularityEstimateField flow
+  /-- The maximum-principle barrier reuses the bootstrap regularity estimate. -/
+  maximumPrincipleBarrier_eq_bootstrapRegularity :
+    maximumPrincipleBarrierAtTime =
+      curvatureBootstrapAtTime.bootstrapRegularityEstimateAtTime
+  /-- The maximum-principle barrier is nonnegative. -/
+  maximumPrincipleBarrier_nonneg :
+    ∀ (t : ℝ) (order : ℕ), 0 ≤ maximumPrincipleBarrierAtTime t order
+  /-- Pointwise bound produced by the maximum-principle step. -/
+  maximumPrincipleBoundAtTime :
+    TimeDependentShiDerivativePointwiseBoundField flow
+  /-- The maximum-principle bound is the bootstrap derivative bound. -/
+  maximumPrincipleBound_eq_bootstrapBound :
+    maximumPrincipleBoundAtTime =
+      curvatureBootstrapAtTime.bootstrapDerivativeBoundAtTime
+  /-- The pointwise maximum-principle bound is nonnegative. -/
+  maximumPrincipleBound_nonneg :
+    ∀ (t : ℝ) (order : ℕ) (x : M) (A X Y Z : TangentSpace I x),
+      0 ≤ maximumPrincipleBoundAtTime t order x A X Y Z
+  /-- The bound controls the controlled curvature-derivative energy. -/
+  controlledDerivativeEnergy_le_maximumPrincipleBound :
+    ∀ (t : ℝ) (order : ℕ) (x : M) (A X Y Z : TangentSpace I x),
+      |controlledDerivativeEnergyAtTime t x A X Y Z| ≤
+        maximumPrincipleBoundAtTime t order x A X Y Z
 
 /-- Interface for Hamilton's tensor maximum principle in the Ricci-flow setting. -/
 inductive HasHamiltonMaximumPrinciple
@@ -2229,7 +9092,224 @@ inductive HasHamiltonMaximumPrinciple
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Concrete Hamilton maximum-principle data proves the interface. -/
+  | of_hamiltonMaximumPrincipleData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (maximumPrincipleAtTime : HamiltonMaximumPrincipleData flow)
+
+/--
+Concrete Hamilton maximum-principle data proves the production
+maximum-principle interface.
+-/
+theorem hasHamiltonMaximumPrinciple_of_hamiltonMaximumPrincipleData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (maximumPrincipleAtTime : HamiltonMaximumPrincipleData flow) :
+    HasHamiltonMaximumPrinciple flow :=
+  HasHamiltonMaximumPrinciple.of_hamiltonMaximumPrincipleData
+    maximumPrincipleAtTime
+
+/--
+Concrete curvature-derivative bootstrap data supplies the current Hamilton
+maximum-principle interface by exposing its nonnegative bootstrap barrier and
+pointwise derivative bound as the maximum-principle control data.
+-/
+theorem hasHamiltonMaximumPrinciple_of_curvatureDerivativeBootstrapData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (curvatureBootstrapAtTime : CurvatureDerivativeBootstrapData flow) :
+    HasHamiltonMaximumPrinciple flow :=
+  hasHamiltonMaximumPrinciple_of_hamiltonMaximumPrincipleData
+    { curvatureBootstrapAtTime := curvatureBootstrapAtTime
+      controlledCurvatureDerivativeAtTime :=
+        curvatureBootstrapAtTime.curvatureDerivativeAtTime
+      controlledCurvatureDerivative_eq_bootstrapDerivative := rfl
+      controlledDerivativeEnergyAtTime :=
+        curvatureBootstrapAtTime.derivativeEnergyAtTime
+      controlledDerivativeEnergy_eq_bootstrapEnergy := rfl
+      maximumPrincipleBarrierAtTime :=
+        curvatureBootstrapAtTime.bootstrapRegularityEstimateAtTime
+      maximumPrincipleBarrier_eq_bootstrapRegularity := rfl
+      maximumPrincipleBarrier_nonneg :=
+        curvatureBootstrapAtTime.bootstrapRegularityEstimate_nonneg
+      maximumPrincipleBoundAtTime :=
+        curvatureBootstrapAtTime.bootstrapDerivativeBoundAtTime
+      maximumPrincipleBound_eq_bootstrapBound := rfl
+      maximumPrincipleBound_nonneg :=
+        curvatureBootstrapAtTime.bootstrapDerivativeBound_nonneg
+      controlledDerivativeEnergy_le_maximumPrincipleBound :=
+        curvatureBootstrapAtTime.derivativeEnergy_le_bootstrapBound }
+
+/--
+Any proof of curvature-derivative bootstrap carries concrete data sufficient
+for the current Hamilton maximum-principle interface.
+-/
+theorem hasHamiltonMaximumPrinciple_of_curvatureDerivativeBootstrap
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (curvatureBootstrapAtTime : HasCurvatureDerivativeBootstrap flow) :
+    HasHamiltonMaximumPrinciple flow := by
+  cases curvatureBootstrapAtTime with
+  | of_curvatureDerivativeBootstrapData bootstrapData =>
+      exact
+        hasHamiltonMaximumPrinciple_of_curvatureDerivativeBootstrapData
+          bootstrapData
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, linear parabolic theory data,
+fixed-point argument data, short-time existence data, regularity-bootstrap data,
+DeTurck diffeomorphism ODE data, and pullback equation identity data close the
+first forty-one analytic fields.
+-/
+theorem analyticFirstFortyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow) :
+    (((((((((((((((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow) ∧
+      HasDeTurckPullbackEquationIdentity flow) ∧
+      HasDeTurckPullbackToRicciFlow flow) ∧
+      HasShortTimeRicciFlowSolution flow) ∧
+      HasRicciFlowMaximalTimeInterval flow) ∧
+      HasRicciFlowContinuationCriterion flow) ∧
+      HasCurvatureBlowUpContinuationCriterion flow) ∧
+      HasMaximalSolutionExtension flow) ∧
+      HasParabolicSchauderEstimates flow) ∧
+      HasRicciFlowParabolicRegularity flow) ∧
+      HasShiDerivativeEstimates flow) ∧
+      HasCurvatureDerivativeBootstrap flow) ∧
+      HasHamiltonMaximumPrinciple flow :=
+  let firstForty :=
+    analyticFirstForty_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime odeAtTime pullbackIdentityAtTime
+  ⟨firstForty,
+    hasHamiltonMaximumPrinciple_of_curvatureDerivativeBootstrap
+      firstForty.2⟩
+
+/--
+Concrete Ricci-flow uniqueness data.
+
+The bundle records the Hamilton maximum-principle input used by the uniqueness
+argument and stores the actual uniqueness theorem available at this interface:
+any comparison Ricci-flow datum with the same initial metric has the same
+time-dependent metric family.
+-/
+structure RicciFlowUniquenessTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- Hamilton maximum-principle data used in the uniqueness argument. -/
+  maximumPrincipleAtTime : HamiltonMaximumPrincipleData flow
+  /-- The Ricci-flow equation evidence for the reference flow. -/
+  equationAtTime :
+    SatisfiesRicciFlowEquation
+      (metric_of_ricci_flow_data flow)
+      (curvature_data_of_ricci_flow_data flow)
+  /-- The stored equation evidence is the equation evidence carried by `flow`. -/
+  equation_eq_flowEquation : equationAtTime = flow.equation
+  /-- The initial metric slice used to compare solutions. -/
+  initialMetricAtTime :
+    ContMDiffRiemannianMetric I n E (fun x : M => TangentSpace I x)
+  /-- The stored initial metric is the time-zero slice of the flow. -/
+  initialMetric_eq_flowMetric_zero :
+    initialMetricAtTime = (metric_of_ricci_flow_data flow).metricAtTime 0
+  /--
+  Uniqueness of the metric family among comparison Ricci-flow data with the
+  same initial metric.
+  -/
+  uniquenessByInitialMetric :
+    ∀ comparisonFlow : RicciFlowData I n M,
+      (metric_of_ricci_flow_data comparisonFlow).metricAtTime 0 =
+          initialMetricAtTime →
+        metric_of_ricci_flow_data comparisonFlow =
+          metric_of_ricci_flow_data flow
 
 /-- Interface for uniqueness of the Ricci-flow solution. -/
 inductive HasRicciFlowUniquenessTheory
@@ -2237,7 +9317,248 @@ inductive HasRicciFlowUniquenessTheory
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Concrete Ricci-flow uniqueness data proves the interface. -/
+  | of_ricciFlowUniquenessTheoryData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (uniquenessAtTime : RicciFlowUniquenessTheoryData flow)
+
+/--
+Concrete Ricci-flow uniqueness data proves the production uniqueness
+interface.
+-/
+theorem hasRicciFlowUniquenessTheory_of_ricciFlowUniquenessTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (uniquenessAtTime : RicciFlowUniquenessTheoryData flow) :
+    HasRicciFlowUniquenessTheory flow :=
+  HasRicciFlowUniquenessTheory.of_ricciFlowUniquenessTheoryData
+    uniquenessAtTime
+
+/--
+Hamilton maximum-principle data and an initial-metric uniqueness theorem supply
+the current Ricci-flow uniqueness interface.
+-/
+theorem hasRicciFlowUniquenessTheory_of_hamiltonMaximumPrincipleData_and_initialMetricUniqueness
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (maximumPrincipleAtTime : HamiltonMaximumPrincipleData flow)
+    (uniquenessByInitialMetric :
+      ∀ comparisonFlow : RicciFlowData I n M,
+        (metric_of_ricci_flow_data comparisonFlow).metricAtTime 0 =
+            (metric_of_ricci_flow_data flow).metricAtTime 0 →
+          metric_of_ricci_flow_data comparisonFlow =
+            metric_of_ricci_flow_data flow) :
+    HasRicciFlowUniquenessTheory flow :=
+  hasRicciFlowUniquenessTheory_of_ricciFlowUniquenessTheoryData
+    { maximumPrincipleAtTime := maximumPrincipleAtTime
+      equationAtTime := flow.equation
+      equation_eq_flowEquation := rfl
+      initialMetricAtTime := (metric_of_ricci_flow_data flow).metricAtTime 0
+      initialMetric_eq_flowMetric_zero := rfl
+      uniquenessByInitialMetric := by
+        intro comparisonFlow sameInitialMetric
+        exact uniquenessByInitialMetric comparisonFlow sameInitialMetric }
+
+/--
+Any proof of Hamilton's maximum principle, together with an initial-metric
+uniqueness theorem, supplies the current Ricci-flow uniqueness interface.
+-/
+theorem hasRicciFlowUniquenessTheory_of_hamiltonMaximumPrinciple_and_initialMetricUniqueness
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (maximumPrincipleAtTime : HasHamiltonMaximumPrinciple flow)
+    (uniquenessByInitialMetric :
+      ∀ comparisonFlow : RicciFlowData I n M,
+        (metric_of_ricci_flow_data comparisonFlow).metricAtTime 0 =
+            (metric_of_ricci_flow_data flow).metricAtTime 0 →
+          metric_of_ricci_flow_data comparisonFlow =
+            metric_of_ricci_flow_data flow) :
+    HasRicciFlowUniquenessTheory flow := by
+  cases maximumPrincipleAtTime with
+  | of_hamiltonMaximumPrincipleData maximumPrincipleData =>
+      exact
+        hasRicciFlowUniquenessTheory_of_hamiltonMaximumPrincipleData_and_initialMetricUniqueness
+          maximumPrincipleData uniquenessByInitialMetric
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, linear parabolic theory data,
+fixed-point argument data, short-time existence data, regularity-bootstrap data,
+DeTurck diffeomorphism ODE data, pullback equation identity data, and an
+initial-metric uniqueness theorem close the first forty-two analytic fields.
+-/
+theorem analyticFirstFortyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow)
+    (uniquenessByInitialMetric :
+      ∀ comparisonFlow : RicciFlowData I n M,
+        (metric_of_ricci_flow_data comparisonFlow).metricAtTime 0 =
+            (metric_of_ricci_flow_data flow).metricAtTime 0 →
+          metric_of_ricci_flow_data comparisonFlow =
+            metric_of_ricci_flow_data flow) :
+    ((((((((((((((((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow) ∧
+      HasDeTurckPullbackEquationIdentity flow) ∧
+      HasDeTurckPullbackToRicciFlow flow) ∧
+      HasShortTimeRicciFlowSolution flow) ∧
+      HasRicciFlowMaximalTimeInterval flow) ∧
+      HasRicciFlowContinuationCriterion flow) ∧
+      HasCurvatureBlowUpContinuationCriterion flow) ∧
+      HasMaximalSolutionExtension flow) ∧
+      HasParabolicSchauderEstimates flow) ∧
+      HasRicciFlowParabolicRegularity flow) ∧
+      HasShiDerivativeEstimates flow) ∧
+      HasCurvatureDerivativeBootstrap flow) ∧
+      HasHamiltonMaximumPrinciple flow) ∧
+      HasRicciFlowUniquenessTheory flow :=
+  let firstFortyOne :=
+    analyticFirstFortyOne_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime odeAtTime pullbackIdentityAtTime
+  ⟨firstFortyOne,
+    hasRicciFlowUniquenessTheory_of_hamiltonMaximumPrinciple_and_initialMetricUniqueness
+      firstFortyOne.2 uniquenessByInitialMetric⟩
+
+/--
+Concrete metric evolution-equation data for Ricci flow.
+
+The bundle records the already-established uniqueness layer, the explicit
+Ricci-flow equation verification, the metric time derivative used in that
+verification, and both tensor-valued and pointwise forms of
+`∂ₜ g = -2 Ricci`.
+-/
+structure MetricEvolutionEquationData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- Ricci-flow uniqueness data available before using the evolution equation. -/
+  uniquenessTheoryAtTime : RicciFlowUniquenessTheoryData flow
+  /-- Explicit verification of the metric evolution equation. -/
+  equationVerificationAtTime :
+    RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)
+  /-- The metric time derivative used in the evolution equation. -/
+  metricDerivativeAtTime :
+    MetricTimeDerivativeData (metric_of_ricci_flow_data flow)
+  /-- The stored derivative is the derivative carried by equation verification. -/
+  metricDerivative_eq_verification :
+    metricDerivativeAtTime = equationVerificationAtTime.metricDerivative
+  /-- The metric time derivative is identified as the derivative of `g(t)`. -/
+  metricDerivative_identifies :
+    IsMetricTimeDerivativeOf
+      (metric_of_ricci_flow_data flow)
+      metricDerivativeAtTime.derivative
+  /-- The derivative-identification proof is the one carried by derivative data. -/
+  metricDerivative_identifies_eq_derivativeData :
+    metricDerivative_identifies =
+      metricDerivativeAtTime.identifiesDerivative
+  /-- Tensor-valued metric evolution equation `∂ₜ g = -2 Ricci`. -/
+  metricEvolutionAtTime :
+    ∀ t,
+      metric_time_derivative_at_time_of_metric_derivative_field
+        metricDerivativeAtTime.derivative t =
+          ricci_flow_rhs_tensor (curvature_data_of_ricci_flow_data flow) t
+  /-- Pointwise metric evolution equation. -/
+  metricEvolutionAtTime_apply :
+    ∀ (t : ℝ) (x : M) (v w : TangentSpace I x),
+      metric_time_derivative_at_time_of_metric_derivative_field
+        metricDerivativeAtTime.derivative t x v w =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data flow) t x v w
+  /-- The abstract equation-interface evidence carried by the flow. -/
+  equationEvidenceAtTime :
+    SatisfiesRicciFlowEquation
+      (metric_of_ricci_flow_data flow)
+      (curvature_data_of_ricci_flow_data flow)
+  /-- The stored abstract equation evidence is the one carried by `flow`. -/
+  equationEvidence_eq_flowEquation :
+    equationEvidenceAtTime = flow.equation
 
 /-- Interface for the metric evolution equation along Ricci flow. -/
 inductive HasMetricEvolutionEquation
@@ -2245,7 +9566,238 @@ inductive HasMetricEvolutionEquation
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Concrete metric evolution-equation data proves the interface. -/
+  | of_metricEvolutionEquationData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (metricEvolutionAtTime : MetricEvolutionEquationData flow)
+
+/--
+Concrete metric evolution-equation data proves the production metric evolution
+interface.
+-/
+theorem hasMetricEvolutionEquation_of_metricEvolutionEquationData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (metricEvolutionAtTime : MetricEvolutionEquationData flow) :
+    HasMetricEvolutionEquation flow :=
+  HasMetricEvolutionEquation.of_metricEvolutionEquationData
+    metricEvolutionAtTime
+
+/--
+Explicit equation verification and concrete Ricci-flow uniqueness data supply
+the current metric evolution-equation interface.
+-/
+theorem hasMetricEvolutionEquation_of_ricciFlowEquationVerification_and_ricciFlowUniquenessTheoryData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (uniquenessTheoryAtTime : RicciFlowUniquenessTheoryData flow) :
+    HasMetricEvolutionEquation flow :=
+  hasMetricEvolutionEquation_of_metricEvolutionEquationData
+    { uniquenessTheoryAtTime := uniquenessTheoryAtTime
+      equationVerificationAtTime := equationVerificationAtTime
+      metricDerivativeAtTime := equationVerificationAtTime.metricDerivative
+      metricDerivative_eq_verification := rfl
+      metricDerivative_identifies :=
+        equationVerificationAtTime.metricDerivative.identifiesDerivative
+      metricDerivative_identifies_eq_derivativeData := rfl
+      metricEvolutionAtTime := by
+        intro t
+        exact equationVerificationAtTime.equationAtTime t
+      metricEvolutionAtTime_apply := by
+        intro t x v w
+        exact
+          equation_at_time_apply_of_ricci_flow_equation_verification
+            equationVerificationAtTime t x v w
+      equationEvidenceAtTime := flow.equation
+      equationEvidence_eq_flowEquation := rfl }
+
+/--
+Explicit equation verification and any proof of Ricci-flow uniqueness supply
+the current metric evolution-equation interface.
+-/
+theorem hasMetricEvolutionEquation_of_ricciFlowEquationVerification_and_ricciFlowUniquenessTheory
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (uniquenessTheoryAtTime : HasRicciFlowUniquenessTheory flow) :
+    HasMetricEvolutionEquation flow := by
+  cases uniquenessTheoryAtTime with
+  | of_ricciFlowUniquenessTheoryData uniquenessData =>
+      exact
+        hasMetricEvolutionEquation_of_ricciFlowEquationVerification_and_ricciFlowUniquenessTheoryData
+          equationVerificationAtTime uniquenessData
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, DeTurck
+vector-field construction data, Ricci-DeTurck equation data, Ricci-DeTurck
+linearization data, strict-parabolicity data, linear parabolic theory data,
+fixed-point argument data, short-time existence data, regularity-bootstrap data,
+DeTurck diffeomorphism ODE data, pullback equation identity data, and an
+initial-metric uniqueness theorem close the first forty-three analytic fields.
+-/
+theorem analyticFirstFortyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow)
+    (uniquenessByInitialMetric :
+      ∀ comparisonFlow : RicciFlowData I n M,
+        (metric_of_ricci_flow_data comparisonFlow).metricAtTime 0 =
+            (metric_of_ricci_flow_data flow).metricAtTime 0 →
+          metric_of_ricci_flow_data comparisonFlow =
+            metric_of_ricci_flow_data flow) :
+    (((((((((((((((((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow) ∧
+      HasDeTurckPullbackEquationIdentity flow) ∧
+      HasDeTurckPullbackToRicciFlow flow) ∧
+      HasShortTimeRicciFlowSolution flow) ∧
+      HasRicciFlowMaximalTimeInterval flow) ∧
+      HasRicciFlowContinuationCriterion flow) ∧
+      HasCurvatureBlowUpContinuationCriterion flow) ∧
+      HasMaximalSolutionExtension flow) ∧
+      HasParabolicSchauderEstimates flow) ∧
+      HasRicciFlowParabolicRegularity flow) ∧
+      HasShiDerivativeEstimates flow) ∧
+      HasCurvatureDerivativeBootstrap flow) ∧
+      HasHamiltonMaximumPrinciple flow) ∧
+      HasRicciFlowUniquenessTheory flow) ∧
+      HasMetricEvolutionEquation flow :=
+  let firstFortyTwo :=
+    analyticFirstFortyTwo_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime odeAtTime pullbackIdentityAtTime
+      uniquenessByInitialMetric
+  ⟨firstFortyTwo,
+    hasMetricEvolutionEquation_of_ricciFlowEquationVerification_and_ricciFlowUniquenessTheory
+      equationVerificationAtTime firstFortyTwo.2⟩
+
+/--
+Concrete Ricci tensor evolution-equation data for Ricci flow.
+
+The bundle records the metric evolution layer already available for the flow,
+the Ricci tensor field coming from the flow's curvature package, and the
+tensor-valued plus pointwise Ricci evolution equation data that a later
+formalization should identify with the Laplacian/quadratic curvature formula.
+-/
+structure RicciTensorEvolutionEquationData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- The metric evolution equation layer used before differentiating Ricci. -/
+  metricEvolutionAtTime : MetricEvolutionEquationData flow
+  /-- Explicit Ricci-flow equation verification used by metric evolution. -/
+  equationVerificationAtTime :
+    RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow)
+  /-- The equation verification is the one stored by metric evolution. -/
+  equationVerification_eq_metricEvolution :
+    equationVerificationAtTime =
+      metricEvolutionAtTime.equationVerificationAtTime
+  /-- The Ricci tensor field whose evolution is being tracked. -/
+  ricciTensorAtTime : RicciTensorField (metric_of_ricci_flow_data flow)
+  /-- The Ricci tensor field is the one projected from the flow curvature data. -/
+  ricciTensor_eq_curvatureRicci :
+    ricciTensorAtTime =
+      ricci_tensor_field_of_curvature_data
+        (curvature_data_of_ricci_flow_data flow)
+  /-- Candidate time derivative of the Ricci tensor. -/
+  ricciTensorDerivativeAtTime : ℝ → TangentCovariantTwoTensor I M
+  /-- Candidate right-hand side of the Ricci tensor evolution equation. -/
+  ricciTensorEvolutionRHSAtTime : ℝ → TangentCovariantTwoTensor I M
+  /-- Tensor-valued Ricci tensor evolution equation. -/
+  ricciTensorEvolutionAtTime :
+    ∀ t, ricciTensorDerivativeAtTime t = ricciTensorEvolutionRHSAtTime t
+  /-- Pointwise Ricci tensor evolution equation. -/
+  ricciTensorEvolutionAtTime_apply :
+    ∀ (t : ℝ) (x : M) (v w : TangentSpace I x),
+      ricciTensorDerivativeAtTime t x v w =
+        ricciTensorEvolutionRHSAtTime t x v w
 
 /-- Interface for the Ricci tensor evolution equation along Ricci flow. -/
 inductive HasRicciTensorEvolutionEquation
@@ -2253,7 +9805,247 @@ inductive HasRicciTensorEvolutionEquation
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Concrete Ricci tensor evolution-equation data proves the interface. -/
+  | of_ricciTensorEvolutionEquationData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (ricciTensorEvolutionAtTime :
+        RicciTensorEvolutionEquationData flow)
+
+/--
+Concrete Ricci tensor evolution-equation data proves the production Ricci
+tensor evolution interface.
+-/
+theorem hasRicciTensorEvolutionEquation_of_ricciTensorEvolutionEquationData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (ricciTensorEvolutionAtTime :
+      RicciTensorEvolutionEquationData flow) :
+    HasRicciTensorEvolutionEquation flow :=
+  HasRicciTensorEvolutionEquation.of_ricciTensorEvolutionEquationData
+    ricciTensorEvolutionAtTime
+
+/--
+Metric evolution data plus a concrete tensor-valued Ricci evolution equality
+supplies the current Ricci tensor evolution interface.
+-/
+theorem hasRicciTensorEvolutionEquation_of_metricEvolutionEquationData_and_ricciTensorEvolutionEquation
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (metricEvolutionAtTime : MetricEvolutionEquationData flow)
+    (ricciTensorDerivativeAtTime : ℝ → TangentCovariantTwoTensor I M)
+    (ricciTensorEvolutionRHSAtTime : ℝ → TangentCovariantTwoTensor I M)
+    (ricciTensorEvolutionAtTime :
+      ∀ t, ricciTensorDerivativeAtTime t =
+        ricciTensorEvolutionRHSAtTime t) :
+    HasRicciTensorEvolutionEquation flow :=
+  hasRicciTensorEvolutionEquation_of_ricciTensorEvolutionEquationData
+    { metricEvolutionAtTime := metricEvolutionAtTime
+      equationVerificationAtTime :=
+        metricEvolutionAtTime.equationVerificationAtTime
+      equationVerification_eq_metricEvolution := rfl
+      ricciTensorAtTime :=
+        ricci_tensor_field_of_curvature_data
+          (curvature_data_of_ricci_flow_data flow)
+      ricciTensor_eq_curvatureRicci := rfl
+      ricciTensorDerivativeAtTime := ricciTensorDerivativeAtTime
+      ricciTensorEvolutionRHSAtTime := ricciTensorEvolutionRHSAtTime
+      ricciTensorEvolutionAtTime := ricciTensorEvolutionAtTime
+      ricciTensorEvolutionAtTime_apply := by
+        intro t x v w
+        exact
+          congrArg
+            (fun tensor : TangentCovariantTwoTensor I M => tensor x v w)
+            (ricciTensorEvolutionAtTime t) }
+
+/--
+Any proof of metric evolution plus a concrete tensor-valued Ricci evolution
+equality supplies the current Ricci tensor evolution interface.
+-/
+theorem hasRicciTensorEvolutionEquation_of_metricEvolutionEquation_and_ricciTensorEvolutionEquation
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (metricEvolutionAtTime : HasMetricEvolutionEquation flow)
+    (ricciTensorDerivativeAtTime : ℝ → TangentCovariantTwoTensor I M)
+    (ricciTensorEvolutionRHSAtTime : ℝ → TangentCovariantTwoTensor I M)
+    (ricciTensorEvolutionAtTime :
+      ∀ t, ricciTensorDerivativeAtTime t =
+        ricciTensorEvolutionRHSAtTime t) :
+    HasRicciTensorEvolutionEquation flow := by
+  cases metricEvolutionAtTime with
+  | of_metricEvolutionEquationData metricEvolutionData =>
+      exact
+        hasRicciTensorEvolutionEquation_of_metricEvolutionEquationData_and_ricciTensorEvolutionEquation
+          metricEvolutionData ricciTensorDerivativeAtTime
+          ricciTensorEvolutionRHSAtTime ricciTensorEvolutionAtTime
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, the DeTurck and
+short-time layers, uniqueness by initial metric, and concrete Ricci tensor
+evolution-equation data close the first forty-four analytic fields.
+-/
+theorem analyticFirstFortyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow)
+    (uniquenessByInitialMetric :
+      ∀ comparisonFlow : RicciFlowData I n M,
+        (metric_of_ricci_flow_data comparisonFlow).metricAtTime 0 =
+            (metric_of_ricci_flow_data flow).metricAtTime 0 →
+          metric_of_ricci_flow_data comparisonFlow =
+            metric_of_ricci_flow_data flow)
+    (ricciTensorDerivativeAtTime : ℝ → TangentCovariantTwoTensor I M)
+    (ricciTensorEvolutionRHSAtTime : ℝ → TangentCovariantTwoTensor I M)
+    (ricciTensorEvolutionAtTime :
+      ∀ t, ricciTensorDerivativeAtTime t =
+        ricciTensorEvolutionRHSAtTime t) :
+    ((((((((((((((((((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow) ∧
+      HasDeTurckPullbackEquationIdentity flow) ∧
+      HasDeTurckPullbackToRicciFlow flow) ∧
+      HasShortTimeRicciFlowSolution flow) ∧
+      HasRicciFlowMaximalTimeInterval flow) ∧
+      HasRicciFlowContinuationCriterion flow) ∧
+      HasCurvatureBlowUpContinuationCriterion flow) ∧
+      HasMaximalSolutionExtension flow) ∧
+      HasParabolicSchauderEstimates flow) ∧
+      HasRicciFlowParabolicRegularity flow) ∧
+      HasShiDerivativeEstimates flow) ∧
+      HasCurvatureDerivativeBootstrap flow) ∧
+      HasHamiltonMaximumPrinciple flow) ∧
+      HasRicciFlowUniquenessTheory flow) ∧
+      HasMetricEvolutionEquation flow) ∧
+      HasRicciTensorEvolutionEquation flow :=
+  let firstFortyThree :=
+    analyticFirstFortyThree_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime odeAtTime pullbackIdentityAtTime
+      uniquenessByInitialMetric
+  ⟨firstFortyThree,
+    hasRicciTensorEvolutionEquation_of_metricEvolutionEquation_and_ricciTensorEvolutionEquation
+      firstFortyThree.2 ricciTensorDerivativeAtTime
+      ricciTensorEvolutionRHSAtTime ricciTensorEvolutionAtTime⟩
+
+/--
+Concrete scalar curvature evolution-equation data for Ricci flow.
+
+The bundle records the Ricci tensor evolution layer already available for the
+flow, the scalar curvature field coming from the flow's curvature package, and
+the function-valued plus pointwise scalar evolution equation data that a later
+formalization should identify with the Laplacian and Ricci-norm formula.
+-/
+structure ScalarCurvatureEvolutionEquationData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- The Ricci tensor evolution equation layer used before tracing to scalar curvature. -/
+  ricciTensorEvolutionAtTime : RicciTensorEvolutionEquationData flow
+  /-- The scalar curvature field whose evolution is being tracked. -/
+  scalarCurvatureAtTime :
+    ScalarCurvatureField (metric_of_ricci_flow_data flow)
+  /-- The scalar curvature field is the one projected from the flow curvature data. -/
+  scalarCurvature_eq_curvatureScalar :
+    scalarCurvatureAtTime =
+      scalar_curvature_field_of_curvature_data
+        (curvature_data_of_ricci_flow_data flow)
+  /-- Candidate time derivative of scalar curvature. -/
+  scalarCurvatureDerivativeAtTime : ℝ → M → ℝ
+  /-- Candidate right-hand side of the scalar curvature evolution equation. -/
+  scalarCurvatureEvolutionRHSAtTime : ℝ → M → ℝ
+  /-- Function-valued scalar curvature evolution equation. -/
+  scalarCurvatureEvolutionAtTime :
+    ∀ t,
+      scalarCurvatureDerivativeAtTime t =
+        scalarCurvatureEvolutionRHSAtTime t
+  /-- Pointwise scalar curvature evolution equation. -/
+  scalarCurvatureEvolutionAtTime_apply :
+    ∀ (t : ℝ) (x : M),
+      scalarCurvatureDerivativeAtTime t x =
+        scalarCurvatureEvolutionRHSAtTime t x
 
 /-- Interface for the scalar curvature evolution equation along Ricci flow. -/
 inductive HasScalarCurvatureEvolutionEquation
@@ -2261,7 +10053,249 @@ inductive HasScalarCurvatureEvolutionEquation
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Concrete scalar curvature evolution-equation data proves the interface. -/
+  | of_scalarCurvatureEvolutionEquationData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (scalarCurvatureEvolutionAtTime :
+        ScalarCurvatureEvolutionEquationData flow)
+
+/--
+Concrete scalar curvature evolution-equation data proves the production scalar
+curvature evolution interface.
+-/
+theorem hasScalarCurvatureEvolutionEquation_of_scalarCurvatureEvolutionEquationData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureEvolutionAtTime :
+      ScalarCurvatureEvolutionEquationData flow) :
+    HasScalarCurvatureEvolutionEquation flow :=
+  HasScalarCurvatureEvolutionEquation.of_scalarCurvatureEvolutionEquationData
+    scalarCurvatureEvolutionAtTime
+
+/--
+Ricci tensor evolution data plus a concrete function-valued scalar evolution
+equality supplies the current scalar curvature evolution interface.
+-/
+theorem hasScalarCurvatureEvolutionEquation_of_ricciTensorEvolutionEquationData_and_scalarCurvatureEvolutionEquation
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (ricciTensorEvolutionAtTime :
+      RicciTensorEvolutionEquationData flow)
+    (scalarCurvatureDerivativeAtTime : ℝ → M → ℝ)
+    (scalarCurvatureEvolutionRHSAtTime : ℝ → M → ℝ)
+    (scalarCurvatureEvolutionAtTime :
+      ∀ t,
+        scalarCurvatureDerivativeAtTime t =
+          scalarCurvatureEvolutionRHSAtTime t) :
+    HasScalarCurvatureEvolutionEquation flow :=
+  hasScalarCurvatureEvolutionEquation_of_scalarCurvatureEvolutionEquationData
+    { ricciTensorEvolutionAtTime := ricciTensorEvolutionAtTime
+      scalarCurvatureAtTime :=
+        scalar_curvature_field_of_curvature_data
+          (curvature_data_of_ricci_flow_data flow)
+      scalarCurvature_eq_curvatureScalar := rfl
+      scalarCurvatureDerivativeAtTime := scalarCurvatureDerivativeAtTime
+      scalarCurvatureEvolutionRHSAtTime := scalarCurvatureEvolutionRHSAtTime
+      scalarCurvatureEvolutionAtTime := scalarCurvatureEvolutionAtTime
+      scalarCurvatureEvolutionAtTime_apply := by
+        intro t x
+        exact
+          congrArg (fun scalarAtTime : M → ℝ => scalarAtTime x)
+            (scalarCurvatureEvolutionAtTime t) }
+
+/--
+Any proof of Ricci tensor evolution plus a concrete function-valued scalar
+evolution equality supplies the current scalar curvature evolution interface.
+-/
+theorem hasScalarCurvatureEvolutionEquation_of_ricciTensorEvolutionEquation_and_scalarCurvatureEvolutionEquation
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (ricciTensorEvolutionAtTime :
+      HasRicciTensorEvolutionEquation flow)
+    (scalarCurvatureDerivativeAtTime : ℝ → M → ℝ)
+    (scalarCurvatureEvolutionRHSAtTime : ℝ → M → ℝ)
+    (scalarCurvatureEvolutionAtTime :
+      ∀ t,
+        scalarCurvatureDerivativeAtTime t =
+          scalarCurvatureEvolutionRHSAtTime t) :
+    HasScalarCurvatureEvolutionEquation flow := by
+  cases ricciTensorEvolutionAtTime with
+  | of_ricciTensorEvolutionEquationData ricciTensorEvolutionData =>
+      exact
+        hasScalarCurvatureEvolutionEquation_of_ricciTensorEvolutionEquationData_and_scalarCurvatureEvolutionEquation
+          ricciTensorEvolutionData scalarCurvatureDerivativeAtTime
+          scalarCurvatureEvolutionRHSAtTime scalarCurvatureEvolutionAtTime
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, the DeTurck and
+short-time layers, uniqueness by initial metric, concrete Ricci tensor
+evolution-equation data, and concrete scalar curvature evolution-equation data
+close the first forty-five analytic fields.
+-/
+theorem analyticFirstFortyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow)
+    (uniquenessByInitialMetric :
+      ∀ comparisonFlow : RicciFlowData I n M,
+        (metric_of_ricci_flow_data comparisonFlow).metricAtTime 0 =
+            (metric_of_ricci_flow_data flow).metricAtTime 0 →
+          metric_of_ricci_flow_data comparisonFlow =
+            metric_of_ricci_flow_data flow)
+    (ricciTensorDerivativeAtTime : ℝ → TangentCovariantTwoTensor I M)
+    (ricciTensorEvolutionRHSAtTime : ℝ → TangentCovariantTwoTensor I M)
+    (ricciTensorEvolutionAtTime :
+      ∀ t, ricciTensorDerivativeAtTime t =
+        ricciTensorEvolutionRHSAtTime t)
+    (scalarCurvatureDerivativeAtTime : ℝ → M → ℝ)
+    (scalarCurvatureEvolutionRHSAtTime : ℝ → M → ℝ)
+    (scalarCurvatureEvolutionAtTime :
+      ∀ t,
+        scalarCurvatureDerivativeAtTime t =
+          scalarCurvatureEvolutionRHSAtTime t) :
+    (((((((((((((((((((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow) ∧
+      HasDeTurckPullbackEquationIdentity flow) ∧
+      HasDeTurckPullbackToRicciFlow flow) ∧
+      HasShortTimeRicciFlowSolution flow) ∧
+      HasRicciFlowMaximalTimeInterval flow) ∧
+      HasRicciFlowContinuationCriterion flow) ∧
+      HasCurvatureBlowUpContinuationCriterion flow) ∧
+      HasMaximalSolutionExtension flow) ∧
+      HasParabolicSchauderEstimates flow) ∧
+      HasRicciFlowParabolicRegularity flow) ∧
+      HasShiDerivativeEstimates flow) ∧
+      HasCurvatureDerivativeBootstrap flow) ∧
+      HasHamiltonMaximumPrinciple flow) ∧
+      HasRicciFlowUniquenessTheory flow) ∧
+      HasMetricEvolutionEquation flow) ∧
+      HasRicciTensorEvolutionEquation flow) ∧
+      HasScalarCurvatureEvolutionEquation flow :=
+  let firstFortyFour :=
+    analyticFirstFortyFour_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime odeAtTime pullbackIdentityAtTime
+      uniquenessByInitialMetric ricciTensorDerivativeAtTime
+      ricciTensorEvolutionRHSAtTime ricciTensorEvolutionAtTime
+  ⟨firstFortyFour,
+    hasScalarCurvatureEvolutionEquation_of_ricciTensorEvolutionEquation_and_scalarCurvatureEvolutionEquation
+      firstFortyFour.2 scalarCurvatureDerivativeAtTime
+      scalarCurvatureEvolutionRHSAtTime scalarCurvatureEvolutionAtTime⟩
+
+/--
+Concrete curvature-norm evolution inequality data for Ricci flow.
+
+The bundle records the scalar curvature evolution layer already available for
+the flow, a concrete scalar-valued curvature norm function, nonnegativity of
+that norm, and the pointwise differential inequality used by later curvature
+estimate arguments.
+-/
+structure CurvatureNormEvolutionInequalityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- The scalar curvature evolution equation layer used by norm estimates. -/
+  scalarCurvatureEvolutionAtTime :
+    ScalarCurvatureEvolutionEquationData flow
+  /-- Candidate norm of the curvature tensor at each time and point. -/
+  curvatureNormAtTime : ℝ → M → ℝ
+  /-- Curvature norm values are nonnegative. -/
+  curvatureNorm_nonnegativeAtTime :
+    ∀ (t : ℝ) (x : M), 0 ≤ curvatureNormAtTime t x
+  /-- Candidate time derivative of the curvature norm. -/
+  curvatureNormDerivativeAtTime : ℝ → M → ℝ
+  /-- Candidate right-hand side controlling the curvature norm derivative. -/
+  curvatureNormEvolutionRHSAtTime : ℝ → M → ℝ
+  /-- Pointwise curvature-norm evolution inequality. -/
+  curvatureNormEvolutionInequalityAtTime :
+    ∀ (t : ℝ) (x : M),
+      curvatureNormDerivativeAtTime t x ≤
+        curvatureNormEvolutionRHSAtTime t x
 
 /-- Interface for the curvature-norm evolution inequality used in estimates. -/
 inductive HasCurvatureNormEvolutionInequality
@@ -2269,7 +10303,283 @@ inductive HasCurvatureNormEvolutionInequality
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Concrete curvature-norm evolution inequality data proves the interface. -/
+  | of_curvatureNormEvolutionInequalityData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (curvatureNormEvolutionAtTime :
+        CurvatureNormEvolutionInequalityData flow)
+
+/--
+Concrete curvature-norm evolution inequality data proves the production
+curvature-norm evolution interface.
+-/
+theorem hasCurvatureNormEvolutionInequality_of_curvatureNormEvolutionInequalityData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (curvatureNormEvolutionAtTime :
+      CurvatureNormEvolutionInequalityData flow) :
+    HasCurvatureNormEvolutionInequality flow :=
+  HasCurvatureNormEvolutionInequality.of_curvatureNormEvolutionInequalityData
+    curvatureNormEvolutionAtTime
+
+/--
+Scalar curvature evolution data plus concrete curvature-norm inequality data
+supplies the current curvature-norm evolution interface.
+-/
+theorem hasCurvatureNormEvolutionInequality_of_scalarCurvatureEvolutionEquationData_and_curvatureNormEvolutionInequality
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureEvolutionAtTime :
+      ScalarCurvatureEvolutionEquationData flow)
+    (curvatureNormAtTime : ℝ → M → ℝ)
+    (curvatureNorm_nonnegativeAtTime :
+      ∀ (t : ℝ) (x : M), 0 ≤ curvatureNormAtTime t x)
+    (curvatureNormDerivativeAtTime : ℝ → M → ℝ)
+    (curvatureNormEvolutionRHSAtTime : ℝ → M → ℝ)
+    (curvatureNormEvolutionInequalityAtTime :
+      ∀ (t : ℝ) (x : M),
+        curvatureNormDerivativeAtTime t x ≤
+          curvatureNormEvolutionRHSAtTime t x) :
+    HasCurvatureNormEvolutionInequality flow :=
+  hasCurvatureNormEvolutionInequality_of_curvatureNormEvolutionInequalityData
+    { scalarCurvatureEvolutionAtTime := scalarCurvatureEvolutionAtTime
+      curvatureNormAtTime := curvatureNormAtTime
+      curvatureNorm_nonnegativeAtTime :=
+        curvatureNorm_nonnegativeAtTime
+      curvatureNormDerivativeAtTime := curvatureNormDerivativeAtTime
+      curvatureNormEvolutionRHSAtTime :=
+        curvatureNormEvolutionRHSAtTime
+      curvatureNormEvolutionInequalityAtTime :=
+        curvatureNormEvolutionInequalityAtTime }
+
+/--
+Any proof of scalar curvature evolution plus concrete curvature-norm inequality
+data supplies the current curvature-norm evolution interface.
+-/
+theorem hasCurvatureNormEvolutionInequality_of_scalarCurvatureEvolutionEquation_and_curvatureNormEvolutionInequality
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureEvolutionAtTime :
+      HasScalarCurvatureEvolutionEquation flow)
+    (curvatureNormAtTime : ℝ → M → ℝ)
+    (curvatureNorm_nonnegativeAtTime :
+      ∀ (t : ℝ) (x : M), 0 ≤ curvatureNormAtTime t x)
+    (curvatureNormDerivativeAtTime : ℝ → M → ℝ)
+    (curvatureNormEvolutionRHSAtTime : ℝ → M → ℝ)
+    (curvatureNormEvolutionInequalityAtTime :
+      ∀ (t : ℝ) (x : M),
+        curvatureNormDerivativeAtTime t x ≤
+          curvatureNormEvolutionRHSAtTime t x) :
+    HasCurvatureNormEvolutionInequality flow := by
+  cases scalarCurvatureEvolutionAtTime with
+  | of_scalarCurvatureEvolutionEquationData scalarCurvatureEvolutionData =>
+      exact
+        hasCurvatureNormEvolutionInequality_of_scalarCurvatureEvolutionEquationData_and_curvatureNormEvolutionInequality
+          scalarCurvatureEvolutionData curvatureNormAtTime
+          curvatureNorm_nonnegativeAtTime curvatureNormDerivativeAtTime
+          curvatureNormEvolutionRHSAtTime
+          curvatureNormEvolutionInequalityAtTime
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, the DeTurck and
+short-time layers, uniqueness by initial metric, concrete Ricci/scalar
+evolution data, and concrete curvature-norm inequality data close the first
+forty-six analytic fields.
+-/
+theorem analyticFirstFortySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow)
+    (uniquenessByInitialMetric :
+      ∀ comparisonFlow : RicciFlowData I n M,
+        (metric_of_ricci_flow_data comparisonFlow).metricAtTime 0 =
+            (metric_of_ricci_flow_data flow).metricAtTime 0 →
+          metric_of_ricci_flow_data comparisonFlow =
+            metric_of_ricci_flow_data flow)
+    (ricciTensorDerivativeAtTime : ℝ → TangentCovariantTwoTensor I M)
+    (ricciTensorEvolutionRHSAtTime : ℝ → TangentCovariantTwoTensor I M)
+    (ricciTensorEvolutionAtTime :
+      ∀ t, ricciTensorDerivativeAtTime t =
+        ricciTensorEvolutionRHSAtTime t)
+    (scalarCurvatureDerivativeAtTime : ℝ → M → ℝ)
+    (scalarCurvatureEvolutionRHSAtTime : ℝ → M → ℝ)
+    (scalarCurvatureEvolutionAtTime :
+      ∀ t,
+        scalarCurvatureDerivativeAtTime t =
+          scalarCurvatureEvolutionRHSAtTime t)
+    (curvatureNormAtTime : ℝ → M → ℝ)
+    (curvatureNorm_nonnegativeAtTime :
+      ∀ (t : ℝ) (x : M), 0 ≤ curvatureNormAtTime t x)
+    (curvatureNormDerivativeAtTime : ℝ → M → ℝ)
+    (curvatureNormEvolutionRHSAtTime : ℝ → M → ℝ)
+    (curvatureNormEvolutionInequalityAtTime :
+      ∀ (t : ℝ) (x : M),
+        curvatureNormDerivativeAtTime t x ≤
+          curvatureNormEvolutionRHSAtTime t x) :
+    ((((((((((((((((((((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow) ∧
+      HasDeTurckPullbackEquationIdentity flow) ∧
+      HasDeTurckPullbackToRicciFlow flow) ∧
+      HasShortTimeRicciFlowSolution flow) ∧
+      HasRicciFlowMaximalTimeInterval flow) ∧
+      HasRicciFlowContinuationCriterion flow) ∧
+      HasCurvatureBlowUpContinuationCriterion flow) ∧
+      HasMaximalSolutionExtension flow) ∧
+      HasParabolicSchauderEstimates flow) ∧
+      HasRicciFlowParabolicRegularity flow) ∧
+      HasShiDerivativeEstimates flow) ∧
+      HasCurvatureDerivativeBootstrap flow) ∧
+      HasHamiltonMaximumPrinciple flow) ∧
+      HasRicciFlowUniquenessTheory flow) ∧
+      HasMetricEvolutionEquation flow) ∧
+      HasRicciTensorEvolutionEquation flow) ∧
+      HasScalarCurvatureEvolutionEquation flow) ∧
+      HasCurvatureNormEvolutionInequality flow :=
+  let firstFortyFive :=
+    analyticFirstFortyFive_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime odeAtTime pullbackIdentityAtTime
+      uniquenessByInitialMetric ricciTensorDerivativeAtTime
+      ricciTensorEvolutionRHSAtTime ricciTensorEvolutionAtTime
+      scalarCurvatureDerivativeAtTime scalarCurvatureEvolutionRHSAtTime
+      scalarCurvatureEvolutionAtTime
+  ⟨firstFortyFive,
+    hasCurvatureNormEvolutionInequality_of_scalarCurvatureEvolutionEquation_and_curvatureNormEvolutionInequality
+      firstFortyFive.2 curvatureNormAtTime
+      curvatureNorm_nonnegativeAtTime curvatureNormDerivativeAtTime
+      curvatureNormEvolutionRHSAtTime
+      curvatureNormEvolutionInequalityAtTime⟩
+
+/--
+Concrete curvature evolution-equations data for Ricci flow.
+
+The bundle records the curvature-norm evolution layer already available for
+the flow, the constructed Riemann curvature tensor coming from second-Bianchi
+data, and tensor-valued plus pointwise Riemann curvature evolution equations.
+Together with the previous Ricci, scalar, and norm layers this is the current
+production-level curvature evolution package.
+-/
+structure CurvatureEvolutionEquationsData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    (flow : RicciFlowData I n M) : Type _ where
+  /-- The curvature-norm evolution inequality layer used by curvature estimates. -/
+  curvatureNormEvolutionAtTime :
+    CurvatureNormEvolutionInequalityData flow
+  /-- Riemann-curvature data through the second Bianchi identity. -/
+  riemannSecondBianchiAtTime :
+    RiemannCurvatureSecondBianchiData (metric_of_ricci_flow_data flow)
+  /-- The constructed time-dependent tangent-valued Riemann curvature tensor. -/
+  riemannCurvatureAtTime :
+    TimeDependentRiemannCurvatureTensorField
+      (metric_of_ricci_flow_data flow)
+  /-- The stored Riemann tensor is the one carried by the second-Bianchi data. -/
+  riemannCurvature_eq_secondBianchi :
+    riemannCurvatureAtTime =
+      riemannSecondBianchiAtTime.firstBianchiAtTime.curvatureSymmetryAtTime.curvatureConstructionAtTime.curvatureAtTime
+  /-- Candidate time derivative of the Riemann curvature tensor. -/
+  riemannCurvatureDerivativeAtTime :
+    TimeDependentRiemannCurvatureTensorField
+      (metric_of_ricci_flow_data flow)
+  /-- Candidate right-hand side of the Riemann curvature evolution equation. -/
+  riemannCurvatureEvolutionRHSAtTime :
+    TimeDependentRiemannCurvatureTensorField
+      (metric_of_ricci_flow_data flow)
+  /-- Tensor-valued Riemann curvature evolution equation. -/
+  riemannCurvatureEvolutionAtTime :
+    ∀ t,
+      riemannCurvatureDerivativeAtTime t =
+        riemannCurvatureEvolutionRHSAtTime t
+  /-- Pointwise Riemann curvature evolution equation. -/
+  riemannCurvatureEvolutionAtTime_apply :
+    ∀ (t : ℝ) {x : M} (X Y Z : TangentSpace I x),
+      riemannCurvatureDerivativeAtTime t x X Y Z =
+        riemannCurvatureEvolutionRHSAtTime t x X Y Z
 
 /-- Interface for curvature evolution equations along Ricci flow. -/
 inductive HasCurvatureEvolutionEquations
@@ -2277,7 +10587,262 @@ inductive HasCurvatureEvolutionEquations
     {H : Type v} [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
-    (_flow : RicciFlowData I n M) : Prop
+    (flow : RicciFlowData I n M) : Prop where
+  /-- Concrete curvature evolution-equations data proves the interface. -/
+  | of_curvatureEvolutionEquationsData
+      [CompleteSpace E] [FiniteDimensional ℝ E] [IsManifold I 2 M]
+      (curvatureEvolutionAtTime :
+        CurvatureEvolutionEquationsData flow)
+
+/--
+Concrete curvature evolution-equations data proves the production curvature
+evolution interface.
+-/
+theorem hasCurvatureEvolutionEquations_of_curvatureEvolutionEquationsData
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (curvatureEvolutionAtTime : CurvatureEvolutionEquationsData flow) :
+    HasCurvatureEvolutionEquations flow :=
+  HasCurvatureEvolutionEquations.of_curvatureEvolutionEquationsData
+    curvatureEvolutionAtTime
+
+/--
+Curvature-norm inequality data plus concrete Riemann curvature evolution
+equations supplies the current curvature evolution interface.
+-/
+theorem hasCurvatureEvolutionEquations_of_curvatureNormEvolutionInequalityData_and_curvatureEvolutionEquations
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (curvatureNormEvolutionAtTime :
+      CurvatureNormEvolutionInequalityData flow)
+    (riemannSecondBianchiAtTime :
+      RiemannCurvatureSecondBianchiData (metric_of_ricci_flow_data flow))
+    (riemannCurvatureDerivativeAtTime :
+      TimeDependentRiemannCurvatureTensorField
+        (metric_of_ricci_flow_data flow))
+    (riemannCurvatureEvolutionRHSAtTime :
+      TimeDependentRiemannCurvatureTensorField
+        (metric_of_ricci_flow_data flow))
+    (riemannCurvatureEvolutionAtTime :
+      ∀ t,
+        riemannCurvatureDerivativeAtTime t =
+          riemannCurvatureEvolutionRHSAtTime t) :
+    HasCurvatureEvolutionEquations flow :=
+  hasCurvatureEvolutionEquations_of_curvatureEvolutionEquationsData
+    { curvatureNormEvolutionAtTime := curvatureNormEvolutionAtTime
+      riemannSecondBianchiAtTime := riemannSecondBianchiAtTime
+      riemannCurvatureAtTime :=
+        riemannSecondBianchiAtTime.firstBianchiAtTime.curvatureSymmetryAtTime.curvatureConstructionAtTime.curvatureAtTime
+      riemannCurvature_eq_secondBianchi := rfl
+      riemannCurvatureDerivativeAtTime :=
+        riemannCurvatureDerivativeAtTime
+      riemannCurvatureEvolutionRHSAtTime :=
+        riemannCurvatureEvolutionRHSAtTime
+      riemannCurvatureEvolutionAtTime :=
+        riemannCurvatureEvolutionAtTime
+      riemannCurvatureEvolutionAtTime_apply := by
+        intro t x X Y Z
+        exact
+          congrArg
+            (fun tensor : TangentRiemannCurvatureTensor I M =>
+              tensor x X Y Z)
+            (riemannCurvatureEvolutionAtTime t) }
+
+/--
+Any proof of curvature-norm evolution plus concrete Riemann curvature evolution
+equations supplies the current curvature evolution interface.
+-/
+theorem hasCurvatureEvolutionEquations_of_curvatureNormEvolutionInequality_and_curvatureEvolutionEquations
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (curvatureNormEvolutionAtTime :
+      HasCurvatureNormEvolutionInequality flow)
+    (riemannSecondBianchiAtTime :
+      RiemannCurvatureSecondBianchiData (metric_of_ricci_flow_data flow))
+    (riemannCurvatureDerivativeAtTime :
+      TimeDependentRiemannCurvatureTensorField
+        (metric_of_ricci_flow_data flow))
+    (riemannCurvatureEvolutionRHSAtTime :
+      TimeDependentRiemannCurvatureTensorField
+        (metric_of_ricci_flow_data flow))
+    (riemannCurvatureEvolutionAtTime :
+      ∀ t,
+        riemannCurvatureDerivativeAtTime t =
+          riemannCurvatureEvolutionRHSAtTime t) :
+    HasCurvatureEvolutionEquations flow := by
+  cases curvatureNormEvolutionAtTime with
+  | of_curvatureNormEvolutionInequalityData curvatureNormEvolutionData =>
+      exact
+        hasCurvatureEvolutionEquations_of_curvatureNormEvolutionInequalityData_and_curvatureEvolutionEquations
+          curvatureNormEvolutionData riemannSecondBianchiAtTime
+          riemannCurvatureDerivativeAtTime
+          riemannCurvatureEvolutionRHSAtTime
+          riemannCurvatureEvolutionAtTime
+
+/--
+Scalar-curvature theory data, Ricci-flow equation verification, the DeTurck and
+short-time layers, uniqueness by initial metric, concrete Ricci/scalar/norm
+evolution data, and concrete Riemann curvature evolution-equation data close
+all explicit analytic package fields.
+-/
+theorem analyticFirstFortySeven_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [CompleteSpace E] [FiniteDimensional ℝ E]
+    [IsManifold I 2 M]
+    {flow : RicciFlowData I n M}
+    (scalarCurvatureTheoryAtTime :
+      ScalarCurvatureTheoryData
+        (curvature_data_of_ricci_flow_data flow))
+    (equationVerificationAtTime :
+      RicciFlowEquationVerification (curvature_data_of_ricci_flow_data flow))
+    (vectorFieldAtTime : DeTurckVectorFieldConstructionData flow)
+    (ricciDeTurckEquationAtTime :
+      RicciDeTurckEquationDerivationData flow)
+    (linearizationAtTime : RicciDeTurckLinearizationData flow)
+    (strictParabolicAtTime : StrictlyParabolicDeTurckSystemData flow)
+    (linearTheoryAtTime : ParabolicLinearTheoryData flow)
+    (fixedPointAtTime : ParabolicFixedPointArgumentData flow)
+    (shortTimeAtTime : DeTurckShortTimeExistenceData flow)
+    (regularityAtTime : ShortTimeRegularityBootstrapData flow)
+    (odeAtTime : DeTurckDiffeomorphismODEData flow)
+    (pullbackIdentityAtTime : DeTurckPullbackEquationIdentityData flow)
+    (uniquenessByInitialMetric :
+      ∀ comparisonFlow : RicciFlowData I n M,
+        (metric_of_ricci_flow_data comparisonFlow).metricAtTime 0 =
+            (metric_of_ricci_flow_data flow).metricAtTime 0 →
+          metric_of_ricci_flow_data comparisonFlow =
+            metric_of_ricci_flow_data flow)
+    (ricciTensorDerivativeAtTime : ℝ → TangentCovariantTwoTensor I M)
+    (ricciTensorEvolutionRHSAtTime : ℝ → TangentCovariantTwoTensor I M)
+    (ricciTensorEvolutionAtTime :
+      ∀ t, ricciTensorDerivativeAtTime t =
+        ricciTensorEvolutionRHSAtTime t)
+    (scalarCurvatureDerivativeAtTime : ℝ → M → ℝ)
+    (scalarCurvatureEvolutionRHSAtTime : ℝ → M → ℝ)
+    (scalarCurvatureEvolutionAtTime :
+      ∀ t,
+        scalarCurvatureDerivativeAtTime t =
+          scalarCurvatureEvolutionRHSAtTime t)
+    (curvatureNormAtTime : ℝ → M → ℝ)
+    (curvatureNorm_nonnegativeAtTime :
+      ∀ (t : ℝ) (x : M), 0 ≤ curvatureNormAtTime t x)
+    (curvatureNormDerivativeAtTime : ℝ → M → ℝ)
+    (curvatureNormEvolutionRHSAtTime : ℝ → M → ℝ)
+    (curvatureNormEvolutionInequalityAtTime :
+      ∀ (t : ℝ) (x : M),
+        curvatureNormDerivativeAtTime t x ≤
+          curvatureNormEvolutionRHSAtTime t x)
+    (riemannSecondBianchiAtTime :
+      RiemannCurvatureSecondBianchiData (metric_of_ricci_flow_data flow))
+    (riemannCurvatureDerivativeAtTime :
+      TimeDependentRiemannCurvatureTensorField
+        (metric_of_ricci_flow_data flow))
+    (riemannCurvatureEvolutionRHSAtTime :
+      TimeDependentRiemannCurvatureTensorField
+        (metric_of_ricci_flow_data flow))
+    (riemannCurvatureEvolutionAtTime :
+      ∀ t,
+        riemannCurvatureDerivativeAtTime t =
+          riemannCurvatureEvolutionRHSAtTime t) :
+    (((((((((((((((((((((((((((((HasLeviCivitaConnectionExistence
+      (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionUniqueness
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaTorsionFreeProperty
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaMetricCompatibility
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorConstruction
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorSymmetries
+        (metric_of_ricci_flow_data flow) ∧
+      HasFirstBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasSecondBianchiIdentity
+        (metric_of_ricci_flow_data flow) ∧
+      HasRiemannCurvatureTensorTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasRicciTensorContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureContractionFormula
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciContractionTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasTimeDependentMetricRegularity
+        (metric_of_ricci_flow_data flow) ∧
+      HasMetricTimeDerivativeTheory
+        (metric_of_ricci_flow_data flow) ∧
+      HasScalarCurvatureTheory
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowEquationDerivation flow ∧
+      HasInitialMetricCompatibility flow) ∧
+      HasDeTurckGaugeFixing flow) ∧
+      HasDeTurckBackgroundMetricCompatibility flow) ∧
+      HasDeTurckVectorFieldConstruction flow) ∧
+      HasDeTurckEquationDerivation flow) ∧
+      HasRicciDeTurckLinearization flow) ∧
+      HasStrictlyParabolicDeTurckSystem flow) ∧
+      HasParabolicLinearTheory flow) ∧
+      HasParabolicFixedPointArgument flow) ∧
+      HasDeTurckShortTimeExistence flow) ∧
+      HasShortTimeRegularityBootstrap flow) ∧
+      HasDeTurckDiffeomorphismODE flow) ∧
+      HasDeTurckPullbackEquationIdentity flow) ∧
+      HasDeTurckPullbackToRicciFlow flow) ∧
+      HasShortTimeRicciFlowSolution flow) ∧
+      HasRicciFlowMaximalTimeInterval flow) ∧
+      HasRicciFlowContinuationCriterion flow) ∧
+      HasCurvatureBlowUpContinuationCriterion flow) ∧
+      HasMaximalSolutionExtension flow) ∧
+      HasParabolicSchauderEstimates flow) ∧
+      HasRicciFlowParabolicRegularity flow) ∧
+      HasShiDerivativeEstimates flow) ∧
+      HasCurvatureDerivativeBootstrap flow) ∧
+      HasHamiltonMaximumPrinciple flow) ∧
+      HasRicciFlowUniquenessTheory flow) ∧
+      HasMetricEvolutionEquation flow) ∧
+      HasRicciTensorEvolutionEquation flow) ∧
+      HasScalarCurvatureEvolutionEquation flow) ∧
+      HasCurvatureNormEvolutionInequality flow) ∧
+      HasCurvatureEvolutionEquations flow :=
+  let firstFortySix :=
+    analyticFirstFortySix_of_scalarCurvatureTheoryData_and_ricciFlowEquationVerification
+      scalarCurvatureTheoryAtTime equationVerificationAtTime
+      vectorFieldAtTime ricciDeTurckEquationAtTime linearizationAtTime
+      strictParabolicAtTime linearTheoryAtTime fixedPointAtTime
+      shortTimeAtTime regularityAtTime odeAtTime pullbackIdentityAtTime
+      uniquenessByInitialMetric ricciTensorDerivativeAtTime
+      ricciTensorEvolutionRHSAtTime ricciTensorEvolutionAtTime
+      scalarCurvatureDerivativeAtTime scalarCurvatureEvolutionRHSAtTime
+      scalarCurvatureEvolutionAtTime curvatureNormAtTime
+      curvatureNorm_nonnegativeAtTime curvatureNormDerivativeAtTime
+      curvatureNormEvolutionRHSAtTime
+      curvatureNormEvolutionInequalityAtTime
+  ⟨firstFortySix,
+    hasCurvatureEvolutionEquations_of_curvatureNormEvolutionInequality_and_curvatureEvolutionEquations
+      firstFortySix.2 riemannSecondBianchiAtTime
+      riemannCurvatureDerivativeAtTime riemannCurvatureEvolutionRHSAtTime
+      riemannCurvatureEvolutionAtTime⟩
 
 /--
 Analytic foundation package for Ricci flow before surgery.

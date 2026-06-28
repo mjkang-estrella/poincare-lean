@@ -6468,6 +6468,22 @@ check_decl "surgery package finite-extinction surgery-time summability projectio
   '^theorem finite_extinction_surgery_time_summability_of_surgery_package\b' Poincare/Surgery.lean
 check_decl "surgery package finite-extinction extinction-time contradiction projection is declared" \
   '^theorem finite_extinction_extinction_time_contradiction_of_surgery_package\b' Poincare/Surgery.lean
+check_decl "finite-extinction time bound from volume differential inputs is declared" \
+  '^theorem finite_extinction_time_bound_of_volume_differential_inputs\b' Poincare/Surgery.lean
+check_decl "finite-extinction volume decay estimate from volume differential inputs is declared" \
+  '^theorem finite_extinction_volume_decay_estimate_of_volume_differential_inputs\b' Poincare/Surgery.lean
+check_decl "finite-extinction finite-time integration from volume decay estimate is declared" \
+  '^theorem finite_extinction_finite_time_integration_of_volume_decay_estimate\b' Poincare/Surgery.lean
+check_decl "finite-extinction differential inequality integration from volume decay estimate is declared" \
+  '^theorem finite_extinction_differential_inequality_integration_of_volume_decay_estimate\b' Poincare/Surgery.lean
+check_decl "finite-extinction surgery-time summability from finite-time integration is declared" \
+  '^theorem finite_extinction_surgery_time_summability_of_finite_time_integration\b' Poincare/Surgery.lean
+check_decl "finite-extinction extinction-time contradiction from time-bound estimates is declared" \
+  '^theorem finite_extinction_extinction_time_contradiction_of_time_bound_estimates\b' Poincare/Surgery.lean
+check_decl "finite-extinction conclusion derivation from extinction-time contradiction is declared" \
+  '^theorem finite_extinction_conclusion_derivation_of_extinction_time_contradiction\b' Poincare/Surgery.lean
+check_decl "finite-extinction conclusion derivation from volume differential inputs is declared" \
+  '^theorem finite_extinction_conclusion_derivation_of_volume_differential_inputs\b' Poincare/Surgery.lean
 check_decl "surgery package finite-extinction derivation projection is declared" \
   '^theorem finite_extinction_derivation_of_surgery_package\b' Poincare/Surgery.lean
 check_decl "surgery package finite-extinction conclusion derivation projection is declared" \
@@ -6540,6 +6556,10 @@ check_decl "finite-extinction component assembly theorem is declared" \
   '^theorem finite_extinction_conclusion_statement_of_components\b' Poincare/Surgery.lean
 check_decl "finite-extinction component assembly equality contract is declared" \
   '^theorem finite_extinction_conclusion_statement_of_components_eq\b' Poincare/Surgery.lean
+check_decl "finite-extinction conclusion statement from volume differential inputs is declared" \
+  '^theorem finite_extinction_conclusion_statement_of_volume_differential_inputs\b' Poincare/Surgery.lean
+check_decl "finite-extinction statement from volume differential inputs is declared" \
+  '^theorem finite_extinction_statement_of_volume_differential_inputs\b' Poincare/Surgery.lean
 check_decl "surgery package finite-extinction conclusion statement projection is declared" \
   '^theorem finite_extinction_conclusion_statement_of_surgery_package\b' Poincare/Surgery.lean
 check_decl "surgery package finite-extinction conclusion statement equality contract is declared" \
@@ -32575,6 +32595,8 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.finite_extinction_conclusion_derivation_of_surgery_package_eq
 #check Poincare.finite_extinction_conclusion_statement_of_components
 #check Poincare.finite_extinction_conclusion_statement_of_components_eq
+#check Poincare.finite_extinction_conclusion_statement_of_volume_differential_inputs
+#check Poincare.finite_extinction_statement_of_volume_differential_inputs
 #check Poincare.finite_extinction_conclusion_statement_of_finite_extinction_statement
 #check Poincare.finite_extinction_conclusion_statement_of_finite_extinction_statement_eq
 #check Poincare.finite_extinction_conclusion_statement_of_subobligations_statement
@@ -32593,6 +32615,14 @@ append_certificate_route_projection_contract_checks() {
 #check Poincare.finite_extinction_derivation_stack_of_dependencies_to_package_eq
 #check Poincare.finite_extinction_differential_inequality_integration_of_surgery_package
 #check Poincare.finite_extinction_differential_inequality_integration_of_surgery_package_eq
+#check Poincare.finite_extinction_time_bound_of_volume_differential_inputs
+#check Poincare.finite_extinction_volume_decay_estimate_of_volume_differential_inputs
+#check Poincare.finite_extinction_finite_time_integration_of_volume_decay_estimate
+#check Poincare.finite_extinction_differential_inequality_integration_of_volume_decay_estimate
+#check Poincare.finite_extinction_surgery_time_summability_of_finite_time_integration
+#check Poincare.finite_extinction_extinction_time_contradiction_of_time_bound_estimates
+#check Poincare.finite_extinction_conclusion_derivation_of_extinction_time_contradiction
+#check Poincare.finite_extinction_conclusion_derivation_of_volume_differential_inputs
 #check Poincare.finite_extinction_discarded_component_classification_of_surgery_package
 #check Poincare.finite_extinction_discarded_component_classification_of_surgery_package_eq
 #check Poincare.finite_extinction_discarded_component_sweepout_triviality_of_surgery_package
@@ -42614,6 +42644,14 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_volume_decay_estimate_of_surgery_package
 #check Poincare.finite_extinction_time_bound_of_surgery_package
 #check Poincare.finite_extinction_differential_inequality_integration_of_surgery_package
+#check Poincare.finite_extinction_time_bound_of_volume_differential_inputs
+#check Poincare.finite_extinction_volume_decay_estimate_of_volume_differential_inputs
+#check Poincare.finite_extinction_finite_time_integration_of_volume_decay_estimate
+#check Poincare.finite_extinction_differential_inequality_integration_of_volume_decay_estimate
+#check Poincare.finite_extinction_surgery_time_summability_of_finite_time_integration
+#check Poincare.finite_extinction_extinction_time_contradiction_of_time_bound_estimates
+#check Poincare.finite_extinction_conclusion_derivation_of_extinction_time_contradiction
+#check Poincare.finite_extinction_conclusion_derivation_of_volume_differential_inputs
 #check Poincare.finite_extinction_finite_time_integration_of_surgery_package
 #check Poincare.finite_extinction_surgery_time_summability_of_surgery_package
 #check Poincare.finite_extinction_extinction_time_contradiction_of_surgery_package
@@ -42671,6 +42709,8 @@ open scoped Manifold ContDiff
 #check Poincare.FiniteExtinctionStatement
 #check Poincare.finite_extinction_conclusion_statement_of_components
 #check Poincare.finite_extinction_conclusion_statement_of_components_eq
+#check Poincare.finite_extinction_conclusion_statement_of_volume_differential_inputs
+#check Poincare.finite_extinction_statement_of_volume_differential_inputs
 #check Poincare.finite_extinction_conclusion_statement_of_surgery_package
 #check Poincare.finite_extinction_conclusion_statement_of_surgery_package_eq
 #check Poincare.finite_extinction_statement_of_surgery_package
@@ -54699,6 +54739,14 @@ open scoped Manifold ContDiff
 #check Poincare.finite_extinction_volume_decay_estimate_of_surgery_package
 #check Poincare.finite_extinction_time_bound_of_surgery_package
 #check Poincare.finite_extinction_differential_inequality_integration_of_surgery_package
+#check Poincare.finite_extinction_time_bound_of_volume_differential_inputs
+#check Poincare.finite_extinction_volume_decay_estimate_of_volume_differential_inputs
+#check Poincare.finite_extinction_finite_time_integration_of_volume_decay_estimate
+#check Poincare.finite_extinction_differential_inequality_integration_of_volume_decay_estimate
+#check Poincare.finite_extinction_surgery_time_summability_of_finite_time_integration
+#check Poincare.finite_extinction_extinction_time_contradiction_of_time_bound_estimates
+#check Poincare.finite_extinction_conclusion_derivation_of_extinction_time_contradiction
+#check Poincare.finite_extinction_conclusion_derivation_of_volume_differential_inputs
 #check Poincare.finite_extinction_finite_time_integration_of_surgery_package
 #check Poincare.finite_extinction_surgery_time_summability_of_surgery_package
 #check Poincare.finite_extinction_extinction_time_contradiction_of_surgery_package
@@ -54709,6 +54757,8 @@ open scoped Manifold ContDiff
 #check Poincare.FiniteExtinctionStatement
 #check Poincare.finite_extinction_conclusion_statement_of_components
 #check Poincare.finite_extinction_conclusion_statement_of_components_eq
+#check Poincare.finite_extinction_conclusion_statement_of_volume_differential_inputs
+#check Poincare.finite_extinction_statement_of_volume_differential_inputs
 #check Poincare.finite_extinction_conclusion_statement_of_surgery_package
 #check Poincare.finite_extinction_conclusion_statement_of_surgery_package_eq
 #check Poincare.finite_extinction_statement_of_surgery_package

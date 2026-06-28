@@ -1,0 +1,255 @@
+import Poincare.DependencyCrosswalk
+
+open scoped Manifold ContDiff
+
+namespace Poincare
+
+/--
+The first finite-extinction subobligation is already theorem-resolved from the
+target hypotheses: simply connectedness makes every based fundamental group
+finite.
+-/
+theorem finite_extinction_fundamental_group_input_of_target
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] :
+    HasFiniteExtinctionFundamentalGroupInput M :=
+  finite_extinction_fundamental_group_input_of_simplyConnectedSpace
+
+/--
+The proved fundamental-group input also gives the finite `π₁` formulation used
+by the finite-extinction interface.
+-/
+theorem finite_extinction_piOne_finite_of_target
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] (x : M) :
+    Finite (HomotopyGroup.Pi 1 M x) :=
+  finite_extinction_piOne_finite_of_fundamentalGroupInput
+    finite_extinction_fundamental_group_input_of_target x
+
+/--
+After the fundamental-group input is solved, any full finite-extinction
+subobligation statement must in particular supply the next constructorless
+interface: sweepout existence for the proved fundamental-group input.
+-/
+theorem finite_extinction_sweepout_existence_of_subobligations_statement
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {surgery : HasRicciFlowWithSurgery n M}
+    {control : HasPerelmanSingularityControl (n := n) (M := M) flow}
+    (statement :
+      FiniteExtinctionSubobligationsStatement flow surgery control) :
+    HasFiniteExtinctionSweepoutExistence M
+      finite_extinction_fundamental_group_input_of_target := by
+  rcases finite_extinction_subobligations_of_statement statement with
+    ⟨finiteFundamentalGroup, sweepout, _rest⟩
+  have hfg :
+      finiteFundamentalGroup =
+        finite_extinction_fundamental_group_input_of_target := by
+    apply Subsingleton.elim
+  exact hfg ▸ sweepout
+
+/--
+Conditional bridge: a full finite-extinction sub-obligation payload, for the
+exact flow supplied by the analytic package and the exact surgery/Perelman
+packages over it, supplies the finite-extinction surgery package required by
+the dependency crosswalk.
+-/
+theorem finite_extinction_surgery_package_nonempty_of_subobligations
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (subobligations :
+      FiniteExtinctionSubobligationsStatement
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control) :
+    Nonempty (FiniteExtinctionSurgeryPackage n M) := by
+  rcases subobligations with
+    ⟨finiteFundamentalGroup, sweepout, sweepoutParameterSpace,
+      sweepoutContinuity, sweepoutAreaBound, sweepoutNontriviality,
+      areaFunctional, widthDefinition, widthCompactness,
+      widthLowerSemicontinuity, minimizingSequence, pullTightArgument,
+      minMaxStationarity, minSurfaceRegularity, positiveWidth, widthTheory,
+      firstVariationFormula, secondVariationInequality, gaussBonnetEstimate,
+      scalarCurvatureWidthBound, widthEvolution, widthDifferentialInequality,
+      surgeryMetricComparison, surgeryWidthComparisonMap, surgeryWidthDrop,
+      surgeryDiscardControl, discardedComponentWidthNeutrality,
+      discardedComponentSweepoutTriviality, discardedComponentClassification,
+      survivingComponentTracking, componentTopology, pinching,
+      positiveScalarCurvatureLowerBound, positiveScalarCurvaturePersistence,
+      componentControl, volumeEvolutionFormula, surgeryVolumeNonincrease,
+      scalarCurvatureDifferentialInequality, volumeDifferentialInequality,
+      volumeDecayEstimate, timeBound, differentialInequalityIntegration,
+      finiteTimeIntegration, surgeryTimeSummability, extinctionTimeContradiction,
+      derivation, extinction, conclusionDerivation⟩
+  exact ⟨
+    { analyticFoundation := analyticFoundation
+      surgeryConstruction := surgeryConstruction
+      perelmanControl := perelmanControl
+      extinctionFundamentalGroupInput := finiteFundamentalGroup
+      extinctionSweepout := sweepout
+      extinctionSweepoutParameterSpace := sweepoutParameterSpace
+      extinctionSweepoutContinuity := sweepoutContinuity
+      extinctionSweepoutAreaBound := sweepoutAreaBound
+      extinctionSweepoutNontriviality := sweepoutNontriviality
+      extinctionAreaFunctional := areaFunctional
+      extinctionMinMaxWidth := widthDefinition
+      extinctionWidthCompactness := widthCompactness
+      extinctionWidthLowerSemicontinuity := widthLowerSemicontinuity
+      extinctionMinimizingSequence := minimizingSequence
+      extinctionPullTightArgument := pullTightArgument
+      extinctionMinMaxStationarity := minMaxStationarity
+      extinctionMinSurfaceRegularity := minSurfaceRegularity
+      extinctionPositiveWidth := positiveWidth
+      extinctionWidthTheory := widthTheory
+      extinctionFirstVariationFormula := firstVariationFormula
+      extinctionSecondVariationInequality := secondVariationInequality
+      extinctionGaussBonnetEstimate := gaussBonnetEstimate
+      extinctionScalarCurvatureWidthBound := scalarCurvatureWidthBound
+      extinctionWidthEvolution := widthEvolution
+      extinctionWidthDifferentialInequality := widthDifferentialInequality
+      extinctionSurgeryMetricComparison := surgeryMetricComparison
+      extinctionSurgeryWidthComparisonMap := surgeryWidthComparisonMap
+      extinctionSurgeryWidthDrop := surgeryWidthDrop
+      extinctionSurgeryDiscardControl := surgeryDiscardControl
+      extinctionDiscardedComponentWidthNeutrality :=
+        discardedComponentWidthNeutrality
+      extinctionDiscardedComponentSweepoutTriviality :=
+        discardedComponentSweepoutTriviality
+      extinctionDiscardedComponentClassification :=
+        discardedComponentClassification
+      extinctionSurvivingComponentTracking := survivingComponentTracking
+      extinctionComponentTopology := componentTopology
+      extinctionCurvaturePinching := pinching
+      extinctionPositiveScalarCurvatureLowerBound :=
+        positiveScalarCurvatureLowerBound
+      extinctionPositiveScalarCurvaturePersistence :=
+        positiveScalarCurvaturePersistence
+      extinctionComponentControl := componentControl
+      extinctionVolumeEvolutionFormula := volumeEvolutionFormula
+      extinctionSurgeryVolumeNonincrease := surgeryVolumeNonincrease
+      extinctionScalarCurvatureDifferentialInequality :=
+        scalarCurvatureDifferentialInequality
+      extinctionVolumeDifferentialInequality := volumeDifferentialInequality
+      extinctionVolumeDecayEstimate := volumeDecayEstimate
+      extinctionTimeBound := timeBound
+      extinctionDifferentialInequalityIntegration :=
+        differentialInequalityIntegration
+      extinctionFiniteTimeIntegration := finiteTimeIntegration
+      extinctionSurgeryTimeSummability := surgeryTimeSummability
+      extinctionExtinctionTimeContradiction := extinctionTimeContradiction
+      extinctionDerivation := derivation
+      finiteExtinction := extinction
+      extinctionConclusionDerivation := conclusionDerivation }⟩
+
+/--
+Conditional bridge: the finite-extinction package-layer witness follows from
+one analytic package, one surgery construction package, one Perelman-control
+package, and the full finite-extinction sub-obligation payload for their shared
+flow.
+-/
+theorem finite_extinction_package_nonempty_of_subobligations
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (h :
+      ∃ n : ℕ∞ω,
+      ∃ analyticFoundation :
+        RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M,
+      ∃ surgeryConstruction :
+        RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+          (ricci_flow_data_of_analytic_foundation_package analyticFoundation),
+      ∃ perelmanControl :
+        PerelmanSingularityControlPackage (n := n) (M := M)
+          (ricci_flow_data_of_analytic_foundation_package analyticFoundation),
+        FiniteExtinctionSubobligationsStatement
+          (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+          surgeryConstruction.withSurgery perelmanControl.control) :
+    Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M) := by
+  rcases h with
+    ⟨n, analyticFoundation, surgeryConstruction, perelmanControl,
+      subobligations⟩
+  rcases finite_extinction_surgery_package_nonempty_of_subobligations
+      analyticFoundation surgeryConstruction perelmanControl
+      subobligations with
+    ⟨package⟩
+  exact ⟨⟨n, package⟩⟩
+
+/--
+Conditional bridge: a target-family supply of analytic/surgery/Perelman
+packages plus the full finite-extinction sub-obligation payload discharges the
+finite-extinction package-layer requirement in `DependencyCrosswalk`.
+-/
+theorem finiteExtinctionPackage_requirement_of_subobligations_family
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control) :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.finiteExtinctionPackage := by
+  intro M _ _ _ _ _ _
+  exact finite_extinction_package_nonempty_of_subobligations (h M)
+
+/--
+The conditional family-level sub-obligation route lands on exactly the
+package-layer requirement named in the dependency crosswalk.
+-/
+theorem finiteExtinctionPackage_requirement_of_subobligations_family_eq
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control) :
+    finiteExtinctionPackage_requirement_of_subobligations_family h =
+      (by
+        intro M _ _ _ _ _ _
+        exact finite_extinction_package_nonempty_of_subobligations (h M)) := by
+  rfl
+
+end Poincare

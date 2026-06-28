@@ -433,7 +433,8 @@ theorem smoothability_smooth_atlas_pl_compatibility_of_dependencies
       (smoothability_pl_atlas_of_dependencies dependencies M)
       (smoothability_pl_smoothing_of_dependencies dependencies M)
       (smooth_structure_of_smoothability_package
-        (smoothability_package_of_dependencies dependencies) M) :=
+        (smoothability_package_of_dependencies dependencies) M)
+      (smoothability_smooth_atlas_construction_of_dependencies dependencies M) :=
   smooth_atlas_pl_compatibility_of_smoothability_package
     (smoothability_package_of_dependencies dependencies) M
 
@@ -12234,7 +12235,8 @@ theorem smoothability_subobligations_of_dependencies
         M triangulation plStructure plAtlas plSmoothing smoothStructure,
     ∃ smoothAtlasPLCompatibility :
       HasSmoothAtlasPLCompatibility
-        M triangulation plStructure plAtlas plSmoothing smoothStructure,
+        M triangulation plStructure plAtlas plSmoothing smoothStructure
+        smoothAtlasConstruction,
     ∃ _smoothAtlasMaximality :
       HasSmoothAtlasMaximality
         M triangulation plStructure plAtlas plSmoothing smoothStructure,
