@@ -226,6 +226,49 @@ theorem canonical_payload_and_final_certificate_of_remainingDependencyPackage_an
   apply Subsingleton.elim
 
 /--
+The remaining dependency package, grounded universal finite extinction, and a
+theorem-shaped topology extraction statement close the canonical
+certificate-facing payload.  The topology statement supplies the extractor used
+for the canonical target and completion payload; the remaining dependency
+package is needed only for the checked certificate proposition.
+-/
+theorem canonical_payload_and_final_certificate_of_remainingDependencyPackage_universalFiniteExtinctionStatement_and_topologyExtractionStatement
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} :=
+  ⟨ canonical_completion_target_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+      finiteExtinction topologyStatement
+  , canonical_completion_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+      finiteExtinction topologyStatement
+  , completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+      dependencies finiteExtinction
+  ⟩
+
+/--
+The topology-extraction-statement final payload is exactly the tuple of the
+canonical target route, canonical payload route, and checked certificate
+constructor using the same universal finite-extinction statement.
+-/
+theorem canonical_payload_and_final_certificate_of_remainingDependencyPackage_universalFiniteExtinctionStatement_and_topologyExtractionStatement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    canonical_payload_and_final_certificate_of_remainingDependencyPackage_universalFiniteExtinctionStatement_and_topologyExtractionStatement
+        dependencies finiteExtinction topologyStatement =
+      ⟨ canonical_completion_target_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+          finiteExtinction topologyStatement
+      , canonical_completion_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+          finiteExtinction topologyStatement
+      , completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+          dependencies finiteExtinction
+      ⟩ := by
+  apply Subsingleton.elim
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
