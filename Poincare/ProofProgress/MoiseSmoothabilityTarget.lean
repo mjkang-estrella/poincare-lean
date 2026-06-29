@@ -1190,4 +1190,115 @@ theorem moiseSmoothability_fixedTarget_derivation_statement_and_concrete_structu
     , ⟨smoothCharted, smoothManifold, surgeryCharted, surgerySmooth, hPrereqs⟩
     ⟩
 
+/--
+For a fixed compact simply connected target, the complete Moise consumer
+payload exposes the package bridge tail: the smooth-structure derivation
+statement, the resulting surgery-model manifold evidence, and the bridge,
+model, and chart compatibility certificates from the same package.
+-/
+theorem moiseSmoothability_fixedTarget_bridge_tail_of_completeConsumerPayload
+    (payload : Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u}))
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage ∧
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      (∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+        ∃ smoothDerivationStatement :
+          SmoothStructureDerivationStatement M smoothStructure,
+        ∃ manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M,
+        ∃ bridgeDerivation :
+          HasSmoothabilityBridgeDerivation
+            M smoothStructure smoothDerivationStatement manifoldEvidence,
+        ∃ modelCompatibility :
+          HasSmoothManifoldModelCompatibility
+            M smoothStructure smoothDerivationStatement manifoldEvidence
+            bridgeDerivation,
+          HasSmoothChartCompatibility
+            M smoothStructure smoothDerivationStatement manifoldEvidence
+            bridgeDerivation modelCompatibility) := by
+  rcases payload with ⟨payload⟩
+  rcases payload.targetFamily M with
+    ⟨hSphere, hOnePoint, _hSmooth, _hSurgery, _hPrereqs⟩
+  let package : SmoothabilityPackage.{u} :=
+    payload.smoothabilityPackageRequirement
+  let smoothStructure : HasThreeManifoldSmoothStructure M :=
+    package.smoothStructure M
+  let smoothDerivationStatement :
+      SmoothStructureDerivationStatement M smoothStructure :=
+    smooth_structure_derivation_statement_of_components M
+      (package.moiseLocalCharts M)
+      (package.moiseLocallyFiniteCoverRefinement M)
+      (package.moiseSimplicialComplex M)
+      (package.moiseCompatibleChartTriangulations M)
+      (package.moiseTriangulation M)
+      (package.moiseSimplicialApproximation M)
+      (package.moiseStarNeighborhoodBasis M)
+      (package.moiseBarycentricSubdivision M)
+      (package.moiseRegularNeighborhoodCompatibility M)
+      (package.moiseTriangulationLocalFiniteness M)
+      (package.moiseLinkCompatibility M)
+      (package.moisePLManifoldRecognition M)
+      (package.moiseTriangulationHomeomorphism M)
+      (package.moiseCompatibility M)
+      (package.moiseTriangulationUniqueness M)
+      (package.moiseHauptvermutungDimensionThree M)
+      (package.plStructure M)
+      (package.plTransitionCompatibility M)
+      (package.plAtlas M)
+      (package.plManifoldAtlas M)
+      (package.plCollarNeighborhoodCompatibility M)
+      (package.plHomeomorphismCompatibility M)
+      (package.plAtlasMaximality M)
+      (package.plSmoothingExistence M)
+      (package.plSmoothingObstructionVanishing M)
+      (package.plMicrobundleSmoothing M)
+      (package.plSmoothing M)
+      (package.plSmoothingCompatibility M)
+      (package.plSmoothingUniqueness M)
+      (package.plSmoothingLocalModelCompatibility M)
+      (package.smoothStructure M)
+      (package.smoothAtlasConstruction M)
+      (package.smoothAtlasPLCompatibility M)
+      (package.smoothAtlasMaximality M)
+      (package.smoothAtlasUniqueness M)
+      (package.smoothStructureUniquenessUpToDiffeomorphism M)
+      (package.smoothTransitionCompatibility M)
+      (package.smoothAtlasTransitionSmoothness M)
+      (package.smoothStructureDerivation M)
+  let manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M :=
+    package.bridge M smoothStructure smoothDerivationStatement
+  have bridgeDerivation :
+      HasSmoothabilityBridgeDerivation
+        M smoothStructure smoothDerivationStatement manifoldEvidence := by
+    simpa [package, smoothStructure, smoothDerivationStatement,
+      manifoldEvidence] using package.bridgeDerivation M
+  have modelCompatibility :
+      HasSmoothManifoldModelCompatibility
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation := by
+    simpa [package, smoothStructure, smoothDerivationStatement,
+      manifoldEvidence, bridgeDerivation] using
+        package.smoothModelCompatibility M
+  have chartCompatibility :
+      HasSmoothChartCompatibility
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation modelCompatibility := by
+    simpa [package, smoothStructure, smoothDerivationStatement,
+      manifoldEvidence, bridgeDerivation, modelCompatibility] using
+        package.chartCompatibility M
+  exact
+    ⟨ payload.smoothabilityPackageRequirement
+    , hSphere
+    , hOnePoint
+    , smoothStructure
+    , smoothDerivationStatement
+    , manifoldEvidence
+    , bridgeDerivation
+    , modelCompatibility
+    , chartCompatibility
+    ⟩
+
 end Poincare
