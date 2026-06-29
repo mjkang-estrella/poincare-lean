@@ -395,6 +395,87 @@ theorem finite_extinction_frontier_package_statement_derivation_and_witness_of_g
     ⟩
 
 /--
+Family-level grounded frontier payload: every smooth target carries the actual
+analytic foundation, surgery construction, Perelman control, width statement,
+frontier chain, concrete finite-extinction package, theorem-shaped statement,
+derivation, and finite-extinction witness.  This exposes the real Ricci-flow
+production route pointwise from the grounded universal statement, before any
+final-certificate assembly is selected.
+-/
+theorem finite_extinction_frontier_package_statement_derivation_and_witness_family_of_grounded
+    (grounded :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          GroundedFiniteExtinctionProductionCertificate M) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+        ∃ n : ℕ∞ω,
+        ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+        ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+        ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+        ∃ widthStatement :
+            FiniteExtinctionWidthSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control,
+        ∃ curvatureFrontier :
+            FiniteExtinctionProductionCurvatureFrontier
+              analyticFoundation surgeryConstruction perelmanControl,
+        ∃ volumeFrontier :
+            FiniteExtinctionProductionVolumeEvolutionFrontier
+              analyticFoundation surgeryConstruction perelmanControl
+              curvatureFrontier,
+        ∃ surgeryVolumeFrontier :
+            FiniteExtinctionProductionSurgeryVolumeFrontier
+              analyticFoundation surgeryConstruction perelmanControl
+              curvatureFrontier volumeFrontier,
+        ∃ scalarCurvatureFrontier :
+            FiniteExtinctionProductionScalarCurvatureFrontier
+              analyticFoundation surgeryConstruction perelmanControl
+              curvatureFrontier volumeFrontier surgeryVolumeFrontier,
+        ∃ volumeDifferentialFrontier :
+            FiniteExtinctionProductionVolumeDifferentialFrontier
+              analyticFoundation surgeryConstruction perelmanControl
+              curvatureFrontier volumeFrontier surgeryVolumeFrontier
+              scalarCurvatureFrontier,
+        ∃ package : FiniteExtinctionSurgeryPackage n M,
+        ∃ packageStatement : FiniteExtinctionStatement n M,
+        ∃ derivation :
+            HasFiniteExtinctionDerivation
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control,
+        ∃ extinctionWitness : FiniteExtinctionByRicciFlowWithSurgery M,
+          packageStatement =
+              finite_extinction_statement_of_surgery_package package ∧
+            derivation =
+              finite_extinction_derivation_of_width_statement
+                analyticFoundation surgeryConstruction perelmanControl
+                widthStatement ∧
+            extinctionWitness =
+              finite_extinction_by_ricci_flow_with_surgery_of_volume_differential_frontier
+                analyticFoundation surgeryConstruction perelmanControl
+                widthStatement curvatureFrontier volumeFrontier
+                surgeryVolumeFrontier scalarCurvatureFrontier
+                volumeDifferentialFrontier := by
+  intro M _top _t2 _charted _simple _compact _manifold
+  exact
+    finite_extinction_frontier_package_statement_derivation_and_witness_of_grounded
+      (grounded M)
+
+/--
 The grounded universal finite-extinction statement: every compact simply
 connected topological 3-manifold carries a grounded certificate.  This is the
 honest restatement of the Ricci-flow pillar — unlike
