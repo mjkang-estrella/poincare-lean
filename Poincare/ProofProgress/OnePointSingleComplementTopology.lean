@@ -2713,6 +2713,162 @@ theorem onePoint_threeSpace_compl_singleton_all_basepoint_lowHomotopy_baseclass_
     ⟩
 
 /--
+Every basepoint in the singleton complement also carries the Euclidean chart
+and ordinary topology fields together with the reusable all-basepoint
+baseclass-collapse package.  This is the compact consumer endpoint for callers
+that need the geometric singleton-complement data and the low-homotopy
+collapse family at the same supplied basepoint, without destructing the longer
+complete-collapse tuple.
+-/
+theorem onePoint_threeSpace_compl_singleton_all_basepoint_euclidean_topology_and_lowHomotopy_baseclass_package
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    ∀ suppliedBasepoint :
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+      Nonempty
+          (({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+            EuclideanSpace ℝ (Fin 3)) ∧
+        ContractibleSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        Nonempty
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        PathConnectedSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        ConnectedSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        SimplyConnectedSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        LocPathConnectedSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        (∃ _lowHomotopyBaseclassPackage :
+          Subsingleton
+              (ZerothHomotopy
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 0
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint) ∧
+            Subsingleton
+              (FundamentalGroup
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 1
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint) ∧
+            Nonempty (Unique
+              (ZerothHomotopy
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))) ∧
+            Nonempty (Unique
+              (HomotopyGroup.Pi 0
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint)) ∧
+            Nonempty (Unique
+              (FundamentalGroup
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint)) ∧
+            Nonempty (Unique
+              (HomotopyGroup.Pi 1
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint)) ∧
+            (∀ x y :
+              ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+              ZerothHomotopy.mk x = ZerothHomotopy.mk y) ∧
+            (∀ a b :
+              HomotopyGroup.Pi 0
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint,
+              a = b) ∧
+            (∀ a b :
+              FundamentalGroup
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint,
+              a = b) ∧
+            (∀ a b :
+              HomotopyGroup.Pi 1
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint,
+              a = b) ∧
+            (∃ baseClass :
+              ZerothHomotopy
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+              ∀ homotopyClass :
+                ZerothHomotopy
+                  ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+                homotopyClass = baseClass) ∧
+            (∃ baseClass :
+              HomotopyGroup.Pi 0
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint,
+              ∀ homotopyClass :
+                HomotopyGroup.Pi 0
+                  ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                  suppliedBasepoint,
+                homotopyClass = baseClass) ∧
+            (∃ baseClass :
+              FundamentalGroup
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint,
+              ∀ fundamentalClass :
+                FundamentalGroup
+                  ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                  suppliedBasepoint,
+                fundamentalClass = baseClass) ∧
+            (∃ baseClass :
+              HomotopyGroup.Pi 1
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint,
+              ∀ homotopyClass :
+                HomotopyGroup.Pi 1
+                  ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                  suppliedBasepoint,
+                homotopyClass = baseClass) ∧
+            (∀ x y :
+              ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+              Nonempty (Path x y)) ∧
+            (∀ x :
+              ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+              pathComponent x = Set.univ),
+          True) := by
+  intro suppliedBasepoint
+  rcases
+      onePoint_threeSpace_compl_singleton_euclidean_complete_collapse_and_lowHomotopy_subsingleton_package
+        p suppliedBasepoint with
+    ⟨ chart
+    , contractible
+    , nonempty
+    , pathConnected
+    , connected
+    , simplyConnected
+    , locPathConnected
+    , _zerothSubsingleton
+    , _piZeroSubsingleton
+    , _fundamentalGroupSubsingleton
+    , _piOneSubsingleton
+    , _zerothUnique
+    , _piZeroUnique
+    , _fundamentalGroupUnique
+    , _piOneUnique
+    , _zerothEq
+    , _piZeroEq
+    , _fundamentalGroupEq
+    , _piOneEq
+    , _pathNonempty
+    , _pathComponentEqUniv
+    ⟩
+  exact
+    ⟨ chart
+    , contractible
+    , nonempty
+    , pathConnected
+    , connected
+    , simplyConnected
+    , locPathConnected
+    , ⟨ onePoint_threeSpace_compl_singleton_all_basepoint_lowHomotopy_baseclass_collapse_package
+        p suppliedBasepoint
+      , trivial⟩
+    ⟩
+
+/--
 The selected singleton-complement endpoint now carries the stronger
 all-basepoint baseclass-collapse family, while preserving the selected
 basepoint equality eliminators and selected canonical base classes.  This is
