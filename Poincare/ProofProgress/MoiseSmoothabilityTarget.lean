@@ -704,6 +704,34 @@ theorem moiseSmoothability_completeConsumerPayload_of_smoothabilityPackage_and_t
       recognize⟩
 
 /--
+The residual `SmoothabilityPackage` and target-family recognition by the
+one-point compactification model construct the complete smoothability consumer
+payload directly.  The proof converts the one-point recognition family to the
+existing `ThreeSphere` recognition route before building the Moise assembly
+payload.
+-/
+theorem moiseSmoothability_completeConsumerPayload_of_smoothabilityPackage_and_onePointRecognition
+    (smoothability : SmoothabilityPackage.{u})
+    (recognizeOnePoint :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u}) := by
+  let recognizeSphere :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere) := by
+    intro M _top _t2 _charted _simple _compact
+    exact
+      homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+        (recognizeOnePoint M)
+  exact
+    moiseSmoothability_completeConsumerPayload_of_smoothabilityPackage_and_threeSphereRecognition
+      smoothability recognizeSphere
+
+/--
 The complete Moise smoothability consumer payload is equivalent to the residual
 smoothability package requirement together with an inhabited concrete Moise
 recognition assembly payload.  The forward direction projects both fields from
@@ -1299,6 +1327,64 @@ theorem moiseSmoothability_fixedTarget_bridge_tail_of_completeConsumerPayload
     , bridgeDerivation
     , modelCompatibility
     , chartCompatibility
+    ⟩
+
+/--
+One-point recognition plus the residual smoothability package constructs the
+complete Moise consumer payload and, for a fixed target, exposes the same
+package bridge tail: smooth-structure derivation, surgery-model manifold
+evidence, bridge derivation, model compatibility, and chart compatibility.
+-/
+theorem smoothabilityPackage_requirement_completeMoiseConsumer_and_fixedTarget_bridge_tail_of_smoothabilityPackage_and_onePointRecognition
+    (smoothability : SmoothabilityPackage.{u})
+    (recognizeOnePoint :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage ∧
+      Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u}) ∧
+      MoiseSmoothThreeManifoldStatement.{u} ∧
+      MoiseSmoothabilityStatement.{u} ∧
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      (∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+        ∃ smoothDerivationStatement :
+          SmoothStructureDerivationStatement M smoothStructure,
+        ∃ manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M,
+        ∃ bridgeDerivation :
+          HasSmoothabilityBridgeDerivation
+            M smoothStructure smoothDerivationStatement manifoldEvidence,
+        ∃ modelCompatibility :
+          HasSmoothManifoldModelCompatibility
+            M smoothStructure smoothDerivationStatement manifoldEvidence
+            bridgeDerivation,
+          HasSmoothChartCompatibility
+            M smoothStructure smoothDerivationStatement manifoldEvidence
+            bridgeDerivation modelCompatibility) := by
+  let completePayload :=
+    moiseSmoothability_completeConsumerPayload_of_smoothabilityPackage_and_onePointRecognition
+      smoothability recognizeOnePoint
+  rcases completePayload with ⟨payload⟩
+  rcases payload.targetFamily M with
+    ⟨hSphere, hOnePoint, _hSmooth, _hSurgery, _hPrereqs⟩
+  rcases
+    moiseSmoothability_fixedTarget_bridge_tail_of_completeConsumerPayload
+      ⟨payload⟩ M with
+    ⟨smoothabilityRequirement, _hSphereBridge, _hOnePointBridge,
+      bridgeTail⟩
+  exact
+    ⟨ smoothabilityRequirement
+    , ⟨payload⟩
+    , payload.smoothMoise
+    , payload.surgeryMoise
+    , hSphere
+    , hOnePoint
+    , bridgeTail
     ⟩
 
 end Poincare
