@@ -4597,6 +4597,73 @@ theorem finalCertificateNamedPackageLayerRequirements_constructedConsumer_projec
     ⟩
 
 /--
+For the constructed named-package consumer, the primitive final-certificate
+inputs obtained from the selected smoothability, finite-extinction, and
+topology package fields feed the named final assembly theorems directly.  This
+records that the selected reserved public statement is the same statement
+obtained by applying the final assembly layer to those primitive inputs, while
+retaining the checked certificate and all completion criteria from the same
+consumer.
+-/
+theorem finalCertificateNamedPackageLayerRequirements_constructedConsumer_primitive_finalAssembly_routes
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    let selected :=
+      finalCertificateNamedPackageLayerConsumerPayload
+        smoothability finiteExtinction topology
+    let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+      { smoothability := selected.smoothability
+        finiteExtinction := selected.finiteExtinction }
+    let primitiveInputs : FinalCertificatePrimitiveInputs.{u} :=
+      finalCertificatePrimitiveInputs_of_minimalPackageInputs inputs
+        (extinction_implies_sphere_of_topology_package selected.topology)
+    primitiveInputs.universalFiniteExtinction =
+        universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+          selected.smoothability selected.finiteExtinction ∧
+      primitiveInputs.extinctionImpliesSphere =
+        extinction_implies_sphere_of_topology_package selected.topology ∧
+      poincare_statement_of_extinction_and_extraction
+          primitiveInputs.universalFiniteExtinction
+          primitiveInputs.extinctionImpliesSphere =
+        selected.publicStatement ∧
+      poincare_conjecture_of_extinction_and_extraction
+          primitiveInputs.universalFiniteExtinction
+          primitiveInputs.extinctionImpliesSphere =
+        selected.publicStatement ∧
+      selected.publicStatement =
+        poincare_conjecture_of_completion_certificate
+          selected.checkedCertificate ∧
+      PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let selected :=
+    finalCertificateNamedPackageLayerConsumerPayload
+      smoothability finiteExtinction topology
+  let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+    { smoothability := selected.smoothability
+      finiteExtinction := selected.finiteExtinction }
+  let primitiveInputs : FinalCertificatePrimitiveInputs.{u} :=
+    finalCertificatePrimitiveInputs_of_minimalPackageInputs inputs
+      (extinction_implies_sphere_of_topology_package selected.topology)
+  exact
+    ⟨ rfl
+    , rfl
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , selected.publicStatement
+    , selected.checkedCertificate
+    , selected.completionCriteria
+    ⟩
+
+/--
 For the constructed named-package consumer, the project payload statement, the
 nonempty-consumer endpoint, and the checked-certificate endpoint are the same
 reserved public statement.  The same fixed consumer also identifies the public
