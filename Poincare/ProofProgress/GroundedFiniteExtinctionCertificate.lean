@@ -3118,4 +3118,120 @@ theorem groundedUniversalFiniteExtinction_completeConsumerPayload_checked_certif
     , extinction
     ⟩
 
+/--
+Grounded universal finite extinction constructs a selected complete
+finite-extinction consumer payload and keeps both fixed-target derivation
+views available while feeding the checked final-certificate route.  The target
+certificate, the flow-first statement payload, and the package-first derivation
+payload all come from the same selected complete consumer produced from the
+grounded hypothesis.
+-/
+theorem groundedUniversalFiniteExtinction_selected_completeConsumerPayload_checked_certificate_targetCertificate_statement_and_packageDerivationPayloads_of_grounded
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    Nonempty GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u} ∧
+      ∃ selected : GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u},
+        GroundedFiniteExtinctionProductionCertificate M ∧
+          selected.universalStatement =
+            universalFiniteExtinctionStatement_of_grounded grounded ∧
+          selected.finiteExtinctionPackageRequirement =
+            finiteExtinctionPackage_requirement_of_grounded grounded ∧
+          selected.ricciFlowWithSurgeryMilestone =
+            ricciFlowWithSurgery_milestone_requirement_of_grounded
+              grounded ∧
+          selected.perelmanSingularityControlMilestone =
+            perelmanSingularityControl_milestone_requirement_of_grounded
+              grounded ∧
+          selected.finiteExtinctionMilestone =
+            finiteExtinction_milestone_requirement_of_grounded grounded ∧
+          RemainingDependencyPackage.{u} ∧
+          PoincareConjectureStatement.{u} ∧
+          PoincareCompletionCertificate.{u} ∧
+          (∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+          (∃ n : ℕ∞ω,
+          ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          ∃ surgery : HasRicciFlowWithSurgery n M,
+          ∃ control :
+            HasPerelmanSingularityControl (n := n) (M := M) flow,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+          ∃ _packageStatement : FiniteExtinctionStatement n M,
+          ∃ _derivation : HasFiniteExtinctionDerivation flow surgery control,
+            FiniteExtinctionStatement n M ∧
+              HasFiniteExtinctionDerivation flow surgery control ∧
+              FiniteExtinctionByRicciFlowWithSurgery M) ∧
+          (∃ n : ℕ∞ω,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+            FiniteExtinctionStatement n M ∧
+              FiniteExtinctionByRicciFlowWithSurgery M ∧
+              ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+              ∃ surgery : HasRicciFlowWithSurgery n M,
+              ∃ control :
+                HasPerelmanSingularityControl (n := n) (M := M) flow,
+                HasFiniteExtinctionDerivation flow surgery control) := by
+  let constructed :
+      Nonempty GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u} :=
+    groundedUniversalFiniteExtinction_completeConsumerPayload_of_grounded
+      grounded
+  rcases constructed with ⟨selected⟩
+  let remaining : RemainingDependencyPackage.{u} :=
+    { smoothability := smoothability
+      surgery := selected.finiteExtinctionPackageRequirement
+      topology := topologyPackage }
+  let certificate : PoincareCompletionCertificate.{u} :=
+    completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+      remaining selected.universalStatement
+  rcases selected.statementPayloadFamily M with
+    ⟨n, flow, surgery, control, package, packageStatement,
+      derivation, extinction⟩
+  rcases selected.packageStatementDerivationFamily M with
+    ⟨n', package', packageStatement', extinction',
+      flow', surgery', control', derivation'⟩
+  refine ⟨⟨selected⟩, selected, ?_⟩
+  refine
+    ⟨ grounded M
+    , (by apply Subsingleton.elim)
+    , (by apply Subsingleton.elim)
+    , (by apply Subsingleton.elim)
+    , (by apply Subsingleton.elim)
+    , (by apply Subsingleton.elim)
+    , remaining
+    , poincare_conjecture_of_completion_certificate certificate
+    , certificate
+    , (fun witness => completion_criterion_of_completion_certificate
+        witness certificate)
+    , ?_
+    , ?_
+    ⟩
+  · exact
+      ⟨ n
+      , flow
+      , surgery
+      , control
+      , package
+      , packageStatement
+      , derivation
+      , packageStatement
+      , derivation
+      , extinction
+      ⟩
+  · exact
+      ⟨ n'
+      , package'
+      , packageStatement'
+      , extinction'
+      , flow'
+      , surgery'
+      , control'
+      , derivation'
+      ⟩
+
 end Poincare
