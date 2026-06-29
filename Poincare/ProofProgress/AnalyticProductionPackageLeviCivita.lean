@@ -5733,4 +5733,79 @@ theorem analyticProductionPackage_finiteExtinctionFacing_control_certificate_of_
         exact statement_eq
     ⟩
 
+/--
+Consumer form of the finite-extinction analytic control certificate.  It opens
+the certificate constructed from the package and retains the selected flow,
+theorem-shaped statement, analytic sub-obligation payload, equation evidence,
+temporal controls, maximum principle, uniqueness, and curvature-evolution
+controls in one endpoint.
+-/
+theorem analyticProductionPackage_finiteExtinctionFacing_control_certificate_fields_of_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    ∃ certificate : AnalyticFiniteExtinctionControlCertificate I n M,
+      certificate.flow =
+          ricci_flow_data_of_analytic_foundation_package package ∧
+        certificate.statement =
+          analytic_foundation_statement_of_analytic_foundation_package
+            package ∧
+        certificate.statement =
+          ⟨certificate.flow, certificate.derivationStatement⟩ ∧
+        ricci_flow_data_of_analytic_foundation_statement
+            certificate.statement =
+          ⟨certificate.flow, certificate.derivationStatement⟩ ∧
+        AnalyticFoundationSubobligationsPayload certificate.flow ∧
+        SatisfiesRicciFlowEquation
+          (metric_of_ricci_flow_data certificate.flow)
+          (curvature_data_of_ricci_flow_data certificate.flow) ∧
+        HasDeTurckPullbackToRicciFlow certificate.flow ∧
+        HasShortTimeRicciFlowSolution certificate.flow ∧
+        HasRicciFlowMaximalTimeInterval certificate.flow ∧
+        HasRicciFlowContinuationCriterion certificate.flow ∧
+        HasCurvatureBlowUpContinuationCriterion certificate.flow ∧
+        HasMaximalSolutionExtension certificate.flow ∧
+        HasRicciFlowParabolicRegularity certificate.flow ∧
+        HasShiDerivativeEstimates certificate.flow ∧
+        HasCurvatureDerivativeBootstrap certificate.flow ∧
+        HasHamiltonMaximumPrinciple certificate.flow ∧
+        HasRicciFlowUniquenessTheory certificate.flow ∧
+        HasMetricEvolutionEquation certificate.flow ∧
+        HasRicciTensorEvolutionEquation certificate.flow ∧
+        HasScalarCurvatureEvolutionEquation certificate.flow ∧
+        HasCurvatureNormEvolutionInequality certificate.flow ∧
+        HasCurvatureEvolutionEquations certificate.flow := by
+  rcases
+    analyticProductionPackage_finiteExtinctionFacing_control_certificate_of_package
+      package with
+    ⟨certificate, hFlow, hStatement, hStatementSelected⟩
+  exact
+    ⟨ certificate
+    , hFlow
+    , hStatement
+    , hStatementSelected
+    , certificate.statement_flow_derivation_eq
+    , certificate.subobligations
+    , certificate.equationEvidence
+    , certificate.deturckPullback
+    , certificate.shortTime
+    , certificate.maximalInterval
+    , certificate.continuation
+    , certificate.blowup
+    , certificate.extension
+    , certificate.regularity
+    , certificate.shiEstimates
+    , certificate.derivativeBootstrap
+    , certificate.maximumPrinciple
+    , certificate.uniqueness
+    , certificate.metricEvolution
+    , certificate.ricciEvolution
+    , certificate.scalarEvolution
+    , certificate.curvatureNormInequality
+    , certificate.curvatureEvolution
+    ⟩
+
 end Poincare
