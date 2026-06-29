@@ -358,4 +358,36 @@ theorem smoothability_transported_smooth_and_surgery_model_package_family_of_thr
     smoothability_transported_smooth_and_surgery_model_package_of_homeomorph_to_threeSphere
       (recognize M)
 
+/--
+Family payload for downstream smoothability consumers: the same
+`ThreeSphere` recognition family supplies both the compact surgery-model
+smooth-structure family and the full transported smoothability package family.
+This keeps the surgery-only endpoint and the richer transported charted-space,
+`C∞`, `C¹`, and topological-prerequisite endpoint synchronized to one
+recognition source.
+-/
+theorem smoothability_surgery_model_and_transported_package_family_of_threeSphereRecognition
+    (recognize :
+      ∀ (M : Type u) [TopologicalSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    (∀ (M : Type u) [TopologicalSpace M],
+      ∃ _charted : ChartedSpace ThreeManifoldModel M,
+        IsManifold ThreeManifoldModelWithCorners 1 M) ∧
+    (∀ (M : Type u) [TopologicalSpace M],
+      ∃ charted : ChartedSpace ThreeManifoldModel M,
+        (letI : ChartedSpace ThreeManifoldModel M := charted
+         IsManifold (𝓡 3) ∞ M) ∧
+        (letI : ChartedSpace ThreeManifoldModel M := charted
+         IsManifold ThreeManifoldModelWithCorners 1 M) ∧
+        ∃ _t2 : T2Space M,
+        ∃ _simple : SimplyConnectedSpace M,
+        ∃ _compact : CompactSpace M,
+          Nonempty M) := by
+  exact
+    ⟨ smoothability_surgery_model_smooth_structure_family_of_homeomorph_to_threeSphere
+        recognize
+    , smoothability_transported_smooth_and_surgery_model_package_family_of_threeSphereRecognition
+        recognize
+    ⟩
+
 end Poincare
