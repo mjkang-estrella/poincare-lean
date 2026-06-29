@@ -2660,6 +2660,60 @@ theorem groundedUniversalFiniteExtinction_completeConsumerPayload_checked_certif
     ⟩
 
 /--
+Grounded universal finite extinction feeds the same target-free checked
+certificate route while retaining the Ricci-flow, Perelman-control, and
+finite-extinction milestone requirements carried by the complete consumer
+payload.  This is the milestone-preserving target-free endpoint for final
+certificate assembly.
+-/
+theorem groundedUniversalFiniteExtinction_completeConsumerPayload_milestones_checked_certificate_and_completion_criteria_of_grounded
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    Nonempty GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u} ∧
+      UniversalFiniteExtinctionStatement.{u} ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.finiteExtinction ∧
+      RemainingDependencyPackage.{u} ∧
+      PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let payload :=
+    groundedUniversalFiniteExtinction_completeConsumerPayload_of_grounded
+      grounded
+  rcases payload with ⟨payload⟩
+  let remaining : RemainingDependencyPackage.{u} :=
+    { smoothability := smoothability
+      surgery := payload.finiteExtinctionPackageRequirement
+      topology := topologyPackage }
+  let certificate : PoincareCompletionCertificate.{u} :=
+    completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+      remaining payload.universalStatement
+  exact
+    ⟨ ⟨payload⟩
+    , payload.universalStatement
+    , payload.finiteExtinctionPackageRequirement
+    , payload.ricciFlowWithSurgeryMilestone
+    , payload.perelmanSingularityControlMilestone
+    , payload.finiteExtinctionMilestone
+    , remaining
+    , poincare_conjecture_of_completion_certificate certificate
+    , certificate
+    , fun witness => completion_criterion_of_completion_certificate
+        witness certificate
+    ⟩
+
+/--
 Grounded universal finite extinction itself constructs the complete
 finite-extinction consumer payload and feeds the checked final-certificate
 route once smoothability and topology-package inputs are supplied.  The fixed
