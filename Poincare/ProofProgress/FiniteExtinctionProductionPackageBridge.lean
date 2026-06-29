@@ -11124,4 +11124,77 @@ theorem finite_extinction_sweepout_payload_package_statement_and_witness
     , rfl
     ⟩
 
+/--
+Payload full package projection: the concrete target sweepout payload route
+retains the generated finite-extinction package together with its selected
+Ricci-flow data, surgery construction, Perelman control, finite-extinction
+derivation, theorem-shaped statement, and projected extinction witness.  This
+is the fixed-target package view needed when downstream assembly must audit
+that all finite-extinction fields came from the same constructed package.
+-/
+theorem finite_extinction_sweepout_payload_full_package_derivation_statement_and_witness
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (payload : TargetFiniteExtinctionSweepoutPayload M)
+    (remainder :
+      FiniteExtinctionProductionPackageRemainder analyticFoundation
+        surgeryConstruction perelmanControl
+        (target_finite_extinction_sweepout_interface_bundle_of_payload
+          payload)) :
+    ∃ sweepoutBundle : TargetFiniteExtinctionSweepoutInterfaceBundle M,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    let flow : RicciFlowData ThreeManifoldModelWithCorners n M :=
+      ricci_flow_data_of_surgery_package package
+    let surgery : HasRicciFlowWithSurgery n M :=
+      ricci_flow_with_surgery_of_surgery_package package
+    let control : HasPerelmanSingularityControl (n := n) (M := M) flow :=
+      perelman_singularity_control_of_surgery_package package
+    ∃ derivation : HasFiniteExtinctionDerivation flow surgery control,
+    ∃ packageStatement : FiniteExtinctionStatement n M,
+    ∃ extinctionWitness : FiniteExtinctionByRicciFlowWithSurgery M,
+      sweepoutBundle =
+          target_finite_extinction_sweepout_interface_bundle_of_payload
+            payload ∧
+        derivation = finite_extinction_derivation_of_surgery_package package ∧
+        packageStatement =
+          finite_extinction_statement_of_surgery_package package ∧
+        extinctionWitness =
+          finite_extinction_via_statement_of_surgery_package package := by
+  let sweepoutBundle : TargetFiniteExtinctionSweepoutInterfaceBundle M :=
+    target_finite_extinction_sweepout_interface_bundle_of_payload payload
+  rcases
+      finite_extinction_surgery_package_nonempty_of_target_sweepout_payload
+        analyticFoundation surgeryConstruction perelmanControl payload
+        remainder with
+    ⟨package⟩
+  let flow : RicciFlowData ThreeManifoldModelWithCorners n M :=
+    ricci_flow_data_of_surgery_package package
+  let surgery : HasRicciFlowWithSurgery n M :=
+    ricci_flow_with_surgery_of_surgery_package package
+  let control : HasPerelmanSingularityControl (n := n) (M := M) flow :=
+    perelman_singularity_control_of_surgery_package package
+  let derivation : HasFiniteExtinctionDerivation flow surgery control :=
+    finite_extinction_derivation_of_surgery_package package
+  exact
+    ⟨ sweepoutBundle
+    , package
+    , derivation
+    , finite_extinction_statement_of_surgery_package package
+    , finite_extinction_via_statement_of_surgery_package package
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    ⟩
+
 end Poincare
