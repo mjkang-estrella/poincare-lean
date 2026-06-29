@@ -25035,6 +25035,66 @@ theorem extinctionTopologyExtractionPackage_selectedRawMapData_forwardContinuity
     ⟩
 
 /--
+The same selected raw-map plus forward-continuity route keeps the earlier
+topology extraction fields synchronized with the intermediate
+simply-connected extinction-recognition prefix.  This exposes the surgery
+trace, component, recognition, and prime-decomposition fields from the
+constructed package before consumers ask for the final homeomorphism fields.
+-/
+theorem extinctionTopologyExtractionPackage_selectedRawMapData_forwardContinuity_package_and_topology_prefix_fields
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ∃ package : ExtinctionTopologyExtractionPackage.{u},
+    let recognitionPrefix :=
+      extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceSelectedRawMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+        surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData
+    package =
+        extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceSelectedRawMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+          surgeryTracePrefix mapSelectionData selectedRawMapData
+          forwardContinuityData ∧
+      package.surgeryTraceReconstruction M extinction =
+        recognitionPrefix.surgeryTraceReconstruction M extinction ∧
+      package.surgeryTraceHandleCancellation M extinction =
+        recognitionPrefix.surgeryTraceHandleCancellation M extinction ∧
+      package.componentClassification M extinction =
+        recognitionPrefix.componentClassification M extinction ∧
+      package.componentInventory M extinction =
+        recognitionPrefix.componentInventory M extinction ∧
+      package.componentBoundarySphereControl M extinction =
+        recognitionPrefix.componentBoundarySphereControl M extinction ∧
+      package.recognition M =
+        recognitionPrefix.recognition M ∧
+      package.primeDecomposition M extinction =
+        recognitionPrefix.primeDecomposition M extinction := by
+  let package :=
+    extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceSelectedRawMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+      surgeryTracePrefix mapSelectionData selectedRawMapData
+      forwardContinuityData
+  refine ⟨package, ?_⟩
+  dsimp
+  exact
+    ⟨ rfl
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    ⟩
+
+/--
 Once final homeomorphism payload data is supplied, the next package field is
 the raw final homeomorphism. This proof-progress theorem records the explicit
 payload-to-field bridge without asserting a constructorless negation of
