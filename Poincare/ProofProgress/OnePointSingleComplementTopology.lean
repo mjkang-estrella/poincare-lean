@@ -540,6 +540,137 @@ theorem onePoint_threeSpace_compl_singleton_euclidean_complete_collapse_package
     ⟩
 
 /--
+At any externally supplied basepoint in the one-point model, the singleton
+complement endpoint also carries the direct low-homotopy `Subsingleton`
+instances together with the Euclidean chart, contractibility, uniqueness
+objects, equality eliminators, and path-collapse data.  This is the supplied
+basepoint model companion to the selected endpoint below.
+-/
+theorem onePoint_threeSpace_compl_singleton_euclidean_complete_collapse_and_lowHomotopy_subsingleton_package
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3)))
+    (basepoint : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    Nonempty
+        (({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+          EuclideanSpace ℝ (Fin 3)) ∧
+      ContractibleSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      Nonempty
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      PathConnectedSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      ConnectedSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      SimplyConnectedSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      LocPathConnectedSpace
+        ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      Subsingleton
+        (ZerothHomotopy
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 0
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint) ∧
+      Subsingleton
+        (FundamentalGroup
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 1
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint) ∧
+      Nonempty (Unique
+        (ZerothHomotopy
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))) ∧
+      Nonempty (Unique
+        (HomotopyGroup.Pi 0
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint)) ∧
+      Nonempty (Unique
+        (FundamentalGroup
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint)) ∧
+      Nonempty (Unique
+        (HomotopyGroup.Pi 1
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint)) ∧
+      (∀ x y : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        ZerothHomotopy.mk x = ZerothHomotopy.mk y) ∧
+      (∀ a b :
+        HomotopyGroup.Pi 0
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+        a = b) ∧
+      (∀ a b :
+        FundamentalGroup
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+        a = b) ∧
+      (∀ a b :
+        HomotopyGroup.Pi 1
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+        a = b) ∧
+      (∀ x y : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty (Path x y)) ∧
+      (∀ x : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        pathComponent x = Set.univ) := by
+  rcases
+      onePoint_threeSpace_compl_singleton_euclidean_complete_collapse_package
+        p basepoint with
+    ⟨ chart
+    , contractible
+    , nonempty
+    , pathConnected
+    , connected
+    , simplyConnected
+    , locPathConnected
+    , zerothUnique
+    , piZeroUnique
+    , fundamentalGroupUnique
+    , piOneUnique
+    , zerothEq
+    , piZeroEq
+    , fundamentalGroupEq
+    , piOneEq
+    , pathNonempty
+    , pathComponentEqUniv
+    ⟩
+  rcases onePoint_threeSpace_compl_singleton_lowHomotopy_package
+      p basepoint with
+    ⟨ _simplyConnected
+    , zerothSubsingleton
+    , piZeroSubsingleton
+    , fundamentalGroupSubsingleton
+    , piOneSubsingleton
+    , _pathNonempty
+    , _pathComponentEqUniv
+    ⟩
+  exact
+    ⟨ chart
+    , contractible
+    , nonempty
+    , pathConnected
+    , connected
+    , simplyConnected
+    , locPathConnected
+    , zerothSubsingleton
+    , piZeroSubsingleton
+    , fundamentalGroupSubsingleton
+    , piOneSubsingleton
+    , zerothUnique
+    , piZeroUnique
+    , fundamentalGroupUnique
+    , piOneUnique
+    , zerothEq
+    , piZeroEq
+    , fundamentalGroupEq
+    , piOneEq
+    , pathNonempty
+    , pathComponentEqUniv
+    ⟩
+
+/--
 Transported singleton-complement collapse for any space recognized as the
 one-point compactification model.  The supplied source basepoint is retained
 through the Euclidean chart, ordinary topology fields, canonical low-homotopy
