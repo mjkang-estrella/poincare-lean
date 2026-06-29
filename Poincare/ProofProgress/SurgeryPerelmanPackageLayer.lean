@@ -20324,6 +20324,55 @@ theorem no_surgeryPerelman_completeConsumerPayload_direct_at_of_current_interfac
       ⟨payload⟩ M
 
 /--
+Any asserted detailed surgery/Perelman assembly payload contradicts the
+current local interface at a target in the dependency-package class, because
+the existing assembly-to-consumer constructor promotes it to a complete
+consumer payload, which recovers the finite-extinction package-layer
+requirement ruled out above.
+-/
+theorem surgeryPerelman_detailedAssemblyPayload_false_at_of_current_interface
+    (payload :
+      Nonempty SurgeryPerelmanDetailedAssemblyPayloadFromFiniteExtinction.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    False :=
+  surgeryPerelman_completeConsumerPayload_false_at_of_current_interface
+    (surgeryPerelman_completeConsumerPayload_of_nonemptyDetailedAssemblyPayload
+      payload) M
+
+/--
+Equivalently, under the current local interface, the detailed
+surgery/Perelman assembly payload is uninhabited at any target in the
+dependency-package class.
+-/
+theorem no_surgeryPerelman_detailedAssemblyPayload_at_of_current_interface
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ¬ Nonempty SurgeryPerelmanDetailedAssemblyPayloadFromFiniteExtinction.{u} := by
+  intro payload
+  exact
+    surgeryPerelman_detailedAssemblyPayload_false_at_of_current_interface
+      payload M
+
+/--
+The detailed surgery/Perelman assembly payload itself is refuted at any target
+in the dependency-package class, before wrapping it in `Nonempty`: the
+completed consumer payload built from it still reaches the same
+finite-extinction package-layer blocker.
+-/
+theorem no_surgeryPerelman_detailedAssemblyPayload_direct_at_of_current_interface
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ¬ SurgeryPerelmanDetailedAssemblyPayloadFromFiniteExtinction.{u} := by
+  intro payload
+  exact
+    surgeryPerelman_detailedAssemblyPayload_false_at_of_current_interface
+      ⟨payload⟩ M
+
+/--
 At any target in the dependency-package class, the current local interface also
 refutes a completed aggregate dependency package: its stored surgery component
 would provide exactly the finite-extinction package-layer target ruled out
