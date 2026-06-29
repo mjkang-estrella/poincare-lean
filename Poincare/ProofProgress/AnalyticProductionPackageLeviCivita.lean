@@ -5048,4 +5048,163 @@ theorem analyticProductionPackage_selected_statement_extractors_connectionField_
     , curvature_evolution_of_analytic_foundation_package package
     ⟩
 
+/--
+A completed analytic-foundation package also exposes named selected-flow
+witnesses for the finite-extinction-facing continuation, regularization,
+uniqueness, and terminal curvature-evolution route.  Each witness is tied back
+to the corresponding projection from the same package, while the theorem-shaped
+statement extractors remain synchronized with the selected Ricci-flow datum and
+equation evidence.
+-/
+theorem analyticProductionPackage_selected_statement_extractors_named_continuation_regularization_curvature_witnesses
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    let flow := ricci_flow_data_of_analytic_foundation_package package
+    ∃ statement : RicciFlowAnalyticFoundationStatement I n M,
+    ∃ derivationStatement : AnalyticFoundationDerivationStatement flow,
+    ∃ equationEvidence :
+      SatisfiesRicciFlowEquation
+        (metric_of_ricci_flow_data flow)
+        (curvature_data_of_ricci_flow_data flow),
+    ∃ connectionAtTime :
+      TimeDependentTangentConnectionField
+        (metric_of_ricci_flow_data flow),
+    ∃ _subobligations : AnalyticFoundationSubobligationsPayload flow,
+    ∃ deturckPullback : HasDeTurckPullbackToRicciFlow flow,
+    ∃ shortTime : HasShortTimeRicciFlowSolution flow,
+    ∃ maximalTime : HasRicciFlowMaximalTimeInterval flow,
+    ∃ continuation : HasRicciFlowContinuationCriterion flow,
+    ∃ blowup : HasCurvatureBlowUpContinuationCriterion flow,
+    ∃ maximalExtension : HasMaximalSolutionExtension flow,
+    ∃ regularity : HasRicciFlowParabolicRegularity flow,
+    ∃ shiEstimates : HasShiDerivativeEstimates flow,
+    ∃ derivativeBootstrap : HasCurvatureDerivativeBootstrap flow,
+    ∃ uniqueness : HasRicciFlowUniquenessTheory flow,
+    ∃ metricEvolution : HasMetricEvolutionEquation flow,
+    ∃ ricciEvolution : HasRicciTensorEvolutionEquation flow,
+    ∃ scalarEvolution : HasScalarCurvatureEvolutionEquation flow,
+    ∃ curvatureNormInequality : HasCurvatureNormEvolutionInequality flow,
+    ∃ curvatureEvolution : HasCurvatureEvolutionEquations flow,
+      statement = ⟨flow, derivationStatement⟩ ∧
+        ricci_flow_data_of_analytic_foundation_statement statement =
+          ⟨flow, derivationStatement⟩ ∧
+        equation_evidence_of_analytic_foundation_statement statement =
+          ⟨flow, equationEvidence⟩ ∧
+        SatisfiesRicciFlowEquation
+          (metric_of_ricci_flow_data flow)
+          (curvature_data_of_ricci_flow_data flow) ∧
+        (∃ leviCivitaExistence :
+          HasLeviCivitaConnectionExistence
+            (metric_of_ricci_flow_data flow),
+          leviCivitaExistence =
+            hasLeviCivitaConnectionExistence_of_connectionField
+              (g := metric_of_ricci_flow_data flow) connectionAtTime) ∧
+        deturckPullback =
+          deturck_pullback_to_ricci_flow_of_analytic_foundation_package
+            package ∧
+        shortTime =
+          short_time_existence_of_analytic_foundation_package package ∧
+        maximalTime =
+          maximal_time_interval_of_analytic_foundation_package package ∧
+        continuation =
+          continuation_criterion_of_analytic_foundation_package package ∧
+        blowup =
+          curvature_blowup_criterion_of_analytic_foundation_package
+            package ∧
+        maximalExtension =
+          maximal_solution_extension_of_analytic_foundation_package
+            package ∧
+        regularity =
+          parabolic_regularity_of_analytic_foundation_package package ∧
+        shiEstimates =
+          shi_derivative_estimates_of_analytic_foundation_package
+            package ∧
+        derivativeBootstrap =
+          curvature_derivative_bootstrap_of_analytic_foundation_package
+            package ∧
+        uniqueness =
+          uniqueness_theory_of_analytic_foundation_package package ∧
+        metricEvolution =
+          metric_evolution_equation_of_analytic_foundation_package
+            package ∧
+        ricciEvolution =
+          ricci_tensor_evolution_equation_of_analytic_foundation_package
+            package ∧
+        scalarEvolution =
+          scalar_curvature_evolution_equation_of_analytic_foundation_package
+            package ∧
+        curvatureNormInequality =
+          curvature_norm_evolution_inequality_of_analytic_foundation_package
+            package ∧
+        curvatureEvolution =
+          curvature_evolution_of_analytic_foundation_package package := by
+  let flow := ricci_flow_data_of_analytic_foundation_package package
+  have connectionField :
+      Nonempty
+        (TimeDependentTangentConnectionField
+          (metric_of_ricci_flow_data flow)) :=
+    (hasLeviCivitaConnectionExistence_iff_connectionField_nonempty
+      (metric_of_ricci_flow_data flow)).1
+        (levi_civita_existence_of_analytic_foundation_package package)
+  rcases connectionField with ⟨connectionAtTime⟩
+  rcases analytic_foundation_payload_of_analytic_foundation_package
+      package with
+    ⟨statement, derivationStatement, subobligations, equationEvidence⟩
+  have statement_eq :
+      statement = ⟨flow, derivationStatement⟩ := by
+    simpa [flow] using
+      analytic_foundation_statement_of_analytic_foundation_package_eq
+        package
+  exact
+    ⟨ statement
+    , derivationStatement
+    , equationEvidence
+    , connectionAtTime
+    , subobligations
+    , deturck_pullback_to_ricci_flow_of_analytic_foundation_package package
+    , short_time_existence_of_analytic_foundation_package package
+    , maximal_time_interval_of_analytic_foundation_package package
+    , continuation_criterion_of_analytic_foundation_package package
+    , curvature_blowup_criterion_of_analytic_foundation_package package
+    , maximal_solution_extension_of_analytic_foundation_package package
+    , parabolic_regularity_of_analytic_foundation_package package
+    , shi_derivative_estimates_of_analytic_foundation_package package
+    , curvature_derivative_bootstrap_of_analytic_foundation_package package
+    , uniqueness_theory_of_analytic_foundation_package package
+    , metric_evolution_equation_of_analytic_foundation_package package
+    , ricci_tensor_evolution_equation_of_analytic_foundation_package package
+    , scalar_curvature_evolution_equation_of_analytic_foundation_package
+        package
+    , curvature_norm_evolution_inequality_of_analytic_foundation_package
+        package
+    , curvature_evolution_of_analytic_foundation_package package
+    , statement_eq
+    , by apply Subsingleton.elim
+    , by
+        apply Subsingleton.elim
+    , equationEvidence
+    , ⟨ hasLeviCivitaConnectionExistence_of_connectionField
+          (g := metric_of_ricci_flow_data flow) connectionAtTime
+      , rfl⟩
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    ⟩
+
 end Poincare
