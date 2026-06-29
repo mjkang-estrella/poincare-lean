@@ -1658,6 +1658,29 @@ theorem surgeryPerelman_finiteExtinctionRequirement_and_fixedTarget_completeEndp
     ⟩
 
 /--
+For a fixed target manifold, a complete surgery/Perelman consumer payload
+directly yields finite extinction.  This short endpoint packages the actual
+extinction witness carried by the selected combined payload, without requiring
+downstream consumers to destruct the full surgery/Perelman projection tuple.
+-/
+theorem finiteExtinctionByRicciFlowWithSurgery_of_surgeryPerelman_completeConsumerPayload
+    (payload :
+      Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases
+    surgeryPerelman_fixedTarget_combinedPayload_of_completeConsumerPayload
+      payload M with
+    ⟨_n, _package, _combinedPayload, _flow, _flow_eq,
+      _constructionPackage, _perelmanPackage, _scalePayload,
+      _blowupClassification, _finiteExtinctionStatement,
+      finiteExtinction⟩
+  exact finiteExtinction
+
+/--
 The original finite-extinction package-layer requirement constructs an
 inhabited complete surgery/Perelman consumer payload and, for any fixed target,
 immediately exposes the same concrete selected package/flow finite-extinction
