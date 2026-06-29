@@ -25521,4 +25521,71 @@ theorem extinction_surgery_trace_reconstruction_after_decomposition_of_topology_
         package M extinction :=
   rfl
 
+/--
+A completed topology package also supplies handle cancellation for the
+after-decomposition surgery trace selected by the package-level reconstruction
+field.
+-/
+theorem extinction_surgery_trace_handle_cancellation_after_decomposition_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    HasExtinctionSurgeryTraceHandleCancellation M extinction
+      (extinction_decomposition_of_topology_package package M extinction)
+      (extinction_surgery_trace_reconstruction_after_decomposition_of_topology_package
+        package M extinction) :=
+  extinction_surgery_trace_handle_cancellation_of_topology_package
+    package M extinction
+
+/--
+The after-decomposition handle-cancellation projection is the stored
+package-level handle-cancellation field.
+-/
+theorem extinction_surgery_trace_handle_cancellation_after_decomposition_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    extinction_surgery_trace_handle_cancellation_after_decomposition_of_topology_package
+        package M extinction =
+      extinction_surgery_trace_handle_cancellation_of_topology_package
+        package M extinction :=
+  rfl
+
+/--
+The handle-cancellation witness produced after decomposition carries the next
+component-classification field.  This proves that a completed topology package
+does not merely expose cancellation as a marker; it exposes the component
+classification produced by that cancellation.
+-/
+theorem extinction_component_classification_after_handle_cancellation_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    HasExtinctionComponentClassification M extinction
+      (extinction_decomposition_of_topology_package package M extinction) :=
+  (extinction_surgery_trace_handle_cancellation_after_decomposition_of_topology_package
+    package M extinction).componentClassification
+
+/--
+The component-classification field carried by after-decomposition cancellation
+agrees with the named package-level component-classification projection.
+-/
+theorem extinction_component_classification_after_handle_cancellation_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    extinction_component_classification_after_handle_cancellation_of_topology_package
+        package M extinction =
+      extinction_component_classification_of_topology_package
+        package M extinction := by
+  apply Subsingleton.elim
+
 end Poincare
