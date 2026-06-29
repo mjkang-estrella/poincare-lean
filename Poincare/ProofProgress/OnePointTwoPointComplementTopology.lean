@@ -621,4 +621,114 @@ theorem twoPointComplement_recognition_all_basepoint_lowHomotopy_baseclass_colla
           exact PathConnectedSpace.joined z w
     ⟩
 
+/--
+Supplied-basepoint recognized-source form of the two-point complement collapse.
+This opens the all-basepoint package into named punctured-Euclidean chart data,
+named collapsed base classes for `π₀`, the fundamental group, and `π₁`, plus the
+path and path-component collapse fields at the chosen basepoint.
+-/
+theorem twoPointComplement_recognition_supplied_basepoint_named_baseclass_collapse_package_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ puncture : EuclideanSpace ℝ (Fin 3),
+    ∃ _chart :
+      Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+        ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3)))),
+    ∃ zerothBaseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+    ∃ piZeroBaseClass :
+      HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+    ∃ fundamentalBaseClass :
+      FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+    ∃ piOneBaseClass :
+      HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+      Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+        PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        LocPathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        Subsingleton (ZerothHomotopy (({x} ∪ {y})ᶜ : Set M)) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+        Subsingleton
+          (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+        (∀ z w : (({x} ∪ {y})ᶜ : Set M),
+          ZerothHomotopy.mk z = ZerothHomotopy.mk w) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          a = b) ∧
+        (∀ a b : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+          a = b) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          a = b) ∧
+        (∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+          homotopyClass = zerothBaseClass) ∧
+        (∀ homotopyClass :
+          HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          homotopyClass = piZeroBaseClass) ∧
+        (∀ fundamentalClass :
+          FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+          fundamentalClass = fundamentalBaseClass) ∧
+        (∀ homotopyClass :
+          HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          homotopyClass = piOneBaseClass) ∧
+        (∀ z w : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path z w)) ∧
+        (∀ z : (({x} ∪ {y})ᶜ : Set M), pathComponent z = Set.univ) := by
+  rcases
+    twoPointComplement_recognition_all_basepoint_lowHomotopy_baseclass_collapse_package_of_homeomorph_to_onePoint_threeSpace
+      h hyx basepoint with
+    ⟨ punctureChart
+    , nonempty
+    , pathConnected
+    , connected
+    , simplyConnected
+    , locPathConnected
+    , zerothSubsingleton
+    , piZeroSubsingleton
+    , fundamentalGroupSubsingleton
+    , piOneSubsingleton
+    , zerothEq
+    , piZeroEq
+    , fundamentalGroupEq
+    , piOneEq
+    , ⟨zerothBaseClass, zerothBaseClass_eq⟩
+    , ⟨piZeroBaseClass, piZeroBaseClass_eq⟩
+    , ⟨fundamentalBaseClass, fundamentalBaseClass_eq⟩
+    , ⟨piOneBaseClass, piOneBaseClass_eq⟩
+    , pathNonempty
+    , pathComponentEq
+    ⟩
+  rcases punctureChart with ⟨puncture, chart⟩
+  exact
+    ⟨ puncture
+    , chart
+    , zerothBaseClass
+    , piZeroBaseClass
+    , fundamentalBaseClass
+    , piOneBaseClass
+    , nonempty
+    , pathConnected
+    , connected
+    , simplyConnected
+    , locPathConnected
+    , zerothSubsingleton
+    , piZeroSubsingleton
+    , fundamentalGroupSubsingleton
+    , piOneSubsingleton
+    , zerothEq
+    , piZeroEq
+    , fundamentalGroupEq
+    , piOneEq
+    , zerothBaseClass_eq
+    , piZeroBaseClass_eq
+    , fundamentalBaseClass_eq
+    , piOneBaseClass_eq
+    , pathNonempty
+    , pathComponentEq
+    ⟩
+
 end Poincare
