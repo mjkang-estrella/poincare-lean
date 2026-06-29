@@ -3296,6 +3296,52 @@ theorem finalCertificateNamedPackageLayerConsumerPayload_requirements_topologyAs
       payload
 
 /--
+An inhabited named-package final consumer payload can be selected once and then
+used as a complete final endpoint: the selected payload exposes all three
+package-layer requirements, its public statement as the checked-certificate
+projection, the concrete checked certificate, its inhabited form, the canonical
+target, both public/canonical completion payloads, and all completion criteria.
+This keeps downstream final-collapse code from separately combining the
+nonempty consumer equivalence with the certificate-projection theorem.
+-/
+theorem finalCertificateNamedPackageLayerConsumerPayload_selected_projected_endpoint_fields_of_nonempty
+    (payload : Nonempty FinalCertificateNamedPackageLayerConsumerPayload.{u}) :
+    ∃ selected : FinalCertificateNamedPackageLayerConsumerPayload.{u},
+      dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage ∧
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage ∧
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage ∧
+        selected.publicStatement =
+          poincare_conjecture_of_completion_certificate
+            selected.checkedCertificate ∧
+        PoincareConjectureStatement.{u} ∧
+        PoincareCompletionCertificate.{u} ∧
+        Nonempty PoincareCompletionCertificate.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  rcases payload with ⟨selected⟩
+  exact
+    ⟨ selected
+    , selected.smoothability
+    , selected.finiteExtinction
+    , selected.topology
+    , by apply Subsingleton.elim
+    , selected.publicStatement
+    , selected.checkedCertificate
+    , ⟨selected.checkedCertificate⟩
+    , selected.canonicalTarget
+    , selected.publicPayload
+    , selected.canonicalPayload
+    , selected.completionCriteria
+    ⟩
+
+/--
 Equivalently, the three named package-layer requirements construct an inhabited
 complete final consumer payload.
 -/
