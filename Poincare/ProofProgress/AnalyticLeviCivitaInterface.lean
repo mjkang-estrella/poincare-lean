@@ -282,4 +282,42 @@ theorem flow_metric_slices_riemannianBundle_connectionField_and_first_analytic_f
   flow_metric_slices_riemannianBundle_connectionField_and_first_analytic_field_of_leviCivitaExistence
     subobligations.1
 
+/--
+The analytic sub-obligation payload can be retained while projecting the
+concrete Levi-Civita connection-field interface from it.  This endpoint is for
+downstream analytic consumers that need the full theorem-shaped analytic
+payload and the selected mathlib connection/smooth metric-slice evidence in
+one proof object.
+-/
+theorem analyticFoundationSubobligationsPayload_and_flow_metric_slices_riemannianBundle_connectionField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (subobligations : AnalyticFoundationSubobligationsPayload flow) :
+    AnalyticFoundationSubobligationsPayload flow ∧
+      ∃ _connectionAtTime :
+        TimeDependentTangentConnectionField (metric_of_ricci_flow_data flow),
+        TimeDependentTangentConnectionField
+            (metric_of_ricci_flow_data flow) =
+          (ℝ → TangentCovariantDerivative I M) ∧
+        (∀ _t : ℝ,
+          Nonempty
+            (ContMDiffRiemannianMetric I n E
+              (fun x : M => TangentSpace I x))) ∧
+        (∀ t : ℝ,
+          letI : RiemannianBundle (fun x : M => TangentSpace I x) :=
+            ⟨(metric_at_time_of_ricci_flow_data flow t).toRiemannianMetric⟩
+          IsContMDiffRiemannianBundle I n E
+            (fun x : M => TangentSpace I x)) ∧
+        ProposedHasLeviCivitaConnectionExistence
+          (metric_of_ricci_flow_data flow) ∧
+        HasLeviCivitaConnectionExistence
+          (metric_of_ricci_flow_data flow) :=
+  ⟨ subobligations
+  , flow_metric_slices_riemannianBundle_connectionField_and_first_analytic_field_of_subobligations
+      subobligations
+  ⟩
+
 end Poincare
