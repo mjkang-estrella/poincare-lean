@@ -19935,4 +19935,49 @@ theorem no_poincareProofDependenciesWithEquationBoundary_direct_at_of_current_in
     poincareProofDependenciesWithEquationBoundary_false_at_of_current_interface
       dependencies M
 
+/--
+The three named package-layer requirements used by final assembly are refuted
+at any dependency-package-class target by the same current-interface surgery
+blocker: the finite-extinction requirement alone would produce a
+finite-extinction surgery package at that target.
+-/
+theorem named_package_layer_requirements_false_at_of_current_interface
+    (_smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (_topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    False :=
+  finiteExtinctionPackage_requirement_false_at_of_current_interface
+    finiteExtinction M
+
+/--
+Equivalently, the currently available local interface rules out the
+requirements triple consumed by final assembly as soon as it is evaluated at
+any target in the dependency-package class.
+-/
+theorem no_named_package_layer_requirements_at_of_current_interface
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ¬ (∃ _smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ _finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage) := by
+  rintro ⟨smoothability, finiteExtinction, topology⟩
+  exact
+    named_package_layer_requirements_false_at_of_current_interface
+      smoothability finiteExtinction topology M
+
 end Poincare
