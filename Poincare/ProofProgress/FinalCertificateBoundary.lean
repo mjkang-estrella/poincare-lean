@@ -4933,4 +4933,94 @@ theorem finalCertificateNamedPackageLayerRequirements_constructedConsumer_select
     , selected.completionCriteria
     ⟩
 
+/--
+For the constructed named-package consumer, the primitive final-assembly route
+and the concrete topology-assembly payload fields are retained together.  This
+keeps the primitive universal finite-extinction and extraction inputs,
+project-level final assembly statement, checked certificate, public/canonical
+payload fields, and all-witness completion criteria synchronized at the same
+selected consumer.
+-/
+theorem finalCertificateNamedPackageLayerRequirements_constructedConsumer_primitive_finalAssembly_routes_and_topologyAssembly_fields
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    let selected :=
+      finalCertificateNamedPackageLayerConsumerPayload
+        smoothability finiteExtinction topology
+    let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+      { smoothability := selected.smoothability
+        finiteExtinction := selected.finiteExtinction }
+    let primitiveInputs : FinalCertificatePrimitiveInputs.{u} :=
+      finalCertificatePrimitiveInputs_of_minimalPackageInputs inputs
+        (extinction_implies_sphere_of_topology_package selected.topology)
+    let topologyAssemblyPayload :
+        FinalCertificateTopologyAssemblyPayload inputs selected.topology :=
+      selected.topologyAssemblyPayload
+    primitiveInputs.universalFiniteExtinction =
+        universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+          selected.smoothability selected.finiteExtinction ∧
+      primitiveInputs.extinctionImpliesSphere =
+        extinction_implies_sphere_of_topology_package selected.topology ∧
+      poincare_statement_of_extinction_and_extraction
+          primitiveInputs.universalFiniteExtinction
+          primitiveInputs.extinctionImpliesSphere =
+        selected.publicStatement ∧
+      poincare_conjecture_of_extinction_and_extraction
+          primitiveInputs.universalFiniteExtinction
+          primitiveInputs.extinctionImpliesSphere =
+        selected.publicStatement ∧
+      topologyAssemblyPayload.publicStatement =
+        selected.publicStatement ∧
+      topologyAssemblyPayload.checkedCertificate =
+        selected.checkedCertificate ∧
+      topologyAssemblyPayload.canonicalTarget =
+        selected.canonicalTarget ∧
+      topologyAssemblyPayload.publicPayload =
+        selected.publicPayload ∧
+      topologyAssemblyPayload.canonicalPayload =
+        selected.canonicalPayload ∧
+      topologyAssemblyPayload.completionCriteria =
+        selected.completionCriteria ∧
+      selected.publicStatement =
+        poincare_conjecture_of_completion_certificate
+          selected.checkedCertificate ∧
+      PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let selected :=
+    finalCertificateNamedPackageLayerConsumerPayload
+      smoothability finiteExtinction topology
+  let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+    { smoothability := selected.smoothability
+      finiteExtinction := selected.finiteExtinction }
+  let primitiveInputs : FinalCertificatePrimitiveInputs.{u} :=
+    finalCertificatePrimitiveInputs_of_minimalPackageInputs inputs
+      (extinction_implies_sphere_of_topology_package selected.topology)
+  let topologyAssemblyPayload :
+      FinalCertificateTopologyAssemblyPayload inputs selected.topology :=
+    selected.topologyAssemblyPayload
+  exact
+    ⟨ rfl
+    , rfl
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , selected.publicStatement
+    , selected.checkedCertificate
+    , selected.completionCriteria
+    ⟩
+
 end Poincare
