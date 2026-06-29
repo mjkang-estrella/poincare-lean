@@ -1357,6 +1357,108 @@ theorem onePoint_threeSpace_twoPointComplement_flatRecognition_and_collapse_payl
     ⟩
 
 /--
+At an externally supplied two-puncture basepoint, the model endpoint retains
+the whole recognition hierarchy: the structured recognition payload, its
+flattened recognition payload, and the legacy collapse tuple all refer to the
+same basepoint.  This is the supplied-basepoint companion to the selected
+endpoint below.
+-/
+theorem onePoint_threeSpace_twoPointComplement_recognition_flatRecognition_and_collapse_payload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    Nonempty
+      (OnePointTwoPointComplementRecognitionPayload hqp basepoint) ∧
+      Nonempty
+        (OnePointTwoPointComplementFlatRecognitionPayload hqp basepoint) ∧
+      (∃ puncture : EuclideanSpace ℝ (Fin 3),
+        Nonempty
+          ((({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+      SimplyConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      ConnectedSpace
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      Nonempty
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 0
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 1
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint) ∧
+      (∀ a b :
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+      (∀ a b :
+        HomotopyGroup.Pi 0
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+        a = b) ∧
+      (∀ a b : FundamentalGroup
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint,
+        a = b) ∧
+      (∀ a b :
+        HomotopyGroup.Pi 1
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+        a = b) ∧
+      (∃ baseClass :
+        ZerothHomotopy
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        ∀ homotopyClass :
+          ZerothHomotopy
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          homotopyClass = baseClass) ∧
+      (∃ baseClass :
+        HomotopyGroup.Pi 0
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+        ∀ homotopyClass :
+          HomotopyGroup.Pi 0
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          homotopyClass = baseClass) ∧
+      (∃ baseClass : FundamentalGroup
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint,
+        ∀ fundamentalClass :
+          FundamentalGroup
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          fundamentalClass = baseClass) ∧
+      (∃ baseClass :
+        HomotopyGroup.Pi 1
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+        ∀ homotopyClass :
+          HomotopyGroup.Pi 1
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          homotopyClass = baseClass) ∧
+      (∀ a b :
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        Nonempty (Path a b)) ∧
+      (∀ x :
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        pathComponent x = Set.univ) := by
+  let recognitionPayload :=
+    onePoint_threeSpace_twoPointComplement_recognition_payload hqp
+      basepoint
+  let flatPayload :=
+    onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition
+      recognitionPayload
+  exact
+    ⟨ ⟨recognitionPayload⟩
+    , ⟨flatPayload⟩
+    , onePoint_threeSpace_twoPointComplement_collapse_payload_of_flatRecognition
+        flatPayload
+    ⟩
+
+/--
 The selected two-puncture endpoint retains the whole recognition hierarchy at
 one basepoint: the structured recognition payload, its flattened recognition
 payload, and the legacy collapse tuple all refer to the same selected point.
