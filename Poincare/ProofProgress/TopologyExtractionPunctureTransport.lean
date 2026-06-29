@@ -3166,4 +3166,169 @@ theorem recognition_complete_complement_payload_opened_models_selected_and_suppl
     , singletonPiOne
     ⟩
 
+/--
+The mixed selected/supplied two-puncture recognition route can be opened all
+the way to explicit base-class collapse witnesses for both basepoints while
+preserving the sphere recognition and complement model data.  This is the
+consumer-facing form needed when later topology extraction code must name the
+trivialized low-dimensional homotopy classes rather than only keep the bundled
+field packages.
+-/
+theorem recognition_complete_complement_payload_opened_models_selected_and_supplied_twoPoint_baseclasses_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere))
+    (x : M) {y : M} (hyx : y ≠ x)
+    (suppliedBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ _singleBasepoint : ({x}ᶜ : Set M),
+    ∃ selectedTwoBasepoint : (({x} ∪ {y})ᶜ : Set M),
+    ∃ suppliedZerothBaseClass :
+      ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+    ∃ suppliedPiZeroBaseClass :
+      HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) suppliedBasepoint,
+    ∃ suppliedFundamentalBaseClass :
+      FundamentalGroup (({x} ∪ {y})ᶜ : Set M) suppliedBasepoint,
+    ∃ suppliedPiOneBaseClass :
+      HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) suppliedBasepoint,
+    ∃ selectedZerothBaseClass :
+      ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+    ∃ selectedPiZeroBaseClass :
+      HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) selectedTwoBasepoint,
+    ∃ selectedFundamentalBaseClass :
+      FundamentalGroup (({x} ∪ {y})ᶜ : Set M) selectedTwoBasepoint,
+    ∃ selectedPiOneBaseClass :
+      HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) selectedTwoBasepoint,
+      (∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+        homotopyClass = suppliedZerothBaseClass) ∧
+        (∀ homotopyClass :
+          HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M)
+            suppliedBasepoint,
+          homotopyClass = suppliedPiZeroBaseClass) ∧
+        (∀ fundamentalClass :
+          FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+            suppliedBasepoint,
+          fundamentalClass = suppliedFundamentalBaseClass) ∧
+        (∀ homotopyClass :
+          HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M)
+            suppliedBasepoint,
+          homotopyClass = suppliedPiOneBaseClass) ∧
+        (∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+          homotopyClass = selectedZerothBaseClass) ∧
+        (∀ homotopyClass :
+          HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M)
+            selectedTwoBasepoint,
+          homotopyClass = selectedPiZeroBaseClass) ∧
+        (∀ fundamentalClass :
+          FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+            selectedTwoBasepoint,
+          fundamentalClass = selectedFundamentalBaseClass) ∧
+        (∀ homotopyClass :
+          HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M)
+            selectedTwoBasepoint,
+          homotopyClass = selectedPiOneBaseClass) ∧
+        Nonempty (M ≃ₜ ThreeSphere) ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        ContractibleSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+        (∃ puncture : EuclideanSpace ℝ (Fin 3),
+          Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) := by
+  rcases
+    recognition_complete_complement_payload_opened_models_selected_and_supplied_twoPoint_fields_of_homeomorph_to_threeSphere
+      h x hyx suppliedBasepoint with
+    ⟨ singleBasepoint
+    , selectedTwoBasepoint
+    , suppliedFields
+    , selectedFields
+    , sphereRecognition
+    , onePointRecognition
+    , singletonContractible
+    , singletonSimplyConnected
+    , twoPointSimplyConnected
+    , singletonModel
+    , twoPointModel
+    , _singletonPiZero
+    , _singletonPiOne
+    ⟩
+  rcases suppliedFields with
+    ⟨ _suppliedConnected
+    , _suppliedNonempty
+    , _suppliedZerothSubsingleton
+    , _suppliedPiZeroSubsingleton
+    , _suppliedFundamentalGroupSubsingleton
+    , _suppliedPiOneSubsingleton
+    , _suppliedZerothEq
+    , _suppliedPiZeroEq
+    , _suppliedFundamentalGroupEq
+    , _suppliedPiOneEq
+    , suppliedZerothBaseclass
+    , suppliedPiZeroBaseclass
+    , suppliedFundamentalBaseclass
+    , suppliedPiOneBaseclass
+    , _suppliedPathNonempty
+    , _suppliedPathComponentEqUniv
+    ⟩
+  rcases selectedFields with
+    ⟨ _selectedConnected
+    , _selectedNonempty
+    , _selectedZerothSubsingleton
+    , _selectedPiZeroSubsingleton
+    , _selectedFundamentalGroupSubsingleton
+    , _selectedPiOneSubsingleton
+    , _selectedZerothEq
+    , _selectedPiZeroEq
+    , _selectedFundamentalGroupEq
+    , _selectedPiOneEq
+    , selectedZerothBaseclass
+    , selectedPiZeroBaseclass
+    , selectedFundamentalBaseclass
+    , selectedPiOneBaseclass
+    , _selectedPathNonempty
+    , _selectedPathComponentEqUniv
+    ⟩
+  rcases suppliedZerothBaseclass with
+    ⟨suppliedZerothBaseClass, suppliedZerothCollapse⟩
+  rcases suppliedPiZeroBaseclass with
+    ⟨suppliedPiZeroBaseClass, suppliedPiZeroCollapse⟩
+  rcases suppliedFundamentalBaseclass with
+    ⟨suppliedFundamentalBaseClass, suppliedFundamentalCollapse⟩
+  rcases suppliedPiOneBaseclass with
+    ⟨suppliedPiOneBaseClass, suppliedPiOneCollapse⟩
+  rcases selectedZerothBaseclass with
+    ⟨selectedZerothBaseClass, selectedZerothCollapse⟩
+  rcases selectedPiZeroBaseclass with
+    ⟨selectedPiZeroBaseClass, selectedPiZeroCollapse⟩
+  rcases selectedFundamentalBaseclass with
+    ⟨selectedFundamentalBaseClass, selectedFundamentalCollapse⟩
+  rcases selectedPiOneBaseclass with
+    ⟨selectedPiOneBaseClass, selectedPiOneCollapse⟩
+  exact
+    ⟨ singleBasepoint
+    , selectedTwoBasepoint
+    , suppliedZerothBaseClass
+    , suppliedPiZeroBaseClass
+    , suppliedFundamentalBaseClass
+    , suppliedPiOneBaseClass
+    , selectedZerothBaseClass
+    , selectedPiZeroBaseClass
+    , selectedFundamentalBaseClass
+    , selectedPiOneBaseClass
+    , suppliedZerothCollapse
+    , suppliedPiZeroCollapse
+    , suppliedFundamentalCollapse
+    , suppliedPiOneCollapse
+    , selectedZerothCollapse
+    , selectedPiZeroCollapse
+    , selectedFundamentalCollapse
+    , selectedPiOneCollapse
+    , sphereRecognition
+    , onePointRecognition
+    , singletonContractible
+    , singletonSimplyConnected
+    , twoPointSimplyConnected
+    , singletonModel
+    , twoPointModel
+    ⟩
+
 end Poincare
