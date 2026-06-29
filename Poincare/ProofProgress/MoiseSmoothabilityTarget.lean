@@ -1141,4 +1141,53 @@ theorem moiseSmoothability_fixedTarget_packageMoisePrefix_and_concrete_structure
     , ⟨smoothCharted, smoothManifold, surgeryCharted, surgerySmooth, hPrereqs⟩
     ⟩
 
+/--
+For a fixed compact simply connected target, the complete Moise consumer
+payload projects the actual package-level smooth-structure derivation
+statement, while preserving the same transported smooth and surgery-model
+witnesses needed by downstream Ricci-flow consumers.
+-/
+theorem moiseSmoothability_fixedTarget_derivation_statement_and_concrete_structures_of_completeConsumerPayload
+    (payload : Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u}))
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage ∧
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      (∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+        SmoothStructureDerivationStatement M smoothStructure) ∧
+      (∃ _smoothCharted : ChartedSpace ThreeManifoldModel M,
+        ∃ _smooth : IsManifold (𝓡 3) ∞ M,
+        ∃ _surgeryCharted : ChartedSpace ThreeManifoldModel M,
+        ∃ _surgerySmooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+        ∃ _t2 : T2Space M,
+        ∃ _charted : ChartedSpace ThreeManifoldModel M,
+        ∃ _simple : SimplyConnectedSpace M,
+        ∃ _compact : CompactSpace M,
+        ∃ _smoothPrereq : IsManifold ThreeManifoldModelWithCorners 1 M,
+          Nonempty M) := by
+  rcases payload with ⟨payload⟩
+  rcases payload.targetFamily M with
+    ⟨hSphere, hOnePoint, hSmooth, hSurgery, hPrereqs⟩
+  let package : SmoothabilityPackage.{u} :=
+    payload.smoothabilityPackageRequirement
+  let smoothStructure : HasThreeManifoldSmoothStructure M :=
+    smooth_structure_of_smoothability_package package M
+  have smoothDerivationStatement :
+      SmoothStructureDerivationStatement M smoothStructure := by
+    simpa [smoothStructure] using
+      smooth_structure_derivation_statement_of_smoothability_package
+        package M
+  rcases hSmooth with ⟨smoothCharted, smoothManifold⟩
+  rcases hSurgery with ⟨surgeryCharted, surgerySmooth⟩
+  exact
+    ⟨ payload.smoothabilityPackageRequirement
+    , hSphere
+    , hOnePoint
+    , ⟨smoothStructure, smoothDerivationStatement⟩
+    , ⟨smoothCharted, smoothManifold, surgeryCharted, surgerySmooth, hPrereqs⟩
+    ⟩
+
 end Poincare
