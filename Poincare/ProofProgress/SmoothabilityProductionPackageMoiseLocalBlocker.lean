@@ -19258,6 +19258,93 @@ theorem onePointRecognition_selected_transportedSmoothManifold_recoveredBridge_c
     ⟩
 
 /--
+The selected transported one-point smoothability route retains the canonical
+finite-extinction payload proposition and the concrete witness extracted from
+that same payload.  This keeps the transported smooth-manifold fields,
+recovered bridge, canonical surgery-family specialization, payload equality,
+and actual charted-space finite-extinction witness synchronized for downstream
+finite-extinction consumers.
+-/
+theorem onePointRecognition_selected_transportedSmoothManifold_recoveredBridge_canonicalSurgeryFamily_finiteExtinctionPayload_andWitness
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0})
+    (surgeryPackages :
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    ∃ transportedFields : SmoothabilityPackageTransportedSmoothManifoldFields.{0},
+    ∃ bridgeFields : SmoothabilityPackageTransportedBridgeFields.{0},
+    ∃ recoveredBridge : SmoothabilityTransportedBridgePackageField.{0},
+    ∃ smoothFields : SmoothabilityPackageSmoothStructureDerivationFields.{0},
+    ∃ surgeryFamily : OnePointTransportedSurgeryPackageFamily,
+    ∃ finiteExtinctionPayload : OnePointTransportedFiniteExtinctionPayload,
+    ∃ charted : ChartedSpace ThreeManifoldModel
+        (OnePoint (EuclideanSpace ℝ (Fin 3))),
+      letI : ChartedSpace ThreeManifoldModel
+        (OnePoint (EuclideanSpace ℝ (Fin 3))) := charted
+      FiniteExtinctionByRicciFlowWithSurgery
+        (OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        transportedFields =
+          smoothabilityPackageTransportedSmoothManifoldFields_of_onePointRecognition
+            recognize ∧
+        bridgeFields =
+          transportedFields.toSmoothabilityPackageTransportedBridgeFields ∧
+        recoveredBridge =
+          smoothabilityTransportedBridgePackageField_of_transportedSmoothManifoldPackageField
+            transportedFields.toSmoothabilityTransportedSmoothManifoldPackageField ∧
+        recoveredBridge.transportedBridge =
+          bridgeFields.transportedBridge ∧
+        smoothFields =
+          bridgeFields.toSmoothabilityPackageSmoothStructureDerivationFields ∧
+        surgeryFamily =
+          onePointTransportedSurgeryPackageFamily_of_surgeryPackages
+            surgeryPackages ∧
+        (finiteExtinctionPayload =
+          onePointTransportedFiniteExtinctionPayload_of_transportedSmoothManifoldFields
+            transportedFields surgeryFamily) ∧
+        SmoothabilityTransportedBridgeStatement.{0} ∧
+        SmoothabilityTransportedSmoothManifoldStatement.{0} := by
+  let transportedFields :
+      SmoothabilityPackageTransportedSmoothManifoldFields.{0} :=
+    smoothabilityPackageTransportedSmoothManifoldFields_of_onePointRecognition
+      recognize
+  let bridgeFields : SmoothabilityPackageTransportedBridgeFields.{0} :=
+    transportedFields.toSmoothabilityPackageTransportedBridgeFields
+  let recoveredBridge : SmoothabilityTransportedBridgePackageField.{0} :=
+    smoothabilityTransportedBridgePackageField_of_transportedSmoothManifoldPackageField
+      transportedFields.toSmoothabilityTransportedSmoothManifoldPackageField
+  let smoothFields :
+      SmoothabilityPackageSmoothStructureDerivationFields.{0} :=
+    bridgeFields.toSmoothabilityPackageSmoothStructureDerivationFields
+  let surgeryFamily : OnePointTransportedSurgeryPackageFamily :=
+    onePointTransportedSurgeryPackageFamily_of_surgeryPackages
+      surgeryPackages
+  have finiteExtinctionPayload : OnePointTransportedFiniteExtinctionPayload :=
+    onePointTransportedFiniteExtinctionPayload_of_transportedSmoothManifoldFields
+      transportedFields surgeryFamily
+  rcases finiteExtinctionPayload with ⟨charted, finiteExtinction⟩
+  exact
+    ⟨ transportedFields
+    , bridgeFields
+    , recoveredBridge
+    , smoothFields
+    , surgeryFamily
+    , ⟨charted, finiteExtinction⟩
+    , charted
+    , finiteExtinction
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , by apply Subsingleton.elim
+    , bridgeFields.transportedBridge
+    , transportedFields.transportedSmoothManifold
+    ⟩
+
+/--
 The stronger charted-space comparison API can instantiate the explicit
 atlas-compatible bridge inputs.
 -/
