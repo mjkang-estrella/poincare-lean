@@ -1279,6 +1279,94 @@ theorem twoPointComplement_collapse_payload_of_homeomorph_to_threeSphere
     basepoint
 
 /--
+Recognizing a space as the one-point compactification gives a two-puncture
+low-homotopy collapse package at every supplied basepoint.  This all-basepoint
+form exposes connectedness, nonemptiness, the zeroth, `π₀`,
+fundamental-group, and `π₁` collapse fields, named base classes, and
+path-component collapse without routing through `ThreeSphere` recognition.
+-/
+theorem twoPointComplement_all_basepoint_lowHomotopy_baseclass_collapse_payload_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x) :
+    ∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+      ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+        Subsingleton (ZerothHomotopy (({x} ∪ {y})ᶜ : Set M)) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+        Subsingleton
+          (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+        (∀ a b : (({x} ∪ {y})ᶜ : Set M),
+          ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          a = b) ∧
+        (∀ a b :
+          FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+          a = b) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          a = b) ∧
+        (∃ baseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+          ∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+            homotopyClass = baseClass) ∧
+        (∃ baseClass :
+          HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          ∀ homotopyClass :
+            HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+            homotopyClass = baseClass) ∧
+        (∃ baseClass :
+          FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+          ∀ fundamentalClass :
+            FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+            fundamentalClass = baseClass) ∧
+        (∃ baseClass :
+          HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          ∀ homotopyClass :
+            HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+            homotopyClass = baseClass) ∧
+        (∀ a b : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path a b)) ∧
+        (∀ point : (({x} ∪ {y})ᶜ : Set M),
+          pathComponent point = Set.univ) := by
+  intro basepoint
+  exact
+    ⟨ twoPointComplement_connectedSpace_of_homeomorph_to_onePoint_threeSpace
+        h hyx
+    , twoPointComplement_nonempty_of_homeomorph_to_onePoint_threeSpace h hyx
+    , twoPointComplement_zerothHomotopy_subsingleton_of_homeomorph_to_onePoint_threeSpace
+        h hyx
+    , twoPointComplement_piZero_subsingleton_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint
+    , twoPointComplement_fundamentalGroup_subsingleton_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint
+    , twoPointComplement_piOne_subsingleton_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint
+    , twoPointComplement_zerothHomotopy_mk_eq_of_homeomorph_to_onePoint_threeSpace
+        h hyx
+    , twoPointComplement_piZero_eq_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint
+    , twoPointComplement_fundamentalGroup_eq_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint
+    , twoPointComplement_piOne_eq_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint
+    , twoPointComplement_zerothHomotopy_exists_unique_of_homeomorph_to_onePoint_threeSpace
+        h hyx
+    , twoPointComplement_piZero_exists_unique_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint
+    , twoPointComplement_fundamentalGroup_exists_unique_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint
+    , twoPointComplement_piOne_exists_unique_of_homeomorph_to_onePoint_threeSpace
+        h hyx basepoint
+    , twoPointComplement_path_nonempty_of_homeomorph_to_onePoint_threeSpace
+        h hyx
+    , twoPointComplement_pathComponent_eq_univ_of_homeomorph_to_onePoint_threeSpace
+        h hyx
+    ⟩
+
+/--
 Recognizing a space as `ThreeSphere` gives a two-puncture low-homotopy
 collapse package at every supplied basepoint.  This all-basepoint form exposes
 connectedness, nonemptiness, the zeroth, `π₀`, fundamental-group, and `π₁`
