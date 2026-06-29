@@ -442,6 +442,52 @@ theorem finiteExtinctionSurgeryPerelmanAndExtinctionPayload_fields
   ⟩
 
 /--
+The combined surgery/Perelman/extinction payload also exposes the concrete
+Perelman control spine for the same selected flow: entropy monotonicity,
+reduced-volume control, positive lower bounds, kappa noncollapsing,
+canonical-neighborhood recognition, singularity-model classification, blow-up
+classification, and the aggregate singularity-control theorem, together with
+the finite-extinction statement and witness from the same package.
+-/
+theorem finiteExtinctionSurgeryPerelmanAndExtinctionPayload_perelman_control_and_finiteExtinction_fields
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackage n M}
+    (payload : FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package) :
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      flow = ricci_flow_data_of_surgery_package package ∧
+        RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+        PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+        HasPerelmanEntropyMonotonicity flow ∧
+        HasPerelmanReducedVolumeMonotonicity flow ∧
+        HasPerelmanReducedVolumePositiveLowerBound flow ∧
+        HasPerelmanKappaNoncollapsingQuantification flow ∧
+        HasCanonicalNeighborhoodTheorem flow ∧
+        HasSingularityModelClassification flow ∧
+        HasSingularityModelBlowupClassification flow ∧
+        HasPerelmanSingularityControl flow ∧
+        FiniteExtinctionStatement n M ∧
+        FiniteExtinctionByRicciFlowWithSurgery M :=
+  ⟨ payload.projectionPayload.flow
+  , payload.projectionPayload.flow_eq
+  , payload.projectionPayload.constructionPackage
+  , payload.projectionPayload.perelmanPackage
+  , payload.projectionPayload.perelmanPackage.entropyMonotonicity
+  , payload.projectionPayload.perelmanPackage.reducedVolume
+  , payload.projectionPayload.perelmanPackage.reducedVolumePositiveLowerBound
+  , payload.projectionPayload.perelmanPackage.kappaNoncollapsing
+  , payload.projectionPayload.perelmanPackage.canonicalNeighborhood
+  , payload.projectionPayload.perelmanPackage.singularityModelClassification
+  , payload.projectionPayload.blowupClassification
+  , payload.projectionPayload.perelmanPackage.control
+  , payload.finiteExtinctionStatement
+  , payload.finiteExtinctionWitness
+  ⟩
+
+/--
 Pointwise named-payload projection from the finite-extinction package-layer
 requirement.  This exposes the actual finite-extinction witness together with a
 stable field-based surgery/Perelman payload for downstream assembly.
