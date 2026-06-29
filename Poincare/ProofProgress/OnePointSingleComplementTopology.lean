@@ -2712,4 +2712,285 @@ theorem onePoint_threeSpace_compl_singleton_all_basepoint_lowHomotopy_baseclass_
     , pathComponentEqUniv
     ⟩
 
+/--
+The selected singleton-complement endpoint now carries the stronger
+all-basepoint baseclass-collapse family, while preserving the selected
+basepoint equality eliminators and selected canonical base classes.  This is
+the endpoint shape needed by recognition routes that consume a chosen collapse
+basepoint but must also transport low-homotopy collapse data across every
+basepoint in the punctured one-point compactification.
+-/
+theorem onePoint_threeSpace_compl_singleton_selected_basepoint_all_basepoint_baseclass_collapse_and_selected_eq_package
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    ∃ basepoint : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+      Nonempty
+          (({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+            EuclideanSpace ℝ (Fin 3)) ∧
+        ContractibleSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        Nonempty
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        PathConnectedSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        ConnectedSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        SimplyConnectedSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        LocPathConnectedSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        (∀ suppliedBasepoint :
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          Subsingleton
+              (ZerothHomotopy
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 0
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint) ∧
+            Subsingleton
+              (FundamentalGroup
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 1
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint) ∧
+            Nonempty (Unique
+              (ZerothHomotopy
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))) ∧
+            Nonempty (Unique
+              (HomotopyGroup.Pi 0
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint)) ∧
+            Nonempty (Unique
+              (FundamentalGroup
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint)) ∧
+            Nonempty (Unique
+              (HomotopyGroup.Pi 1
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint)) ∧
+            (∀ x y :
+              ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+              ZerothHomotopy.mk x = ZerothHomotopy.mk y) ∧
+            (∀ a b :
+              HomotopyGroup.Pi 0
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint,
+              a = b) ∧
+            (∀ a b :
+              FundamentalGroup
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint,
+              a = b) ∧
+            (∀ a b :
+              HomotopyGroup.Pi 1
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint,
+              a = b) ∧
+            (∃ baseClass :
+              ZerothHomotopy
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+              ∀ homotopyClass :
+                ZerothHomotopy
+                  ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+                homotopyClass = baseClass) ∧
+            (∃ baseClass :
+              HomotopyGroup.Pi 0
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint,
+              ∀ homotopyClass :
+                HomotopyGroup.Pi 0
+                  ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                  suppliedBasepoint,
+                homotopyClass = baseClass) ∧
+            (∃ baseClass :
+              FundamentalGroup
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint,
+              ∀ fundamentalClass :
+                FundamentalGroup
+                  ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                  suppliedBasepoint,
+                fundamentalClass = baseClass) ∧
+            (∃ baseClass :
+              HomotopyGroup.Pi 1
+                ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint,
+              ∀ homotopyClass :
+                HomotopyGroup.Pi 1
+                  ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                  suppliedBasepoint,
+                homotopyClass = baseClass) ∧
+            (∀ x y :
+              ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+              Nonempty (Path x y)) ∧
+            (∀ x :
+              ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+              pathComponent x = Set.univ)) ∧
+        Subsingleton
+          (ZerothHomotopy
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 0
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint) ∧
+        Subsingleton
+          (FundamentalGroup
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint) ∧
+        Nonempty (Unique
+          (ZerothHomotopy
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))) ∧
+        Nonempty (Unique
+          (HomotopyGroup.Pi 0
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint)) ∧
+        Nonempty (Unique
+          (FundamentalGroup
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint)) ∧
+        Nonempty (Unique
+          (HomotopyGroup.Pi 1
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint)) ∧
+        (∀ x y : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          ZerothHomotopy.mk x = ZerothHomotopy.mk y) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 0
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          a = b) ∧
+        (∀ a b :
+          FundamentalGroup
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          a = b) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 1
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          a = b) ∧
+        (∃ baseClass :
+          ZerothHomotopy
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          ∀ homotopyClass :
+            ZerothHomotopy
+              ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+            homotopyClass = baseClass) ∧
+        (∃ baseClass :
+          HomotopyGroup.Pi 0
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          ∀ homotopyClass :
+            HomotopyGroup.Pi 0
+              ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              basepoint,
+            homotopyClass = baseClass) ∧
+        (∃ baseClass :
+          FundamentalGroup
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          ∀ fundamentalClass :
+            FundamentalGroup
+              ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              basepoint,
+            fundamentalClass = baseClass) ∧
+        (∃ baseClass :
+          HomotopyGroup.Pi 1
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          ∀ homotopyClass :
+            HomotopyGroup.Pi 1
+              ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              basepoint,
+            homotopyClass = baseClass) ∧
+        (∀ x y : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          Nonempty (Path x y)) ∧
+        (∀ x : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          pathComponent x = Set.univ) := by
+  rcases
+      onePoint_threeSpace_compl_singleton_selected_basepoint_all_basepoint_path_and_selected_eq_package
+        p with
+    ⟨ basepoint
+    , chart
+    , contractible
+    , nonempty
+    , pathConnected
+    , connected
+    , simplyConnected
+    , locPathConnected
+    , _allBasepointLowHomotopyAndPath
+    , zerothSubsingleton
+    , piZeroSubsingleton
+    , fundamentalGroupSubsingleton
+    , piOneSubsingleton
+    , zerothUnique
+    , piZeroUnique
+    , fundamentalGroupUnique
+    , piOneUnique
+    , zerothEq
+    , piZeroEq
+    , fundamentalGroupEq
+    , piOneEq
+    , pathNonempty
+    , pathComponentEqUniv
+    ⟩
+  let allBasepointBaseclass :=
+    onePoint_threeSpace_compl_singleton_all_basepoint_lowHomotopy_baseclass_collapse_package
+      p
+  rcases allBasepointBaseclass basepoint with
+    ⟨ _zerothSubsingletonFromBaseclass
+    , _piZeroSubsingletonFromBaseclass
+    , _fundamentalGroupSubsingletonFromBaseclass
+    , _piOneSubsingletonFromBaseclass
+    , _zerothUniqueFromBaseclass
+    , _piZeroUniqueFromBaseclass
+    , _fundamentalGroupUniqueFromBaseclass
+    , _piOneUniqueFromBaseclass
+    , _zerothEqFromBaseclass
+    , _piZeroEqFromBaseclass
+    , _fundamentalGroupEqFromBaseclass
+    , _piOneEqFromBaseclass
+    , zerothBaseclass
+    , piZeroBaseclass
+    , fundamentalGroupBaseclass
+    , piOneBaseclass
+    , _pathNonemptyFromBaseclass
+    , _pathComponentEqUnivFromBaseclass
+    ⟩
+  exact
+    ⟨ basepoint
+    , chart
+    , contractible
+    , nonempty
+    , pathConnected
+    , connected
+    , simplyConnected
+    , locPathConnected
+    , allBasepointBaseclass
+    , zerothSubsingleton
+    , piZeroSubsingleton
+    , fundamentalGroupSubsingleton
+    , piOneSubsingleton
+    , zerothUnique
+    , piZeroUnique
+    , fundamentalGroupUnique
+    , piOneUnique
+    , zerothEq
+    , piZeroEq
+    , fundamentalGroupEq
+    , piOneEq
+    , zerothBaseclass
+    , piZeroBaseclass
+    , fundamentalGroupBaseclass
+    , piOneBaseclass
+    , pathNonempty
+    , pathComponentEqUniv
+    ⟩
+
 end Poincare
