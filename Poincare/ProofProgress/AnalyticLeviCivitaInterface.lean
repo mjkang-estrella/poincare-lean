@@ -212,4 +212,74 @@ theorem flow_metric_slices_riemannianBundle_connectionField_and_first_analytic_f
     , first_analytic_package_field_of_connectionField connectionAtTime
     ⟩
 
+/--
+The production Levi-Civita-existence field is strong enough to recover a
+selected mathlib time-dependent tangent connection field, together with the
+metric-slice and Riemannian-bundle evidence used by downstream analytic
+consumers.
+-/
+theorem flow_metric_slices_riemannianBundle_connectionField_and_first_analytic_field_of_leviCivitaExistence
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (leviCivitaExistence :
+      HasLeviCivitaConnectionExistence
+        (metric_of_ricci_flow_data flow)) :
+    ∃ _connectionAtTime :
+      TimeDependentTangentConnectionField (metric_of_ricci_flow_data flow),
+      TimeDependentTangentConnectionField
+          (metric_of_ricci_flow_data flow) =
+        (ℝ → TangentCovariantDerivative I M) ∧
+      (∀ _t : ℝ,
+        Nonempty
+          (ContMDiffRiemannianMetric I n E
+            (fun x : M => TangentSpace I x))) ∧
+      (∀ t : ℝ,
+        letI : RiemannianBundle (fun x : M => TangentSpace I x) :=
+          ⟨(metric_at_time_of_ricci_flow_data flow t).toRiemannianMetric⟩
+        IsContMDiffRiemannianBundle I n E
+          (fun x : M => TangentSpace I x)) ∧
+      ProposedHasLeviCivitaConnectionExistence
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionExistence
+        (metric_of_ricci_flow_data flow) :=
+  flow_metric_slices_riemannianBundle_connectionField_and_first_analytic_field_of_nonemptyConnectionField
+    ((hasLeviCivitaConnectionExistence_iff_connectionField_nonempty
+      (metric_of_ricci_flow_data flow)).1 leviCivitaExistence)
+
+/--
+Any analytic sub-obligation payload contains enough Levi-Civita data to expose
+the selected mathlib connection field and the metric/Riemannian-bundle slices
+needed by the concrete connection interface.
+-/
+theorem flow_metric_slices_riemannianBundle_connectionField_and_first_analytic_field_of_subobligations
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (subobligations : AnalyticFoundationSubobligationsPayload flow) :
+    ∃ _connectionAtTime :
+      TimeDependentTangentConnectionField (metric_of_ricci_flow_data flow),
+      TimeDependentTangentConnectionField
+          (metric_of_ricci_flow_data flow) =
+        (ℝ → TangentCovariantDerivative I M) ∧
+      (∀ _t : ℝ,
+        Nonempty
+          (ContMDiffRiemannianMetric I n E
+            (fun x : M => TangentSpace I x))) ∧
+      (∀ t : ℝ,
+        letI : RiemannianBundle (fun x : M => TangentSpace I x) :=
+          ⟨(metric_at_time_of_ricci_flow_data flow t).toRiemannianMetric⟩
+        IsContMDiffRiemannianBundle I n E
+          (fun x : M => TangentSpace I x)) ∧
+      ProposedHasLeviCivitaConnectionExistence
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionExistence
+        (metric_of_ricci_flow_data flow) :=
+  flow_metric_slices_riemannianBundle_connectionField_and_first_analytic_field_of_leviCivitaExistence
+    subobligations.1
+
 end Poincare
