@@ -2377,6 +2377,78 @@ theorem groundedRecognitionPrefixPayload_and_finalCertificateTopologyAssemblyPay
     ⟩
 
 /--
+The grounded recognition-prefix payload and the generic topology-assembly
+payload built from the same remaining-dependency package and recognition
+prefix carry the same final endpoint fields.  This lets final-collapse
+consumers select both payload objects once and use either route for the public
+statement, checked certificate, canonical target, public/canonical payloads,
+and all completion criteria without rebuilding the topology package boundary.
+-/
+theorem groundedRecognitionPrefixPayload_topologyAssemblyPayload_selected_endpoint_fields
+    (dependencies : RemainingDependencyPackage.{u})
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    ∃ groundedPayload :
+      GroundedRecognitionPrefixFinalCertificatePayload
+        dependencies grounded recognitionPrefix,
+    ∃ topologyPayload :
+      FinalCertificateTopologyAssemblyPayload
+        (finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+          (finalAssemblyPackageBoundaryInputs_of_remainingDependencyPackage
+            dependencies))
+        (topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+          recognitionPrefix),
+      groundedPayload.topologyPackage =
+          topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+            recognitionPrefix ∧
+        groundedPayload.topologyStatement =
+          extinction_topology_extraction_statement_of_topology_package
+            groundedPayload.topologyPackage ∧
+        groundedPayload.publicStatement = topologyPayload.publicStatement ∧
+        groundedPayload.checkedCertificate =
+          topologyPayload.checkedCertificate ∧
+        groundedPayload.canonicalTarget = topologyPayload.canonicalTarget ∧
+        groundedPayload.publicPayload = topologyPayload.publicPayload ∧
+        groundedPayload.canonicalPayload = topologyPayload.canonicalPayload ∧
+        groundedPayload.completionCriteria =
+          topologyPayload.completionCriteria ∧
+        PoincareConjectureStatement.{u} ∧
+        PoincareCompletionCertificate.{u} ∧
+        Nonempty PoincareCompletionCertificate.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let groundedPayload :=
+    groundedRecognitionPrefixFinalCertificatePayload
+      dependencies grounded recognitionPrefix
+  let topologyPayload :=
+    finalCertificateTopologyAssemblyPayload_of_remainingDependencyPackage_and_recognitionPrefix
+      dependencies recognitionPrefix
+  exact
+    ⟨ groundedPayload
+    , topologyPayload
+    , rfl
+    , rfl
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , topologyPayload.publicStatement
+    , topologyPayload.checkedCertificate
+    , topologyPayload.nonemptyCertificate
+    , topologyPayload.canonicalTarget
+    , topologyPayload.publicPayload
+    , topologyPayload.canonicalPayload
+    , topologyPayload.completionCriteria
+    ⟩
+
+/--
 Consumer-facing collapse of the joined grounded recognition-prefix and topology
 assembly route: the same inputs produce the public Poincare statement,
 inhabited checked certificate, and all completion criteria.
