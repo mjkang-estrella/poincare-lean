@@ -6776,4 +6776,145 @@ theorem finalAssemblySubobligationBoundaryInputs_requirements_payloads_and_reser
         inputs witness
     ⟩
 
+/--
+The sub-obligation boundary also exposes the primitive final-certificate input
+selected after finite-extinction promotion.  This pins the universal
+finite-extinction statement used by the checked certificate to the
+smoothability package and the promoted finite-extinction package built from the
+analytic/surgery/Perelman sub-obligations, while retaining the reserved-name
+final-collapse route and fixed witness criterion.
+-/
+theorem finalAssemblySubobligationBoundaryInputs_primitiveInputs_and_reservedName_direct_finalCollapse_routes
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u})
+    (witness : Type u) :
+    let assemblyInputs :=
+      finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs
+        inputs
+    let minimalInputs :=
+      finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+        assemblyInputs
+    let primitiveInputs :=
+      finalCertificatePrimitiveInputs_of_minimalPackageInputs minimalInputs
+        (extinction_implies_sphere_of_topology_package assemblyInputs.topology)
+    let dependencies :=
+      remainingDependencyPackage_of_finalAssemblyPackageBoundaryInputs
+        assemblyInputs
+    let selected :=
+      finalCertificateNamedPackageLayerConsumerPayload
+        assemblyInputs.smoothability
+        assemblyInputs.finiteExtinction
+        assemblyInputs.topology
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+        selected.smoothability = inputs.smoothability ∧
+        selected.finiteExtinction =
+          finiteExtinctionPackage_requirement_of_subobligations_family
+            inputs.finiteExtinctionSubobligations ∧
+        selected.topology = inputs.topology ∧
+        selected.smoothability = minimalInputs.smoothability ∧
+        selected.finiteExtinction = minimalInputs.finiteExtinction ∧
+        primitiveInputs.universalFiniteExtinction =
+          universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+            inputs.smoothability
+            (finiteExtinctionPackage_requirement_of_subobligations_family
+              inputs.finiteExtinctionSubobligations) ∧
+        primitiveInputs.extinctionImpliesSphere =
+          extinction_implies_sphere_of_topology_package inputs.topology ∧
+        selected.checkedCertificate =
+          completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+            dependencies primitiveInputs ∧
+        selected.checkedCertificate =
+          completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+            minimalInputs assemblyInputs.topology ∧
+        selected.publicStatement =
+          poincare_conjecture_of_completion_certificate
+            selected.checkedCertificate ∧
+        selected.publicPayload =
+          ⟨selected.publicStatement, selected.completionCriteria⟩ ∧
+        selected.canonicalPayload =
+          ⟨selected.canonicalTarget, selected.completionCriteria⟩ ∧
+        PoincareConjectureStatement.{u} ∧
+        PoincareCompletionCertificate.{u} ∧
+        Nonempty PoincareCompletionCertificate.{u} ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        (∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        CompletionCriterionAtUniverse witness := by
+  let assemblyInputs :=
+    finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs
+      inputs
+  let minimalInputs :=
+    finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+      assemblyInputs
+  let primitiveInputs :=
+    finalCertificatePrimitiveInputs_of_minimalPackageInputs minimalInputs
+      (extinction_implies_sphere_of_topology_package assemblyInputs.topology)
+  let dependencies :=
+    remainingDependencyPackage_of_finalAssemblyPackageBoundaryInputs
+      assemblyInputs
+  let selected :=
+    finalCertificateNamedPackageLayerConsumerPayload
+      assemblyInputs.smoothability
+      assemblyInputs.finiteExtinction
+      assemblyInputs.topology
+  rcases
+    finalAssemblySubobligationBoundaryInputs_reservedName_direct_finalCollapse_minimal_and_legacyCertificate_routes
+      inputs witness with
+    ⟨ theoremName
+    , theoremName_eq
+    , hSelectedSmoothability
+    , hSelectedFiniteExtinction
+    , hSelectedTopology
+    , hMinimalSmoothability
+    , hMinimalFiniteExtinction
+    , _hAssemblyTopology
+    , hPublicStatement
+    , _hLegacyCertificate
+    , hMinimalCertificate
+    , hPublicPayload
+    , hCanonicalPayload
+    , _hTopologyPublicStatement
+    , _hTopologyCheckedCertificate
+    , _hTopologyCanonicalTarget
+    , _hTopologyPublicPayload
+    , _hTopologyCanonicalPayload
+    , _hTopologyCompletionCriteria
+    , publicStatement
+    , checkedCertificate
+    , nonemptyCertificate
+    , remainingPackage
+    , canonicalTarget
+    , canonicalStatement
+    , completionCriteria
+    , witnessCriterion
+    ⟩
+  exact
+    ⟨ theoremName
+    , theoremName_eq
+    , hSelectedSmoothability
+    , hSelectedFiniteExtinction
+    , hSelectedTopology
+    , hMinimalSmoothability
+    , hMinimalFiniteExtinction
+    , rfl
+    , rfl
+    , by apply Subsingleton.elim
+    , hMinimalCertificate
+    , hPublicStatement
+    , hPublicPayload
+    , hCanonicalPayload
+    , publicStatement
+    , checkedCertificate
+    , nonemptyCertificate
+    , remainingPackage
+    , canonicalTarget
+    , canonicalStatement
+    , completionCriteria
+    , witnessCriterion
+    ⟩
+
 end Poincare
