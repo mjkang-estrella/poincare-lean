@@ -20142,6 +20142,84 @@ theorem onePointRecognitionAmbientAtlasTransitionCompatibilityPayload_of_smootha
   exact HasGroupoid.compatible hc hc'
 
 /--
+A completed smoothability package and a one-point final-certificate field
+package can be consumed together: the package supplies the transported-to-
+ambient `IsManifold` transfer and ambient atlas transition compatibility, while
+the one-point recognition route keeps the transported smoothability fields,
+package fields, canonical one-point surgery family, opened finite-extinction
+payload, and finite-extinction witness synchronized.
+-/
+theorem onePointTransportedFinalCertificateFields_named_transport_fields_package_fields_opened_payload_and_package_transfer
+    (package : SmoothabilityPackage.{0})
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0})
+    (surgeryPackages :
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    OnePointRecognitionTransportedToAmbientIsManifoldTransferTheorem.{0} ∧
+      OnePointRecognitionAmbientAtlasTransitionCompatibilityPayload.{0} ∧
+      ∃ fields :
+        OnePointTransportedFinalCertificateFields recognize surgeryPackages,
+      ∃ charted : ChartedSpace ThreeManifoldModel
+          (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        letI : ChartedSpace ThreeManifoldModel
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) := charted
+        ∃ finiteExtinction :
+          FiniteExtinctionByRicciFlowWithSurgery
+            (OnePoint (EuclideanSpace ℝ (Fin 3))),
+          fields.finiteExtinctionPayload = ⟨charted, finiteExtinction⟩ ∧
+            fields.transportedFields =
+              smoothabilityPackageTransportedSmoothManifoldFields_of_onePointRecognition
+                recognize ∧
+            fields.bridgeFields =
+              fields.transportedFields.toSmoothabilityPackageTransportedBridgeFields ∧
+            fields.transportedPackageField =
+              fields.transportedFields.toSmoothabilityTransportedSmoothManifoldPackageField ∧
+            fields.bridgePackageField =
+              fields.bridgeFields.toSmoothabilityTransportedBridgePackageField ∧
+            fields.recoveredBridge =
+              smoothabilityTransportedBridgePackageField_of_transportedSmoothManifoldPackageField
+                fields.transportedPackageField ∧
+            fields.recoveredBridge.transportedBridge =
+              fields.bridgePackageField.transportedBridge ∧
+            fields.surgeryFamily =
+              onePointTransportedSurgeryPackageFamily_of_surgeryPackages
+                surgeryPackages ∧
+            fields.finiteExtinctionPayload =
+              onePointTransportedFiniteExtinctionPayload_of_transportedSmoothManifoldFields
+                fields.transportedFields fields.surgeryFamily ∧
+            fields.transportedBridgeStatement =
+              fields.bridgeFields.transportedBridge ∧
+            fields.transportedSmoothManifoldStatement =
+              fields.transportedFields.transportedSmoothManifold := by
+  let fields :=
+    onePointTransportedFinalCertificateFieldsOfOnePointRecognition
+      recognize surgeryPackages
+  rcases fields.finiteExtinctionPayload with ⟨charted, finiteExtinction⟩
+  exact
+    ⟨ onePointRecognitionTransportedToAmbientIsManifoldTransferTheorem_of_smoothabilityPackage
+        package
+    , onePointRecognitionAmbientAtlasTransitionCompatibilityPayload_of_smoothabilityPackage
+        package
+    , fields
+    , charted
+    , finiteExtinction
+    , rfl
+    , fields.transportedFields_eq
+    , fields.bridgeFields_eq
+    , fields.transportedPackageField_eq
+    , fields.bridgePackageField_eq
+    , fields.recoveredBridge_eq
+    , fields.recoveredBridge_transport_eq
+    , fields.surgeryFamily_eq
+    , fields.finiteExtinctionPayload_eq
+    , rfl
+    , rfl
+    ⟩
+
+/--
 Thus the current transfer theorem is blocked at the raw ambient atlas
 transition compatibility needed to build the ambient `HasGroupoid`.
 -/
