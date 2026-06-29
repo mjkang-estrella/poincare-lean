@@ -11197,4 +11197,128 @@ theorem finite_extinction_sweepout_payload_full_package_derivation_statement_and
     , rfl
     ⟩
 
+/--
+The concrete target sweepout route can keep the production-remainder frontier
+visible while constructing the same finite-extinction package.  This opens the
+min-max width, surgery-discard, curvature/component, time-bound, derivation,
+and conclusion-derivation fields used by the package proof, together with the
+generated package's own derivation, theorem-shaped statement, and projected
+finite-extinction witness.
+-/
+theorem finite_extinction_sweepout_payload_remainder_frontier_package_derivation_statement_and_witness
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (payload : TargetFiniteExtinctionSweepoutPayload M)
+    (remainder :
+      FiniteExtinctionProductionPackageRemainder analyticFoundation
+        surgeryConstruction perelmanControl
+        (target_finite_extinction_sweepout_interface_bundle_of_payload
+          payload)) :
+    let sweepoutBundle : TargetFiniteExtinctionSweepoutInterfaceBundle M :=
+      target_finite_extinction_sweepout_interface_bundle_of_payload payload
+    let flow : RicciFlowData ThreeManifoldModelWithCorners n M :=
+      ricci_flow_data_of_analytic_foundation_package analyticFoundation
+    let surgery : HasRicciFlowWithSurgery n M :=
+      surgeryConstruction.withSurgery
+    let control : HasPerelmanSingularityControl (n := n) (M := M) flow :=
+      perelmanControl.control
+    let sweepout :
+      HasFiniteExtinctionSweepoutExistence M
+        finite_extinction_fundamental_group_input_of_target :=
+      finite_extinction_sweepout_existence_of_interface_bundle sweepoutBundle
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    ∃ packageFlow : RicciFlowData ThreeManifoldModelWithCorners n M,
+    ∃ packageSurgery : HasRicciFlowWithSurgery n M,
+    ∃ packageControl :
+      HasPerelmanSingularityControl (n := n) (M := M)
+        (ricci_flow_data_of_surgery_package package),
+    ∃ packageDerivation :
+      HasFiniteExtinctionDerivation
+        (ricci_flow_data_of_surgery_package package)
+        (ricci_flow_with_surgery_of_surgery_package package)
+        packageControl,
+    ∃ packageStatement : FiniteExtinctionStatement n M,
+    ∃ extinctionWitness : FiniteExtinctionByRicciFlowWithSurgery M,
+      HasFiniteExtinctionAreaFunctionalSetup flow surgery control
+          finite_extinction_fundamental_group_input_of_target sweepout ∧
+        HasFiniteExtinctionMinMaxWidthDefinition flow surgery control
+          finite_extinction_fundamental_group_input_of_target sweepout ∧
+        HasFiniteExtinctionWidthTheory flow surgery control ∧
+        HasFiniteExtinctionSurgeryDiscardControl flow surgery control
+          remainder.widthTheory remainder.widthEvolution ∧
+        HasFiniteExtinctionCurvaturePinching flow surgery control ∧
+        HasFiniteExtinctionComponentControl flow surgery control
+          remainder.curvaturePinching ∧
+        HasFiniteExtinctionTimeBound flow surgery control
+          remainder.curvaturePinching remainder.componentControl ∧
+        HasFiniteExtinctionDerivation flow surgery control ∧
+        remainder.finiteExtinction = extinctionWitness ∧
+        HasFiniteExtinctionConclusionDerivation flow surgery control
+          remainder.curvaturePinching remainder.componentControl
+          remainder.timeBound remainder.derivation remainder.finiteExtinction ∧
+        packageFlow = ricci_flow_data_of_surgery_package package ∧
+        packageSurgery = ricci_flow_with_surgery_of_surgery_package package ∧
+        packageControl =
+          perelman_singularity_control_of_surgery_package package ∧
+        packageDerivation =
+          finite_extinction_derivation_of_surgery_package package ∧
+        packageStatement =
+          finite_extinction_statement_of_surgery_package package ∧
+        extinctionWitness =
+          finite_extinction_via_statement_of_surgery_package package := by
+  let sweepoutBundle : TargetFiniteExtinctionSweepoutInterfaceBundle M :=
+    target_finite_extinction_sweepout_interface_bundle_of_payload payload
+  rcases
+      finite_extinction_surgery_package_nonempty_of_target_sweepout_payload
+        analyticFoundation surgeryConstruction perelmanControl payload
+        remainder with
+    ⟨package⟩
+  let packageFlow : RicciFlowData ThreeManifoldModelWithCorners n M :=
+    ricci_flow_data_of_surgery_package package
+  let packageSurgery : HasRicciFlowWithSurgery n M :=
+    ricci_flow_with_surgery_of_surgery_package package
+  let packageControl :=
+    perelman_singularity_control_of_surgery_package package
+  let packageDerivation :=
+    finite_extinction_derivation_of_surgery_package package
+  let packageStatement : FiniteExtinctionStatement n M :=
+    finite_extinction_statement_of_surgery_package package
+  let extinctionWitness : FiniteExtinctionByRicciFlowWithSurgery M :=
+    finite_extinction_via_statement_of_surgery_package package
+  exact
+    ⟨ package
+    , packageFlow
+    , packageSurgery
+    , packageControl
+    , packageDerivation
+    , packageStatement
+    , extinctionWitness
+    , remainder.areaFunctional
+    , remainder.minMaxWidth
+    , remainder.widthTheory
+    , remainder.surgeryDiscardControl
+    , remainder.curvaturePinching
+    , remainder.componentControl
+    , remainder.timeBound
+    , remainder.derivation
+    , by apply Subsingleton.elim
+    , remainder.conclusionDerivation
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    ⟩
+
 end Poincare
