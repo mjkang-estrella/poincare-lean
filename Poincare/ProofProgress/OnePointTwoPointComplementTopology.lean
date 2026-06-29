@@ -2349,4 +2349,83 @@ theorem onePoint_threeSpace_twoPointComplement_selected_recognition_unique_lowHo
     , flatPayload.pathComponentEqUniv
     ⟩
 
+/--
+The selected two-puncture recognition route retains concrete field equalities,
+unique low-homotopy instances, path-connectedness, and the path-collapse
+surface at the same selected basepoint and flattened payload.
+-/
+theorem onePoint_threeSpace_twoPointComplement_selected_recognition_fields_unique_and_collapse_payload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    ∃ basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+    ∃ recognitionPayload :
+      OnePointTwoPointComplementRecognitionPayload hqp basepoint,
+    ∃ flatPayload :
+      OnePointTwoPointComplementFlatRecognitionPayload hqp basepoint,
+      flatPayload =
+        onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition
+          recognitionPayload ∧
+        flatPayload.puncturedEuclideanChart =
+          recognitionPayload.puncturedEuclideanChart ∧
+        flatPayload.simplyConnected = recognitionPayload.simplyConnected ∧
+        flatPayload.connected = recognitionPayload.lowHomotopy.connected ∧
+        flatPayload.nonempty = recognitionPayload.lowHomotopy.nonempty ∧
+        flatPayload.pathNonempty =
+          recognitionPayload.lowHomotopy.pathNonempty ∧
+        flatPayload.pathComponentEqUniv =
+          recognitionPayload.lowHomotopy.pathComponentEqUniv ∧
+        Nonempty (Unique
+          (ZerothHomotopy
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))) ∧
+        Nonempty (Unique
+          (HomotopyGroup.Pi 0
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint)) ∧
+        Nonempty (Unique
+          (FundamentalGroup
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint)) ∧
+        Nonempty (Unique
+          (HomotopyGroup.Pi 1
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint)) ∧
+        PathConnectedSpace
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        (∀ a b :
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          Nonempty (Path a b)) ∧
+        (∀ x :
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          pathComponent x = Set.univ) := by
+  let basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    Classical.choice
+      (onePoint_threeSpace_twoPointComplement_nonempty hqp)
+  let recognitionPayload :=
+    onePoint_threeSpace_twoPointComplement_recognition_payload hqp
+      basepoint
+  let flatPayload :=
+    onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition
+      recognitionPayload
+  exact
+    ⟨ basepoint
+    , recognitionPayload
+    , flatPayload
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , ⟨flatPayload.zerothUnique⟩
+    , ⟨flatPayload.piZeroUnique⟩
+    , ⟨flatPayload.fundamentalGroupUnique⟩
+    , ⟨flatPayload.piOneUnique⟩
+    , onePoint_threeSpace_twoPointComplement_pathConnectedSpace_of_flatRecognition
+        flatPayload
+    , flatPayload.pathNonempty
+    , flatPayload.pathComponentEqUniv
+    ⟩
+
 end Poincare
