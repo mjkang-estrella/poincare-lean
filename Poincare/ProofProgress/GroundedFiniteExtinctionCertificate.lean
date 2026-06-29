@@ -2053,6 +2053,67 @@ theorem groundedUniversalFiniteExtinction_universal_requirements_and_fixedTarget
     ⟩
 
 /--
+For a fixed target manifold, a complete grounded finite-extinction consumer
+payload exposes the finite-extinction package, package statement, extinction
+witness, selected flow/surgery/control data, and finite-extinction derivation
+in the package-first order retained by the complete payload.
+-/
+theorem groundedUniversalFiniteExtinction_fixedTarget_packageDerivationPayload_of_completeConsumerPayload
+    (payload :
+      Nonempty GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ n : ℕ∞ω,
+    ∃ _package : FiniteExtinctionSurgeryPackage n M,
+      FiniteExtinctionStatement n M ∧
+        FiniteExtinctionByRicciFlowWithSurgery M ∧
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ surgery : HasRicciFlowWithSurgery n M,
+        ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+          HasFiniteExtinctionDerivation flow surgery control := by
+  rcases payload with ⟨payload⟩
+  exact payload.packageStatementDerivationFamily M
+
+/--
+For a fixed target manifold, a complete grounded finite-extinction consumer
+payload simultaneously exposes the named finite-extinction package/milestone
+requirements and the package-first finite-extinction derivation payload.
+-/
+theorem groundedUniversalFiniteExtinction_requirements_and_fixedTarget_packageDerivationPayload_of_completeConsumerPayload
+    (payload :
+      Nonempty GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.finiteExtinction ∧
+      ∃ n : ℕ∞ω,
+      ∃ _package : FiniteExtinctionSurgeryPackage n M,
+        FiniteExtinctionStatement n M ∧
+          FiniteExtinctionByRicciFlowWithSurgery M ∧
+          ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          ∃ surgery : HasRicciFlowWithSurgery n M,
+          ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+            HasFiniteExtinctionDerivation flow surgery control := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ payload.finiteExtinctionPackageRequirement
+    , payload.ricciFlowWithSurgeryMilestone
+    , payload.perelmanSingularityControlMilestone
+    , payload.finiteExtinctionMilestone
+    , payload.packageStatementDerivationFamily M
+    ⟩
+
+/--
 The complete finite-extinction consumer payload is equivalent to the inhabited
 detailed grounded finite-extinction assembly payload: the forward direction
 projects the stored detailed payload, while the reverse direction rebuilds the
