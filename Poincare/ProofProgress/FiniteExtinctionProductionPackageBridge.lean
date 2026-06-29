@@ -10772,6 +10772,48 @@ theorem finite_extinction_by_ricci_flow_with_surgery_family_of_target_assumption
       (controlFrontier M)
 
 /--
+Family-level package-bearing finite extinction: the target-family
+control-frontier supply gives each target manifold a concrete
+finite-extinction surgery package, its theorem-shaped statement, and the
+projected finite-extinction witness from that same package.
+-/
+theorem finite_extinction_package_statement_and_witness_family_of_target_assumptions_and_control_frontier
+    (controlFrontier :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ _surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ _perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            True) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackage n M,
+        ∃ packageStatement : FiniteExtinctionStatement n M,
+        ∃ extinctionWitness : FiniteExtinctionByRicciFlowWithSurgery M,
+          packageStatement =
+              finite_extinction_statement_of_surgery_package package ∧
+            extinctionWitness =
+              finite_extinction_via_statement_of_surgery_package package := by
+  intro M _top _t2 _charted _simple _compact _manifold
+  exact
+    finite_extinction_package_statement_and_witness_of_target_assumptions_and_control_frontier_package
+      (controlFrontier M)
+
+/--
 Family-level finite-to-assembly bridge: a target-family supply of analytic,
 surgery-construction, and Perelman-control frontiers discharges the exact
 finite-extinction package-layer requirement consumed by final assembly.
