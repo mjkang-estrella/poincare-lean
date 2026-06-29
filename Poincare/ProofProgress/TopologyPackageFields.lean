@@ -1841,6 +1841,81 @@ theorem poincare_statement_recognition_fixedTarget_punctureFamily_and_lowHomotop
     ⟩
 
 /--
+Universal finite extinction and a concrete topology extraction package already
+construct the complete topology consumer payload needed by the final route.
+This endpoint keeps that constructed payload visible while exposing the same
+fixed-target one-point, singleton-complement, and two-puncture low-homotopy
+family, so downstream final-certificate code can start from the package layer
+without separately assuming the complete consumer payload.
+-/
+theorem poincare_statement_recognition_fixedTarget_punctureFamily_and_lowHomotopy_of_universalFiniteExtinctionStatement_and_topologyPackage
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    Nonempty (ExtinctionTopologyCompleteConsumerPayload.{u}) ∧
+      PoincareConjectureStatement.{u} ∧
+      ExtinctionOnePointThreeSpaceRecognitionStatement.{u} ∧
+      ∃ package : ExtinctionTopologyExtractionPackage.{u},
+      ∃ topologyStatement : ExtinctionTopologyExtractionStatement.{u},
+        topologyStatement =
+            extinction_topology_extraction_statement_of_topology_package
+              package ∧
+          ExtinctionImpliesSphereStatement.{u} ∧
+          ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} ∧
+          ∃ homeomorphism : M ≃ₜ ThreeSphere,
+            Nonempty (M ≃ₜ ThreeSphere) ∧
+            Nonempty.intro homeomorphism =
+                homeomorphism_of_topology_package package M extinction ∧
+            ExtinctionTopologyClassificationSubobligationsPayload
+              M extinction ∧
+            ExtinctionTopologySimplyConnectedRecognitionStatement
+              M extinction ∧
+            ExtinctionTopologySphericalTrivialQuotientStatement
+              M extinction ∧
+            ExtinctionTopologySphericalHomeomorphismLiftStatement
+              M extinction ∧
+            ExtinctionTopologyHomeomorphismAssemblyStatement
+              M extinction (Nonempty.intro homeomorphism) ∧
+            ExtinctionTopologyHomeomorphismDerivationStatement
+              M extinction (Nonempty.intro homeomorphism) ∧
+            ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+              M extinction (Nonempty.intro homeomorphism) ∧
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+            (∀ x : M,
+              Nonempty (({x}ᶜ : Set M) ≃ₜ
+                EuclideanSpace ℝ (Fin 3)) ∧
+              ContractibleSpace ({x}ᶜ : Set M) ∧
+              SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+              ∀ basepoint : ({x}ᶜ : Set M),
+                Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+                Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M)
+                  basepoint) ∧
+                Subsingleton (FundamentalGroup ({x}ᶜ : Set M)
+                  basepoint) ∧
+                Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M)
+                  basepoint)) ∧
+            (∀ {x y : M} (_hyx : y ≠ x),
+              (∃ puncture : EuclideanSpace ℝ (Fin 3),
+                Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+                  ({puncture}ᶜ :
+                    Set (EuclideanSpace ℝ (Fin 3))))) ∧
+              ∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+                SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                Subsingleton
+                  (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+                    basepoint)) := by
+  let payload : Nonempty (ExtinctionTopologyCompleteConsumerPayload.{u}) :=
+    extinctionTopology_completeConsumerPayload_of_topologyPackage package
+  exact
+    ⟨ payload
+    , poincare_statement_recognition_fixedTarget_punctureFamily_and_lowHomotopy_of_universalFiniteExtinctionStatement_and_extinctionTopology_completeConsumerPayload
+        finiteExtinction payload M extinction
+    ⟩
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
