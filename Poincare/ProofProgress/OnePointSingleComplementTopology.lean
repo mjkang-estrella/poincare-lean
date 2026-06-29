@@ -439,4 +439,57 @@ theorem onePoint_threeSpace_compl_singleton_euclidean_lowHomotopy_unique_package
     , pathComponentEqUniv
     ⟩
 
+/--
+The singleton complement package can be produced without an externally chosen
+basepoint: contractibility supplies a point of the complement, and the full
+Euclidean/low-homotopy uniqueness package is then available at that selected
+basepoint.
+-/
+theorem onePoint_threeSpace_compl_singleton_euclidean_lowHomotopy_unique_package_with_basepoint
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    ∃ basepoint : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+      Nonempty
+          (({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+            EuclideanSpace ℝ (Fin 3)) ∧
+        ContractibleSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        Nonempty
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        PathConnectedSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        ConnectedSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        SimplyConnectedSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        LocPathConnectedSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        Nonempty (Unique
+          (ZerothHomotopy
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))) ∧
+        Nonempty (Unique
+          (HomotopyGroup.Pi 0
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint)) ∧
+        Nonempty (Unique
+          (FundamentalGroup
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint)) ∧
+        Nonempty (Unique
+          (HomotopyGroup.Pi 1
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint)) ∧
+        (∀ x y : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          Nonempty (Path x y)) ∧
+        (∀ x : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          pathComponent x = Set.univ) := by
+  let basepoint :
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    Classical.choice
+      (onePoint_threeSpace_compl_singleton_nonempty_of_contractible p)
+  exact
+    ⟨ basepoint
+    , onePoint_threeSpace_compl_singleton_euclidean_lowHomotopy_unique_package
+        p basepoint
+    ⟩
+
 end Poincare
