@@ -790,6 +790,36 @@ theorem nonempty_moiseSmoothabilityCompleteConsumerPayload_iff_smoothabilityPack
         ⟩
 
 /--
+The complete Moise smoothability consumer payload is equivalent to the residual
+smoothability package requirement together with target-family recognition by
+the one-point compactification model.  The forward direction projects the
+stored one-point recognition field from the complete target family; the reverse
+direction uses the proved conversion from one-point recognition to the
+`ThreeSphere` assembly route.
+-/
+theorem nonempty_moiseSmoothabilityCompleteConsumerPayload_iff_smoothabilityPackage_and_onePointRecognition :
+    Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u}) ↔
+      dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) := by
+  constructor
+  · rintro ⟨payload⟩
+    exact
+      ⟨ payload.smoothabilityPackageRequirement
+      , fun M _top _t2 _charted _simple _compact =>
+          (payload.targetFamily M).2.1
+      ⟩
+  · rintro ⟨smoothability, recognizeOnePoint⟩
+    exact
+      moiseSmoothability_completeConsumerPayload_of_smoothabilityPackage_and_onePointRecognition
+        (by
+          simpa [dependencyPackageLayerRequirement] using smoothability)
+        recognizeOnePoint
+
+/--
 The complete Moise smoothability consumer payload is also equivalent to the
 residual smoothability package requirement together with the full
 target-by-target recognition/smoothability/prerequisite family.  The reverse
