@@ -1072,4 +1072,73 @@ theorem moiseSmoothability_fixedTarget_concrete_smooth_and_surgery_structures_of
     , hPrereqs
     ⟩
 
+/--
+For a fixed compact simply connected target, the complete Moise consumer
+payload also exposes the opening Moise package fields from the stored
+`SmoothabilityPackage`, together with the same recognition and transported
+smooth/surgery structures.  This ties the package-layer requirement to
+concrete package data instead of only to theorem-shaped smoothability targets.
+-/
+theorem moiseSmoothability_fixedTarget_packageMoisePrefix_and_concrete_structures_of_completeConsumerPayload
+    (payload : Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u}))
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage ∧
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      AdmitsSmoothThreeManifoldStructure M ∧
+      AdmitsSurgeryModelSmoothStructure M ∧
+      (∃ localCharts : HasMoiseLocalTriangulationCharts M,
+        ∃ _locallyFinite :
+          HasMoiseLocallyFiniteCoverRefinement M localCharts,
+        ∃ simplicial :
+          HasMoiseSimplicialComplex M localCharts,
+        ∃ _compatible :
+          HasMoiseCompatibleChartTriangulations M localCharts simplicial,
+          HasMoiseTriangulation M) ∧
+      (∃ _smoothCharted : ChartedSpace ThreeManifoldModel M,
+        ∃ _smooth : IsManifold (𝓡 3) ∞ M,
+        ∃ _surgeryCharted : ChartedSpace ThreeManifoldModel M,
+        ∃ _surgerySmooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+        ∃ _t2 : T2Space M,
+        ∃ _charted : ChartedSpace ThreeManifoldModel M,
+        ∃ _simple : SimplyConnectedSpace M,
+        ∃ _compact : CompactSpace M,
+        ∃ _smoothPrereq : IsManifold ThreeManifoldModelWithCorners 1 M,
+          Nonempty M) := by
+  rcases payload with ⟨payload⟩
+  rcases payload.targetFamily M with
+    ⟨hSphere, hOnePoint, hSmooth, hSurgery, hPrereqs⟩
+  let package : SmoothabilityPackage.{u} :=
+    payload.smoothabilityPackageRequirement
+  let localCharts : HasMoiseLocalTriangulationCharts M :=
+    moise_local_charts_of_smoothability_package package M
+  have _locallyFinite :
+      HasMoiseLocallyFiniteCoverRefinement M localCharts := by
+    simpa [localCharts] using
+      moise_locally_finite_cover_refinement_of_smoothability_package
+        package M
+  let simplicial : HasMoiseSimplicialComplex M localCharts :=
+    moise_simplicial_complex_of_smoothability_package package M
+  have _compatible :
+      HasMoiseCompatibleChartTriangulations M localCharts simplicial := by
+    simpa [localCharts, simplicial] using
+      moise_compatible_chart_triangulations_of_smoothability_package
+        package M
+  let triangulation :=
+    moise_triangulation_of_smoothability_package package M
+  rcases hSmooth with ⟨smoothCharted, smoothManifold⟩
+  rcases hSurgery with ⟨surgeryCharted, surgerySmooth⟩
+  exact
+    ⟨ payload.smoothabilityPackageRequirement
+    , hSphere
+    , hOnePoint
+    , ⟨smoothCharted, smoothManifold⟩
+    , ⟨surgeryCharted, surgerySmooth⟩
+    , ⟨localCharts, _locallyFinite, simplicial, _compatible, triangulation⟩
+    , ⟨smoothCharted, smoothManifold, surgeryCharted, surgerySmooth, hPrereqs⟩
+    ⟩
+
 end Poincare
