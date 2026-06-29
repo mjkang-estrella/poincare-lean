@@ -599,6 +599,81 @@ theorem groundedUniversalFiniteExtinction_topologyExtraction_opened_payloads_che
     ⟩
 
 /--
+The grounded finite-extinction/topology-extraction route also retains the
+named project and canonical payload objects themselves.  Both payloads use the
+direct grounded checked certificate, and their opened fixed-witness criteria
+collapse to the same selected criterion by proof irrelevance.
+-/
+theorem groundedUniversalFiniteExtinction_topologyExtraction_named_payloads_checkedCertificate_and_witnessCriteria
+    (dependencies : RemainingDependencyPackage.{u})
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (witness : Type u) :
+    ∃ projectPayload :
+      PoincareConjectureStatement.{u} ∧
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        PoincareCompletionCertificate.{u},
+    ∃ canonicalPayload :
+      canonicalCompletionTarget.{u} ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        PoincareCompletionCertificate.{u},
+    ∃ publicTarget : PoincareConjectureStatement.{u},
+    ∃ publicCriteria :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ canonicalTarget : canonicalCompletionTarget.{u},
+    ∃ canonicalCriteria :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+      projectPayload =
+          project_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+            dependencies grounded topologyStatement ∧
+        canonicalPayload =
+          canonical_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+            dependencies grounded topologyStatement ∧
+        projectPayload.2.1 = ⟨publicTarget, publicCriteria⟩ ∧
+        canonicalPayload.2.1 = ⟨canonicalTarget, canonicalCriteria⟩ ∧
+        projectPayload.2.2 =
+          completion_certificate_of_remainingDependencyPackage_and_groundedUniversalFiniteExtinctionStatement
+            dependencies grounded ∧
+        canonicalPayload.2.2 =
+          completion_certificate_of_remainingDependencyPackage_and_groundedUniversalFiniteExtinctionStatement
+            dependencies grounded ∧
+        PoincareCompletionCertificate.{u} ∧
+        Nonempty PoincareCompletionCertificate.{u} ∧
+        CompletionCriterionAtUniverse witness ∧
+        publicCriteria witness = canonicalCriteria witness := by
+  let projectPayload :=
+    project_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+      dependencies grounded topologyStatement
+  let canonicalPayload :=
+    canonical_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+      dependencies grounded topologyStatement
+  rcases projectPayload.2.1 with ⟨publicTarget, publicCriteria⟩
+  rcases canonicalPayload.2.1 with ⟨canonicalTarget, canonicalCriteria⟩
+  let certificate : PoincareCompletionCertificate.{u} :=
+    completion_certificate_of_remainingDependencyPackage_and_groundedUniversalFiniteExtinctionStatement
+      dependencies grounded
+  exact
+    ⟨ projectPayload
+    , canonicalPayload
+    , publicTarget
+    , publicCriteria
+    , canonicalTarget
+    , canonicalCriteria
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , certificate
+    , ⟨certificate⟩
+    , publicCriteria witness
+    , by apply Subsingleton.elim
+    ⟩
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
