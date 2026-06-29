@@ -2909,4 +2909,47 @@ theorem poincare_statement_nonempty_certificate_and_completion_criteria_iff_name
       ⟨statement, certificate, completionCriteria⟩
     exact ⟨statement, ⟨certificate⟩, completionCriteria⟩
 
+/--
+The inhabited-certificate final endpoint is equivalent to the fully explicit
+named-package field package: three package-layer requirements, a concrete
+topology-assembly payload, and the checked public/canonical endpoint fields.
+-/
+theorem poincare_statement_nonempty_certificate_and_completion_criteria_iff_requirements_topologyAssembly_and_endpoint_fields :
+    (PoincareConjectureStatement.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness) ↔
+      ∃ smoothability :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage,
+      ∃ finiteExtinction :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage,
+      ∃ topology :
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.topologyPackage,
+      ∃ _topologyAssemblyPayload :
+        FinalCertificateTopologyAssemblyPayload
+          { smoothability := smoothability
+            finiteExtinction := finiteExtinction }
+          topology,
+        PoincareConjectureStatement.{u} ∧
+          PoincareCompletionCertificate.{u} ∧
+          canonicalCompletionTarget.{u} ∧
+          (∃ _target : PoincareConjectureStatement.{u},
+            ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+          (∃ _target : canonicalCompletionTarget.{u},
+            ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+          (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  constructor
+  · intro endpoint
+    exact
+      nonempty_finalCertificateNamedPackageLayerConsumerPayload_iff_requirements_topologyAssembly_and_endpoint_fields.1
+        ((poincare_statement_nonempty_certificate_and_completion_criteria_iff_nonempty_namedPackageLayerConsumerPayload).1
+          endpoint)
+  · intro fieldPackage
+    exact
+      (poincare_statement_nonempty_certificate_and_completion_criteria_iff_nonempty_namedPackageLayerConsumerPayload).2
+        (nonempty_finalCertificateNamedPackageLayerConsumerPayload_iff_requirements_topologyAssembly_and_endpoint_fields.2
+          fieldPackage)
+
 end Poincare
