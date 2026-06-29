@@ -962,6 +962,38 @@ theorem moiseSmoothability_fixedTarget_recognition_and_smoothability_of_complete
 
 /--
 For a fixed compact simply connected target, a complete Moise smoothability
+consumer payload exposes the surgery-facing smoothability data: the residual
+smoothability package requirement, the one-point model recognition, the
+surgery-model smooth structure, and the concrete prerequisite package carrying
+a `C¹` surgery-model manifold instance with a nonempty target.
+-/
+theorem moiseSmoothability_fixedTarget_surgeryModelPrerequisites_of_completeConsumerPayload
+    (payload : Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u}))
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage ∧
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      AdmitsSurgeryModelSmoothStructure M ∧
+      (∃ _t2 : T2Space M,
+        ∃ _charted : ChartedSpace ThreeManifoldModel M,
+        ∃ _simple : SimplyConnectedSpace M,
+        ∃ _compact : CompactSpace M,
+        ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+          Nonempty M) := by
+  rcases payload with ⟨payload⟩
+  rcases payload.targetFamily M with
+    ⟨_hSphere, hOnePoint, _hSmooth, hSurgery, hPrereqs⟩
+  exact
+    ⟨ payload.smoothabilityPackageRequirement
+    , hOnePoint
+    , hSurgery
+    , hPrereqs
+    ⟩
+
+/--
+For a fixed compact simply connected target, a complete Moise smoothability
 consumer payload exposes the package requirement, both theorem-shaped Moise
 statements, and the concrete recognition/smoothability target package.
 -/
