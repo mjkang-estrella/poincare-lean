@@ -295,4 +295,62 @@ theorem finite_extinction_surgery_package_nonempty_of_width_curvature_volume_and
       analyticFoundation surgeryConstruction perelmanControl curvatureFrontier
       volumeFrontier surgeryVolumeFrontier remainder)
 
+/--
+The post-surgery-volume production boundary supplies not only a fixed-index
+surgery package, but also the package-layer sigma target and the concrete
+finite-extinction conclusion with its derivation certificate.
+-/
+theorem finite_extinction_package_layer_target_and_conclusion_of_width_curvature_volume_and_surgery_volume_frontiers
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (widthStatement :
+      FiniteExtinctionWidthSubobligationsStatement
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control)
+    (curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl)
+    (volumeFrontier :
+      FiniteExtinctionProductionVolumeEvolutionFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier)
+    (surgeryVolumeFrontier :
+      FiniteExtinctionProductionSurgeryVolumeFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier volumeFrontier)
+    (remainder :
+      FiniteExtinctionProductionPackageRemainderAfterSurgeryVolume
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier) :
+    Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M) ∧
+      FiniteExtinctionByRicciFlowWithSurgery M ∧
+      HasFiniteExtinctionDerivation
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control ∧
+      HasFiniteExtinctionConclusionDerivation
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching curvatureFrontier.componentControl
+        remainder.timeBound remainder.derivation remainder.finiteExtinction := by
+  rcases finite_extinction_surgery_package_nonempty_of_width_curvature_volume_and_surgery_volume_frontiers
+      analyticFoundation surgeryConstruction perelmanControl widthStatement
+      curvatureFrontier volumeFrontier surgeryVolumeFrontier remainder with
+    ⟨package⟩
+  exact
+    ⟨ ⟨⟨n, package⟩⟩
+    , remainder.finiteExtinction
+    , remainder.derivation
+    , remainder.conclusionDerivation
+    ⟩
+
 end Poincare
