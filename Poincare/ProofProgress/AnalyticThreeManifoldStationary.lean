@@ -16050,6 +16050,55 @@ theorem stationaryZeroAnalyticFoundation_fixedTarget_evolutionFields_of_complete
   exact payload.evolutionFieldsFamily M
 
 /--
+For a fixed target, the complete analytic consumer payload exposes both compact
+analytic projections retained by the detailed assembly: a package/subobligation
+route with the package-flow identity and terminal curvature-evolution field,
+and the standalone evolution-field route carrying the Ricci/scalar contraction
+and evolution equations.
+-/
+theorem stationaryZeroAnalyticFoundation_requirements_and_fixedTarget_compactProjection_of_completeConsumerPayload
+    (payload :
+      Nonempty StationaryZeroAnalyticFoundationCompleteConsumerPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation ∧
+      (∃ n : ℕ∞ω,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      ∃ package :
+        RicciFlowAnalyticFoundationPackage
+          ThreeManifoldModelWithCorners n M,
+        AnalyticFoundationSubobligationsPayload flow ∧
+          ricci_flow_data_of_analytic_foundation_package package = flow ∧
+          RicciFlowAnalyticFoundationStatement
+            ThreeManifoldModelWithCorners n M ∧
+          AnalyticFoundationWithEquationBoundaryStatement flow ∧
+          HasCurvatureEvolutionEquations flow) ∧
+      ∃ n : ℕ∞ω,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        AnalyticFoundationWithEquationBoundaryStatement flow ∧
+          HasRicciContractionTheory
+            (curvature_data_of_ricci_flow_data flow) ∧
+          HasScalarCurvatureTheory
+            (curvature_data_of_ricci_flow_data flow) ∧
+          HasMetricEvolutionEquation flow ∧
+          HasRicciTensorEvolutionEquation flow ∧
+          HasScalarCurvatureEvolutionEquation flow ∧
+          HasCurvatureNormEvolutionInequality flow ∧
+          HasCurvatureEvolutionEquations flow := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ payload.analyticFoundationPackageRequirement
+    , payload.ricciFlowAnalyticFoundationMilestone
+    , payload.packageSubobligationsFamily M
+    , payload.evolutionFieldsFamily M
+    ⟩
+
+/--
 For a fixed target, the complete analytic consumer payload exposes the
 analytic package-layer requirement, the Ricci-flow analytic milestone, and the
 normalized full package/evolution payload from the same detailed assembly.
