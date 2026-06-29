@@ -3160,6 +3160,150 @@ theorem poincare_statement_packageLayer_selectedConsumerFields_packageHomeomorph
     package M extinction
 
 /--
+Opened model-witness form of the package-layer topology-recognition endpoint.
+Starting from the same selected topology package, this route names the package
+homeomorphism, a concrete `ThreeSphere` homeomorphism, the induced one-point
+model, the singleton-complement Euclidean model, and the two-puncture Euclidean
+puncture model while retaining the fixed low-homotopy collapse instances.
+-/
+theorem poincare_statement_packageLayer_openedPackageHomeomorphism_onePoint_and_punctureModels_of_universalFiniteExtinctionStatement_and_topologyPackage_requirement
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x y : M) (hyx : y ≠ x)
+    (singletonBasepoint : ({x}ᶜ : Set M))
+    (twoPointBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    let package : ExtinctionTopologyExtractionPackage.{u} :=
+      topologyPackage
+    ∃ consumer : ExtinctionTopologyCompleteConsumerPayload.{u},
+    ∃ selectedTopologyStatement : ExtinctionTopologyExtractionStatement.{u},
+    ∃ selectedExtinctionImpliesSphere :
+      ExtinctionImpliesSphereStatement.{u},
+    ∃ selectedLiftedHomeomorphismDerivation :
+      ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u},
+    ∃ packageHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ homeomorphism : M ≃ₜ ThreeSphere,
+    ∃ _onePointModel :
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ _singletonModel :
+      Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)),
+    ∃ twoPointPuncture : EuclideanSpace ℝ (Fin 3),
+    ∃ _twoPointModel :
+      Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+        ({twoPointPuncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3)))),
+      consumer.topologyPackage = package ∧
+        consumer.topologyPackageRequirement = package ∧
+        consumer.topologyStatement = selectedTopologyStatement ∧
+        selectedTopologyStatement =
+          extinction_topology_extraction_statement_of_topology_package
+            package ∧
+        consumer.extinctionImpliesSphere =
+          selectedExtinctionImpliesSphere ∧
+        selectedExtinctionImpliesSphere =
+          extinction_implies_sphere_of_topology_package package ∧
+        consumer.liftedHomeomorphismDerivation =
+          selectedLiftedHomeomorphismDerivation ∧
+        selectedLiftedHomeomorphismDerivation =
+          topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+            package ∧
+        packageHomeomorphism =
+          homeomorphism_of_topology_package package M extinction ∧
+        packageHomeomorphism = Nonempty.intro homeomorphism ∧
+        ExtinctionTopologyHomeomorphismDerivationStatement
+          M extinction packageHomeomorphism ∧
+        PoincareConjectureStatement.{u} ∧
+        ExtinctionOnePointThreeSpaceRecognitionStatement.{u} ∧
+        ContractibleSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+        Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+        Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M)
+          singletonBasepoint) ∧
+        Subsingleton (FundamentalGroup ({x}ᶜ : Set M)
+          singletonBasepoint) ∧
+        Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M)
+          singletonBasepoint) ∧
+        SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        Subsingleton
+          (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+            twoPointBasepoint) := by
+  let package : ExtinctionTopologyExtractionPackage.{u} :=
+    topologyPackage
+  rcases
+    poincare_statement_packageLayer_selectedConsumerFields_packageHomeomorphism_and_fixedTarget_instances_of_universalFiniteExtinctionStatement_and_topologyPackage_requirement
+      finiteExtinction topologyPackage M extinction x y hyx
+      singletonBasepoint twoPointBasepoint with
+    ⟨ consumer
+    , selectedTopologyStatement
+    , selectedExtinctionImpliesSphere
+    , selectedLiftedHomeomorphismDerivation
+    , packageHomeomorphism
+    , homeomorphism
+    , hTopologyPackage
+    , hTopologyPackageRequirement
+    , hTopologyStatement
+    , hSelectedTopologyStatement
+    , hExtinctionImpliesSphere
+    , hSelectedExtinctionImpliesSphere
+    , hLiftedHomeomorphismDerivation
+    , hSelectedLiftedHomeomorphismDerivation
+    , hPackageHomeomorphism
+    , hConcreteHomeomorphism
+    , derivation
+    , poincareStatement
+    , recognitionStatement
+    , onePointModel
+    , singletonModel
+    , singletonContractible
+    , singletonSimplyConnected
+    , singletonZeroth
+    , singletonPi0
+    , singletonPi1
+    , singletonHomotopyPi1
+    , twoPointModel
+    , twoPointSimplyConnected
+    , twoPointFundamentalGroup
+    ⟩
+  rcases twoPointModel with ⟨twoPointPuncture, twoPointModel⟩
+  exact
+    ⟨ consumer
+    , selectedTopologyStatement
+    , selectedExtinctionImpliesSphere
+    , selectedLiftedHomeomorphismDerivation
+    , packageHomeomorphism
+    , homeomorphism
+    , onePointModel
+    , singletonModel
+    , twoPointPuncture
+    , twoPointModel
+    , hTopologyPackage
+    , hTopologyPackageRequirement
+    , hTopologyStatement
+    , hSelectedTopologyStatement
+    , hExtinctionImpliesSphere
+    , hSelectedExtinctionImpliesSphere
+    , hLiftedHomeomorphismDerivation
+    , hSelectedLiftedHomeomorphismDerivation
+    , hPackageHomeomorphism
+    , hConcreteHomeomorphism
+    , derivation
+    , poincareStatement
+    , recognitionStatement
+    , singletonContractible
+    , singletonSimplyConnected
+    , singletonZeroth
+    , singletonPi0
+    , singletonPi1
+    , singletonHomotopyPi1
+    , twoPointSimplyConnected
+    , twoPointFundamentalGroup
+    ⟩
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
