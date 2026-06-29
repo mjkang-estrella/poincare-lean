@@ -5575,4 +5575,46 @@ theorem finalCertificateNamedPackageLayerRequirements_constructedConsumer_payloa
     , selected.completionCriteria
     ⟩
 
+/--
+For a fixed witness universe object, the constructed named-package consumer
+directly supplies the checked final certificate and the selected completion
+criterion at that witness.  This is the fixed-witness form of the final
+payload collapse above.
+-/
+theorem finalCertificateNamedPackageLayerRequirements_constructedConsumer_checkedCertificate_and_witnessCompletionCriterion
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (witness : Type u) :
+    let selected :=
+      finalCertificateNamedPackageLayerConsumerPayload
+        smoothability finiteExtinction topology
+    selected.publicStatement =
+        poincare_conjecture_of_completion_certificate
+          selected.checkedCertificate ∧
+      selected.publicPayload =
+        ⟨selected.publicStatement, selected.completionCriteria⟩ ∧
+      selected.canonicalPayload =
+        ⟨selected.canonicalTarget, selected.completionCriteria⟩ ∧
+      PoincareCompletionCertificate.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      CompletionCriterionAtUniverse witness := by
+  let selected :=
+    finalCertificateNamedPackageLayerConsumerPayload
+      smoothability finiteExtinction topology
+  exact
+    ⟨ by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , selected.checkedCertificate
+    , ⟨selected.checkedCertificate⟩
+    , selected.completionCriteria witness
+    ⟩
+
 end Poincare
