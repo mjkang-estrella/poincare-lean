@@ -25588,4 +25588,47 @@ theorem extinction_component_classification_after_handle_cancellation_of_topolog
         package M extinction := by
   apply Subsingleton.elim
 
+/--
+The component classification produced by after-decomposition handle
+cancellation carries the discarded-component homeomorphism classification
+needed by the next topology-package field.
+-/
+theorem extinction_discarded_component_homeomorphism_classification_after_handle_cancellation_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    HasExtinctionDiscardedComponentHomeomorphismClassification M extinction
+      (extinction_decomposition_of_topology_package package M extinction)
+      (extinction_component_classification_after_handle_cancellation_of_topology_package
+        package M extinction) :=
+  extinction_discarded_component_homeomorphism_classification_of_component_classification
+    M extinction
+    (extinction_decomposition_of_topology_package package M extinction)
+    (extinction_component_classification_after_handle_cancellation_of_topology_package
+      package M extinction)
+
+/--
+The component classification produced by after-decomposition handle
+cancellation also carries the component-inventory datum, opening the next
+component-inventory topology-package route without requiring a new analytic
+assumption.
+-/
+theorem extinction_component_inventory_after_handle_cancellation_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    HasExtinctionComponentInventory M extinction
+      (extinction_decomposition_of_topology_package package M extinction)
+      (extinction_component_classification_after_handle_cancellation_of_topology_package
+        package M extinction) :=
+  extinction_component_inventory_of_component_classification
+    M extinction
+    (extinction_decomposition_of_topology_package package M extinction)
+    (extinction_component_classification_after_handle_cancellation_of_topology_package
+      package M extinction)
+
 end Poincare
