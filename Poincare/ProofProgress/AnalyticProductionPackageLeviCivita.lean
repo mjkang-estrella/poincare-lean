@@ -5379,4 +5379,114 @@ theorem analyticProductionPackage_finiteExtinctionFacing_maximumPrinciple_regula
     , curvature_evolution_of_analytic_foundation_package package
     ⟩
 
+/--
+A completed analytic-foundation package can also present the
+finite-extinction-facing analytic controls as named witnesses tied to the
+selected package flow.  This endpoint keeps the theorem-shaped analytic
+statement, the selected-flow equality, equation evidence, temporal
+regularization, maximum principle, uniqueness, and terminal curvature-evolution
+fields in one package-level route.
+-/
+theorem analyticProductionPackage_finiteExtinctionFacing_named_control_witnesses_of_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    ∃ flow : RicciFlowData I n M,
+    ∃ statement : RicciFlowAnalyticFoundationStatement I n M,
+    ∃ derivationStatement : AnalyticFoundationDerivationStatement flow,
+    ∃ _equationEvidence :
+      SatisfiesRicciFlowEquation
+        (metric_of_ricci_flow_data flow)
+        (curvature_data_of_ricci_flow_data flow),
+    ∃ _deturckPullback : HasDeTurckPullbackToRicciFlow flow,
+    ∃ _shortTime : HasShortTimeRicciFlowSolution flow,
+    ∃ _maximalInterval : HasRicciFlowMaximalTimeInterval flow,
+    ∃ _continuation : HasRicciFlowContinuationCriterion flow,
+    ∃ _blowup : HasCurvatureBlowUpContinuationCriterion flow,
+    ∃ _extension : HasMaximalSolutionExtension flow,
+    ∃ _regularity : HasRicciFlowParabolicRegularity flow,
+    ∃ _shiEstimates : HasShiDerivativeEstimates flow,
+    ∃ _derivativeBootstrap : HasCurvatureDerivativeBootstrap flow,
+    ∃ _maximumPrinciple : HasHamiltonMaximumPrinciple flow,
+    ∃ _uniqueness : HasRicciFlowUniquenessTheory flow,
+    ∃ _metricEvolution : HasMetricEvolutionEquation flow,
+    ∃ _ricciEvolution : HasRicciTensorEvolutionEquation flow,
+    ∃ _scalarEvolution : HasScalarCurvatureEvolutionEquation flow,
+    ∃ _curvatureNormInequality : HasCurvatureNormEvolutionInequality flow,
+    ∃ _curvatureEvolution : HasCurvatureEvolutionEquations flow,
+        flow = ricci_flow_data_of_analytic_foundation_package package ∧
+        statement = ⟨flow, derivationStatement⟩ := by
+  let flow := ricci_flow_data_of_analytic_foundation_package package
+  rcases analytic_foundation_payload_of_analytic_foundation_package
+      package with
+    ⟨statement, derivationStatement, _subobligations, equationEvidence⟩
+  have statement_eq :
+      statement = ⟨flow, derivationStatement⟩ := by
+    simpa [flow] using
+      analytic_foundation_statement_of_analytic_foundation_package_eq
+        package
+  exact
+    ⟨ flow
+    , statement
+    , derivationStatement
+    , equationEvidence
+    , by
+        simpa [flow] using
+          deturck_pullback_to_ricci_flow_of_analytic_foundation_package
+            package
+    , by
+        simpa [flow] using
+          short_time_existence_of_analytic_foundation_package package
+    , by
+        simpa [flow] using
+          maximal_time_interval_of_analytic_foundation_package package
+    , by
+        simpa [flow] using
+          continuation_criterion_of_analytic_foundation_package package
+    , by
+        simpa [flow] using
+          curvature_blowup_criterion_of_analytic_foundation_package package
+    , by
+        simpa [flow] using
+          maximal_solution_extension_of_analytic_foundation_package package
+    , by
+        simpa [flow] using
+          parabolic_regularity_of_analytic_foundation_package package
+    , by
+        simpa [flow] using
+          shi_derivative_estimates_of_analytic_foundation_package package
+    , by
+        simpa [flow] using
+          curvature_derivative_bootstrap_of_analytic_foundation_package package
+    , by
+        simpa [flow] using
+          hamilton_maximum_principle_of_analytic_foundation_package package
+    , by
+        simpa [flow] using
+          uniqueness_theory_of_analytic_foundation_package package
+    , by
+        simpa [flow] using
+          metric_evolution_equation_of_analytic_foundation_package package
+    , by
+        simpa [flow] using
+          ricci_tensor_evolution_equation_of_analytic_foundation_package
+            package
+    , by
+        simpa [flow] using
+          scalar_curvature_evolution_equation_of_analytic_foundation_package
+            package
+    , by
+        simpa [flow] using
+          curvature_norm_evolution_inequality_of_analytic_foundation_package
+            package
+    , by
+        simpa [flow] using
+          curvature_evolution_of_analytic_foundation_package package
+    , rfl
+    , statement_eq
+    ⟩
+
 end Poincare
