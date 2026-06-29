@@ -5489,4 +5489,99 @@ theorem analyticProductionPackage_finiteExtinctionFacing_named_control_witnesses
     , statement_eq
     ⟩
 
+/--
+The package-selected analytic flow can be consumed with both its named theorem
+statement and the full finite-extinction-facing control tuple.  This endpoint
+keeps the package flow equality, the theorem-shaped analytic statement equality,
+equation evidence, temporal regularization, Hamilton maximum principle,
+uniqueness, and terminal curvature-evolution fields synchronized for downstream
+finite-extinction constructors.
+-/
+theorem analyticProductionPackage_finiteExtinctionFacing_selected_flow_statement_and_control_fields_of_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    ∃ flow : RicciFlowData I n M,
+    ∃ statement : RicciFlowAnalyticFoundationStatement I n M,
+    ∃ derivationStatement : AnalyticFoundationDerivationStatement flow,
+      flow = ricci_flow_data_of_analytic_foundation_package package ∧
+        statement =
+          analytic_foundation_statement_of_analytic_foundation_package
+            package ∧
+        statement = ⟨flow, derivationStatement⟩ ∧
+        SatisfiesRicciFlowEquation
+          (metric_of_ricci_flow_data flow)
+          (curvature_data_of_ricci_flow_data flow) ∧
+        HasDeTurckPullbackToRicciFlow flow ∧
+        HasShortTimeRicciFlowSolution flow ∧
+        HasRicciFlowMaximalTimeInterval flow ∧
+        HasRicciFlowContinuationCriterion flow ∧
+        HasCurvatureBlowUpContinuationCriterion flow ∧
+        HasMaximalSolutionExtension flow ∧
+        HasRicciFlowParabolicRegularity flow ∧
+        HasShiDerivativeEstimates flow ∧
+        HasCurvatureDerivativeBootstrap flow ∧
+        HasHamiltonMaximumPrinciple flow ∧
+        HasRicciFlowUniquenessTheory flow ∧
+        HasMetricEvolutionEquation flow ∧
+        HasRicciTensorEvolutionEquation flow ∧
+        HasScalarCurvatureEvolutionEquation flow ∧
+        HasCurvatureNormEvolutionInequality flow ∧
+        HasCurvatureEvolutionEquations flow := by
+  rcases
+    analyticProductionPackage_finiteExtinctionFacing_named_control_witnesses_of_package
+      package with
+    ⟨ flow
+    , statement
+    , derivationStatement
+    , equationEvidence
+    , deturckPullback
+    , shortTime
+    , maximalInterval
+    , continuation
+    , blowup
+    , extension
+    , regularity
+    , shiEstimates
+    , derivativeBootstrap
+    , maximumPrinciple
+    , uniqueness
+    , metricEvolution
+    , ricciEvolution
+    , scalarEvolution
+    , curvatureNormInequality
+    , curvatureEvolution
+    , hFlow
+    , hStatement
+    ⟩
+  exact
+    ⟨ flow
+    , statement
+    , derivationStatement
+    , hFlow
+    , analytic_foundation_statement_of_analytic_foundation_package_eq
+        package
+    , hStatement
+    , equationEvidence
+    , deturckPullback
+    , shortTime
+    , maximalInterval
+    , continuation
+    , blowup
+    , extension
+    , regularity
+    , shiEstimates
+    , derivativeBootstrap
+    , maximumPrinciple
+    , uniqueness
+    , metricEvolution
+    , ricciEvolution
+    , scalarEvolution
+    , curvatureNormInequality
+    , curvatureEvolution
+    ⟩
+
 end Poincare
