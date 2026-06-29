@@ -6038,4 +6038,161 @@ theorem analyticProductionPackage_finiteExtinctionFacing_named_certificate_paylo
     , hCurvatureEvolution
     ⟩
 
+/--
+Package-plus-boundary finite-extinction analytic certificate: a completed
+analytic package and a concrete equation-boundary package expose the selected
+certificate flow/statement, named derivation/sub-obligation/equation fields,
+temporal and regularity controls, maximum-principle and uniqueness controls,
+curvature-evolution controls, and the pointwise Ricci-flow equation boundary
+from one synchronized endpoint.
+-/
+theorem analyticProductionPackage_finiteExtinctionFacing_named_certificate_and_boundary_payload_fields_of_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M)
+    (boundary : RicciFlowEquationBoundaryPackage
+      (ricci_flow_data_of_analytic_foundation_package package)) :
+    ∃ certificate : AnalyticFiniteExtinctionControlCertificate I n M,
+    ∃ flow : RicciFlowData I n M,
+    ∃ statement : RicciFlowAnalyticFoundationStatement I n M,
+    ∃ derivationStatement :
+      AnalyticFoundationDerivationStatement certificate.flow,
+    ∃ subobligations :
+      AnalyticFoundationSubobligationsPayload certificate.flow,
+    ∃ equationEvidence :
+      SatisfiesRicciFlowEquation
+        (metric_of_ricci_flow_data certificate.flow)
+        (curvature_data_of_ricci_flow_data certificate.flow),
+      flow = ricci_flow_data_of_analytic_foundation_package package ∧
+        statement =
+          analytic_foundation_statement_of_analytic_foundation_package
+            package ∧
+        certificate.flow = flow ∧
+        certificate.statement = statement ∧
+        certificate.derivationStatement = derivationStatement ∧
+        certificate.subobligations = subobligations ∧
+        certificate.equationEvidence = equationEvidence ∧
+        certificate.statement =
+          ⟨certificate.flow, derivationStatement⟩ ∧
+        ricci_flow_data_of_analytic_foundation_statement
+            certificate.statement =
+          ⟨certificate.flow, derivationStatement⟩ ∧
+        RicciFlowEquationBoundaryStatement
+          (ricci_flow_data_of_analytic_foundation_package package) ∧
+        IsMetricTimeDerivativeOf
+          (metric_of_ricci_flow_data
+            (ricci_flow_data_of_analytic_foundation_package package))
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary)) ∧
+        (∀ t : ℝ,
+          metric_time_derivative_at_time_of_metric_derivative_field
+            (metric_time_derivative_field_of_metric_derivative_data
+              (metric_derivative_data_of_equation_boundary_package boundary))
+              t =
+            ricci_flow_rhs_tensor
+              (curvature_data_of_ricci_flow_data
+                (ricci_flow_data_of_analytic_foundation_package package)) t) ∧
+        (∀ (t : ℝ) (x : M) (v w : TangentSpace I x),
+          metric_time_derivative_at_time_of_metric_derivative_field
+            (metric_time_derivative_field_of_metric_derivative_data
+              (metric_derivative_data_of_equation_boundary_package boundary))
+              t x v w =
+            ricci_flow_rhs_tensor
+              (curvature_data_of_ricci_flow_data
+                (ricci_flow_data_of_analytic_foundation_package package))
+              t x v w) ∧
+        HasDeTurckPullbackToRicciFlow certificate.flow ∧
+        HasShortTimeRicciFlowSolution certificate.flow ∧
+        HasRicciFlowMaximalTimeInterval certificate.flow ∧
+        HasRicciFlowContinuationCriterion certificate.flow ∧
+        HasCurvatureBlowUpContinuationCriterion certificate.flow ∧
+        HasMaximalSolutionExtension certificate.flow ∧
+        HasRicciFlowParabolicRegularity certificate.flow ∧
+        HasShiDerivativeEstimates certificate.flow ∧
+        HasCurvatureDerivativeBootstrap certificate.flow ∧
+        HasHamiltonMaximumPrinciple certificate.flow ∧
+        HasRicciFlowUniquenessTheory certificate.flow ∧
+        HasMetricEvolutionEquation certificate.flow ∧
+        HasRicciTensorEvolutionEquation certificate.flow ∧
+        HasScalarCurvatureEvolutionEquation certificate.flow ∧
+        HasCurvatureNormEvolutionInequality certificate.flow ∧
+        HasCurvatureEvolutionEquations certificate.flow := by
+  rcases
+    analyticProductionPackage_finiteExtinctionFacing_named_certificate_payload_fields_of_package
+      package with
+    ⟨ certificate
+    , flow
+    , statement
+    , derivationStatement
+    , subobligations
+    , equationEvidence
+    , hFlow
+    , hStatement
+    , hCertificateFlow
+    , hCertificateStatement
+    , hDerivationStatement
+    , hSubobligations
+    , hEquationEvidence
+    , hCertificateStatementSelected
+    , hStatementFlow
+    , hDeTurck
+    , hShortTime
+    , hMaximalInterval
+    , hContinuation
+    , hBlowup
+    , hExtension
+    , hRegularity
+    , hShiEstimates
+    , hDerivativeBootstrap
+    , hMaximumPrinciple
+    , hUniqueness
+    , hMetricEvolution
+    , hRicciEvolution
+    , hScalarEvolution
+    , hCurvatureNormInequality
+    , hCurvatureEvolution
+    ⟩
+  exact
+    ⟨ certificate
+    , flow
+    , statement
+    , derivationStatement
+    , subobligations
+    , equationEvidence
+    , hFlow
+    , hStatement
+    , hCertificateFlow
+    , hCertificateStatement
+    , hDerivationStatement
+    , hSubobligations
+    , hEquationEvidence
+    , hCertificateStatementSelected
+    , hStatementFlow
+    , ⟨boundary⟩
+    , metric_time_derivative_identification_of_equation_boundary_package
+        boundary
+    , equation_at_time_of_equation_boundary_package_projection boundary
+    , equation_at_time_apply_of_equation_boundary_package_projection
+        boundary
+    , hDeTurck
+    , hShortTime
+    , hMaximalInterval
+    , hContinuation
+    , hBlowup
+    , hExtension
+    , hRegularity
+    , hShiEstimates
+    , hDerivativeBootstrap
+    , hMaximumPrinciple
+    , hUniqueness
+    , hMetricEvolution
+    , hRicciEvolution
+    , hScalarEvolution
+    , hCurvatureNormInequality
+    , hCurvatureEvolution
+    ⟩
+
 end Poincare
