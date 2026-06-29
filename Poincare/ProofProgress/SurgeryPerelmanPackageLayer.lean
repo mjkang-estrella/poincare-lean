@@ -19546,6 +19546,22 @@ theorem no_surgeryPerelman_completeConsumerPayload_at_of_current_interface
       payload M
 
 /--
+The complete surgery/Perelman consumer payload itself is refuted at any target
+in the dependency-package class, before wrapping it in `Nonempty`: a concrete
+consumer still recovers the finite-extinction package-layer requirement ruled
+out by the current singularity-model blowup-classification interface.
+-/
+theorem no_surgeryPerelman_completeConsumerPayload_direct_at_of_current_interface
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ¬ SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u} := by
+  intro payload
+  exact
+    surgeryPerelman_completeConsumerPayload_false_at_of_current_interface
+      ⟨payload⟩ M
+
+/--
 At any target in the dependency-package class, the current local interface also
 refutes a completed aggregate dependency package: its stored surgery component
 would provide exactly the finite-extinction package-layer target ruled out
