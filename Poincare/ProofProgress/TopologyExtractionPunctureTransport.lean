@@ -1852,6 +1852,86 @@ theorem twoPointComplement_all_basepoint_lowHomotopy_baseclass_collapse_payload_
     ⟩
 
 /--
+The fixed-basepoint low-homotopy/baseclass collapse fields for a two-puncture
+complement.  This local payload type is used to state mixed selected/supplied
+basepoint endpoints without duplicating the full field list at every consumer.
+-/
+def TwoPointComplementLowHomotopyBaseclassCollapseFields
+    (M : Type u) [TopologicalSpace M] {x y : M}
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) : Prop :=
+  ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+    Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+    Subsingleton (ZerothHomotopy (({x} ∪ {y})ᶜ : Set M)) ∧
+    Subsingleton
+      (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+    Subsingleton
+      (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+    Subsingleton
+      (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+    (∀ a b : (({x} ∪ {y})ᶜ : Set M),
+      ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+    (∀ a b :
+      HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+      a = b) ∧
+    (∀ a b :
+      FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+      a = b) ∧
+    (∀ a b :
+      HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+      a = b) ∧
+    (∃ baseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+      ∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+        homotopyClass = baseClass) ∧
+    (∃ baseClass :
+      HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+      ∀ homotopyClass :
+        HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+        homotopyClass = baseClass) ∧
+    (∃ baseClass :
+      FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+      ∀ fundamentalClass :
+        FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+        fundamentalClass = baseClass) ∧
+    (∃ baseClass :
+      HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+      ∀ homotopyClass :
+        HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+        homotopyClass = baseClass) ∧
+    (∀ a b : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path a b)) ∧
+    (∀ point : (({x} ∪ {y})ᶜ : Set M),
+      pathComponent point = Set.univ)
+
+/--
+Project-target sphere recognition supplies a selected two-puncture basepoint,
+the reusable all-basepoint collapse family, and both the selected-basepoint and
+externally supplied-basepoint specializations.  This is the mixed endpoint for
+consumers that must retain a canonical selected basepoint while also using a
+basepoint they already carry.
+-/
+theorem twoPointComplement_selected_and_supplied_basepoint_lowHomotopy_baseclass_collapse_payload_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) {x y : M} (hyx : y ≠ x)
+    (suppliedBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ selectedBasepoint : (({x} ∪ {y})ᶜ : Set M),
+      (∀ laterBasepoint : (({x} ∪ {y})ᶜ : Set M),
+        TwoPointComplementLowHomotopyBaseclassCollapseFields
+          M laterBasepoint) ∧
+        TwoPointComplementLowHomotopyBaseclassCollapseFields
+          M suppliedBasepoint ∧
+        TwoPointComplementLowHomotopyBaseclassCollapseFields
+          M selectedBasepoint := by
+  rcases
+    twoPointComplement_all_basepoint_lowHomotopy_baseclass_collapse_payload_with_basepoint_of_homeomorph_to_threeSphere
+      h hyx with
+    ⟨selectedBasepoint, allBasepoint, selectedPayload⟩
+  exact
+    ⟨ selectedBasepoint
+    , allBasepoint
+    , allBasepoint suppliedBasepoint
+    , selectedPayload
+    ⟩
+
+/--
 Recognizing a space as the one-point compactification of `R^3` supplies the
 core complement chart, connectedness, and low-dimensional homotopy-collapse
 payloads for both one and two punctures.
