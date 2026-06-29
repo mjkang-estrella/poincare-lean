@@ -2729,4 +2729,208 @@ theorem recognition_complete_complement_payload_and_twoPoint_allBasepoint_family
         h x hyx singleBasepoint twoBasepoint
     ⟩
 
+/--
+The project-target recognition route can specialize its reusable two-puncture
+all-basepoint family at an externally supplied basepoint while retaining the
+selected singleton and two-puncture basepoints used by the complete complement
+payload.  This is the mixed-basepoint endpoint needed by consumers that already
+carry a two-puncture basepoint but still need the selected recognition package.
+-/
+theorem recognition_complete_complement_payload_and_twoPoint_suppliedBasepoint_payload_with_selected_basepoints_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere))
+    (x : M) {y : M} (hyx : y ≠ x)
+    (suppliedBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ singleBasepoint : ({x}ᶜ : Set M),
+      ∃ selectedTwoBasepoint : (({x} ∪ {y})ᶜ : Set M),
+        ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+          Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+          Subsingleton (ZerothHomotopy (({x} ∪ {y})ᶜ : Set M)) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M)
+              suppliedBasepoint) ∧
+          Subsingleton
+            (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+              suppliedBasepoint) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M)
+              suppliedBasepoint) ∧
+          (∀ a b : (({x} ∪ {y})ᶜ : Set M),
+            ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+          (∀ a b :
+            HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M)
+              suppliedBasepoint,
+            a = b) ∧
+          (∀ a b :
+            FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+              suppliedBasepoint,
+            a = b) ∧
+          (∀ a b :
+            HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M)
+              suppliedBasepoint,
+            a = b) ∧
+          (∃ baseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+            ∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+              homotopyClass = baseClass) ∧
+          (∃ baseClass :
+            HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M)
+              suppliedBasepoint,
+            ∀ homotopyClass :
+              HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M)
+                suppliedBasepoint,
+              homotopyClass = baseClass) ∧
+          (∃ baseClass :
+            FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+              suppliedBasepoint,
+            ∀ fundamentalClass :
+              FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+                suppliedBasepoint,
+              fundamentalClass = baseClass) ∧
+          (∃ baseClass :
+            HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M)
+              suppliedBasepoint,
+            ∀ homotopyClass :
+              HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M)
+                suppliedBasepoint,
+              homotopyClass = baseClass) ∧
+          (∀ a b : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path a b)) ∧
+          ((∀ point : (({x} ∪ {y})ᶜ : Set M),
+            pathComponent point = Set.univ)) ∧
+          Nonempty (M ≃ₜ ThreeSphere) ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          (ContractibleSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M)) ∧
+          (Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+            (∃ puncture : EuclideanSpace ℝ (Fin 3),
+              Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+                ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            Nonempty ({x}ᶜ : Set M) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint) ∧
+            ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+            Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M)
+                selectedTwoBasepoint) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M)
+                selectedTwoBasepoint)) ∧
+          ((∀ a b : ({x}ᶜ : Set M),
+            ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+            (∀ a b : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint,
+              a = b) ∧
+            (∀ a b : FundamentalGroup ({x}ᶜ : Set M) singleBasepoint,
+              a = b) ∧
+            (∀ a b : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint,
+              a = b) ∧
+            (∀ a b : (({x} ∪ {y})ᶜ : Set M),
+              ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+            (∀ a b :
+              HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M)
+                selectedTwoBasepoint,
+              a = b) ∧
+            (∀ a b :
+              FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+                selectedTwoBasepoint,
+              a = b) ∧
+            (∀ a b :
+              HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M)
+                selectedTwoBasepoint,
+              a = b)) ∧
+          ((∃ baseClass : ZerothHomotopy ({x}ᶜ : Set M),
+            ∀ homotopyClass : ZerothHomotopy ({x}ᶜ : Set M),
+              homotopyClass = baseClass) ∧
+            (∃ baseClass :
+              HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint,
+              ∀ homotopyClass :
+                HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint,
+                homotopyClass = baseClass) ∧
+            (∃ baseClass :
+              FundamentalGroup ({x}ᶜ : Set M) singleBasepoint,
+              ∀ fundamentalClass :
+                FundamentalGroup ({x}ᶜ : Set M) singleBasepoint,
+                fundamentalClass = baseClass) ∧
+            (∃ baseClass :
+              HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint,
+              ∀ homotopyClass :
+                HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint,
+                homotopyClass = baseClass) ∧
+            (∃ baseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+              ∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+                homotopyClass = baseClass) ∧
+            (∃ baseClass :
+              HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M)
+                selectedTwoBasepoint,
+              ∀ homotopyClass :
+                HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M)
+                  selectedTwoBasepoint,
+                homotopyClass = baseClass) ∧
+            (∃ baseClass :
+              FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+                selectedTwoBasepoint,
+              ∀ fundamentalClass :
+                FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+                  selectedTwoBasepoint,
+                fundamentalClass = baseClass) ∧
+            (∃ baseClass :
+              HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M)
+                selectedTwoBasepoint,
+              ∀ homotopyClass :
+                HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M)
+                  selectedTwoBasepoint,
+                homotopyClass = baseClass)) ∧
+          ((∀ a b : ({x}ᶜ : Set M), Nonempty (Path a b)) ∧
+            (∀ basepoint : ({x}ᶜ : Set M),
+              pathComponent basepoint = Set.univ) ∧
+            (∀ a b : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path a b)) ∧
+            (∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+              pathComponent basepoint = Set.univ)) := by
+  rcases
+    recognition_complete_complement_payload_and_twoPoint_allBasepoint_family_with_basepoints_of_homeomorph_to_threeSphere
+      h x hyx with
+    ⟨singleBasepoint, selectedTwoBasepoint, allBasepoint, completePayload⟩
+  rcases allBasepoint suppliedBasepoint with
+    ⟨ connected
+    , nonempty
+    , zerothSubsingleton
+    , piZeroSubsingleton
+    , fundamentalGroupSubsingleton
+    , piOneSubsingleton
+    , zerothEq
+    , piZeroEq
+    , fundamentalGroupEq
+    , piOneEq
+    , zerothBaseclass
+    , piZeroBaseclass
+    , fundamentalGroupBaseclass
+    , piOneBaseclass
+    , pathNonempty
+    , pathComponentEqUniv
+    ⟩
+  exact
+    ⟨ singleBasepoint
+    , selectedTwoBasepoint
+    , connected
+    , nonempty
+    , zerothSubsingleton
+    , piZeroSubsingleton
+    , fundamentalGroupSubsingleton
+    , piOneSubsingleton
+    , zerothEq
+    , piZeroEq
+    , fundamentalGroupEq
+    , piOneEq
+    , zerothBaseclass
+    , piZeroBaseclass
+    , fundamentalGroupBaseclass
+    , piOneBaseclass
+    , pathNonempty
+    , pathComponentEqUniv
+    , completePayload
+    ⟩
+
 end Poincare
