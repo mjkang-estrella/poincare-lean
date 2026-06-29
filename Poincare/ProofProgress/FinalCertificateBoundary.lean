@@ -2822,6 +2822,59 @@ theorem finalCertificateNamedPackageLayerConsumerPayload_dependency_objects_and_
     ⟩
 
 /--
+The complete named-package consumer payload ties the remaining-dependency
+certificate route to the final checked endpoint: the checked certificate is the
+same proposition-level endpoint as the legacy dependency-route certificate, and
+the public Poincare statement is the certificate projection from that checked
+certificate.  The same witness also carries the canonical target and both
+completion-criterion payloads.
+-/
+theorem finalCertificateNamedPackageLayerConsumerPayload_dependency_route_and_certificate_projected_endpoint
+    (payload : FinalCertificateNamedPackageLayerConsumerPayload.{u}) :
+    ∃ inputs : FinalCertificateMinimalPackageInputs.{u},
+    ∃ _assemblyInputs : FinalAssemblyPackageBoundaryInputs.{u},
+    ∃ dependencies : RemainingDependencyPackage.{u},
+      FinalCertificateTopologyAssemblyPayload inputs payload.topology ∧
+        payload.checkedCertificate =
+          completion_certificate_of_remaining_dependency_package
+            dependencies ∧
+        PoincareCompletionCertificate.{u} ∧
+        PoincareConjectureStatement.{u} ∧
+        poincare_conjecture_of_completion_certificate
+            payload.checkedCertificate =
+          payload.publicStatement ∧
+        canonicalCompletionTarget.{u} ∧
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+    { smoothability := payload.smoothability
+      finiteExtinction := payload.finiteExtinction }
+  let assemblyInputs : FinalAssemblyPackageBoundaryInputs.{u} :=
+    { smoothability := payload.smoothability
+      finiteExtinction := payload.finiteExtinction
+      topology := payload.topology }
+  let dependencies : RemainingDependencyPackage.{u} :=
+    remainingDependencyPackage_of_finalAssemblyPackageBoundaryInputs
+      assemblyInputs
+  exact
+    ⟨ inputs
+    , assemblyInputs
+    , dependencies
+    , payload.topologyAssemblyPayload
+    , by apply Subsingleton.elim
+    , payload.checkedCertificate
+    , poincare_conjecture_of_completion_certificate payload.checkedCertificate
+    , by apply Subsingleton.elim
+    , payload.canonicalTarget
+    , payload.publicPayload
+    , payload.canonicalPayload
+    , payload.completionCriteria
+    ⟩
+
+/--
 The inhabited complete named-package consumer payload exposes all three
 package-layer requirements, the inhabited topology assembly payload, and the
 checked final endpoint data carried by the selected payload.
