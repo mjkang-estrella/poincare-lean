@@ -3374,4 +3374,75 @@ theorem groundedUniversalFiniteExtinction_selected_completeConsumerPayload_remai
       , derivation'
       ⟩
 
+/--
+Grounded universal finite extinction selects the complete finite-extinction
+consumer payload and pins the final-certificate route fields without reopening
+the fixed-target derivation witnesses.  This endpoint keeps the selected
+universal statement, package-layer requirement, Ricci-flow/Perelman/
+finite-extinction milestones, remaining-dependency package, checked
+certificate constructor, public Poincare statement, and all completion
+criteria synchronized for final-certificate assembly.
+-/
+theorem groundedUniversalFiniteExtinction_selected_completeConsumerPayload_remaining_certificate_endpoint_fields_of_grounded
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    Nonempty GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u} ∧
+      ∃ selected : GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u},
+      ∃ remaining : RemainingDependencyPackage.{u},
+      ∃ certificate : PoincareCompletionCertificate.{u},
+        selected.universalStatement =
+            universalFiniteExtinctionStatement_of_grounded grounded ∧
+          selected.finiteExtinctionPackageRequirement =
+            finiteExtinctionPackage_requirement_of_grounded grounded ∧
+          selected.ricciFlowWithSurgeryMilestone =
+            ricciFlowWithSurgery_milestone_requirement_of_grounded
+              grounded ∧
+          selected.perelmanSingularityControlMilestone =
+            perelmanSingularityControl_milestone_requirement_of_grounded
+              grounded ∧
+          selected.finiteExtinctionMilestone =
+            finiteExtinction_milestone_requirement_of_grounded grounded ∧
+          remaining.smoothability = smoothability ∧
+          remaining.surgery = selected.finiteExtinctionPackageRequirement ∧
+          remaining.topology = topologyPackage ∧
+          certificate =
+            completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+              remaining selected.universalStatement ∧
+          PoincareConjectureStatement.{u} ∧
+          PoincareCompletionCertificate.{u} ∧
+          (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let constructed :
+      Nonempty GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u} :=
+    groundedUniversalFiniteExtinction_completeConsumerPayload_of_grounded
+      grounded
+  rcases constructed with ⟨selected⟩
+  let remaining : RemainingDependencyPackage.{u} :=
+    { smoothability := smoothability
+      surgery := selected.finiteExtinctionPackageRequirement
+      topology := topologyPackage }
+  let certificate : PoincareCompletionCertificate.{u} :=
+    completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+      remaining selected.universalStatement
+  refine ⟨⟨selected⟩, selected, remaining, certificate, ?_⟩
+  exact
+    ⟨ by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , poincare_conjecture_of_completion_certificate certificate
+    , certificate
+    , fun witness => completion_criterion_of_completion_certificate
+        witness certificate
+    ⟩
+
 end Poincare
