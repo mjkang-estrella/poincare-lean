@@ -459,4 +459,125 @@ theorem threeSphere_twoPointComplement_completeLowHomotopyUnique_and_collapse_pa
     , pathComponentEqUniv
     ⟩
 
+/--
+All basepoints of the standard three-sphere two-puncture complement carry the
+complete low-homotopy collapse package.  This exposes connectedness,
+nonemptiness, subsingleton and uniqueness data for zeroth homotopy, `π₀`, the
+fundamental group, and `π₁`, together with named base classes and path-collapse
+fields at every supplied basepoint.
+-/
+theorem threeSphere_twoPointComplement_all_basepoint_completeLowHomotopy_baseclass_collapse_payload
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    ∀ basepoint : (({a} ∪ {b})ᶜ : Set ThreeSphere),
+      Nonempty
+        (ThreeSphereTwoPointComplementCompleteLowHomotopyUniquePayload
+          hab basepoint) ∧
+      ConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+      Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+      Subsingleton
+        (ZerothHomotopy (({a} ∪ {b})ᶜ : Set ThreeSphere)) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 0 (({a} ∪ {b})ᶜ : Set ThreeSphere)
+          basepoint) ∧
+      Subsingleton
+        (FundamentalGroup (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 1 (({a} ∪ {b})ᶜ : Set ThreeSphere)
+          basepoint) ∧
+      Nonempty
+        (Unique (ZerothHomotopy (({a} ∪ {b})ᶜ : Set ThreeSphere))) ∧
+      Nonempty
+        (Unique
+          (HomotopyGroup.Pi 0 (({a} ∪ {b})ᶜ : Set ThreeSphere)
+            basepoint)) ∧
+      Nonempty
+        (Unique
+          (FundamentalGroup (({a} ∪ {b})ᶜ : Set ThreeSphere)
+            basepoint)) ∧
+      Nonempty
+        (Unique
+          (HomotopyGroup.Pi 1 (({a} ∪ {b})ᶜ : Set ThreeSphere)
+            basepoint)) ∧
+      (∀ x y : (({a} ∪ {b})ᶜ : Set ThreeSphere),
+        ZerothHomotopy.mk x = ZerothHomotopy.mk y) ∧
+      (∀ g h :
+        HomotopyGroup.Pi 0 (({a} ∪ {b})ᶜ : Set ThreeSphere)
+          basepoint,
+        g = h) ∧
+      (∀ g h : FundamentalGroup (({a} ∪ {b})ᶜ : Set ThreeSphere)
+          basepoint,
+        g = h) ∧
+      (∀ g h :
+        HomotopyGroup.Pi 1 (({a} ∪ {b})ᶜ : Set ThreeSphere)
+          basepoint,
+        g = h) ∧
+      (∃ baseClass :
+        ZerothHomotopy (({a} ∪ {b})ᶜ : Set ThreeSphere),
+        ∀ homotopyClass :
+          ZerothHomotopy (({a} ∪ {b})ᶜ : Set ThreeSphere),
+          homotopyClass = baseClass) ∧
+      (∃ baseClass :
+        HomotopyGroup.Pi 0 (({a} ∪ {b})ᶜ : Set ThreeSphere)
+          basepoint,
+        ∀ homotopyClass :
+          HomotopyGroup.Pi 0 (({a} ∪ {b})ᶜ : Set ThreeSphere)
+            basepoint,
+          homotopyClass = baseClass) ∧
+      (∃ baseClass :
+        FundamentalGroup (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint,
+        ∀ fundamentalClass :
+          FundamentalGroup (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint,
+          fundamentalClass = baseClass) ∧
+      (∃ baseClass :
+        HomotopyGroup.Pi 1 (({a} ∪ {b})ᶜ : Set ThreeSphere)
+          basepoint,
+        ∀ homotopyClass :
+          HomotopyGroup.Pi 1 (({a} ∪ {b})ᶜ : Set ThreeSphere)
+            basepoint,
+          homotopyClass = baseClass) ∧
+      (∀ x y : (({a} ∪ {b})ᶜ : Set ThreeSphere), Nonempty (Path x y)) ∧
+      (∀ x : (({a} ∪ {b})ᶜ : Set ThreeSphere),
+        pathComponent x = Set.univ) := by
+  intro basepoint
+  let payload :=
+    threeSphere_twoPointComplement_completeLowHomotopyUnique_payload
+      hab basepoint
+  letI : Subsingleton
+      (ZerothHomotopy (({a} ∪ {b})ᶜ : Set ThreeSphere)) :=
+    threeSphere_twoPointComplement_zerothHomotopy_subsingleton hab
+  letI : Subsingleton
+      (HomotopyGroup.Pi 0 (({a} ∪ {b})ᶜ : Set ThreeSphere)
+        basepoint) :=
+    threeSphere_twoPointComplement_piZero_subsingleton hab basepoint
+  letI : Subsingleton
+      (FundamentalGroup (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint) :=
+    threeSphere_twoPointComplement_fundamentalGroup_subsingleton hab basepoint
+  letI : Subsingleton
+      (HomotopyGroup.Pi 1 (({a} ∪ {b})ᶜ : Set ThreeSphere)
+        basepoint) :=
+    threeSphere_twoPointComplement_piOne_subsingleton hab basepoint
+  exact
+    ⟨ ⟨payload⟩
+    , payload.connected
+    , payload.nonempty
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , ⟨payload.zerothUnique⟩
+    , ⟨payload.piZeroUnique⟩
+    , ⟨payload.fundamentalGroupUnique⟩
+    , ⟨payload.piOneUnique⟩
+    , threeSphere_twoPointComplement_zerothHomotopy_mk_eq hab
+    , fun g h => Subsingleton.elim g h
+    , fun g h => Subsingleton.elim g h
+    , fun g h => Subsingleton.elim g h
+    , threeSphere_twoPointComplement_zerothHomotopy_exists_unique hab
+    , threeSphere_twoPointComplement_piZero_exists_unique hab basepoint
+    , threeSphere_twoPointComplement_fundamentalGroup_exists_unique hab basepoint
+    , threeSphere_twoPointComplement_piOne_exists_unique hab basepoint
+    , payload.pathNonempty
+    , payload.pathComponentEqUniv
+    ⟩
+
 end Poincare
