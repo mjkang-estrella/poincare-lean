@@ -2449,6 +2449,108 @@ theorem groundedRecognitionPrefixPayload_topologyAssemblyPayload_selected_endpoi
     ⟩
 
 /--
+The selected grounded recognition-prefix endpoint retains the explicit
+project-level and canonical payload routes used to build its fields.  This
+keeps the topology input, topology extraction statement, public payload,
+canonical payload, checked certificate, and completion-criterion family tied to
+the same selected grounded payload instead of forcing final-collapse consumers
+to reconstruct the project and canonical routes separately.
+-/
+theorem groundedRecognitionPrefixPayload_selected_projectCanonical_route_and_completionCriteria
+    (dependencies : RemainingDependencyPackage.{u})
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (recognitionPrefix :
+      ExtinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage.{u}) :
+    ∃ groundedPayload :
+      GroundedRecognitionPrefixFinalCertificatePayload
+        dependencies grounded recognitionPrefix,
+    ∃ topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage,
+    ∃ topologyStatement : ExtinctionTopologyExtractionStatement.{u},
+    ∃ projectPayload :
+      PoincareConjectureStatement.{u} ∧
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        PoincareCompletionCertificate.{u},
+    ∃ canonicalPayload :
+      canonicalCompletionTarget.{u} ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        PoincareCompletionCertificate.{u},
+      topology =
+          topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+            recognitionPrefix ∧
+        topologyStatement =
+          extinction_topology_extraction_statement_of_topology_package
+            topology ∧
+        groundedPayload.topologyPackage = topology ∧
+        groundedPayload.topologyStatement = topologyStatement ∧
+        projectPayload =
+          project_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+            dependencies grounded topologyStatement ∧
+        canonicalPayload =
+          canonical_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+            dependencies grounded topologyStatement ∧
+        projectPayload.1 = groundedPayload.publicStatement ∧
+        projectPayload.2.1 = groundedPayload.publicPayload ∧
+        projectPayload.2.2 = groundedPayload.checkedCertificate ∧
+        canonicalPayload.1 = groundedPayload.canonicalTarget ∧
+        canonicalPayload.2.1 = groundedPayload.canonicalPayload ∧
+        canonicalPayload.2.2 = groundedPayload.checkedCertificate ∧
+        groundedPayload.completionCriteria =
+          (fun witness : Type u =>
+            canonicalPayload.2.1.choose_spec witness) ∧
+        PoincareConjectureStatement.{u} ∧
+        PoincareCompletionCertificate.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let topology :=
+    topologyPackage_requirement_of_simplyConnectedExtinctionRecognitionPrefixPackage
+      recognitionPrefix
+  let topologyStatement : ExtinctionTopologyExtractionStatement.{u} :=
+    extinction_topology_extraction_statement_of_topology_package topology
+  let projectPayload :=
+    project_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+      dependencies grounded topologyStatement
+  let canonicalPayload :=
+    canonical_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+      dependencies grounded topologyStatement
+  let groundedPayload :=
+    groundedRecognitionPrefixFinalCertificatePayload
+      dependencies grounded recognitionPrefix
+  exact
+    ⟨ groundedPayload
+    , topology
+    , topologyStatement
+    , projectPayload
+    , canonicalPayload
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , groundedPayload.publicStatement
+    , groundedPayload.checkedCertificate
+    , groundedPayload.canonicalTarget
+    , groundedPayload.publicPayload
+    , groundedPayload.canonicalPayload
+    , groundedPayload.completionCriteria
+    ⟩
+
+/--
 Consumer-facing collapse of the joined grounded recognition-prefix and topology
 assembly route: the same inputs produce the public Poincare statement,
 inhabited checked certificate, and all completion criteria.
