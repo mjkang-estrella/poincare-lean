@@ -477,6 +477,62 @@ theorem project_payload_and_final_certificate_of_remainingDependencyPackage_grou
   apply Subsingleton.elim
 
 /--
+Grounded universal finite extinction and theorem-shaped topology extraction
+expose both final payload layers at once: the public Poincare
+statement/payload, the canonical completion target/payload, and the checked
+certificate built from the direct grounded certificate constructor.
+-/
+theorem project_and_canonical_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+    (dependencies : RemainingDependencyPackage.{u})
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      PoincareCompletionCertificate.{u} := by
+  let projectPayload :=
+    project_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+      dependencies grounded topologyStatement
+  let canonicalPayload :=
+    canonical_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+      dependencies grounded topologyStatement
+  exact
+    ⟨ projectPayload.1
+    , projectPayload.2.1
+    , canonicalPayload.1
+    , canonicalPayload.2.1
+    , projectPayload.2.2
+    ⟩
+
+/--
+The bundled grounded final payload is exactly the tuple assembled from the
+grounded project route, the grounded canonical route, and the checked
+certificate carried by the project route.
+-/
+theorem project_and_canonical_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement_eq
+    (dependencies : RemainingDependencyPackage.{u})
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u}) :
+    project_and_canonical_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+        dependencies grounded topologyStatement =
+      (let projectPayload :=
+        project_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+          dependencies grounded topologyStatement
+      let canonicalPayload :=
+        canonical_payload_and_final_certificate_of_remainingDependencyPackage_groundedUniversalFiniteExtinctionStatement_and_topologyExtractionStatement
+          dependencies grounded topologyStatement
+      ⟨ projectPayload.1
+      , projectPayload.2.1
+      , canonicalPayload.1
+      , canonicalPayload.2.1
+      , projectPayload.2.2
+      ⟩) := by
+  apply Subsingleton.elim
+
+/--
 Grounded finite extinction plus theorem-shaped topology extraction opens both
 the project and canonical completion payloads at a fixed witness universe
 object.  The checked certificate is the direct grounded certificate, while the
