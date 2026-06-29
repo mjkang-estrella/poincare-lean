@@ -1168,6 +1168,51 @@ theorem surgeryPerelman_requirements_selectedFlowExtinction_and_combinedPayloadF
     ⟩
 
 /--
+An inhabited complete surgery/Perelman consumer payload can be opened at a
+fixed target to recover the concrete combined surgery/Perelman/extinction
+payload object, the selected flow tied to the same finite-extinction package,
+and all construction, Perelman-control, scale, blowup, statement, and
+finite-extinction fields carried by that object.
+-/
+theorem surgeryPerelman_completeConsumerPayload_fixedTarget_combinedPayload_selectedFlow_fields
+    (payload :
+      Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ n : ℕ∞ω,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    ∃ _combinedPayload :
+      FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package,
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      flow = ricci_flow_data_of_surgery_package package ∧
+        RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+        PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+        Nonempty (SurgeryScaleFunctionPayload flow) ∧
+        HasSingularityModelBlowupClassification flow ∧
+        FiniteExtinctionStatement n M ∧
+        FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases payload with ⟨payload⟩
+  rcases payload.combinedPayloadAndSelectedFlowFamily M with
+    ⟨n, package, combinedPayload, flow, hFlow, constructionPackage,
+      perelmanPackage, scalePayload, blowupClassification,
+      finiteExtinctionStatement, finiteExtinctionWitness⟩
+  exact
+    ⟨ n
+    , package
+    , combinedPayload
+    , flow
+    , hFlow
+    , constructionPackage
+    , perelmanPackage
+    , scalePayload
+    , blowupClassification
+    , finiteExtinctionStatement
+    , finiteExtinctionWitness
+    ⟩
+
+/--
 An inhabited complete surgery/Perelman consumer payload also exposes the
 package-tied projection family, the selected-flow scale/blowup family, and the
 combined surgery/Perelman/extinction payload family retained by the same
