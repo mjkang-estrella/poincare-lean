@@ -2611,4 +2611,57 @@ theorem groundedUniversalFiniteExtinction_completeConsumerPayload_checked_certif
     , extinction
     ⟩
 
+/--
+Grounded universal finite extinction itself constructs the complete
+finite-extinction consumer payload and feeds the checked final-certificate
+route once smoothability and topology-package inputs are supplied.  The fixed
+target still receives the selected scale, flow, surgery, control, package,
+statement, derivation, and extinction witnesses from the constructed complete
+payload.
+-/
+theorem groundedUniversalFiniteExtinction_completeConsumerPayload_checked_certificate_and_fixedTarget_concreteDerivationWitnesses_of_grounded
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    Nonempty GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u} ∧
+      UniversalFiniteExtinctionStatement.{u} ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.finiteExtinction ∧
+      RemainingDependencyPackage.{u} ∧
+      PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      ∃ n : ℕ∞ω,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      ∃ surgery : HasRicciFlowWithSurgery n M,
+      ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+      ∃ _package : FiniteExtinctionSurgeryPackage n M,
+      ∃ _packageStatement : FiniteExtinctionStatement n M,
+      ∃ _derivation : HasFiniteExtinctionDerivation flow surgery control,
+        FiniteExtinctionStatement n M ∧
+          HasFiniteExtinctionDerivation flow surgery control ∧
+          FiniteExtinctionByRicciFlowWithSurgery M := by
+  let payload :=
+    groundedUniversalFiniteExtinction_completeConsumerPayload_of_grounded
+      grounded
+  exact
+    ⟨ payload
+    , groundedUniversalFiniteExtinction_completeConsumerPayload_checked_certificate_and_fixedTarget_concreteDerivationWitnesses
+        smoothability payload topologyPackage M
+    ⟩
+
 end Poincare
