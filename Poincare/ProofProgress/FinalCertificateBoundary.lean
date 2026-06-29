@@ -6180,6 +6180,113 @@ theorem finalCertificateNamedPackageLayerRequirements_constructedConsumer_reserv
     ⟩
 
 /--
+The minimal two-package final-certificate boundary plus the topology package
+opens directly to the reserved-name final-collapse endpoint.  This keeps the
+constructed named-package consumer, topology-assembly payload equalities, the
+checked certificate's minimal-boundary certificate route, all completion
+criteria, and the fixed witness criterion synchronized without reopening the
+legacy three-input boundary wrapper.
+-/
+theorem finalCertificateMinimalPackageInputs_reservedName_direct_finalCollapse_payload_topologyAssembly_minimalCertificate_and_witness
+    (inputs : FinalCertificateMinimalPackageInputs.{u})
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (witness : Type u) :
+    let selected :=
+      finalCertificateNamedPackageLayerConsumerPayload
+        inputs.smoothability inputs.finiteExtinction topology
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+        selected.smoothability = inputs.smoothability ∧
+        selected.finiteExtinction = inputs.finiteExtinction ∧
+        selected.topology = topology ∧
+        selected.publicStatement =
+          poincare_conjecture_of_completion_certificate
+            selected.checkedCertificate ∧
+        selected.checkedCertificate =
+          completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+            inputs topology ∧
+        selected.publicPayload =
+          ⟨selected.publicStatement, selected.completionCriteria⟩ ∧
+        selected.canonicalPayload =
+          ⟨selected.canonicalTarget, selected.completionCriteria⟩ ∧
+        selected.topologyAssemblyPayload.publicStatement =
+          selected.publicStatement ∧
+        selected.topologyAssemblyPayload.checkedCertificate =
+          selected.checkedCertificate ∧
+        selected.topologyAssemblyPayload.canonicalTarget =
+          selected.canonicalTarget ∧
+        selected.topologyAssemblyPayload.publicPayload =
+          selected.publicPayload ∧
+        selected.topologyAssemblyPayload.canonicalPayload =
+          selected.canonicalPayload ∧
+        selected.topologyAssemblyPayload.completionCriteria =
+          selected.completionCriteria ∧
+        PoincareConjectureStatement.{u} ∧
+        PoincareCompletionCertificate.{u} ∧
+        Nonempty PoincareCompletionCertificate.{u} ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        (∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        CompletionCriterionAtUniverse witness := by
+  let selected :=
+    finalCertificateNamedPackageLayerConsumerPayload
+      inputs.smoothability inputs.finiteExtinction topology
+  rcases
+    finalCertificateNamedPackageLayerRequirements_constructedConsumer_reservedName_direct_finalCollapse_payload_topologyAssembly_and_witness
+      inputs.smoothability inputs.finiteExtinction topology witness with
+    ⟨ theoremName
+    , theoremName_eq
+    , hPublicStatement
+    , hPublicPayload
+    , hCanonicalPayload
+    , hTopologyPublicStatement
+    , hTopologyCheckedCertificate
+    , hTopologyCanonicalTarget
+    , hTopologyPublicPayload
+    , hTopologyCanonicalPayload
+    , hTopologyCompletionCriteria
+    , publicStatement
+    , checkedCertificate
+    , nonemptyCertificate
+    , remainingPackage
+    , canonicalTarget
+    , canonicalStatement
+    , completionCriteria
+    , witnessCriterion
+    ⟩
+  exact
+    ⟨ theoremName
+    , theoremName_eq
+    , rfl
+    , rfl
+    , rfl
+    , hPublicStatement
+    , by apply Subsingleton.elim
+    , hPublicPayload
+    , hCanonicalPayload
+    , hTopologyPublicStatement
+    , hTopologyCheckedCertificate
+    , hTopologyCanonicalTarget
+    , hTopologyPublicPayload
+    , hTopologyCanonicalPayload
+    , hTopologyCompletionCriteria
+    , publicStatement
+    , checkedCertificate
+    , nonemptyCertificate
+    , remainingPackage
+    , canonicalTarget
+    , canonicalStatement
+    , completionCriteria
+    , witnessCriterion
+    ⟩
+
+/--
 The old three-input final-assembly boundary now opens directly to the strongest
 reserved-name final-collapse endpoint on this branch.  The endpoint keeps the
 original package-boundary fields, the constructed named-package consumer, the
