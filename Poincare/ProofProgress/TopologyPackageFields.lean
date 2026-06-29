@@ -1095,6 +1095,44 @@ theorem poincare_statement_of_universalFiniteExtinctionStatement_and_extinctionT
       payload)
 
 /--
+Universal finite extinction and the complete topology consumer payload expose a
+target-free final topology endpoint: the public Poincare statement, the named
+one-point recognition route, the selected topology package, the exact topology
+statement produced by that package, the extinction-to-sphere statement, and
+the lifted-homeomorphism derivation route.  Fixed-target extraction and
+puncture transport can then be selected separately from the same payload.
+-/
+theorem poincare_statement_recognition_and_topologyPackage_endpoint_of_universalFiniteExtinctionStatement_and_extinctionTopology_completeConsumerPayload
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (payload : Nonempty (ExtinctionTopologyCompleteConsumerPayload.{u})) :
+    PoincareConjectureStatement.{u} ∧
+      ExtinctionOnePointThreeSpaceRecognitionStatement.{u} ∧
+      ∃ package : ExtinctionTopologyExtractionPackage.{u},
+      ∃ topologyStatement : ExtinctionTopologyExtractionStatement.{u},
+        topologyStatement =
+            extinction_topology_extraction_statement_of_topology_package
+              package ∧
+          ExtinctionImpliesSphereStatement.{u} ∧
+          ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} := by
+  let recognition :
+      ExtinctionOnePointThreeSpaceRecognitionStatement.{u} :=
+    extinctionOnePointThreeSpaceRecognitionStatement_of_extinctionTopology_completeConsumerPayload
+      payload
+  let statement : PoincareConjectureStatement.{u} :=
+    poincare_statement_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
+      finiteExtinction recognition
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ statement
+    , recognition
+    , payload.topologyPackage
+    , payload.topologyStatement
+    , payload.topologyStatement_eq
+    , payload.extinctionImpliesSphere
+    , payload.liftedHomeomorphismDerivation
+    ⟩
+
+/--
 Universal finite extinction and the complete topology consumer payload expose
 the public Poincare statement together with the named one-point recognition
 route and the fixed-target concrete full-extraction payload.  This packages the
