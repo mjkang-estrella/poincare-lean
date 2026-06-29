@@ -18955,6 +18955,68 @@ theorem onePointRecognition_smoothStructureDerivation_transportedSmoothabilitySt
     ⟩
 
 /--
+One-point recognition selects the transported smooth-manifold fields, their
+transported bridge prefix, and the smooth-structure derivation prefix from the
+same constructed route while preserving the concrete transported
+finite-extinction payload.  This is the field-synchronized version of the
+transported smoothability endpoint used before the ambient charted-space
+comparison blocker.
+-/
+theorem onePointRecognition_selected_transportedSmoothManifold_bridge_smoothStructure_and_finiteExtinctionPayload_of_surgeryPackages
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0})
+    (surgeryPackages :
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    ∃ transportedFields : SmoothabilityPackageTransportedSmoothManifoldFields.{0},
+    ∃ bridgeFields : SmoothabilityPackageTransportedBridgeFields.{0},
+    ∃ smoothFields : SmoothabilityPackageSmoothStructureDerivationFields.{0},
+    ∃ surgeryFamily : OnePointTransportedSurgeryPackageFamily,
+    ∃ finiteExtinctionPayload : OnePointTransportedFiniteExtinctionPayload,
+      transportedFields =
+          smoothabilityPackageTransportedSmoothManifoldFields_of_onePointRecognition
+            recognize ∧
+        bridgeFields =
+          transportedFields.toSmoothabilityPackageTransportedBridgeFields ∧
+        smoothFields =
+          bridgeFields.toSmoothabilityPackageSmoothStructureDerivationFields ∧
+        SmoothabilityTransportedBridgeStatement.{0} ∧
+        SmoothabilityTransportedSmoothManifoldStatement.{0} ∧
+        finiteExtinctionPayload =
+          onePointTransportedFiniteExtinctionPayload_of_transportedSmoothManifoldFields
+            transportedFields surgeryFamily := by
+  let transportedFields :
+      SmoothabilityPackageTransportedSmoothManifoldFields.{0} :=
+    smoothabilityPackageTransportedSmoothManifoldFields_of_onePointRecognition
+      recognize
+  let bridgeFields : SmoothabilityPackageTransportedBridgeFields.{0} :=
+    transportedFields.toSmoothabilityPackageTransportedBridgeFields
+  let smoothFields :
+      SmoothabilityPackageSmoothStructureDerivationFields.{0} :=
+    bridgeFields.toSmoothabilityPackageSmoothStructureDerivationFields
+  let surgeryFamily : OnePointTransportedSurgeryPackageFamily :=
+    onePointTransportedSurgeryPackageFamily_of_surgeryPackages
+      surgeryPackages
+  let finiteExtinctionPayload : OnePointTransportedFiniteExtinctionPayload :=
+    onePointTransportedFiniteExtinctionPayload_of_transportedSmoothManifoldFields
+      transportedFields surgeryFamily
+  exact
+    ⟨ transportedFields
+    , bridgeFields
+    , smoothFields
+    , surgeryFamily
+    , finiteExtinctionPayload
+    , rfl
+    , rfl
+    , rfl
+    , bridgeFields.transportedBridge
+    , transportedFields.transportedSmoothManifold
+    , rfl
+    ⟩
+
+/--
 The stronger charted-space comparison API can instantiate the explicit
 atlas-compatible bridge inputs.
 -/
