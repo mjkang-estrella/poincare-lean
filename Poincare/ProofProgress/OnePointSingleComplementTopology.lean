@@ -1066,6 +1066,79 @@ theorem compl_singleton_euclidean_complete_collapse_package_with_basepoint_of_ho
     ⟩
 
 /--
+The selected singleton-complement collapse from one-point compactification
+recognition also retains the direct low-homotopy `Subsingleton` package at the
+same selected basepoint.  This is the one-point-recognition companion to the
+supplied-basepoint endpoint: the recognition input, Euclidean topology,
+uniqueness/equality eliminators, concrete `Subsingleton` facts, and
+path-collapse data all refer to the same chosen complement point.
+-/
+theorem compl_singleton_recognition_euclidean_complete_collapse_and_lowHomotopy_subsingleton_package_with_basepoint_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M) :
+    ∃ basepoint : ({x}ᶜ : Set M),
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+        ContractibleSpace ({x}ᶜ : Set M) ∧
+        Nonempty ({x}ᶜ : Set M) ∧
+        PathConnectedSpace ({x}ᶜ : Set M) ∧
+        ConnectedSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+        LocPathConnectedSpace ({x}ᶜ : Set M) ∧
+        Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+        Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) ∧
+        Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) ∧
+        Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) ∧
+        Nonempty (Unique (ZerothHomotopy ({x}ᶜ : Set M))) ∧
+        Nonempty (Unique (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint)) ∧
+        Nonempty (Unique (FundamentalGroup ({x}ᶜ : Set M) basepoint)) ∧
+        Nonempty (Unique (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint)) ∧
+        (∀ y z : ({x}ᶜ : Set M),
+          ZerothHomotopy.mk y = ZerothHomotopy.mk z) ∧
+        (∀ a b : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint, a = b) ∧
+        (∀ a b : FundamentalGroup ({x}ᶜ : Set M) basepoint, a = b) ∧
+        (∀ a b : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint, a = b) ∧
+        (∀ y z : ({x}ᶜ : Set M), Nonempty (Path y z)) ∧
+        (∀ y : ({x}ᶜ : Set M), pathComponent y = Set.univ) := by
+  rcases
+    compl_singleton_euclidean_complete_collapse_package_with_basepoint_of_homeomorph_to_onePoint_threeSpace
+      h x with
+    ⟨basepoint, chart, contractible, nonempty, pathConnected, connected,
+      simplyConnected, locPathConnected, zerothUnique, piZeroUnique,
+      fundamentalGroupUnique, piOneUnique, zerothEq, piZeroEq,
+      fundamentalGroupEq, piOneEq, pathNonempty, pathComponentEqUniv⟩
+  rcases
+    compl_singleton_lowHomotopy_subsingleton_package_of_homeomorph_to_onePoint_threeSpace
+      h x basepoint with
+    ⟨zerothSubsingleton, piZeroSubsingleton, fundamentalGroupSubsingleton,
+      piOneSubsingleton⟩
+  exact
+    ⟨ basepoint
+    , h
+    , chart
+    , contractible
+    , nonempty
+    , pathConnected
+    , connected
+    , simplyConnected
+    , locPathConnected
+    , zerothSubsingleton
+    , piZeroSubsingleton
+    , fundamentalGroupSubsingleton
+    , piOneSubsingleton
+    , zerothUnique
+    , piZeroUnique
+    , fundamentalGroupUnique
+    , piOneUnique
+    , zerothEq
+    , piZeroEq
+    , fundamentalGroupEq
+    , piOneEq
+    , pathNonempty
+    , pathComponentEqUniv
+    ⟩
+
+/--
 The selected singleton-complement collapse can be consumed directly from
 recognition as `ThreeSphere`.  This converts the recognition to the one-point
 compactification model and then applies the existing selected-basepoint
