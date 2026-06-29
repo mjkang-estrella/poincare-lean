@@ -6890,4 +6890,203 @@ theorem analyticProductionPackage_finiteExtinctionFacing_certificate_and_package
     , hCurvatureEvolution
     ⟩
 
+/--
+Opened certificate/package boundary-equation endpoint for finite-extinction
+analytic consumers.  This combines the full finite-extinction-facing analytic
+certificate fields with the package-side derivative and equation-at-time
+boundary witnesses, while also transporting the pointwise Ricci-flow equation
+to the certificate-selected flow.
+-/
+theorem analyticProductionPackage_finiteExtinctionFacing_opened_certificate_and_package_boundary_equation_fields_of_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M)
+    (boundary : RicciFlowEquationBoundaryPackage
+      (ricci_flow_data_of_analytic_foundation_package package)) :
+    ∃ certificate : AnalyticFiniteExtinctionControlCertificate I n M,
+    ∃ flow : RicciFlowData I n M,
+    ∃ statement : RicciFlowAnalyticFoundationStatement I n M,
+    ∃ derivationStatement :
+      AnalyticFoundationDerivationStatement certificate.flow,
+    ∃ subobligations :
+      AnalyticFoundationSubobligationsPayload certificate.flow,
+    ∃ certificateEquationEvidence :
+      SatisfiesRicciFlowEquation
+        (metric_of_ricci_flow_data certificate.flow)
+        (curvature_data_of_ricci_flow_data certificate.flow),
+    ∃ boundaryVerification : RicciFlowEquationVerification
+      (curvature_data_of_ricci_flow_data
+        (ricci_flow_data_of_analytic_foundation_package package)),
+    ∃ boundaryEquationEvidence :
+      SatisfiesRicciFlowEquation
+        (metric_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package))
+        (curvature_data_of_ricci_flow_data
+          (ricci_flow_data_of_analytic_foundation_package package)),
+    ∃ boundaryPointwiseEquationOnPackage :
+      ∀ (t : ℝ) (x : M) (v w : TangentSpace I x),
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary))
+            t x v w =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data
+              (ricci_flow_data_of_analytic_foundation_package package))
+            t x v w,
+    ∃ _boundaryPointwiseEquationOnCertificate :
+      ∀ (t : ℝ) (x : M) (v w : TangentSpace I x),
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary))
+            t x v w =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data certificate.flow)
+            t x v w,
+      flow = ricci_flow_data_of_analytic_foundation_package package ∧
+        statement =
+          analytic_foundation_statement_of_analytic_foundation_package
+            package ∧
+        certificate.flow = flow ∧
+        certificate.flow =
+          ricci_flow_data_of_analytic_foundation_package package ∧
+        certificate.statement = statement ∧
+        certificate.derivationStatement = derivationStatement ∧
+        certificate.subobligations = subobligations ∧
+        certificate.equationEvidence = certificateEquationEvidence ∧
+        boundaryVerification =
+          ricci_flow_equation_verification_of_boundary_package boundary ∧
+        boundaryEquationEvidence =
+          equation_evidence_of_equation_boundary_package boundary ∧
+        boundaryPointwiseEquationOnPackage =
+          pointwise_equation_payload_of_equation_boundary_package boundary ∧
+        AnalyticFoundationWithEquationBoundaryStatement certificate.flow ∧
+        AnalyticFoundationWithEquationBoundaryStatement
+          (ricci_flow_data_of_analytic_foundation_package package) ∧
+        RicciFlowEquationBoundaryStatement certificate.flow ∧
+        RicciFlowEquationBoundaryStatement
+          (ricci_flow_data_of_analytic_foundation_package package) ∧
+        IsMetricTimeDerivativeOf
+          (metric_of_ricci_flow_data
+            (ricci_flow_data_of_analytic_foundation_package package))
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary)) ∧
+        (∀ t : ℝ,
+          metric_time_derivative_at_time_of_metric_derivative_field
+            (metric_time_derivative_field_of_metric_derivative_data
+              (metric_derivative_data_of_equation_boundary_package boundary))
+              t =
+            ricci_flow_rhs_tensor
+              (curvature_data_of_ricci_flow_data
+                (ricci_flow_data_of_analytic_foundation_package package)) t) ∧
+        HasDeTurckPullbackToRicciFlow certificate.flow ∧
+        HasRicciFlowContinuationCriterion certificate.flow ∧
+        HasCurvatureBlowUpContinuationCriterion certificate.flow ∧
+        HasCurvatureDerivativeBootstrap certificate.flow ∧
+        HasHamiltonMaximumPrinciple certificate.flow ∧
+        HasRicciFlowUniquenessTheory certificate.flow ∧
+        HasMetricEvolutionEquation certificate.flow ∧
+        HasRicciTensorEvolutionEquation certificate.flow ∧
+        HasScalarCurvatureEvolutionEquation certificate.flow ∧
+        HasCurvatureNormEvolutionInequality certificate.flow ∧
+        HasCurvatureEvolutionEquations certificate.flow := by
+  rcases
+    analyticProductionPackage_finiteExtinctionFacing_boundary_verification_payload_of_package
+      package boundary with
+    ⟨ certificate
+    , flow
+    , statement
+    , derivationStatement
+    , subobligations
+    , certificateEquationEvidence
+    , boundaryVerification
+    , boundaryEquationEvidence
+    , boundaryPointwiseEquationOnPackage
+    , hFlow
+    , hStatement
+    , hCertificateFlow
+    , hCertificateStatement
+    , hDerivationStatement
+    , hSubobligations
+    , hCertificateEquationEvidence
+    , hBoundaryVerification
+    , hBoundaryEquationEvidence
+    , hBoundaryPointwiseEquationOnPackage
+    , hWithBoundaryCertificate
+    , hWithBoundaryPackage
+    , hBoundaryCertificate
+    , hBoundaryPackage
+    , hDerivative
+    , hEquationAtTime
+    , hDeTurck
+    , hContinuation
+    , hBlowup
+    , hDerivativeBootstrap
+    , hMaximumPrinciple
+    , hUniqueness
+    , hMetricEvolution
+    , hRicciEvolution
+    , hScalarEvolution
+    , hCurvatureNormInequality
+    , hCurvatureEvolution
+    ⟩
+  have hCertificatePackageFlow :
+      certificate.flow =
+        ricci_flow_data_of_analytic_foundation_package package :=
+    hCertificateFlow.trans hFlow
+  have hBoundaryPointwiseEquationOnCertificate :
+      ∀ (t : ℝ) (x : M) (v w : TangentSpace I x),
+        metric_time_derivative_at_time_of_metric_derivative_field
+          (metric_time_derivative_field_of_metric_derivative_data
+            (metric_derivative_data_of_equation_boundary_package boundary))
+            t x v w =
+          ricci_flow_rhs_tensor
+            (curvature_data_of_ricci_flow_data certificate.flow)
+            t x v w := by
+    intro t x v w
+    rw [hCertificatePackageFlow]
+    exact boundaryPointwiseEquationOnPackage t x v w
+  exact
+    ⟨ certificate
+    , flow
+    , statement
+    , derivationStatement
+    , subobligations
+    , certificateEquationEvidence
+    , boundaryVerification
+    , boundaryEquationEvidence
+    , boundaryPointwiseEquationOnPackage
+    , hBoundaryPointwiseEquationOnCertificate
+    , hFlow
+    , hStatement
+    , hCertificateFlow
+    , hCertificatePackageFlow
+    , hCertificateStatement
+    , hDerivationStatement
+    , hSubobligations
+    , hCertificateEquationEvidence
+    , hBoundaryVerification
+    , hBoundaryEquationEvidence
+    , hBoundaryPointwiseEquationOnPackage
+    , hWithBoundaryCertificate
+    , hWithBoundaryPackage
+    , hBoundaryCertificate
+    , hBoundaryPackage
+    , hDerivative
+    , hEquationAtTime
+    , hDeTurck
+    , hContinuation
+    , hBlowup
+    , hDerivativeBootstrap
+    , hMaximumPrinciple
+    , hUniqueness
+    , hMetricEvolution
+    , hRicciEvolution
+    , hScalarEvolution
+    , hCurvatureNormInequality
+    , hCurvatureEvolution
+    ⟩
+
 end Poincare
