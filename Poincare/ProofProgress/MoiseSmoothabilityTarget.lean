@@ -1030,4 +1030,46 @@ theorem moiseSmoothability_targets_and_fixedTarget_recognition_of_completeConsum
     , hPrereqs
     ⟩
 
+/--
+For a fixed compact simply connected target, the complete Moise consumer
+payload can be unpacked all the way to concrete charted-space witnesses: one
+for the transported `C∞` smooth structure, one for the lowered surgery-model
+`C¹` structure, and the full surgery-prerequisite package carried by the same
+target family.
+-/
+theorem moiseSmoothability_fixedTarget_concrete_smooth_and_surgery_structures_of_completeConsumerPayload
+    (payload : Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u}))
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage ∧
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      (∃ _smoothCharted : ChartedSpace ThreeManifoldModel M,
+        ∃ _smooth : IsManifold (𝓡 3) ∞ M,
+        ∃ _surgeryCharted : ChartedSpace ThreeManifoldModel M,
+        ∃ _surgerySmooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+        ∃ _t2 : T2Space M,
+        ∃ _charted : ChartedSpace ThreeManifoldModel M,
+        ∃ _simple : SimplyConnectedSpace M,
+        ∃ _compact : CompactSpace M,
+        ∃ _smoothPrereq : IsManifold ThreeManifoldModelWithCorners 1 M,
+          Nonempty M) := by
+  rcases payload with ⟨payload⟩
+  rcases payload.targetFamily M with
+    ⟨hSphere, hOnePoint, hSmooth, hSurgery, hPrereqs⟩
+  rcases hSmooth with ⟨smoothCharted, smoothManifold⟩
+  rcases hSurgery with ⟨surgeryCharted, surgerySmooth⟩
+  exact
+    ⟨ payload.smoothabilityPackageRequirement
+    , hSphere
+    , hOnePoint
+    , smoothCharted
+    , smoothManifold
+    , surgeryCharted
+    , surgerySmooth
+    , hPrereqs
+    ⟩
+
 end Poincare
