@@ -17575,4 +17575,152 @@ theorem stationaryZeroAnalyticFoundation_nonemptyDetailedAssemblyPayload_selecte
     , rawProductionPayload
     ⟩
 
+/--
+An inhabited detailed stationary-zero assembly payload selects one complete
+analytic consumer and exposes both fixed-target endpoints through that same
+selection: the normalized full package/evolution payload and the raw
+stationary-zero production payload.  This keeps downstream finite-extinction
+consumers from having to independently reselect the complete analytic
+consumer for the two analytic routes.
+-/
+theorem stationaryZeroAnalyticFoundation_nonemptyDetailedAssemblyPayload_selected_completeConsumerPayload_and_fixedTarget_fullPackageEvolution_and_rawProductionPayload
+    (payload :
+      Nonempty StationaryZeroAnalyticFoundationDetailedAssemblyPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ selected : StationaryZeroAnalyticFoundationCompleteConsumerPayload.{u},
+    ∃ detailed :
+      StationaryZeroAnalyticFoundationDetailedAssemblyPayload.{u},
+      selected.detailedPayload = detailed ∧
+        selected.fullPackageEvolutionFamily =
+          stationaryZeroAnalyticFoundationDetailedAssemblyPayload_fullPackageEvolutionFamily
+            detailed ∧
+        selected.rawFullStatementPayloadFamily =
+          detailed.fullStatementPayloadFamily ∧
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage ∧
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation ∧
+        (∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ package :
+          RicciFlowAnalyticFoundationPackage
+            ThreeManifoldModelWithCorners n M,
+          AnalyticFoundationSubobligationsPayload flow ∧
+            ricci_flow_data_of_analytic_foundation_package package =
+              flow ∧
+            RicciFlowAnalyticFoundationStatement
+              ThreeManifoldModelWithCorners n M ∧
+            AnalyticFoundationWithEquationBoundaryStatement flow ∧
+            HasRicciContractionTheory
+              (curvature_data_of_ricci_flow_data flow) ∧
+            HasScalarCurvatureTheory
+              (curvature_data_of_ricci_flow_data flow) ∧
+            HasMetricEvolutionEquation flow ∧
+            HasRicciTensorEvolutionEquation flow ∧
+            HasScalarCurvatureEvolutionEquation flow ∧
+            HasCurvatureNormEvolutionInequality flow ∧
+            HasCurvatureEvolutionEquations flow) ∧
+        (∃ n : ℕ∞ω,
+        ∃ smooth2 : IsManifold ThreeManifoldModelWithCorners 2 M,
+        letI : IsManifold ThreeManifoldModelWithCorners 2 M := smooth2
+        ∃ metric :
+          ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+            ThreeManifoldModel
+            (fun x : M => TangentSpace ThreeManifoldModelWithCorners x),
+        ∃ identifiesDerivative :
+          IsMetricTimeDerivativeOf
+            (stationary_time_dependent_riemannian_metric metric)
+            (zero_metric_time_derivative_field
+              (stationary_time_dependent_riemannian_metric metric)),
+        ∃ identifiesRicci :
+          IsRicciTensorOf
+            (stationary_time_dependent_riemannian_metric metric)
+            (zero_ricci_tensor_field
+              (stationary_time_dependent_riemannian_metric metric)),
+        ∃ _productionData :
+          StationaryZeroAnalyticFoundationProductionDataCurrentApi
+            metric identifiesDerivative identifiesRicci,
+        let flow :=
+          stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci
+        AnalyticFoundationSubobligationsPayload flow ∧
+          ∃ package :
+              RicciFlowAnalyticFoundationPackage
+                ThreeManifoldModelWithCorners n M,
+            ricci_flow_data_of_analytic_foundation_package package =
+              flow ∧
+            RicciFlowAnalyticFoundationStatement
+              ThreeManifoldModelWithCorners n M ∧
+            AnalyticFoundationWithEquationBoundaryStatement flow ∧
+            HasRicciContractionTheory
+              (curvature_data_of_ricci_flow_data flow) ∧
+            HasScalarCurvatureTheory
+              (curvature_data_of_ricci_flow_data flow) ∧
+            HasMetricEvolutionEquation flow ∧
+            HasRicciTensorEvolutionEquation flow ∧
+            HasScalarCurvatureEvolutionEquation flow ∧
+            HasCurvatureNormEvolutionInequality flow ∧
+            HasCurvatureEvolutionEquations flow) := by
+  rcases payload with ⟨detailed⟩
+  let selected : StationaryZeroAnalyticFoundationCompleteConsumerPayload.{u} :=
+    { detailedPayload := detailed
+      analyticFoundationPackageRequirement :=
+        detailed.analyticFoundationPackageRequirement
+      ricciFlowAnalyticFoundationMilestone :=
+        detailed.ricciFlowAnalyticFoundationMilestone
+      packageStatementCurvatureFamily :=
+        detailed.packageStatementCurvatureFamily
+      packageSubobligationsFamily :=
+        stationaryZeroAnalyticFoundationDetailedAssemblyPayload_packageSubobligationsFamily
+          detailed
+      evolutionFieldsFamily :=
+        stationaryZeroAnalyticFoundationDetailedAssemblyPayload_evolutionFieldsFamily
+          detailed
+      fullPackageEvolutionFamily :=
+        stationaryZeroAnalyticFoundationDetailedAssemblyPayload_fullPackageEvolutionFamily
+          detailed
+      rawFullStatementPayloadFamily := detailed.fullStatementPayloadFamily }
+  have fullPackageEvolutionPayload :
+      ∃ n : ℕ∞ω,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      ∃ package :
+        RicciFlowAnalyticFoundationPackage
+          ThreeManifoldModelWithCorners n M,
+        AnalyticFoundationSubobligationsPayload flow ∧
+          ricci_flow_data_of_analytic_foundation_package package =
+            flow ∧
+          RicciFlowAnalyticFoundationStatement
+            ThreeManifoldModelWithCorners n M ∧
+          AnalyticFoundationWithEquationBoundaryStatement flow ∧
+          HasRicciContractionTheory
+            (curvature_data_of_ricci_flow_data flow) ∧
+          HasScalarCurvatureTheory
+            (curvature_data_of_ricci_flow_data flow) ∧
+          HasMetricEvolutionEquation flow ∧
+          HasRicciTensorEvolutionEquation flow ∧
+          HasScalarCurvatureEvolutionEquation flow ∧
+          HasCurvatureNormEvolutionInequality flow ∧
+          HasCurvatureEvolutionEquations flow :=
+    (stationaryZeroAnalyticFoundation_requirements_and_fixedTarget_fullPackageEvolution_of_completeConsumerPayload
+      ⟨selected⟩ M).2.2
+  rcases
+    stationaryZeroAnalyticFoundation_requirements_and_fixedTarget_rawProductionPayload_of_completeConsumerPayload
+      ⟨selected⟩ M with
+    ⟨_analyticFoundationPackageRequirement,
+      _ricciFlowAnalyticFoundationMilestone, rawProductionPayload⟩
+  exact
+    ⟨ selected
+    , detailed
+    , rfl
+    , rfl
+    , rfl
+    , selected.analyticFoundationPackageRequirement
+    , selected.ricciFlowAnalyticFoundationMilestone
+    , fullPackageEvolutionPayload
+    , rawProductionPayload
+    ⟩
+
 end Poincare
