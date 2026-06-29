@@ -382,4 +382,81 @@ noncomputable def threeSphere_twoPointComplement_completeLowHomotopyUnique_paylo
   pathNonempty := threeSphere_twoPointComplement_path_nonempty hab
   pathComponentEqUniv := threeSphere_twoPointComplement_pathComponent_eq_univ hab
 
+/--
+The standard-sphere two-puncture endpoint can be consumed without an externally
+chosen basepoint.  Nonemptiness selects one complement point, and the complete
+unique-instance payload is returned together with the legacy low-homotopy
+collapse tuple at that same basepoint.
+-/
+theorem threeSphere_twoPointComplement_completeLowHomotopyUnique_and_collapse_payload_with_basepoint
+    {a b : ThreeSphere} (hab : b ≠ a) :
+    ∃ basepoint : (({a} ∪ {b})ᶜ : Set ThreeSphere),
+      Nonempty
+        (ThreeSphereTwoPointComplementCompleteLowHomotopyUniquePayload
+          hab basepoint) ∧
+      ConnectedSpace (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+      Nonempty (({a} ∪ {b})ᶜ : Set ThreeSphere) ∧
+      Nonempty (Unique
+        (FundamentalGroup (({a} ∪ {b})ᶜ : Set ThreeSphere) basepoint)) ∧
+      Nonempty (Unique
+        (HomotopyGroup.Pi 1 (({a} ∪ {b})ᶜ : Set ThreeSphere)
+          basepoint)) ∧
+      Nonempty (Unique
+        (HomotopyGroup.Pi 0 (({a} ∪ {b})ᶜ : Set ThreeSphere)
+          basepoint)) ∧
+      Nonempty (Unique
+        (ZerothHomotopy (({a} ∪ {b})ᶜ : Set ThreeSphere))) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 1 (({a} ∪ {b})ᶜ : Set ThreeSphere)
+          basepoint) ∧
+      (∀ g h :
+        HomotopyGroup.Pi 1 (({a} ∪ {b})ᶜ : Set ThreeSphere)
+          basepoint,
+        g = h) ∧
+      (∃ baseClass :
+        HomotopyGroup.Pi 1 (({a} ∪ {b})ᶜ : Set ThreeSphere)
+          basepoint,
+        ∀ homotopyClass :
+          HomotopyGroup.Pi 1 (({a} ∪ {b})ᶜ : Set ThreeSphere)
+            basepoint,
+          homotopyClass = baseClass) ∧
+      Subsingleton
+        (ZerothHomotopy (({a} ∪ {b})ᶜ : Set ThreeSphere)) ∧
+      (∀ x y : (({a} ∪ {b})ᶜ : Set ThreeSphere),
+        ZerothHomotopy.mk x = ZerothHomotopy.mk y) ∧
+      (∃ baseClass : ZerothHomotopy (({a} ∪ {b})ᶜ : Set ThreeSphere),
+        ∀ homotopyClass : ZerothHomotopy (({a} ∪ {b})ᶜ : Set ThreeSphere),
+          homotopyClass = baseClass) ∧
+      (∀ x y : (({a} ∪ {b})ᶜ : Set ThreeSphere), Nonempty (Path x y)) ∧
+      (∀ x : (({a} ∪ {b})ᶜ : Set ThreeSphere),
+        pathComponent x = Set.univ) := by
+  let basepoint : (({a} ∪ {b})ᶜ : Set ThreeSphere) :=
+    Classical.choice (threeSphere_twoPointComplement_nonempty hab)
+  let payload :=
+    threeSphere_twoPointComplement_completeLowHomotopyUnique_payload
+      hab basepoint
+  rcases threeSphere_twoPointComplement_lowHomotopyCollapse_payload
+      hab basepoint with
+    ⟨piOneSubsingleton, piOneEq, piOneExistsUnique,
+      zerothSubsingleton, zerothEq, zerothExistsUnique,
+      pathNonempty, pathComponentEqUniv⟩
+  exact
+    ⟨ basepoint
+    , ⟨payload⟩
+    , payload.connected
+    , payload.nonempty
+    , ⟨payload.fundamentalGroupUnique⟩
+    , ⟨payload.piOneUnique⟩
+    , ⟨payload.piZeroUnique⟩
+    , ⟨payload.zerothUnique⟩
+    , piOneSubsingleton
+    , piOneEq
+    , piOneExistsUnique
+    , zerothSubsingleton
+    , zerothEq
+    , zerothExistsUnique
+    , pathNonempty
+    , pathComponentEqUniv
+    ⟩
+
 end Poincare
