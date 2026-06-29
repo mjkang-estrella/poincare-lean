@@ -3514,4 +3514,173 @@ theorem compl_singleton_recognition_supplied_basepoint_all_basepoint_baseclass_c
     , pathComponentEqUniv
     ⟩
 
+/--
+For a sphere-recognized source, select a singleton-complement basepoint while
+keeping the ordinary Euclidean/topological collapse fields synchronized with the
+full all-basepoint baseclass-collapse package.  This is the compact consumer
+endpoint for final topology extraction code that needs one chosen complement
+basepoint plus the reusable collapse family for every other basepoint.
+-/
+theorem compl_singleton_recognition_selected_basepoint_topology_and_all_basepoint_baseclass_collapse_package_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M) :
+    ∃ basepoint : ({x}ᶜ : Set M),
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+        ContractibleSpace ({x}ᶜ : Set M) ∧
+        Nonempty ({x}ᶜ : Set M) ∧
+        PathConnectedSpace ({x}ᶜ : Set M) ∧
+        ConnectedSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+        LocPathConnectedSpace ({x}ᶜ : Set M) ∧
+        (∀ suppliedBasepoint : ({x}ᶜ : Set M),
+          Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) suppliedBasepoint) ∧
+            Subsingleton
+              (FundamentalGroup ({x}ᶜ : Set M) suppliedBasepoint) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) suppliedBasepoint) ∧
+            Nonempty (Unique (ZerothHomotopy ({x}ᶜ : Set M))) ∧
+            Nonempty
+              (Unique (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) suppliedBasepoint)) ∧
+            Nonempty
+              (Unique (FundamentalGroup ({x}ᶜ : Set M) suppliedBasepoint)) ∧
+            Nonempty
+              (Unique (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) suppliedBasepoint)) ∧
+            (∀ y z : ({x}ᶜ : Set M), ZerothHomotopy.mk y = ZerothHomotopy.mk z) ∧
+            (∀ a b :
+              HomotopyGroup.Pi 0 ({x}ᶜ : Set M) suppliedBasepoint,
+              a = b) ∧
+            (∀ a b : FundamentalGroup ({x}ᶜ : Set M) suppliedBasepoint,
+              a = b) ∧
+            (∀ a b :
+              HomotopyGroup.Pi 1 ({x}ᶜ : Set M) suppliedBasepoint,
+              a = b) ∧
+            (∃ baseClass : ZerothHomotopy ({x}ᶜ : Set M),
+              ∀ homotopyClass : ZerothHomotopy ({x}ᶜ : Set M),
+                homotopyClass = baseClass) ∧
+            (∃ baseClass :
+              HomotopyGroup.Pi 0 ({x}ᶜ : Set M) suppliedBasepoint,
+              ∀ homotopyClass :
+                HomotopyGroup.Pi 0 ({x}ᶜ : Set M) suppliedBasepoint,
+                homotopyClass = baseClass) ∧
+            (∃ baseClass : FundamentalGroup ({x}ᶜ : Set M) suppliedBasepoint,
+              ∀ fundamentalClass :
+                FundamentalGroup ({x}ᶜ : Set M) suppliedBasepoint,
+                fundamentalClass = baseClass) ∧
+            (∃ baseClass :
+              HomotopyGroup.Pi 1 ({x}ᶜ : Set M) suppliedBasepoint,
+              ∀ homotopyClass :
+                HomotopyGroup.Pi 1 ({x}ᶜ : Set M) suppliedBasepoint,
+                homotopyClass = baseClass) ∧
+            (∀ y z : ({x}ᶜ : Set M), Nonempty (Path y z)) ∧
+            (∀ y : ({x}ᶜ : Set M), pathComponent y = Set.univ)) ∧
+        Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+        Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) ∧
+        Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) ∧
+        Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) ∧
+        Nonempty (Unique (ZerothHomotopy ({x}ᶜ : Set M))) ∧
+        Nonempty (Unique (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint)) ∧
+        Nonempty (Unique (FundamentalGroup ({x}ᶜ : Set M) basepoint)) ∧
+        Nonempty (Unique (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint)) ∧
+        (∀ y z : ({x}ᶜ : Set M), ZerothHomotopy.mk y = ZerothHomotopy.mk z) ∧
+        (∀ a b : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint, a = b) ∧
+        (∀ a b : FundamentalGroup ({x}ᶜ : Set M) basepoint, a = b) ∧
+        (∀ a b : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint, a = b) ∧
+        (∃ baseClass : ZerothHomotopy ({x}ᶜ : Set M),
+          ∀ homotopyClass : ZerothHomotopy ({x}ᶜ : Set M),
+            homotopyClass = baseClass) ∧
+        (∃ baseClass : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint,
+          ∀ homotopyClass :
+            HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint,
+            homotopyClass = baseClass) ∧
+        (∃ baseClass : FundamentalGroup ({x}ᶜ : Set M) basepoint,
+          ∀ fundamentalClass : FundamentalGroup ({x}ᶜ : Set M) basepoint,
+            fundamentalClass = baseClass) ∧
+        (∃ baseClass : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint,
+          ∀ homotopyClass :
+            HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint,
+            homotopyClass = baseClass) ∧
+        (∀ y z : ({x}ᶜ : Set M), Nonempty (Path y z)) ∧
+        (∀ y : ({x}ᶜ : Set M), pathComponent y = Set.univ) := by
+  rcases
+    compl_singleton_recognition_selected_basepoint_and_all_basepoint_lowHomotopy_package_of_homeomorph_to_threeSphere
+      h x with
+    ⟨ basepoint
+    , hSphere
+    , hOnePoint
+    , chart
+    , contractible
+    , nonempty
+    , pathConnected
+    , connected
+    , simplyConnected
+    , locPathConnected
+    , _allBasepointLowHomotopy
+    , _piZeroSubsingleton
+    , _fundamentalGroupSubsingleton
+    , _piOneSubsingleton
+    , _piZeroUnique
+    , _fundamentalGroupUnique
+    , _piOneUnique
+    , _pathNonempty
+    , _pathComponentEqUniv
+    ⟩
+  let allBasepointBaseclass :=
+    compl_singleton_recognition_all_basepoint_lowHomotopy_baseclass_collapse_package_of_homeomorph_to_threeSphere
+      h x
+  rcases allBasepointBaseclass basepoint with
+    ⟨ zerothSubsingleton
+    , piZeroSubsingleton
+    , fundamentalGroupSubsingleton
+    , piOneSubsingleton
+    , zerothUnique
+    , piZeroUnique
+    , fundamentalGroupUnique
+    , piOneUnique
+    , zerothEq
+    , piZeroEq
+    , fundamentalGroupEq
+    , piOneEq
+    , zerothBaseclass
+    , piZeroBaseclass
+    , fundamentalGroupBaseclass
+    , piOneBaseclass
+    , pathNonempty
+    , pathComponentEqUniv
+    ⟩
+  exact
+    ⟨ basepoint
+    , hSphere
+    , hOnePoint
+    , chart
+    , contractible
+    , nonempty
+    , pathConnected
+    , connected
+    , simplyConnected
+    , locPathConnected
+    , allBasepointBaseclass
+    , zerothSubsingleton
+    , piZeroSubsingleton
+    , fundamentalGroupSubsingleton
+    , piOneSubsingleton
+    , zerothUnique
+    , piZeroUnique
+    , fundamentalGroupUnique
+    , piOneUnique
+    , zerothEq
+    , piZeroEq
+    , fundamentalGroupEq
+    , piOneEq
+    , zerothBaseclass
+    , piZeroBaseclass
+    , fundamentalGroupBaseclass
+    , piOneBaseclass
+    , pathNonempty
+    , pathComponentEqUniv
+    ⟩
+
 end Poincare
