@@ -4150,4 +4150,55 @@ theorem analyticProductionPackage_firstFortySeven_of_scalarCurvatureTheoryData_a
     riemannCurvatureDerivativeAtTime riemannCurvatureEvolutionRHSAtTime
     riemannCurvatureEvolutionAtTime
 
+/--
+A completed analytic-foundation package selects one Ricci-flow datum and keeps
+the named analytic sub-obligation payload, Ricci-flow equation evidence, the
+Levi-Civita input fields, and the terminal curvature-evolution fields tied to
+that same selected flow.
+-/
+theorem analyticProductionPackage_selected_payload_leviCivita_and_terminal_curvature_fields
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    ∃ flow : RicciFlowData I n M,
+      flow = ricci_flow_data_of_analytic_foundation_package package ∧
+        AnalyticFoundationSubobligationsPayload flow ∧
+        SatisfiesRicciFlowEquation
+          (metric_of_ricci_flow_data flow)
+          (curvature_data_of_ricci_flow_data flow) ∧
+        HasLeviCivitaConnectionExistence
+          (metric_of_ricci_flow_data flow) ∧
+        HasLeviCivitaConnectionUniqueness
+          (metric_of_ricci_flow_data flow) ∧
+        HasLeviCivitaTorsionFreeProperty
+          (metric_of_ricci_flow_data flow) ∧
+        HasLeviCivitaMetricCompatibility
+          (metric_of_ricci_flow_data flow) ∧
+        HasLeviCivitaConnectionTheory
+          (metric_of_ricci_flow_data flow) ∧
+        HasCurvatureNormEvolutionInequality flow ∧
+        HasCurvatureEvolutionEquations flow := by
+  let flow := ricci_flow_data_of_analytic_foundation_package package
+  rcases analytic_foundation_payload_of_analytic_foundation_package
+      package with
+    ⟨ _statement, _derivationStatement, subobligations, equationEvidence⟩
+  exact
+    ⟨ flow
+    , rfl
+    , subobligations
+    , equationEvidence
+    , levi_civita_existence_of_analytic_foundation_package package
+    , levi_civita_uniqueness_of_analytic_foundation_package package
+    , levi_civita_torsion_free_of_analytic_foundation_package package
+    , levi_civita_metric_compatibility_of_analytic_foundation_package
+        package
+    , levi_civita_theory_of_analytic_foundation_package package
+    , curvature_norm_evolution_inequality_of_analytic_foundation_package
+        package
+    , curvature_evolution_of_analytic_foundation_package package
+    ⟩
+
 end Poincare
