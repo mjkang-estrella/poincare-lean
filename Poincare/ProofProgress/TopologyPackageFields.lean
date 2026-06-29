@@ -2404,6 +2404,187 @@ theorem poincare_statement_selectedTopologyConsumer_punctureFamily_fixedTarget_i
     ⟩
 
 /--
+The selected topology consumer can be retained together with the full
+classification/lift/assembly/derivation endpoint and the concrete fixed-target
+singleton/two-puncture consequences.  This gives final-certificate code one
+package-synchronized entry point for the complete extraction stack and the
+basepointed puncture collapses.
+-/
+theorem poincare_statement_selectedTopologyConsumer_fullExtraction_and_fixedTarget_instances_of_universalFiniteExtinctionStatement_and_topologyPackage
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x y : M) (hyx : y ≠ x)
+    (singletonBasepoint : ({x}ᶜ : Set M))
+    (twoPointBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ consumer : ExtinctionTopologyCompleteConsumerPayload.{u},
+      (consumer.topologyPackage = package) ∧
+        (consumer.topologyPackageRequirement = package) ∧
+        (consumer.topologyStatement =
+          extinction_topology_extraction_statement_of_topology_package
+            package) ∧
+        (consumer.extinctionImpliesSphere =
+          extinction_implies_sphere_of_topology_package package) ∧
+        (consumer.liftedHomeomorphismDerivation =
+          topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+            package) ∧
+        (PoincareConjectureStatement.{u} ∧
+          ExtinctionOnePointThreeSpaceRecognitionStatement.{u} ∧
+          ∃ package : ExtinctionTopologyExtractionPackage.{u},
+          ∃ topologyStatement : ExtinctionTopologyExtractionStatement.{u},
+            topologyStatement =
+                extinction_topology_extraction_statement_of_topology_package
+                  package ∧
+              ExtinctionImpliesSphereStatement.{u} ∧
+              ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} ∧
+              ∃ homeomorphism : M ≃ₜ ThreeSphere,
+                Nonempty (M ≃ₜ ThreeSphere) ∧
+                Nonempty.intro homeomorphism =
+                    homeomorphism_of_topology_package package M extinction ∧
+                ExtinctionTopologyClassificationSubobligationsPayload
+                  M extinction ∧
+                ExtinctionTopologySimplyConnectedRecognitionStatement
+                  M extinction ∧
+                ExtinctionTopologySphericalTrivialQuotientStatement
+                  M extinction ∧
+                ExtinctionTopologySphericalHomeomorphismLiftStatement
+                  M extinction ∧
+                ExtinctionTopologyHomeomorphismAssemblyStatement
+                  M extinction (Nonempty.intro homeomorphism) ∧
+                ExtinctionTopologyHomeomorphismDerivationStatement
+                  M extinction (Nonempty.intro homeomorphism) ∧
+                ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+                  M extinction (Nonempty.intro homeomorphism) ∧
+                Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+                (∀ x : M,
+                  Nonempty (({x}ᶜ : Set M) ≃ₜ
+                    EuclideanSpace ℝ (Fin 3)) ∧
+                  ContractibleSpace ({x}ᶜ : Set M) ∧
+                  SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+                  ∀ basepoint : ({x}ᶜ : Set M),
+                    Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+                    Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M)
+                      basepoint) ∧
+                    Subsingleton (FundamentalGroup ({x}ᶜ : Set M)
+                      basepoint) ∧
+                    Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M)
+                      basepoint)) ∧
+                (∀ {x y : M} (_hyx : y ≠ x),
+                  (∃ puncture : EuclideanSpace ℝ (Fin 3),
+                    Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+                      ({puncture}ᶜ :
+                        Set (EuclideanSpace ℝ (Fin 3))))) ∧
+                  ∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+                    SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                    Subsingleton
+                      (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+                        basepoint))) ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        (∀ x : M,
+          Nonempty (({x}ᶜ : Set M) ≃ₜ
+            EuclideanSpace ℝ (Fin 3)) ∧
+          ContractibleSpace ({x}ᶜ : Set M) ∧
+          SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+          ∀ basepoint : ({x}ᶜ : Set M),
+            Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+            Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M)
+              basepoint) ∧
+            Subsingleton (FundamentalGroup ({x}ᶜ : Set M)
+              basepoint) ∧
+            Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M)
+              basepoint)) ∧
+        (∀ {x y : M} (_hyx : y ≠ x),
+          (∃ puncture : EuclideanSpace ℝ (Fin 3),
+            Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+              ({puncture}ᶜ :
+                Set (EuclideanSpace ℝ (Fin 3))))) ∧
+          ∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+            SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+            Subsingleton
+              (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+                basepoint)) ∧
+        Nonempty (({x}ᶜ : Set M) ≃ₜ
+          EuclideanSpace ℝ (Fin 3)) ∧
+        ContractibleSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+        Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+        Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M)
+          singletonBasepoint) ∧
+        Subsingleton (FundamentalGroup ({x}ᶜ : Set M)
+          singletonBasepoint) ∧
+        Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M)
+          singletonBasepoint) ∧
+        (∃ puncture : EuclideanSpace ℝ (Fin 3),
+          Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+        SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        Subsingleton
+          (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+            twoPointBasepoint) := by
+  rcases
+    poincare_statement_selectedTopologyConsumer_punctureFamily_and_lowHomotopy_of_universalFiniteExtinctionStatement_and_topologyPackage
+      finiteExtinction package M extinction with
+    ⟨ consumer
+    , hTopologyPackage
+    , hTopologyPackageRequirement
+    , hTopologyStatement
+    , hExtinctionImpliesSphere
+    , hLiftedDerivation
+    , endpoint
+    ⟩
+  rcases
+    poincare_statement_selectedTopologyConsumer_punctureFamily_fixedTarget_instances_of_universalFiniteExtinctionStatement_and_topologyPackage
+      finiteExtinction package M extinction x y hyx singletonBasepoint
+      twoPointBasepoint with
+    ⟨ _fixedConsumer
+    , _fixedTopologyPackage
+    , _fixedTopologyPackageRequirement
+    , _fixedTopologyStatement
+    , _fixedExtinctionImpliesSphere
+    , _fixedLiftedDerivation
+    , _poincareStatement
+    , _recognition
+    , onePoint
+    , singletonFamily
+    , twoPointFamily
+    , singletonModel
+    , singletonContractible
+    , singletonSimplyConnected
+    , singletonZeroth
+    , singletonPi0
+    , singletonPi1
+    , singletonHomotopyPi1
+    , twoPointModel
+    , twoPointSimplyConnected
+    , twoPointFundamentalGroup
+    ⟩
+  exact
+    ⟨ consumer
+    , hTopologyPackage
+    , hTopologyPackageRequirement
+    , hTopologyStatement
+    , hExtinctionImpliesSphere
+    , hLiftedDerivation
+    , endpoint
+    , onePoint
+    , singletonFamily
+    , twoPointFamily
+    , singletonModel
+    , singletonContractible
+    , singletonSimplyConnected
+    , singletonZeroth
+    , singletonPi0
+    , singletonPi1
+    , singletonHomotopyPi1
+    , twoPointModel
+    , twoPointSimplyConnected
+    , twoPointFundamentalGroup
+    ⟩
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
