@@ -1164,4 +1164,97 @@ theorem onePoint_threeSpace_twoPointComplement_flatRecognition_payload_with_base
         (hqp := hqp) (basepoint := basepoint)).1 ⟨payload⟩
     ⟩
 
+/--
+The full legacy two-puncture collapse tuple can also be produced without an
+externally chosen basepoint.  The basepoint is selected from the established
+nonemptiness of the two-point complement, and all low-homotopy equality and
+path-component collapse fields are returned at that selected point.
+-/
+theorem onePoint_threeSpace_twoPointComplement_collapse_payload_with_basepoint
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    ∃ basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+      (∃ puncture : EuclideanSpace ℝ (Fin 3),
+        Nonempty
+          ((({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+        SimplyConnectedSpace
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        ConnectedSpace
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        Nonempty
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 0
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint) ∧
+        (∀ a b :
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 0
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          a = b) ∧
+        (∀ a b : FundamentalGroup
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+          a = b) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 1
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          a = b) ∧
+        (∃ baseClass :
+          ZerothHomotopy
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          ∀ homotopyClass :
+            ZerothHomotopy
+              (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+            homotopyClass = baseClass) ∧
+        (∃ baseClass :
+          HomotopyGroup.Pi 0
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          ∀ homotopyClass :
+            HomotopyGroup.Pi 0
+              (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              basepoint,
+            homotopyClass = baseClass) ∧
+        (∃ baseClass : FundamentalGroup
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint,
+          ∀ fundamentalClass :
+            FundamentalGroup
+              (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              basepoint,
+            fundamentalClass = baseClass) ∧
+        (∃ baseClass :
+          HomotopyGroup.Pi 1
+            (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          ∀ homotopyClass :
+            HomotopyGroup.Pi 1
+              (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              basepoint,
+            homotopyClass = baseClass) ∧
+        (∀ a b :
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          Nonempty (Path a b)) ∧
+        (∀ x :
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          pathComponent x = Set.univ) := by
+  let basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    Classical.choice
+      (onePoint_threeSpace_twoPointComplement_nonempty hqp)
+  exact
+    ⟨ basepoint
+    , onePoint_threeSpace_twoPointComplement_collapse_payload hqp basepoint
+    ⟩
+
 end Poincare
