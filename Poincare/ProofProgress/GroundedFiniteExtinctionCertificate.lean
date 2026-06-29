@@ -2077,6 +2077,55 @@ theorem groundedUniversalFiniteExtinction_fixedTarget_packageDerivationPayload_o
   exact payload.packageStatementDerivationFamily M
 
 /--
+For a fixed target manifold, the complete grounded finite-extinction consumer
+payload can synchronize the flow-first statement payload with the package-first
+derivation shape using the same selected scale, package, statement,
+derivation, and extinction witness.
+-/
+theorem groundedUniversalFiniteExtinction_fixedTarget_synchronized_statement_and_packageDerivationPayload_of_completeConsumerPayload
+    (payload :
+      Nonempty GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ n : ℕ∞ω,
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+    ∃ surgery : HasRicciFlowWithSurgery n M,
+    ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+    ∃ _package : FiniteExtinctionSurgeryPackage n M,
+      FiniteExtinctionStatement n M ∧
+        HasFiniteExtinctionDerivation flow surgery control ∧
+        FiniteExtinctionByRicciFlowWithSurgery M ∧
+        (FiniteExtinctionStatement n M ∧
+          FiniteExtinctionByRicciFlowWithSurgery M ∧
+          ∃ flow' : RicciFlowData ThreeManifoldModelWithCorners n M,
+          ∃ surgery' : HasRicciFlowWithSurgery n M,
+          ∃ control' :
+            HasPerelmanSingularityControl (n := n) (M := M) flow',
+            HasFiniteExtinctionDerivation flow' surgery' control') := by
+  rcases payload with ⟨payload⟩
+  rcases payload.statementPayloadFamily M with
+    ⟨n, flow, surgery, control, package, packageStatement,
+      derivation, extinction⟩
+  exact
+    ⟨ n
+    , flow
+    , surgery
+    , control
+    , package
+    , packageStatement
+    , derivation
+    , extinction
+    , packageStatement
+    , extinction
+    , flow
+    , surgery
+    , control
+    , derivation
+    ⟩
+
+/--
 For a fixed target manifold, a complete grounded finite-extinction consumer
 payload exposes the actual extinction witness together with selected
 flow/surgery/control data and the finite-extinction derivation, without
