@@ -804,6 +804,72 @@ theorem moiseSmoothability_completeConsumerPayload_of_smoothabilityPackage_and_o
       smoothability recognizeSphere
 
 /--
+The one-point recognition route can select a concrete complete Moise consumer
+payload whose stored `ThreeSphere` recognition family is exactly the named
+compactification-to-sphere conversion and whose detailed assembly retains the
+original one-point recognition input.  This gives compactification-route
+consumers a field-synchronized payload without reselecting the converted
+recognition family.
+-/
+theorem moiseSmoothability_onePointRecognition_selected_completeConsumerPayload_fields
+    (smoothability : SmoothabilityPackage.{u})
+    (recognizeOnePoint :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ selected : MoiseSmoothabilityCompleteConsumerPayload.{u},
+      selected.smoothabilityPackageRequirement =
+          (by
+            simpa [dependencyPackageLayerRequirement] using smoothability) ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            selected.recognizedSphereFamily M =
+              homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+                (recognizeOnePoint M)) ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            selected.detailedPayload.recognizedOnePoint M =
+              recognizeOnePoint M) ∧
+        selected.targetFamily =
+          moiseSmoothabilityRecognitionAssemblyPayload_targetFamily
+            selected.detailedPayload := by
+  let recognizeSphere :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere) := by
+    intro M _top _t2 _charted _simple _compact
+    exact
+      homeomorph_to_threeSphere_of_homeomorph_to_onePoint_threeSpace
+        (recognizeOnePoint M)
+  let assemblyPayload :=
+    moiseSmoothabilityRecognitionAssemblyPayload_of_threeSphereRecognition
+      recognizeSphere
+  let smoothabilityRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage := by
+    simpa [dependencyPackageLayerRequirement] using smoothability
+  let selected : MoiseSmoothabilityCompleteConsumerPayload.{u} :=
+    { detailedPayload := assemblyPayload
+      smoothabilityPackageRequirement := smoothabilityRequirement
+      smoothMoise := assemblyPayload.smoothMoise
+      surgeryMoise := assemblyPayload.surgeryMoise
+      recognizedSphereFamily := assemblyPayload.recognizedSphere
+      targetFamily :=
+        moiseSmoothabilityRecognitionAssemblyPayload_targetFamily
+          assemblyPayload }
+  refine ⟨selected, ?_, ?_, ?_, ?_⟩
+  · rfl
+  · intro M _top _t2 _charted _simple _compact
+    rfl
+  · intro M _top _t2 _charted _simple _compact
+    apply Subsingleton.elim
+  · rfl
+
+/--
 The complete Moise smoothability consumer payload is equivalent to the residual
 smoothability package requirement together with an inhabited concrete Moise
 recognition assembly payload.  The forward direction projects both fields from
