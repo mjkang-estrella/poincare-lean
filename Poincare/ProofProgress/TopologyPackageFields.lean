@@ -637,6 +637,35 @@ theorem extinctionTopology_fixedTarget_puncture_payload_of_completeConsumerPaylo
 
 /--
 For a fixed finite-extinction target, a complete topology consumer payload
+exposes the selected 3-sphere homeomorphism together with the one-point
+compactification homeomorphism transported by the same topology package.
+-/
+theorem extinctionTopology_fixedTarget_sphere_and_onePoint_homeomorphisms_of_completeConsumerPayload
+    (payload : Nonempty (ExtinctionTopologyCompleteConsumerPayload.{u}))
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ∃ package : ExtinctionTopologyExtractionPackage.{u},
+      ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        homeomorphism =
+            homeomorphism_of_topology_package package M extinction ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) := by
+  rcases payload with ⟨payload⟩
+  rcases payload.derivationPunctureFamily M extinction with
+    ⟨homeomorphism, hHomeomorphism_eq, _classification,
+      _simplyConnectedRecognition, _trivialQuotient, _lift,
+      _assembly, _derivation, _liftedDerivation, hOnePoint,
+      _singletonContractible, _twoPoint⟩
+  exact
+    ⟨ payload.topologyPackage
+    , homeomorphism
+    , hHomeomorphism_eq
+    , hOnePoint
+    ⟩
+
+/--
+For a fixed finite-extinction target, a complete topology consumer payload
 exposes the concrete package, global extraction statements, selected
 homeomorphism derivation, and puncture-transport package without requiring the
 larger classification/lift surface.
