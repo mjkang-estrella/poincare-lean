@@ -2078,6 +2078,31 @@ theorem groundedUniversalFiniteExtinction_fixedTarget_packageDerivationPayload_o
 
 /--
 For a fixed target manifold, a complete grounded finite-extinction consumer
+payload exposes the actual extinction witness together with selected
+flow/surgery/control data and the finite-extinction derivation, without
+requiring downstream consumers to unpack the package statement separately.
+-/
+theorem groundedUniversalFiniteExtinction_fixedTarget_extinctionDerivationPayload_of_completeConsumerPayload
+    (payload :
+      Nonempty GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    FiniteExtinctionByRicciFlowWithSurgery M ∧
+      ∃ n : ℕ∞ω,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      ∃ surgery : HasRicciFlowWithSurgery n M,
+      ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+        HasFiniteExtinctionDerivation flow surgery control := by
+  rcases payload with ⟨payload⟩
+  rcases payload.packageStatementDerivationFamily M with
+    ⟨n, _package, _packageStatement, extinction,
+      flow, surgery, control, derivation⟩
+  exact ⟨extinction, n, flow, surgery, control, derivation⟩
+
+/--
+For a fixed target manifold, a complete grounded finite-extinction consumer
 payload simultaneously exposes the named finite-extinction package/milestone
 requirements and the package-first finite-extinction derivation payload.
 -/
