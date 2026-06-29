@@ -619,6 +619,47 @@ theorem compl_singleton_euclidean_complete_collapse_package_of_homeomorph_to_one
     ⟩
 
 /--
+The transported singleton-complement collapse can also be consumed without an
+externally supplied source basepoint.  The Euclidean complement chart supplies
+nonemptiness of `{x}ᶜ`, and the selected endpoint carries the same full
+collapse package: Euclidean chart, contractibility, low-homotopy uniqueness,
+equality eliminators, and path-collapse data.
+-/
+theorem compl_singleton_euclidean_complete_collapse_package_with_basepoint_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M) :
+    ∃ basepoint : ({x}ᶜ : Set M),
+      Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+        ContractibleSpace ({x}ᶜ : Set M) ∧
+        Nonempty ({x}ᶜ : Set M) ∧
+        PathConnectedSpace ({x}ᶜ : Set M) ∧
+        ConnectedSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+        LocPathConnectedSpace ({x}ᶜ : Set M) ∧
+        Nonempty (Unique (ZerothHomotopy ({x}ᶜ : Set M))) ∧
+        Nonempty (Unique (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint)) ∧
+        Nonempty (Unique (FundamentalGroup ({x}ᶜ : Set M) basepoint)) ∧
+        Nonempty (Unique (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint)) ∧
+        (∀ y z : ({x}ᶜ : Set M),
+          ZerothHomotopy.mk y = ZerothHomotopy.mk z) ∧
+        (∀ a b : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint, a = b) ∧
+        (∀ a b : FundamentalGroup ({x}ᶜ : Set M) basepoint, a = b) ∧
+        (∀ a b : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint, a = b) ∧
+        (∀ y z : ({x}ᶜ : Set M), Nonempty (Path y z)) ∧
+        (∀ y : ({x}ᶜ : Set M), pathComponent y = Set.univ) := by
+  let chart :=
+    homeomorph_compl_singleton_euclidean_of_homeomorph_to_onePoint_threeSpace
+      h x
+  letI : ContractibleSpace ({x}ᶜ : Set M) := chart.contractibleSpace
+  let basepoint : ({x}ᶜ : Set M) :=
+    Classical.choice (show Nonempty ({x}ᶜ : Set M) by infer_instance)
+  exact
+    ⟨ basepoint
+    , compl_singleton_euclidean_complete_collapse_package_of_homeomorph_to_onePoint_threeSpace
+        h x basepoint
+    ⟩
+
+/--
 The singleton complement package can be produced without an externally chosen
 basepoint: contractibility supplies a point of the complement, and the full
 Euclidean/low-homotopy uniqueness package is then available at that selected
