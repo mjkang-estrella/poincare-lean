@@ -983,6 +983,115 @@ theorem groundedUniversalFiniteExtinction_packageStatementDerivationFamily_of_gr
     (groundedUniversalFiniteExtinctionDetailedAssemblyPayload grounded)
 
 /--
+For a fixed target, the detailed grounded finite-extinction payload can select
+both concrete derivation views from the same stored statement-payload family:
+the flow-first view with explicit surgery/control data and the package-first
+view used by downstream package consumers.  The theorem also records that the
+two selected finite-extinction statements, derivations, and extinction
+witnesses are synchronized, so callers do not have to reopen the grounded
+certificate to compare the two views.
+-/
+theorem groundedUniversalFiniteExtinctionDetailedAssemblyPayload_fixedTarget_flowPackage_and_packageDerivation_fields
+    (payload : GroundedUniversalFiniteExtinctionDetailedAssemblyPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ n : ℕ∞ω,
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+    ∃ surgery : HasRicciFlowWithSurgery n M,
+    ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    ∃ packageStatement : FiniteExtinctionStatement n M,
+    ∃ derivation : HasFiniteExtinctionDerivation flow surgery control,
+    ∃ packageStatementAgain : FiniteExtinctionStatement n M,
+    ∃ derivationAgain : HasFiniteExtinctionDerivation flow surgery control,
+      packageStatementAgain = packageStatement ∧
+        derivationAgain = derivation ∧
+        FiniteExtinctionByRicciFlowWithSurgery M ∧
+        (∃ packageFirst :
+          FiniteExtinctionSurgeryPackage n M,
+          packageFirst = package ∧
+            FiniteExtinctionStatement n M ∧
+            FiniteExtinctionByRicciFlowWithSurgery M ∧
+            ∃ flowFirst : RicciFlowData ThreeManifoldModelWithCorners n M,
+            ∃ surgeryFirst : HasRicciFlowWithSurgery n M,
+            ∃ controlFirst :
+              HasPerelmanSingularityControl (n := n) (M := M) flowFirst,
+            ∃ derivationFirst :
+              HasFiniteExtinctionDerivation flowFirst surgeryFirst
+                controlFirst,
+              flowFirst = flow ∧
+                HEq derivationFirst derivation) := by
+  rcases payload.statementPayloadFamily M with
+    ⟨n, flow, surgery, control, package, packageStatement, derivation,
+      finiteExtinction⟩
+  exact
+    ⟨ n
+    , flow
+    , surgery
+    , control
+    , package
+    , packageStatement
+    , derivation
+    , packageStatement
+    , derivation
+    , rfl
+    , rfl
+    , finiteExtinction
+    , package
+    , rfl
+    , packageStatement
+    , finiteExtinction
+    , flow
+    , surgery
+    , control
+    , derivation
+    , rfl
+    , HEq.rfl
+    ⟩
+
+/--
+The fixed-target flow/package and package-first derivation synchronization is
+available directly from the grounded universal finite-extinction statement via
+the detailed assembly payload it constructs.
+-/
+theorem groundedUniversalFiniteExtinction_fixedTarget_flowPackage_and_packageDerivation_fields_of_grounded
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ n : ℕ∞ω,
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+    ∃ surgery : HasRicciFlowWithSurgery n M,
+    ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    ∃ packageStatement : FiniteExtinctionStatement n M,
+    ∃ derivation : HasFiniteExtinctionDerivation flow surgery control,
+    ∃ packageStatementAgain : FiniteExtinctionStatement n M,
+    ∃ derivationAgain : HasFiniteExtinctionDerivation flow surgery control,
+      packageStatementAgain = packageStatement ∧
+        derivationAgain = derivation ∧
+        FiniteExtinctionByRicciFlowWithSurgery M ∧
+        (∃ packageFirst :
+          FiniteExtinctionSurgeryPackage n M,
+          packageFirst = package ∧
+            FiniteExtinctionStatement n M ∧
+            FiniteExtinctionByRicciFlowWithSurgery M ∧
+            ∃ flowFirst : RicciFlowData ThreeManifoldModelWithCorners n M,
+            ∃ surgeryFirst : HasRicciFlowWithSurgery n M,
+            ∃ controlFirst :
+              HasPerelmanSingularityControl (n := n) (M := M) flowFirst,
+            ∃ derivationFirst :
+              HasFiniteExtinctionDerivation flowFirst surgeryFirst
+                controlFirst,
+              flowFirst = flow ∧
+                HEq derivationFirst derivation) :=
+  groundedUniversalFiniteExtinctionDetailedAssemblyPayload_fixedTarget_flowPackage_and_packageDerivation_fields
+    (groundedUniversalFiniteExtinctionDetailedAssemblyPayload grounded) M
+
+/--
 Grounded universal finite extinction plus theorem-shaped topology extraction
 proves the project-level Poincare statement through the universal
 finite-extinction topology-extraction route.
