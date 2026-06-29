@@ -556,4 +556,64 @@ theorem threeSphereRecognition_bridgeTail_family
     smoothabilityBridgeTail_of_threeSphereRecognition_subobligationsPayload
       payload (recognize M)
 
+/--
+Target-family `ThreeSphere` recognition plus the recognized-source
+smoothability payload exposes the full smoothability assembly prefix for every
+compact simply connected target: the recognition witness, transported surgery
+prerequisites, the first two Moise package fields, and the bridge-tail smooth
+structure/model/chart-compatibility witnesses produced from the same payload.
+-/
+theorem threeSphereRecognition_smoothabilityAssemblyPrefix_family
+    (recognize :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere))
+    (payload : ThreeSphereRecognitionSmoothabilitySubobligationsPayload.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ ThreeSphere) ∧
+          (∃ _t2 : T2Space M,
+            ∃ _charted : ChartedSpace ThreeManifoldModel M,
+            ∃ _simple : SimplyConnectedSpace M,
+            ∃ _compact : CompactSpace M,
+            ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+              Nonempty M) ∧
+          (∃ _t2 : T2Space M,
+            ∃ _charted : ChartedSpace ThreeManifoldModel M,
+            ∃ _simple : SimplyConnectedSpace M,
+            ∃ _compact : CompactSpace M,
+            ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+              HasMoiseLocallyFiniteCoverRefinement M localCharts) ∧
+          (∃ _t2 : T2Space M,
+            ∃ _charted : ChartedSpace ThreeManifoldModel M,
+            ∃ _simple : SimplyConnectedSpace M,
+            ∃ _compact : CompactSpace M,
+            ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+            ∃ smoothDerivationStatement :
+              SmoothStructureDerivationStatement M smoothStructure,
+            ∃ manifoldEvidence :
+              IsManifold ThreeManifoldModelWithCorners 1 M,
+            ∃ bridgeDerivation :
+              HasSmoothabilityBridgeDerivation
+                M smoothStructure smoothDerivationStatement
+                manifoldEvidence,
+            ∃ modelCompatibility :
+              HasSmoothManifoldModelCompatibility
+                M smoothStructure smoothDerivationStatement manifoldEvidence
+                bridgeDerivation,
+              HasSmoothChartCompatibility
+                M smoothStructure smoothDerivationStatement manifoldEvidence
+                bridgeDerivation modelCompatibility) := by
+  intro M _top _t2 _charted _simple _compact
+  exact
+    ⟨ recognize M
+    , (threeSphereRecognition_surgeryPrerequisites_and_moiseInitialFields
+        payload (recognize M)).1
+    , (threeSphereRecognition_surgeryPrerequisites_and_moiseInitialFields
+        payload (recognize M)).2
+    , threeSphereRecognition_bridgeTail_family recognize payload M
+    ⟩
+
 end Poincare
