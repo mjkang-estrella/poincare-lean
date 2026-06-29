@@ -1842,6 +1842,93 @@ theorem finiteExtinctionRequirement_completeSurgeryPerelmanConsumer_and_fixedTar
     ⟩
 
 /--
+The finite-extinction package-layer requirement directly yields the fixed-target
+finite-extinction witness by constructing the complete surgery/Perelman
+consumer and projecting its selected combined payload.  This is the collapsed
+consumer route for downstream assembly code that needs the actual
+`FiniteExtinctionByRicciFlowWithSurgery` witness rather than the surrounding
+projection package.
+-/
+theorem finiteExtinctionByRicciFlowWithSurgery_of_finiteExtinctionRequirement
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    FiniteExtinctionByRicciFlowWithSurgery M := by
+  let completePayload :=
+    surgeryPerelman_completeConsumerPayload_of_finiteExtinctionPackage_requirement
+      finiteExtinctionRequirement
+  exact
+    finiteExtinctionByRicciFlowWithSurgery_of_surgeryPerelman_completeConsumerPayload
+      completePayload M
+
+/--
+The same collapsed route can retain the selected complete consumer and the
+package/flow payload that produced the fixed-target finite-extinction witness.
+The final witness is synchronized with the selected combined payload's stored
+finite-extinction field and with the direct collapsed requirement endpoint.
+-/
+theorem finiteExtinctionRequirement_selectedCompleteSurgeryPerelmanConsumer_and_fixedTarget_finiteExtinctionWitness
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ completePayload :
+      SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u},
+    ∃ n : ℕ∞ω,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    ∃ combinedPayload :
+      FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package,
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+    ∃ finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      finiteExtinctionRequirement =
+          finiteExtinctionPackage_requirement_of_surgeryPerelman_completeConsumerPayload
+            ⟨completePayload⟩ ∧
+        flow = ricci_flow_data_of_surgery_package package ∧
+        RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+        PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+        Nonempty (SurgeryScaleFunctionPayload flow) ∧
+        HasSingularityModelBlowupClassification flow ∧
+        FiniteExtinctionStatement n M ∧
+        finiteExtinction = combinedPayload.finiteExtinctionWitness ∧
+        finiteExtinction =
+          finiteExtinctionByRicciFlowWithSurgery_of_finiteExtinctionRequirement
+            finiteExtinctionRequirement M := by
+  let completePayloadNonempty :=
+    surgeryPerelman_completeConsumerPayload_of_finiteExtinctionPackage_requirement
+      finiteExtinctionRequirement
+  rcases completePayloadNonempty with ⟨completePayload⟩
+  rcases
+    surgeryPerelman_fixedTarget_combinedPayload_of_completeConsumerPayload
+      ⟨completePayload⟩ M with
+    ⟨n, package, combinedPayload, flow, hFlow, constructionPackage,
+      perelmanPackage, scalePayload, blowupClassification,
+      finiteExtinctionStatement, finiteExtinctionWitness⟩
+  exact
+    ⟨ completePayload
+    , n
+    , package
+    , combinedPayload
+    , flow
+    , finiteExtinctionWitness
+    , by apply Subsingleton.elim
+    , hFlow
+    , constructionPackage
+    , perelmanPackage
+    , scalePayload
+    , blowupClassification
+    , finiteExtinctionStatement
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    ⟩
+
+/--
 The finite-extinction package-layer requirement constructs the complete
 surgery/Perelman consumer payload and immediately exposes the synchronized
 projection payload and finite-extinction fields for the same selected package.
