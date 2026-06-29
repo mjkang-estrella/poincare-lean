@@ -1264,6 +1264,53 @@ theorem surgeryPerelman_fixedTarget_combinedPayload_of_completeConsumerPayload
 
 /--
 For a fixed target manifold, a complete surgery/Perelman consumer payload
+exposes the finite-extinction package-layer sigma witness together with the
+concrete combined payload, selected flow, Perelman/surgery packages, scale
+payload, blowup classification, finite-extinction statement, and extinction
+witness from the same selected package.
+-/
+theorem surgeryPerelman_fixedTarget_packageLayerTarget_and_combinedPayload_of_completeConsumerPayload
+    (payload :
+      Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M) ∧
+      ∃ n : ℕ∞ω,
+      ∃ package : FiniteExtinctionSurgeryPackage n M,
+      ∃ _combinedPayload :
+        FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        flow = ricci_flow_data_of_surgery_package package ∧
+          RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+          PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+          Nonempty (SurgeryScaleFunctionPayload flow) ∧
+          HasSingularityModelBlowupClassification flow ∧
+          FiniteExtinctionStatement n M ∧
+          FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases surgeryPerelman_fixedTarget_combinedPayload_of_completeConsumerPayload
+      payload M with
+    ⟨n, package, combinedPayload, flow, hFlow, constructionPackage,
+      perelmanPackage, scalePayload, blowupClassification,
+      finiteExtinctionStatement, finiteExtinctionWitness⟩
+  exact
+    ⟨ ⟨⟨n, package⟩⟩
+    , n
+    , package
+    , combinedPayload
+    , flow
+    , hFlow
+    , constructionPackage
+    , perelmanPackage
+    , scalePayload
+    , blowupClassification
+    , finiteExtinctionStatement
+    , finiteExtinctionWitness
+    ⟩
+
+/--
+For a fixed target manifold, a complete surgery/Perelman consumer payload
 simultaneously exposes the package-layer requirement, both analytic milestones,
 and the concrete combined payload object tied to the selected surgery flow.
 -/
