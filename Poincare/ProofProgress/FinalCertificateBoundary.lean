@@ -7469,4 +7469,71 @@ theorem finalAssemblySubobligationBoundaryInputs_openedNamedPrimitiveInputs_payl
     , witnessCriterion
     ⟩
 
+/--
+The sub-obligation final-collapse boundary has a direct topology-assembly
+projection at each witness.  It constructs the minimal package inputs, the
+primitive finite-extinction inputs, and the topology-assembly payload, then
+opens the payload's checked-certificate route and witness-level completion
+criterion without passing through the larger selected-consumer existential.
+-/
+theorem finalAssemblySubobligationBoundaryInputs_topologyAssembly_checkedCertificate_and_witnessCriterion
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u})
+    (witness : Type u) :
+    ∃ minimalInputs : FinalCertificateMinimalPackageInputs.{u},
+    ∃ primitiveInputs : FinalCertificatePrimitiveInputs.{u},
+    ∃ topologyAssemblyPayload :
+      FinalCertificateTopologyAssemblyPayload minimalInputs inputs.topology,
+      minimalInputs =
+        finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+          (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs
+            inputs) ∧
+        primitiveInputs =
+          finalCertificatePrimitiveInputs_of_minimalPackageInputs minimalInputs
+            (extinction_implies_sphere_of_topology_package
+              inputs.topology) ∧
+        primitiveInputs.universalFiniteExtinction =
+          universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+            inputs.smoothability
+            (finiteExtinctionPackage_requirement_of_subobligations_family
+              inputs.finiteExtinctionSubobligations) ∧
+        primitiveInputs.extinctionImpliesSphere =
+          extinction_implies_sphere_of_topology_package inputs.topology ∧
+        topologyAssemblyPayload.checkedCertificate =
+          completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+            (remainingDependencyPackage_of_finalAssemblyPackageBoundaryInputs
+              (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs
+                inputs)) primitiveInputs ∧
+        topologyAssemblyPayload.checkedCertificate =
+          completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+            minimalInputs inputs.topology ∧
+        topologyAssemblyPayload.completionCriteria witness =
+          completion_criterion_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+            witness minimalInputs inputs.topology ∧
+        CompletionCriterionAtUniverse witness := by
+  let assemblyInputs :=
+    finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs
+      inputs
+  let minimalInputs :=
+    finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+      assemblyInputs
+  let primitiveInputs :=
+    finalCertificatePrimitiveInputs_of_minimalPackageInputs minimalInputs
+      (extinction_implies_sphere_of_topology_package inputs.topology)
+  let topologyAssemblyPayload :
+      FinalCertificateTopologyAssemblyPayload minimalInputs inputs.topology :=
+    finalCertificateTopologyAssemblyPayload minimalInputs inputs.topology
+  exact
+    ⟨ minimalInputs
+    , primitiveInputs
+    , topologyAssemblyPayload
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , by apply Subsingleton.elim
+    , rfl
+    , rfl
+    , topologyAssemblyPayload.completionCriteria witness
+    ⟩
+
 end Poincare
