@@ -921,6 +921,74 @@ theorem extinctionTopology_fixedTarget_concrete_homeomorphism_and_puncture_paylo
     ⟩
 
 /--
+For a fixed finite-extinction target, a complete topology consumer payload
+exposes the selected final homeomorphism as a concrete `M ≃ₜ ThreeSphere`
+witness together with the full target-specific extraction surface:
+classification subobligations, recognition, quotient/lift/assembly/derivation
+routes, one-point compactification recognition, and puncture transport data.
+-/
+theorem extinctionTopology_fixedTarget_concrete_homeomorphism_fullExtraction_payload_of_completeConsumerPayload
+    (payload : Nonempty (ExtinctionTopologyCompleteConsumerPayload.{u}))
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ∃ package : ExtinctionTopologyExtractionPackage.{u},
+      ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionImpliesSphereStatement.{u} ∧
+        ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} ∧
+        ∃ homeomorphism : M ≃ₜ ThreeSphere,
+          Nonempty.intro homeomorphism =
+              homeomorphism_of_topology_package package M extinction ∧
+          ExtinctionTopologyClassificationSubobligationsPayload
+            M extinction ∧
+          ExtinctionTopologySimplyConnectedRecognitionStatement
+            M extinction ∧
+          ExtinctionTopologySphericalTrivialQuotientStatement
+            M extinction ∧
+          ExtinctionTopologySphericalHomeomorphismLiftStatement
+            M extinction ∧
+          ExtinctionTopologyHomeomorphismAssemblyStatement
+            M extinction (Nonempty.intro homeomorphism) ∧
+          ExtinctionTopologyHomeomorphismDerivationStatement
+            M extinction (Nonempty.intro homeomorphism) ∧
+          ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+            M extinction (Nonempty.intro homeomorphism) ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          (∀ x : M, ContractibleSpace ({x}ᶜ : Set M)) ∧
+          (∀ {x y : M} (_hyx : y ≠ x)
+            (basepoint : (({x} ∪ {y})ᶜ : Set M)),
+              SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                Subsingleton
+                  (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+                    basepoint)) := by
+  rcases payload with ⟨payload⟩
+  rcases payload.derivationPunctureFamily M extinction with
+    ⟨homeomorphism, hHomeomorphism_eq, hClassification,
+      hSimplyConnectedRecognition, hTrivialQuotient, hLift, hAssembly,
+      hDerivation, hLiftedDerivation, hOnePoint,
+      hSingletonContractible, hTwoPoint⟩
+  rcases homeomorphism with ⟨homeomorphism⟩
+  exact
+    ⟨ payload.topologyPackage
+    , payload.topologyStatement
+    , payload.extinctionImpliesSphere
+    , payload.liftedHomeomorphismDerivation
+    , homeomorphism
+    , hHomeomorphism_eq
+    , hClassification
+    , hSimplyConnectedRecognition
+    , hTrivialQuotient
+    , hLift
+    , hAssembly
+    , hDerivation
+    , hLiftedDerivation
+    , hOnePoint
+    , hSingletonContractible
+    , hTwoPoint
+    ⟩
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
