@@ -1570,6 +1570,142 @@ theorem poincare_statement_recognition_and_fixedTarget_concrete_fullExtraction_o
     ⟩
 
 /--
+Universal finite extinction and the complete topology consumer payload expose
+the public Poincare statement while retaining the fixed-target topology
+recognition data needed by puncture-transport consumers.  The selected package
+is kept synchronized with its extraction statement, concrete `ThreeSphere`
+homeomorphism, one-point compactification recognition, Euclidean models for
+the singleton and two-point complements, and the full singleton low-homotopy
+collapse at a chosen basepoint.
+-/
+theorem poincare_statement_recognition_fixedTarget_lowHomotopy_and_euclideanPunctureModels_of_universalFiniteExtinctionStatement_and_extinctionTopology_completeConsumerPayload
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (payload : Nonempty (ExtinctionTopologyCompleteConsumerPayload.{u}))
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) {y : M} (hyx : y ≠ x)
+    (singletonBasepoint : ({x}ᶜ : Set M))
+    (twoPointBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    PoincareConjectureStatement.{u} ∧
+      ExtinctionOnePointThreeSpaceRecognitionStatement.{u} ∧
+      ∃ package : ExtinctionTopologyExtractionPackage.{u},
+      ∃ topologyStatement : ExtinctionTopologyExtractionStatement.{u},
+        topologyStatement =
+            extinction_topology_extraction_statement_of_topology_package
+              package ∧
+          ExtinctionImpliesSphereStatement.{u} ∧
+          ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} ∧
+          ∃ homeomorphism : M ≃ₜ ThreeSphere,
+            Nonempty (M ≃ₜ ThreeSphere) ∧
+            Nonempty.intro homeomorphism =
+                homeomorphism_of_topology_package package M extinction ∧
+            ExtinctionTopologyClassificationSubobligationsPayload
+              M extinction ∧
+            ExtinctionTopologySimplyConnectedRecognitionStatement
+              M extinction ∧
+            ExtinctionTopologySphericalTrivialQuotientStatement
+              M extinction ∧
+            ExtinctionTopologySphericalHomeomorphismLiftStatement
+              M extinction ∧
+            ExtinctionTopologyHomeomorphismAssemblyStatement
+              M extinction (Nonempty.intro homeomorphism) ∧
+            ExtinctionTopologyHomeomorphismDerivationStatement
+              M extinction (Nonempty.intro homeomorphism) ∧
+            ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+              M extinction (Nonempty.intro homeomorphism) ∧
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+            Nonempty (({x}ᶜ : Set M) ≃ₜ
+              EuclideanSpace ℝ (Fin 3)) ∧
+            (∃ puncture : EuclideanSpace ℝ (Fin 3),
+              Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+                ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+            ContractibleSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+            Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M)
+              singletonBasepoint) ∧
+            Subsingleton (FundamentalGroup ({x}ᶜ : Set M)
+              singletonBasepoint) ∧
+            Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M)
+              singletonBasepoint) ∧
+            SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+            Subsingleton
+              (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+                twoPointBasepoint) := by
+  let recognition :
+      ExtinctionOnePointThreeSpaceRecognitionStatement.{u} :=
+    extinctionOnePointThreeSpaceRecognitionStatement_of_extinctionTopology_completeConsumerPayload
+      payload
+  let statement : PoincareConjectureStatement.{u} :=
+    poincare_statement_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
+      finiteExtinction recognition
+  rcases
+    extinctionTopology_statementEquality_and_fixedTarget_concrete_homeomorphism_fullExtraction_of_completeConsumerPayload
+      payload M extinction with
+    ⟨ package
+    , topologyStatement
+    , hTopologyStatement
+    , extinctionImpliesSphere
+    , liftedHomeomorphismDerivation
+    , homeomorphism
+    , nonemptyHomeomorphism
+    , hHomeomorphism
+    , classification
+    , simplyConnectedRecognition
+    , trivialQuotient
+    , lift
+    , assembly
+    , derivation
+    , liftedDerivation
+    , onePoint
+    , singletonContractible
+    , twoPoint
+    ⟩
+  rcases
+    exists_homeomorph_twoPointComplement_puncturedEuclidean_of_homeomorph_to_onePoint_threeSpace
+      onePoint hyx with
+    ⟨puncture, puncturedEuclidean⟩
+  rcases
+    compl_singleton_lowHomotopy_subsingleton_package_of_topology_package
+      package M extinction x singletonBasepoint with
+    ⟨zerothSubsingleton, piZeroSubsingleton,
+      fundamentalGroupSubsingleton, piOneSubsingleton⟩
+  exact
+    ⟨ statement
+    , recognition
+    , package
+    , topologyStatement
+    , hTopologyStatement
+    , extinctionImpliesSphere
+    , liftedHomeomorphismDerivation
+    , homeomorphism
+    , nonemptyHomeomorphism
+    , hHomeomorphism
+    , classification
+    , simplyConnectedRecognition
+    , trivialQuotient
+    , lift
+    , assembly
+    , derivation
+    , liftedDerivation
+    , onePoint
+    , ⟨homeomorph_compl_singleton_euclidean_of_homeomorph_to_onePoint_threeSpace
+        onePoint x⟩
+    , ⟨puncture, puncturedEuclidean⟩
+    , singletonContractible x
+    , compl_singleton_simplyConnectedSpace_of_topology_package
+        package M extinction x
+    , zerothSubsingleton
+    , piZeroSubsingleton
+    , fundamentalGroupSubsingleton
+    , piOneSubsingleton
+    , (twoPoint hyx twoPointBasepoint).1
+    , (twoPoint hyx twoPointBasepoint).2
+    ⟩
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
