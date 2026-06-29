@@ -6390,4 +6390,122 @@ theorem finalAssemblyPackageBoundaryInputs_reservedName_direct_finalCollapse_pay
     , witnessCriterion
     ⟩
 
+/--
+The old three-input final-assembly boundary also carries the reduced
+two-package final-certificate boundary.  This endpoint keeps the selected
+reserved final-collapse payload synchronized with both checked-certificate
+constructors: the legacy `FinalAssemblyPackageBoundaryInputs` constructor and
+the reduced `FinalCertificateMinimalPackageInputs` plus topology-package
+constructor.
+-/
+theorem finalAssemblyPackageBoundaryInputs_reservedName_direct_finalCollapse_minimal_and_legacyCertificate_routes
+    (inputs : FinalAssemblyPackageBoundaryInputs.{u})
+    (witness : Type u) :
+    let minimalInputs :=
+      finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+        inputs
+    let selected :=
+      finalCertificateNamedPackageLayerConsumerPayload
+        inputs.smoothability inputs.finiteExtinction inputs.topology
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+        selected.smoothability = minimalInputs.smoothability ∧
+        selected.finiteExtinction = minimalInputs.finiteExtinction ∧
+        selected.topology = inputs.topology ∧
+        selected.publicStatement =
+          poincare_conjecture_of_completion_certificate
+            selected.checkedCertificate ∧
+        selected.checkedCertificate =
+          completion_certificate_of_finalAssemblyPackageBoundaryInputs
+            inputs ∧
+        selected.checkedCertificate =
+          completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+            minimalInputs inputs.topology ∧
+        selected.publicPayload =
+          ⟨selected.publicStatement, selected.completionCriteria⟩ ∧
+        selected.canonicalPayload =
+          ⟨selected.canonicalTarget, selected.completionCriteria⟩ ∧
+        selected.topologyAssemblyPayload.publicStatement =
+          selected.publicStatement ∧
+        selected.topologyAssemblyPayload.checkedCertificate =
+          selected.checkedCertificate ∧
+        selected.topologyAssemblyPayload.canonicalTarget =
+          selected.canonicalTarget ∧
+        selected.topologyAssemblyPayload.publicPayload =
+          selected.publicPayload ∧
+        selected.topologyAssemblyPayload.canonicalPayload =
+          selected.canonicalPayload ∧
+        selected.topologyAssemblyPayload.completionCriteria =
+          selected.completionCriteria ∧
+        PoincareConjectureStatement.{u} ∧
+        PoincareCompletionCertificate.{u} ∧
+        Nonempty PoincareCompletionCertificate.{u} ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        (∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        CompletionCriterionAtUniverse witness := by
+  let minimalInputs :=
+    finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+      inputs
+  let selected :=
+    finalCertificateNamedPackageLayerConsumerPayload
+      inputs.smoothability inputs.finiteExtinction inputs.topology
+  rcases
+    finalAssemblyPackageBoundaryInputs_reservedName_direct_finalCollapse_payload_topologyAssembly_legacyCertificate_and_witness
+      inputs witness with
+    ⟨ theoremName
+    , theoremName_eq
+    , hSmoothability
+    , hFiniteExtinction
+    , hTopology
+    , hPublicStatement
+    , hLegacyCertificate
+    , hPublicPayload
+    , hCanonicalPayload
+    , hTopologyPublicStatement
+    , hTopologyCheckedCertificate
+    , hTopologyCanonicalTarget
+    , hTopologyPublicPayload
+    , hTopologyCanonicalPayload
+    , hTopologyCompletionCriteria
+    , publicStatement
+    , checkedCertificate
+    , nonemptyCertificate
+    , remainingPackage
+    , canonicalTarget
+    , canonicalStatement
+    , completionCriteria
+    , witnessCriterion
+    ⟩
+  exact
+    ⟨ theoremName
+    , theoremName_eq
+    , hSmoothability
+    , hFiniteExtinction
+    , hTopology
+    , hPublicStatement
+    , hLegacyCertificate
+    , by apply Subsingleton.elim
+    , hPublicPayload
+    , hCanonicalPayload
+    , hTopologyPublicStatement
+    , hTopologyCheckedCertificate
+    , hTopologyCanonicalTarget
+    , hTopologyPublicPayload
+    , hTopologyCanonicalPayload
+    , hTopologyCompletionCriteria
+    , publicStatement
+    , checkedCertificate
+    , nonemptyCertificate
+    , remainingPackage
+    , canonicalTarget
+    , canonicalStatement
+    , completionCriteria
+    , witnessCriterion
+    ⟩
+
 end Poincare
