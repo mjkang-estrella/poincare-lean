@@ -680,6 +680,54 @@ theorem extinctionTopology_fixedTarget_recognition_and_transport_fields_of_compl
     ⟩
 
 /--
+For a fixed finite-extinction target and chosen two-puncture basepoint, a
+complete topology consumer payload exposes not only the package-selected
+sphere recognition and puncture-transport consequences, but also the concrete
+punctured-Euclidean model of that two-point complement.
+-/
+theorem extinctionTopology_fixedTarget_euclidean_puncture_models_of_completeConsumerPayload
+    (payload : Nonempty (ExtinctionTopologyCompleteConsumerPayload.{u}))
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) {y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ package : ExtinctionTopologyExtractionPackage.{u},
+      ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        homeomorphism =
+            homeomorphism_of_topology_package package M extinction ∧
+        Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+        (∃ puncture : EuclideanSpace ℝ (Fin 3),
+          Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+        ContractibleSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        Subsingleton
+          (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  rcases payload with ⟨payload⟩
+  rcases payload.derivationPunctureFamily M extinction with
+    ⟨homeomorphism, hHomeomorphism_eq, _classification,
+      _simplyConnectedRecognition, _trivialQuotient, _lift,
+      _assembly, _derivation, _liftedDerivation, hOnePoint,
+      hSingletonContractible, hTwoPoint⟩
+  rcases
+    exists_homeomorph_twoPointComplement_puncturedEuclidean_of_homeomorph_to_onePoint_threeSpace
+      hOnePoint hyx with
+    ⟨puncture, hPuncturedEuclidean⟩
+  exact
+    ⟨ payload.topologyPackage
+    , homeomorphism
+    , hHomeomorphism_eq
+    , ⟨homeomorph_compl_singleton_euclidean_of_homeomorph_to_threeSphere
+        homeomorphism x⟩
+    , ⟨puncture, hPuncturedEuclidean⟩
+    , hSingletonContractible x
+    , (hTwoPoint hyx basepoint).1
+    , (hTwoPoint hyx basepoint).2
+    ⟩
+
+/--
 For a fixed finite-extinction target, a complete topology consumer payload
 exposes the selected 3-sphere homeomorphism together with the one-point
 compactification homeomorphism transported by the same topology package.
