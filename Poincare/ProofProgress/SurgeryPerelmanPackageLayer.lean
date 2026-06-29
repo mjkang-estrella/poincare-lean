@@ -1384,6 +1384,97 @@ theorem surgeryPerelman_completeConsumerPayload_fixedTarget_combinedPayload_sele
     ⟩
 
 /--
+An inhabited complete surgery/Perelman consumer payload opens the reduced
+volume, no-local-collapsing, and canonical-neighborhood control spine at a
+fixed target through the concrete combined payload selected for that target.
+This keeps the Perelman analytic controls synchronized with the same
+finite-extinction statement and extinction witness carried by the selected
+surgery package.
+-/
+theorem surgeryPerelman_completeConsumerPayload_fixedTarget_noLocalCollapsing_reducedVolume_canonical_fields
+    (payload :
+      Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ n : ℕ∞ω,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    ∃ _combinedPayload :
+      FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package,
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      flow = ricci_flow_data_of_surgery_package package ∧
+        PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+        HasPerelmanReducedVolumeDefinition flow ∧
+        HasPerelmanReducedVolumeDerivativeFormula flow ∧
+        HasPerelmanReducedVolumeRigidity flow ∧
+        HasPerelmanReducedVolumePositiveLowerBound flow ∧
+        HasPerelmanReducedVolumeLimitRigidity flow ∧
+        HasPerelmanReducedVolumeNonincreasing flow ∧
+        HasPerelmanKappaNoncollapsingFromReducedVolume flow ∧
+        HasPerelmanNoLocalCollapsingContradictionSetup flow ∧
+        HasNoLocalCollapsingVolumeLowerBound flow ∧
+        HasPerelmanKappaNoncollapsingQuantification flow ∧
+        HasCanonicalNeighborhoodScaleControl flow ∧
+        HasCanonicalNeighborhoodStability flow ∧
+        HasCanonicalNeighborhoodPersistenceAcrossScales flow ∧
+        HasCanonicalNeighborhoodNeckCapDichotomy flow ∧
+        HasCanonicalNeighborhoodClassification flow ∧
+        HasPerelmanNoLocalCollapsing flow ∧
+        HasPerelmanReducedVolumeMonotonicity flow ∧
+        HasCanonicalNeighborhoodTheorem flow ∧
+        FiniteExtinctionStatement n M ∧
+        FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases
+    surgeryPerelman_completeConsumerPayload_fixedTarget_combinedPayload_selectedFlow_fields
+      payload M with
+    ⟨n, package, combinedPayload, _flow, _flow_eq, _constructionPackage,
+      _perelmanPackage, _scalePayload, _blowupClassification,
+      _finiteExtinctionStatement, _finiteExtinctionWitness⟩
+  rcases
+    finiteExtinctionSurgeryPerelmanAndExtinctionPayload_noLocalCollapsing_reducedVolume_canonical_fields
+      combinedPayload with
+    ⟨flow, hFlow, perelmanPackage, reducedVolumeDefinition,
+      reducedVolumeDerivativeFormula, reducedVolumeRigidity,
+      reducedVolumePositiveLowerBound, reducedVolumeLimitRigidity,
+      reducedVolumeNonincreasing, kappaNoncollapsingFromReducedVolume,
+      noLocalCollapsingContradictionSetup, noLocalCollapsingVolumeLowerBound,
+      kappaNoncollapsing, canonicalNeighborhoodScaleControl,
+      canonicalNeighborhoodStability,
+      canonicalNeighborhoodPersistenceAcrossScales,
+      canonicalNeighborhoodNeckCapDichotomy, canonicalNeighborhoodClassification,
+      noLocalCollapsing, reducedVolume, canonicalNeighborhood,
+      finiteExtinctionStatement, finiteExtinctionWitness⟩
+  exact
+    ⟨ n
+    , package
+    , combinedPayload
+    , flow
+    , hFlow
+    , perelmanPackage
+    , reducedVolumeDefinition
+    , reducedVolumeDerivativeFormula
+    , reducedVolumeRigidity
+    , reducedVolumePositiveLowerBound
+    , reducedVolumeLimitRigidity
+    , reducedVolumeNonincreasing
+    , kappaNoncollapsingFromReducedVolume
+    , noLocalCollapsingContradictionSetup
+    , noLocalCollapsingVolumeLowerBound
+    , kappaNoncollapsing
+    , canonicalNeighborhoodScaleControl
+    , canonicalNeighborhoodStability
+    , canonicalNeighborhoodPersistenceAcrossScales
+    , canonicalNeighborhoodNeckCapDichotomy
+    , canonicalNeighborhoodClassification
+    , noLocalCollapsing
+    , reducedVolume
+    , canonicalNeighborhood
+    , finiteExtinctionStatement
+    , finiteExtinctionWitness
+    ⟩
+
+/--
 An inhabited complete surgery/Perelman consumer payload also exposes the
 package-tied projection family, the selected-flow scale/blowup family, and the
 combined surgery/Perelman/extinction payload family retained by the same
@@ -2098,6 +2189,61 @@ theorem finiteExtinctionRequirement_completeSurgeryPerelmanConsumer_and_fixedTar
     , perelmanSingularityControlMilestone
     , packageLayerTarget
     , combinedPayload
+    ⟩
+
+/--
+The finite-extinction package-layer requirement constructs the complete
+surgery/Perelman consumer payload and opens the fixed-target reduced-volume,
+no-local-collapsing, and canonical-neighborhood control spine through that same
+selected consumer.  This is the package-layer route to the Perelman analytic
+controls synchronized with the selected finite-extinction witness.
+-/
+theorem finiteExtinctionRequirement_completeSurgeryPerelmanConsumer_and_fixedTarget_noLocalCollapsing_reducedVolume_canonical_fields
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u} ∧
+      ∃ n : ℕ∞ω,
+      ∃ package : FiniteExtinctionSurgeryPackage n M,
+      ∃ _combinedPayload :
+        FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        flow = ricci_flow_data_of_surgery_package package ∧
+          PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+          HasPerelmanReducedVolumeDefinition flow ∧
+          HasPerelmanReducedVolumeDerivativeFormula flow ∧
+          HasPerelmanReducedVolumeRigidity flow ∧
+          HasPerelmanReducedVolumePositiveLowerBound flow ∧
+          HasPerelmanReducedVolumeLimitRigidity flow ∧
+          HasPerelmanReducedVolumeNonincreasing flow ∧
+          HasPerelmanKappaNoncollapsingFromReducedVolume flow ∧
+          HasPerelmanNoLocalCollapsingContradictionSetup flow ∧
+          HasNoLocalCollapsingVolumeLowerBound flow ∧
+          HasPerelmanKappaNoncollapsingQuantification flow ∧
+          HasCanonicalNeighborhoodScaleControl flow ∧
+          HasCanonicalNeighborhoodStability flow ∧
+          HasCanonicalNeighborhoodPersistenceAcrossScales flow ∧
+          HasCanonicalNeighborhoodNeckCapDichotomy flow ∧
+          HasCanonicalNeighborhoodClassification flow ∧
+          HasPerelmanNoLocalCollapsing flow ∧
+          HasPerelmanReducedVolumeMonotonicity flow ∧
+          HasCanonicalNeighborhoodTheorem flow ∧
+          FiniteExtinctionStatement n M ∧
+          FiniteExtinctionByRicciFlowWithSurgery M := by
+  let completePayload :=
+    surgeryPerelman_completeConsumerPayload_of_finiteExtinctionPackage_requirement
+      finiteExtinctionRequirement
+  exact
+    ⟨ finiteExtinctionRequirement
+    , completePayload
+    , surgeryPerelman_completeConsumerPayload_fixedTarget_noLocalCollapsing_reducedVolume_canonical_fields
+        completePayload M
     ⟩
 
 /--
