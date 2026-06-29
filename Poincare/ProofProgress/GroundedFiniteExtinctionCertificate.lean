@@ -1838,6 +1838,90 @@ theorem groundedUniversalFiniteExtinction_completeConsumerPayload_of_nonemptyDet
             payload } ⟩
 
 /--
+An inhabited detailed grounded finite-extinction assembly payload selects a
+complete consumer with the expected stored fields.  This pins the complete
+consumer's universal statement, finite-extinction package requirement,
+milestones, compact witness family, full statement-payload family, and both
+package-first derivation families to one selected detailed payload.
+-/
+theorem groundedUniversalFiniteExtinction_nonemptyDetailedAssemblyPayload_selected_completeConsumerPayload_fields
+    (payload :
+      Nonempty GroundedUniversalFiniteExtinctionDetailedAssemblyPayload.{u}) :
+    ∃ selected :
+      GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u},
+    ∃ detailed :
+      GroundedUniversalFiniteExtinctionDetailedAssemblyPayload.{u},
+      selected.detailedPayload = detailed ∧
+        selected.universalStatement = detailed.universalStatement ∧
+        selected.finiteExtinctionPackageRequirement =
+          detailed.finiteExtinctionPackageRequirement ∧
+        selected.ricciFlowWithSurgeryMilestone =
+          detailed.ricciFlowWithSurgeryMilestone ∧
+        selected.perelmanSingularityControlMilestone =
+          detailed.perelmanSingularityControlMilestone ∧
+        selected.finiteExtinctionMilestone =
+          detailed.finiteExtinctionMilestone ∧
+        selected.packageStatementWitnessFamily =
+          detailed.packageStatementWitnessFamily ∧
+        selected.statementPayloadFamily = detailed.statementPayloadFamily ∧
+        selected.flowPackageFamily =
+          groundedUniversalFiniteExtinctionDetailedAssemblyPayload_flowPackageFamily
+            detailed ∧
+        selected.packageStatementDerivationFamily =
+          groundedUniversalFiniteExtinctionDetailedAssemblyPayload_packageStatementDerivationFamily
+            detailed ∧
+        UniversalFiniteExtinctionStatement.{u} ∧
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage ∧
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery ∧
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl ∧
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.finiteExtinction := by
+  rcases payload with ⟨detailed⟩
+  let selected :
+      GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u} :=
+    { detailedPayload := detailed
+      universalStatement := detailed.universalStatement
+      finiteExtinctionPackageRequirement :=
+        detailed.finiteExtinctionPackageRequirement
+      ricciFlowWithSurgeryMilestone :=
+        detailed.ricciFlowWithSurgeryMilestone
+      perelmanSingularityControlMilestone :=
+        detailed.perelmanSingularityControlMilestone
+      finiteExtinctionMilestone :=
+        detailed.finiteExtinctionMilestone
+      packageStatementWitnessFamily :=
+        detailed.packageStatementWitnessFamily
+      statementPayloadFamily := detailed.statementPayloadFamily
+      flowPackageFamily :=
+        groundedUniversalFiniteExtinctionDetailedAssemblyPayload_flowPackageFamily
+          detailed
+      packageStatementDerivationFamily :=
+        groundedUniversalFiniteExtinctionDetailedAssemblyPayload_packageStatementDerivationFamily
+          detailed }
+  exact
+    ⟨ selected
+    , detailed
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , selected.universalStatement
+    , selected.finiteExtinctionPackageRequirement
+    , selected.ricciFlowWithSurgeryMilestone
+    , selected.perelmanSingularityControlMilestone
+    , selected.finiteExtinctionMilestone
+    ⟩
+
+/--
 Grounded universal finite extinction constructs the complete finite-extinction
 consumer payload, retaining both the compact package-first data and the full
 flow/surgery/control derivation family.
