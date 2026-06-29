@@ -2875,6 +2875,69 @@ theorem finalCertificateNamedPackageLayerConsumerPayload_dependency_route_and_ce
     ⟩
 
 /--
+The complete named-package consumer payload also exposes the primitive
+final-certificate inputs that drive the canonical target/payload route:
+universal finite extinction assembled from smoothability and finite extinction,
+and the post-extinction sphere extraction supplied by the same topology
+package.  The checked certificate is propositionally the one obtained by
+feeding those primitive inputs to the remaining-dependency certificate route.
+-/
+theorem finalCertificateNamedPackageLayerConsumerPayload_primitiveInputs_and_certificate_projected_endpoint
+    (payload : FinalCertificateNamedPackageLayerConsumerPayload.{u}) :
+    ∃ inputs : FinalCertificateMinimalPackageInputs.{u},
+    ∃ primitiveInputs : FinalCertificatePrimitiveInputs.{u},
+    ∃ _assemblyInputs : FinalAssemblyPackageBoundaryInputs.{u},
+    ∃ dependencies : RemainingDependencyPackage.{u},
+      FinalCertificateTopologyAssemblyPayload inputs payload.topology ∧
+        primitiveInputs =
+          finalCertificatePrimitiveInputs_of_minimalPackageInputs inputs
+            (extinction_implies_sphere_of_topology_package
+              payload.topology) ∧
+        primitiveInputs.universalFiniteExtinction =
+          universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+            payload.smoothability payload.finiteExtinction ∧
+        primitiveInputs.extinctionImpliesSphere =
+          extinction_implies_sphere_of_topology_package payload.topology ∧
+        payload.checkedCertificate =
+          completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+            dependencies primitiveInputs ∧
+        canonicalCompletionTarget.{u} ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        PoincareCompletionCertificate.{u} ∧
+        PoincareConjectureStatement.{u} ∧
+        (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+    { smoothability := payload.smoothability
+      finiteExtinction := payload.finiteExtinction }
+  let primitiveInputs : FinalCertificatePrimitiveInputs.{u} :=
+    finalCertificatePrimitiveInputs_of_minimalPackageInputs inputs
+      (extinction_implies_sphere_of_topology_package payload.topology)
+  let assemblyInputs : FinalAssemblyPackageBoundaryInputs.{u} :=
+    { smoothability := payload.smoothability
+      finiteExtinction := payload.finiteExtinction
+      topology := payload.topology }
+  let dependencies : RemainingDependencyPackage.{u} :=
+    remainingDependencyPackage_of_finalAssemblyPackageBoundaryInputs
+      assemblyInputs
+  exact
+    ⟨ inputs
+    , primitiveInputs
+    , assemblyInputs
+    , dependencies
+    , payload.topologyAssemblyPayload
+    , rfl
+    , rfl
+    , rfl
+    , by apply Subsingleton.elim
+    , payload.canonicalTarget
+    , payload.canonicalPayload
+    , payload.checkedCertificate
+    , poincare_conjecture_of_completion_certificate payload.checkedCertificate
+    , payload.completionCriteria
+    ⟩
+
+/--
 The three named package-layer requirements directly produce the
 remaining-dependency certificate route and the certificate-projected final
 endpoint.  This is the consumer-facing form of
