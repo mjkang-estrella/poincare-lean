@@ -3796,4 +3796,162 @@ theorem groundedUniversalFiniteExtinction_selected_completeConsumerPayload_remai
         witness certificate
     ⟩
 
+/--
+Grounded universal finite extinction selects the complete finite-extinction
+consumer payload, pins the remaining-dependency certificate route, and keeps
+the actual fixed-target analytic/surgery/Perelman/frontier chain that produces
+the finite-extinction package.  This endpoint connects the checked final
+certificate route to the grounded Ricci-flow inputs instead of only to the
+derived package and derivation families.
+-/
+theorem groundedUniversalFiniteExtinction_selected_completeConsumerPayload_remaining_certificate_frontier_chain_of_grounded
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    Nonempty GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u} ∧
+      ∃ selected : GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u},
+      ∃ remaining : RemainingDependencyPackage.{u},
+      ∃ certificate : PoincareCompletionCertificate.{u},
+        remaining.smoothability = smoothability ∧
+          remaining.surgery = selected.finiteExtinctionPackageRequirement ∧
+          remaining.topology = topologyPackage ∧
+          certificate =
+            completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+              remaining selected.universalStatement ∧
+          selected.universalStatement =
+            universalFiniteExtinctionStatement_of_grounded grounded ∧
+          selected.finiteExtinctionPackageRequirement =
+            finiteExtinctionPackage_requirement_of_grounded grounded ∧
+          selected.ricciFlowWithSurgeryMilestone =
+            ricciFlowWithSurgery_milestone_requirement_of_grounded
+              grounded ∧
+          selected.perelmanSingularityControlMilestone =
+            perelmanSingularityControl_milestone_requirement_of_grounded
+              grounded ∧
+          selected.finiteExtinctionMilestone =
+            finiteExtinction_milestone_requirement_of_grounded grounded ∧
+          PoincareConjectureStatement.{u} ∧
+          PoincareCompletionCertificate.{u} ∧
+          (∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+          ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+              RicciFlowAnalyticFoundationPackage
+                ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+              RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+                (ricci_flow_data_of_analytic_foundation_package
+                  analyticFoundation),
+          ∃ perelmanControl :
+              PerelmanSingularityControlPackage (n := n) (M := M)
+                (ricci_flow_data_of_analytic_foundation_package
+                  analyticFoundation),
+          ∃ widthStatement :
+              FiniteExtinctionWidthSubobligationsStatement
+                (ricci_flow_data_of_analytic_foundation_package
+                  analyticFoundation)
+                surgeryConstruction.withSurgery perelmanControl.control,
+          ∃ curvatureFrontier :
+              FiniteExtinctionProductionCurvatureFrontier
+                analyticFoundation surgeryConstruction perelmanControl,
+          ∃ volumeFrontier :
+              FiniteExtinctionProductionVolumeEvolutionFrontier
+                analyticFoundation surgeryConstruction perelmanControl
+                curvatureFrontier,
+          ∃ surgeryVolumeFrontier :
+              FiniteExtinctionProductionSurgeryVolumeFrontier
+                analyticFoundation surgeryConstruction perelmanControl
+                curvatureFrontier volumeFrontier,
+          ∃ scalarCurvatureFrontier :
+              FiniteExtinctionProductionScalarCurvatureFrontier
+                analyticFoundation surgeryConstruction perelmanControl
+                curvatureFrontier volumeFrontier surgeryVolumeFrontier,
+          ∃ volumeDifferentialFrontier :
+              FiniteExtinctionProductionVolumeDifferentialFrontier
+                analyticFoundation surgeryConstruction perelmanControl
+                curvatureFrontier volumeFrontier surgeryVolumeFrontier
+                scalarCurvatureFrontier,
+          ∃ package : FiniteExtinctionSurgeryPackage n M,
+          ∃ packageStatement : FiniteExtinctionStatement n M,
+          ∃ derivation :
+              HasFiniteExtinctionDerivation
+                (ricci_flow_data_of_analytic_foundation_package
+                  analyticFoundation)
+                surgeryConstruction.withSurgery perelmanControl.control,
+          ∃ extinctionWitness : FiniteExtinctionByRicciFlowWithSurgery M,
+            packageStatement =
+                finite_extinction_statement_of_surgery_package package ∧
+              derivation =
+                finite_extinction_derivation_of_width_statement
+                  analyticFoundation surgeryConstruction perelmanControl
+                  widthStatement ∧
+              extinctionWitness =
+                finite_extinction_by_ricci_flow_with_surgery_of_volume_differential_frontier
+                  analyticFoundation surgeryConstruction perelmanControl
+                  widthStatement curvatureFrontier volumeFrontier
+                  surgeryVolumeFrontier scalarCurvatureFrontier
+                  volumeDifferentialFrontier := by
+  let constructed :
+      Nonempty GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u} :=
+    groundedUniversalFiniteExtinction_completeConsumerPayload_of_grounded
+      grounded
+  rcases constructed with ⟨selected⟩
+  let remaining : RemainingDependencyPackage.{u} :=
+    { smoothability := smoothability
+      surgery := selected.finiteExtinctionPackageRequirement
+      topology := topologyPackage }
+  let certificate : PoincareCompletionCertificate.{u} :=
+    completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+      remaining selected.universalStatement
+  rcases
+    finite_extinction_frontier_package_statement_derivation_and_witness_of_grounded
+      (grounded M) with
+    ⟨ smooth, n, analyticFoundation, surgeryConstruction, perelmanControl,
+      widthStatement, curvatureFrontier, volumeFrontier,
+      surgeryVolumeFrontier, scalarCurvatureFrontier,
+      volumeDifferentialFrontier, package, packageStatement, derivation,
+      extinctionWitness, hStatement, hDerivation, hExtinction⟩
+  refine ⟨⟨selected⟩, selected, remaining, certificate, ?_⟩
+  exact
+    ⟨ rfl
+    , rfl
+    , rfl
+    , rfl
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , poincare_conjecture_of_completion_certificate certificate
+    , certificate
+    , (fun witness => completion_criterion_of_completion_certificate
+        witness certificate)
+    , smooth
+    , n
+    , analyticFoundation
+    , surgeryConstruction
+    , perelmanControl
+    , widthStatement
+    , curvatureFrontier
+    , volumeFrontier
+    , surgeryVolumeFrontier
+    , scalarCurvatureFrontier
+    , volumeDifferentialFrontier
+    , package
+    , packageStatement
+    , derivation
+    , extinctionWitness
+    , hStatement
+    , hDerivation
+    , hExtinction
+    ⟩
+
 end Poincare
