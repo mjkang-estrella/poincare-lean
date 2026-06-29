@@ -11021,4 +11021,57 @@ theorem finite_extinction_surgery_package_nonempty_of_target_sweepout_payload
     (target_finite_extinction_sweepout_interface_bundle_of_payload payload)
     remainder
 
+/--
+Payload package/statement/witness bridge: the concrete target sweepout payload
+route keeps the payload-derived sweepout bundle visible together with the
+constructed finite-extinction package, its theorem-shaped statement, and the
+projected finite-extinction witness.
+-/
+theorem finite_extinction_sweepout_payload_package_statement_and_witness
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (payload : TargetFiniteExtinctionSweepoutPayload M)
+    (remainder :
+      FiniteExtinctionProductionPackageRemainder analyticFoundation
+        surgeryConstruction perelmanControl
+        (target_finite_extinction_sweepout_interface_bundle_of_payload
+          payload)) :
+    ∃ sweepoutBundle : TargetFiniteExtinctionSweepoutInterfaceBundle M,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    ∃ packageStatement : FiniteExtinctionStatement n M,
+    ∃ extinctionWitness : FiniteExtinctionByRicciFlowWithSurgery M,
+      sweepoutBundle =
+          target_finite_extinction_sweepout_interface_bundle_of_payload
+            payload ∧
+        packageStatement =
+          finite_extinction_statement_of_surgery_package package ∧
+        extinctionWitness =
+          finite_extinction_via_statement_of_surgery_package package := by
+  let sweepoutBundle : TargetFiniteExtinctionSweepoutInterfaceBundle M :=
+    target_finite_extinction_sweepout_interface_bundle_of_payload payload
+  rcases
+      finite_extinction_surgery_package_nonempty_of_target_sweepout_payload
+        analyticFoundation surgeryConstruction perelmanControl payload
+        remainder with
+    ⟨package⟩
+  exact
+    ⟨ sweepoutBundle
+    , package
+    , finite_extinction_statement_of_surgery_package package
+    , finite_extinction_via_statement_of_surgery_package package
+    , rfl
+    , rfl
+    , rfl
+    ⟩
+
 end Poincare
