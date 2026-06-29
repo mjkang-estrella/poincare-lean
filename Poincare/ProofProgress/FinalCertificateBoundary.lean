@@ -2949,6 +2949,86 @@ theorem finalCertificateNamedPackageLayerRequirements_dependency_route_and_certi
     ⟩
 
 /--
+The three named package-layer requirements construct both concrete final
+consumer objects used by the endpoint: the complete named-package consumer
+payload and the topology-assembly payload for the corresponding minimal
+package inputs.  This exposes the checked public statement, concrete checked
+certificate, inhabited certificate, canonical target, and completion criteria
+from both constructed objects without requiring downstream callers to rebuild
+or unpack either constructor.
+-/
+theorem finalCertificateNamedPackageLayerRequirements_consumerPayload_topologyAssembly_and_checkedEndpoint
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    ∃ payload : FinalCertificateNamedPackageLayerConsumerPayload.{u},
+    ∃ _topologyAssemblyPayload :
+      FinalCertificateTopologyAssemblyPayload
+        { smoothability := smoothability
+          finiteExtinction := finiteExtinction }
+        topology,
+      payload.smoothability = smoothability ∧
+        payload.finiteExtinction = finiteExtinction ∧
+        payload.topology = topology ∧
+        PoincareConjectureStatement.{u} ∧
+        PoincareCompletionCertificate.{u} ∧
+        Nonempty PoincareCompletionCertificate.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        (∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        PoincareConjectureStatement.{u} ∧
+        PoincareCompletionCertificate.{u} ∧
+        Nonempty PoincareCompletionCertificate.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let payload :=
+    finalCertificateNamedPackageLayerConsumerPayload
+      smoothability finiteExtinction topology
+  let topologyAssemblyPayload :
+      FinalCertificateTopologyAssemblyPayload
+        { smoothability := smoothability
+          finiteExtinction := finiteExtinction }
+        topology :=
+    finalCertificateTopologyAssemblyPayload
+      { smoothability := smoothability
+        finiteExtinction := finiteExtinction }
+      topology
+  exact
+    ⟨ payload
+    , topologyAssemblyPayload
+    , rfl
+    , rfl
+    , rfl
+    , topologyAssemblyPayload.publicStatement
+    , topologyAssemblyPayload.checkedCertificate
+    , topologyAssemblyPayload.nonemptyCertificate
+    , topologyAssemblyPayload.canonicalTarget
+    , topologyAssemblyPayload.publicPayload
+    , topologyAssemblyPayload.canonicalPayload
+    , topologyAssemblyPayload.completionCriteria
+    , payload.publicStatement
+    , payload.checkedCertificate
+    , ⟨payload.checkedCertificate⟩
+    , payload.canonicalTarget
+    , payload.publicPayload
+    , payload.canonicalPayload
+    , payload.completionCriteria
+    ⟩
+
+/--
 The inhabited complete named-package consumer payload exposes all three
 package-layer requirements, the inhabited topology assembly payload, and the
 checked final endpoint data carried by the selected payload.
