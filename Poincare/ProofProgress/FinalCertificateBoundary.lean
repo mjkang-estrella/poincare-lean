@@ -2172,6 +2172,58 @@ theorem finalCertificateTopologyAssemblyPayload_fields_of_nonempty
     ⟩
 
 /--
+An inhabited final-certificate topology assembly payload is exactly the
+concrete public statement, checked completion certificate, inhabited
+certificate witness, canonical target, public and canonical completion
+payloads, and completion-criterion family it carries.  The reverse direction
+rebuilds the assembly payload directly from those endpoint fields, keeping the
+checked certificate object rather than only its inhabited wrapper.
+-/
+theorem nonempty_finalCertificateTopologyAssemblyPayload_iff_endpoint_fields
+    {inputs : FinalCertificateMinimalPackageInputs.{u}}
+    {topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage} :
+    Nonempty (FinalCertificateTopologyAssemblyPayload inputs topology) ↔
+      PoincareConjectureStatement.{u} ∧
+        PoincareCompletionCertificate.{u} ∧
+        Nonempty PoincareCompletionCertificate.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  constructor
+  · rintro ⟨payload⟩
+    exact
+      ⟨ payload.publicStatement
+      , payload.checkedCertificate
+      , payload.nonemptyCertificate
+      , payload.canonicalTarget
+      , payload.publicPayload
+      , payload.canonicalPayload
+      , payload.completionCriteria
+      ⟩
+  · rintro
+      ⟨ publicStatement
+      , checkedCertificate
+      , nonemptyCertificate
+      , canonicalTarget
+      , publicPayload
+      , canonicalPayload
+      , completionCriteria
+      ⟩
+    exact
+      ⟨ { publicStatement := publicStatement
+          checkedCertificate := checkedCertificate
+          nonemptyCertificate := nonemptyCertificate
+          canonicalTarget := canonicalTarget
+          publicPayload := publicPayload
+          canonicalPayload := canonicalPayload
+          completionCriteria := completionCriteria } ⟩
+
+/--
 A checked remaining-dependency package plus the simply connected recognition
 prefix constructs the generic final-certificate topology assembly payload.  The
 remaining-dependency package supplies the smoothability and finite-extinction
