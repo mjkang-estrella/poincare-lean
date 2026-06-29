@@ -243,6 +243,47 @@ def finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs
   topology := inputs.topology
 
 /--
+The sub-obligation boundary exposes all five package-layer requirements after
+the finite-extinction proof-progress bridge promotes analytic/surgery/Perelman
+sub-obligations to the finite-extinction package layer.
+-/
+theorem package_layer_requirements_payload_of_finalAssemblySubobligationBoundaryInputs
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u}) :
+    ∃ _smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage,
+    ∃ _analytic :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage,
+    ∃ _surgery :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.surgeryPackage,
+    ∃ _finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage :=
+  package_layer_requirements_payload_of_finalAssemblyPackageBoundaryInputs
+    (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
+
+/--
+The same lower-level sub-obligation boundary supplies the aggregate component
+requirements used by the existing completion routes.
+-/
+theorem component_requirements_payload_of_finalAssemblySubobligationBoundaryInputs
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u}) :
+    ∃ _smoothability :
+      dependencyComponentRequirement.{u}
+        DependencyComponentSlot.smoothabilityComponent,
+    ∃ _surgery :
+      dependencyComponentRequirement.{u}
+        DependencyComponentSlot.surgeryComponent,
+      dependencyComponentRequirement.{u}
+        DependencyComponentSlot.topologyComponent :=
+  component_requirements_payload_of_finalAssemblyPackageBoundaryInputs
+    (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
+
+/--
 The sub-obligation boundary proves the existing full assembly payload after the
 finite-extinction proof-progress bridge builds the package-layer requirement.
 -/
