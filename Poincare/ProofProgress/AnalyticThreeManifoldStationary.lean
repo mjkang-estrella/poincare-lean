@@ -17328,4 +17328,75 @@ theorem stationaryZeroAnalyticFoundation_requirements_fullPackageEvolution_rawPr
         payload M
     ⟩
 
+/--
+An inhabited detailed stationary-zero assembly payload selects a complete
+analytic consumer with the expected definitional fields.  This keeps the
+compact package/curvature projection, compact subobligation projection,
+standalone evolution-field projection, normalized full package/evolution
+projection, and raw stationary-zero production route tied to the same detailed
+assembly payload instead of letting downstream code reselect the complete
+consumer only through nonemptiness.
+-/
+theorem stationaryZeroAnalyticFoundation_nonemptyDetailedAssemblyPayload_selected_completeConsumerPayload_fields
+    (payload :
+      Nonempty StationaryZeroAnalyticFoundationDetailedAssemblyPayload.{u}) :
+    ∃ selected : StationaryZeroAnalyticFoundationCompleteConsumerPayload.{u},
+    ∃ detailed :
+      StationaryZeroAnalyticFoundationDetailedAssemblyPayload.{u},
+      selected.detailedPayload = detailed ∧
+        selected.analyticFoundationPackageRequirement =
+          detailed.analyticFoundationPackageRequirement ∧
+        selected.ricciFlowAnalyticFoundationMilestone =
+          detailed.ricciFlowAnalyticFoundationMilestone ∧
+        selected.packageStatementCurvatureFamily =
+          detailed.packageStatementCurvatureFamily ∧
+        selected.packageSubobligationsFamily =
+          stationaryZeroAnalyticFoundationDetailedAssemblyPayload_packageSubobligationsFamily
+            detailed ∧
+        selected.evolutionFieldsFamily =
+          stationaryZeroAnalyticFoundationDetailedAssemblyPayload_evolutionFieldsFamily
+            detailed ∧
+        selected.fullPackageEvolutionFamily =
+          stationaryZeroAnalyticFoundationDetailedAssemblyPayload_fullPackageEvolutionFamily
+            detailed ∧
+        selected.rawFullStatementPayloadFamily =
+          detailed.fullStatementPayloadFamily ∧
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.analyticFoundationPackage ∧
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowAnalyticFoundation := by
+  rcases payload with ⟨detailed⟩
+  let selected : StationaryZeroAnalyticFoundationCompleteConsumerPayload.{u} :=
+    { detailedPayload := detailed
+      analyticFoundationPackageRequirement :=
+        detailed.analyticFoundationPackageRequirement
+      ricciFlowAnalyticFoundationMilestone :=
+        detailed.ricciFlowAnalyticFoundationMilestone
+      packageStatementCurvatureFamily :=
+        detailed.packageStatementCurvatureFamily
+      packageSubobligationsFamily :=
+        stationaryZeroAnalyticFoundationDetailedAssemblyPayload_packageSubobligationsFamily
+          detailed
+      evolutionFieldsFamily :=
+        stationaryZeroAnalyticFoundationDetailedAssemblyPayload_evolutionFieldsFamily
+          detailed
+      fullPackageEvolutionFamily :=
+        stationaryZeroAnalyticFoundationDetailedAssemblyPayload_fullPackageEvolutionFamily
+          detailed
+      rawFullStatementPayloadFamily := detailed.fullStatementPayloadFamily }
+  exact
+    ⟨ selected
+    , detailed
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , selected.analyticFoundationPackageRequirement
+    , selected.ricciFlowAnalyticFoundationMilestone
+    ⟩
+
 end Poincare
