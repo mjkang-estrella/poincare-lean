@@ -2670,6 +2670,36 @@ theorem poincare_statement_nonempty_certificate_and_completion_criteria_of_named
   ⟩
 
 /--
+The complete named-package consumer payload discharges the reserved public
+Poincare statement by projecting through its checked completion certificate.
+-/
+theorem poincare_conjecture_of_namedPackageLayerConsumerPayload
+    (payload : FinalCertificateNamedPackageLayerConsumerPayload.{u}) :
+    PoincareConjectureStatement.{u} :=
+  poincare_conjecture_of_completion_certificate payload.checkedCertificate
+
+/--
+The named-consumer reserved endpoint is exactly the checked-certificate
+projection carried by that same consumer payload.
+-/
+theorem poincare_conjecture_of_namedPackageLayerConsumerPayload_eq
+    (payload : FinalCertificateNamedPackageLayerConsumerPayload.{u}) :
+    poincare_conjecture_of_namedPackageLayerConsumerPayload payload =
+      poincare_conjecture_of_completion_certificate
+        payload.checkedCertificate := by
+  apply Subsingleton.elim
+
+/--
+An inhabited complete named-package consumer payload discharges the reserved
+public Poincare statement by selecting its checked completion certificate.
+-/
+theorem poincare_conjecture_of_nonempty_namedPackageLayerConsumerPayload
+    (payload : Nonempty FinalCertificateNamedPackageLayerConsumerPayload.{u}) :
+    PoincareConjectureStatement.{u} := by
+  rcases payload with ⟨payload⟩
+  exact poincare_conjecture_of_namedPackageLayerConsumerPayload payload
+
+/--
 The complete named-package consumer payload also retains the concrete topology
 assembly payload and both the public and canonical completion payloads used to
 produce the checked final endpoint.
