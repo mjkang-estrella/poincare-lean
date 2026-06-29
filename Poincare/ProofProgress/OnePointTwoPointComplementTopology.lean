@@ -1,3 +1,4 @@
+import Poincare.ProofProgress.TopologyExtractionPunctureTransport
 import Poincare.TopologyExtraction
 
 open scoped Manifold ContDiff
@@ -494,5 +495,130 @@ theorem onePoint_threeSpace_twoPointComplement_all_basepoint_lowHomotopy_basecla
   exact
     onePoint_threeSpace_twoPointComplement_lowHomotopy_baseclass_collapse_package
       hqp basepoint
+
+/--
+A recognized one-point compactification source has the same all-basepoint
+two-puncture complement collapse package as the model compactification.  The
+transported punctured-Euclidean chart supplies path connectedness,
+connectedness, simple connectedness, local path connectedness, all low-homotopy
+subsingleton fields, equality eliminators, named base classes, and
+path-component collapse for every supplied basepoint of the two-point
+complement.
+-/
+theorem twoPointComplement_recognition_all_basepoint_lowHomotopy_baseclass_collapse_package_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    {x y : M} (hyx : y ≠ x) :
+    ∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+      (∃ puncture : EuclideanSpace ℝ (Fin 3),
+        Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+          ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+        Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+        PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        LocPathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        Subsingleton (ZerothHomotopy (({x} ∪ {y})ᶜ : Set M)) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+        Subsingleton
+          (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+        (∀ z w : (({x} ∪ {y})ᶜ : Set M),
+          ZerothHomotopy.mk z = ZerothHomotopy.mk w) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          a = b) ∧
+        (∀ a b : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+          a = b) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          a = b) ∧
+        (∃ baseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+          ∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+          homotopyClass = baseClass) ∧
+        (∃ baseClass :
+          HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          ∀ homotopyClass :
+            HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          homotopyClass = baseClass) ∧
+        (∃ baseClass :
+          FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+          ∀ fundamentalClass :
+            FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+          fundamentalClass = baseClass) ∧
+        (∃ baseClass :
+          HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          ∀ homotopyClass :
+            HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          homotopyClass = baseClass) ∧
+        (∀ z w : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path z w)) ∧
+        (∀ z : (({x} ∪ {y})ᶜ : Set M), pathComponent z = Set.univ) := by
+  intro basepoint
+  rcases
+    exists_homeomorph_twoPointComplement_puncturedEuclidean_of_homeomorph_to_onePoint_threeSpace
+      h hyx with
+    ⟨puncture, ⟨chart⟩⟩
+  let source := (({x} ∪ {y})ᶜ : Set M)
+  let target := ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3)))
+  letI : PathConnectedSpace target :=
+    euclideanThree_compl_singleton_pathConnectedSpace puncture
+  letI : ConnectedSpace target := inferInstance
+  letI : SimplyConnectedSpace target :=
+    euclideanThree_compl_singleton_simplyConnectedSpace puncture
+  letI : LocPathConnectedSpace target :=
+    (euclideanThree_compl_singleton_isOpenEmbedding puncture).locPathConnectedSpace
+  letI : PathConnectedSpace source :=
+    chart.symm.surjective.pathConnectedSpace chart.symm.continuous
+  letI : ConnectedSpace source := inferInstance
+  letI : Nonempty source := inferInstance
+  letI : SimplyConnectedSpace source :=
+    chart.toHomotopyEquiv.simplyConnectedSpace
+  letI : LocPathConnectedSpace source :=
+    chart.isOpenEmbedding.locPathConnectedSpace
+  letI : Subsingleton (ZerothHomotopy source) := inferInstance
+  letI : Subsingleton (HomotopyGroup.Pi 0 source basepoint) :=
+    ((HomotopyGroup.pi0EquivZerothHomotopy
+      (X := source) (x := basepoint)).subsingleton_congr).mpr inferInstance
+  letI : Subsingleton (FundamentalGroup source basepoint) := by
+    change Subsingleton (Path.Homotopic.Quotient basepoint basepoint)
+    infer_instance
+  letI : Subsingleton (HomotopyGroup.Pi 1 source basepoint) :=
+    ((HomotopyGroup.pi1EquivFundamentalGroup
+      (X := source) (x := basepoint)).subsingleton_congr).mpr inferInstance
+  exact
+    ⟨ ⟨puncture, ⟨chart⟩⟩
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , fun z w => Subsingleton.elim (ZerothHomotopy.mk z) (ZerothHomotopy.mk w)
+    , fun a b => Subsingleton.elim a b
+    , fun a b => Subsingleton.elim a b
+    , fun a b => Subsingleton.elim a b
+    , ⟨ ZerothHomotopy.mk basepoint
+      , fun homotopyClass =>
+          Subsingleton.elim homotopyClass (ZerothHomotopy.mk basepoint)⟩
+    , ⟨ default
+      , fun homotopyClass => Subsingleton.elim homotopyClass default⟩
+    , ⟨ default
+      , fun fundamentalClass => Subsingleton.elim fundamentalClass default⟩
+    , ⟨ default
+      , fun homotopyClass => Subsingleton.elim homotopyClass default⟩
+    , fun z w => PathConnectedSpace.joined z w
+    , fun z => by
+        ext w
+        constructor
+        · intro _hw
+          exact Set.mem_univ w
+        · intro _hw
+          exact PathConnectedSpace.joined z w
+    ⟩
 
 end Poincare
