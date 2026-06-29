@@ -3090,4 +3090,80 @@ theorem recognition_complete_complement_payload_and_twoPoint_suppliedBasepoint_p
     , completePayload
     ⟩
 
+/--
+The project-target recognition route can keep the selected two-puncture
+basepoint used by the complete complement payload and an externally supplied
+two-puncture basepoint as structured low-homotopy/baseclass-collapse field
+packages, while also opening the sphere/one-point recognition and complement
+model data.  This is the compact mixed-basepoint consumer form of the longer
+tuple endpoint above.
+-/
+theorem recognition_complete_complement_payload_opened_models_selected_and_supplied_twoPoint_fields_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere))
+    (x : M) {y : M} (hyx : y ≠ x)
+    (suppliedBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ singleBasepoint : ({x}ᶜ : Set M),
+    ∃ selectedTwoBasepoint : (({x} ∪ {y})ᶜ : Set M),
+      TwoPointComplementLowHomotopyBaseclassCollapseFields
+        M suppliedBasepoint ∧
+        TwoPointComplementLowHomotopyBaseclassCollapseFields
+          M selectedTwoBasepoint ∧
+        Nonempty (M ≃ₜ ThreeSphere) ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        ContractibleSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+        (∃ puncture : EuclideanSpace ℝ (Fin 3),
+          Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+        Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint) ∧
+        Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint) := by
+  rcases
+    recognition_complete_complement_payload_and_twoPoint_allBasepoint_family_with_basepoints_of_homeomorph_to_threeSphere
+      h x hyx with
+    ⟨singleBasepoint, selectedTwoBasepoint, allBasepoint, completePayload⟩
+  rcases completePayload with
+    ⟨ sphereRecognition
+    , onePointRecognition
+    , complementConnectivity
+    , complementModels
+    , _subsingletonPayload
+    , _baseclassPayload
+    , _pathPayload
+    ⟩
+  rcases complementConnectivity with
+    ⟨ singletonContractible
+    , singletonSimplyConnected
+    , twoPointSimplyConnected
+    ⟩
+  rcases complementModels with
+    ⟨ singletonModel
+    , twoPointModel
+    , _singletonConnected
+    , _singletonNonempty
+    , singletonPiZero
+    , singletonPiOne
+    , _twoPointConnected
+    , _twoPointNonempty
+    , _twoPointPiZero
+    , _twoPointPiOne
+    ⟩
+  exact
+    ⟨ singleBasepoint
+    , selectedTwoBasepoint
+    , allBasepoint suppliedBasepoint
+    , allBasepoint selectedTwoBasepoint
+    , sphereRecognition
+    , onePointRecognition
+    , singletonContractible
+    , singletonSimplyConnected
+    , twoPointSimplyConnected
+    , singletonModel
+    , twoPointModel
+    , singletonPiZero
+    , singletonPiOne
+    ⟩
+
 end Poincare
