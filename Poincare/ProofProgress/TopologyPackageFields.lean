@@ -1916,6 +1916,156 @@ theorem poincare_statement_recognition_fixedTarget_punctureFamily_and_lowHomotop
     ⟩
 
 /--
+Starting from a concrete topology package, select the complete topology
+consumer payload and keep its package, extractor, and lifted-derivation fields
+synchronized with the fixed-target low-homotopy endpoint.  This is the
+package-layer entry point for final-certificate code that needs a named
+consumer object and the fixed singleton/two-puncture collapse route at the same
+target.
+-/
+theorem poincare_statement_selectedTopologyConsumer_fixedTarget_lowHomotopy_of_universalFiniteExtinctionStatement_and_topologyPackage
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) {y : M} (hyx : y ≠ x)
+    (singletonBasepoint : ({x}ᶜ : Set M))
+    (twoPointBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ consumer : ExtinctionTopologyCompleteConsumerPayload.{u},
+      (consumer.topologyPackage = package) ∧
+        (consumer.topologyPackageRequirement = package) ∧
+        (consumer.topologyStatement =
+          extinction_topology_extraction_statement_of_topology_package
+            package) ∧
+        (consumer.extinctionImpliesSphere =
+          extinction_implies_sphere_of_topology_package package) ∧
+        (consumer.liftedHomeomorphismDerivation =
+          topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+            package) ∧
+        PoincareConjectureStatement.{u} ∧
+          ExtinctionOnePointThreeSpaceRecognitionStatement.{u} ∧
+          ∃ package : ExtinctionTopologyExtractionPackage.{u},
+          ∃ topologyStatement : ExtinctionTopologyExtractionStatement.{u},
+            topologyStatement =
+                extinction_topology_extraction_statement_of_topology_package
+                  package ∧
+              ExtinctionImpliesSphereStatement.{u} ∧
+              ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} ∧
+              ∃ homeomorphism : M ≃ₜ ThreeSphere,
+                Nonempty (M ≃ₜ ThreeSphere) ∧
+                Nonempty.intro homeomorphism =
+                    homeomorphism_of_topology_package package M extinction ∧
+                ExtinctionTopologyClassificationSubobligationsPayload
+                  M extinction ∧
+                ExtinctionTopologySimplyConnectedRecognitionStatement
+                  M extinction ∧
+                ExtinctionTopologySphericalTrivialQuotientStatement
+                  M extinction ∧
+                ExtinctionTopologySphericalHomeomorphismLiftStatement
+                  M extinction ∧
+                ExtinctionTopologyHomeomorphismAssemblyStatement
+                  M extinction (Nonempty.intro homeomorphism) ∧
+                ExtinctionTopologyHomeomorphismDerivationStatement
+                  M extinction (Nonempty.intro homeomorphism) ∧
+                ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+                  M extinction (Nonempty.intro homeomorphism) ∧
+                Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+                Nonempty (({x}ᶜ : Set M) ≃ₜ
+                  EuclideanSpace ℝ (Fin 3)) ∧
+                (∃ puncture : EuclideanSpace ℝ (Fin 3),
+                  Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+                    ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+                ContractibleSpace ({x}ᶜ : Set M) ∧
+                SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+                Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+                Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M)
+                  singletonBasepoint) ∧
+                Subsingleton (FundamentalGroup ({x}ᶜ : Set M)
+                  singletonBasepoint) ∧
+                Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M)
+                  singletonBasepoint) ∧
+                SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                Subsingleton
+                  (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+                    twoPointBasepoint) := by
+  let consumer : ExtinctionTopologyCompleteConsumerPayload.{u} :=
+    { topologyPackage := package
+      topologyPackageRequirement := package
+      topologyStatement :=
+        extinction_topology_extraction_statement_of_topology_package
+          package
+      topologyStatement_eq := rfl
+      extinctionImpliesSphere :=
+        extinction_implies_sphere_of_topology_package package
+      liftedHomeomorphismDerivation :=
+        topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+          package
+      derivationPunctureFamily :=
+        topology_package_extraction_derivation_and_puncture_payload_family
+          package }
+  have endpoint :
+      PoincareConjectureStatement.{u} ∧
+        ExtinctionOnePointThreeSpaceRecognitionStatement.{u} ∧
+        ∃ package : ExtinctionTopologyExtractionPackage.{u},
+        ∃ topologyStatement : ExtinctionTopologyExtractionStatement.{u},
+          topologyStatement =
+              extinction_topology_extraction_statement_of_topology_package
+                package ∧
+            ExtinctionImpliesSphereStatement.{u} ∧
+            ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} ∧
+            ∃ homeomorphism : M ≃ₜ ThreeSphere,
+              Nonempty (M ≃ₜ ThreeSphere) ∧
+              Nonempty.intro homeomorphism =
+                  homeomorphism_of_topology_package package M extinction ∧
+              ExtinctionTopologyClassificationSubobligationsPayload
+                M extinction ∧
+              ExtinctionTopologySimplyConnectedRecognitionStatement
+                M extinction ∧
+              ExtinctionTopologySphericalTrivialQuotientStatement
+                M extinction ∧
+              ExtinctionTopologySphericalHomeomorphismLiftStatement
+                M extinction ∧
+              ExtinctionTopologyHomeomorphismAssemblyStatement
+                M extinction (Nonempty.intro homeomorphism) ∧
+              ExtinctionTopologyHomeomorphismDerivationStatement
+                M extinction (Nonempty.intro homeomorphism) ∧
+              ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+                M extinction (Nonempty.intro homeomorphism) ∧
+              Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+              Nonempty (({x}ᶜ : Set M) ≃ₜ
+                EuclideanSpace ℝ (Fin 3)) ∧
+              (∃ puncture : EuclideanSpace ℝ (Fin 3),
+                Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+                  ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+              ContractibleSpace ({x}ᶜ : Set M) ∧
+              SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+              Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+              Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M)
+                singletonBasepoint) ∧
+              Subsingleton (FundamentalGroup ({x}ᶜ : Set M)
+                singletonBasepoint) ∧
+              Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M)
+                singletonBasepoint) ∧
+              SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+              Subsingleton
+                (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+                  twoPointBasepoint) :=
+    poincare_statement_recognition_fixedTarget_lowHomotopy_and_euclideanPunctureModels_of_universalFiniteExtinctionStatement_and_extinctionTopology_completeConsumerPayload
+      finiteExtinction ⟨consumer⟩ M extinction x hyx singletonBasepoint
+      twoPointBasepoint
+  exact
+    ⟨ consumer
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , endpoint
+    ⟩
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
