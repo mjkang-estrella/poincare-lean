@@ -3189,6 +3189,97 @@ theorem finiteExtinctionRequirement_fixedTarget_packageValue_fullPerelmanControl
     ⟩
 
 /--
+Direct package-value endpoint retaining the theorem-shaped finite-extinction
+statement alongside the full aggregate Perelman-control package and collapsed
+finite-extinction witness.  This keeps the selected surgery package value, its
+projection payload, the selected Ricci-flow datum, the finite-extinction
+statement, the construction package, the aggregate Perelman singularity
+control, blowup classification, and the collapsed witness synchronized for
+downstream finite-extinction consumers.
+-/
+theorem finiteExtinctionRequirement_fixedTarget_packageValue_statement_fullPerelmanControl_and_finiteExtinctionWitness
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ packageTarget : Nonempty (Σ n : ℕ∞ω,
+      FiniteExtinctionSurgeryPackage n M),
+    ∃ n : ℕ∞ω,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    ∃ combinedPayload :
+      FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package,
+    ∃ projectionPayload :
+      FiniteExtinctionSurgeryPerelmanProjectionPayload package,
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+    ∃ packageStatement : FiniteExtinctionStatement n M,
+    ∃ finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      packageTarget = finiteExtinctionRequirement M ∧
+        packageTarget = ⟨⟨n, package⟩⟩ ∧
+        combinedPayload =
+          finiteExtinctionSurgeryPerelmanAndExtinctionPayload_of_finite_extinction_surgery_package
+            package ∧
+        projectionPayload = combinedPayload.projectionPayload ∧
+        flow = projectionPayload.flow ∧
+        flow = ricci_flow_data_of_surgery_package package ∧
+        packageStatement = combinedPayload.finiteExtinctionStatement ∧
+        packageStatement =
+          finite_extinction_statement_of_surgery_package package ∧
+        RicciFlowWithSurgeryConstructionPackage
+          (n := n) (M := M) flow ∧
+        PerelmanSingularityControlPackage
+          (n := n) (M := M) flow ∧
+        HasPerelmanSingularityControl flow ∧
+        HasSingularityModelBlowupClassification flow ∧
+        combinedPayload.finiteExtinctionWitness =
+          finite_extinction_of_surgery_package package ∧
+        finiteExtinction = combinedPayload.finiteExtinctionWitness ∧
+        finiteExtinction =
+          finiteExtinctionByRicciFlowWithSurgery_of_finiteExtinctionRequirement
+            finiteExtinctionRequirement M := by
+  rcases finiteExtinctionRequirement M with ⟨⟨n, package⟩⟩
+  let combinedPayload :
+      FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package :=
+    finiteExtinctionSurgeryPerelmanAndExtinctionPayload_of_finite_extinction_surgery_package
+      package
+  let projectionPayload :
+      FiniteExtinctionSurgeryPerelmanProjectionPayload package :=
+    combinedPayload.projectionPayload
+  let flow : RicciFlowData ThreeManifoldModelWithCorners n M :=
+    projectionPayload.flow
+  let packageStatement : FiniteExtinctionStatement n M :=
+    combinedPayload.finiteExtinctionStatement
+  let finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M :=
+    combinedPayload.finiteExtinctionWitness
+  exact
+    ⟨ finiteExtinctionRequirement M
+    , n
+    , package
+    , combinedPayload
+    , projectionPayload
+    , flow
+    , packageStatement
+    , finiteExtinction
+    , rfl
+    , by apply Subsingleton.elim
+    , rfl
+    , rfl
+    , rfl
+    , projectionPayload.flow_eq
+    , rfl
+    , rfl
+    , projectionPayload.constructionPackage
+    , projectionPayload.perelmanPackage
+    , projectionPayload.perelmanPackage.control
+    , projectionPayload.blowupClassification
+    , rfl
+    , rfl
+    , by apply Subsingleton.elim
+    ⟩
+
+/--
 An inhabited detailed surgery/Perelman assembly payload selects a complete
 consumer and exposes the fixed-target complete endpoint through that same
 selected consumer.  This is the detailed-assembly route for callers that
