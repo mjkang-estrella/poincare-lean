@@ -24053,6 +24053,52 @@ def extinctionTopologySphericalSpaceFormHomeomorphismLiftPrefixPackage_of_surger
     forwardContinuityData
 
 /--
+The selected raw-map route through the spherical homeomorphism lift is the
+same production route as first rebuilding raw forward/inverse map data from
+that selected pair and then applying the forward-continuity upgrade. This
+pins the nonterminal topology-recognition payload before it is collapsed into
+the final extraction package.
+-/
+theorem extinctionTopologySphericalSpaceFormHomeomorphismLiftPrefixPackage_selectedRawMapData_forwardContinuity_rawMapRoute_fields
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    let rawMapData :=
+      extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecompositionStatement_of_selectedRawMapData
+        mapSelectionData selectedRawMapData
+    let fullContinuityData :=
+      extinctionOnePointThreeSpaceForwardInverseMapContinuityDataAfterDecompositionStatement_of_forwardContinuityDataAfterDecompositionStatement
+        forwardContinuityData
+    let rawMapPrefix :=
+      extinctionTopologySphericalSpaceFormHomeomorphismLiftPrefixPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceForwardInverseMapDataAfterDecomposition
+        surgeryTracePrefix rawMapData fullContinuityData
+    let selectedPrefix :=
+      extinctionTopologySphericalSpaceFormHomeomorphismLiftPrefixPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceSelectedRawMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+        surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData
+    selectedPrefix.decomposition M extinction =
+        rawMapPrefix.decomposition M extinction ∧
+      selectedPrefix.trivialQuotientHomeomorphism M extinction =
+        rawMapPrefix.trivialQuotientHomeomorphism M extinction ∧
+      selectedPrefix.sphericalHomeomorphismLift M extinction =
+        rawMapPrefix.sphericalHomeomorphismLift M extinction := by
+  dsimp
+  exact
+    ⟨ by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    ⟩
+
+/--
 A surgery-trace prefix plus paired forward-continuous map data advances
 through the spherical homeomorphism lift.
 -/
