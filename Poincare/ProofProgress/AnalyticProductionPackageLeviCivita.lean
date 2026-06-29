@@ -4201,4 +4201,74 @@ theorem analyticProductionPackage_selected_payload_leviCivita_and_terminal_curva
     , curvature_evolution_of_analytic_foundation_package package
     ⟩
 
+/--
+A completed analytic-foundation package also keeps the selected Ricci-flow
+datum tied to the DeTurck construction route, the pulled-back short-time Ricci
+flow solution, and the continuation criterion.  This records the analytic
+middle of the package separately from the Levi-Civita and terminal curvature
+field endpoint above.
+-/
+theorem analyticProductionPackage_selected_payload_deturck_shortTime_and_continuation_fields
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    ∃ flow : RicciFlowData I n M,
+      flow = ricci_flow_data_of_analytic_foundation_package package ∧
+        AnalyticFoundationSubobligationsPayload flow ∧
+        SatisfiesRicciFlowEquation
+          (metric_of_ricci_flow_data flow)
+          (curvature_data_of_ricci_flow_data flow) ∧
+        HasRicciFlowEquationDerivation flow ∧
+        HasInitialMetricCompatibility flow ∧
+        HasDeTurckGaugeFixing flow ∧
+        HasDeTurckBackgroundMetricCompatibility flow ∧
+        HasDeTurckVectorFieldConstruction flow ∧
+        HasDeTurckEquationDerivation flow ∧
+        HasRicciDeTurckLinearization flow ∧
+        HasStrictlyParabolicDeTurckSystem flow ∧
+        HasParabolicLinearTheory flow ∧
+        HasParabolicFixedPointArgument flow ∧
+        HasDeTurckShortTimeExistence flow ∧
+        HasShortTimeRegularityBootstrap flow ∧
+        HasDeTurckDiffeomorphismODE flow ∧
+        HasDeTurckPullbackEquationIdentity flow ∧
+        HasDeTurckPullbackToRicciFlow flow ∧
+        HasShortTimeRicciFlowSolution flow ∧
+        HasRicciFlowMaximalTimeInterval flow ∧
+        HasRicciFlowContinuationCriterion flow := by
+  let flow := ricci_flow_data_of_analytic_foundation_package package
+  rcases analytic_foundation_payload_of_analytic_foundation_package
+      package with
+    ⟨ _statement, _derivationStatement, subobligations, equationEvidence⟩
+  exact
+    ⟨ flow
+    , rfl
+    , subobligations
+    , equationEvidence
+    , equation_derivation_of_analytic_foundation_package package
+    , initial_metric_compatibility_of_analytic_foundation_package package
+    , deturck_gauge_fixing_of_analytic_foundation_package package
+    , deturck_background_metric_compatibility_of_analytic_foundation_package
+        package
+    , deturck_vector_field_construction_of_analytic_foundation_package
+        package
+    , deturck_equation_derivation_of_analytic_foundation_package package
+    , ricci_deturck_linearization_of_analytic_foundation_package package
+    , strictly_parabolic_deturck_of_analytic_foundation_package package
+    , parabolic_linear_theory_of_analytic_foundation_package package
+    , parabolic_fixed_point_argument_of_analytic_foundation_package package
+    , deturck_short_time_existence_of_analytic_foundation_package package
+    , short_time_regularity_bootstrap_of_analytic_foundation_package package
+    , deturck_diffeomorphism_ode_of_analytic_foundation_package package
+    , deturck_pullback_equation_identity_of_analytic_foundation_package
+        package
+    , deturck_pullback_to_ricci_flow_of_analytic_foundation_package package
+    , short_time_existence_of_analytic_foundation_package package
+    , maximal_time_interval_of_analytic_foundation_package package
+    , continuation_criterion_of_analytic_foundation_package package
+    ⟩
+
 end Poincare
