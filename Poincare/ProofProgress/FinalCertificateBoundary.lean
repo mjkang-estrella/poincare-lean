@@ -5529,4 +5529,50 @@ theorem finalCertificateNamedPackageLayerRequirements_constructedConsumer_opened
     , selected.completionCriteria
     ⟩
 
+/--
+For the constructed named-package consumer, the public and canonical
+completion payloads collapse directly to the selected public statement,
+selected canonical target, and the single selected all-witness completion
+criterion family.  Downstream final-collapse consumers can use these equalities
+without reopening either existential payload.
+-/
+theorem finalCertificateNamedPackageLayerRequirements_constructedConsumer_payloads_are_selected_completionCriteria
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    let selected :=
+      finalCertificateNamedPackageLayerConsumerPayload
+        smoothability finiteExtinction topology
+    selected.publicPayload =
+        ⟨selected.publicStatement, selected.completionCriteria⟩ ∧
+      selected.canonicalPayload =
+        ⟨selected.canonicalTarget, selected.completionCriteria⟩ ∧
+      selected.publicStatement =
+        poincare_conjecture_of_completion_certificate
+          selected.checkedCertificate ∧
+      PoincareConjectureStatement.{u} ∧
+      canonicalCompletionTarget.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let selected :=
+    finalCertificateNamedPackageLayerConsumerPayload
+      smoothability finiteExtinction topology
+  exact
+    ⟨ by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , selected.publicStatement
+    , selected.canonicalTarget
+    , selected.checkedCertificate
+    , ⟨selected.checkedCertificate⟩
+    , selected.completionCriteria
+    ⟩
+
 end Poincare
