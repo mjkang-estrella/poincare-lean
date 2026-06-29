@@ -2118,4 +2118,60 @@ theorem onePoint_threeSpace_twoPointComplement_selected_recognition_flatRecognit
         flatPayload
     ⟩
 
+/--
+The selected two-puncture recognition route also keeps the concrete
+punctured-Euclidean chart and path-collapse fields synchronized across the
+structured and flattened payloads.  The same selected flat payload reconstructs
+path-connectedness, so downstream consumers can use the flattened recognition
+object without losing the selected chart or path-component data.
+-/
+theorem onePoint_threeSpace_twoPointComplement_selected_recognition_flatRecognition_fields_and_pathConnected_payload
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    ∃ basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+    ∃ recognitionPayload :
+      OnePointTwoPointComplementRecognitionPayload hqp basepoint,
+    ∃ flatPayload :
+      OnePointTwoPointComplementFlatRecognitionPayload hqp basepoint,
+      flatPayload =
+        onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition
+          recognitionPayload ∧
+        flatPayload.puncturedEuclideanChart =
+          recognitionPayload.puncturedEuclideanChart ∧
+        flatPayload.pathNonempty =
+          recognitionPayload.lowHomotopy.pathNonempty ∧
+        flatPayload.pathComponentEqUniv =
+          recognitionPayload.lowHomotopy.pathComponentEqUniv ∧
+        PathConnectedSpace
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        (∀ a b :
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          Nonempty (Path a b)) ∧
+        (∀ x :
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          pathComponent x = Set.univ) := by
+  let basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    Classical.choice
+      (onePoint_threeSpace_twoPointComplement_nonempty hqp)
+  let recognitionPayload :=
+    onePoint_threeSpace_twoPointComplement_recognition_payload hqp
+      basepoint
+  let flatPayload :=
+    onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition
+      recognitionPayload
+  exact
+    ⟨ basepoint
+    , recognitionPayload
+    , flatPayload
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , onePoint_threeSpace_twoPointComplement_pathConnectedSpace_of_flatRecognition
+        flatPayload
+    , flatPayload.pathNonempty
+    , flatPayload.pathComponentEqUniv
+    ⟩
+
 end Poincare
