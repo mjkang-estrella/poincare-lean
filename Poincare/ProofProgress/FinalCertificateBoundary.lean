@@ -5617,4 +5617,69 @@ theorem finalCertificateNamedPackageLayerRequirements_constructedConsumer_checke
     , selected.completionCriteria witness
     ⟩
 
+/--
+For a fixed witness universe object, the constructed named-package consumer
+also opens the public and canonical completion payloads at the same selected
+certificate.  This keeps the public target, canonical target, checked
+certificate, and the public/canonical/selected witness criteria synchronized in
+one final-collapse endpoint.
+-/
+theorem finalCertificateNamedPackageLayerRequirements_constructedConsumer_openedPayloads_checkedCertificate_and_witnessCriteria
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (witness : Type u) :
+    let selected :=
+      finalCertificateNamedPackageLayerConsumerPayload
+        smoothability finiteExtinction topology
+    ∃ publicTarget : PoincareConjectureStatement.{u},
+    ∃ publicCriteria :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ canonicalTarget : canonicalCompletionTarget.{u},
+    ∃ canonicalCriteria :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+      selected.publicPayload = ⟨publicTarget, publicCriteria⟩ ∧
+        selected.canonicalPayload = ⟨canonicalTarget, canonicalCriteria⟩ ∧
+        publicTarget = selected.publicStatement ∧
+        canonicalTarget = selected.canonicalTarget ∧
+        selected.publicStatement =
+          poincare_conjecture_of_completion_certificate
+            selected.checkedCertificate ∧
+        publicCriteria = selected.completionCriteria ∧
+        canonicalCriteria = selected.completionCriteria ∧
+        PoincareCompletionCertificate.{u} ∧
+        Nonempty PoincareCompletionCertificate.{u} ∧
+        CompletionCriterionAtUniverse witness ∧
+        publicCriteria witness = selected.completionCriteria witness ∧
+        canonicalCriteria witness = selected.completionCriteria witness := by
+  let selected :=
+    finalCertificateNamedPackageLayerConsumerPayload
+      smoothability finiteExtinction topology
+  rcases selected.publicPayload with ⟨publicTarget, publicCriteria⟩
+  rcases selected.canonicalPayload with ⟨canonicalTarget, canonicalCriteria⟩
+  exact
+    ⟨ publicTarget
+    , publicCriteria
+    , canonicalTarget
+    , canonicalCriteria
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , selected.checkedCertificate
+    , ⟨selected.checkedCertificate⟩
+    , selected.completionCriteria witness
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    ⟩
+
 end Poincare
