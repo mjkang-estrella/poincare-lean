@@ -68,6 +68,44 @@ theorem compl_singleton_fundamentalGroup_subsingleton_of_topology_package
   infer_instance
 
 /--
+The topology package gives the full low-homotopy singleton-complement collapse
+at any supplied basepoint: path components, `π₀`, the fundamental group, and
+`π₁` are all subsingletons after transporting the package-selected one-point
+compactification chart.
+-/
+theorem compl_singleton_lowHomotopy_subsingleton_package_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+      Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) ∧
+      Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) ∧
+      Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) := by
+  letI : ContractibleSpace ({x}ᶜ : Set M) :=
+    compl_singleton_contractibleSpace_of_topology_package
+      package M extinction x
+  letI : PathConnectedSpace ({x}ᶜ : Set M) := inferInstance
+  letI : SimplyConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_simplyConnectedSpace_of_topology_package
+      package M extinction x
+  letI : Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) := inferInstance
+  letI : Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) :=
+    ((HomotopyGroup.pi0EquivZerothHomotopy
+      (X := ({x}ᶜ : Set M)) (x := basepoint)).subsingleton_congr).mpr
+        inferInstance
+  letI : Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) :=
+    compl_singleton_fundamentalGroup_subsingleton_of_topology_package
+      package M extinction x basepoint
+  letI : Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) :=
+    ((HomotopyGroup.pi1EquivFundamentalGroup
+      (X := ({x}ᶜ : Set M)) (x := basepoint)).subsingleton_congr).mpr
+        inferInstance
+  exact ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩
+
+/--
 The package-level homeomorphism projection transports any two-puncture
 complement to a punctured Euclidean chart, hence makes it simply connected.
 -/
@@ -752,6 +790,60 @@ theorem extinctionTopology_fixedTarget_singleton_fundamentalGroup_payload_of_com
         payload.topologyPackage M extinction x
     , compl_singleton_fundamentalGroup_subsingleton_of_topology_package
         payload.topologyPackage M extinction x basepoint
+    ⟩
+
+/--
+For a fixed finite-extinction target and chosen singleton-complement basepoint,
+a complete topology consumer payload exposes the full singleton low-homotopy
+collapse package retained by the topology package, not only the fundamental
+group collapse.  This gives downstream puncture-transport consumers direct
+access to path-component, `π₀`, fundamental-group, and `π₁` subsingleton facts
+from the same selected package and recognition data.
+-/
+theorem extinctionTopology_fixedTarget_singleton_lowHomotopy_payload_of_completeConsumerPayload
+    (payload : Nonempty (ExtinctionTopologyCompleteConsumerPayload.{u}))
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) (basepoint : ({x}ᶜ : Set M)) :
+    ∃ package : ExtinctionTopologyExtractionPackage.{u},
+      ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        homeomorphism =
+            homeomorphism_of_topology_package package M extinction ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+        ContractibleSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+        Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+        Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) ∧
+        Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) ∧
+        Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) := by
+  rcases payload with ⟨payload⟩
+  rcases payload.derivationPunctureFamily M extinction with
+    ⟨homeomorphism, hHomeomorphism_eq, _classification,
+      _simplyConnectedRecognition, _trivialQuotient, _lift,
+      _assembly, _derivation, _liftedDerivation, hOnePoint,
+      hSingletonContractible, _twoPoint⟩
+  rcases
+    compl_singleton_lowHomotopy_subsingleton_package_of_topology_package
+      payload.topologyPackage M extinction x basepoint with
+    ⟨zerothSubsingleton, piZeroSubsingleton, fundamentalGroupSubsingleton,
+      piOneSubsingleton⟩
+  exact
+    ⟨ payload.topologyPackage
+    , homeomorphism
+    , hHomeomorphism_eq
+    , hOnePoint
+    , ⟨homeomorph_compl_singleton_euclidean_of_homeomorph_to_onePoint_threeSpace
+        hOnePoint x⟩
+    , hSingletonContractible x
+    , compl_singleton_simplyConnectedSpace_of_topology_package
+        payload.topologyPackage M extinction x
+    , zerothSubsingleton
+    , piZeroSubsingleton
+    , fundamentalGroupSubsingleton
+    , piOneSubsingleton
     ⟩
 
 /--
