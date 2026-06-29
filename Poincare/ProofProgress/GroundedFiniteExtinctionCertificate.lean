@@ -2696,6 +2696,70 @@ theorem groundedUniversalFiniteExtinction_completeConsumerPayload_checked_certif
     ⟩
 
 /--
+The complete grounded finite-extinction consumer payload selects the exact
+remaining-dependency package and checked-certificate route used by final
+assembly.  This target-free endpoint pins the remaining package fields to the
+selected complete consumer and specializes the completion-criteria family to a
+single requested witness.
+-/
+theorem groundedUniversalFiniteExtinction_completeConsumerPayload_selected_remaining_certificate_route_and_completionCriterion
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (payload :
+      Nonempty GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u})
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (witness : Type u) :
+    ∃ selected : GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u},
+    ∃ remaining : RemainingDependencyPackage.{u},
+    ∃ certificate : PoincareCompletionCertificate.{u},
+      remaining.smoothability = smoothability ∧
+        remaining.surgery = selected.finiteExtinctionPackageRequirement ∧
+        remaining.topology = topologyPackage ∧
+        certificate =
+          completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+            remaining selected.universalStatement ∧
+        UniversalFiniteExtinctionStatement.{u} ∧
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage ∧
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery ∧
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl ∧
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.finiteExtinction ∧
+        PoincareConjectureStatement.{u} ∧
+        PoincareCompletionCertificate.{u} ∧
+        CompletionCriterionAtUniverse witness := by
+  rcases payload with ⟨selected⟩
+  let remaining : RemainingDependencyPackage.{u} :=
+    { smoothability := smoothability
+      surgery := selected.finiteExtinctionPackageRequirement
+      topology := topologyPackage }
+  let certificate : PoincareCompletionCertificate.{u} :=
+    completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+      remaining selected.universalStatement
+  exact
+    ⟨ selected
+    , remaining
+    , certificate
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , selected.universalStatement
+    , selected.finiteExtinctionPackageRequirement
+    , selected.ricciFlowWithSurgeryMilestone
+    , selected.perelmanSingularityControlMilestone
+    , selected.finiteExtinctionMilestone
+    , poincare_conjecture_of_completion_certificate certificate
+    , certificate
+    , completion_criterion_of_completion_certificate witness certificate
+    ⟩
+
+/--
 Grounded universal finite extinction constructs the complete finite-extinction
 consumer payload and feeds the checked final-certificate route without choosing
 a fixed target manifold.  This target-free endpoint exposes the selected
