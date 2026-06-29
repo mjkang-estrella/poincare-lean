@@ -90,6 +90,40 @@ theorem smoothability_surgery_prerequisites_of_homeomorph_to_onePoint_threeSpace
   exact ⟨e.symm.t2Space, charted, simple, e.symm.compactSpace, smooth, nonempty⟩
 
 /--
+One-point recognition supplies a single transported charted-space witness that
+simultaneously carries the `C∞` smooth-manifold proof, the regularity-lowered
+`C¹` surgery-model proof, and the topological prerequisites used by the
+surgery layer.
+-/
+theorem smoothability_transported_smooth_and_surgery_model_package_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ charted : ChartedSpace ThreeManifoldModel M,
+      (letI : ChartedSpace ThreeManifoldModel M := charted
+       IsManifold (𝓡 3) ∞ M) ∧
+      (letI : ChartedSpace ThreeManifoldModel M := charted
+       IsManifold ThreeManifoldModelWithCorners 1 M) ∧
+      ∃ _t2 : T2Space M,
+      ∃ _simple : SimplyConnectedSpace M,
+      ∃ _compact : CompactSpace M,
+        Nonempty M := by
+  rcases h with ⟨e⟩
+  let charted : ChartedSpace ThreeManifoldModel M :=
+    homeomorphToOnePoint_threeSpace_smoothChartedSpace e
+  have smooth :
+      letI : ChartedSpace ThreeManifoldModel M := charted
+      IsManifold (𝓡 3) ∞ M := by
+    exact homeomorphToOnePoint_threeSpace_smoothManifold e
+  have surgeryModel :
+      letI : ChartedSpace ThreeManifoldModel M := charted
+      IsManifold ThreeManifoldModelWithCorners 1 M := by
+    exact homeomorphToOnePoint_threeSpace_surgeryModel_isManifold e
+  rcases smoothability_surgery_prerequisites_of_homeomorph_to_onePoint_threeSpace
+      ⟨e⟩ with
+    ⟨t2, _charted, simple, compact, _smooth, nonempty⟩
+  exact ⟨charted, smooth, surgeryModel, t2, simple, compact, nonempty⟩
+
+/--
 One-point recognition closes the theorem-shaped transported smoothability
 bridge: it supplies the transported charted-space witness and the corresponding
 surgery-model manifold evidence for every recognized compact simply connected
@@ -130,6 +164,26 @@ theorem smoothability_surgery_prerequisites_of_homeomorph_to_threeSphere
     ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
       Nonempty M :=
   smoothability_surgery_prerequisites_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h)
+
+/--
+Sphere recognition gives the same synchronized transported smoothability
+package after converting the sphere recognition homeomorphism to the one-point
+compactification model.
+-/
+theorem smoothability_transported_smooth_and_surgery_model_package_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ charted : ChartedSpace ThreeManifoldModel M,
+      (letI : ChartedSpace ThreeManifoldModel M := charted
+       IsManifold (𝓡 3) ∞ M) ∧
+      (letI : ChartedSpace ThreeManifoldModel M := charted
+       IsManifold ThreeManifoldModelWithCorners 1 M) ∧
+      ∃ _t2 : T2Space M,
+      ∃ _simple : SimplyConnectedSpace M,
+      ∃ _compact : CompactSpace M,
+        Nonempty M :=
+  smoothability_transported_smooth_and_surgery_model_package_of_homeomorph_to_onePoint_threeSpace
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h)
 
 /--
