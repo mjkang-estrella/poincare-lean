@@ -2060,6 +2060,114 @@ theorem surgeryPerelman_nonemptyDetailedAssemblyPayload_selectedCompleteConsumer
     ⟩
 
 /--
+An inhabited detailed surgery/Perelman assembly payload also selects a complete
+consumer and exposes the fixed-target projection payload endpoint through that
+same selected consumer.  This retains the concrete combined payload, its
+projection payload, the selected flow equalities, construction/control
+packages, scale/blowup data, and finite-extinction witnesses while keeping the
+selected complete consumer synchronized with the detailed assembly object that
+produced it.
+-/
+theorem surgeryPerelman_nonemptyDetailedAssemblyPayload_selectedCompleteConsumer_and_fixedTarget_projectionPayloadFields
+    (payload :
+      Nonempty SurgeryPerelmanDetailedAssemblyPayloadFromFiniteExtinction.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ completePayload :
+      SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u},
+    ∃ detailed :
+      SurgeryPerelmanDetailedAssemblyPayloadFromFiniteExtinction.{u},
+      completePayload.detailedPayload = detailed ∧
+        completePayload.projectionAndExtinctionFamily =
+          detailed.projectionAndExtinctionFamily ∧
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.finiteExtinctionPackage ∧
+        dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.surgeryPackage ∧
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.ricciFlowWithSurgery ∧
+        dependencyMilestoneRequirement.{u}
+          DependencyMilestone.perelmanSingularityControl ∧
+        ∃ n : ℕ∞ω,
+        ∃ package : FiniteExtinctionSurgeryPackage n M,
+        ∃ combinedPayload :
+          FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package,
+        ∃ projectionPayload :
+          FiniteExtinctionSurgeryPerelmanProjectionPayload package,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+          projectionPayload = combinedPayload.projectionPayload ∧
+            flow = ricci_flow_data_of_surgery_package package ∧
+            flow = projectionPayload.flow ∧
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+            PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+            Nonempty (SurgeryScaleFunctionPayload flow) ∧
+            HasSingularityModelBlowupClassification flow ∧
+            combinedPayload.finiteExtinctionStatement =
+              finite_extinction_statement_of_surgery_package package ∧
+            combinedPayload.finiteExtinctionWitness =
+              finite_extinction_of_surgery_package package ∧
+            FiniteExtinctionStatement n M ∧
+            FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases payload with ⟨detailed⟩
+  let completePayload :
+      SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u} :=
+    { detailedPayload := detailed
+      surgeryPackageRequirement :=
+        detailed.basePayload.surgeryPackageRequirement
+      ricciFlowWithSurgeryMilestone :=
+        detailed.basePayload.ricciFlowWithSurgeryMilestone
+      perelmanSingularityControlMilestone :=
+        detailed.basePayload.perelmanSingularityControlMilestone
+      projectionPayloadFamily :=
+        detailed.basePayload.projectionPayloadFamily
+      selectedFlowScaleBlowupFamily :=
+        detailed.basePayload.selectedFlowScaleBlowupFamily
+      projectionAndExtinctionFamily :=
+        detailed.projectionAndExtinctionFamily
+      selectedFlowExtinctionFamily :=
+        surgeryPerelmanDetailedAssemblyPayload_selectedFlowExtinctionFamily
+          detailed
+      combinedPayloadAndSelectedFlowFamily :=
+        surgeryPerelmanDetailedAssemblyPayload_combinedPayload_and_selectedFlowExtinctionFamily_of_nonempty
+          ⟨detailed⟩ }
+  rcases
+    surgeryPerelman_fixedTarget_projectionPayload_and_extinctionFields_of_completeConsumerPayload
+      ⟨completePayload⟩ M with
+    ⟨n, package, combinedPayload, projectionPayload, flow,
+      hProjectionPayload, hFlow, hProjectionFlow, constructionPackage,
+      perelmanPackage, scalePayload, blowupClassification,
+      finiteExtinctionStatement, finiteExtinctionWitness⟩
+  exact
+    ⟨ completePayload
+    , detailed
+    , rfl
+    , rfl
+    , finiteExtinctionPackage_requirement_of_surgeryPerelman_completeConsumerPayload
+        ⟨completePayload⟩
+    , completePayload.surgeryPackageRequirement
+    , completePayload.ricciFlowWithSurgeryMilestone
+    , completePayload.perelmanSingularityControlMilestone
+    , n
+    , package
+    , combinedPayload
+    , projectionPayload
+    , flow
+    , hProjectionPayload
+    , hFlow
+    , hProjectionFlow
+    , constructionPackage
+    , perelmanPackage
+    , scalePayload
+    , blowupClassification
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , finiteExtinctionStatement
+    , finiteExtinctionWitness
+    ⟩
+
+/--
 The complete surgery/Perelman consumer payload is equivalent to the inhabited
 detailed surgery/Perelman assembly payload: the forward direction projects the
 stored detailed payload, while the reverse direction rebuilds the complete
