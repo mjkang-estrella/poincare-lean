@@ -24920,6 +24920,56 @@ theorem extinctionTopologyExtractionPackage_selectedRawMapData_forwardContinuity
     ⟩
 
 /--
+The selected raw-map plus forward-continuity topology package also retains the
+homeomorphism assembly and derivation fields from the same intermediate
+simply-connected extinction-recognition prefix.
+-/
+theorem extinctionTopologyExtractionPackage_selectedRawMapData_forwardContinuity_homeomorphismAssembly_fields
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    let recognitionPrefix :=
+      extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceSelectedRawMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+        surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData
+    let package :=
+      extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceSelectedRawMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+        surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData
+    package.extractHomeomorphism M extinction =
+        final_homeomorphism_of_simplyConnectedExtinctionRecognitionPrefixPackage
+          recognitionPrefix M extinction ∧
+      package.homeomorphismAssembly M extinction =
+        homeomorphism_assembly_of_simplyConnectedExtinctionRecognitionPrefixPackage
+          recognitionPrefix M extinction
+          (final_homeomorphism_of_simplyConnectedExtinctionRecognitionPrefixPackage
+            recognitionPrefix M extinction) ∧
+      package.homeomorphismDerivation M extinction =
+        homeomorphism_derivation_of_simplyConnectedExtinctionRecognitionPrefixPackage
+          recognitionPrefix M extinction
+          (final_homeomorphism_of_simplyConnectedExtinctionRecognitionPrefixPackage
+            recognitionPrefix M extinction)
+          (homeomorphism_assembly_of_simplyConnectedExtinctionRecognitionPrefixPackage
+            recognitionPrefix M extinction
+            (final_homeomorphism_of_simplyConnectedExtinctionRecognitionPrefixPackage
+              recognitionPrefix M extinction)) := by
+  dsimp
+  exact
+    ⟨ by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    ⟩
+
+/--
 Once final homeomorphism payload data is supplied, the next package field is
 the raw final homeomorphism. This proof-progress theorem records the explicit
 payload-to-field bridge without asserting a constructorless negation of
