@@ -3671,6 +3671,99 @@ theorem compl_singleton_recognition_supplied_basepoint_all_basepoint_baseclass_c
     ⟩
 
 /--
+Supplied-basepoint singleton-complement endpoint for a sphere-recognized
+source.  It opens the reusable all-basepoint collapse package into named
+collapsed base classes for zeroth homotopy, `π₀`, the fundamental group, and
+`π₁`, while retaining the equality eliminators, path nonemptiness, and
+path-component collapse at the chosen complement basepoint.
+-/
+theorem compl_singleton_recognition_supplied_basepoint_named_baseclass_collapse_package_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    ∃ zerothBaseClass : ZerothHomotopy ({x}ᶜ : Set M),
+    ∃ piZeroBaseClass :
+      HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint,
+    ∃ fundamentalBaseClass :
+      FundamentalGroup ({x}ᶜ : Set M) basepoint,
+    ∃ piOneBaseClass :
+      HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint,
+      Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+        Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) ∧
+        Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) ∧
+        Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) ∧
+        Nonempty (Unique (ZerothHomotopy ({x}ᶜ : Set M))) ∧
+        Nonempty (Unique (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint)) ∧
+        Nonempty (Unique (FundamentalGroup ({x}ᶜ : Set M) basepoint)) ∧
+        Nonempty (Unique (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint)) ∧
+        (∀ y z : ({x}ᶜ : Set M), ZerothHomotopy.mk y = ZerothHomotopy.mk z) ∧
+        (∀ a b : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint,
+          a = b) ∧
+        (∀ a b : FundamentalGroup ({x}ᶜ : Set M) basepoint,
+          a = b) ∧
+        (∀ a b : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint,
+          a = b) ∧
+        (∀ homotopyClass : ZerothHomotopy ({x}ᶜ : Set M),
+          homotopyClass = zerothBaseClass) ∧
+        (∀ homotopyClass :
+          HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint,
+          homotopyClass = piZeroBaseClass) ∧
+        (∀ fundamentalClass :
+          FundamentalGroup ({x}ᶜ : Set M) basepoint,
+          fundamentalClass = fundamentalBaseClass) ∧
+        (∀ homotopyClass :
+          HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint,
+          homotopyClass = piOneBaseClass) ∧
+        (∀ y z : ({x}ᶜ : Set M), Nonempty (Path y z)) ∧
+        (∀ y : ({x}ᶜ : Set M), pathComponent y = Set.univ) := by
+  rcases
+    compl_singleton_recognition_all_basepoint_lowHomotopy_baseclass_collapse_package_of_homeomorph_to_threeSphere
+      h x basepoint with
+    ⟨ zerothSubsingleton
+    , piZeroSubsingleton
+    , fundamentalGroupSubsingleton
+    , piOneSubsingleton
+    , zerothUnique
+    , piZeroUnique
+    , fundamentalGroupUnique
+    , piOneUnique
+    , zerothEq
+    , piZeroEq
+    , fundamentalGroupEq
+    , piOneEq
+    , ⟨zerothBaseClass, zerothBaseClass_eq⟩
+    , ⟨piZeroBaseClass, piZeroBaseClass_eq⟩
+    , ⟨fundamentalBaseClass, fundamentalBaseClass_eq⟩
+    , ⟨piOneBaseClass, piOneBaseClass_eq⟩
+    , pathNonempty
+    , pathComponentEqUniv
+    ⟩
+  exact
+    ⟨ zerothBaseClass
+    , piZeroBaseClass
+    , fundamentalBaseClass
+    , piOneBaseClass
+    , zerothSubsingleton
+    , piZeroSubsingleton
+    , fundamentalGroupSubsingleton
+    , piOneSubsingleton
+    , zerothUnique
+    , piZeroUnique
+    , fundamentalGroupUnique
+    , piOneUnique
+    , zerothEq
+    , piZeroEq
+    , fundamentalGroupEq
+    , piOneEq
+    , zerothBaseClass_eq
+    , piZeroBaseClass_eq
+    , fundamentalBaseClass_eq
+    , piOneBaseClass_eq
+    , pathNonempty
+    , pathComponentEqUniv
+    ⟩
+
+/--
 For a sphere-recognized source, select a singleton-complement basepoint while
 keeping the ordinary Euclidean/topological collapse fields synchronized with the
 full all-basepoint baseclass-collapse package.  This is the compact consumer
