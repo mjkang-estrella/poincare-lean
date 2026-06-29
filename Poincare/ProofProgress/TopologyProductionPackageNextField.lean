@@ -1,3 +1,4 @@
+import Poincare.DependencyCrosswalk
 import Poincare.TopologyExtraction
 
 open scoped Manifold ContDiff
@@ -26053,5 +26054,65 @@ theorem extinction_after_decomposition_component_control_packageExtractHomeomorp
     , boundaryControl
     , derivation
     ⟩
+
+/--
+The package-layer topology requirement exposes the same named fixed-target
+recognition payload as the concrete topology extraction package.  This is the
+assembly-facing version of the endpoint: downstream final-certificate callers
+can start from `DependencyPackageLayer.topologyPackage` and still recover the
+package's extract-homeomorphism field, named extraction and sphere-recognition
+statements, the after-decomposition component-control chain, and the derivation
+statement for the selected extinct target.
+-/
+theorem extinction_after_decomposition_component_control_packageLayer_named_statement_payload_of_topologyPackage_requirement
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    let package : ExtinctionTopologyExtractionPackage.{u} :=
+      topologyPackage
+    let decomposition :=
+      extinction_decomposition_of_topology_package package M extinction
+    let reconstruction :=
+      extinction_surgery_trace_reconstruction_after_decomposition_of_topology_package
+        package M extinction
+    let classification :=
+      extinction_component_classification_after_handle_cancellation_of_topology_package
+        package M extinction
+    let inventory :=
+      extinction_component_inventory_after_handle_cancellation_of_topology_package
+        package M extinction
+    let packageHomeomorphism :=
+      package.extractHomeomorphism M extinction
+    ∃ selectedHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ extractionStatement : ExtinctionTopologyExtractionStatement.{u},
+    ∃ sphereStatement : ExtinctionImpliesSphereStatement.{u},
+      selectedHomeomorphism =
+          homeomorphism_of_topology_package package M extinction ∧
+        packageHomeomorphism = selectedHomeomorphism ∧
+        extractionStatement =
+          extinction_topology_extraction_statement_of_topology_package
+            package ∧
+        sphereStatement =
+          extinction_implies_sphere_of_topology_package package ∧
+        HasExtinctionSurgeryTraceReconstruction M extinction decomposition ∧
+        HasExtinctionSurgeryTraceHandleCancellation M extinction
+          decomposition reconstruction ∧
+        HasExtinctionComponentClassification M extinction decomposition ∧
+        HasExtinctionDiscardedComponentHomeomorphismClassification M extinction
+          decomposition classification ∧
+        HasExtinctionComponentInventory M extinction
+          decomposition classification ∧
+        HasExtinctionComponentBoundarySphereControl M extinction
+          decomposition classification inventory ∧
+        ExtinctionTopologyDerivationStatement M extinction packageHomeomorphism := by
+  let package : ExtinctionTopologyExtractionPackage.{u} :=
+    topologyPackage
+  exact
+    extinction_after_decomposition_component_control_packageExtractHomeomorphism_named_statement_payload_of_topology_package
+      package M extinction
 
 end Poincare
