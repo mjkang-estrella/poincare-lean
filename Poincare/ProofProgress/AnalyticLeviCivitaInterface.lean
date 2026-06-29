@@ -320,4 +320,64 @@ theorem analyticFoundationSubobligationsPayload_and_flow_metric_slices_riemannia
       subobligations
   ⟩
 
+/--
+At a fixed time, an analytic sub-obligation payload retains the concrete metric
+slice, the induced smooth Riemannian-bundle evidence for that slice, and the
+selected time-dependent tangent connection field that closes the first analytic
+package field.
+-/
+theorem analyticFoundationSubobligationsPayload_fixedTime_metricSlice_riemannianBundle_connectionField_and_first_analytic_field
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (subobligations : AnalyticFoundationSubobligationsPayload flow)
+    (t : ℝ) :
+    AnalyticFoundationSubobligationsPayload flow ∧
+      ∃ metricSlice :
+        ContMDiffRiemannianMetric I n E
+          (fun x : M => TangentSpace I x),
+        metricSlice = metric_at_time_of_ricci_flow_data flow t ∧
+        (letI : RiemannianBundle (fun x : M => TangentSpace I x) :=
+            ⟨metricSlice.toRiemannianMetric⟩;
+          IsContMDiffRiemannianBundle I n E
+            (fun x : M => TangentSpace I x)) ∧
+        ∃ _connectionAtTime :
+          TimeDependentTangentConnectionField
+            (metric_of_ricci_flow_data flow),
+          TimeDependentTangentConnectionField
+              (metric_of_ricci_flow_data flow) =
+            (ℝ → TangentCovariantDerivative I M) ∧
+          ProposedHasLeviCivitaConnectionExistence
+            (metric_of_ricci_flow_data flow) ∧
+          HasLeviCivitaConnectionExistence
+            (metric_of_ricci_flow_data flow) := by
+  rcases
+    flow_metric_slices_riemannianBundle_connectionField_and_first_analytic_field_of_subobligations
+      subobligations with
+    ⟨connectionAtTime, hConnectionField, _metricSlices, _bundleSlices,
+      hProposed, hFirstField⟩
+  let metricSlice :
+      ContMDiffRiemannianMetric I n E
+        (fun x : M => TangentSpace I x) :=
+    metric_at_time_of_ricci_flow_data flow t
+  have hBundle :
+      letI : RiemannianBundle (fun x : M => TangentSpace I x) :=
+        ⟨metricSlice.toRiemannianMetric⟩
+      IsContMDiffRiemannianBundle I n E
+        (fun x : M => TangentSpace I x) := by
+    simpa [metricSlice] using
+      flow_metric_slice_induces_contMDiff_riemannian_bundle flow t
+  exact
+    ⟨ subobligations
+    , metricSlice
+    , rfl
+    , hBundle
+    , connectionAtTime
+    , hConnectionField
+    , hProposed
+    , hFirstField
+    ⟩
+
 end Poincare
