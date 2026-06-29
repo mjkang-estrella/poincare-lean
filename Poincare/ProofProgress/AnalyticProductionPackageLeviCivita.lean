@@ -4892,4 +4892,160 @@ theorem analyticProductionPackage_selected_statement_extractors_connectionField_
     , curvature_evolution_of_analytic_foundation_package package
     ⟩
 
+/--
+A completed analytic-foundation package synchronizes the theorem-shaped
+statement extractors with the full selected-flow analytic foundation.  This
+keeps the statement-level Ricci-flow datum and equation evidence tied to the
+same concrete Levi-Civita connection field, DeTurck construction, continuation
+and regularization layer, uniqueness theory, and terminal curvature-evolution
+fields.
+-/
+theorem analyticProductionPackage_selected_statement_extractors_connectionField_full_foundation_to_curvature_fields
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    ∃ flow : RicciFlowData I n M,
+    ∃ statement : RicciFlowAnalyticFoundationStatement I n M,
+    ∃ derivationStatement : AnalyticFoundationDerivationStatement flow,
+    ∃ equationEvidence :
+      SatisfiesRicciFlowEquation
+        (metric_of_ricci_flow_data flow)
+        (curvature_data_of_ricci_flow_data flow),
+    ∃ connectionAtTime :
+      TimeDependentTangentConnectionField
+        (metric_of_ricci_flow_data flow),
+      flow = ricci_flow_data_of_analytic_foundation_package package ∧
+        statement = ⟨flow, derivationStatement⟩ ∧
+        ricci_flow_data_of_analytic_foundation_statement statement =
+          ⟨flow, derivationStatement⟩ ∧
+        equation_evidence_of_analytic_foundation_statement statement =
+          ⟨flow, equationEvidence⟩ ∧
+        AnalyticFoundationSubobligationsPayload flow ∧
+        SatisfiesRicciFlowEquation
+          (metric_of_ricci_flow_data flow)
+          (curvature_data_of_ricci_flow_data flow) ∧
+        (∃ leviCivitaExistence :
+          HasLeviCivitaConnectionExistence
+            (metric_of_ricci_flow_data flow),
+          leviCivitaExistence =
+            hasLeviCivitaConnectionExistence_of_connectionField
+              (g := metric_of_ricci_flow_data flow) connectionAtTime) ∧
+        HasLeviCivitaConnectionUniqueness
+          (metric_of_ricci_flow_data flow) ∧
+        HasLeviCivitaTorsionFreeProperty
+          (metric_of_ricci_flow_data flow) ∧
+        HasLeviCivitaMetricCompatibility
+          (metric_of_ricci_flow_data flow) ∧
+        HasLeviCivitaConnectionTheory
+          (metric_of_ricci_flow_data flow) ∧
+        HasRicciFlowEquationDerivation flow ∧
+        HasInitialMetricCompatibility flow ∧
+        HasDeTurckGaugeFixing flow ∧
+        HasDeTurckBackgroundMetricCompatibility flow ∧
+        HasDeTurckVectorFieldConstruction flow ∧
+        HasDeTurckEquationDerivation flow ∧
+        HasRicciDeTurckLinearization flow ∧
+        HasStrictlyParabolicDeTurckSystem flow ∧
+        HasParabolicLinearTheory flow ∧
+        HasParabolicFixedPointArgument flow ∧
+        HasDeTurckShortTimeExistence flow ∧
+        HasShortTimeRegularityBootstrap flow ∧
+        HasDeTurckDiffeomorphismODE flow ∧
+        HasDeTurckPullbackEquationIdentity flow ∧
+        HasDeTurckPullbackToRicciFlow flow ∧
+        HasShortTimeRicciFlowSolution flow ∧
+        HasRicciFlowMaximalTimeInterval flow ∧
+        HasRicciFlowContinuationCriterion flow ∧
+        HasCurvatureBlowUpContinuationCriterion flow ∧
+        HasMaximalSolutionExtension flow ∧
+        HasParabolicSchauderEstimates flow ∧
+        HasRicciFlowParabolicRegularity flow ∧
+        HasShiDerivativeEstimates flow ∧
+        HasCurvatureDerivativeBootstrap flow ∧
+        HasHamiltonMaximumPrinciple flow ∧
+        HasRicciFlowUniquenessTheory flow ∧
+        HasMetricEvolutionEquation flow ∧
+        HasRicciTensorEvolutionEquation flow ∧
+        HasScalarCurvatureEvolutionEquation flow ∧
+        HasCurvatureNormEvolutionInequality flow ∧
+        HasCurvatureEvolutionEquations flow := by
+  let flow := ricci_flow_data_of_analytic_foundation_package package
+  have connectionField :
+      Nonempty
+        (TimeDependentTangentConnectionField
+          (metric_of_ricci_flow_data flow)) :=
+    (hasLeviCivitaConnectionExistence_iff_connectionField_nonempty
+      (metric_of_ricci_flow_data flow)).1
+        (levi_civita_existence_of_analytic_foundation_package package)
+  rcases connectionField with ⟨connectionAtTime⟩
+  rcases analytic_foundation_payload_of_analytic_foundation_package
+      package with
+    ⟨statement, derivationStatement, subobligations, equationEvidence⟩
+  have statement_eq :
+      statement = ⟨flow, derivationStatement⟩ := by
+    simpa [flow] using
+      analytic_foundation_statement_of_analytic_foundation_package_eq
+        package
+  exact
+    ⟨ flow
+    , statement
+    , derivationStatement
+    , equationEvidence
+    , connectionAtTime
+    , rfl
+    , statement_eq
+    , by apply Subsingleton.elim
+    , by
+        apply Subsingleton.elim
+    , subobligations
+    , equationEvidence
+    , ⟨ hasLeviCivitaConnectionExistence_of_connectionField
+          (g := metric_of_ricci_flow_data flow) connectionAtTime
+      , rfl⟩
+    , levi_civita_uniqueness_of_analytic_foundation_package package
+    , levi_civita_torsion_free_of_analytic_foundation_package package
+    , levi_civita_metric_compatibility_of_analytic_foundation_package
+        package
+    , levi_civita_theory_of_analytic_foundation_package package
+    , equation_derivation_of_analytic_foundation_package package
+    , initial_metric_compatibility_of_analytic_foundation_package package
+    , deturck_gauge_fixing_of_analytic_foundation_package package
+    , deturck_background_metric_compatibility_of_analytic_foundation_package
+        package
+    , deturck_vector_field_construction_of_analytic_foundation_package
+        package
+    , deturck_equation_derivation_of_analytic_foundation_package package
+    , ricci_deturck_linearization_of_analytic_foundation_package package
+    , strictly_parabolic_deturck_of_analytic_foundation_package package
+    , parabolic_linear_theory_of_analytic_foundation_package package
+    , parabolic_fixed_point_argument_of_analytic_foundation_package package
+    , deturck_short_time_existence_of_analytic_foundation_package package
+    , short_time_regularity_bootstrap_of_analytic_foundation_package package
+    , deturck_diffeomorphism_ode_of_analytic_foundation_package package
+    , deturck_pullback_equation_identity_of_analytic_foundation_package
+        package
+    , deturck_pullback_to_ricci_flow_of_analytic_foundation_package package
+    , short_time_existence_of_analytic_foundation_package package
+    , maximal_time_interval_of_analytic_foundation_package package
+    , continuation_criterion_of_analytic_foundation_package package
+    , curvature_blowup_criterion_of_analytic_foundation_package package
+    , maximal_solution_extension_of_analytic_foundation_package package
+    , parabolic_schauder_estimates_of_analytic_foundation_package package
+    , parabolic_regularity_of_analytic_foundation_package package
+    , shi_derivative_estimates_of_analytic_foundation_package package
+    , curvature_derivative_bootstrap_of_analytic_foundation_package package
+    , hamilton_maximum_principle_of_analytic_foundation_package package
+    , uniqueness_theory_of_analytic_foundation_package package
+    , metric_evolution_equation_of_analytic_foundation_package package
+    , ricci_tensor_evolution_equation_of_analytic_foundation_package package
+    , scalar_curvature_evolution_equation_of_analytic_foundation_package
+        package
+    , curvature_norm_evolution_inequality_of_analytic_foundation_package
+        package
+    , curvature_evolution_of_analytic_foundation_package package
+    ⟩
+
 end Poincare
