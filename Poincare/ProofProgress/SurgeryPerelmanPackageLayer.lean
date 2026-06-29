@@ -1200,6 +1200,42 @@ theorem surgeryPerelman_requirements_and_fixedTarget_scaleBlowup_of_completeCons
 
 /--
 For a fixed target manifold, a complete surgery/Perelman consumer payload
+exposes the normalized selected-flow finite-extinction endpoint together with
+the package-layer and milestone requirements justifying the selected flow.
+-/
+theorem surgeryPerelman_requirements_and_fixedTarget_selectedFlowExtinction_of_completeConsumerPayload
+    (payload :
+      Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.surgeryPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      ∃ n : ℕ∞ω,
+      ∃ package : FiniteExtinctionSurgeryPackage n M,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        flow = ricci_flow_data_of_surgery_package package ∧
+          RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+          PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+          Nonempty (SurgeryScaleFunctionPayload flow) ∧
+          HasSingularityModelBlowupClassification flow ∧
+          FiniteExtinctionStatement n M ∧
+          FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases payload with ⟨payload⟩
+  exact
+    ⟨ payload.surgeryPackageRequirement
+    , payload.ricciFlowWithSurgeryMilestone
+    , payload.perelmanSingularityControlMilestone
+    , payload.selectedFlowExtinctionFamily M
+    ⟩
+
+/--
+For a fixed target manifold, a complete surgery/Perelman consumer payload
 exposes the concrete combined payload object together with the selected flow,
 construction package, Perelman control package, surgery-scale payload, blowup
 classification, finite-extinction statement, and extinction witness.
