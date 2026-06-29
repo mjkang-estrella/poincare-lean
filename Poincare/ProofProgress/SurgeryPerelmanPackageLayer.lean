@@ -3190,6 +3190,105 @@ theorem finiteExtinctionRequirement_fixedTarget_packageValue_fullPerelmanControl
 
 /--
 Direct package-value endpoint retaining the theorem-shaped finite-extinction
+statement together with entropy monotonicity, aggregate Perelman control,
+singularity-model classification, blowup classification, and the collapsed
+finite-extinction witness.  This is the compact statement-bearing version of
+the full Perelman-control spine for consumers that need the named extinction
+statement and the main Perelman classification/control fields at the same
+selected package.
+-/
+theorem finiteExtinctionRequirement_fixedTarget_packageValue_statement_entropy_control_classification_and_finiteExtinctionWitness
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ packageTarget : Nonempty (Σ n : ℕ∞ω,
+      FiniteExtinctionSurgeryPackage n M),
+    ∃ n : ℕ∞ω,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    ∃ combinedPayload :
+      FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package,
+    ∃ projectionPayload :
+      FiniteExtinctionSurgeryPerelmanProjectionPayload package,
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+    ∃ packageStatement : FiniteExtinctionStatement n M,
+    ∃ finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      packageTarget = finiteExtinctionRequirement M ∧
+        packageTarget = ⟨⟨n, package⟩⟩ ∧
+        combinedPayload =
+          finiteExtinctionSurgeryPerelmanAndExtinctionPayload_of_finite_extinction_surgery_package
+            package ∧
+        projectionPayload = combinedPayload.projectionPayload ∧
+        flow = projectionPayload.flow ∧
+        flow = ricci_flow_data_of_surgery_package package ∧
+        packageStatement = combinedPayload.finiteExtinctionStatement ∧
+        packageStatement =
+          finite_extinction_statement_of_surgery_package package ∧
+        PerelmanSingularityControlPackage
+          (n := n) (M := M) flow ∧
+        HasPerelmanEntropyMonotonicity flow ∧
+        HasSingularityModelClassification flow ∧
+        HasSingularityModelBlowupClassification flow ∧
+        HasPerelmanSingularityControl flow ∧
+        combinedPayload.finiteExtinctionWitness =
+          finite_extinction_of_surgery_package package ∧
+        finiteExtinction = combinedPayload.finiteExtinctionWitness ∧
+        finiteExtinction =
+          finiteExtinctionByRicciFlowWithSurgery_of_finiteExtinctionRequirement
+            finiteExtinctionRequirement M := by
+  rcases
+    finiteExtinctionRequirement_fixedTarget_packageValue_fullPerelmanControl_fields_and_finiteExtinctionWitness
+      finiteExtinctionRequirement M with
+    ⟨packageTarget, n, package, combinedPayload, projectionPayload, flow,
+      finiteExtinction, hPackageTarget, hPackageSigma, hCombinedPayload,
+      hProjectionPayload, hFlowProjection, hFlowPackage,
+      _constructionPackage, _scalePayload, _scaleFunction, _scaleContinuity,
+      _scaleSeparation, _cutoffParameterControl, _cutoffSmoothBump,
+      _parameterSelection, _withSurgery, perelmanPackage,
+      entropyMonotonicity, _reducedVolumeDefinition,
+      _reducedVolumeDerivativeFormula, _reducedVolumeRigidity,
+      _reducedVolumePositiveLowerBound, _reducedVolumeLimitRigidity,
+      _reducedVolumeNonincreasing, _reducedVolume, _kappaFromReducedVolume,
+      _noLocalCollapsingSetup, _noLocalCollapsingVolumeLowerBound,
+      _kappaNoncollapsing, _canonicalScaleControl, _canonicalStability,
+      _canonicalPersistenceAcrossScales, _canonicalNeckCapDichotomy,
+      _canonicalClassification, _noLocalCollapsing,
+      _canonicalNeighborhood, singularityModelClassification,
+      blowupClassification, perelmanControl, hPackageStatement,
+      hFiniteExtinctionWitness, hFiniteExtinction,
+      hFiniteExtinctionRequirement⟩
+  exact
+    ⟨ packageTarget
+    , n
+    , package
+    , combinedPayload
+    , projectionPayload
+    , flow
+    , combinedPayload.finiteExtinctionStatement
+    , finiteExtinction
+    , hPackageTarget
+    , hPackageSigma
+    , hCombinedPayload
+    , hProjectionPayload
+    , hFlowProjection
+    , hFlowPackage
+    , rfl
+    , hPackageStatement
+    , perelmanPackage
+    , entropyMonotonicity
+    , singularityModelClassification
+    , blowupClassification
+    , perelmanControl
+    , hFiniteExtinctionWitness
+    , hFiniteExtinction
+    , hFiniteExtinctionRequirement
+    ⟩
+
+/--
+Direct package-value endpoint retaining the theorem-shaped finite-extinction
 statement alongside the full aggregate Perelman-control package and collapsed
 finite-extinction witness.  This keeps the selected surgery package value, its
 projection payload, the selected Ricci-flow datum, the finite-extinction
