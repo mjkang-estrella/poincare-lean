@@ -2334,6 +2334,107 @@ theorem finiteExtinctionRequirement_selectedCompleteSurgeryPerelmanConsumer_and_
     ⟩
 
 /--
+The finite-extinction package-layer requirement can retain the complete
+surgery/Perelman consumer, the reduced-volume/no-local-collapsing/canonical
+control spine, and the direct collapsed finite-extinction witness in one
+fixed-target route.  The witness is the same proposition as both the selected
+combined payload's finite-extinction field and the direct package-layer
+projection.
+-/
+theorem finiteExtinctionRequirement_completeSurgeryPerelmanConsumer_fixedTarget_noLocalCollapsing_controls_and_collapsedWitness
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u} ∧
+      ∃ n : ℕ∞ω,
+      ∃ package : FiniteExtinctionSurgeryPackage n M,
+      ∃ combinedPayload :
+        FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      ∃ finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+        flow = ricci_flow_data_of_surgery_package package ∧
+          PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+          HasPerelmanReducedVolumeDefinition flow ∧
+          HasPerelmanReducedVolumeDerivativeFormula flow ∧
+          HasPerelmanReducedVolumeRigidity flow ∧
+          HasPerelmanReducedVolumePositiveLowerBound flow ∧
+          HasPerelmanReducedVolumeLimitRigidity flow ∧
+          HasPerelmanReducedVolumeNonincreasing flow ∧
+          HasPerelmanKappaNoncollapsingFromReducedVolume flow ∧
+          HasPerelmanNoLocalCollapsingContradictionSetup flow ∧
+          HasNoLocalCollapsingVolumeLowerBound flow ∧
+          HasPerelmanKappaNoncollapsingQuantification flow ∧
+          HasCanonicalNeighborhoodScaleControl flow ∧
+          HasCanonicalNeighborhoodStability flow ∧
+          HasCanonicalNeighborhoodPersistenceAcrossScales flow ∧
+          HasCanonicalNeighborhoodNeckCapDichotomy flow ∧
+          HasCanonicalNeighborhoodClassification flow ∧
+          HasPerelmanNoLocalCollapsing flow ∧
+          HasPerelmanReducedVolumeMonotonicity flow ∧
+          HasCanonicalNeighborhoodTheorem flow ∧
+          FiniteExtinctionStatement n M ∧
+          finiteExtinction = combinedPayload.finiteExtinctionWitness ∧
+          finiteExtinction =
+            finiteExtinctionByRicciFlowWithSurgery_of_finiteExtinctionRequirement
+              finiteExtinctionRequirement M := by
+  let completePayload :=
+    surgeryPerelman_completeConsumerPayload_of_finiteExtinctionPackage_requirement
+      finiteExtinctionRequirement
+  rcases
+    surgeryPerelman_completeConsumerPayload_fixedTarget_noLocalCollapsing_reducedVolume_canonical_fields
+      completePayload M with
+    ⟨n, package, combinedPayload, flow, hFlow, perelmanPackage,
+      reducedVolumeDefinition, reducedVolumeDerivativeFormula,
+      reducedVolumeRigidity, reducedVolumePositiveLowerBound,
+      reducedVolumeLimitRigidity, reducedVolumeNonincreasing,
+      kappaNoncollapsingFromReducedVolume,
+      noLocalCollapsingContradictionSetup, noLocalCollapsingVolumeLowerBound,
+      kappaNoncollapsing, canonicalNeighborhoodScaleControl,
+      canonicalNeighborhoodStability,
+      canonicalNeighborhoodPersistenceAcrossScales,
+      canonicalNeighborhoodNeckCapDichotomy, canonicalNeighborhoodClassification,
+      noLocalCollapsing, reducedVolume, canonicalNeighborhood,
+      finiteExtinctionStatement, finiteExtinctionWitness⟩
+  exact
+    ⟨ finiteExtinctionRequirement
+    , completePayload
+    , n
+    , package
+    , combinedPayload
+    , flow
+    , finiteExtinctionWitness
+    , hFlow
+    , perelmanPackage
+    , reducedVolumeDefinition
+    , reducedVolumeDerivativeFormula
+    , reducedVolumeRigidity
+    , reducedVolumePositiveLowerBound
+    , reducedVolumeLimitRigidity
+    , reducedVolumeNonincreasing
+    , kappaNoncollapsingFromReducedVolume
+    , noLocalCollapsingContradictionSetup
+    , noLocalCollapsingVolumeLowerBound
+    , kappaNoncollapsing
+    , canonicalNeighborhoodScaleControl
+    , canonicalNeighborhoodStability
+    , canonicalNeighborhoodPersistenceAcrossScales
+    , canonicalNeighborhoodNeckCapDichotomy
+    , canonicalNeighborhoodClassification
+    , noLocalCollapsing
+    , reducedVolume
+    , canonicalNeighborhood
+    , finiteExtinctionStatement
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    ⟩
+
+/--
 The finite-extinction package-layer requirement constructs the complete
 surgery/Perelman consumer payload and immediately exposes the synchronized
 projection payload and finite-extinction fields for the same selected package.
