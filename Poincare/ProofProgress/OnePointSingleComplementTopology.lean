@@ -1369,6 +1369,144 @@ theorem compl_singleton_recognition_euclidean_complete_collapse_and_lowHomotopy_
     ⟩
 
 /--
+The selected singleton-complement endpoint from `ThreeSphere` recognition also
+retains an all-basepoint low-homotopy collapse family.  The selected basepoint
+is used for the concrete Euclidean collapse package, while every supplied
+basepoint of the same complement carries direct `Subsingleton`, uniqueness,
+and equality-eliminator data for the low-homotopy objects.
+-/
+theorem compl_singleton_recognition_selected_basepoint_and_all_basepoint_lowHomotopy_package_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M) :
+    ∃ basepoint : ({x}ᶜ : Set M),
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+        ContractibleSpace ({x}ᶜ : Set M) ∧
+        Nonempty ({x}ᶜ : Set M) ∧
+        PathConnectedSpace ({x}ᶜ : Set M) ∧
+        ConnectedSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+        LocPathConnectedSpace ({x}ᶜ : Set M) ∧
+        (∀ suppliedBasepoint : ({x}ᶜ : Set M),
+          Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) suppliedBasepoint) ∧
+            Subsingleton
+              (FundamentalGroup ({x}ᶜ : Set M) suppliedBasepoint) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) suppliedBasepoint) ∧
+            Nonempty (Unique (ZerothHomotopy ({x}ᶜ : Set M))) ∧
+            Nonempty (Unique
+              (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) suppliedBasepoint)) ∧
+            Nonempty (Unique
+              (FundamentalGroup ({x}ᶜ : Set M) suppliedBasepoint)) ∧
+            Nonempty (Unique
+              (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) suppliedBasepoint)) ∧
+            (∀ y z : ({x}ᶜ : Set M),
+              ZerothHomotopy.mk y = ZerothHomotopy.mk z) ∧
+            (∀ a b :
+              HomotopyGroup.Pi 0 ({x}ᶜ : Set M) suppliedBasepoint,
+              a = b) ∧
+            (∀ a b : FundamentalGroup ({x}ᶜ : Set M) suppliedBasepoint,
+              a = b) ∧
+            (∀ a b :
+              HomotopyGroup.Pi 1 ({x}ᶜ : Set M) suppliedBasepoint,
+              a = b)) ∧
+        Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) ∧
+        Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) ∧
+        Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) ∧
+        Nonempty (Unique (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint)) ∧
+        Nonempty (Unique (FundamentalGroup ({x}ᶜ : Set M) basepoint)) ∧
+        Nonempty (Unique (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint)) ∧
+        (∀ y z : ({x}ᶜ : Set M), Nonempty (Path y z)) ∧
+        (∀ y : ({x}ᶜ : Set M), pathComponent y = Set.univ) := by
+  rcases
+    compl_singleton_recognition_euclidean_complete_collapse_and_lowHomotopy_subsingleton_package_with_basepoint_of_homeomorph_to_threeSphere
+      h x with
+    ⟨basepoint, hSphere, hOnePoint, chart, contractible, nonempty,
+      pathConnected, connected, simplyConnected, locPathConnected,
+      _zerothSubsingleton, piZeroSubsingleton,
+      fundamentalGroupSubsingleton, piOneSubsingleton, _zerothUnique,
+      piZeroUnique, fundamentalGroupUnique, piOneUnique, _zerothEq,
+      _piZeroEq, _fundamentalGroupEq, _piOneEq, pathNonempty,
+      pathComponentEqUniv⟩
+  let allBasepointLowHomotopy :
+      ∀ suppliedBasepoint : ({x}ᶜ : Set M),
+        Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) suppliedBasepoint) ∧
+          Subsingleton
+            (FundamentalGroup ({x}ᶜ : Set M) suppliedBasepoint) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) suppliedBasepoint) ∧
+          Nonempty (Unique (ZerothHomotopy ({x}ᶜ : Set M))) ∧
+          Nonempty (Unique
+            (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) suppliedBasepoint)) ∧
+          Nonempty (Unique
+            (FundamentalGroup ({x}ᶜ : Set M) suppliedBasepoint)) ∧
+          Nonempty (Unique
+            (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) suppliedBasepoint)) ∧
+          (∀ y z : ({x}ᶜ : Set M),
+            ZerothHomotopy.mk y = ZerothHomotopy.mk z) ∧
+          (∀ a b :
+            HomotopyGroup.Pi 0 ({x}ᶜ : Set M) suppliedBasepoint,
+            a = b) ∧
+          (∀ a b : FundamentalGroup ({x}ᶜ : Set M) suppliedBasepoint,
+            a = b) ∧
+          (∀ a b :
+            HomotopyGroup.Pi 1 ({x}ᶜ : Set M) suppliedBasepoint,
+            a = b) := by
+    intro suppliedBasepoint
+    rcases
+      compl_singleton_recognition_euclidean_complete_collapse_and_lowHomotopy_subsingleton_package_of_homeomorph_to_threeSphere
+        h x suppliedBasepoint with
+      ⟨_hSphere, _hOnePoint, _chart, _contractible, _nonempty,
+        _pathConnected, _connected, _simplyConnected, _locPathConnected,
+        zerothSubsingleton, piZeroSubsingletonAtSupplied,
+        fundamentalGroupSubsingletonAtSupplied,
+        piOneSubsingletonAtSupplied, zerothUnique,
+        piZeroUniqueAtSupplied, fundamentalGroupUniqueAtSupplied,
+        piOneUniqueAtSupplied, zerothEq, piZeroEqAtSupplied,
+        fundamentalGroupEqAtSupplied, piOneEqAtSupplied, _pathNonempty,
+        _pathComponentEqUniv⟩
+    exact
+      ⟨ zerothSubsingleton
+      , piZeroSubsingletonAtSupplied
+      , fundamentalGroupSubsingletonAtSupplied
+      , piOneSubsingletonAtSupplied
+      , zerothUnique
+      , piZeroUniqueAtSupplied
+      , fundamentalGroupUniqueAtSupplied
+      , piOneUniqueAtSupplied
+      , zerothEq
+      , piZeroEqAtSupplied
+      , fundamentalGroupEqAtSupplied
+      , piOneEqAtSupplied
+      ⟩
+  exact
+    ⟨ basepoint
+    , hSphere
+    , hOnePoint
+    , chart
+    , contractible
+    , nonempty
+    , pathConnected
+    , connected
+    , simplyConnected
+    , locPathConnected
+    , allBasepointLowHomotopy
+    , piZeroSubsingleton
+    , fundamentalGroupSubsingleton
+    , piOneSubsingleton
+    , piZeroUnique
+    , fundamentalGroupUnique
+    , piOneUnique
+    , pathNonempty
+    , pathComponentEqUniv
+    ⟩
+
+/--
 The singleton complement package can be produced without an externally chosen
 basepoint: contractibility supplies a point of the complement, and the full
 Euclidean/low-homotopy uniqueness package is then available at that selected
