@@ -1095,6 +1095,107 @@ theorem poincare_statement_of_universalFiniteExtinctionStatement_and_extinctionT
       payload)
 
 /--
+Universal finite extinction and the complete topology consumer payload expose
+the public Poincare statement together with the named one-point recognition
+route and the fixed-target concrete full-extraction payload.  This packages the
+final statement endpoint and the topology-extraction evidence for the selected
+finite-extinction target without reopening the topology package.
+-/
+theorem poincare_statement_recognition_and_fixedTarget_concrete_fullExtraction_of_universalFiniteExtinctionStatement_and_extinctionTopology_completeConsumerPayload
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (payload : Nonempty (ExtinctionTopologyCompleteConsumerPayload.{u}))
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    PoincareConjectureStatement.{u} ∧
+      ExtinctionOnePointThreeSpaceRecognitionStatement.{u} ∧
+      ∃ package : ExtinctionTopologyExtractionPackage.{u},
+      ∃ topologyStatement : ExtinctionTopologyExtractionStatement.{u},
+        topologyStatement =
+            extinction_topology_extraction_statement_of_topology_package
+              package ∧
+          ExtinctionImpliesSphereStatement.{u} ∧
+          ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} ∧
+          ∃ homeomorphism : M ≃ₜ ThreeSphere,
+            Nonempty (M ≃ₜ ThreeSphere) ∧
+            Nonempty.intro homeomorphism =
+                homeomorphism_of_topology_package package M extinction ∧
+            ExtinctionTopologyClassificationSubobligationsPayload
+              M extinction ∧
+            ExtinctionTopologySimplyConnectedRecognitionStatement
+              M extinction ∧
+            ExtinctionTopologySphericalTrivialQuotientStatement
+              M extinction ∧
+            ExtinctionTopologySphericalHomeomorphismLiftStatement
+              M extinction ∧
+            ExtinctionTopologyHomeomorphismAssemblyStatement
+              M extinction (Nonempty.intro homeomorphism) ∧
+            ExtinctionTopologyHomeomorphismDerivationStatement
+              M extinction (Nonempty.intro homeomorphism) ∧
+            ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+              M extinction (Nonempty.intro homeomorphism) ∧
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+            (∀ x : M, ContractibleSpace ({x}ᶜ : Set M)) ∧
+            (∀ {x y : M} (_hyx : y ≠ x)
+              (basepoint : (({x} ∪ {y})ᶜ : Set M)),
+                SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                  Subsingleton
+                    (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+                      basepoint)) := by
+  let recognition :
+      ExtinctionOnePointThreeSpaceRecognitionStatement.{u} :=
+    extinctionOnePointThreeSpaceRecognitionStatement_of_extinctionTopology_completeConsumerPayload
+      payload
+  let statement : PoincareConjectureStatement.{u} :=
+    poincare_statement_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
+      finiteExtinction recognition
+  rcases
+    extinctionTopology_statementEquality_and_fixedTarget_concrete_homeomorphism_fullExtraction_of_completeConsumerPayload
+      payload M extinction with
+    ⟨ package
+    , topologyStatement
+    , hTopologyStatement
+    , extinctionImpliesSphere
+    , liftedHomeomorphismDerivation
+    , homeomorphism
+    , nonemptyHomeomorphism
+    , hHomeomorphism
+    , classification
+    , simplyConnectedRecognition
+    , trivialQuotient
+    , lift
+    , assembly
+    , derivation
+    , liftedDerivation
+    , onePoint
+    , singletonContractible
+    , twoPoint
+    ⟩
+  exact
+    ⟨ statement
+    , recognition
+    , package
+    , topologyStatement
+    , hTopologyStatement
+    , extinctionImpliesSphere
+    , liftedHomeomorphismDerivation
+    , homeomorphism
+    , nonemptyHomeomorphism
+    , hHomeomorphism
+    , classification
+    , simplyConnectedRecognition
+    , trivialQuotient
+    , lift
+    , assembly
+    , derivation
+    , liftedDerivation
+    , onePoint
+    , singletonContractible
+    , twoPoint
+    ⟩
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
