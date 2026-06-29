@@ -10992,6 +10992,56 @@ theorem finiteExtinction_requirement_of_target_assumptions_and_control_frontier_
       controlFrontier
 
 /--
+Final-assembly-facing family payload: the same target-family control frontier
+simultaneously supplies the finite-extinction package-layer requirement, the
+finite-extinction milestone requirement, and for every target manifold a
+concrete finite-extinction package with its theorem-shaped statement and
+projected finite-extinction witness synchronized to that package.
+-/
+theorem finiteExtinctionPackage_requirement_milestone_and_statement_witness_family_of_target_assumptions_and_control_frontier
+    (controlFrontier :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ _surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ _perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            True) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ package : FiniteExtinctionSurgeryPackage n M,
+          ∃ packageStatement : FiniteExtinctionStatement n M,
+          ∃ extinctionWitness : FiniteExtinctionByRicciFlowWithSurgery M,
+            packageStatement =
+                finite_extinction_statement_of_surgery_package package ∧
+              extinctionWitness =
+                finite_extinction_via_statement_of_surgery_package package) := by
+  exact
+    ⟨ finiteExtinctionPackage_requirement_of_target_assumptions_and_control_frontier_family
+        controlFrontier
+    , finiteExtinction_requirement_of_target_assumptions_and_control_frontier_family
+        controlFrontier
+    , finite_extinction_package_statement_and_witness_family_of_target_assumptions_and_control_frontier
+        controlFrontier
+    ⟩
+
+/--
 Payload form of the production bridge: a concrete target sweepout payload
 constructs the target sweepout-frontier bundle, after which the existing
 production bridge consumes the remaining finite-extinction fields.
