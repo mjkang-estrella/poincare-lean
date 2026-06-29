@@ -25631,4 +25631,46 @@ theorem extinction_component_inventory_after_handle_cancellation_of_topology_pac
     (extinction_component_classification_after_handle_cancellation_of_topology_package
       package M extinction)
 
+/--
+The component inventory produced by after-decomposition handle cancellation
+also carries the boundary-sphere-control datum for the discarded components.
+This advances the fixed-target topology-package route one field beyond the
+component-inventory endpoint.
+-/
+theorem extinction_component_boundary_sphere_control_after_handle_cancellation_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    HasExtinctionComponentBoundarySphereControl M extinction
+      (extinction_decomposition_of_topology_package package M extinction)
+      (extinction_component_classification_after_handle_cancellation_of_topology_package
+        package M extinction)
+      (extinction_component_inventory_after_handle_cancellation_of_topology_package
+        package M extinction) :=
+  extinction_component_boundary_sphere_control_of_component_inventory
+    M extinction
+    (extinction_decomposition_of_topology_package package M extinction)
+    (extinction_component_classification_after_handle_cancellation_of_topology_package
+      package M extinction)
+    (extinction_component_inventory_after_handle_cancellation_of_topology_package
+      package M extinction)
+
+/--
+The boundary-sphere-control field obtained through after-decomposition handle
+cancellation agrees with the package-level boundary-sphere-control projection.
+-/
+theorem extinction_component_boundary_sphere_control_after_handle_cancellation_of_topology_package_eq
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    extinction_component_boundary_sphere_control_after_handle_cancellation_of_topology_package
+        package M extinction =
+      extinction_component_boundary_sphere_control_of_topology_package
+        package M extinction := by
+  apply Subsingleton.elim
+
 end Poincare
