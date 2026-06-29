@@ -5879,4 +5879,72 @@ theorem finalCertificateNamedPackageLayerRequirements_constructedConsumer_opened
     , by apply Subsingleton.elim
     ⟩
 
+/--
+The named package layer requirements directly expose the final-collapse
+objects needed by consumers that do not need to inspect the intermediate
+payload equalities: the public Poincare statement, checked completion
+certificate, canonical target, and all universe-level completion criteria from
+the constructed consumer.
+-/
+theorem finalCertificateNamedPackageLayerRequirements_constructedConsumer_direct_finalCollapse_payload
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      canonicalCompletionTarget.{u} ∧
+      (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let selected :=
+    finalCertificateNamedPackageLayerConsumerPayload
+      smoothability finiteExtinction topology
+  exact
+    ⟨ selected.publicStatement
+    , selected.checkedCertificate
+    , ⟨selected.checkedCertificate⟩
+    , selected.canonicalTarget
+    , selected.completionCriteria
+    ⟩
+
+/--
+Fixed-witness form of the direct final-collapse payload: the same constructed
+consumer supplies the checked certificate and the completion criterion at the
+chosen witness while retaining the public Poincare statement and canonical
+completion target.
+-/
+theorem finalCertificateNamedPackageLayerRequirements_constructedConsumer_direct_finalCollapse_witness
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (witness : Type u) :
+    PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      canonicalCompletionTarget.{u} ∧
+      CompletionCriterionAtUniverse witness := by
+  rcases
+    finalCertificateNamedPackageLayerRequirements_constructedConsumer_direct_finalCollapse_payload
+      smoothability finiteExtinction topology with
+    ⟨publicStatement, checkedCertificate, nonemptyCertificate,
+      canonicalTarget, completionCriteria⟩
+  exact
+    ⟨ publicStatement
+    , checkedCertificate
+    , nonemptyCertificate
+    , canonicalTarget
+    , completionCriteria witness
+    ⟩
+
 end Poincare
