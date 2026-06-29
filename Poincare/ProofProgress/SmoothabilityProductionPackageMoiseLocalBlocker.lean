@@ -16412,6 +16412,106 @@ theorem smoothabilityPackageBridgeFields_of_localTransportedChartAtSourceEqChart
       inputs)
 
 /--
+Certificate form of the smoothability transfer frontier.  It packages the raw
+ambient atlas transition theorem, the induced `HasGroupoid` transfer, the
+transported-to-ambient `IsManifold` transfer theorem, the resulting ambient
+smoothability payload, and the bridge fields constructed from the same input.
+-/
+structure OnePointRecognitionTransportedToAmbientTransferCertificate where
+  transitionCompatibility :
+    OnePointRecognitionAmbientAtlasTransitionCompatibilityPayload.{u}
+  hasGroupoidTransfer :
+    OnePointRecognitionTransportedToAmbientHasGroupoidTransferPayload.{u}
+  transferTheorem :
+    OnePointRecognitionTransportedToAmbientIsManifoldTransferTheorem.{u}
+  ambientSmoothability :
+    OnePointRecognitionAmbientSmoothabilityBridgePayload.{u}
+  bridgeFields :
+    SmoothabilityPackageBridgeFields.{u}
+
+/--
+Cross-atlas bridge inputs construct the full transported-to-ambient transfer
+certificate, not only the smoothability bridge fields.
+-/
+theorem onePointRecognitionTransportedToAmbientTransferCertificate_of_chartTransportedAtlasCompatibleBridgeInputs
+    (inputs :
+      OnePointRecognitionAmbientChartTransportedAtlasCompatibleBridgeInputs.{u}) :
+    OnePointRecognitionTransportedToAmbientTransferCertificate.{u} := by
+  let transitionCompatibility :
+      OnePointRecognitionAmbientAtlasTransitionCompatibilityPayload.{u} :=
+    onePointRecognitionAmbientAtlasTransitionCompatibilityPayload_of_chartTransportedAtlasCompatibleBridgeInputs
+      inputs
+  let hasGroupoidTransfer :
+      OnePointRecognitionTransportedToAmbientHasGroupoidTransferPayload.{u} :=
+    onePointRecognitionTransportedToAmbientHasGroupoidTransferPayload_of_atlasTransitionCompatibility
+      transitionCompatibility
+  let transferTheorem :
+      OnePointRecognitionTransportedToAmbientIsManifoldTransferTheorem.{u} :=
+    onePointRecognitionTransportedToAmbientIsManifoldTransferTheorem_of_hasGroupoidTransfer
+      hasGroupoidTransfer
+  exact
+    { transitionCompatibility := transitionCompatibility
+      hasGroupoidTransfer := hasGroupoidTransfer
+      transferTheorem := transferTheorem
+      ambientSmoothability :=
+        onePointRecognitionAmbientSmoothabilityBridgePayload_of_chartedSpaceComparison
+          transferTheorem
+      bridgeFields :=
+        smoothabilityPackageBridgeFields_of_chartTransportedAtlasCompatibleBridgeInputs
+          inputs }
+
+/--
+The one-directional forward cross-atlas bridge input also constructs the full
+transfer certificate after recovering the reverse transition by groupoid
+inversion.
+-/
+theorem onePointRecognitionTransportedToAmbientTransferCertificate_of_forwardChartTransportedAtlasCompatibleBridgeInputs
+    (inputs :
+      OnePointRecognitionAmbientChartForwardTransportedAtlasCompatibleBridgeInputs.{u}) :
+    OnePointRecognitionTransportedToAmbientTransferCertificate.{u} :=
+  onePointRecognitionTransportedToAmbientTransferCertificate_of_chartTransportedAtlasCompatibleBridgeInputs
+    (chartTransportedAtlasCompatibleBridgeInputs_of_forwardChartTransportedAtlasCompatibleBridgeInputs
+      inputs)
+
+/--
+The local restricted-transition bridge input constructs the full transfer
+certificate through the accepted forward cross-atlas route.
+-/
+theorem onePointRecognitionTransportedToAmbientTransferCertificate_of_localForwardChartTransportedAtlasCompatibleBridgeInputs
+    (inputs :
+      OnePointRecognitionAmbientChartLocalForwardTransportedAtlasCompatibleBridgeInputs.{u}) :
+    OnePointRecognitionTransportedToAmbientTransferCertificate.{u} :=
+  onePointRecognitionTransportedToAmbientTransferCertificate_of_forwardChartTransportedAtlasCompatibleBridgeInputs
+    (forwardChartTransportedAtlasCompatibleBridgeInputs_of_localForwardChartTransportedAtlasCompatibleBridgeInputs
+      inputs)
+
+/--
+The local source-equivalence inverse model constructs the full transfer
+certificate through the current forward cross-atlas frontier.
+-/
+theorem onePointRecognitionTransportedToAmbientTransferCertificate_of_localInverseTransportedChartAtEqOnSourceBridgeInputs
+    (inputs :
+      OnePointRecognitionAmbientChartLocalInverseTransportedChartAtEqOnSourceBridgeInputs.{u}) :
+    OnePointRecognitionTransportedToAmbientTransferCertificate.{u} :=
+  onePointRecognitionTransportedToAmbientTransferCertificate_of_forwardChartTransportedAtlasCompatibleBridgeInputs
+    (forwardChartTransportedAtlasCompatibleBridgeInputs_of_localInverseTransportedChartAtEqOnSourceBridgeInputs
+      inputs)
+
+/--
+The manifold-side local source-intersection and forward-chart equality input
+constructs the full transfer certificate through the target/source inverse-map
+route.
+-/
+theorem onePointRecognitionTransportedToAmbientTransferCertificate_of_localTransportedChartAtSourceEqChartEqBridgeInputs
+    (inputs :
+      OnePointRecognitionAmbientChartLocalTransportedChartAtSourceEqChartEqBridgeInputs.{u}) :
+    OnePointRecognitionTransportedToAmbientTransferCertificate.{u} :=
+  onePointRecognitionTransportedToAmbientTransferCertificate_of_forwardChartTransportedAtlasCompatibleBridgeInputs
+    (forwardChartTransportedAtlasCompatibleBridgeInputs_of_localInverseTransportedChartAtTargetEqInvEqBridgeInputs
+      (localInverseTransportedChartAtTargetEqInvEqBridgeInputs_of_localTransportedChartAtSourceEqChartEqBridgeInputs
+        inputs))
+
+/--
 Once the local restriction-equality chart germ is supplied explicitly, one-point
 recognition constructs the package fields through the accepted manifold-side
 chart-germ bridge.
