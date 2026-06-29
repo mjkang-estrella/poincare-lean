@@ -1362,6 +1362,84 @@ theorem surgeryPerelman_fixedTarget_projectionPayload_and_extinctionFields_of_co
     ⟩
 
 /--
+For a fixed target, a complete surgery/Perelman consumer payload recovers the
+finite-extinction package-layer requirement and exposes the synchronized
+projection-payload endpoint for the same selected package.  This keeps the
+package-layer target, projection object, selected flow packages, scale/blowup
+evidence, finite-extinction statement, and finite-extinction witness in one
+consumer-facing route.
+-/
+theorem surgeryPerelman_finiteExtinctionRequirement_and_fixedTarget_projectionPayloadEndpoint_of_completeConsumerPayload
+    (payload :
+      Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.surgeryPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M) ∧
+      ∃ n : ℕ∞ω,
+      ∃ package : FiniteExtinctionSurgeryPackage n M,
+      ∃ combinedPayload :
+        FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package,
+      ∃ projectionPayload :
+        FiniteExtinctionSurgeryPerelmanProjectionPayload package,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        projectionPayload = combinedPayload.projectionPayload ∧
+          flow = ricci_flow_data_of_surgery_package package ∧
+          flow = projectionPayload.flow ∧
+          RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+          PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+          Nonempty (SurgeryScaleFunctionPayload flow) ∧
+          HasSingularityModelBlowupClassification flow ∧
+          FiniteExtinctionStatement n M ∧
+          FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases payload with ⟨payload⟩
+  let finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage := by
+    intro N _top _t2 _charted _simple _compact _manifold
+    rcases payload.combinedPayloadAndSelectedFlowFamily N with
+      ⟨n, package, _combinedPayload, _flow, _flow_eq,
+        _constructionPackage, _perelmanPackage, _scalePayload,
+        _blowupClassification, _finiteExtinctionStatement,
+        _finiteExtinctionWitness⟩
+    exact ⟨⟨n, package⟩⟩
+  rcases payload.combinedPayloadAndSelectedFlowFamily M with
+    ⟨n, package, combinedPayload, flow, hFlow, constructionPackage,
+      perelmanPackage, scalePayload, blowupClassification,
+      finiteExtinctionStatement, finiteExtinctionWitness⟩
+  exact
+    ⟨ finiteExtinctionRequirement
+    , payload.surgeryPackageRequirement
+    , payload.ricciFlowWithSurgeryMilestone
+    , payload.perelmanSingularityControlMilestone
+    , ⟨⟨n, package⟩⟩
+    , n
+    , package
+    , combinedPayload
+    , combinedPayload.projectionPayload
+    , flow
+    , rfl
+    , hFlow
+    , by
+        simpa [hFlow] using combinedPayload.projectionPayload.flow_eq.symm
+    , constructionPackage
+    , perelmanPackage
+    , scalePayload
+    , blowupClassification
+    , finiteExtinctionStatement
+    , finiteExtinctionWitness
+    ⟩
+
+/--
 A complete surgery/Perelman consumer payload carries enough package-tied
 finite-extinction data to recover the finite-extinction package-layer
 requirement itself.  This lets downstream assembly code consume the completed
