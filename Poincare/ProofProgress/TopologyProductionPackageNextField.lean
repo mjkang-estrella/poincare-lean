@@ -25892,4 +25892,86 @@ theorem extinction_after_decomposition_component_control_extractHomeomorphism_an
     , extinction_implies_sphere_of_topology_package package
     ⟩
 
+/--
+A completed topology package can also center the recognition payload on the
+package's concrete `extractHomeomorphism` field itself.  This exposes the same
+after-decomposition component-control chain, the derivation statement for the
+actual package field, the theorem-shaped extraction and sphere-recognition
+statements, and the equality back to the selected homeomorphism route.
+-/
+theorem extinction_after_decomposition_component_control_packageExtractHomeomorphism_and_recognition_payload_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    let decomposition :=
+      extinction_decomposition_of_topology_package package M extinction
+    let reconstruction :=
+      extinction_surgery_trace_reconstruction_after_decomposition_of_topology_package
+        package M extinction
+    let classification :=
+      extinction_component_classification_after_handle_cancellation_of_topology_package
+        package M extinction
+    let inventory :=
+      extinction_component_inventory_after_handle_cancellation_of_topology_package
+        package M extinction
+    let selectedHomeomorphism :=
+      homeomorphism_of_topology_package package M extinction
+    let packageHomeomorphism :=
+      package.extractHomeomorphism M extinction
+    HasExtinctionSurgeryTraceReconstruction M extinction decomposition ∧
+      HasExtinctionSurgeryTraceHandleCancellation M extinction
+        decomposition reconstruction ∧
+      HasExtinctionComponentClassification M extinction decomposition ∧
+      HasExtinctionDiscardedComponentHomeomorphismClassification M extinction
+        decomposition classification ∧
+      HasExtinctionComponentInventory M extinction
+        decomposition classification ∧
+      HasExtinctionComponentBoundarySphereControl M extinction
+        decomposition classification inventory ∧
+      packageHomeomorphism = selectedHomeomorphism ∧
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+      ExtinctionTopologyDerivationStatement M extinction packageHomeomorphism ∧
+      ExtinctionTopologyExtractionStatement.{u} ∧
+      ExtinctionImpliesSphereStatement.{u} := by
+  let decomposition :=
+    extinction_decomposition_of_topology_package package M extinction
+  let reconstruction :=
+    extinction_surgery_trace_reconstruction_after_decomposition_of_topology_package
+      package M extinction
+  let cancellation :=
+    extinction_surgery_trace_handle_cancellation_after_decomposition_of_topology_package
+      package M extinction
+  let classification :=
+    extinction_component_classification_after_handle_cancellation_of_topology_package
+      package M extinction
+  let discardedComponents :=
+    extinction_discarded_component_homeomorphism_classification_after_handle_cancellation_of_topology_package
+      package M extinction
+  let inventory :=
+    extinction_component_inventory_after_handle_cancellation_of_topology_package
+      package M extinction
+  let boundaryControl :=
+    extinction_component_boundary_sphere_control_after_handle_cancellation_of_topology_package
+      package M extinction
+  let selectedHomeomorphism :=
+    homeomorphism_of_topology_package package M extinction
+  let packageHomeomorphism :=
+    package.extractHomeomorphism M extinction
+  exact
+    ⟨ reconstruction
+    , cancellation
+    , classification
+    , discardedComponents
+    , inventory
+    , boundaryControl
+    , rfl
+    , packageHomeomorphism
+    , extinction_topology_derivation_statement_of_topology_package
+        package M extinction
+    , extinction_topology_extraction_statement_of_topology_package package
+    , extinction_implies_sphere_of_topology_package package
+    ⟩
+
 end Poincare
