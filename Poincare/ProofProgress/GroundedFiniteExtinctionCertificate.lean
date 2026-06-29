@@ -543,6 +543,30 @@ theorem finite_extinction_package_statement_and_witness_family_of_grounded
     (grounded M)
 
 /--
+Family-level package-first grounded finite-extinction payload retaining the
+explicit flow, surgery construction, Perelman-control, and derivation witness
+for the theorem-shaped finite-extinction statement at each smooth target.
+-/
+theorem finite_extinction_package_statement_derivation_and_witness_family_of_grounded
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ n : ℕ∞ω,
+        ∃ _package : FiniteExtinctionSurgeryPackage n M,
+          FiniteExtinctionStatement n M ∧
+            FiniteExtinctionByRicciFlowWithSurgery M ∧
+            ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+            ∃ surgery : HasRicciFlowWithSurgery n M,
+            ∃ control :
+                HasPerelmanSingularityControl (n := n) (M := M) flow,
+              HasFiniteExtinctionDerivation flow surgery control := by
+  intro M _top _t2 _charted _simple _compact _manifold
+  exact finite_extinction_package_statement_derivation_and_witness_of_grounded
+    (grounded M)
+
+/--
 The grounded universal statement supplies the finite-extinction package-layer
 requirement consumed by the dependency crosswalk.
 -/
@@ -586,6 +610,34 @@ theorem finiteExtinctionPackage_requirement_and_package_statement_witness_family
               FiniteExtinctionByRicciFlowWithSurgery M) :=
   ⟨ finiteExtinctionPackage_requirement_of_grounded grounded
   , finite_extinction_package_statement_and_witness_family_of_grounded grounded
+  ⟩
+
+/--
+The grounded package-layer requirement and the package-first derivation family
+come from the same grounded universal finite-extinction input.  This retains
+the explicit flow/surgery/control derivation route alongside the dependency
+package consumed by final assembly.
+-/
+theorem finiteExtinctionPackage_requirement_and_package_statement_derivation_witness_family_of_grounded
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u}) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ _package : FiniteExtinctionSurgeryPackage n M,
+            FiniteExtinctionStatement n M ∧
+              FiniteExtinctionByRicciFlowWithSurgery M ∧
+              ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+              ∃ surgery : HasRicciFlowWithSurgery n M,
+              ∃ control :
+                  HasPerelmanSingularityControl (n := n) (M := M) flow,
+                HasFiniteExtinctionDerivation flow surgery control) :=
+  ⟨ finiteExtinctionPackage_requirement_of_grounded grounded
+  , finite_extinction_package_statement_derivation_and_witness_family_of_grounded
+      grounded
   ⟩
 
 /--
