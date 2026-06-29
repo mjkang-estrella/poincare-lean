@@ -477,6 +477,72 @@ theorem project_payload_and_final_certificate_of_remainingDependencyPackage_grou
   apply Subsingleton.elim
 
 /--
+Grounded finite extinction plus theorem-shaped topology extraction opens both
+the project and canonical completion payloads at a fixed witness universe
+object.  The checked certificate is the direct grounded certificate, while the
+public and canonical criteria at the chosen witness are synchronized by proof
+irrelevance.
+-/
+theorem groundedUniversalFiniteExtinction_topologyExtraction_opened_payloads_checkedCertificate_and_witnessCriteria
+    (dependencies : RemainingDependencyPackage.{u})
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyStatement : ExtinctionTopologyExtractionStatement.{u})
+    (witness : Type u) :
+    ∃ publicTarget : PoincareConjectureStatement.{u},
+    ∃ publicCriteria :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ canonicalTarget : canonicalCompletionTarget.{u},
+    ∃ canonicalCriteria :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+      poincare_statement_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+          (universalFiniteExtinctionStatement_of_grounded grounded)
+          topologyStatement =
+        publicTarget ∧
+      canonical_completion_target_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+          (universalFiniteExtinctionStatement_of_grounded grounded)
+          topologyStatement =
+        canonicalTarget ∧
+      poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+          (universalFiniteExtinctionStatement_of_grounded grounded)
+          topologyStatement =
+        ⟨publicTarget, publicCriteria⟩ ∧
+      canonical_completion_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+          (universalFiniteExtinctionStatement_of_grounded grounded)
+          topologyStatement =
+        ⟨canonicalTarget, canonicalCriteria⟩ ∧
+      PoincareCompletionCertificate.{u} ∧
+      Nonempty PoincareCompletionCertificate.{u} ∧
+      CompletionCriterionAtUniverse witness ∧
+      publicCriteria witness = canonicalCriteria witness := by
+  let finiteExtinction :=
+    universalFiniteExtinctionStatement_of_grounded grounded
+  rcases
+    poincare_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+      finiteExtinction topologyStatement with
+    ⟨publicTarget, publicCriteria⟩
+  rcases
+    canonical_completion_payload_of_universalFiniteExtinctionStatement_and_topology_extraction_statement
+      finiteExtinction topologyStatement with
+    ⟨canonicalTarget, canonicalCriteria⟩
+  let certificate : PoincareCompletionCertificate.{u} :=
+    completion_certificate_of_remainingDependencyPackage_and_groundedUniversalFiniteExtinctionStatement
+      dependencies grounded
+  exact
+    ⟨ publicTarget
+    , publicCriteria
+    , canonicalTarget
+    , canonicalCriteria
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , certificate
+    , ⟨certificate⟩
+    , publicCriteria witness
+    , by apply Subsingleton.elim
+    ⟩
+
+/--
 The checked certificate proposition itself has no extra primitive
 finite-extinction field: existing projections make it equivalent to the current
 remaining dependency package.
