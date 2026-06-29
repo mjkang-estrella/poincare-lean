@@ -274,4 +274,60 @@ theorem canonical_completion_payload_of_finalAssemblySubobligationBoundaryInputs
   canonical_completion_payload_of_finalAssemblyPackageBoundaryInputs
     (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
 
+/-- The sub-obligation boundary also exposes the project completion payload. -/
+theorem poincare_completion_payload_of_finalAssemblySubobligationBoundaryInputs
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u}) :
+    ∃ _target : PoincareConjectureStatement.{u},
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  poincare_completion_payload_of_finalAssemblyPackageBoundaryInputs
+    (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
+
+/--
+The sub-obligation boundary closes the canonical completion target after the
+finite-extinction proof-progress bridge builds the package-layer requirement.
+-/
+theorem canonical_completion_target_of_finalAssemblySubobligationBoundaryInputs
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u}) :
+    canonicalCompletionTarget.{u} :=
+  canonical_completion_target_of_finalAssemblyPackageBoundaryInputs
+    (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs inputs)
+
+/--
+The sub-obligation boundary gives one final-assembly consumer endpoint carrying
+the full assembly payload, the public project completion payload, the canonical
+target, and the canonical completion payload after the finite-extinction
+sub-obligation family is promoted to the package-layer requirement.
+-/
+theorem finalAssemblySubobligationBoundaryInputs_fullAssembly_project_and_canonical_payloads
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u}) :
+    (∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+      ∃ _surgeryPackages :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          [IsManifold ThreeManifoldModelWithCorners 1 M],
+            Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+      ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+      ∃ _finiteExtinction :
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            FiniteExtinctionByRicciFlowWithSurgery M),
+      ∃ _extractSphere : ExtinctionImpliesSphereStatement.{u},
+        PoincareConjectureStatement.{u}) ∧
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+      canonicalCompletionTarget.{u} ∧
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :=
+  ⟨ poincare_full_assembly_payload_of_finalAssemblySubobligationBoundaryInputs
+      inputs
+  , poincare_completion_payload_of_finalAssemblySubobligationBoundaryInputs
+      inputs
+  , canonical_completion_target_of_finalAssemblySubobligationBoundaryInputs
+      inputs
+  , canonical_completion_payload_of_finalAssemblySubobligationBoundaryInputs
+      inputs
+  ⟩
+
 end Poincare
