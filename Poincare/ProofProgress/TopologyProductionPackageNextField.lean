@@ -26056,6 +26056,61 @@ theorem extinction_after_decomposition_component_control_packageExtractHomeomorp
     ⟩
 
 /--
+The package-layer topology requirement exposes the full fixed-target
+component-control and recognition payload, not only the named-statement
+projection.  This keeps the dependency-layer package input synchronized with
+the selected decomposition, surgery-trace reconstruction, handle cancellation,
+component classification/inventory/boundary control, the actual package
+`extractHomeomorphism` field, and the theorem-shaped extraction and
+extinction-implies-sphere statements for the same finite-extinction target.
+-/
+theorem extinction_after_decomposition_component_control_packageLayer_extractHomeomorphism_and_recognition_payload_of_topologyPackage_requirement
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    let package : ExtinctionTopologyExtractionPackage.{u} :=
+      topologyPackage
+    let decomposition :=
+      extinction_decomposition_of_topology_package package M extinction
+    let reconstruction :=
+      extinction_surgery_trace_reconstruction_after_decomposition_of_topology_package
+        package M extinction
+    let classification :=
+      extinction_component_classification_after_handle_cancellation_of_topology_package
+        package M extinction
+    let inventory :=
+      extinction_component_inventory_after_handle_cancellation_of_topology_package
+        package M extinction
+    let selectedHomeomorphism :=
+      homeomorphism_of_topology_package package M extinction
+    let packageHomeomorphism :=
+      package.extractHomeomorphism M extinction
+    HasExtinctionSurgeryTraceReconstruction M extinction decomposition ∧
+      HasExtinctionSurgeryTraceHandleCancellation M extinction
+        decomposition reconstruction ∧
+      HasExtinctionComponentClassification M extinction decomposition ∧
+      HasExtinctionDiscardedComponentHomeomorphismClassification M extinction
+        decomposition classification ∧
+      HasExtinctionComponentInventory M extinction
+        decomposition classification ∧
+      HasExtinctionComponentBoundarySphereControl M extinction
+        decomposition classification inventory ∧
+      packageHomeomorphism = selectedHomeomorphism ∧
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+      ExtinctionTopologyDerivationStatement M extinction packageHomeomorphism ∧
+      ExtinctionTopologyExtractionStatement.{u} ∧
+      ExtinctionImpliesSphereStatement.{u} := by
+  let package : ExtinctionTopologyExtractionPackage.{u} :=
+    topologyPackage
+  exact
+    extinction_after_decomposition_component_control_packageExtractHomeomorphism_and_recognition_payload_of_topology_package
+      package M extinction
+
+/--
 The package-layer topology requirement exposes the same named fixed-target
 recognition payload as the concrete topology extraction package.  This is the
 assembly-facing version of the endpoint: downstream final-certificate callers
