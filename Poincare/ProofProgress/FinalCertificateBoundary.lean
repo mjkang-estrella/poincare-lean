@@ -6008,4 +6008,79 @@ theorem finalCertificateNamedPackageLayerRequirements_constructedConsumer_reserv
     , selected.completionCriteria witness
     ⟩
 
+/--
+The reserved theorem-name endpoint and the direct final-collapse endpoint can be
+opened in one step.  The constructed consumer retains the reserved theorem
+name, selected public/canonical payload equalities, checked certificate,
+nonempty certificate witness, canonical target, canonical statement route, all
+completion criteria, and the fixed witness criterion.
+-/
+theorem finalCertificateNamedPackageLayerRequirements_constructedConsumer_reservedName_direct_finalCollapse_payload_and_witness
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (witness : Type u) :
+    let selected :=
+      finalCertificateNamedPackageLayerConsumerPayload
+        smoothability finiteExtinction topology
+    ∃ theoremName : String,
+      theoremName = "poincare_conjecture" ∧
+        selected.publicStatement =
+          poincare_conjecture_of_completion_certificate
+            selected.checkedCertificate ∧
+        selected.publicPayload =
+          ⟨selected.publicStatement, selected.completionCriteria⟩ ∧
+        selected.canonicalPayload =
+          ⟨selected.canonicalTarget, selected.completionCriteria⟩ ∧
+        PoincareConjectureStatement.{u} ∧
+        PoincareCompletionCertificate.{u} ∧
+        Nonempty PoincareCompletionCertificate.{u} ∧
+        RemainingDependencyPackage.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere)) ∧
+        (∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        CompletionCriterionAtUniverse witness := by
+  let selected :=
+    finalCertificateNamedPackageLayerConsumerPayload
+      smoothability finiteExtinction topology
+  rcases
+    finalCertificateNamedPackageLayerRequirements_constructedConsumer_reservedName_certificate_statement_payload_and_witness
+      smoothability finiteExtinction topology witness with
+    ⟨ theoremName
+    , theoremName_eq
+    , hPublicStatement
+    , hPublicPayload
+    , hCanonicalPayload
+    , publicStatement
+    , remainingPackage
+    , canonicalTarget
+    , canonicalStatement
+    , completionCriteria
+    , witnessCriterion
+    ⟩
+  exact
+    ⟨ theoremName
+    , theoremName_eq
+    , hPublicStatement
+    , hPublicPayload
+    , hCanonicalPayload
+    , publicStatement
+    , selected.checkedCertificate
+    , ⟨selected.checkedCertificate⟩
+    , remainingPackage
+    , canonicalTarget
+    , canonicalStatement
+    , completionCriteria
+    , witnessCriterion
+    ⟩
+
 end Poincare
