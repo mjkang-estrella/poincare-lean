@@ -330,6 +330,49 @@ theorem finiteExtinctionSurgeryPerelmanProjectionPayload_fields
   ⟩
 
 /--
+The named finite-extinction surgery/Perelman projection payload opens the
+stored construction package into the concrete early surgery-construction
+fields for the same selected flow.  This keeps the scale-function payload tied
+to continuity, separation, cutoff control, smooth bump functions, parameter
+selection, and the aggregate Ricci-flow-with-surgery construction witness.
+-/
+theorem finiteExtinctionSurgeryPerelmanProjectionPayload_construction_fields
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackage n M}
+    (payload : FiniteExtinctionSurgeryPerelmanProjectionPayload package) :
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      flow = ricci_flow_data_of_surgery_package package ∧
+        RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+        Nonempty (SurgeryScaleFunctionPayload flow) ∧
+        HasSurgeryScaleFunction flow ∧
+        HasSurgeryScaleContinuity flow ∧
+        HasSurgeryScaleSeparation flow ∧
+        HasSurgeryCutoffParameterControl flow ∧
+        HasSurgeryCutoffSmoothBumpFunction flow ∧
+        HasSurgeryParameterSelection flow ∧
+        HasRicciFlowWithSurgery n M ∧
+        PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+        HasSingularityModelBlowupClassification flow :=
+  ⟨ payload.flow
+  , payload.flow_eq
+  , payload.constructionPackage
+  , payload.scalePayload
+  , payload.constructionPackage.scaleFunction
+  , payload.constructionPackage.scaleContinuity
+  , payload.constructionPackage.scaleSeparation
+  , payload.constructionPackage.cutoffParameterControl
+  , payload.constructionPackage.cutoffSmoothBump
+  , payload.constructionPackage.parameterSelection
+  , payload.constructionPackage.withSurgery
+  , payload.perelmanPackage
+  , payload.blowupClassification
+  ⟩
+
+/--
 Finite-extinction-aware surgery/Perelman projection payload.  It keeps the
 field-based surgery/Perelman projection tied to the selected finite-extinction
 package and also records the finite-extinction statement and witness produced
