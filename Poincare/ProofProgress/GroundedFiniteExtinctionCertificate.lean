@@ -252,6 +252,33 @@ theorem finite_extinction_package_statement_and_witness_of_grounded
   exact ⟨n, package, statement, finiteExtinction⟩
 
 /--
+A package-first grounded finite-extinction payload: the same grounded
+certificate that supplies the compact package/statement/witness endpoint also
+retains an explicit flow, surgery, Perelman-control, and derivation witness for
+that package statement.
+-/
+theorem finite_extinction_package_statement_derivation_and_witness_of_grounded
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (grounded : GroundedFiniteExtinctionProductionCertificate M) :
+    ∃ n : ℕ∞ω,
+    ∃ _package : FiniteExtinctionSurgeryPackage n M,
+      FiniteExtinctionStatement n M ∧
+        FiniteExtinctionByRicciFlowWithSurgery M ∧
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ surgery : HasRicciFlowWithSurgery n M,
+        ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+          HasFiniteExtinctionDerivation flow surgery control := by
+  rcases finite_extinction_statement_payload_of_grounded grounded with
+    ⟨n, flow, surgery, control, package, statement, derivation,
+      finiteExtinction⟩
+  exact
+    ⟨n, package, statement, finiteExtinction, flow, surgery, control,
+      derivation⟩
+
+/--
 The grounded universal finite-extinction statement: every compact simply
 connected topological 3-manifold carries a grounded certificate.  This is the
 honest restatement of the Ricci-flow pillar — unlike
