@@ -273,6 +273,146 @@ theorem onePointRecognition_surgeryPrerequisites_and_moiseInitialFields
       moiseInitialFields_of_onePointRecognition_subobligationsPayload payload h⟩
 
 /--
+One-point recognition plus the recognized-source payload also exposes the
+smoothability bridge tail: the chosen smooth structure, derivation statement,
+surgery-model manifold evidence, and model/chart compatibility witnesses.
+-/
+theorem smoothabilityBridgeTail_of_onePointRecognition_subobligationsPayload
+    (payload : OnePointRecognitionSmoothabilitySubobligationsPayload.{u})
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∃ _t2 : T2Space M,
+    ∃ _charted : ChartedSpace ThreeManifoldModel M,
+    ∃ _simple : SimplyConnectedSpace M,
+    ∃ _compact : CompactSpace M,
+    ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+    ∃ smoothDerivationStatement :
+      SmoothStructureDerivationStatement M smoothStructure,
+    ∃ manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ bridgeDerivation :
+      HasSmoothabilityBridgeDerivation
+        M smoothStructure smoothDerivationStatement manifoldEvidence,
+    ∃ modelCompatibility :
+      HasSmoothManifoldModelCompatibility
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation,
+      HasSmoothChartCompatibility
+        M smoothStructure smoothDerivationStatement manifoldEvidence
+        bridgeDerivation modelCompatibility := by
+  rcases payload h with ⟨t2, charted, simple, compact, subobligations⟩
+  letI : T2Space M := t2
+  letI : ChartedSpace ThreeManifoldModel M := charted
+  letI : SimplyConnectedSpace M := simple
+  letI : CompactSpace M := compact
+  rcases
+    smoothability_bridge_tail_payload_of_subobligations_payload
+      M subobligations with
+    ⟨smoothStructure, smoothDerivationStatement, manifoldEvidence,
+      bridgeDerivation, modelCompatibility, chartCompatibility⟩
+  exact
+    ⟨t2, charted, simple, compact, smoothStructure,
+      smoothDerivationStatement, manifoldEvidence, bridgeDerivation,
+      modelCompatibility, chartCompatibility⟩
+
+/--
+Target-family one-point recognition plus the recognized-source smoothability
+payload exposes the bridge-tail smoothability witnesses for every compact
+simply connected target.
+-/
+theorem onePointRecognition_bridgeTail_family
+    (recognizeOnePoint :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (payload : OnePointRecognitionSmoothabilitySubobligationsPayload.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        ∃ _t2 : T2Space M,
+        ∃ _charted : ChartedSpace ThreeManifoldModel M,
+        ∃ _simple : SimplyConnectedSpace M,
+        ∃ _compact : CompactSpace M,
+        ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+        ∃ smoothDerivationStatement :
+          SmoothStructureDerivationStatement M smoothStructure,
+        ∃ manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M,
+        ∃ bridgeDerivation :
+          HasSmoothabilityBridgeDerivation
+            M smoothStructure smoothDerivationStatement manifoldEvidence,
+        ∃ modelCompatibility :
+          HasSmoothManifoldModelCompatibility
+            M smoothStructure smoothDerivationStatement manifoldEvidence
+            bridgeDerivation,
+          HasSmoothChartCompatibility
+            M smoothStructure smoothDerivationStatement manifoldEvidence
+            bridgeDerivation modelCompatibility := by
+  intro M _top _t2 _charted _simple _compact
+  exact
+    smoothabilityBridgeTail_of_onePointRecognition_subobligationsPayload
+      payload (recognizeOnePoint M)
+
+/--
+Target-family one-point recognition plus the recognized-source smoothability
+payload exposes the full smoothability assembly prefix for every compact
+simply connected target: the one-point recognition witness, transported surgery
+prerequisites, the first two Moise package fields, and the bridge-tail smooth
+structure/model/chart-compatibility witnesses produced from the same payload.
+-/
+theorem onePointRecognition_smoothabilityAssemblyPrefix_family
+    (recognizeOnePoint :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))))
+    (payload : OnePointRecognitionSmoothabilitySubobligationsPayload.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M],
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          (∃ _t2 : T2Space M,
+            ∃ _charted : ChartedSpace ThreeManifoldModel M,
+            ∃ _simple : SimplyConnectedSpace M,
+            ∃ _compact : CompactSpace M,
+            ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+              Nonempty M) ∧
+          (∃ _t2 : T2Space M,
+            ∃ _charted : ChartedSpace ThreeManifoldModel M,
+            ∃ _simple : SimplyConnectedSpace M,
+            ∃ _compact : CompactSpace M,
+            ∃ localCharts : HasMoiseLocalTriangulationCharts M,
+              HasMoiseLocallyFiniteCoverRefinement M localCharts) ∧
+          (∃ _t2 : T2Space M,
+            ∃ _charted : ChartedSpace ThreeManifoldModel M,
+            ∃ _simple : SimplyConnectedSpace M,
+            ∃ _compact : CompactSpace M,
+            ∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+            ∃ smoothDerivationStatement :
+              SmoothStructureDerivationStatement M smoothStructure,
+            ∃ manifoldEvidence :
+              IsManifold ThreeManifoldModelWithCorners 1 M,
+            ∃ bridgeDerivation :
+              HasSmoothabilityBridgeDerivation
+                M smoothStructure smoothDerivationStatement
+                manifoldEvidence,
+            ∃ modelCompatibility :
+              HasSmoothManifoldModelCompatibility
+                M smoothStructure smoothDerivationStatement manifoldEvidence
+                bridgeDerivation,
+              HasSmoothChartCompatibility
+                M smoothStructure smoothDerivationStatement manifoldEvidence
+                bridgeDerivation modelCompatibility) := by
+  intro M _top _t2 _charted _simple _compact
+  exact
+    ⟨ recognizeOnePoint M
+    , (onePointRecognition_surgeryPrerequisites_and_moiseInitialFields
+        payload (recognizeOnePoint M)).1
+    , (onePointRecognition_surgeryPrerequisites_and_moiseInitialFields
+        payload (recognizeOnePoint M)).2
+    , onePointRecognition_bridgeTail_family recognizeOnePoint payload M
+    ⟩
+
+/--
 Uniform smoothability sub-obligation payload for sources recognized as
 `ThreeSphere`, matching the topology-recognition output form.
 -/
