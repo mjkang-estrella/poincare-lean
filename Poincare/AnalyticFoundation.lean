@@ -14691,6 +14691,56 @@ theorem analytic_foundation_derivation_and_boundary_payload_of_with_equation_bou
   apply Subsingleton.elim
 
 /--
+A completed analytic-foundation package plus a concrete equation-boundary
+package exposes the package-selected analytic subobligations, the package
+derivation statement, and the pointwise Ricci-flow equation boundary in one
+finite-extinction-facing payload.
+-/
+theorem analytic_foundation_subobligations_derivation_boundary_payload_of_package_and_boundary
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M)
+    (boundary : RicciFlowEquationBoundaryPackage
+      (ricci_flow_data_of_analytic_foundation_package package)) :
+    AnalyticFoundationSubobligationsPayload
+      (ricci_flow_data_of_analytic_foundation_package package) ∧
+    AnalyticFoundationDerivationStatement
+      (ricci_flow_data_of_analytic_foundation_package package) ∧
+    RicciFlowEquationBoundaryStatement
+      (ricci_flow_data_of_analytic_foundation_package package) ∧
+    IsMetricTimeDerivativeOf
+      (metric_of_ricci_flow_data
+        (ricci_flow_data_of_analytic_foundation_package package))
+      (metric_time_derivative_field_of_metric_derivative_data
+        (metric_derivative_data_of_equation_boundary_package boundary)) ∧
+    (∀ t : ℝ,
+      metric_time_derivative_at_time_of_metric_derivative_field
+        (metric_time_derivative_field_of_metric_derivative_data
+          (metric_derivative_data_of_equation_boundary_package boundary)) t =
+        ricci_flow_rhs_tensor
+          (curvature_data_of_ricci_flow_data
+            (ricci_flow_data_of_analytic_foundation_package package)) t) ∧
+    ∀ (t : ℝ) (x : M) (v w : TangentSpace I x),
+      metric_time_derivative_at_time_of_metric_derivative_field
+        (metric_time_derivative_field_of_metric_derivative_data
+          (metric_derivative_data_of_equation_boundary_package boundary)) t x v w =
+        ricci_flow_rhs_tensor
+          (curvature_data_of_ricci_flow_data
+            (ricci_flow_data_of_analytic_foundation_package package)) t x v w :=
+  ⟨ analytic_foundation_subobligations_of_analytic_foundation_package
+      package
+  , analytic_foundation_derivation_statement_of_analytic_foundation_package
+      package
+  , ⟨boundary⟩
+  , metric_time_derivative_identification_of_equation_boundary_package
+      boundary
+  , equation_at_time_of_equation_boundary_package_projection boundary
+  , equation_at_time_apply_of_equation_boundary_package_projection boundary
+  ⟩
+
+/--
 A completed analytic-foundation package plus an explicit equation-boundary
 package exposes the projection payload most downstream certificate consumers
 need: curvature theory, continuation and extension criteria, regularity through
