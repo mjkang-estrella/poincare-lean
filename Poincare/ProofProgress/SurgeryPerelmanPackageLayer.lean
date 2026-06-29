@@ -19603,4 +19603,34 @@ theorem no_poincareProofDependenciesWithEquationBoundary_at_of_current_interface
     poincareProofDependenciesWithEquationBoundary_false_at_of_current_interface
       dependencies M
 
+/--
+The aggregate proof-dependency package itself is refuted at any target in the
+dependency-package class, not only its inhabited wrapper: its surgery component
+still supplies the finite-extinction package target ruled out above.
+-/
+theorem no_poincareProofDependencies_direct_at_of_current_interface
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ¬ PoincareProofDependencies.{u} := by
+  intro dependencies
+  exact
+    poincareProofDependencies_false_at_of_current_interface
+      dependencies M
+
+/--
+The strengthened equation-boundary aggregate dependency package is also
+directly refuted under the current local interface, before wrapping it in
+`Nonempty`.
+-/
+theorem no_poincareProofDependenciesWithEquationBoundary_direct_at_of_current_interface
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ¬ PoincareProofDependenciesWithEquationBoundary.{u} := by
+  intro dependencies
+  exact
+    poincareProofDependenciesWithEquationBoundary_false_at_of_current_interface
+      dependencies M
+
 end Poincare
