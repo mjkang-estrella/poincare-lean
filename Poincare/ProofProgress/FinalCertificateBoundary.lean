@@ -2679,6 +2679,22 @@ theorem poincare_conjecture_of_namedPackageLayerConsumerPayload
   poincare_conjecture_of_completion_certificate payload.checkedCertificate
 
 /--
+The complete named-package consumer payload exposes the final endpoint through
+its checked completion certificate: the public statement component is obtained
+by certificate projection, while the concrete checked certificate and all
+completion criteria remain the fields carried by the same payload.
+-/
+theorem poincare_conjecture_certificate_and_completion_criteria_of_namedPackageLayerConsumerPayload
+    (payload : FinalCertificateNamedPackageLayerConsumerPayload.{u}) :
+    PoincareConjectureStatement.{u} ∧
+      PoincareCompletionCertificate.{u} ∧
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+  ⟨ poincare_conjecture_of_namedPackageLayerConsumerPayload payload
+  , payload.checkedCertificate
+  , payload.completionCriteria
+  ⟩
+
+/--
 The named-consumer reserved endpoint is exactly the checked-certificate
 projection carried by that same consumer payload.
 -/
