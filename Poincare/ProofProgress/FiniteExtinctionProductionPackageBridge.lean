@@ -10704,6 +10704,58 @@ theorem finite_extinction_package_statement_and_witness_of_target_assumptions_an
     ⟩
 
 /--
+The same pointwise target-assumption/control-frontier route also keeps the
+concrete target sweepout-frontier bundle visible together with the constructed
+finite-extinction package, its theorem-shaped statement, and the projected
+finite-extinction witness.
+-/
+theorem finite_extinction_sweepout_package_statement_and_witness_of_target_assumptions_and_control_frontier_package
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (controlFrontier :
+      ∃ n : ℕ∞ω,
+      ∃ analyticFoundation :
+        RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M,
+      ∃ _surgeryConstruction :
+        RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+          (ricci_flow_data_of_analytic_foundation_package analyticFoundation),
+      ∃ _perelmanControl :
+        PerelmanSingularityControlPackage (n := n) (M := M)
+          (ricci_flow_data_of_analytic_foundation_package analyticFoundation),
+        True) :
+    ∃ sweepoutBundle : TargetFiniteExtinctionSweepoutInterfaceBundle M,
+    ∃ n : ℕ∞ω,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    ∃ packageStatement : FiniteExtinctionStatement n M,
+    ∃ extinctionWitness : FiniteExtinctionByRicciFlowWithSurgery M,
+      sweepoutBundle =
+          target_finite_extinction_sweepout_interface_bundle_of_target_assumptions
+            M ∧
+        packageStatement =
+          finite_extinction_statement_of_surgery_package package ∧
+        extinctionWitness =
+          finite_extinction_via_statement_of_surgery_package package := by
+  let sweepoutBundle :
+      TargetFiniteExtinctionSweepoutInterfaceBundle M :=
+    target_finite_extinction_sweepout_interface_bundle_of_target_assumptions M
+  rcases
+      finite_extinction_package_statement_and_witness_of_target_assumptions_and_control_frontier_package
+        controlFrontier with
+    ⟨n, package, packageStatement, extinctionWitness,
+      packageStatement_eq, extinctionWitness_eq⟩
+  exact
+    ⟨ sweepoutBundle
+    , n
+    , package
+    , packageStatement
+    , extinctionWitness
+    , rfl
+    , packageStatement_eq
+    , extinctionWitness_eq
+    ⟩
+
+/--
 Family-level theorem-shaped finite extinction: the target-family
 control-frontier supply gives each target manifold a time parameter together
 with the finite-extinction statement at that parameter.
