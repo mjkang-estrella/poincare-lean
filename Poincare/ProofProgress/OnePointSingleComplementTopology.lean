@@ -2993,4 +2993,115 @@ theorem onePoint_threeSpace_compl_singleton_selected_basepoint_all_basepoint_bas
     , pathComponentEqUniv
     ⟩
 
+/--
+Recognition as the one-point compactification transports the all-basepoint
+baseclass-collapse package to any recognized singleton complement.  Each
+supplied basepoint receives concrete subsingleton, uniqueness,
+equality-eliminator, canonical baseclass, path-nonempty, and path-component
+collapse witnesses in the original recognized space.
+-/
+theorem compl_singleton_recognition_all_basepoint_lowHomotopy_baseclass_collapse_package_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M) :
+    ∀ suppliedBasepoint : ({x}ᶜ : Set M),
+      Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) suppliedBasepoint) ∧
+        Subsingleton
+          (FundamentalGroup ({x}ᶜ : Set M) suppliedBasepoint) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) suppliedBasepoint) ∧
+        Nonempty (Unique (ZerothHomotopy ({x}ᶜ : Set M))) ∧
+        Nonempty
+          (Unique (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) suppliedBasepoint)) ∧
+        Nonempty
+          (Unique (FundamentalGroup ({x}ᶜ : Set M) suppliedBasepoint)) ∧
+        Nonempty
+          (Unique (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) suppliedBasepoint)) ∧
+        (∀ y z : ({x}ᶜ : Set M), ZerothHomotopy.mk y = ZerothHomotopy.mk z) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 0 ({x}ᶜ : Set M) suppliedBasepoint,
+          a = b) ∧
+        (∀ a b : FundamentalGroup ({x}ᶜ : Set M) suppliedBasepoint,
+          a = b) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 1 ({x}ᶜ : Set M) suppliedBasepoint,
+          a = b) ∧
+        (∃ baseClass : ZerothHomotopy ({x}ᶜ : Set M),
+          ∀ homotopyClass : ZerothHomotopy ({x}ᶜ : Set M),
+            homotopyClass = baseClass) ∧
+        (∃ baseClass :
+          HomotopyGroup.Pi 0 ({x}ᶜ : Set M) suppliedBasepoint,
+          ∀ homotopyClass :
+            HomotopyGroup.Pi 0 ({x}ᶜ : Set M) suppliedBasepoint,
+            homotopyClass = baseClass) ∧
+        (∃ baseClass : FundamentalGroup ({x}ᶜ : Set M) suppliedBasepoint,
+          ∀ fundamentalClass :
+            FundamentalGroup ({x}ᶜ : Set M) suppliedBasepoint,
+            fundamentalClass = baseClass) ∧
+        (∃ baseClass :
+          HomotopyGroup.Pi 1 ({x}ᶜ : Set M) suppliedBasepoint,
+          ∀ homotopyClass :
+            HomotopyGroup.Pi 1 ({x}ᶜ : Set M) suppliedBasepoint,
+            homotopyClass = baseClass) ∧
+        (∀ y z : ({x}ᶜ : Set M), Nonempty (Path y z)) ∧
+        (∀ y : ({x}ᶜ : Set M), pathComponent y = Set.univ) := by
+  intro suppliedBasepoint
+  rcases
+    compl_singleton_recognition_euclidean_complete_collapse_and_lowHomotopy_subsingleton_package_of_homeomorph_to_onePoint_threeSpace
+      h x suppliedBasepoint with
+    ⟨ _hOnePoint
+    , _chart
+    , _contractible
+    , _nonempty
+    , _pathConnected
+    , _connected
+    , _simplyConnected
+    , _locPathConnected
+    , zerothSubsingleton
+    , piZeroSubsingleton
+    , fundamentalGroupSubsingleton
+    , piOneSubsingleton
+    , zerothUnique
+    , piZeroUnique
+    , fundamentalGroupUnique
+    , piOneUnique
+    , zerothEq
+    , piZeroEq
+    , fundamentalGroupEq
+    , piOneEq
+    , pathNonempty
+    , pathComponentEqUniv
+    ⟩
+  letI : Unique (ZerothHomotopy ({x}ᶜ : Set M)) :=
+    Classical.choice zerothUnique
+  letI : Unique
+      (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) suppliedBasepoint) :=
+    Classical.choice piZeroUnique
+  letI : Unique (FundamentalGroup ({x}ᶜ : Set M) suppliedBasepoint) :=
+    Classical.choice fundamentalGroupUnique
+  letI : Unique
+      (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) suppliedBasepoint) :=
+    Classical.choice piOneUnique
+  exact
+    ⟨ zerothSubsingleton
+    , piZeroSubsingleton
+    , fundamentalGroupSubsingleton
+    , piOneSubsingleton
+    , zerothUnique
+    , piZeroUnique
+    , fundamentalGroupUnique
+    , piOneUnique
+    , zerothEq
+    , piZeroEq
+    , fundamentalGroupEq
+    , piOneEq
+    , ⟨default, fun homotopyClass => Subsingleton.elim homotopyClass default⟩
+    , ⟨default, fun homotopyClass => Subsingleton.elim homotopyClass default⟩
+    , ⟨default, fun fundamentalClass => Subsingleton.elim fundamentalClass default⟩
+    , ⟨default, fun homotopyClass => Subsingleton.elim homotopyClass default⟩
+    , pathNonempty
+    , pathComponentEqUniv
+    ⟩
+
 end Poincare
