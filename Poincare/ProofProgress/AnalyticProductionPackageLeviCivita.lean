@@ -5207,4 +5207,54 @@ theorem analyticProductionPackage_selected_statement_extractors_named_continuati
     , rfl
     ⟩
 
+/--
+A completed analytic-foundation package exposes the compact
+finite-extinction-facing analytic control tuple for its selected flow:
+the fixed-flow derivation stack, equation-interface evidence, continuation and
+blow-up criteria, maximal extension, regularity, uniqueness, and terminal
+curvature evolution.
+-/
+theorem analyticProductionPackage_finiteExtinctionFacing_control_fields_of_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    let flow := ricci_flow_data_of_analytic_foundation_package package
+    AnalyticFoundationDerivationStatement flow ∧
+      SatisfiesRicciFlowEquation
+        (metric_of_ricci_flow_data flow)
+        (curvature_data_of_ricci_flow_data flow) ∧
+      HasRicciFlowContinuationCriterion flow ∧
+      HasCurvatureBlowUpContinuationCriterion flow ∧
+      HasMaximalSolutionExtension flow ∧
+      HasRicciFlowParabolicRegularity flow ∧
+      HasRicciFlowUniquenessTheory flow ∧
+      HasMetricEvolutionEquation flow ∧
+      HasRicciTensorEvolutionEquation flow ∧
+      HasScalarCurvatureEvolutionEquation flow ∧
+      HasCurvatureNormEvolutionInequality flow ∧
+      HasCurvatureEvolutionEquations flow := by
+  let flow := ricci_flow_data_of_analytic_foundation_package package
+  rcases analytic_foundation_payload_of_analytic_foundation_package
+      package with
+    ⟨_statement, derivationStatement, _subobligations, equationEvidence⟩
+  exact
+    ⟨ derivationStatement
+    , equationEvidence
+    , continuation_criterion_of_analytic_foundation_package package
+    , curvature_blowup_criterion_of_analytic_foundation_package package
+    , maximal_solution_extension_of_analytic_foundation_package package
+    , parabolic_regularity_of_analytic_foundation_package package
+    , uniqueness_theory_of_analytic_foundation_package package
+    , metric_evolution_equation_of_analytic_foundation_package package
+    , ricci_tensor_evolution_equation_of_analytic_foundation_package package
+    , scalar_curvature_evolution_equation_of_analytic_foundation_package
+        package
+    , curvature_norm_evolution_inequality_of_analytic_foundation_package
+        package
+    , curvature_evolution_of_analytic_foundation_package package
+    ⟩
+
 end Poincare
