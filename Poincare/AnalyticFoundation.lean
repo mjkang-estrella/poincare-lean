@@ -14763,6 +14763,70 @@ theorem analytic_foundation_continuation_curvature_uniqueness_boundary_payload_o
     equation_at_time_apply_of_equation_boundary_package_projection boundary⟩
 
 /--
+The package-plus-boundary endpoint also retains the package-selected analytic
+derivation statement.  This is the finite-extinction-facing analytic payload
+needed when a downstream consumer must use the derivation stack together with
+curvature theory, continuation/extension criteria, maximum principle,
+uniqueness, and the concrete pointwise Ricci-flow equation boundary.
+-/
+theorem analytic_foundation_derivation_continuation_curvature_uniqueness_boundary_payload_of_package_and_boundary
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M)
+    (boundary : RicciFlowEquationBoundaryPackage
+      (ricci_flow_data_of_analytic_foundation_package package)) :
+    AnalyticFoundationDerivationStatement
+      (ricci_flow_data_of_analytic_foundation_package package) ∧
+    HasRiemannCurvatureTensorTheory
+      (metric_of_ricci_flow_data
+        (ricci_flow_data_of_analytic_foundation_package package)) ∧
+    HasRicciContractionTheory
+      (curvature_data_of_ricci_flow_data
+        (ricci_flow_data_of_analytic_foundation_package package)) ∧
+    HasScalarCurvatureTheory
+      (curvature_data_of_ricci_flow_data
+        (ricci_flow_data_of_analytic_foundation_package package)) ∧
+    HasRicciFlowContinuationCriterion
+      (ricci_flow_data_of_analytic_foundation_package package) ∧
+    HasCurvatureBlowUpContinuationCriterion
+      (ricci_flow_data_of_analytic_foundation_package package) ∧
+    HasMaximalSolutionExtension
+      (ricci_flow_data_of_analytic_foundation_package package) ∧
+    HasCurvatureDerivativeBootstrap
+      (ricci_flow_data_of_analytic_foundation_package package) ∧
+    HasHamiltonMaximumPrinciple
+      (ricci_flow_data_of_analytic_foundation_package package) ∧
+    HasRicciFlowUniquenessTheory
+      (ricci_flow_data_of_analytic_foundation_package package) ∧
+    RicciFlowEquationBoundaryStatement
+      (ricci_flow_data_of_analytic_foundation_package package) ∧
+    IsMetricTimeDerivativeOf
+      (metric_of_ricci_flow_data
+        (ricci_flow_data_of_analytic_foundation_package package))
+      (metric_time_derivative_field_of_metric_derivative_data
+        (metric_derivative_data_of_equation_boundary_package boundary)) ∧
+    (∀ t : ℝ,
+      metric_time_derivative_at_time_of_metric_derivative_field
+        (metric_time_derivative_field_of_metric_derivative_data
+          (metric_derivative_data_of_equation_boundary_package boundary)) t =
+        ricci_flow_rhs_tensor
+          (curvature_data_of_ricci_flow_data
+            (ricci_flow_data_of_analytic_foundation_package package)) t) ∧
+    ∀ (t : ℝ) (x : M) (v w : TangentSpace I x),
+      metric_time_derivative_at_time_of_metric_derivative_field
+        (metric_time_derivative_field_of_metric_derivative_data
+          (metric_derivative_data_of_equation_boundary_package boundary)) t x v w =
+        ricci_flow_rhs_tensor
+          (curvature_data_of_ricci_flow_data
+            (ricci_flow_data_of_analytic_foundation_package package)) t x v w :=
+  ⟨analytic_foundation_derivation_statement_of_analytic_foundation_package
+      package,
+    analytic_foundation_continuation_curvature_uniqueness_boundary_payload_of_package_and_boundary
+      package boundary⟩
+
+/--
 The analytic package/equation-boundary projection payload is exactly the tuple
 of named package-field projections and boundary-package equation projections.
 -/
