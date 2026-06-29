@@ -762,6 +762,64 @@ theorem nonempty_moiseSmoothabilityCompleteConsumerPayload_iff_smoothabilityPack
         ⟩
 
 /--
+The complete Moise smoothability consumer payload is exactly a concrete
+recognition assembly payload, the residual smoothability package requirement,
+both theorem-shaped Moise targets, the `ThreeSphere` recognition family, and
+the full target-by-target recognition/smoothability/prerequisite family.  The
+reverse direction rebuilds the complete consumer payload from those explicit
+fields.
+-/
+theorem nonempty_moiseSmoothabilityCompleteConsumerPayload_iff_fields :
+    Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u}) ↔
+      ∃ _assemblyPayload : MoiseSmoothabilityRecognitionAssemblyPayload.{u},
+        dependencyPackageLayerRequirement.{u}
+            DependencyPackageLayer.smoothabilityPackage ∧
+          MoiseSmoothThreeManifoldStatement.{u} ∧
+          MoiseSmoothabilityStatement.{u} ∧
+          (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+            [ChartedSpace ThreeManifoldModel M]
+            [SimplyConnectedSpace M] [CompactSpace M],
+              Nonempty (M ≃ₜ ThreeSphere)) ∧
+          (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+            [ChartedSpace ThreeManifoldModel M]
+            [SimplyConnectedSpace M] [CompactSpace M],
+              Nonempty (M ≃ₜ ThreeSphere) ∧
+                Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+                AdmitsSmoothThreeManifoldStructure M ∧
+                AdmitsSurgeryModelSmoothStructure M ∧
+                (∃ _t2 : T2Space M,
+                  ∃ _charted : ChartedSpace ThreeManifoldModel M,
+                  ∃ _simple : SimplyConnectedSpace M,
+                  ∃ _compact : CompactSpace M,
+                  ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+                    Nonempty M)) := by
+  constructor
+  · rintro ⟨payload⟩
+    exact
+      ⟨ payload.detailedPayload
+      , payload.smoothabilityPackageRequirement
+      , payload.smoothMoise
+      , payload.surgeryMoise
+      , payload.recognizedSphereFamily
+      , payload.targetFamily
+      ⟩
+  · rintro
+      ⟨ assemblyPayload
+      , smoothabilityPackageRequirement
+      , smoothMoise
+      , surgeryMoise
+      , recognizedSphereFamily
+      , targetFamily
+      ⟩
+    exact
+      ⟨ { detailedPayload := assemblyPayload
+          smoothabilityPackageRequirement := smoothabilityPackageRequirement
+          smoothMoise := smoothMoise
+          surgeryMoise := surgeryMoise
+          recognizedSphereFamily := recognizedSphereFamily
+          targetFamily := targetFamily } ⟩
+
+/--
 An inhabited complete Moise smoothability consumer payload exposes the concrete
 assembly object, both theorem-shaped Moise targets, and the target-family
 recognition/smoothability/prerequisite payload carried by that same object.
