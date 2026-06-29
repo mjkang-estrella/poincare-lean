@@ -2235,6 +2235,85 @@ theorem finiteExtinctionRequirement_selectedCompleteSurgeryPerelmanConsumer_and_
     ⟩
 
 /--
+The finite-extinction package-layer requirement can also be opened at a fixed
+target without passing through the complete consumer wrapper first.  This
+retains the actual package-layer value `finiteExtinctionRequirement M`, the
+selected finite-extinction surgery package inside that value, the direct
+projection payload constructed from the package, and the collapsed
+`FiniteExtinctionByRicciFlowWithSurgery` witness from the same selected data.
+-/
+theorem finiteExtinctionRequirement_fixedTarget_packageValue_projectionPayload_and_finiteExtinctionWitness
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ packageTarget : Nonempty (Σ n : ℕ∞ω,
+      FiniteExtinctionSurgeryPackage n M),
+    ∃ n : ℕ∞ω,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    ∃ combinedPayload :
+      FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package,
+    ∃ projectionPayload :
+      FiniteExtinctionSurgeryPerelmanProjectionPayload package,
+    ∃ finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      packageTarget = finiteExtinctionRequirement M ∧
+        packageTarget = ⟨⟨n, package⟩⟩ ∧
+        combinedPayload =
+          finiteExtinctionSurgeryPerelmanAndExtinctionPayload_of_finite_extinction_surgery_package
+            package ∧
+        projectionPayload = combinedPayload.projectionPayload ∧
+        projectionPayload.flow =
+          ricci_flow_data_of_surgery_package package ∧
+        RicciFlowWithSurgeryConstructionPackage
+          (n := n) (M := M) projectionPayload.flow ∧
+        PerelmanSingularityControlPackage
+          (n := n) (M := M) projectionPayload.flow ∧
+        Nonempty (SurgeryScaleFunctionPayload projectionPayload.flow) ∧
+        HasSingularityModelBlowupClassification projectionPayload.flow ∧
+        combinedPayload.finiteExtinctionStatement =
+          finite_extinction_statement_of_surgery_package package ∧
+        combinedPayload.finiteExtinctionWitness =
+          finite_extinction_of_surgery_package package ∧
+        finiteExtinction = combinedPayload.finiteExtinctionWitness ∧
+        finiteExtinction =
+          finiteExtinctionByRicciFlowWithSurgery_of_finiteExtinctionRequirement
+            finiteExtinctionRequirement M := by
+  rcases finiteExtinctionRequirement M with ⟨⟨n, package⟩⟩
+  let combinedPayload :
+      FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package :=
+    finiteExtinctionSurgeryPerelmanAndExtinctionPayload_of_finite_extinction_surgery_package
+      package
+  let projectionPayload :
+      FiniteExtinctionSurgeryPerelmanProjectionPayload package :=
+    combinedPayload.projectionPayload
+  let finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M :=
+    combinedPayload.finiteExtinctionWitness
+  exact
+    ⟨ finiteExtinctionRequirement M
+    , n
+    , package
+    , combinedPayload
+    , projectionPayload
+    , finiteExtinction
+    , rfl
+    , by apply Subsingleton.elim
+    , rfl
+    , rfl
+    , projectionPayload.flow_eq
+    , projectionPayload.constructionPackage
+    , projectionPayload.perelmanPackage
+    , projectionPayload.scalePayload
+    , projectionPayload.blowupClassification
+    , rfl
+    , rfl
+    , rfl
+    , by apply Subsingleton.elim
+    ⟩
+
+/--
 An inhabited detailed surgery/Perelman assembly payload selects a complete
 consumer and exposes the fixed-target complete endpoint through that same
 selected consumer.  This is the detailed-assembly route for callers that
