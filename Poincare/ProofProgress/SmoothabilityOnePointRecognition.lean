@@ -250,4 +250,53 @@ theorem smoothability_surgery_model_smooth_structure_family_of_homeomorph_to_thr
     smoothability_surgery_model_smooth_structure_of_homeomorph_to_threeSphere
       (recognize M)
 
+/--
+A target-family one-point recognition theorem supplies the synchronized
+transported smoothability package for every target: the selected transported
+charted space, the `C∞` smooth-manifold proof, the `C¹` surgery-model proof,
+and the topological prerequisites all come from the same recognition route.
+-/
+theorem smoothability_transported_smooth_and_surgery_model_package_family_of_onePointRecognition
+    (recognize :
+      ∀ (M : Type u) [TopologicalSpace M],
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∀ (M : Type u) [TopologicalSpace M],
+      ∃ charted : ChartedSpace ThreeManifoldModel M,
+        (letI : ChartedSpace ThreeManifoldModel M := charted
+         IsManifold (𝓡 3) ∞ M) ∧
+        (letI : ChartedSpace ThreeManifoldModel M := charted
+         IsManifold ThreeManifoldModelWithCorners 1 M) ∧
+        ∃ _t2 : T2Space M,
+        ∃ _simple : SimplyConnectedSpace M,
+        ∃ _compact : CompactSpace M,
+          Nonempty M := by
+  intro M _top
+  exact
+    smoothability_transported_smooth_and_surgery_model_package_of_homeomorph_to_onePoint_threeSpace
+      (recognize M)
+
+/--
+A target-family `ThreeSphere` recognition theorem gives the same synchronized
+transported smoothability package after converting each recognized target to
+the one-point compactification model.
+-/
+theorem smoothability_transported_smooth_and_surgery_model_package_family_of_threeSphereRecognition
+    (recognize :
+      ∀ (M : Type u) [TopologicalSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    ∀ (M : Type u) [TopologicalSpace M],
+      ∃ charted : ChartedSpace ThreeManifoldModel M,
+        (letI : ChartedSpace ThreeManifoldModel M := charted
+         IsManifold (𝓡 3) ∞ M) ∧
+        (letI : ChartedSpace ThreeManifoldModel M := charted
+         IsManifold ThreeManifoldModelWithCorners 1 M) ∧
+        ∃ _t2 : T2Space M,
+        ∃ _simple : SimplyConnectedSpace M,
+        ∃ _compact : CompactSpace M,
+          Nonempty M := by
+  intro M _top
+  exact
+    smoothability_transported_smooth_and_surgery_model_package_of_homeomorph_to_threeSphere
+      (recognize M)
+
 end Poincare
