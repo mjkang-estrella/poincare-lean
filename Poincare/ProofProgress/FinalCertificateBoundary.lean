@@ -5184,4 +5184,114 @@ theorem finalCertificateNamedPackageLayerRequirements_constructedConsumer_projec
     , selected.completionCriteria
     ⟩
 
+/--
+For the constructed named-package consumer, the project and canonical payload
+existentials can be opened while staying synchronized with the same selected
+consumer and topology-assembly payload.  This endpoint gives final-collapse
+callers named public/canonical payload targets and their all-witness completion
+criteria, and proves that both criteria coincide with the selected consumer's
+completion-criteria field.
+-/
+theorem finalCertificateNamedPackageLayerRequirements_constructedConsumer_projectCanonical_payload_targets_and_completionCriteria
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (finiteExtinction :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    let selected :=
+      finalCertificateNamedPackageLayerConsumerPayload
+        smoothability finiteExtinction topology
+    let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+      { smoothability := selected.smoothability
+        finiteExtinction := selected.finiteExtinction }
+    let topologyAssemblyPayload :
+        FinalCertificateTopologyAssemblyPayload inputs selected.topology :=
+      selected.topologyAssemblyPayload
+    let projectPayload :
+      PoincareConjectureStatement.{u} ∧
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        PoincareCompletionCertificate.{u} :=
+      project_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+        inputs selected.topology
+    let canonicalPayload :
+      canonicalCompletionTarget.{u} ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        PoincareCompletionCertificate.{u} :=
+      canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_topologyPackage
+        selected.smoothability selected.finiteExtinction selected.topology
+    ∃ publicTarget : PoincareConjectureStatement.{u},
+    ∃ publicCriteria :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ canonicalTarget : canonicalCompletionTarget.{u},
+    ∃ canonicalCriteria :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+      selected.publicPayload = ⟨publicTarget, publicCriteria⟩ ∧
+        selected.canonicalPayload = ⟨canonicalTarget, canonicalCriteria⟩ ∧
+        topologyAssemblyPayload.publicPayload = selected.publicPayload ∧
+        topologyAssemblyPayload.canonicalPayload = selected.canonicalPayload ∧
+        topologyAssemblyPayload.completionCriteria =
+          selected.completionCriteria ∧
+        projectPayload.2.1 = selected.publicPayload ∧
+        projectPayload.2.2 = selected.checkedCertificate ∧
+        canonicalPayload.1 = selected.canonicalTarget ∧
+        canonicalPayload.2.1 = selected.canonicalPayload ∧
+        canonicalPayload.2.2 = selected.checkedCertificate ∧
+        publicCriteria = selected.completionCriteria ∧
+        canonicalCriteria = selected.completionCriteria ∧
+        (∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        PoincareCompletionCertificate.{u} ∧
+        Nonempty PoincareCompletionCertificate.{u} := by
+  let selected :=
+    finalCertificateNamedPackageLayerConsumerPayload
+      smoothability finiteExtinction topology
+  let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+    { smoothability := selected.smoothability
+      finiteExtinction := selected.finiteExtinction }
+  let topologyAssemblyPayload :
+      FinalCertificateTopologyAssemblyPayload inputs selected.topology :=
+    selected.topologyAssemblyPayload
+  let projectPayload :
+      PoincareConjectureStatement.{u} ∧
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        PoincareCompletionCertificate.{u} :=
+    project_payload_and_final_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+      inputs selected.topology
+  let canonicalPayload :
+      canonicalCompletionTarget.{u} ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        PoincareCompletionCertificate.{u} :=
+    canonical_payload_and_final_certificate_of_smoothability_finiteExtinctionPackage_and_topologyPackage
+      selected.smoothability selected.finiteExtinction selected.topology
+  rcases selected.publicPayload with ⟨publicTarget, publicCriteria⟩
+  rcases selected.canonicalPayload with ⟨canonicalTarget, canonicalCriteria⟩
+  exact
+    ⟨ publicTarget
+    , publicCriteria
+    , canonicalTarget
+    , canonicalCriteria
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , selected.completionCriteria
+    , selected.checkedCertificate
+    , ⟨selected.checkedCertificate⟩
+    ⟩
+
 end Poincare
