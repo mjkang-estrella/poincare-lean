@@ -1063,6 +1063,38 @@ theorem extinctionTopology_statementEquality_and_fixedTarget_concrete_homeomorph
     ⟩
 
 /--
+The complete topology consumer payload supplies the named one-point
+compactification recognition statement after finite extinction.  This is the
+topology side of the final target route stated against the compactification
+model, not just the project `ThreeSphere` endpoint.
+-/
+theorem extinctionOnePointThreeSpaceRecognitionStatement_of_extinctionTopology_completeConsumerPayload
+    (payload : Nonempty (ExtinctionTopologyCompleteConsumerPayload.{u})) :
+    ExtinctionOnePointThreeSpaceRecognitionStatement.{u} := by
+  intro M _top _t2 _charted _simple _compact extinction
+  rcases payload with ⟨payload⟩
+  rcases payload.derivationPunctureFamily M extinction with
+    ⟨_homeomorphism, _hHomeomorphism_eq, _classification,
+      _simplyConnectedRecognition, _trivialQuotient, _lift, _assembly,
+      _derivation, _liftedDerivation, hOnePoint, _singletonContractible,
+      _twoPoint⟩
+  exact hOnePoint
+
+/--
+Universal finite extinction together with the complete topology consumer
+payload discharges the project target statement through the named one-point
+compactification recognition route retained by the topology payload.
+-/
+theorem poincare_statement_of_universalFiniteExtinctionStatement_and_extinctionTopology_completeConsumerPayload
+    (finiteExtinction : UniversalFiniteExtinctionStatement.{u})
+    (payload : Nonempty (ExtinctionTopologyCompleteConsumerPayload.{u})) :
+    PoincareConjectureStatement.{u} :=
+  poincare_statement_of_universalFiniteExtinctionStatement_and_extinctionOnePointThreeSpaceRecognitionStatement
+    finiteExtinction
+    (extinctionOnePointThreeSpaceRecognitionStatement_of_extinctionTopology_completeConsumerPayload
+      payload)
+
+/--
 Named production input for the first topology-package field: each finite
 extinction witness supplies explicit certified decomposition data.
 -/
