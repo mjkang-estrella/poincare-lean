@@ -141,4 +141,31 @@ theorem first_analytic_package_field_of_connectionField
       (metric_of_ricci_flow_data flow) :=
   hasLeviCivitaConnectionExistence_of_connectionField connectionAtTime
 
+/--
+For a Ricci-flow datum, a concrete time-dependent tangent connection field
+simultaneously exposes the smooth metric slices, the refactored
+Levi-Civita-existence proposition, and the first analytic package field.
+-/
+theorem flow_metric_slices_proposed_and_first_analytic_field_of_connectionField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (connectionAtTime :
+      TimeDependentTangentConnectionField (metric_of_ricci_flow_data flow)) :
+    (∀ _t : ℝ,
+      Nonempty
+        (ContMDiffRiemannianMetric I n E
+          (fun x : M => TangentSpace I x))) ∧
+      ProposedHasLeviCivitaConnectionExistence
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionExistence
+        (metric_of_ricci_flow_data flow) :=
+  ⟨ flow_metric_slice_contMDiffRiemannianMetric_nonempty flow
+  , proposed_first_analytic_subobligation_of_connectionField
+      connectionAtTime
+  , first_analytic_package_field_of_connectionField connectionAtTime
+  ⟩
+
 end Poincare
