@@ -4627,4 +4627,103 @@ theorem onePoint_threeSpace_twoPointComplement_supplied_basepoint_recognition_fl
     , lowHomotopyPayload.pathComponentEqUniv
     ⟩
 
+/--
+Uniform all-basepoint consumer form of the retained two-puncture recognition
+route.  For every supplied basepoint it constructs the synchronized structured
+recognition, flat recognition, and low-homotopy payloads and exposes the four
+low-homotopy subsingleton instances together with path and path-component
+collapse.
+-/
+theorem onePoint_threeSpace_twoPointComplement_all_basepoint_recognition_flat_lowHomotopy_subsingleton_path_fields
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    ∀ suppliedBasepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+      ∃ recognitionPayload :
+        OnePointTwoPointComplementRecognitionPayload hqp suppliedBasepoint,
+      ∃ flatPayload :
+        OnePointTwoPointComplementFlatRecognitionPayload hqp suppliedBasepoint,
+      ∃ lowHomotopyPayload :
+        OnePointTwoPointComplementLowHomotopyUniquePayload
+          hqp suppliedBasepoint,
+        lowHomotopyPayload = recognitionPayload.lowHomotopy ∧
+          flatPayload =
+            onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition
+              recognitionPayload ∧
+          Subsingleton
+            (ZerothHomotopy
+              (({p} ∪ {q})ᶜ :
+                Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 0
+              (({p} ∪ {q})ᶜ :
+                Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              suppliedBasepoint) ∧
+          Subsingleton
+            (FundamentalGroup
+              (({p} ∪ {q})ᶜ :
+                Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              suppliedBasepoint) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1
+              (({p} ∪ {q})ᶜ :
+                Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              suppliedBasepoint) ∧
+          (∀ a b :
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+            Nonempty (Path a b)) ∧
+          (∀ point :
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+            pathComponent point = Set.univ) := by
+  intro suppliedBasepoint
+  let recognitionPayload :=
+    onePoint_threeSpace_twoPointComplement_recognition_payload
+      hqp suppliedBasepoint
+  let flatPayload :=
+    onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition
+      recognitionPayload
+  let lowHomotopyPayload :=
+    recognitionPayload.lowHomotopy
+  letI :
+      Unique
+        (ZerothHomotopy
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :=
+    lowHomotopyPayload.zerothUnique
+  letI :
+      Unique
+        (HomotopyGroup.Pi 0
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          suppliedBasepoint) :=
+    lowHomotopyPayload.piZeroUnique
+  letI :
+      Unique
+        (FundamentalGroup
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          suppliedBasepoint) :=
+    lowHomotopyPayload.fundamentalGroupUnique
+  letI :
+      Unique
+        (HomotopyGroup.Pi 1
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          suppliedBasepoint) :=
+    lowHomotopyPayload.piOneUnique
+  exact
+    ⟨ recognitionPayload
+    , flatPayload
+    , lowHomotopyPayload
+    , rfl
+    , rfl
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , lowHomotopyPayload.pathNonempty
+    , lowHomotopyPayload.pathComponentEqUniv
+    ⟩
+
 end Poincare
