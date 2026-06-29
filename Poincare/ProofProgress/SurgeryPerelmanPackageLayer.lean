@@ -8301,6 +8301,104 @@ theorem surgery_construction_package_and_ricci_flow_with_surgery_of_payload
   ⟩
 
 /--
+The complete concrete surgery payload chain yields one construction package
+whose selected-scale fields and aggregate Ricci-flow-with-surgery field are
+available from that same constructed package.
+-/
+theorem surgery_construction_package_selected_scale_fields_and_ricci_flow_with_surgery_of_payload
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    {scalePayload : SurgeryScaleFunctionPayload flow}
+    {continuityPayload : SurgeryScaleContinuityPayload scalePayload}
+    {separationPayload : SurgeryScaleSeparationPayload continuityPayload}
+    {cutoffPayload : SurgeryCutoffParameterControlPayload separationPayload}
+    {smoothBumpPayload : SurgeryCutoffSmoothBumpPayload cutoffPayload}
+    {parameterSelectionPayload :
+      SurgeryParameterSelectionPayload smoothBumpPayload}
+    {strongDeltaPayload :
+      SurgeryStrongDeltaNeckDetectionPayload parameterSelectionPayload}
+    {neckSeparationPayload :
+      SurgeryNeckSeparationPayload strongDeltaPayload}
+    {neckParametrizationPayload :
+      SurgeryNeckParametrizationPayload neckSeparationPayload}
+    {neckCanonicalCoordinatesPayload :
+      SurgeryNeckCanonicalCoordinatesPayload
+        neckParametrizationPayload}
+    {neckDecompositionPayload :
+      SurgeryNeckDecompositionPayload
+        neckCanonicalCoordinatesPayload}
+    {standardCapModelPayload :
+      StandardCapModelPayload neckDecompositionPayload}
+    {capGluingSmoothnessPayload :
+      CapGluingSmoothnessPayload standardCapModelPayload}
+    {capMetricInterpolationPayload :
+      SurgeryCapMetricInterpolationPayload
+        capGluingSmoothnessPayload}
+    {capCurvatureEstimatesPayload :
+      SurgeryCapCurvatureEstimatesPayload
+        capMetricInterpolationPayload}
+    {capConstructionPayload :
+      SurgeryCapConstructionPayload capCurvatureEstimatesPayload}
+    {postSurgeryCurvaturePinchingPayload :
+      PostSurgeryCurvaturePinchingPayload capConstructionPayload}
+    {postSurgeryNoncollapsingPayload :
+      PostSurgeryNoncollapsingControlPayload
+        postSurgeryCurvaturePinchingPayload}
+    {postSurgeryDerivativeBoundsPayload :
+      PostSurgeryDerivativeBoundsPayload postSurgeryNoncollapsingPayload}
+    {postSurgeryCanonicalNeighborhoodPersistencePayload :
+      PostSurgeryCanonicalNeighborhoodPersistencePayload
+        postSurgeryDerivativeBoundsPayload}
+    {postSurgeryMetricControlPayload :
+      PostSurgeryMetricControlPayload
+        postSurgeryCanonicalNeighborhoodPersistencePayload}
+    {surgeryTimeDiscretenessPayload :
+      SurgeryTimeDiscretenessPayload postSurgeryMetricControlPayload}
+    {surgeryTimeLocalFinitenessPayload :
+      SurgeryTimeLocalFinitenessPayload surgeryTimeDiscretenessPayload}
+    {longTimeExistenceIterationPayload :
+      LongTimeExistenceIterationPayload surgeryTimeLocalFinitenessPayload}
+    {longTimeSurgeryParameterCoherencePayload :
+      LongTimeSurgeryParameterCoherencePayload
+        longTimeExistenceIterationPayload}
+    {longTimeNonaccumulationPayload :
+      LongTimeNonaccumulationPayload
+        longTimeSurgeryParameterCoherencePayload}
+    {longTimeSurgeryContinuationPayload :
+      LongTimeSurgeryContinuationPayload longTimeNonaccumulationPayload}
+    (payload :
+      RicciFlowWithSurgeryPayload longTimeSurgeryContinuationPayload) :
+    ∃ _constructionPackage :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow,
+      HasSurgeryScaleFunction flow ∧
+        HasSurgeryScaleContinuity flow ∧
+        HasSurgeryScaleSeparation flow ∧
+        HasRicciFlowWithSurgery n M :=
+  let constructionPackage :=
+    ricciFlowWithSurgeryConstructionPackage_of_scale_payload_continuity_payload_separation_payload_cutoff_payload_smooth_bump_payload_parameter_selection_payload_strong_delta_payload_neck_separation_payload_neck_parametrization_payload_neck_canonical_coordinates_payload_neck_decomposition_payload_standard_cap_model_payload_cap_gluing_smoothness_payload_cap_metric_interpolation_payload_cap_curvature_estimates_payload_cap_construction_payload_post_surgery_curvature_pinching_payload_post_surgery_noncollapsing_payload_post_surgery_derivative_bounds_payload_post_surgery_canonical_neighborhood_persistence_payload_post_surgery_metric_control_payload_surgery_time_discreteness_payload_surgery_time_local_finiteness_payload_long_time_existence_iteration_payload_long_time_parameter_coherence_payload_long_time_nonaccumulation_payload_long_time_continuation_payload_ricci_flow_with_surgery_payload
+      scalePayload continuityPayload separationPayload cutoffPayload
+      smoothBumpPayload parameterSelectionPayload strongDeltaPayload
+      neckSeparationPayload neckParametrizationPayload
+      neckCanonicalCoordinatesPayload neckDecompositionPayload
+      standardCapModelPayload capGluingSmoothnessPayload
+      capMetricInterpolationPayload capCurvatureEstimatesPayload
+      capConstructionPayload postSurgeryCurvaturePinchingPayload
+      postSurgeryNoncollapsingPayload postSurgeryDerivativeBoundsPayload
+      postSurgeryCanonicalNeighborhoodPersistencePayload
+      postSurgeryMetricControlPayload surgeryTimeDiscretenessPayload
+      surgeryTimeLocalFinitenessPayload longTimeExistenceIterationPayload
+      longTimeSurgeryParameterCoherencePayload longTimeNonaccumulationPayload
+      longTimeSurgeryContinuationPayload payload
+  ⟨ constructionPackage
+  , constructionPackage.scaleFunction
+  , constructionPackage.scaleContinuity
+  , constructionPackage.scaleSeparation
+  , constructionPackage.withSurgery
+  ⟩
+
+/--
 Concrete aggregate Perelman singularity-control payloads produce the final
 Perelman package field.
 -/
