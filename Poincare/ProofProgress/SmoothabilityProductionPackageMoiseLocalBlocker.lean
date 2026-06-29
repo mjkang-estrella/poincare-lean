@@ -20279,6 +20279,146 @@ theorem onePointTransportedFinalCertificateFields_named_transport_fields_package
     smoothability recognize surgeryPackages
 
 /--
+A completed smoothability package also keeps the smooth-structure derivation
+field synchronized with the transported bridge fields in the assembly-facing
+one-point final-certificate route.  This strengthens the package-transfer
+endpoint by retaining the `smoothFields` equality together with the
+transported-to-ambient transfer theorem, ambient atlas compatibility payload,
+canonical one-point surgery family, opened finite-extinction payload, and
+finite-extinction witness.
+-/
+theorem onePointTransportedFinalCertificateFields_package_transfer_with_smoothFields
+    (package : SmoothabilityPackage.{0})
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0})
+    (surgeryPackages :
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    OnePointRecognitionTransportedToAmbientIsManifoldTransferTheorem.{0} ∧
+      OnePointRecognitionAmbientAtlasTransitionCompatibilityPayload.{0} ∧
+      ∃ fields :
+        OnePointTransportedFinalCertificateFields recognize surgeryPackages,
+      ∃ charted : ChartedSpace ThreeManifoldModel
+          (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        letI : ChartedSpace ThreeManifoldModel
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) := charted
+        ∃ finiteExtinction :
+          FiniteExtinctionByRicciFlowWithSurgery
+            (OnePoint (EuclideanSpace ℝ (Fin 3))),
+          fields.finiteExtinctionPayload = ⟨charted, finiteExtinction⟩ ∧
+            fields.transportedFields =
+              smoothabilityPackageTransportedSmoothManifoldFields_of_onePointRecognition
+                recognize ∧
+            fields.bridgeFields =
+              fields.transportedFields.toSmoothabilityPackageTransportedBridgeFields ∧
+            fields.transportedPackageField =
+              fields.transportedFields.toSmoothabilityTransportedSmoothManifoldPackageField ∧
+            fields.bridgePackageField =
+              fields.bridgeFields.toSmoothabilityTransportedBridgePackageField ∧
+            fields.recoveredBridge =
+              smoothabilityTransportedBridgePackageField_of_transportedSmoothManifoldPackageField
+                fields.transportedPackageField ∧
+            fields.recoveredBridge.transportedBridge =
+              fields.bridgePackageField.transportedBridge ∧
+            fields.smoothFields =
+              fields.bridgeFields.toSmoothabilityPackageSmoothStructureDerivationFields ∧
+            fields.surgeryFamily =
+              onePointTransportedSurgeryPackageFamily_of_surgeryPackages
+                surgeryPackages ∧
+            fields.finiteExtinctionPayload =
+              onePointTransportedFiniteExtinctionPayload_of_transportedSmoothManifoldFields
+                fields.transportedFields fields.surgeryFamily ∧
+            fields.transportedBridgeStatement =
+              fields.bridgeFields.transportedBridge ∧
+            fields.transportedSmoothManifoldStatement =
+              fields.transportedFields.transportedSmoothManifold := by
+  let fields :=
+    onePointTransportedFinalCertificateFieldsOfOnePointRecognition
+      recognize surgeryPackages
+  rcases fields.finiteExtinctionPayload with ⟨charted, finiteExtinction⟩
+  exact
+    ⟨ onePointRecognitionTransportedToAmbientIsManifoldTransferTheorem_of_smoothabilityPackage
+        package
+    , onePointRecognitionAmbientAtlasTransitionCompatibilityPayload_of_smoothabilityPackage
+        package
+    , fields
+    , charted
+    , finiteExtinction
+    , rfl
+    , fields.transportedFields_eq
+    , fields.bridgeFields_eq
+    , fields.transportedPackageField_eq
+    , fields.bridgePackageField_eq
+    , fields.recoveredBridge_eq
+    , fields.recoveredBridge_transport_eq
+    , fields.smoothFields_eq
+    , fields.surgeryFamily_eq
+    , fields.finiteExtinctionPayload_eq
+    , rfl
+    , rfl
+    ⟩
+
+/--
+The same smooth-structure derivation field synchronization is available from
+the smoothability package-layer requirement consumed by final assembly.  The
+route preserves the package-layer input all the way to the opened one-point
+finite-extinction witness and the transported smoothability statements.
+-/
+theorem onePointTransportedFinalCertificateFields_packageLayer_transfer_with_smoothFields
+    (smoothability :
+      dependencyPackageLayerRequirement.{0}
+        DependencyPackageLayer.smoothabilityPackage)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0})
+    (surgeryPackages :
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    OnePointRecognitionTransportedToAmbientIsManifoldTransferTheorem.{0} ∧
+      OnePointRecognitionAmbientAtlasTransitionCompatibilityPayload.{0} ∧
+      ∃ fields :
+        OnePointTransportedFinalCertificateFields recognize surgeryPackages,
+      ∃ charted : ChartedSpace ThreeManifoldModel
+          (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        letI : ChartedSpace ThreeManifoldModel
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) := charted
+        ∃ finiteExtinction :
+          FiniteExtinctionByRicciFlowWithSurgery
+            (OnePoint (EuclideanSpace ℝ (Fin 3))),
+          fields.finiteExtinctionPayload = ⟨charted, finiteExtinction⟩ ∧
+            fields.transportedFields =
+              smoothabilityPackageTransportedSmoothManifoldFields_of_onePointRecognition
+                recognize ∧
+            fields.bridgeFields =
+              fields.transportedFields.toSmoothabilityPackageTransportedBridgeFields ∧
+            fields.transportedPackageField =
+              fields.transportedFields.toSmoothabilityTransportedSmoothManifoldPackageField ∧
+            fields.bridgePackageField =
+              fields.bridgeFields.toSmoothabilityTransportedBridgePackageField ∧
+            fields.recoveredBridge =
+              smoothabilityTransportedBridgePackageField_of_transportedSmoothManifoldPackageField
+                fields.transportedPackageField ∧
+            fields.recoveredBridge.transportedBridge =
+              fields.bridgePackageField.transportedBridge ∧
+            fields.smoothFields =
+              fields.bridgeFields.toSmoothabilityPackageSmoothStructureDerivationFields ∧
+            fields.surgeryFamily =
+              onePointTransportedSurgeryPackageFamily_of_surgeryPackages
+                surgeryPackages ∧
+            fields.finiteExtinctionPayload =
+              onePointTransportedFiniteExtinctionPayload_of_transportedSmoothManifoldFields
+                fields.transportedFields fields.surgeryFamily ∧
+            fields.transportedBridgeStatement =
+              fields.bridgeFields.transportedBridge ∧
+            fields.transportedSmoothManifoldStatement =
+              fields.transportedFields.transportedSmoothManifold :=
+  onePointTransportedFinalCertificateFields_package_transfer_with_smoothFields
+    smoothability recognize surgeryPackages
+
+/--
 Thus the current transfer theorem is blocked at the raw ambient atlas
 transition compatibility needed to build the ambient `HasGroupoid`.
 -/
