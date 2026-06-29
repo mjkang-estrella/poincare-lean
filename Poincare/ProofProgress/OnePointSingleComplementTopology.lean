@@ -619,6 +619,46 @@ theorem compl_singleton_euclidean_complete_collapse_package_of_homeomorph_to_one
     ⟩
 
 /--
+The supplied-basepoint singleton-complement collapse can be consumed directly
+from recognition as `ThreeSphere`.  This retains the original sphere
+recognition, records the induced one-point compactification recognition, and
+keeps the full Euclidean/low-homotopy/path-collapse package at the external
+basepoint.
+-/
+theorem compl_singleton_recognition_and_euclidean_complete_collapse_package_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    Nonempty (M ≃ₜ ThreeSphere) ∧
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+      ContractibleSpace ({x}ᶜ : Set M) ∧
+      Nonempty ({x}ᶜ : Set M) ∧
+      PathConnectedSpace ({x}ᶜ : Set M) ∧
+      ConnectedSpace ({x}ᶜ : Set M) ∧
+      SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+      LocPathConnectedSpace ({x}ᶜ : Set M) ∧
+      Nonempty (Unique (ZerothHomotopy ({x}ᶜ : Set M))) ∧
+      Nonempty (Unique (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint)) ∧
+      Nonempty (Unique (FundamentalGroup ({x}ᶜ : Set M) basepoint)) ∧
+      Nonempty (Unique (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint)) ∧
+      (∀ y z : ({x}ᶜ : Set M), ZerothHomotopy.mk y = ZerothHomotopy.mk z) ∧
+      (∀ a b : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint, a = b) ∧
+      (∀ a b : FundamentalGroup ({x}ᶜ : Set M) basepoint, a = b) ∧
+      (∀ a b : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint, a = b) ∧
+      (∀ y z : ({x}ᶜ : Set M), Nonempty (Path y z)) ∧
+      (∀ y : ({x}ᶜ : Set M), pathComponent y = Set.univ) := by
+  let hOnePoint :
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) :=
+    homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h
+  exact
+    ⟨ h
+    , hOnePoint
+    , compl_singleton_euclidean_complete_collapse_package_of_homeomorph_to_onePoint_threeSpace
+        hOnePoint x basepoint
+    ⟩
+
+/--
 The transported singleton-complement collapse can also be consumed without an
 externally supplied source basepoint.  The Euclidean complement chart supplies
 nonemptiness of `{x}ᶜ`, and the selected endpoint carries the same full
