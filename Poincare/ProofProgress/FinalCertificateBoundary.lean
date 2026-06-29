@@ -3682,4 +3682,61 @@ theorem finalCertificateNamedPackageLayerConsumerPayload_selected_reserved_endpo
     , selected.completionCriteria witness
     ⟩
 
+/--
+The same selected complete final consumer payload exposes the full
+universe-indexed completion-criteria family, not only one requested witness.
+This is the all-witness final endpoint for downstream consumers that select an
+inhabited named-package payload once and then need the checked certificate,
+reserved public statement route, topology assembly object, and every
+completion criterion together.
+-/
+theorem finalCertificateNamedPackageLayerConsumerPayload_selected_reserved_endpoint_topologyAssembly_and_completionCriteria_of_nonempty
+    (payload : Nonempty FinalCertificateNamedPackageLayerConsumerPayload.{u}) :
+    ∃ selected : FinalCertificateNamedPackageLayerConsumerPayload.{u},
+    ∃ inputs : FinalCertificateMinimalPackageInputs.{u},
+    ∃ topology :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage,
+      selected.smoothability = inputs.smoothability ∧
+        selected.finiteExtinction = inputs.finiteExtinction ∧
+        selected.topology = topology ∧
+        Nonempty (FinalCertificateTopologyAssemblyPayload inputs topology) ∧
+        poincare_conjecture_of_nonempty_namedPackageLayerConsumerPayload
+            payload =
+          selected.publicStatement ∧
+        selected.publicStatement =
+          poincare_conjecture_of_completion_certificate
+            selected.checkedCertificate ∧
+        PoincareConjectureStatement.{u} ∧
+        PoincareCompletionCertificate.{u} ∧
+        Nonempty PoincareCompletionCertificate.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  rcases payload with ⟨selected⟩
+  let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+    { smoothability := selected.smoothability
+      finiteExtinction := selected.finiteExtinction }
+  exact
+    ⟨ selected
+    , inputs
+    , selected.topology
+    , rfl
+    , rfl
+    , rfl
+    , ⟨selected.topologyAssemblyPayload⟩
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , selected.publicStatement
+    , selected.checkedCertificate
+    , ⟨selected.checkedCertificate⟩
+    , selected.canonicalTarget
+    , selected.publicPayload
+    , selected.canonicalPayload
+    , selected.completionCriteria
+    ⟩
+
 end Poincare
