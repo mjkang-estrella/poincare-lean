@@ -168,4 +168,48 @@ theorem flow_metric_slices_proposed_and_first_analytic_field_of_connectionField
   , first_analytic_package_field_of_connectionField connectionAtTime
   ⟩
 
+/--
+A nonempty connection-field input for a Ricci-flow datum can be consumed as one
+selected time-dependent tangent connection field, together with its definitional
+shape, every smooth metric slice, every induced smooth Riemannian-bundle slice,
+and the first analytic package field.
+-/
+theorem flow_metric_slices_riemannianBundle_connectionField_and_first_analytic_field_of_nonemptyConnectionField
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    {flow : RicciFlowData I n M}
+    (connectionField :
+      Nonempty (TimeDependentTangentConnectionField
+        (metric_of_ricci_flow_data flow))) :
+    ∃ _connectionAtTime :
+      TimeDependentTangentConnectionField (metric_of_ricci_flow_data flow),
+      TimeDependentTangentConnectionField
+          (metric_of_ricci_flow_data flow) =
+        (ℝ → TangentCovariantDerivative I M) ∧
+      (∀ _t : ℝ,
+        Nonempty
+          (ContMDiffRiemannianMetric I n E
+            (fun x : M => TangentSpace I x))) ∧
+      (∀ t : ℝ,
+        letI : RiemannianBundle (fun x : M => TangentSpace I x) :=
+          ⟨(metric_at_time_of_ricci_flow_data flow t).toRiemannianMetric⟩
+        IsContMDiffRiemannianBundle I n E
+          (fun x : M => TangentSpace I x)) ∧
+      ProposedHasLeviCivitaConnectionExistence
+        (metric_of_ricci_flow_data flow) ∧
+      HasLeviCivitaConnectionExistence
+        (metric_of_ricci_flow_data flow) := by
+  rcases connectionField with ⟨connectionAtTime⟩
+  exact
+    ⟨ connectionAtTime
+    , connectionField_for_flow_eq flow
+    , flow_metric_slice_contMDiffRiemannianMetric_nonempty flow
+    , flow_metric_slice_induces_contMDiff_riemannian_bundle flow
+    , proposed_first_analytic_subobligation_of_connectionField
+        connectionAtTime
+    , first_analytic_package_field_of_connectionField connectionAtTime
+    ⟩
+
 end Poincare
