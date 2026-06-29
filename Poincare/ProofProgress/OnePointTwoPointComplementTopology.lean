@@ -650,6 +650,54 @@ noncomputable def onePoint_threeSpace_twoPointComplement_flatRecognition_payload
   pathComponentEqUniv := payload.lowHomotopy.pathComponentEqUniv
 
 /--
+Flattening a structured two-puncture recognition payload preserves every
+field by definition.  Downstream consumers can therefore move from the
+structured payload to the flat recognition payload while keeping the same
+punctured-Euclidean chart, simple connectedness, low-homotopy uniqueness, path
+witnesses, and path-component collapse data.
+-/
+theorem onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition_fields
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} {hqp : q ≠ p}
+    {basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    (payload : OnePointTwoPointComplementRecognitionPayload hqp basepoint) :
+    ∃ flatPayload :
+      OnePointTwoPointComplementFlatRecognitionPayload hqp basepoint,
+      flatPayload =
+        onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition
+          payload ∧
+        flatPayload.puncturedEuclideanChart =
+          payload.puncturedEuclideanChart ∧
+        flatPayload.simplyConnected = payload.simplyConnected ∧
+        flatPayload.connected = payload.lowHomotopy.connected ∧
+        flatPayload.nonempty = payload.lowHomotopy.nonempty ∧
+        flatPayload.zerothUnique = payload.lowHomotopy.zerothUnique ∧
+        flatPayload.piZeroUnique = payload.lowHomotopy.piZeroUnique ∧
+        flatPayload.fundamentalGroupUnique =
+          payload.lowHomotopy.fundamentalGroupUnique ∧
+        flatPayload.piOneUnique = payload.lowHomotopy.piOneUnique ∧
+        flatPayload.pathNonempty = payload.lowHomotopy.pathNonempty ∧
+        flatPayload.pathComponentEqUniv =
+          payload.lowHomotopy.pathComponentEqUniv := by
+  let flatPayload :=
+    onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition
+      payload
+  exact
+    ⟨ flatPayload
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    ⟩
+
+/--
 The flat two-puncture recognition payload reconstructs path-connectedness from
 its stored nonempty witness and explicit paths between all pairs of points.
 -/
