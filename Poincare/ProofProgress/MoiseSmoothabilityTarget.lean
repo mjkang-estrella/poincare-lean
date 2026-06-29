@@ -762,6 +762,48 @@ theorem nonempty_moiseSmoothabilityCompleteConsumerPayload_iff_smoothabilityPack
         ⟩
 
 /--
+The complete Moise smoothability consumer payload is also equivalent to the
+residual smoothability package requirement together with the full
+target-by-target recognition/smoothability/prerequisite family.  The reverse
+direction extracts the `ThreeSphere` recognition component from that family and
+rebuilds the concrete Moise recognition assembly payload.
+-/
+theorem nonempty_moiseSmoothabilityCompleteConsumerPayload_iff_smoothabilityPackage_and_targetFamily :
+    Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u}) ↔
+      dependencyPackageLayerRequirement.{u}
+          DependencyPackageLayer.smoothabilityPackage ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere) ∧
+              Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+              AdmitsSmoothThreeManifoldStructure M ∧
+              AdmitsSurgeryModelSmoothStructure M ∧
+              (∃ _t2 : T2Space M,
+                ∃ _charted : ChartedSpace ThreeManifoldModel M,
+                ∃ _simple : SimplyConnectedSpace M,
+                ∃ _compact : CompactSpace M,
+                ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+                  Nonempty M)) := by
+  constructor
+  · rintro ⟨payload⟩
+    exact ⟨payload.smoothabilityPackageRequirement, payload.targetFamily⟩
+  · rintro ⟨smoothabilityPackageRequirement, targetFamily⟩
+    let recognizedSphereFamily :
+        ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere) := by
+      intro M _top _t2 _charted _simple _compact
+      exact (targetFamily M).1
+    exact
+      moiseSmoothability_completeConsumerPayload_of_smoothabilityPackage_and_threeSphereRecognition
+        (by
+          simpa [dependencyPackageLayerRequirement] using
+            smoothabilityPackageRequirement)
+        recognizedSphereFamily
+
+/--
 The complete Moise smoothability consumer payload is exactly a concrete
 recognition assembly payload, the residual smoothability package requirement,
 both theorem-shaped Moise targets, the `ThreeSphere` recognition family, and
