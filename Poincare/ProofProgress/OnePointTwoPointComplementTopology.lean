@@ -4302,4 +4302,118 @@ theorem onePoint_threeSpace_twoPointComplement_all_basepoint_recognition_and_low
         hqp
     ⟩
 
+/--
+For one supplied two-puncture basepoint, the recognition payload, flat
+recognition payload, and low-homotopy/baseclass payload can be selected from
+the same concrete low-homotopy object.  This fixed-basepoint endpoint keeps
+the punctured-Euclidean model, simple connectedness, connectedness,
+nonemptiness, four unique low-homotopy/baseclass witnesses, path nonemptiness,
+and path-component collapse synchronized without passing through the
+all-basepoint family first.
+-/
+theorem onePoint_threeSpace_twoPointComplement_supplied_basepoint_recognition_flat_lowHomotopy_fields
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (suppliedBasepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    ∃ recognitionPayload :
+      OnePointTwoPointComplementRecognitionPayload hqp suppliedBasepoint,
+    ∃ flatPayload :
+      OnePointTwoPointComplementFlatRecognitionPayload hqp suppliedBasepoint,
+    ∃ lowHomotopyPayload :
+      OnePointTwoPointComplementLowHomotopyUniquePayload
+        hqp suppliedBasepoint,
+      lowHomotopyPayload = recognitionPayload.lowHomotopy ∧
+        flatPayload =
+          onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition
+            recognitionPayload ∧
+        flatPayload.puncturedEuclideanChart =
+          recognitionPayload.puncturedEuclideanChart ∧
+        flatPayload.simplyConnected = recognitionPayload.simplyConnected ∧
+        flatPayload.connected = lowHomotopyPayload.connected ∧
+        flatPayload.nonempty = lowHomotopyPayload.nonempty ∧
+        flatPayload.zerothUnique = lowHomotopyPayload.zerothUnique ∧
+        flatPayload.piZeroUnique = lowHomotopyPayload.piZeroUnique ∧
+        flatPayload.fundamentalGroupUnique =
+          lowHomotopyPayload.fundamentalGroupUnique ∧
+        flatPayload.piOneUnique = lowHomotopyPayload.piOneUnique ∧
+        flatPayload.pathNonempty = lowHomotopyPayload.pathNonempty ∧
+        flatPayload.pathComponentEqUniv =
+          lowHomotopyPayload.pathComponentEqUniv ∧
+        (∃ puncture : EuclideanSpace ℝ (Fin 3),
+          Nonempty
+            ((({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+                ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+        SimplyConnectedSpace
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        ConnectedSpace
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        Nonempty
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        Nonempty (Unique
+          (ZerothHomotopy
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3)))))) ∧
+        Nonempty (Unique
+          (HomotopyGroup.Pi 0
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            suppliedBasepoint)) ∧
+        Nonempty (Unique
+          (FundamentalGroup
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            suppliedBasepoint)) ∧
+        Nonempty (Unique
+          (HomotopyGroup.Pi 1
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            suppliedBasepoint)) ∧
+        (∀ a b :
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          Nonempty (Path a b)) ∧
+        (∀ point :
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          pathComponent point = Set.univ) := by
+  let recognitionPayload :=
+    onePoint_threeSpace_twoPointComplement_recognition_payload
+      hqp suppliedBasepoint
+  let flatPayload :=
+    onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition
+      recognitionPayload
+  let lowHomotopyPayload :=
+    recognitionPayload.lowHomotopy
+  exact
+    ⟨ recognitionPayload
+    , flatPayload
+    , lowHomotopyPayload
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , recognitionPayload.puncturedEuclideanChart
+    , recognitionPayload.simplyConnected
+    , lowHomotopyPayload.connected
+    , lowHomotopyPayload.nonempty
+    , ⟨lowHomotopyPayload.zerothUnique⟩
+    , ⟨lowHomotopyPayload.piZeroUnique⟩
+    , ⟨lowHomotopyPayload.fundamentalGroupUnique⟩
+    , ⟨lowHomotopyPayload.piOneUnique⟩
+    , lowHomotopyPayload.pathNonempty
+    , lowHomotopyPayload.pathComponentEqUniv
+    ⟩
+
 end Poincare
