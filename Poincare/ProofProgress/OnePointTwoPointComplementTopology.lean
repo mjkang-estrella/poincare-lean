@@ -791,6 +791,53 @@ theorem onePoint_threeSpace_twoPointComplement_lowHomotopy_of_flatRecognition
     payload.pathNonempty, payload.pathComponentEqUniv⟩
 
 /--
+The flat recognition payload also exposes direct subsingleton facts for the
+low-homotopy objects at the retained basepoint.  This is the compact
+consumer-facing form for code that needs collapse facts rather than chosen
+`Unique` instances.
+-/
+theorem onePoint_threeSpace_twoPointComplement_lowHomotopy_subsingleton_package_of_flatRecognition
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} {hqp : q ≠ p}
+    {basepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))}
+    (payload : OnePointTwoPointComplementFlatRecognitionPayload hqp basepoint) :
+    Subsingleton
+        (ZerothHomotopy
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 0
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint) ∧
+      Subsingleton
+        (FundamentalGroup
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint) ∧
+      Subsingleton
+        (HomotopyGroup.Pi 1
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          basepoint) := by
+  letI : Unique
+      (ZerothHomotopy
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :=
+    payload.zerothUnique
+  letI : Unique
+      (HomotopyGroup.Pi 0
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint) :=
+    payload.piZeroUnique
+  letI : Unique
+      (FundamentalGroup
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint) :=
+    payload.fundamentalGroupUnique
+  letI : Unique
+      (HomotopyGroup.Pi 1
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        basepoint) :=
+    payload.piOneUnique
+  exact ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩
+
+/--
 The flat recognition payload exposes the ordinary topology and low-homotopy
 collapse surface together, so downstream topology extraction can consume one
 endpoint instead of recombining separate path-connected and homotopy packages.
