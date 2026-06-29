@@ -1155,6 +1155,83 @@ theorem extinctionTopology_statementEquality_and_fixedTarget_concrete_homeomorph
     ⟩
 
 /--
+For a fixed finite-extinction target and chosen two-puncture basepoint, a
+complete topology consumer payload keeps the topology-package statement
+equality and global extraction statements synchronized with the concrete final
+homeomorphism and the Euclidean models of the singleton and two-point
+complements.
+-/
+theorem extinctionTopology_package_statement_and_fixedTarget_euclidean_puncture_models_of_completeConsumerPayload
+    (payload : Nonempty (ExtinctionTopologyCompleteConsumerPayload.{u}))
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) {y : M} (hyx : y ≠ x)
+    (basepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ package : ExtinctionTopologyExtractionPackage.{u},
+    ∃ topologyStatement : ExtinctionTopologyExtractionStatement.{u},
+      topologyStatement =
+          extinction_topology_extraction_statement_of_topology_package
+            package ∧
+        ExtinctionImpliesSphereStatement.{u} ∧
+        ExtinctionTopologyExtractionWithLiftedHomeomorphismDerivationStatement.{u} ∧
+        ∃ homeomorphism : M ≃ₜ ThreeSphere,
+          Nonempty.intro homeomorphism =
+              homeomorphism_of_topology_package package M extinction ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+          (∃ puncture : EuclideanSpace ℝ (Fin 3),
+            Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+              ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+          ContractibleSpace ({x}ᶜ : Set M) ∧
+          SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+          Subsingleton
+            (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) := by
+  rcases
+    extinctionTopology_statementEquality_and_fixedTarget_concrete_homeomorphism_fullExtraction_of_completeConsumerPayload
+      payload M extinction with
+    ⟨ package
+    , topologyStatement
+    , hTopologyStatement
+    , extinctionImpliesSphere
+    , liftedHomeomorphismDerivation
+    , homeomorphism
+    , _nonemptyHomeomorphism
+    , hHomeomorphism
+    , _classification
+    , _simplyConnectedRecognition
+    , _trivialQuotient
+    , _lift
+    , _assembly
+    , _derivation
+    , _liftedDerivation
+    , hOnePoint
+    , hSingletonContractible
+    , hTwoPoint
+    ⟩
+  rcases
+    exists_homeomorph_twoPointComplement_puncturedEuclidean_of_homeomorph_to_onePoint_threeSpace
+      hOnePoint hyx with
+    ⟨puncture, hPuncturedEuclidean⟩
+  exact
+    ⟨ package
+    , topologyStatement
+    , hTopologyStatement
+    , extinctionImpliesSphere
+    , liftedHomeomorphismDerivation
+    , homeomorphism
+    , hHomeomorphism
+    , hOnePoint
+    , ⟨homeomorph_compl_singleton_euclidean_of_homeomorph_to_threeSphere
+        (Nonempty.intro homeomorphism) x⟩
+    , ⟨puncture, hPuncturedEuclidean⟩
+    , hSingletonContractible x
+    , (hTwoPoint hyx basepoint).1
+    , (hTwoPoint hyx basepoint).2
+    ⟩
+
+/--
 The complete topology consumer payload supplies the named one-point
 compactification recognition statement after finite extinction.  This is the
 topology side of the final target route stated against the compactification
