@@ -2786,6 +2786,42 @@ theorem finalCertificateNamedPackageLayerConsumerPayload_requirements_topologyAs
     ⟩
 
 /--
+The complete named-package consumer payload also determines the concrete
+minimal final-certificate inputs, the old three-input assembly object, and the
+remaining-dependency package used by the legacy certificate constructor.  Its
+stored checked certificate is the same proposition-level endpoint as that
+remaining-dependency certificate route.
+-/
+theorem finalCertificateNamedPackageLayerConsumerPayload_dependency_objects_and_certificate_route
+    (payload : FinalCertificateNamedPackageLayerConsumerPayload.{u}) :
+    ∃ inputs : FinalCertificateMinimalPackageInputs.{u},
+    ∃ _assemblyInputs : FinalAssemblyPackageBoundaryInputs.{u},
+    ∃ dependencies : RemainingDependencyPackage.{u},
+      FinalCertificateTopologyAssemblyPayload inputs payload.topology ∧
+        PoincareCompletionCertificate.{u} ∧
+        payload.checkedCertificate =
+          completion_certificate_of_remaining_dependency_package
+            dependencies := by
+  let inputs : FinalCertificateMinimalPackageInputs.{u} :=
+    { smoothability := payload.smoothability
+      finiteExtinction := payload.finiteExtinction }
+  let assemblyInputs : FinalAssemblyPackageBoundaryInputs.{u} :=
+    { smoothability := payload.smoothability
+      finiteExtinction := payload.finiteExtinction
+      topology := payload.topology }
+  let dependencies : RemainingDependencyPackage.{u} :=
+    remainingDependencyPackage_of_finalAssemblyPackageBoundaryInputs
+      assemblyInputs
+  exact
+    ⟨ inputs
+    , assemblyInputs
+    , dependencies
+    , payload.topologyAssemblyPayload
+    , payload.checkedCertificate
+    , by apply Subsingleton.elim
+    ⟩
+
+/--
 The inhabited complete named-package consumer payload exposes all three
 package-layer requirements, the inhabited topology assembly payload, and the
 checked final endpoint data carried by the selected payload.
