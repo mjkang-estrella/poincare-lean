@@ -1310,6 +1310,58 @@ theorem surgeryPerelman_fixedTarget_packageLayerTarget_and_combinedPayload_of_co
     ⟩
 
 /--
+For a fixed target manifold, the complete surgery/Perelman consumer payload
+synchronizes the selected package's projection payload with the finite
+extinction statement and extinction witness carried by the same combined
+payload object.
+-/
+theorem surgeryPerelman_fixedTarget_projectionPayload_and_extinctionFields_of_completeConsumerPayload
+    (payload :
+      Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ n : ℕ∞ω,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    ∃ combinedPayload :
+      FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package,
+    ∃ projectionPayload :
+      FiniteExtinctionSurgeryPerelmanProjectionPayload package,
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      projectionPayload = combinedPayload.projectionPayload ∧
+        flow = ricci_flow_data_of_surgery_package package ∧
+        flow = projectionPayload.flow ∧
+        RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+        PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+        Nonempty (SurgeryScaleFunctionPayload flow) ∧
+        HasSingularityModelBlowupClassification flow ∧
+        FiniteExtinctionStatement n M ∧
+        FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases payload with ⟨payload⟩
+  rcases payload.combinedPayloadAndSelectedFlowFamily M with
+    ⟨n, package, combinedPayload, flow, hFlow, constructionPackage,
+      perelmanPackage, scalePayload, blowupClassification,
+      finiteExtinctionStatement, finiteExtinctionWitness⟩
+  exact
+    ⟨ n
+    , package
+    , combinedPayload
+    , combinedPayload.projectionPayload
+    , flow
+    , rfl
+    , hFlow
+    , by
+        simpa [hFlow] using combinedPayload.projectionPayload.flow_eq.symm
+    , constructionPackage
+    , perelmanPackage
+    , scalePayload
+    , blowupClassification
+    , finiteExtinctionStatement
+    , finiteExtinctionWitness
+    ⟩
+
+/--
 A complete surgery/Perelman consumer payload carries enough package-tied
 finite-extinction data to recover the finite-extinction package-layer
 requirement itself.  This lets downstream assembly code consume the completed
