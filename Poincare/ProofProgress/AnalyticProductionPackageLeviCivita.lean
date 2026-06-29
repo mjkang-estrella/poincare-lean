@@ -5917,4 +5917,125 @@ theorem analyticProductionPackage_finiteExtinctionFacing_package_flow_statement_
     , hCurvatureEvolution
     ⟩
 
+/--
+Named payload-field form of the finite-extinction analytic certificate.  It
+opens the package-selected certificate far enough for downstream consumers to
+reuse the exact derivation statement, retained sub-obligation payload, equation
+evidence, selected statement equalities, temporal controls, regularization,
+maximum principle, uniqueness, and curvature-evolution fields from one
+selected analytic package flow.
+-/
+theorem analyticProductionPackage_finiteExtinctionFacing_named_certificate_payload_fields_of_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    ∃ certificate : AnalyticFiniteExtinctionControlCertificate I n M,
+    ∃ flow : RicciFlowData I n M,
+    ∃ statement : RicciFlowAnalyticFoundationStatement I n M,
+    ∃ derivationStatement :
+      AnalyticFoundationDerivationStatement certificate.flow,
+    ∃ subobligations :
+      AnalyticFoundationSubobligationsPayload certificate.flow,
+    ∃ equationEvidence :
+      SatisfiesRicciFlowEquation
+        (metric_of_ricci_flow_data certificate.flow)
+        (curvature_data_of_ricci_flow_data certificate.flow),
+      flow = ricci_flow_data_of_analytic_foundation_package package ∧
+        statement =
+          analytic_foundation_statement_of_analytic_foundation_package
+            package ∧
+        certificate.flow = flow ∧
+        certificate.statement = statement ∧
+        certificate.derivationStatement = derivationStatement ∧
+        certificate.subobligations = subobligations ∧
+        certificate.equationEvidence = equationEvidence ∧
+        certificate.statement =
+          ⟨certificate.flow, derivationStatement⟩ ∧
+        ricci_flow_data_of_analytic_foundation_statement
+            certificate.statement =
+          ⟨certificate.flow, derivationStatement⟩ ∧
+        HasDeTurckPullbackToRicciFlow certificate.flow ∧
+        HasShortTimeRicciFlowSolution certificate.flow ∧
+        HasRicciFlowMaximalTimeInterval certificate.flow ∧
+        HasRicciFlowContinuationCriterion certificate.flow ∧
+        HasCurvatureBlowUpContinuationCriterion certificate.flow ∧
+        HasMaximalSolutionExtension certificate.flow ∧
+        HasRicciFlowParabolicRegularity certificate.flow ∧
+        HasShiDerivativeEstimates certificate.flow ∧
+        HasCurvatureDerivativeBootstrap certificate.flow ∧
+        HasHamiltonMaximumPrinciple certificate.flow ∧
+        HasRicciFlowUniquenessTheory certificate.flow ∧
+        HasMetricEvolutionEquation certificate.flow ∧
+        HasRicciTensorEvolutionEquation certificate.flow ∧
+        HasScalarCurvatureEvolutionEquation certificate.flow ∧
+        HasCurvatureNormEvolutionInequality certificate.flow ∧
+        HasCurvatureEvolutionEquations certificate.flow := by
+  rcases
+    analyticProductionPackage_finiteExtinctionFacing_package_flow_statement_control_payload_of_package
+      package with
+    ⟨ certificate
+    , flow
+    , statement
+    , hFlow
+    , hStatement
+    , hCertificateFlow
+    , hCertificateStatement
+    , hCertificateStatementSelected
+    , hStatementFlow
+    , _hSubobligations
+    , _hEquation
+    , hDeTurck
+    , hShortTime
+    , hMaximalInterval
+    , hContinuation
+    , hBlowup
+    , hExtension
+    , hRegularity
+    , hShiEstimates
+    , hDerivativeBootstrap
+    , hMaximumPrinciple
+    , hUniqueness
+    , hMetricEvolution
+    , hRicciEvolution
+    , hScalarEvolution
+    , hCurvatureNormInequality
+    , hCurvatureEvolution
+    ⟩
+  exact
+    ⟨ certificate
+    , flow
+    , statement
+    , certificate.derivationStatement
+    , certificate.subobligations
+    , certificate.equationEvidence
+    , hFlow
+    , hStatement
+    , hCertificateFlow
+    , hCertificateStatement
+    , rfl
+    , rfl
+    , rfl
+    , hCertificateStatementSelected
+    , hStatementFlow
+    , hDeTurck
+    , hShortTime
+    , hMaximalInterval
+    , hContinuation
+    , hBlowup
+    , hExtension
+    , hRegularity
+    , hShiEstimates
+    , hDerivativeBootstrap
+    , hMaximumPrinciple
+    , hUniqueness
+    , hMetricEvolution
+    , hRicciEvolution
+    , hScalarEvolution
+    , hCurvatureNormInequality
+    , hCurvatureEvolution
+    ⟩
+
 end Poincare
