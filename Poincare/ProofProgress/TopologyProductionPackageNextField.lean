@@ -25095,6 +25095,103 @@ theorem extinctionTopologyExtractionPackage_selectedRawMapData_forwardContinuity
     ⟩
 
 /--
+The selected raw-map plus forward-continuity route also retains the spherical
+space-form and deck-group recognition fields from the same intermediate
+simply-connected recognition prefix.  This keeps the selected package route
+through irreducibility, connected-sum collapse, spherical reduction, deck
+triviality, and simply connected recognition available before the final
+homeomorphism consumer asks for the assembled homeomorphism fields.
+-/
+theorem extinctionTopologyExtractionPackage_selectedRawMapData_forwardContinuity_package_and_spherical_deck_route_fields
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ∃ package : ExtinctionTopologyExtractionPackage.{u},
+    let recognitionPrefix :=
+      extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceSelectedRawMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+        surgeryTracePrefix mapSelectionData selectedRawMapData
+        forwardContinuityData
+    package =
+        extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceSelectedRawMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+          surgeryTracePrefix mapSelectionData selectedRawMapData
+          forwardContinuityData ∧
+      package.irreducibility M extinction =
+        recognitionPrefix.irreducibility M extinction ∧
+      package.connectedSumCollapse M extinction =
+        recognitionPrefix.connectedSumCollapse M extinction ∧
+      package.sphericalSpaceFormReduction M extinction =
+        recognitionPrefix.sphericalSpaceFormReduction M extinction ∧
+      package.sphericalSpaceFormClassification M extinction =
+        recognitionPrefix.sphericalSpaceFormClassification M extinction ∧
+      package.sphericalQuotientModel M extinction =
+        recognitionPrefix.sphericalQuotientModel M extinction ∧
+      package.sphericalFreeAction M extinction =
+        recognitionPrefix.sphericalFreeAction M extinction ∧
+      package.sphericalUniversalCover M extinction =
+        recognitionPrefix.sphericalUniversalCover M extinction ∧
+      package.sphericalCoveringModel M extinction =
+        recognitionPrefix.sphericalCoveringModel M extinction ∧
+      package.sphericalCoveringProjection M extinction =
+        recognitionPrefix.sphericalCoveringProjection M extinction ∧
+      package.sphericalFundamentalGroup M extinction =
+        recognitionPrefix.sphericalFundamentalGroup M extinction ∧
+      package.deckGroupIdentification M extinction =
+        recognitionPrefix.deckGroupIdentification M extinction ∧
+      package.deckActionProperness M extinction =
+        recognitionPrefix.deckActionProperness M extinction ∧
+      package.deckGroupTriviality M extinction =
+        recognitionPrefix.deckGroupTriviality M extinction ∧
+      package.deckActionTrivialization M extinction =
+        recognitionPrefix.deckActionTrivialization M extinction ∧
+      package.trivialDeckQuotientIdentification M extinction =
+        recognitionPrefix.trivialDeckQuotientIdentification M extinction ∧
+      package.trivialSphericalQuotient M extinction =
+        recognitionPrefix.trivialSphericalQuotient M extinction ∧
+      package.trivialQuotientHomeomorphism M extinction =
+        recognitionPrefix.trivialQuotientHomeomorphism M extinction ∧
+      package.sphericalHomeomorphismLift M extinction =
+        recognitionPrefix.sphericalHomeomorphismLift M extinction ∧
+      package.simplyConnectedRecognition M extinction =
+        recognitionPrefix.simplyConnectedRecognition M extinction := by
+  let package :=
+    extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceSelectedRawMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+      surgeryTracePrefix mapSelectionData selectedRawMapData
+      forwardContinuityData
+  refine ⟨package, ?_⟩
+  dsimp
+  exact
+    ⟨ rfl
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    ⟩
+
+/--
 Once final homeomorphism payload data is supplied, the next package field is
 the raw final homeomorphism. This proof-progress theorem records the explicit
 payload-to-field bridge without asserting a constructorless negation of
