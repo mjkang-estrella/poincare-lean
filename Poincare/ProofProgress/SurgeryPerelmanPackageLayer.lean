@@ -1310,6 +1310,23 @@ theorem surgeryPerelman_fixedTarget_packageLayerTarget_and_combinedPayload_of_co
     ⟩
 
 /--
+A complete surgery/Perelman consumer payload carries enough package-tied
+finite-extinction data to recover the finite-extinction package-layer
+requirement itself.  This lets downstream assembly code consume the completed
+surgery/Perelman surface without separately threading the original
+finite-extinction package-layer hypothesis.
+-/
+theorem finiteExtinctionPackage_requirement_of_surgeryPerelman_completeConsumerPayload
+    (payload :
+      Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u}) :
+    dependencyPackageLayerRequirement.{u}
+      DependencyPackageLayer.finiteExtinctionPackage := by
+  intro M _top _t2 _charted _simple _compact _manifold
+  exact
+    (surgeryPerelman_fixedTarget_packageLayerTarget_and_combinedPayload_of_completeConsumerPayload
+      payload M).1
+
+/--
 For a fixed target manifold, a complete surgery/Perelman consumer payload
 simultaneously exposes the package-layer requirement, both analytic milestones,
 and the concrete combined payload object tied to the selected surgery flow.
@@ -1345,6 +1362,60 @@ theorem surgeryPerelman_requirements_and_fixedTarget_combinedPayload_of_complete
     , payload.ricciFlowWithSurgeryMilestone
     , payload.perelmanSingularityControlMilestone
     , payload.combinedPayloadAndSelectedFlowFamily M
+    ⟩
+
+/--
+For a fixed target manifold, the complete surgery/Perelman consumer payload
+collapses to one endpoint containing the recovered finite-extinction package
+requirement, the surgery package requirement, both analytic milestones, the
+finite-extinction package-layer target for `M`, and the concrete selected
+package/flow payload with finite extinction.
+-/
+theorem surgeryPerelman_finiteExtinctionRequirement_and_fixedTarget_completeEndpoint_of_completeConsumerPayload
+    (payload :
+      Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage ∧
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.surgeryPackage ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery ∧
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl ∧
+      Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M) ∧
+      ∃ n : ℕ∞ω,
+      ∃ package : FiniteExtinctionSurgeryPackage n M,
+      ∃ _combinedPayload :
+        FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        flow = ricci_flow_data_of_surgery_package package ∧
+          RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+          PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+          Nonempty (SurgeryScaleFunctionPayload flow) ∧
+          HasSingularityModelBlowupClassification flow ∧
+          FiniteExtinctionStatement n M ∧
+          FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases
+    surgeryPerelman_requirements_and_fixedTarget_combinedPayload_of_completeConsumerPayload
+      payload M with
+    ⟨surgeryPackageRequirement, ricciFlowWithSurgeryMilestone,
+      perelmanSingularityControlMilestone, combinedPayload⟩
+  rcases
+    surgeryPerelman_fixedTarget_packageLayerTarget_and_combinedPayload_of_completeConsumerPayload
+      payload M with
+    ⟨packageLayerTarget, _combinedPayloadAgain⟩
+  exact
+    ⟨ finiteExtinctionPackage_requirement_of_surgeryPerelman_completeConsumerPayload
+        payload
+    , surgeryPackageRequirement
+    , ricciFlowWithSurgeryMilestone
+    , perelmanSingularityControlMilestone
+    , packageLayerTarget
+    , combinedPayload
     ⟩
 
 /--
