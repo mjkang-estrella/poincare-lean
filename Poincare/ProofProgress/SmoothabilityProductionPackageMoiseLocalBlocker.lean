@@ -1,3 +1,4 @@
+import Poincare.DependencyCrosswalk
 import Poincare.ProofProgress.SmoothabilityProductionPackageBridge
 
 universe u
@@ -20218,6 +20219,64 @@ theorem onePointTransportedFinalCertificateFields_named_transport_fields_package
     , rfl
     , rfl
     ⟩
+
+/--
+The same one-point transported final-certificate route is available from the
+smoothability package-layer requirement used by final assembly.  This keeps the
+package-layer input, transported-to-ambient transfer theorem, ambient atlas
+compatibility payload, transported package fields, canonical one-point surgery
+family, opened finite-extinction payload, and finite-extinction witness in one
+assembly-facing endpoint.
+-/
+theorem onePointTransportedFinalCertificateFields_named_transport_fields_package_fields_opened_payload_and_packageLayer_transfer
+    (smoothability :
+      dependencyPackageLayerRequirement.{0}
+        DependencyPackageLayer.smoothabilityPackage)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0})
+    (surgeryPackages :
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    OnePointRecognitionTransportedToAmbientIsManifoldTransferTheorem.{0} ∧
+      OnePointRecognitionAmbientAtlasTransitionCompatibilityPayload.{0} ∧
+      ∃ fields :
+        OnePointTransportedFinalCertificateFields recognize surgeryPackages,
+      ∃ charted : ChartedSpace ThreeManifoldModel
+          (OnePoint (EuclideanSpace ℝ (Fin 3))),
+        letI : ChartedSpace ThreeManifoldModel
+          (OnePoint (EuclideanSpace ℝ (Fin 3))) := charted
+        ∃ finiteExtinction :
+          FiniteExtinctionByRicciFlowWithSurgery
+            (OnePoint (EuclideanSpace ℝ (Fin 3))),
+          fields.finiteExtinctionPayload = ⟨charted, finiteExtinction⟩ ∧
+            fields.transportedFields =
+              smoothabilityPackageTransportedSmoothManifoldFields_of_onePointRecognition
+                recognize ∧
+            fields.bridgeFields =
+              fields.transportedFields.toSmoothabilityPackageTransportedBridgeFields ∧
+            fields.transportedPackageField =
+              fields.transportedFields.toSmoothabilityTransportedSmoothManifoldPackageField ∧
+            fields.bridgePackageField =
+              fields.bridgeFields.toSmoothabilityTransportedBridgePackageField ∧
+            fields.recoveredBridge =
+              smoothabilityTransportedBridgePackageField_of_transportedSmoothManifoldPackageField
+                fields.transportedPackageField ∧
+            fields.recoveredBridge.transportedBridge =
+              fields.bridgePackageField.transportedBridge ∧
+            fields.surgeryFamily =
+              onePointTransportedSurgeryPackageFamily_of_surgeryPackages
+                surgeryPackages ∧
+            fields.finiteExtinctionPayload =
+              onePointTransportedFiniteExtinctionPayload_of_transportedSmoothManifoldFields
+                fields.transportedFields fields.surgeryFamily ∧
+            fields.transportedBridgeStatement =
+              fields.bridgeFields.transportedBridge ∧
+            fields.transportedSmoothManifoldStatement =
+              fields.transportedFields.transportedSmoothManifold :=
+  onePointTransportedFinalCertificateFields_named_transport_fields_package_fields_opened_payload_and_package_transfer
+    smoothability recognize surgeryPackages
 
 /--
 Thus the current transfer theorem is blocked at the raw ambient atlas
