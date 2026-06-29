@@ -5584,4 +5584,153 @@ theorem analyticProductionPackage_finiteExtinctionFacing_selected_flow_statement
     , curvatureEvolution
     ⟩
 
+/--
+Certificate form of the package-selected analytic data consumed by
+finite-extinction arguments.  Unlike the compact tuple above, this retains the
+analytic sub-obligation payload together with the selected statement,
+equation evidence, temporal controls, maximum principle, uniqueness, and all
+terminal curvature-evolution fields.
+-/
+structure AnalyticFiniteExtinctionControlCertificate
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    (I : ModelWithCorners ℝ E H) (n : ℕ∞ω)
+    (M : Type w) [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] where
+  flow : RicciFlowData I n M
+  statement : RicciFlowAnalyticFoundationStatement I n M
+  derivationStatement : AnalyticFoundationDerivationStatement flow
+  subobligations : AnalyticFoundationSubobligationsPayload flow
+  equationEvidence :
+    SatisfiesRicciFlowEquation
+      (metric_of_ricci_flow_data flow)
+      (curvature_data_of_ricci_flow_data flow)
+  deturckPullback : HasDeTurckPullbackToRicciFlow flow
+  shortTime : HasShortTimeRicciFlowSolution flow
+  maximalInterval : HasRicciFlowMaximalTimeInterval flow
+  continuation : HasRicciFlowContinuationCriterion flow
+  blowup : HasCurvatureBlowUpContinuationCriterion flow
+  extension : HasMaximalSolutionExtension flow
+  regularity : HasRicciFlowParabolicRegularity flow
+  shiEstimates : HasShiDerivativeEstimates flow
+  derivativeBootstrap : HasCurvatureDerivativeBootstrap flow
+  maximumPrinciple : HasHamiltonMaximumPrinciple flow
+  uniqueness : HasRicciFlowUniquenessTheory flow
+  metricEvolution : HasMetricEvolutionEquation flow
+  ricciEvolution : HasRicciTensorEvolutionEquation flow
+  scalarEvolution : HasScalarCurvatureEvolutionEquation flow
+  curvatureNormInequality : HasCurvatureNormEvolutionInequality flow
+  curvatureEvolution : HasCurvatureEvolutionEquations flow
+  statement_flow_derivation_eq :
+    ricci_flow_data_of_analytic_foundation_statement statement =
+      ⟨flow, derivationStatement⟩
+  statement_eq :
+    statement = ⟨flow, derivationStatement⟩
+
+/--
+A completed analytic-foundation package constructs the full finite-extinction
+control certificate while keeping the selected flow synchronized with the
+package's theorem-shaped statement and retained sub-obligation payload.
+-/
+theorem analyticProductionPackage_finiteExtinctionFacing_control_certificate_of_package
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    ∃ certificate : AnalyticFiniteExtinctionControlCertificate I n M,
+      certificate.flow =
+          ricci_flow_data_of_analytic_foundation_package package ∧
+        certificate.statement =
+          analytic_foundation_statement_of_analytic_foundation_package
+            package ∧
+        certificate.statement =
+          ⟨certificate.flow, certificate.derivationStatement⟩ := by
+  let flow := ricci_flow_data_of_analytic_foundation_package package
+  rcases analytic_foundation_payload_of_analytic_foundation_package
+      package with
+    ⟨statement, derivationStatement, subobligations, equationEvidence⟩
+  have statement_eq :
+      statement = ⟨flow, derivationStatement⟩ := by
+    simpa [flow] using
+      analytic_foundation_statement_of_analytic_foundation_package_eq
+        package
+  let certificate : AnalyticFiniteExtinctionControlCertificate I n M :=
+    {
+      flow := flow
+      statement := statement
+      derivationStatement := derivationStatement
+      subobligations := subobligations
+      equationEvidence := equationEvidence
+      deturckPullback := by
+        simpa [flow] using
+          deturck_pullback_to_ricci_flow_of_analytic_foundation_package
+            package
+      shortTime := by
+        simpa [flow] using
+          short_time_existence_of_analytic_foundation_package package
+      maximalInterval := by
+        simpa [flow] using
+          maximal_time_interval_of_analytic_foundation_package package
+      continuation := by
+        simpa [flow] using
+          continuation_criterion_of_analytic_foundation_package package
+      blowup := by
+        simpa [flow] using
+          curvature_blowup_criterion_of_analytic_foundation_package package
+      extension := by
+        simpa [flow] using
+          maximal_solution_extension_of_analytic_foundation_package package
+      regularity := by
+        simpa [flow] using
+          parabolic_regularity_of_analytic_foundation_package package
+      shiEstimates := by
+        simpa [flow] using
+          shi_derivative_estimates_of_analytic_foundation_package package
+      derivativeBootstrap := by
+        simpa [flow] using
+          curvature_derivative_bootstrap_of_analytic_foundation_package package
+      maximumPrinciple := by
+        simpa [flow] using
+          hamilton_maximum_principle_of_analytic_foundation_package package
+      uniqueness := by
+        simpa [flow] using
+          uniqueness_theory_of_analytic_foundation_package package
+      metricEvolution := by
+        simpa [flow] using
+          metric_evolution_equation_of_analytic_foundation_package package
+      ricciEvolution := by
+        simpa [flow] using
+          ricci_tensor_evolution_equation_of_analytic_foundation_package
+            package
+      scalarEvolution := by
+        simpa [flow] using
+          scalar_curvature_evolution_equation_of_analytic_foundation_package
+            package
+      curvatureNormInequality := by
+        simpa [flow] using
+          curvature_norm_evolution_inequality_of_analytic_foundation_package
+            package
+      curvatureEvolution := by
+        simpa [flow] using
+          curvature_evolution_of_analytic_foundation_package package
+      statement_flow_derivation_eq := by
+        apply Subsingleton.elim
+      statement_eq := statement_eq }
+  exact
+    ⟨ certificate
+    , rfl
+    , by
+        change statement =
+          analytic_foundation_statement_of_analytic_foundation_package
+            package
+        exact statement_eq.trans
+          (analytic_foundation_statement_of_analytic_foundation_package_eq
+            package).symm
+    , by
+        change statement = ⟨flow, derivationStatement⟩
+        exact statement_eq
+    ⟩
+
 end Poincare
