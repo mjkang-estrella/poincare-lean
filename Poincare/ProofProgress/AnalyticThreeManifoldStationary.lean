@@ -16021,6 +16021,35 @@ theorem stationaryZeroAnalyticFoundation_fixedTarget_fullPackageEvolution_of_com
   exact payload.fullPackageEvolutionFamily M
 
 /--
+For a fixed target manifold, a complete analytic consumer payload exposes the
+selected stationary-zero flow together with the equation-boundary statement,
+Ricci/scalar contraction theories, individual evolution equations, curvature
+norm inequality, and terminal curvature-evolution field, without requiring the
+analytic package object itself.
+-/
+theorem stationaryZeroAnalyticFoundation_fixedTarget_evolutionFields_of_completeConsumerPayload
+    (payload :
+      Nonempty StationaryZeroAnalyticFoundationCompleteConsumerPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ n : ℕ∞ω,
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      AnalyticFoundationWithEquationBoundaryStatement flow ∧
+        HasRicciContractionTheory
+          (curvature_data_of_ricci_flow_data flow) ∧
+        HasScalarCurvatureTheory
+          (curvature_data_of_ricci_flow_data flow) ∧
+        HasMetricEvolutionEquation flow ∧
+        HasRicciTensorEvolutionEquation flow ∧
+        HasScalarCurvatureEvolutionEquation flow ∧
+        HasCurvatureNormEvolutionInequality flow ∧
+        HasCurvatureEvolutionEquations flow := by
+  rcases payload with ⟨payload⟩
+  exact payload.evolutionFieldsFamily M
+
+/--
 For a fixed target, the complete analytic consumer payload exposes the
 analytic package-layer requirement, the Ricci-flow analytic milestone, and the
 normalized full package/evolution payload from the same detailed assembly.
