@@ -25304,6 +25304,87 @@ theorem extinctionTopologyExtractionPackage_selectedRawMapData_forwardContinuity
     ⟩
 
 /--
+The selected raw-map plus forward-continuity route reaches the final consumer
+surface while retaining the topology-prefix fields from the same intermediate
+recognition prefix.  This keeps the selected package constructor, theorem-
+shaped extraction statement, final sphere implication, fixed-target
+homeomorphism route, and early surgery/component/prime-decomposition fields
+synchronized for downstream topology assembly.
+-/
+theorem extinctionTopologyExtractionPackage_selectedRawMapData_forwardContinuity_final_consumer_statement_and_prefix_fields
+    (surgeryTracePrefix : ExtinctionTopologySurgeryTracePrefixPackage.{u})
+    (mapSelectionData :
+      ExtinctionOnePointThreeSpaceCanonicalMapSelectionDataAfterDecompositionStatement.{u})
+    (selectedRawMapData :
+      ExtinctionOnePointThreeSpaceCanonicalForwardInverseMapSelectedRawMapDataAfterMapSelectionDataStatement
+        mapSelectionData)
+    (forwardContinuityData :
+      ExtinctionOnePointThreeSpaceForwardInverseMapForwardContinuityDataAfterDecompositionStatement.{u}) :
+    ∃ package : ExtinctionTopologyExtractionPackage.{u},
+      package =
+          extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceSelectedRawMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+            surgeryTracePrefix mapSelectionData selectedRawMapData
+            forwardContinuityData ∧
+        ExtinctionTopologyExtractionStatement.{u} ∧
+        ExtinctionImpliesSphereStatement.{u} ∧
+        ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+          [SimplyConnectedSpace M] [CompactSpace M]
+          (extinction : FiniteExtinctionByRicciFlowWithSurgery M),
+          let recognitionPrefix :=
+            extinctionTopologySimplyConnectedExtinctionRecognitionPrefixPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceSelectedRawMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+              surgeryTracePrefix mapSelectionData selectedRawMapData
+              forwardContinuityData
+          package.surgeryTraceReconstruction M extinction =
+              recognitionPrefix.surgeryTraceReconstruction M extinction ∧
+            package.surgeryTraceHandleCancellation M extinction =
+              recognitionPrefix.surgeryTraceHandleCancellation M extinction ∧
+            package.componentClassification M extinction =
+              recognitionPrefix.componentClassification M extinction ∧
+            package.componentInventory M extinction =
+              recognitionPrefix.componentInventory M extinction ∧
+            package.componentBoundarySphereControl M extinction =
+              recognitionPrefix.componentBoundarySphereControl M extinction ∧
+            package.recognition M =
+              recognitionPrefix.recognition M ∧
+            package.primeDecomposition M extinction =
+              recognitionPrefix.primeDecomposition M extinction ∧
+            ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+              homeomorphism =
+                  homeomorphism_of_topology_package package M extinction ∧
+                ExtinctionTopologyDerivationStatement M extinction
+                  homeomorphism ∧
+                package.extractHomeomorphism M extinction = homeomorphism := by
+  let package :=
+    extinctionTopologyExtractionPackage_of_surgeryTracePrefix_and_extinctionOnePointThreeSpaceSelectedRawMapDataAfterDecomposition_and_forwardContinuityDataAfterDecomposition
+      surgeryTracePrefix mapSelectionData selectedRawMapData
+      forwardContinuityData
+  refine
+    ⟨ package
+    , rfl
+    , extinction_topology_extraction_statement_of_topology_package package
+    , extinction_implies_sphere_of_topology_package package
+    , ?_
+    ⟩
+  intro M _top _t2 _charted _simple _compact extinction
+  let homeomorphism : Nonempty (M ≃ₜ ThreeSphere) :=
+    homeomorphism_of_topology_package package M extinction
+  exact
+    ⟨ by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , homeomorphism
+    , rfl
+    , extinction_topology_derivation_statement_of_topology_package
+        package M extinction
+    , rfl
+    ⟩
+
+/--
 Once final homeomorphism payload data is supplied, the next package field is
 the raw final homeomorphism. This proof-progress theorem records the explicit
 payload-to-field bridge without asserting a constructorless negation of
