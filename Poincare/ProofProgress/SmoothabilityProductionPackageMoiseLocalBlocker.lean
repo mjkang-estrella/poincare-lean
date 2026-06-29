@@ -19448,6 +19448,155 @@ theorem onePointRecognition_selected_transportedPackageFields_recoveredBridge_ca
     ⟩
 
 /--
+The selected transported smoothability route bundled as a field package for
+downstream final-certificate consumers.  It records the smooth-structure field
+package, both transported package-field projections, the recovered bridge field,
+the canonical one-point surgery-family specialization, and the finite-extinction
+payload extracted from that same route.
+-/
+structure OnePointTransportedFinalCertificateFields
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0})
+    (surgeryPackages :
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) where
+  transportedFields : SmoothabilityPackageTransportedSmoothManifoldFields.{0}
+  bridgeFields : SmoothabilityPackageTransportedBridgeFields.{0}
+  transportedPackageField :
+    SmoothabilityTransportedSmoothManifoldPackageField.{0}
+  bridgePackageField : SmoothabilityTransportedBridgePackageField.{0}
+  recoveredBridge : SmoothabilityTransportedBridgePackageField.{0}
+  smoothFields : SmoothabilityPackageSmoothStructureDerivationFields.{0}
+  surgeryFamily : OnePointTransportedSurgeryPackageFamily
+  finiteExtinctionPayload : OnePointTransportedFiniteExtinctionPayload
+  transportedFields_eq :
+    transportedFields =
+      smoothabilityPackageTransportedSmoothManifoldFields_of_onePointRecognition
+        recognize
+  bridgeFields_eq :
+    bridgeFields =
+      transportedFields.toSmoothabilityPackageTransportedBridgeFields
+  transportedPackageField_eq :
+    transportedPackageField =
+      transportedFields.toSmoothabilityTransportedSmoothManifoldPackageField
+  bridgePackageField_eq :
+    bridgePackageField =
+      bridgeFields.toSmoothabilityTransportedBridgePackageField
+  recoveredBridge_eq :
+    recoveredBridge =
+      smoothabilityTransportedBridgePackageField_of_transportedSmoothManifoldPackageField
+        transportedPackageField
+  recoveredBridge_transport_eq :
+    recoveredBridge.transportedBridge =
+      bridgePackageField.transportedBridge
+  smoothFields_eq :
+    smoothFields =
+      bridgeFields.toSmoothabilityPackageSmoothStructureDerivationFields
+  surgeryFamily_eq :
+    surgeryFamily =
+      onePointTransportedSurgeryPackageFamily_of_surgeryPackages
+        surgeryPackages
+  finiteExtinctionPayload_eq :
+    finiteExtinctionPayload =
+      onePointTransportedFiniteExtinctionPayload_of_transportedSmoothManifoldFields
+        transportedFields surgeryFamily
+  transportedBridgeStatement : SmoothabilityTransportedBridgeStatement.{0}
+  transportedSmoothManifoldStatement :
+    SmoothabilityTransportedSmoothManifoldStatement.{0}
+
+/--
+One-point recognition constructs the final-certificate field package through
+the transported smoothability route before the ambient charted-space comparison
+blocker.  The finite-extinction payload is produced from the same transported
+smooth-manifold package field retained in the package.
+-/
+def onePointTransportedFinalCertificateFieldsOfOnePointRecognition
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0})
+    (surgeryPackages :
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    OnePointTransportedFinalCertificateFields recognize surgeryPackages := by
+  let transportedFields :
+      SmoothabilityPackageTransportedSmoothManifoldFields.{0} :=
+    smoothabilityPackageTransportedSmoothManifoldFields_of_onePointRecognition
+      recognize
+  let bridgeFields : SmoothabilityPackageTransportedBridgeFields.{0} :=
+    transportedFields.toSmoothabilityPackageTransportedBridgeFields
+  let transportedPackageField :
+      SmoothabilityTransportedSmoothManifoldPackageField.{0} :=
+    transportedFields.toSmoothabilityTransportedSmoothManifoldPackageField
+  let bridgePackageField : SmoothabilityTransportedBridgePackageField.{0} :=
+    bridgeFields.toSmoothabilityTransportedBridgePackageField
+  let recoveredBridge : SmoothabilityTransportedBridgePackageField.{0} :=
+    smoothabilityTransportedBridgePackageField_of_transportedSmoothManifoldPackageField
+      transportedPackageField
+  let smoothFields :
+      SmoothabilityPackageSmoothStructureDerivationFields.{0} :=
+    bridgeFields.toSmoothabilityPackageSmoothStructureDerivationFields
+  let surgeryFamily : OnePointTransportedSurgeryPackageFamily :=
+    onePointTransportedSurgeryPackageFamily_of_surgeryPackages
+      surgeryPackages
+  have finiteExtinctionPayload : OnePointTransportedFiniteExtinctionPayload :=
+    onePointTransportedFiniteExtinctionPayload_of_transportedSmoothManifoldFields
+      transportedFields surgeryFamily
+  exact
+    { transportedFields := transportedFields
+      bridgeFields := bridgeFields
+      transportedPackageField := transportedPackageField
+      bridgePackageField := bridgePackageField
+      recoveredBridge := recoveredBridge
+      smoothFields := smoothFields
+      surgeryFamily := surgeryFamily
+      finiteExtinctionPayload := finiteExtinctionPayload
+      transportedFields_eq := rfl
+      bridgeFields_eq := rfl
+      transportedPackageField_eq := rfl
+      bridgePackageField_eq := rfl
+      recoveredBridge_eq := rfl
+      recoveredBridge_transport_eq := rfl
+      smoothFields_eq := rfl
+      surgeryFamily_eq := rfl
+      finiteExtinctionPayload_eq := by apply Subsingleton.elim
+      transportedBridgeStatement := bridgeFields.transportedBridge
+      transportedSmoothManifoldStatement :=
+        transportedFields.transportedSmoothManifold }
+
+/--
+The constructed final-certificate field package exposes the synchronized
+finite-extinction payload and the transported smoothability statements as
+projection data for downstream certificate assembly.
+-/
+theorem onePointTransportedFinalCertificateFields_payload_and_statements
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0})
+    (surgeryPackages :
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    ∃ fields :
+      OnePointTransportedFinalCertificateFields recognize surgeryPackages,
+      fields.finiteExtinctionPayload =
+        onePointTransportedFiniteExtinctionPayload_of_transportedSmoothManifoldFields
+          fields.transportedFields fields.surgeryFamily ∧
+        SmoothabilityTransportedBridgeStatement.{0} ∧
+        SmoothabilityTransportedSmoothManifoldStatement.{0} := by
+  let fields :=
+    onePointTransportedFinalCertificateFieldsOfOnePointRecognition
+      recognize surgeryPackages
+  exact
+    ⟨ fields
+    , fields.finiteExtinctionPayload_eq
+    , fields.transportedBridgeStatement
+    , fields.transportedSmoothManifoldStatement
+    ⟩
+
+/--
 The stronger charted-space comparison API can instantiate the explicit
 atlas-compatible bridge inputs.
 -/
