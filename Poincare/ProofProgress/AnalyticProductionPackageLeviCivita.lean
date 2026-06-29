@@ -4328,4 +4328,71 @@ theorem analyticProductionPackage_selected_payload_regularization_and_evolution_
     , curvature_evolution_of_analytic_foundation_package package
     ⟩
 
+/--
+A completed analytic-foundation package keeps the pulled-back short-time Ricci
+flow route, continuation criterion, regularization layer, and terminal
+curvature-evolution estimates tied to one selected Ricci-flow datum.  This is
+the finite-extinction-facing analytic endpoint: consumers get the short-time
+solution and the curvature-control fields from the same completed package.
+-/
+theorem analyticProductionPackage_selected_payload_shortTime_regularization_and_evolution_fields
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    ∃ flow : RicciFlowData I n M,
+      flow = ricci_flow_data_of_analytic_foundation_package package ∧
+        AnalyticFoundationSubobligationsPayload flow ∧
+        SatisfiesRicciFlowEquation
+          (metric_of_ricci_flow_data flow)
+          (curvature_data_of_ricci_flow_data flow) ∧
+        HasDeTurckPullbackToRicciFlow flow ∧
+        HasShortTimeRicciFlowSolution flow ∧
+        HasRicciFlowMaximalTimeInterval flow ∧
+        HasRicciFlowContinuationCriterion flow ∧
+        HasCurvatureBlowUpContinuationCriterion flow ∧
+        HasMaximalSolutionExtension flow ∧
+        HasParabolicSchauderEstimates flow ∧
+        HasRicciFlowParabolicRegularity flow ∧
+        HasShiDerivativeEstimates flow ∧
+        HasCurvatureDerivativeBootstrap flow ∧
+        HasHamiltonMaximumPrinciple flow ∧
+        HasRicciFlowUniquenessTheory flow ∧
+        HasMetricEvolutionEquation flow ∧
+        HasRicciTensorEvolutionEquation flow ∧
+        HasScalarCurvatureEvolutionEquation flow ∧
+        HasCurvatureNormEvolutionInequality flow ∧
+        HasCurvatureEvolutionEquations flow := by
+  let flow := ricci_flow_data_of_analytic_foundation_package package
+  rcases analytic_foundation_payload_of_analytic_foundation_package
+      package with
+    ⟨ _statement, _derivationStatement, subobligations, equationEvidence⟩
+  exact
+    ⟨ flow
+    , rfl
+    , subobligations
+    , equationEvidence
+    , deturck_pullback_to_ricci_flow_of_analytic_foundation_package package
+    , short_time_existence_of_analytic_foundation_package package
+    , maximal_time_interval_of_analytic_foundation_package package
+    , continuation_criterion_of_analytic_foundation_package package
+    , curvature_blowup_criterion_of_analytic_foundation_package package
+    , maximal_solution_extension_of_analytic_foundation_package package
+    , parabolic_schauder_estimates_of_analytic_foundation_package package
+    , parabolic_regularity_of_analytic_foundation_package package
+    , shi_derivative_estimates_of_analytic_foundation_package package
+    , curvature_derivative_bootstrap_of_analytic_foundation_package package
+    , hamilton_maximum_principle_of_analytic_foundation_package package
+    , uniqueness_theory_of_analytic_foundation_package package
+    , metric_evolution_equation_of_analytic_foundation_package package
+    , ricci_tensor_evolution_equation_of_analytic_foundation_package package
+    , scalar_curvature_evolution_equation_of_analytic_foundation_package
+        package
+    , curvature_norm_evolution_inequality_of_analytic_foundation_package
+        package
+    , curvature_evolution_of_analytic_foundation_package package
+    ⟩
+
 end Poincare
