@@ -35,6 +35,39 @@ theorem compl_singleton_contractibleSpace_of_topology_package
       package M extinction) x
 
 /--
+The same package-level singleton-complement chart transports Euclidean simple
+connectedness back to the punctured target.
+-/
+theorem compl_singleton_simplyConnectedSpace_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M) :
+    SimplyConnectedSpace ({x}ᶜ : Set M) :=
+  (homeomorph_compl_singleton_euclidean_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_topology_package
+      package M extinction) x).toHomotopyEquiv.simplyConnectedSpace
+
+/--
+Consequently, every based fundamental group of a singleton complement selected
+by the topology package is trivial.
+-/
+theorem compl_singleton_fundamentalGroup_subsingleton_of_topology_package
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) := by
+  letI : SimplyConnectedSpace ({x}ᶜ : Set M) :=
+    compl_singleton_simplyConnectedSpace_of_topology_package
+      package M extinction x
+  change Subsingleton (Path.Homotopic.Quotient basepoint basepoint)
+  infer_instance
+
+/--
 The package-level homeomorphism projection transports any two-puncture
 complement to a punctured Euclidean chart, hence makes it simply connected.
 -/
@@ -677,6 +710,48 @@ theorem extinctionTopology_fixedTarget_recognition_and_transport_fields_of_compl
     , hSingletonContractible x
     , (hTwoPoint hyx basepoint).1
     , (hTwoPoint hyx basepoint).2
+    ⟩
+
+/--
+For a fixed finite-extinction target and chosen singleton-complement basepoint,
+a complete topology consumer payload exposes the package-selected recognition
+together with the singleton Euclidean chart, contractibility, simple
+connectedness, and based fundamental-group collapse.
+-/
+theorem extinctionTopology_fixedTarget_singleton_fundamentalGroup_payload_of_completeConsumerPayload
+    (payload : Nonempty (ExtinctionTopologyCompleteConsumerPayload.{u}))
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x : M) (basepoint : ({x}ᶜ : Set M)) :
+    ∃ package : ExtinctionTopologyExtractionPackage.{u},
+      ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+        homeomorphism =
+            homeomorphism_of_topology_package package M extinction ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+        ContractibleSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+        Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) := by
+  rcases payload with ⟨payload⟩
+  rcases payload.derivationPunctureFamily M extinction with
+    ⟨homeomorphism, hHomeomorphism_eq, _classification,
+      _simplyConnectedRecognition, _trivialQuotient, _lift,
+      _assembly, _derivation, _liftedDerivation, hOnePoint,
+      hSingletonContractible, _twoPoint⟩
+  exact
+    ⟨ payload.topologyPackage
+    , homeomorphism
+    , hHomeomorphism_eq
+    , hOnePoint
+    , ⟨homeomorph_compl_singleton_euclidean_of_homeomorph_to_onePoint_threeSpace
+        hOnePoint x⟩
+    , hSingletonContractible x
+    , compl_singleton_simplyConnectedSpace_of_topology_package
+        payload.topologyPackage M extinction x
+    , compl_singleton_fundamentalGroup_subsingleton_of_topology_package
+        payload.topologyPackage M extinction x basepoint
     ⟩
 
 /--
