@@ -1475,4 +1475,85 @@ theorem smoothabilityPackage_requirement_completeMoiseConsumer_and_fixedTarget_b
     , bridgeTail
     ⟩
 
+/--
+`ThreeSphere` recognition plus the residual smoothability package constructs
+the complete Moise consumer payload and keeps the fixed-target Moise package
+prefix synchronized with the bridge tail.  Downstream certificate assembly can
+therefore consume the triangulation prefix, transported smooth/surgery
+structures, and smoothability bridge compatibility data from one endpoint.
+-/
+theorem smoothabilityPackage_requirement_completeMoiseConsumer_fixedTarget_packageMoisePrefix_and_bridge_tail_of_smoothabilityPackage_and_threeSphereRecognition
+    (smoothability : SmoothabilityPackage.{u})
+    (recognizeSphere :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere))
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M] :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage ∧
+      Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u}) ∧
+      MoiseSmoothThreeManifoldStatement.{u} ∧
+      MoiseSmoothabilityStatement.{u} ∧
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+      Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+      AdmitsSmoothThreeManifoldStructure M ∧
+      AdmitsSurgeryModelSmoothStructure M ∧
+      (∃ localCharts : HasMoiseLocalTriangulationCharts M,
+        ∃ _locallyFinite :
+          HasMoiseLocallyFiniteCoverRefinement M localCharts,
+        ∃ simplicial :
+          HasMoiseSimplicialComplex M localCharts,
+        ∃ _compatible :
+          HasMoiseCompatibleChartTriangulations M localCharts simplicial,
+          HasMoiseTriangulation M) ∧
+      (∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+        ∃ smoothDerivationStatement :
+          SmoothStructureDerivationStatement M smoothStructure,
+        ∃ manifoldEvidence : IsManifold ThreeManifoldModelWithCorners 1 M,
+        ∃ bridgeDerivation :
+          HasSmoothabilityBridgeDerivation
+            M smoothStructure smoothDerivationStatement manifoldEvidence,
+        ∃ modelCompatibility :
+          HasSmoothManifoldModelCompatibility
+            M smoothStructure smoothDerivationStatement manifoldEvidence
+            bridgeDerivation,
+          HasSmoothChartCompatibility
+            M smoothStructure smoothDerivationStatement manifoldEvidence
+            bridgeDerivation modelCompatibility) := by
+  let completePayload :=
+    moiseSmoothability_completeConsumerPayload_of_smoothabilityPackage_and_threeSphereRecognition
+      smoothability recognizeSphere
+  rcases completePayload with ⟨payload⟩
+  rcases
+    moiseSmoothability_fixedTarget_packageMoisePrefix_and_concrete_structures_of_completeConsumerPayload
+      ⟨payload⟩ M with
+    ⟨ smoothabilityRequirement
+    , hSphere
+    , hOnePoint
+    , hSmooth
+    , hSurgery
+    , packagePrefix
+    , _concretePrereqs
+    ⟩
+  rcases
+    moiseSmoothability_fixedTarget_bridge_tail_of_completeConsumerPayload
+      ⟨payload⟩ M with
+    ⟨_smoothabilityRequirementBridge, _hSphereBridge, _hOnePointBridge,
+      bridgeTail⟩
+  exact
+    ⟨ smoothabilityRequirement
+    , ⟨payload⟩
+    , payload.smoothMoise
+    , payload.surgeryMoise
+    , hSphere
+    , hOnePoint
+    , hSmooth
+    , hSurgery
+    , packagePrefix
+    , bridgeTail
+    ⟩
+
 end Poincare
