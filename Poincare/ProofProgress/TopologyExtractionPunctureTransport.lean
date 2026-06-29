@@ -1899,4 +1899,103 @@ theorem recognition_and_complete_complement_payload_of_homeomorph_to_threeSphere
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h)
     x hyx singleBasepoint twoBasepoint
 
+/--
+Project-target sphere recognition also supplies the complete recognition and
+complement-collapse payload without externally chosen complement basepoints.
+The singleton and two-puncture nonemptiness fields select the basepoints, and
+the existing complete payload is returned at those selected points.
+-/
+theorem recognition_and_complete_complement_payload_with_basepoints_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere))
+    (x : M) {y : M} (hyx : y ≠ x) :
+    ∃ singleBasepoint : ({x}ᶜ : Set M),
+      ∃ twoBasepoint : (({x} ∪ {y})ᶜ : Set M),
+        Nonempty (M ≃ₜ ThreeSphere) ∧
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          (ContractibleSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+            SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M)) ∧
+          (Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+            (∃ puncture : EuclideanSpace ℝ (Fin 3),
+              Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+                ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+            ConnectedSpace ({x}ᶜ : Set M) ∧
+            Nonempty ({x}ᶜ : Set M) ∧
+            Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint) ∧
+            Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint) ∧
+            ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+            Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint)) ∧
+          ((∀ a b : ({x}ᶜ : Set M),
+            ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+            (∀ a b : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint,
+              a = b) ∧
+            (∀ a b : FundamentalGroup ({x}ᶜ : Set M) singleBasepoint,
+              a = b) ∧
+            (∀ a b : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint,
+              a = b) ∧
+            (∀ a b : (({x} ∪ {y})ᶜ : Set M),
+              ZerothHomotopy.mk a = ZerothHomotopy.mk b) ∧
+            (∀ a b :
+              HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+              a = b) ∧
+            (∀ a b : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+              a = b) ∧
+            (∀ a b :
+              HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+              a = b)) ∧
+          ((∃ baseClass : ZerothHomotopy ({x}ᶜ : Set M),
+            ∀ homotopyClass : ZerothHomotopy ({x}ᶜ : Set M),
+              homotopyClass = baseClass) ∧
+            (∃ baseClass : HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint,
+              ∀ homotopyClass :
+                HomotopyGroup.Pi 0 ({x}ᶜ : Set M) singleBasepoint,
+                homotopyClass = baseClass) ∧
+            (∃ baseClass : FundamentalGroup ({x}ᶜ : Set M) singleBasepoint,
+              ∀ fundamentalClass :
+                FundamentalGroup ({x}ᶜ : Set M) singleBasepoint,
+                fundamentalClass = baseClass) ∧
+            (∃ baseClass : HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint,
+              ∀ homotopyClass :
+                HomotopyGroup.Pi 1 ({x}ᶜ : Set M) singleBasepoint,
+                homotopyClass = baseClass) ∧
+            (∃ baseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+              ∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+                homotopyClass = baseClass) ∧
+            (∃ baseClass :
+              HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+              ∀ homotopyClass :
+                HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+                homotopyClass = baseClass) ∧
+            (∃ baseClass :
+              FundamentalGroup (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+              ∀ fundamentalClass :
+                FundamentalGroup (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+                fundamentalClass = baseClass) ∧
+            (∃ baseClass :
+              HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+              ∀ homotopyClass :
+                HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) twoBasepoint,
+                homotopyClass = baseClass)) ∧
+          ((∀ a b : ({x}ᶜ : Set M), Nonempty (Path a b)) ∧
+            (∀ basepoint : ({x}ᶜ : Set M),
+              pathComponent basepoint = Set.univ) ∧
+            (∀ a b : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path a b)) ∧
+            (∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+              pathComponent basepoint = Set.univ)) := by
+  let singleBasepoint : ({x}ᶜ : Set M) :=
+    Classical.choice (compl_singleton_nonempty_of_homeomorph_to_threeSphere h x)
+  let twoBasepoint : (({x} ∪ {y})ᶜ : Set M) :=
+    Classical.choice (twoPointComplement_nonempty_of_homeomorph_to_threeSphere h hyx)
+  exact
+    ⟨ singleBasepoint
+    , twoBasepoint
+    , recognition_and_complete_complement_payload_of_homeomorph_to_threeSphere
+        h x hyx singleBasepoint twoBasepoint
+    ⟩
+
 end Poincare
