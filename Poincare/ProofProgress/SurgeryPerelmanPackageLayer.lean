@@ -488,6 +488,69 @@ theorem finiteExtinctionSurgeryPerelmanAndExtinctionPayload_perelman_control_and
   ⟩
 
 /--
+The combined surgery/Perelman/extinction payload also opens the
+no-local-collapsing and reduced-volume spine of the same selected Perelman
+package.  This keeps the reduced-volume lower-bound chain, kappa
+noncollapsing, no-local-collapsing, canonical-neighborhood scale controls, and
+finite-extinction witness synchronized at one selected flow.
+-/
+theorem finiteExtinctionSurgeryPerelmanAndExtinctionPayload_noLocalCollapsing_reducedVolume_canonical_fields
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackage n M}
+    (payload : FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package) :
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      flow = ricci_flow_data_of_surgery_package package ∧
+        PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+        HasPerelmanReducedVolumeDefinition flow ∧
+        HasPerelmanReducedVolumeDerivativeFormula flow ∧
+        HasPerelmanReducedVolumeRigidity flow ∧
+        HasPerelmanReducedVolumePositiveLowerBound flow ∧
+        HasPerelmanReducedVolumeLimitRigidity flow ∧
+        HasPerelmanReducedVolumeNonincreasing flow ∧
+        HasPerelmanKappaNoncollapsingFromReducedVolume flow ∧
+        HasPerelmanNoLocalCollapsingContradictionSetup flow ∧
+        HasNoLocalCollapsingVolumeLowerBound flow ∧
+        HasPerelmanKappaNoncollapsingQuantification flow ∧
+        HasCanonicalNeighborhoodScaleControl flow ∧
+        HasCanonicalNeighborhoodStability flow ∧
+        HasCanonicalNeighborhoodPersistenceAcrossScales flow ∧
+        HasCanonicalNeighborhoodNeckCapDichotomy flow ∧
+        HasCanonicalNeighborhoodClassification flow ∧
+        HasPerelmanNoLocalCollapsing flow ∧
+        HasPerelmanReducedVolumeMonotonicity flow ∧
+        HasCanonicalNeighborhoodTheorem flow ∧
+        FiniteExtinctionStatement n M ∧
+        FiniteExtinctionByRicciFlowWithSurgery M :=
+  ⟨ payload.projectionPayload.flow
+  , payload.projectionPayload.flow_eq
+  , payload.projectionPayload.perelmanPackage
+  , payload.projectionPayload.perelmanPackage.reducedVolumeDefinition
+  , payload.projectionPayload.perelmanPackage.reducedVolumeDerivativeFormula
+  , payload.projectionPayload.perelmanPackage.reducedVolumeRigidity
+  , payload.projectionPayload.perelmanPackage.reducedVolumePositiveLowerBound
+  , payload.projectionPayload.perelmanPackage.reducedVolumeLimitRigidity
+  , payload.projectionPayload.perelmanPackage.reducedVolumeNonincreasing
+  , payload.projectionPayload.perelmanPackage.kappaNoncollapsingFromReducedVolume
+  , payload.projectionPayload.perelmanPackage.noLocalCollapsingContradictionSetup
+  , payload.projectionPayload.perelmanPackage.noLocalCollapsingVolumeLowerBound
+  , payload.projectionPayload.perelmanPackage.kappaNoncollapsing
+  , payload.projectionPayload.perelmanPackage.canonicalNeighborhoodScaleControl
+  , payload.projectionPayload.perelmanPackage.canonicalNeighborhoodStability
+  , payload.projectionPayload.perelmanPackage.canonicalNeighborhoodPersistenceAcrossScales
+  , payload.projectionPayload.perelmanPackage.canonicalNeighborhoodNeckCapDichotomy
+  , payload.projectionPayload.perelmanPackage.canonicalNeighborhoodClassification
+  , payload.projectionPayload.perelmanPackage.noLocalCollapsing
+  , payload.projectionPayload.perelmanPackage.reducedVolume
+  , payload.projectionPayload.perelmanPackage.canonicalNeighborhood
+  , payload.finiteExtinctionStatement
+  , payload.finiteExtinctionWitness
+  ⟩
+
+/--
 The combined surgery/Perelman/extinction payload keeps the construction spine
 and the Perelman control spine synchronized at the same selected flow.  This
 single endpoint exposes the surgery scale, cutoff, parameter-selection, and
