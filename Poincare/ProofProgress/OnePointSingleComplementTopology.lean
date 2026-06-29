@@ -492,4 +492,84 @@ theorem onePoint_threeSpace_compl_singleton_euclidean_lowHomotopy_unique_package
         p basepoint
     ⟩
 
+/--
+The singleton complement equality-eliminator package can also be produced
+without an externally chosen basepoint.  The selected endpoint carries the
+Euclidean chart, ordinary topology fields, explicit low-homotopy equality
+eliminators, and the path-collapse data at the chosen basepoint.
+-/
+theorem onePoint_threeSpace_compl_singleton_euclidean_lowHomotopy_eq_package_with_basepoint
+    (p : OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    ∃ basepoint : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+      Nonempty
+          (({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+            EuclideanSpace ℝ (Fin 3)) ∧
+        ContractibleSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        Nonempty
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        PathConnectedSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        ConnectedSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        SimplyConnectedSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        LocPathConnectedSpace
+          ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        (∀ x y : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          ZerothHomotopy.mk x = ZerothHomotopy.mk y) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 0
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          a = b) ∧
+        (∀ a b :
+          FundamentalGroup
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          a = b) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 1
+            ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            basepoint,
+          a = b) ∧
+        (∀ x y : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          Nonempty (Path x y)) ∧
+        (∀ x : ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          pathComponent x = Set.univ) := by
+  let basepoint :
+      ({p}ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    Classical.choice
+      (onePoint_threeSpace_compl_singleton_nonempty_of_contractible p)
+  rcases onePoint_threeSpace_compl_singleton_euclidean_topology_package p with
+    ⟨ chart
+    , contractible
+    , nonempty
+    , pathConnected
+    , connected
+    , simplyConnected
+    , locPathConnected
+    , pathNonempty
+    , pathComponentEqUniv
+    ⟩
+  rcases onePoint_threeSpace_compl_singleton_lowHomotopy_eq_package
+      p basepoint with
+    ⟨zerothEq, piZeroEq, fundamentalGroupEq, piOneEq⟩
+  exact
+    ⟨ basepoint
+    , chart
+    , contractible
+    , nonempty
+    , pathConnected
+    , connected
+    , simplyConnected
+    , locPathConnected
+    , zerothEq
+    , piZeroEq
+    , fundamentalGroupEq
+    , piOneEq
+    , pathNonempty
+    , pathComponentEqUniv
+    ⟩
+
 end Poincare
