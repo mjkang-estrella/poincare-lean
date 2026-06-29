@@ -619,6 +619,52 @@ theorem compl_singleton_euclidean_complete_collapse_package_of_homeomorph_to_one
     ⟩
 
 /--
+Recognition as the one-point compactification gives direct low-homotopy
+subsingleton data for every singleton complement at every supplied basepoint.
+This standalone package exposes the transported `π₀`, fundamental-group, and
+`π₁` collapse without forcing consumers to unpack the longer Euclidean
+collapse endpoint.
+-/
+theorem compl_singleton_lowHomotopy_subsingleton_package_of_homeomorph_to_onePoint_threeSpace
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+      Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) ∧
+      Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) ∧
+      Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) := by
+  rcases
+      compl_singleton_euclidean_complete_collapse_package_of_homeomorph_to_onePoint_threeSpace
+        h x basepoint with
+    ⟨ _chart
+    , _contractible
+    , _nonempty
+    , _pathConnected
+    , _connected
+    , _simplyConnected
+    , _locPathConnected
+    , zerothUnique
+    , piZeroUnique
+    , fundamentalGroupUnique
+    , piOneUnique
+    , _zerothEq
+    , _piZeroEq
+    , _fundamentalGroupEq
+    , _piOneEq
+    , _pathNonempty
+    , _pathComponentEqUniv
+    ⟩
+  letI : Unique (ZerothHomotopy ({x}ᶜ : Set M)) :=
+    Classical.choice zerothUnique
+  letI : Unique (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) :=
+    Classical.choice piZeroUnique
+  letI : Unique (FundamentalGroup ({x}ᶜ : Set M) basepoint) :=
+    Classical.choice fundamentalGroupUnique
+  letI : Unique (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) :=
+    Classical.choice piOneUnique
+  exact ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩
+
+/--
 The supplied-basepoint singleton-complement collapse can be consumed directly
 from recognition as `ThreeSphere`.  This retains the original sphere
 recognition, records the induced one-point compactification recognition, and
@@ -657,6 +703,23 @@ theorem compl_singleton_recognition_and_euclidean_complete_collapse_package_of_h
     , compl_singleton_euclidean_complete_collapse_package_of_homeomorph_to_onePoint_threeSpace
         hOnePoint x basepoint
     ⟩
+
+/--
+Recognition as `ThreeSphere` gives direct low-homotopy subsingleton data for
+every singleton complement at every supplied basepoint, after transporting
+through the one-point compactification model.
+-/
+theorem compl_singleton_lowHomotopy_subsingleton_package_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M)
+    (basepoint : ({x}ᶜ : Set M)) :
+    Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+      Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M) basepoint) ∧
+      Subsingleton (FundamentalGroup ({x}ᶜ : Set M) basepoint) ∧
+      Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M) basepoint) :=
+  compl_singleton_lowHomotopy_subsingleton_package_of_homeomorph_to_onePoint_threeSpace
+    (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h)
+    x basepoint
 
 /--
 The transported singleton-complement collapse can also be consumed without an
