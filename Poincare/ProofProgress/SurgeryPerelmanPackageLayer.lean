@@ -19514,6 +19514,38 @@ theorem no_finiteExtinctionPackage_requirement_at_of_current_interface
       finiteExtinctionRequirement M
 
 /--
+Any asserted complete surgery/Perelman consumer payload contradicts the
+current local interface at a target in the dependency-package class, because
+that consumer recovers the finite-extinction package-layer requirement and the
+current interface still rules out finite-extinction surgery packages.
+-/
+theorem surgeryPerelman_completeConsumerPayload_false_at_of_current_interface
+    (payload :
+      Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    False :=
+  finiteExtinctionPackage_requirement_false_at_of_current_interface
+    (finiteExtinctionPackage_requirement_of_surgeryPerelman_completeConsumerPayload
+      payload) M
+
+/--
+Equivalently, under the current local interface, the complete
+surgery/Perelman consumer payload is uninhabited at any target in the
+dependency-package class.
+-/
+theorem no_surgeryPerelman_completeConsumerPayload_at_of_current_interface
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ¬ Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u} := by
+  intro payload
+  exact
+    surgeryPerelman_completeConsumerPayload_false_at_of_current_interface
+      payload M
+
+/--
 At any target in the dependency-package class, the current local interface also
 refutes a completed aggregate dependency package: its stored surgery component
 would provide exactly the finite-extinction package-layer target ruled out
