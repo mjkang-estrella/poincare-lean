@@ -488,6 +488,68 @@ theorem finiteExtinctionSurgeryPerelmanAndExtinctionPayload_perelman_control_and
   ⟩
 
 /--
+The combined surgery/Perelman/extinction payload keeps the construction spine
+and the Perelman control spine synchronized at the same selected flow.  This
+single endpoint exposes the surgery scale, cutoff, parameter-selection, and
+aggregate-with-surgery fields together with Perelman's entropy/reduced-volume,
+canonical-neighborhood, singularity-classification, blowup, control, and
+finite-extinction witnesses.
+-/
+theorem finiteExtinctionSurgeryPerelmanAndExtinctionPayload_construction_perelman_control_and_finiteExtinction_fields
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {package : FiniteExtinctionSurgeryPackage n M}
+    (payload : FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package) :
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      flow = ricci_flow_data_of_surgery_package package ∧
+        RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+        Nonempty (SurgeryScaleFunctionPayload flow) ∧
+        HasSurgeryScaleFunction flow ∧
+        HasSurgeryScaleContinuity flow ∧
+        HasSurgeryScaleSeparation flow ∧
+        HasSurgeryCutoffParameterControl flow ∧
+        HasSurgeryCutoffSmoothBumpFunction flow ∧
+        HasSurgeryParameterSelection flow ∧
+        HasRicciFlowWithSurgery n M ∧
+        PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+        HasPerelmanEntropyMonotonicity flow ∧
+        HasPerelmanReducedVolumeMonotonicity flow ∧
+        HasPerelmanReducedVolumePositiveLowerBound flow ∧
+        HasPerelmanKappaNoncollapsingQuantification flow ∧
+        HasCanonicalNeighborhoodTheorem flow ∧
+        HasSingularityModelClassification flow ∧
+        HasSingularityModelBlowupClassification flow ∧
+        HasPerelmanSingularityControl flow ∧
+        FiniteExtinctionStatement n M ∧
+        FiniteExtinctionByRicciFlowWithSurgery M :=
+  ⟨ payload.projectionPayload.flow
+  , payload.projectionPayload.flow_eq
+  , payload.projectionPayload.constructionPackage
+  , payload.projectionPayload.scalePayload
+  , payload.projectionPayload.constructionPackage.scaleFunction
+  , payload.projectionPayload.constructionPackage.scaleContinuity
+  , payload.projectionPayload.constructionPackage.scaleSeparation
+  , payload.projectionPayload.constructionPackage.cutoffParameterControl
+  , payload.projectionPayload.constructionPackage.cutoffSmoothBump
+  , payload.projectionPayload.constructionPackage.parameterSelection
+  , payload.projectionPayload.constructionPackage.withSurgery
+  , payload.projectionPayload.perelmanPackage
+  , payload.projectionPayload.perelmanPackage.entropyMonotonicity
+  , payload.projectionPayload.perelmanPackage.reducedVolume
+  , payload.projectionPayload.perelmanPackage.reducedVolumePositiveLowerBound
+  , payload.projectionPayload.perelmanPackage.kappaNoncollapsing
+  , payload.projectionPayload.perelmanPackage.canonicalNeighborhood
+  , payload.projectionPayload.perelmanPackage.singularityModelClassification
+  , payload.projectionPayload.blowupClassification
+  , payload.projectionPayload.perelmanPackage.control
+  , payload.finiteExtinctionStatement
+  , payload.finiteExtinctionWitness
+  ⟩
+
+/--
 Pointwise named-payload projection from the finite-extinction package-layer
 requirement.  This exposes the actual finite-extinction witness together with a
 stable field-based surgery/Perelman payload for downstream assembly.
