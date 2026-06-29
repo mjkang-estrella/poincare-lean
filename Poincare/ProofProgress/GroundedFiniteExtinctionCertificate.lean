@@ -728,6 +728,53 @@ theorem universalFiniteExtinctionStatement_of_grounded
     finiteExtinctionByRicciFlowWithSurgery_of_grounded (grounded M)
 
 /--
+For a fixed target, the grounded universal statement retains the actual
+grounded target certificate, the theorem-shaped Ricci-flow/surgery/control
+finite-extinction derivation payload, and the witness selected by the legacy
+universal finite-extinction statement.
+-/
+theorem groundedUniversalFiniteExtinction_targetCertificate_statementPayload_and_universalWitness_of_grounded
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    GroundedFiniteExtinctionProductionCertificate M ∧
+      ∃ n : ℕ∞ω,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      ∃ surgery : HasRicciFlowWithSurgery n M,
+      ∃ control :
+        HasPerelmanSingularityControl (n := n) (M := M) flow,
+      ∃ _package : FiniteExtinctionSurgeryPackage n M,
+      ∃ _packageStatement : FiniteExtinctionStatement n M,
+      ∃ _derivation : HasFiniteExtinctionDerivation flow surgery control,
+      ∃ extinctionWitness : FiniteExtinctionByRicciFlowWithSurgery M,
+        universalFiniteExtinctionStatement_of_grounded grounded M =
+          extinctionWitness := by
+  rcases finite_extinction_statement_payload_of_grounded (grounded M) with
+    ⟨ n
+    , flow
+    , surgery
+    , control
+    , package
+    , packageStatement
+    , derivation
+    , extinctionWitness
+    ⟩
+  exact
+    ⟨ grounded M
+    , n
+    , flow
+    , surgery
+    , control
+    , package
+    , packageStatement
+    , derivation
+    , extinctionWitness
+    , by apply Subsingleton.elim
+    ⟩
+
+/--
 Grounded universal finite extinction exposes the legacy universal statement,
 the finite-extinction package layer, the Ricci-flow/Perelman/finite-extinction
 milestones, and the compact package/statement/witness family without requiring
