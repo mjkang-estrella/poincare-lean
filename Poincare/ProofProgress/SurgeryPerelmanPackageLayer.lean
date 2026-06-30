@@ -6407,6 +6407,179 @@ theorem surgeryPerelman_nonemptyDetailedAssemblyPayload_selectedCompleteConsumer
     ⟩
 
 /--
+Compact fixed-target endpoint for downstream final-certificate consumers: from
+the detailed surgery/Perelman payload, retain the rebuilt complete consumer,
+the recovered package-layer and milestone requirements, the evaluated
+surgery/Ricci-flow/Perelman targets, the named construction and Perelman
+package witnesses for the selected flow, the finite-extinction statement, and
+the finite-extinction witness.  This keeps the target equalities and package
+witnesses synchronized without reopening the full Perelman control tuple.
+-/
+theorem surgeryPerelman_nonemptyDetailedAssemblyPayload_selectedCompleteConsumer_fixedTarget_namedTargets_packages_and_extinctionWitness
+    (payload :
+      Nonempty SurgeryPerelmanDetailedAssemblyPayloadFromFiniteExtinction.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ completePayload :
+      SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u},
+    ∃ finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ surgeryRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.surgeryPackage,
+    ∃ ricciFlowMilestone :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowWithSurgery,
+    ∃ perelmanMilestone :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.perelmanSingularityControl,
+    ∃ finiteExtinctionTarget : Nonempty (Σ n : ℕ∞ω,
+      FiniteExtinctionSurgeryPackage n M),
+    ∃ surgeryTarget :
+      ∃ n : ℕ∞ω,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        RicciFlowWithSurgeryConstructionPackage
+          (n := n) (M := M) flow ∧
+        PerelmanSingularityControlPackage (n := n) (M := M) flow,
+    ∃ ricciFlowTarget :
+      ∃ n : ℕ∞ω,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        RicciFlowWithSurgeryConstructionPackage
+          (n := n) (M := M) flow ∧
+        PerelmanSingularityControlPackage (n := n) (M := M) flow,
+    ∃ perelmanTarget :
+      ∃ n : ℕ∞ω,
+      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        RicciFlowWithSurgeryConstructionPackage
+          (n := n) (M := M) flow ∧
+        PerelmanSingularityControlPackage (n := n) (M := M) flow,
+    ∃ n : ℕ∞ω,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+    ∃ constructionPackage :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow,
+    ∃ perelmanPackage :
+      PerelmanSingularityControlPackage (n := n) (M := M) flow,
+    ∃ packageStatement : FiniteExtinctionStatement n M,
+    ∃ finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      finiteExtinctionRequirement =
+        finiteExtinctionPackage_requirement_of_surgeryPerelman_completeConsumerPayload
+          ⟨completePayload⟩ ∧
+        surgeryRequirement =
+          surgeryPackage_requirement_of_finiteExtinctionPackage_requirement
+            finiteExtinctionRequirement ∧
+        ricciFlowMilestone =
+          ricciFlowWithSurgery_milestone_requirement_of_finiteExtinctionPackage_requirement
+            finiteExtinctionRequirement ∧
+        perelmanMilestone =
+          perelmanSingularityControl_milestone_requirement_of_finiteExtinctionPackage_requirement
+            finiteExtinctionRequirement ∧
+        finiteExtinctionTarget = finiteExtinctionRequirement M ∧
+        finiteExtinctionTarget = ⟨⟨n, package⟩⟩ ∧
+        surgeryTarget = surgeryRequirement M ∧
+        ricciFlowTarget = ricciFlowMilestone M ∧
+        perelmanTarget = perelmanMilestone M ∧
+        surgeryTarget = ⟨n, flow, constructionPackage, perelmanPackage⟩ ∧
+        ricciFlowTarget = ⟨n, flow, constructionPackage, perelmanPackage⟩ ∧
+        perelmanTarget = ⟨n, flow, constructionPackage, perelmanPackage⟩ ∧
+        flow = ricci_flow_data_of_surgery_package package ∧
+        packageStatement =
+          finite_extinction_statement_of_surgery_package package ∧
+        FiniteExtinctionStatement n M ∧
+        finiteExtinction =
+          finiteExtinctionByRicciFlowWithSurgery_of_finiteExtinctionRequirement
+            finiteExtinctionRequirement M := by
+  rcases
+    surgeryPerelman_nonemptyDetailedAssemblyPayload_selectedCompleteConsumer_fixedTarget_namedPackageWitnesses_and_evaluatedTargets
+      payload M with
+    ⟨ completePayload
+    , _detailed
+    , finiteExtinctionRequirement
+    , surgeryRequirement
+    , ricciFlowMilestone
+    , perelmanMilestone
+    , finiteExtinctionTarget
+    , surgeryTarget
+    , ricciFlowTarget
+    , perelmanTarget
+    , n
+    , package
+    , _combinedPayload
+    , _projectionPayload
+    , flow
+    , packageStatement
+    , finiteExtinction
+    , constructionPackage
+    , perelmanPackage
+    , _hDetailed
+    , _hProjectionFamily
+    , hFiniteExtinctionRequirement
+    , hSurgeryRequirement
+    , hRicciFlowMilestone
+    , hPerelmanMilestone
+    , hFiniteExtinctionTarget
+    , hPackageSigma
+    , hSurgeryTarget
+    , hRicciFlowTarget
+    , hPerelmanTarget
+    , hSurgeryTargetPackage
+    , hRicciFlowTargetPackage
+    , hPerelmanTargetPackage
+    , _hCombinedPayload
+    , _hProjectionPayload
+    , _hFlowProjection
+    , hFlowPackage
+    , _hPackageStatement
+    , hPackageStatementPackage
+    , _entropyMonotonicity
+    , _reducedVolume
+    , _noLocalCollapsing
+    , _canonicalNeighborhood
+    , _singularityModelClassification
+    , _blowupClassification
+    , _perelmanControl
+    , _hFiniteExtinction
+    , hFiniteExtinctionRequirementAt
+    ⟩
+  exact
+    ⟨ completePayload
+    , finiteExtinctionRequirement
+    , surgeryRequirement
+    , ricciFlowMilestone
+    , perelmanMilestone
+    , finiteExtinctionTarget
+    , surgeryTarget
+    , ricciFlowTarget
+    , perelmanTarget
+    , n
+    , package
+    , flow
+    , constructionPackage
+    , perelmanPackage
+    , packageStatement
+    , finiteExtinction
+    , hFiniteExtinctionRequirement
+    , hSurgeryRequirement
+    , hRicciFlowMilestone
+    , hPerelmanMilestone
+    , hFiniteExtinctionTarget
+    , hPackageSigma
+    , hSurgeryTarget
+    , hRicciFlowTarget
+    , hPerelmanTarget
+    , hSurgeryTargetPackage
+    , hRicciFlowTargetPackage
+    , hPerelmanTargetPackage
+    , hFlowPackage
+    , hPackageStatementPackage
+    , packageStatement
+    , hFiniteExtinctionRequirementAt
+    ⟩
+
+/--
 The complete surgery/Perelman consumer payload is equivalent to the inhabited
 detailed surgery/Perelman assembly payload: the forward direction projects the
 stored detailed payload, while the reverse direction rebuilds the complete
