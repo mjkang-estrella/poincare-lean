@@ -4249,4 +4249,123 @@ theorem topologyPackage_requirement_fixedTarget_decomposition_recognition_and_pu
     , twoPointFundamental
     ⟩
 
+/--
+Homeomorphism-derivation form of the fixed-target topology-package endpoint.
+Besides the decomposition-data synchronization and complement-collapse facts,
+this retains the package-level derivation statement for the named
+`ThreeSphere` homeomorphism witness selected by the topology package.
+-/
+theorem topologyPackage_requirement_fixedTarget_decomposition_homeomorphism_derivation_and_puncture_payload_current_interface
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (x y : M) (hyx : y ≠ x)
+    (singletonBasepoint : ({x}ᶜ : Set M))
+    (twoPointBasepoint : (({x} ∪ {y})ᶜ : Set M)) :
+    ∃ package : ExtinctionTopologyExtractionPackage.{u},
+    ∃ data : ExtinctionTopologyDecompositionData M extinction,
+    ∃ selectedDecomposition : HasExtinctionTopologyDecomposition M extinction,
+    ∃ packageHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ sphereHomeomorphism : M ≃ₜ ThreeSphere,
+    ∃ onePointRecognition : Nonempty (M ≃ₜ
+        OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ onePointHomeomorphism : M ≃ₜ
+        OnePoint (EuclideanSpace ℝ (Fin 3)),
+      package = topologyPackage ∧
+        selectedDecomposition =
+          extinction_topology_decomposition_of_decomposition_data_current_interface
+            M extinction data ∧
+        extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+            decompositionData M extinction =
+          selectedDecomposition ∧
+        selectedDecomposition =
+          extinction_decomposition_of_topology_package package M extinction ∧
+        packageHomeomorphism =
+          homeomorphism_of_topology_package package M extinction ∧
+        packageHomeomorphism = Nonempty.intro sphereHomeomorphism ∧
+        onePointRecognition =
+          homeomorph_to_onePoint_threeSpace_of_topology_package
+            package M extinction ∧
+        onePointRecognition = Nonempty.intro onePointHomeomorphism ∧
+        ExtinctionTopologyHomeomorphismDerivationStatement
+          M extinction packageHomeomorphism ∧
+        ContractibleSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+        Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+        Subsingleton (HomotopyGroup.Pi 0 ({x}ᶜ : Set M)
+          singletonBasepoint) ∧
+        Subsingleton (FundamentalGroup ({x}ᶜ : Set M)
+          singletonBasepoint) ∧
+        Subsingleton (HomotopyGroup.Pi 1 ({x}ᶜ : Set M)
+          singletonBasepoint) ∧
+        SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        Subsingleton
+          (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+            twoPointBasepoint) := by
+  rcases
+    topologyPackage_requirement_fixedTarget_decomposition_recognition_and_puncture_payload_current_interface
+      topologyPackage decompositionData M extinction x y hyx
+      singletonBasepoint twoPointBasepoint with
+    ⟨ package
+    , data
+    , selectedDecomposition
+    , packageHomeomorphism
+    , sphereHomeomorphism
+    , onePointRecognition
+    , onePointHomeomorphism
+    , hPackage
+    , hSelectedData
+    , hStatementSelected
+    , hPackageSelected
+    , hPackageHomeomorphism
+    , hConcreteHomeomorphism
+    , hOnePointRecognition
+    , hConcreteOnePoint
+    , singletonContractible
+    , singletonSimplyConnected
+    , singletonZeroth
+    , singletonPi0
+    , singletonPi1
+    , singletonHomotopyPi1
+    , twoPointSimplyConnected
+    , twoPointFundamental
+    ⟩
+  have homeomorphismDerivation :
+      ExtinctionTopologyHomeomorphismDerivationStatement
+        M extinction packageHomeomorphism := by
+    simpa [hPackageHomeomorphism] using
+      topology_homeomorphism_derivation_statement_of_topology_package
+        package M extinction
+  exact
+    ⟨ package
+    , data
+    , selectedDecomposition
+    , packageHomeomorphism
+    , sphereHomeomorphism
+    , onePointRecognition
+    , onePointHomeomorphism
+    , hPackage
+    , hSelectedData
+    , hStatementSelected
+    , hPackageSelected
+    , hPackageHomeomorphism
+    , hConcreteHomeomorphism
+    , hOnePointRecognition
+    , hConcreteOnePoint
+    , homeomorphismDerivation
+    , singletonContractible
+    , singletonSimplyConnected
+    , singletonZeroth
+    , singletonPi0
+    , singletonPi1
+    , singletonHomotopyPi1
+    , twoPointSimplyConnected
+    , twoPointFundamental
+    ⟩
+
 end Poincare
