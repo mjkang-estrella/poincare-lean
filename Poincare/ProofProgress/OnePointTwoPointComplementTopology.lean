@@ -5301,4 +5301,206 @@ theorem onePoint_threeSpace_twoPointComplement_selected_basepoint_and_all_basepo
     , allSupplied
     ⟩
 
+/--
+The two-puncture route can keep the selected recognition/flat payload objects
+and the uniform all-basepoint named class collapse simultaneously.  This gives
+downstream topology extraction one endpoint that retains the selected
+punctured-Euclidean chart data while still providing the low-homotopy collapse
+for every externally supplied basepoint.
+-/
+theorem onePoint_threeSpace_twoPointComplement_selected_recognition_flat_and_all_basepoint_named_baseclass_collapse_witnesses
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    (∃ selectedBasepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+    ∃ recognitionPayload :
+      OnePointTwoPointComplementRecognitionPayload hqp selectedBasepoint,
+    ∃ flatPayload :
+      OnePointTwoPointComplementFlatRecognitionPayload hqp selectedBasepoint,
+    ∃ zerothBaseClass :
+      ZerothHomotopy
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+    ∃ piZeroBaseClass :
+      HomotopyGroup.Pi 0
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        selectedBasepoint,
+    ∃ fundamentalBaseClass :
+      FundamentalGroup
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        selectedBasepoint,
+    ∃ piOneBaseClass :
+      HomotopyGroup.Pi 1
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        selectedBasepoint,
+      flatPayload =
+        onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition
+          recognitionPayload ∧
+        flatPayload.puncturedEuclideanChart =
+          recognitionPayload.puncturedEuclideanChart ∧
+        flatPayload.simplyConnected = recognitionPayload.simplyConnected ∧
+        flatPayload.connected = recognitionPayload.lowHomotopy.connected ∧
+        flatPayload.nonempty = recognitionPayload.lowHomotopy.nonempty ∧
+        flatPayload.zerothUnique =
+          recognitionPayload.lowHomotopy.zerothUnique ∧
+        flatPayload.piZeroUnique =
+          recognitionPayload.lowHomotopy.piZeroUnique ∧
+        flatPayload.fundamentalGroupUnique =
+          recognitionPayload.lowHomotopy.fundamentalGroupUnique ∧
+        flatPayload.piOneUnique =
+          recognitionPayload.lowHomotopy.piOneUnique ∧
+        flatPayload.pathNonempty =
+          recognitionPayload.lowHomotopy.pathNonempty ∧
+        flatPayload.pathComponentEqUniv =
+          recognitionPayload.lowHomotopy.pathComponentEqUniv ∧
+        (∃ puncture : EuclideanSpace ℝ (Fin 3),
+          Nonempty
+            ((({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+                ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+        SimplyConnectedSpace
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        ConnectedSpace
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        Nonempty
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        Subsingleton
+          (ZerothHomotopy
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 0
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            selectedBasepoint) ∧
+        Subsingleton
+          (FundamentalGroup
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            selectedBasepoint) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            selectedBasepoint) ∧
+        (∀ homotopyClass :
+          ZerothHomotopy
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          homotopyClass = zerothBaseClass) ∧
+        (∀ homotopyClass :
+          HomotopyGroup.Pi 0
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            selectedBasepoint,
+          homotopyClass = piZeroBaseClass) ∧
+        (∀ fundamentalClass :
+          FundamentalGroup
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            selectedBasepoint,
+          fundamentalClass = fundamentalBaseClass) ∧
+        (∀ homotopyClass :
+          HomotopyGroup.Pi 1
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            selectedBasepoint,
+          homotopyClass = piOneBaseClass) ∧
+        (∀ a b :
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          Nonempty (Path a b)) ∧
+        (∀ point :
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          pathComponent point = Set.univ)) ∧
+      (∀ suppliedBasepoint :
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        ∃ suppliedZerothBaseClass :
+          ZerothHomotopy
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        ∃ suppliedPiZeroBaseClass :
+          HomotopyGroup.Pi 0
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            suppliedBasepoint,
+        ∃ suppliedFundamentalBaseClass :
+          FundamentalGroup
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            suppliedBasepoint,
+        ∃ suppliedPiOneBaseClass :
+          HomotopyGroup.Pi 1
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            suppliedBasepoint,
+          (∀ homotopyClass :
+            ZerothHomotopy
+              (({p} ∪ {q})ᶜ :
+                Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+            homotopyClass = suppliedZerothBaseClass) ∧
+            (∀ homotopyClass :
+              HomotopyGroup.Pi 0
+                (({p} ∪ {q})ᶜ :
+                  Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint,
+              homotopyClass = suppliedPiZeroBaseClass) ∧
+            (∀ fundamentalClass :
+              FundamentalGroup
+                (({p} ∪ {q})ᶜ :
+                  Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint,
+              fundamentalClass = suppliedFundamentalBaseClass) ∧
+            (∀ homotopyClass :
+              HomotopyGroup.Pi 1
+                (({p} ∪ {q})ᶜ :
+                  Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+                suppliedBasepoint,
+              homotopyClass = suppliedPiOneBaseClass) ∧
+            (∀ a b :
+              (({p} ∪ {q})ᶜ :
+                Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+              Nonempty (Path a b)) ∧
+            (∀ point :
+              (({p} ∪ {q})ᶜ :
+                Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+              pathComponent point = Set.univ)) := by
+  refine
+    ⟨ onePoint_threeSpace_twoPointComplement_selected_basepoint_recognition_flat_named_baseclass_collapse_witnesses
+        hqp
+    , ?_ ⟩
+  intro suppliedBasepoint
+  rcases
+    onePoint_threeSpace_twoPointComplement_all_basepoint_lowHomotopy_baseclass_collapse_payloads
+      hqp suppliedBasepoint with
+    ⟨ _lowHomotopyPayload
+    , _connected
+    , _nonempty
+    , _zerothSubsingleton
+    , _piZeroSubsingleton
+    , _fundamentalSubsingleton
+    , _piOneSubsingleton
+    , _zerothMkEq
+    , _piZeroEq
+    , _fundamentalEq
+    , _piOneEq
+    , ⟨ suppliedZerothBaseClass, suppliedZerothEq ⟩
+    , ⟨ suppliedPiZeroBaseClass, suppliedPiZeroEq ⟩
+    , ⟨ suppliedFundamentalBaseClass, suppliedFundamentalEq ⟩
+    , ⟨ suppliedPiOneBaseClass, suppliedPiOneEq ⟩
+    , suppliedPathNonempty
+    , suppliedPathComponentEqUniv
+    ⟩
+  exact
+    ⟨ suppliedZerothBaseClass
+    , suppliedPiZeroBaseClass
+    , suppliedFundamentalBaseClass
+    , suppliedPiOneBaseClass
+    , suppliedZerothEq
+    , suppliedPiZeroEq
+    , suppliedFundamentalEq
+    , suppliedPiOneEq
+    , suppliedPathNonempty
+    , suppliedPathComponentEqUniv
+    ⟩
+
 end Poincare
