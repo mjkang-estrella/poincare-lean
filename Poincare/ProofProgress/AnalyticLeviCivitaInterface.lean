@@ -892,4 +892,122 @@ theorem analyticFoundationPackage_namedFlow_sharedConnection_twoTime_nonemptyCon
     , allMetricSlices
     ⟩
 
+/--
+Two-time package endpoint with package sub-obligation synchronization.  This
+keeps the same named flow, shared connection, selected metric slices,
+Riemannian-bundle evidence, connection-field nonemptiness bridge, first
+analytic field, and all-time metric-slice family as the two-time endpoint
+above, while also recording that the selected sub-obligation payload is exactly
+the analytic sub-obligation payload stored by the package.
+-/
+theorem analyticFoundationPackage_namedFlow_sharedConnection_twoTime_subobligations_nonemptyConnection_and_allTime_metricSlice_riemannianBundle_and_first_analytic_field
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) (t₀ t₁ : ℝ) :
+    ∃ flow : RicciFlowData I n M,
+    ∃ subobligations :
+      AnalyticFoundationSubobligationsPayload
+        (ricci_flow_data_of_analytic_foundation_package package),
+    ∃ _connectionAtTime :
+      TimeDependentTangentConnectionField (metric_of_ricci_flow_data flow),
+    ∃ firstMetricSlice :
+      ContMDiffRiemannianMetric I n E
+        (fun x : M => TangentSpace I x),
+    ∃ secondMetricSlice :
+      ContMDiffRiemannianMetric I n E
+        (fun x : M => TangentSpace I x),
+      flow = ricci_flow_data_of_analytic_foundation_package package ∧
+        subobligations =
+          analytic_foundation_subobligations_of_analytic_foundation_package
+            package ∧
+        Nonempty
+          (TimeDependentTangentConnectionField
+            (metric_of_ricci_flow_data flow)) ∧
+        (ProposedHasLeviCivitaConnectionExistence
+            (metric_of_ricci_flow_data flow) ↔
+          Nonempty
+            (TimeDependentTangentConnectionField
+              (metric_of_ricci_flow_data flow))) ∧
+        firstMetricSlice = metric_at_time_of_ricci_flow_data flow t₀ ∧
+        secondMetricSlice = metric_at_time_of_ricci_flow_data flow t₁ ∧
+        Nonempty
+          (ContMDiffRiemannianMetric I n E
+            (fun x : M => TangentSpace I x)) ∧
+        (letI : RiemannianBundle (fun x : M => TangentSpace I x) :=
+            ⟨firstMetricSlice.toRiemannianMetric⟩;
+          IsContMDiffRiemannianBundle I n E
+            (fun x : M => TangentSpace I x)) ∧
+        (letI : RiemannianBundle (fun x : M => TangentSpace I x) :=
+            ⟨secondMetricSlice.toRiemannianMetric⟩;
+          IsContMDiffRiemannianBundle I n E
+            (fun x : M => TangentSpace I x)) ∧
+        TimeDependentTangentConnectionField
+            (metric_of_ricci_flow_data flow) =
+          (ℝ → TangentCovariantDerivative I M) ∧
+        ProposedHasLeviCivitaConnectionExistence
+          (metric_of_ricci_flow_data flow) ∧
+        HasLeviCivitaConnectionExistence
+          (metric_of_ricci_flow_data flow) ∧
+        (∀ t : ℝ,
+          ∃ metricSlice :
+            ContMDiffRiemannianMetric I n E
+              (fun x : M => TangentSpace I x),
+            metricSlice = metric_at_time_of_ricci_flow_data flow t ∧
+              Nonempty
+                (ContMDiffRiemannianMetric I n E
+                  (fun x : M => TangentSpace I x)) ∧
+              (letI : RiemannianBundle (fun x : M => TangentSpace I x) :=
+                  ⟨metricSlice.toRiemannianMetric⟩;
+                IsContMDiffRiemannianBundle I n E
+                  (fun x : M => TangentSpace I x))) := by
+  rcases
+    analyticFoundationPackage_namedFlow_sharedConnection_twoTime_nonemptyConnection_and_allTime_metricSlice_riemannianBundle_and_first_analytic_field
+      package t₀ t₁ with
+    ⟨ flow
+    , subobligations
+    , connectionAtTime
+    , firstMetricSlice
+    , secondMetricSlice
+    , hFlow
+    , hConnectionNonempty
+    , hProposedIff
+    , hFirstMetricSlice
+    , hSecondMetricSlice
+    , hMetricNonempty
+    , hFirstBundle
+    , hSecondBundle
+    , hConnectionField
+    , hProposed
+    , hFirstField
+    , allMetricSlices
+    ⟩
+  subst flow
+  have hSubobligations :
+      subobligations =
+        analytic_foundation_subobligations_of_analytic_foundation_package
+          package := by
+    rfl
+  exact
+    ⟨ ricci_flow_data_of_analytic_foundation_package package
+    , subobligations
+    , connectionAtTime
+    , firstMetricSlice
+    , secondMetricSlice
+    , rfl
+    , hSubobligations
+    , hConnectionNonempty
+    , hProposedIff
+    , hFirstMetricSlice
+    , hSecondMetricSlice
+    , hMetricNonempty
+    , hFirstBundle
+    , hSecondBundle
+    , hConnectionField
+    , hProposed
+    , hFirstField
+    , allMetricSlices
+    ⟩
+
 end Poincare
