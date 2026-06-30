@@ -851,4 +851,66 @@ theorem twoPointComplement_recognition_supplied_basepoint_named_baseclass_collap
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h) hyx
     basepoint
 
+/--
+Uniform all-distinct-pairs version of the sphere-recognized two-puncture
+collapse bridge.  Topology-extraction consumers can quantify over every
+ordered pair of distinct points and still obtain the full all-basepoint
+low-homotopy/baseclass collapse package for the complement.
+-/
+theorem twoPointComplement_recognition_all_distinct_points_all_basepoint_lowHomotopy_baseclass_collapse_package_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∀ x y : M,
+    ∀ _hyx : y ≠ x,
+    ∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+      (∃ puncture : EuclideanSpace ℝ (Fin 3),
+        Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+          ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+        Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+        PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        LocPathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        Subsingleton (ZerothHomotopy (({x} ∪ {y})ᶜ : Set M)) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+        Subsingleton
+          (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+        (∀ z w : (({x} ∪ {y})ᶜ : Set M),
+          ZerothHomotopy.mk z = ZerothHomotopy.mk w) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          a = b) ∧
+        (∀ a b : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+          a = b) ∧
+        (∀ a b :
+          HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          a = b) ∧
+        (∃ baseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+          ∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+          homotopyClass = baseClass) ∧
+        (∃ baseClass :
+          HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          ∀ homotopyClass :
+            HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          homotopyClass = baseClass) ∧
+        (∃ baseClass :
+          FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+          ∀ fundamentalClass :
+            FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+          fundamentalClass = baseClass) ∧
+        (∃ baseClass :
+          HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          ∀ homotopyClass :
+            HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          homotopyClass = baseClass) ∧
+        (∀ z w : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path z w)) ∧
+        (∀ z : (({x} ∪ {y})ᶜ : Set M), pathComponent z = Set.univ) := by
+  intro x y hyx
+  exact
+    twoPointComplement_recognition_all_basepoint_lowHomotopy_baseclass_collapse_package_of_homeomorph_to_threeSphere
+      h hyx
+
 end Poincare
