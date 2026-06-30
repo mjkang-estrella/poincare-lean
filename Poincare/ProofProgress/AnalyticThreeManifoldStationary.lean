@@ -18745,4 +18745,149 @@ theorem stationaryZeroAnalyticFoundation_nonemptyDetailedAssemblyPayload_selecte
       ⟩
     ⟩
 
+/--
+An inhabited detailed stationary-zero assembly payload also keeps the selected
+consumer's family-field equalities synchronized with both fixed-target analytic
+routes: the raw stationary-zero production witnesses and the normalized full
+package/evolution endpoint.  This is the finite-extinction-facing projection
+that lets downstream code consume the concrete metric/production data and the
+package-level analytic endpoint from the same selected analytic payload.
+-/
+theorem stationaryZeroAnalyticFoundation_nonemptyDetailedAssemblyPayload_selected_allFamilyFields_rawProduction_and_completeAnalyticEndpoint
+    (payload :
+      Nonempty StationaryZeroAnalyticFoundationDetailedAssemblyPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ selected : StationaryZeroAnalyticFoundationCompleteConsumerPayload.{u},
+    ∃ detailed :
+      StationaryZeroAnalyticFoundationDetailedAssemblyPayload.{u},
+    ∃ analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage,
+    ∃ analyticMilestone :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation,
+      selected.detailedPayload = detailed ∧
+        selected.analyticFoundationPackageRequirement =
+          analyticRequirement ∧
+        selected.ricciFlowAnalyticFoundationMilestone =
+          analyticMilestone ∧
+        analyticRequirement =
+          detailed.analyticFoundationPackageRequirement ∧
+        analyticMilestone =
+          detailed.ricciFlowAnalyticFoundationMilestone ∧
+        selected.packageStatementCurvatureFamily =
+          detailed.packageStatementCurvatureFamily ∧
+        selected.packageSubobligationsFamily =
+          stationaryZeroAnalyticFoundationDetailedAssemblyPayload_packageSubobligationsFamily
+            detailed ∧
+        selected.evolutionFieldsFamily =
+          stationaryZeroAnalyticFoundationDetailedAssemblyPayload_evolutionFieldsFamily
+            detailed ∧
+        selected.fullPackageEvolutionFamily =
+          stationaryZeroAnalyticFoundationDetailedAssemblyPayload_fullPackageEvolutionFamily
+            detailed ∧
+        selected.rawFullStatementPayloadFamily =
+          detailed.fullStatementPayloadFamily ∧
+        (∃ n : ℕ∞ω,
+        ∃ smooth2 : IsManifold ThreeManifoldModelWithCorners 2 M,
+        letI : IsManifold ThreeManifoldModelWithCorners 2 M := smooth2
+        ∃ metric :
+          ContMDiffRiemannianMetric ThreeManifoldModelWithCorners n
+            ThreeManifoldModel
+            (fun x : M => TangentSpace ThreeManifoldModelWithCorners x),
+        ∃ identifiesDerivative :
+          IsMetricTimeDerivativeOf
+            (stationary_time_dependent_riemannian_metric metric)
+            (zero_metric_time_derivative_field
+              (stationary_time_dependent_riemannian_metric metric)),
+        ∃ identifiesRicci :
+          IsRicciTensorOf
+            (stationary_time_dependent_riemannian_metric metric)
+            (zero_ricci_tensor_field
+              (stationary_time_dependent_riemannian_metric metric)),
+        ∃ _productionData :
+          StationaryZeroAnalyticFoundationProductionDataCurrentApi
+            metric identifiesDerivative identifiesRicci,
+        let flow :=
+          stationary_zero_ricci_flow_data_current_api
+            metric identifiesDerivative identifiesRicci
+        AnalyticFoundationSubobligationsPayload flow ∧
+          ∃ package :
+              RicciFlowAnalyticFoundationPackage
+                ThreeManifoldModelWithCorners n M,
+            ricci_flow_data_of_analytic_foundation_package package =
+              flow ∧
+            RicciFlowAnalyticFoundationStatement
+              ThreeManifoldModelWithCorners n M ∧
+            AnalyticFoundationWithEquationBoundaryStatement flow ∧
+            HasRicciContractionTheory
+              (curvature_data_of_ricci_flow_data flow) ∧
+            HasScalarCurvatureTheory
+              (curvature_data_of_ricci_flow_data flow) ∧
+            HasMetricEvolutionEquation flow ∧
+            HasRicciTensorEvolutionEquation flow ∧
+            HasScalarCurvatureEvolutionEquation flow ∧
+            HasCurvatureNormEvolutionInequality flow ∧
+            HasCurvatureEvolutionEquations flow) ∧
+        ∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ package :
+          RicciFlowAnalyticFoundationPackage
+            ThreeManifoldModelWithCorners n M,
+          AnalyticFoundationSubobligationsPayload flow ∧
+            ricci_flow_data_of_analytic_foundation_package package =
+              flow ∧
+            RicciFlowAnalyticFoundationStatement
+              ThreeManifoldModelWithCorners n M ∧
+            AnalyticFoundationWithEquationBoundaryStatement flow ∧
+            HasRicciContractionTheory
+              (curvature_data_of_ricci_flow_data flow) ∧
+            HasScalarCurvatureTheory
+              (curvature_data_of_ricci_flow_data flow) ∧
+            HasMetricEvolutionEquation flow ∧
+            HasRicciTensorEvolutionEquation flow ∧
+            HasScalarCurvatureEvolutionEquation flow ∧
+            HasCurvatureNormEvolutionInequality flow ∧
+            HasCurvatureEvolutionEquations flow := by
+  rcases payload with ⟨detailed⟩
+  let selected : StationaryZeroAnalyticFoundationCompleteConsumerPayload.{u} :=
+    { detailedPayload := detailed
+      analyticFoundationPackageRequirement :=
+        detailed.analyticFoundationPackageRequirement
+      ricciFlowAnalyticFoundationMilestone :=
+        detailed.ricciFlowAnalyticFoundationMilestone
+      packageStatementCurvatureFamily :=
+        detailed.packageStatementCurvatureFamily
+      packageSubobligationsFamily :=
+        stationaryZeroAnalyticFoundationDetailedAssemblyPayload_packageSubobligationsFamily
+          detailed
+      evolutionFieldsFamily :=
+        stationaryZeroAnalyticFoundationDetailedAssemblyPayload_evolutionFieldsFamily
+          detailed
+      fullPackageEvolutionFamily :=
+        stationaryZeroAnalyticFoundationDetailedAssemblyPayload_fullPackageEvolutionFamily
+          detailed
+      rawFullStatementPayloadFamily := detailed.fullStatementPayloadFamily }
+  exact
+    ⟨ selected
+    , detailed
+    , selected.analyticFoundationPackageRequirement
+    , selected.ricciFlowAnalyticFoundationMilestone
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , detailed.fullStatementPayloadFamily M
+    , selected.fullPackageEvolutionFamily M
+    ⟩
+
 end Poincare
