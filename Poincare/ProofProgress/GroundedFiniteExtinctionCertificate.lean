@@ -6087,6 +6087,12 @@ theorem groundedUniversalFiniteExtinction_selected_detailedPayload_familyFields_
         selected.packageStatementWitnessFamily =
           detailed.packageStatementWitnessFamily ∧
         selected.statementPayloadFamily = detailed.statementPayloadFamily ∧
+        selected.flowPackageFamily =
+          groundedUniversalFiniteExtinctionDetailedAssemblyPayload_flowPackageFamily
+            detailed ∧
+        selected.packageStatementDerivationFamily =
+          groundedUniversalFiniteExtinctionDetailedAssemblyPayload_packageStatementDerivationFamily
+            detailed ∧
         selected.finiteExtinctionPackageRequirement =
           finiteExtinctionPackage_requirement_of_grounded grounded ∧
         remaining.smoothability = smoothability ∧
@@ -6183,6 +6189,8 @@ theorem groundedUniversalFiniteExtinction_selected_detailedPayload_familyFields_
     , hRequirementDetailed
     , hPackageStatementWitnessFamily
     , hStatementPayloadFamily
+    , hFlowPackageFamily
+    , hPackageStatementDerivationFamily
     , hRequirement
     , hSmoothability
     , hSurgery
@@ -6279,6 +6287,12 @@ theorem groundedUniversalFiniteExtinction_selected_detailedPayload_familyFields_
         selected.packageStatementWitnessFamily =
           detailed.packageStatementWitnessFamily ∧
         selected.statementPayloadFamily = detailed.statementPayloadFamily ∧
+        selected.flowPackageFamily =
+          groundedUniversalFiniteExtinctionDetailedAssemblyPayload_flowPackageFamily
+            detailed ∧
+        selected.packageStatementDerivationFamily =
+          groundedUniversalFiniteExtinctionDetailedAssemblyPayload_packageStatementDerivationFamily
+            detailed ∧
         selected.finiteExtinctionPackageRequirement =
           finiteExtinctionPackage_requirement_of_grounded grounded ∧
         remaining.smoothability = smoothability ∧
@@ -6330,8 +6344,8 @@ theorem groundedUniversalFiniteExtinction_selected_detailedPayload_familyFields_
     , _hFiniteExtinctionDetailed
     , hPackageStatementWitnessFamily
     , hStatementPayloadFamily
-    , _hFlowPackageFamily
-    , _hPackageStatementDerivationFamily
+    , hFlowPackageFamily
+    , hPackageStatementDerivationFamily
     , hSmoothability
     , hSurgery
     , hTopology
@@ -6375,6 +6389,8 @@ theorem groundedUniversalFiniteExtinction_selected_detailedPayload_familyFields_
     , hRequirementDetailed
     , hPackageStatementWitnessFamily
     , hStatementPayloadFamily
+    , hFlowPackageFamily
+    , hPackageStatementDerivationFamily
     , hRequirement
     , hSmoothability
     , hSurgery
