@@ -7536,4 +7536,83 @@ theorem finalAssemblySubobligationBoundaryInputs_topologyAssembly_checkedCertifi
     , topologyAssemblyPayload.completionCriteria witness
     ⟩
 
+/--
+The direct topology-assembly projection from sub-obligation inputs also carries
+the public statement, canonical target, inhabited checked-certificate witness,
+and all universe-level completion criteria supplied by the same constructed
+payload.  This is the compact consumer-facing final-certificate endpoint after
+finite-extinction sub-obligations have been promoted to the package boundary.
+-/
+theorem finalAssemblySubobligationBoundaryInputs_topologyAssembly_direct_finalCertificate_payload
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u}) :
+    ∃ minimalInputs : FinalCertificateMinimalPackageInputs.{u},
+    ∃ primitiveInputs : FinalCertificatePrimitiveInputs.{u},
+    ∃ topologyAssemblyPayload :
+      FinalCertificateTopologyAssemblyPayload minimalInputs inputs.topology,
+      minimalInputs =
+        finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+          (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs
+            inputs) ∧
+        primitiveInputs =
+          finalCertificatePrimitiveInputs_of_minimalPackageInputs minimalInputs
+            (extinction_implies_sphere_of_topology_package
+              inputs.topology) ∧
+        primitiveInputs.universalFiniteExtinction =
+          universalFiniteExtinctionStatement_of_smoothability_and_surgery_packages
+            inputs.smoothability
+            (finiteExtinctionPackage_requirement_of_subobligations_family
+              inputs.finiteExtinctionSubobligations) ∧
+        primitiveInputs.extinctionImpliesSphere =
+          extinction_implies_sphere_of_topology_package inputs.topology ∧
+        topologyAssemblyPayload.publicStatement =
+          poincare_conjecture_of_completion_certificate
+            topologyAssemblyPayload.checkedCertificate ∧
+        topologyAssemblyPayload.checkedCertificate =
+          completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+            (remainingDependencyPackage_of_finalAssemblyPackageBoundaryInputs
+              (finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs
+                inputs)) primitiveInputs ∧
+        topologyAssemblyPayload.checkedCertificate =
+          completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+            minimalInputs inputs.topology ∧
+        topologyAssemblyPayload.completionCriteria =
+          (fun witness =>
+            completion_criterion_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+              witness minimalInputs inputs.topology) ∧
+        PoincareConjectureStatement.{u} ∧
+        PoincareCompletionCertificate.{u} ∧
+        Nonempty PoincareCompletionCertificate.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let assemblyInputs :=
+    finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs
+      inputs
+  let minimalInputs :=
+    finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+      assemblyInputs
+  let primitiveInputs :=
+    finalCertificatePrimitiveInputs_of_minimalPackageInputs minimalInputs
+      (extinction_implies_sphere_of_topology_package inputs.topology)
+  let topologyAssemblyPayload :
+      FinalCertificateTopologyAssemblyPayload minimalInputs inputs.topology :=
+    finalCertificateTopologyAssemblyPayload minimalInputs inputs.topology
+  exact
+    ⟨ minimalInputs
+    , primitiveInputs
+    , topologyAssemblyPayload
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , rfl
+    , rfl
+    , topologyAssemblyPayload.publicStatement
+    , topologyAssemblyPayload.checkedCertificate
+    , topologyAssemblyPayload.nonemptyCertificate
+    , topologyAssemblyPayload.canonicalTarget
+    , topologyAssemblyPayload.completionCriteria
+    ⟩
+
 end Poincare
