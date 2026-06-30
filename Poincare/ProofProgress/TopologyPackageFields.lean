@@ -3948,4 +3948,34 @@ theorem extinction_topology_decomposition_statement_of_decomposition_data_curren
   exact extinction_topology_decomposition_of_decomposition_data_current_interface
     M extinction data
 
+/--
+Opened fixed-target payload for the first topology-production field.  The
+data statement not only supplies a package-level decomposition proof; it also
+names the certified decomposition data whose constructor route selects that
+proof, and synchronizes it with the statement-level field projection.
+-/
+theorem extinction_topology_decomposition_statement_named_data_payload_current_interface
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    ∃ data : ExtinctionTopologyDecompositionData M extinction,
+    ∃ selectedDecomposition : HasExtinctionTopologyDecomposition M extinction,
+      selectedDecomposition =
+          extinction_topology_decomposition_of_decomposition_data_current_interface
+            M extinction data ∧
+        extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+            decompositionData M extinction =
+          selectedDecomposition := by
+  rcases decompositionData M extinction with ⟨data⟩
+  refine
+    ⟨ data
+    , extinction_topology_decomposition_of_decomposition_data_current_interface
+        M extinction data
+    , rfl
+    , ?_
+    ⟩
+  apply Subsingleton.elim
+
 end Poincare
