@@ -4871,4 +4871,190 @@ theorem onePoint_threeSpace_twoPointComplement_all_basepoint_recognition_flat_lo
     onePoint_threeSpace_twoPointComplement_supplied_basepoint_recognition_flat_lowHomotopy_subsingleton_baseclass_fields
       hqp suppliedBasepoint
 
+/--
+The selected two-puncture basepoint can be opened into the concrete
+recognition/flat payloads and named collapsed low-homotopy base classes.  This
+is the selected-basepoint consumer form of the two-puncture route: it retains
+the punctured-Euclidean chart, simple connectedness, connectedness,
+nonemptiness, four subsingleton collapse instances, concrete collapsed
+representatives, path nonemptiness, and path-component collapse in one witness.
+-/
+theorem onePoint_threeSpace_twoPointComplement_selected_basepoint_recognition_flat_named_baseclass_collapse_witnesses
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p) :
+    ∃ selectedBasepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+    ∃ recognitionPayload :
+      OnePointTwoPointComplementRecognitionPayload hqp selectedBasepoint,
+    ∃ flatPayload :
+      OnePointTwoPointComplementFlatRecognitionPayload hqp selectedBasepoint,
+    ∃ zerothBaseClass :
+      ZerothHomotopy
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+    ∃ piZeroBaseClass :
+      HomotopyGroup.Pi 0
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        selectedBasepoint,
+    ∃ fundamentalBaseClass :
+      FundamentalGroup
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        selectedBasepoint,
+    ∃ piOneBaseClass :
+      HomotopyGroup.Pi 1
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        selectedBasepoint,
+      flatPayload =
+        onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition
+          recognitionPayload ∧
+        flatPayload.puncturedEuclideanChart =
+          recognitionPayload.puncturedEuclideanChart ∧
+        flatPayload.simplyConnected = recognitionPayload.simplyConnected ∧
+        flatPayload.connected = recognitionPayload.lowHomotopy.connected ∧
+        flatPayload.nonempty = recognitionPayload.lowHomotopy.nonempty ∧
+        flatPayload.zerothUnique =
+          recognitionPayload.lowHomotopy.zerothUnique ∧
+        flatPayload.piZeroUnique =
+          recognitionPayload.lowHomotopy.piZeroUnique ∧
+        flatPayload.fundamentalGroupUnique =
+          recognitionPayload.lowHomotopy.fundamentalGroupUnique ∧
+        flatPayload.piOneUnique =
+          recognitionPayload.lowHomotopy.piOneUnique ∧
+        flatPayload.pathNonempty =
+          recognitionPayload.lowHomotopy.pathNonempty ∧
+        flatPayload.pathComponentEqUniv =
+          recognitionPayload.lowHomotopy.pathComponentEqUniv ∧
+        (∃ puncture : EuclideanSpace ℝ (Fin 3),
+          Nonempty
+            ((({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ≃ₜ
+                ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+        SimplyConnectedSpace
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        ConnectedSpace
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        Nonempty
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) ∧
+        Subsingleton
+          (ZerothHomotopy
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 0
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            selectedBasepoint) ∧
+        Subsingleton
+          (FundamentalGroup
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            selectedBasepoint) ∧
+        Subsingleton
+          (HomotopyGroup.Pi 1
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            selectedBasepoint) ∧
+        (∀ homotopyClass :
+          ZerothHomotopy
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          homotopyClass = zerothBaseClass) ∧
+        (∀ homotopyClass :
+          HomotopyGroup.Pi 0
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            selectedBasepoint,
+          homotopyClass = piZeroBaseClass) ∧
+        (∀ fundamentalClass :
+          FundamentalGroup
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            selectedBasepoint,
+          fundamentalClass = fundamentalBaseClass) ∧
+        (∀ homotopyClass :
+          HomotopyGroup.Pi 1
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            selectedBasepoint,
+          homotopyClass = piOneBaseClass) ∧
+        (∀ a b :
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          Nonempty (Path a b)) ∧
+        (∀ point :
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          pathComponent point = Set.univ) := by
+  let selectedBasepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))) :=
+    Classical.choice
+      (onePoint_threeSpace_twoPointComplement_nonempty hqp)
+  let recognitionPayload :=
+    onePoint_threeSpace_twoPointComplement_recognition_payload
+      hqp selectedBasepoint
+  let flatPayload :=
+    onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition
+      recognitionPayload
+  let lowHomotopyPayload :=
+    recognitionPayload.lowHomotopy
+  letI :
+      Unique
+        (ZerothHomotopy
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :=
+    lowHomotopyPayload.zerothUnique
+  letI :
+      Unique
+        (HomotopyGroup.Pi 0
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          selectedBasepoint) :=
+    lowHomotopyPayload.piZeroUnique
+  letI :
+      Unique
+        (FundamentalGroup
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          selectedBasepoint) :=
+    lowHomotopyPayload.fundamentalGroupUnique
+  letI :
+      Unique
+        (HomotopyGroup.Pi 1
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          selectedBasepoint) :=
+    lowHomotopyPayload.piOneUnique
+  exact
+    ⟨ selectedBasepoint
+    , recognitionPayload
+    , flatPayload
+    , default
+    , default
+    , default
+    , default
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , recognitionPayload.puncturedEuclideanChart
+    , recognitionPayload.simplyConnected
+    , lowHomotopyPayload.connected
+    , lowHomotopyPayload.nonempty
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , fun homotopyClass => Subsingleton.elim _ _
+    , fun homotopyClass => Subsingleton.elim _ _
+    , fun fundamentalClass => Subsingleton.elim _ _
+    , fun homotopyClass => Subsingleton.elim _ _
+    , lowHomotopyPayload.pathNonempty
+    , lowHomotopyPayload.pathComponentEqUniv
+    ⟩
+
 end Poincare
