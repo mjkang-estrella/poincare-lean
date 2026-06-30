@@ -187,6 +187,49 @@ theorem smoothability_transported_smooth_and_surgery_model_package_of_homeomorph
     (homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h)
 
 /--
+A concrete one-point compactification recognition homeomorphism selects the
+exact transported charted space used by smoothability, together with the `C∞`
+smooth-manifold witness, the lowered surgery-model manifold witness, and the
+topological prerequisites needed by the Ricci-flow-with-surgery layer.
+-/
+theorem smoothability_selected_onePoint_homeomorph_transported_package
+    {M : Type u} [TopologicalSpace M]
+    (e : M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) :
+    ∃ charted : ChartedSpace ThreeManifoldModel M,
+      charted = homeomorphToOnePoint_threeSpace_smoothChartedSpace e ∧
+        (letI : ChartedSpace ThreeManifoldModel M := charted
+         IsManifold (𝓡 3) ∞ M) ∧
+        (letI : ChartedSpace ThreeManifoldModel M := charted
+         IsManifold ThreeManifoldModelWithCorners 1 M) ∧
+        ∃ _t2 : T2Space M,
+        ∃ _simple : SimplyConnectedSpace M,
+        ∃ _compact : CompactSpace M,
+          Nonempty M := by
+  let charted : ChartedSpace ThreeManifoldModel M :=
+    homeomorphToOnePoint_threeSpace_smoothChartedSpace e
+  have smooth :
+      letI : ChartedSpace ThreeManifoldModel M := charted
+      IsManifold (𝓡 3) ∞ M := by
+    exact homeomorphToOnePoint_threeSpace_smoothManifold e
+  have surgeryModel :
+      letI : ChartedSpace ThreeManifoldModel M := charted
+      IsManifold ThreeManifoldModelWithCorners 1 M := by
+    exact homeomorphToOnePoint_threeSpace_surgeryModel_isManifold e
+  rcases smoothability_surgery_prerequisites_of_homeomorph_to_onePoint_threeSpace
+      ⟨e⟩ with
+    ⟨t2, _charted, simple, compact, _smooth, nonempty⟩
+  exact
+    ⟨ charted
+    , rfl
+    , smooth
+    , surgeryModel
+    , t2
+    , simple
+    , compact
+    , nonempty
+    ⟩
+
+/--
 A concrete sphere-recognition homeomorphism selects the one-point
 compactification route used by smoothability, the exact transported charted
 space from that route, the `C∞` and surgery-model manifold witnesses, and the
@@ -388,6 +431,52 @@ theorem smoothability_surgery_model_and_transported_package_family_of_threeSpher
         recognize
     , smoothability_transported_smooth_and_surgery_model_package_family_of_threeSphereRecognition
         recognize
+    ⟩
+
+/--
+Family version of the selected one-point transported package: from a one-point
+recognition family, choose the compactification homeomorphism for each target
+and retain the exact transported charted space, `C∞` smooth-manifold witness,
+surgery-model manifold witness, and topological prerequisites produced by that
+chosen route.
+-/
+theorem smoothability_selected_onePoint_homeomorph_transported_package_family
+    (recognize :
+      ∀ (M : Type u) [TopologicalSpace M],
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    ∀ (M : Type u) [TopologicalSpace M],
+      ∃ onePointHomeomorph :
+        M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)),
+      ∃ charted : ChartedSpace ThreeManifoldModel M,
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+          charted =
+            homeomorphToOnePoint_threeSpace_smoothChartedSpace
+              onePointHomeomorph ∧
+          (letI : ChartedSpace ThreeManifoldModel M := charted
+           IsManifold (𝓡 3) ∞ M) ∧
+          (letI : ChartedSpace ThreeManifoldModel M := charted
+           IsManifold ThreeManifoldModelWithCorners 1 M) ∧
+          ∃ _t2 : T2Space M,
+          ∃ _simple : SimplyConnectedSpace M,
+          ∃ _compact : CompactSpace M,
+            Nonempty M := by
+  intro M _top
+  rcases recognize M with ⟨onePointHomeomorph⟩
+  rcases
+    smoothability_selected_onePoint_homeomorph_transported_package
+      onePointHomeomorph with
+    ⟨charted, hCharted, hSmooth, hSurgery, t2, simple, compact, nonempty⟩
+  exact
+    ⟨ onePointHomeomorph
+    , charted
+    , ⟨onePointHomeomorph⟩
+    , hCharted
+    , hSmooth
+    , hSurgery
+    , t2
+    , simple
+    , compact
+    , nonempty
     ⟩
 
 /--
