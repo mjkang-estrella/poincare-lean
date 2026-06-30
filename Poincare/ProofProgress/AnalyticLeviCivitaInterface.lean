@@ -380,4 +380,42 @@ theorem analyticFoundationSubobligationsPayload_fixedTime_metricSlice_riemannian
     , hFirstField
     ⟩
 
+/--
+A completed analytic-foundation package retains the fixed-time metric slice,
+the induced smooth Riemannian-bundle evidence, the selected time-dependent
+tangent connection field, and the first Levi-Civita package field for its
+projected Ricci-flow datum.  This is the package-level version of the local
+sub-obligation projection above.
+-/
+theorem analyticFoundationPackage_fixedTime_metricSlice_riemannianBundle_connectionField_and_first_analytic_field
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M)
+    (t : ℝ) :
+    let flow := ricci_flow_data_of_analytic_foundation_package package
+    AnalyticFoundationSubobligationsPayload flow ∧
+      ∃ metricSlice :
+        ContMDiffRiemannianMetric I n E
+          (fun x : M => TangentSpace I x),
+        metricSlice = metric_at_time_of_ricci_flow_data flow t ∧
+        (letI : RiemannianBundle (fun x : M => TangentSpace I x) :=
+            ⟨metricSlice.toRiemannianMetric⟩;
+          IsContMDiffRiemannianBundle I n E
+            (fun x : M => TangentSpace I x)) ∧
+        ∃ _connectionAtTime :
+          TimeDependentTangentConnectionField
+            (metric_of_ricci_flow_data flow),
+          TimeDependentTangentConnectionField
+              (metric_of_ricci_flow_data flow) =
+            (ℝ → TangentCovariantDerivative I M) ∧
+          ProposedHasLeviCivitaConnectionExistence
+            (metric_of_ricci_flow_data flow) ∧
+          HasLeviCivitaConnectionExistence
+            (metric_of_ricci_flow_data flow) :=
+  analyticFoundationSubobligationsPayload_fixedTime_metricSlice_riemannianBundle_connectionField_and_first_analytic_field
+    (analytic_foundation_subobligations_of_analytic_foundation_package
+      package) t
+
 end Poincare
