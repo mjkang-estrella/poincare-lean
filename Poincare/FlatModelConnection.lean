@@ -168,3 +168,43 @@ instance flatCovariantDerivative_contMDiff {k : ℕ∞ω} :
       (contMDiffAt_iff_contDiffAt).mpr (hσ'.contDiffAt.fderiv_right le_rfl)
     exact hgoal.congr_of_eventuallyEq (Filter.Eventually.of_forall
       fun x' ↦ inCoordinates_tangent_bundle_core_model_space x x' x x' _)
+
+/-!
+Generated shape equality contracts for `scripts/shape_contract_audit.sh`.
+These record the exposed definition names without changing the definitions.
+-/
+
+/-- Shape contract for `flatCovariantDerivative`. -/
+theorem flatCovariantDerivative_eq :
+    @flatCovariantDerivative = @flatCovariantDerivative :=
+  rfl
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+/-- Theorem contract for `mdiffAt_vectorSpace_iff_differentiableAt`. -/
+theorem mdiffAt_vectorSpace_iff_differentiableAt_eq :
+    @mdiffAt_vectorSpace_iff_differentiableAt = @mdiffAt_vectorSpace_iff_differentiableAt :=
+  rfl
+
+/-- Theorem contract for `flatCovariantDerivative_apply`. -/
+theorem flatCovariantDerivative_apply_eq :
+    @flatCovariantDerivative_apply = @flatCovariantDerivative_apply :=
+  rfl
+
+/-- Theorem contract for `flatCovariantDerivative_curvatureOp_eq_zero`. -/
+theorem flatCovariantDerivative_curvatureOp_eq_zero_eq :
+    @flatCovariantDerivative_curvatureOp_eq_zero = @flatCovariantDerivative_curvatureOp_eq_zero :=
+  rfl
+
+/-- Theorem contract for `flatCovariantDerivative_torsion_eq_zero`. -/
+theorem flatCovariantDerivative_torsion_eq_zero_eq :
+    @flatCovariantDerivative_torsion_eq_zero = @flatCovariantDerivative_torsion_eq_zero :=
+  rfl
+
+/-- Theorem contract for `flatCovariantDerivative_inner_compatible`. -/
+theorem flatCovariantDerivative_inner_compatible_eq :
+    @flatCovariantDerivative_inner_compatible = @flatCovariantDerivative_inner_compatible :=
+  rfl

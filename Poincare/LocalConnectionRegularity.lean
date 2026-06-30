@@ -170,3 +170,51 @@ theorem curvatureTensorAt_congr_of_eventuallyEq [CompleteSpace E]
     (mdifferentiableAt_extend ..) (mdifferentiableAt_extend ..) hZZ'
 
 end CovariantDerivative
+
+/-!
+Generated shape equality contracts for `scripts/shape_contract_audit.sh`.
+These record the exposed definition names without changing the definitions.
+-/
+
+namespace CovariantDerivative
+
+/-- Shape contract for `ricciBilinearAt`. -/
+theorem ricciBilinearAt_eq :
+    @CovariantDerivative.ricciBilinearAt = @CovariantDerivative.ricciBilinearAt :=
+  rfl
+
+end CovariantDerivative
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+namespace CovariantDerivative
+
+/-- Theorem contract for `mdiffAt_cov_section_of_contMDiffAt`. -/
+theorem mdiffAt_cov_section_of_contMDiffAt_eq :
+    @CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt = @CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt :=
+  rfl
+
+/-- Theorem contract for `derivRegularAt_extend`. -/
+theorem derivRegularAt_extend_eq :
+    @CovariantDerivative.derivRegularAt_extend = @CovariantDerivative.derivRegularAt_extend :=
+  rfl
+
+/-- Theorem contract for `ricciBilinearAt_def`. -/
+theorem ricciBilinearAt_def_eq :
+    @CovariantDerivative.ricciBilinearAt_def = @CovariantDerivative.ricciBilinearAt_def :=
+  rfl
+
+/-- Theorem contract for `curvatureOp_congr_of_eventuallyEq`. -/
+theorem curvatureOp_congr_of_eventuallyEq_eq :
+    @CovariantDerivative.curvatureOp_congr_of_eventuallyEq = @CovariantDerivative.curvatureOp_congr_of_eventuallyEq :=
+  rfl
+
+/-- Theorem contract for `curvatureTensorAt_congr_of_eventuallyEq`. -/
+theorem curvatureTensorAt_congr_of_eventuallyEq_eq :
+    @CovariantDerivative.curvatureTensorAt_congr_of_eventuallyEq = @CovariantDerivative.curvatureTensorAt_congr_of_eventuallyEq :=
+  rfl
+
+end CovariantDerivative

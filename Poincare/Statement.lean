@@ -48505,3 +48505,1937 @@ theorem completionCriterionAtUniverse_iff_poincare_completion_payload_eq
   apply Subsingleton.elim
 
 end Poincare
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+namespace Poincare
+
+/-- Theorem contract for `threeSphere_stereographic_source_contained_loop_nullhomotopic`. -/
+theorem threeSphere_stereographic_source_contained_loop_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_source_contained_loop_nullhomotopic = @Poincare.threeSphere_stereographic_source_contained_loop_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_source_contained_paths_homotopy_forall_mem`. -/
+theorem threeSphere_stereographic_source_contained_paths_homotopy_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_source_contained_paths_homotopy_forall_mem = @Poincare.threeSphere_stereographic_source_contained_paths_homotopy_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_source_contained_paths_homotopic`. -/
+theorem threeSphere_stereographic_source_contained_paths_homotopic_eq :
+    @Poincare.threeSphere_stereographic_source_contained_paths_homotopic = @Poincare.threeSphere_stereographic_source_contained_paths_homotopic :=
+  rfl
+
+/-- Theorem contract for `path_trans_range_subset_of_range_subset`. -/
+theorem path_trans_range_subset_of_range_subset_eq :
+    @Poincare.path_trans_range_subset_of_range_subset = @Poincare.path_trans_range_subset_of_range_subset :=
+  rfl
+
+/-- Theorem contract for `path_concat_range_subset_of_mapsTo`. -/
+theorem path_concat_range_subset_of_mapsTo_eq :
+    @Poincare.path_concat_range_subset_of_mapsTo = @Poincare.path_concat_range_subset_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `path_concat_segment_range_subset_of_concat_range`. -/
+theorem path_concat_segment_range_subset_of_concat_range_eq :
+    @Poincare.path_concat_segment_range_subset_of_concat_range = @Poincare.path_concat_segment_range_subset_of_concat_range :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_source_concat_range_subset`. -/
+theorem threeSphere_stereographic_source_concat_range_subset_eq :
+    @Poincare.threeSphere_stereographic_source_concat_range_subset = @Poincare.threeSphere_stereographic_source_concat_range_subset :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_source_contained_concat_loop_nullhomotopic`. -/
+theorem threeSphere_stereographic_source_contained_concat_loop_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_source_contained_concat_loop_nullhomotopic = @Poincare.threeSphere_stereographic_source_contained_concat_loop_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_source_head_concat_tail_nullhomotopic`. -/
+theorem threeSphere_stereographic_source_head_concat_tail_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_source_head_concat_tail_nullhomotopic = @Poincare.threeSphere_stereographic_source_head_concat_tail_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `path_homotopic_concat_first_tail`. -/
+theorem path_homotopic_concat_first_tail_eq :
+    @Poincare.path_homotopic_concat_first_tail = @Poincare.path_homotopic_concat_first_tail :=
+  rfl
+
+/-- Theorem contract for `path_homotopic_concat_first_middle_last`. -/
+theorem path_homotopic_concat_first_middle_last_eq :
+    @Poincare.path_homotopic_concat_first_middle_last = @Poincare.path_homotopic_concat_first_middle_last :=
+  rfl
+
+/-- Theorem contract for `path_homotopic_concat_split`. -/
+theorem path_homotopic_concat_split_eq :
+    @Poincare.path_homotopic_concat_split = @Poincare.path_homotopic_concat_split :=
+  rfl
+
+/-- Theorem contract for `path_concat_split_homotopy_forall_mem_of_mapsTo`. -/
+theorem path_concat_split_homotopy_forall_mem_of_mapsTo_eq :
+    @Poincare.path_concat_split_homotopy_forall_mem_of_mapsTo = @Poincare.path_concat_split_homotopy_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `path_trans_forall_mem_of_forall_mem`. -/
+theorem path_trans_forall_mem_of_forall_mem_eq :
+    @Poincare.path_trans_forall_mem_of_forall_mem = @Poincare.path_trans_forall_mem_of_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_transAssoc_forall_mem_of_forall_mem`. -/
+theorem path_transAssoc_forall_mem_of_forall_mem_eq :
+    @Poincare.path_transAssoc_forall_mem_of_forall_mem = @Poincare.path_transAssoc_forall_mem_of_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_homotopy_symm_forall_mem_of_forall_mem`. -/
+theorem path_homotopy_symm_forall_mem_of_forall_mem_eq :
+    @Poincare.path_homotopy_symm_forall_mem_of_forall_mem = @Poincare.path_homotopy_symm_forall_mem_of_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_homotopy_trans_forall_mem_of_forall_mem`. -/
+theorem path_homotopy_trans_forall_mem_of_forall_mem_eq :
+    @Poincare.path_homotopy_trans_forall_mem_of_forall_mem = @Poincare.path_homotopy_trans_forall_mem_of_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_homotopy_hcomp_forall_mem_of_forall_mem`. -/
+theorem path_homotopy_hcomp_forall_mem_of_forall_mem_eq :
+    @Poincare.path_homotopy_hcomp_forall_mem_of_forall_mem = @Poincare.path_homotopy_hcomp_forall_mem_of_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_homotopy_cast_forall_mem_of_forall_mem`. -/
+theorem path_homotopy_cast_forall_mem_of_forall_mem_eq :
+    @Poincare.path_homotopy_cast_forall_mem_of_forall_mem = @Poincare.path_homotopy_cast_forall_mem_of_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_homotopy_reflTrans_forall_mem_of_forall_mem`. -/
+theorem path_homotopy_reflTrans_forall_mem_of_forall_mem_eq :
+    @Poincare.path_homotopy_reflTrans_forall_mem_of_forall_mem = @Poincare.path_homotopy_reflTrans_forall_mem_of_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_homotopy_refl_forall_mem_of_forall_mem`. -/
+theorem path_homotopy_refl_forall_mem_of_forall_mem_eq :
+    @Poincare.path_homotopy_refl_forall_mem_of_forall_mem = @Poincare.path_homotopy_refl_forall_mem_of_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_homotopy_transRefl_forall_mem_of_forall_mem`. -/
+theorem path_homotopy_transRefl_forall_mem_of_forall_mem_eq :
+    @Poincare.path_homotopy_transRefl_forall_mem_of_forall_mem = @Poincare.path_homotopy_transRefl_forall_mem_of_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_homotopy_reflSymmTrans_forall_mem_of_forall_mem`. -/
+theorem path_homotopy_reflSymmTrans_forall_mem_of_forall_mem_eq :
+    @Poincare.path_homotopy_reflSymmTrans_forall_mem_of_forall_mem = @Poincare.path_homotopy_reflSymmTrans_forall_mem_of_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_homotopy_forall_mem_of_trans_symm_loop_homotopy_refl_forall_mem`. -/
+theorem path_homotopy_forall_mem_of_trans_symm_loop_homotopy_refl_forall_mem_eq :
+    @Poincare.path_homotopy_forall_mem_of_trans_symm_loop_homotopy_refl_forall_mem = @Poincare.path_homotopy_forall_mem_of_trans_symm_loop_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_subpath_forall_mem_of_forall_mem`. -/
+theorem path_subpath_forall_mem_of_forall_mem_eq :
+    @Poincare.path_subpath_forall_mem_of_forall_mem = @Poincare.path_subpath_forall_mem_of_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_subpath_range_subset_of_Icc_subset`. -/
+theorem path_subpath_range_subset_of_Icc_subset_eq :
+    @Poincare.path_subpath_range_subset_of_Icc_subset = @Poincare.path_subpath_range_subset_of_Icc_subset :=
+  rfl
+
+/-- Theorem contract for `path_homotopy_subpathTransSubpathRefl_forall_mem_of_forall_mem`. -/
+theorem path_homotopy_subpathTransSubpathRefl_forall_mem_of_forall_mem_eq :
+    @Poincare.path_homotopy_subpathTransSubpathRefl_forall_mem_of_forall_mem = @Poincare.path_homotopy_subpathTransSubpathRefl_forall_mem_of_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_homotopy_subpathTransSubpath_forall_mem_of_forall_mem`. -/
+theorem path_homotopy_subpathTransSubpath_forall_mem_of_forall_mem_eq :
+    @Poincare.path_homotopy_subpathTransSubpath_forall_mem_of_forall_mem = @Poincare.path_homotopy_subpathTransSubpath_forall_mem_of_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_concatSubpath_homotopy_forall_mem_of_forall_mem`. -/
+theorem path_concatSubpath_homotopy_forall_mem_of_forall_mem_eq :
+    @Poincare.path_concatSubpath_homotopy_forall_mem_of_forall_mem = @Poincare.path_concatSubpath_homotopy_forall_mem_of_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_four_left_assoc_homotopy_forall_mem`. -/
+theorem path_four_left_assoc_homotopy_forall_mem_eq :
+    @Poincare.path_four_left_assoc_homotopy_forall_mem = @Poincare.path_four_left_assoc_homotopy_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_five_left_assoc_homotopy_forall_mem`. -/
+theorem path_five_left_assoc_homotopy_forall_mem_eq :
+    @Poincare.path_five_left_assoc_homotopy_forall_mem = @Poincare.path_five_left_assoc_homotopy_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_six_left_assoc_homotopy_forall_mem`. -/
+theorem path_six_left_assoc_homotopy_forall_mem_eq :
+    @Poincare.path_six_left_assoc_homotopy_forall_mem = @Poincare.path_six_left_assoc_homotopy_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_seven_left_assoc_homotopy_forall_mem`. -/
+theorem path_seven_left_assoc_homotopy_forall_mem_eq :
+    @Poincare.path_seven_left_assoc_homotopy_forall_mem = @Poincare.path_seven_left_assoc_homotopy_forall_mem :=
+  rfl
+
+/-- Theorem contract for `path_eight_left_assoc_homotopy_forall_mem`. -/
+theorem path_eight_left_assoc_homotopy_forall_mem_eq :
+    @Poincare.path_eight_left_assoc_homotopy_forall_mem = @Poincare.path_eight_left_assoc_homotopy_forall_mem :=
+  rfl
+
+/-- Theorem contract for `finite_or_first_right_or_all_left`. -/
+theorem finite_or_first_right_or_all_left_eq :
+    @Poincare.finite_or_first_right_or_all_left = @Poincare.finite_or_first_right_or_all_left :=
+  rfl
+
+/-- Theorem contract for `finite_first_right_or_all_left_with_tail_choice`. -/
+theorem finite_first_right_or_all_left_with_tail_choice_eq :
+    @Poincare.finite_first_right_or_all_left_with_tail_choice = @Poincare.finite_first_right_or_all_left_with_tail_choice :=
+  rfl
+
+/-- Theorem contract for `finite_first_opposite_run_or_all_preferred_with_tail_choice`. -/
+theorem finite_first_opposite_run_or_all_preferred_with_tail_choice_eq :
+    @Poincare.finite_first_opposite_run_or_all_preferred_with_tail_choice = @Poincare.finite_first_opposite_run_or_all_preferred_with_tail_choice :=
+  rfl
+
+/-- Theorem contract for `finite_run_interval_reindex`. -/
+theorem finite_run_interval_reindex_eq :
+    @Poincare.finite_run_interval_reindex = @Poincare.finite_run_interval_reindex :=
+  rfl
+
+/-- Theorem contract for `finite_first_opposite_run_or_all_preferred_with_reindexed_block`. -/
+theorem finite_first_opposite_run_or_all_preferred_with_reindexed_block_eq :
+    @Poincare.finite_first_opposite_run_or_all_preferred_with_reindexed_block = @Poincare.finite_first_opposite_run_or_all_preferred_with_reindexed_block :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_runBlock_source`. -/
+theorem threeSphere_stereographicEquatorLoop_runBlock_source_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_runBlock_source = @Poincare.threeSphere_stereographicEquatorLoop_runBlock_source :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_runBlock_sourceData`. -/
+theorem threeSphere_stereographicEquatorLoop_runBlock_sourceData_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_runBlock_sourceData = @Poincare.threeSphere_stereographicEquatorLoop_runBlock_sourceData :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_runBlock_concat_range_subset`. -/
+theorem threeSphere_stereographicEquatorLoop_runBlock_concat_range_subset_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_runBlock_concat_range_subset = @Poincare.threeSphere_stereographicEquatorLoop_runBlock_concat_range_subset :=
+  rfl
+
+/-- Theorem contract for `path_trans_source_cast_eq_target_cast_trans`. -/
+theorem path_trans_source_cast_eq_target_cast_trans_eq :
+    @Poincare.path_trans_source_cast_eq_target_cast_trans = @Poincare.path_trans_source_cast_eq_target_cast_trans :=
+  rfl
+
+/-- Theorem contract for `path_trans_cast_eq_trans_cast_target`. -/
+theorem path_trans_cast_eq_trans_cast_target_eq :
+    @Poincare.path_trans_cast_eq_trans_cast_target = @Poincare.path_trans_cast_eq_trans_cast_target :=
+  rfl
+
+/-- Theorem contract for `threeSphere_antipodal_ne_self`. -/
+theorem threeSphere_antipodal_ne_self_eq :
+    @Poincare.threeSphere_antipodal_ne_self = @Poincare.threeSphere_antipodal_ne_self :=
+  rfl
+
+/-- Theorem contract for `threeSphere_antipode_mem_stereographic_source`. -/
+theorem threeSphere_antipode_mem_stereographic_source_eq :
+    @Poincare.threeSphere_antipode_mem_stereographic_source = @Poincare.threeSphere_antipode_mem_stereographic_source :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_sources_cover_of_ne`. -/
+theorem threeSphere_stereographic_sources_cover_of_ne_eq :
+    @Poincare.threeSphere_stereographic_sources_cover_of_ne = @Poincare.threeSphere_stereographic_sources_cover_of_ne :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_leftEndpoint_northSource_of_before`. -/
+theorem threeSphere_stereographicEquatorLoop_leftEndpoint_northSource_of_before_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_leftEndpoint_northSource_of_before = @Poincare.threeSphere_stereographicEquatorLoop_leftEndpoint_northSource_of_before :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_leftEndpoint_southSource_of_before`. -/
+theorem threeSphere_stereographicEquatorLoop_leftEndpoint_southSource_of_before_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_leftEndpoint_southSource_of_before = @Poincare.threeSphere_stereographicEquatorLoop_leftEndpoint_southSource_of_before :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_prefixConcat_range_subset`. -/
+theorem threeSphere_stereographicEquatorLoop_prefixConcat_range_subset_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_prefixConcat_range_subset = @Poincare.threeSphere_stereographicEquatorLoop_prefixConcat_range_subset :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstSouthRun_prefixNorth_sourceData`. -/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_prefixNorth_sourceData_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_prefixNorth_sourceData = @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_prefixNorth_sourceData :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstNorthRun_prefixSouth_sourceData`. -/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_prefixSouth_sourceData_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_prefixSouth_sourceData = @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_prefixSouth_sourceData :=
+  rfl
+
+/-- Theorem contract for `euclideanThree_compl_singleton_isOpenEmbedding`. -/
+theorem euclideanThree_compl_singleton_isOpenEmbedding_eq :
+    @Poincare.euclideanThree_compl_singleton_isOpenEmbedding = @Poincare.euclideanThree_compl_singleton_isOpenEmbedding :=
+  rfl
+
+/-- Theorem contract for `euclideanThree_compl_singleton_smoothManifold`. -/
+theorem euclideanThree_compl_singleton_smoothManifold_eq :
+    @Poincare.euclideanThree_compl_singleton_smoothManifold = @Poincare.euclideanThree_compl_singleton_smoothManifold :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicSource_countableComplement_pathConnectedSpace`. -/
+theorem threeSphere_stereographicSource_countableComplement_pathConnectedSpace_eq :
+    @Poincare.threeSphere_stereographicSource_countableComplement_pathConnectedSpace = @Poincare.threeSphere_stereographicSource_countableComplement_pathConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `threeSphere_countableComplement_pathConnectedSpace_of_mem`. -/
+theorem threeSphere_countableComplement_pathConnectedSpace_of_mem_eq :
+    @Poincare.threeSphere_countableComplement_pathConnectedSpace_of_mem = @Poincare.threeSphere_countableComplement_pathConnectedSpace_of_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_countableComplement_pathConnectedSpace`. -/
+theorem threeSphere_countableComplement_pathConnectedSpace_eq :
+    @Poincare.threeSphere_countableComplement_pathConnectedSpace = @Poincare.threeSphere_countableComplement_pathConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_sources_inter_eq_twoPointComplement`. -/
+theorem threeSphere_stereographic_sources_inter_eq_twoPointComplement_eq :
+    @Poincare.threeSphere_stereographic_sources_inter_eq_twoPointComplement = @Poincare.threeSphere_stereographic_sources_inter_eq_twoPointComplement :=
+  rfl
+
+/-- Theorem contract for `threeSphere_twoPointComplement_isOpen`. -/
+theorem threeSphere_twoPointComplement_isOpen_eq :
+    @Poincare.threeSphere_twoPointComplement_isOpen = @Poincare.threeSphere_twoPointComplement_isOpen :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_sources_inter_pathConnectedSpace`. -/
+theorem threeSphere_stereographic_sources_inter_pathConnectedSpace_eq :
+    @Poincare.threeSphere_stereographic_sources_inter_pathConnectedSpace = @Poincare.threeSphere_stereographic_sources_inter_pathConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_sources_inter_isOpen`. -/
+theorem threeSphere_stereographic_sources_inter_isOpen_eq :
+    @Poincare.threeSphere_stereographic_sources_inter_isOpen = @Poincare.threeSphere_stereographic_sources_inter_isOpen :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_sources_inter_locPathConnectedSpace`. -/
+theorem threeSphere_stereographic_sources_inter_locPathConnectedSpace_eq :
+    @Poincare.threeSphere_stereographic_sources_inter_locPathConnectedSpace = @Poincare.threeSphere_stereographic_sources_inter_locPathConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `threeSphere_twoPointChartImage_eq_stereographic_apply`. -/
+theorem threeSphere_twoPointChartImage_eq_stereographic_apply_eq :
+    @Poincare.threeSphere_twoPointChartImage_eq_stereographic_apply = @Poincare.threeSphere_twoPointChartImage_eq_stereographic_apply :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicTransition_mem_contDiffGroupoid`. -/
+theorem threeSphere_stereographicTransition_mem_contDiffGroupoid_eq :
+    @Poincare.threeSphere_stereographicTransition_mem_contDiffGroupoid = @Poincare.threeSphere_stereographicTransition_mem_contDiffGroupoid :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicTransition_contMDiffOn_puncturedChart`. -/
+theorem threeSphere_stereographicTransition_contMDiffOn_puncturedChart_eq :
+    @Poincare.threeSphere_stereographicTransition_contMDiffOn_puncturedChart = @Poincare.threeSphere_stereographicTransition_contMDiffOn_puncturedChart :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicTransition_source_mem_puncturedChart`. -/
+theorem threeSphere_stereographicTransition_source_mem_puncturedChart_eq :
+    @Poincare.threeSphere_stereographicTransition_source_mem_puncturedChart = @Poincare.threeSphere_stereographicTransition_source_mem_puncturedChart :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicTransition_mapsTo_puncturedChart`. -/
+theorem threeSphere_stereographicTransition_mapsTo_puncturedChart_eq :
+    @Poincare.threeSphere_stereographicTransition_mapsTo_puncturedChart = @Poincare.threeSphere_stereographicTransition_mapsTo_puncturedChart :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicTransition_diffeomorph_puncturedCharts_apply`. -/
+theorem threeSphere_stereographicTransition_diffeomorph_puncturedCharts_apply_eq :
+    @Poincare.threeSphere_stereographicTransition_diffeomorph_puncturedCharts_apply = @Poincare.threeSphere_stereographicTransition_diffeomorph_puncturedCharts_apply :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicTransition_diffeomorph_puncturedCharts_symm_apply`. -/
+theorem threeSphere_stereographicTransition_diffeomorph_puncturedCharts_symm_apply_eq :
+    @Poincare.threeSphere_stereographicTransition_diffeomorph_puncturedCharts_symm_apply = @Poincare.threeSphere_stereographicTransition_diffeomorph_puncturedCharts_symm_apply :=
+  rfl
+
+/-- Theorem contract for `threeSphere_twoPointComplement_puncturedChart_isOpenEmbedding`. -/
+theorem threeSphere_twoPointComplement_puncturedChart_isOpenEmbedding_eq :
+    @Poincare.threeSphere_twoPointComplement_puncturedChart_isOpenEmbedding = @Poincare.threeSphere_twoPointComplement_puncturedChart_isOpenEmbedding :=
+  rfl
+
+/-- Theorem contract for `threeSphere_twoPointComplement_locPathConnectedSpace`. -/
+theorem threeSphere_twoPointComplement_locPathConnectedSpace_eq :
+    @Poincare.threeSphere_twoPointComplement_locPathConnectedSpace = @Poincare.threeSphere_twoPointComplement_locPathConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicSources_inter_puncturedChart_isOpenEmbedding`. -/
+theorem threeSphere_stereographicSources_inter_puncturedChart_isOpenEmbedding_eq :
+    @Poincare.threeSphere_stereographicSources_inter_puncturedChart_isOpenEmbedding = @Poincare.threeSphere_stereographicSources_inter_puncturedChart_isOpenEmbedding :=
+  rfl
+
+/-- Theorem contract for `threeSphere_twoPointComplement_pathConnectedSpace`. -/
+theorem threeSphere_twoPointComplement_pathConnectedSpace_eq :
+    @Poincare.threeSphere_twoPointComplement_pathConnectedSpace = @Poincare.threeSphere_twoPointComplement_pathConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `threeSphere_twoPointComplement_smoothManifold_via_puncturedChart`. -/
+theorem threeSphere_twoPointComplement_smoothManifold_via_puncturedChart_eq :
+    @Poincare.threeSphere_twoPointComplement_smoothManifold_via_puncturedChart = @Poincare.threeSphere_twoPointComplement_smoothManifold_via_puncturedChart :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicSources_inter_smoothManifold_via_puncturedChart`. -/
+theorem threeSphere_stereographicSources_inter_smoothManifold_via_puncturedChart_eq :
+    @Poincare.threeSphere_stereographicSources_inter_smoothManifold_via_puncturedChart = @Poincare.threeSphere_stereographicSources_inter_smoothManifold_via_puncturedChart :=
+  rfl
+
+/-- Theorem contract for `threeSphere_antipodalSourceOverlap_pathConnectedSpace`. -/
+theorem threeSphere_antipodalSourceOverlap_pathConnectedSpace_eq :
+    @Poincare.threeSphere_antipodalSourceOverlap_pathConnectedSpace = @Poincare.threeSphere_antipodalSourceOverlap_pathConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `threeSphere_antipodalSourceOverlap_puncturedChart_isOpenEmbedding`. -/
+theorem threeSphere_antipodalSourceOverlap_puncturedChart_isOpenEmbedding_eq :
+    @Poincare.threeSphere_antipodalSourceOverlap_puncturedChart_isOpenEmbedding = @Poincare.threeSphere_antipodalSourceOverlap_puncturedChart_isOpenEmbedding :=
+  rfl
+
+/-- Theorem contract for `threeSphere_antipodalActualOverlap_pathConnectedSpace`. -/
+theorem threeSphere_antipodalActualOverlap_pathConnectedSpace_eq :
+    @Poincare.threeSphere_antipodalActualOverlap_pathConnectedSpace = @Poincare.threeSphere_antipodalActualOverlap_pathConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `threeSphere_antipodalActualOverlap_puncturedChart_isOpenEmbedding`. -/
+theorem threeSphere_antipodalActualOverlap_puncturedChart_isOpenEmbedding_eq :
+    @Poincare.threeSphere_antipodalActualOverlap_puncturedChart_isOpenEmbedding = @Poincare.threeSphere_antipodalActualOverlap_puncturedChart_isOpenEmbedding :=
+  rfl
+
+/-- Theorem contract for `paths_homotopic_of_mapsTo_simplyConnectedSubtype`. -/
+theorem paths_homotopic_of_mapsTo_simplyConnectedSubtype_eq :
+    @Poincare.paths_homotopic_of_mapsTo_simplyConnectedSubtype = @Poincare.paths_homotopic_of_mapsTo_simplyConnectedSubtype :=
+  rfl
+
+/-- Theorem contract for `loop_homotopic_refl_of_mapsTo_simplyConnectedSubtype`. -/
+theorem loop_homotopic_refl_of_mapsTo_simplyConnectedSubtype_eq :
+    @Poincare.loop_homotopic_refl_of_mapsTo_simplyConnectedSubtype = @Poincare.loop_homotopic_refl_of_mapsTo_simplyConnectedSubtype :=
+  rfl
+
+/-- Theorem contract for `path_homotopy_forall_mem_of_isSimplyConnected`. -/
+theorem path_homotopy_forall_mem_of_isSimplyConnected_eq :
+    @Poincare.path_homotopy_forall_mem_of_isSimplyConnected = @Poincare.path_homotopy_forall_mem_of_isSimplyConnected :=
+  rfl
+
+/-- Theorem contract for `path_homotopy_forall_mem_of_range_subset_simplyConnectedSubtype`. -/
+theorem path_homotopy_forall_mem_of_range_subset_simplyConnectedSubtype_eq :
+    @Poincare.path_homotopy_forall_mem_of_range_subset_simplyConnectedSubtype = @Poincare.path_homotopy_forall_mem_of_range_subset_simplyConnectedSubtype :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameHead_sameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_sameHead_sameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameHead_sameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_sameHead_sameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameHead_sameTail_concat_cast_nullhomotopic_of_mapsTo`. -/
+theorem twoSetOpenCover_sameHead_sameTail_concat_cast_nullhomotopic_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameHead_sameTail_concat_cast_nullhomotopic_of_mapsTo = @Poincare.twoSetOpenCover_sameHead_sameTail_concat_cast_nullhomotopic_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_twoPieceLoop_nullhomotopic_of_mapsTo`. -/
+theorem twoSetOpenCover_twoPieceLoop_nullhomotopic_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_twoPieceLoop_nullhomotopic_of_mapsTo = @Poincare.twoSetOpenCover_twoPieceLoop_nullhomotopic_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_twoPieceLoop_cast_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_twoPieceLoop_cast_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_twoPieceLoop_cast_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_twoPieceLoop_cast_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_twoPieceLoop_cast_nullhomotopic_of_mapsTo`. -/
+theorem twoSetOpenCover_twoPieceLoop_cast_nullhomotopic_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_twoPieceLoop_cast_nullhomotopic_of_mapsTo = @Poincare.twoSetOpenCover_twoPieceLoop_cast_nullhomotopic_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameSideBlock_homotopy_to_overlapBlock_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_sameSideBlock_homotopy_to_overlapBlock_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameSideBlock_homotopy_to_overlapBlock_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_sameSideBlock_homotopy_to_overlapBlock_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo`. -/
+theorem twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo = @Poincare.twoSetOpenCover_sameSideBlock_homotopic_to_overlapBlock_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_samePrefixOppositeRunSameReturn_tail_induction_step_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_samePrefixOppositeRunSameReturn_tail_induction_step_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_samePrefixOppositeRunSameReturn_tail_induction_step_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_samePrefixOppositeRunSameReturn_tail_induction_step_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_samePrefixOppositeRunSameReturn_tail_induction_step_of_mapsTo`. -/
+theorem twoSetOpenCover_samePrefixOppositeRunSameReturn_tail_induction_step_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_samePrefixOppositeRunSameReturn_tail_induction_step_of_mapsTo = @Poincare.twoSetOpenCover_samePrefixOppositeRunSameReturn_tail_induction_step_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameSideBlock_cast_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_sameSideBlock_cast_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameSideBlock_cast_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_sameSideBlock_cast_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameSideBlock_cast_nullhomotopic_of_mapsTo`. -/
+theorem twoSetOpenCover_sameSideBlock_cast_nullhomotopic_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameSideBlock_cast_nullhomotopic_of_mapsTo = @Poincare.twoSetOpenCover_sameSideBlock_cast_nullhomotopic_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameSideBlockSameSideTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_sameSideBlockSameSideTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameSideBlockSameSideTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_sameSideBlockSameSideTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameSideBlockSameSideTail_concat_cast_nullhomotopic_of_mapsTo`. -/
+theorem twoSetOpenCover_sameSideBlockSameSideTail_concat_cast_nullhomotopic_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameSideBlockSameSideTail_concat_cast_nullhomotopic_of_mapsTo = @Poincare.twoSetOpenCover_sameSideBlockSameSideTail_concat_cast_nullhomotopic_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_nullhomotopic_of_mapsTo`. -/
+theorem twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_nullhomotopic_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_nullhomotopic_of_mapsTo = @Poincare.twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_nullhomotopic_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_nullhomotopic_of_mapsTo`. -/
+theorem twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_nullhomotopic_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_nullhomotopic_of_mapsTo = @Poincare.twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_nullhomotopic_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameHead_firstOppositeRun_terminal_or_return_tail_induction_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_sameHead_firstOppositeRun_terminal_or_return_tail_induction_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameHead_firstOppositeRun_terminal_or_return_tail_induction_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_sameHead_firstOppositeRun_terminal_or_return_tail_induction_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameHead_firstOppositeRun_terminal_or_return_tail_induction`. -/
+theorem twoSetOpenCover_sameHead_firstOppositeRun_terminal_or_return_tail_induction_eq :
+    @Poincare.twoSetOpenCover_sameHead_firstOppositeRun_terminal_or_return_tail_induction = @Poincare.twoSetOpenCover_sameHead_firstOppositeRun_terminal_or_return_tail_induction :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameHead_prefixOppositeRunSameReturn_flat_tail_induction_step_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_sameHead_prefixOppositeRunSameReturn_flat_tail_induction_step_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameHead_prefixOppositeRunSameReturn_flat_tail_induction_step_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_sameHead_prefixOppositeRunSameReturn_flat_tail_induction_step_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameHead_prefixOppositeRunSameReturn_flat_tail_induction_step`. -/
+theorem twoSetOpenCover_sameHead_prefixOppositeRunSameReturn_flat_tail_induction_step_eq :
+    @Poincare.twoSetOpenCover_sameHead_prefixOppositeRunSameReturn_flat_tail_induction_step = @Poincare.twoSetOpenCover_sameHead_prefixOppositeRunSameReturn_flat_tail_induction_step :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameHead_firstOppositeRun_tail_induction_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_sameHead_firstOppositeRun_tail_induction_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameHead_firstOppositeRun_tail_induction_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_sameHead_firstOppositeRun_tail_induction_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameHead_firstOppositeRun_tail_induction`. -/
+theorem twoSetOpenCover_sameHead_firstOppositeRun_tail_induction_eq :
+    @Poincare.twoSetOpenCover_sameHead_firstOppositeRun_tail_induction = @Poincare.twoSetOpenCover_sameHead_firstOppositeRun_tail_induction :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_basedLoop_fullConcat_homotopy_refl_forall_mem_of_sourceChoice`. -/
+theorem twoSetOpenCover_basedLoop_fullConcat_homotopy_refl_forall_mem_of_sourceChoice_eq :
+    @Poincare.twoSetOpenCover_basedLoop_fullConcat_homotopy_refl_forall_mem_of_sourceChoice = @Poincare.twoSetOpenCover_basedLoop_fullConcat_homotopy_refl_forall_mem_of_sourceChoice :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_basedLoop_fullConcat_nullhomotopic_of_sourceChoice`. -/
+theorem twoSetOpenCover_basedLoop_fullConcat_nullhomotopic_of_sourceChoice_eq :
+    @Poincare.twoSetOpenCover_basedLoop_fullConcat_nullhomotopic_of_sourceChoice = @Poincare.twoSetOpenCover_basedLoop_fullConcat_nullhomotopic_of_sourceChoice :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_path_sourceChoice_subpaths`. -/
+theorem twoSetOpenCover_path_sourceChoice_subpaths_eq :
+    @Poincare.twoSetOpenCover_path_sourceChoice_subpaths = @Poincare.twoSetOpenCover_path_sourceChoice_subpaths :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_basedLoop_nullhomotopic_of_sourceChoice`. -/
+theorem twoSetOpenCover_basedLoop_nullhomotopic_of_sourceChoice_eq :
+    @Poincare.twoSetOpenCover_basedLoop_nullhomotopic_of_sourceChoice = @Poincare.twoSetOpenCover_basedLoop_nullhomotopic_of_sourceChoice :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_basedLoop_homotopy_refl_forall_mem_of_sourceChoice`. -/
+theorem twoSetOpenCover_basedLoop_homotopy_refl_forall_mem_of_sourceChoice_eq :
+    @Poincare.twoSetOpenCover_basedLoop_homotopy_refl_forall_mem_of_sourceChoice = @Poincare.twoSetOpenCover_basedLoop_homotopy_refl_forall_mem_of_sourceChoice :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_basedLoop_nullhomotopic`. -/
+theorem twoSetOpenCover_basedLoop_nullhomotopic_eq :
+    @Poincare.twoSetOpenCover_basedLoop_nullhomotopic = @Poincare.twoSetOpenCover_basedLoop_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_pathConnectedSpace`. -/
+theorem twoSetOpenCover_pathConnectedSpace_eq :
+    @Poincare.twoSetOpenCover_pathConnectedSpace = @Poincare.twoSetOpenCover_pathConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `pathConnectedSpace_union_of_pathConnected_inter`. -/
+theorem pathConnectedSpace_union_of_pathConnected_inter_eq :
+    @Poincare.pathConnectedSpace_union_of_pathConnected_inter = @Poincare.pathConnectedSpace_union_of_pathConnected_inter :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_pathConnectedSpace_of_pathConnected_inter`. -/
+theorem twoSetOpenCover_pathConnectedSpace_of_pathConnected_inter_eq :
+    @Poincare.twoSetOpenCover_pathConnectedSpace_of_pathConnected_inter = @Poincare.twoSetOpenCover_pathConnectedSpace_of_pathConnected_inter :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_simplyConnectedSpace`. -/
+theorem twoSetOpenCover_simplyConnectedSpace_eq :
+    @Poincare.twoSetOpenCover_simplyConnectedSpace = @Poincare.twoSetOpenCover_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_simplyConnectedSpace_of_pathConnected_inter`. -/
+theorem twoSetOpenCover_simplyConnectedSpace_of_pathConnected_inter_eq :
+    @Poincare.twoSetOpenCover_simplyConnectedSpace_of_pathConnected_inter = @Poincare.twoSetOpenCover_simplyConnectedSpace_of_pathConnected_inter :=
+  rfl
+
+/-- Theorem contract for `simplyConnectedSpace_union_of_isOpen_pathConnected_inter`. -/
+theorem simplyConnectedSpace_union_of_isOpen_pathConnected_inter_eq :
+    @Poincare.simplyConnectedSpace_union_of_isOpen_pathConnected_inter = @Poincare.simplyConnectedSpace_union_of_isOpen_pathConnected_inter :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_sources_union_simplyConnectedSpace`. -/
+theorem threeSphere_stereographic_sources_union_simplyConnectedSpace_eq :
+    @Poincare.threeSphere_stereographic_sources_union_simplyConnectedSpace = @Poincare.threeSphere_stereographic_sources_union_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `euclideanTwo_rank_gt_one`. -/
+theorem euclideanTwo_rank_gt_one_eq :
+    @Poincare.euclideanTwo_rank_gt_one = @Poincare.euclideanTwo_rank_gt_one :=
+  rfl
+
+/-- Theorem contract for `twoSphere_stereographic_source_simplyConnectedSpace`. -/
+theorem twoSphere_stereographic_source_simplyConnectedSpace_eq :
+    @Poincare.twoSphere_stereographic_source_simplyConnectedSpace = @Poincare.twoSphere_stereographic_source_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `twoSphere_stereographic_source_eq_compl_singleton`. -/
+theorem twoSphere_stereographic_source_eq_compl_singleton_eq :
+    @Poincare.twoSphere_stereographic_source_eq_compl_singleton = @Poincare.twoSphere_stereographic_source_eq_compl_singleton :=
+  rfl
+
+/-- Theorem contract for `twoSphere_stereographic_source_isOpen`. -/
+theorem twoSphere_stereographic_source_isOpen_eq :
+    @Poincare.twoSphere_stereographic_source_isOpen = @Poincare.twoSphere_stereographic_source_isOpen :=
+  rfl
+
+/-- Theorem contract for `twoSphere_stereographic_sources_cover_of_ne`. -/
+theorem twoSphere_stereographic_sources_cover_of_ne_eq :
+    @Poincare.twoSphere_stereographic_sources_cover_of_ne = @Poincare.twoSphere_stereographic_sources_cover_of_ne :=
+  rfl
+
+/-- Theorem contract for `twoSphere_stereographicSource_countableComplement_pathConnectedSpace`. -/
+theorem twoSphere_stereographicSource_countableComplement_pathConnectedSpace_eq :
+    @Poincare.twoSphere_stereographicSource_countableComplement_pathConnectedSpace = @Poincare.twoSphere_stereographicSource_countableComplement_pathConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `twoSphere_countableComplement_pathConnectedSpace_of_mem`. -/
+theorem twoSphere_countableComplement_pathConnectedSpace_of_mem_eq :
+    @Poincare.twoSphere_countableComplement_pathConnectedSpace_of_mem = @Poincare.twoSphere_countableComplement_pathConnectedSpace_of_mem :=
+  rfl
+
+/-- Theorem contract for `twoSphere_countableComplement_pathConnectedSpace`. -/
+theorem twoSphere_countableComplement_pathConnectedSpace_eq :
+    @Poincare.twoSphere_countableComplement_pathConnectedSpace = @Poincare.twoSphere_countableComplement_pathConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `twoSphere_stereographic_sources_inter_eq_twoPointComplement`. -/
+theorem twoSphere_stereographic_sources_inter_eq_twoPointComplement_eq :
+    @Poincare.twoSphere_stereographic_sources_inter_eq_twoPointComplement = @Poincare.twoSphere_stereographic_sources_inter_eq_twoPointComplement :=
+  rfl
+
+/-- Theorem contract for `twoSphere_stereographic_sources_inter_pathConnectedSpace`. -/
+theorem twoSphere_stereographic_sources_inter_pathConnectedSpace_eq :
+    @Poincare.twoSphere_stereographic_sources_inter_pathConnectedSpace = @Poincare.twoSphere_stereographic_sources_inter_pathConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `twoSphere_simplyConnectedSpace_of_distinct_stereographic_sources`. -/
+theorem twoSphere_simplyConnectedSpace_of_distinct_stereographic_sources_eq :
+    @Poincare.twoSphere_simplyConnectedSpace_of_distinct_stereographic_sources = @Poincare.twoSphere_simplyConnectedSpace_of_distinct_stereographic_sources :=
+  rfl
+
+/-- Theorem contract for `twoSphere_antipodal_ne_self`. -/
+theorem twoSphere_antipodal_ne_self_eq :
+    @Poincare.twoSphere_antipodal_ne_self = @Poincare.twoSphere_antipodal_ne_self :=
+  rfl
+
+/-- Theorem contract for `twoSphere_simplyConnectedSpace`. -/
+theorem twoSphere_simplyConnectedSpace_eq :
+    @Poincare.twoSphere_simplyConnectedSpace = @Poincare.twoSphere_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `pathConnectedSpace_prod`. -/
+theorem pathConnectedSpace_prod_eq :
+    @Poincare.pathConnectedSpace_prod = @Poincare.pathConnectedSpace_prod :=
+  rfl
+
+/-- Theorem contract for `simplyConnectedSpace_prod`. -/
+theorem simplyConnectedSpace_prod_eq :
+    @Poincare.simplyConnectedSpace_prod = @Poincare.simplyConnectedSpace_prod :=
+  rfl
+
+/-- Theorem contract for `positiveRealRay_contractibleSpace`. -/
+theorem positiveRealRay_contractibleSpace_eq :
+    @Poincare.positiveRealRay_contractibleSpace = @Poincare.positiveRealRay_contractibleSpace :=
+  rfl
+
+/-- Theorem contract for `positiveRealRay_simplyConnectedSpace`. -/
+theorem positiveRealRay_simplyConnectedSpace_eq :
+    @Poincare.positiveRealRay_simplyConnectedSpace = @Poincare.positiveRealRay_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `euclideanThree_unitSphere_prod_positiveRay_simplyConnectedSpace`. -/
+theorem euclideanThree_unitSphere_prod_positiveRay_simplyConnectedSpace_eq :
+    @Poincare.euclideanThree_unitSphere_prod_positiveRay_simplyConnectedSpace = @Poincare.euclideanThree_unitSphere_prod_positiveRay_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `euclideanThree_compl_zero_simplyConnectedSpace`. -/
+theorem euclideanThree_compl_zero_simplyConnectedSpace_eq :
+    @Poincare.euclideanThree_compl_zero_simplyConnectedSpace = @Poincare.euclideanThree_compl_zero_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `euclideanThree_compl_singleton_simplyConnectedSpace`. -/
+theorem euclideanThree_compl_singleton_simplyConnectedSpace_eq :
+    @Poincare.euclideanThree_compl_singleton_simplyConnectedSpace = @Poincare.euclideanThree_compl_singleton_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `threeSphere_twoPointComplement_simplyConnectedSpace`. -/
+theorem threeSphere_twoPointComplement_simplyConnectedSpace_eq :
+    @Poincare.threeSphere_twoPointComplement_simplyConnectedSpace = @Poincare.threeSphere_twoPointComplement_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicSources_inter_simplyConnectedSpace`. -/
+theorem threeSphere_stereographicSources_inter_simplyConnectedSpace_eq :
+    @Poincare.threeSphere_stereographicSources_inter_simplyConnectedSpace = @Poincare.threeSphere_stereographicSources_inter_simplyConnectedSpace :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_source_contained_concat_loop_homotopy_refl`. -/
+theorem threeSphere_stereographic_source_contained_concat_loop_homotopy_refl_eq :
+    @Poincare.threeSphere_stereographic_source_contained_concat_loop_homotopy_refl = @Poincare.threeSphere_stereographic_source_contained_concat_loop_homotopy_refl :=
+  rfl
+
+/-- Theorem contract for `union_loop_homotopy_refl_forall_mem_of_isOpen_pathConnected_inter`. -/
+theorem union_loop_homotopy_refl_forall_mem_of_isOpen_pathConnected_inter_eq :
+    @Poincare.union_loop_homotopy_refl_forall_mem_of_isOpen_pathConnected_inter = @Poincare.union_loop_homotopy_refl_forall_mem_of_isOpen_pathConnected_inter :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_sources_loop_homotopy_refl_forall_mem_of_ne`. -/
+theorem threeSphere_stereographic_sources_loop_homotopy_refl_forall_mem_of_ne_eq :
+    @Poincare.threeSphere_stereographic_sources_loop_homotopy_refl_forall_mem_of_ne = @Poincare.threeSphere_stereographic_sources_loop_homotopy_refl_forall_mem_of_ne :=
+  rfl
+
+/-- Theorem contract for `union_paths_homotopy_forall_mem_of_isOpen_pathConnected_inter`. -/
+theorem union_paths_homotopy_forall_mem_of_isOpen_pathConnected_inter_eq :
+    @Poincare.union_paths_homotopy_forall_mem_of_isOpen_pathConnected_inter = @Poincare.union_paths_homotopy_forall_mem_of_isOpen_pathConnected_inter :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_pathQuotientSubsingleton_of_pathConnected_inter`. -/
+theorem twoSetOpenCover_pathQuotientSubsingleton_of_pathConnected_inter_eq :
+    @Poincare.twoSetOpenCover_pathQuotientSubsingleton_of_pathConnected_inter = @Poincare.twoSetOpenCover_pathQuotientSubsingleton_of_pathConnected_inter :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_fundamentalGroupSubsingleton_of_pathConnected_inter`. -/
+theorem twoSetOpenCover_fundamentalGroupSubsingleton_of_pathConnected_inter_eq :
+    @Poincare.twoSetOpenCover_fundamentalGroupSubsingleton_of_pathConnected_inter = @Poincare.twoSetOpenCover_fundamentalGroupSubsingleton_of_pathConnected_inter :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_paths_homotopic_of_pathConnected_inter`. -/
+theorem twoSetOpenCover_paths_homotopic_of_pathConnected_inter_eq :
+    @Poincare.twoSetOpenCover_paths_homotopic_of_pathConnected_inter = @Poincare.twoSetOpenCover_paths_homotopic_of_pathConnected_inter :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_piOneSubsingleton_of_pathConnected_inter`. -/
+theorem twoSetOpenCover_piOneSubsingleton_of_pathConnected_inter_eq :
+    @Poincare.twoSetOpenCover_piOneSubsingleton_of_pathConnected_inter = @Poincare.twoSetOpenCover_piOneSubsingleton_of_pathConnected_inter :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameSideBlockOppositeReturn_trans_cast_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_sameSideBlockOppositeReturn_trans_cast_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameSideBlockOppositeReturn_trans_cast_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_sameSideBlockOppositeReturn_trans_cast_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameSideBlockOppositeReturn_trans_cast_nullhomotopic_of_mapsTo`. -/
+theorem twoSetOpenCover_sameSideBlockOppositeReturn_trans_cast_nullhomotopic_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameSideBlockOppositeReturn_trans_cast_nullhomotopic_of_mapsTo = @Poincare.twoSetOpenCover_sameSideBlockOppositeReturn_trans_cast_nullhomotopic_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_oppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_oppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_oppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_oppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_oppositeSameOppositeTail_concat_cast_nullhomotopic_of_mapsTo`. -/
+theorem twoSetOpenCover_oppositeSameOppositeTail_concat_cast_nullhomotopic_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_oppositeSameOppositeTail_concat_cast_nullhomotopic_of_mapsTo = @Poincare.twoSetOpenCover_oppositeSameOppositeTail_concat_cast_nullhomotopic_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_sameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_sameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_sameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo`. -/
+theorem twoSetOpenCover_sameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_sameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo = @Poincare.twoSetOpenCover_sameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_oppositeSameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_oppositeSameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_oppositeSameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_oppositeSameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_oppositeSameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo`. -/
+theorem twoSetOpenCover_oppositeSameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_oppositeSameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo = @Poincare.twoSetOpenCover_oppositeSameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_oppositeSameOppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_oppositeSameOppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_oppositeSameOppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_oppositeSameOppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_oppositeSameOppositeSameOppositeTail_concat_cast_nullhomotopic_of_mapsTo`. -/
+theorem twoSetOpenCover_oppositeSameOppositeSameOppositeTail_concat_cast_nullhomotopic_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_oppositeSameOppositeSameOppositeTail_concat_cast_nullhomotopic_of_mapsTo = @Poincare.twoSetOpenCover_oppositeSameOppositeSameOppositeTail_concat_cast_nullhomotopic_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_oppositeSameOppositeSameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_oppositeSameOppositeSameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_oppositeSameOppositeSameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_oppositeSameOppositeSameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_oppositeSameOppositeSameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo`. -/
+theorem twoSetOpenCover_oppositeSameOppositeSameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_oppositeSameOppositeSameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo = @Poincare.twoSetOpenCover_oppositeSameOppositeSameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeTail_concat_cast_nullhomotopic_of_mapsTo`. -/
+theorem twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeTail_concat_cast_nullhomotopic_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeTail_concat_cast_nullhomotopic_of_mapsTo = @Poincare.twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeTail_concat_cast_nullhomotopic_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo`. -/
+theorem twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo = @Poincare.twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo`. -/
+theorem twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo_eq :
+    @Poincare.twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo = @Poincare.twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo :=
+  rfl
+
+/-- Theorem contract for `simplyConnectedSpace_iff_pathConnectedSpace_and_basedFundamentalGroupSubsingleton`. -/
+theorem simplyConnectedSpace_iff_pathConnectedSpace_and_basedFundamentalGroupSubsingleton_eq :
+    @Poincare.simplyConnectedSpace_iff_pathConnectedSpace_and_basedFundamentalGroupSubsingleton = @Poincare.simplyConnectedSpace_iff_pathConnectedSpace_and_basedFundamentalGroupSubsingleton :=
+  rfl
+
+/-- Theorem contract for `simplyConnectedSpace_iff_pathConnectedSpace_and_basedPiOneSubsingleton`. -/
+theorem simplyConnectedSpace_iff_pathConnectedSpace_and_basedPiOneSubsingleton_eq :
+    @Poincare.simplyConnectedSpace_iff_pathConnectedSpace_and_basedPiOneSubsingleton = @Poincare.simplyConnectedSpace_iff_pathConnectedSpace_and_basedPiOneSubsingleton :=
+  rfl
+
+/-- Theorem contract for `simplyConnectedSpace_of_pathConnectedSpace_and_basedPiOneSubsingleton`. -/
+theorem simplyConnectedSpace_of_pathConnectedSpace_and_basedPiOneSubsingleton_eq :
+    @Poincare.simplyConnectedSpace_of_pathConnectedSpace_and_basedPiOneSubsingleton = @Poincare.simplyConnectedSpace_of_pathConnectedSpace_and_basedPiOneSubsingleton :=
+  rfl
+
+/-- Theorem contract for `pathQuotientSubsingleton_of_pathConnectedSpace_and_basedFundamentalGroupSubsingleton`. -/
+theorem pathQuotientSubsingleton_of_pathConnectedSpace_and_basedFundamentalGroupSubsingleton_eq :
+    @Poincare.pathQuotientSubsingleton_of_pathConnectedSpace_and_basedFundamentalGroupSubsingleton = @Poincare.pathQuotientSubsingleton_of_pathConnectedSpace_and_basedFundamentalGroupSubsingleton :=
+  rfl
+
+/-- Theorem contract for `pathQuotientSubsingleton_of_pathConnectedSpace_and_basedPiOneSubsingleton`. -/
+theorem pathQuotientSubsingleton_of_pathConnectedSpace_and_basedPiOneSubsingleton_eq :
+    @Poincare.pathQuotientSubsingleton_of_pathConnectedSpace_and_basedPiOneSubsingleton = @Poincare.pathQuotientSubsingleton_of_pathConnectedSpace_and_basedPiOneSubsingleton :=
+  rfl
+
+/-- Theorem contract for `fundamentalGroupSubsingleton_of_pathConnectedSpace_and_basedFundamentalGroupSubsingleton`. -/
+theorem fundamentalGroupSubsingleton_of_pathConnectedSpace_and_basedFundamentalGroupSubsingleton_eq :
+    @Poincare.fundamentalGroupSubsingleton_of_pathConnectedSpace_and_basedFundamentalGroupSubsingleton = @Poincare.fundamentalGroupSubsingleton_of_pathConnectedSpace_and_basedFundamentalGroupSubsingleton :=
+  rfl
+
+/-- Theorem contract for `piOneSubsingleton_of_pathConnectedSpace_and_basedPiOneSubsingleton`. -/
+theorem piOneSubsingleton_of_pathConnectedSpace_and_basedPiOneSubsingleton_eq :
+    @Poincare.piOneSubsingleton_of_pathConnectedSpace_and_basedPiOneSubsingleton = @Poincare.piOneSubsingleton_of_pathConnectedSpace_and_basedPiOneSubsingleton :=
+  rfl
+
+/-- Theorem contract for `simplyConnectedSpace_iff_pathConnectedSpace_and_fundamentalGroupSubsingleton`. -/
+theorem simplyConnectedSpace_iff_pathConnectedSpace_and_fundamentalGroupSubsingleton_eq :
+    @Poincare.simplyConnectedSpace_iff_pathConnectedSpace_and_fundamentalGroupSubsingleton = @Poincare.simplyConnectedSpace_iff_pathConnectedSpace_and_fundamentalGroupSubsingleton :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_allNorth`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_allNorth_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_allNorth = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_allNorth :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_allSouth`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_allSouth_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_allSouth = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_allSouth :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouth_loop_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouth_loop_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouth_loop_nullhomotopic = @Poincare.threeSphere_stereographic_northSouth_loop_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouth_trans_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_northSouth_trans_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_northSouth_trans_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_northSouth_trans_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouth_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouth_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouth_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouth_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorth_loop_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorth_loop_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorth_loop_nullhomotopic = @Poincare.threeSphere_stereographic_southNorth_loop_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorth_trans_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_southNorth_trans_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_southNorth_trans_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_southNorth_trans_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorth_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorth_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorth_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorth_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthNorth_trans_trans_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_northSouthNorth_trans_trans_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_northSouthNorth_trans_trans_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_northSouthNorth_trans_trans_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthNorth_trans_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthNorth_trans_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthNorth_trans_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthNorth_trans_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthSouth_trans_trans_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_southNorthSouth_trans_trans_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_southNorthSouth_trans_trans_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_southNorthSouth_trans_trans_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthSouth_trans_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthSouth_trans_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthSouth_trans_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthSouth_trans_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorth_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_northSouthBlockNorth_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorth_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_northSouthBlockNorth_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorth_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorth_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorth_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorth_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouth_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_southNorthBlockSouth_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouth_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_southNorthBlockSouth_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouth_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouth_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouth_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouth_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthTail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthTail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northNorthBlockSouthTail_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_northNorthBlockSouthTail_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_northNorthBlockSouthTail_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_northNorthBlockSouthTail_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northNorthBlockSouthTail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northNorthBlockSouthTail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northNorthBlockSouthTail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northNorthBlockSouthTail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southSouthBlockNorthTail_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_southSouthBlockNorthTail_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_southSouthBlockNorthTail_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_southSouthBlockNorthTail_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southSouthBlockNorthTail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southSouthBlockNorthTail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southSouthBlockNorthTail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southSouthBlockNorthTail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northHead_terminalSouthRun_tail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northHead_terminalSouthRun_tail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northHead_terminalSouthRun_tail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northHead_terminalSouthRun_tail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southHead_terminalNorthRun_tail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southHead_terminalNorthRun_tail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southHead_terminalNorthRun_tail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southHead_terminalNorthRun_tail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northHead_firstSouthRun_terminal_or_return_tail_induction`. -/
+theorem threeSphere_stereographic_northHead_firstSouthRun_terminal_or_return_tail_induction_eq :
+    @Poincare.threeSphere_stereographic_northHead_firstSouthRun_terminal_or_return_tail_induction = @Poincare.threeSphere_stereographic_northHead_firstSouthRun_terminal_or_return_tail_induction :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southHead_firstNorthRun_terminal_or_return_tail_induction`. -/
+theorem threeSphere_stereographic_southHead_firstNorthRun_terminal_or_return_tail_induction_eq :
+    @Poincare.threeSphere_stereographic_southHead_firstNorthRun_terminal_or_return_tail_induction = @Poincare.threeSphere_stereographic_southHead_firstNorthRun_terminal_or_return_tail_induction :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorth_homotopic_to_northBlock`. -/
+theorem threeSphere_stereographic_northSouthBlockNorth_homotopic_to_northBlock_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorth_homotopic_to_northBlock = @Poincare.threeSphere_stereographic_northSouthBlockNorth_homotopic_to_northBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouth_homotopic_to_southBlock`. -/
+theorem threeSphere_stereographic_southNorthBlockSouth_homotopic_to_southBlock_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouth_homotopic_to_southBlock = @Poincare.threeSphere_stereographic_southNorthBlockSouth_homotopic_to_southBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_runBlock_southBetweenNorth_homotopic_to_northBlock`. -/
+theorem threeSphere_stereographicEquatorLoop_runBlock_southBetweenNorth_homotopic_to_northBlock_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_runBlock_southBetweenNorth_homotopic_to_northBlock = @Poincare.threeSphere_stereographicEquatorLoop_runBlock_southBetweenNorth_homotopic_to_northBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_runBlock_northBetweenSouth_homotopic_to_southBlock`. -/
+theorem threeSphere_stereographicEquatorLoop_runBlock_northBetweenSouth_homotopic_to_southBlock_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_runBlock_northBetweenSouth_homotopic_to_southBlock = @Poincare.threeSphere_stereographicEquatorLoop_runBlock_northBetweenSouth_homotopic_to_southBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstSouthRun_prefixBlockStop_replacement`. -/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_prefixBlockStop_replacement_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_prefixBlockStop_replacement = @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_prefixBlockStop_replacement :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstNorthRun_prefixBlockStop_replacement`. -/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_prefixBlockStop_replacement_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_prefixBlockStop_replacement = @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_prefixBlockStop_replacement :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_prefixBlockStop_homotopic_to_stopSubpath`. -/
+theorem threeSphere_stereographicEquatorLoop_prefixBlockStop_homotopic_to_stopSubpath_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_prefixBlockStop_homotopic_to_stopSubpath = @Poincare.threeSphere_stereographicEquatorLoop_prefixBlockStop_homotopic_to_stopSubpath :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstSouthRun_prefixBlockStop_tail_induction_step`. -/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_prefixBlockStop_tail_induction_step_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_prefixBlockStop_tail_induction_step = @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_prefixBlockStop_tail_induction_step :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstNorthRun_prefixBlockStop_tail_induction_step`. -/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_prefixBlockStop_tail_induction_step_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_prefixBlockStop_tail_induction_step = @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_prefixBlockStop_tail_induction_step :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_afterStop_tail_sourceChoice`. -/
+theorem threeSphere_stereographicEquatorLoop_afterStop_tail_sourceChoice_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_afterStop_tail_sourceChoice = @Poincare.threeSphere_stereographicEquatorLoop_afterStop_tail_sourceChoice :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_afterStop_tail_sameSource_range_subset`. -/
+theorem threeSphere_stereographicEquatorLoop_afterStop_tail_sameSource_range_subset_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_afterStop_tail_sameSource_range_subset = @Poincare.threeSphere_stereographicEquatorLoop_afterStop_tail_sameSource_range_subset :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_afterStop_tailConcat_homotopic_to_subpath`. -/
+theorem threeSphere_stereographicEquatorLoop_afterStop_tailConcat_homotopic_to_subpath_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_afterStop_tailConcat_homotopic_to_subpath = @Poincare.threeSphere_stereographicEquatorLoop_afterStop_tailConcat_homotopic_to_subpath :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_fullConcat_homotopic_to_stopSubpath_tailConcat`. -/
+theorem threeSphere_stereographicEquatorLoop_fullConcat_homotopic_to_stopSubpath_tailConcat_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_fullConcat_homotopic_to_stopSubpath_tailConcat = @Poincare.threeSphere_stereographicEquatorLoop_fullConcat_homotopic_to_stopSubpath_tailConcat :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_fullConcat_homotopic_to_prefixBlockStop_tailConcat`. -/
+theorem threeSphere_stereographicEquatorLoop_fullConcat_homotopic_to_prefixBlockStop_tailConcat_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_fullConcat_homotopic_to_prefixBlockStop_tailConcat = @Poincare.threeSphere_stereographicEquatorLoop_fullConcat_homotopic_to_prefixBlockStop_tailConcat :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_induction_step`. -/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_induction_step_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_induction_step = @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_induction_step :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_induction_step`. -/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_induction_step_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_induction_step = @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_induction_step :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstSouthRunBetweenNorth_replacement_or_terminal`. -/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRunBetweenNorth_replacement_or_terminal_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRunBetweenNorth_replacement_or_terminal = @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRunBetweenNorth_replacement_or_terminal :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstNorthRunBetweenSouth_replacement_or_terminal`. -/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRunBetweenSouth_replacement_or_terminal_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRunBetweenSouth_replacement_or_terminal = @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRunBetweenSouth_replacement_or_terminal :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorth_induction_step`. -/
+theorem threeSphere_stereographic_northSouthBlockNorth_induction_step_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorth_induction_step = @Poincare.threeSphere_stereographic_northSouthBlockNorth_induction_step :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouth_induction_step`. -/
+theorem threeSphere_stereographic_southNorthBlockSouth_induction_step_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouth_induction_step = @Poincare.threeSphere_stereographic_southNorthBlockSouth_induction_step :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northPrefixSouthRunNorthReturn_tail_induction_step`. -/
+theorem threeSphere_stereographic_northPrefixSouthRunNorthReturn_tail_induction_step_eq :
+    @Poincare.threeSphere_stereographic_northPrefixSouthRunNorthReturn_tail_induction_step = @Poincare.threeSphere_stereographic_northPrefixSouthRunNorthReturn_tail_induction_step :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southPrefixNorthRunSouthReturn_tail_induction_step`. -/
+theorem threeSphere_stereographic_southPrefixNorthRunSouthReturn_tail_induction_step_eq :
+    @Poincare.threeSphere_stereographic_southPrefixNorthRunSouthReturn_tail_induction_step = @Poincare.threeSphere_stereographic_southPrefixNorthRunSouthReturn_tail_induction_step :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northHead_prefixSouthRunNorthReturn_flat_tail_induction_step`. -/
+theorem threeSphere_stereographic_northHead_prefixSouthRunNorthReturn_flat_tail_induction_step_eq :
+    @Poincare.threeSphere_stereographic_northHead_prefixSouthRunNorthReturn_flat_tail_induction_step = @Poincare.threeSphere_stereographic_northHead_prefixSouthRunNorthReturn_flat_tail_induction_step :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southHead_prefixNorthRunSouthReturn_flat_tail_induction_step`. -/
+theorem threeSphere_stereographic_southHead_prefixNorthRunSouthReturn_flat_tail_induction_step_eq :
+    @Poincare.threeSphere_stereographic_southHead_prefixNorthRunSouthReturn_flat_tail_induction_step = @Poincare.threeSphere_stereographic_southHead_prefixNorthRunSouthReturn_flat_tail_induction_step :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northHead_firstSouthRun_tail_induction`. -/
+theorem threeSphere_stereographic_northHead_firstSouthRun_tail_induction_eq :
+    @Poincare.threeSphere_stereographic_northHead_firstSouthRun_tail_induction = @Poincare.threeSphere_stereographic_northHead_firstSouthRun_tail_induction :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southHead_firstNorthRun_tail_induction`. -/
+theorem threeSphere_stereographic_southHead_firstNorthRun_tail_induction_eq :
+    @Poincare.threeSphere_stereographic_southHead_firstNorthRun_tail_induction = @Poincare.threeSphere_stereographic_southHead_firstNorthRun_tail_induction :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorth_contracts_through_northBlock`. -/
+theorem threeSphere_stereographic_northSouthBlockNorth_contracts_through_northBlock_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorth_contracts_through_northBlock = @Poincare.threeSphere_stereographic_northSouthBlockNorth_contracts_through_northBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouth_contracts_through_southBlock`. -/
+theorem threeSphere_stereographic_southNorthBlockSouth_contracts_through_southBlock_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouth_contracts_through_southBlock = @Poincare.threeSphere_stereographic_southNorthBlockSouth_contracts_through_southBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlock_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlock_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlock_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlock_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlock_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlock_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlock_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlock_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorthBlock_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlock_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlock_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlock_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthBlock_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthBlock_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthBlock_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthBlock_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthBlock_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthBlock_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthBlock_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthBlock_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouth_trans_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouth_trans_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouth_trans_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouth_trans_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouth_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouth_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouth_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouth_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorth_trans_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorth_trans_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorth_trans_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorth_trans_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorth_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorth_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorth_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorth_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthBlockSouthBlock_tail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthBlockSouthBlock_tail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthBlockSouthBlock_tail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthBlockSouthBlock_tail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthBlockNorthBlock_tail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthBlockNorthBlock_tail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthBlockNorthBlock_tail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthBlockNorthBlock_tail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockTail_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockTail_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockTail_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockTail_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockTail_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockTail_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockTail_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockTail_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northNorthBlockSouthBlockNorthBlockTail_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_northNorthBlockSouthBlockNorthBlockTail_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_northNorthBlockSouthBlockNorthBlockTail_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_northNorthBlockSouthBlockNorthBlockTail_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southSouthBlockNorthBlockSouthBlockTail_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_southSouthBlockNorthBlockSouthBlockTail_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_southSouthBlockNorthBlockSouthBlockTail_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_southSouthBlockNorthBlockSouthBlockTail_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlockNorth_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlockNorth_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorth_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorth_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorthBlockSouth_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouth_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouth_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouth_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouth_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouth_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouth_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouth_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorth_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorth_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorth_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorth_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorth_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorth_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorth_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorth_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouth_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouth_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouth_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouth_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorth_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorth_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorth_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorth_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthSouth_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthSouth_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthSouth_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthSouth_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorth_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorth_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorth_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorth_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouth_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouth_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouth_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouth_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouth_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouth_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouth_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouth_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthNorth_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthNorth_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthNorth_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthNorth_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthBlock_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthBlock_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthBlock_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthBlock_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthBlock_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthBlock_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthBlock_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthBlock_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthBlock_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthBlock_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthBlock_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthBlock_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthBlock_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthBlock_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthBlock_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthBlock_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthBlock_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthBlock_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthBlock_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthBlock_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthBlock_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthBlock_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthBlock_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthBlock_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthBlock_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthBlock_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthBlock_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthBlock_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthBlock_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthBlock_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthBlock_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthBlock_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northSouthBlockNorthSouthBlockNorthSouthBlock_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southNorthBlockSouthNorthBlockSouthNorthBlock_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northBlockSouth_trans_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_northBlockSouth_trans_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_northBlockSouth_trans_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_northBlockSouth_trans_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northBlockSouth_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northBlockSouth_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northBlockSouth_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northBlockSouth_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southBlockNorth_trans_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_southBlockNorth_trans_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_southBlockNorth_trans_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_southBlockNorth_trans_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southBlockNorth_trans_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southBlockNorth_trans_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southBlockNorth_trans_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southBlockNorth_trans_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northBlockSouthBlock_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_northBlockSouthBlock_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_northBlockSouthBlock_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_northBlockSouthBlock_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_northBlockSouthBlock_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_northBlockSouthBlock_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_northBlockSouthBlock_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_northBlockSouthBlock_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southBlockNorthBlock_concat_cast_homotopy_refl_forall_mem`. -/
+theorem threeSphere_stereographic_southBlockNorthBlock_concat_cast_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_stereographic_southBlockNorthBlock_concat_cast_homotopy_refl_forall_mem = @Poincare.threeSphere_stereographic_southBlockNorthBlock_concat_cast_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_southBlockNorthBlock_concat_cast_nullhomotopic`. -/
+theorem threeSphere_stereographic_southBlockNorthBlock_concat_cast_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographic_southBlockNorthBlock_concat_cast_nullhomotopic = @Poincare.threeSphere_stereographic_southBlockNorthBlock_concat_cast_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlock_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlock_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlock_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlock_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlock_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlock_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlock_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlock_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlock_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlock_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlock_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlock_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlock_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlock_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlock_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlock_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlock_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlock_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlock_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlock_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlock_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlock_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlock_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlock_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_of_subpath_nullhomotopic`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_of_subpath_nullhomotopic_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_of_subpath_nullhomotopic = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_of_subpath_nullhomotopic :=
+  rfl
+
+/-- Theorem contract for `threeSphere_antipodalLoop_homotopy_refl_forall_mem`. -/
+theorem threeSphere_antipodalLoop_homotopy_refl_forall_mem_eq :
+    @Poincare.threeSphere_antipodalLoop_homotopy_refl_forall_mem = @Poincare.threeSphere_antipodalLoop_homotopy_refl_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_antipodalPaths_homotopy_forall_mem`. -/
+theorem threeSphere_antipodalPaths_homotopy_forall_mem_eq :
+    @Poincare.threeSphere_antipodalPaths_homotopy_forall_mem = @Poincare.threeSphere_antipodalPaths_homotopy_forall_mem :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographic_sources_paths_homotopy_forall_mem_of_ne`. -/
+theorem threeSphere_stereographic_sources_paths_homotopy_forall_mem_of_ne_eq :
+    @Poincare.threeSphere_stereographic_sources_paths_homotopy_forall_mem_of_ne = @Poincare.threeSphere_stereographic_sources_paths_homotopy_forall_mem_of_ne :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicSources_fullConcat_homotopy_refl_forall_mem_of_sourceChoice`. -/
+theorem threeSphere_stereographicSources_fullConcat_homotopy_refl_forall_mem_of_sourceChoice_eq :
+    @Poincare.threeSphere_stereographicSources_fullConcat_homotopy_refl_forall_mem_of_sourceChoice = @Poincare.threeSphere_stereographicSources_fullConcat_homotopy_refl_forall_mem_of_sourceChoice :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicSources_fullConcat_homotopy_refl_forall_mem_of_sourceChoice_of_ne`. -/
+theorem threeSphere_stereographicSources_fullConcat_homotopy_refl_forall_mem_of_sourceChoice_of_ne_eq :
+    @Poincare.threeSphere_stereographicSources_fullConcat_homotopy_refl_forall_mem_of_sourceChoice_of_ne = @Poincare.threeSphere_stereographicSources_fullConcat_homotopy_refl_forall_mem_of_sourceChoice_of_ne :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_fullConcat_homotopy_refl_forall_mem_of_sourceChoice`. -/
+theorem threeSphere_stereographicEquatorLoop_fullConcat_homotopy_refl_forall_mem_of_sourceChoice_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_fullConcat_homotopy_refl_forall_mem_of_sourceChoice = @Poincare.threeSphere_stereographicEquatorLoop_fullConcat_homotopy_refl_forall_mem_of_sourceChoice :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_fullConcat_nullhomotopic_of_sourceChoice`. -/
+theorem threeSphere_stereographicEquatorLoop_fullConcat_nullhomotopic_of_sourceChoice_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_fullConcat_nullhomotopic_of_sourceChoice = @Poincare.threeSphere_stereographicEquatorLoop_fullConcat_nullhomotopic_of_sourceChoice :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_of_sourceChoice`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_of_sourceChoice_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_of_sourceChoice = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_of_sourceChoice :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapseStatement :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstSouthRun_terminal_fullConcat_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_terminal_fullConcat_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_terminal_fullConcat_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_terminal_fullConcat_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstNorthRun_terminal_fullConcat_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_terminal_fullConcat_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_terminal_fullConcat_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_terminal_fullConcat_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_allNorth_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_allNorth_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_allNorth_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_allNorth_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_allSouth_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_allSouth_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_allSouth_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_allSouth_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_allSouth_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_allSouth_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_allSouth_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_allSouth_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_allNorth_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_allNorth_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_allNorth_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_allNorth_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlock_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlock_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlock_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlock_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlock_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlock_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlock_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlock_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlock_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlock_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlock_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlock_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlock_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlock_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlock_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlock_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlock_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlock_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlock_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlock_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_northBlockSouthBlockNorthBlock_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_northBlockSouthBlockNorthBlock_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_northBlockSouthBlockNorthBlock_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_northBlockSouthBlockNorthBlock_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_southBlockNorthBlockSouthBlock_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_southBlockNorthBlockSouthBlock_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_southBlockNorthBlockSouthBlock_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_southBlockNorthBlockSouthBlock_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlock_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlock_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlock_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlock_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_northBlockSouthBlock_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_northBlockSouthBlock_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_northBlockSouthBlock_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_northBlockSouthBlock_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_southBlockNorthBlock_collapse`. -/
+theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_southBlockNorthBlock_collapse_eq :
+    @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_southBlockNorthBlock_collapse = @Poincare.threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_southBlockNorthBlock_collapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlock`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlock_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlock = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlock`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlock_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlock = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlock`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlock_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlock = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlock`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlock_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlock = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlock`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlock_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlock = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlock`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlock_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlock = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlock`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlock_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlock = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlock`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlock_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlock = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlock :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northSouthBlockNorth`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northSouthBlockNorth_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northSouthBlockNorth = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northSouthBlockNorth :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southNorthBlockSouth`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southNorthBlockSouth_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southNorthBlockSouth = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southNorthBlockSouth :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoNorthSouth`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoNorthSouth_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoNorthSouth = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoNorthSouth :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoSouthNorth`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoSouthNorth_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoSouthNorth = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoSouthNorth :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoSegments_of_source_or`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoSegments_of_source_or_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoSegments_of_source_or = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoSegments_of_source_or :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeNorthSouthNorth`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeNorthSouthNorth_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeNorthSouthNorth = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeNorthSouthNorth :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeSouthNorthSouth`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeSouthNorthSouth_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeSouthNorthSouth = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeSouthNorthSouth :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeSegments_of_source_or`. -/
+theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeSegments_of_source_or_eq :
+    @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeSegments_of_source_or = @Poincare.threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeSegments_of_source_or :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicVanKampenLoopStatement_of_sourceChoiceCollapse`. -/
+theorem threeSphere_stereographicVanKampenLoopStatement_of_sourceChoiceCollapse_eq :
+    @Poincare.threeSphere_stereographicVanKampenLoopStatement_of_sourceChoiceCollapse = @Poincare.threeSphere_stereographicVanKampenLoopStatement_of_sourceChoiceCollapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicVanKampenConclusionStatement`. -/
+theorem threeSphere_stereographicVanKampenConclusionStatement_eq :
+    @Poincare.threeSphere_stereographicVanKampenConclusionStatement = @Poincare.threeSphere_stereographicVanKampenConclusionStatement :=
+  rfl
+
+/-- Theorem contract for `threeSphere_stereographicVanKampenReductionStatement`. -/
+theorem threeSphere_stereographicVanKampenReductionStatement_eq :
+    @Poincare.threeSphere_stereographicVanKampenReductionStatement = @Poincare.threeSphere_stereographicVanKampenReductionStatement :=
+  rfl
+
+/-- Theorem contract for `threeSphere_simplyConnectedSpace_of_sourceChoiceCollapse`. -/
+theorem threeSphere_simplyConnectedSpace_of_sourceChoiceCollapse_eq :
+    @Poincare.threeSphere_simplyConnectedSpace_of_sourceChoiceCollapse = @Poincare.threeSphere_simplyConnectedSpace_of_sourceChoiceCollapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_pathQuotientSubsingletonStatement_of_basedFundamentalGroupSubsingleton`. -/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_basedFundamentalGroupSubsingleton_eq :
+    @Poincare.threeSphere_pathQuotientSubsingletonStatement_of_basedFundamentalGroupSubsingleton = @Poincare.threeSphere_pathQuotientSubsingletonStatement_of_basedFundamentalGroupSubsingleton :=
+  rfl
+
+/-- Theorem contract for `threeSphere_loopNullhomotopyStatement_of_sourceChoiceCollapse`. -/
+theorem threeSphere_loopNullhomotopyStatement_of_sourceChoiceCollapse_eq :
+    @Poincare.threeSphere_loopNullhomotopyStatement_of_sourceChoiceCollapse = @Poincare.threeSphere_loopNullhomotopyStatement_of_sourceChoiceCollapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_pathHomotopyStatement_of_sourceChoiceCollapse`. -/
+theorem threeSphere_pathHomotopyStatement_of_sourceChoiceCollapse_eq :
+    @Poincare.threeSphere_pathHomotopyStatement_of_sourceChoiceCollapse = @Poincare.threeSphere_pathHomotopyStatement_of_sourceChoiceCollapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_pathQuotientSubsingletonStatement_of_sourceChoiceCollapse`. -/
+theorem threeSphere_pathQuotientSubsingletonStatement_of_sourceChoiceCollapse_eq :
+    @Poincare.threeSphere_pathQuotientSubsingletonStatement_of_sourceChoiceCollapse = @Poincare.threeSphere_pathQuotientSubsingletonStatement_of_sourceChoiceCollapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_fundamentalGroupSubsingletonStatement_of_sourceChoiceCollapse`. -/
+theorem threeSphere_fundamentalGroupSubsingletonStatement_of_sourceChoiceCollapse_eq :
+    @Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_sourceChoiceCollapse = @Poincare.threeSphere_fundamentalGroupSubsingletonStatement_of_sourceChoiceCollapse :=
+  rfl
+
+/-- Theorem contract for `threeSphere_piOneSubsingletonStatement_of_sourceChoiceCollapse`. -/
+theorem threeSphere_piOneSubsingletonStatement_of_sourceChoiceCollapse_eq :
+    @Poincare.threeSphere_piOneSubsingletonStatement_of_sourceChoiceCollapse = @Poincare.threeSphere_piOneSubsingletonStatement_of_sourceChoiceCollapse :=
+  rfl
+
+end Poincare

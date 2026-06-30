@@ -48214,35 +48214,42 @@ witness.
   @poincare_statement_checked_certificate_terminal_smoothability_bridge_tail_three_sphere_homeomorphism_projector_and_puncture_payload_of_grounded_terminal_onePoint_core_smoothability_consumer
 
 /--
-**Step 3802.** Exact route `poincare_conjecture` is exposed for direct researcher checking.
-
-Explanation: this aliases the compiled theorem named `poincare_conjecture`,
-the reserved root theorem name. The theorem is intentionally still
-parameterized by `PoincareProofDependenciesWithEquationBoundary`, so it does
-not pretend that the closed final theorem has been completed. It makes the
-remaining dependency boundary explicit at the canonical theorem name and routes
-that strengthened dependency package through
-`poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary` to the
-project statement `PoincareConjectureStatement`. The companion theorem
-`poincare_conjecture_expanded` exposes the corresponding expanded topological
-claim `∀ M, Nonempty (M ≃ₜ ThreeSphere)` under the same strengthened
-dependency package.
--/
-@[reducible] noncomputable def exact_step_poincare_conjecture :=
-  @poincare_conjecture
-
-/--
-**Step 3803.** Exact route `poincare_conjecture_expanded` is exposed for direct researcher checking.
+**Step 3802.** Exact conditional route
+`conditional_poincare_conjecture_of_equation_boundary_dependencies` is exposed
+for direct researcher checking.
 
 Explanation: this aliases the compiled theorem named
-`poincare_conjecture_expanded`, the expanded form of the dependency-parameterized
-root theorem. It exposes, under the same
-`PoincareProofDependenciesWithEquationBoundary` input, the concrete conclusion
-that every compact simply connected charted 3-manifold is homeomorphic to the
-project's `ThreeSphere` model.
+`conditional_poincare_conjecture_of_equation_boundary_dependencies`. The theorem
+is intentionally still parameterized by
+`PoincareProofDependenciesWithEquationBoundary`, so it does not pretend that the
+closed final theorem has been completed and it does not occupy the reserved
+unconditional theorem name `Poincare.poincare_conjecture`. It routes that
+strengthened dependency package through
+`poincare_conjecture_of_poincareProofDependenciesWithEquationBoundary` to the
+project statement `PoincareConjectureStatement`. The companion theorem
+`conditional_poincare_conjecture_expanded_of_equation_boundary_dependencies`
+exposes the corresponding expanded topological claim
+`∀ M, Nonempty (M ≃ₜ ThreeSphere)` under the same strengthened dependency
+package.
 -/
-@[reducible] noncomputable def exact_step_poincare_conjecture_expanded :=
-  @poincare_conjecture_expanded
+@[reducible] noncomputable def exact_step_conditional_poincare_conjecture_of_equation_boundary_dependencies :=
+  @conditional_poincare_conjecture_of_equation_boundary_dependencies
+
+/--
+**Step 3803.** Exact conditional route
+`conditional_poincare_conjecture_expanded_of_equation_boundary_dependencies` is
+exposed for direct researcher checking.
+
+Explanation: this aliases the compiled theorem named
+`conditional_poincare_conjecture_expanded_of_equation_boundary_dependencies`,
+the expanded form of the dependency-parameterized root route. It exposes, under
+the same `PoincareProofDependenciesWithEquationBoundary` input, the concrete
+conclusion that every compact simply connected charted 3-manifold is
+homeomorphic to the project's `ThreeSphere` model, while leaving the reserved
+unconditional theorem name unused.
+-/
+@[reducible] noncomputable def exact_step_conditional_poincare_conjecture_expanded_of_equation_boundary_dependencies :=
+  @conditional_poincare_conjecture_expanded_of_equation_boundary_dependencies
 
 /--
 **Step 3804.** Exact route `finite_extinction_statement_of_finalAssemblyFiniteExtinctionSubobligationFamily` is exposed for direct researcher checking.

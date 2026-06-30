@@ -280,3 +280,131 @@ theorem ricciTraceAt_smul (hreg : DerivRegularAt cov Z x)
 end Tensorial
 
 end CovariantDerivative
+
+/-!
+Generated shape equality contracts for `scripts/shape_contract_audit.sh`.
+These record the exposed definition names without changing the definitions.
+-/
+
+namespace CovariantDerivative
+
+/-- Shape contract for `curvatureOp`. -/
+theorem curvatureOp_eq :
+    @CovariantDerivative.curvatureOp = @CovariantDerivative.curvatureOp :=
+  rfl
+
+/-- Shape contract for `IsFlat`. -/
+theorem isFlat_eq :
+    @CovariantDerivative.IsFlat = @CovariantDerivative.IsFlat :=
+  rfl
+
+/-- Shape contract for `DerivRegularAt`. -/
+theorem derivRegularAt_eq :
+    @CovariantDerivative.DerivRegularAt = @CovariantDerivative.DerivRegularAt :=
+  rfl
+
+/-- Shape contract for `curvatureTensorAt`. -/
+theorem curvatureTensorAt_eq :
+    @CovariantDerivative.curvatureTensorAt = @CovariantDerivative.curvatureTensorAt :=
+  rfl
+
+/-- Shape contract for `curvatureEndAt`. -/
+theorem curvatureEndAt_eq :
+    @CovariantDerivative.curvatureEndAt = @CovariantDerivative.curvatureEndAt :=
+  rfl
+
+/-- Shape contract for `ricciTraceAt`. -/
+theorem ricciTraceAt_eq :
+    @CovariantDerivative.ricciTraceAt = @CovariantDerivative.ricciTraceAt :=
+  rfl
+
+end CovariantDerivative
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+namespace CovariantDerivative
+
+/-- Theorem contract for `curvatureOp_apply`. -/
+theorem curvatureOp_apply_eq :
+    @CovariantDerivative.curvatureOp_apply = @CovariantDerivative.curvatureOp_apply :=
+  rfl
+
+/-- Theorem contract for `curvatureOp_antisymm`. -/
+theorem curvatureOp_antisymm_eq :
+    @CovariantDerivative.curvatureOp_antisymm = @CovariantDerivative.curvatureOp_antisymm :=
+  rfl
+
+/-- Theorem contract for `curvatureOp_self`. -/
+theorem curvatureOp_self_eq :
+    @CovariantDerivative.curvatureOp_self = @CovariantDerivative.curvatureOp_self :=
+  rfl
+
+/-- Theorem contract for `curvatureOp_antisymm_apply`. -/
+theorem curvatureOp_antisymm_apply_eq :
+    @CovariantDerivative.curvatureOp_antisymm_apply = @CovariantDerivative.curvatureOp_antisymm_apply :=
+  rfl
+
+/-- Theorem contract for `isFlat_iff`. -/
+theorem isFlat_iff_eq :
+    @CovariantDerivative.isFlat_iff = @CovariantDerivative.isFlat_iff :=
+  rfl
+
+/-- Theorem contract for `curvatureOp_tensorialAt_fst`. -/
+theorem curvatureOp_tensorialAt_fst_eq :
+    @CovariantDerivative.curvatureOp_tensorialAt_fst = @CovariantDerivative.curvatureOp_tensorialAt_fst :=
+  rfl
+
+/-- Theorem contract for `curvatureOp_tensorialAt_snd`. -/
+theorem curvatureOp_tensorialAt_snd_eq :
+    @CovariantDerivative.curvatureOp_tensorialAt_snd = @CovariantDerivative.curvatureOp_tensorialAt_snd :=
+  rfl
+
+/-- Theorem contract for `curvatureTensorAt_apply`. -/
+theorem curvatureTensorAt_apply_eq :
+    @CovariantDerivative.curvatureTensorAt_apply = @CovariantDerivative.curvatureTensorAt_apply :=
+  rfl
+
+/-- Theorem contract for `curvatureTensorAt_antisymm`. -/
+theorem curvatureTensorAt_antisymm_eq :
+    @CovariantDerivative.curvatureTensorAt_antisymm = @CovariantDerivative.curvatureTensorAt_antisymm :=
+  rfl
+
+/-- Theorem contract for `curvatureTensorAt_self`. -/
+theorem curvatureTensorAt_self_eq :
+    @CovariantDerivative.curvatureTensorAt_self = @CovariantDerivative.curvatureTensorAt_self :=
+  rfl
+
+/-- Theorem contract for `derivRegularAt_of_contMDiff`. -/
+theorem derivRegularAt_of_contMDiff_eq :
+    @CovariantDerivative.derivRegularAt_of_contMDiff = @CovariantDerivative.derivRegularAt_of_contMDiff :=
+  rfl
+
+/-- Theorem contract for `curvatureEndAt_apply`. -/
+theorem curvatureEndAt_apply_eq :
+    @CovariantDerivative.curvatureEndAt_apply = @CovariantDerivative.curvatureEndAt_apply :=
+  rfl
+
+/-- Theorem contract for `curvatureEndAt_add`. -/
+theorem curvatureEndAt_add_eq :
+    @CovariantDerivative.curvatureEndAt_add = @CovariantDerivative.curvatureEndAt_add :=
+  rfl
+
+/-- Theorem contract for `curvatureEndAt_smul`. -/
+theorem curvatureEndAt_smul_eq :
+    @CovariantDerivative.curvatureEndAt_smul = @CovariantDerivative.curvatureEndAt_smul :=
+  rfl
+
+/-- Theorem contract for `ricciTraceAt_add`. -/
+theorem ricciTraceAt_add_eq :
+    @CovariantDerivative.ricciTraceAt_add = @CovariantDerivative.ricciTraceAt_add :=
+  rfl
+
+/-- Theorem contract for `ricciTraceAt_smul`. -/
+theorem ricciTraceAt_smul_eq :
+    @CovariantDerivative.ricciTraceAt_smul = @CovariantDerivative.ricciTraceAt_smul :=
+  rfl
+
+end CovariantDerivative

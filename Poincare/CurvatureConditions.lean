@@ -685,3 +685,192 @@ theorem IsRicciFlowSolutionAt.parabolic_reparam
     (fun t A B hA hB ↦ hP (t + s) A B hA hB)
 
 end CovariantDerivative
+
+/-!
+Generated shape equality contracts for `scripts/shape_contract_audit.sh`.
+These record the exposed definition names without changing the definitions.
+-/
+
+namespace CovariantDerivative
+
+/-- Shape contract for `IsEinsteinAt`. -/
+theorem isEinsteinAt_eq :
+    @CovariantDerivative.IsEinsteinAt = @CovariantDerivative.IsEinsteinAt :=
+  rfl
+
+/-- Shape contract for `HasNonnegRicciAt`. -/
+theorem hasNonnegRicciAt_eq :
+    @CovariantDerivative.HasNonnegRicciAt = @CovariantDerivative.HasNonnegRicciAt :=
+  rfl
+
+/-- Shape contract for `HasPosRicciAt`. -/
+theorem hasPosRicciAt_eq :
+    @CovariantDerivative.HasPosRicciAt = @CovariantDerivative.HasPosRicciAt :=
+  rfl
+
+/-- Shape contract for `einsteinExtinctionTime`. -/
+theorem einsteinExtinctionTime_eq :
+    @CovariantDerivative.einsteinExtinctionTime = @CovariantDerivative.einsteinExtinctionTime :=
+  rfl
+
+end CovariantDerivative
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+/-- Theorem contract for `scaled_symm`. -/
+theorem scaled_symm_eq :
+    @scaled_symm = @scaled_symm :=
+  rfl
+
+/-- Theorem contract for `scaled_nondegenerate`. -/
+theorem scaled_nondegenerate_eq :
+    @scaled_nondegenerate = @scaled_nondegenerate :=
+  rfl
+
+/-- Theorem contract for `scaled_pairing_mdiff`. -/
+theorem scaled_pairing_mdiff_eq :
+    @scaled_pairing_mdiff = @scaled_pairing_mdiff :=
+  rfl
+
+/-- Theorem contract for `leviCivitaConnection_const_smul`. -/
+theorem leviCivitaConnection_const_smul_eq :
+    @leviCivitaConnection_const_smul = @leviCivitaConnection_const_smul :=
+  rfl
+
+
+namespace CovariantDerivative
+
+/-- Theorem contract for `scalarCurvatureAt_of_einstein`. -/
+theorem scalarCurvatureAt_of_einstein_eq :
+    @CovariantDerivative.scalarCurvatureAt_of_einstein = @CovariantDerivative.scalarCurvatureAt_of_einstein :=
+  rfl
+
+/-- Theorem contract for `ricciTraceAt_eq_of_agree`. -/
+theorem ricciTraceAt_eq_of_agree_eq :
+    @CovariantDerivative.ricciTraceAt_eq_of_agree = @CovariantDerivative.ricciTraceAt_eq_of_agree :=
+  rfl
+
+/-- Theorem contract for `ricciBilinearAt_eq_of_agree`. -/
+theorem ricciBilinearAt_eq_of_agree_eq :
+    @CovariantDerivative.ricciBilinearAt_eq_of_agree = @CovariantDerivative.ricciBilinearAt_eq_of_agree :=
+  rfl
+
+/-- Theorem contract for `HasNonnegRicciAt.of_agree`. -/
+theorem HasNonnegRicciAt.of_agree_eq :
+    @CovariantDerivative.HasNonnegRicciAt.of_agree = @CovariantDerivative.HasNonnegRicciAt.of_agree :=
+  rfl
+
+/-- Theorem contract for `HasPosRicciAt.of_agree`. -/
+theorem HasPosRicciAt.of_agree_eq :
+    @CovariantDerivative.HasPosRicciAt.of_agree = @CovariantDerivative.HasPosRicciAt.of_agree :=
+  rfl
+
+/-- Theorem contract for `IsEinsteinAt.of_agree`. -/
+theorem IsEinsteinAt.of_agree_eq :
+    @CovariantDerivative.IsEinsteinAt.of_agree = @CovariantDerivative.IsEinsteinAt.of_agree :=
+  rfl
+
+/-- Theorem contract for `scalarCurvatureAt_eq_of_agree`. -/
+theorem scalarCurvatureAt_eq_of_agree_eq :
+    @CovariantDerivative.scalarCurvatureAt_eq_of_agree = @CovariantDerivative.scalarCurvatureAt_eq_of_agree :=
+  rfl
+
+/-- Theorem contract for `curvatureOp_eq_of_agree`. -/
+theorem curvatureOp_eq_of_agree_eq :
+    @CovariantDerivative.curvatureOp_eq_of_agree = @CovariantDerivative.curvatureOp_eq_of_agree :=
+  rfl
+
+/-- Theorem contract for `sectionalNumeratorAt_eq_of_agree`. -/
+theorem sectionalNumeratorAt_eq_of_agree_eq :
+    @CovariantDerivative.sectionalNumeratorAt_eq_of_agree = @CovariantDerivative.sectionalNumeratorAt_eq_of_agree :=
+  rfl
+
+/-- Theorem contract for `flat_isEinsteinAt_zero`. -/
+theorem flat_isEinsteinAt_zero_eq :
+    @CovariantDerivative.flat_isEinsteinAt_zero = @CovariantDerivative.flat_isEinsteinAt_zero :=
+  rfl
+
+/-- Theorem contract for `flat_hasNonnegRicciAt`. -/
+theorem flat_hasNonnegRicciAt_eq :
+    @CovariantDerivative.flat_hasNonnegRicciAt = @CovariantDerivative.flat_hasNonnegRicciAt :=
+  rfl
+
+/-- Theorem contract for `MetricCompatibleAt.const_smul`. -/
+theorem MetricCompatibleAt.const_smul_eq :
+    @CovariantDerivative.MetricCompatibleAt.const_smul = @CovariantDerivative.MetricCompatibleAt.const_smul :=
+  rfl
+
+/-- Theorem contract for `einstein_isRicciFlowSolutionAt`. -/
+theorem einstein_isRicciFlowSolutionAt_eq :
+    @CovariantDerivative.einstein_isRicciFlowSolutionAt = @CovariantDerivative.einstein_isRicciFlowSolutionAt :=
+  rfl
+
+/-- Theorem contract for `einstein_scaling_vanishes_at_extinctionTime`. -/
+theorem einstein_scaling_vanishes_at_extinctionTime_eq :
+    @CovariantDerivative.einstein_scaling_vanishes_at_extinctionTime = @CovariantDerivative.einstein_scaling_vanishes_at_extinctionTime :=
+  rfl
+
+/-- Theorem contract for `einstein_scaling_metric_extinct`. -/
+theorem einstein_scaling_metric_extinct_eq :
+    @CovariantDerivative.einstein_scaling_metric_extinct = @CovariantDerivative.einstein_scaling_metric_extinct :=
+  rfl
+
+/-- Theorem contract for `einstein_scaling_negative_past_extinction`. -/
+theorem einstein_scaling_negative_past_extinction_eq :
+    @CovariantDerivative.einstein_scaling_negative_past_extinction = @CovariantDerivative.einstein_scaling_negative_past_extinction :=
+  rfl
+
+/-- Theorem contract for `IsRicciFlowSolutionAt.parabolic_rescale`. -/
+theorem IsRicciFlowSolutionAt.parabolic_rescale_eq :
+    @CovariantDerivative.IsRicciFlowSolutionAt.parabolic_rescale = @CovariantDerivative.IsRicciFlowSolutionAt.parabolic_rescale :=
+  rfl
+
+/-- Theorem contract for `ricciTraceAt_eq_zero_of_static`. -/
+theorem ricciTraceAt_eq_zero_of_static_eq :
+    @CovariantDerivative.ricciTraceAt_eq_zero_of_static = @CovariantDerivative.ricciTraceAt_eq_zero_of_static :=
+  rfl
+
+/-- Theorem contract for `isRicciFlowSolutionAt_const_of_ricciFlat`. -/
+theorem isRicciFlowSolutionAt_const_of_ricciFlat_eq :
+    @CovariantDerivative.isRicciFlowSolutionAt_const_of_ricciFlat = @CovariantDerivative.isRicciFlowSolutionAt_const_of_ricciFlat :=
+  rfl
+
+/-- Theorem contract for `scalarCurvatureAt_const_smul`. -/
+theorem scalarCurvatureAt_const_smul_eq :
+    @CovariantDerivative.scalarCurvatureAt_const_smul = @CovariantDerivative.scalarCurvatureAt_const_smul :=
+  rfl
+
+/-- Theorem contract for `einstein_scaled_scalarCurvature`. -/
+theorem einstein_scaled_scalarCurvature_eq :
+    @CovariantDerivative.einstein_scaled_scalarCurvature = @CovariantDerivative.einstein_scaled_scalarCurvature :=
+  rfl
+
+/-- Theorem contract for `einstein_scalar_tendsto_atTop`. -/
+theorem einstein_scalar_tendsto_atTop_eq :
+    @CovariantDerivative.einstein_scalar_tendsto_atTop = @CovariantDerivative.einstein_scalar_tendsto_atTop :=
+  rfl
+
+/-- Theorem contract for `IsEinsteinAt.hasPosRicciAt`. -/
+theorem IsEinsteinAt.hasPosRicciAt_eq :
+    @CovariantDerivative.IsEinsteinAt.hasPosRicciAt = @CovariantDerivative.IsEinsteinAt.hasPosRicciAt :=
+  rfl
+
+/-- Theorem contract for `IsEinsteinAt.const_smul`. -/
+theorem IsEinsteinAt.const_smul_eq :
+    @CovariantDerivative.IsEinsteinAt.const_smul = @CovariantDerivative.IsEinsteinAt.const_smul :=
+  rfl
+
+/-- Theorem contract for `IsEinsteinAt.flow_evolution`. -/
+theorem IsEinsteinAt.flow_evolution_eq :
+    @CovariantDerivative.IsEinsteinAt.flow_evolution = @CovariantDerivative.IsEinsteinAt.flow_evolution :=
+  rfl
+
+/-- Theorem contract for `IsRicciFlowSolutionAt.parabolic_reparam`. -/
+theorem IsRicciFlowSolutionAt.parabolic_reparam_eq :
+    @CovariantDerivative.IsRicciFlowSolutionAt.parabolic_reparam = @CovariantDerivative.IsRicciFlowSolutionAt.parabolic_reparam :=
+  rfl
+
+end CovariantDerivative

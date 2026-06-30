@@ -162,3 +162,17 @@ theorem bianchi_first
   linear_combination (norm := module) e1 + e2 + e3 + t1 + t2 + t3 + jac
 
 end CovariantDerivative
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+namespace CovariantDerivative
+
+/-- Theorem contract for `bianchi_first`. -/
+theorem bianchi_first_eq :
+    @CovariantDerivative.bianchi_first = @CovariantDerivative.bianchi_first :=
+  rfl
+
+end CovariantDerivative

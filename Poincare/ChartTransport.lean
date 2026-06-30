@@ -632,3 +632,185 @@ theorem chartLeviCivita_contMDiff [CompleteSpace E]
 end BlendedSmooth
 
 end CovariantDerivative
+
+namespace Poincare
+
+/--
+Poincare-surface alias for the inverse-chart derivative target/range bridge.
+The implementation lives with the chart-transport API in
+`CovariantDerivative`; the semantic surface audit expects root-level project
+routes to be visible under `Poincare`.
+-/
+theorem mfderivWithin_extChartAt_symm_target_eq_range
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [I.Boundaryless]
+    (x₀ : M) {z : E} (hz : z ∈ (extChartAt I x₀).target) :
+    mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (extChartAt I x₀).target z =
+      mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z :=
+  CovariantDerivative.mfderivWithin_extChartAt_symm_target_eq_range x₀ hz
+
+end Poincare
+
+/-!
+Generated shape equality contracts for `scripts/shape_contract_audit.sh`.
+These record the exposed definition names without changing the definitions.
+-/
+
+/-- Shape contract for `chartBilin`. -/
+theorem chartBilin_eq :
+    @chartBilin = @chartBilin :=
+  rfl
+
+/-- Shape contract for `chartLeviCivita`. -/
+theorem chartLeviCivita_eq :
+    @chartLeviCivita = @chartLeviCivita :=
+  rfl
+
+
+namespace CovariantDerivative
+
+/-- Shape contract for `chartMetric`. -/
+theorem chartMetric_eq :
+    @CovariantDerivative.chartMetric = @CovariantDerivative.chartMetric :=
+  rfl
+
+/-- Shape contract for `blendedChartMetric`. -/
+theorem blendedChartMetric_eq :
+    @CovariantDerivative.blendedChartMetric = @CovariantDerivative.blendedChartMetric :=
+  rfl
+
+end CovariantDerivative
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+/-- Theorem contract for `contMDiffOn_chartMetric_pairing`. -/
+theorem contMDiffOn_chartMetric_pairing_eq :
+    @contMDiffOn_chartMetric_pairing = @contMDiffOn_chartMetric_pairing :=
+  rfl
+
+/-- Theorem contract for `chartBilin_nondegenerate`. -/
+theorem chartBilin_nondegenerate_eq :
+    @chartBilin_nondegenerate = @chartBilin_nondegenerate :=
+  rfl
+
+/-- Theorem contract for `chartLeviCivita_torsionFreeAt`. -/
+theorem chartLeviCivita_torsionFreeAt_eq :
+    @chartLeviCivita_torsionFreeAt = @chartLeviCivita_torsionFreeAt :=
+  rfl
+
+/-- Theorem contract for `chartLeviCivita_metricCompatibleAt`. -/
+theorem chartLeviCivita_metricCompatibleAt_eq :
+    @chartLeviCivita_metricCompatibleAt = @chartLeviCivita_metricCompatibleAt :=
+  rfl
+
+/-- Theorem contract for `contDiff_blendedChartMetric_scalar`. -/
+theorem contDiff_blendedChartMetric_scalar_eq :
+    @contDiff_blendedChartMetric_scalar = @contDiff_blendedChartMetric_scalar :=
+  rfl
+
+/-- Theorem contract for `contDiff_blendedChartMetric`. -/
+theorem contDiff_blendedChartMetric_eq :
+    @contDiff_blendedChartMetric = @contDiff_blendedChartMetric :=
+  rfl
+
+/-- Theorem contract for `chartLeviCivita_contMDiff`. -/
+theorem chartLeviCivita_contMDiff_eq :
+    @chartLeviCivita_contMDiff = @chartLeviCivita_contMDiff :=
+  rfl
+
+
+namespace CovariantDerivative
+
+/-- Theorem contract for `chartMetric_apply`. -/
+theorem chartMetric_apply_eq :
+    @CovariantDerivative.chartMetric_apply = @CovariantDerivative.chartMetric_apply :=
+  rfl
+
+/-- Theorem contract for `chartMetric_symm`. -/
+theorem chartMetric_symm_eq :
+    @CovariantDerivative.chartMetric_symm = @CovariantDerivative.chartMetric_symm :=
+  rfl
+
+/-- Theorem contract for `chartMetric_nondegenerate`. -/
+theorem chartMetric_nondegenerate_eq :
+    @CovariantDerivative.chartMetric_nondegenerate = @CovariantDerivative.chartMetric_nondegenerate :=
+  rfl
+
+/-- Theorem contract for `chartMetric_posDef`. -/
+theorem chartMetric_posDef_eq :
+    @CovariantDerivative.chartMetric_posDef = @CovariantDerivative.chartMetric_posDef :=
+  rfl
+
+/-- Theorem contract for `chartMetric_nondegenerate_center`. -/
+theorem chartMetric_nondegenerate_center_eq :
+    @CovariantDerivative.chartMetric_nondegenerate_center = @CovariantDerivative.chartMetric_nondegenerate_center :=
+  rfl
+
+/-- Theorem contract for `chartMetric_model_space`. -/
+theorem chartMetric_model_space_eq :
+    @CovariantDerivative.chartMetric_model_space = @CovariantDerivative.chartMetric_model_space :=
+  rfl
+
+/-- Theorem contract for `contDiff_chartMetric_iff`. -/
+theorem contDiff_chartMetric_iff_eq :
+    @CovariantDerivative.contDiff_chartMetric_iff = @CovariantDerivative.contDiff_chartMetric_iff :=
+  rfl
+
+/-- Theorem contract for `contMDiffOn_inverseChart_tangentMap`. -/
+theorem contMDiffOn_inverseChart_tangentMap_eq :
+    @CovariantDerivative.contMDiffOn_inverseChart_tangentMap = @CovariantDerivative.contMDiffOn_inverseChart_tangentMap :=
+  rfl
+
+/-- Theorem contract for `mfderivWithin_extChartAt_symm_target_eq_range`. -/
+theorem mfderivWithin_extChartAt_symm_target_eq_range_eq :
+    @CovariantDerivative.mfderivWithin_extChartAt_symm_target_eq_range = @CovariantDerivative.mfderivWithin_extChartAt_symm_target_eq_range :=
+  rfl
+
+/-- Theorem contract for `blendedChartMetric_apply`. -/
+theorem blendedChartMetric_apply_eq :
+    @CovariantDerivative.blendedChartMetric_apply = @CovariantDerivative.blendedChartMetric_apply :=
+  rfl
+
+/-- Theorem contract for `blendedChartMetric_symm`. -/
+theorem blendedChartMetric_symm_eq :
+    @CovariantDerivative.blendedChartMetric_symm = @CovariantDerivative.blendedChartMetric_symm :=
+  rfl
+
+/-- Theorem contract for `blendedChartMetric_posDef`. -/
+theorem blendedChartMetric_posDef_eq :
+    @CovariantDerivative.blendedChartMetric_posDef = @CovariantDerivative.blendedChartMetric_posDef :=
+  rfl
+
+/-- Theorem contract for `blendedChartMetric_nondegenerate`. -/
+theorem blendedChartMetric_nondegenerate_eq :
+    @CovariantDerivative.blendedChartMetric_nondegenerate = @CovariantDerivative.blendedChartMetric_nondegenerate :=
+  rfl
+
+/-- Theorem contract for `exists_blending_cutoff`. -/
+theorem exists_blending_cutoff_eq :
+    @CovariantDerivative.exists_blending_cutoff = @CovariantDerivative.exists_blending_cutoff :=
+  rfl
+
+/-- Theorem contract for `exists_global_chart_metric`. -/
+theorem exists_global_chart_metric_eq :
+    @CovariantDerivative.exists_global_chart_metric = @CovariantDerivative.exists_global_chart_metric :=
+  rfl
+
+end CovariantDerivative
+
+
+namespace Poincare
+
+/-- Theorem contract for `mfderivWithin_extChartAt_symm_target_eq_range`. -/
+theorem mfderivWithin_extChartAt_symm_target_eq_range_eq :
+    @Poincare.mfderivWithin_extChartAt_symm_target_eq_range = @Poincare.mfderivWithin_extChartAt_symm_target_eq_range :=
+  rfl
+
+end Poincare

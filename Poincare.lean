@@ -13,6 +13,7 @@ import Poincare.ModelChristoffel
 import Poincare.ChartTransport
 import Poincare.MaximumPrinciple
 import Poincare.ModelLaplacian
+import Poincare.ModelLaplacianRootAliases
 import Poincare.Statement
 import Poincare.Milestones
 import Poincare.Assembly
@@ -55,6 +56,8 @@ import Poincare.ProofProgress.TopologyProductionPackageNextField
 import Poincare.ProofProgress.CompletionBlockerLedger
 import Poincare.ProofProgress.FullAssemblyClosure
 import Poincare.ProofProgress.FinalCertificateBoundary
+import Poincare.ProofProgress.ResearcherStepLedger
+import Poincare.ProofProgress.SemanticSurfaceContractBridge
 import Poincare.FullAssembly
 import Poincare.Dependencies
 import Poincare.DependencyProjections

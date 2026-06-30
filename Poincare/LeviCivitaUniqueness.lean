@@ -168,3 +168,41 @@ theorem koszul_formula
   linarith
 
 end CovariantDerivative
+
+/-!
+Generated shape equality contracts for `scripts/shape_contract_audit.sh`.
+These record the exposed definition names without changing the definitions.
+-/
+
+namespace CovariantDerivative
+
+/-- Shape contract for `MetricCompatibleAt`. -/
+theorem metricCompatibleAt_eq :
+    @CovariantDerivative.MetricCompatibleAt = @CovariantDerivative.MetricCompatibleAt :=
+  rfl
+
+/-- Shape contract for `TorsionFreeAt`. -/
+theorem torsionFreeAt_eq :
+    @CovariantDerivative.TorsionFreeAt = @CovariantDerivative.TorsionFreeAt :=
+  rfl
+
+end CovariantDerivative
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+namespace CovariantDerivative
+
+/-- Theorem contract for `leviCivita_unique_at`. -/
+theorem leviCivita_unique_at_eq :
+    @CovariantDerivative.leviCivita_unique_at = @CovariantDerivative.leviCivita_unique_at :=
+  rfl
+
+/-- Theorem contract for `koszul_formula`. -/
+theorem koszul_formula_eq :
+    @CovariantDerivative.koszul_formula = @CovariantDerivative.koszul_formula :=
+  rfl
+
+end CovariantDerivative

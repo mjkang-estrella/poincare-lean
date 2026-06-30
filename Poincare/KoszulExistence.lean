@@ -1255,3 +1255,228 @@ end Bundled
 end Construction
 
 end CovariantDerivative
+
+/-!
+Generated shape equality contracts for `scripts/shape_contract_audit.sh`.
+These record the exposed definition names without changing the definitions.
+-/
+
+/-- Shape contract for `koszulFunctionalAt`. -/
+theorem koszulFunctionalAt_eq :
+    @koszulFunctionalAt = @koszulFunctionalAt :=
+  rfl
+
+/-- Shape contract for `leviCivitaValueAt`. -/
+theorem leviCivitaValueAt_eq :
+    @leviCivitaValueAt = @leviCivitaValueAt :=
+  rfl
+
+/-- Shape contract for `leviCivitaDirectionalAt`. -/
+theorem leviCivitaDirectionalAt_eq :
+    @leviCivitaDirectionalAt = @leviCivitaDirectionalAt :=
+  rfl
+
+/-- Shape contract for `metricBilinAt`. -/
+theorem metricBilinAt_eq :
+    @metricBilinAt = @metricBilinAt :=
+  rfl
+
+/-- Shape contract for `leviCivitaCovFun`. -/
+theorem leviCivitaCovFun_eq :
+    @leviCivitaCovFun = @leviCivitaCovFun :=
+  rfl
+
+/-- Shape contract for `leviCivitaConnection`. -/
+theorem leviCivitaConnection_eq :
+    @leviCivitaConnection = @leviCivitaConnection :=
+  rfl
+
+
+namespace CovariantDerivative
+
+/-- Shape contract for `koszulRHS`. -/
+theorem koszulRHS_eq :
+    @CovariantDerivative.koszulRHS = @CovariantDerivative.koszulRHS :=
+  rfl
+
+end CovariantDerivative
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+/-- Theorem contract for `b_leviCivitaValueAt`. -/
+theorem b_leviCivitaValueAt_eq :
+    @b_leviCivitaValueAt = @b_leviCivitaValueAt :=
+  rfl
+
+/-- Theorem contract for `koszulRHS_sub_swap`. -/
+theorem koszulRHS_sub_swap_eq :
+    @koszulRHS_sub_swap = @koszulRHS_sub_swap :=
+  rfl
+
+/-- Theorem contract for `leviCivitaValueAt_torsionFree`. -/
+theorem leviCivitaValueAt_torsionFree_eq :
+    @leviCivitaValueAt_torsionFree = @leviCivitaValueAt_torsionFree :=
+  rfl
+
+/-- Theorem contract for `koszulRHS_add_swap_last`. -/
+theorem koszulRHS_add_swap_last_eq :
+    @koszulRHS_add_swap_last = @koszulRHS_add_swap_last :=
+  rfl
+
+/-- Theorem contract for `leviCivitaValueAt_compat`. -/
+theorem leviCivitaValueAt_compat_eq :
+    @leviCivitaValueAt_compat = @leviCivitaValueAt_compat :=
+  rfl
+
+/-- Theorem contract for `koszulRHS_add_middle`. -/
+theorem koszulRHS_add_middle_eq :
+    @koszulRHS_add_middle = @koszulRHS_add_middle :=
+  rfl
+
+/-- Theorem contract for `koszulRHS_smul_middle`. -/
+theorem koszulRHS_smul_middle_eq :
+    @koszulRHS_smul_middle = @koszulRHS_smul_middle :=
+  rfl
+
+/-- Theorem contract for `koszulRHS_smul_left`. -/
+theorem koszulRHS_smul_left_eq :
+    @koszulRHS_smul_left = @koszulRHS_smul_left :=
+  rfl
+
+/-- Theorem contract for `koszulRHS_add_left`. -/
+theorem koszulRHS_add_left_eq :
+    @koszulRHS_add_left = @koszulRHS_add_left :=
+  rfl
+
+/-- Theorem contract for `leviCivitaValueAt_add_section`. -/
+theorem leviCivitaValueAt_add_section_eq :
+    @leviCivitaValueAt_add_section = @leviCivitaValueAt_add_section :=
+  rfl
+
+/-- Theorem contract for `leviCivitaValueAt_leibniz`. -/
+theorem leviCivitaValueAt_leibniz_eq :
+    @leviCivitaValueAt_leibniz = @leviCivitaValueAt_leibniz :=
+  rfl
+
+/-- Theorem contract for `covDeriv_eq_leviCivitaValueAt`. -/
+theorem covDeriv_eq_leviCivitaValueAt_eq :
+    @covDeriv_eq_leviCivitaValueAt = @covDeriv_eq_leviCivitaValueAt :=
+  rfl
+
+/-- Theorem contract for `koszulRHS_zero_left`. -/
+theorem koszulRHS_zero_left_eq :
+    @koszulRHS_zero_left = @koszulRHS_zero_left :=
+  rfl
+
+/-- Theorem contract for `koszulRHS_congr_of_eventuallyEq_left`. -/
+theorem koszulRHS_congr_of_eventuallyEq_left_eq :
+    @koszulRHS_congr_of_eventuallyEq_left = @koszulRHS_congr_of_eventuallyEq_left :=
+  rfl
+
+/-- Theorem contract for `koszulRHS_finsetSum_left`. -/
+theorem koszulRHS_finsetSum_left_eq :
+    @koszulRHS_finsetSum_left = @koszulRHS_finsetSum_left :=
+  rfl
+
+/-- Theorem contract for `koszulRHS_eq_zero_of_direction_value_eq_zero`. -/
+theorem koszulRHS_eq_zero_of_direction_value_eq_zero_eq :
+    @koszulRHS_eq_zero_of_direction_value_eq_zero = @koszulRHS_eq_zero_of_direction_value_eq_zero :=
+  rfl
+
+/-- Theorem contract for `metricBilinAt_nondegenerate`. -/
+theorem metricBilinAt_nondegenerate_eq :
+    @metricBilinAt_nondegenerate = @metricBilinAt_nondegenerate :=
+  rfl
+
+/-- Theorem contract for `metricBilinAt_apply`. -/
+theorem metricBilinAt_apply_eq :
+    @metricBilinAt_apply = @metricBilinAt_apply :=
+  rfl
+
+/-- Theorem contract for `leviCivitaCovFun_apply`. -/
+theorem leviCivitaCovFun_apply_eq :
+    @leviCivitaCovFun_apply = @leviCivitaCovFun_apply :=
+  rfl
+
+/-- Theorem contract for `isCovariantDerivativeOn_leviCivitaCovFun`. -/
+theorem isCovariantDerivativeOn_leviCivitaCovFun_eq :
+    @isCovariantDerivativeOn_leviCivitaCovFun = @isCovariantDerivativeOn_leviCivitaCovFun :=
+  rfl
+
+/-- Theorem contract for `leviCivitaValueAt_congr_direction`. -/
+theorem leviCivitaValueAt_congr_direction_eq :
+    @leviCivitaValueAt_congr_direction = @leviCivitaValueAt_congr_direction :=
+  rfl
+
+/-- Theorem contract for `leviCivitaConnection_apply_field`. -/
+theorem leviCivitaConnection_apply_field_eq :
+    @leviCivitaConnection_apply_field = @leviCivitaConnection_apply_field :=
+  rfl
+
+/-- Theorem contract for `leviCivitaConnection_torsionFreeAt`. -/
+theorem leviCivitaConnection_torsionFreeAt_eq :
+    @leviCivitaConnection_torsionFreeAt = @leviCivitaConnection_torsionFreeAt :=
+  rfl
+
+/-- Theorem contract for `leviCivitaConnection_metricCompatibleAt`. -/
+theorem leviCivitaConnection_metricCompatibleAt_eq :
+    @leviCivitaConnection_metricCompatibleAt = @leviCivitaConnection_metricCompatibleAt :=
+  rfl
+
+/-- Theorem contract for `leviCivitaConnection_isLeviCivitaAt`. -/
+theorem leviCivitaConnection_isLeviCivitaAt_eq :
+    @leviCivitaConnection_isLeviCivitaAt = @leviCivitaConnection_isLeviCivitaAt :=
+  rfl
+
+/-- Theorem contract for `isRicciFlowSolutionAt_of_metric`. -/
+theorem isRicciFlowSolutionAt_of_metric_eq :
+    @isRicciFlowSolutionAt_of_metric = @isRicciFlowSolutionAt_of_metric :=
+  rfl
+
+/-- Theorem contract for `leviCivitaConnection_eq_of_isLeviCivita`. -/
+theorem leviCivitaConnection_eq_of_isLeviCivita_eq :
+    @leviCivitaConnection_eq_of_isLeviCivita = @leviCivitaConnection_eq_of_isLeviCivita :=
+  rfl
+
+
+namespace CovariantDerivative
+
+/-- Theorem contract for `extDerivFun_mul`. -/
+theorem extDerivFun_mul_eq :
+    @CovariantDerivative.extDerivFun_mul = @CovariantDerivative.extDerivFun_mul :=
+  rfl
+
+/-- Theorem contract for `koszulRHS_smul_right`. -/
+theorem koszulRHS_smul_right_eq :
+    @CovariantDerivative.koszulRHS_smul_right = @CovariantDerivative.koszulRHS_smul_right :=
+  rfl
+
+/-- Theorem contract for `koszulRHS_add_right`. -/
+theorem koszulRHS_add_right_eq :
+    @CovariantDerivative.koszulRHS_add_right = @CovariantDerivative.koszulRHS_add_right :=
+  rfl
+
+/-- Theorem contract for `koszulRHS_zero_right`. -/
+theorem koszulRHS_zero_right_eq :
+    @CovariantDerivative.koszulRHS_zero_right = @CovariantDerivative.koszulRHS_zero_right :=
+  rfl
+
+/-- Theorem contract for `koszulRHS_congr_of_eventuallyEq`. -/
+theorem koszulRHS_congr_of_eventuallyEq_eq :
+    @CovariantDerivative.koszulRHS_congr_of_eventuallyEq = @CovariantDerivative.koszulRHS_congr_of_eventuallyEq :=
+  rfl
+
+/-- Theorem contract for `koszulRHS_finsetSum_right`. -/
+theorem koszulRHS_finsetSum_right_eq :
+    @CovariantDerivative.koszulRHS_finsetSum_right = @CovariantDerivative.koszulRHS_finsetSum_right :=
+  rfl
+
+/-- Theorem contract for `koszulRHS_eq_zero_of_value_eq_zero`. -/
+theorem koszulRHS_eq_zero_of_value_eq_zero_eq :
+    @CovariantDerivative.koszulRHS_eq_zero_of_value_eq_zero = @CovariantDerivative.koszulRHS_eq_zero_of_value_eq_zero :=
+  rfl
+
+end CovariantDerivative

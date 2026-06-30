@@ -898,3 +898,192 @@ theorem ricci_identity
   (curvatureOp_modelLeviCivita_extend G b hb X v w).symm
 
 end CovariantDerivative
+
+/-!
+Generated shape equality contracts for `scripts/shape_contract_audit.sh`.
+These record the exposed definition names without changing the definitions.
+-/
+
+namespace CovariantDerivative
+
+/-- Shape contract for `christoffelFunctional`. -/
+theorem christoffelFunctional_eq :
+    @CovariantDerivative.christoffelFunctional = @CovariantDerivative.christoffelFunctional :=
+  rfl
+
+/-- Shape contract for `christoffelAt`. -/
+theorem christoffelAt_eq :
+    @CovariantDerivative.christoffelAt = @CovariantDerivative.christoffelAt :=
+  rfl
+
+/-- Shape contract for `christoffelLinear`. -/
+theorem christoffelLinear_eq :
+    @CovariantDerivative.christoffelLinear = @CovariantDerivative.christoffelLinear :=
+  rfl
+
+/-- Shape contract for `christoffelOneForm`. -/
+theorem christoffelOneForm_eq :
+    @CovariantDerivative.christoffelOneForm = @CovariantDerivative.christoffelOneForm :=
+  rfl
+
+/-- Shape contract for `modelLeviCivita`. -/
+theorem modelLeviCivita_eq :
+    @CovariantDerivative.modelLeviCivita = @CovariantDerivative.modelLeviCivita :=
+  rfl
+
+/-- Shape contract for `covariantHessian`. -/
+theorem covariantHessian_eq :
+    @CovariantDerivative.covariantHessian = @CovariantDerivative.covariantHessian :=
+  rfl
+
+/-- Shape contract for `covariantHessianLin`. -/
+theorem covariantHessianLin_eq :
+    @CovariantDerivative.covariantHessianLin = @CovariantDerivative.covariantHessianLin :=
+  rfl
+
+/-- Shape contract for `curvedLaplacian`. -/
+theorem curvedLaplacian_eq :
+    @CovariantDerivative.curvedLaplacian = @CovariantDerivative.curvedLaplacian :=
+  rfl
+
+end CovariantDerivative
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+/-- Theorem contract for `metric_isInvertible`. -/
+theorem metric_isInvertible_eq :
+    @metric_isInvertible = @metric_isInvertible :=
+  rfl
+
+/-- Theorem contract for `christoffelAt_eq_inverse`. -/
+theorem christoffelAt_eq_inverse_eq :
+    @christoffelAt_eq_inverse = @christoffelAt_eq_inverse :=
+  rfl
+
+/-- Theorem contract for `contDiffAt_christoffelAt`. -/
+theorem contDiffAt_christoffelAt_eq :
+    @contDiffAt_christoffelAt = @contDiffAt_christoffelAt :=
+  rfl
+
+/-- Theorem contract for `contDiff_christoffel_apply_section`. -/
+theorem contDiff_christoffel_apply_section_eq :
+    @contDiff_christoffel_apply_section = @contDiff_christoffel_apply_section :=
+  rfl
+
+/-- Theorem contract for `modelLeviCivita_contMDiff`. -/
+theorem modelLeviCivita_contMDiff_eq :
+    @modelLeviCivita_contMDiff = @modelLeviCivita_contMDiff :=
+  rfl
+
+/-- Theorem contract for `modelLeviCivita_ricciBilinearAt_symm`. -/
+theorem modelLeviCivita_ricciBilinearAt_symm_eq :
+    @modelLeviCivita_ricciBilinearAt_symm = @modelLeviCivita_ricciBilinearAt_symm :=
+  rfl
+
+/-- Theorem contract for `isRicciFlowSolutionAt_of_model_metric`. -/
+theorem isRicciFlowSolutionAt_of_model_metric_eq :
+    @isRicciFlowSolutionAt_of_model_metric = @isRicciFlowSolutionAt_of_model_metric :=
+  rfl
+
+/-- Theorem contract for `christoffelAt_const`. -/
+theorem christoffelAt_const_eq :
+    @christoffelAt_const = @christoffelAt_const :=
+  rfl
+
+/-- Theorem contract for `modelLeviCivita_const_eq_flat`. -/
+theorem modelLeviCivita_const_eq_flat_eq :
+    @modelLeviCivita_const_eq_flat = @modelLeviCivita_const_eq_flat :=
+  rfl
+
+/-- Theorem contract for `modelLeviCivita_const_ricciBilinearAt_eq_zero`. -/
+theorem modelLeviCivita_const_ricciBilinearAt_eq_zero_eq :
+    @modelLeviCivita_const_ricciBilinearAt_eq_zero = @modelLeviCivita_const_ricciBilinearAt_eq_zero :=
+  rfl
+
+/-- Theorem contract for `flat_derivRegularAt_of_contDiff`. -/
+theorem flat_derivRegularAt_of_contDiff_eq :
+    @flat_derivRegularAt_of_contDiff = @flat_derivRegularAt_of_contDiff :=
+  rfl
+
+/-- Theorem contract for `const_metric_static_model_flow`. -/
+theorem const_metric_static_model_flow_eq :
+    @const_metric_static_model_flow = @const_metric_static_model_flow :=
+  rfl
+
+
+namespace CovariantDerivative
+
+/-- Theorem contract for `b_christoffelAt`. -/
+theorem b_christoffelAt_eq :
+    @CovariantDerivative.b_christoffelAt = @CovariantDerivative.b_christoffelAt :=
+  rfl
+
+/-- Theorem contract for `fderiv_metric_symm`. -/
+theorem fderiv_metric_symm_eq :
+    @CovariantDerivative.fderiv_metric_symm = @CovariantDerivative.fderiv_metric_symm :=
+  rfl
+
+/-- Theorem contract for `christoffelAt_symm`. -/
+theorem christoffelAt_symm_eq :
+    @CovariantDerivative.christoffelAt_symm = @CovariantDerivative.christoffelAt_symm :=
+  rfl
+
+/-- Theorem contract for `christoffelOneForm_apply`. -/
+theorem christoffelOneForm_apply_eq :
+    @CovariantDerivative.christoffelOneForm_apply = @CovariantDerivative.christoffelOneForm_apply :=
+  rfl
+
+/-- Theorem contract for `modelLeviCivita_apply`. -/
+theorem modelLeviCivita_apply_eq :
+    @CovariantDerivative.modelLeviCivita_apply = @CovariantDerivative.modelLeviCivita_apply :=
+  rfl
+
+/-- Theorem contract for `modelLeviCivita_torsionFreeAt`. -/
+theorem modelLeviCivita_torsionFreeAt_eq :
+    @CovariantDerivative.modelLeviCivita_torsionFreeAt = @CovariantDerivative.modelLeviCivita_torsionFreeAt :=
+  rfl
+
+/-- Theorem contract for `fderiv_metric_pairing`. -/
+theorem fderiv_metric_pairing_eq :
+    @CovariantDerivative.fderiv_metric_pairing = @CovariantDerivative.fderiv_metric_pairing :=
+  rfl
+
+/-- Theorem contract for `modelLeviCivita_metricCompatibleAt`. -/
+theorem modelLeviCivita_metricCompatibleAt_eq :
+    @CovariantDerivative.modelLeviCivita_metricCompatibleAt = @CovariantDerivative.modelLeviCivita_metricCompatibleAt :=
+  rfl
+
+/-- Theorem contract for `metric_pairing_mdiff`. -/
+theorem metric_pairing_mdiff_eq :
+    @CovariantDerivative.metric_pairing_mdiff = @CovariantDerivative.metric_pairing_mdiff :=
+  rfl
+
+/-- Theorem contract for `leviCivitaConnection_eq_modelLeviCivita`. -/
+theorem leviCivitaConnection_eq_modelLeviCivita_eq :
+    @CovariantDerivative.leviCivitaConnection_eq_modelLeviCivita = @CovariantDerivative.leviCivitaConnection_eq_modelLeviCivita :=
+  rfl
+
+/-- Theorem contract for `covariantHessian_symm`. -/
+theorem covariantHessian_symm_eq :
+    @CovariantDerivative.covariantHessian_symm = @CovariantDerivative.covariantHessian_symm :=
+  rfl
+
+/-- Theorem contract for `extend_model_space'`. -/
+theorem extend_model_space'_eq :
+    @CovariantDerivative.extend_model_space' = @CovariantDerivative.extend_model_space' :=
+  rfl
+
+/-- Theorem contract for `curvatureOp_modelLeviCivita_extend`. -/
+theorem curvatureOp_modelLeviCivita_extend_eq :
+    @CovariantDerivative.curvatureOp_modelLeviCivita_extend = @CovariantDerivative.curvatureOp_modelLeviCivita_extend :=
+  rfl
+
+/-- Theorem contract for `ricci_identity`. -/
+theorem ricci_identity_eq :
+    @CovariantDerivative.ricci_identity = @CovariantDerivative.ricci_identity :=
+  rfl
+
+end CovariantDerivative

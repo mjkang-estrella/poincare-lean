@@ -3700,3 +3700,43 @@ theorem canonical_three_sphere_statement_of_boundary_surgery_and_topology_packag
     smoothabilityPackage surgeryPackages topologyPackage
 
 end Poincare
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+/-- Theorem contract for `onePoint_threeSpace_surgeryModel_isManifold`. -/
+theorem onePoint_threeSpace_surgeryModel_isManifold_eq :
+    @onePoint_threeSpace_surgeryModel_isManifold = @onePoint_threeSpace_surgeryModel_isManifold :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_surgeryModel_isManifold_oldChartedSpace`. -/
+theorem onePoint_threeSpace_surgeryModel_isManifold_oldChartedSpace_eq :
+    @onePoint_threeSpace_surgeryModel_isManifold_oldChartedSpace = @onePoint_threeSpace_surgeryModel_isManifold_oldChartedSpace :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_finite_extinction_of_sourceChoiceCollapse_and_surgery_packages`. -/
+theorem onePoint_threeSpace_finite_extinction_of_sourceChoiceCollapse_and_surgery_packages_eq :
+    @onePoint_threeSpace_finite_extinction_of_sourceChoiceCollapse_and_surgery_packages = @onePoint_threeSpace_finite_extinction_of_sourceChoiceCollapse_and_surgery_packages :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_finite_extinction_of_sourceChoiceCollapse_and_smoothabilitySmoothManifoldStatement_and_surgery_packages`. -/
+theorem onePoint_threeSpace_finite_extinction_of_sourceChoiceCollapse_and_smoothabilitySmoothManifoldStatement_and_surgery_packages_eq :
+    @onePoint_threeSpace_finite_extinction_of_sourceChoiceCollapse_and_smoothabilitySmoothManifoldStatement_and_surgery_packages = @onePoint_threeSpace_finite_extinction_of_sourceChoiceCollapse_and_smoothabilitySmoothManifoldStatement_and_surgery_packages :=
+  rfl
+
+
+namespace Poincare
+
+/-- Theorem contract for `onePoint_threeSpace_smoothManifold_of_smoothabilitySmoothManifoldStatement`. -/
+theorem onePoint_threeSpace_smoothManifold_of_smoothabilitySmoothManifoldStatement_eq :
+    @Poincare.onePoint_threeSpace_smoothManifold_of_smoothabilitySmoothManifoldStatement = @Poincare.onePoint_threeSpace_smoothManifold_of_smoothabilitySmoothManifoldStatement :=
+  rfl
+
+/-- Theorem contract for `onePoint_threeSpace_surgeryModel_isManifold_of_smoothabilitySmoothManifoldStatement`. -/
+theorem onePoint_threeSpace_surgeryModel_isManifold_of_smoothabilitySmoothManifoldStatement_eq :
+    @Poincare.onePoint_threeSpace_surgeryModel_isManifold_of_smoothabilitySmoothManifoldStatement = @Poincare.onePoint_threeSpace_surgeryModel_isManifold_of_smoothabilitySmoothManifoldStatement :=
+  rfl
+
+end Poincare

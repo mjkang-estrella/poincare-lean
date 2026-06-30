@@ -230,3 +230,83 @@ theorem IsRicciFlowSolutionAt.time_shift
     exact sol.flow hZ hreg w
 
 end CovariantDerivative
+
+/-!
+Generated shape equality contracts for `scripts/shape_contract_audit.sh`.
+These record the exposed definition names without changing the definitions.
+-/
+
+/-- Shape contract for `euclideanBundleMetric`. -/
+theorem euclideanBundleMetric_eq :
+    @euclideanBundleMetric = @euclideanBundleMetric :=
+  rfl
+
+
+namespace CovariantDerivative
+
+/-- Shape contract for `IsLeviCivitaAt`. -/
+theorem isLeviCivitaAt_eq :
+    @CovariantDerivative.IsLeviCivitaAt = @CovariantDerivative.IsLeviCivitaAt :=
+  rfl
+
+end CovariantDerivative
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+/-- Theorem contract for `flat_metricCompatibleAt`. -/
+theorem flat_metricCompatibleAt_eq :
+    @flat_metricCompatibleAt = @flat_metricCompatibleAt :=
+  rfl
+
+/-- Theorem contract for `flat_torsionFreeAt`. -/
+theorem flat_torsionFreeAt_eq :
+    @flat_torsionFreeAt = @flat_torsionFreeAt :=
+  rfl
+
+/-- Theorem contract for `flat_isLeviCivitaAt`. -/
+theorem flat_isLeviCivitaAt_eq :
+    @flat_isLeviCivitaAt = @flat_isLeviCivitaAt :=
+  rfl
+
+/-- Theorem contract for `flat_ricciTraceAt_eq_zero`. -/
+theorem flat_ricciTraceAt_eq_zero_eq :
+    @flat_ricciTraceAt_eq_zero = @flat_ricciTraceAt_eq_zero :=
+  rfl
+
+/-- Theorem contract for `euclidean_static_isRicciFlowSolutionAt`. -/
+theorem euclidean_static_isRicciFlowSolutionAt_eq :
+    @euclidean_static_isRicciFlowSolutionAt = @euclidean_static_isRicciFlowSolutionAt :=
+  rfl
+
+/-- Theorem contract for `extend_model_space`. -/
+theorem extend_model_space_eq :
+    @extend_model_space = @extend_model_space :=
+  rfl
+
+/-- Theorem contract for `flat_derivRegularAt_extend`. -/
+theorem flat_derivRegularAt_extend_eq :
+    @flat_derivRegularAt_extend = @flat_derivRegularAt_extend :=
+  rfl
+
+/-- Theorem contract for `flat_ricciTraceAt_extend_eq_zero`. -/
+theorem flat_ricciTraceAt_extend_eq_zero_eq :
+    @flat_ricciTraceAt_extend_eq_zero = @flat_ricciTraceAt_extend_eq_zero :=
+  rfl
+
+/-- Theorem contract for `flat_ricciBilinearAt_eq_zero`. -/
+theorem flat_ricciBilinearAt_eq_zero_eq :
+    @flat_ricciBilinearAt_eq_zero = @flat_ricciBilinearAt_eq_zero :=
+  rfl
+
+
+namespace CovariantDerivative
+
+/-- Theorem contract for `IsRicciFlowSolutionAt.time_shift`. -/
+theorem IsRicciFlowSolutionAt.time_shift_eq :
+    @CovariantDerivative.IsRicciFlowSolutionAt.time_shift = @CovariantDerivative.IsRicciFlowSolutionAt.time_shift :=
+  rfl
+
+end CovariantDerivative

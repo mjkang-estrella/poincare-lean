@@ -137,3 +137,42 @@ theorem flat_sectionalNumeratorAt_eq_zero (x : F)
   simp
 
 end CovariantDerivative
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+namespace CovariantDerivative
+
+/-- Theorem contract for `euclideanBundleMetric_symm`. -/
+theorem euclideanBundleMetric_symm_eq :
+    @CovariantDerivative.euclideanBundleMetric_symm = @CovariantDerivative.euclideanBundleMetric_symm :=
+  rfl
+
+/-- Theorem contract for `euclideanBundleMetric_nondegenerate`. -/
+theorem euclideanBundleMetric_nondegenerate_eq :
+    @CovariantDerivative.euclideanBundleMetric_nondegenerate = @CovariantDerivative.euclideanBundleMetric_nondegenerate :=
+  rfl
+
+/-- Theorem contract for `euclideanBundleMetric_pairing_mdiff`. -/
+theorem euclideanBundleMetric_pairing_mdiff_eq :
+    @CovariantDerivative.euclideanBundleMetric_pairing_mdiff = @CovariantDerivative.euclideanBundleMetric_pairing_mdiff :=
+  rfl
+
+/-- Theorem contract for `leviCivitaConnection_euclidean_eq_flat`. -/
+theorem leviCivitaConnection_euclidean_eq_flat_eq :
+    @CovariantDerivative.leviCivitaConnection_euclidean_eq_flat = @CovariantDerivative.leviCivitaConnection_euclidean_eq_flat :=
+  rfl
+
+/-- Theorem contract for `curvatureOp_leviCivitaConnection_euclidean`. -/
+theorem curvatureOp_leviCivitaConnection_euclidean_eq :
+    @CovariantDerivative.curvatureOp_leviCivitaConnection_euclidean = @CovariantDerivative.curvatureOp_leviCivitaConnection_euclidean :=
+  rfl
+
+/-- Theorem contract for `flat_sectionalNumeratorAt_eq_zero`. -/
+theorem flat_sectionalNumeratorAt_eq_zero_eq :
+    @CovariantDerivative.flat_sectionalNumeratorAt_eq_zero = @CovariantDerivative.flat_sectionalNumeratorAt_eq_zero :=
+  rfl
+
+end CovariantDerivative

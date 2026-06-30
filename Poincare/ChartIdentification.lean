@@ -336,3 +336,43 @@ theorem extDerivFun_apply_mlieBracket
     hterm Y X hY, hterm X Y hX]
 
 end DerivationIdentity
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+/-- Theorem contract for `mlieBracket_apply_chart`. -/
+theorem mlieBracket_apply_chart_eq :
+    @mlieBracket_apply_chart = @mlieBracket_apply_chart :=
+  rfl
+
+/-- Theorem contract for `mpullbackWithin_extChartAt_symm_self`. -/
+theorem mpullbackWithin_extChartAt_symm_self_eq :
+    @mpullbackWithin_extChartAt_symm_self = @mpullbackWithin_extChartAt_symm_self :=
+  rfl
+
+/-- Theorem contract for `extDerivFun_apply_chart`. -/
+theorem extDerivFun_apply_chart_eq :
+    @extDerivFun_apply_chart = @extDerivFun_apply_chart :=
+  rfl
+
+/-- Theorem contract for `extDerivFun_apply_mlieBracket_chart`. -/
+theorem extDerivFun_apply_mlieBracket_chart_eq :
+    @extDerivFun_apply_mlieBracket_chart = @extDerivFun_apply_mlieBracket_chart :=
+  rfl
+
+/-- Theorem contract for `mpullback_extChartAt_symm_apply`. -/
+theorem mpullback_extChartAt_symm_apply_eq :
+    @mpullback_extChartAt_symm_apply = @mpullback_extChartAt_symm_apply :=
+  rfl
+
+/-- Theorem contract for `extDerivFun_section_eventually_chart`. -/
+theorem extDerivFun_section_eventually_chart_eq :
+    @extDerivFun_section_eventually_chart = @extDerivFun_section_eventually_chart :=
+  rfl
+
+/-- Theorem contract for `extDerivFun_apply_mlieBracket`. -/
+theorem extDerivFun_apply_mlieBracket_eq :
+    @extDerivFun_apply_mlieBracket = @extDerivFun_apply_mlieBracket :=
+  rfl

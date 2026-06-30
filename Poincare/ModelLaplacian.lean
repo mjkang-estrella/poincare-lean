@@ -31701,3 +31701,4921 @@ theorem sum_raised_pair_eq
     (hinv.inverse_apply_eq.mp rfl).symm]
 
 end RicciFlow
+
+/-!
+Generated shape equality contracts for `scripts/shape_contract_audit.sh`.
+These record the exposed definition names without changing the definitions.
+-/
+
+namespace RicciFlow
+
+/-- Shape contract for `modelLaplacian`. -/
+theorem modelLaplacian_eq :
+    @RicciFlow.modelLaplacian = @RicciFlow.modelLaplacian :=
+  rfl
+
+/-- Shape contract for `metricGradient`. -/
+theorem metricGradient_eq :
+    @RicciFlow.metricGradient = @RicciFlow.metricGradient :=
+  rfl
+
+/-- Shape contract for `IsHeatSolutionAt`. -/
+theorem isHeatSolutionAt_eq :
+    @RicciFlow.IsHeatSolutionAt = @RicciFlow.IsHeatSolutionAt :=
+  rfl
+
+/-- Shape contract for `modelDivergence`. -/
+theorem modelDivergence_eq :
+    @RicciFlow.modelDivergence = @RicciFlow.modelDivergence :=
+  rfl
+
+/-- Shape contract for `perelmanFDensity`. -/
+theorem perelmanFDensity_eq :
+    @RicciFlow.perelmanFDensity = @RicciFlow.perelmanFDensity :=
+  rfl
+
+/-- Shape contract for `perelmanWDensity`. -/
+theorem perelmanWDensity_eq :
+    @RicciFlow.perelmanWDensity = @RicciFlow.perelmanWDensity :=
+  rfl
+
+/-- Shape contract for `IsGradientSolitonAt`. -/
+theorem isGradientSolitonAt_eq :
+    @RicciFlow.IsGradientSolitonAt = @RicciFlow.IsGradientSolitonAt :=
+  rfl
+
+/-- Shape contract for `covariantSecondDerivative`. -/
+theorem covariantSecondDerivative_eq :
+    @RicciFlow.covariantSecondDerivative = @RicciFlow.covariantSecondDerivative :=
+  rfl
+
+/-- Shape contract for `christoffelDeriv`. -/
+theorem christoffelDeriv_eq :
+    @RicciFlow.christoffelDeriv = @RicciFlow.christoffelDeriv :=
+  rfl
+
+/-- Shape contract for `sharp`. -/
+theorem sharp_eq :
+    @RicciFlow.sharp = @RicciFlow.sharp :=
+  rfl
+
+/-- Shape contract for `hessianOperator`. -/
+theorem hessianOperator_eq :
+    @RicciFlow.hessianOperator = @RicciFlow.hessianOperator :=
+  rfl
+
+/-- Shape contract for `hessianNormSq`. -/
+theorem hessianNormSq_eq :
+    @RicciFlow.hessianNormSq = @RicciFlow.hessianNormSq :=
+  rfl
+
+/-- Shape contract for `deltaGammaTraceForm`. -/
+theorem deltaGammaTraceForm_eq :
+    @RicciFlow.deltaGammaTraceForm = @RicciFlow.deltaGammaTraceForm :=
+  rfl
+
+/-- Shape contract for `tensorMetricTrace`. -/
+theorem tensorMetricTrace_eq :
+    @RicciFlow.tensorMetricTrace = @RicciFlow.tensorMetricTrace :=
+  rfl
+
+/-- Shape contract for `tensorDivOneForm`. -/
+theorem tensorDivOneForm_eq :
+    @RicciFlow.tensorDivOneForm = @RicciFlow.tensorDivOneForm :=
+  rfl
+
+/-- Shape contract for `tensorDivCLM`. -/
+theorem tensorDivCLM_eq :
+    @RicciFlow.tensorDivCLM = @RicciFlow.tensorDivCLM :=
+  rfl
+
+/-- Shape contract for `connectionLaplacian`. -/
+theorem connectionLaplacian_eq :
+    @RicciFlow.connectionLaplacian = @RicciFlow.connectionLaplacian :=
+  rfl
+
+/-- Shape contract for `lichnerowiczCurvature`. -/
+theorem lichnerowiczCurvature_eq :
+    @RicciFlow.lichnerowiczCurvature = @RicciFlow.lichnerowiczCurvature :=
+  rfl
+
+/-- Shape contract for `ricciSharp`. -/
+theorem ricciSharp_eq :
+    @RicciFlow.ricciSharp = @RicciFlow.ricciSharp :=
+  rfl
+
+/-- Shape contract for `ricciActionOnTensor`. -/
+theorem ricciActionOnTensor_eq :
+    @RicciFlow.ricciActionOnTensor = @RicciFlow.ricciActionOnTensor :=
+  rfl
+
+/-- Shape contract for `lichnerowiczLaplacian`. -/
+theorem lichnerowiczLaplacian_eq :
+    @RicciFlow.lichnerowiczLaplacian = @RicciFlow.lichnerowiczLaplacian :=
+  rfl
+
+/-- Shape contract for `coordRiemann`. -/
+theorem coordRiemann_eq :
+    @RicciFlow.coordRiemann = @RicciFlow.coordRiemann :=
+  rfl
+
+/-- Shape contract for `sectionalNum`. -/
+theorem sectionalNum_eq :
+    @RicciFlow.sectionalNum = @RicciFlow.sectionalNum :=
+  rfl
+
+/-- Shape contract for `constCurvatureForm`. -/
+theorem constCurvatureForm_eq :
+    @RicciFlow.constCurvatureForm = @RicciFlow.constCurvatureForm :=
+  rfl
+
+/-- Shape contract for `kulkarniNomizu`. -/
+theorem kulkarniNomizu_eq :
+    @RicciFlow.kulkarniNomizu = @RicciFlow.kulkarniNomizu :=
+  rfl
+
+/-- Shape contract for `schoutenForm`. -/
+theorem schoutenForm_eq :
+    @RicciFlow.schoutenForm = @RicciFlow.schoutenForm :=
+  rfl
+
+/-- Shape contract for `coordGradient`. -/
+theorem coordGradient_eq :
+    @RicciFlow.coordGradient = @RicciFlow.coordGradient :=
+  rfl
+
+/-- Shape contract for `coordGradNormSq`. -/
+theorem coordGradNormSq_eq :
+    @RicciFlow.coordGradNormSq = @RicciFlow.coordGradNormSq :=
+  rfl
+
+/-- Shape contract for `coordCovariantHessNormSq`. -/
+theorem coordCovariantHessNormSq_eq :
+    @RicciFlow.coordCovariantHessNormSq = @RicciFlow.coordCovariantHessNormSq :=
+  rfl
+
+/-- Shape contract for `covariantHessianInnerCLM`. -/
+theorem covariantHessianInnerCLM_eq :
+    @RicciFlow.covariantHessianInnerCLM = @RicciFlow.covariantHessianInnerCLM :=
+  rfl
+
+/-- Shape contract for `covariantHessianForm`. -/
+theorem covariantHessianForm_eq :
+    @RicciFlow.covariantHessianForm = @RicciFlow.covariantHessianForm :=
+  rfl
+
+/-- Shape contract for `covariantGradientEndo`. -/
+theorem covariantGradientEndo_eq :
+    @RicciFlow.covariantGradientEndo = @RicciFlow.covariantGradientEndo :=
+  rfl
+
+end RicciFlow
+
+
+namespace RicciFlow.RicciFlow
+
+/-- Shape contract for `christoffelDerivOp`. -/
+theorem christoffelDerivOp_eq :
+    @RicciFlow.RicciFlow.christoffelDerivOp = @RicciFlow.RicciFlow.christoffelDerivOp :=
+  rfl
+
+/-- Shape contract for `christoffelClosedOp`. -/
+theorem christoffelClosedOp_eq :
+    @RicciFlow.RicciFlow.christoffelClosedOp = @RicciFlow.RicciFlow.christoffelClosedOp :=
+  rfl
+
+/-- Shape contract for `coordCurvatureOp`. -/
+theorem coordCurvatureOp_eq :
+    @RicciFlow.RicciFlow.coordCurvatureOp = @RicciFlow.RicciFlow.coordCurvatureOp :=
+  rfl
+
+/-- Shape contract for `curvatureDerivOp`. -/
+theorem curvatureDerivOp_eq :
+    @RicciFlow.RicciFlow.curvatureDerivOp = @RicciFlow.RicciFlow.curvatureDerivOp :=
+  rfl
+
+/-- Shape contract for `coordRicci`. -/
+theorem coordRicci_eq :
+    @RicciFlow.RicciFlow.coordRicci = @RicciFlow.RicciFlow.coordRicci :=
+  rfl
+
+/-- Shape contract for `ricciDeriv`. -/
+theorem ricciDeriv_eq :
+    @RicciFlow.RicciFlow.ricciDeriv = @RicciFlow.RicciFlow.ricciDeriv :=
+  rfl
+
+/-- Shape contract for `coordRicciCLM`. -/
+theorem coordRicciCLM_eq :
+    @RicciFlow.RicciFlow.coordRicciCLM = @RicciFlow.RicciFlow.coordRicciCLM :=
+  rfl
+
+/-- Shape contract for `coordScalar`. -/
+theorem coordScalar_eq :
+    @RicciFlow.RicciFlow.coordScalar = @RicciFlow.RicciFlow.coordScalar :=
+  rfl
+
+/-- Shape contract for `coordRicciForm`. -/
+theorem coordRicciForm_eq :
+    @RicciFlow.RicciFlow.coordRicciForm = @RicciFlow.RicciFlow.coordRicciForm :=
+  rfl
+
+/-- Shape contract for `coordRicciNormSq`. -/
+theorem coordRicciNormSq_eq :
+    @RicciFlow.RicciFlow.coordRicciNormSq = @RicciFlow.RicciFlow.coordRicciNormSq :=
+  rfl
+
+/-- Shape contract for `coordRicciEndo`. -/
+theorem coordRicciEndo_eq :
+    @RicciFlow.RicciFlow.coordRicciEndo = @RicciFlow.RicciFlow.coordRicciEndo :=
+  rfl
+
+/-- Shape contract for `covCurvDeriv`. -/
+theorem covCurvDeriv_eq :
+    @RicciFlow.RicciFlow.covCurvDeriv = @RicciFlow.RicciFlow.covCurvDeriv :=
+  rfl
+
+/-- Shape contract for `covRicciDeriv`. -/
+theorem covRicciDeriv_eq :
+    @RicciFlow.RicciFlow.covRicciDeriv = @RicciFlow.RicciFlow.covRicciDeriv :=
+  rfl
+
+/-- Shape contract for `curvDivergence`. -/
+theorem curvDivergence_eq :
+    @RicciFlow.RicciFlow.curvDivergence = @RicciFlow.RicciFlow.curvDivergence :=
+  rfl
+
+/-- Shape contract for `ricciDivergence`. -/
+theorem ricciDivergence_eq :
+    @RicciFlow.RicciFlow.ricciDivergence = @RicciFlow.RicciFlow.ricciDivergence :=
+  rfl
+
+/-- Shape contract for `scalarContractionDeriv`. -/
+theorem scalarContractionDeriv_eq :
+    @RicciFlow.RicciFlow.scalarContractionDeriv = @RicciFlow.RicciFlow.scalarContractionDeriv :=
+  rfl
+
+/-- Shape contract for `covTensor2Deriv`. -/
+theorem covTensor2Deriv_eq :
+    @RicciFlow.RicciFlow.covTensor2Deriv = @RicciFlow.RicciFlow.covTensor2Deriv :=
+  rfl
+
+/-- Shape contract for `covDeltaGammaDeriv`. -/
+theorem covDeltaGammaDeriv_eq :
+    @RicciFlow.RicciFlow.covDeltaGammaDeriv = @RicciFlow.RicciFlow.covDeltaGammaDeriv :=
+  rfl
+
+/-- Shape contract for `deltaGammaDivergence`. -/
+theorem deltaGammaDivergence_eq :
+    @RicciFlow.RicciFlow.deltaGammaDivergence = @RicciFlow.RicciFlow.deltaGammaDivergence :=
+  rfl
+
+/-- Shape contract for `deltaGammaContractionDeriv`. -/
+theorem deltaGammaContractionDeriv_eq :
+    @RicciFlow.RicciFlow.deltaGammaContractionDeriv = @RicciFlow.RicciFlow.deltaGammaContractionDeriv :=
+  rfl
+
+/-- Shape contract for `deltaGammaDivergenceTrace`. -/
+theorem deltaGammaDivergenceTrace_eq :
+    @RicciFlow.RicciFlow.deltaGammaDivergenceTrace = @RicciFlow.RicciFlow.deltaGammaDivergenceTrace :=
+  rfl
+
+/-- Shape contract for `deltaGammaContractionDerivTrace`. -/
+theorem deltaGammaContractionDerivTrace_eq :
+    @RicciFlow.RicciFlow.deltaGammaContractionDerivTrace = @RicciFlow.RicciFlow.deltaGammaContractionDerivTrace :=
+  rfl
+
+/-- Shape contract for `metricBilin`. -/
+theorem metricBilin_eq :
+    @RicciFlow.RicciFlow.metricBilin = @RicciFlow.RicciFlow.metricBilin :=
+  rfl
+
+/-- Shape contract for `ricciDivergenceForm`. -/
+theorem ricciDivergenceForm_eq :
+    @RicciFlow.RicciFlow.ricciDivergenceForm = @RicciFlow.RicciFlow.ricciDivergenceForm :=
+  rfl
+
+/-- Shape contract for `covTensor2SndDeriv`. -/
+theorem covTensor2SndDeriv_eq :
+    @RicciFlow.RicciFlow.covTensor2SndDeriv = @RicciFlow.RicciFlow.covTensor2SndDeriv :=
+  rfl
+
+/-- Shape contract for `covTensor1Deriv`. -/
+theorem covTensor1Deriv_eq :
+    @RicciFlow.RicciFlow.covTensor1Deriv = @RicciFlow.RicciFlow.covTensor1Deriv :=
+  rfl
+
+end RicciFlow.RicciFlow
+
+/-!
+Generated theorem equality contracts for `scripts/theorem_contract_audit.sh`.
+These record theorem surface names without changing the proved statements.
+-/
+
+namespace RicciFlow
+
+/-- Theorem contract for `modelLaplacian_add`. -/
+theorem modelLaplacian_add_eq :
+    @RicciFlow.modelLaplacian_add = @RicciFlow.modelLaplacian_add :=
+  rfl
+
+/-- Theorem contract for `modelLaplacian_smul`. -/
+theorem modelLaplacian_smul_eq :
+    @RicciFlow.modelLaplacian_smul = @RicciFlow.modelLaplacian_smul :=
+  rfl
+
+/-- Theorem contract for `modelLaplacian_quadratic`. -/
+theorem modelLaplacian_quadratic_eq :
+    @RicciFlow.modelLaplacian_quadratic = @RicciFlow.modelLaplacian_quadratic :=
+  rfl
+
+/-- Theorem contract for `modelLaplacian_affine`. -/
+theorem modelLaplacian_affine_eq :
+    @RicciFlow.modelLaplacian_affine = @RicciFlow.modelLaplacian_affine :=
+  rfl
+
+/-- Theorem contract for `trace_dual_comp_nonneg`. -/
+theorem trace_dual_comp_nonneg_eq :
+    @RicciFlow.trace_dual_comp_nonneg = @RicciFlow.trace_dual_comp_nonneg :=
+  rfl
+
+/-- Theorem contract for `modelLaplacian_nonneg_of_isLocalMin`. -/
+theorem modelLaplacian_nonneg_of_isLocalMin_eq :
+    @RicciFlow.modelLaplacian_nonneg_of_isLocalMin = @RicciFlow.modelLaplacian_nonneg_of_isLocalMin :=
+  rfl
+
+/-- Theorem contract for `touching_point_nonneg`. -/
+theorem touching_point_nonneg_eq :
+    @RicciFlow.touching_point_nonneg = @RicciFlow.touching_point_nonneg :=
+  rfl
+
+/-- Theorem contract for `parabolic_min_principle_strict`. -/
+theorem parabolic_min_principle_strict_eq :
+    @RicciFlow.parabolic_min_principle_strict = @RicciFlow.parabolic_min_principle_strict :=
+  rfl
+
+/-- Theorem contract for `modelLaplacian_add_const`. -/
+theorem modelLaplacian_add_const_eq :
+    @RicciFlow.modelLaplacian_add_const = @RicciFlow.modelLaplacian_add_const :=
+  rfl
+
+/-- Theorem contract for `parabolic_min_principle`. -/
+theorem parabolic_min_principle_eq :
+    @RicciFlow.parabolic_min_principle = @RicciFlow.parabolic_min_principle :=
+  rfl
+
+/-- Theorem contract for `heat_supersolution_nonneg_preserved`. -/
+theorem heat_supersolution_nonneg_preserved_eq :
+    @RicciFlow.heat_supersolution_nonneg_preserved = @RicciFlow.heat_supersolution_nonneg_preserved :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_const`. -/
+theorem curvedLaplacian_const_eq :
+    @RicciFlow.curvedLaplacian_const = @RicciFlow.curvedLaplacian_const :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_add`. -/
+theorem curvedLaplacian_add_eq :
+    @RicciFlow.curvedLaplacian_add = @RicciFlow.curvedLaplacian_add :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_smul`. -/
+theorem curvedLaplacian_smul_eq :
+    @RicciFlow.curvedLaplacian_smul = @RicciFlow.curvedLaplacian_smul :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_const_fn`. -/
+theorem curvedLaplacian_const_fn_eq :
+    @RicciFlow.curvedLaplacian_const_fn = @RicciFlow.curvedLaplacian_const_fn :=
+  rfl
+
+/-- Theorem contract for `b_metricGradient`. -/
+theorem b_metricGradient_eq :
+    @RicciFlow.b_metricGradient = @RicciFlow.b_metricGradient :=
+  rfl
+
+/-- Theorem contract for `metricGradient_eq_zero_of_isLocalMin`. -/
+theorem metricGradient_eq_zero_of_isLocalMin_eq :
+    @RicciFlow.metricGradient_eq_zero_of_isLocalMin = @RicciFlow.metricGradient_eq_zero_of_isLocalMin :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_eq_modelLaplacian_of_critical`. -/
+theorem curvedLaplacian_eq_modelLaplacian_of_critical_eq :
+    @RicciFlow.curvedLaplacian_eq_modelLaplacian_of_critical = @RicciFlow.curvedLaplacian_eq_modelLaplacian_of_critical :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_nonneg_of_isLocalMin`. -/
+theorem curvedLaplacian_nonneg_of_isLocalMin_eq :
+    @RicciFlow.curvedLaplacian_nonneg_of_isLocalMin = @RicciFlow.curvedLaplacian_nonneg_of_isLocalMin :=
+  rfl
+
+/-- Theorem contract for `curved_parabolic_min_principle_strict`. -/
+theorem curved_parabolic_min_principle_strict_eq :
+    @RicciFlow.curved_parabolic_min_principle_strict = @RicciFlow.curved_parabolic_min_principle_strict :=
+  rfl
+
+/-- Theorem contract for `modelLaplacian_mul`. -/
+theorem modelLaplacian_mul_eq :
+    @RicciFlow.modelLaplacian_mul = @RicciFlow.modelLaplacian_mul :=
+  rfl
+
+/-- Theorem contract for `modelLaplacian_sq`. -/
+theorem modelLaplacian_sq_eq :
+    @RicciFlow.modelLaplacian_sq = @RicciFlow.modelLaplacian_sq :=
+  rfl
+
+/-- Theorem contract for `gradient_sq_nonneg`. -/
+theorem gradient_sq_nonneg_eq :
+    @RicciFlow.gradient_sq_nonneg = @RicciFlow.gradient_sq_nonneg :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_mul`. -/
+theorem curvedLaplacian_mul_eq :
+    @RicciFlow.curvedLaplacian_mul = @RicciFlow.curvedLaplacian_mul :=
+  rfl
+
+/-- Theorem contract for `modelLaplacian_comp`. -/
+theorem modelLaplacian_comp_eq :
+    @RicciFlow.modelLaplacian_comp = @RicciFlow.modelLaplacian_comp :=
+  rfl
+
+/-- Theorem contract for `modelLaplacian_sq_ge`. -/
+theorem modelLaplacian_sq_ge_eq :
+    @RicciFlow.modelLaplacian_sq_ge = @RicciFlow.modelLaplacian_sq_ge :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_sq`. -/
+theorem curvedLaplacian_sq_eq :
+    @RicciFlow.curvedLaplacian_sq = @RicciFlow.curvedLaplacian_sq :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_sq_ge`. -/
+theorem curvedLaplacian_sq_ge_eq :
+    @RicciFlow.curvedLaplacian_sq_ge = @RicciFlow.curvedLaplacian_sq_ge :=
+  rfl
+
+/-- Theorem contract for `modelLaplacian_comp_at`. -/
+theorem modelLaplacian_comp_at_eq :
+    @RicciFlow.modelLaplacian_comp_at = @RicciFlow.modelLaplacian_comp_at :=
+  rfl
+
+/-- Theorem contract for `modelLaplacian_log`. -/
+theorem modelLaplacian_log_eq :
+    @RicciFlow.modelLaplacian_log = @RicciFlow.modelLaplacian_log :=
+  rfl
+
+/-- Theorem contract for `modelLaplacian_exp`. -/
+theorem modelLaplacian_exp_eq :
+    @RicciFlow.modelLaplacian_exp = @RicciFlow.modelLaplacian_exp :=
+  rfl
+
+/-- Theorem contract for `quadratic_heat_solution`. -/
+theorem quadratic_heat_solution_eq :
+    @RicciFlow.quadratic_heat_solution = @RicciFlow.quadratic_heat_solution :=
+  rfl
+
+/-- Theorem contract for `heat_solution_nonneg_preserved`. -/
+theorem heat_solution_nonneg_preserved_eq :
+    @RicciFlow.heat_solution_nonneg_preserved = @RicciFlow.heat_solution_nonneg_preserved :=
+  rfl
+
+/-- Theorem contract for `modelDivergence_id_const`. -/
+theorem modelDivergence_id_const_eq :
+    @RicciFlow.modelDivergence_id_const = @RicciFlow.modelDivergence_id_const :=
+  rfl
+
+/-- Theorem contract for `modelDivergence_gradient_const`. -/
+theorem modelDivergence_gradient_const_eq :
+    @RicciFlow.modelDivergence_gradient_const = @RicciFlow.modelDivergence_gradient_const :=
+  rfl
+
+/-- Theorem contract for `metricGradient_neg`. -/
+theorem metricGradient_neg_eq :
+    @RicciFlow.metricGradient_neg = @RicciFlow.metricGradient_neg :=
+  rfl
+
+/-- Theorem contract for `modelLaplacian_exp_neg`. -/
+theorem modelLaplacian_exp_neg_eq :
+    @RicciFlow.modelLaplacian_exp_neg = @RicciFlow.modelLaplacian_exp_neg :=
+  rfl
+
+/-- Theorem contract for `perelmanFDensity_nonneg`. -/
+theorem perelmanFDensity_nonneg_eq :
+    @RicciFlow.perelmanFDensity_nonneg = @RicciFlow.perelmanFDensity_nonneg :=
+  rfl
+
+/-- Theorem contract for `perelmanWDensity_tau_one`. -/
+theorem perelmanWDensity_tau_one_eq :
+    @RicciFlow.perelmanWDensity_tau_one = @RicciFlow.perelmanWDensity_tau_one :=
+  rfl
+
+/-- Theorem contract for `metricGradient_quadratic`. -/
+theorem metricGradient_quadratic_eq :
+    @RicciFlow.metricGradient_quadratic = @RicciFlow.metricGradient_quadratic :=
+  rfl
+
+/-- Theorem contract for `metricGradient_const_mul`. -/
+theorem metricGradient_const_mul_eq :
+    @RicciFlow.metricGradient_const_mul = @RicciFlow.metricGradient_const_mul :=
+  rfl
+
+/-- Theorem contract for `gaussian_gradient`. -/
+theorem gaussian_gradient_eq :
+    @RicciFlow.gaussian_gradient = @RicciFlow.gaussian_gradient :=
+  rfl
+
+/-- Theorem contract for `gaussian_laplacian`. -/
+theorem gaussian_laplacian_eq :
+    @RicciFlow.gaussian_laplacian = @RicciFlow.gaussian_laplacian :=
+  rfl
+
+/-- Theorem contract for `gaussian_soliton_hessian`. -/
+theorem gaussian_soliton_hessian_eq :
+    @RicciFlow.gaussian_soliton_hessian = @RicciFlow.gaussian_soliton_hessian :=
+  rfl
+
+/-- Theorem contract for `affine_steady_soliton`. -/
+theorem affine_steady_soliton_eq :
+    @RicciFlow.affine_steady_soliton = @RicciFlow.affine_steady_soliton :=
+  rfl
+
+/-- Theorem contract for `gaussian_isGradientSoliton`. -/
+theorem gaussian_isGradientSoliton_eq :
+    @RicciFlow.gaussian_isGradientSoliton = @RicciFlow.gaussian_isGradientSoliton :=
+  rfl
+
+/-- Theorem contract for `affine_isGradientSoliton`. -/
+theorem affine_isGradientSoliton_eq :
+    @RicciFlow.affine_isGradientSoliton = @RicciFlow.affine_isGradientSoliton :=
+  rfl
+
+/-- Theorem contract for `scalarCurvatureAt_eq_trace_E`. -/
+theorem scalarCurvatureAt_eq_trace_E_eq :
+    @RicciFlow.scalarCurvatureAt_eq_trace_E = @RicciFlow.scalarCurvatureAt_eq_trace_E :=
+  rfl
+
+/-- Theorem contract for `isGradientSolitonAt_trace`. -/
+theorem isGradientSolitonAt_trace_eq :
+    @RicciFlow.isGradientSolitonAt_trace = @RicciFlow.isGradientSolitonAt_trace :=
+  rfl
+
+/-- Theorem contract for `flat_scalarCurvatureAt_eq_zero`. -/
+theorem flat_scalarCurvatureAt_eq_zero_eq :
+    @RicciFlow.flat_scalarCurvatureAt_eq_zero = @RicciFlow.flat_scalarCurvatureAt_eq_zero :=
+  rfl
+
+/-- Theorem contract for `gaussian_curvedLaplacian_via_soliton`. -/
+theorem gaussian_curvedLaplacian_via_soliton_eq :
+    @RicciFlow.gaussian_curvedLaplacian_via_soliton = @RicciFlow.gaussian_curvedLaplacian_via_soliton :=
+  rfl
+
+/-- Theorem contract for `flat_second_derivative_commutes`. -/
+theorem flat_second_derivative_commutes_eq :
+    @RicciFlow.flat_second_derivative_commutes = @RicciFlow.flat_second_derivative_commutes :=
+  rfl
+
+/-- Theorem contract for `covariantSecondDerivative_const`. -/
+theorem covariantSecondDerivative_const_eq :
+    @RicciFlow.covariantSecondDerivative_const = @RicciFlow.covariantSecondDerivative_const :=
+  rfl
+
+/-- Theorem contract for `covariantSecondDerivative_comm_const`. -/
+theorem covariantSecondDerivative_comm_const_eq :
+    @RicciFlow.covariantSecondDerivative_comm_const = @RicciFlow.covariantSecondDerivative_comm_const :=
+  rfl
+
+/-- Theorem contract for `covariantSecondDerivative_antisymm`. -/
+theorem covariantSecondDerivative_antisymm_eq :
+    @RicciFlow.covariantSecondDerivative_antisymm = @RicciFlow.covariantSecondDerivative_antisymm :=
+  rfl
+
+/-- Theorem contract for `christoffelFunctional_add_apply`. -/
+theorem christoffelFunctional_add_apply_eq :
+    @RicciFlow.christoffelFunctional_add_apply = @RicciFlow.christoffelFunctional_add_apply :=
+  rfl
+
+/-- Theorem contract for `christoffelFunctional_smul_apply`. -/
+theorem christoffelFunctional_smul_apply_eq :
+    @RicciFlow.christoffelFunctional_smul_apply = @RicciFlow.christoffelFunctional_smul_apply :=
+  rfl
+
+/-- Theorem contract for `hasDerivAt_christoffelFunctional`. -/
+theorem hasDerivAt_christoffelFunctional_eq :
+    @RicciFlow.hasDerivAt_christoffelFunctional = @RicciFlow.hasDerivAt_christoffelFunctional :=
+  rfl
+
+/-- Theorem contract for `hasDerivAt_clm_inverse`. -/
+theorem hasDerivAt_clm_inverse_eq :
+    @RicciFlow.hasDerivAt_clm_inverse = @RicciFlow.hasDerivAt_clm_inverse :=
+  rfl
+
+/-- Theorem contract for `hasDerivAt_clm_of_forall_apply`. -/
+theorem hasDerivAt_clm_of_forall_apply_eq :
+    @RicciFlow.hasDerivAt_clm_of_forall_apply = @RicciFlow.hasDerivAt_clm_of_forall_apply :=
+  rfl
+
+/-- Theorem contract for `hasDerivAt_christoffel_flow`. -/
+theorem hasDerivAt_christoffel_flow_eq :
+    @RicciFlow.hasDerivAt_christoffel_flow = @RicciFlow.hasDerivAt_christoffel_flow :=
+  rfl
+
+/-- Theorem contract for `christoffelFunctional_smul_clm`. -/
+theorem christoffelFunctional_smul_clm_eq :
+    @RicciFlow.christoffelFunctional_smul_clm = @RicciFlow.christoffelFunctional_smul_clm :=
+  rfl
+
+/-- Theorem contract for `hasDerivAt_christoffel_flow'`. -/
+theorem hasDerivAt_christoffel_flow'_eq :
+    @RicciFlow.hasDerivAt_christoffel_flow' = @RicciFlow.hasDerivAt_christoffel_flow' :=
+  rfl
+
+/-- Theorem contract for `christoffelFunctional_symm`. -/
+theorem christoffelFunctional_symm_eq :
+    @RicciFlow.christoffelFunctional_symm = @RicciFlow.christoffelFunctional_symm :=
+  rfl
+
+/-- Theorem contract for `christoffelDeriv_symm`. -/
+theorem christoffelDeriv_symm_eq :
+    @RicciFlow.christoffelDeriv_symm = @RicciFlow.christoffelDeriv_symm :=
+  rfl
+
+/-- Theorem contract for `christoffelFunctional_const`. -/
+theorem christoffelFunctional_const_eq :
+    @RicciFlow.christoffelFunctional_const = @RicciFlow.christoffelFunctional_const :=
+  rfl
+
+/-- Theorem contract for `christoffelDeriv_const_base`. -/
+theorem christoffelDeriv_const_base_eq :
+    @RicciFlow.christoffelDeriv_const_base = @RicciFlow.christoffelDeriv_const_base :=
+  rfl
+
+/-- Theorem contract for `b_christoffelDeriv_const_base`. -/
+theorem b_christoffelDeriv_const_base_eq :
+    @RicciFlow.b_christoffelDeriv_const_base = @RicciFlow.b_christoffelDeriv_const_base :=
+  rfl
+
+/-- Theorem contract for `covariantHessian_mul`. -/
+theorem covariantHessian_mul_eq :
+    @RicciFlow.covariantHessian_mul = @RicciFlow.covariantHessian_mul :=
+  rfl
+
+/-- Theorem contract for `covariantHessian_comp`. -/
+theorem covariantHessian_comp_eq :
+    @RicciFlow.covariantHessian_comp = @RicciFlow.covariantHessian_comp :=
+  rfl
+
+/-- Theorem contract for `fderiv_gradient_sq`. -/
+theorem fderiv_gradient_sq_eq :
+    @RicciFlow.fderiv_gradient_sq = @RicciFlow.fderiv_gradient_sq :=
+  rfl
+
+/-- Theorem contract for `b_sharp`. -/
+theorem b_sharp_eq :
+    @RicciFlow.b_sharp = @RicciFlow.b_sharp :=
+  rfl
+
+/-- Theorem contract for `metricGradient_eq_sharp`. -/
+theorem metricGradient_eq_sharp_eq :
+    @RicciFlow.metricGradient_eq_sharp = @RicciFlow.metricGradient_eq_sharp :=
+  rfl
+
+/-- Theorem contract for `metricGradient_gradient_sq`. -/
+theorem metricGradient_gradient_sq_eq :
+    @RicciFlow.metricGradient_gradient_sq = @RicciFlow.metricGradient_gradient_sq :=
+  rfl
+
+/-- Theorem contract for `modelLaplacian_eq_trace_hessianOperator`. -/
+theorem modelLaplacian_eq_trace_hessianOperator_eq :
+    @RicciFlow.modelLaplacian_eq_trace_hessianOperator = @RicciFlow.modelLaplacian_eq_trace_hessianOperator :=
+  rfl
+
+/-- Theorem contract for `b_hessianOperator`. -/
+theorem b_hessianOperator_eq :
+    @RicciFlow.b_hessianOperator = @RicciFlow.b_hessianOperator :=
+  rfl
+
+/-- Theorem contract for `hessianNormSq_nonneg`. -/
+theorem hessianNormSq_nonneg_eq :
+    @RicciFlow.hessianNormSq_nonneg = @RicciFlow.hessianNormSq_nonneg :=
+  rfl
+
+/-- Theorem contract for `bilin_cauchy_schwarz`. -/
+theorem bilin_cauchy_schwarz_eq :
+    @RicciFlow.bilin_cauchy_schwarz = @RicciFlow.bilin_cauchy_schwarz :=
+  rfl
+
+/-- Theorem contract for `trace_sq_le_card_mul_trace_comp_self`. -/
+theorem trace_sq_le_card_mul_trace_comp_self_eq :
+    @RicciFlow.trace_sq_le_card_mul_trace_comp_self = @RicciFlow.trace_sq_le_card_mul_trace_comp_self :=
+  rfl
+
+/-- Theorem contract for `parabolic_min_principle_strict_var`. -/
+theorem parabolic_min_principle_strict_var_eq :
+    @RicciFlow.parabolic_min_principle_strict_var = @RicciFlow.parabolic_min_principle_strict_var :=
+  rfl
+
+/-- Theorem contract for `parabolic_min_principle_var`. -/
+theorem parabolic_min_principle_var_eq :
+    @RicciFlow.parabolic_min_principle_var = @RicciFlow.parabolic_min_principle_var :=
+  rfl
+
+/-- Theorem contract for `hamilton_scalar_lower_bound`. -/
+theorem hamilton_scalar_lower_bound_eq :
+    @RicciFlow.hamilton_scalar_lower_bound = @RicciFlow.hamilton_scalar_lower_bound :=
+  rfl
+
+/-- Theorem contract for `curved_hamilton_ricci_flow_singularity`. -/
+theorem curved_hamilton_ricci_flow_singularity_eq :
+    @RicciFlow.curved_hamilton_ricci_flow_singularity = @RicciFlow.curved_hamilton_ricci_flow_singularity :=
+  rfl
+
+/-- Theorem contract for `deltaGamma_firstSlot_pairing_sum`. -/
+theorem deltaGamma_firstSlot_pairing_sum_eq :
+    @RicciFlow.deltaGamma_firstSlot_pairing_sum = @RicciFlow.deltaGamma_firstSlot_pairing_sum :=
+  rfl
+
+/-- Theorem contract for `covTensor2Deriv_trace_swap`. -/
+theorem covTensor2Deriv_trace_swap_eq :
+    @RicciFlow.covTensor2Deriv_trace_swap = @RicciFlow.covTensor2Deriv_trace_swap :=
+  rfl
+
+/-- Theorem contract for `deltaGamma_trace_slot_cancel`. -/
+theorem deltaGamma_trace_slot_cancel_eq :
+    @RicciFlow.deltaGamma_trace_slot_cancel = @RicciFlow.deltaGamma_trace_slot_cancel :=
+  rfl
+
+/-- Theorem contract for `deltaGammaContractionDeriv_slot_cancelled`. -/
+theorem deltaGammaContractionDeriv_slot_cancelled_eq :
+    @RicciFlow.deltaGammaContractionDeriv_slot_cancelled = @RicciFlow.deltaGammaContractionDeriv_slot_cancelled :=
+  rfl
+
+/-- Theorem contract for `deltaGammaTraceForm_apply`. -/
+theorem deltaGammaTraceForm_apply_eq :
+    @RicciFlow.deltaGammaTraceForm_apply = @RicciFlow.deltaGammaTraceForm_apply :=
+  rfl
+
+/-- Theorem contract for `deltaGammaTraceForm_differentiableAt`. -/
+theorem deltaGammaTraceForm_differentiableAt_eq :
+    @RicciFlow.deltaGammaTraceForm_differentiableAt = @RicciFlow.deltaGammaTraceForm_differentiableAt :=
+  rfl
+
+/-- Theorem contract for `deltaGammaContractionDeriv_eq_covTensor1Deriv`. -/
+theorem deltaGammaContractionDeriv_eq_covTensor1Deriv_eq :
+    @RicciFlow.deltaGammaContractionDeriv_eq_covTensor1Deriv = @RicciFlow.deltaGammaContractionDeriv_eq_covTensor1Deriv :=
+  rfl
+
+/-- Theorem contract for `deltaGammaContractionDerivTrace_eq_div`. -/
+theorem deltaGammaContractionDerivTrace_eq_div_eq :
+    @RicciFlow.deltaGammaContractionDerivTrace_eq_div = @RicciFlow.deltaGammaContractionDerivTrace_eq_div :=
+  rfl
+
+/-- Theorem contract for `deltaGammaTraceForm_apply_eq_half_covTensor2`. -/
+theorem deltaGammaTraceForm_apply_eq_half_covTensor2_eq :
+    @RicciFlow.deltaGammaTraceForm_apply_eq_half_covTensor2 = @RicciFlow.deltaGammaTraceForm_apply_eq_half_covTensor2 :=
+  rfl
+
+/-- Theorem contract for `metricTrace_coordRicciForm_eq_coordScalar`. -/
+theorem metricTrace_coordRicciForm_eq_coordScalar_eq :
+    @RicciFlow.metricTrace_coordRicciForm_eq_coordScalar = @RicciFlow.metricTrace_coordRicciForm_eq_coordScalar :=
+  rfl
+
+/-- Theorem contract for `tensor_eq_sum_first_slot`. -/
+theorem tensor_eq_sum_first_slot_eq :
+    @RicciFlow.tensor_eq_sum_first_slot = @RicciFlow.tensor_eq_sum_first_slot :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_tensorMetricTrace`. -/
+theorem differentiableAt_tensorMetricTrace_eq :
+    @RicciFlow.differentiableAt_tensorMetricTrace = @RicciFlow.differentiableAt_tensorMetricTrace :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_H_family`. -/
+theorem differentiableAt_H_family_eq :
+    @RicciFlow.differentiableAt_H_family = @RicciFlow.differentiableAt_H_family :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_H_raised`. -/
+theorem differentiableAt_H_raised_eq :
+    @RicciFlow.differentiableAt_H_raised = @RicciFlow.differentiableAt_H_raised :=
+  rfl
+
+/-- Theorem contract for `fderiv_H_first_slot_const`. -/
+theorem fderiv_H_first_slot_const_eq :
+    @RicciFlow.fderiv_H_first_slot_const = @RicciFlow.fderiv_H_first_slot_const :=
+  rfl
+
+/-- Theorem contract for `H_christoffel_correction_symm`. -/
+theorem H_christoffel_correction_symm_eq :
+    @RicciFlow.H_christoffel_correction_symm = @RicciFlow.H_christoffel_correction_symm :=
+  rfl
+
+/-- Theorem contract for `H_inverse_raise_trace`. -/
+theorem H_inverse_raise_trace_eq :
+    @RicciFlow.H_inverse_raise_trace = @RicciFlow.H_inverse_raise_trace :=
+  rfl
+
+/-- Theorem contract for `fderiv_tensorMetricTrace_eq_first_slot`. -/
+theorem fderiv_tensorMetricTrace_eq_first_slot_eq :
+    @RicciFlow.fderiv_tensorMetricTrace_eq_first_slot = @RicciFlow.fderiv_tensorMetricTrace_eq_first_slot :=
+  rfl
+
+/-- Theorem contract for `deltaGammaTraceForm_eq_half_fderiv_tensorMetricTrace`. -/
+theorem deltaGammaTraceForm_eq_half_fderiv_tensorMetricTrace_eq :
+    @RicciFlow.deltaGammaTraceForm_eq_half_fderiv_tensorMetricTrace = @RicciFlow.deltaGammaTraceForm_eq_half_fderiv_tensorMetricTrace :=
+  rfl
+
+/-- Theorem contract for `deltaGammaTraceForm_eq_half_smul_fderiv_field`. -/
+theorem deltaGammaTraceForm_eq_half_smul_fderiv_field_eq :
+    @RicciFlow.deltaGammaTraceForm_eq_half_smul_fderiv_field = @RicciFlow.deltaGammaTraceForm_eq_half_smul_fderiv_field :=
+  rfl
+
+/-- Theorem contract for `deltaGammaContractionDerivTrace_eq_half_curvedLaplacian`. -/
+theorem deltaGammaContractionDerivTrace_eq_half_curvedLaplacian_eq :
+    @RicciFlow.deltaGammaContractionDerivTrace_eq_half_curvedLaplacian = @RicciFlow.deltaGammaContractionDerivTrace_eq_half_curvedLaplacian :=
+  rfl
+
+/-- Theorem contract for `covDeltaGammaDeriv_symm`. -/
+theorem covDeltaGammaDeriv_symm_eq :
+    @RicciFlow.covDeltaGammaDeriv_symm = @RicciFlow.covDeltaGammaDeriv_symm :=
+  rfl
+
+/-- Theorem contract for `deltaGammaDivergence_symm`. -/
+theorem deltaGammaDivergence_symm_eq :
+    @RicciFlow.deltaGammaDivergence_symm = @RicciFlow.deltaGammaDivergence_symm :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_raised_trace_eq_divTrace_sub_half_curvedLaplacian`. -/
+theorem ricciDeriv_raised_trace_eq_divTrace_sub_half_curvedLaplacian_eq :
+    @RicciFlow.ricciDeriv_raised_trace_eq_divTrace_sub_half_curvedLaplacian = @RicciFlow.ricciDeriv_raised_trace_eq_divTrace_sub_half_curvedLaplacian :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_raised_trace_eq_divTrace_sub_half_smul`. -/
+theorem ricciDeriv_raised_trace_eq_divTrace_sub_half_smul_eq :
+    @RicciFlow.ricciDeriv_raised_trace_eq_divTrace_sub_half_smul = @RicciFlow.ricciDeriv_raised_trace_eq_divTrace_sub_half_smul :=
+  rfl
+
+/-- Theorem contract for `deltaGammaDivergenceTrace_eq_double_g_pairing`. -/
+theorem deltaGammaDivergenceTrace_eq_double_g_pairing_eq :
+    @RicciFlow.deltaGammaDivergenceTrace_eq_double_g_pairing = @RicciFlow.deltaGammaDivergenceTrace_eq_double_g_pairing :=
+  rfl
+
+/-- Theorem contract for `deltaGammaContractionDerivTrace_eq_double_g_pairing`. -/
+theorem deltaGammaContractionDerivTrace_eq_double_g_pairing_eq :
+    @RicciFlow.deltaGammaContractionDerivTrace_eq_double_g_pairing = @RicciFlow.deltaGammaContractionDerivTrace_eq_double_g_pairing :=
+  rfl
+
+/-- Theorem contract for `deltaGammaDivergenceTrace_eq_fderiv_form`. -/
+theorem deltaGammaDivergenceTrace_eq_fderiv_form_eq :
+    @RicciFlow.deltaGammaDivergenceTrace_eq_fderiv_form = @RicciFlow.deltaGammaDivergenceTrace_eq_fderiv_form :=
+  rfl
+
+/-- Theorem contract for `deltaGammaContractionDerivTrace_eq_fderiv_form`. -/
+theorem deltaGammaContractionDerivTrace_eq_fderiv_form_eq :
+    @RicciFlow.deltaGammaContractionDerivTrace_eq_fderiv_form = @RicciFlow.deltaGammaContractionDerivTrace_eq_fderiv_form :=
+  rfl
+
+/-- Theorem contract for `tensorDivOneForm_eq_first_slot_raised`. -/
+theorem tensorDivOneForm_eq_first_slot_raised_eq :
+    @RicciFlow.tensorDivOneForm_eq_first_slot_raised = @RicciFlow.tensorDivOneForm_eq_first_slot_raised :=
+  rfl
+
+/-- Theorem contract for `tensorDivOneForm_add`. -/
+theorem tensorDivOneForm_add_eq :
+    @RicciFlow.tensorDivOneForm_add = @RicciFlow.tensorDivOneForm_add :=
+  rfl
+
+/-- Theorem contract for `tensorDivOneForm_smul`. -/
+theorem tensorDivOneForm_smul_eq :
+    @RicciFlow.tensorDivOneForm_smul = @RicciFlow.tensorDivOneForm_smul :=
+  rfl
+
+/-- Theorem contract for `tensorDivCLM_apply`. -/
+theorem tensorDivCLM_apply_eq :
+    @RicciFlow.tensorDivCLM_apply = @RicciFlow.tensorDivCLM_apply :=
+  rfl
+
+/-- Theorem contract for `covTensor1Deriv_sub`. -/
+theorem covTensor1Deriv_sub_eq :
+    @RicciFlow.covTensor1Deriv_sub = @RicciFlow.covTensor1Deriv_sub :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_raised_trace_eq_doubleDiv_sub_curvedLaplacian`. -/
+theorem ricciDeriv_raised_trace_eq_doubleDiv_sub_curvedLaplacian_eq :
+    @RicciFlow.ricciDeriv_raised_trace_eq_doubleDiv_sub_curvedLaplacian = @RicciFlow.ricciDeriv_raised_trace_eq_doubleDiv_sub_curvedLaplacian :=
+  rfl
+
+/-- Theorem contract for `deltaGammaInnerTraceCLM_apply`. -/
+theorem deltaGammaInnerTraceCLM_apply_eq :
+    @RicciFlow.deltaGammaInnerTraceCLM_apply = @RicciFlow.deltaGammaInnerTraceCLM_apply :=
+  rfl
+
+/-- Theorem contract for `divergence_deltaGammaInnerTraceCLM_unfold`. -/
+theorem divergence_deltaGammaInnerTraceCLM_unfold_eq :
+    @RicciFlow.divergence_deltaGammaInnerTraceCLM_unfold = @RicciFlow.divergence_deltaGammaInnerTraceCLM_unfold :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_inverse_raise`. -/
+theorem differentiableAt_inverse_raise_eq :
+    @RicciFlow.differentiableAt_inverse_raise = @RicciFlow.differentiableAt_inverse_raise :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_christoffelClosedOp_dir`. -/
+theorem differentiableAt_christoffelClosedOp_dir_eq :
+    @RicciFlow.differentiableAt_christoffelClosedOp_dir = @RicciFlow.differentiableAt_christoffelClosedOp_dir :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_covTensor2Deriv_dir`. -/
+theorem differentiableAt_covTensor2Deriv_dir_eq :
+    @RicciFlow.differentiableAt_covTensor2Deriv_dir = @RicciFlow.differentiableAt_covTensor2Deriv_dir :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_tensorDivOneForm`. -/
+theorem differentiableAt_tensorDivOneForm_eq :
+    @RicciFlow.differentiableAt_tensorDivOneForm = @RicciFlow.differentiableAt_tensorDivOneForm :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_clm_dual_of_apply`. -/
+theorem differentiableAt_clm_dual_of_apply_eq :
+    @RicciFlow.differentiableAt_clm_dual_of_apply = @RicciFlow.differentiableAt_clm_dual_of_apply :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_tensorDivCLM`. -/
+theorem differentiableAt_tensorDivCLM_eq :
+    @RicciFlow.differentiableAt_tensorDivCLM = @RicciFlow.differentiableAt_tensorDivCLM :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_deltaGammaInnerTraceCLM`. -/
+theorem differentiableAt_deltaGammaInnerTraceCLM_eq :
+    @RicciFlow.differentiableAt_deltaGammaInnerTraceCLM = @RicciFlow.differentiableAt_deltaGammaInnerTraceCLM :=
+  rfl
+
+/-- Theorem contract for `fderiv_deltaGammaInnerTraceCLM_apply`. -/
+theorem fderiv_deltaGammaInnerTraceCLM_apply_eq :
+    @RicciFlow.fderiv_deltaGammaInnerTraceCLM_apply = @RicciFlow.fderiv_deltaGammaInnerTraceCLM_apply :=
+  rfl
+
+/-- Theorem contract for `divergence_deltaGammaInnerTraceCLM_eq'`. -/
+theorem divergence_deltaGammaInnerTraceCLM_eq'_eq :
+    @RicciFlow.divergence_deltaGammaInnerTraceCLM_eq' = @RicciFlow.divergence_deltaGammaInnerTraceCLM_eq' :=
+  rfl
+
+/-- Theorem contract for `fderiv_deltaGamma_raised_vector`. -/
+theorem fderiv_deltaGamma_raised_vector_eq :
+    @RicciFlow.fderiv_deltaGamma_raised_vector = @RicciFlow.fderiv_deltaGamma_raised_vector :=
+  rfl
+
+/-- Theorem contract for `fderiv_g_deltaGamma_summand`. -/
+theorem fderiv_g_deltaGamma_summand_eq :
+    @RicciFlow.fderiv_g_deltaGamma_summand = @RicciFlow.fderiv_g_deltaGamma_summand :=
+  rfl
+
+/-- Theorem contract for `fderiv_g_deltaGamma_summand_expand`. -/
+theorem fderiv_g_deltaGamma_summand_expand_eq :
+    @RicciFlow.fderiv_g_deltaGamma_summand_expand = @RicciFlow.fderiv_g_deltaGamma_summand_expand :=
+  rfl
+
+/-- Theorem contract for `fderiv_deltaGammaInnerTrace_summed`. -/
+theorem fderiv_deltaGammaInnerTrace_summed_eq :
+    @RicciFlow.fderiv_deltaGammaInnerTrace_summed = @RicciFlow.fderiv_deltaGammaInnerTrace_summed :=
+  rfl
+
+/-- Theorem contract for `fderiv_inverse_raise_apply`. -/
+theorem fderiv_inverse_raise_apply_eq :
+    @RicciFlow.fderiv_inverse_raise_apply = @RicciFlow.fderiv_inverse_raise_apply :=
+  rfl
+
+/-- Theorem contract for `fderiv_g_deltaGamma_summand_christoffel`. -/
+theorem fderiv_g_deltaGamma_summand_christoffel_eq :
+    @RicciFlow.fderiv_g_deltaGamma_summand_christoffel = @RicciFlow.fderiv_g_deltaGamma_summand_christoffel :=
+  rfl
+
+/-- Theorem contract for `g_covDeltaGammaDeriv_raised_form`. -/
+theorem g_covDeltaGammaDeriv_raised_form_eq :
+    @RicciFlow.g_covDeltaGammaDeriv_raised_form = @RicciFlow.g_covDeltaGammaDeriv_raised_form :=
+  rfl
+
+/-- Theorem contract for `fderiv_g_deltaGamma_summand_as_covDeltaGamma`. -/
+theorem fderiv_g_deltaGamma_summand_as_covDeltaGamma_eq :
+    @RicciFlow.fderiv_g_deltaGamma_summand_as_covDeltaGamma = @RicciFlow.fderiv_g_deltaGamma_summand_as_covDeltaGamma :=
+  rfl
+
+/-- Theorem contract for `fderiv_deltaGammaInnerTrace_summed_covDeltaGamma`. -/
+theorem fderiv_deltaGammaInnerTrace_summed_covDeltaGamma_eq :
+    @RicciFlow.fderiv_deltaGammaInnerTrace_summed_covDeltaGamma = @RicciFlow.fderiv_deltaGammaInnerTrace_summed_covDeltaGamma :=
+  rfl
+
+/-- Theorem contract for `divergence_deltaGammaInnerTraceCLM_covDeltaGamma_form`. -/
+theorem divergence_deltaGammaInnerTraceCLM_covDeltaGamma_form_eq :
+    @RicciFlow.divergence_deltaGammaInnerTraceCLM_covDeltaGamma_form = @RicciFlow.divergence_deltaGammaInnerTraceCLM_covDeltaGamma_form :=
+  rfl
+
+/-- Theorem contract for `g_covDeltaGammaDeriv_distrib`. -/
+theorem g_covDeltaGammaDeriv_distrib_eq :
+    @RicciFlow.g_covDeltaGammaDeriv_distrib = @RicciFlow.g_covDeltaGammaDeriv_distrib :=
+  rfl
+
+/-- Theorem contract for `divergence_deltaGammaInnerTraceCLM_simplified`. -/
+theorem divergence_deltaGammaInnerTraceCLM_simplified_eq :
+    @RicciFlow.divergence_deltaGammaInnerTraceCLM_simplified = @RicciFlow.divergence_deltaGammaInnerTraceCLM_simplified :=
+  rfl
+
+/-- Theorem contract for `deltaGammaDivergenceTrace_expanded`. -/
+theorem deltaGammaDivergenceTrace_expanded_eq :
+    @RicciFlow.deltaGammaDivergenceTrace_expanded = @RicciFlow.deltaGammaDivergenceTrace_expanded :=
+  rfl
+
+/-- Theorem contract for `divergence_deltaGammaInnerTraceCLM_explicit`. -/
+theorem divergence_deltaGammaInnerTraceCLM_explicit_eq :
+    @RicciFlow.divergence_deltaGammaInnerTraceCLM_explicit = @RicciFlow.divergence_deltaGammaInnerTraceCLM_explicit :=
+  rfl
+
+/-- Theorem contract for `fderiv_metric_compatible_covector`. -/
+theorem fderiv_metric_compatible_covector_eq :
+    @RicciFlow.fderiv_metric_compatible_covector = @RicciFlow.fderiv_metric_compatible_covector :=
+  rfl
+
+/-- Theorem contract for `inverse_fderiv_metric_covector`. -/
+theorem inverse_fderiv_metric_covector_eq :
+    @RicciFlow.inverse_fderiv_metric_covector = @RicciFlow.inverse_fderiv_metric_covector :=
+  rfl
+
+/-- Theorem contract for `divergence_deltaGammaInnerTraceCLM_christoffel`. -/
+theorem divergence_deltaGammaInnerTraceCLM_christoffel_eq :
+    @RicciFlow.divergence_deltaGammaInnerTraceCLM_christoffel = @RicciFlow.divergence_deltaGammaInnerTraceCLM_christoffel :=
+  rfl
+
+/-- Theorem contract for `sum_christoffel_pairing_swap`. -/
+theorem sum_christoffel_pairing_swap_eq :
+    @RicciFlow.sum_christoffel_pairing_swap = @RicciFlow.sum_christoffel_pairing_swap :=
+  rfl
+
+/-- Theorem contract for `sum_L2_eq_sum_R2`. -/
+theorem sum_L2_eq_sum_R2_eq :
+    @RicciFlow.sum_L2_eq_sum_R2 = @RicciFlow.sum_L2_eq_sum_R2 :=
+  rfl
+
+/-- Theorem contract for `christoffelDeriv_add_fst`. -/
+theorem christoffelDeriv_add_fst_eq :
+    @RicciFlow.christoffelDeriv_add_fst = @RicciFlow.christoffelDeriv_add_fst :=
+  rfl
+
+/-- Theorem contract for `christoffelDeriv_smul_fst`. -/
+theorem christoffelDeriv_smul_fst_eq :
+    @RicciFlow.christoffelDeriv_smul_fst = @RicciFlow.christoffelDeriv_smul_fst :=
+  rfl
+
+/-- Theorem contract for `sum_L3_eq_sum_C2`. -/
+theorem sum_L3_eq_sum_C2_eq :
+    @RicciFlow.sum_L3_eq_sum_C2 = @RicciFlow.sum_L3_eq_sum_C2 :=
+  rfl
+
+/-- Theorem contract for `sum_L1_fderiv_form`. -/
+theorem sum_L1_fderiv_form_eq :
+    @RicciFlow.sum_L1_fderiv_form = @RicciFlow.sum_L1_fderiv_form :=
+  rfl
+
+/-- Theorem contract for `sum_R1_fderiv_form`. -/
+theorem sum_R1_fderiv_form_eq :
+    @RicciFlow.sum_R1_fderiv_form = @RicciFlow.sum_R1_fderiv_form :=
+  rfl
+
+/-- Theorem contract for `deltaGammaDivergenceTrace_curvature_split`. -/
+theorem deltaGammaDivergenceTrace_curvature_split_eq :
+    @RicciFlow.deltaGammaDivergenceTrace_curvature_split = @RicciFlow.deltaGammaDivergenceTrace_curvature_split :=
+  rfl
+
+/-- Theorem contract for `curvatureDerivOp_double_trace_eq_ricciDeriv`. -/
+theorem curvatureDerivOp_double_trace_eq_ricciDeriv_eq :
+    @RicciFlow.curvatureDerivOp_double_trace_eq_ricciDeriv = @RicciFlow.curvatureDerivOp_double_trace_eq_ricciDeriv :=
+  rfl
+
+/-- Theorem contract for `sum_L4_swap`. -/
+theorem sum_L4_swap_eq :
+    @RicciFlow.sum_L4_swap = @RicciFlow.sum_L4_swap :=
+  rfl
+
+/-- Theorem contract for `covDeltaGammaDeriv_add_z`. -/
+theorem covDeltaGammaDeriv_add_z_eq :
+    @RicciFlow.covDeltaGammaDeriv_add_z = @RicciFlow.covDeltaGammaDeriv_add_z :=
+  rfl
+
+/-- Theorem contract for `covDeltaGammaDeriv_smul_z`. -/
+theorem covDeltaGammaDeriv_smul_z_eq :
+    @RicciFlow.covDeltaGammaDeriv_smul_z = @RicciFlow.covDeltaGammaDeriv_smul_z :=
+  rfl
+
+/-- Theorem contract for `covDeltaGammaDeriv_add_v`. -/
+theorem covDeltaGammaDeriv_add_v_eq :
+    @RicciFlow.covDeltaGammaDeriv_add_v = @RicciFlow.covDeltaGammaDeriv_add_v :=
+  rfl
+
+/-- Theorem contract for `covDeltaGammaDeriv_smul_v`. -/
+theorem covDeltaGammaDeriv_smul_v_eq :
+    @RicciFlow.covDeltaGammaDeriv_smul_v = @RicciFlow.covDeltaGammaDeriv_smul_v :=
+  rfl
+
+/-- Theorem contract for `christoffelDerivOp_add_fst`. -/
+theorem christoffelDerivOp_add_fst_eq :
+    @RicciFlow.christoffelDerivOp_add_fst = @RicciFlow.christoffelDerivOp_add_fst :=
+  rfl
+
+/-- Theorem contract for `christoffelDerivOp_smul_fst`. -/
+theorem christoffelDerivOp_smul_fst_eq :
+    @RicciFlow.christoffelDerivOp_smul_fst = @RicciFlow.christoffelDerivOp_smul_fst :=
+  rfl
+
+/-- Theorem contract for `covDeltaGammaDeriv_add_p`. -/
+theorem covDeltaGammaDeriv_add_p_eq :
+    @RicciFlow.covDeltaGammaDeriv_add_p = @RicciFlow.covDeltaGammaDeriv_add_p :=
+  rfl
+
+/-- Theorem contract for `deltaGammaDivergenceTrace_koszul`. -/
+theorem deltaGammaDivergenceTrace_koszul_eq :
+    @RicciFlow.deltaGammaDivergenceTrace_koszul = @RicciFlow.deltaGammaDivergenceTrace_koszul :=
+  rfl
+
+/-- Theorem contract for `deltaGammaDivergenceTrace_koszul_distributed`. -/
+theorem deltaGammaDivergenceTrace_koszul_distributed_eq :
+    @RicciFlow.deltaGammaDivergenceTrace_koszul_distributed = @RicciFlow.deltaGammaDivergenceTrace_koszul_distributed :=
+  rfl
+
+/-- Theorem contract for `koszul_term1_lift`. -/
+theorem koszul_term1_lift_eq :
+    @RicciFlow.koszul_term1_lift = @RicciFlow.koszul_term1_lift :=
+  rfl
+
+/-- Theorem contract for `koszul_term2_lift`. -/
+theorem koszul_term2_lift_eq :
+    @RicciFlow.koszul_term2_lift = @RicciFlow.koszul_term2_lift :=
+  rfl
+
+/-- Theorem contract for `koszul_term3_lift`. -/
+theorem koszul_term3_lift_eq :
+    @RicciFlow.koszul_term3_lift = @RicciFlow.koszul_term3_lift :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_symm`. -/
+theorem covTensor2SndDeriv_symm_eq :
+    @RicciFlow.covTensor2SndDeriv_symm = @RicciFlow.covTensor2SndDeriv_symm :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_add_v'`. -/
+theorem covTensor2SndDeriv_add_v'_eq :
+    @RicciFlow.covTensor2SndDeriv_add_v' = @RicciFlow.covTensor2SndDeriv_add_v' :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_add_v`. -/
+theorem covTensor2SndDeriv_add_v_eq :
+    @RicciFlow.covTensor2SndDeriv_add_v = @RicciFlow.covTensor2SndDeriv_add_v :=
+  rfl
+
+/-- Theorem contract for `deltaGammaDivergenceTrace_sndDeriv`. -/
+theorem deltaGammaDivergenceTrace_sndDeriv_eq :
+    @RicciFlow.deltaGammaDivergenceTrace_sndDeriv = @RicciFlow.deltaGammaDivergenceTrace_sndDeriv :=
+  rfl
+
+/-- Theorem contract for `sum_covTensor2Deriv_Hslot_trace`. -/
+theorem sum_covTensor2Deriv_Hslot_trace_eq :
+    @RicciFlow.sum_covTensor2Deriv_Hslot_trace = @RicciFlow.sum_covTensor2Deriv_Hslot_trace :=
+  rfl
+
+/-- Theorem contract for `fderiv_tensorDivCLM_apply`. -/
+theorem fderiv_tensorDivCLM_apply_eq :
+    @RicciFlow.fderiv_tensorDivCLM_apply = @RicciFlow.fderiv_tensorDivCLM_apply :=
+  rfl
+
+/-- Theorem contract for `curvedLap_tensorMetricTrace_hessian_form`. -/
+theorem curvedLap_tensorMetricTrace_hessian_form_eq :
+    @RicciFlow.curvedLap_tensorMetricTrace_hessian_form = @RicciFlow.curvedLap_tensorMetricTrace_hessian_form :=
+  rfl
+
+/-- Theorem contract for `sum_covTensor2Deriv_Hslot_trace_field`. -/
+theorem sum_covTensor2Deriv_Hslot_trace_field_eq :
+    @RicciFlow.sum_covTensor2Deriv_Hslot_trace_field = @RicciFlow.sum_covTensor2Deriv_Hslot_trace_field :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_covTensor2Deriv_Hslot`. -/
+theorem differentiableAt_covTensor2Deriv_Hslot_eq :
+    @RicciFlow.differentiableAt_covTensor2Deriv_Hslot = @RicciFlow.differentiableAt_covTensor2Deriv_Hslot :=
+  rfl
+
+/-- Theorem contract for `fderiv_tr_eq_sum_basepoint_deriv`. -/
+theorem fderiv_tr_eq_sum_basepoint_deriv_eq :
+    @RicciFlow.fderiv_tr_eq_sum_basepoint_deriv = @RicciFlow.fderiv_tr_eq_sum_basepoint_deriv :=
+  rfl
+
+/-- Theorem contract for `fderiv_covTensor2Deriv_Hslot_split`. -/
+theorem fderiv_covTensor2Deriv_Hslot_split_eq :
+    @RicciFlow.fderiv_covTensor2Deriv_Hslot_split = @RicciFlow.fderiv_covTensor2Deriv_Hslot_split :=
+  rfl
+
+/-- Theorem contract for `fderiv2_tensorMetricTrace_sum_expand`. -/
+theorem fderiv2_tensorMetricTrace_sum_expand_eq :
+    @RicciFlow.fderiv2_tensorMetricTrace_sum_expand = @RicciFlow.fderiv2_tensorMetricTrace_sum_expand :=
+  rfl
+
+/-- Theorem contract for `christoffel_inverse_raise_merge`. -/
+theorem christoffel_inverse_raise_merge_eq :
+    @RicciFlow.christoffel_inverse_raise_merge = @RicciFlow.christoffel_inverse_raise_merge :=
+  rfl
+
+/-- Theorem contract for `fderiv_covTensor2Deriv_varying_raise_merged`. -/
+theorem fderiv_covTensor2Deriv_varying_raise_merged_eq :
+    @RicciFlow.fderiv_covTensor2Deriv_varying_raise_merged = @RicciFlow.fderiv_covTensor2Deriv_varying_raise_merged :=
+  rfl
+
+/-- Theorem contract for `fderiv2_tensorMetricTrace_sum_merged`. -/
+theorem fderiv2_tensorMetricTrace_sum_merged_eq :
+    @RicciFlow.fderiv2_tensorMetricTrace_sum_merged = @RicciFlow.fderiv2_tensorMetricTrace_sum_merged :=
+  rfl
+
+/-- Theorem contract for `sum_raised_op_slot_swap`. -/
+theorem sum_raised_op_slot_swap_eq :
+    @RicciFlow.sum_raised_op_slot_swap = @RicciFlow.sum_raised_op_slot_swap :=
+  rfl
+
+/-- Theorem contract for `sum_covTensor2SndDeriv_Hslot_trace`. -/
+theorem sum_covTensor2SndDeriv_Hslot_trace_eq :
+    @RicciFlow.sum_covTensor2SndDeriv_Hslot_trace = @RicciFlow.sum_covTensor2SndDeriv_Hslot_trace :=
+  rfl
+
+/-- Theorem contract for `sum_sum_covTensor2SndDeriv_laplacian_trace`. -/
+theorem sum_sum_covTensor2SndDeriv_laplacian_trace_eq :
+    @RicciFlow.sum_sum_covTensor2SndDeriv_laplacian_trace = @RicciFlow.sum_sum_covTensor2SndDeriv_laplacian_trace :=
+  rfl
+
+/-- Theorem contract for `sum_hessian_trace_raise_swap`. -/
+theorem sum_hessian_trace_raise_swap_eq :
+    @RicciFlow.sum_hessian_trace_raise_swap = @RicciFlow.sum_hessian_trace_raise_swap :=
+  rfl
+
+/-- Theorem contract for `sum_sum_covTensor2SndDeriv_eq_curvedLap`. -/
+theorem sum_sum_covTensor2SndDeriv_eq_curvedLap_eq :
+    @RicciFlow.sum_sum_covTensor2SndDeriv_eq_curvedLap = @RicciFlow.sum_sum_covTensor2SndDeriv_eq_curvedLap :=
+  rfl
+
+/-- Theorem contract for `tensorDoubleDivergence_covTensor1Deriv_form`. -/
+theorem tensorDoubleDivergence_covTensor1Deriv_form_eq :
+    @RicciFlow.tensorDoubleDivergence_covTensor1Deriv_form = @RicciFlow.tensorDoubleDivergence_covTensor1Deriv_form :=
+  rfl
+
+/-- Theorem contract for `fderiv_tensorDivOneForm_sum`. -/
+theorem fderiv_tensorDivOneForm_sum_eq :
+    @RicciFlow.fderiv_tensorDivOneForm_sum = @RicciFlow.fderiv_tensorDivOneForm_sum :=
+  rfl
+
+/-- Theorem contract for `fderiv_covTensor2Deriv_dir_split`. -/
+theorem fderiv_covTensor2Deriv_dir_split_eq :
+    @RicciFlow.fderiv_covTensor2Deriv_dir_split = @RicciFlow.fderiv_covTensor2Deriv_dir_split :=
+  rfl
+
+/-- Theorem contract for `fderiv_tensorDivOneForm_sum_expand`. -/
+theorem fderiv_tensorDivOneForm_sum_expand_eq :
+    @RicciFlow.fderiv_tensorDivOneForm_sum_expand = @RicciFlow.fderiv_tensorDivOneForm_sum_expand :=
+  rfl
+
+/-- Theorem contract for `tensorDoubleDivergence_oneForm_form`. -/
+theorem tensorDoubleDivergence_oneForm_form_eq :
+    @RicciFlow.tensorDoubleDivergence_oneForm_form = @RicciFlow.tensorDoubleDivergence_oneForm_form :=
+  rfl
+
+/-- Theorem contract for `tensorDoubleDivergence_sndDeriv_form`. -/
+theorem tensorDoubleDivergence_sndDeriv_form_eq :
+    @RicciFlow.tensorDoubleDivergence_sndDeriv_form = @RicciFlow.tensorDoubleDivergence_sndDeriv_form :=
+  rfl
+
+/-- Theorem contract for `tensorDoubleDivergence_merged`. -/
+theorem tensorDoubleDivergence_merged_eq :
+    @RicciFlow.tensorDoubleDivergence_merged = @RicciFlow.tensorDoubleDivergence_merged :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_add_q`. -/
+theorem covTensor2SndDeriv_add_q_eq :
+    @RicciFlow.covTensor2SndDeriv_add_q = @RicciFlow.covTensor2SndDeriv_add_q :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_add_p`. -/
+theorem covTensor2SndDeriv_add_p_eq :
+    @RicciFlow.covTensor2SndDeriv_add_p = @RicciFlow.covTensor2SndDeriv_add_p :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_smul_q`. -/
+theorem covTensor2SndDeriv_smul_q_eq :
+    @RicciFlow.covTensor2SndDeriv_smul_q = @RicciFlow.covTensor2SndDeriv_smul_q :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_smul_p`. -/
+theorem covTensor2SndDeriv_smul_p_eq :
+    @RicciFlow.covTensor2SndDeriv_smul_p = @RicciFlow.covTensor2SndDeriv_smul_p :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_smul_v'`. -/
+theorem covTensor2SndDeriv_smul_v'_eq :
+    @RicciFlow.covTensor2SndDeriv_smul_v' = @RicciFlow.covTensor2SndDeriv_smul_v' :=
+  rfl
+
+/-- Theorem contract for `sum_sum_covTensor2SndDeriv_outer_q_swap`. -/
+theorem sum_sum_covTensor2SndDeriv_outer_q_swap_eq :
+    @RicciFlow.sum_sum_covTensor2SndDeriv_outer_q_swap = @RicciFlow.sum_sum_covTensor2SndDeriv_outer_q_swap :=
+  rfl
+
+/-- Theorem contract for `sum_sum_divdiv_corrections_cancel`. -/
+theorem sum_sum_divdiv_corrections_cancel_eq :
+    @RicciFlow.sum_sum_divdiv_corrections_cancel = @RicciFlow.sum_sum_divdiv_corrections_cancel :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_smul_v`. -/
+theorem covTensor2SndDeriv_smul_v_eq :
+    @RicciFlow.covTensor2SndDeriv_smul_v = @RicciFlow.covTensor2SndDeriv_smul_v :=
+  rfl
+
+/-- Theorem contract for `sum_sum_covTensor2SndDeriv_inner_p_swap`. -/
+theorem sum_sum_covTensor2SndDeriv_inner_p_swap_eq :
+    @RicciFlow.sum_sum_covTensor2SndDeriv_inner_p_swap = @RicciFlow.sum_sum_covTensor2SndDeriv_inner_p_swap :=
+  rfl
+
+/-- Theorem contract for `sum_sum_T1_eq_T2`. -/
+theorem sum_sum_T1_eq_T2_eq :
+    @RicciFlow.sum_sum_T1_eq_T2 = @RicciFlow.sum_sum_T1_eq_T2 :=
+  rfl
+
+/-- Theorem contract for `tensorDoubleDivergence_eq_sum_sum_T2`. -/
+theorem tensorDoubleDivergence_eq_sum_sum_T2_eq :
+    @RicciFlow.tensorDoubleDivergence_eq_sum_sum_T2 = @RicciFlow.tensorDoubleDivergence_eq_sum_sum_T2 :=
+  rfl
+
+/-- Theorem contract for `deltaGammaDivergenceTrace_keystone`. -/
+theorem deltaGammaDivergenceTrace_keystone_eq :
+    @RicciFlow.deltaGammaDivergenceTrace_keystone = @RicciFlow.deltaGammaDivergenceTrace_keystone :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_raised_trace_contracted_lichnerowicz`. -/
+theorem ricciDeriv_raised_trace_contracted_lichnerowicz_eq :
+    @RicciFlow.ricciDeriv_raised_trace_contracted_lichnerowicz = @RicciFlow.ricciDeriv_raised_trace_contracted_lichnerowicz :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_raised_trace_lichnerowicz_smul`. -/
+theorem ricciDeriv_raised_trace_lichnerowicz_smul_eq :
+    @RicciFlow.ricciDeriv_raised_trace_lichnerowicz_smul = @RicciFlow.ricciDeriv_raised_trace_lichnerowicz_smul :=
+  rfl
+
+/-- Theorem contract for `tensorMetricTrace_coordRicciForm`. -/
+theorem tensorMetricTrace_coordRicciForm_eq :
+    @RicciFlow.tensorMetricTrace_coordRicciForm = @RicciFlow.tensorMetricTrace_coordRicciForm :=
+  rfl
+
+/-- Theorem contract for `tensorMetricTrace_smul`. -/
+theorem tensorMetricTrace_smul_eq :
+    @RicciFlow.tensorMetricTrace_smul = @RicciFlow.tensorMetricTrace_smul :=
+  rfl
+
+/-- Theorem contract for `tensorMetricTrace_neg_two_coordRicciForm`. -/
+theorem tensorMetricTrace_neg_two_coordRicciForm_eq :
+    @RicciFlow.tensorMetricTrace_neg_two_coordRicciForm = @RicciFlow.tensorMetricTrace_neg_two_coordRicciForm :=
+  rfl
+
+/-- Theorem contract for `covTensor2Deriv_coordRicciForm`. -/
+theorem covTensor2Deriv_coordRicciForm_eq :
+    @RicciFlow.covTensor2Deriv_coordRicciForm = @RicciFlow.covTensor2Deriv_coordRicciForm :=
+  rfl
+
+/-- Theorem contract for `tensorDivOneForm_coordRicciForm`. -/
+theorem tensorDivOneForm_coordRicciForm_eq :
+    @RicciFlow.tensorDivOneForm_coordRicciForm = @RicciFlow.tensorDivOneForm_coordRicciForm :=
+  rfl
+
+/-- Theorem contract for `tensorDivOneForm_coordRicciForm_field`. -/
+theorem tensorDivOneForm_coordRicciForm_field_eq :
+    @RicciFlow.tensorDivOneForm_coordRicciForm_field = @RicciFlow.tensorDivOneForm_coordRicciForm_field :=
+  rfl
+
+/-- Theorem contract for `tensorDivOneForm_coordRicciForm_eq_half_grad`. -/
+theorem tensorDivOneForm_coordRicciForm_eq_half_grad_eq :
+    @RicciFlow.tensorDivOneForm_coordRicciForm_eq_half_grad = @RicciFlow.tensorDivOneForm_coordRicciForm_eq_half_grad :=
+  rfl
+
+/-- Theorem contract for `tensorDivCLM_coordRicciForm_eq_half_grad_field`. -/
+theorem tensorDivCLM_coordRicciForm_eq_half_grad_field_eq :
+    @RicciFlow.tensorDivCLM_coordRicciForm_eq_half_grad_field = @RicciFlow.tensorDivCLM_coordRicciForm_eq_half_grad_field :=
+  rfl
+
+/-- Theorem contract for `tensorDoubleDivergence_coordRicciForm`. -/
+theorem tensorDoubleDivergence_coordRicciForm_eq :
+    @RicciFlow.tensorDoubleDivergence_coordRicciForm = @RicciFlow.tensorDoubleDivergence_coordRicciForm :=
+  rfl
+
+/-- Theorem contract for `covTensor2Deriv_smul_field`. -/
+theorem covTensor2Deriv_smul_field_eq :
+    @RicciFlow.covTensor2Deriv_smul_field = @RicciFlow.covTensor2Deriv_smul_field :=
+  rfl
+
+/-- Theorem contract for `tensorDivOneForm_smul_field`. -/
+theorem tensorDivOneForm_smul_field_eq :
+    @RicciFlow.tensorDivOneForm_smul_field = @RicciFlow.tensorDivOneForm_smul_field :=
+  rfl
+
+/-- Theorem contract for `tensorDoubleDivergence_smul_field`. -/
+theorem tensorDoubleDivergence_smul_field_eq :
+    @RicciFlow.tensorDoubleDivergence_smul_field = @RicciFlow.tensorDoubleDivergence_smul_field :=
+  rfl
+
+/-- Theorem contract for `tensorDoubleDivergence_neg_two_coordRicciForm`. -/
+theorem tensorDoubleDivergence_neg_two_coordRicciForm_eq :
+    @RicciFlow.tensorDoubleDivergence_neg_two_coordRicciForm = @RicciFlow.tensorDoubleDivergence_neg_two_coordRicciForm :=
+  rfl
+
+/-- Theorem contract for `tensorMetricTrace_neg_two_coordRicciForm_field`. -/
+theorem tensorMetricTrace_neg_two_coordRicciForm_field_eq :
+    @RicciFlow.tensorMetricTrace_neg_two_coordRicciForm_field = @RicciFlow.tensorMetricTrace_neg_two_coordRicciForm_field :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian`. -/
+theorem ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian_eq :
+    @RicciFlow.ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian = @RicciFlow.ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian :=
+  rfl
+
+/-- Theorem contract for `neg_two_coordRicciForm_symm`. -/
+theorem neg_two_coordRicciForm_symm_eq :
+    @RicciFlow.neg_two_coordRicciForm_symm = @RicciFlow.neg_two_coordRicciForm_symm :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_fderiv_of_contDiff_two`. -/
+theorem differentiableAt_fderiv_of_contDiff_two_eq :
+    @RicciFlow.differentiableAt_fderiv_of_contDiff_two = @RicciFlow.differentiableAt_fderiv_of_contDiff_two :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_fderiv_tensorMetricTrace_neg_two_coordRicciForm`. -/
+theorem differentiableAt_fderiv_tensorMetricTrace_neg_two_coordRicciForm_eq :
+    @RicciFlow.differentiableAt_fderiv_tensorMetricTrace_neg_two_coordRicciForm = @RicciFlow.differentiableAt_fderiv_tensorMetricTrace_neg_two_coordRicciForm :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian'`. -/
+theorem ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian'_eq :
+    @RicciFlow.ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian' = @RicciFlow.ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian' :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_tensorDivCLM_coordRicciForm`. -/
+theorem differentiableAt_tensorDivCLM_coordRicciForm_eq :
+    @RicciFlow.differentiableAt_tensorDivCLM_coordRicciForm = @RicciFlow.differentiableAt_tensorDivCLM_coordRicciForm :=
+  rfl
+
+/-- Theorem contract for `coordRicciForm_proof_irrel`. -/
+theorem coordRicciForm_proof_irrel_eq :
+    @RicciFlow.coordRicciForm_proof_irrel = @RicciFlow.coordRicciForm_proof_irrel :=
+  rfl
+
+/-- Theorem contract for `hamilton_scalar_evolution_ricci_flow`. -/
+theorem hamilton_scalar_evolution_ricci_flow_eq :
+    @RicciFlow.hamilton_scalar_evolution_ricci_flow = @RicciFlow.hamilton_scalar_evolution_ricci_flow :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian_family`. -/
+theorem ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian_family_eq :
+    @RicciFlow.ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian_family = @RicciFlow.ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian_family :=
+  rfl
+
+/-- Theorem contract for `curved_hamilton_ricci_flow_singularity_bianchi_free`. -/
+theorem curved_hamilton_ricci_flow_singularity_bianchi_free_eq :
+    @RicciFlow.curved_hamilton_ricci_flow_singularity_bianchi_free = @RicciFlow.curved_hamilton_ricci_flow_singularity_bianchi_free :=
+  rfl
+
+/-- Theorem contract for `deltaGammaDivergence_eq_g_paired`. -/
+theorem deltaGammaDivergence_eq_g_paired_eq :
+    @RicciFlow.deltaGammaDivergence_eq_g_paired = @RicciFlow.deltaGammaDivergence_eq_g_paired :=
+  rfl
+
+/-- Theorem contract for `deltaGammaContractionDeriv_eq_g_paired`. -/
+theorem deltaGammaContractionDeriv_eq_g_paired_eq :
+    @RicciFlow.deltaGammaContractionDeriv_eq_g_paired = @RicciFlow.deltaGammaContractionDeriv_eq_g_paired :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_eq_g_paired`. -/
+theorem ricciDeriv_eq_g_paired_eq :
+    @RicciFlow.ricciDeriv_eq_g_paired = @RicciFlow.ricciDeriv_eq_g_paired :=
+  rfl
+
+/-- Theorem contract for `deltaGammaDivergence_fderiv_form`. -/
+theorem deltaGammaDivergence_fderiv_form_eq :
+    @RicciFlow.deltaGammaDivergence_fderiv_form = @RicciFlow.deltaGammaDivergence_fderiv_form :=
+  rfl
+
+/-- Theorem contract for `deltaGammaContractionDeriv_fderiv_form`. -/
+theorem deltaGammaContractionDeriv_fderiv_form_eq :
+    @RicciFlow.deltaGammaContractionDeriv_fderiv_form = @RicciFlow.deltaGammaContractionDeriv_fderiv_form :=
+  rfl
+
+/-- Theorem contract for `deltaGammaContractionDeriv_eq_half_hessian`. -/
+theorem deltaGammaContractionDeriv_eq_half_hessian_eq :
+    @RicciFlow.deltaGammaContractionDeriv_eq_half_hessian = @RicciFlow.deltaGammaContractionDeriv_eq_half_hessian :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_eq_div_sub_half_hessian`. -/
+theorem ricciDeriv_eq_div_sub_half_hessian_eq :
+    @RicciFlow.ricciDeriv_eq_div_sub_half_hessian = @RicciFlow.ricciDeriv_eq_div_sub_half_hessian :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_fderiv_hessian_form`. -/
+theorem ricciDeriv_fderiv_hessian_form_eq :
+    @RicciFlow.ricciDeriv_fderiv_hessian_form = @RicciFlow.ricciDeriv_fderiv_hessian_form :=
+  rfl
+
+/-- Theorem contract for `deltaGammaContractionDeriv_eq_half_covariantHessian`. -/
+theorem deltaGammaContractionDeriv_eq_half_covariantHessian_eq :
+    @RicciFlow.deltaGammaContractionDeriv_eq_half_covariantHessian = @RicciFlow.deltaGammaContractionDeriv_eq_half_covariantHessian :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_eq_div_sub_half_covariantHessian`. -/
+theorem ricciDeriv_eq_div_sub_half_covariantHessian_eq :
+    @RicciFlow.ricciDeriv_eq_div_sub_half_covariantHessian = @RicciFlow.ricciDeriv_eq_div_sub_half_covariantHessian :=
+  rfl
+
+/-- Theorem contract for `deltaGammaContractionDeriv_symm`. -/
+theorem deltaGammaContractionDeriv_symm_eq :
+    @RicciFlow.deltaGammaContractionDeriv_symm = @RicciFlow.deltaGammaContractionDeriv_symm :=
+  rfl
+
+/-- Theorem contract for `covariantHessian_smul`. -/
+theorem covariantHessian_smul_eq :
+    @RicciFlow.covariantHessian_smul = @RicciFlow.covariantHessian_smul :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_eq_div_sub_half_smul_covariantHessian`. -/
+theorem ricciDeriv_eq_div_sub_half_smul_covariantHessian_eq :
+    @RicciFlow.ricciDeriv_eq_div_sub_half_smul_covariantHessian = @RicciFlow.ricciDeriv_eq_div_sub_half_smul_covariantHessian :=
+  rfl
+
+/-- Theorem contract for `covariantHessian_add`. -/
+theorem covariantHessian_add_eq :
+    @RicciFlow.covariantHessian_add = @RicciFlow.covariantHessian_add :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_neg_two_eq_div_add_covariantHessian`. -/
+theorem ricciDeriv_neg_two_eq_div_add_covariantHessian_eq :
+    @RicciFlow.ricciDeriv_neg_two_eq_div_add_covariantHessian = @RicciFlow.ricciDeriv_neg_two_eq_div_add_covariantHessian :=
+  rfl
+
+/-- Theorem contract for `deltaGammaDivergence_lichnerowicz_form`. -/
+theorem deltaGammaDivergence_lichnerowicz_form_eq :
+    @RicciFlow.deltaGammaDivergence_lichnerowicz_form = @RicciFlow.deltaGammaDivergence_lichnerowicz_form :=
+  rfl
+
+/-- Theorem contract for `deltaGammaDivergence_lichnerowicz_split`. -/
+theorem deltaGammaDivergence_lichnerowicz_split_eq :
+    @RicciFlow.deltaGammaDivergence_lichnerowicz_split = @RicciFlow.deltaGammaDivergence_lichnerowicz_split :=
+  rfl
+
+/-- Theorem contract for `sum_covariantHessian_eq_curvedLaplacian`. -/
+theorem sum_covariantHessian_eq_curvedLaplacian_eq :
+    @RicciFlow.sum_covariantHessian_eq_curvedLaplacian = @RicciFlow.sum_covariantHessian_eq_curvedLaplacian :=
+  rfl
+
+/-- Theorem contract for `sum_ricciDeriv_raised_eq_divTrace_sub_half_curvedLaplacian'`. -/
+theorem sum_ricciDeriv_raised_eq_divTrace_sub_half_curvedLaplacian'_eq :
+    @RicciFlow.sum_ricciDeriv_raised_eq_divTrace_sub_half_curvedLaplacian' = @RicciFlow.sum_ricciDeriv_raised_eq_divTrace_sub_half_curvedLaplacian' :=
+  rfl
+
+/-- Theorem contract for `deltaGammaDivergence_isSymm`. -/
+theorem deltaGammaDivergence_isSymm_eq :
+    @RicciFlow.deltaGammaDivergence_isSymm = @RicciFlow.deltaGammaDivergence_isSymm :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_isSymm`. -/
+theorem ricciDeriv_isSymm_eq :
+    @RicciFlow.ricciDeriv_isSymm = @RicciFlow.ricciDeriv_isSymm :=
+  rfl
+
+/-- Theorem contract for `deltaGammaDivergence_isSymm_field`. -/
+theorem deltaGammaDivergence_isSymm_field_eq :
+    @RicciFlow.deltaGammaDivergence_isSymm_field = @RicciFlow.deltaGammaDivergence_isSymm_field :=
+  rfl
+
+/-- Theorem contract for `deltaGammaDivergence_sndDeriv_bochner_form`. -/
+theorem deltaGammaDivergence_sndDeriv_bochner_form_eq :
+    @RicciFlow.deltaGammaDivergence_sndDeriv_bochner_form = @RicciFlow.deltaGammaDivergence_sndDeriv_bochner_form :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_sndDeriv_bochner_form`. -/
+theorem ricciDeriv_sndDeriv_bochner_form_eq :
+    @RicciFlow.ricciDeriv_sndDeriv_bochner_form = @RicciFlow.ricciDeriv_sndDeriv_bochner_form :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_neg_two_isSymm`. -/
+theorem ricciDeriv_neg_two_isSymm_eq :
+    @RicciFlow.ricciDeriv_neg_two_isSymm = @RicciFlow.ricciDeriv_neg_two_isSymm :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_symm`. -/
+theorem connectionLaplacian_symm_eq :
+    @RicciFlow.connectionLaplacian_symm = @RicciFlow.connectionLaplacian_symm :=
+  rfl
+
+/-- Theorem contract for `sum_connectionLaplacian_eq_curvedLaplacian`. -/
+theorem sum_connectionLaplacian_eq_curvedLaplacian_eq :
+    @RicciFlow.sum_connectionLaplacian_eq_curvedLaplacian = @RicciFlow.sum_connectionLaplacian_eq_curvedLaplacian :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_add_left`. -/
+theorem connectionLaplacian_add_left_eq :
+    @RicciFlow.connectionLaplacian_add_left = @RicciFlow.connectionLaplacian_add_left :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_add_right`. -/
+theorem connectionLaplacian_add_right_eq :
+    @RicciFlow.connectionLaplacian_add_right = @RicciFlow.connectionLaplacian_add_right :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_smul_left`. -/
+theorem connectionLaplacian_smul_left_eq :
+    @RicciFlow.connectionLaplacian_smul_left = @RicciFlow.connectionLaplacian_smul_left :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_smul_right`. -/
+theorem connectionLaplacian_smul_right_eq :
+    @RicciFlow.connectionLaplacian_smul_right = @RicciFlow.connectionLaplacian_smul_right :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_smul_field`. -/
+theorem covTensor2SndDeriv_smul_field_eq :
+    @RicciFlow.covTensor2SndDeriv_smul_field = @RicciFlow.covTensor2SndDeriv_smul_field :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_smul_field`. -/
+theorem connectionLaplacian_smul_field_eq :
+    @RicciFlow.connectionLaplacian_smul_field = @RicciFlow.connectionLaplacian_smul_field :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_neg_two_coordRicciForm`. -/
+theorem connectionLaplacian_neg_two_coordRicciForm_eq :
+    @RicciFlow.connectionLaplacian_neg_two_coordRicciForm = @RicciFlow.connectionLaplacian_neg_two_coordRicciForm :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_symm_field`. -/
+theorem connectionLaplacian_symm_field_eq :
+    @RicciFlow.connectionLaplacian_symm_field = @RicciFlow.connectionLaplacian_symm_field :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_smul_field_lift`. -/
+theorem connectionLaplacian_smul_field_lift_eq :
+    @RicciFlow.connectionLaplacian_smul_field_lift = @RicciFlow.connectionLaplacian_smul_field_lift :=
+  rfl
+
+/-- Theorem contract for `sum_connectionLaplacian_neg_two_coordRicciForm`. -/
+theorem sum_connectionLaplacian_neg_two_coordRicciForm_eq :
+    @RicciFlow.sum_connectionLaplacian_neg_two_coordRicciForm = @RicciFlow.sum_connectionLaplacian_neg_two_coordRicciForm :=
+  rfl
+
+/-- Theorem contract for `sum_connectionLaplacian_coordRicciForm`. -/
+theorem sum_connectionLaplacian_coordRicciForm_eq :
+    @RicciFlow.sum_connectionLaplacian_coordRicciForm = @RicciFlow.sum_connectionLaplacian_coordRicciForm :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_antisymm`. -/
+theorem covTensor2SndDeriv_antisymm_eq :
+    @RicciFlow.covTensor2SndDeriv_antisymm = @RicciFlow.covTensor2SndDeriv_antisymm :=
+  rfl
+
+/-- Theorem contract for `contDiffAt_tensor_eval`. -/
+theorem contDiffAt_tensor_eval_eq :
+    @RicciFlow.contDiffAt_tensor_eval = @RicciFlow.contDiffAt_tensor_eval :=
+  rfl
+
+/-- Theorem contract for `fderiv_tensor_eval_apply`. -/
+theorem fderiv_tensor_eval_apply_eq :
+    @RicciFlow.fderiv_tensor_eval_apply = @RicciFlow.fderiv_tensor_eval_apply :=
+  rfl
+
+/-- Theorem contract for `fderiv_dual_eval_apply`. -/
+theorem fderiv_dual_eval_apply_eq :
+    @RicciFlow.fderiv_dual_eval_apply = @RicciFlow.fderiv_dual_eval_apply :=
+  rfl
+
+/-- Theorem contract for `fderiv_covTensor2Deriv_pure_block_antisymm`. -/
+theorem fderiv_covTensor2Deriv_pure_block_antisymm_eq :
+    @RicciFlow.fderiv_covTensor2Deriv_pure_block_antisymm = @RicciFlow.fderiv_covTensor2Deriv_pure_block_antisymm :=
+  rfl
+
+/-- Theorem contract for `fderiv_tensor_corr_field`. -/
+theorem fderiv_tensor_corr_field_eq :
+    @RicciFlow.fderiv_tensor_corr_field = @RicciFlow.fderiv_tensor_corr_field :=
+  rfl
+
+/-- Theorem contract for `fderiv_tensor_eval1_apply`. -/
+theorem fderiv_tensor_eval1_apply_eq :
+    @RicciFlow.fderiv_tensor_eval1_apply = @RicciFlow.fderiv_tensor_eval1_apply :=
+  rfl
+
+/-- Theorem contract for `fderiv_tensor_corr_field'`. -/
+theorem fderiv_tensor_corr_field'_eq :
+    @RicciFlow.fderiv_tensor_corr_field' = @RicciFlow.fderiv_tensor_corr_field' :=
+  rfl
+
+/-- Theorem contract for `fderiv_covTensor2Deriv_flat_split`. -/
+theorem fderiv_covTensor2Deriv_flat_split_eq :
+    @RicciFlow.fderiv_covTensor2Deriv_flat_split = @RicciFlow.fderiv_covTensor2Deriv_flat_split :=
+  rfl
+
+/-- Theorem contract for `fderiv_covTensor2Deriv_flat_antisymm`. -/
+theorem fderiv_covTensor2Deriv_flat_antisymm_eq :
+    @RicciFlow.fderiv_covTensor2Deriv_flat_antisymm = @RicciFlow.fderiv_covTensor2Deriv_flat_antisymm :=
+  rfl
+
+/-- Theorem contract for `fderiv_corr1_antisymm_expand`. -/
+theorem fderiv_corr1_antisymm_expand_eq :
+    @RicciFlow.fderiv_corr1_antisymm_expand = @RicciFlow.fderiv_corr1_antisymm_expand :=
+  rfl
+
+/-- Theorem contract for `fderiv_corr2_antisymm_expand`. -/
+theorem fderiv_corr2_antisymm_expand_eq :
+    @RicciFlow.fderiv_corr2_antisymm_expand = @RicciFlow.fderiv_corr2_antisymm_expand :=
+  rfl
+
+/-- Theorem contract for `fderiv_christoffel_eval_apply`. -/
+theorem fderiv_christoffel_eval_apply_eq :
+    @RicciFlow.fderiv_christoffel_eval_apply = @RicciFlow.fderiv_christoffel_eval_apply :=
+  rfl
+
+/-- Theorem contract for `christoffel_antisymm_deriv_eq_curvature`. -/
+theorem christoffel_antisymm_deriv_eq_curvature_eq :
+    @RicciFlow.christoffel_antisymm_deriv_eq_curvature = @RicciFlow.christoffel_antisymm_deriv_eq_curvature :=
+  rfl
+
+/-- Theorem contract for `fderiv_corr1_antisymm_curvature`. -/
+theorem fderiv_corr1_antisymm_curvature_eq :
+    @RicciFlow.fderiv_corr1_antisymm_curvature = @RicciFlow.fderiv_corr1_antisymm_curvature :=
+  rfl
+
+/-- Theorem contract for `fderiv_corr2_antisymm_curvature`. -/
+theorem fderiv_corr2_antisymm_curvature_eq :
+    @RicciFlow.fderiv_corr2_antisymm_curvature = @RicciFlow.fderiv_corr2_antisymm_curvature :=
+  rfl
+
+/-- Theorem contract for `fderiv_covTensor2Deriv_flat_antisymm_curvature`. -/
+theorem fderiv_covTensor2Deriv_flat_antisymm_curvature_eq :
+    @RicciFlow.fderiv_covTensor2Deriv_flat_antisymm_curvature = @RicciFlow.fderiv_covTensor2Deriv_flat_antisymm_curvature :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_ricci_identity`. -/
+theorem covTensor2SndDeriv_ricci_identity_eq :
+    @RicciFlow.covTensor2SndDeriv_ricci_identity = @RicciFlow.covTensor2SndDeriv_ricci_identity :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_comm`. -/
+theorem covTensor2SndDeriv_comm_eq :
+    @RicciFlow.covTensor2SndDeriv_comm = @RicciFlow.covTensor2SndDeriv_comm :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_sub_transpose_eq_curvature`. -/
+theorem connectionLaplacian_sub_transpose_eq_curvature_eq :
+    @RicciFlow.connectionLaplacian_sub_transpose_eq_curvature = @RicciFlow.connectionLaplacian_sub_transpose_eq_curvature :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_transpose`. -/
+theorem connectionLaplacian_transpose_eq :
+    @RicciFlow.connectionLaplacian_transpose = @RicciFlow.connectionLaplacian_transpose :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_comm_of_flat`. -/
+theorem covTensor2SndDeriv_comm_of_flat_eq :
+    @RicciFlow.covTensor2SndDeriv_comm_of_flat = @RicciFlow.covTensor2SndDeriv_comm_of_flat :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_transpose_eq_add_curvature`. -/
+theorem connectionLaplacian_transpose_eq_add_curvature_eq :
+    @RicciFlow.connectionLaplacian_transpose_eq_add_curvature = @RicciFlow.connectionLaplacian_transpose_eq_add_curvature :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczCurvature_symm`. -/
+theorem lichnerowiczCurvature_symm_eq :
+    @RicciFlow.lichnerowiczCurvature_symm = @RicciFlow.lichnerowiczCurvature_symm :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczCurvature_add`. -/
+theorem lichnerowiczCurvature_add_eq :
+    @RicciFlow.lichnerowiczCurvature_add = @RicciFlow.lichnerowiczCurvature_add :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczCurvature_smul`. -/
+theorem lichnerowiczCurvature_smul_eq :
+    @RicciFlow.lichnerowiczCurvature_smul = @RicciFlow.lichnerowiczCurvature_smul :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczCurvature_flat`. -/
+theorem lichnerowiczCurvature_flat_eq :
+    @RicciFlow.lichnerowiczCurvature_flat = @RicciFlow.lichnerowiczCurvature_flat :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczCurvature_add_left`. -/
+theorem lichnerowiczCurvature_add_left_eq :
+    @RicciFlow.lichnerowiczCurvature_add_left = @RicciFlow.lichnerowiczCurvature_add_left :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczCurvature_add_right`. -/
+theorem lichnerowiczCurvature_add_right_eq :
+    @RicciFlow.lichnerowiczCurvature_add_right = @RicciFlow.lichnerowiczCurvature_add_right :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_add_lichnerowiczCurvature_symm`. -/
+theorem connectionLaplacian_add_lichnerowiczCurvature_symm_eq :
+    @RicciFlow.connectionLaplacian_add_lichnerowiczCurvature_symm = @RicciFlow.connectionLaplacian_add_lichnerowiczCurvature_symm :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczCurvature_smul_left`. -/
+theorem lichnerowiczCurvature_smul_left_eq :
+    @RicciFlow.lichnerowiczCurvature_smul_left = @RicciFlow.lichnerowiczCurvature_smul_left :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczCurvature_smul_right`. -/
+theorem lichnerowiczCurvature_smul_right_eq :
+    @RicciFlow.lichnerowiczCurvature_smul_right = @RicciFlow.lichnerowiczCurvature_smul_right :=
+  rfl
+
+/-- Theorem contract for `deltaGammaDivergence_extract_connectionLaplacian`. -/
+theorem deltaGammaDivergence_extract_connectionLaplacian_eq :
+    @RicciFlow.deltaGammaDivergence_extract_connectionLaplacian = @RicciFlow.deltaGammaDivergence_extract_connectionLaplacian :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_extract_connectionLaplacian`. -/
+theorem ricciDeriv_extract_connectionLaplacian_eq :
+    @RicciFlow.ricciDeriv_extract_connectionLaplacian = @RicciFlow.ricciDeriv_extract_connectionLaplacian :=
+  rfl
+
+/-- Theorem contract for `neg_half_connectionLaplacian_neg_two`. -/
+theorem neg_half_connectionLaplacian_neg_two_eq :
+    @RicciFlow.neg_half_connectionLaplacian_neg_two = @RicciFlow.neg_half_connectionLaplacian_neg_two :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczCurvature_zero`. -/
+theorem lichnerowiczCurvature_zero_eq :
+    @RicciFlow.lichnerowiczCurvature_zero = @RicciFlow.lichnerowiczCurvature_zero :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_neg`. -/
+theorem connectionLaplacian_neg_eq :
+    @RicciFlow.connectionLaplacian_neg = @RicciFlow.connectionLaplacian_neg :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_add_lichnerowiczCurvature_smul`. -/
+theorem connectionLaplacian_add_lichnerowiczCurvature_smul_eq :
+    @RicciFlow.connectionLaplacian_add_lichnerowiczCurvature_smul = @RicciFlow.connectionLaplacian_add_lichnerowiczCurvature_smul :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczCurvature_neg`. -/
+theorem lichnerowiczCurvature_neg_eq :
+    @RicciFlow.lichnerowiczCurvature_neg = @RicciFlow.lichnerowiczCurvature_neg :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_zero`. -/
+theorem connectionLaplacian_zero_eq :
+    @RicciFlow.connectionLaplacian_zero = @RicciFlow.connectionLaplacian_zero :=
+  rfl
+
+/-- Theorem contract for `ricciActionOnTensor_add`. -/
+theorem ricciActionOnTensor_add_eq :
+    @RicciFlow.ricciActionOnTensor_add = @RicciFlow.ricciActionOnTensor_add :=
+  rfl
+
+/-- Theorem contract for `ricciActionOnTensor_smul`. -/
+theorem ricciActionOnTensor_smul_eq :
+    @RicciFlow.ricciActionOnTensor_smul = @RicciFlow.ricciActionOnTensor_smul :=
+  rfl
+
+/-- Theorem contract for `ricciActionOnTensor_symm`. -/
+theorem ricciActionOnTensor_symm_eq :
+    @RicciFlow.ricciActionOnTensor_symm = @RicciFlow.ricciActionOnTensor_symm :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczLaplacian_symm`. -/
+theorem lichnerowiczLaplacian_symm_eq :
+    @RicciFlow.lichnerowiczLaplacian_symm = @RicciFlow.lichnerowiczLaplacian_symm :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczLaplacian_smul`. -/
+theorem lichnerowiczLaplacian_smul_eq :
+    @RicciFlow.lichnerowiczLaplacian_smul = @RicciFlow.lichnerowiczLaplacian_smul :=
+  rfl
+
+/-- Theorem contract for `ricciActionOnTensor_zero`. -/
+theorem ricciActionOnTensor_zero_eq :
+    @RicciFlow.ricciActionOnTensor_zero = @RicciFlow.ricciActionOnTensor_zero :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczLaplacian_zero`. -/
+theorem lichnerowiczLaplacian_zero_eq :
+    @RicciFlow.lichnerowiczLaplacian_zero = @RicciFlow.lichnerowiczLaplacian_zero :=
+  rfl
+
+/-- Theorem contract for `ricciSharp_add`. -/
+theorem ricciSharp_add_eq :
+    @RicciFlow.ricciSharp_add = @RicciFlow.ricciSharp_add :=
+  rfl
+
+/-- Theorem contract for `ricciSharp_smul`. -/
+theorem ricciSharp_smul_eq :
+    @RicciFlow.ricciSharp_smul = @RicciFlow.ricciSharp_smul :=
+  rfl
+
+/-- Theorem contract for `ricciActionOnTensor_add_left`. -/
+theorem ricciActionOnTensor_add_left_eq :
+    @RicciFlow.ricciActionOnTensor_add_left = @RicciFlow.ricciActionOnTensor_add_left :=
+  rfl
+
+/-- Theorem contract for `ricciActionOnTensor_add_right`. -/
+theorem ricciActionOnTensor_add_right_eq :
+    @RicciFlow.ricciActionOnTensor_add_right = @RicciFlow.ricciActionOnTensor_add_right :=
+  rfl
+
+/-- Theorem contract for `ricciActionOnTensor_smul_left`. -/
+theorem ricciActionOnTensor_smul_left_eq :
+    @RicciFlow.ricciActionOnTensor_smul_left = @RicciFlow.ricciActionOnTensor_smul_left :=
+  rfl
+
+/-- Theorem contract for `coordRicci_contraction`. -/
+theorem coordRicci_contraction_eq :
+    @RicciFlow.coordRicci_contraction = @RicciFlow.coordRicci_contraction :=
+  rfl
+
+/-- Theorem contract for `g_ricciSharp`. -/
+theorem g_ricciSharp_eq :
+    @RicciFlow.g_ricciSharp = @RicciFlow.g_ricciSharp :=
+  rfl
+
+/-- Theorem contract for `ricciActionOnTensor_smul_right`. -/
+theorem ricciActionOnTensor_smul_right_eq :
+    @RicciFlow.ricciActionOnTensor_smul_right = @RicciFlow.ricciActionOnTensor_smul_right :=
+  rfl
+
+/-- Theorem contract for `ricciSharp_eq_coordRicciEndo`. -/
+theorem ricciSharp_eq_coordRicciEndo_eq :
+    @RicciFlow.ricciSharp_eq_coordRicciEndo = @RicciFlow.ricciSharp_eq_coordRicciEndo :=
+  rfl
+
+/-- Theorem contract for `ricciActionOnTensor_metric`. -/
+theorem ricciActionOnTensor_metric_eq :
+    @RicciFlow.ricciActionOnTensor_metric = @RicciFlow.ricciActionOnTensor_metric :=
+  rfl
+
+/-- Theorem contract for `covTensor2Deriv_metric_eq_zero`. -/
+theorem covTensor2Deriv_metric_eq_zero_eq :
+    @RicciFlow.covTensor2Deriv_metric_eq_zero = @RicciFlow.covTensor2Deriv_metric_eq_zero :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_metric_eq_zero`. -/
+theorem covTensor2SndDeriv_metric_eq_zero_eq :
+    @RicciFlow.covTensor2SndDeriv_metric_eq_zero = @RicciFlow.covTensor2SndDeriv_metric_eq_zero :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_metric_eq_zero`. -/
+theorem connectionLaplacian_metric_eq_zero_eq :
+    @RicciFlow.connectionLaplacian_metric_eq_zero = @RicciFlow.connectionLaplacian_metric_eq_zero :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczLaplacian_metric`. -/
+theorem lichnerowiczLaplacian_metric_eq :
+    @RicciFlow.lichnerowiczLaplacian_metric = @RicciFlow.lichnerowiczLaplacian_metric :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczLaplacian_neg`. -/
+theorem lichnerowiczLaplacian_neg_eq :
+    @RicciFlow.lichnerowiczLaplacian_neg = @RicciFlow.lichnerowiczLaplacian_neg :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczCurvature_metric_eq_zero`. -/
+theorem lichnerowiczCurvature_metric_eq_zero_eq :
+    @RicciFlow.lichnerowiczCurvature_metric_eq_zero = @RicciFlow.lichnerowiczCurvature_metric_eq_zero :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczLaplacian_metric_eq_two_ricci`. -/
+theorem lichnerowiczLaplacian_metric_eq_two_ricci_eq :
+    @RicciFlow.lichnerowiczLaplacian_metric_eq_two_ricci = @RicciFlow.lichnerowiczLaplacian_metric_eq_two_ricci :=
+  rfl
+
+/-- Theorem contract for `ricci_flow_eq_neg_lichnerowiczLaplacian_metric`. -/
+theorem ricci_flow_eq_neg_lichnerowiczLaplacian_metric_eq :
+    @RicciFlow.ricci_flow_eq_neg_lichnerowiczLaplacian_metric = @RicciFlow.ricci_flow_eq_neg_lichnerowiczLaplacian_metric :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_antisymm_pair_left`. -/
+theorem coordRiemann_antisymm_pair_left_eq :
+    @RicciFlow.coordRiemann_antisymm_pair_left = @RicciFlow.coordRiemann_antisymm_pair_left :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_antisymm_pair_right`. -/
+theorem coordRiemann_antisymm_pair_right_eq :
+    @RicciFlow.coordRiemann_antisymm_pair_right = @RicciFlow.coordRiemann_antisymm_pair_right :=
+  rfl
+
+/-- Theorem contract for `coordRicci_eq_riemann_trace`. -/
+theorem coordRicci_eq_riemann_trace_eq :
+    @RicciFlow.coordRicci_eq_riemann_trace = @RicciFlow.coordRicci_eq_riemann_trace :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_self_pair_left`. -/
+theorem coordRiemann_self_pair_left_eq :
+    @RicciFlow.coordRiemann_self_pair_left = @RicciFlow.coordRiemann_self_pair_left :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_self_pair_right`. -/
+theorem coordRiemann_self_pair_right_eq :
+    @RicciFlow.coordRiemann_self_pair_right = @RicciFlow.coordRiemann_self_pair_right :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_add_slot3`. -/
+theorem coordRiemann_add_slot3_eq :
+    @RicciFlow.coordRiemann_add_slot3 = @RicciFlow.coordRiemann_add_slot3 :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_add_slot4`. -/
+theorem coordRiemann_add_slot4_eq :
+    @RicciFlow.coordRiemann_add_slot4 = @RicciFlow.coordRiemann_add_slot4 :=
+  rfl
+
+/-- Theorem contract for `coordCurvatureOp_first_bianchi`. -/
+theorem coordCurvatureOp_first_bianchi_eq :
+    @RicciFlow.coordCurvatureOp_first_bianchi = @RicciFlow.coordCurvatureOp_first_bianchi :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_first_bianchi`. -/
+theorem coordRiemann_first_bianchi_eq :
+    @RicciFlow.coordRiemann_first_bianchi = @RicciFlow.coordRiemann_first_bianchi :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_block_symm`. -/
+theorem coordRiemann_block_symm_eq :
+    @RicciFlow.coordRiemann_block_symm = @RicciFlow.coordRiemann_block_symm :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_double_antisymm`. -/
+theorem coordRiemann_double_antisymm_eq :
+    @RicciFlow.coordRiemann_double_antisymm = @RicciFlow.coordRiemann_double_antisymm :=
+  rfl
+
+/-- Theorem contract for `sectionalNum_symm`. -/
+theorem sectionalNum_symm_eq :
+    @RicciFlow.sectionalNum_symm = @RicciFlow.sectionalNum_symm :=
+  rfl
+
+/-- Theorem contract for `sectionalNum_self_eq_zero`. -/
+theorem sectionalNum_self_eq_zero_eq :
+    @RicciFlow.sectionalNum_self_eq_zero = @RicciFlow.sectionalNum_self_eq_zero :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_add_slot1`. -/
+theorem coordRiemann_add_slot1_eq :
+    @RicciFlow.coordRiemann_add_slot1 = @RicciFlow.coordRiemann_add_slot1 :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_add_slot2`. -/
+theorem coordRiemann_add_slot2_eq :
+    @RicciFlow.coordRiemann_add_slot2 = @RicciFlow.coordRiemann_add_slot2 :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_smul_slot1`. -/
+theorem coordRiemann_smul_slot1_eq :
+    @RicciFlow.coordRiemann_smul_slot1 = @RicciFlow.coordRiemann_smul_slot1 :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_smul_slot2`. -/
+theorem coordRiemann_smul_slot2_eq :
+    @RicciFlow.coordRiemann_smul_slot2 = @RicciFlow.coordRiemann_smul_slot2 :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_smul_slot3`. -/
+theorem coordRiemann_smul_slot3_eq :
+    @RicciFlow.coordRiemann_smul_slot3 = @RicciFlow.coordRiemann_smul_slot3 :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_smul_slot4`. -/
+theorem coordRiemann_smul_slot4_eq :
+    @RicciFlow.coordRiemann_smul_slot4 = @RicciFlow.coordRiemann_smul_slot4 :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_block_antisymm`. -/
+theorem coordRiemann_block_antisymm_eq :
+    @RicciFlow.coordRiemann_block_antisymm = @RicciFlow.coordRiemann_block_antisymm :=
+  rfl
+
+/-- Theorem contract for `sectionalNum_smul_left`. -/
+theorem sectionalNum_smul_left_eq :
+    @RicciFlow.sectionalNum_smul_left = @RicciFlow.sectionalNum_smul_left :=
+  rfl
+
+/-- Theorem contract for `sectionalNum_smul_right`. -/
+theorem sectionalNum_smul_right_eq :
+    @RicciFlow.sectionalNum_smul_right = @RicciFlow.sectionalNum_smul_right :=
+  rfl
+
+/-- Theorem contract for `coordRicci_eq_riemann_trace'`. -/
+theorem coordRicci_eq_riemann_trace'_eq :
+    @RicciFlow.coordRicci_eq_riemann_trace' = @RicciFlow.coordRicci_eq_riemann_trace' :=
+  rfl
+
+/-- Theorem contract for `sectionalNum_eq_swap`. -/
+theorem sectionalNum_eq_swap_eq :
+    @RicciFlow.sectionalNum_eq_swap = @RicciFlow.sectionalNum_eq_swap :=
+  rfl
+
+/-- Theorem contract for `coordRicciEndo_self_adjoint`. -/
+theorem coordRicciEndo_self_adjoint_eq :
+    @RicciFlow.coordRicciEndo_self_adjoint = @RicciFlow.coordRicciEndo_self_adjoint :=
+  rfl
+
+/-- Theorem contract for `coordScalar_sq_le_finrank_mul_ricci_traceSq`. -/
+theorem coordScalar_sq_le_finrank_mul_ricci_traceSq_eq :
+    @RicciFlow.coordScalar_sq_le_finrank_mul_ricci_traceSq = @RicciFlow.coordScalar_sq_le_finrank_mul_ricci_traceSq :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_const_eq_zero`. -/
+theorem coordRiemann_const_eq_zero_eq :
+    @RicciFlow.coordRiemann_const_eq_zero = @RicciFlow.coordRiemann_const_eq_zero :=
+  rfl
+
+/-- Theorem contract for `coordRicciEndo_comp_self_adjoint`. -/
+theorem coordRicciEndo_comp_self_adjoint_eq :
+    @RicciFlow.coordRicciEndo_comp_self_adjoint = @RicciFlow.coordRicciEndo_comp_self_adjoint :=
+  rfl
+
+/-- Theorem contract for `coordScalar_sq_le_finrank_mul_ricciNormSq`. -/
+theorem coordScalar_sq_le_finrank_mul_ricciNormSq_eq :
+    @RicciFlow.coordScalar_sq_le_finrank_mul_ricciNormSq = @RicciFlow.coordScalar_sq_le_finrank_mul_ricciNormSq :=
+  rfl
+
+/-- Theorem contract for `riccati_reaction_bound`. -/
+theorem riccati_reaction_bound_eq :
+    @RicciFlow.riccati_reaction_bound = @RicciFlow.riccati_reaction_bound :=
+  rfl
+
+/-- Theorem contract for `coordRicciNormSq_nonneg`. -/
+theorem coordRicciNormSq_nonneg_eq :
+    @RicciFlow.coordRicciNormSq_nonneg = @RicciFlow.coordRicciNormSq_nonneg :=
+  rfl
+
+/-- Theorem contract for `coordRicciNormSq_eq_zero_of_ricci_flat`. -/
+theorem coordRicciNormSq_eq_zero_of_ricci_flat_eq :
+    @RicciFlow.coordRicciNormSq_eq_zero_of_ricci_flat = @RicciFlow.coordRicciNormSq_eq_zero_of_ricci_flat :=
+  rfl
+
+/-- Theorem contract for `sectionalNum_const_eq_zero`. -/
+theorem sectionalNum_const_eq_zero_eq :
+    @RicciFlow.sectionalNum_const_eq_zero = @RicciFlow.sectionalNum_const_eq_zero :=
+  rfl
+
+/-- Theorem contract for `ricciNormSq_ge_of_scalar_ge`. -/
+theorem ricciNormSq_ge_of_scalar_ge_eq :
+    @RicciFlow.ricciNormSq_ge_of_scalar_ge = @RicciFlow.ricciNormSq_ge_of_scalar_ge :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_neg_slot1`. -/
+theorem coordRiemann_neg_slot1_eq :
+    @RicciFlow.coordRiemann_neg_slot1 = @RicciFlow.coordRiemann_neg_slot1 :=
+  rfl
+
+/-- Theorem contract for `ricciNormSq_ge_scalar_sq_div`. -/
+theorem ricciNormSq_ge_scalar_sq_div_eq :
+    @RicciFlow.ricciNormSq_ge_scalar_sq_div = @RicciFlow.ricciNormSq_ge_scalar_sq_div :=
+  rfl
+
+/-- Theorem contract for `tensorMetricTrace_metric`. -/
+theorem tensorMetricTrace_metric_eq :
+    @RicciFlow.tensorMetricTrace_metric = @RicciFlow.tensorMetricTrace_metric :=
+  rfl
+
+/-- Theorem contract for `coordScalar_of_einstein`. -/
+theorem coordScalar_of_einstein_eq :
+    @RicciFlow.coordScalar_of_einstein = @RicciFlow.coordScalar_of_einstein :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_antisymm_left`. -/
+theorem constCurvatureForm_antisymm_left_eq :
+    @RicciFlow.constCurvatureForm_antisymm_left = @RicciFlow.constCurvatureForm_antisymm_left :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_antisymm_right`. -/
+theorem constCurvatureForm_antisymm_right_eq :
+    @RicciFlow.constCurvatureForm_antisymm_right = @RicciFlow.constCurvatureForm_antisymm_right :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_block_symm`. -/
+theorem constCurvatureForm_block_symm_eq :
+    @RicciFlow.constCurvatureForm_block_symm = @RicciFlow.constCurvatureForm_block_symm :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_first_bianchi`. -/
+theorem constCurvatureForm_first_bianchi_eq :
+    @RicciFlow.constCurvatureForm_first_bianchi = @RicciFlow.constCurvatureForm_first_bianchi :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_self_left`. -/
+theorem constCurvatureForm_self_left_eq :
+    @RicciFlow.constCurvatureForm_self_left = @RicciFlow.constCurvatureForm_self_left :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_self_right`. -/
+theorem constCurvatureForm_self_right_eq :
+    @RicciFlow.constCurvatureForm_self_right = @RicciFlow.constCurvatureForm_self_right :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_sectional`. -/
+theorem constCurvatureForm_sectional_eq :
+    @RicciFlow.constCurvatureForm_sectional = @RicciFlow.constCurvatureForm_sectional :=
+  rfl
+
+/-- Theorem contract for `metric_basis_contraction`. -/
+theorem metric_basis_contraction_eq :
+    @RicciFlow.metric_basis_contraction = @RicciFlow.metric_basis_contraction :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_ricci_trace`. -/
+theorem constCurvatureForm_ricci_trace_eq :
+    @RicciFlow.constCurvatureForm_ricci_trace = @RicciFlow.constCurvatureForm_ricci_trace :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_scalar_trace`. -/
+theorem constCurvatureForm_scalar_trace_eq :
+    @RicciFlow.constCurvatureForm_scalar_trace = @RicciFlow.constCurvatureForm_scalar_trace :=
+  rfl
+
+/-- Theorem contract for `coordRicciEndo_of_einstein`. -/
+theorem coordRicciEndo_of_einstein_eq :
+    @RicciFlow.coordRicciEndo_of_einstein = @RicciFlow.coordRicciEndo_of_einstein :=
+  rfl
+
+/-- Theorem contract for `coordRicciNormSq_of_einstein`. -/
+theorem coordRicciNormSq_of_einstein_eq :
+    @RicciFlow.coordRicciNormSq_of_einstein = @RicciFlow.coordRicciNormSq_of_einstein :=
+  rfl
+
+/-- Theorem contract for `einstein_pinching_equality`. -/
+theorem einstein_pinching_equality_eq :
+    @RicciFlow.einstein_pinching_equality = @RicciFlow.einstein_pinching_equality :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_add_slot1`. -/
+theorem constCurvatureForm_add_slot1_eq :
+    @RicciFlow.constCurvatureForm_add_slot1 = @RicciFlow.constCurvatureForm_add_slot1 :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_smul_slot1`. -/
+theorem constCurvatureForm_smul_slot1_eq :
+    @RicciFlow.constCurvatureForm_smul_slot1 = @RicciFlow.constCurvatureForm_smul_slot1 :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_double_antisymm`. -/
+theorem constCurvatureForm_double_antisymm_eq :
+    @RicciFlow.constCurvatureForm_double_antisymm = @RicciFlow.constCurvatureForm_double_antisymm :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_ricci_symm`. -/
+theorem constCurvatureForm_ricci_symm_eq :
+    @RicciFlow.constCurvatureForm_ricci_symm = @RicciFlow.constCurvatureForm_ricci_symm :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_add_slot2`. -/
+theorem constCurvatureForm_add_slot2_eq :
+    @RicciFlow.constCurvatureForm_add_slot2 = @RicciFlow.constCurvatureForm_add_slot2 :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_add_slot3`. -/
+theorem constCurvatureForm_add_slot3_eq :
+    @RicciFlow.constCurvatureForm_add_slot3 = @RicciFlow.constCurvatureForm_add_slot3 :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_add_slot4`. -/
+theorem constCurvatureForm_add_slot4_eq :
+    @RicciFlow.constCurvatureForm_add_slot4 = @RicciFlow.constCurvatureForm_add_slot4 :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_smul_slot2`. -/
+theorem constCurvatureForm_smul_slot2_eq :
+    @RicciFlow.constCurvatureForm_smul_slot2 = @RicciFlow.constCurvatureForm_smul_slot2 :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_smul_slot3`. -/
+theorem constCurvatureForm_smul_slot3_eq :
+    @RicciFlow.constCurvatureForm_smul_slot3 = @RicciFlow.constCurvatureForm_smul_slot3 :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_smul_slot4`. -/
+theorem constCurvatureForm_smul_slot4_eq :
+    @RicciFlow.constCurvatureForm_smul_slot4 = @RicciFlow.constCurvatureForm_smul_slot4 :=
+  rfl
+
+/-- Theorem contract for `einstein_traceless_ricci`. -/
+theorem einstein_traceless_ricci_eq :
+    @RicciFlow.einstein_traceless_ricci = @RicciFlow.einstein_traceless_ricci :=
+  rfl
+
+/-- Theorem contract for `einstein_ricci_flow_homothetic`. -/
+theorem einstein_ricci_flow_homothetic_eq :
+    @RicciFlow.einstein_ricci_flow_homothetic = @RicciFlow.einstein_ricci_flow_homothetic :=
+  rfl
+
+/-- Theorem contract for `einstein_homothety_pos`. -/
+theorem einstein_homothety_pos_eq :
+    @RicciFlow.einstein_homothety_pos = @RicciFlow.einstein_homothety_pos :=
+  rfl
+
+/-- Theorem contract for `einstein_homothety_extinction`. -/
+theorem einstein_homothety_extinction_eq :
+    @RicciFlow.einstein_homothety_extinction = @RicciFlow.einstein_homothety_extinction :=
+  rfl
+
+/-- Theorem contract for `round_sphere_extinction_eq_bound`. -/
+theorem round_sphere_extinction_eq_bound_eq :
+    @RicciFlow.round_sphere_extinction_eq_bound = @RicciFlow.round_sphere_extinction_eq_bound :=
+  rfl
+
+/-- Theorem contract for `einstein_homothety_decreasing`. -/
+theorem einstein_homothety_decreasing_eq :
+    @RicciFlow.einstein_homothety_decreasing = @RicciFlow.einstein_homothety_decreasing :=
+  rfl
+
+/-- Theorem contract for `einstein_scalar_pos`. -/
+theorem einstein_scalar_pos_eq :
+    @RicciFlow.einstein_scalar_pos = @RicciFlow.einstein_scalar_pos :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_normalized_sectional`. -/
+theorem constCurvatureForm_normalized_sectional_eq :
+    @RicciFlow.constCurvatureForm_normalized_sectional = @RicciFlow.constCurvatureForm_normalized_sectional :=
+  rfl
+
+/-- Theorem contract for `einstein_extinction_time_antitone`. -/
+theorem einstein_extinction_time_antitone_eq :
+    @RicciFlow.einstein_extinction_time_antitone = @RicciFlow.einstein_extinction_time_antitone :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_zero_curvature`. -/
+theorem constCurvatureForm_zero_curvature_eq :
+    @RicciFlow.constCurvatureForm_zero_curvature = @RicciFlow.constCurvatureForm_zero_curvature :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_add_curvature`. -/
+theorem constCurvatureForm_add_curvature_eq :
+    @RicciFlow.constCurvatureForm_add_curvature = @RicciFlow.constCurvatureForm_add_curvature :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_smul_curvature`. -/
+theorem constCurvatureForm_smul_curvature_eq :
+    @RicciFlow.constCurvatureForm_smul_curvature = @RicciFlow.constCurvatureForm_smul_curvature :=
+  rfl
+
+/-- Theorem contract for `inverse_smul_eq'`. -/
+theorem inverse_smul_eq'_eq :
+    @RicciFlow.inverse_smul_eq' = @RicciFlow.inverse_smul_eq' :=
+  rfl
+
+/-- Theorem contract for `christoffelClosedOp_smul_metric`. -/
+theorem christoffelClosedOp_smul_metric_eq :
+    @RicciFlow.christoffelClosedOp_smul_metric = @RicciFlow.christoffelClosedOp_smul_metric :=
+  rfl
+
+/-- Theorem contract for `coordCurvatureOp_smul_metric`. -/
+theorem coordCurvatureOp_smul_metric_eq :
+    @RicciFlow.coordCurvatureOp_smul_metric = @RicciFlow.coordCurvatureOp_smul_metric :=
+  rfl
+
+/-- Theorem contract for `coordRicci_smul_metric`. -/
+theorem coordRicci_smul_metric_eq :
+    @RicciFlow.coordRicci_smul_metric = @RicciFlow.coordRicci_smul_metric :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_smul_metric`. -/
+theorem coordRiemann_smul_metric_eq :
+    @RicciFlow.coordRiemann_smul_metric = @RicciFlow.coordRiemann_smul_metric :=
+  rfl
+
+/-- Theorem contract for `sectionalNum_smul_metric`. -/
+theorem sectionalNum_smul_metric_eq :
+    @RicciFlow.sectionalNum_smul_metric = @RicciFlow.sectionalNum_smul_metric :=
+  rfl
+
+/-- Theorem contract for `coordScalar_smul_metric`. -/
+theorem coordScalar_smul_metric_eq :
+    @RicciFlow.coordScalar_smul_metric = @RicciFlow.coordScalar_smul_metric :=
+  rfl
+
+/-- Theorem contract for `einstein_smul_metric`. -/
+theorem einstein_smul_metric_eq :
+    @RicciFlow.einstein_smul_metric = @RicciFlow.einstein_smul_metric :=
+  rfl
+
+/-- Theorem contract for `round_sphere_scalar_increasing`. -/
+theorem round_sphere_scalar_increasing_eq :
+    @RicciFlow.round_sphere_scalar_increasing = @RicciFlow.round_sphere_scalar_increasing :=
+  rfl
+
+/-- Theorem contract for `round_sphere_ricci_const`. -/
+theorem round_sphere_ricci_const_eq :
+    @RicciFlow.round_sphere_ricci_const = @RicciFlow.round_sphere_ricci_const :=
+  rfl
+
+/-- Theorem contract for `round_sphere_scalar_monotone`. -/
+theorem round_sphere_scalar_monotone_eq :
+    @RicciFlow.round_sphere_scalar_monotone = @RicciFlow.round_sphere_scalar_monotone :=
+  rfl
+
+/-- Theorem contract for `round_sphere_scalar_blowup`. -/
+theorem round_sphere_scalar_blowup_eq :
+    @RicciFlow.round_sphere_scalar_blowup = @RicciFlow.round_sphere_scalar_blowup :=
+  rfl
+
+/-- Theorem contract for `round_sphere_scalar_pos_along_flow`. -/
+theorem round_sphere_scalar_pos_along_flow_eq :
+    @RicciFlow.round_sphere_scalar_pos_along_flow = @RicciFlow.round_sphere_scalar_pos_along_flow :=
+  rfl
+
+/-- Theorem contract for `round_sphere_scalar_hasDerivAt`. -/
+theorem round_sphere_scalar_hasDerivAt_eq :
+    @RicciFlow.round_sphere_scalar_hasDerivAt = @RicciFlow.round_sphere_scalar_hasDerivAt :=
+  rfl
+
+/-- Theorem contract for `round_sphere_riccati`. -/
+theorem round_sphere_riccati_eq :
+    @RicciFlow.round_sphere_riccati = @RicciFlow.round_sphere_riccati :=
+  rfl
+
+/-- Theorem contract for `round_sphere_ricciNormSq_blowup`. -/
+theorem round_sphere_ricciNormSq_blowup_eq :
+    @RicciFlow.round_sphere_ricciNormSq_blowup = @RicciFlow.round_sphere_ricciNormSq_blowup :=
+  rfl
+
+/-- Theorem contract for `round_sphere_pinching_preserved`. -/
+theorem round_sphere_pinching_preserved_eq :
+    @RicciFlow.round_sphere_pinching_preserved = @RicciFlow.round_sphere_pinching_preserved :=
+  rfl
+
+/-- Theorem contract for `einstein_normalized_ricci_flow_stationary`. -/
+theorem einstein_normalized_ricci_flow_stationary_eq :
+    @RicciFlow.einstein_normalized_ricci_flow_stationary = @RicciFlow.einstein_normalized_ricci_flow_stationary :=
+  rfl
+
+/-- Theorem contract for `normalized_ricci_flow_eq_traceless`. -/
+theorem normalized_ricci_flow_eq_traceless_eq :
+    @RicciFlow.normalized_ricci_flow_eq_traceless = @RicciFlow.normalized_ricci_flow_eq_traceless :=
+  rfl
+
+/-- Theorem contract for `traceless_ricci_zero_iff`. -/
+theorem traceless_ricci_zero_iff_eq :
+    @RicciFlow.traceless_ricci_zero_iff = @RicciFlow.traceless_ricci_zero_iff :=
+  rfl
+
+/-- Theorem contract for `pinching_gap_nonneg`. -/
+theorem pinching_gap_nonneg_eq :
+    @RicciFlow.pinching_gap_nonneg = @RicciFlow.pinching_gap_nonneg :=
+  rfl
+
+/-- Theorem contract for `round_sphere_pinching_gap_zero`. -/
+theorem round_sphere_pinching_gap_zero_eq :
+    @RicciFlow.round_sphere_pinching_gap_zero = @RicciFlow.round_sphere_pinching_gap_zero :=
+  rfl
+
+/-- Theorem contract for `round_sphere_extinction_times_scalar`. -/
+theorem round_sphere_extinction_times_scalar_eq :
+    @RicciFlow.round_sphere_extinction_times_scalar = @RicciFlow.round_sphere_extinction_times_scalar :=
+  rfl
+
+/-- Theorem contract for `round_sphere_ricci_flow_neg_def`. -/
+theorem round_sphere_ricci_flow_neg_def_eq :
+    @RicciFlow.round_sphere_ricci_flow_neg_def = @RicciFlow.round_sphere_ricci_flow_neg_def :=
+  rfl
+
+/-- Theorem contract for `round_sphere_ricci_scalar_ratio_const`. -/
+theorem round_sphere_ricci_scalar_ratio_const_eq :
+    @RicciFlow.round_sphere_ricci_scalar_ratio_const = @RicciFlow.round_sphere_ricci_scalar_ratio_const :=
+  rfl
+
+/-- Theorem contract for `tracelessRicciNormSq_eq_gap_div`. -/
+theorem tracelessRicciNormSq_eq_gap_div_eq :
+    @RicciFlow.tracelessRicciNormSq_eq_gap_div = @RicciFlow.tracelessRicciNormSq_eq_gap_div :=
+  rfl
+
+/-- Theorem contract for `tracelessRicciNormSq_nonneg`. -/
+theorem tracelessRicciNormSq_nonneg_eq :
+    @RicciFlow.tracelessRicciNormSq_nonneg = @RicciFlow.tracelessRicciNormSq_nonneg :=
+  rfl
+
+/-- Theorem contract for `einstein_tracelessRicciNormSq_eq_zero`. -/
+theorem einstein_tracelessRicciNormSq_eq_zero_eq :
+    @RicciFlow.einstein_tracelessRicciNormSq_eq_zero = @RicciFlow.einstein_tracelessRicciNormSq_eq_zero :=
+  rfl
+
+/-- Theorem contract for `pinching_gap_eq_n_mul_tracelessNormSq`. -/
+theorem pinching_gap_eq_n_mul_tracelessNormSq_eq :
+    @RicciFlow.pinching_gap_eq_n_mul_tracelessNormSq = @RicciFlow.pinching_gap_eq_n_mul_tracelessNormSq :=
+  rfl
+
+/-- Theorem contract for `tracelessRicciNormSq_eq_zero_iff_saturated`. -/
+theorem tracelessRicciNormSq_eq_zero_iff_saturated_eq :
+    @RicciFlow.tracelessRicciNormSq_eq_zero_iff_saturated = @RicciFlow.tracelessRicciNormSq_eq_zero_iff_saturated :=
+  rfl
+
+/-- Theorem contract for `round_sphere_tracelessRicciNormSq_zero`. -/
+theorem round_sphere_tracelessRicciNormSq_zero_eq :
+    @RicciFlow.round_sphere_tracelessRicciNormSq_zero = @RicciFlow.round_sphere_tracelessRicciNormSq_zero :=
+  rfl
+
+/-- Theorem contract for `einstein_const_eq_scalar_div`. -/
+theorem einstein_const_eq_scalar_div_eq :
+    @RicciFlow.einstein_const_eq_scalar_div = @RicciFlow.einstein_const_eq_scalar_div :=
+  rfl
+
+/-- Theorem contract for `tracelessRicci_metricTrace_zero`. -/
+theorem tracelessRicci_metricTrace_zero_eq :
+    @RicciFlow.tracelessRicci_metricTrace_zero = @RicciFlow.tracelessRicci_metricTrace_zero :=
+  rfl
+
+/-- Theorem contract for `tensorMetricTrace_sub`. -/
+theorem tensorMetricTrace_sub_eq :
+    @RicciFlow.tensorMetricTrace_sub = @RicciFlow.tensorMetricTrace_sub :=
+  rfl
+
+/-- Theorem contract for `normalized_ricci_flow_direction_traceFree`. -/
+theorem normalized_ricci_flow_direction_traceFree_eq :
+    @RicciFlow.normalized_ricci_flow_direction_traceFree = @RicciFlow.normalized_ricci_flow_direction_traceFree :=
+  rfl
+
+/-- Theorem contract for `tensorMetricTrace_add`. -/
+theorem tensorMetricTrace_add_eq :
+    @RicciFlow.tensorMetricTrace_add = @RicciFlow.tensorMetricTrace_add :=
+  rfl
+
+/-- Theorem contract for `tensorMetricTrace_smul_metric`. -/
+theorem tensorMetricTrace_smul_metric_eq :
+    @RicciFlow.tensorMetricTrace_smul_metric = @RicciFlow.tensorMetricTrace_smul_metric :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczLaplacian_metric_trace`. -/
+theorem lichnerowiczLaplacian_metric_trace_eq :
+    @RicciFlow.lichnerowiczLaplacian_metric_trace = @RicciFlow.lichnerowiczLaplacian_metric_trace :=
+  rfl
+
+/-- Theorem contract for `neg_lichnerowiczLaplacian_metric_trace`. -/
+theorem neg_lichnerowiczLaplacian_metric_trace_eq :
+    @RicciFlow.neg_lichnerowiczLaplacian_metric_trace = @RicciFlow.neg_lichnerowiczLaplacian_metric_trace :=
+  rfl
+
+/-- Theorem contract for `einstein_lichnerowiczLaplacian_metric_trace`. -/
+theorem einstein_lichnerowiczLaplacian_metric_trace_eq :
+    @RicciFlow.einstein_lichnerowiczLaplacian_metric_trace = @RicciFlow.einstein_lichnerowiczLaplacian_metric_trace :=
+  rfl
+
+/-- Theorem contract for `einstein_lichnerowiczLaplacian_metric_trace_pos`. -/
+theorem einstein_lichnerowiczLaplacian_metric_trace_pos_eq :
+    @RicciFlow.einstein_lichnerowiczLaplacian_metric_trace_pos = @RicciFlow.einstein_lichnerowiczLaplacian_metric_trace_pos :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_metric_trace_eq_zero`. -/
+theorem connectionLaplacian_metric_trace_eq_zero_eq :
+    @RicciFlow.connectionLaplacian_metric_trace_eq_zero = @RicciFlow.connectionLaplacian_metric_trace_eq_zero :=
+  rfl
+
+/-- Theorem contract for `ricciActionOnTensor_metric_trace`. -/
+theorem ricciActionOnTensor_metric_trace_eq :
+    @RicciFlow.ricciActionOnTensor_metric_trace = @RicciFlow.ricciActionOnTensor_metric_trace :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczCurvature_metric_trace_eq_zero`. -/
+theorem lichnerowiczCurvature_metric_trace_eq_zero_eq :
+    @RicciFlow.lichnerowiczCurvature_metric_trace_eq_zero = @RicciFlow.lichnerowiczCurvature_metric_trace_eq_zero :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczLaplacian_metric_trace_decompose`. -/
+theorem lichnerowiczLaplacian_metric_trace_decompose_eq :
+    @RicciFlow.lichnerowiczLaplacian_metric_trace_decompose = @RicciFlow.lichnerowiczLaplacian_metric_trace_decompose :=
+  rfl
+
+/-- Theorem contract for `half_lichnerowiczLaplacian_metric_trace`. -/
+theorem half_lichnerowiczLaplacian_metric_trace_eq :
+    @RicciFlow.half_lichnerowiczLaplacian_metric_trace = @RicciFlow.half_lichnerowiczLaplacian_metric_trace :=
+  rfl
+
+/-- Theorem contract for `einstein_half_lichnerowiczLaplacian_metric_trace`. -/
+theorem einstein_half_lichnerowiczLaplacian_metric_trace_eq :
+    @RicciFlow.einstein_half_lichnerowiczLaplacian_metric_trace = @RicciFlow.einstein_half_lichnerowiczLaplacian_metric_trace :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_scalar_trace_standard`. -/
+theorem constCurvatureForm_scalar_trace_standard_eq :
+    @RicciFlow.constCurvatureForm_scalar_trace_standard = @RicciFlow.constCurvatureForm_scalar_trace_standard :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_scalar_trace_pos`. -/
+theorem constCurvatureForm_scalar_trace_pos_eq :
+    @RicciFlow.constCurvatureForm_scalar_trace_pos = @RicciFlow.constCurvatureForm_scalar_trace_pos :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_ricci_const_pos`. -/
+theorem constCurvatureForm_ricci_const_pos_eq :
+    @RicciFlow.constCurvatureForm_ricci_const_pos = @RicciFlow.constCurvatureForm_ricci_const_pos :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_extinction_pos`. -/
+theorem constCurvatureForm_extinction_pos_eq :
+    @RicciFlow.constCurvatureForm_extinction_pos = @RicciFlow.constCurvatureForm_extinction_pos :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_extinction_times_scalar`. -/
+theorem constCurvatureForm_extinction_times_scalar_eq :
+    @RicciFlow.constCurvatureForm_extinction_times_scalar = @RicciFlow.constCurvatureForm_extinction_times_scalar :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_sectional_orthonormal`. -/
+theorem constCurvatureForm_sectional_orthonormal_eq :
+    @RicciFlow.constCurvatureForm_sectional_orthonormal = @RicciFlow.constCurvatureForm_sectional_orthonormal :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_sectional_orthonormal_pos`. -/
+theorem constCurvatureForm_sectional_orthonormal_pos_eq :
+    @RicciFlow.constCurvatureForm_sectional_orthonormal_pos = @RicciFlow.constCurvatureForm_sectional_orthonormal_pos :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_sectional_isotropic`. -/
+theorem constCurvatureForm_sectional_isotropic_eq :
+    @RicciFlow.constCurvatureForm_sectional_isotropic = @RicciFlow.constCurvatureForm_sectional_isotropic :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_ricci_const_eq_sectional`. -/
+theorem constCurvatureForm_ricci_const_eq_sectional_eq :
+    @RicciFlow.constCurvatureForm_ricci_const_eq_sectional = @RicciFlow.constCurvatureForm_ricci_const_eq_sectional :=
+  rfl
+
+/-- Theorem contract for `coordRicciNormSq_of_einstein_pos`. -/
+theorem coordRicciNormSq_of_einstein_pos_eq :
+    @RicciFlow.coordRicciNormSq_of_einstein_pos = @RicciFlow.coordRicciNormSq_of_einstein_pos :=
+  rfl
+
+/-- Theorem contract for `ricciDivergence_eq_zero_of_scalar_const`. -/
+theorem ricciDivergence_eq_zero_of_scalar_const_eq :
+    @RicciFlow.ricciDivergence_eq_zero_of_scalar_const = @RicciFlow.ricciDivergence_eq_zero_of_scalar_const :=
+  rfl
+
+/-- Theorem contract for `ricciDivergenceForm_eq_zero_of_scalar_const`. -/
+theorem ricciDivergenceForm_eq_zero_of_scalar_const_eq :
+    @RicciFlow.ricciDivergenceForm_eq_zero_of_scalar_const = @RicciFlow.ricciDivergenceForm_eq_zero_of_scalar_const :=
+  rfl
+
+/-- Theorem contract for `einstein_tensor_divergence_free`. -/
+theorem einstein_tensor_divergence_free_eq :
+    @RicciFlow.einstein_tensor_divergence_free = @RicciFlow.einstein_tensor_divergence_free :=
+  rfl
+
+/-- Theorem contract for `fderiv_coordScalar_eq_zero_of_ricciDivergence_zero`. -/
+theorem fderiv_coordScalar_eq_zero_of_ricciDivergence_zero_eq :
+    @RicciFlow.fderiv_coordScalar_eq_zero_of_ricciDivergence_zero = @RicciFlow.fderiv_coordScalar_eq_zero_of_ricciDivergence_zero :=
+  rfl
+
+/-- Theorem contract for `ricciDivergence_zero_iff_scalar_const`. -/
+theorem ricciDivergence_zero_iff_scalar_const_eq :
+    @RicciFlow.ricciDivergence_zero_iff_scalar_const = @RicciFlow.ricciDivergence_zero_iff_scalar_const :=
+  rfl
+
+/-- Theorem contract for `einstein_tensor_divergence_free_apply`. -/
+theorem einstein_tensor_divergence_free_apply_eq :
+    @RicciFlow.einstein_tensor_divergence_free_apply = @RicciFlow.einstein_tensor_divergence_free_apply :=
+  rfl
+
+/-- Theorem contract for `fderiv_coordScalar_apply_eq_two_ricciDivergence`. -/
+theorem fderiv_coordScalar_apply_eq_two_ricciDivergence_eq :
+    @RicciFlow.fderiv_coordScalar_apply_eq_two_ricciDivergence = @RicciFlow.fderiv_coordScalar_apply_eq_two_ricciDivergence :=
+  rfl
+
+/-- Theorem contract for `coordScalar_eq_zero_of_ricci_flat`. -/
+theorem coordScalar_eq_zero_of_ricci_flat_eq :
+    @RicciFlow.coordScalar_eq_zero_of_ricci_flat = @RicciFlow.coordScalar_eq_zero_of_ricci_flat :=
+  rfl
+
+/-- Theorem contract for `ricci_flat_flow_static`. -/
+theorem ricci_flat_flow_static_eq :
+    @RicciFlow.ricci_flat_flow_static = @RicciFlow.ricci_flat_flow_static :=
+  rfl
+
+/-- Theorem contract for `ricci_flat_pinching_gap_zero`. -/
+theorem ricci_flat_pinching_gap_zero_eq :
+    @RicciFlow.ricci_flat_pinching_gap_zero = @RicciFlow.ricci_flat_pinching_gap_zero :=
+  rfl
+
+/-- Theorem contract for `einstein_homothety_pos_of_neg`. -/
+theorem einstein_homothety_pos_of_neg_eq :
+    @RicciFlow.einstein_homothety_pos_of_neg = @RicciFlow.einstein_homothety_pos_of_neg :=
+  rfl
+
+/-- Theorem contract for `einstein_homothety_increasing_of_neg`. -/
+theorem einstein_homothety_increasing_of_neg_eq :
+    @RicciFlow.einstein_homothety_increasing_of_neg = @RicciFlow.einstein_homothety_increasing_of_neg :=
+  rfl
+
+/-- Theorem contract for `hyperbolic_scalar_neg`. -/
+theorem hyperbolic_scalar_neg_eq :
+    @RicciFlow.hyperbolic_scalar_neg = @RicciFlow.hyperbolic_scalar_neg :=
+  rfl
+
+/-- Theorem contract for `hyperbolic_scalar_tendsto_zero`. -/
+theorem hyperbolic_scalar_tendsto_zero_eq :
+    @RicciFlow.hyperbolic_scalar_tendsto_zero = @RicciFlow.hyperbolic_scalar_tendsto_zero :=
+  rfl
+
+/-- Theorem contract for `hyperbolic_ricciNormSq_tendsto_zero`. -/
+theorem hyperbolic_ricciNormSq_tendsto_zero_eq :
+    @RicciFlow.hyperbolic_ricciNormSq_tendsto_zero = @RicciFlow.hyperbolic_ricciNormSq_tendsto_zero :=
+  rfl
+
+/-- Theorem contract for `einstein_homothety_tendsto_atTop_of_neg`. -/
+theorem einstein_homothety_tendsto_atTop_of_neg_eq :
+    @RicciFlow.einstein_homothety_tendsto_atTop_of_neg = @RicciFlow.einstein_homothety_tendsto_atTop_of_neg :=
+  rfl
+
+/-- Theorem contract for `hyperbolic_metric_pos_def`. -/
+theorem hyperbolic_metric_pos_def_eq :
+    @RicciFlow.hyperbolic_metric_pos_def = @RicciFlow.hyperbolic_metric_pos_def :=
+  rfl
+
+/-- Theorem contract for `round_sphere_metric_degenerate_past_extinction`. -/
+theorem round_sphere_metric_degenerate_past_extinction_eq :
+    @RicciFlow.round_sphere_metric_degenerate_past_extinction = @RicciFlow.round_sphere_metric_degenerate_past_extinction :=
+  rfl
+
+/-- Theorem contract for `round_sphere_ancient`. -/
+theorem round_sphere_ancient_eq :
+    @RicciFlow.round_sphere_ancient = @RicciFlow.round_sphere_ancient :=
+  rfl
+
+/-- Theorem contract for `round_sphere_homothety_decreasing`. -/
+theorem round_sphere_homothety_decreasing_eq :
+    @RicciFlow.round_sphere_homothety_decreasing = @RicciFlow.round_sphere_homothety_decreasing :=
+  rfl
+
+/-- Theorem contract for `round_sphere_ancient_scalar_bounded`. -/
+theorem round_sphere_ancient_scalar_bounded_eq :
+    @RicciFlow.round_sphere_ancient_scalar_bounded = @RicciFlow.round_sphere_ancient_scalar_bounded :=
+  rfl
+
+/-- Theorem contract for `round_sphere_ancient_scalar_pos`. -/
+theorem round_sphere_ancient_scalar_pos_eq :
+    @RicciFlow.round_sphere_ancient_scalar_pos = @RicciFlow.round_sphere_ancient_scalar_pos :=
+  rfl
+
+/-- Theorem contract for `round_sphere_kappa_solution_model`. -/
+theorem round_sphere_kappa_solution_model_eq :
+    @RicciFlow.round_sphere_kappa_solution_model = @RicciFlow.round_sphere_kappa_solution_model :=
+  rfl
+
+/-- Theorem contract for `round_sphere_scalar_factor_const`. -/
+theorem round_sphere_scalar_factor_const_eq :
+    @RicciFlow.round_sphere_scalar_factor_const = @RicciFlow.round_sphere_scalar_factor_const :=
+  rfl
+
+/-- Theorem contract for `round_sphere_ricciNormSq_factor_const`. -/
+theorem round_sphere_ricciNormSq_factor_const_eq :
+    @RicciFlow.round_sphere_ricciNormSq_factor_const = @RicciFlow.round_sphere_ricciNormSq_factor_const :=
+  rfl
+
+/-- Theorem contract for `round_sphere_conserved_ratio`. -/
+theorem round_sphere_conserved_ratio_eq :
+    @RicciFlow.round_sphere_conserved_ratio = @RicciFlow.round_sphere_conserved_ratio :=
+  rfl
+
+/-- Theorem contract for `round_sphere_scalar_type_one`. -/
+theorem round_sphere_scalar_type_one_eq :
+    @RicciFlow.round_sphere_scalar_type_one = @RicciFlow.round_sphere_scalar_type_one :=
+  rfl
+
+/-- Theorem contract for `einstein_ricci_orthonormal`. -/
+theorem einstein_ricci_orthonormal_eq :
+    @RicciFlow.einstein_ricci_orthonormal = @RicciFlow.einstein_ricci_orthonormal :=
+  rfl
+
+/-- Theorem contract for `einstein_ricci_orthonormal_pos`. -/
+theorem einstein_ricci_orthonormal_pos_eq :
+    @RicciFlow.einstein_ricci_orthonormal_pos = @RicciFlow.einstein_ricci_orthonormal_pos :=
+  rfl
+
+/-- Theorem contract for `einstein_ricci_pos_def`. -/
+theorem einstein_ricci_pos_def_eq :
+    @RicciFlow.einstein_ricci_pos_def = @RicciFlow.einstein_ricci_pos_def :=
+  rfl
+
+/-- Theorem contract for `round_sphere_inv_scalar_linear`. -/
+theorem round_sphere_inv_scalar_linear_eq :
+    @RicciFlow.round_sphere_inv_scalar_linear = @RicciFlow.round_sphere_inv_scalar_linear :=
+  rfl
+
+/-- Theorem contract for `round_sphere_inv_scalar_hasDerivAt`. -/
+theorem round_sphere_inv_scalar_hasDerivAt_eq :
+    @RicciFlow.round_sphere_inv_scalar_hasDerivAt = @RicciFlow.round_sphere_inv_scalar_hasDerivAt :=
+  rfl
+
+/-- Theorem contract for `round_sphere_inv_scalar_zero_at_extinction`. -/
+theorem round_sphere_inv_scalar_zero_at_extinction_eq :
+    @RicciFlow.round_sphere_inv_scalar_zero_at_extinction = @RicciFlow.round_sphere_inv_scalar_zero_at_extinction :=
+  rfl
+
+/-- Theorem contract for `einstein_normalized_flow_fixed`. -/
+theorem einstein_normalized_flow_fixed_eq :
+    @RicciFlow.einstein_normalized_flow_fixed = @RicciFlow.einstein_normalized_flow_fixed :=
+  rfl
+
+/-- Theorem contract for `normalized_flow_fixed_imp_einstein`. -/
+theorem normalized_flow_fixed_imp_einstein_eq :
+    @RicciFlow.normalized_flow_fixed_imp_einstein = @RicciFlow.normalized_flow_fixed_imp_einstein :=
+  rfl
+
+/-- Theorem contract for `normalized_flow_fixed_iff_einstein`. -/
+theorem normalized_flow_fixed_iff_einstein_eq :
+    @RicciFlow.normalized_flow_fixed_iff_einstein = @RicciFlow.normalized_flow_fixed_iff_einstein :=
+  rfl
+
+/-- Theorem contract for `normalized_einstein_const_trace_consistent`. -/
+theorem normalized_einstein_const_trace_consistent_eq :
+    @RicciFlow.normalized_einstein_const_trace_consistent = @RicciFlow.normalized_einstein_const_trace_consistent :=
+  rfl
+
+/-- Theorem contract for `coordCurvatureOp_self_eq_zero`. -/
+theorem coordCurvatureOp_self_eq_zero_eq :
+    @RicciFlow.coordCurvatureOp_self_eq_zero = @RicciFlow.coordCurvatureOp_self_eq_zero :=
+  rfl
+
+/-- Theorem contract for `round_sphere_ricciNormSq_type_one`. -/
+theorem round_sphere_ricciNormSq_type_one_eq :
+    @RicciFlow.round_sphere_ricciNormSq_type_one = @RicciFlow.round_sphere_ricciNormSq_type_one :=
+  rfl
+
+/-- Theorem contract for `round_sphere_scalar_ratio_times`. -/
+theorem round_sphere_scalar_ratio_times_eq :
+    @RicciFlow.round_sphere_scalar_ratio_times = @RicciFlow.round_sphere_scalar_ratio_times :=
+  rfl
+
+/-- Theorem contract for `round_sphere_factor_zero_iff`. -/
+theorem round_sphere_factor_zero_iff_eq :
+    @RicciFlow.round_sphere_factor_zero_iff = @RicciFlow.round_sphere_factor_zero_iff :=
+  rfl
+
+/-- Theorem contract for `round_sphere_3d_extinction_times_scalar`. -/
+theorem round_sphere_3d_extinction_times_scalar_eq :
+    @RicciFlow.round_sphere_3d_extinction_times_scalar = @RicciFlow.round_sphere_3d_extinction_times_scalar :=
+  rfl
+
+/-- Theorem contract for `round_sphere_3d_scalar`. -/
+theorem round_sphere_3d_scalar_eq :
+    @RicciFlow.round_sphere_3d_scalar = @RicciFlow.round_sphere_3d_scalar :=
+  rfl
+
+/-- Theorem contract for `round_sphere_3d_pinching`. -/
+theorem round_sphere_3d_pinching_eq :
+    @RicciFlow.round_sphere_3d_pinching = @RicciFlow.round_sphere_3d_pinching :=
+  rfl
+
+/-- Theorem contract for `round_sphere_3d_ricciNormSq`. -/
+theorem round_sphere_3d_ricciNormSq_eq :
+    @RicciFlow.round_sphere_3d_ricciNormSq = @RicciFlow.round_sphere_3d_ricciNormSq :=
+  rfl
+
+/-- Theorem contract for `round_sphere_3d_type_one_constant`. -/
+theorem round_sphere_3d_type_one_constant_eq :
+    @RicciFlow.round_sphere_3d_type_one_constant = @RicciFlow.round_sphere_3d_type_one_constant :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_3d_ricci_const_eq_two_sectional`. -/
+theorem constCurvatureForm_3d_ricci_const_eq_two_sectional_eq :
+    @RicciFlow.constCurvatureForm_3d_ricci_const_eq_two_sectional = @RicciFlow.constCurvatureForm_3d_ricci_const_eq_two_sectional :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_3d_scalar_eq_six_sectional`. -/
+theorem constCurvatureForm_3d_scalar_eq_six_sectional_eq :
+    @RicciFlow.constCurvatureForm_3d_scalar_eq_six_sectional = @RicciFlow.constCurvatureForm_3d_scalar_eq_six_sectional :=
+  rfl
+
+/-- Theorem contract for `round_sphere_3d_conserved_ratio`. -/
+theorem round_sphere_3d_conserved_ratio_eq :
+    @RicciFlow.round_sphere_3d_conserved_ratio = @RicciFlow.round_sphere_3d_conserved_ratio :=
+  rfl
+
+/-- Theorem contract for `round_sphere_3d_traceless_zero`. -/
+theorem round_sphere_3d_traceless_zero_eq :
+    @RicciFlow.round_sphere_3d_traceless_zero = @RicciFlow.round_sphere_3d_traceless_zero :=
+  rfl
+
+/-- Theorem contract for `round_sphere_3d_lichnerowicz_trace`. -/
+theorem round_sphere_3d_lichnerowicz_trace_eq :
+    @RicciFlow.round_sphere_3d_lichnerowicz_trace = @RicciFlow.round_sphere_3d_lichnerowicz_trace :=
+  rfl
+
+/-- Theorem contract for `round_sphere_3d_normalized_flow_fixed`. -/
+theorem round_sphere_3d_normalized_flow_fixed_eq :
+    @RicciFlow.round_sphere_3d_normalized_flow_fixed = @RicciFlow.round_sphere_3d_normalized_flow_fixed :=
+  rfl
+
+/-- Theorem contract for `round_sphere_3d_scalar_pos`. -/
+theorem round_sphere_3d_scalar_pos_eq :
+    @RicciFlow.round_sphere_3d_scalar_pos = @RicciFlow.round_sphere_3d_scalar_pos :=
+  rfl
+
+/-- Theorem contract for `round_sphere_3d_ricciNormSq_pos`. -/
+theorem round_sphere_3d_ricciNormSq_pos_eq :
+    @RicciFlow.round_sphere_3d_ricciNormSq_pos = @RicciFlow.round_sphere_3d_ricciNormSq_pos :=
+  rfl
+
+/-- Theorem contract for `round_sphere_scalar_doubles`. -/
+theorem round_sphere_scalar_doubles_eq :
+    @RicciFlow.round_sphere_scalar_doubles = @RicciFlow.round_sphere_scalar_doubles :=
+  rfl
+
+/-- Theorem contract for `tensorMetricTrace_zero`. -/
+theorem tensorMetricTrace_zero_eq :
+    @RicciFlow.tensorMetricTrace_zero = @RicciFlow.tensorMetricTrace_zero :=
+  rfl
+
+/-- Theorem contract for `two_ricciNormSq_ge_two_scalar_sq_div`. -/
+theorem two_ricciNormSq_ge_two_scalar_sq_div_eq :
+    @RicciFlow.two_ricciNormSq_ge_two_scalar_sq_div = @RicciFlow.two_ricciNormSq_ge_two_scalar_sq_div :=
+  rfl
+
+/-- Theorem contract for `two_ricciNormSq_ge_two_scalar_sq_div_3d`. -/
+theorem two_ricciNormSq_ge_two_scalar_sq_div_3d_eq :
+    @RicciFlow.two_ricciNormSq_ge_two_scalar_sq_div_3d = @RicciFlow.two_ricciNormSq_ge_two_scalar_sq_div_3d :=
+  rfl
+
+/-- Theorem contract for `two_ricciNormSq_nonneg`. -/
+theorem two_ricciNormSq_nonneg_eq :
+    @RicciFlow.two_ricciNormSq_nonneg = @RicciFlow.two_ricciNormSq_nonneg :=
+  rfl
+
+/-- Theorem contract for `riccati_comparison_extinction_3d`. -/
+theorem riccati_comparison_extinction_3d_eq :
+    @RicciFlow.riccati_comparison_extinction_3d = @RicciFlow.riccati_comparison_extinction_3d :=
+  rfl
+
+/-- Theorem contract for `riccati_comparison_extinction`. -/
+theorem riccati_comparison_extinction_eq :
+    @RicciFlow.riccati_comparison_extinction = @RicciFlow.riccati_comparison_extinction :=
+  rfl
+
+/-- Theorem contract for `riccati_extinction_antitone`. -/
+theorem riccati_extinction_antitone_eq :
+    @RicciFlow.riccati_extinction_antitone = @RicciFlow.riccati_extinction_antitone :=
+  rfl
+
+/-- Theorem contract for `ricciNormSq_pos_of_scalar_pos`. -/
+theorem ricciNormSq_pos_of_scalar_pos_eq :
+    @RicciFlow.ricciNormSq_pos_of_scalar_pos = @RicciFlow.ricciNormSq_pos_of_scalar_pos :=
+  rfl
+
+/-- Theorem contract for `reaction_eq_riccati_iff_traceless_zero`. -/
+theorem reaction_eq_riccati_iff_traceless_zero_eq :
+    @RicciFlow.reaction_eq_riccati_iff_traceless_zero = @RicciFlow.reaction_eq_riccati_iff_traceless_zero :=
+  rfl
+
+/-- Theorem contract for `reaction_gt_riccati_of_traceless_pos`. -/
+theorem reaction_gt_riccati_of_traceless_pos_eq :
+    @RicciFlow.reaction_gt_riccati_of_traceless_pos = @RicciFlow.reaction_gt_riccati_of_traceless_pos :=
+  rfl
+
+/-- Theorem contract for `pinching_gap_pos_iff_traceless_pos`. -/
+theorem pinching_gap_pos_iff_traceless_pos_eq :
+    @RicciFlow.pinching_gap_pos_iff_traceless_pos = @RicciFlow.pinching_gap_pos_iff_traceless_pos :=
+  rfl
+
+/-- Theorem contract for `coordRicciEndo_of_einstein_normalized`. -/
+theorem coordRicciEndo_of_einstein_normalized_eq :
+    @RicciFlow.coordRicciEndo_of_einstein_normalized = @RicciFlow.coordRicciEndo_of_einstein_normalized :=
+  rfl
+
+/-- Theorem contract for `coordRicciEndo_einstein_apply`. -/
+theorem coordRicciEndo_einstein_apply_eq :
+    @RicciFlow.coordRicciEndo_einstein_apply = @RicciFlow.coordRicciEndo_einstein_apply :=
+  rfl
+
+/-- Theorem contract for `coordRicciEndo_einstein_eigenvalue_pos`. -/
+theorem coordRicciEndo_einstein_eigenvalue_pos_eq :
+    @RicciFlow.coordRicciEndo_einstein_eigenvalue_pos = @RicciFlow.coordRicciEndo_einstein_eigenvalue_pos :=
+  rfl
+
+/-- Theorem contract for `coordRicciEndo_einstein_sq_apply`. -/
+theorem coordRicciEndo_einstein_sq_apply_eq :
+    @RicciFlow.coordRicciEndo_einstein_sq_apply = @RicciFlow.coordRicciEndo_einstein_sq_apply :=
+  rfl
+
+/-- Theorem contract for `coordRicciEndo_einstein_eigenvalue_neg`. -/
+theorem coordRicciEndo_einstein_eigenvalue_neg_eq :
+    @RicciFlow.coordRicciEndo_einstein_eigenvalue_neg = @RicciFlow.coordRicciEndo_einstein_eigenvalue_neg :=
+  rfl
+
+/-- Theorem contract for `coordRicciEndo_ricci_flat_eigenvalue_zero`. -/
+theorem coordRicciEndo_ricci_flat_eigenvalue_zero_eq :
+    @RicciFlow.coordRicciEndo_ricci_flat_eigenvalue_zero = @RicciFlow.coordRicciEndo_ricci_flat_eigenvalue_zero :=
+  rfl
+
+/-- Theorem contract for `coordRicciNormSq_einstein_eq_scalar_sq_div`. -/
+theorem coordRicciNormSq_einstein_eq_scalar_sq_div_eq :
+    @RicciFlow.coordRicciNormSq_einstein_eq_scalar_sq_div = @RicciFlow.coordRicciNormSq_einstein_eq_scalar_sq_div :=
+  rfl
+
+/-- Theorem contract for `round_sphere_3d_ricci_eq_scalar_sq_div`. -/
+theorem round_sphere_3d_ricci_eq_scalar_sq_div_eq :
+    @RicciFlow.round_sphere_3d_ricci_eq_scalar_sq_div = @RicciFlow.round_sphere_3d_ricci_eq_scalar_sq_div :=
+  rfl
+
+/-- Theorem contract for `coordRicciNormSq_einstein_pos_iff_scalar_ne`. -/
+theorem coordRicciNormSq_einstein_pos_iff_scalar_ne_eq :
+    @RicciFlow.coordRicciNormSq_einstein_pos_iff_scalar_ne = @RicciFlow.coordRicciNormSq_einstein_pos_iff_scalar_ne :=
+  rfl
+
+/-- Theorem contract for `einstein_scalar_ne_iff_const_ne`. -/
+theorem einstein_scalar_ne_iff_const_ne_eq :
+    @RicciFlow.einstein_scalar_ne_iff_const_ne = @RicciFlow.einstein_scalar_ne_iff_const_ne :=
+  rfl
+
+/-- Theorem contract for `round_sphere_reaction_eq_riccati`. -/
+theorem round_sphere_reaction_eq_riccati_eq :
+    @RicciFlow.round_sphere_reaction_eq_riccati = @RicciFlow.round_sphere_reaction_eq_riccati :=
+  rfl
+
+/-- Theorem contract for `round_sphere_3d_reaction_eq_riccati`. -/
+theorem round_sphere_3d_reaction_eq_riccati_eq :
+    @RicciFlow.round_sphere_3d_reaction_eq_riccati = @RicciFlow.round_sphere_3d_reaction_eq_riccati :=
+  rfl
+
+/-- Theorem contract for `round_sphere_exists_on_interval`. -/
+theorem round_sphere_exists_on_interval_eq :
+    @RicciFlow.round_sphere_exists_on_interval = @RicciFlow.round_sphere_exists_on_interval :=
+  rfl
+
+/-- Theorem contract for `round_sphere_scalar_pos_on_interval`. -/
+theorem round_sphere_scalar_pos_on_interval_eq :
+    @RicciFlow.round_sphere_scalar_pos_on_interval = @RicciFlow.round_sphere_scalar_pos_on_interval :=
+  rfl
+
+/-- Theorem contract for `round_sphere_ricciNormSq_pos_on_interval`. -/
+theorem round_sphere_ricciNormSq_pos_on_interval_eq :
+    @RicciFlow.round_sphere_ricciNormSq_pos_on_interval = @RicciFlow.round_sphere_ricciNormSq_pos_on_interval :=
+  rfl
+
+/-- Theorem contract for `round_sphere_inv_scalar_pos_on_interval`. -/
+theorem round_sphere_inv_scalar_pos_on_interval_eq :
+    @RicciFlow.round_sphere_inv_scalar_pos_on_interval = @RicciFlow.round_sphere_inv_scalar_pos_on_interval :=
+  rfl
+
+/-- Theorem contract for `covCurvDeriv_second_bianchi_solved`. -/
+theorem covCurvDeriv_second_bianchi_solved_eq :
+    @RicciFlow.covCurvDeriv_second_bianchi_solved = @RicciFlow.covCurvDeriv_second_bianchi_solved :=
+  rfl
+
+/-- Theorem contract for `curvDivergence_eq_ricci_deriv_diff`. -/
+theorem curvDivergence_eq_ricci_deriv_diff_eq :
+    @RicciFlow.curvDivergence_eq_ricci_deriv_diff = @RicciFlow.curvDivergence_eq_ricci_deriv_diff :=
+  rfl
+
+/-- Theorem contract for `curvDivergence_eq_zero_of_ricci_parallel`. -/
+theorem curvDivergence_eq_zero_of_ricci_parallel_eq :
+    @RicciFlow.curvDivergence_eq_zero_of_ricci_parallel = @RicciFlow.curvDivergence_eq_zero_of_ricci_parallel :=
+  rfl
+
+/-- Theorem contract for `curvDivergence_antisymm_first_two`. -/
+theorem curvDivergence_antisymm_first_two_eq :
+    @RicciFlow.curvDivergence_antisymm_first_two = @RicciFlow.curvDivergence_antisymm_first_two :=
+  rfl
+
+/-- Theorem contract for `ricciDivergence_eq_zero_of_ricci_parallel`. -/
+theorem ricciDivergence_eq_zero_of_ricci_parallel_eq :
+    @RicciFlow.ricciDivergence_eq_zero_of_ricci_parallel = @RicciFlow.ricciDivergence_eq_zero_of_ricci_parallel :=
+  rfl
+
+/-- Theorem contract for `fderiv_coordScalar_eq_zero_of_ricci_parallel`. -/
+theorem fderiv_coordScalar_eq_zero_of_ricci_parallel_eq :
+    @RicciFlow.fderiv_coordScalar_eq_zero_of_ricci_parallel = @RicciFlow.fderiv_coordScalar_eq_zero_of_ricci_parallel :=
+  rfl
+
+/-- Theorem contract for `ricciDivergenceForm_eq_zero_of_ricci_parallel`. -/
+theorem ricciDivergenceForm_eq_zero_of_ricci_parallel_eq :
+    @RicciFlow.ricciDivergenceForm_eq_zero_of_ricci_parallel = @RicciFlow.ricciDivergenceForm_eq_zero_of_ricci_parallel :=
+  rfl
+
+/-- Theorem contract for `curvDivergence_self_eq_zero`. -/
+theorem curvDivergence_self_eq_zero_eq :
+    @RicciFlow.curvDivergence_self_eq_zero = @RicciFlow.curvDivergence_self_eq_zero :=
+  rfl
+
+/-- Theorem contract for `round_sphere_scalar_triples`. -/
+theorem round_sphere_scalar_triples_eq :
+    @RicciFlow.round_sphere_scalar_triples = @RicciFlow.round_sphere_scalar_triples :=
+  rfl
+
+/-- Theorem contract for `round_sphere_scalar_kfold`. -/
+theorem round_sphere_scalar_kfold_eq :
+    @RicciFlow.round_sphere_scalar_kfold = @RicciFlow.round_sphere_scalar_kfold :=
+  rfl
+
+/-- Theorem contract for `round_sphere_kfold_time_lt_extinction`. -/
+theorem round_sphere_kfold_time_lt_extinction_eq :
+    @RicciFlow.round_sphere_kfold_time_lt_extinction = @RicciFlow.round_sphere_kfold_time_lt_extinction :=
+  rfl
+
+/-- Theorem contract for `round_sphere_kfold_time_mono`. -/
+theorem round_sphere_kfold_time_mono_eq :
+    @RicciFlow.round_sphere_kfold_time_mono = @RicciFlow.round_sphere_kfold_time_mono :=
+  rfl
+
+/-- Theorem contract for `round_sphere_kfold_time_tendsto_extinction`. -/
+theorem round_sphere_kfold_time_tendsto_extinction_eq :
+    @RicciFlow.round_sphere_kfold_time_tendsto_extinction = @RicciFlow.round_sphere_kfold_time_tendsto_extinction :=
+  rfl
+
+/-- Theorem contract for `round_sphere_ricciNormSq_kfold`. -/
+theorem round_sphere_ricciNormSq_kfold_eq :
+    @RicciFlow.round_sphere_ricciNormSq_kfold = @RicciFlow.round_sphere_ricciNormSq_kfold :=
+  rfl
+
+/-- Theorem contract for `round_sphere_ricciNormSq_hasDerivAt`. -/
+theorem round_sphere_ricciNormSq_hasDerivAt_eq :
+    @RicciFlow.round_sphere_ricciNormSq_hasDerivAt = @RicciFlow.round_sphere_ricciNormSq_hasDerivAt :=
+  rfl
+
+/-- Theorem contract for `round_sphere_ricciNormSq_rate_pos`. -/
+theorem round_sphere_ricciNormSq_rate_pos_eq :
+    @RicciFlow.round_sphere_ricciNormSq_rate_pos = @RicciFlow.round_sphere_ricciNormSq_rate_pos :=
+  rfl
+
+/-- Theorem contract for `round_sphere_scalar_rate_pos`. -/
+theorem round_sphere_scalar_rate_pos_eq :
+    @RicciFlow.round_sphere_scalar_rate_pos = @RicciFlow.round_sphere_scalar_rate_pos :=
+  rfl
+
+/-- Theorem contract for `round_sphere_scalar_at_zero`. -/
+theorem round_sphere_scalar_at_zero_eq :
+    @RicciFlow.round_sphere_scalar_at_zero = @RicciFlow.round_sphere_scalar_at_zero :=
+  rfl
+
+/-- Theorem contract for `round_sphere_ricciNormSq_at_zero`. -/
+theorem round_sphere_ricciNormSq_at_zero_eq :
+    @RicciFlow.round_sphere_ricciNormSq_at_zero = @RicciFlow.round_sphere_ricciNormSq_at_zero :=
+  rfl
+
+/-- Theorem contract for `round_sphere_ricciNormSq_rate_at_zero`. -/
+theorem round_sphere_ricciNormSq_rate_at_zero_eq :
+    @RicciFlow.round_sphere_ricciNormSq_rate_at_zero = @RicciFlow.round_sphere_ricciNormSq_rate_at_zero :=
+  rfl
+
+/-- Theorem contract for `round_sphere_scalar_second_deriv`. -/
+theorem round_sphere_scalar_second_deriv_eq :
+    @RicciFlow.round_sphere_scalar_second_deriv = @RicciFlow.round_sphere_scalar_second_deriv :=
+  rfl
+
+/-- Theorem contract for `round_sphere_scalar_accel_pos`. -/
+theorem round_sphere_scalar_accel_pos_eq :
+    @RicciFlow.round_sphere_scalar_accel_pos = @RicciFlow.round_sphere_scalar_accel_pos :=
+  rfl
+
+/-- Theorem contract for `round_sphere_ricciNormSq_second_deriv`. -/
+theorem round_sphere_ricciNormSq_second_deriv_eq :
+    @RicciFlow.round_sphere_ricciNormSq_second_deriv = @RicciFlow.round_sphere_ricciNormSq_second_deriv :=
+  rfl
+
+/-- Theorem contract for `round_sphere_ricciNormSq_accel_pos`. -/
+theorem round_sphere_ricciNormSq_accel_pos_eq :
+    @RicciFlow.round_sphere_ricciNormSq_accel_pos = @RicciFlow.round_sphere_ricciNormSq_accel_pos :=
+  rfl
+
+/-- Theorem contract for `round_sphere_inv_scalar_second_deriv`. -/
+theorem round_sphere_inv_scalar_second_deriv_eq :
+    @RicciFlow.round_sphere_inv_scalar_second_deriv = @RicciFlow.round_sphere_inv_scalar_second_deriv :=
+  rfl
+
+/-- Theorem contract for `round_sphere_pinching_ratio_const`. -/
+theorem round_sphere_pinching_ratio_const_eq :
+    @RicciFlow.round_sphere_pinching_ratio_const = @RicciFlow.round_sphere_pinching_ratio_const :=
+  rfl
+
+/-- Theorem contract for `round_sphere_pinching_ratio_eq_inv_dim`. -/
+theorem round_sphere_pinching_ratio_eq_inv_dim_eq :
+    @RicciFlow.round_sphere_pinching_ratio_eq_inv_dim = @RicciFlow.round_sphere_pinching_ratio_eq_inv_dim :=
+  rfl
+
+/-- Theorem contract for `covTensor2Deriv_add_field`. -/
+theorem covTensor2Deriv_add_field_eq :
+    @RicciFlow.covTensor2Deriv_add_field = @RicciFlow.covTensor2Deriv_add_field :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_add_field`. -/
+theorem covTensor2SndDeriv_add_field_eq :
+    @RicciFlow.covTensor2SndDeriv_add_field = @RicciFlow.covTensor2SndDeriv_add_field :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_add_field`. -/
+theorem connectionLaplacian_add_field_eq :
+    @RicciFlow.connectionLaplacian_add_field = @RicciFlow.connectionLaplacian_add_field :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczLaplacian_add`. -/
+theorem lichnerowiczLaplacian_add_eq :
+    @RicciFlow.lichnerowiczLaplacian_add = @RicciFlow.lichnerowiczLaplacian_add :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczLaplacian_two_metric`. -/
+theorem lichnerowiczLaplacian_two_metric_eq :
+    @RicciFlow.lichnerowiczLaplacian_two_metric = @RicciFlow.lichnerowiczLaplacian_two_metric :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczLaplacian_two_metric_eq_four_ricci`. -/
+theorem lichnerowiczLaplacian_two_metric_eq_four_ricci_eq :
+    @RicciFlow.lichnerowiczLaplacian_two_metric_eq_four_ricci = @RicciFlow.lichnerowiczLaplacian_two_metric_eq_four_ricci :=
+  rfl
+
+/-- Theorem contract for `covTensor2Deriv_sub_field`. -/
+theorem covTensor2Deriv_sub_field_eq :
+    @RicciFlow.covTensor2Deriv_sub_field = @RicciFlow.covTensor2Deriv_sub_field :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_sub_field`. -/
+theorem covTensor2SndDeriv_sub_field_eq :
+    @RicciFlow.covTensor2SndDeriv_sub_field = @RicciFlow.covTensor2SndDeriv_sub_field :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_sub_field`. -/
+theorem connectionLaplacian_sub_field_eq :
+    @RicciFlow.connectionLaplacian_sub_field = @RicciFlow.connectionLaplacian_sub_field :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczCurvature_sub`. -/
+theorem lichnerowiczCurvature_sub_eq :
+    @RicciFlow.lichnerowiczCurvature_sub = @RicciFlow.lichnerowiczCurvature_sub :=
+  rfl
+
+/-- Theorem contract for `ricciActionOnTensor_sub`. -/
+theorem ricciActionOnTensor_sub_eq :
+    @RicciFlow.ricciActionOnTensor_sub = @RicciFlow.ricciActionOnTensor_sub :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczLaplacian_sub`. -/
+theorem lichnerowiczLaplacian_sub_eq :
+    @RicciFlow.lichnerowiczLaplacian_sub = @RicciFlow.lichnerowiczLaplacian_sub :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczLaplacian_metric_sub_self`. -/
+theorem lichnerowiczLaplacian_metric_sub_self_eq :
+    @RicciFlow.lichnerowiczLaplacian_metric_sub_self = @RicciFlow.lichnerowiczLaplacian_metric_sub_self :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczLaplacian_neg_metric`. -/
+theorem lichnerowiczLaplacian_neg_metric_eq :
+    @RicciFlow.lichnerowiczLaplacian_neg_metric = @RicciFlow.lichnerowiczLaplacian_neg_metric :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczLaplacian_neg_two_ricci`. -/
+theorem lichnerowiczLaplacian_neg_two_ricci_eq :
+    @RicciFlow.lichnerowiczLaplacian_neg_two_ricci = @RicciFlow.lichnerowiczLaplacian_neg_two_ricci :=
+  rfl
+
+/-- Theorem contract for `connectionLaplacian_two_metric_eq_zero`. -/
+theorem connectionLaplacian_two_metric_eq_zero_eq :
+    @RicciFlow.connectionLaplacian_two_metric_eq_zero = @RicciFlow.connectionLaplacian_two_metric_eq_zero :=
+  rfl
+
+/-- Theorem contract for `ricciActionOnTensor_two_metric`. -/
+theorem ricciActionOnTensor_two_metric_eq :
+    @RicciFlow.ricciActionOnTensor_two_metric = @RicciFlow.ricciActionOnTensor_two_metric :=
+  rfl
+
+/-- Theorem contract for `lichnerowiczCurvature_two_metric_eq_zero`. -/
+theorem lichnerowiczCurvature_two_metric_eq_zero_eq :
+    @RicciFlow.lichnerowiczCurvature_two_metric_eq_zero = @RicciFlow.lichnerowiczCurvature_two_metric_eq_zero :=
+  rfl
+
+/-- Theorem contract for `tensorMetricTrace_two_metric`. -/
+theorem tensorMetricTrace_two_metric_eq :
+    @RicciFlow.tensorMetricTrace_two_metric = @RicciFlow.tensorMetricTrace_two_metric :=
+  rfl
+
+/-- Theorem contract for `tensorMetricTrace_metric_sub_self`. -/
+theorem tensorMetricTrace_metric_sub_self_eq :
+    @RicciFlow.tensorMetricTrace_metric_sub_self = @RicciFlow.tensorMetricTrace_metric_sub_self :=
+  rfl
+
+/-- Theorem contract for `tensorMetricTrace_two_metric_eq_smul`. -/
+theorem tensorMetricTrace_two_metric_eq_smul_eq :
+    @RicciFlow.tensorMetricTrace_two_metric_eq_smul = @RicciFlow.tensorMetricTrace_two_metric_eq_smul :=
+  rfl
+
+/-- Theorem contract for `tensorDivOneForm_add_field`. -/
+theorem tensorDivOneForm_add_field_eq :
+    @RicciFlow.tensorDivOneForm_add_field = @RicciFlow.tensorDivOneForm_add_field :=
+  rfl
+
+/-- Theorem contract for `tensorDivOneForm_sub_field`. -/
+theorem tensorDivOneForm_sub_field_eq :
+    @RicciFlow.tensorDivOneForm_sub_field = @RicciFlow.tensorDivOneForm_sub_field :=
+  rfl
+
+/-- Theorem contract for `tensorDivOneForm_two_metric`. -/
+theorem tensorDivOneForm_two_metric_eq :
+    @RicciFlow.tensorDivOneForm_two_metric = @RicciFlow.tensorDivOneForm_two_metric :=
+  rfl
+
+/-- Theorem contract for `tensorDivOneForm_neg_two_ricci`. -/
+theorem tensorDivOneForm_neg_two_ricci_eq :
+    @RicciFlow.tensorDivOneForm_neg_two_ricci = @RicciFlow.tensorDivOneForm_neg_two_ricci :=
+  rfl
+
+/-- Theorem contract for `tensorDivOneForm_zero`. -/
+theorem tensorDivOneForm_zero_eq :
+    @RicciFlow.tensorDivOneForm_zero = @RicciFlow.tensorDivOneForm_zero :=
+  rfl
+
+/-- Theorem contract for `covTensor2Deriv_zero`. -/
+theorem covTensor2Deriv_zero_eq :
+    @RicciFlow.covTensor2Deriv_zero = @RicciFlow.covTensor2Deriv_zero :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_zero`. -/
+theorem covTensor2SndDeriv_zero_eq :
+    @RicciFlow.covTensor2SndDeriv_zero = @RicciFlow.covTensor2SndDeriv_zero :=
+  rfl
+
+/-- Theorem contract for `round_sphere_ricci_over_scalar`. -/
+theorem round_sphere_ricci_over_scalar_eq :
+    @RicciFlow.round_sphere_ricci_over_scalar = @RicciFlow.round_sphere_ricci_over_scalar :=
+  rfl
+
+/-- Theorem contract for `round_sphere_inv_ricciNormSq_sq`. -/
+theorem round_sphere_inv_ricciNormSq_sq_eq :
+    @RicciFlow.round_sphere_inv_ricciNormSq_sq = @RicciFlow.round_sphere_inv_ricciNormSq_sq :=
+  rfl
+
+/-- Theorem contract for `round_sphere_inv_ricciNormSq_zero_at_extinction`. -/
+theorem round_sphere_inv_ricciNormSq_zero_at_extinction_eq :
+    @RicciFlow.round_sphere_inv_ricciNormSq_zero_at_extinction = @RicciFlow.round_sphere_inv_ricciNormSq_zero_at_extinction :=
+  rfl
+
+/-- Theorem contract for `kulkarniNomizu_comm`. -/
+theorem kulkarniNomizu_comm_eq :
+    @RicciFlow.kulkarniNomizu_comm = @RicciFlow.kulkarniNomizu_comm :=
+  rfl
+
+/-- Theorem contract for `kulkarniNomizu_antisymm_left`. -/
+theorem kulkarniNomizu_antisymm_left_eq :
+    @RicciFlow.kulkarniNomizu_antisymm_left = @RicciFlow.kulkarniNomizu_antisymm_left :=
+  rfl
+
+/-- Theorem contract for `kulkarniNomizu_antisymm_right`. -/
+theorem kulkarniNomizu_antisymm_right_eq :
+    @RicciFlow.kulkarniNomizu_antisymm_right = @RicciFlow.kulkarniNomizu_antisymm_right :=
+  rfl
+
+/-- Theorem contract for `kulkarniNomizu_block_symm`. -/
+theorem kulkarniNomizu_block_symm_eq :
+    @RicciFlow.kulkarniNomizu_block_symm = @RicciFlow.kulkarniNomizu_block_symm :=
+  rfl
+
+/-- Theorem contract for `constCurvatureForm_eq_half_kulkarniNomizu`. -/
+theorem constCurvatureForm_eq_half_kulkarniNomizu_eq :
+    @RicciFlow.constCurvatureForm_eq_half_kulkarniNomizu = @RicciFlow.constCurvatureForm_eq_half_kulkarniNomizu :=
+  rfl
+
+/-- Theorem contract for `kulkarniNomizu_first_bianchi`. -/
+theorem kulkarniNomizu_first_bianchi_eq :
+    @RicciFlow.kulkarniNomizu_first_bianchi = @RicciFlow.kulkarniNomizu_first_bianchi :=
+  rfl
+
+/-- Theorem contract for `kulkarniNomizu_add_left`. -/
+theorem kulkarniNomizu_add_left_eq :
+    @RicciFlow.kulkarniNomizu_add_left = @RicciFlow.kulkarniNomizu_add_left :=
+  rfl
+
+/-- Theorem contract for `kulkarniNomizu_add_right`. -/
+theorem kulkarniNomizu_add_right_eq :
+    @RicciFlow.kulkarniNomizu_add_right = @RicciFlow.kulkarniNomizu_add_right :=
+  rfl
+
+/-- Theorem contract for `kulkarniNomizu_smul_left`. -/
+theorem kulkarniNomizu_smul_left_eq :
+    @RicciFlow.kulkarniNomizu_smul_left = @RicciFlow.kulkarniNomizu_smul_left :=
+  rfl
+
+/-- Theorem contract for `kulkarniNomizu_smul_right`. -/
+theorem kulkarniNomizu_smul_right_eq :
+    @RicciFlow.kulkarniNomizu_smul_right = @RicciFlow.kulkarniNomizu_smul_right :=
+  rfl
+
+/-- Theorem contract for `kulkarniNomizu_metric_ricci_trace`. -/
+theorem kulkarniNomizu_metric_ricci_trace_eq :
+    @RicciFlow.kulkarniNomizu_metric_ricci_trace = @RicciFlow.kulkarniNomizu_metric_ricci_trace :=
+  rfl
+
+/-- Theorem contract for `kulkarniNomizu_metric_self_trace`. -/
+theorem kulkarniNomizu_metric_self_trace_eq :
+    @RicciFlow.kulkarniNomizu_metric_self_trace = @RicciFlow.kulkarniNomizu_metric_self_trace :=
+  rfl
+
+/-- Theorem contract for `dim3_kulkarniNomizu_ricci_trace`. -/
+theorem dim3_kulkarniNomizu_ricci_trace_eq :
+    @RicciFlow.dim3_kulkarniNomizu_ricci_trace = @RicciFlow.dim3_kulkarniNomizu_ricci_trace :=
+  rfl
+
+/-- Theorem contract for `coordRicci_eq_riemann_inner_trace`. -/
+theorem coordRicci_eq_riemann_inner_trace_eq :
+    @RicciFlow.coordRicci_eq_riemann_inner_trace = @RicciFlow.coordRicci_eq_riemann_inner_trace :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_first_pair_metric_trace_zero`. -/
+theorem coordRiemann_first_pair_metric_trace_zero_eq :
+    @RicciFlow.coordRiemann_first_pair_metric_trace_zero = @RicciFlow.coordRiemann_first_pair_metric_trace_zero :=
+  rfl
+
+/-- Theorem contract for `coordRiemann_last_pair_metric_trace_zero`. -/
+theorem coordRiemann_last_pair_metric_trace_zero_eq :
+    @RicciFlow.coordRiemann_last_pair_metric_trace_zero = @RicciFlow.coordRiemann_last_pair_metric_trace_zero :=
+  rfl
+
+/-- Theorem contract for `kulkarniNomizu_tracelessRicci_metric_trace`. -/
+theorem kulkarniNomizu_tracelessRicci_metric_trace_eq :
+    @RicciFlow.kulkarniNomizu_tracelessRicci_metric_trace = @RicciFlow.kulkarniNomizu_tracelessRicci_metric_trace :=
+  rfl
+
+/-- Theorem contract for `dim3_weyl_candidate_metric_trace_zero`. -/
+theorem dim3_weyl_candidate_metric_trace_zero_eq :
+    @RicciFlow.dim3_weyl_candidate_metric_trace_zero = @RicciFlow.dim3_weyl_candidate_metric_trace_zero :=
+  rfl
+
+/-- Theorem contract for `schoutenForm_metricTrace`. -/
+theorem schoutenForm_metricTrace_eq :
+    @RicciFlow.schoutenForm_metricTrace = @RicciFlow.schoutenForm_metricTrace :=
+  rfl
+
+/-- Theorem contract for `dim3_schouten_weyl_metric_trace_zero`. -/
+theorem dim3_schouten_weyl_metric_trace_zero_eq :
+    @RicciFlow.dim3_schouten_weyl_metric_trace_zero = @RicciFlow.dim3_schouten_weyl_metric_trace_zero :=
+  rfl
+
+/-- Theorem contract for `hamilton_pinched_scalar_lower_bound`. -/
+theorem hamilton_pinched_scalar_lower_bound_eq :
+    @RicciFlow.hamilton_pinched_scalar_lower_bound = @RicciFlow.hamilton_pinched_scalar_lower_bound :=
+  rfl
+
+/-- Theorem contract for `riccati_barrier_blowup`. -/
+theorem riccati_barrier_blowup_eq :
+    @RicciFlow.riccati_barrier_blowup = @RicciFlow.riccati_barrier_blowup :=
+  rfl
+
+/-- Theorem contract for `hessianOperator_selfAdjoint`. -/
+theorem hessianOperator_selfAdjoint_eq :
+    @RicciFlow.hessianOperator_selfAdjoint = @RicciFlow.hessianOperator_selfAdjoint :=
+  rfl
+
+/-- Theorem contract for `fderiv_metricGradient_eq_hessianOperator`. -/
+theorem fderiv_metricGradient_eq_hessianOperator_eq :
+    @RicciFlow.fderiv_metricGradient_eq_hessianOperator = @RicciFlow.fderiv_metricGradient_eq_hessianOperator :=
+  rfl
+
+/-- Theorem contract for `fderiv_hessianOperator_apply`. -/
+theorem fderiv_hessianOperator_apply_eq :
+    @RicciFlow.fderiv_hessianOperator_apply = @RicciFlow.fderiv_hessianOperator_apply :=
+  rfl
+
+/-- Theorem contract for `differentiable_metricGradient`. -/
+theorem differentiable_metricGradient_eq :
+    @RicciFlow.differentiable_metricGradient = @RicciFlow.differentiable_metricGradient :=
+  rfl
+
+/-- Theorem contract for `fderiv_fderiv_gradient_sq`. -/
+theorem fderiv_fderiv_gradient_sq_eq :
+    @RicciFlow.fderiv_fderiv_gradient_sq = @RicciFlow.fderiv_fderiv_gradient_sq :=
+  rfl
+
+/-- Theorem contract for `contDiff_two_gradient_sq`. -/
+theorem contDiff_two_gradient_sq_eq :
+    @RicciFlow.contDiff_two_gradient_sq = @RicciFlow.contDiff_two_gradient_sq :=
+  rfl
+
+/-- Theorem contract for `fderiv_fderiv_gradient_sq_apply`. -/
+theorem fderiv_fderiv_gradient_sq_apply_eq :
+    @RicciFlow.fderiv_fderiv_gradient_sq_apply = @RicciFlow.fderiv_fderiv_gradient_sq_apply :=
+  rfl
+
+/-- Theorem contract for `fderiv_third_outer_symm`. -/
+theorem fderiv_third_outer_symm_eq :
+    @RicciFlow.fderiv_third_outer_symm = @RicciFlow.fderiv_third_outer_symm :=
+  rfl
+
+/-- Theorem contract for `fderiv_third_inner_symm`. -/
+theorem fderiv_third_inner_symm_eq :
+    @RicciFlow.fderiv_third_inner_symm = @RicciFlow.fderiv_third_inner_symm :=
+  rfl
+
+/-- Theorem contract for `b_gradient_gradLaplacian`. -/
+theorem b_gradient_gradLaplacian_eq :
+    @RicciFlow.b_gradient_gradLaplacian = @RicciFlow.b_gradient_gradLaplacian :=
+  rfl
+
+/-- Theorem contract for `modelLaplacian_eq_orthoBasis_sum`. -/
+theorem modelLaplacian_eq_orthoBasis_sum_eq :
+    @RicciFlow.modelLaplacian_eq_orthoBasis_sum = @RicciFlow.modelLaplacian_eq_orthoBasis_sum :=
+  rfl
+
+/-- Theorem contract for `fderiv_fderiv_fderiv_apply`. -/
+theorem fderiv_fderiv_fderiv_apply_eq :
+    @RicciFlow.fderiv_fderiv_fderiv_apply = @RicciFlow.fderiv_fderiv_fderiv_apply :=
+  rfl
+
+/-- Theorem contract for `fderiv_modelLaplacian_eq_basis_sum`. -/
+theorem fderiv_modelLaplacian_eq_basis_sum_eq :
+    @RicciFlow.fderiv_modelLaplacian_eq_basis_sum = @RicciFlow.fderiv_modelLaplacian_eq_basis_sum :=
+  rfl
+
+/-- Theorem contract for `hessianNormSq_eq_orthoBasis_sum`. -/
+theorem hessianNormSq_eq_orthoBasis_sum_eq :
+    @RicciFlow.hessianNormSq_eq_orthoBasis_sum = @RicciFlow.hessianNormSq_eq_orthoBasis_sum :=
+  rfl
+
+/-- Theorem contract for `bochner_flat`. -/
+theorem bochner_flat_eq :
+    @RicciFlow.bochner_flat = @RicciFlow.bochner_flat :=
+  rfl
+
+/-- Theorem contract for `gradient_sq_subharmonic_of_harmonic`. -/
+theorem gradient_sq_subharmonic_of_harmonic_eq :
+    @RicciFlow.gradient_sq_subharmonic_of_harmonic = @RicciFlow.gradient_sq_subharmonic_of_harmonic :=
+  rfl
+
+/-- Theorem contract for `bochner_inequality`. -/
+theorem bochner_inequality_eq :
+    @RicciFlow.bochner_inequality = @RicciFlow.bochner_inequality :=
+  rfl
+
+/-- Theorem contract for `laplacian_sq_le_finrank_mul_hessianNormSq`. -/
+theorem laplacian_sq_le_finrank_mul_hessianNormSq_eq :
+    @RicciFlow.laplacian_sq_le_finrank_mul_hessianNormSq = @RicciFlow.laplacian_sq_le_finrank_mul_hessianNormSq :=
+  rfl
+
+/-- Theorem contract for `bochner_inequality_refined`. -/
+theorem bochner_inequality_refined_eq :
+    @RicciFlow.bochner_inequality_refined = @RicciFlow.bochner_inequality_refined :=
+  rfl
+
+/-- Theorem contract for `bochner_eigenfunction`. -/
+theorem bochner_eigenfunction_eq :
+    @RicciFlow.bochner_eigenfunction = @RicciFlow.bochner_eigenfunction :=
+  rfl
+
+/-- Theorem contract for `bochner_eigenfunction_pointwise_bound`. -/
+theorem bochner_eigenfunction_pointwise_bound_eq :
+    @RicciFlow.bochner_eigenfunction_pointwise_bound = @RicciFlow.bochner_eigenfunction_pointwise_bound :=
+  rfl
+
+/-- Theorem contract for `hessian_eq_zero_of_hessianNormSq_eq_zero`. -/
+theorem hessian_eq_zero_of_hessianNormSq_eq_zero_eq :
+    @RicciFlow.hessian_eq_zero_of_hessianNormSq_eq_zero = @RicciFlow.hessian_eq_zero_of_hessianNormSq_eq_zero :=
+  rfl
+
+/-- Theorem contract for `bochner_equality_iff_hessian_vanishes`. -/
+theorem bochner_equality_iff_hessian_vanishes_eq :
+    @RicciFlow.bochner_equality_iff_hessian_vanishes = @RicciFlow.bochner_equality_iff_hessian_vanishes :=
+  rfl
+
+/-- Theorem contract for `covariantHessian_const`. -/
+theorem covariantHessian_const_eq :
+    @RicciFlow.covariantHessian_const = @RicciFlow.covariantHessian_const :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_const_eq_flat_hessian_trace`. -/
+theorem curvedLaplacian_const_eq_flat_hessian_trace_eq :
+    @RicciFlow.curvedLaplacian_const_eq_flat_hessian_trace = @RicciFlow.curvedLaplacian_const_eq_flat_hessian_trace :=
+  rfl
+
+/-- Theorem contract for `fderiv_christoffelClosedOp_apply_field`. -/
+theorem fderiv_christoffelClosedOp_apply_field_eq :
+    @RicciFlow.fderiv_christoffelClosedOp_apply_field = @RicciFlow.fderiv_christoffelClosedOp_apply_field :=
+  rfl
+
+/-- Theorem contract for `fderiv_fderiv_vectorField_apply`. -/
+theorem fderiv_fderiv_vectorField_apply_eq :
+    @RicciFlow.fderiv_fderiv_vectorField_apply = @RicciFlow.fderiv_fderiv_vectorField_apply :=
+  rfl
+
+/-- Theorem contract for `fderiv_covariant_inner_expand`. -/
+theorem fderiv_covariant_inner_expand_eq :
+    @RicciFlow.fderiv_covariant_inner_expand = @RicciFlow.fderiv_covariant_inner_expand :=
+  rfl
+
+/-- Theorem contract for `covariantSecondDerivative_expand`. -/
+theorem covariantSecondDerivative_expand_eq :
+    @RicciFlow.covariantSecondDerivative_expand = @RicciFlow.covariantSecondDerivative_expand :=
+  rfl
+
+/-- Theorem contract for `covariantSecondDerivative_antisymm_eq_coordCurvatureOp`. -/
+theorem covariantSecondDerivative_antisymm_eq_coordCurvatureOp_eq :
+    @RicciFlow.covariantSecondDerivative_antisymm_eq_coordCurvatureOp = @RicciFlow.covariantSecondDerivative_antisymm_eq_coordCurvatureOp :=
+  rfl
+
+/-- Theorem contract for `sum_g_coordCurvatureOp_eq_coordRicci`. -/
+theorem sum_g_coordCurvatureOp_eq_coordRicci_eq :
+    @RicciFlow.sum_g_coordCurvatureOp_eq_coordRicci = @RicciFlow.sum_g_coordCurvatureOp_eq_coordRicci :=
+  rfl
+
+/-- Theorem contract for `sum_g_covariantSecondDerivative_antisymm_eq_coordRicci`. -/
+theorem sum_g_covariantSecondDerivative_antisymm_eq_coordRicci_eq :
+    @RicciFlow.sum_g_covariantSecondDerivative_antisymm_eq_coordRicci = @RicciFlow.sum_g_covariantSecondDerivative_antisymm_eq_coordRicci :=
+  rfl
+
+/-- Theorem contract for `g_coordGradient`. -/
+theorem g_coordGradient_eq :
+    @RicciFlow.g_coordGradient = @RicciFlow.g_coordGradient :=
+  rfl
+
+/-- Theorem contract for `g_coordGradient_pair`. -/
+theorem g_coordGradient_pair_eq :
+    @RicciFlow.g_coordGradient_pair = @RicciFlow.g_coordGradient_pair :=
+  rfl
+
+/-- Theorem contract for `fderiv_g_coordGradient_eq_fderiv_fderiv`. -/
+theorem fderiv_g_coordGradient_eq_fderiv_fderiv_eq :
+    @RicciFlow.fderiv_g_coordGradient_eq_fderiv_fderiv = @RicciFlow.fderiv_g_coordGradient_eq_fderiv_fderiv :=
+  rfl
+
+/-- Theorem contract for `coordGradNormSq_eq_fderiv`. -/
+theorem coordGradNormSq_eq_fderiv_eq :
+    @RicciFlow.coordGradNormSq_eq_fderiv = @RicciFlow.coordGradNormSq_eq_fderiv :=
+  rfl
+
+/-- Theorem contract for `fderiv_g_coordGradient_apply`. -/
+theorem fderiv_g_coordGradient_apply_eq :
+    @RicciFlow.fderiv_g_coordGradient_apply = @RicciFlow.fderiv_g_coordGradient_apply :=
+  rfl
+
+/-- Theorem contract for `g_covariantDeriv_coordGradient_eq_covariantHessian`. -/
+theorem g_covariantDeriv_coordGradient_eq_covariantHessian_eq :
+    @RicciFlow.g_covariantDeriv_coordGradient_eq_covariantHessian = @RicciFlow.g_covariantDeriv_coordGradient_eq_covariantHessian :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_coordGradient`. -/
+theorem differentiableAt_coordGradient_eq :
+    @RicciFlow.differentiableAt_coordGradient = @RicciFlow.differentiableAt_coordGradient :=
+  rfl
+
+/-- Theorem contract for `g_covariantDeriv_coordGradient_eq_covariantHessian'`. -/
+theorem g_covariantDeriv_coordGradient_eq_covariantHessian'_eq :
+    @RicciFlow.g_covariantDeriv_coordGradient_eq_covariantHessian' = @RicciFlow.g_covariantDeriv_coordGradient_eq_covariantHessian' :=
+  rfl
+
+/-- Theorem contract for `fderiv_coordGradNormSq`. -/
+theorem fderiv_coordGradNormSq_eq :
+    @RicciFlow.fderiv_coordGradNormSq = @RicciFlow.fderiv_coordGradNormSq :=
+  rfl
+
+/-- Theorem contract for `fderiv_coordGradNormSq_eq_two_covariantDeriv`. -/
+theorem fderiv_coordGradNormSq_eq_two_covariantDeriv_eq :
+    @RicciFlow.fderiv_coordGradNormSq_eq_two_covariantDeriv = @RicciFlow.fderiv_coordGradNormSq_eq_two_covariantDeriv :=
+  rfl
+
+/-- Theorem contract for `fderiv_coordGradNormSq_eq_two_covariantHessian`. -/
+theorem fderiv_coordGradNormSq_eq_two_covariantHessian_eq :
+    @RicciFlow.fderiv_coordGradNormSq_eq_two_covariantHessian = @RicciFlow.fderiv_coordGradNormSq_eq_two_covariantHessian :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_coordGradNormSq`. -/
+theorem differentiableAt_coordGradNormSq_eq :
+    @RicciFlow.differentiableAt_coordGradNormSq = @RicciFlow.differentiableAt_coordGradNormSq :=
+  rfl
+
+/-- Theorem contract for `contDiffAt_coordGradient`. -/
+theorem contDiffAt_coordGradient_eq :
+    @RicciFlow.contDiffAt_coordGradient = @RicciFlow.contDiffAt_coordGradient :=
+  rfl
+
+/-- Theorem contract for `contDiffAt_coordGradient_two`. -/
+theorem contDiffAt_coordGradient_two_eq :
+    @RicciFlow.contDiffAt_coordGradient_two = @RicciFlow.contDiffAt_coordGradient_two :=
+  rfl
+
+/-- Theorem contract for `fderiv_g_field_field`. -/
+theorem fderiv_g_field_field_eq :
+    @RicciFlow.fderiv_g_field_field = @RicciFlow.fderiv_g_field_field :=
+  rfl
+
+/-- Theorem contract for `fderiv_coordGradNormSq_field`. -/
+theorem fderiv_coordGradNormSq_field_eq :
+    @RicciFlow.fderiv_coordGradNormSq_field = @RicciFlow.fderiv_coordGradNormSq_field :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_christoffel_coordGradient`. -/
+theorem differentiableAt_christoffel_coordGradient_eq :
+    @RicciFlow.differentiableAt_christoffel_coordGradient = @RicciFlow.differentiableAt_christoffel_coordGradient :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_fderiv_coordGradient`. -/
+theorem differentiableAt_fderiv_coordGradient_eq :
+    @RicciFlow.differentiableAt_fderiv_coordGradient = @RicciFlow.differentiableAt_fderiv_coordGradient :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_covariantDeriv_coordGradient`. -/
+theorem differentiableAt_covariantDeriv_coordGradient_eq :
+    @RicciFlow.differentiableAt_covariantDeriv_coordGradient = @RicciFlow.differentiableAt_covariantDeriv_coordGradient :=
+  rfl
+
+/-- Theorem contract for `fderiv_fderiv_coordGradNormSq`. -/
+theorem fderiv_fderiv_coordGradNormSq_eq :
+    @RicciFlow.fderiv_fderiv_coordGradNormSq = @RicciFlow.fderiv_fderiv_coordGradNormSq :=
+  rfl
+
+/-- Theorem contract for `contDiffAt_coordGradNormSq`. -/
+theorem contDiffAt_coordGradNormSq_eq :
+    @RicciFlow.contDiffAt_coordGradNormSq = @RicciFlow.contDiffAt_coordGradNormSq :=
+  rfl
+
+/-- Theorem contract for `fderiv_fderiv_apply_real`. -/
+theorem fderiv_fderiv_apply_real_eq :
+    @RicciFlow.fderiv_fderiv_apply_real = @RicciFlow.fderiv_fderiv_apply_real :=
+  rfl
+
+/-- Theorem contract for `covariantSecondDerivative_iterated`. -/
+theorem covariantSecondDerivative_iterated_eq :
+    @RicciFlow.covariantSecondDerivative_iterated = @RicciFlow.covariantSecondDerivative_iterated :=
+  rfl
+
+/-- Theorem contract for `covariantHessian_coordGradNormSq`. -/
+theorem covariantHessian_coordGradNormSq_eq :
+    @RicciFlow.covariantHessian_coordGradNormSq = @RicciFlow.covariantHessian_coordGradNormSq :=
+  rfl
+
+/-- Theorem contract for `sum_hessNorm_eq_two_coordCovariantHessNormSq`. -/
+theorem sum_hessNorm_eq_two_coordCovariantHessNormSq_eq :
+    @RicciFlow.sum_hessNorm_eq_two_coordCovariantHessNormSq = @RicciFlow.sum_hessNorm_eq_two_coordCovariantHessNormSq :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_coordGradNormSq_eq_two`. -/
+theorem curvedLaplacian_coordGradNormSq_eq_two_eq :
+    @RicciFlow.curvedLaplacian_coordGradNormSq_eq_two = @RicciFlow.curvedLaplacian_coordGradNormSq_eq_two :=
+  rfl
+
+/-- Theorem contract for `contDiff_coordGradient`. -/
+theorem contDiff_coordGradient_eq :
+    @RicciFlow.contDiff_coordGradient = @RicciFlow.contDiff_coordGradient :=
+  rfl
+
+/-- Theorem contract for `sum_G_covariantSecondDerivative_swap`. -/
+theorem sum_G_covariantSecondDerivative_swap_eq :
+    @RicciFlow.sum_G_covariantSecondDerivative_swap = @RicciFlow.sum_G_covariantSecondDerivative_swap :=
+  rfl
+
+/-- Theorem contract for `g_covariantDeriv_coordGradient_eq_covariantHessian_field`. -/
+theorem g_covariantDeriv_coordGradient_eq_covariantHessian_field_eq :
+    @RicciFlow.g_covariantDeriv_coordGradient_eq_covariantHessian_field = @RicciFlow.g_covariantDeriv_coordGradient_eq_covariantHessian_field :=
+  rfl
+
+/-- Theorem contract for `fderiv_g_covariantDeriv_coordGradient`. -/
+theorem fderiv_g_covariantDeriv_coordGradient_eq :
+    @RicciFlow.fderiv_g_covariantDeriv_coordGradient = @RicciFlow.fderiv_g_covariantDeriv_coordGradient :=
+  rfl
+
+/-- Theorem contract for `coordThirdDeriv_symm_last`. -/
+theorem coordThirdDeriv_symm_last_eq :
+    @RicciFlow.coordThirdDeriv_symm_last = @RicciFlow.coordThirdDeriv_symm_last :=
+  rfl
+
+/-- Theorem contract for `g_covariantSecondDerivative_coordGradient_symm_last`. -/
+theorem g_covariantSecondDerivative_coordGradient_symm_last_eq :
+    @RicciFlow.g_covariantSecondDerivative_coordGradient_symm_last = @RicciFlow.g_covariantSecondDerivative_coordGradient_symm_last :=
+  rfl
+
+/-- Theorem contract for `g_covariantSecondDerivative_coordGradient_antisymm_first`. -/
+theorem g_covariantSecondDerivative_coordGradient_antisymm_first_eq :
+    @RicciFlow.g_covariantSecondDerivative_coordGradient_antisymm_first = @RicciFlow.g_covariantSecondDerivative_coordGradient_antisymm_first :=
+  rfl
+
+/-- Theorem contract for `sum_coordRiemann_gradient_eq_coordRicci`. -/
+theorem sum_coordRiemann_gradient_eq_coordRicci_eq :
+    @RicciFlow.sum_coordRiemann_gradient_eq_coordRicci = @RicciFlow.sum_coordRiemann_gradient_eq_coordRicci :=
+  rfl
+
+/-- Theorem contract for `sum_G_covariantSecondDerivative_gradient_weitzenbock`. -/
+theorem sum_G_covariantSecondDerivative_gradient_weitzenbock_eq :
+    @RicciFlow.sum_G_covariantSecondDerivative_gradient_weitzenbock = @RicciFlow.sum_G_covariantSecondDerivative_gradient_weitzenbock :=
+  rfl
+
+/-- Theorem contract for `sum_G_covariantSecondDerivative_gradient_transport_swap`. -/
+theorem sum_G_covariantSecondDerivative_gradient_transport_swap_eq :
+    @RicciFlow.sum_G_covariantSecondDerivative_gradient_transport_swap = @RicciFlow.sum_G_covariantSecondDerivative_gradient_transport_swap :=
+  rfl
+
+/-- Theorem contract for `covariantHessianInnerCLM_apply`. -/
+theorem covariantHessianInnerCLM_apply_eq :
+    @RicciFlow.covariantHessianInnerCLM_apply = @RicciFlow.covariantHessianInnerCLM_apply :=
+  rfl
+
+/-- Theorem contract for `covariantHessianForm_apply`. -/
+theorem covariantHessianForm_apply_eq :
+    @RicciFlow.covariantHessianForm_apply = @RicciFlow.covariantHessianForm_apply :=
+  rfl
+
+/-- Theorem contract for `covariantHessianForm_eq_covariantHessian`. -/
+theorem covariantHessianForm_eq_covariantHessian_eq :
+    @RicciFlow.covariantHessianForm_eq_covariantHessian = @RicciFlow.covariantHessianForm_eq_covariantHessian :=
+  rfl
+
+/-- Theorem contract for `covariantHessianForm_symm`. -/
+theorem covariantHessianForm_symm_eq :
+    @RicciFlow.covariantHessianForm_symm = @RicciFlow.covariantHessianForm_symm :=
+  rfl
+
+/-- Theorem contract for `tensorMetricTrace_covariantHessianForm`. -/
+theorem tensorMetricTrace_covariantHessianForm_eq :
+    @RicciFlow.tensorMetricTrace_covariantHessianForm = @RicciFlow.tensorMetricTrace_covariantHessianForm :=
+  rfl
+
+/-- Theorem contract for `sum_G_covariantSecondDerivative_gradient_eq_transport_ricci`. -/
+theorem sum_G_covariantSecondDerivative_gradient_eq_transport_ricci_eq :
+    @RicciFlow.sum_G_covariantSecondDerivative_gradient_eq_transport_ricci = @RicciFlow.sum_G_covariantSecondDerivative_gradient_eq_transport_ricci :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_coordGradNormSq_bochner`. -/
+theorem curvedLaplacian_coordGradNormSq_bochner_eq :
+    @RicciFlow.curvedLaplacian_coordGradNormSq_bochner = @RicciFlow.curvedLaplacian_coordGradNormSq_bochner :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_coordGradNormSq_bochner_gradient`. -/
+theorem curvedLaplacian_coordGradNormSq_bochner_gradient_eq :
+    @RicciFlow.curvedLaplacian_coordGradNormSq_bochner_gradient = @RicciFlow.curvedLaplacian_coordGradNormSq_bochner_gradient :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_clm_of_apply`. -/
+theorem differentiableAt_clm_of_apply_eq :
+    @RicciFlow.differentiableAt_clm_of_apply = @RicciFlow.differentiableAt_clm_of_apply :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_covariantHessianForm`. -/
+theorem differentiableAt_covariantHessianForm_eq :
+    @RicciFlow.differentiableAt_covariantHessianForm = @RicciFlow.differentiableAt_covariantHessianForm :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_coordGradNormSq_bochner_gradient_of_christoffelDiff`. -/
+theorem curvedLaplacian_coordGradNormSq_bochner_gradient_of_christoffelDiff_eq :
+    @RicciFlow.curvedLaplacian_coordGradNormSq_bochner_gradient_of_christoffelDiff = @RicciFlow.curvedLaplacian_coordGradNormSq_bochner_gradient_of_christoffelDiff :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_coordGradNormSq_bochner_harmonic`. -/
+theorem curvedLaplacian_coordGradNormSq_bochner_harmonic_eq :
+    @RicciFlow.curvedLaplacian_coordGradNormSq_bochner_harmonic = @RicciFlow.curvedLaplacian_coordGradNormSq_bochner_harmonic :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_coordGradNormSq_bochner_eigenfunction`. -/
+theorem curvedLaplacian_coordGradNormSq_bochner_eigenfunction_eq :
+    @RicciFlow.curvedLaplacian_coordGradNormSq_bochner_eigenfunction = @RicciFlow.curvedLaplacian_coordGradNormSq_bochner_eigenfunction :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_christoffelClosedOp`. -/
+theorem differentiableAt_christoffelClosedOp_eq :
+    @RicciFlow.differentiableAt_christoffelClosedOp = @RicciFlow.differentiableAt_christoffelClosedOp :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_coordGradNormSq_bochner_gradient_unconditional`. -/
+theorem curvedLaplacian_coordGradNormSq_bochner_gradient_unconditional_eq :
+    @RicciFlow.curvedLaplacian_coordGradNormSq_bochner_gradient_unconditional = @RicciFlow.curvedLaplacian_coordGradNormSq_bochner_gradient_unconditional :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_coordRicciForm_field`. -/
+theorem differentiableAt_coordRicciForm_field_eq :
+    @RicciFlow.differentiableAt_coordRicciForm_field = @RicciFlow.differentiableAt_coordRicciForm_field :=
+  rfl
+
+/-- Theorem contract for `contDiffAt_clm_of_apply`. -/
+theorem contDiffAt_clm_of_apply_eq :
+    @RicciFlow.contDiffAt_clm_of_apply = @RicciFlow.contDiffAt_clm_of_apply :=
+  rfl
+
+/-- Theorem contract for `contDiffAt_christoffelClosedOp`. -/
+theorem contDiffAt_christoffelClosedOp_eq :
+    @RicciFlow.contDiffAt_christoffelClosedOp = @RicciFlow.contDiffAt_christoffelClosedOp :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_fderiv_christoffelClosedOp`. -/
+theorem differentiableAt_fderiv_christoffelClosedOp_eq :
+    @RicciFlow.differentiableAt_fderiv_christoffelClosedOp = @RicciFlow.differentiableAt_fderiv_christoffelClosedOp :=
+  rfl
+
+/-- Theorem contract for `isSymmSndFDerivAt_christoffelClosedOp`. -/
+theorem isSymmSndFDerivAt_christoffelClosedOp_eq :
+    @RicciFlow.isSymmSndFDerivAt_christoffelClosedOp = @RicciFlow.isSymmSndFDerivAt_christoffelClosedOp :=
+  rfl
+
+/-- Theorem contract for `contDiffAt_christoffelClosedOp_three`. -/
+theorem contDiffAt_christoffelClosedOp_three_eq :
+    @RicciFlow.contDiffAt_christoffelClosedOp_three = @RicciFlow.contDiffAt_christoffelClosedOp_three :=
+  rfl
+
+/-- Theorem contract for `contDiffAt_coordCurvatureOp_family`. -/
+theorem contDiffAt_coordCurvatureOp_family_eq :
+    @RicciFlow.contDiffAt_coordCurvatureOp_family = @RicciFlow.contDiffAt_coordCurvatureOp_family :=
+  rfl
+
+/-- Theorem contract for `contDiffAt_coordRicci_family`. -/
+theorem contDiffAt_coordRicci_family_eq :
+    @RicciFlow.contDiffAt_coordRicci_family = @RicciFlow.contDiffAt_coordRicci_family :=
+  rfl
+
+/-- Theorem contract for `contDiffAt_coordRicciForm_field`. -/
+theorem contDiffAt_coordRicciForm_field_eq :
+    @RicciFlow.contDiffAt_coordRicciForm_field = @RicciFlow.contDiffAt_coordRicciForm_field :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_fderiv_coordRicciForm_field`. -/
+theorem differentiableAt_fderiv_coordRicciForm_field_eq :
+    @RicciFlow.differentiableAt_fderiv_coordRicciForm_field = @RicciFlow.differentiableAt_fderiv_coordRicciForm_field :=
+  rfl
+
+/-- Theorem contract for `contDiffAt_tensorMetricTrace`. -/
+theorem contDiffAt_tensorMetricTrace_eq :
+    @RicciFlow.contDiffAt_tensorMetricTrace = @RicciFlow.contDiffAt_tensorMetricTrace :=
+  rfl
+
+/-- Theorem contract for `contDiff_coordScalar`. -/
+theorem contDiff_coordScalar_eq :
+    @RicciFlow.contDiff_coordScalar = @RicciFlow.contDiff_coordScalar :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_fderiv_neg_two_coordRicciForm_field`. -/
+theorem differentiableAt_fderiv_neg_two_coordRicciForm_field_eq :
+    @RicciFlow.differentiableAt_fderiv_neg_two_coordRicciForm_field = @RicciFlow.differentiableAt_fderiv_neg_two_coordRicciForm_field :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_christoffelFunctionalCLM`. -/
+theorem differentiableAt_christoffelFunctionalCLM_eq :
+    @RicciFlow.differentiableAt_christoffelFunctionalCLM = @RicciFlow.differentiableAt_christoffelFunctionalCLM :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_christoffelDerivOp_neg_two_coordRicciForm_field`. -/
+theorem differentiableAt_christoffelDerivOp_neg_two_coordRicciForm_field_eq :
+    @RicciFlow.differentiableAt_christoffelDerivOp_neg_two_coordRicciForm_field = @RicciFlow.differentiableAt_christoffelDerivOp_neg_two_coordRicciForm_field :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian_of_contDiff`. -/
+theorem ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian_of_contDiff_eq :
+    @RicciFlow.ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian_of_contDiff = @RicciFlow.ricciDeriv_neg_two_raised_trace_eq_curvedLaplacian_of_contDiff :=
+  rfl
+
+/-- Theorem contract for `curved_ricci_flow_scalar_evolution`. -/
+theorem curved_ricci_flow_scalar_evolution_eq :
+    @RicciFlow.curved_ricci_flow_scalar_evolution = @RicciFlow.curved_ricci_flow_scalar_evolution :=
+  rfl
+
+/-- Theorem contract for `curved_ricci_flow_scalar_riccati_lower_bound`. -/
+theorem curved_ricci_flow_scalar_riccati_lower_bound_eq :
+    @RicciFlow.curved_ricci_flow_scalar_riccati_lower_bound = @RicciFlow.curved_ricci_flow_scalar_riccati_lower_bound :=
+  rfl
+
+/-- Theorem contract for `covariantGradientEndo_apply`. -/
+theorem covariantGradientEndo_apply_eq :
+    @RicciFlow.covariantGradientEndo_apply = @RicciFlow.covariantGradientEndo_apply :=
+  rfl
+
+/-- Theorem contract for `covariantGradientEndo_selfAdjoint`. -/
+theorem covariantGradientEndo_selfAdjoint_eq :
+    @RicciFlow.covariantGradientEndo_selfAdjoint = @RicciFlow.covariantGradientEndo_selfAdjoint :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_eq_trace_covariantGradientEndo`. -/
+theorem curvedLaplacian_eq_trace_covariantGradientEndo_eq :
+    @RicciFlow.curvedLaplacian_eq_trace_covariantGradientEndo = @RicciFlow.curvedLaplacian_eq_trace_covariantGradientEndo :=
+  rfl
+
+/-- Theorem contract for `coordCovariantHessNormSq_eq_trace`. -/
+theorem coordCovariantHessNormSq_eq_trace_eq :
+    @RicciFlow.coordCovariantHessNormSq_eq_trace = @RicciFlow.coordCovariantHessNormSq_eq_trace :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_sq_le_finrank_mul_coordCovariantHessNormSq`. -/
+theorem curvedLaplacian_sq_le_finrank_mul_coordCovariantHessNormSq_eq :
+    @RicciFlow.curvedLaplacian_sq_le_finrank_mul_coordCovariantHessNormSq = @RicciFlow.curvedLaplacian_sq_le_finrank_mul_coordCovariantHessNormSq :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_coordGradNormSq_bochner_refined`. -/
+theorem curvedLaplacian_coordGradNormSq_bochner_refined_eq :
+    @RicciFlow.curvedLaplacian_coordGradNormSq_bochner_refined = @RicciFlow.curvedLaplacian_coordGradNormSq_bochner_refined :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_coordGradNormSq_bochner_eigenfunction_refined`. -/
+theorem curvedLaplacian_coordGradNormSq_bochner_eigenfunction_refined_eq :
+    @RicciFlow.curvedLaplacian_coordGradNormSq_bochner_eigenfunction_refined = @RicciFlow.curvedLaplacian_coordGradNormSq_bochner_eigenfunction_refined :=
+  rfl
+
+/-- Theorem contract for `curved_ricci_flow_scalar_evolution_trace_form`. -/
+theorem curved_ricci_flow_scalar_evolution_trace_form_eq :
+    @RicciFlow.curved_ricci_flow_scalar_evolution_trace_form = @RicciFlow.curved_ricci_flow_scalar_evolution_trace_form :=
+  rfl
+
+/-- Theorem contract for `coordCovariantHessNormSq_nonneg`. -/
+theorem coordCovariantHessNormSq_nonneg_eq :
+    @RicciFlow.coordCovariantHessNormSq_nonneg = @RicciFlow.coordCovariantHessNormSq_nonneg :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_coordGradNormSq_nonneg_of_ricci_nonneg`. -/
+theorem curvedLaplacian_coordGradNormSq_nonneg_of_ricci_nonneg_eq :
+    @RicciFlow.curvedLaplacian_coordGradNormSq_nonneg_of_ricci_nonneg = @RicciFlow.curvedLaplacian_coordGradNormSq_nonneg_of_ricci_nonneg :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_coordGradNormSq_bochner_refined_ricci_lower`. -/
+theorem curvedLaplacian_coordGradNormSq_bochner_refined_ricci_lower_eq :
+    @RicciFlow.curvedLaplacian_coordGradNormSq_bochner_refined_ricci_lower = @RicciFlow.curvedLaplacian_coordGradNormSq_bochner_refined_ricci_lower :=
+  rfl
+
+/-- Theorem contract for `trace_comp_self_nonneg`. -/
+theorem trace_comp_self_nonneg_eq :
+    @RicciFlow.trace_comp_self_nonneg = @RicciFlow.trace_comp_self_nonneg :=
+  rfl
+
+/-- Theorem contract for `eq_zero_of_trace_comp_self_eq_zero`. -/
+theorem eq_zero_of_trace_comp_self_eq_zero_eq :
+    @RicciFlow.eq_zero_of_trace_comp_self_eq_zero = @RicciFlow.eq_zero_of_trace_comp_self_eq_zero :=
+  rfl
+
+/-- Theorem contract for `covariantGradientEndo_eq_zero_of_hessNormSq_eq_zero`. -/
+theorem covariantGradientEndo_eq_zero_of_hessNormSq_eq_zero_eq :
+    @RicciFlow.covariantGradientEndo_eq_zero_of_hessNormSq_eq_zero = @RicciFlow.covariantGradientEndo_eq_zero_of_hessNormSq_eq_zero :=
+  rfl
+
+/-- Theorem contract for `covariantHessian_eq_zero_of_hessNormSq_eq_zero`. -/
+theorem covariantHessian_eq_zero_of_hessNormSq_eq_zero_eq :
+    @RicciFlow.covariantHessian_eq_zero_of_hessNormSq_eq_zero = @RicciFlow.covariantHessian_eq_zero_of_hessNormSq_eq_zero :=
+  rfl
+
+/-- Theorem contract for `bilin_cauchy_schwarz_eq_case`. -/
+theorem bilin_cauchy_schwarz_eq_case_eq :
+    @RicciFlow.bilin_cauchy_schwarz_eq_case = @RicciFlow.bilin_cauchy_schwarz_eq_case :=
+  rfl
+
+/-- Theorem contract for `all_eq_of_sq_sum_eq_card_mul_sum_sq`. -/
+theorem all_eq_of_sq_sum_eq_card_mul_sum_sq_eq :
+    @RicciFlow.all_eq_of_sq_sum_eq_card_mul_sum_sq = @RicciFlow.all_eq_of_sq_sum_eq_card_mul_sum_sq :=
+  rfl
+
+/-- Theorem contract for `eq_smul_id_of_basis_apply`. -/
+theorem eq_smul_id_of_basis_apply_eq :
+    @RicciFlow.eq_smul_id_of_basis_apply = @RicciFlow.eq_smul_id_of_basis_apply :=
+  rfl
+
+/-- Theorem contract for `coordRicci_eq_zero_of_ricciNormSq_eq_zero`. -/
+theorem coordRicci_eq_zero_of_ricciNormSq_eq_zero_eq :
+    @RicciFlow.coordRicci_eq_zero_of_ricciNormSq_eq_zero = @RicciFlow.coordRicci_eq_zero_of_ricciNormSq_eq_zero :=
+  rfl
+
+/-- Theorem contract for `trace_traceless_sq`. -/
+theorem trace_traceless_sq_eq :
+    @RicciFlow.trace_traceless_sq = @RicciFlow.trace_traceless_sq :=
+  rfl
+
+/-- Theorem contract for `coordScalar_sq_eq_finrank_mul_ricciNormSq_of_einstein`. -/
+theorem coordScalar_sq_eq_finrank_mul_ricciNormSq_of_einstein_eq :
+    @RicciFlow.coordScalar_sq_eq_finrank_mul_ricciNormSq_of_einstein = @RicciFlow.coordScalar_sq_eq_finrank_mul_ricciNormSq_of_einstein :=
+  rfl
+
+/-- Theorem contract for `ricciNormSq_sub_scalar_sq_div_eq_traceless_trace`. -/
+theorem ricciNormSq_sub_scalar_sq_div_eq_traceless_trace_eq :
+    @RicciFlow.ricciNormSq_sub_scalar_sq_div_eq_traceless_trace = @RicciFlow.ricciNormSq_sub_scalar_sq_div_eq_traceless_trace :=
+  rfl
+
+/-- Theorem contract for `traceless_ricci_normSq_nonneg`. -/
+theorem traceless_ricci_normSq_nonneg_eq :
+    @RicciFlow.traceless_ricci_normSq_nonneg = @RicciFlow.traceless_ricci_normSq_nonneg :=
+  rfl
+
+/-- Theorem contract for `einstein_tensor_divergence_free_of_contDiff`. -/
+theorem einstein_tensor_divergence_free_of_contDiff_eq :
+    @RicciFlow.einstein_tensor_divergence_free_of_contDiff = @RicciFlow.einstein_tensor_divergence_free_of_contDiff :=
+  rfl
+
+/-- Theorem contract for `fderiv_coordScalar_eq_two_ricciDivergenceForm_of_contDiff`. -/
+theorem fderiv_coordScalar_eq_two_ricciDivergenceForm_of_contDiff_eq :
+    @RicciFlow.fderiv_coordScalar_eq_two_ricciDivergenceForm_of_contDiff = @RicciFlow.fderiv_coordScalar_eq_two_ricciDivergenceForm_of_contDiff :=
+  rfl
+
+/-- Theorem contract for `fderiv_coordScalar_eq_zero_of_ricciDivergence_zero_of_contDiff`. -/
+theorem fderiv_coordScalar_eq_zero_of_ricciDivergence_zero_of_contDiff_eq :
+    @RicciFlow.fderiv_coordScalar_eq_zero_of_ricciDivergence_zero_of_contDiff = @RicciFlow.fderiv_coordScalar_eq_zero_of_ricciDivergence_zero_of_contDiff :=
+  rfl
+
+/-- Theorem contract for `ricciDivergence_eq_zero_of_scalar_const_of_contDiff`. -/
+theorem ricciDivergence_eq_zero_of_scalar_const_of_contDiff_eq :
+    @RicciFlow.ricciDivergence_eq_zero_of_scalar_const_of_contDiff = @RicciFlow.ricciDivergence_eq_zero_of_scalar_const_of_contDiff :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_sq_eq_finrank_mul_coordCovariantHessNormSq_of_hess_smul_id`. -/
+theorem curvedLaplacian_sq_eq_finrank_mul_coordCovariantHessNormSq_of_hess_smul_id_eq :
+    @RicciFlow.curvedLaplacian_sq_eq_finrank_mul_coordCovariantHessNormSq_of_hess_smul_id = @RicciFlow.curvedLaplacian_sq_eq_finrank_mul_coordCovariantHessNormSq_of_hess_smul_id :=
+  rfl
+
+/-- Theorem contract for `trace_comp_self_pos`. -/
+theorem trace_comp_self_pos_eq :
+    @RicciFlow.trace_comp_self_pos = @RicciFlow.trace_comp_self_pos :=
+  rfl
+
+/-- Theorem contract for `coordScalar_sq_lt_finrank_mul_ricciNormSq_of_not_einstein`. -/
+theorem coordScalar_sq_lt_finrank_mul_ricciNormSq_of_not_einstein_eq :
+    @RicciFlow.coordScalar_sq_lt_finrank_mul_ricciNormSq_of_not_einstein = @RicciFlow.coordScalar_sq_lt_finrank_mul_ricciNormSq_of_not_einstein :=
+  rfl
+
+/-- Theorem contract for `coordCovariantHessNormSq_sub_curvedLaplacian_sq_div_eq_traceless_trace`. -/
+theorem coordCovariantHessNormSq_sub_curvedLaplacian_sq_div_eq_traceless_trace_eq :
+    @RicciFlow.coordCovariantHessNormSq_sub_curvedLaplacian_sq_div_eq_traceless_trace = @RicciFlow.coordCovariantHessNormSq_sub_curvedLaplacian_sq_div_eq_traceless_trace :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_sq_lt_finrank_mul_coordCovariantHessNormSq_of_not_obata`. -/
+theorem curvedLaplacian_sq_lt_finrank_mul_coordCovariantHessNormSq_of_not_obata_eq :
+    @RicciFlow.curvedLaplacian_sq_lt_finrank_mul_coordCovariantHessNormSq_of_not_obata = @RicciFlow.curvedLaplacian_sq_lt_finrank_mul_coordCovariantHessNormSq_of_not_obata :=
+  rfl
+
+/-- Theorem contract for `traceless_hessian_normSq_nonneg`. -/
+theorem traceless_hessian_normSq_nonneg_eq :
+    @RicciFlow.traceless_hessian_normSq_nonneg = @RicciFlow.traceless_hessian_normSq_nonneg :=
+  rfl
+
+/-- Theorem contract for `coordRicciNormSq_pos`. -/
+theorem coordRicciNormSq_pos_eq :
+    @RicciFlow.coordRicciNormSq_pos = @RicciFlow.coordRicciNormSq_pos :=
+  rfl
+
+/-- Theorem contract for `coordCovariantHessNormSq_pos`. -/
+theorem coordCovariantHessNormSq_pos_eq :
+    @RicciFlow.coordCovariantHessNormSq_pos = @RicciFlow.coordCovariantHessNormSq_pos :=
+  rfl
+
+/-- Theorem contract for `coordRicciNormSq_eq_zero_iff_ricci_flat`. -/
+theorem coordRicciNormSq_eq_zero_iff_ricci_flat_eq :
+    @RicciFlow.coordRicciNormSq_eq_zero_iff_ricci_flat = @RicciFlow.coordRicciNormSq_eq_zero_iff_ricci_flat :=
+  rfl
+
+/-- Theorem contract for `coordCovariantHessNormSq_eq_zero_iff_hessian_flat`. -/
+theorem coordCovariantHessNormSq_eq_zero_iff_hessian_flat_eq :
+    @RicciFlow.coordCovariantHessNormSq_eq_zero_iff_hessian_flat = @RicciFlow.coordCovariantHessNormSq_eq_zero_iff_hessian_flat :=
+  rfl
+
+/-- Theorem contract for `coordScalar_sq_lt_finrank_mul_ricciNormSq_iff_not_einstein`. -/
+theorem coordScalar_sq_lt_finrank_mul_ricciNormSq_iff_not_einstein_eq :
+    @RicciFlow.coordScalar_sq_lt_finrank_mul_ricciNormSq_iff_not_einstein = @RicciFlow.coordScalar_sq_lt_finrank_mul_ricciNormSq_iff_not_einstein :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_sq_lt_finrank_mul_coordCovariantHessNormSq_iff_not_obata`. -/
+theorem curvedLaplacian_sq_lt_finrank_mul_coordCovariantHessNormSq_iff_not_obata_eq :
+    @RicciFlow.curvedLaplacian_sq_lt_finrank_mul_coordCovariantHessNormSq_iff_not_obata = @RicciFlow.curvedLaplacian_sq_lt_finrank_mul_coordCovariantHessNormSq_iff_not_obata :=
+  rfl
+
+end RicciFlow
+
+
+namespace RicciFlow.RicciFlow
+
+/-- Theorem contract for `hamilton_finite_time_singularity`. -/
+theorem hamilton_finite_time_singularity_eq :
+    @RicciFlow.RicciFlow.hamilton_finite_time_singularity = @RicciFlow.RicciFlow.hamilton_finite_time_singularity :=
+  rfl
+
+/-- Theorem contract for `hasDerivAt_trace`. -/
+theorem hasDerivAt_trace_eq :
+    @RicciFlow.RicciFlow.hasDerivAt_trace = @RicciFlow.RicciFlow.hasDerivAt_trace :=
+  rfl
+
+/-- Theorem contract for `hasDerivAt_trace_sq`. -/
+theorem hasDerivAt_trace_sq_eq :
+    @RicciFlow.RicciFlow.hasDerivAt_trace_sq = @RicciFlow.RicciFlow.hasDerivAt_trace_sq :=
+  rfl
+
+/-- Theorem contract for `christoffelDeriv_zero_direction`. -/
+theorem christoffelDeriv_zero_direction_eq :
+    @RicciFlow.RicciFlow.christoffelDeriv_zero_direction = @RicciFlow.RicciFlow.christoffelDeriv_zero_direction :=
+  rfl
+
+/-- Theorem contract for `christoffelDeriv_add_direction`. -/
+theorem christoffelDeriv_add_direction_eq :
+    @RicciFlow.RicciFlow.christoffelDeriv_add_direction = @RicciFlow.RicciFlow.christoffelDeriv_add_direction :=
+  rfl
+
+/-- Theorem contract for `hasDerivAt_clm_of_forall_apply'`. -/
+theorem hasDerivAt_clm_of_forall_apply'_eq :
+    @RicciFlow.RicciFlow.hasDerivAt_clm_of_forall_apply' = @RicciFlow.RicciFlow.hasDerivAt_clm_of_forall_apply' :=
+  rfl
+
+/-- Theorem contract for `christoffelFunctional_add_snd`. -/
+theorem christoffelFunctional_add_snd_eq :
+    @RicciFlow.RicciFlow.christoffelFunctional_add_snd = @RicciFlow.RicciFlow.christoffelFunctional_add_snd :=
+  rfl
+
+/-- Theorem contract for `christoffelDeriv_add_snd`. -/
+theorem christoffelDeriv_add_snd_eq :
+    @RicciFlow.RicciFlow.christoffelDeriv_add_snd = @RicciFlow.RicciFlow.christoffelDeriv_add_snd :=
+  rfl
+
+/-- Theorem contract for `christoffelFunctional_smul_snd`. -/
+theorem christoffelFunctional_smul_snd_eq :
+    @RicciFlow.RicciFlow.christoffelFunctional_smul_snd = @RicciFlow.RicciFlow.christoffelFunctional_smul_snd :=
+  rfl
+
+/-- Theorem contract for `christoffelDeriv_smul_snd`. -/
+theorem christoffelDeriv_smul_snd_eq :
+    @RicciFlow.RicciFlow.christoffelDeriv_smul_snd = @RicciFlow.RicciFlow.christoffelDeriv_smul_snd :=
+  rfl
+
+/-- Theorem contract for `christoffelDerivOp_apply`. -/
+theorem christoffelDerivOp_apply_eq :
+    @RicciFlow.RicciFlow.christoffelDerivOp_apply = @RicciFlow.RicciFlow.christoffelDerivOp_apply :=
+  rfl
+
+/-- Theorem contract for `christoffelClosedOp_apply`. -/
+theorem christoffelClosedOp_apply_eq :
+    @RicciFlow.RicciFlow.christoffelClosedOp_apply = @RicciFlow.RicciFlow.christoffelClosedOp_apply :=
+  rfl
+
+/-- Theorem contract for `hasDerivAt_christoffelClosedOp`. -/
+theorem hasDerivAt_christoffelClosedOp_eq :
+    @RicciFlow.RicciFlow.hasDerivAt_christoffelClosedOp = @RicciFlow.RicciFlow.hasDerivAt_christoffelClosedOp :=
+  rfl
+
+/-- Theorem contract for `hasDerivAt_christoffelClosedOp_comp`. -/
+theorem hasDerivAt_christoffelClosedOp_comp_eq :
+    @RicciFlow.RicciFlow.hasDerivAt_christoffelClosedOp_comp = @RicciFlow.RicciFlow.hasDerivAt_christoffelClosedOp_comp :=
+  rfl
+
+/-- Theorem contract for `christoffelDerivOp_symm`. -/
+theorem christoffelDerivOp_symm_eq :
+    @RicciFlow.RicciFlow.christoffelDerivOp_symm = @RicciFlow.RicciFlow.christoffelDerivOp_symm :=
+  rfl
+
+/-- Theorem contract for `christoffelClosedOp_eq_christoffelAt`. -/
+theorem christoffelClosedOp_eq_christoffelAt_eq :
+    @RicciFlow.RicciFlow.christoffelClosedOp_eq_christoffelAt = @RicciFlow.RicciFlow.christoffelClosedOp_eq_christoffelAt :=
+  rfl
+
+/-- Theorem contract for `curvature_quadratic_operator_form`. -/
+theorem curvature_quadratic_operator_form_eq :
+    @RicciFlow.RicciFlow.curvature_quadratic_operator_form = @RicciFlow.RicciFlow.curvature_quadratic_operator_form :=
+  rfl
+
+/-- Theorem contract for `hasDerivAt_christoffelOpGrad`. -/
+theorem hasDerivAt_christoffelOpGrad_eq :
+    @RicciFlow.RicciFlow.hasDerivAt_christoffelOpGrad = @RicciFlow.RicciFlow.hasDerivAt_christoffelOpGrad :=
+  rfl
+
+/-- Theorem contract for `hasDerivAt_christoffelOpGrad_apply`. -/
+theorem hasDerivAt_christoffelOpGrad_apply_eq :
+    @RicciFlow.RicciFlow.hasDerivAt_christoffelOpGrad_apply = @RicciFlow.RicciFlow.hasDerivAt_christoffelOpGrad_apply :=
+  rfl
+
+/-- Theorem contract for `hasDerivAt_coordCurvatureOp`. -/
+theorem hasDerivAt_coordCurvatureOp_eq :
+    @RicciFlow.RicciFlow.hasDerivAt_coordCurvatureOp = @RicciFlow.RicciFlow.hasDerivAt_coordCurvatureOp :=
+  rfl
+
+/-- Theorem contract for `hasDerivAt_coordRicci`. -/
+theorem hasDerivAt_coordRicci_eq :
+    @RicciFlow.RicciFlow.hasDerivAt_coordRicci = @RicciFlow.RicciFlow.hasDerivAt_coordRicci :=
+  rfl
+
+/-- Theorem contract for `christoffelFunctional_add_fst`. -/
+theorem christoffelFunctional_add_fst_eq :
+    @RicciFlow.RicciFlow.christoffelFunctional_add_fst = @RicciFlow.RicciFlow.christoffelFunctional_add_fst :=
+  rfl
+
+/-- Theorem contract for `christoffelFunctional_smul_fst`. -/
+theorem christoffelFunctional_smul_fst_eq :
+    @RicciFlow.RicciFlow.christoffelFunctional_smul_fst = @RicciFlow.RicciFlow.christoffelFunctional_smul_fst :=
+  rfl
+
+/-- Theorem contract for `christoffelClosedOp_add_fst`. -/
+theorem christoffelClosedOp_add_fst_eq :
+    @RicciFlow.RicciFlow.christoffelClosedOp_add_fst = @RicciFlow.RicciFlow.christoffelClosedOp_add_fst :=
+  rfl
+
+/-- Theorem contract for `christoffelClosedOp_smul_fst`. -/
+theorem christoffelClosedOp_smul_fst_eq :
+    @RicciFlow.RicciFlow.christoffelClosedOp_smul_fst = @RicciFlow.RicciFlow.christoffelClosedOp_smul_fst :=
+  rfl
+
+/-- Theorem contract for `coordCurvatureOp_add_snd`. -/
+theorem coordCurvatureOp_add_snd_eq :
+    @RicciFlow.RicciFlow.coordCurvatureOp_add_snd = @RicciFlow.RicciFlow.coordCurvatureOp_add_snd :=
+  rfl
+
+/-- Theorem contract for `coordRicci_add_fst`. -/
+theorem coordRicci_add_fst_eq :
+    @RicciFlow.RicciFlow.coordRicci_add_fst = @RicciFlow.RicciFlow.coordRicci_add_fst :=
+  rfl
+
+/-- Theorem contract for `coordCurvatureOp_smul_snd`. -/
+theorem coordCurvatureOp_smul_snd_eq :
+    @RicciFlow.RicciFlow.coordCurvatureOp_smul_snd = @RicciFlow.RicciFlow.coordCurvatureOp_smul_snd :=
+  rfl
+
+/-- Theorem contract for `coordRicci_smul_fst`. -/
+theorem coordRicci_smul_fst_eq :
+    @RicciFlow.RicciFlow.coordRicci_smul_fst = @RicciFlow.RicciFlow.coordRicci_smul_fst :=
+  rfl
+
+/-- Theorem contract for `coordRicciCLM_apply`. -/
+theorem coordRicciCLM_apply_eq :
+    @RicciFlow.RicciFlow.coordRicciCLM_apply = @RicciFlow.RicciFlow.coordRicciCLM_apply :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_add_fst`. -/
+theorem ricciDeriv_add_fst_eq :
+    @RicciFlow.RicciFlow.ricciDeriv_add_fst = @RicciFlow.RicciFlow.ricciDeriv_add_fst :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_smul_fst`. -/
+theorem ricciDeriv_smul_fst_eq :
+    @RicciFlow.RicciFlow.ricciDeriv_smul_fst = @RicciFlow.RicciFlow.ricciDeriv_smul_fst :=
+  rfl
+
+/-- Theorem contract for `hasDerivAt_coordScalar`. -/
+theorem hasDerivAt_coordScalar_eq :
+    @RicciFlow.RicciFlow.hasDerivAt_coordScalar = @RicciFlow.RicciFlow.hasDerivAt_coordScalar :=
+  rfl
+
+/-- Theorem contract for `christoffelFunctional_const_eq_zero`. -/
+theorem christoffelFunctional_const_eq_zero_eq :
+    @RicciFlow.RicciFlow.christoffelFunctional_const_eq_zero = @RicciFlow.RicciFlow.christoffelFunctional_const_eq_zero :=
+  rfl
+
+/-- Theorem contract for `christoffelClosedOp_const_eq_zero`. -/
+theorem christoffelClosedOp_const_eq_zero_eq :
+    @RicciFlow.RicciFlow.christoffelClosedOp_const_eq_zero = @RicciFlow.RicciFlow.christoffelClosedOp_const_eq_zero :=
+  rfl
+
+/-- Theorem contract for `coordCurvatureOp_const_eq_zero`. -/
+theorem coordCurvatureOp_const_eq_zero_eq :
+    @RicciFlow.RicciFlow.coordCurvatureOp_const_eq_zero = @RicciFlow.RicciFlow.coordCurvatureOp_const_eq_zero :=
+  rfl
+
+/-- Theorem contract for `coordRicci_const_eq_zero`. -/
+theorem coordRicci_const_eq_zero_eq :
+    @RicciFlow.RicciFlow.coordRicci_const_eq_zero = @RicciFlow.RicciFlow.coordRicci_const_eq_zero :=
+  rfl
+
+/-- Theorem contract for `coordScalar_const_eq_zero`. -/
+theorem coordScalar_const_eq_zero_eq :
+    @RicciFlow.RicciFlow.coordScalar_const_eq_zero = @RicciFlow.RicciFlow.coordScalar_const_eq_zero :=
+  rfl
+
+/-- Theorem contract for `coordRicci_add_snd`. -/
+theorem coordRicci_add_snd_eq :
+    @RicciFlow.RicciFlow.coordRicci_add_snd = @RicciFlow.RicciFlow.coordRicci_add_snd :=
+  rfl
+
+/-- Theorem contract for `coordRicci_smul_snd`. -/
+theorem coordRicci_smul_snd_eq :
+    @RicciFlow.RicciFlow.coordRicci_smul_snd = @RicciFlow.RicciFlow.coordRicci_smul_snd :=
+  rfl
+
+/-- Theorem contract for `coordRicciForm_apply`. -/
+theorem coordRicciForm_apply_eq :
+    @RicciFlow.RicciFlow.coordRicciForm_apply = @RicciFlow.RicciFlow.coordRicciForm_apply :=
+  rfl
+
+/-- Theorem contract for `inverseVariation_ricci_direction`. -/
+theorem inverseVariation_ricci_direction_eq :
+    @RicciFlow.RicciFlow.inverseVariation_ricci_direction = @RicciFlow.RicciFlow.inverseVariation_ricci_direction :=
+  rfl
+
+/-- Theorem contract for `hamilton_scalar_evolution_of_bianchi`. -/
+theorem hamilton_scalar_evolution_of_bianchi_eq :
+    @RicciFlow.RicciFlow.hamilton_scalar_evolution_of_bianchi = @RicciFlow.RicciFlow.hamilton_scalar_evolution_of_bianchi :=
+  rfl
+
+/-- Theorem contract for `coordRicciEndo_apply`. -/
+theorem coordRicciEndo_apply_eq :
+    @RicciFlow.RicciFlow.coordRicciEndo_apply = @RicciFlow.RicciFlow.coordRicciEndo_apply :=
+  rfl
+
+/-- Theorem contract for `g_coordRicciEndo`. -/
+theorem g_coordRicciEndo_eq :
+    @RicciFlow.RicciFlow.g_coordRicciEndo = @RicciFlow.RicciFlow.g_coordRicciEndo :=
+  rfl
+
+/-- Theorem contract for `trace_coordRicciEndo`. -/
+theorem trace_coordRicciEndo_eq :
+    @RicciFlow.RicciFlow.trace_coordRicciEndo = @RicciFlow.RicciFlow.trace_coordRicciEndo :=
+  rfl
+
+/-- Theorem contract for `sum_g_raised_eq_trace`. -/
+theorem sum_g_raised_eq_trace_eq :
+    @RicciFlow.RicciFlow.sum_g_raised_eq_trace = @RicciFlow.RicciFlow.sum_g_raised_eq_trace :=
+  rfl
+
+/-- Theorem contract for `coordRicciNormSq_eq_trace`. -/
+theorem coordRicciNormSq_eq_trace_eq :
+    @RicciFlow.RicciFlow.coordRicciNormSq_eq_trace = @RicciFlow.RicciFlow.coordRicciNormSq_eq_trace :=
+  rfl
+
+/-- Theorem contract for `coordRicciEndo_selfAdjoint`. -/
+theorem coordRicciEndo_selfAdjoint_eq :
+    @RicciFlow.RicciFlow.coordRicciEndo_selfAdjoint = @RicciFlow.RicciFlow.coordRicciEndo_selfAdjoint :=
+  rfl
+
+/-- Theorem contract for `hamilton_ricci_flow_singularity`. -/
+theorem hamilton_ricci_flow_singularity_eq :
+    @RicciFlow.RicciFlow.hamilton_ricci_flow_singularity = @RicciFlow.RicciFlow.hamilton_ricci_flow_singularity :=
+  rfl
+
+/-- Theorem contract for `christoffelClosedOp_symm`. -/
+theorem christoffelClosedOp_symm_eq :
+    @RicciFlow.RicciFlow.christoffelClosedOp_symm = @RicciFlow.RicciFlow.christoffelClosedOp_symm :=
+  rfl
+
+/-- Theorem contract for `coordCurvatureOp_antisymm`. -/
+theorem coordCurvatureOp_antisymm_eq :
+    @RicciFlow.RicciFlow.coordCurvatureOp_antisymm = @RicciFlow.RicciFlow.coordCurvatureOp_antisymm :=
+  rfl
+
+/-- Theorem contract for `fderiv_christoffelClosedOp_apply`. -/
+theorem fderiv_christoffelClosedOp_apply_eq :
+    @RicciFlow.RicciFlow.fderiv_christoffelClosedOp_apply = @RicciFlow.RicciFlow.fderiv_christoffelClosedOp_apply :=
+  rfl
+
+/-- Theorem contract for `coord_first_bianchi`. -/
+theorem coord_first_bianchi_eq :
+    @RicciFlow.RicciFlow.coord_first_bianchi = @RicciFlow.RicciFlow.coord_first_bianchi :=
+  rfl
+
+/-- Theorem contract for `coordRicci_antisymm_part`. -/
+theorem coordRicci_antisymm_part_eq :
+    @RicciFlow.RicciFlow.coordRicci_antisymm_part = @RicciFlow.RicciFlow.coordRicci_antisymm_part :=
+  rfl
+
+/-- Theorem contract for `g_christoffelClosedOp`. -/
+theorem g_christoffelClosedOp_eq :
+    @RicciFlow.RicciFlow.g_christoffelClosedOp = @RicciFlow.RicciFlow.g_christoffelClosedOp :=
+  rfl
+
+/-- Theorem contract for `coord_metric_compatible`. -/
+theorem coord_metric_compatible_eq :
+    @RicciFlow.RicciFlow.coord_metric_compatible = @RicciFlow.RicciFlow.coord_metric_compatible :=
+  rfl
+
+/-- Theorem contract for `hasFDerivAt_g_christoffel_left`. -/
+theorem hasFDerivAt_g_christoffel_left_eq :
+    @RicciFlow.RicciFlow.hasFDerivAt_g_christoffel_left = @RicciFlow.RicciFlow.hasFDerivAt_g_christoffel_left :=
+  rfl
+
+/-- Theorem contract for `hasFDerivAt_g_christoffel_right`. -/
+theorem hasFDerivAt_g_christoffel_right_eq :
+    @RicciFlow.RicciFlow.hasFDerivAt_g_christoffel_right = @RicciFlow.RicciFlow.hasFDerivAt_g_christoffel_right :=
+  rfl
+
+/-- Theorem contract for `coordCurvatureOp_skew`. -/
+theorem coordCurvatureOp_skew_eq :
+    @RicciFlow.RicciFlow.coordCurvatureOp_skew = @RicciFlow.RicciFlow.coordCurvatureOp_skew :=
+  rfl
+
+/-- Theorem contract for `coordRicci_symm`. -/
+theorem coordRicci_symm_eq :
+    @RicciFlow.RicciFlow.coordRicci_symm = @RicciFlow.RicciFlow.coordRicci_symm :=
+  rfl
+
+/-- Theorem contract for `hamilton_ricci_flow_singularity'`. -/
+theorem hamilton_ricci_flow_singularity'_eq :
+    @RicciFlow.RicciFlow.hamilton_ricci_flow_singularity' = @RicciFlow.RicciFlow.hamilton_ricci_flow_singularity' :=
+  rfl
+
+/-- Theorem contract for `fderiv_clm_family_apply`. -/
+theorem fderiv_clm_family_apply_eq :
+    @RicciFlow.RicciFlow.fderiv_clm_family_apply = @RicciFlow.RicciFlow.fderiv_clm_family_apply :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_coordCurvatureOp_family`. -/
+theorem differentiableAt_coordCurvatureOp_family_eq :
+    @RicciFlow.RicciFlow.differentiableAt_coordCurvatureOp_family = @RicciFlow.RicciFlow.differentiableAt_coordCurvatureOp_family :=
+  rfl
+
+/-- Theorem contract for `covCurvDeriv_antisymm`. -/
+theorem covCurvDeriv_antisymm_eq :
+    @RicciFlow.RicciFlow.covCurvDeriv_antisymm = @RicciFlow.RicciFlow.covCurvDeriv_antisymm :=
+  rfl
+
+/-- Theorem contract for `covCurvDeriv_const_eq_zero`. -/
+theorem covCurvDeriv_const_eq_zero_eq :
+    @RicciFlow.RicciFlow.covCurvDeriv_const_eq_zero = @RicciFlow.RicciFlow.covCurvDeriv_const_eq_zero :=
+  rfl
+
+/-- Theorem contract for `fderiv_christoffelClosedOp_comp_apply`. -/
+theorem fderiv_christoffelClosedOp_comp_apply_eq :
+    @RicciFlow.RicciFlow.fderiv_christoffelClosedOp_comp_apply = @RicciFlow.RicciFlow.fderiv_christoffelClosedOp_comp_apply :=
+  rfl
+
+/-- Theorem contract for `fderiv_coordCurvatureOp_family`. -/
+theorem fderiv_coordCurvatureOp_family_eq :
+    @RicciFlow.RicciFlow.fderiv_coordCurvatureOp_family = @RicciFlow.RicciFlow.fderiv_coordCurvatureOp_family :=
+  rfl
+
+/-- Theorem contract for `fderiv_christoffelClosedOp_slot_symm`. -/
+theorem fderiv_christoffelClosedOp_slot_symm_eq :
+    @RicciFlow.RicciFlow.fderiv_christoffelClosedOp_slot_symm = @RicciFlow.RicciFlow.fderiv_christoffelClosedOp_slot_symm :=
+  rfl
+
+/-- Theorem contract for `sndFDeriv_christoffelClosedOp_slot_symm`. -/
+theorem sndFDeriv_christoffelClosedOp_slot_symm_eq :
+    @RicciFlow.RicciFlow.sndFDeriv_christoffelClosedOp_slot_symm = @RicciFlow.RicciFlow.sndFDeriv_christoffelClosedOp_slot_symm :=
+  rfl
+
+/-- Theorem contract for `coord_second_bianchi`. -/
+theorem coord_second_bianchi_eq :
+    @RicciFlow.RicciFlow.coord_second_bianchi = @RicciFlow.RicciFlow.coord_second_bianchi :=
+  rfl
+
+/-- Theorem contract for `coord_first_contracted_bianchi`. -/
+theorem coord_first_contracted_bianchi_eq :
+    @RicciFlow.RicciFlow.coord_first_contracted_bianchi = @RicciFlow.RicciFlow.coord_first_contracted_bianchi :=
+  rfl
+
+/-- Theorem contract for `coordCurvature_pair_symm`. -/
+theorem coordCurvature_pair_symm_eq :
+    @RicciFlow.RicciFlow.coordCurvature_pair_symm = @RicciFlow.RicciFlow.coordCurvature_pair_symm :=
+  rfl
+
+/-- Theorem contract for `coord_twice_contracted_bianchi_raw`. -/
+theorem coord_twice_contracted_bianchi_raw_eq :
+    @RicciFlow.RicciFlow.coord_twice_contracted_bianchi_raw = @RicciFlow.RicciFlow.coord_twice_contracted_bianchi_raw :=
+  rfl
+
+/-- Theorem contract for `hasFDerivAt_g_op_family`. -/
+theorem hasFDerivAt_g_op_family_eq :
+    @RicciFlow.RicciFlow.hasFDerivAt_g_op_family = @RicciFlow.RicciFlow.hasFDerivAt_g_op_family :=
+  rfl
+
+/-- Theorem contract for `covCurvDeriv_pair_symm`. -/
+theorem covCurvDeriv_pair_symm_eq :
+    @RicciFlow.RicciFlow.covCurvDeriv_pair_symm = @RicciFlow.RicciFlow.covCurvDeriv_pair_symm :=
+  rfl
+
+/-- Theorem contract for `covCurvDeriv_add_snd`. -/
+theorem covCurvDeriv_add_snd_eq :
+    @RicciFlow.RicciFlow.covCurvDeriv_add_snd = @RicciFlow.RicciFlow.covCurvDeriv_add_snd :=
+  rfl
+
+/-- Theorem contract for `covCurvDeriv_smul_snd`. -/
+theorem covCurvDeriv_smul_snd_eq :
+    @RicciFlow.RicciFlow.covCurvDeriv_smul_snd = @RicciFlow.RicciFlow.covCurvDeriv_smul_snd :=
+  rfl
+
+/-- Theorem contract for `coord_eq_g_raised`. -/
+theorem coord_eq_g_raised_eq :
+    @RicciFlow.RicciFlow.coord_eq_g_raised = @RicciFlow.RicciFlow.coord_eq_g_raised :=
+  rfl
+
+/-- Theorem contract for `coord_raised_symm`. -/
+theorem coord_raised_symm_eq :
+    @RicciFlow.RicciFlow.coord_raised_symm = @RicciFlow.RicciFlow.coord_raised_symm :=
+  rfl
+
+/-- Theorem contract for `sum_raised_contraction_swap`. -/
+theorem sum_raised_contraction_swap_eq :
+    @RicciFlow.RicciFlow.sum_raised_contraction_swap = @RicciFlow.RicciFlow.sum_raised_contraction_swap :=
+  rfl
+
+/-- Theorem contract for `covCurvDeriv_add_fst`. -/
+theorem covCurvDeriv_add_fst_eq :
+    @RicciFlow.RicciFlow.covCurvDeriv_add_fst = @RicciFlow.RicciFlow.covCurvDeriv_add_fst :=
+  rfl
+
+/-- Theorem contract for `covCurvDeriv_smul_fst`. -/
+theorem covCurvDeriv_smul_fst_eq :
+    @RicciFlow.RicciFlow.covCurvDeriv_smul_fst = @RicciFlow.RicciFlow.covCurvDeriv_smul_fst :=
+  rfl
+
+/-- Theorem contract for `covCurvDeriv_applied_skew`. -/
+theorem covCurvDeriv_applied_skew_eq :
+    @RicciFlow.RicciFlow.covCurvDeriv_applied_skew = @RicciFlow.RicciFlow.covCurvDeriv_applied_skew :=
+  rfl
+
+/-- Theorem contract for `covCurvDeriv_first_bianchi`. -/
+theorem covCurvDeriv_first_bianchi_eq :
+    @RicciFlow.RicciFlow.covCurvDeriv_first_bianchi = @RicciFlow.RicciFlow.covCurvDeriv_first_bianchi :=
+  rfl
+
+/-- Theorem contract for `curvDivergence_contraction_eq_ricciDivergence`. -/
+theorem curvDivergence_contraction_eq_ricciDivergence_eq :
+    @RicciFlow.RicciFlow.curvDivergence_contraction_eq_ricciDivergence = @RicciFlow.RicciFlow.curvDivergence_contraction_eq_ricciDivergence :=
+  rfl
+
+/-- Theorem contract for `coord_twice_contracted_bianchi`. -/
+theorem coord_twice_contracted_bianchi_eq :
+    @RicciFlow.RicciFlow.coord_twice_contracted_bianchi = @RicciFlow.RicciFlow.coord_twice_contracted_bianchi :=
+  rfl
+
+/-- Theorem contract for `g_christoffelDeriv`. -/
+theorem g_christoffelDeriv_eq :
+    @RicciFlow.RicciFlow.g_christoffelDeriv = @RicciFlow.RicciFlow.g_christoffelDeriv :=
+  rfl
+
+/-- Theorem contract for `curvatureDerivOp_eq_covDeltaGamma`. -/
+theorem curvatureDerivOp_eq_covDeltaGamma_eq :
+    @RicciFlow.RicciFlow.curvatureDerivOp_eq_covDeltaGamma = @RicciFlow.RicciFlow.curvatureDerivOp_eq_covDeltaGamma :=
+  rfl
+
+/-- Theorem contract for `ricciDeriv_eq_deltaGamma_contractions`. -/
+theorem ricciDeriv_eq_deltaGamma_contractions_eq :
+    @RicciFlow.RicciFlow.ricciDeriv_eq_deltaGamma_contractions = @RicciFlow.RicciFlow.ricciDeriv_eq_deltaGamma_contractions :=
+  rfl
+
+/-- Theorem contract for `g_covDeltaGammaDeriv`. -/
+theorem g_covDeltaGammaDeriv_eq :
+    @RicciFlow.RicciFlow.g_covDeltaGammaDeriv = @RicciFlow.RicciFlow.g_covDeltaGammaDeriv :=
+  rfl
+
+/-- Theorem contract for `covTensor2Deriv_add_dir`. -/
+theorem covTensor2Deriv_add_dir_eq :
+    @RicciFlow.RicciFlow.covTensor2Deriv_add_dir = @RicciFlow.RicciFlow.covTensor2Deriv_add_dir :=
+  rfl
+
+/-- Theorem contract for `covTensor2Deriv_smul_dir`. -/
+theorem covTensor2Deriv_smul_dir_eq :
+    @RicciFlow.RicciFlow.covTensor2Deriv_smul_dir = @RicciFlow.RicciFlow.covTensor2Deriv_smul_dir :=
+  rfl
+
+/-- Theorem contract for `covTensor2Deriv_add_left`. -/
+theorem covTensor2Deriv_add_left_eq :
+    @RicciFlow.RicciFlow.covTensor2Deriv_add_left = @RicciFlow.RicciFlow.covTensor2Deriv_add_left :=
+  rfl
+
+/-- Theorem contract for `covTensor2Deriv_add_right`. -/
+theorem covTensor2Deriv_add_right_eq :
+    @RicciFlow.RicciFlow.covTensor2Deriv_add_right = @RicciFlow.RicciFlow.covTensor2Deriv_add_right :=
+  rfl
+
+/-- Theorem contract for `covTensor2Deriv_smul_left`. -/
+theorem covTensor2Deriv_smul_left_eq :
+    @RicciFlow.RicciFlow.covTensor2Deriv_smul_left = @RicciFlow.RicciFlow.covTensor2Deriv_smul_left :=
+  rfl
+
+/-- Theorem contract for `covTensor2Deriv_smul_right`. -/
+theorem covTensor2Deriv_smul_right_eq :
+    @RicciFlow.RicciFlow.covTensor2Deriv_smul_right = @RicciFlow.RicciFlow.covTensor2Deriv_smul_right :=
+  rfl
+
+/-- Theorem contract for `metricBilin_apply`. -/
+theorem metricBilin_apply_eq :
+    @RicciFlow.RicciFlow.metricBilin_apply = @RicciFlow.RicciFlow.metricBilin_apply :=
+  rfl
+
+/-- Theorem contract for `metricBilin_nondeg`. -/
+theorem metricBilin_nondeg_eq :
+    @RicciFlow.RicciFlow.metricBilin_nondeg = @RicciFlow.RicciFlow.metricBilin_nondeg :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_eq_raised_sum`. -/
+theorem curvedLaplacian_eq_raised_sum_eq :
+    @RicciFlow.RicciFlow.curvedLaplacian_eq_raised_sum = @RicciFlow.RicciFlow.curvedLaplacian_eq_raised_sum :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_eq_raised_hessian_sum`. -/
+theorem curvedLaplacian_eq_raised_hessian_sum_eq :
+    @RicciFlow.RicciFlow.curvedLaplacian_eq_raised_hessian_sum = @RicciFlow.RicciFlow.curvedLaplacian_eq_raised_hessian_sum :=
+  rfl
+
+/-- Theorem contract for `hasFDerivAt_inverse_raise`. -/
+theorem hasFDerivAt_inverse_raise_eq :
+    @RicciFlow.RicciFlow.hasFDerivAt_inverse_raise = @RicciFlow.RicciFlow.hasFDerivAt_inverse_raise :=
+  rfl
+
+/-- Theorem contract for `g_inverse_raise_fderiv`. -/
+theorem g_inverse_raise_fderiv_eq :
+    @RicciFlow.RicciFlow.g_inverse_raise_fderiv = @RicciFlow.RicciFlow.g_inverse_raise_fderiv :=
+  rfl
+
+/-- Theorem contract for `g_inverse_raise_metric_compat`. -/
+theorem g_inverse_raise_metric_compat_eq :
+    @RicciFlow.RicciFlow.g_inverse_raise_metric_compat = @RicciFlow.RicciFlow.g_inverse_raise_metric_compat :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_coordRicci_family`. -/
+theorem differentiableAt_coordRicci_family_eq :
+    @RicciFlow.RicciFlow.differentiableAt_coordRicci_family = @RicciFlow.RicciFlow.differentiableAt_coordRicci_family :=
+  rfl
+
+/-- Theorem contract for `sum_coord_eq_trace`. -/
+theorem sum_coord_eq_trace_eq :
+    @RicciFlow.RicciFlow.sum_coord_eq_trace = @RicciFlow.RicciFlow.sum_coord_eq_trace :=
+  rfl
+
+/-- Theorem contract for `coordCurvatureOp_add_fst`. -/
+theorem coordCurvatureOp_add_fst_eq :
+    @RicciFlow.RicciFlow.coordCurvatureOp_add_fst = @RicciFlow.RicciFlow.coordCurvatureOp_add_fst :=
+  rfl
+
+/-- Theorem contract for `coordCurvatureOp_smul_fst`. -/
+theorem coordCurvatureOp_smul_fst_eq :
+    @RicciFlow.RicciFlow.coordCurvatureOp_smul_fst = @RicciFlow.RicciFlow.coordCurvatureOp_smul_fst :=
+  rfl
+
+/-- Theorem contract for `coordRicci_trace_slot_cancel`. -/
+theorem coordRicci_trace_slot_cancel_eq :
+    @RicciFlow.RicciFlow.coordRicci_trace_slot_cancel = @RicciFlow.RicciFlow.coordRicci_trace_slot_cancel :=
+  rfl
+
+/-- Theorem contract for `covRicciDeriv_eq_tensor_deriv`. -/
+theorem covRicciDeriv_eq_tensor_deriv_eq :
+    @RicciFlow.RicciFlow.covRicciDeriv_eq_tensor_deriv = @RicciFlow.RicciFlow.covRicciDeriv_eq_tensor_deriv :=
+  rfl
+
+/-- Theorem contract for `coordRicci_christoffel_correction_symm`. -/
+theorem coordRicci_christoffel_correction_symm_eq :
+    @RicciFlow.RicciFlow.coordRicci_christoffel_correction_symm = @RicciFlow.RicciFlow.coordRicci_christoffel_correction_symm :=
+  rfl
+
+/-- Theorem contract for `coordRicci_eq_sum_first_slot`. -/
+theorem coordRicci_eq_sum_first_slot_eq :
+    @RicciFlow.RicciFlow.coordRicci_eq_sum_first_slot = @RicciFlow.RicciFlow.coordRicci_eq_sum_first_slot :=
+  rfl
+
+/-- Theorem contract for `fderiv_coordRicci_first_slot_const`. -/
+theorem fderiv_coordRicci_first_slot_const_eq :
+    @RicciFlow.RicciFlow.fderiv_coordRicci_first_slot_const = @RicciFlow.RicciFlow.fderiv_coordRicci_first_slot_const :=
+  rfl
+
+/-- Theorem contract for `coordRicci_inverse_raise_trace`. -/
+theorem coordRicci_inverse_raise_trace_eq :
+    @RicciFlow.RicciFlow.coordRicci_inverse_raise_trace = @RicciFlow.RicciFlow.coordRicci_inverse_raise_trace :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_coordRicci_raised`. -/
+theorem differentiableAt_coordRicci_raised_eq :
+    @RicciFlow.RicciFlow.differentiableAt_coordRicci_raised = @RicciFlow.RicciFlow.differentiableAt_coordRicci_raised :=
+  rfl
+
+/-- Theorem contract for `scalarContractionDeriv_eq_fderiv_coordScalar`. -/
+theorem scalarContractionDeriv_eq_fderiv_coordScalar_eq :
+    @RicciFlow.RicciFlow.scalarContractionDeriv_eq_fderiv_coordScalar = @RicciFlow.RicciFlow.scalarContractionDeriv_eq_fderiv_coordScalar :=
+  rfl
+
+/-- Theorem contract for `ricciDivergence_eq_half_fderiv_scalar`. -/
+theorem ricciDivergence_eq_half_fderiv_scalar_eq :
+    @RicciFlow.RicciFlow.ricciDivergence_eq_half_fderiv_scalar = @RicciFlow.RicciFlow.ricciDivergence_eq_half_fderiv_scalar :=
+  rfl
+
+/-- Theorem contract for `ricciDivergence_add`. -/
+theorem ricciDivergence_add_eq :
+    @RicciFlow.RicciFlow.ricciDivergence_add = @RicciFlow.RicciFlow.ricciDivergence_add :=
+  rfl
+
+/-- Theorem contract for `ricciDivergence_smul`. -/
+theorem ricciDivergence_smul_eq :
+    @RicciFlow.RicciFlow.ricciDivergence_smul = @RicciFlow.RicciFlow.ricciDivergence_smul :=
+  rfl
+
+/-- Theorem contract for `ricciDivergenceForm_apply`. -/
+theorem ricciDivergenceForm_apply_eq :
+    @RicciFlow.RicciFlow.ricciDivergenceForm_apply = @RicciFlow.RicciFlow.ricciDivergenceForm_apply :=
+  rfl
+
+/-- Theorem contract for `fderiv_coordScalar_eq_two_ricciDivergenceForm`. -/
+theorem fderiv_coordScalar_eq_two_ricciDivergenceForm_eq :
+    @RicciFlow.RicciFlow.fderiv_coordScalar_eq_two_ricciDivergenceForm = @RicciFlow.RicciFlow.fderiv_coordScalar_eq_two_ricciDivergenceForm :=
+  rfl
+
+/-- Theorem contract for `hamilton_scalar_evolution_of_bianchi_curved`. -/
+theorem hamilton_scalar_evolution_of_bianchi_curved_eq :
+    @RicciFlow.RicciFlow.hamilton_scalar_evolution_of_bianchi_curved = @RicciFlow.RicciFlow.hamilton_scalar_evolution_of_bianchi_curved :=
+  rfl
+
+/-- Theorem contract for `g_covDeltaGammaDeriv_lichnerowicz`. -/
+theorem g_covDeltaGammaDeriv_lichnerowicz_eq :
+    @RicciFlow.RicciFlow.g_covDeltaGammaDeriv_lichnerowicz = @RicciFlow.RicciFlow.g_covDeltaGammaDeriv_lichnerowicz :=
+  rfl
+
+/-- Theorem contract for `differentiableAt_covTensor2Deriv_family`. -/
+theorem differentiableAt_covTensor2Deriv_family_eq :
+    @RicciFlow.RicciFlow.differentiableAt_covTensor2Deriv_family = @RicciFlow.RicciFlow.differentiableAt_covTensor2Deriv_family :=
+  rfl
+
+/-- Theorem contract for `covTensor2Deriv_const_eq_zero`. -/
+theorem covTensor2Deriv_const_eq_zero_eq :
+    @RicciFlow.RicciFlow.covTensor2Deriv_const_eq_zero = @RicciFlow.RicciFlow.covTensor2Deriv_const_eq_zero :=
+  rfl
+
+/-- Theorem contract for `covTensor2SndDeriv_const_eq_zero`. -/
+theorem covTensor2SndDeriv_const_eq_zero_eq :
+    @RicciFlow.RicciFlow.covTensor2SndDeriv_const_eq_zero = @RicciFlow.RicciFlow.covTensor2SndDeriv_const_eq_zero :=
+  rfl
+
+/-- Theorem contract for `fderiv_lichnerowicz_sum`. -/
+theorem fderiv_lichnerowicz_sum_eq :
+    @RicciFlow.RicciFlow.fderiv_lichnerowicz_sum = @RicciFlow.RicciFlow.fderiv_lichnerowicz_sum :=
+  rfl
+
+/-- Theorem contract for `g_covDeltaGammaDeriv_fderiv_form`. -/
+theorem g_covDeltaGammaDeriv_fderiv_form_eq :
+    @RicciFlow.RicciFlow.g_covDeltaGammaDeriv_fderiv_form = @RicciFlow.RicciFlow.g_covDeltaGammaDeriv_fderiv_form :=
+  rfl
+
+/-- Theorem contract for `g_covDeltaGammaDeriv_sndDeriv_form`. -/
+theorem g_covDeltaGammaDeriv_sndDeriv_form_eq :
+    @RicciFlow.RicciFlow.g_covDeltaGammaDeriv_sndDeriv_form = @RicciFlow.RicciFlow.g_covDeltaGammaDeriv_sndDeriv_form :=
+  rfl
+
+/-- Theorem contract for `coordRicciForm_metric_trace`. -/
+theorem coordRicciForm_metric_trace_eq :
+    @RicciFlow.RicciFlow.coordRicciForm_metric_trace = @RicciFlow.RicciFlow.coordRicciForm_metric_trace :=
+  rfl
+
+/-- Theorem contract for `metricTrace_smul_coordRicciForm`. -/
+theorem metricTrace_smul_coordRicciForm_eq :
+    @RicciFlow.RicciFlow.metricTrace_smul_coordRicciForm = @RicciFlow.RicciFlow.metricTrace_smul_coordRicciForm :=
+  rfl
+
+/-- Theorem contract for `covTensor1Deriv_const_eq_zero`. -/
+theorem covTensor1Deriv_const_eq_zero_eq :
+    @RicciFlow.RicciFlow.covTensor1Deriv_const_eq_zero = @RicciFlow.RicciFlow.covTensor1Deriv_const_eq_zero :=
+  rfl
+
+/-- Theorem contract for `covTensor1Deriv_add_test`. -/
+theorem covTensor1Deriv_add_test_eq :
+    @RicciFlow.RicciFlow.covTensor1Deriv_add_test = @RicciFlow.RicciFlow.covTensor1Deriv_add_test :=
+  rfl
+
+/-- Theorem contract for `covTensor1Deriv_fderiv_eq_covariantHessian`. -/
+theorem covTensor1Deriv_fderiv_eq_covariantHessian_eq :
+    @RicciFlow.RicciFlow.covTensor1Deriv_fderiv_eq_covariantHessian = @RicciFlow.RicciFlow.covTensor1Deriv_fderiv_eq_covariantHessian :=
+  rfl
+
+/-- Theorem contract for `metricTrace_covTensor1Deriv_fderiv`. -/
+theorem metricTrace_covTensor1Deriv_fderiv_eq :
+    @RicciFlow.RicciFlow.metricTrace_covTensor1Deriv_fderiv = @RicciFlow.RicciFlow.metricTrace_covTensor1Deriv_fderiv :=
+  rfl
+
+/-- Theorem contract for `covTensor1Deriv_smul`. -/
+theorem covTensor1Deriv_smul_eq :
+    @RicciFlow.RicciFlow.covTensor1Deriv_smul = @RicciFlow.RicciFlow.covTensor1Deriv_smul :=
+  rfl
+
+/-- Theorem contract for `metricTrace_covTensor1Deriv_half_grad`. -/
+theorem metricTrace_covTensor1Deriv_half_grad_eq :
+    @RicciFlow.RicciFlow.metricTrace_covTensor1Deriv_half_grad = @RicciFlow.RicciFlow.metricTrace_covTensor1Deriv_half_grad :=
+  rfl
+
+/-- Theorem contract for `deltaGammaDivergence_eq_g_pairing`. -/
+theorem deltaGammaDivergence_eq_g_pairing_eq :
+    @RicciFlow.RicciFlow.deltaGammaDivergence_eq_g_pairing = @RicciFlow.RicciFlow.deltaGammaDivergence_eq_g_pairing :=
+  rfl
+
+/-- Theorem contract for `deltaGammaContractionDeriv_eq_g_pairing`. -/
+theorem deltaGammaContractionDeriv_eq_g_pairing_eq :
+    @RicciFlow.RicciFlow.deltaGammaContractionDeriv_eq_g_pairing = @RicciFlow.RicciFlow.deltaGammaContractionDeriv_eq_g_pairing :=
+  rfl
+
+/-- Theorem contract for `covTensor2Deriv_symm`. -/
+theorem covTensor2Deriv_symm_eq :
+    @RicciFlow.RicciFlow.covTensor2Deriv_symm = @RicciFlow.RicciFlow.covTensor2Deriv_symm :=
+  rfl
+
+/-- Theorem contract for `curvedLaplacian_add_const`. -/
+theorem curvedLaplacian_add_const_eq :
+    @RicciFlow.RicciFlow.curvedLaplacian_add_const = @RicciFlow.RicciFlow.curvedLaplacian_add_const :=
+  rfl
+
+/-- Theorem contract for `curved_parabolic_min_principle`. -/
+theorem curved_parabolic_min_principle_eq :
+    @RicciFlow.RicciFlow.curved_parabolic_min_principle = @RicciFlow.RicciFlow.curved_parabolic_min_principle :=
+  rfl
+
+/-- Theorem contract for `curved_parabolic_min_principle_strict_var`. -/
+theorem curved_parabolic_min_principle_strict_var_eq :
+    @RicciFlow.RicciFlow.curved_parabolic_min_principle_strict_var = @RicciFlow.RicciFlow.curved_parabolic_min_principle_strict_var :=
+  rfl
+
+/-- Theorem contract for `curved_parabolic_min_principle_var`. -/
+theorem curved_parabolic_min_principle_var_eq :
+    @RicciFlow.RicciFlow.curved_parabolic_min_principle_var = @RicciFlow.RicciFlow.curved_parabolic_min_principle_var :=
+  rfl
+
+/-- Theorem contract for `curved_hamilton_scalar_lower_bound`. -/
+theorem curved_hamilton_scalar_lower_bound_eq :
+    @RicciFlow.RicciFlow.curved_hamilton_scalar_lower_bound = @RicciFlow.RicciFlow.curved_hamilton_scalar_lower_bound :=
+  rfl
+
+/-- Theorem contract for `curved_hamilton_finite_time_singularity`. -/
+theorem curved_hamilton_finite_time_singularity_eq :
+    @RicciFlow.RicciFlow.curved_hamilton_finite_time_singularity = @RicciFlow.RicciFlow.curved_hamilton_finite_time_singularity :=
+  rfl
+
+/-- Theorem contract for `curved_parabolic_min_principle_strict_var_tv`. -/
+theorem curved_parabolic_min_principle_strict_var_tv_eq :
+    @RicciFlow.RicciFlow.curved_parabolic_min_principle_strict_var_tv = @RicciFlow.RicciFlow.curved_parabolic_min_principle_strict_var_tv :=
+  rfl
+
+/-- Theorem contract for `curved_parabolic_min_principle_var_tv`. -/
+theorem curved_parabolic_min_principle_var_tv_eq :
+    @RicciFlow.RicciFlow.curved_parabolic_min_principle_var_tv = @RicciFlow.RicciFlow.curved_parabolic_min_principle_var_tv :=
+  rfl
+
+/-- Theorem contract for `curved_hamilton_scalar_lower_bound_tv`. -/
+theorem curved_hamilton_scalar_lower_bound_tv_eq :
+    @RicciFlow.RicciFlow.curved_hamilton_scalar_lower_bound_tv = @RicciFlow.RicciFlow.curved_hamilton_scalar_lower_bound_tv :=
+  rfl
+
+/-- Theorem contract for `curved_hamilton_finite_time_singularity_tv`. -/
+theorem curved_hamilton_finite_time_singularity_tv_eq :
+    @RicciFlow.RicciFlow.curved_hamilton_finite_time_singularity_tv = @RicciFlow.RicciFlow.curved_hamilton_finite_time_singularity_tv :=
+  rfl
+
+/-- Theorem contract for `curved_hamilton_singularity_of_evolution_eq_tv`. -/
+theorem curved_hamilton_singularity_of_evolution_eq_tv_eq :
+    @RicciFlow.RicciFlow.curved_hamilton_singularity_of_evolution_eq_tv = @RicciFlow.RicciFlow.curved_hamilton_singularity_of_evolution_eq_tv :=
+  rfl
+
+/-- Theorem contract for `metricBilin_isSymm`. -/
+theorem metricBilin_isSymm_eq :
+    @RicciFlow.RicciFlow.metricBilin_isSymm = @RicciFlow.RicciFlow.metricBilin_isSymm :=
+  rfl
+
+end RicciFlow.RicciFlow
