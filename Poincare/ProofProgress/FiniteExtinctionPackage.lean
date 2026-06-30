@@ -1503,4 +1503,166 @@ theorem public_and_canonical_certificate_payloads_named_targets_criteria_and_wit
     , witnessCriterion
     ⟩
 
+/--
+Target-evaluated finite-extinction package data for the
+smoothability/sub-obligation-family route, carried together with the public
+and canonical certificate payloads.  This exposes the actual selected
+finite-extinction surgery package at one manifold and keeps its statement and
+Ricci-flow-with-surgery extinction witness synchronized with the package-layer
+requirement consumed by final assembly.
+-/
+theorem finiteExtinctionPackage_requirement_target_package_statement_witness_and_certificate_payloads_of_smoothability_and_subobligations_family
+    (witness : Type u)
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage,
+    ∃ milestoneRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction,
+    ∃ targetPackage : Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M,
+    ∃ targetStatement : FiniteExtinctionStatement targetPackage.1 M,
+    ∃ targetWitness : FiniteExtinctionByRicciFlowWithSurgery M,
+    ∃ finiteExtinction : UniversalFiniteExtinctionStatement.{u},
+    ∃ publicTarget : PoincareConjectureStatement.{u},
+    ∃ publicPayload :
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ canonicalTarget : canonicalCompletionTarget.{u},
+    ∃ canonicalPayload :
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ allCriteria :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ witnessCriterion : CompletionCriterionAtUniverse witness,
+      packageRequirement =
+          finiteExtinctionPackage_requirement_of_subobligations_family h ∧
+        milestoneRequirement =
+          finiteExtinction_requirement_of_subobligations_family h ∧
+        packageRequirement M = ⟨targetPackage⟩ ∧
+        targetStatement =
+          finite_extinction_statement_of_surgery_package targetPackage.2 ∧
+        targetWitness =
+          finite_extinction_via_statement_of_surgery_package targetPackage.2 ∧
+        finiteExtinction =
+          universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+            smoothabilityPackage h ∧
+        publicTarget =
+          poincare_conjecture_of_smoothability_and_subobligations_family
+            smoothabilityPackage h extractSphere ∧
+        publicPayload =
+          poincare_conjecture_payload_of_smoothability_and_subobligations_family
+            smoothabilityPackage h extractSphere ∧
+        publicPayload = ⟨publicTarget, allCriteria⟩ ∧
+        canonicalTarget =
+          canonical_completion_target_of_smoothability_and_subobligations_family
+            smoothabilityPackage h extractSphere ∧
+        canonicalPayload =
+          canonical_completion_payload_of_smoothability_and_subobligations_family
+            smoothabilityPackage h extractSphere ∧
+        canonicalPayload = ⟨canonicalTarget, allCriteria⟩ ∧
+        allCriteria =
+          (fun witness =>
+            completion_criterion_of_smoothability_and_subobligations_family
+              witness smoothabilityPackage h extractSphere) ∧
+        allCriteria witness = witnessCriterion ∧
+        witnessCriterion =
+          canonical_completion_criterion_of_smoothability_and_subobligations_family
+            witness smoothabilityPackage h extractSphere ∧
+        PoincareConjectureStatement.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        CompletionCriterionAtUniverse witness := by
+  let packageRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage :=
+    finiteExtinctionPackage_requirement_of_subobligations_family h
+  let milestoneRequirement :
+      dependencyMilestoneRequirement.{u} DependencyMilestone.finiteExtinction :=
+    finiteExtinction_requirement_of_subobligations_family h
+  rcases packageRequirement M with ⟨targetPackage⟩
+  let targetStatement : FiniteExtinctionStatement targetPackage.1 M :=
+    finite_extinction_statement_of_surgery_package targetPackage.2
+  let targetWitness : FiniteExtinctionByRicciFlowWithSurgery M :=
+    finite_extinction_via_statement_of_surgery_package targetPackage.2
+  rcases
+    public_and_canonical_certificate_payloads_named_targets_criteria_and_witnessCriterion_of_smoothability_and_subobligations_family
+      witness smoothabilityPackage h extractSphere with
+    ⟨ finiteExtinction
+    , publicTarget
+    , publicPayload
+    , canonicalTarget
+    , canonicalPayload
+    , allCriteria
+    , witnessCriterion
+    , hFiniteExtinction
+    , hPublicTarget
+    , hPublicPayload
+    , hPublicPayloadPair
+    , hCanonicalTarget
+    , hCanonicalPayload
+    , hCanonicalPayloadPair
+    , hAllCriteria
+    , hAllCriteriaWitness
+    , hWitnessCriterion
+    , poincareStatement
+    , canonicalTargetWitness
+    , witnessCriterionWitness
+    ⟩
+  exact
+    ⟨ packageRequirement
+    , milestoneRequirement
+    , targetPackage
+    , targetStatement
+    , targetWitness
+    , finiteExtinction
+    , publicTarget
+    , publicPayload
+    , canonicalTarget
+    , canonicalPayload
+    , allCriteria
+    , witnessCriterion
+    , rfl
+    , rfl
+    , by apply Subsingleton.elim
+    , rfl
+    , rfl
+    , hFiniteExtinction
+    , hPublicTarget
+    , hPublicPayload
+    , hPublicPayloadPair
+    , hCanonicalTarget
+    , hCanonicalPayload
+    , hCanonicalPayloadPair
+    , hAllCriteria
+    , hAllCriteriaWitness
+    , hWitnessCriterion
+    , poincareStatement
+    , canonicalTargetWitness
+    , witnessCriterionWitness
+    ⟩
+
 end Poincare
