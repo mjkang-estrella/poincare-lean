@@ -619,4 +619,81 @@ theorem analyticFoundationPackage_namedFlow_sharedConnection_allTime_metricSlice
     , hBundle
     ⟩
 
+/--
+Fixed-time consumer form of the shared-connection analytic package endpoint.
+It keeps one selected metric slice at `t₀` together with its smooth
+Riemannian-bundle evidence, while retaining the same named flow, sub-obligation
+payload, shared connection field, first analytic field, and all-time metric
+slice family.
+-/
+theorem analyticFoundationPackage_namedFlow_sharedConnection_fixedTime_and_allTime_metricSlice_riemannianBundle_and_first_analytic_field
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) (t₀ : ℝ) :
+    ∃ flow : RicciFlowData I n M,
+    ∃ _subobligations : AnalyticFoundationSubobligationsPayload flow,
+    ∃ _connectionAtTime :
+      TimeDependentTangentConnectionField (metric_of_ricci_flow_data flow),
+    ∃ selectedMetricSlice :
+      ContMDiffRiemannianMetric I n E
+        (fun x : M => TangentSpace I x),
+      flow = ricci_flow_data_of_analytic_foundation_package package ∧
+        selectedMetricSlice = metric_at_time_of_ricci_flow_data flow t₀ ∧
+        (letI : RiemannianBundle (fun x : M => TangentSpace I x) :=
+            ⟨selectedMetricSlice.toRiemannianMetric⟩;
+          IsContMDiffRiemannianBundle I n E
+            (fun x : M => TangentSpace I x)) ∧
+        TimeDependentTangentConnectionField
+            (metric_of_ricci_flow_data flow) =
+          (ℝ → TangentCovariantDerivative I M) ∧
+        ProposedHasLeviCivitaConnectionExistence
+          (metric_of_ricci_flow_data flow) ∧
+        HasLeviCivitaConnectionExistence
+          (metric_of_ricci_flow_data flow) ∧
+        (∀ t : ℝ,
+          ∃ metricSlice :
+            ContMDiffRiemannianMetric I n E
+              (fun x : M => TangentSpace I x),
+            metricSlice = metric_at_time_of_ricci_flow_data flow t ∧
+              Nonempty
+                (ContMDiffRiemannianMetric I n E
+                  (fun x : M => TangentSpace I x)) ∧
+              (letI : RiemannianBundle (fun x : M => TangentSpace I x) :=
+                  ⟨metricSlice.toRiemannianMetric⟩;
+                IsContMDiffRiemannianBundle I n E
+                  (fun x : M => TangentSpace I x))) := by
+  rcases
+    analyticFoundationPackage_namedFlow_sharedConnection_allTime_metricSlice_riemannianBundle_and_first_analytic_field
+      package with
+    ⟨ flow
+    , subobligations
+    , connectionAtTime
+    , hFlow
+    , hConnectionField
+    , hProposed
+    , hFirstField
+    , allMetricSlices
+    ⟩
+  rcases allMetricSlices t₀ with
+    ⟨ selectedMetricSlice
+    , hSelectedMetricSlice
+    , _hSelectedNonempty
+    , hSelectedBundle
+    ⟩
+  exact
+    ⟨ flow
+    , subobligations
+    , connectionAtTime
+    , selectedMetricSlice
+    , hFlow
+    , hSelectedMetricSlice
+    , hSelectedBundle
+    , hConnectionField
+    , hProposed
+    , hFirstField
+    , allMetricSlices
+    ⟩
+
 end Poincare
