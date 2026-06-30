@@ -1384,6 +1384,92 @@ theorem surgeryPerelman_completeConsumerPayload_fixedTarget_combinedPayload_sele
     ⟩
 
 /--
+An inhabited complete surgery/Perelman consumer payload opens the full
+construction and Perelman-control spine at a fixed target through the concrete
+combined payload selected for that target.  This keeps the surgery scale,
+cutoff, parameter-selection, aggregate with-surgery package, Perelman
+entropy/reduced-volume/canonical-neighborhood controls, blowup classification,
+finite-extinction statement, and extinction witness synchronized at one
+selected flow.
+-/
+theorem surgeryPerelman_completeConsumerPayload_fixedTarget_construction_perelman_control_and_finiteExtinction_fields
+    (payload :
+      Nonempty SurgeryPerelmanCompleteConsumerPayloadFromFiniteExtinction.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ n : ℕ∞ω,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    ∃ _combinedPayload :
+      FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package,
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+      flow = ricci_flow_data_of_surgery_package package ∧
+        RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
+        Nonempty (SurgeryScaleFunctionPayload flow) ∧
+        HasSurgeryScaleFunction flow ∧
+        HasSurgeryScaleContinuity flow ∧
+        HasSurgeryScaleSeparation flow ∧
+        HasSurgeryCutoffParameterControl flow ∧
+        HasSurgeryCutoffSmoothBumpFunction flow ∧
+        HasSurgeryParameterSelection flow ∧
+        HasRicciFlowWithSurgery n M ∧
+        PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+        HasPerelmanEntropyMonotonicity flow ∧
+        HasPerelmanReducedVolumeMonotonicity flow ∧
+        HasPerelmanReducedVolumePositiveLowerBound flow ∧
+        HasPerelmanKappaNoncollapsingQuantification flow ∧
+        HasCanonicalNeighborhoodTheorem flow ∧
+        HasSingularityModelClassification flow ∧
+        HasSingularityModelBlowupClassification flow ∧
+        HasPerelmanSingularityControl flow ∧
+        FiniteExtinctionStatement n M ∧
+        FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases
+    surgeryPerelman_completeConsumerPayload_fixedTarget_combinedPayload_selectedFlow_fields
+      payload M with
+    ⟨n, package, combinedPayload, _flow, _flow_eq, _constructionPackage,
+      _perelmanPackage, _scalePayload, _blowupClassification,
+      _finiteExtinctionStatement, _finiteExtinctionWitness⟩
+  rcases
+    finiteExtinctionSurgeryPerelmanAndExtinctionPayload_construction_perelman_control_and_finiteExtinction_fields
+      combinedPayload with
+    ⟨flow, hFlow, constructionPackage, scalePayload, scaleFunction,
+      scaleContinuity, scaleSeparation, cutoffParameterControl,
+      cutoffSmoothBump, parameterSelection, withSurgery, perelmanPackage,
+      entropyMonotonicity, reducedVolume, reducedVolumePositiveLowerBound,
+      kappaNoncollapsing, canonicalNeighborhood,
+      singularityModelClassification, blowupClassification, control,
+      finiteExtinctionStatement, finiteExtinctionWitness⟩
+  exact
+    ⟨ n
+    , package
+    , combinedPayload
+    , flow
+    , hFlow
+    , constructionPackage
+    , scalePayload
+    , scaleFunction
+    , scaleContinuity
+    , scaleSeparation
+    , cutoffParameterControl
+    , cutoffSmoothBump
+    , parameterSelection
+    , withSurgery
+    , perelmanPackage
+    , entropyMonotonicity
+    , reducedVolume
+    , reducedVolumePositiveLowerBound
+    , kappaNoncollapsing
+    , canonicalNeighborhood
+    , singularityModelClassification
+    , blowupClassification
+    , control
+    , finiteExtinctionStatement
+    , finiteExtinctionWitness
+    ⟩
+
+/--
 An inhabited complete surgery/Perelman consumer payload opens the reduced
 volume, no-local-collapsing, and canonical-neighborhood control spine at a
 fixed target through the concrete combined payload selected for that target.
