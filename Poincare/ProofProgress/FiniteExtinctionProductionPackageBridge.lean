@@ -10822,6 +10822,103 @@ theorem finite_extinction_control_frontier_sweepout_package_statement_and_witnes
     ⟩
 
 /--
+The same target-assumption/control-frontier route also retains the
+finite-extinction derivation stored in the constructed package.  This keeps the
+selected analytic, surgery, Perelman-control, target sweepout bundle, package
+flow, package surgery/control fields, derivation, theorem-shaped statement,
+and projected extinction witness synchronized for one fixed target.
+-/
+theorem finite_extinction_control_frontier_sweepout_package_statement_derivation_and_witness_of_target_assumptions
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (controlFrontier :
+      ∃ n : ℕ∞ω,
+      ∃ analyticFoundation :
+        RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M,
+      ∃ _surgeryConstruction :
+        RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+          (ricci_flow_data_of_analytic_foundation_package analyticFoundation),
+      ∃ _perelmanControl :
+        PerelmanSingularityControlPackage (n := n) (M := M)
+          (ricci_flow_data_of_analytic_foundation_package analyticFoundation),
+        True) :
+    ∃ n : ℕ∞ω,
+    ∃ analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M,
+    ∃ _surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation),
+    ∃ _perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation),
+    ∃ sweepoutBundle : TargetFiniteExtinctionSweepoutInterfaceBundle M,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    ∃ packageFlow : RicciFlowData ThreeManifoldModelWithCorners n M,
+    ∃ packageSurgery : HasRicciFlowWithSurgery n M,
+    ∃ packageControl :
+      HasPerelmanSingularityControl (n := n) (M := M)
+        (ricci_flow_data_of_surgery_package package),
+    ∃ packageDerivation :
+      HasFiniteExtinctionDerivation
+        (ricci_flow_data_of_surgery_package package)
+        (ricci_flow_with_surgery_of_surgery_package package)
+        packageControl,
+    ∃ packageStatement : FiniteExtinctionStatement n M,
+    ∃ extinctionWitness : FiniteExtinctionByRicciFlowWithSurgery M,
+      sweepoutBundle =
+          target_finite_extinction_sweepout_interface_bundle_of_target_assumptions
+            M ∧
+        packageFlow = ricci_flow_data_of_surgery_package package ∧
+        packageSurgery = ricci_flow_with_surgery_of_surgery_package package ∧
+        packageControl =
+          perelman_singularity_control_of_surgery_package package ∧
+        packageDerivation =
+          finite_extinction_derivation_of_surgery_package package ∧
+        packageStatement =
+          finite_extinction_statement_of_surgery_package package ∧
+        extinctionWitness =
+          finite_extinction_via_statement_of_surgery_package package := by
+  rcases controlFrontier with
+    ⟨n, analyticFoundation, surgeryConstruction, perelmanControl, _⟩
+  let sweepoutBundle :
+      TargetFiniteExtinctionSweepoutInterfaceBundle M :=
+    target_finite_extinction_sweepout_interface_bundle_of_target_assumptions M
+  rcases
+      finite_extinction_surgery_package_nonempty_of_target_assumptions_and_control_frontier
+        analyticFoundation surgeryConstruction perelmanControl with
+    ⟨package⟩
+  let packageFlow : RicciFlowData ThreeManifoldModelWithCorners n M :=
+    ricci_flow_data_of_surgery_package package
+  let packageSurgery : HasRicciFlowWithSurgery n M :=
+    ricci_flow_with_surgery_of_surgery_package package
+  let packageControl :=
+    perelman_singularity_control_of_surgery_package package
+  let packageDerivation :=
+    finite_extinction_derivation_of_surgery_package package
+  exact
+    ⟨ n
+    , analyticFoundation
+    , surgeryConstruction
+    , perelmanControl
+    , sweepoutBundle
+    , package
+    , packageFlow
+    , packageSurgery
+    , packageControl
+    , packageDerivation
+    , finite_extinction_statement_of_surgery_package package
+    , finite_extinction_via_statement_of_surgery_package package
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    ⟩
+
+/--
 Family-level theorem-shaped finite extinction: the target-family
 control-frontier supply gives each target manifold a time parameter together
 with the finite-extinction statement at that parameter.
