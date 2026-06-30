@@ -1340,4 +1340,275 @@ theorem finite_extinction_surgery_package_nonempty_of_width_statement_and_contro
     analyticFoundation surgeryConstruction perelmanControl widthStatement
     curvatureFrontier
 
+/--
+The width statement plus the analytic/surgery/Perelman control frontier
+construct a completed finite-extinction surgery package, hence the
+theorem-shaped finite-extinction statement.
+-/
+theorem finite_extinction_statement_of_width_statement_and_control_frontier
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (widthStatement :
+      FiniteExtinctionWidthSubobligationsStatement
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control) :
+    FiniteExtinctionStatement n M := by
+  rcases finite_extinction_surgery_package_nonempty_of_width_statement_and_control_frontier
+      analyticFoundation surgeryConstruction perelmanControl widthStatement with
+    ⟨package⟩
+  exact finite_extinction_statement_of_surgery_package package
+
+/--
+The same width/control frontier directly exposes the finite-extinction witness
+for the target manifold by projecting it from the theorem-shaped statement
+constructed above.
+-/
+theorem finite_extinction_by_ricci_flow_with_surgery_of_width_statement_and_control_frontier
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (widthStatement :
+      FiniteExtinctionWidthSubobligationsStatement
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control) :
+    FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases finite_extinction_statement_of_width_statement_and_control_frontier
+      analyticFoundation surgeryConstruction perelmanControl widthStatement with
+    ⟨_flow, _surgery, _control, finiteExtinction, _conclusion⟩
+  exact finiteExtinction
+
+/--
+Bundled width/control-frontier finite-extinction payload: the completed surgery
+package remains visible together with its theorem-shaped statement and the
+finite-extinction witness projected from that same package.
+-/
+theorem finite_extinction_package_statement_and_witness_of_width_statement_and_control_frontier
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (widthStatement :
+      FiniteExtinctionWidthSubobligationsStatement
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control) :
+    ∃ _package : FiniteExtinctionSurgeryPackage n M,
+      FiniteExtinctionStatement n M ∧
+        FiniteExtinctionByRicciFlowWithSurgery M := by
+  rcases finite_extinction_surgery_package_nonempty_of_width_statement_and_control_frontier
+      analyticFoundation surgeryConstruction perelmanControl widthStatement with
+    ⟨package⟩
+  exact
+    ⟨ package
+    , finite_extinction_statement_of_surgery_package package
+    , finite_extinction_via_statement_of_surgery_package package
+    ⟩
+
+/--
+The width/control frontier also exposes the derivation data behind the
+completed finite-extinction package.  This keeps the package, theorem-shaped
+statement, Ricci-flow data, surgery structure, Perelman control, derivation
+certificate, and projected extinction witness synchronized at the same
+constructed package.
+-/
+theorem finite_extinction_package_statement_derivation_and_witness_of_width_statement_and_control_frontier
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (widthStatement :
+      FiniteExtinctionWidthSubobligationsStatement
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control) :
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    ∃ packageStatement : FiniteExtinctionStatement n M,
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+    ∃ surgery : HasRicciFlowWithSurgery n M,
+    ∃ control : HasPerelmanSingularityControl (n := n) (M := M) flow,
+    ∃ _derivation : HasFiniteExtinctionDerivation flow surgery control,
+    ∃ extinctionWitness : FiniteExtinctionByRicciFlowWithSurgery M,
+      packageStatement = finite_extinction_statement_of_surgery_package package ∧
+        extinctionWitness =
+          finite_extinction_via_statement_of_surgery_package package := by
+  rcases finite_extinction_surgery_package_nonempty_of_width_statement_and_control_frontier
+      analyticFoundation surgeryConstruction perelmanControl widthStatement with
+    ⟨package⟩
+  exact
+    ⟨ package
+    , finite_extinction_statement_of_surgery_package package
+    , ricci_flow_data_of_analytic_foundation_package analyticFoundation
+    , surgeryConstruction.withSurgery
+    , perelmanControl.control
+    , finite_extinction_derivation_of_width_statement
+        analyticFoundation surgeryConstruction perelmanControl widthStatement
+    , finite_extinction_via_statement_of_surgery_package package
+    , rfl
+    , rfl
+    ⟩
+
+/--
+The width/control frontier also keeps the constructed post-volume-differential
+frontiers and conclusion-derivation certificate visible.  This exposes the
+full proof-producing route from the width statement through curvature,
+volume, surgery-volume, scalar-curvature, and volume-differential frontiers to
+the finite-extinction package, theorem-shaped statement, derivation, time
+bound, conclusion derivation, and projected extinction witness.
+-/
+theorem finite_extinction_frontiers_package_statement_derivation_conclusion_and_witness_of_width_statement_and_control_frontier
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
+    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (analyticFoundation :
+      RicciFlowAnalyticFoundationPackage ThreeManifoldModelWithCorners n M)
+    (surgeryConstruction :
+      RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (perelmanControl :
+      PerelmanSingularityControlPackage (n := n) (M := M)
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation))
+    (widthStatement :
+      FiniteExtinctionWidthSubobligationsStatement
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control) :
+    ∃ curvatureFrontier :
+      FiniteExtinctionProductionCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl,
+    ∃ volumeFrontier :
+      FiniteExtinctionProductionVolumeEvolutionFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier,
+    ∃ surgeryVolumeFrontier :
+      FiniteExtinctionProductionSurgeryVolumeFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier volumeFrontier,
+    ∃ scalarCurvatureFrontier :
+      FiniteExtinctionProductionScalarCurvatureFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier volumeFrontier surgeryVolumeFrontier,
+    ∃ _volumeDifferentialFrontier :
+      FiniteExtinctionProductionVolumeDifferentialFrontier
+        analyticFoundation surgeryConstruction perelmanControl
+        curvatureFrontier volumeFrontier surgeryVolumeFrontier
+        scalarCurvatureFrontier,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    ∃ packageStatement : FiniteExtinctionStatement n M,
+    ∃ derivation :
+      HasFiniteExtinctionDerivation
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control,
+    ∃ timeBound :
+      HasFiniteExtinctionTimeBound
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching curvatureFrontier.componentControl,
+    ∃ extinctionWitness : FiniteExtinctionByRicciFlowWithSurgery M,
+    ∃ _conclusionDerivation :
+      HasFiniteExtinctionConclusionDerivation
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching curvatureFrontier.componentControl
+        timeBound derivation extinctionWitness,
+      packageStatement = finite_extinction_statement_of_surgery_package package ∧
+        extinctionWitness =
+          finite_extinction_via_statement_of_surgery_package package := by
+  let curvatureFrontier :=
+    finite_extinction_curvature_frontier_of_control_frontier
+      analyticFoundation surgeryConstruction perelmanControl
+  let volumeFrontier :=
+    finite_extinction_volume_evolution_frontier_of_curvature_frontier
+      analyticFoundation surgeryConstruction perelmanControl curvatureFrontier
+  let surgeryVolumeFrontier :=
+    finite_extinction_surgery_volume_frontier_of_volume_frontier
+      analyticFoundation surgeryConstruction perelmanControl
+      curvatureFrontier volumeFrontier
+  let scalarCurvatureFrontier :=
+    finite_extinction_scalar_curvature_frontier_of_curvature_frontier
+      analyticFoundation surgeryConstruction perelmanControl
+      curvatureFrontier volumeFrontier surgeryVolumeFrontier
+  let volumeDifferentialFrontier :=
+    finite_extinction_volume_differential_frontier_of_scalar_curvature_frontier
+      analyticFoundation surgeryConstruction perelmanControl
+      curvatureFrontier volumeFrontier surgeryVolumeFrontier
+      scalarCurvatureFrontier
+  rcases
+    finite_extinction_surgery_package_nonempty_of_volume_differential_frontier
+      analyticFoundation surgeryConstruction perelmanControl widthStatement
+      curvatureFrontier volumeFrontier surgeryVolumeFrontier
+      scalarCurvatureFrontier volumeDifferentialFrontier with
+    ⟨package⟩
+  let derivation :=
+    finite_extinction_derivation_of_width_statement
+      analyticFoundation surgeryConstruction perelmanControl widthStatement
+  let timeBound :=
+    finite_extinction_time_bound_of_volume_differential_frontier
+      analyticFoundation surgeryConstruction perelmanControl
+      curvatureFrontier volumeFrontier surgeryVolumeFrontier
+      scalarCurvatureFrontier volumeDifferentialFrontier
+  let extinctionWitness :=
+    finite_extinction_by_ricci_flow_with_surgery_of_volume_differential_frontier
+      analyticFoundation surgeryConstruction perelmanControl widthStatement
+      curvatureFrontier volumeFrontier surgeryVolumeFrontier
+      scalarCurvatureFrontier volumeDifferentialFrontier
+  have conclusionDerivation :
+      HasFiniteExtinctionConclusionDerivation
+        (ricci_flow_data_of_analytic_foundation_package analyticFoundation)
+        surgeryConstruction.withSurgery perelmanControl.control
+        curvatureFrontier.curvaturePinching curvatureFrontier.componentControl
+        timeBound derivation extinctionWitness := by
+    exact
+      finite_extinction_conclusion_derivation_of_volume_differential_frontier
+        analyticFoundation surgeryConstruction perelmanControl widthStatement
+        curvatureFrontier volumeFrontier surgeryVolumeFrontier
+        scalarCurvatureFrontier volumeDifferentialFrontier
+  exact
+    ⟨ curvatureFrontier
+    , volumeFrontier
+    , surgeryVolumeFrontier
+    , scalarCurvatureFrontier
+    , volumeDifferentialFrontier
+    , package
+    , finite_extinction_statement_of_surgery_package package
+    , derivation
+    , timeBound
+    , extinctionWitness
+    , conclusionDerivation
+    , rfl
+    , by apply Subsingleton.elim
+    ⟩
+
 end Poincare
