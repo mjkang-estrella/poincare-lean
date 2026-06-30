@@ -3978,4 +3978,30 @@ theorem extinction_topology_decomposition_statement_named_data_payload_current_i
     ⟩
   apply Subsingleton.elim
 
+/--
+Family form of the first topology-production field payload.  A decomposition
+data statement supplies, for every finite-extinction target, a named certified
+decomposition datum, the selected package-level decomposition proof constructed
+from that datum, and its synchronization with the statement-level field
+projection.
+-/
+theorem extinction_topology_decomposition_statement_named_data_payload_family_current_interface
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      (extinction : FiniteExtinctionByRicciFlowWithSurgery M),
+        ∃ data : ExtinctionTopologyDecompositionData M extinction,
+        ∃ selectedDecomposition : HasExtinctionTopologyDecomposition M extinction,
+          selectedDecomposition =
+              extinction_topology_decomposition_of_decomposition_data_current_interface
+                M extinction data ∧
+            extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+                decompositionData M extinction =
+              selectedDecomposition := by
+  intro M _top _t2 _charted _simple _compact extinction
+  exact
+    extinction_topology_decomposition_statement_named_data_payload_current_interface
+      decompositionData M extinction
+
 end Poincare
