@@ -785,4 +785,111 @@ theorem analyticFoundationPackage_namedFlow_sharedConnection_fixedTime_nonemptyC
     , allMetricSlices
     ⟩
 
+/--
+Two-time consumer endpoint for the analytic package.  The same named flow,
+sub-obligation payload, and shared connection field support two explicitly
+selected metric slices, their smooth Riemannian-bundle evidence, the
+connection-field nonemptiness bridge, and the all-time metric-slice family.
+-/
+theorem analyticFoundationPackage_namedFlow_sharedConnection_twoTime_nonemptyConnection_and_allTime_metricSlice_riemannianBundle_and_first_analytic_field
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) (t₀ t₁ : ℝ) :
+    ∃ flow : RicciFlowData I n M,
+    ∃ _subobligations : AnalyticFoundationSubobligationsPayload flow,
+    ∃ _connectionAtTime :
+      TimeDependentTangentConnectionField (metric_of_ricci_flow_data flow),
+    ∃ firstMetricSlice :
+      ContMDiffRiemannianMetric I n E
+        (fun x : M => TangentSpace I x),
+    ∃ secondMetricSlice :
+      ContMDiffRiemannianMetric I n E
+        (fun x : M => TangentSpace I x),
+      flow = ricci_flow_data_of_analytic_foundation_package package ∧
+        Nonempty
+          (TimeDependentTangentConnectionField
+            (metric_of_ricci_flow_data flow)) ∧
+        (ProposedHasLeviCivitaConnectionExistence
+            (metric_of_ricci_flow_data flow) ↔
+          Nonempty
+            (TimeDependentTangentConnectionField
+              (metric_of_ricci_flow_data flow))) ∧
+        firstMetricSlice = metric_at_time_of_ricci_flow_data flow t₀ ∧
+        secondMetricSlice = metric_at_time_of_ricci_flow_data flow t₁ ∧
+        Nonempty
+          (ContMDiffRiemannianMetric I n E
+            (fun x : M => TangentSpace I x)) ∧
+        (letI : RiemannianBundle (fun x : M => TangentSpace I x) :=
+            ⟨firstMetricSlice.toRiemannianMetric⟩;
+          IsContMDiffRiemannianBundle I n E
+            (fun x : M => TangentSpace I x)) ∧
+        (letI : RiemannianBundle (fun x : M => TangentSpace I x) :=
+            ⟨secondMetricSlice.toRiemannianMetric⟩;
+          IsContMDiffRiemannianBundle I n E
+            (fun x : M => TangentSpace I x)) ∧
+        TimeDependentTangentConnectionField
+            (metric_of_ricci_flow_data flow) =
+          (ℝ → TangentCovariantDerivative I M) ∧
+        ProposedHasLeviCivitaConnectionExistence
+          (metric_of_ricci_flow_data flow) ∧
+        HasLeviCivitaConnectionExistence
+          (metric_of_ricci_flow_data flow) ∧
+        (∀ t : ℝ,
+          ∃ metricSlice :
+            ContMDiffRiemannianMetric I n E
+              (fun x : M => TangentSpace I x),
+            metricSlice = metric_at_time_of_ricci_flow_data flow t ∧
+              Nonempty
+                (ContMDiffRiemannianMetric I n E
+                  (fun x : M => TangentSpace I x)) ∧
+              (letI : RiemannianBundle (fun x : M => TangentSpace I x) :=
+                  ⟨metricSlice.toRiemannianMetric⟩;
+                IsContMDiffRiemannianBundle I n E
+                  (fun x : M => TangentSpace I x))) := by
+  rcases
+    analyticFoundationPackage_namedFlow_sharedConnection_fixedTime_nonemptyConnection_and_allTime_metricSlice_riemannianBundle_and_first_analytic_field
+      package t₀ with
+    ⟨ flow
+    , subobligations
+    , connectionAtTime
+    , firstMetricSlice
+    , hFlow
+    , hConnectionNonempty
+    , hProposedIff
+    , hFirstMetricSlice
+    , hMetricNonempty
+    , hFirstBundle
+    , hConnectionField
+    , hProposed
+    , hFirstField
+    , allMetricSlices
+    ⟩
+  rcases allMetricSlices t₁ with
+    ⟨ secondMetricSlice
+    , hSecondMetricSlice
+    , _hSecondMetricNonempty
+    , hSecondBundle
+    ⟩
+  exact
+    ⟨ flow
+    , subobligations
+    , connectionAtTime
+    , firstMetricSlice
+    , secondMetricSlice
+    , hFlow
+    , hConnectionNonempty
+    , hProposedIff
+    , hFirstMetricSlice
+    , hSecondMetricSlice
+    , hMetricNonempty
+    , hFirstBundle
+    , hSecondBundle
+    , hConnectionField
+    , hProposed
+    , hFirstField
+    , allMetricSlices
+    ⟩
+
 end Poincare
