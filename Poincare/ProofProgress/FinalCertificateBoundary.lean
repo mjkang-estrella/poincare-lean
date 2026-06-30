@@ -8565,4 +8565,156 @@ theorem finalAssemblySubobligationBoundaryInputs_promotedBoundary_requirements_f
     , rfl
     ⟩
 
+/--
+Remaining-dependency opened final-certificate handoff.  This strengthens the
+field-opened topology-assembly endpoint by naming the remaining dependency
+package recovered from the promoted boundary, and by retaining the checked
+certificate equalities through both certificate constructors: the
+remaining-dependency/primitive-input route and the minimal-input/topology route.
+-/
+theorem finalAssemblySubobligationBoundaryInputs_promotedBoundary_remainingDependency_topologyAssembly_fields_and_completionCriteria
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u})
+    (witness : Type u) :
+    ∃ promoted : FinalAssemblyPackageBoundaryInputs.{u},
+    ∃ minimalInputs : FinalCertificateMinimalPackageInputs.{u},
+    ∃ primitiveInputs : FinalCertificatePrimitiveInputs.{u},
+    ∃ remainingDependencies : RemainingDependencyPackage.{u},
+    ∃ topologyAssemblyPayload :
+      FinalCertificateTopologyAssemblyPayload minimalInputs promoted.topology,
+    ∃ publicStatement : PoincareConjectureStatement.{u},
+    ∃ checkedCertificate : PoincareCompletionCertificate.{u},
+    ∃ nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u},
+    ∃ canonicalTarget : canonicalCompletionTarget.{u},
+    ∃ publicPayload :
+      (∃ _statement : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ canonicalPayload :
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ allCriteria :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ witnessCriterion : CompletionCriterionAtUniverse witness,
+      promoted =
+        finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs
+          inputs ∧
+        promoted.smoothability = inputs.smoothability ∧
+        promoted.finiteExtinction =
+          finiteExtinctionPackage_requirement_of_subobligations_family
+            inputs.finiteExtinctionSubobligations ∧
+        promoted.topology = inputs.topology ∧
+        minimalInputs =
+          finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+            promoted ∧
+        primitiveInputs =
+          finalCertificatePrimitiveInputs_of_minimalPackageInputs minimalInputs
+            (extinction_implies_sphere_of_topology_package
+              promoted.topology) ∧
+        remainingDependencies =
+          remainingDependencyPackage_of_finalAssemblyPackageBoundaryInputs
+            promoted ∧
+        publicStatement = topologyAssemblyPayload.publicStatement ∧
+        checkedCertificate = topologyAssemblyPayload.checkedCertificate ∧
+        nonemptyCertificate = topologyAssemblyPayload.nonemptyCertificate ∧
+        canonicalTarget = topologyAssemblyPayload.canonicalTarget ∧
+        publicPayload = topologyAssemblyPayload.publicPayload ∧
+        canonicalPayload = topologyAssemblyPayload.canonicalPayload ∧
+        publicPayload = ⟨publicStatement, allCriteria⟩ ∧
+        canonicalPayload = ⟨canonicalTarget, allCriteria⟩ ∧
+        allCriteria = topologyAssemblyPayload.completionCriteria ∧
+        allCriteria =
+          (fun witness =>
+            completion_criterion_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+              witness minimalInputs promoted.topology) ∧
+        publicStatement =
+          poincare_conjecture_of_completion_certificate checkedCertificate ∧
+        checkedCertificate =
+          completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+            remainingDependencies primitiveInputs ∧
+        checkedCertificate =
+          completion_certificate_of_remainingDependencyPackage_and_finalCertificatePrimitiveInputs
+            (remainingDependencyPackage_of_finalAssemblyPackageBoundaryInputs
+              promoted) primitiveInputs ∧
+        checkedCertificate =
+          completion_certificate_of_finalCertificateMinimalPackageInputs_and_topologyPackage
+            minimalInputs promoted.topology ∧
+        allCriteria witness = witnessCriterion ∧
+        PoincareCompletionCertificate.{u} ∧
+        Nonempty PoincareCompletionCertificate.{u} ∧
+        CompletionCriterionAtUniverse witness := by
+  let promoted :=
+    finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs
+      inputs
+  let minimalInputs :=
+    finalCertificateMinimalPackageInputs_of_finalAssemblyPackageBoundaryInputs
+      promoted
+  let primitiveInputs :=
+    finalCertificatePrimitiveInputs_of_minimalPackageInputs minimalInputs
+      (extinction_implies_sphere_of_topology_package promoted.topology)
+  let remainingDependencies :=
+    remainingDependencyPackage_of_finalAssemblyPackageBoundaryInputs promoted
+  let topologyAssemblyPayload :
+      FinalCertificateTopologyAssemblyPayload minimalInputs promoted.topology :=
+    finalCertificateTopologyAssemblyPayload minimalInputs promoted.topology
+  let publicStatement : PoincareConjectureStatement.{u} :=
+    topologyAssemblyPayload.publicStatement
+  let checkedCertificate : PoincareCompletionCertificate.{u} :=
+    topologyAssemblyPayload.checkedCertificate
+  let nonemptyCertificate : Nonempty PoincareCompletionCertificate.{u} :=
+    topologyAssemblyPayload.nonemptyCertificate
+  let canonicalTarget : canonicalCompletionTarget.{u} :=
+    topologyAssemblyPayload.canonicalTarget
+  let publicPayload :
+      (∃ _statement : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :=
+    topologyAssemblyPayload.publicPayload
+  let canonicalPayload :
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness) :=
+    topologyAssemblyPayload.canonicalPayload
+  let allCriteria :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness :=
+    topologyAssemblyPayload.completionCriteria
+  let witnessCriterion : CompletionCriterionAtUniverse witness :=
+    topologyAssemblyPayload.completionCriteria witness
+  exact
+    ⟨ promoted
+    , minimalInputs
+    , primitiveInputs
+    , remainingDependencies
+    , topologyAssemblyPayload
+    , publicStatement
+    , checkedCertificate
+    , nonemptyCertificate
+    , canonicalTarget
+    , publicPayload
+    , canonicalPayload
+    , allCriteria
+    , witnessCriterion
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , by apply Subsingleton.elim
+    , rfl
+    , rfl
+    , checkedCertificate
+    , nonemptyCertificate
+    , witnessCriterion
+    ⟩
+
 end Poincare
