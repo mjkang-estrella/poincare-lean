@@ -1208,4 +1208,65 @@ theorem canonical_certificate_payload_of_smoothability_and_subobligations_family
       ⟩ := by
   apply Subsingleton.elim
 
+/--
+The smoothability/sub-obligation-family route supplies the public completion
+payload and the canonical completion payload from the same universal
+finite-extinction boundary.  This is the all-witness certificate-facing shape
+needed by final assembly when it must keep both completion targets synchronized
+without choosing a witness universe first.
+-/
+theorem public_and_canonical_certificate_payloads_of_smoothability_and_subobligations_family
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    ∃ finiteExtinction : UniversalFiniteExtinctionStatement.{u},
+      finiteExtinction =
+          universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+            smoothabilityPackage h ∧
+        PoincareConjectureStatement.{u} ∧
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        canonicalCompletionTarget.{u} ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        (∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let finiteExtinction :=
+    universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+      smoothabilityPackage h
+  exact
+    ⟨ finiteExtinction
+    , rfl
+    , poincare_conjecture_of_smoothability_and_subobligations_family
+        smoothabilityPackage h extractSphere
+    , poincare_conjecture_payload_of_smoothability_and_subobligations_family
+        smoothabilityPackage h extractSphere
+    , canonical_completion_target_of_smoothability_and_subobligations_family
+        smoothabilityPackage h extractSphere
+    , canonical_completion_payload_of_smoothability_and_subobligations_family
+        smoothabilityPackage h extractSphere
+    , fun witness =>
+        completion_criterion_of_smoothability_and_subobligations_family
+          witness smoothabilityPackage h extractSphere
+    ⟩
+
 end Poincare
