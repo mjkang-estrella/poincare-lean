@@ -493,4 +493,55 @@ theorem analyticFoundationPackage_namedFlow_fixedTime_metricSlice_riemannianBund
     , hFirstField
     ⟩
 
+/--
+All-time named-flow package endpoint for analytic consumers.  A completed
+analytic-foundation package supplies, at every time parameter, the selected
+Ricci-flow datum, the package sub-obligation payload, the metric slice, the
+smooth Riemannian-bundle evidence induced by that slice, and the connection
+field closing the first Levi-Civita analytic package field.
+-/
+theorem analyticFoundationPackage_namedFlow_allTime_metricSlice_riemannianBundle_connectionField_and_first_analytic_field
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type v} [TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {n : ℕ∞ω}
+    {M : Type w} [TopologicalSpace M] [ChartedSpace H M] [IsManifold I 1 M]
+    (package : RicciFlowAnalyticFoundationPackage I n M) :
+    ∀ t : ℝ,
+      ∃ flow : RicciFlowData I n M,
+      ∃ subobligations :
+        AnalyticFoundationSubobligationsPayload
+          (ricci_flow_data_of_analytic_foundation_package package),
+      ∃ metricSlice :
+        ContMDiffRiemannianMetric I n E
+          (fun x : M => TangentSpace I x),
+      ∃ _connectionAtTime :
+        TimeDependentTangentConnectionField
+          (metric_of_ricci_flow_data
+            (ricci_flow_data_of_analytic_foundation_package package)),
+        flow = ricci_flow_data_of_analytic_foundation_package package ∧
+          subobligations =
+              analytic_foundation_subobligations_of_analytic_foundation_package
+                package ∧
+          metricSlice =
+            metric_at_time_of_ricci_flow_data
+              (ricci_flow_data_of_analytic_foundation_package package) t ∧
+          (letI : RiemannianBundle (fun x : M => TangentSpace I x) :=
+              ⟨metricSlice.toRiemannianMetric⟩;
+            IsContMDiffRiemannianBundle I n E
+              (fun x : M => TangentSpace I x)) ∧
+          TimeDependentTangentConnectionField
+              (metric_of_ricci_flow_data
+                (ricci_flow_data_of_analytic_foundation_package package)) =
+            (ℝ → TangentCovariantDerivative I M) ∧
+          ProposedHasLeviCivitaConnectionExistence
+            (metric_of_ricci_flow_data
+              (ricci_flow_data_of_analytic_foundation_package package)) ∧
+          HasLeviCivitaConnectionExistence
+            (metric_of_ricci_flow_data
+              (ricci_flow_data_of_analytic_foundation_package package)) := by
+  intro t
+  exact
+    analyticFoundationPackage_namedFlow_fixedTime_metricSlice_riemannianBundle_connectionField_and_first_analytic_field
+      package t
+
 end Poincare
