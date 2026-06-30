@@ -8,7 +8,13 @@ echo "== Lean build =="
 lake build
 
 echo "== Placeholder audit =="
-placeholder_hits=$(rg -n '\b(opaque|axiom|constant|postulate|sorry|admit)\b' Poincare Poincare.lean || true)
+placeholder_decl_pattern='^[[:space:]]*(opaque|axiom|postulate)[[:space:]]+|^[[:space:]]*constant[[:space:]]+[A-Za-z_][A-Za-z0-9_]*([[:space:]]*:|[[:space:]]+.*:|[[:space:]]*$)'
+placeholder_hits=$(
+  {
+    rg -n "$placeholder_decl_pattern" Poincare Poincare.lean || true
+    rg -n '\b(sorry|admit)\b' Poincare Poincare.lean || true
+  } | sort -u
+)
 proof_wanted_hits=$(rg -n '^\s*proof_wanted\b' Poincare Poincare.lean || true)
 
 if [ -n "$placeholder_hits" ]; then

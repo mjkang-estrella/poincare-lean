@@ -54,7 +54,7 @@ root_import_status=$(cat "$tmp_dir/root_import.status")
 run_capture axiom sh scripts/axiom_audit.sh
 axiom_status=$(cat "$tmp_dir/axiom.status")
 
-run_capture completion sh scripts/completion_audit.sh
+run_capture completion env COMPLETION_AUDIT_SKIP_STATUS_SNAPSHOT=1 sh scripts/completion_audit.sh
 completion_status=$(cat "$tmp_dir/completion.status")
 
 completion_result="not achieved"
@@ -104,28 +104,38 @@ EOF
 write_section() {
   title=$1
   output_file=$2
+  status_file=$3
 
   cat >> "$tmp" <<EOF
 
 ## ${title}
 
+Status: $(cat "$status_file")
+
 \`\`\`text
 EOF
-  cat "$output_file" >> "$tmp"
+  line_count=$(wc -l < "$output_file" | tr -d ' ')
+  if [ "$line_count" -le 80 ]; then
+    cat "$output_file" >> "$tmp"
+  else
+    sed -n '1,40p' "$output_file" >> "$tmp"
+    printf '\n... omitted %s middle lines ...\n\n' "$((line_count - 80))" >> "$tmp"
+    tail -n 40 "$output_file" >> "$tmp"
+  fi
   cat >> "$tmp" <<EOF
 \`\`\`
 EOF
 }
 
-write_section "Build" "$tmp_dir/build.out"
-write_section "Interface Audit" "$tmp_dir/interface.out"
-write_section "Mathlib Gap Audit" "$tmp_dir/mathlib.out"
-write_section "Shape Contract Audit" "$tmp_dir/shape.out"
-write_section "Theorem Contract Audit" "$tmp_dir/theorem.out"
-write_section "Semantic Surface Audit" "$tmp_dir/semantic.out"
-write_section "Root Import Audit" "$tmp_dir/root_import.out"
-write_section "Axiom Footprint Audit" "$tmp_dir/axiom.out"
-write_section "Completion Audit" "$tmp_dir/completion.out"
+write_section "Build" "$tmp_dir/build.out" "$tmp_dir/build.status"
+write_section "Interface Audit" "$tmp_dir/interface.out" "$tmp_dir/interface.status"
+write_section "Mathlib Gap Audit" "$tmp_dir/mathlib.out" "$tmp_dir/mathlib.status"
+write_section "Shape Contract Audit" "$tmp_dir/shape.out" "$tmp_dir/shape.status"
+write_section "Theorem Contract Audit" "$tmp_dir/theorem.out" "$tmp_dir/theorem.status"
+write_section "Semantic Surface Audit" "$tmp_dir/semantic.out" "$tmp_dir/semantic.status"
+write_section "Root Import Audit" "$tmp_dir/root_import.out" "$tmp_dir/root_import.status"
+write_section "Axiom Footprint Audit" "$tmp_dir/axiom.out" "$tmp_dir/axiom.status"
+write_section "Completion Audit" "$tmp_dir/completion.out" "$tmp_dir/completion.status"
 
 mv "$tmp" "$out"
 tmp=""

@@ -17,38 +17,72 @@ cleanup() {
 
 trap cleanup EXIT
 
-rg --no-filename -o '^(@\[[^]]+\][[:space:]]+)?(theorem|lemma)[[:space:]]+[A-Za-z0-9_.'\'']+' \
-  Poincare/*.lean |
+: > "$decls_file"
+for path in Poincare/*.lean; do
+  awk -v path="$path" '
+    BEGIN {
+      in_block = 0
+      apos = sprintf("%c", 39)
+      pattern = "^(@\\[[^]]+\\][[:space:]]+)?(theorem|lemma)[[:space:]]+[A-Za-z0-9_." apos "]+"
+    }
+    {
+      line = $0
+      if (in_block) {
+        if (line ~ /-\//) {
+          in_block = 0
+        }
+        next
+      }
+      if (line ~ /^[[:space:]]*\/-/) {
+        if (line !~ /-\//) {
+          in_block = 1
+        }
+        next
+      }
+      sub(/[[:space:]]*--.*/, "", line)
+      if (line ~ pattern) {
+        match(line, pattern)
+        print path ":" NR ":" substr(line, RSTART, RLENGTH)
+      }
+    }
+  ' "$path" >> "$decls_file"
+done
+
+sort -t: -k1,1 -k2,2n "$decls_file" -o "$decls_file"
+
+cut -d: -f3- "$decls_file" |
   sed -E 's/^(@\[[^]]+\][[:space:]]+)?(theorem|lemma)[[:space:]]+//' |
   sort -u > "$names_file"
 
-rg -n -o '^(@\[[^]]+\][[:space:]]+)?(theorem|lemma)[[:space:]]+[A-Za-z0-9_.'\'']+' \
-  Poincare/*.lean |
-  sort -t: -k1,1 -k2,2n > "$decls_file"
+awk -F: '
+  FNR == NR {
+    names[$0] = 1
+    next
+  }
+  {
+    path = $1
+    line = $2
+    rest = $3
+    for (i = 4; i <= NF; i++) {
+      rest = rest ":" $i
+    }
+    name = rest
+    sub(/^(@\[[^]]+\][[:space:]]+)?(theorem|lemma)[[:space:]]+/, "", name)
 
-while IFS=: read -r path line rest; do
-  name=$(
-    printf '%s\n' "$rest" |
-      sed -E 's/^(@\[[^]]+\][[:space:]]+)?(theorem|lemma)[[:space:]]+//'
-  )
+    if (name ~ /_eq$/ || name == "poincare_conjecture") {
+      next
+    }
 
-  case "$name" in
-    *_eq|poincare_conjecture)
-      continue
-      ;;
-  esac
-
-  checked=$((checked + 1))
-  if grep -Fxq "${name}_eq" "$names_file"; then
-    :
-  else
-    echo "FAIL: $name at $path:$line is missing ${name}_eq"
-    status=1
-  fi
-done < "$decls_file"
-
-if [ "$status" -eq 0 ]; then
-  echo "PASS: theorem equality contracts present for $checked theorem/lemma declarations"
-fi
-
-exit "$status"
+    checked += 1
+    if (!((name "_eq") in names)) {
+      print "FAIL: " name " at " path ":" line " is missing " name "_eq"
+      status = 1
+    }
+  }
+  END {
+    if (status == 0) {
+      print "PASS: theorem equality contracts present for " checked " theorem/lemma declarations"
+    }
+    exit status
+  }
+' "$names_file" "$decls_file"

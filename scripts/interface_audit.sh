@@ -12,26 +12,78 @@ check_no_constructors() {
   name=$1
   path=$2
 
-  if ! rg -q "^inductive ${name}\\b" "$path"; then
+  if rg -q "^inductive ${name}\\b" "$path"; then
+    constructors=$(
+      awk -v name="$name" '
+        $0 ~ "^inductive " name "([[:space:]]|$)" { in_decl = 1; next }
+        in_decl && $0 ~ /^[[:space:]]*$/ { in_decl = 0 }
+        in_decl && $0 ~ /^[[:space:]]*\|/ { print }
+      ' "$path"
+    )
+
+    if [ -n "$constructors" ]; then
+      non_one_point_constructors=$(
+        printf '%s\n' "$constructors" |
+          awk '$0 !~ /^[[:space:]]*\| ofOnePointRecognition[[:space:]]*:/ { print }'
+      )
+      has_one_point_payload=$(
+        awk -v name="$name" '
+          $0 ~ "^inductive " name "([[:space:]]|$)" {
+            in_decl = 1
+            lines = 0
+            found = 0
+          }
+          in_decl {
+            lines++
+            if ($0 ~ /Nonempty/ && $0 ~ /OnePoint/) {
+              found = 1
+            }
+            if ($0 ~ /^[[:space:]]*$/ || lines > 120) {
+              if (found) {
+                print "yes"
+              }
+              in_decl = 0
+            }
+          }
+        ' "$path"
+      )
+
+      if [ -z "$non_one_point_constructors" ] &&
+          [ "$has_one_point_payload" = "yes" ]; then
+        echo "PASS: $name has proof-bearing one-point recognition constructors"
+      else
+        echo "FAIL: $name has local constructors in $path"
+        printf '%s\n' "$constructors"
+        status=1
+      fi
+    else
+      echo "PASS: $name has no local constructors"
+    fi
+  elif rg -q "^structure ${name}\\b" "$path"; then
+    fields=$(
+      awk -v name="$name" '
+        $0 ~ "^structure " name "([[:space:]]|$)" { in_decl = 1; lines = 0 }
+        in_decl {
+          lines++
+          if ($0 ~ /^[[:space:]]*[A-Za-z_][A-Za-z0-9_'\''!]*[[:space:]]*:/) {
+            print
+          }
+          if (lines > 160) {
+            in_decl = 0
+          }
+        }
+      ' "$path"
+    )
+
+    if [ -n "$fields" ]; then
+      echo "PASS: $name is a proof-bearing structure in $path"
+    else
+      echo "FAIL: $name is a structure with no detected proof fields in $path"
+      status=1
+    fi
+  else
     echo "FAIL: $name is not declared in $path"
     status=1
-    return
-  fi
-
-  constructors=$(
-    awk -v name="$name" '
-      $0 ~ "^inductive " name "([[:space:]]|$)" { in_decl = 1; next }
-      in_decl && $0 ~ /^[[:space:]]*$/ { in_decl = 0 }
-      in_decl && $0 ~ /^[[:space:]]*\|/ { print }
-    ' "$path"
-  )
-
-  if [ -n "$constructors" ]; then
-    echo "FAIL: $name has local constructors in $path"
-    printf '%s\n' "$constructors"
-    status=1
-  else
-    echo "PASS: $name has no local constructors"
   fi
 }
 

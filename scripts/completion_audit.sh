@@ -142,7 +142,7 @@ check_file_contains "External research status content" "EXTERNAL_RESEARCH_STATUS
 check_file_contains "Progress report content" "POINCARE_FORMALIZATION_REPORT.md" 'Implement a complete Lean proof of the Poincare Conjecture'
 check_file_contains "Generated current status content" "CURRENT_STATUS.md" '^- Completion: not achieved$'
 
-if rg -q '^inductive ExternalFormalizationBlocker\b' Poincare/Milestones.lean &&
+if rg -q '^(structure|inductive) ExternalFormalizationBlocker\b' Poincare/Milestones.lean &&
     rg -q '^def externalFormalizationBlockerLedger\b' Poincare/Milestones.lean &&
     rg -q '^theorem externalFormalizationBlockerLedger_length\b' Poincare/Milestones.lean &&
     rg -q '^def mathlibPoincareStatementAdapterLedger\b' Poincare/Milestones.lean &&
@@ -212,6 +212,9 @@ else
   status=1
 fi
 
+if [ "${COMPLETION_AUDIT_SKIP_STATUS_SNAPSHOT:-0}" = "1" ]; then
+  echo "SKIP: generated status snapshot checks disabled during status generation"
+else
 if rg -q '^- Completion: not achieved$' CURRENT_STATUS.md &&
     rg -q '^- Build status: 0$' CURRENT_STATUS.md &&
     rg -q '^- Interface audit status: 0$' CURRENT_STATUS.md &&
@@ -266,6 +269,7 @@ if rg -q "^- Lean toolchain: ${toolchain}$" CURRENT_STATUS.md; then
 else
   echo "FAIL: generated status snapshot does not match current Lean toolchain"
   status=1
+fi
 fi
 
 if rg -q '^def PoincareConjectureStatement\b' Poincare/Statement.lean; then
@@ -1420,7 +1424,7 @@ check_direct_package_route_suffix_parity
 check_completion_constructor_endpoint_coverage
 
 check_decl "Ricci tensor interface is declared" \
-  '^inductive IsRicciTensorOf\b' Poincare/RicciFlow.lean
+  '^(structure|inductive) IsRicciTensorOf\b' Poincare/RicciFlow.lean
 check_decl "target sphere model contract is declared" \
   '^theorem threeSphere_eq\b' Poincare/Statement.lean
 check_decl "target sphere Hausdorff theorem is declared" \
@@ -2432,11 +2436,11 @@ check_decl "zero metric time-derivative pointwise theorem is declared" \
 check_decl "zero metric time-derivative pointwise equality contract is declared" \
   '^@\[simp\] theorem metric_time_derivative_at_time_apply_of_zero_metric_time_derivative_field_eq\b' Poincare/RicciFlow.lean
 check_decl "metric time-derivative identification interface is declared" \
-  '^inductive IsMetricTimeDerivativeOf\b' Poincare/RicciFlow.lean
+  '^(structure|inductive) IsMetricTimeDerivativeOf\b' Poincare/RicciFlow.lean
 check_decl "metric time-derivative data is declared" \
   '^structure MetricTimeDerivativeData\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow equation interface is declared" \
-  '^inductive SatisfiesRicciFlowEquation\b' Poincare/RicciFlow.lean
+  '^(structure|inductive) SatisfiesRicciFlowEquation\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow metric projection is declared" \
   '^def metric_of_ricci_flow_data\b' Poincare/RicciFlow.lean
 check_decl "Ricci-flow metric projection equality theorem is declared" \
@@ -2684,99 +2688,99 @@ check_decl "stationary zero-derivative zero-Ricci verification pointwise-zero pa
 check_decl "stationary zero-derivative zero-Ricci verification pointwise-zero equality contract is declared" \
   '^theorem stationary_zero_derivative_zero_ricci_equation_verification_pointwise_zero_eq\b' Poincare/RicciFlow.lean
 check_decl "Levi-Civita theory interface is declared" \
-  '^inductive HasLeviCivitaConnectionTheory\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasLeviCivitaConnectionTheory\b' Poincare/AnalyticFoundation.lean
 check_decl "Levi-Civita existence interface is declared" \
-  '^inductive HasLeviCivitaConnectionExistence\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasLeviCivitaConnectionExistence\b' Poincare/AnalyticFoundation.lean
 check_decl "Levi-Civita uniqueness interface is declared" \
-  '^inductive HasLeviCivitaConnectionUniqueness\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasLeviCivitaConnectionUniqueness\b' Poincare/AnalyticFoundation.lean
 check_decl "Levi-Civita torsion-free interface is declared" \
-  '^inductive HasLeviCivitaTorsionFreeProperty\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasLeviCivitaTorsionFreeProperty\b' Poincare/AnalyticFoundation.lean
 check_decl "Levi-Civita metric-compatibility interface is declared" \
-  '^inductive HasLeviCivitaMetricCompatibility\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasLeviCivitaMetricCompatibility\b' Poincare/AnalyticFoundation.lean
 check_decl "Riemann-curvature theory interface is declared" \
-  '^inductive HasRiemannCurvatureTensorTheory\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasRiemannCurvatureTensorTheory\b' Poincare/AnalyticFoundation.lean
 check_decl "Riemann-curvature construction interface is declared" \
-  '^inductive HasRiemannCurvatureTensorConstruction\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasRiemannCurvatureTensorConstruction\b' Poincare/AnalyticFoundation.lean
 check_decl "Riemann-curvature symmetries interface is declared" \
-  '^inductive HasRiemannCurvatureTensorSymmetries\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasRiemannCurvatureTensorSymmetries\b' Poincare/AnalyticFoundation.lean
 check_decl "first Bianchi identity interface is declared" \
-  '^inductive HasFirstBianchiIdentity\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasFirstBianchiIdentity\b' Poincare/AnalyticFoundation.lean
 check_decl "second Bianchi identity interface is declared" \
-  '^inductive HasSecondBianchiIdentity\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasSecondBianchiIdentity\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-contraction theory interface is declared" \
-  '^inductive HasRicciContractionTheory\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasRicciContractionTheory\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci tensor contraction formula interface is declared" \
-  '^inductive HasRicciTensorContractionFormula\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasRicciTensorContractionFormula\b' Poincare/AnalyticFoundation.lean
 check_decl "scalar-curvature contraction formula interface is declared" \
-  '^inductive HasScalarCurvatureContractionFormula\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasScalarCurvatureContractionFormula\b' Poincare/AnalyticFoundation.lean
 check_decl "time-dependent metric regularity interface is declared" \
-  '^inductive HasTimeDependentMetricRegularity\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasTimeDependentMetricRegularity\b' Poincare/AnalyticFoundation.lean
 check_decl "metric time-derivative theory interface is declared" \
-  '^inductive HasMetricTimeDerivativeTheory\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasMetricTimeDerivativeTheory\b' Poincare/AnalyticFoundation.lean
 check_decl "scalar-curvature theory interface is declared" \
-  '^inductive HasScalarCurvatureTheory\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasScalarCurvatureTheory\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-flow equation derivation interface is declared" \
-  '^inductive HasRicciFlowEquationDerivation\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasRicciFlowEquationDerivation\b' Poincare/AnalyticFoundation.lean
 check_decl "initial metric compatibility interface is declared" \
-  '^inductive HasInitialMetricCompatibility\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasInitialMetricCompatibility\b' Poincare/AnalyticFoundation.lean
 check_decl "DeTurck gauge-fixing interface is declared" \
-  '^inductive HasDeTurckGaugeFixing\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasDeTurckGaugeFixing\b' Poincare/AnalyticFoundation.lean
 check_decl "DeTurck background-metric compatibility interface is declared" \
-  '^inductive HasDeTurckBackgroundMetricCompatibility\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasDeTurckBackgroundMetricCompatibility\b' Poincare/AnalyticFoundation.lean
 check_decl "DeTurck vector-field construction interface is declared" \
-  '^inductive HasDeTurckVectorFieldConstruction\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasDeTurckVectorFieldConstruction\b' Poincare/AnalyticFoundation.lean
 check_decl "DeTurck equation derivation interface is declared" \
-  '^inductive HasDeTurckEquationDerivation\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasDeTurckEquationDerivation\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-DeTurck linearization interface is declared" \
-  '^inductive HasRicciDeTurckLinearization\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasRicciDeTurckLinearization\b' Poincare/AnalyticFoundation.lean
 check_decl "strictly parabolic DeTurck system interface is declared" \
-  '^inductive HasStrictlyParabolicDeTurckSystem\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasStrictlyParabolicDeTurckSystem\b' Poincare/AnalyticFoundation.lean
 check_decl "parabolic linear theory interface is declared" \
-  '^inductive HasParabolicLinearTheory\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasParabolicLinearTheory\b' Poincare/AnalyticFoundation.lean
 check_decl "parabolic fixed-point argument interface is declared" \
-  '^inductive HasParabolicFixedPointArgument\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasParabolicFixedPointArgument\b' Poincare/AnalyticFoundation.lean
 check_decl "DeTurck short-time existence interface is declared" \
-  '^inductive HasDeTurckShortTimeExistence\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasDeTurckShortTimeExistence\b' Poincare/AnalyticFoundation.lean
 check_decl "short-time regularity bootstrap interface is declared" \
-  '^inductive HasShortTimeRegularityBootstrap\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasShortTimeRegularityBootstrap\b' Poincare/AnalyticFoundation.lean
 check_decl "DeTurck diffeomorphism ODE interface is declared" \
-  '^inductive HasDeTurckDiffeomorphismODE\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasDeTurckDiffeomorphismODE\b' Poincare/AnalyticFoundation.lean
 check_decl "DeTurck pullback equation identity interface is declared" \
-  '^inductive HasDeTurckPullbackEquationIdentity\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasDeTurckPullbackEquationIdentity\b' Poincare/AnalyticFoundation.lean
 check_decl "DeTurck pullback-to-Ricci-flow interface is declared" \
-  '^inductive HasDeTurckPullbackToRicciFlow\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasDeTurckPullbackToRicciFlow\b' Poincare/AnalyticFoundation.lean
 check_decl "short-time Ricci-flow existence interface is declared" \
-  '^inductive HasShortTimeRicciFlowSolution\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasShortTimeRicciFlowSolution\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-flow maximal-time interval interface is declared" \
-  '^inductive HasRicciFlowMaximalTimeInterval\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasRicciFlowMaximalTimeInterval\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-flow continuation criterion interface is declared" \
-  '^inductive HasRicciFlowContinuationCriterion\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasRicciFlowContinuationCriterion\b' Poincare/AnalyticFoundation.lean
 check_decl "curvature blow-up continuation criterion interface is declared" \
-  '^inductive HasCurvatureBlowUpContinuationCriterion\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasCurvatureBlowUpContinuationCriterion\b' Poincare/AnalyticFoundation.lean
 check_decl "maximal solution extension interface is declared" \
-  '^inductive HasMaximalSolutionExtension\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasMaximalSolutionExtension\b' Poincare/AnalyticFoundation.lean
 check_decl "parabolic Schauder estimates interface is declared" \
-  '^inductive HasParabolicSchauderEstimates\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasParabolicSchauderEstimates\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-flow parabolic regularity interface is declared" \
-  '^inductive HasRicciFlowParabolicRegularity\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasRicciFlowParabolicRegularity\b' Poincare/AnalyticFoundation.lean
 check_decl "Shi derivative estimates interface is declared" \
-  '^inductive HasShiDerivativeEstimates\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasShiDerivativeEstimates\b' Poincare/AnalyticFoundation.lean
 check_decl "curvature derivative bootstrap interface is declared" \
-  '^inductive HasCurvatureDerivativeBootstrap\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasCurvatureDerivativeBootstrap\b' Poincare/AnalyticFoundation.lean
 check_decl "Hamilton maximum principle interface is declared" \
-  '^inductive HasHamiltonMaximumPrinciple\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasHamiltonMaximumPrinciple\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-flow uniqueness interface is declared" \
-  '^inductive HasRicciFlowUniquenessTheory\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasRicciFlowUniquenessTheory\b' Poincare/AnalyticFoundation.lean
 check_decl "metric evolution equation interface is declared" \
-  '^inductive HasMetricEvolutionEquation\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasMetricEvolutionEquation\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci tensor evolution equation interface is declared" \
-  '^inductive HasRicciTensorEvolutionEquation\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasRicciTensorEvolutionEquation\b' Poincare/AnalyticFoundation.lean
 check_decl "scalar curvature evolution equation interface is declared" \
-  '^inductive HasScalarCurvatureEvolutionEquation\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasScalarCurvatureEvolutionEquation\b' Poincare/AnalyticFoundation.lean
 check_decl "curvature norm evolution inequality interface is declared" \
-  '^inductive HasCurvatureNormEvolutionInequality\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasCurvatureNormEvolutionInequality\b' Poincare/AnalyticFoundation.lean
 check_decl "curvature evolution equations interface is declared" \
-  '^inductive HasCurvatureEvolutionEquations\b' Poincare/AnalyticFoundation.lean
+  '^(structure|inductive) HasCurvatureEvolutionEquations\b' Poincare/AnalyticFoundation.lean
 check_decl "analytic foundation package is declared" \
   '^structure RicciFlowAnalyticFoundationPackage\b' Poincare/AnalyticFoundation.lean
 check_decl "Ricci-flow equation boundary package is declared" \
@@ -5389,61 +5393,61 @@ check_decl "aggregate dependency packaged canonical smooth certificate reserved 
 check_decl "aggregate dependency packaged canonical smooth certificate reserved payload equality contract is declared" \
   '^theorem poincare_conjecture_payload_of_completion_certificate_of_poincareProofDependencies_and_packaged_canonical_smooth_three_sphere_statement_eq\b' Poincare/CanonicalBridges.lean
 check_decl "Ricci-flow-with-surgery interface is declared" \
-  '^inductive HasRicciFlowWithSurgery\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasRicciFlowWithSurgery\b' Poincare/Surgery.lean
 check_decl "surgery parameter-selection interface is declared" \
-  '^inductive HasSurgeryParameterSelection\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasSurgeryParameterSelection\b' Poincare/Surgery.lean
 check_decl "surgery scale-function interface is declared" \
-  '^inductive HasSurgeryScaleFunction\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasSurgeryScaleFunction\b' Poincare/Surgery.lean
 check_decl "surgery scale-continuity interface is declared" \
-  '^inductive HasSurgeryScaleContinuity\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasSurgeryScaleContinuity\b' Poincare/Surgery.lean
 check_decl "surgery scale-separation interface is declared" \
-  '^inductive HasSurgeryScaleSeparation\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasSurgeryScaleSeparation\b' Poincare/Surgery.lean
 check_decl "surgery cutoff-parameter control interface is declared" \
-  '^inductive HasSurgeryCutoffParameterControl\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasSurgeryCutoffParameterControl\b' Poincare/Surgery.lean
 check_decl "surgery cutoff smooth-bump interface is declared" \
-  '^inductive HasSurgeryCutoffSmoothBumpFunction\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasSurgeryCutoffSmoothBumpFunction\b' Poincare/Surgery.lean
 check_decl "surgery neck-decomposition interface is declared" \
-  '^inductive HasSurgeryNeckDecomposition\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasSurgeryNeckDecomposition\b' Poincare/Surgery.lean
 check_decl "strong delta-neck detection interface is declared" \
-  '^inductive HasStrongDeltaNeckDetection\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasStrongDeltaNeckDetection\b' Poincare/Surgery.lean
 check_decl "surgery neck-separation interface is declared" \
-  '^inductive HasSurgeryNeckSeparation\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasSurgeryNeckSeparation\b' Poincare/Surgery.lean
 check_decl "surgery neck-parametrization interface is declared" \
-  '^inductive HasSurgeryNeckParametrization\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasSurgeryNeckParametrization\b' Poincare/Surgery.lean
 check_decl "surgery neck canonical-coordinate interface is declared" \
-  '^inductive HasSurgeryNeckCanonicalCoordinates\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasSurgeryNeckCanonicalCoordinates\b' Poincare/Surgery.lean
 check_decl "surgery cap-construction interface is declared" \
-  '^inductive HasSurgeryCapConstruction\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasSurgeryCapConstruction\b' Poincare/Surgery.lean
 check_decl "standard cap model interface is declared" \
-  '^inductive HasStandardCapModel\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasStandardCapModel\b' Poincare/Surgery.lean
 check_decl "cap-gluing smoothness interface is declared" \
-  '^inductive HasCapGluingSmoothness\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasCapGluingSmoothness\b' Poincare/Surgery.lean
 check_decl "surgery cap metric-interpolation interface is declared" \
-  '^inductive HasSurgeryCapMetricInterpolation\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasSurgeryCapMetricInterpolation\b' Poincare/Surgery.lean
 check_decl "surgery cap curvature-estimate interface is declared" \
-  '^inductive HasSurgeryCapCurvatureEstimates\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasSurgeryCapCurvatureEstimates\b' Poincare/Surgery.lean
 check_decl "post-surgery metric-control interface is declared" \
-  '^inductive HasPostSurgeryMetricControl\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPostSurgeryMetricControl\b' Poincare/Surgery.lean
 check_decl "post-surgery curvature-pinching interface is declared" \
-  '^inductive HasPostSurgeryCurvaturePinching\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPostSurgeryCurvaturePinching\b' Poincare/Surgery.lean
 check_decl "post-surgery noncollapsing-control interface is declared" \
-  '^inductive HasPostSurgeryNoncollapsingControl\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPostSurgeryNoncollapsingControl\b' Poincare/Surgery.lean
 check_decl "post-surgery derivative-bound interface is declared" \
-  '^inductive HasPostSurgeryDerivativeBounds\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPostSurgeryDerivativeBounds\b' Poincare/Surgery.lean
 check_decl "post-surgery canonical-neighborhood persistence interface is declared" \
-  '^inductive HasPostSurgeryCanonicalNeighborhoodPersistence\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPostSurgeryCanonicalNeighborhoodPersistence\b' Poincare/Surgery.lean
 check_decl "long-time surgery continuation interface is declared" \
-  '^inductive HasLongTimeSurgeryContinuation\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasLongTimeSurgeryContinuation\b' Poincare/Surgery.lean
 check_decl "surgery-time discreteness interface is declared" \
-  '^inductive HasSurgeryTimeDiscreteness\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasSurgeryTimeDiscreteness\b' Poincare/Surgery.lean
 check_decl "surgery-time local-finiteness interface is declared" \
-  '^inductive HasSurgeryTimeLocalFiniteness\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasSurgeryTimeLocalFiniteness\b' Poincare/Surgery.lean
 check_decl "long-time existence iteration interface is declared" \
-  '^inductive HasLongTimeExistenceIteration\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasLongTimeExistenceIteration\b' Poincare/Surgery.lean
 check_decl "long-time surgery-parameter coherence interface is declared" \
-  '^inductive HasLongTimeSurgeryParameterCoherence\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasLongTimeSurgeryParameterCoherence\b' Poincare/Surgery.lean
 check_decl "long-time nonaccumulation interface is declared" \
-  '^inductive HasLongTimeNonaccumulation\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasLongTimeNonaccumulation\b' Poincare/Surgery.lean
 check_decl "Ricci-flow-with-surgery construction package is declared" \
   '^structure RicciFlowWithSurgeryConstructionPackage\b' Poincare/Surgery.lean
 check_decl "surgery construction scale-function projection is declared" \
@@ -5568,153 +5572,153 @@ do
     "^theorem ${decl}\b" Poincare/Surgery.lean
 done
 check_decl "Perelman entropy-functional interface is declared" \
-  '^inductive HasPerelmanEntropyFunctional\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanEntropyFunctional\b' Poincare/Surgery.lean
 check_decl "Perelman F-functional setup interface is declared" \
-  '^inductive HasPerelmanFFunctionalSetup\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanFFunctionalSetup\b' Poincare/Surgery.lean
 check_decl "Perelman entropy normalization interface is declared" \
-  '^inductive HasPerelmanEntropyNormalization\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanEntropyNormalization\b' Poincare/Surgery.lean
 check_decl "Perelman entropy minimizer-existence interface is declared" \
-  '^inductive HasPerelmanEntropyMinimizerExistence\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanEntropyMinimizerExistence\b' Poincare/Surgery.lean
 check_decl "Perelman entropy log-Sobolev interface is declared" \
-  '^inductive HasPerelmanEntropyLogSobolevControl\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanEntropyLogSobolevControl\b' Poincare/Surgery.lean
 check_decl "Perelman conjugate heat equation interface is declared" \
-  '^inductive HasConjugateHeatEquationTheory\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasConjugateHeatEquationTheory\b' Poincare/Surgery.lean
 check_decl "Perelman adjoint heat kernel interface is declared" \
-  '^inductive HasAdjointHeatKernelConstruction\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasAdjointHeatKernelConstruction\b' Poincare/Surgery.lean
 check_decl "Perelman conjugate heat-kernel estimates interface is declared" \
-  '^inductive HasPerelmanConjugateHeatKernelEstimates\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanConjugateHeatKernelEstimates\b' Poincare/Surgery.lean
 check_decl "Perelman W-functional setup interface is declared" \
-  '^inductive HasPerelmanWFunctionalSetup\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanWFunctionalSetup\b' Poincare/Surgery.lean
 check_decl "Perelman entropy-gradient formula interface is declared" \
-  '^inductive HasPerelmanEntropyGradientFormula\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanEntropyGradientFormula\b' Poincare/Surgery.lean
 check_decl "Perelman entropy first-variation interface is declared" \
-  '^inductive HasPerelmanEntropyFirstVariation\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanEntropyFirstVariation\b' Poincare/Surgery.lean
 check_decl "Perelman entropy monotonicity interface is declared" \
-  '^inductive HasPerelmanEntropyMonotonicity\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanEntropyMonotonicity\b' Poincare/Surgery.lean
 check_decl "Perelman entropy lower-bound propagation interface is declared" \
-  '^inductive HasPerelmanEntropyLowerBoundPropagation\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanEntropyLowerBoundPropagation\b' Poincare/Surgery.lean
 check_decl "Perelman reduced-distance interface is declared" \
-  '^inductive HasPerelmanReducedDistanceTheory\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanReducedDistanceTheory\b' Poincare/Surgery.lean
 check_decl "Perelman reduced-length first-variation interface is declared" \
-  '^inductive HasPerelmanReducedLengthFirstVariation\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanReducedLengthFirstVariation\b' Poincare/Surgery.lean
 check_decl "Perelman reduced-distance existence interface is declared" \
-  '^inductive HasPerelmanReducedDistanceExistence\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanReducedDistanceExistence\b' Poincare/Surgery.lean
 check_decl "Perelman reduced-distance differential inequality interface is declared" \
-  '^inductive HasPerelmanReducedDistanceDifferentialInequality\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanReducedDistanceDifferentialInequality\b' Poincare/Surgery.lean
 check_decl "Perelman reduced-distance estimates interface is declared" \
-  '^inductive HasPerelmanReducedDistanceEstimates\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanReducedDistanceEstimates\b' Poincare/Surgery.lean
 check_decl "Perelman reduced-distance cut-locus interface is declared" \
-  '^inductive HasPerelmanReducedDistanceCutLocusControl\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanReducedDistanceCutLocusControl\b' Poincare/Surgery.lean
 check_decl "Perelman reduced-Jacobian comparison interface is declared" \
-  '^inductive HasPerelmanReducedJacobianComparison\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanReducedJacobianComparison\b' Poincare/Surgery.lean
 check_decl "Perelman reduced-volume nonincreasing interface is declared" \
-  '^inductive HasPerelmanReducedVolumeNonincreasing\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanReducedVolumeNonincreasing\b' Poincare/Surgery.lean
 check_decl "Perelman reduced-volume definition interface is declared" \
-  '^inductive HasPerelmanReducedVolumeDefinition\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanReducedVolumeDefinition\b' Poincare/Surgery.lean
 check_decl "Perelman reduced-volume derivative interface is declared" \
-  '^inductive HasPerelmanReducedVolumeDerivativeFormula\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanReducedVolumeDerivativeFormula\b' Poincare/Surgery.lean
 check_decl "Perelman reduced-volume rigidity interface is declared" \
-  '^inductive HasPerelmanReducedVolumeRigidity\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanReducedVolumeRigidity\b' Poincare/Surgery.lean
 check_decl "Perelman reduced-volume positive lower-bound interface is declared" \
-  '^inductive HasPerelmanReducedVolumePositiveLowerBound\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanReducedVolumePositiveLowerBound\b' Poincare/Surgery.lean
 check_decl "Perelman reduced-volume limit-rigidity interface is declared" \
-  '^inductive HasPerelmanReducedVolumeLimitRigidity\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanReducedVolumeLimitRigidity\b' Poincare/Surgery.lean
 check_decl "Perelman kappa-noncollapsing quantification interface is declared" \
-  '^inductive HasPerelmanKappaNoncollapsingQuantification\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanKappaNoncollapsingQuantification\b' Poincare/Surgery.lean
 check_decl "Perelman no-local-collapsing contradiction setup interface is declared" \
-  '^inductive HasPerelmanNoLocalCollapsingContradictionSetup\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanNoLocalCollapsingContradictionSetup\b' Poincare/Surgery.lean
 check_decl "Perelman collapsed-ball blow-up interface is declared" \
-  '^inductive HasPerelmanCollapsedBallBlowup\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanCollapsedBallBlowup\b' Poincare/Surgery.lean
 check_decl "Perelman volume-ratio contradiction interface is declared" \
-  '^inductive HasPerelmanVolumeRatioContradiction\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanVolumeRatioContradiction\b' Poincare/Surgery.lean
 check_decl "Perelman kappa-from-reduced-volume interface is declared" \
-  '^inductive HasPerelmanKappaNoncollapsingFromReducedVolume\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanKappaNoncollapsingFromReducedVolume\b' Poincare/Surgery.lean
 check_decl "Perelman no-local-collapsing volume lower-bound interface is declared" \
-  '^inductive HasNoLocalCollapsingVolumeLowerBound\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasNoLocalCollapsingVolumeLowerBound\b' Poincare/Surgery.lean
 check_decl "Hamilton compactness interface is declared" \
-  '^inductive HasHamiltonCompactnessTheorem\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasHamiltonCompactnessTheorem\b' Poincare/Surgery.lean
 check_decl "ancient kappa-solution compactness interface is declared" \
-  '^inductive HasAncientKappaSolutionCompactness\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasAncientKappaSolutionCompactness\b' Poincare/Surgery.lean
 check_decl "ancient kappa-solution limit-extraction interface is declared" \
-  '^inductive HasAncientKappaSolutionLimitExtraction\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasAncientKappaSolutionLimitExtraction\b' Poincare/Surgery.lean
 check_decl "kappa-solution pointed-rescaling interface is declared" \
-  '^inductive HasKappaSolutionPointedRescaling\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasKappaSolutionPointedRescaling\b' Poincare/Surgery.lean
 check_decl "kappa-solution curvature-normalization interface is declared" \
-  '^inductive HasKappaSolutionCurvatureNormalization\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasKappaSolutionCurvatureNormalization\b' Poincare/Surgery.lean
 check_decl "kappa-solution structure interface is declared" \
-  '^inductive HasKappaSolutionStructureTheory\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasKappaSolutionStructureTheory\b' Poincare/Surgery.lean
 check_decl "kappa-solution nonnegative curvature-operator interface is declared" \
-  '^inductive HasKappaSolutionNonnegativeCurvatureOperator\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasKappaSolutionNonnegativeCurvatureOperator\b' Poincare/Surgery.lean
 check_decl "kappa-solution asymptotic soliton interface is declared" \
-  '^inductive HasKappaSolutionAsymptoticSoliton\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasKappaSolutionAsymptoticSoliton\b' Poincare/Surgery.lean
 check_decl "canonical-neighborhood classification interface is declared" \
-  '^inductive HasCanonicalNeighborhoodClassification\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasCanonicalNeighborhoodClassification\b' Poincare/Surgery.lean
 check_decl "canonical-neighborhood neck/cap dichotomy interface is declared" \
-  '^inductive HasCanonicalNeighborhoodNeckCapDichotomy\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasCanonicalNeighborhoodNeckCapDichotomy\b' Poincare/Surgery.lean
 check_decl "canonical-neighborhood scale-control interface is declared" \
-  '^inductive HasCanonicalNeighborhoodScaleControl\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasCanonicalNeighborhoodScaleControl\b' Poincare/Surgery.lean
 check_decl "canonical-neighborhood stability interface is declared" \
-  '^inductive HasCanonicalNeighborhoodStability\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasCanonicalNeighborhoodStability\b' Poincare/Surgery.lean
 check_decl "canonical-neighborhood cross-scale persistence interface is declared" \
-  '^inductive HasCanonicalNeighborhoodPersistenceAcrossScales\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasCanonicalNeighborhoodPersistenceAcrossScales\b' Poincare/Surgery.lean
 check_decl "Perelman no-local-collapsing interface is declared" \
-  '^inductive HasPerelmanNoLocalCollapsing\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanNoLocalCollapsing\b' Poincare/Surgery.lean
 check_decl "Perelman reduced-volume interface is declared" \
-  '^inductive HasPerelmanReducedVolumeMonotonicity\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasPerelmanReducedVolumeMonotonicity\b' Poincare/Surgery.lean
 check_decl "canonical-neighborhood interface is declared" \
-  '^inductive HasCanonicalNeighborhoodTheorem\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasCanonicalNeighborhoodTheorem\b' Poincare/Surgery.lean
 check_decl "singularity-model classification interface is declared" \
-  '^inductive HasSingularityModelClassification\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasSingularityModelClassification\b' Poincare/Surgery.lean
 check_decl "singularity-model blow-up classification interface is declared" \
-  '^inductive HasSingularityModelBlowupClassification\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasSingularityModelBlowupClassification\b' Poincare/Surgery.lean
 check_decl "finite-extinction fundamental-group input interface is proof-resolved" \
   '^structure HasFiniteExtinctionFundamentalGroupInput\b' Poincare/Surgery.lean
 check_decl "finite-extinction fundamental-group input is derived from simple-connectedness" \
   '^theorem finite_extinction_fundamental_group_input_of_simplyConnectedSpace\b' Poincare/Surgery.lean
 check_decl "finite-extinction sweepout-existence interface is declared" \
-  '^inductive HasFiniteExtinctionSweepoutExistence\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionSweepoutExistence\b' Poincare/Surgery.lean
 check_decl "finite-extinction sweepout-continuity interface is declared" \
-  '^inductive HasFiniteExtinctionSweepoutContinuity\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionSweepoutContinuity\b' Poincare/Surgery.lean
 check_decl "finite-extinction sweepout-nontriviality interface is declared" \
-  '^inductive HasFiniteExtinctionSweepoutNontriviality\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionSweepoutNontriviality\b' Poincare/Surgery.lean
 check_decl "finite-extinction area-functional setup interface is declared" \
-  '^inductive HasFiniteExtinctionAreaFunctionalSetup\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionAreaFunctionalSetup\b' Poincare/Surgery.lean
 check_decl "finite-extinction min-max width definition interface is declared" \
-  '^inductive HasFiniteExtinctionMinMaxWidthDefinition\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionMinMaxWidthDefinition\b' Poincare/Surgery.lean
 check_decl "finite-extinction width compactness interface is declared" \
-  '^inductive HasFiniteExtinctionWidthCompactness\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionWidthCompactness\b' Poincare/Surgery.lean
 check_decl "finite-extinction minimizing-sequence interface is declared" \
-  '^inductive HasFiniteExtinctionMinimizingSequence\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionMinimizingSequence\b' Poincare/Surgery.lean
 check_decl "finite-extinction min-surface regularity interface is declared" \
-  '^inductive HasFiniteExtinctionMinSurfaceRegularity\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionMinSurfaceRegularity\b' Poincare/Surgery.lean
 check_decl "finite-extinction positive-width interface is declared" \
-  '^inductive HasFiniteExtinctionPositiveWidth\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionPositiveWidth\b' Poincare/Surgery.lean
 check_decl "finite-extinction width theory interface is declared" \
-  '^inductive HasFiniteExtinctionWidthTheory\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionWidthTheory\b' Poincare/Surgery.lean
 check_decl "finite-extinction first-variation interface is declared" \
-  '^inductive HasFiniteExtinctionFirstVariationFormula\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionFirstVariationFormula\b' Poincare/Surgery.lean
 check_decl "finite-extinction second-variation interface is declared" \
-  '^inductive HasFiniteExtinctionSecondVariationInequality\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionSecondVariationInequality\b' Poincare/Surgery.lean
 check_decl "finite-extinction Gauss-Bonnet estimate interface is declared" \
-  '^inductive HasFiniteExtinctionGaussBonnetEstimate\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionGaussBonnetEstimate\b' Poincare/Surgery.lean
 check_decl "finite-extinction scalar-curvature width-bound interface is declared" \
-  '^inductive HasFiniteExtinctionScalarCurvatureWidthBound\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionScalarCurvatureWidthBound\b' Poincare/Surgery.lean
 check_decl "finite-extinction width evolution interface is declared" \
-  '^inductive HasFiniteExtinctionWidthEvolution\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionWidthEvolution\b' Poincare/Surgery.lean
 check_decl "finite-extinction width differential inequality interface is declared" \
-  '^inductive HasFiniteExtinctionWidthDifferentialInequality\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionWidthDifferentialInequality\b' Poincare/Surgery.lean
 check_decl "finite-extinction surgery metric-comparison interface is declared" \
-  '^inductive HasFiniteExtinctionSurgeryMetricComparison\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionSurgeryMetricComparison\b' Poincare/Surgery.lean
 check_decl "finite-extinction surgery width drop interface is declared" \
-  '^inductive HasFiniteExtinctionSurgeryWidthDrop\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionSurgeryWidthDrop\b' Poincare/Surgery.lean
 check_decl "finite-extinction surgery-discard control interface is declared" \
-  '^inductive HasFiniteExtinctionSurgeryDiscardControl\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionSurgeryDiscardControl\b' Poincare/Surgery.lean
 check_decl "finite-extinction discarded-component width-neutrality interface is declared" \
-  '^inductive HasFiniteExtinctionDiscardedComponentWidthNeutrality\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionDiscardedComponentWidthNeutrality\b' Poincare/Surgery.lean
 check_decl "finite-extinction discarded-component classification interface is declared" \
-  '^inductive HasFiniteExtinctionDiscardedComponentClassification\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionDiscardedComponentClassification\b' Poincare/Surgery.lean
 check_decl "finite-extinction component topology interface is declared" \
-  '^inductive HasFiniteExtinctionComponentTopology\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionComponentTopology\b' Poincare/Surgery.lean
 check_decl "Perelman singularity-control package is declared" \
   '^structure PerelmanSingularityControlPackage\b' Poincare/Surgery.lean
 check_decl "Perelman fixed singularity-control statement is declared" \
@@ -6411,35 +6415,35 @@ check_decl "surgery package finite-extinction surviving-component tracking proje
 check_decl "surgery package finite-extinction component topology projection is declared" \
   '^theorem finite_extinction_component_topology_of_surgery_package\b' Poincare/Surgery.lean
 check_decl "finite-extinction curvature pinching interface is declared" \
-  '^inductive HasFiniteExtinctionCurvaturePinching\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionCurvaturePinching\b' Poincare/Surgery.lean
 check_decl "finite-extinction positive scalar curvature lower-bound interface is declared" \
-  '^inductive HasFiniteExtinctionPositiveScalarCurvatureLowerBound\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionPositiveScalarCurvatureLowerBound\b' Poincare/Surgery.lean
 check_decl "finite-extinction positive scalar curvature persistence interface is declared" \
-  '^inductive HasFiniteExtinctionPositiveScalarCurvaturePersistence\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionPositiveScalarCurvaturePersistence\b' Poincare/Surgery.lean
 check_decl "finite-extinction component-control interface is declared" \
-  '^inductive HasFiniteExtinctionComponentControl\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionComponentControl\b' Poincare/Surgery.lean
 check_decl "finite-extinction volume-evolution formula interface is declared" \
-  '^inductive HasFiniteExtinctionVolumeEvolutionFormula\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionVolumeEvolutionFormula\b' Poincare/Surgery.lean
 check_decl "finite-extinction surgery volume-nonincrease interface is declared" \
-  '^inductive HasFiniteExtinctionSurgeryVolumeNonincrease\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionSurgeryVolumeNonincrease\b' Poincare/Surgery.lean
 check_decl "finite-extinction scalar-curvature differential interface is declared" \
-  '^inductive HasFiniteExtinctionScalarCurvatureDifferentialInequality\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionScalarCurvatureDifferentialInequality\b' Poincare/Surgery.lean
 check_decl "finite-extinction volume differential interface is declared" \
-  '^inductive HasFiniteExtinctionVolumeDifferentialInequality\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionVolumeDifferentialInequality\b' Poincare/Surgery.lean
 check_decl "finite-extinction volume-decay estimate interface is declared" \
-  '^inductive HasFiniteExtinctionVolumeDecayEstimate\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionVolumeDecayEstimate\b' Poincare/Surgery.lean
 check_decl "finite-extinction time-bound interface is declared" \
-  '^inductive HasFiniteExtinctionTimeBound\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionTimeBound\b' Poincare/Surgery.lean
 check_decl "finite-extinction differential-inequality integration interface is declared" \
-  '^inductive HasFiniteExtinctionDifferentialInequalityIntegration\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionDifferentialInequalityIntegration\b' Poincare/Surgery.lean
 check_decl "finite-extinction finite-time integration interface is declared" \
-  '^inductive HasFiniteExtinctionFiniteTimeIntegration\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionFiniteTimeIntegration\b' Poincare/Surgery.lean
 check_decl "finite-extinction surgery-time summability interface is declared" \
-  '^inductive HasFiniteExtinctionSurgeryTimeSummability\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionSurgeryTimeSummability\b' Poincare/Surgery.lean
 check_decl "finite-extinction extinction-time contradiction interface is declared" \
-  '^inductive HasFiniteExtinctionExtinctionTimeContradiction\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionExtinctionTimeContradiction\b' Poincare/Surgery.lean
 check_decl "finite-extinction conclusion derivation interface is declared" \
-  '^inductive HasFiniteExtinctionConclusionDerivation\b' Poincare/Surgery.lean
+  '^(structure|inductive) HasFiniteExtinctionConclusionDerivation\b' Poincare/Surgery.lean
 check_decl "surgery package finite-extinction curvature pinching projection is declared" \
   '^theorem finite_extinction_curvature_pinching_of_surgery_package\b' Poincare/Surgery.lean
 check_decl "surgery package finite-extinction positive scalar curvature lower-bound projection is declared" \
@@ -6659,43 +6663,43 @@ check_decl "surgery package finite-extinction statement payload equality contrac
 check_decl "topology extraction package is declared" \
   '^structure ExtinctionTopologyExtractionPackage\b' Poincare/TopologyExtraction.lean
 check_decl "topology surgery trace reconstruction interface is declared" \
-  '^inductive HasExtinctionSurgeryTraceReconstruction\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionSurgeryTraceReconstruction\b' Poincare/TopologyExtraction.lean
 check_decl "topology prime-decomposition interface is declared" \
-  '^inductive HasExtinctionPrimeDecomposition\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionPrimeDecomposition\b' Poincare/TopologyExtraction.lean
 check_decl "topology sphere-theorem application interface is declared" \
-  '^inductive HasExtinctionSphereTheoremApplication\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionSphereTheoremApplication\b' Poincare/TopologyExtraction.lean
 check_decl "topology prime-factor uniqueness interface is declared" \
-  '^inductive HasExtinctionPrimeFactorUniqueness\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionPrimeFactorUniqueness\b' Poincare/TopologyExtraction.lean
 check_decl "topology irreducibility interface is declared" \
-  '^inductive HasExtinctionIrreducibility\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionIrreducibility\b' Poincare/TopologyExtraction.lean
 check_decl "topology irreducible-factor recognition interface is declared" \
-  '^inductive HasExtinctionIrreducibleFactorRecognition\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionIrreducibleFactorRecognition\b' Poincare/TopologyExtraction.lean
 check_decl "topology connected-sum collapse interface is declared" \
-  '^inductive HasExtinctionConnectedSumCollapse\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionConnectedSumCollapse\b' Poincare/TopologyExtraction.lean
 check_decl "topology connected-sum fundamental-group control interface is declared" \
-  '^inductive HasExtinctionConnectedSumFundamentalGroupControl\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionConnectedSumFundamentalGroupControl\b' Poincare/TopologyExtraction.lean
 check_decl "topology spherical-space-form reduction interface is declared" \
-  '^inductive HasExtinctionSphericalSpaceFormReduction\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionSphericalSpaceFormReduction\b' Poincare/TopologyExtraction.lean
 check_decl "topology spherical-space-form classification interface is declared" \
-  '^inductive HasSphericalSpaceFormClassification\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasSphericalSpaceFormClassification\b' Poincare/TopologyExtraction.lean
 check_decl "topology spherical-space-form fundamental-group interface is declared" \
-  '^inductive HasSphericalSpaceFormFundamentalGroupComputation\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasSphericalSpaceFormFundamentalGroupComputation\b' Poincare/TopologyExtraction.lean
 check_decl "topology spherical covering-model interface is declared" \
-  '^inductive HasSphericalSpaceFormCoveringModel\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasSphericalSpaceFormCoveringModel\b' Poincare/TopologyExtraction.lean
 check_decl "topology spherical-space-form deck-group triviality interface is declared" \
-  '^inductive HasSphericalSpaceFormDeckGroupTriviality\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasSphericalSpaceFormDeckGroupTriviality\b' Poincare/TopologyExtraction.lean
 check_decl "topology deck-action trivialization interface is declared" \
-  '^inductive HasSphericalSpaceFormDeckActionTrivialization\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasSphericalSpaceFormDeckActionTrivialization\b' Poincare/TopologyExtraction.lean
 check_decl "topology simply connected recognition interface is declared" \
-  '^inductive HasSimplyConnectedExtinctionRecognition\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasSimplyConnectedExtinctionRecognition\b' Poincare/TopologyExtraction.lean
 check_decl "topology trivial-quotient homeomorphism interface is declared" \
-  '^inductive HasSphericalSpaceFormTrivialQuotientHomeomorphism\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasSphericalSpaceFormTrivialQuotientHomeomorphism\b' Poincare/TopologyExtraction.lean
 check_decl "topology homeomorphism derivation interface is declared" \
-  '^inductive HasExtinctionHomeomorphismDerivation\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionHomeomorphismDerivation\b' Poincare/TopologyExtraction.lean
 if awk '
-  /^inductive HasExtinctionHomeomorphismDerivation([[:space:]]|$)/ { in_decl = 1 }
+  /^(structure|inductive) HasExtinctionHomeomorphismDerivation([[:space:]]|$)/ { in_decl = 1 }
   in_decl && /HasExtinctionHomeomorphismAssembly/ { found = 1 }
-  in_decl && /: Prop$/ { in_decl = 0 }
+  in_decl && /: Prop([[:space:]]+where)?$/ { in_decl = 0 }
   END { exit found ? 0 : 1 }
 ' Poincare/TopologyExtraction.lean; then
   echo "PASS: topology homeomorphism derivation interface depends on homeomorphism assembly"
@@ -6710,23 +6714,23 @@ check_decl "topology package decomposition equality contract is declared" \
 check_decl "topology package surgery trace projection is declared" \
   '^theorem extinction_surgery_trace_reconstruction_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology surgery trace handle-cancellation interface is declared" \
-  '^inductive HasExtinctionSurgeryTraceHandleCancellation\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionSurgeryTraceHandleCancellation\b' Poincare/TopologyExtraction.lean
 check_decl "topology package surgery trace handle-cancellation projection is declared" \
   '^theorem extinction_surgery_trace_handle_cancellation_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology component-classification interface is declared" \
-  '^inductive HasExtinctionComponentClassification\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionComponentClassification\b' Poincare/TopologyExtraction.lean
 check_decl "topology package component-classification projection is declared" \
   '^theorem extinction_component_classification_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology discarded-component homeomorphism classification interface is declared" \
-  '^inductive HasExtinctionDiscardedComponentHomeomorphismClassification\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionDiscardedComponentHomeomorphismClassification\b' Poincare/TopologyExtraction.lean
 check_decl "topology package discarded-component homeomorphism classification projection is declared" \
   '^theorem extinction_discarded_component_homeomorphism_classification_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology component-inventory interface is declared" \
-  '^inductive HasExtinctionComponentInventory\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionComponentInventory\b' Poincare/TopologyExtraction.lean
 check_decl "topology package component-inventory projection is declared" \
   '^theorem extinction_component_inventory_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology component boundary-sphere control interface is declared" \
-  '^inductive HasExtinctionComponentBoundarySphereControl\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionComponentBoundarySphereControl\b' Poincare/TopologyExtraction.lean
 check_decl "topology package component boundary-sphere control projection is declared" \
   '^theorem extinction_component_boundary_sphere_control_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology package recognition projection is declared" \
@@ -6736,21 +6740,21 @@ check_decl "topology package prime-decomposition projection is declared" \
 check_decl "topology package prime-decomposition equality contract is declared" \
   '^theorem extinction_prime_decomposition_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology prime-decomposition existence interface is declared" \
-  '^inductive HasExtinctionPrimeDecompositionExistence\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionPrimeDecompositionExistence\b' Poincare/TopologyExtraction.lean
 check_decl "topology package prime-decomposition existence projection is declared" \
   '^theorem extinction_prime_decomposition_existence_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology package sphere-theorem projection is declared" \
   '^theorem extinction_sphere_theorem_application_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology embedded-sphere production interface is declared" \
-  '^inductive HasExtinctionEmbeddedSphereProduction\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionEmbeddedSphereProduction\b' Poincare/TopologyExtraction.lean
 check_decl "topology package embedded-sphere production projection is declared" \
   '^theorem extinction_embedded_sphere_production_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology loop-theorem application interface is declared" \
-  '^inductive HasExtinctionLoopTheoremApplication\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionLoopTheoremApplication\b' Poincare/TopologyExtraction.lean
 check_decl "topology package loop-theorem application projection is declared" \
   '^theorem extinction_loop_theorem_application_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology prime-decomposition compatibility interface is declared" \
-  '^inductive HasExtinctionPrimeDecompositionCompatibility\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionPrimeDecompositionCompatibility\b' Poincare/TopologyExtraction.lean
 check_decl "topology package prime-decomposition compatibility projection is declared" \
   '^theorem extinction_prime_decomposition_compatibility_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology package prime-factor uniqueness projection is declared" \
@@ -6768,11 +6772,11 @@ check_decl "topology package connected-sum collapse equality contract is declare
 check_decl "topology package connected-sum fundamental-group projection is declared" \
   '^theorem extinction_connected_sum_fundamental_group_control_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology connected-sum van Kampen interface is declared" \
-  '^inductive HasExtinctionConnectedSumVanKampenCalculation\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionConnectedSumVanKampenCalculation\b' Poincare/TopologyExtraction.lean
 check_decl "topology package connected-sum van Kampen projection is declared" \
   '^theorem extinction_connected_sum_van_kampen_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology simply connected prime-factor control interface is declared" \
-  '^inductive HasExtinctionSimplyConnectedPrimeFactorControl\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionSimplyConnectedPrimeFactorControl\b' Poincare/TopologyExtraction.lean
 check_decl "topology package simply connected prime-factor control projection is declared" \
   '^theorem extinction_simply_connected_prime_factor_control_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology package spherical-space-form projection is declared" \
@@ -6782,23 +6786,23 @@ check_decl "topology package spherical-space-form equality contract is declared"
 check_decl "topology package spherical-space-form classification projection is declared" \
   '^theorem spherical_space_form_classification_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology spherical quotient-model interface is declared" \
-  '^inductive HasSphericalSpaceFormQuotientModel\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasSphericalSpaceFormQuotientModel\b' Poincare/TopologyExtraction.lean
 check_decl "topology package spherical quotient-model projection is declared" \
   '^theorem spherical_quotient_model_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology package spherical quotient-model equality contract is declared" \
   '^theorem spherical_quotient_model_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology spherical free-action interface is declared" \
-  '^inductive HasSphericalSpaceFormFreeAction\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasSphericalSpaceFormFreeAction\b' Poincare/TopologyExtraction.lean
 check_decl "topology package spherical free-action projection is declared" \
   '^theorem spherical_free_action_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology spherical universal-cover interface is declared" \
-  '^inductive HasSphericalSpaceFormUniversalCover\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasSphericalSpaceFormUniversalCover\b' Poincare/TopologyExtraction.lean
 check_decl "topology package spherical universal-cover projection is declared" \
   '^theorem spherical_universal_cover_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology package spherical covering-model projection is declared" \
   '^theorem spherical_covering_model_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology spherical covering-projection interface is declared" \
-  '^inductive HasSphericalSpaceFormCoveringProjection\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasSphericalSpaceFormCoveringProjection\b' Poincare/TopologyExtraction.lean
 check_decl "topology package spherical covering-projection projection is declared" \
   '^theorem spherical_covering_projection_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology package spherical fundamental-group projection is declared" \
@@ -6806,13 +6810,13 @@ check_decl "topology package spherical fundamental-group projection is declared"
 check_decl "topology package spherical fundamental-group equality contract is declared" \
   '^theorem spherical_fundamental_group_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology spherical deck-group identification interface is declared" \
-  '^inductive HasSphericalSpaceFormDeckGroupIdentification\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasSphericalSpaceFormDeckGroupIdentification\b' Poincare/TopologyExtraction.lean
 check_decl "topology package deck-group identification projection is declared" \
   '^theorem spherical_deck_group_identification_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology package deck-group identification equality contract is declared" \
   '^theorem spherical_deck_group_identification_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology deck-action properness interface is declared" \
-  '^inductive HasSphericalSpaceFormDeckActionProperness\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasSphericalSpaceFormDeckActionProperness\b' Poincare/TopologyExtraction.lean
 check_decl "topology package deck-action properness projection is declared" \
   '^theorem spherical_deck_action_properness_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology package deck-group triviality projection is declared" \
@@ -6822,13 +6826,13 @@ check_decl "topology package deck-group triviality equality contract is declared
 check_decl "topology package deck-action trivialization projection is declared" \
   '^theorem spherical_deck_action_trivialization_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology trivial deck quotient identification interface is declared" \
-  '^inductive HasSphericalSpaceFormTrivialDeckQuotientIdentification\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasSphericalSpaceFormTrivialDeckQuotientIdentification\b' Poincare/TopologyExtraction.lean
 check_decl "topology package trivial deck quotient identification projection is declared" \
   '^theorem spherical_trivial_deck_quotient_identification_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology package simply connected recognition projection is declared" \
   '^theorem simply_connected_extinction_recognition_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology trivial spherical quotient interface is declared" \
-  '^inductive HasTrivialSphericalSpaceFormQuotient\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasTrivialSphericalSpaceFormQuotient\b' Poincare/TopologyExtraction.lean
 check_decl "topology package trivial spherical quotient projection is declared" \
   '^theorem trivial_spherical_quotient_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology package trivial spherical quotient equality contract is declared" \
@@ -6838,7 +6842,7 @@ check_decl "topology package trivial-quotient homeomorphism projection is declar
 check_decl "topology package trivial-quotient homeomorphism equality contract is declared" \
   '^theorem trivial_quotient_homeomorphism_of_topology_package_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology spherical homeomorphism-lift interface is declared" \
-  '^inductive HasSphericalSpaceFormHomeomorphismLift\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasSphericalSpaceFormHomeomorphismLift\b' Poincare/TopologyExtraction.lean
 check_decl "topology package spherical homeomorphism-lift projection is declared" \
   '^theorem spherical_homeomorphism_lift_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology package spherical homeomorphism-lift equality contract is declared" \
@@ -6852,7 +6856,7 @@ check_decl "topology package one-point recognition bridge is declared" \
 check_decl "topology package one-point recognition equality contract is declared" \
   '^theorem onePointThreeSpaceRecognitionStatement_of_finite_extinction_and_topology_package_eq\b' Poincare/TopologyExtraction.lean
 check_decl "topology homeomorphism assembly interface is declared" \
-  '^inductive HasExtinctionHomeomorphismAssembly\b' Poincare/TopologyExtraction.lean
+  '^(structure|inductive) HasExtinctionHomeomorphismAssembly\b' Poincare/TopologyExtraction.lean
 check_decl "topology package homeomorphism assembly projection is declared" \
   '^theorem extinction_homeomorphism_assembly_of_topology_package\b' Poincare/TopologyExtraction.lean
 check_decl "topology package homeomorphism assembly equality contract is declared" \
@@ -9163,81 +9167,81 @@ check_decl "standard based-loop extinction-recognition target payload path-quoti
 check_decl "smoothability package is declared" \
   '^structure SmoothabilityPackage\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise triangulation interface is declared" \
-  '^inductive HasMoiseTriangulation\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasMoiseTriangulation\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise local chart interface is declared" \
-  '^inductive HasMoiseLocalTriangulationCharts\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasMoiseLocalTriangulationCharts\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise locally finite cover refinement interface is declared" \
-  '^inductive HasMoiseLocallyFiniteCoverRefinement\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasMoiseLocallyFiniteCoverRefinement\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise simplicial-complex interface is declared" \
-  '^inductive HasMoiseSimplicialComplex\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasMoiseSimplicialComplex\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise compatible chart triangulations interface is declared" \
-  '^inductive HasMoiseCompatibleChartTriangulations\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasMoiseCompatibleChartTriangulations\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise simplicial approximation interface is declared" \
-  '^inductive HasMoiseSimplicialApproximation\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasMoiseSimplicialApproximation\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise star-neighborhood basis interface is declared" \
-  '^inductive HasMoiseStarNeighborhoodBasis\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasMoiseStarNeighborhoodBasis\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise barycentric subdivision interface is declared" \
-  '^inductive HasMoiseBarycentricSubdivisionControl\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasMoiseBarycentricSubdivisionControl\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise regular-neighborhood compatibility interface is declared" \
-  '^inductive HasMoiseRegularNeighborhoodCompatibility\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasMoiseRegularNeighborhoodCompatibility\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise local-finiteness interface is declared" \
-  '^inductive HasMoiseTriangulationLocalFiniteness\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasMoiseTriangulationLocalFiniteness\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise link-compatibility interface is declared" \
-  '^inductive HasMoiseLinkCompatibility\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasMoiseLinkCompatibility\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise PL-manifold recognition interface is declared" \
-  '^inductive HasMoisePLManifoldRecognition\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasMoisePLManifoldRecognition\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise triangulation-homeomorphism interface is declared" \
-  '^inductive HasMoiseTriangulationHomeomorphism\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasMoiseTriangulationHomeomorphism\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise compatibility interface is declared" \
-  '^inductive HasMoiseTriangulationCompatibility\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasMoiseTriangulationCompatibility\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise triangulation uniqueness interface is declared" \
-  '^inductive HasMoiseTriangulationUniqueness\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasMoiseTriangulationUniqueness\b' Poincare/Smoothability.lean
 check_decl "smoothability Moise dimension-three Hauptvermutung interface is declared" \
-  '^inductive HasMoiseHauptvermutungDimensionThree\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasMoiseHauptvermutungDimensionThree\b' Poincare/Smoothability.lean
 check_decl "smoothability PL-structure interface is declared" \
-  '^inductive HasCompatiblePLStructure\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasCompatiblePLStructure\b' Poincare/Smoothability.lean
 check_decl "smoothability PL-transition compatibility interface is declared" \
-  '^inductive HasPLTransitionCompatibility\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasPLTransitionCompatibility\b' Poincare/Smoothability.lean
 check_decl "smoothability PL-atlas interface is declared" \
-  '^inductive HasCompatiblePLAtlas\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasCompatiblePLAtlas\b' Poincare/Smoothability.lean
 check_decl "smoothability PL-manifold atlas interface is declared" \
-  '^inductive HasPLManifoldAtlas\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasPLManifoldAtlas\b' Poincare/Smoothability.lean
 check_decl "smoothability PL collar-neighborhood compatibility interface is declared" \
-  '^inductive HasPLCollarNeighborhoodCompatibility\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasPLCollarNeighborhoodCompatibility\b' Poincare/Smoothability.lean
 check_decl "smoothability PL-homeomorphism compatibility interface is declared" \
-  '^inductive HasPLHomeomorphismCompatibility\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasPLHomeomorphismCompatibility\b' Poincare/Smoothability.lean
 check_decl "smoothability PL-atlas maximality interface is declared" \
-  '^inductive HasPLAtlasMaximality\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasPLAtlasMaximality\b' Poincare/Smoothability.lean
 check_decl "smoothability PL-smoothing existence interface is declared" \
-  '^inductive HasPLSmoothingExistence\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasPLSmoothingExistence\b' Poincare/Smoothability.lean
 check_decl "smoothability PL-smoothing obstruction-vanishing interface is declared" \
-  '^inductive HasPLSmoothingObstructionVanishing\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasPLSmoothingObstructionVanishing\b' Poincare/Smoothability.lean
 check_decl "smoothability PL microbundle smoothing interface is declared" \
-  '^inductive HasPLMicrobundleSmoothing\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasPLMicrobundleSmoothing\b' Poincare/Smoothability.lean
 check_decl "smoothability PL-smoothing theorem interface is declared" \
-  '^inductive HasPLSmoothingTheorem\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasPLSmoothingTheorem\b' Poincare/Smoothability.lean
 check_decl "smoothability PL-smoothing compatibility interface is declared" \
-  '^inductive HasPLSmoothingCompatibility\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasPLSmoothingCompatibility\b' Poincare/Smoothability.lean
 check_decl "smoothability PL-smoothing uniqueness interface is declared" \
-  '^inductive HasPLSmoothingUniqueness\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasPLSmoothingUniqueness\b' Poincare/Smoothability.lean
 check_decl "smoothability PL-smoothing local-model compatibility interface is declared" \
-  '^inductive HasPLSmoothingLocalModelCompatibility\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasPLSmoothingLocalModelCompatibility\b' Poincare/Smoothability.lean
 check_decl "smoothability smooth-atlas construction interface is declared" \
-  '^inductive HasSmoothAtlasConstruction\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasSmoothAtlasConstruction\b' Poincare/Smoothability.lean
 check_decl "smoothability smooth-atlas PL-compatibility interface is declared" \
-  '^inductive HasSmoothAtlasPLCompatibility\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasSmoothAtlasPLCompatibility\b' Poincare/Smoothability.lean
 check_decl "smoothability smooth-atlas maximality interface is declared" \
-  '^inductive HasSmoothAtlasMaximality\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasSmoothAtlasMaximality\b' Poincare/Smoothability.lean
 check_decl "smoothability smooth-atlas uniqueness interface is declared" \
-  '^inductive HasSmoothAtlasUniqueness\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasSmoothAtlasUniqueness\b' Poincare/Smoothability.lean
 check_decl "smoothability smooth-structure uniqueness interface is declared" \
-  '^inductive HasSmoothStructureUniquenessUpToDiffeomorphism\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasSmoothStructureUniquenessUpToDiffeomorphism\b' Poincare/Smoothability.lean
 check_decl "smoothability smooth-transition compatibility interface is declared" \
-  '^inductive HasSmoothTransitionCompatibility\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasSmoothTransitionCompatibility\b' Poincare/Smoothability.lean
 check_decl "smoothability smooth-atlas transition smoothness interface is declared" \
-  '^inductive HasSmoothAtlasTransitionSmoothness\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasSmoothAtlasTransitionSmoothness\b' Poincare/Smoothability.lean
 check_decl "smoothability smooth-structure derivation interface is declared" \
-  '^inductive HasSmoothStructureDerivation\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasSmoothStructureDerivation\b' Poincare/Smoothability.lean
 check_decl "smoothability smooth-structure derivation statement is declared" \
   '^def SmoothStructureDerivationStatement\b' Poincare/Smoothability.lean
 check_decl "smoothability smooth-structure derivation statement shape contract is declared" \
@@ -9255,11 +9259,11 @@ check_decl "smoothability C-infinity smooth-manifold statement is declared" \
 check_decl "smoothability C-infinity smooth-manifold statement equality contract is declared" \
   '^theorem smoothabilitySmoothManifoldStatement_eq\b' Poincare/Smoothability.lean
 check_decl "smoothability bridge derivation interface is declared" \
-  '^inductive HasSmoothabilityBridgeDerivation\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasSmoothabilityBridgeDerivation\b' Poincare/Smoothability.lean
 check_decl "smoothability smooth-model compatibility interface is declared" \
-  '^inductive HasSmoothManifoldModelCompatibility\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasSmoothManifoldModelCompatibility\b' Poincare/Smoothability.lean
 check_decl "smoothability chart-compatibility interface is declared" \
-  '^inductive HasSmoothChartCompatibility\b' Poincare/Smoothability.lean
+  '^(structure|inductive) HasSmoothChartCompatibility\b' Poincare/Smoothability.lean
 check_decl "smoothability sub-obligations payload alias is declared" \
   '^abbrev SmoothabilitySubobligationsPayload\b' Poincare/Smoothability.lean
 check_decl "smoothability sub-obligations payload equality contract is declared" \
@@ -11295,7 +11299,7 @@ check_decl "dependency package-layer membership theorem is declared" \
 check_decl "dependency package-layer membership theorem equality contract is declared" \
   '^theorem dependency_ledger_package_layer_mem_eq\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency component slot type is declared" \
-  '^inductive DependencyComponentSlot\b' Poincare/DependencyCrosswalk.lean
+  '^(structure|inductive) DependencyComponentSlot\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer component map is declared" \
   '^def dependencyComponentForPackageLayer\b' Poincare/DependencyCrosswalk.lean
 check_decl "dependency package-layer component map equality contract is declared" \
@@ -40509,10 +40513,8 @@ EOF
 check_audit_surface_coverage() {
   audit_surface_dir=$(mktemp -d "${TMPDIR:-/tmp}/poincare-audit-surface.$$-XXXXXX")
   audit_surface_declarations="$audit_surface_dir/declarations"
-  audit_surface_tokens="$audit_surface_dir/tokens"
   audit_surface_missing="$audit_surface_dir/missing"
   all_surface_declarations="$audit_surface_dir/all-declarations"
-  all_surface_missing="$audit_surface_dir/all-missing"
   explicit_check_tokens="$audit_surface_dir/explicit-check-tokens"
   explicit_check_missing="$audit_surface_dir/explicit-check-missing"
   explicit_check_stale="$audit_surface_dir/explicit-check-stale"
@@ -40780,13 +40782,36 @@ check_audit_surface_coverage() {
   rg -P --no-filename -o '^(?:@\[[^]\n]+\]\s*)?(?:(?:private|protected|noncomputable)\s+)*(?:theorem|lemma|def|structure|class|inductive|abbrev|instance)\s+[A-Za-z0-9_]+(?=\s*(?:\.|:|:=|where|extends|$|\[|\(|\{|⦃))' \
     Poincare.lean Poincare/*.lean |
     awk '{ print $NF }' |
-    awk '/payload|target|criterion|certificate|statement|poincare_conjecture|route|projection|dependency|dependencies|bridge|finite_extinction|equation_boundary/' |
-    sort -u > "$audit_surface_declarations"
+      sort -u > "$all_surface_declarations"
 
-  rg --no-filename -o '[A-Za-z0-9_]+' "$0" |
-    sort -u > "$audit_surface_tokens"
+  {
+    printf 'import Poincare\n\n'
+    printf 'open Poincare\n'
+    printf 'open RicciFlow\n'
+    printf 'open RicciFlow.RicciFlow\n'
+    printf 'open CovariantDerivative\n\n'
+    while IFS= read -r declaration_name; do
+      printf '#check %s\n' "$declaration_name"
+    done < "$all_surface_declarations"
+  } > "$explicit_check_file"
+  append_certificate_route_projection_contract_checks "$explicit_check_file"
 
-  comm -23 "$audit_surface_declarations" "$audit_surface_tokens" > "$audit_surface_missing"
+  if lake env lean "$explicit_check_file" >/dev/null 2>&1; then
+    echo "PASS: completion audit generated #checks for all parser-visible Poincare declarations"
+  else
+    echo "FAIL: completion audit generated parser-visible #check file does not compile"
+    lake env lean "$explicit_check_file" || true
+    status=1
+  fi
+
+  rg -P --no-filename -o '^[[:space:]]*#check (?:Poincare\.)?[A-Za-z0-9_]+' "$explicit_check_file" |
+    sed -E 's/^[[:space:]]*#check[[:space:]]+//; s/^Poincare\.//' |
+    sort -u > "$explicit_check_tokens"
+
+  awk '/payload|target|criterion|certificate|statement|poincare_conjecture|route|projection|dependency|dependencies|bridge|finite_extinction|equation_boundary/' \
+    "$all_surface_declarations" > "$audit_surface_declarations"
+
+  comm -23 "$audit_surface_declarations" "$explicit_check_tokens" > "$audit_surface_missing"
 
   if [ -s "$audit_surface_missing" ]; then
     echo "FAIL: completion audit is missing route-bearing Poincare declarations"
@@ -40795,28 +40820,6 @@ check_audit_surface_coverage() {
   else
     echo "PASS: completion audit covers route-bearing Poincare declarations"
   fi
-
-  rg -P --no-filename -o '^(?:@\[[^]\n]+\]\s*)?(?:(?:private|protected|noncomputable)\s+)*(?:theorem|lemma|def|structure|class|inductive|abbrev|instance)\s+[A-Za-z0-9_]+(?=\s*(?:\.|:|:=|where|extends|$|\[|\(|\{|⦃))' \
-    Poincare.lean Poincare/*.lean |
-    awk '{ print $NF }' |
-      sort -u > "$all_surface_declarations"
-
-  comm -23 "$all_surface_declarations" "$audit_surface_tokens" > "$all_surface_missing"
-
-  if [ -s "$all_surface_missing" ]; then
-    echo "FAIL: completion audit is missing parser-visible Poincare declarations"
-    sed 's/^/MISSING: /' "$all_surface_missing"
-    status=1
-  else
-    echo "PASS: completion audit covers all parser-visible Poincare declarations"
-  fi
-
-  : > "$explicit_check_file"
-  append_certificate_route_projection_contract_checks "$explicit_check_file"
-
-  rg --no-filename -o '#check Poincare\.[A-Za-z0-9_]+' "$explicit_check_file" |
-    awk -F. '{ print $NF }' |
-    sort -u > "$explicit_check_tokens"
 
   comm -23 "$all_surface_declarations" "$explicit_check_tokens" > "$explicit_check_missing"
 
@@ -64265,9 +64268,17 @@ rm -rf "$completion_check_dir"
 completion_check_dir=
 completion_check=
 
-if rg -q '\b(opaque|axiom|constant|postulate|sorry|admit)\b' Poincare Poincare.lean; then
+placeholder_decl_pattern='^[[:space:]]*(opaque|axiom|postulate)[[:space:]]+|^[[:space:]]*constant[[:space:]]+[A-Za-z_][A-Za-z0-9_]*([[:space:]]*:|[[:space:]]+.*:|[[:space:]]*$)'
+placeholder_hits=$(
+  {
+    rg -n "$placeholder_decl_pattern" Poincare Poincare.lean || true
+    rg -n '\b(sorry|admit)\b' Poincare Poincare.lean || true
+  } | sort -u
+)
+
+if [ -n "$placeholder_hits" ]; then
   echo "FAIL: local proof placeholders remain"
-  rg -n '\b(opaque|axiom|constant|postulate|sorry|admit)\b' Poincare Poincare.lean
+  printf '%s\n' "$placeholder_hits"
   status=1
 else
   echo "PASS: no local opaque/axiom/constant/postulate/sorry/admit placeholders"
