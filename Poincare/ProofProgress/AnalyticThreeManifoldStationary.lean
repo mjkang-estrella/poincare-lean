@@ -15296,6 +15296,29 @@ theorem stationaryZeroAnalyticFoundation_packageSubobligationsFamily_of_stationa
     (stationaryZeroAnalyticFoundationDetailedAssemblyPayload data)
 
 /--
+Compact evolution-field group for a stationary-zero analytic foundation target.
+This keeps the Ricci-flow equation boundary and downstream evolution fields
+without requiring consumers to unpack the full analytic package tuple.
+-/
+structure StationaryZeroAnalyticFoundationEvolutionFieldGroup
+    (M : Type u) [TopologicalSpace M]
+    [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] where
+  regularity : ℕ∞ω
+  flow : RicciFlowData ThreeManifoldModelWithCorners regularity M
+  equationBoundary :
+    AnalyticFoundationWithEquationBoundaryStatement flow
+  ricciContraction :
+    HasRicciContractionTheory (curvature_data_of_ricci_flow_data flow)
+  scalarCurvature :
+    HasScalarCurvatureTheory (curvature_data_of_ricci_flow_data flow)
+  metricEvolution : HasMetricEvolutionEquation flow
+  ricciTensorEvolution : HasRicciTensorEvolutionEquation flow
+  scalarCurvatureEvolution : HasScalarCurvatureEvolutionEquation flow
+  curvatureNormEvolution : HasCurvatureNormEvolutionInequality flow
+  curvatureEvolution : HasCurvatureEvolutionEquations flow
+
+/--
 The detailed analytic assembly payload also exposes the compact evolution-field
 family retained in the full stationary-zero statement payload.  This projection
 keeps the actual flow together with the equation-boundary statement,
@@ -15364,6 +15387,45 @@ theorem stationaryZeroAnalyticFoundation_evolutionFieldsFamily_of_stationaryZero
             HasCurvatureNormEvolutionInequality flow ∧
             HasCurvatureEvolutionEquations flow :=
   stationaryZeroAnalyticFoundationDetailedAssemblyPayload_evolutionFieldsFamily
+    (stationaryZeroAnalyticFoundationDetailedAssemblyPayload data)
+
+/--
+The detailed analytic assembly payload constructs the compact evolution-field
+group for each target, avoiding the larger package/subobligation tuple when only
+the equation-boundary and evolution fields are needed.
+-/
+theorem stationaryZeroAnalyticFoundationDetailedAssemblyPayload_evolutionFieldGroupFamily
+    (payload : StationaryZeroAnalyticFoundationDetailedAssemblyPayload.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty (StationaryZeroAnalyticFoundationEvolutionFieldGroup M) := by
+  intro M _top _t2 _charted _simple _compact _smooth1
+  rcases
+    stationaryZeroAnalyticFoundationDetailedAssemblyPayload_evolutionFieldsFamily
+      payload M with
+    ⟨ n, flow, boundary, ricciContraction, scalarCurvature,
+      metricEvolution, ricciTensorEvolution, scalarCurvatureEvolution,
+      curvatureNormEvolution, curvatureEvolution ⟩
+  exact
+    ⟨⟨ n, flow, boundary, ricciContraction, scalarCurvature,
+      metricEvolution, ricciTensorEvolution, scalarCurvatureEvolution,
+      curvatureNormEvolution, curvatureEvolution ⟩⟩
+
+/--
+Universal stationary-zero production data directly constructs the compact
+evolution-field group family.
+-/
+theorem stationaryZeroAnalyticFoundation_evolutionFieldGroupFamily_of_stationaryZeroProductionData
+    (data :
+      StationaryZeroAnalyticFoundationPackageLayerProductionData.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        Nonempty (StationaryZeroAnalyticFoundationEvolutionFieldGroup M) :=
+  stationaryZeroAnalyticFoundationDetailedAssemblyPayload_evolutionFieldGroupFamily
     (stationaryZeroAnalyticFoundationDetailedAssemblyPayload data)
 
 /--
