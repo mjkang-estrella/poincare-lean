@@ -390,4 +390,59 @@ theorem smoothability_surgery_model_and_transported_package_family_of_threeSpher
         recognize
     ⟩
 
+/--
+Family version of the selected transported package: from a `ThreeSphere`
+recognition family, choose the sphere homeomorphism for each target and retain
+the exact one-point compactification factorization, transported charted space,
+`C∞` smooth-manifold witness, surgery-model manifold witness, and topological
+prerequisites produced by that chosen route.
+-/
+theorem smoothability_selected_threeSphere_homeomorph_transported_package_family
+    (recognize :
+      ∀ (M : Type u) [TopologicalSpace M],
+        Nonempty (M ≃ₜ ThreeSphere)) :
+    ∀ (M : Type u) [TopologicalSpace M],
+      ∃ sphereHomeomorph : M ≃ₜ ThreeSphere,
+      ∃ modelHomeomorph :
+        OnePoint (EuclideanSpace ℝ (Fin 3)) ≃ₜ ThreeSphere,
+      ∃ onePointHomeomorph :
+        M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)),
+      ∃ charted : ChartedSpace ThreeManifoldModel M,
+        Nonempty (M ≃ₜ ThreeSphere) ∧
+          onePointHomeomorph =
+            sphereHomeomorph.trans modelHomeomorph.symm ∧
+          charted =
+            homeomorphToOnePoint_threeSpace_smoothChartedSpace
+              onePointHomeomorph ∧
+          (letI : ChartedSpace ThreeManifoldModel M := charted
+           IsManifold (𝓡 3) ∞ M) ∧
+          (letI : ChartedSpace ThreeManifoldModel M := charted
+           IsManifold ThreeManifoldModelWithCorners 1 M) ∧
+          ∃ _t2 : T2Space M,
+          ∃ _simple : SimplyConnectedSpace M,
+          ∃ _compact : CompactSpace M,
+            Nonempty M := by
+  intro M _top
+  rcases recognize M with ⟨sphereHomeomorph⟩
+  rcases
+    smoothability_selected_threeSphere_homeomorph_transported_package
+      sphereHomeomorph with
+    ⟨modelHomeomorph, onePointHomeomorph, charted, hOnePoint,
+      hCharted, hSmooth, hSurgery, t2, simple, compact, nonempty⟩
+  exact
+    ⟨ sphereHomeomorph
+    , modelHomeomorph
+    , onePointHomeomorph
+    , charted
+    , ⟨sphereHomeomorph⟩
+    , hOnePoint
+    , hCharted
+    , hSmooth
+    , hSurgery
+    , t2
+    , simple
+    , compact
+    , nonempty
+    ⟩
+
 end Poincare
