@@ -1159,4 +1159,100 @@ theorem threeSphere_recognition_fixed_singleton_chart_and_twoPoint_named_basecla
     , twoPointPathComponentEq
     ⟩
 
+/--
+Uniform fixed-singleton/two-puncture payload.  This keeps the concrete
+singleton Euclidean chart at `x` synchronized with the all-basepoint
+two-puncture low-homotopy collapse route for `{x,y}`.
+-/
+theorem threeSphere_recognition_fixed_singleton_chart_and_twoPoint_all_basepoint_lowHomotopy_collapse_payload
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere))
+    (x y : M) (hyx : y ≠ x) :
+    ∃ singletonChart : (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)),
+      singletonChart =
+        homeomorph_compl_singleton_euclidean_of_homeomorph_to_threeSphere
+          h x ∧
+        Nonempty (M ≃ₜ ThreeSphere) ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+        ContractibleSpace ({x}ᶜ : Set M) ∧
+        Nonempty ({x}ᶜ : Set M) ∧
+        PathConnectedSpace ({x}ᶜ : Set M) ∧
+        ConnectedSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+        LocPathConnectedSpace ({x}ᶜ : Set M) ∧
+        (∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+          (∃ puncture : EuclideanSpace ℝ (Fin 3),
+            Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+              ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+            Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+            PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+            ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+            SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+            LocPathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+            Subsingleton (ZerothHomotopy (({x} ∪ {y})ᶜ : Set M)) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+            Subsingleton
+              (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+            (∀ z w : (({x} ∪ {y})ᶜ : Set M),
+              ZerothHomotopy.mk z = ZerothHomotopy.mk w) ∧
+            (∀ a b :
+              HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+              a = b) ∧
+            (∀ a b : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+              a = b) ∧
+            (∀ a b :
+              HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+              a = b) ∧
+            (∃ baseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+              ∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+              homotopyClass = baseClass) ∧
+            (∃ baseClass :
+              HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+              ∀ homotopyClass :
+                HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+              homotopyClass = baseClass) ∧
+            (∃ baseClass :
+              FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+              ∀ fundamentalClass :
+                FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+              fundamentalClass = baseClass) ∧
+            (∃ baseClass :
+              HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+              ∀ homotopyClass :
+                HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+              homotopyClass = baseClass) ∧
+            (∀ z w : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path z w)) ∧
+            (∀ z : (({x} ∪ {y})ᶜ : Set M), pathComponent z = Set.univ)) := by
+  let singletonSource := ({x}ᶜ : Set M)
+  let singletonChart :
+      singletonSource ≃ₜ EuclideanSpace ℝ (Fin 3) :=
+    homeomorph_compl_singleton_euclidean_of_homeomorph_to_threeSphere
+      h x
+  letI : ContractibleSpace singletonSource := singletonChart.contractibleSpace
+  letI : Nonempty singletonSource := inferInstance
+  letI : PathConnectedSpace singletonSource := inferInstance
+  letI : ConnectedSpace singletonSource := inferInstance
+  letI : SimplyConnectedSpace singletonSource := inferInstance
+  letI : LocPathConnectedSpace singletonSource :=
+    singletonChart.isOpenEmbedding.locPathConnectedSpace
+  exact
+    ⟨ singletonChart
+    , rfl
+    , h
+    , homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h
+    , ⟨singletonChart⟩
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , twoPointComplement_recognition_all_basepoint_lowHomotopy_baseclass_collapse_package_of_homeomorph_to_threeSphere
+        h hyx
+    ⟩
+
 end Poincare
