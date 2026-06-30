@@ -5503,4 +5503,225 @@ theorem onePoint_threeSpace_twoPointComplement_selected_recognition_flat_and_all
     , suppliedPathComponentEqUniv
     ⟩
 
+/--
+Fixed supplied-basepoint form of the selected two-puncture endpoint.  It keeps
+the selected recognition/flat payload and named-baseclass collapse witnesses
+from the canonical selected basepoint, while also retaining the named
+baseclass collapse and path-connectedness witnesses for one externally
+supplied basepoint.
+-/
+theorem onePoint_threeSpace_twoPointComplement_selected_recognition_flat_and_supplied_basepoint_named_baseclass_collapse_witnesses
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (suppliedBasepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    (∃ selectedBasepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+    ∃ recognitionPayload :
+      OnePointTwoPointComplementRecognitionPayload hqp selectedBasepoint,
+    ∃ flatPayload :
+      OnePointTwoPointComplementFlatRecognitionPayload hqp selectedBasepoint,
+    ∃ selectedZerothBaseClass :
+      ZerothHomotopy
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+    ∃ selectedPiZeroBaseClass :
+      HomotopyGroup.Pi 0
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        selectedBasepoint,
+    ∃ selectedFundamentalBaseClass :
+      FundamentalGroup
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        selectedBasepoint,
+    ∃ selectedPiOneBaseClass :
+      HomotopyGroup.Pi 1
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+        selectedBasepoint,
+      flatPayload =
+        onePoint_threeSpace_twoPointComplement_flatRecognition_payload_of_recognition
+          recognitionPayload ∧
+        flatPayload.puncturedEuclideanChart =
+          recognitionPayload.puncturedEuclideanChart ∧
+        flatPayload.simplyConnected = recognitionPayload.simplyConnected ∧
+        flatPayload.connected = recognitionPayload.lowHomotopy.connected ∧
+        flatPayload.nonempty = recognitionPayload.lowHomotopy.nonempty ∧
+        flatPayload.zerothUnique =
+          recognitionPayload.lowHomotopy.zerothUnique ∧
+        flatPayload.piZeroUnique =
+          recognitionPayload.lowHomotopy.piZeroUnique ∧
+        flatPayload.fundamentalGroupUnique =
+          recognitionPayload.lowHomotopy.fundamentalGroupUnique ∧
+        flatPayload.piOneUnique =
+          recognitionPayload.lowHomotopy.piOneUnique ∧
+        flatPayload.pathNonempty =
+          recognitionPayload.lowHomotopy.pathNonempty ∧
+        flatPayload.pathComponentEqUniv =
+          recognitionPayload.lowHomotopy.pathComponentEqUniv ∧
+        (∀ homotopyClass :
+          ZerothHomotopy
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          homotopyClass = selectedZerothBaseClass) ∧
+        (∀ homotopyClass :
+          HomotopyGroup.Pi 0
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            selectedBasepoint,
+          homotopyClass = selectedPiZeroBaseClass) ∧
+        (∀ fundamentalClass :
+          FundamentalGroup
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            selectedBasepoint,
+          fundamentalClass = selectedFundamentalBaseClass) ∧
+        (∀ homotopyClass :
+          HomotopyGroup.Pi 1
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+            selectedBasepoint,
+          homotopyClass = selectedPiOneBaseClass) ∧
+        (∀ a b :
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          Nonempty (Path a b)) ∧
+        (∀ point :
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          pathComponent point = Set.univ)) ∧
+      (∃ suppliedZerothBaseClass :
+        ZerothHomotopy
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+      ∃ suppliedPiZeroBaseClass :
+        HomotopyGroup.Pi 0
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          suppliedBasepoint,
+      ∃ suppliedFundamentalBaseClass :
+        FundamentalGroup
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          suppliedBasepoint,
+      ∃ suppliedPiOneBaseClass :
+        HomotopyGroup.Pi 1
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+          suppliedBasepoint,
+        (∀ homotopyClass :
+          ZerothHomotopy
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          homotopyClass = suppliedZerothBaseClass) ∧
+          (∀ homotopyClass :
+            HomotopyGroup.Pi 0
+              (({p} ∪ {q})ᶜ :
+                Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              suppliedBasepoint,
+            homotopyClass = suppliedPiZeroBaseClass) ∧
+          (∀ fundamentalClass :
+            FundamentalGroup
+              (({p} ∪ {q})ᶜ :
+                Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              suppliedBasepoint,
+            fundamentalClass = suppliedFundamentalBaseClass) ∧
+          (∀ homotopyClass :
+            HomotopyGroup.Pi 1
+              (({p} ∪ {q})ᶜ :
+                Set (OnePoint (EuclideanSpace ℝ (Fin 3))))
+              suppliedBasepoint,
+            homotopyClass = suppliedPiOneBaseClass) ∧
+          (∀ a b :
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+            Nonempty (Path a b)) ∧
+          (∀ point :
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+            pathComponent point = Set.univ)) := by
+  rcases
+    onePoint_threeSpace_twoPointComplement_selected_recognition_flat_and_all_basepoint_named_baseclass_collapse_witnesses
+      hqp with
+    ⟨ selectedPayload, allSupplied ⟩
+  rcases selectedPayload with
+    ⟨ selectedBasepoint
+    , recognitionPayload
+    , flatPayload
+    , selectedZerothBaseClass
+    , selectedPiZeroBaseClass
+    , selectedFundamentalBaseClass
+    , selectedPiOneBaseClass
+    , hFlatPayload
+    , hPuncturedChart
+    , hSimplyConnected
+    , hConnected
+    , hNonempty
+    , hZerothUnique
+    , hPiZeroUnique
+    , hFundamentalUnique
+    , hPiOneUnique
+    , hPathNonemptyField
+    , hPathComponentField
+    , _puncturedChart
+    , _simplyConnected
+    , _connected
+    , _nonempty
+    , _zerothSubsingleton
+    , _piZeroSubsingleton
+    , _fundamentalSubsingleton
+    , _piOneSubsingleton
+    , selectedZerothEq
+    , selectedPiZeroEq
+    , selectedFundamentalEq
+    , selectedPiOneEq
+    , selectedPathNonempty
+    , selectedPathComponentEqUniv
+    ⟩
+  rcases allSupplied suppliedBasepoint with
+    ⟨ suppliedZerothBaseClass
+    , suppliedPiZeroBaseClass
+    , suppliedFundamentalBaseClass
+    , suppliedPiOneBaseClass
+    , suppliedZerothEq
+    , suppliedPiZeroEq
+    , suppliedFundamentalEq
+    , suppliedPiOneEq
+    , suppliedPathNonempty
+    , suppliedPathComponentEqUniv
+    ⟩
+  exact
+    ⟨ ⟨ selectedBasepoint
+      , recognitionPayload
+      , flatPayload
+      , selectedZerothBaseClass
+      , selectedPiZeroBaseClass
+      , selectedFundamentalBaseClass
+      , selectedPiOneBaseClass
+      , hFlatPayload
+      , hPuncturedChart
+      , hSimplyConnected
+      , hConnected
+      , hNonempty
+      , hZerothUnique
+      , hPiZeroUnique
+      , hFundamentalUnique
+      , hPiOneUnique
+      , hPathNonemptyField
+      , hPathComponentField
+      , selectedZerothEq
+      , selectedPiZeroEq
+      , selectedFundamentalEq
+      , selectedPiOneEq
+      , selectedPathNonempty
+      , selectedPathComponentEqUniv
+      ⟩
+    , suppliedZerothBaseClass
+    , suppliedPiZeroBaseClass
+    , suppliedFundamentalBaseClass
+    , suppliedPiOneBaseClass
+    , suppliedZerothEq
+    , suppliedPiZeroEq
+    , suppliedFundamentalEq
+    , suppliedPiOneEq
+    , suppliedPathNonempty
+    , suppliedPathComponentEqUniv
+    ⟩
+
 end Poincare
