@@ -1385,4 +1385,122 @@ theorem public_and_canonical_certificate_payloads_named_targets_and_criteria_of_
     , allCriteria
     ⟩
 
+/--
+Witness-specialized opened public/canonical certificate payloads for the
+smoothability/sub-obligation-family route.  This keeps the shared all-witness
+criteria family and a named criterion for one witness universe synchronized
+with both the public and canonical completion payload constructors.
+-/
+theorem public_and_canonical_certificate_payloads_named_targets_criteria_and_witnessCriterion_of_smoothability_and_subobligations_family
+    (witness : Type u)
+    (smoothabilityPackage : SmoothabilityPackage.{u})
+    (h :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          ∃ n : ℕ∞ω,
+          ∃ analyticFoundation :
+            RicciFlowAnalyticFoundationPackage
+              ThreeManifoldModelWithCorners n M,
+          ∃ surgeryConstruction :
+            RicciFlowWithSurgeryConstructionPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+          ∃ perelmanControl :
+            PerelmanSingularityControlPackage (n := n) (M := M)
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation),
+            FiniteExtinctionSubobligationsStatement
+              (ricci_flow_data_of_analytic_foundation_package
+                analyticFoundation)
+              surgeryConstruction.withSurgery perelmanControl.control)
+    (extractSphere : ExtinctionImpliesSphereStatement.{u}) :
+    ∃ finiteExtinction : UniversalFiniteExtinctionStatement.{u},
+    ∃ publicTarget : PoincareConjectureStatement.{u},
+    ∃ publicPayload :
+      (∃ _target : PoincareConjectureStatement.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ canonicalTarget : canonicalCompletionTarget.{u},
+    ∃ canonicalPayload :
+      (∃ _target : canonicalCompletionTarget.{u},
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness),
+    ∃ allCriteria :
+      ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+    ∃ witnessCriterion : CompletionCriterionAtUniverse witness,
+      finiteExtinction =
+          universalFiniteExtinctionStatement_of_smoothability_and_subobligations_family
+            smoothabilityPackage h ∧
+        publicTarget =
+          poincare_conjecture_of_smoothability_and_subobligations_family
+            smoothabilityPackage h extractSphere ∧
+        publicPayload =
+          poincare_conjecture_payload_of_smoothability_and_subobligations_family
+            smoothabilityPackage h extractSphere ∧
+        publicPayload = ⟨publicTarget, allCriteria⟩ ∧
+        canonicalTarget =
+          canonical_completion_target_of_smoothability_and_subobligations_family
+            smoothabilityPackage h extractSphere ∧
+        canonicalPayload =
+          canonical_completion_payload_of_smoothability_and_subobligations_family
+            smoothabilityPackage h extractSphere ∧
+        canonicalPayload = ⟨canonicalTarget, allCriteria⟩ ∧
+        allCriteria =
+          (fun witness =>
+            completion_criterion_of_smoothability_and_subobligations_family
+              witness smoothabilityPackage h extractSphere) ∧
+        allCriteria witness = witnessCriterion ∧
+        witnessCriterion =
+          canonical_completion_criterion_of_smoothability_and_subobligations_family
+            witness smoothabilityPackage h extractSphere ∧
+        PoincareConjectureStatement.{u} ∧
+        canonicalCompletionTarget.{u} ∧
+        CompletionCriterionAtUniverse witness := by
+  rcases
+    public_and_canonical_certificate_payloads_named_targets_and_criteria_of_smoothability_and_subobligations_family
+      smoothabilityPackage h extractSphere with
+    ⟨ finiteExtinction
+    , publicTarget
+    , publicPayload
+    , canonicalTarget
+    , canonicalPayload
+    , allCriteria
+    , hFiniteExtinction
+    , hPublicTarget
+    , hPublicPayload
+    , hPublicPayloadPair
+    , hCanonicalTarget
+    , hCanonicalPayload
+    , hCanonicalPayloadPair
+    , hAllCriteria
+    , hAllCriteriaWitness
+    , poincareStatement
+    , canonicalTargetWitness
+    , _allCriteriaWitness
+    ⟩
+  let witnessCriterion : CompletionCriterionAtUniverse witness :=
+    allCriteria witness
+  exact
+    ⟨ finiteExtinction
+    , publicTarget
+    , publicPayload
+    , canonicalTarget
+    , canonicalPayload
+    , allCriteria
+    , witnessCriterion
+    , hFiniteExtinction
+    , hPublicTarget
+    , hPublicPayload
+    , hPublicPayloadPair
+    , hCanonicalTarget
+    , hCanonicalPayload
+    , hCanonicalPayloadPair
+    , hAllCriteria
+    , rfl
+    , hAllCriteriaWitness witness
+    , poincareStatement
+    , canonicalTargetWitness
+    , witnessCriterion
+    ⟩
+
 end Poincare
