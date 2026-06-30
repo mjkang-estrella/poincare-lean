@@ -5724,4 +5724,83 @@ theorem onePoint_threeSpace_twoPointComplement_selected_recognition_flat_and_sup
     , suppliedPathComponentEqUniv
     ⟩
 
+set_option linter.unusedVariables false
+
+/--
+Basepoint-independence of the named `π₀` collapse representative for the
+one-point compactification two-puncture complement.  The selected basepoint
+route and any externally supplied basepoint route choose zeroth homotopy base
+classes, and the collapse eliminators identify those representatives.
+-/
+theorem onePoint_threeSpace_twoPointComplement_selected_and_supplied_zeroth_baseclass_agreement
+    {p q : OnePoint (EuclideanSpace ℝ (Fin 3))} (hqp : q ≠ p)
+    (suppliedBasepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3))))) :
+    ∃ selectedBasepoint :
+      (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+    ∃ selectedZerothBaseClass :
+      ZerothHomotopy
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+    ∃ suppliedZerothBaseClass :
+      ZerothHomotopy
+        (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+      (∀ homotopyClass :
+        ZerothHomotopy
+          (({p} ∪ {q})ᶜ : Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+        homotopyClass = selectedZerothBaseClass) ∧
+        (∀ homotopyClass :
+          ZerothHomotopy
+            (({p} ∪ {q})ᶜ :
+              Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          homotopyClass = suppliedZerothBaseClass) ∧
+        selectedZerothBaseClass = suppliedZerothBaseClass ∧
+        (∀ a b :
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          Nonempty (Path a b)) ∧
+        (∀ point :
+          (({p} ∪ {q})ᶜ :
+            Set (OnePoint (EuclideanSpace ℝ (Fin 3)))),
+          pathComponent point = Set.univ) := by
+  rcases
+    onePoint_threeSpace_twoPointComplement_selected_basepoint_and_all_basepoint_named_baseclass_collapse_witnesses
+      hqp with
+    ⟨ selectedBasepoint
+    , selectedZerothBaseClass
+    , _selectedPiZeroBaseClass
+    , _selectedFundamentalBaseClass
+    , _selectedPiOneBaseClass
+    , selectedZerothEq
+    , _selectedPiZeroEq
+    , _selectedFundamentalEq
+    , _selectedPiOneEq
+    , _selectedPathNonempty
+    , _selectedPathComponentEqUniv
+    , allSupplied
+    ⟩
+  rcases allSupplied suppliedBasepoint with
+    ⟨ suppliedZerothBaseClass
+    , _suppliedPiZeroBaseClass
+    , _suppliedFundamentalBaseClass
+    , _suppliedPiOneBaseClass
+    , suppliedZerothEq
+    , _suppliedPiZeroEq
+    , _suppliedFundamentalEq
+    , _suppliedPiOneEq
+    , suppliedPathNonempty
+    , suppliedPathComponentEqUniv
+    ⟩
+  exact
+    ⟨ selectedBasepoint
+    , selectedZerothBaseClass
+    , suppliedZerothBaseClass
+    , selectedZerothEq
+    , suppliedZerothEq
+    , suppliedZerothEq selectedZerothBaseClass
+    , suppliedPathNonempty
+    , suppliedPathComponentEqUniv
+    ⟩
+
+set_option linter.unusedVariables true
+
 end Poincare
