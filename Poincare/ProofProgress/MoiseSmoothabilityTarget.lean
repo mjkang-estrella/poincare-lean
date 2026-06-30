@@ -629,6 +629,111 @@ theorem smoothabilityPackage_requirement_nonemptyMoiseAssemblyPayload_targets_an
     ⟩
 
 /--
+`ThreeSphere` recognition constructs the Moise assembly payload and, in the
+same target-family theorem, retains the selected sphere-to-one-point
+factorization and transported charted-space package used by smoothability.
+Downstream final-certificate code can therefore consume the theorem-shaped
+Moise targets, the per-target recognition/smoothability family, and the
+concrete selected transport route from one synchronized recognition source.
+-/
+theorem moiseSmoothability_assemblyPayload_targets_family_and_selectedTransport_of_threeSphereRecognition
+    (recognize :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere)) :
+    ∃ assemblyPayload : MoiseSmoothabilityRecognitionAssemblyPayload.{u},
+      assemblyPayload =
+          moiseSmoothabilityRecognitionAssemblyPayload_of_threeSphereRecognition
+            recognize ∧
+        MoiseSmoothThreeManifoldStatement.{u} ∧
+        MoiseSmoothabilityStatement.{u} ∧
+        (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+          [ChartedSpace ThreeManifoldModel M]
+          [SimplyConnectedSpace M] [CompactSpace M],
+            Nonempty (M ≃ₜ ThreeSphere) ∧
+              Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+              AdmitsSmoothThreeManifoldStructure M ∧
+              AdmitsSurgeryModelSmoothStructure M ∧
+              (∃ _t2 : T2Space M,
+                ∃ _charted : ChartedSpace ThreeManifoldModel M,
+                ∃ _simple : SimplyConnectedSpace M,
+                ∃ _compact : CompactSpace M,
+                ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+                  Nonempty M) ∧
+              ∃ sphereHomeomorph : M ≃ₜ ThreeSphere,
+              ∃ modelHomeomorph :
+                OnePoint (EuclideanSpace ℝ (Fin 3)) ≃ₜ ThreeSphere,
+              ∃ onePointHomeomorph :
+                M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)),
+              ∃ charted : ChartedSpace ThreeManifoldModel M,
+                Nonempty (M ≃ₜ ThreeSphere) ∧
+                  onePointHomeomorph =
+                    sphereHomeomorph.trans modelHomeomorph.symm ∧
+                  charted =
+                    homeomorphToOnePoint_threeSpace_smoothChartedSpace
+                      onePointHomeomorph ∧
+                  (letI : ChartedSpace ThreeManifoldModel M := charted
+                   IsManifold (𝓡 3) ∞ M) ∧
+                  (letI : ChartedSpace ThreeManifoldModel M := charted
+                   IsManifold ThreeManifoldModelWithCorners 1 M) ∧
+                  ∃ _t2 : T2Space M,
+                  ∃ _simple : SimplyConnectedSpace M,
+                  ∃ _compact : CompactSpace M,
+                    Nonempty M) := by
+  let assemblyPayload :=
+    moiseSmoothabilityRecognitionAssemblyPayload_of_threeSphereRecognition
+      recognize
+  refine
+    ⟨ assemblyPayload
+    , rfl
+    , assemblyPayload.smoothMoise
+    , assemblyPayload.surgeryMoise
+    , ?_
+    ⟩
+  intro M _top _t2 _charted _simple _compact
+  rcases recognize M with ⟨sphereHomeomorph⟩
+  rcases onePoint_threeSpace_homeomorph_threeSphere with ⟨modelHomeomorph⟩
+  let onePointHomeomorph :
+      M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)) :=
+    sphereHomeomorph.trans modelHomeomorph.symm
+  let transportedCharted : ChartedSpace ThreeManifoldModel M :=
+    homeomorphToOnePoint_threeSpace_smoothChartedSpace onePointHomeomorph
+  have hSmooth :
+      letI : ChartedSpace ThreeManifoldModel M := transportedCharted
+      IsManifold (𝓡 3) ∞ M := by
+    exact homeomorphToOnePoint_threeSpace_smoothManifold onePointHomeomorph
+  have hSurgery :
+      letI : ChartedSpace ThreeManifoldModel M := transportedCharted
+      IsManifold ThreeManifoldModelWithCorners 1 M := by
+    exact
+      homeomorphToOnePoint_threeSpace_surgeryModel_isManifold
+        onePointHomeomorph
+  rcases smoothability_surgery_prerequisites_of_homeomorph_to_onePoint_threeSpace
+      ⟨onePointHomeomorph⟩ with
+    ⟨t2, _charted, simple, compact, _smooth, nonempty⟩
+  exact
+    ⟨ ⟨sphereHomeomorph⟩
+    , assemblyPayload.recognizedOnePoint M
+    , assemblyPayload.smoothStructure M
+    , assemblyPayload.surgeryStructure M
+    , assemblyPayload.surgeryPrerequisites M
+    , sphereHomeomorph
+    , modelHomeomorph
+    , onePointHomeomorph
+    , transportedCharted
+    , ⟨sphereHomeomorph⟩
+    , rfl
+    , rfl
+    , hSmooth
+    , hSurgery
+    , t2
+    , simple
+    , compact
+    , nonempty
+    ⟩
+
+/--
 Consumer payload for the smoothability/Moise pillar.  It retains the concrete
 Moise recognition assembly payload, the residual smoothability package-layer
 requirement, both theorem-shaped Moise targets, the `ThreeSphere` recognition
