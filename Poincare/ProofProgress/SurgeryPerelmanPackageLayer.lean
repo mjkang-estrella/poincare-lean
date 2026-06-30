@@ -4678,6 +4678,129 @@ theorem finiteExtinctionRequirement_evaluated_dependencies_and_fixedTarget_packa
     ⟩
 
 /--
+Compact fixed-target consumer for the evaluated finite-extinction package
+requirement.  It retains the selected package value, package statement,
+construction package, Perelman package/control, and collapsed finite-extinction
+witness without making downstream callers destruct the full scale and
+canonical-neighborhood field tuple.
+-/
+theorem finiteExtinctionRequirement_fixedTarget_compact_package_statement_and_control_witnesses
+    (finiteExtinctionRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.finiteExtinctionPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ finiteExtinctionTarget : Nonempty (Σ n : ℕ∞ω,
+      FiniteExtinctionSurgeryPackage n M),
+    ∃ n : ℕ∞ω,
+    ∃ package : FiniteExtinctionSurgeryPackage n M,
+    ∃ combinedPayload :
+      FiniteExtinctionSurgeryPerelmanAndExtinctionPayload package,
+    ∃ projectionPayload :
+      FiniteExtinctionSurgeryPerelmanProjectionPayload package,
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+    ∃ packageStatement : FiniteExtinctionStatement n M,
+    ∃ finiteExtinction : FiniteExtinctionByRicciFlowWithSurgery M,
+      finiteExtinctionTarget = finiteExtinctionRequirement M ∧
+        finiteExtinctionTarget = ⟨⟨n, package⟩⟩ ∧
+        combinedPayload =
+          finiteExtinctionSurgeryPerelmanAndExtinctionPayload_of_finite_extinction_surgery_package
+            package ∧
+        projectionPayload = combinedPayload.projectionPayload ∧
+        flow = projectionPayload.flow ∧
+        flow = ricci_flow_data_of_surgery_package package ∧
+        packageStatement = combinedPayload.finiteExtinctionStatement ∧
+        packageStatement =
+          finite_extinction_statement_of_surgery_package package ∧
+        RicciFlowWithSurgeryConstructionPackage
+          (n := n) (M := M) flow ∧
+        PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+        HasPerelmanSingularityControl flow ∧
+        finiteExtinction = combinedPayload.finiteExtinctionWitness ∧
+        finiteExtinction =
+          finiteExtinctionByRicciFlowWithSurgery_of_finiteExtinctionRequirement
+            finiteExtinctionRequirement M := by
+  rcases
+    finiteExtinctionRequirement_evaluated_dependencies_and_fixedTarget_packageValue_statement_construction_fullControl_fields
+      finiteExtinctionRequirement M with
+    ⟨ _surgeryRequirement
+    , _ricciFlowMilestone
+    , _perelmanMilestone
+    , finiteExtinctionTarget
+    , _surgeryTarget
+    , _ricciFlowTarget
+    , _perelmanTarget
+    , n
+    , package
+    , combinedPayload
+    , projectionPayload
+    , flow
+    , packageStatement
+    , finiteExtinction
+    , _hSurgeryRequirement
+    , _hRicciFlowMilestone
+    , _hPerelmanMilestone
+    , hFiniteExtinctionTarget
+    , hPackageSigma
+    , _hSurgeryTarget
+    , _hRicciFlowTarget
+    , _hPerelmanTarget
+    , _hSurgeryTargetPackage
+    , _hRicciFlowTargetPackage
+    , _hPerelmanTargetPackage
+    , hCombinedPayload
+    , hProjectionPayload
+    , hFlowProjection
+    , hFlowPackage
+    , hPackageStatement
+    , hPackageStatementPackage
+    , constructionPackage
+    , _scalePayload
+    , _scaleFunction
+    , _scaleContinuity
+    , _scaleSeparation
+    , _cutoffParameterControl
+    , _cutoffSmoothBump
+    , _parameterSelection
+    , _withSurgery
+    , perelmanPackage
+    , _entropyMonotonicity
+    , _reducedVolume
+    , _noLocalCollapsing
+    , _canonicalNeighborhood
+    , _singularityModelClassification
+    , _blowupClassification
+    , perelmanControl
+    , hFiniteExtinction
+    , hFiniteExtinctionRequirement
+    ⟩
+  exact
+    ⟨ finiteExtinctionTarget
+    , n
+    , package
+    , combinedPayload
+    , projectionPayload
+    , flow
+    , packageStatement
+    , finiteExtinction
+    , hFiniteExtinctionTarget
+    , hPackageSigma
+    , hCombinedPayload
+    , hProjectionPayload
+    , hFlowProjection
+    , hFlowPackage
+    , hPackageStatement
+    , hPackageStatementPackage
+    , constructionPackage
+    , perelmanPackage
+    , perelmanControl
+    , hFiniteExtinction
+    , hFiniteExtinctionRequirement
+    ⟩
+
+/--
 An inhabited detailed surgery/Perelman assembly payload selects a complete
 consumer and exposes the fixed-target complete endpoint through that same
 selected consumer.  This is the detailed-assembly route for callers that
