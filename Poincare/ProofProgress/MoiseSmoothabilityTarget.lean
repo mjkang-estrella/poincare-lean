@@ -2722,4 +2722,139 @@ theorem smoothabilityPackage_layerRequirement_completeMoiseConsumer_family_packa
       smoothabilityPackage_layerRequirement_completeMoiseConsumer_fixedTarget_packageMoisePrefix_concrete_structures_and_bridge_tail_of_packageLayer_and_onePointRecognition
         smoothability recognizeOnePoint M
 
+/--
+The package-layer smoothability requirement can retain both final-assembly
+recognition routes at once.  When topology extraction supplies a uniform
+`ThreeSphere` route and a uniform one-point compactification route, the same
+smoothability package exposes the complete Moise consumer family for both
+routes without changing the selected package-layer input.
+-/
+theorem smoothabilityPackage_layerRequirement_completeMoiseConsumer_dualRecognition_family_packageMoisePrefix_concrete_structures_and_bridge_tail
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (recognizeSphere :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ ThreeSphere))
+    (recognizeOnePoint :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+          Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3)))) :
+    dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+        ∃ package : SmoothabilityPackage.{u},
+          package = smoothability ∧
+          dependencyPackageLayerRequirement.{u}
+              DependencyPackageLayer.smoothabilityPackage ∧
+            Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u}) ∧
+            MoiseSmoothThreeManifoldStatement.{u} ∧
+            MoiseSmoothabilityStatement.{u} ∧
+            Nonempty (M ≃ₜ ThreeSphere) ∧
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+            AdmitsSmoothThreeManifoldStructure M ∧
+            AdmitsSurgeryModelSmoothStructure M ∧
+            (∃ localCharts : HasMoiseLocalTriangulationCharts M,
+              ∃ _locallyFinite :
+                HasMoiseLocallyFiniteCoverRefinement M localCharts,
+              ∃ simplicial :
+                HasMoiseSimplicialComplex M localCharts,
+              ∃ _compatible :
+                HasMoiseCompatibleChartTriangulations M localCharts simplicial,
+                HasMoiseTriangulation M) ∧
+            (∃ _smoothCharted : ChartedSpace ThreeManifoldModel M,
+              ∃ _smooth : IsManifold (𝓡 3) ∞ M,
+              ∃ _surgeryCharted : ChartedSpace ThreeManifoldModel M,
+              ∃ _surgerySmooth :
+                IsManifold ThreeManifoldModelWithCorners 1 M,
+              ∃ _t2 : T2Space M,
+              ∃ _charted : ChartedSpace ThreeManifoldModel M,
+              ∃ _simple : SimplyConnectedSpace M,
+              ∃ _compact : CompactSpace M,
+              ∃ _smoothPrereq :
+                IsManifold ThreeManifoldModelWithCorners 1 M,
+                Nonempty M) ∧
+            (∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+              ∃ smoothDerivationStatement :
+                SmoothStructureDerivationStatement M smoothStructure,
+              ∃ manifoldEvidence :
+                IsManifold ThreeManifoldModelWithCorners 1 M,
+              ∃ bridgeDerivation :
+                HasSmoothabilityBridgeDerivation
+                  M smoothStructure smoothDerivationStatement manifoldEvidence,
+              ∃ modelCompatibility :
+                HasSmoothManifoldModelCompatibility
+                  M smoothStructure smoothDerivationStatement manifoldEvidence
+                  bridgeDerivation,
+                HasSmoothChartCompatibility
+                  M smoothStructure smoothDerivationStatement manifoldEvidence
+                  bridgeDerivation modelCompatibility)) ∧
+      (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M],
+        ∃ package : SmoothabilityPackage.{u},
+          package = smoothability ∧
+          dependencyPackageLayerRequirement.{u}
+              DependencyPackageLayer.smoothabilityPackage ∧
+            Nonempty (MoiseSmoothabilityCompleteConsumerPayload.{u}) ∧
+            MoiseSmoothThreeManifoldStatement.{u} ∧
+            MoiseSmoothabilityStatement.{u} ∧
+            Nonempty (M ≃ₜ ThreeSphere) ∧
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+            AdmitsSmoothThreeManifoldStructure M ∧
+            AdmitsSurgeryModelSmoothStructure M ∧
+            (∃ localCharts : HasMoiseLocalTriangulationCharts M,
+              ∃ _locallyFinite :
+                HasMoiseLocallyFiniteCoverRefinement M localCharts,
+              ∃ simplicial :
+                HasMoiseSimplicialComplex M localCharts,
+              ∃ _compatible :
+                HasMoiseCompatibleChartTriangulations M localCharts simplicial,
+                HasMoiseTriangulation M) ∧
+            (∃ _smoothCharted : ChartedSpace ThreeManifoldModel M,
+              ∃ _smooth : IsManifold (𝓡 3) ∞ M,
+              ∃ _surgeryCharted : ChartedSpace ThreeManifoldModel M,
+              ∃ _surgerySmooth :
+                IsManifold ThreeManifoldModelWithCorners 1 M,
+              ∃ _t2 : T2Space M,
+              ∃ _charted : ChartedSpace ThreeManifoldModel M,
+              ∃ _simple : SimplyConnectedSpace M,
+              ∃ _compact : CompactSpace M,
+              ∃ _smoothPrereq :
+                IsManifold ThreeManifoldModelWithCorners 1 M,
+                Nonempty M) ∧
+            (∃ smoothStructure : HasThreeManifoldSmoothStructure M,
+              ∃ smoothDerivationStatement :
+                SmoothStructureDerivationStatement M smoothStructure,
+              ∃ manifoldEvidence :
+                IsManifold ThreeManifoldModelWithCorners 1 M,
+              ∃ bridgeDerivation :
+                HasSmoothabilityBridgeDerivation
+                  M smoothStructure smoothDerivationStatement manifoldEvidence,
+              ∃ modelCompatibility :
+                HasSmoothManifoldModelCompatibility
+                  M smoothStructure smoothDerivationStatement manifoldEvidence
+                  bridgeDerivation,
+                HasSmoothChartCompatibility
+                  M smoothStructure smoothDerivationStatement manifoldEvidence
+                  bridgeDerivation modelCompatibility)) := by
+  rcases
+    smoothabilityPackage_layerRequirement_completeMoiseConsumer_family_packageMoisePrefix_concrete_structures_and_bridge_tail_of_packageLayer_and_threeSphereRecognition
+      smoothability recognizeSphere with
+    ⟨smoothabilityRequirement, sphereFamily⟩
+  rcases
+    smoothabilityPackage_layerRequirement_completeMoiseConsumer_family_packageMoisePrefix_concrete_structures_and_bridge_tail_of_packageLayer_and_onePointRecognition
+      smoothability recognizeOnePoint with
+    ⟨_onePointRequirement, onePointFamily⟩
+  exact
+    ⟨ smoothabilityRequirement
+    , sphereFamily
+    , onePointFamily
+    ⟩
+
 end Poincare
