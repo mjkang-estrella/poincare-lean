@@ -4004,4 +4004,60 @@ theorem extinction_topology_decomposition_statement_named_data_payload_family_cu
     extinction_topology_decomposition_statement_named_data_payload_current_interface
       decompositionData M extinction
 
+/--
+Family endpoint combining the first topology-production data payload with the
+recognition and puncture consequences of a completed topology package.  For
+each finite-extinction target it names the certified decomposition datum,
+synchronizes the data-built decomposition with both the statement projection
+and the package-selected decomposition, and retains the sphere/one-point
+recognition plus singleton and two-puncture complement collapse payloads.
+-/
+theorem topology_package_decomposition_data_recognition_and_puncture_payload_family_current_interface
+    (package : ExtinctionTopologyExtractionPackage.{u})
+    (decompositionData : ExtinctionTopologyDecompositionDataStatement.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      (extinction : FiniteExtinctionByRicciFlowWithSurgery M),
+        ∃ data : ExtinctionTopologyDecompositionData M extinction,
+        ∃ selectedDecomposition : HasExtinctionTopologyDecomposition M extinction,
+          selectedDecomposition =
+              extinction_topology_decomposition_of_decomposition_data_current_interface
+                M extinction data ∧
+            extinction_topology_decomposition_statement_of_decomposition_data_current_interface
+                decompositionData M extinction =
+              selectedDecomposition ∧
+            selectedDecomposition =
+              extinction_decomposition_of_topology_package
+                package M extinction ∧
+            Nonempty (M ≃ₜ ThreeSphere) ∧
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+            (∀ x : M, ContractibleSpace ({x}ᶜ : Set M)) ∧
+            (∀ {x y : M} (_hyx : y ≠ x)
+              (basepoint : (({x} ∪ {y})ᶜ : Set M)),
+                SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                  Subsingleton
+                    (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint)) := by
+  intro M _top _t2 _charted _simple _compact extinction
+  rcases
+    extinction_topology_decomposition_statement_named_data_payload_current_interface
+      decompositionData M extinction with
+    ⟨data, selectedDecomposition, hSelectedData, hStatementSelected⟩
+  rcases topology_package_recognition_and_puncture_payload_family
+      package M extinction with
+    ⟨sphereRecognition, onePointRecognition, singletonFamily,
+      twoPointFamily⟩
+  refine
+    ⟨ data
+    , selectedDecomposition
+    , hSelectedData
+    , hStatementSelected
+    , ?_
+    , sphereRecognition
+    , onePointRecognition
+    , singletonFamily
+    , twoPointFamily
+    ⟩
+  apply Subsingleton.elim
+
 end Poincare
