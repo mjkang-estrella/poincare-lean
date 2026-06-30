@@ -4508,4 +4508,180 @@ theorem topologyPackage_requirement_fixedTarget_named_statement_witnesses_homeom
     , twoPointFundamental
     ⟩
 
+/--
+Complete-consumer derivation-puncture endpoint for the topology package layer.
+This opens the consumer's retained target-family field itself, then specializes
+that same family to one finite-extinction target so final-certificate code can
+reuse the classification, recognition, homeomorphism-assembly, lifted
+derivation, one-point, singleton, and two-point puncture payloads without
+reconstructing the consumer.
+-/
+theorem topologyPackage_requirement_completeConsumer_derivationPunctureFamily_fixedTarget_payload
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M) :
+    let package : ExtinctionTopologyExtractionPackage.{u} :=
+      topologyPackage
+    ∃ consumer : ExtinctionTopologyCompleteConsumerPayload.{u},
+    ∃ selectedDerivationPunctureFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        (_extinction : FiniteExtinctionByRicciFlowWithSurgery M),
+          ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+            homeomorphism =
+                homeomorphism_of_topology_package package M
+                  _extinction ∧
+            ExtinctionTopologyClassificationSubobligationsPayload
+              M _extinction ∧
+            ExtinctionTopologySimplyConnectedRecognitionStatement
+              M _extinction ∧
+            ExtinctionTopologySphericalTrivialQuotientStatement
+              M _extinction ∧
+            ExtinctionTopologySphericalHomeomorphismLiftStatement
+              M _extinction ∧
+            ExtinctionTopologyHomeomorphismAssemblyStatement
+              M _extinction homeomorphism ∧
+            ExtinctionTopologyHomeomorphismDerivationStatement
+              M _extinction homeomorphism ∧
+            ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+              M _extinction homeomorphism ∧
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+            (∀ x : M, ContractibleSpace ({x}ᶜ : Set M)) ∧
+            (∀ {x y : M} (_hyx : y ≠ x)
+              (basepoint : (({x} ∪ {y})ᶜ : Set M)),
+                SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                  Subsingleton
+                    (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+                      basepoint)),
+    ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+      consumer.topologyPackage = package ∧
+        consumer.topologyPackageRequirement = package ∧
+        consumer.topologyStatement =
+          extinction_topology_extraction_statement_of_topology_package
+            package ∧
+        consumer.extinctionImpliesSphere =
+          extinction_implies_sphere_of_topology_package package ∧
+        consumer.liftedHomeomorphismDerivation =
+          topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+            package ∧
+        consumer.derivationPunctureFamily =
+          selectedDerivationPunctureFamily ∧
+        selectedDerivationPunctureFamily =
+          topology_package_extraction_derivation_and_puncture_payload_family
+            package ∧
+        homeomorphism =
+          homeomorphism_of_topology_package package M extinction ∧
+        ExtinctionTopologyClassificationSubobligationsPayload
+          M extinction ∧
+        ExtinctionTopologySimplyConnectedRecognitionStatement
+          M extinction ∧
+        ExtinctionTopologySphericalTrivialQuotientStatement
+          M extinction ∧
+        ExtinctionTopologySphericalHomeomorphismLiftStatement
+          M extinction ∧
+        ExtinctionTopologyHomeomorphismAssemblyStatement
+          M extinction homeomorphism ∧
+        ExtinctionTopologyHomeomorphismDerivationStatement
+          M extinction homeomorphism ∧
+        ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+          M extinction homeomorphism ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        (∀ x : M, ContractibleSpace ({x}ᶜ : Set M)) ∧
+        (∀ {x y : M} (_hyx : y ≠ x)
+          (basepoint : (({x} ∪ {y})ᶜ : Set M)),
+            SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+              Subsingleton
+                (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+                  basepoint)) := by
+  let package : ExtinctionTopologyExtractionPackage.{u} :=
+    topologyPackage
+  let selectedDerivationPunctureFamily :
+      ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        (_extinction : FiniteExtinctionByRicciFlowWithSurgery M),
+          ∃ homeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+            homeomorphism =
+                homeomorphism_of_topology_package package M
+                  _extinction ∧
+            ExtinctionTopologyClassificationSubobligationsPayload
+              M _extinction ∧
+            ExtinctionTopologySimplyConnectedRecognitionStatement
+              M _extinction ∧
+            ExtinctionTopologySphericalTrivialQuotientStatement
+              M _extinction ∧
+            ExtinctionTopologySphericalHomeomorphismLiftStatement
+              M _extinction ∧
+            ExtinctionTopologyHomeomorphismAssemblyStatement
+              M _extinction homeomorphism ∧
+            ExtinctionTopologyHomeomorphismDerivationStatement
+              M _extinction homeomorphism ∧
+            ExtinctionTopologyLiftedHomeomorphismDerivationStatement
+              M _extinction homeomorphism ∧
+            Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+            (∀ x : M, ContractibleSpace ({x}ᶜ : Set M)) ∧
+            (∀ {x y : M} (_hyx : y ≠ x)
+              (basepoint : (({x} ∪ {y})ᶜ : Set M)),
+                SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+                  Subsingleton
+                    (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+                      basepoint)) :=
+    topology_package_extraction_derivation_and_puncture_payload_family
+      package
+  let consumer : ExtinctionTopologyCompleteConsumerPayload.{u} :=
+    { topologyPackage := package
+      topologyPackageRequirement := package
+      topologyStatement :=
+        extinction_topology_extraction_statement_of_topology_package
+          package
+      topologyStatement_eq := rfl
+      extinctionImpliesSphere :=
+        extinction_implies_sphere_of_topology_package package
+      liftedHomeomorphismDerivation :=
+        topology_extraction_lifted_homeomorphism_derivation_payload_of_topology_package
+          package
+      derivationPunctureFamily := selectedDerivationPunctureFamily }
+  rcases selectedDerivationPunctureFamily M extinction with
+    ⟨ homeomorphism
+    , hHomeomorphism
+    , classification
+    , simplyConnectedRecognition
+    , trivialQuotient
+    , homeomorphismLift
+    , homeomorphismAssembly
+    , homeomorphismDerivation
+    , liftedHomeomorphismDerivation
+    , onePointRecognition
+    , singletonFamily
+    , twoPointFamily
+    ⟩
+  exact
+    ⟨ consumer
+    , selectedDerivationPunctureFamily
+    , homeomorphism
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , rfl
+    , hHomeomorphism
+    , classification
+    , simplyConnectedRecognition
+    , trivialQuotient
+    , homeomorphismLift
+    , homeomorphismAssembly
+    , homeomorphismDerivation
+    , liftedHomeomorphismDerivation
+    , onePointRecognition
+    , singletonFamily
+    , twoPointFamily
+    ⟩
+
 end Poincare
