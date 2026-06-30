@@ -532,4 +532,147 @@ theorem finalAssemblySubobligationBoundaryInputs_promotedBoundary_fields_fullAss
         promoted
     ⟩
 
+/--
+Opened final-assembly endpoint retaining the fixed-target topology payload.
+The promoted boundary built from finite-extinction sub-obligations supplies the
+full assembly and completion routes, while its topology field simultaneously
+selects the theorem-shaped extraction/sphere witnesses, the package-level
+`ThreeSphere` and one-point compactification recognitions, and the concrete
+singleton/two-puncture complement facts for a supplied finite-extinction target.
+-/
+theorem finalAssemblySubobligationBoundaryInputs_promotedBoundary_fixedTarget_topologyPayload_fullAssembly_project_and_canonical_payloads
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u}) :
+    ∃ promoted : FinalAssemblyPackageBoundaryInputs.{u},
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+      (x y : M) (_hyx : y ≠ x)
+      (twoPointBasepoint : (({x} ∪ {y})ᶜ : Set M)),
+    ∃ topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+    ∃ packageHomeomorphism : Nonempty (M ≃ₜ ThreeSphere),
+    ∃ onePointRecognition : Nonempty (M ≃ₜ
+        OnePoint (EuclideanSpace ℝ (Fin 3))),
+    ∃ topologyStatement : ExtinctionTopologyExtractionStatement.{u},
+    ∃ sphereStatement : ExtinctionImpliesSphereStatement.{u},
+      promoted =
+        finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs
+          inputs ∧
+        promoted.smoothability = inputs.smoothability ∧
+        promoted.finiteExtinction =
+          finiteExtinctionPackage_requirement_of_subobligations_family
+            inputs.finiteExtinctionSubobligations ∧
+        promoted.topology = inputs.topology ∧
+        topologyPackage = promoted.topology ∧
+        packageHomeomorphism =
+          homeomorphism_of_topology_package topologyPackage M extinction ∧
+        onePointRecognition =
+          homeomorph_to_onePoint_threeSpace_of_topology_package
+            topologyPackage M extinction ∧
+        topologyStatement =
+          extinction_topology_extraction_statement_of_topology_package
+            topologyPackage ∧
+        sphereStatement =
+          extinction_implies_sphere_of_topology_package topologyPackage ∧
+        ContractibleSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+        Subsingleton
+          (FundamentalGroup (({x} ∪ {y})ᶜ : Set M)
+            twoPointBasepoint) ∧
+        (∃ _smoothability :
+          dependencyPackageLayerRequirement.{u}
+            DependencyPackageLayer.smoothabilityPackage,
+        ∃ _analytic :
+          dependencyPackageLayerRequirement.{u}
+            DependencyPackageLayer.analyticFoundationPackage,
+        ∃ _surgery :
+          dependencyPackageLayerRequirement.{u}
+            DependencyPackageLayer.surgeryPackage,
+        ∃ _finiteExtinction :
+          dependencyPackageLayerRequirement.{u}
+            DependencyPackageLayer.finiteExtinctionPackage,
+          dependencyPackageLayerRequirement.{u}
+            DependencyPackageLayer.topologyPackage) ∧
+        (∃ _smoothability :
+          dependencyComponentRequirement.{u}
+            DependencyComponentSlot.smoothabilityComponent,
+        ∃ _surgery :
+          dependencyComponentRequirement.{u}
+            DependencyComponentSlot.surgeryComponent,
+          dependencyComponentRequirement.{u}
+            DependencyComponentSlot.topologyComponent) ∧
+        (∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+        ∃ _surgeryPackages :
+          (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+            [ChartedSpace ThreeManifoldModel M]
+            [SimplyConnectedSpace M] [CompactSpace M]
+            [IsManifold ThreeManifoldModelWithCorners 1 M],
+              Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        ∃ _finiteExtinction :
+          (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+            [ChartedSpace ThreeManifoldModel M]
+            [SimplyConnectedSpace M] [CompactSpace M],
+              FiniteExtinctionByRicciFlowWithSurgery M),
+        ∃ _extractSphere : ExtinctionImpliesSphereStatement.{u},
+          PoincareConjectureStatement.{u}) ∧
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        canonicalCompletionTarget.{u} ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let promoted :=
+    finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs
+      inputs
+  exact
+    ⟨ promoted, by
+      intro M _top _t2 _charted _simple _compact extinction x y _hyx
+        twoPointBasepoint
+      let topologyPackage : ExtinctionTopologyExtractionPackage.{u} :=
+        promoted.topology
+      let packageHomeomorphism :=
+        homeomorphism_of_topology_package topologyPackage M extinction
+      let onePointRecognition :=
+        homeomorph_to_onePoint_threeSpace_of_topology_package
+          topologyPackage M extinction
+      let topologyStatement :=
+        extinction_topology_extraction_statement_of_topology_package
+          topologyPackage
+      let sphereStatement :=
+        extinction_implies_sphere_of_topology_package topologyPackage
+      exact
+        ⟨ topologyPackage
+        , packageHomeomorphism
+        , onePointRecognition
+        , topologyStatement
+        , sphereStatement
+        , rfl
+        , rfl
+        , rfl
+        , rfl
+        , rfl
+        , rfl
+        , rfl
+        , rfl
+        , rfl
+        , compl_singleton_contractibleSpace_of_topology_package
+            topologyPackage M extinction x
+        , twoPointComplement_simplyConnectedSpace_of_topology_package
+            topologyPackage M extinction _hyx
+        , twoPointComplement_fundamentalGroup_subsingleton_of_topology_package
+            topologyPackage M extinction _hyx twoPointBasepoint
+        , package_layer_requirements_payload_of_finalAssemblyPackageBoundaryInputs
+            promoted
+        , component_requirements_payload_of_finalAssemblyPackageBoundaryInputs
+            promoted
+        , poincare_full_assembly_payload_of_finalAssemblyPackageBoundaryInputs
+            promoted
+        , poincare_completion_payload_of_finalAssemblyPackageBoundaryInputs
+            promoted
+        , canonical_completion_target_of_finalAssemblyPackageBoundaryInputs
+            promoted
+        , canonical_completion_payload_of_finalAssemblyPackageBoundaryInputs
+            promoted
+        ⟩ ⟩
+
 end Poincare
