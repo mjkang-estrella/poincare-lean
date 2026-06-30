@@ -5825,4 +5825,189 @@ theorem groundedUniversalFiniteExtinction_selected_detailedPayload_allTargetFami
     , hCriteria witness
     ⟩
 
+/--
+Compact consumer form retaining both the concrete fixed-target finite-extinction
+witnesses and all target-family projections while also exposing the checked
+completion certificate at a requested universe witness.
+-/
+theorem groundedUniversalFiniteExtinction_selected_detailedPayload_concreteTarget_allTargetFamilies_checkedCertificate_and_witnessCriterion_of_grounded
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage)
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (witness : Type u) :
+    ∃ selected : GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u},
+    ∃ detailed : GroundedUniversalFiniteExtinctionDetailedAssemblyPayload.{u},
+    ∃ remaining : RemainingDependencyPackage.{u},
+    ∃ certificate : PoincareCompletionCertificate.{u},
+    ∃ n : ℕ∞ω,
+    ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+    ∃ surgery : HasRicciFlowWithSurgery n M,
+    ∃ control :
+      HasPerelmanSingularityControl (n := n) (M := M) flow,
+    ∃ _package : FiniteExtinctionSurgeryPackage n M,
+    ∃ _packageStatement : FiniteExtinctionStatement n M,
+    ∃ _derivation : HasFiniteExtinctionDerivation flow surgery control,
+    ∃ extinctionWitness : FiniteExtinctionByRicciFlowWithSurgery M,
+    ∃ packageStatementWitness :
+      (∃ n' : ℕ∞ω,
+      ∃ _package' : FiniteExtinctionSurgeryPackage n' M,
+        FiniteExtinctionStatement n' M ∧
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ flowPackage :
+      (∃ n' : ℕ∞ω,
+      ∃ flow' : RicciFlowData ThreeManifoldModelWithCorners n' M,
+      ∃ surgery' : HasRicciFlowWithSurgery n' M,
+      ∃ control' :
+        HasPerelmanSingularityControl (n := n') (M := M) flow',
+      ∃ _package' : FiniteExtinctionSurgeryPackage n' M,
+        FiniteExtinctionStatement n' M ∧
+          HasFiniteExtinctionDerivation flow' surgery' control' ∧
+          FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ statementPayload :
+      (∃ n' : ℕ∞ω,
+      ∃ flow' : RicciFlowData ThreeManifoldModelWithCorners n' M,
+      ∃ surgery' : HasRicciFlowWithSurgery n' M,
+      ∃ control' :
+        HasPerelmanSingularityControl (n := n') (M := M) flow',
+      ∃ _package' : FiniteExtinctionSurgeryPackage n' M,
+      ∃ _packageStatement' : FiniteExtinctionStatement n' M,
+      ∃ _derivation' : HasFiniteExtinctionDerivation flow' surgery' control',
+        FiniteExtinctionByRicciFlowWithSurgery M),
+    ∃ packageStatementDerivation :
+      (∃ n' : ℕ∞ω,
+      ∃ _package' : FiniteExtinctionSurgeryPackage n' M,
+        FiniteExtinctionStatement n' M ∧
+          FiniteExtinctionByRicciFlowWithSurgery M ∧
+          ∃ flow' : RicciFlowData ThreeManifoldModelWithCorners n' M,
+          ∃ surgery' : HasRicciFlowWithSurgery n' M,
+          ∃ control' :
+            HasPerelmanSingularityControl (n := n') (M := M) flow',
+            HasFiniteExtinctionDerivation flow' surgery' control'),
+      detailed = groundedUniversalFiniteExtinctionDetailedAssemblyPayload
+        grounded ∧
+        selected.detailedPayload = detailed ∧
+        selected.universalStatement = detailed.universalStatement ∧
+        selected.finiteExtinctionPackageRequirement =
+          detailed.finiteExtinctionPackageRequirement ∧
+        selected.finiteExtinctionPackageRequirement =
+          finiteExtinctionPackage_requirement_of_grounded grounded ∧
+        remaining.smoothability = smoothability ∧
+        remaining.surgery = selected.finiteExtinctionPackageRequirement ∧
+        remaining.topology = topologyPackage ∧
+        certificate =
+          completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+            remaining selected.universalStatement ∧
+        selected.universalStatement =
+          universalFiniteExtinctionStatement_of_grounded grounded ∧
+        selected.universalStatement M = extinctionWitness ∧
+        packageStatementWitness =
+          selected.packageStatementWitnessFamily M ∧
+        flowPackage = selected.flowPackageFamily M ∧
+        statementPayload = selected.statementPayloadFamily M ∧
+        packageStatementDerivation =
+          selected.packageStatementDerivationFamily M ∧
+        FiniteExtinctionStatement n M ∧
+        HasFiniteExtinctionDerivation flow surgery control ∧
+        PoincareConjectureStatement.{u} ∧
+        PoincareCompletionCertificate.{u} ∧
+        Nonempty PoincareCompletionCertificate.{u} ∧
+        CompletionCriterionAtUniverse witness := by
+  rcases
+    groundedUniversalFiniteExtinction_selected_detailedPayload_allTargetFamilies_remaining_certificate_route_and_fixedTarget_statementPayload_of_grounded
+      smoothability grounded topologyPackage M with
+    ⟨ selected
+    , detailed
+    , remaining
+    , certificate
+    , n
+    , flow
+    , surgery
+    , control
+    , package
+    , packageStatement
+    , derivation
+    , extinctionWitness
+    , packageStatementWitness
+    , flowPackage
+    , statementPayload
+    , packageStatementDerivation
+    , hDetailed
+    , hSelectedDetailed
+    , hUniversalDetailed
+    , hRequirementDetailed
+    , _hRicciFlowDetailed
+    , _hPerelmanDetailed
+    , _hFiniteExtinctionDetailed
+    , _hPackageStatementWitnessFamily
+    , _hStatementPayloadFamily
+    , _hFlowPackageFamily
+    , _hPackageStatementDerivationFamily
+    , hSmoothability
+    , hSurgery
+    , hTopology
+    , hCertificate
+    , hUniversal
+    , hRequirement
+    , _hRicciFlowMilestone
+    , _hPerelmanMilestone
+    , _hFiniteExtinctionMilestone
+    , hWitness
+    , hPackageStatementWitness
+    , hFlowPackage
+    , hStatementPayload
+    , hPackageStatementDerivation
+    , hPackageStatement
+    , hDerivation
+    , hPoincare
+    , hCertificatePayload
+    , hCriteria
+    ⟩
+  exact
+    ⟨ selected
+    , detailed
+    , remaining
+    , certificate
+    , n
+    , flow
+    , surgery
+    , control
+    , package
+    , packageStatement
+    , derivation
+    , extinctionWitness
+    , packageStatementWitness
+    , flowPackage
+    , statementPayload
+    , packageStatementDerivation
+    , hDetailed
+    , hSelectedDetailed
+    , hUniversalDetailed
+    , hRequirementDetailed
+    , hRequirement
+    , hSmoothability
+    , hSurgery
+    , hTopology
+    , hCertificate
+    , hUniversal
+    , hWitness
+    , hPackageStatementWitness
+    , hFlowPackage
+    , hStatementPayload
+    , hPackageStatementDerivation
+    , hPackageStatement
+    , hDerivation
+    , hPoincare
+    , hCertificatePayload
+    , ⟨certificate⟩
+    , hCriteria witness
+    ⟩
+
 end Poincare
