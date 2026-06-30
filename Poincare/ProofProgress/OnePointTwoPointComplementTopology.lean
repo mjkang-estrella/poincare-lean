@@ -913,4 +913,100 @@ theorem twoPointComplement_recognition_all_distinct_points_all_basepoint_lowHomo
     twoPointComplement_recognition_all_basepoint_lowHomotopy_baseclass_collapse_package_of_homeomorph_to_threeSphere
       h hyx
 
+/--
+One `ThreeSphere` recognition witness supplies both complement families needed
+by topology extraction: every singleton complement is Euclidean, contractible,
+and locally path connected, while every ordered pair of distinct punctures has
+the full two-puncture low-homotopy/baseclass collapse package at every
+basepoint.  This keeps the one-puncture and two-puncture routes synchronized
+under the same recognition input.
+-/
+theorem threeSphere_recognition_singleton_topology_and_twoPoint_lowHomotopy_collapse_families
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    (∀ x : M,
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+        ContractibleSpace ({x}ᶜ : Set M) ∧
+        Nonempty ({x}ᶜ : Set M) ∧
+        PathConnectedSpace ({x}ᶜ : Set M) ∧
+        ConnectedSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+        LocPathConnectedSpace ({x}ᶜ : Set M)) ∧
+      (∀ x y : M,
+      ∀ _hyx : y ≠ x,
+      ∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+        (∃ puncture : EuclideanSpace ℝ (Fin 3),
+          Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+            ({puncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3))))) ∧
+          Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+          PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+          ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+          SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+          LocPathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+          Subsingleton (ZerothHomotopy (({x} ∪ {y})ᶜ : Set M)) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+          Subsingleton
+            (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+          Subsingleton
+            (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+          (∀ z w : (({x} ∪ {y})ᶜ : Set M),
+            ZerothHomotopy.mk z = ZerothHomotopy.mk w) ∧
+          (∀ a b :
+            HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+            a = b) ∧
+          (∀ a b : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+            a = b) ∧
+          (∀ a b :
+            HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+            a = b) ∧
+          (∃ baseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+            ∀ homotopyClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+            homotopyClass = baseClass) ∧
+          (∃ baseClass :
+            HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+            ∀ homotopyClass :
+              HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+            homotopyClass = baseClass) ∧
+          (∃ baseClass :
+            FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+            ∀ fundamentalClass :
+              FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+            fundamentalClass = baseClass) ∧
+          (∃ baseClass :
+            HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+            ∀ homotopyClass :
+              HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+            homotopyClass = baseClass) ∧
+          (∀ z w : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path z w)) ∧
+          (∀ z : (({x} ∪ {y})ᶜ : Set M), pathComponent z = Set.univ)) := by
+  constructor
+  · intro x
+    let source := ({x}ᶜ : Set M)
+    let chart :=
+      homeomorph_compl_singleton_euclidean_of_homeomorph_to_threeSphere
+        h x
+    letI : ContractibleSpace source := chart.contractibleSpace
+    letI : Nonempty source := inferInstance
+    letI : PathConnectedSpace source := inferInstance
+    letI : ConnectedSpace source := inferInstance
+    letI : SimplyConnectedSpace source := inferInstance
+    letI : LocPathConnectedSpace source := chart.isOpenEmbedding.locPathConnectedSpace
+    exact
+      ⟨ h
+      , homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h
+      , ⟨chart⟩
+      , inferInstance
+      , inferInstance
+      , inferInstance
+      , inferInstance
+      , inferInstance
+      , inferInstance
+      ⟩
+  · exact
+      twoPointComplement_recognition_all_distinct_points_all_basepoint_lowHomotopy_baseclass_collapse_package_of_homeomorph_to_threeSphere
+        h
+
 end Poincare
