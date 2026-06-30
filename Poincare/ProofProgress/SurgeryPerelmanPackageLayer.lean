@@ -6062,8 +6062,11 @@ theorem surgeryPerelman_nonemptyDetailedAssemblyPayload_selectedCompleteConsumer
         RicciFlowWithSurgeryConstructionPackage
           (n := n) (M := M) flow ∧
         PerelmanSingularityControlPackage (n := n) (M := M) flow ∧
+        HasPerelmanEntropyMonotonicity flow ∧
+        HasPerelmanReducedVolumeMonotonicity flow ∧
         HasPerelmanNoLocalCollapsing flow ∧
         HasCanonicalNeighborhoodTheorem flow ∧
+        HasSingularityModelClassification flow ∧
         HasSingularityModelBlowupClassification flow ∧
         HasPerelmanSingularityControl flow ∧
         finiteExtinction = combinedPayload.finiteExtinctionWitness ∧
@@ -6133,11 +6136,11 @@ theorem surgeryPerelman_nonemptyDetailedAssemblyPayload_selectedCompleteConsumer
     , hPackageStatementPackage
     , constructionPackage
     , _perelmanPackage
-    , _entropyMonotonicity
-    , _reducedVolume
+    , entropyMonotonicity
+    , reducedVolume
     , noLocalCollapsing
     , canonicalNeighborhood
-    , _singularityModelClassification
+    , singularityModelClassification
     , blowupClassification
     , perelmanControl
     , hFiniteExtinction
@@ -6183,8 +6186,11 @@ theorem surgeryPerelman_nonemptyDetailedAssemblyPayload_selectedCompleteConsumer
     , hPackageStatementPackage
     , constructionPackage
     , _perelmanPackage
+    , entropyMonotonicity
+    , reducedVolume
     , noLocalCollapsing
     , canonicalNeighborhood
+    , singularityModelClassification
     , blowupClassification
     , perelmanControl
     , hFiniteExtinction
