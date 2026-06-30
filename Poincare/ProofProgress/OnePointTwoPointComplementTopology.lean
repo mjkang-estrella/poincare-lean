@@ -1255,4 +1255,164 @@ theorem threeSphere_recognition_fixed_singleton_chart_and_twoPoint_all_basepoint
         h hyx
     ⟩
 
+/--
+Family-level opened form of the synchronized singleton/two-puncture route.
+For every selected singleton puncture it names the Euclidean singleton chart
+once, then retains the supplied-basepoint two-puncture chart and collapsed
+base classes for every distinct second puncture and every basepoint in the
+two-puncture complement.
+-/
+theorem threeSphere_recognition_all_singleton_chart_and_all_twoPoint_named_baseclass_collapse_payload
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) :
+    ∀ x : M,
+    ∃ singletonChart : (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)),
+      singletonChart =
+        homeomorph_compl_singleton_euclidean_of_homeomorph_to_threeSphere
+          h x ∧
+        Nonempty (M ≃ₜ ThreeSphere) ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+        ContractibleSpace ({x}ᶜ : Set M) ∧
+        Nonempty ({x}ᶜ : Set M) ∧
+        PathConnectedSpace ({x}ᶜ : Set M) ∧
+        ConnectedSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+        LocPathConnectedSpace ({x}ᶜ : Set M) ∧
+        (∀ y : M,
+        ∀ _hyx : y ≠ x,
+        ∀ basepoint : (({x} ∪ {y})ᶜ : Set M),
+          ∃ twoPointPuncture : EuclideanSpace ℝ (Fin 3),
+          ∃ _twoPointChart :
+            Nonempty ((({x} ∪ {y})ᶜ : Set M) ≃ₜ
+              ({twoPointPuncture}ᶜ : Set (EuclideanSpace ℝ (Fin 3)))),
+          ∃ zerothBaseClass : ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+          ∃ piZeroBaseClass :
+            HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+          ∃ fundamentalBaseClass :
+            FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+          ∃ piOneBaseClass :
+            HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+            Nonempty (({x} ∪ {y})ᶜ : Set M) ∧
+            PathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+            ConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+            SimplyConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+            LocPathConnectedSpace (({x} ∪ {y})ᶜ : Set M) ∧
+            Subsingleton (ZerothHomotopy (({x} ∪ {y})ᶜ : Set M)) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+            Subsingleton
+              (FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+            Subsingleton
+              (HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint) ∧
+            (∀ z w : (({x} ∪ {y})ᶜ : Set M),
+              ZerothHomotopy.mk z = ZerothHomotopy.mk w) ∧
+            (∀ a b :
+              HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+              a = b) ∧
+            (∀ a b : FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+              a = b) ∧
+            (∀ a b :
+              HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+              a = b) ∧
+            (∀ homotopyClass :
+              ZerothHomotopy (({x} ∪ {y})ᶜ : Set M),
+              homotopyClass = zerothBaseClass) ∧
+            (∀ homotopyClass :
+              HomotopyGroup.Pi 0 (({x} ∪ {y})ᶜ : Set M) basepoint,
+              homotopyClass = piZeroBaseClass) ∧
+            (∀ fundamentalClass :
+              FundamentalGroup (({x} ∪ {y})ᶜ : Set M) basepoint,
+              fundamentalClass = fundamentalBaseClass) ∧
+            (∀ homotopyClass :
+              HomotopyGroup.Pi 1 (({x} ∪ {y})ᶜ : Set M) basepoint,
+              homotopyClass = piOneBaseClass) ∧
+            (∀ z w : (({x} ∪ {y})ᶜ : Set M), Nonempty (Path z w)) ∧
+            (∀ z : (({x} ∪ {y})ᶜ : Set M),
+              pathComponent z = Set.univ)) := by
+  intro x
+  let singletonSource := ({x}ᶜ : Set M)
+  let singletonChart :
+      singletonSource ≃ₜ EuclideanSpace ℝ (Fin 3) :=
+    homeomorph_compl_singleton_euclidean_of_homeomorph_to_threeSphere
+      h x
+  letI : ContractibleSpace singletonSource := singletonChart.contractibleSpace
+  letI : Nonempty singletonSource := inferInstance
+  letI : PathConnectedSpace singletonSource := inferInstance
+  letI : ConnectedSpace singletonSource := inferInstance
+  letI : SimplyConnectedSpace singletonSource := inferInstance
+  letI : LocPathConnectedSpace singletonSource :=
+    singletonChart.isOpenEmbedding.locPathConnectedSpace
+  refine
+    ⟨ singletonChart
+    , rfl
+    , h
+    , homeomorph_to_onePoint_threeSpace_of_homeomorph_to_threeSphere h
+    , ⟨singletonChart⟩
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , inferInstance
+    , ?_
+    ⟩
+  intro y hyx basepoint
+  rcases
+    twoPointComplement_recognition_supplied_basepoint_named_baseclass_collapse_package_of_homeomorph_to_threeSphere
+      h hyx basepoint with
+    ⟨ twoPointPuncture
+    , twoPointChart
+    , zerothBaseClass
+    , piZeroBaseClass
+    , fundamentalBaseClass
+    , piOneBaseClass
+    , twoPointNonempty
+    , twoPointPathConnected
+    , twoPointConnected
+    , twoPointSimplyConnected
+    , twoPointLocPathConnected
+    , twoPointZerothSubsingleton
+    , twoPointPiZeroSubsingleton
+    , twoPointFundamentalSubsingleton
+    , twoPointPiOneSubsingleton
+    , twoPointZerothEq
+    , twoPointPiZeroEq
+    , twoPointFundamentalEq
+    , twoPointPiOneEq
+    , twoPointZerothBaseClassEq
+    , twoPointPiZeroBaseClassEq
+    , twoPointFundamentalBaseClassEq
+    , twoPointPiOneBaseClassEq
+    , twoPointPathNonempty
+    , twoPointPathComponentEq
+    ⟩
+  exact
+    ⟨ twoPointPuncture
+    , twoPointChart
+    , zerothBaseClass
+    , piZeroBaseClass
+    , fundamentalBaseClass
+    , piOneBaseClass
+    , twoPointNonempty
+    , twoPointPathConnected
+    , twoPointConnected
+    , twoPointSimplyConnected
+    , twoPointLocPathConnected
+    , twoPointZerothSubsingleton
+    , twoPointPiZeroSubsingleton
+    , twoPointFundamentalSubsingleton
+    , twoPointPiOneSubsingleton
+    , twoPointZerothEq
+    , twoPointPiZeroEq
+    , twoPointFundamentalEq
+    , twoPointPiOneEq
+    , twoPointZerothBaseClassEq
+    , twoPointPiZeroBaseClassEq
+    , twoPointFundamentalBaseClassEq
+    , twoPointPiOneBaseClassEq
+    , twoPointPathNonempty
+    , twoPointPathComponentEq
+    ⟩
+
 end Poincare
