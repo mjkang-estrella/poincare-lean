@@ -371,4 +371,82 @@ theorem finalAssemblySubobligationBoundaryInputs_fullAssembly_project_and_canoni
       inputs
   ⟩
 
+/--
+Opened final-assembly endpoint for sub-obligation inputs.  It keeps the
+promoted three-package boundary, all package-layer requirements, aggregate
+component requirements, full assembly payload, project completion payload,
+canonical target, and canonical completion payload synchronized in one
+consumer theorem.  This is the handoff shape needed before final certificate
+collapse: callers can retain the lower-level finite-extinction
+sub-obligation family while using every package/component and completion route
+derived from the promoted boundary.
+-/
+theorem finalAssemblySubobligationBoundaryInputs_promotedBoundary_requirements_fullAssembly_project_and_canonical_payloads
+    (inputs : FinalAssemblySubobligationBoundaryInputs.{u}) :
+    ∃ promoted : FinalAssemblyPackageBoundaryInputs.{u},
+      promoted =
+        finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs
+          inputs ∧
+        (∃ _smoothability :
+          dependencyPackageLayerRequirement.{u}
+            DependencyPackageLayer.smoothabilityPackage,
+        ∃ _analytic :
+          dependencyPackageLayerRequirement.{u}
+            DependencyPackageLayer.analyticFoundationPackage,
+        ∃ _surgery :
+          dependencyPackageLayerRequirement.{u}
+            DependencyPackageLayer.surgeryPackage,
+        ∃ _finiteExtinction :
+          dependencyPackageLayerRequirement.{u}
+            DependencyPackageLayer.finiteExtinctionPackage,
+          dependencyPackageLayerRequirement.{u}
+            DependencyPackageLayer.topologyPackage) ∧
+        (∃ _smoothability :
+          dependencyComponentRequirement.{u}
+            DependencyComponentSlot.smoothabilityComponent,
+        ∃ _surgery :
+          dependencyComponentRequirement.{u}
+            DependencyComponentSlot.surgeryComponent,
+          dependencyComponentRequirement.{u}
+            DependencyComponentSlot.topologyComponent) ∧
+        (∃ _smoothabilityPackage : SmoothabilityPackage.{u},
+        ∃ _surgeryPackages :
+          (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+            [ChartedSpace ThreeManifoldModel M]
+            [SimplyConnectedSpace M] [CompactSpace M]
+            [IsManifold ThreeManifoldModelWithCorners 1 M],
+              Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)),
+        ∃ _topologyPackage : ExtinctionTopologyExtractionPackage.{u},
+        ∃ _finiteExtinction :
+          (∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+            [ChartedSpace ThreeManifoldModel M]
+            [SimplyConnectedSpace M] [CompactSpace M],
+              FiniteExtinctionByRicciFlowWithSurgery M),
+        ∃ _extractSphere : ExtinctionImpliesSphereStatement.{u},
+          PoincareConjectureStatement.{u}) ∧
+        (∃ _target : PoincareConjectureStatement.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) ∧
+        canonicalCompletionTarget.{u} ∧
+        (∃ _target : canonicalCompletionTarget.{u},
+          ∀ witness : Type u, CompletionCriterionAtUniverse witness) := by
+  let promoted :=
+    finalAssemblyPackageBoundaryInputs_of_subobligationBoundaryInputs
+      inputs
+  exact
+    ⟨ promoted
+    , rfl
+    , package_layer_requirements_payload_of_finalAssemblyPackageBoundaryInputs
+        promoted
+    , component_requirements_payload_of_finalAssemblyPackageBoundaryInputs
+        promoted
+    , poincare_full_assembly_payload_of_finalAssemblyPackageBoundaryInputs
+        promoted
+    , poincare_completion_payload_of_finalAssemblyPackageBoundaryInputs
+        promoted
+    , canonical_completion_target_of_finalAssemblyPackageBoundaryInputs
+        promoted
+    , canonical_completion_payload_of_finalAssemblyPackageBoundaryInputs
+        promoted
+    ⟩
+
 end Poincare
