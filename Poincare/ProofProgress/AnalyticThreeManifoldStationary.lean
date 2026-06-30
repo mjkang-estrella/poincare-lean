@@ -18444,4 +18444,145 @@ theorem stationaryZeroAnalyticFoundation_nonemptyDetailedAssemblyPayload_selecte
     , curvatureEvolution
     ⟩
 
+/--
+The selected stationary-zero analytic payload exposes the compact evolution
+field group and the full fixed-target analytic endpoint from the same detailed
+assembly witness.  This gives finite-extinction consumers a single route to
+the package-flow identity, equation-boundary/evolution equations, and the
+larger analytic endpoint used by downstream package assembly.
+-/
+theorem stationaryZeroAnalyticFoundation_nonemptyDetailedAssemblyPayload_selected_evolutionGroup_and_completeAnalyticEndpoint
+    (payload :
+      Nonempty StationaryZeroAnalyticFoundationDetailedAssemblyPayload.{u})
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace ThreeManifoldModel M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M] :
+    ∃ selected : StationaryZeroAnalyticFoundationCompleteConsumerPayload.{u},
+    ∃ detailed :
+      StationaryZeroAnalyticFoundationDetailedAssemblyPayload.{u},
+    ∃ analyticRequirement :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.analyticFoundationPackage,
+    ∃ analyticMilestone :
+      dependencyMilestoneRequirement.{u}
+        DependencyMilestone.ricciFlowAnalyticFoundation,
+    ∃ group : StationaryZeroAnalyticFoundationEvolutionFieldGroup M,
+    ∃ package :
+      RicciFlowAnalyticFoundationPackage
+        ThreeManifoldModelWithCorners group.regularity M,
+      selected.detailedPayload = detailed ∧
+        selected.analyticFoundationPackageRequirement =
+          analyticRequirement ∧
+        selected.ricciFlowAnalyticFoundationMilestone =
+          analyticMilestone ∧
+        analyticRequirement =
+          detailed.analyticFoundationPackageRequirement ∧
+        analyticMilestone =
+          detailed.ricciFlowAnalyticFoundationMilestone ∧
+        selected.evolutionFieldsFamily =
+          stationaryZeroAnalyticFoundationDetailedAssemblyPayload_evolutionFieldsFamily
+            detailed ∧
+        selected.fullPackageEvolutionFamily =
+          stationaryZeroAnalyticFoundationDetailedAssemblyPayload_fullPackageEvolutionFamily
+            detailed ∧
+        AnalyticFoundationSubobligationsPayload group.flow ∧
+        ricci_flow_data_of_analytic_foundation_package package =
+          group.flow ∧
+        RicciFlowAnalyticFoundationStatement
+          ThreeManifoldModelWithCorners group.regularity M ∧
+        AnalyticFoundationWithEquationBoundaryStatement group.flow ∧
+        HasMetricEvolutionEquation group.flow ∧
+        HasRicciTensorEvolutionEquation group.flow ∧
+        HasScalarCurvatureEvolutionEquation group.flow ∧
+        HasCurvatureNormEvolutionInequality group.flow ∧
+        HasCurvatureEvolutionEquations group.flow ∧
+        (∃ n : ℕ∞ω,
+        ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
+        ∃ package :
+          RicciFlowAnalyticFoundationPackage
+            ThreeManifoldModelWithCorners n M,
+          AnalyticFoundationSubobligationsPayload flow ∧
+            ricci_flow_data_of_analytic_foundation_package package =
+              flow ∧
+            RicciFlowAnalyticFoundationStatement
+              ThreeManifoldModelWithCorners n M ∧
+            AnalyticFoundationWithEquationBoundaryStatement flow ∧
+            HasRicciContractionTheory
+              (curvature_data_of_ricci_flow_data flow) ∧
+            HasScalarCurvatureTheory
+              (curvature_data_of_ricci_flow_data flow) ∧
+            HasMetricEvolutionEquation flow ∧
+            HasRicciTensorEvolutionEquation flow ∧
+            HasScalarCurvatureEvolutionEquation flow ∧
+            HasCurvatureNormEvolutionInequality flow ∧
+            HasCurvatureEvolutionEquations flow) := by
+  rcases
+    stationaryZeroAnalyticFoundation_nonemptyDetailedAssemblyPayload_selected_requirements_and_fixedTarget_evolutionGroup
+      payload M with
+    ⟨ selected
+    , detailed
+    , analyticRequirement
+    , analyticMilestone
+    , group
+    , package
+    , hDetailed
+    , hAnalyticRequirement
+    , hAnalyticMilestone
+    , hAnalyticRequirementDetailed
+    , hAnalyticMilestoneDetailed
+    , hEvolutionFieldsFamily
+    , hFullPackageEvolutionFamily
+    , subobligations
+    , packageFlow
+    , statement
+    , boundary
+    , ricciContraction
+    , scalarCurvature
+    , metricEvolution
+    , ricciTensorEvolution
+    , scalarCurvatureEvolution
+    , curvatureNormEvolution
+    , curvatureEvolution
+    ⟩
+  exact
+    ⟨ selected
+    , detailed
+    , analyticRequirement
+    , analyticMilestone
+    , group
+    , package
+    , hDetailed
+    , hAnalyticRequirement
+    , hAnalyticMilestone
+    , hAnalyticRequirementDetailed
+    , hAnalyticMilestoneDetailed
+    , hEvolutionFieldsFamily
+    , hFullPackageEvolutionFamily
+    , subobligations
+    , packageFlow
+    , statement
+    , boundary
+    , metricEvolution
+    , ricciTensorEvolution
+    , scalarCurvatureEvolution
+    , curvatureNormEvolution
+    , curvatureEvolution
+    , ⟨ group.regularity
+      , group.flow
+      , package
+      , subobligations
+      , packageFlow
+      , statement
+      , boundary
+      , ricciContraction
+      , scalarCurvature
+      , metricEvolution
+      , ricciTensorEvolution
+      , scalarCurvatureEvolution
+      , curvatureNormEvolution
+      , curvatureEvolution
+      ⟩
+    ⟩
+
 end Poincare
