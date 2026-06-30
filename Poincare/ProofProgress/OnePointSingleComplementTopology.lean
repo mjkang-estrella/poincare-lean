@@ -4802,4 +4802,122 @@ theorem compl_singleton_recognition_all_points_uniform_selected_topology_and_sup
     , allSuppliedNamed
     ⟩
 
+/--
+Fixed singleton-complement zeroth-class agreement.  For a recognized
+`ThreeSphere`, a chosen point, and an externally supplied complement basepoint,
+the selected topology route and the supplied-basepoint collapse route choose
+zeroth homotopy representatives that are definitionally identified by the
+opened collapse eliminators, while retaining the singleton chart/topology and
+path-collapse witnesses used downstream.
+-/
+theorem compl_singleton_recognition_selected_and_supplied_zeroth_baseclass_agreement_of_homeomorph_to_threeSphere
+    {M : Type u} [TopologicalSpace M]
+    (h : Nonempty (M ≃ₜ ThreeSphere)) (x : M)
+    (suppliedBasepoint : ({x}ᶜ : Set M)) :
+    ∃ _selectedBasepoint : ({x}ᶜ : Set M),
+    ∃ selectedZerothBaseClass : ZerothHomotopy ({x}ᶜ : Set M),
+    ∃ suppliedZerothBaseClass : ZerothHomotopy ({x}ᶜ : Set M),
+      Nonempty (M ≃ₜ ThreeSphere) ∧
+        Nonempty (M ≃ₜ OnePoint (EuclideanSpace ℝ (Fin 3))) ∧
+        Nonempty (({x}ᶜ : Set M) ≃ₜ EuclideanSpace ℝ (Fin 3)) ∧
+        ContractibleSpace ({x}ᶜ : Set M) ∧
+        Nonempty ({x}ᶜ : Set M) ∧
+        PathConnectedSpace ({x}ᶜ : Set M) ∧
+        ConnectedSpace ({x}ᶜ : Set M) ∧
+        SimplyConnectedSpace ({x}ᶜ : Set M) ∧
+        LocPathConnectedSpace ({x}ᶜ : Set M) ∧
+        Subsingleton (ZerothHomotopy ({x}ᶜ : Set M)) ∧
+        (∀ y z : ({x}ᶜ : Set M),
+          ZerothHomotopy.mk y = ZerothHomotopy.mk z) ∧
+        (∀ homotopyClass : ZerothHomotopy ({x}ᶜ : Set M),
+          homotopyClass = selectedZerothBaseClass) ∧
+        (∀ homotopyClass : ZerothHomotopy ({x}ᶜ : Set M),
+          homotopyClass = suppliedZerothBaseClass) ∧
+        selectedZerothBaseClass = suppliedZerothBaseClass ∧
+        (∀ y z : ({x}ᶜ : Set M), Nonempty (Path y z)) ∧
+        (∀ y : ({x}ᶜ : Set M), pathComponent y = Set.univ) := by
+  rcases
+    compl_singleton_recognition_all_points_uniform_selected_topology_and_supplied_basepoint_named_baseclass_collapse_witnesses_of_homeomorph_to_threeSphere
+      h x with
+    ⟨ selectedBasepoint
+    , selectedZerothBaseClass
+    , _selectedPiZeroBaseClass
+    , _selectedFundamentalBaseClass
+    , _selectedPiOneBaseClass
+    , hSphere
+    , hOnePoint
+    , chart
+    , contractible
+    , nonempty
+    , pathConnected
+    , connected
+    , simplyConnected
+    , locPathConnected
+    , _allBasepointPackage
+    , selectedZerothSubsingleton
+    , _selectedPiZeroSubsingleton
+    , _selectedFundamentalGroupSubsingleton
+    , _selectedPiOneSubsingleton
+    , _selectedZerothUnique
+    , _selectedPiZeroUnique
+    , _selectedFundamentalGroupUnique
+    , _selectedPiOneUnique
+    , selectedZerothEq
+    , _selectedPiZeroEq
+    , _selectedFundamentalGroupEq
+    , _selectedPiOneEq
+    , selectedZerothBaseClass_eq
+    , _selectedPiZeroBaseClass_eq
+    , _selectedFundamentalBaseClass_eq
+    , _selectedPiOneBaseClass_eq
+    , selectedPathNonempty
+    , selectedPathComponentEqUniv
+    , allSuppliedNamed
+    ⟩
+  rcases allSuppliedNamed suppliedBasepoint with
+    ⟨ suppliedZerothBaseClass
+    , _suppliedPiZeroBaseClass
+    , _suppliedFundamentalBaseClass
+    , _suppliedPiOneBaseClass
+    , _suppliedZerothSubsingleton
+    , _suppliedPiZeroSubsingleton
+    , _suppliedFundamentalGroupSubsingleton
+    , _suppliedPiOneSubsingleton
+    , _suppliedZerothUnique
+    , _suppliedPiZeroUnique
+    , _suppliedFundamentalGroupUnique
+    , _suppliedPiOneUnique
+    , suppliedZerothEq
+    , _suppliedPiZeroEq
+    , _suppliedFundamentalGroupEq
+    , _suppliedPiOneEq
+    , suppliedZerothBaseClass_eq
+    , _suppliedPiZeroBaseClass_eq
+    , _suppliedFundamentalBaseClass_eq
+    , _suppliedPiOneBaseClass_eq
+    , suppliedPathNonempty
+    , suppliedPathComponentEqUniv
+    ⟩
+  exact
+    ⟨ selectedBasepoint
+    , selectedZerothBaseClass
+    , suppliedZerothBaseClass
+    , hSphere
+    , hOnePoint
+    , chart
+    , contractible
+    , nonempty
+    , pathConnected
+    , connected
+    , simplyConnected
+    , locPathConnected
+    , selectedZerothSubsingleton
+    , selectedZerothEq
+    , selectedZerothBaseClass_eq
+    , suppliedZerothBaseClass_eq
+    , suppliedZerothBaseClass_eq selectedZerothBaseClass
+    , suppliedPathNonempty
+    , suppliedPathComponentEqUniv
+    ⟩
+
 end Poincare
