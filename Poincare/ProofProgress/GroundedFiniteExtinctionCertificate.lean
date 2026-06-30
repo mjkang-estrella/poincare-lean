@@ -6620,4 +6620,136 @@ theorem groundedUniversalFiniteExtinction_selected_detailedPayload_familyFields_
     , rfl
     ⟩
 
+/--
+Uniform target-family form of the grounded finite-extinction certificate
+endpoint.  A single grounded finite-extinction input supplies, for every smooth
+compact simply connected target and every witness universe, the selected
+consumer payload, detailed assembly payload, remaining dependency package,
+checked completion certificate, target extinction witness, all-witness
+completion-criteria family, and the named specialization at the requested
+witness.
+-/
+theorem groundedUniversalFiniteExtinction_uniform_selected_certificate_completionCriteria_and_witnessCriterion_of_grounded
+    (smoothability :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.smoothabilityPackage)
+    (grounded : GroundedUniversalFiniteExtinctionStatement.{u})
+    (topologyPackage :
+      dependencyPackageLayerRequirement.{u}
+        DependencyPackageLayer.topologyPackage) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+    ∀ witness : Type u,
+      ∃ selected :
+        GroundedUniversalFiniteExtinctionCompleteConsumerPayload.{u},
+      ∃ detailed :
+        GroundedUniversalFiniteExtinctionDetailedAssemblyPayload.{u},
+      ∃ remaining : RemainingDependencyPackage.{u},
+      ∃ certificate : PoincareCompletionCertificate.{u},
+      ∃ extinctionWitness : FiniteExtinctionByRicciFlowWithSurgery M,
+      ∃ allCriteria :
+        ∀ witness : Type u, CompletionCriterionAtUniverse witness,
+      ∃ witnessCriterion : CompletionCriterionAtUniverse witness,
+        detailed =
+          groundedUniversalFiniteExtinctionDetailedAssemblyPayload grounded ∧
+          selected.detailedPayload = detailed ∧
+          selected.universalStatement = detailed.universalStatement ∧
+          selected.finiteExtinctionPackageRequirement =
+            detailed.finiteExtinctionPackageRequirement ∧
+          selected.finiteExtinctionPackageRequirement =
+            finiteExtinctionPackage_requirement_of_grounded grounded ∧
+          remaining.smoothability = smoothability ∧
+          remaining.surgery = selected.finiteExtinctionPackageRequirement ∧
+          remaining.topology = topologyPackage ∧
+          certificate =
+            completion_certificate_of_remaining_dependency_and_universalFiniteExtinctionStatement
+              remaining selected.universalStatement ∧
+          selected.universalStatement =
+            universalFiniteExtinctionStatement_of_grounded grounded ∧
+          selected.universalStatement M = extinctionWitness ∧
+          PoincareConjectureStatement.{u} ∧
+          PoincareCompletionCertificate.{u} ∧
+          Nonempty PoincareCompletionCertificate.{u} ∧
+          allCriteria =
+            (fun witness =>
+              completion_criterion_of_completion_certificate
+                witness certificate) ∧
+          allCriteria witness = witnessCriterion := by
+  intro M _top _t2 _charted _simple _compact _smooth witness
+  rcases
+    groundedUniversalFiniteExtinction_selected_detailedPayload_familyFields_concreteTarget_checkedCertificate_completionCriteria_and_witnessCriterion_of_grounded
+      smoothability grounded topologyPackage M witness with
+    ⟨ selected
+    , detailed
+    , remaining
+    , certificate
+    , _n
+    , _flow
+    , _surgery
+    , _control
+    , _package
+    , _packageStatement
+    , _derivation
+    , extinctionWitness
+    , _packageStatementWitness
+    , _flowPackage
+    , _statementPayload
+    , _packageStatementDerivation
+    , allCriteria
+    , witnessCriterion
+    , hDetailed
+    , hSelectedDetailed
+    , hUniversalDetailed
+    , hRequirementDetailed
+    , _hPackageStatementWitnessFamily
+    , _hStatementPayloadFamily
+    , _hFlowPackageFamily
+    , _hPackageStatementDerivationFamily
+    , hRequirement
+    , hSmoothability
+    , hSurgery
+    , hTopology
+    , hCertificate
+    , hUniversal
+    , hWitness
+    , _hPackageStatementWitness
+    , _hFlowPackage
+    , _hStatementPayload
+    , _hPackageStatementDerivation
+    , _hPackageStatement
+    , _hDerivation
+    , hPoincare
+    , hCertificatePayload
+    , hNonemptyCertificate
+    , hCriteria
+    , hWitnessCriterion
+    ⟩
+  exact
+    ⟨ selected
+    , detailed
+    , remaining
+    , certificate
+    , extinctionWitness
+    , allCriteria
+    , witnessCriterion
+    , hDetailed
+    , hSelectedDetailed
+    , hUniversalDetailed
+    , hRequirementDetailed
+    , hRequirement
+    , hSmoothability
+    , hSurgery
+    , hTopology
+    , hCertificate
+    , hUniversal
+    , hWitness
+    , hPoincare
+    , hCertificatePayload
+    , hNonemptyCertificate
+    , hCriteria
+    , hWitnessCriterion
+    ⟩
+
 end Poincare
