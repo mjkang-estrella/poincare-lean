@@ -21544,6 +21544,134 @@ theorem onePointTransportedFinalCertificateFields_packageLayer_transfer_compact_
     ⟩
 
 /--
+The compact package-layer route also names the transported surgery package
+witness selected by the bridge `IsManifold` instance.  This keeps the
+smoothability transfer theorem, ambient compatibility payload, transported
+statement witnesses, bridge manifold witness, selected finite-extinction
+package, smooth-structure derivation, and finite-extinction payload on the
+same one-point compactification target.
+-/
+theorem onePointTransportedFinalCertificateFields_packageLayer_transfer_compact_bridge_manifold_surgeryPackage_smoothStructure_and_finiteExtinction_witnesses
+    (smoothability :
+      dependencyPackageLayerRequirement.{0}
+        DependencyPackageLayer.smoothabilityPackage)
+    (recognize : OnePointThreeSpaceRecognitionStatement.{0})
+    (surgeryPackages :
+      ∀ (M : Type) [TopologicalSpace M] [T2Space M]
+        [ChartedSpace ThreeManifoldModel M]
+        [SimplyConnectedSpace M] [CompactSpace M]
+        [IsManifold ThreeManifoldModelWithCorners 1 M],
+          Nonempty (Σ n : ℕ∞ω, FiniteExtinctionSurgeryPackage n M)) :
+    OnePointRecognitionTransportedToAmbientIsManifoldTransferTheorem.{0} ∧
+      OnePointRecognitionAmbientAtlasTransitionCompatibilityPayload.{0} ∧
+      let M := OnePoint (EuclideanSpace ℝ (Fin 3))
+      letI : T2Space M := onePoint_threeSpace_t2Space
+      letI : SimplyConnectedSpace M :=
+        onePoint_threeSpace_simplyConnectedSpace_of_sourceChoiceCollapse
+      letI : CompactSpace M := onePoint_threeSpace_compactSpace
+      ∃ fields :
+        OnePointTransportedFinalCertificateFields recognize surgeryPackages,
+      ∃ transportedFields :
+        SmoothabilityPackageTransportedSmoothManifoldFields.{0},
+      ∃ bridgeFields : SmoothabilityPackageTransportedBridgeFields.{0},
+      ∃ smoothFields :
+        SmoothabilityPackageSmoothStructureDerivationFields.{0},
+      ∃ transportedBridgeStatement :
+        SmoothabilityTransportedBridgeStatement.{0},
+      ∃ transportedSmoothManifoldStatement :
+        SmoothabilityTransportedSmoothManifoldStatement.{0},
+      ∃ bridgeCharted : ChartedSpace ThreeManifoldModel M,
+        letI : ChartedSpace ThreeManifoldModel M := bridgeCharted
+        ∃ _bridgeManifold :
+          IsManifold ThreeManifoldModelWithCorners 1 M,
+        ∃ surgeryRegularity : ℕ∞ω,
+        ∃ _surgeryPackage :
+          FiniteExtinctionSurgeryPackage surgeryRegularity M,
+        ∃ charted : ChartedSpace ThreeManifoldModel M,
+          letI : ChartedSpace ThreeManifoldModel M := charted
+          ∃ finiteExtinction :
+            FiniteExtinctionByRicciFlowWithSurgery M,
+          ∃ smoothDerivation,
+            transportedFields = fields.transportedFields ∧
+              bridgeFields = fields.bridgeFields ∧
+              smoothFields = fields.smoothFields ∧
+              smoothDerivation =
+                smoothFields.smoothStructureDerivation M ∧
+              transportedBridgeStatement =
+                bridgeFields.transportedBridge ∧
+              transportedSmoothManifoldStatement =
+                transportedFields.transportedSmoothManifold ∧
+              fields.finiteExtinctionPayload =
+                ⟨charted, finiteExtinction⟩ ∧
+              fields.surgeryFamily =
+                onePointTransportedSurgeryPackageFamily_of_surgeryPackages
+                  surgeryPackages ∧
+              fields.finiteExtinctionPayload =
+                onePointTransportedFiniteExtinctionPayload_of_transportedSmoothManifoldFields
+                  transportedFields fields.surgeryFamily := by
+  let M := OnePoint (EuclideanSpace ℝ (Fin 3))
+  letI : T2Space M := onePoint_threeSpace_t2Space
+  letI : SimplyConnectedSpace M :=
+    onePoint_threeSpace_simplyConnectedSpace_of_sourceChoiceCollapse
+  letI : CompactSpace M := onePoint_threeSpace_compactSpace
+  rcases
+      onePointTransportedFinalCertificateFields_packageLayer_transfer_compact_transportStatements_bridge_manifold_smoothStructure_and_finiteExtinction_witnesses
+        smoothability recognize surgeryPackages with
+    ⟨ transfer
+    , compat
+    , fields
+    , transportedFields
+    , bridgeFields
+    , smoothFields
+    , transportedBridgeStatement
+    , transportedSmoothManifoldStatement
+    , bridgeCharted
+    , bridgeManifold
+    , charted
+    , finiteExtinction
+    , smoothDerivation
+    , transportedFields_eq
+    , bridgeFields_eq
+    , smoothFields_eq
+    , smoothDerivation_eq
+    , transportedBridgeStatement_bridgeFields_eq
+    , transportedSmoothManifoldStatement_transportedFields_eq
+    , finiteExtinctionPayload_eq
+    , surgeryFamily_eq
+    , finiteExtinctionPayload_route_eq
+    ⟩
+  letI : ChartedSpace ThreeManifoldModel M := bridgeCharted
+  letI : IsManifold ThreeManifoldModelWithCorners 1 M := bridgeManifold
+  rcases fields.surgeryFamily bridgeCharted with
+    ⟨⟨surgeryRegularity, surgeryPackage⟩⟩
+  exact
+    ⟨ transfer
+    , compat
+    , fields
+    , transportedFields
+    , bridgeFields
+    , smoothFields
+    , transportedBridgeStatement
+    , transportedSmoothManifoldStatement
+    , bridgeCharted
+    , bridgeManifold
+    , surgeryRegularity
+    , surgeryPackage
+    , charted
+    , finiteExtinction
+    , smoothDerivation
+    , transportedFields_eq
+    , bridgeFields_eq
+    , smoothFields_eq
+    , smoothDerivation_eq
+    , transportedBridgeStatement_bridgeFields_eq
+    , transportedSmoothManifoldStatement_transportedFields_eq
+    , finiteExtinctionPayload_eq
+    , surgeryFamily_eq
+    , finiteExtinctionPayload_route_eq
+    ⟩
+
+/--
 Thus the current transfer theorem is blocked at the raw ambient atlas
 transition compatibility needed to build the ambient `HasGroupoid`.
 -/
