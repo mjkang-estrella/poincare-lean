@@ -15414,6 +15414,72 @@ theorem stationaryZeroAnalyticFoundationDetailedAssemblyPayload_evolutionFieldGr
       curvatureNormEvolution, curvatureEvolution ⟩⟩
 
 /--
+The detailed analytic assembly payload exposes a compact evolution-field group
+that is synchronized with the selected analytic package.  This keeps the
+package-flow identity and subobligation payload attached to the same flow used
+by the compact group, so downstream finite-extinction consumers can move from
+the package route to the grouped evolution fields without unpacking the raw
+stationary-zero production tuple again.
+-/
+theorem stationaryZeroAnalyticFoundationDetailedAssemblyPayload_package_evolutionFieldGroupFamily
+    (payload : StationaryZeroAnalyticFoundationDetailedAssemblyPayload.{u}) :
+    ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+      [ChartedSpace ThreeManifoldModel M]
+      [SimplyConnectedSpace M] [CompactSpace M]
+      [IsManifold ThreeManifoldModelWithCorners 1 M],
+        ∃ group : StationaryZeroAnalyticFoundationEvolutionFieldGroup M,
+        ∃ package :
+          RicciFlowAnalyticFoundationPackage
+            ThreeManifoldModelWithCorners group.regularity M,
+          AnalyticFoundationSubobligationsPayload group.flow ∧
+            ricci_flow_data_of_analytic_foundation_package package =
+              group.flow ∧
+            RicciFlowAnalyticFoundationStatement
+              ThreeManifoldModelWithCorners group.regularity M ∧
+            AnalyticFoundationWithEquationBoundaryStatement group.flow ∧
+            HasRicciContractionTheory
+              (curvature_data_of_ricci_flow_data group.flow) ∧
+            HasScalarCurvatureTheory
+              (curvature_data_of_ricci_flow_data group.flow) ∧
+            HasMetricEvolutionEquation group.flow ∧
+            HasRicciTensorEvolutionEquation group.flow ∧
+            HasScalarCurvatureEvolutionEquation group.flow ∧
+            HasCurvatureNormEvolutionInequality group.flow ∧
+            HasCurvatureEvolutionEquations group.flow := by
+  intro M _top _t2 _charted _simple _compact _smooth1
+  rcases payload.fullStatementPayloadFamily M with
+    ⟨n, smooth2, targetPayload⟩
+  letI : IsManifold ThreeManifoldModelWithCorners 2 M := smooth2
+  rcases targetPayload with
+    ⟨metric, identifiesDerivative, identifiesRicci, _productionData,
+      fullPayload⟩
+  let flow :=
+    stationary_zero_ricci_flow_data_current_api
+      metric identifiesDerivative identifiesRicci
+  rcases fullPayload with
+    ⟨subobligations, package, packageFlow, statement, boundary,
+      ricciContraction, scalarCurvature, metricEvolution,
+      ricciTensorEvolution, scalarCurvatureEvolution,
+      curvatureNormEvolution, curvatureEvolution⟩
+  let group : StationaryZeroAnalyticFoundationEvolutionFieldGroup M :=
+    { regularity := n
+      flow := flow
+      equationBoundary := boundary
+      ricciContraction := ricciContraction
+      scalarCurvature := scalarCurvature
+      metricEvolution := metricEvolution
+      ricciTensorEvolution := ricciTensorEvolution
+      scalarCurvatureEvolution := scalarCurvatureEvolution
+      curvatureNormEvolution := curvatureNormEvolution
+      curvatureEvolution := curvatureEvolution }
+  exact
+    ⟨group, package, subobligations, packageFlow, statement,
+      group.equationBoundary, group.ricciContraction, group.scalarCurvature,
+      group.metricEvolution, group.ricciTensorEvolution,
+      group.scalarCurvatureEvolution, group.curvatureNormEvolution,
+      group.curvatureEvolution⟩
+
+/--
 Universal stationary-zero production data directly constructs the compact
 evolution-field group family.
 -/
