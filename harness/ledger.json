@@ -1,0 +1,129 @@
+{
+  "meta": {
+    "goal": "Full formalization of the Poincaré Conjecture (Perelman program) in Lean 4 / Mathlib",
+    "created": "2026-07-01",
+    "orchestrator": "Claude Fable 5",
+    "workers": "codex exec, gpt-5.5, reasoning=xhigh",
+    "prime_directive": "Never fabricate completion. The gate (compile + no sorry/axiom + non-vacuity + frozen statement) is the only judge.",
+    "structural_finding": "The single-chart model (Poincare/ModelLaplacian.lean etc., ~710 thms) is at its structural ceiling: it cannot state global objects (closed 3-manifold, S^3, homeomorphism, integration, Betti numbers). The whole proof requires a new manifold-level layer (tier M) built on Mathlib's smooth-manifold library, with the local model results ported as chart-level lemmas."
+  },
+  "tiers": {
+    "L": "Local model (single chart) — finish remaining genuine local threads; the porting source",
+    "M0": "Global statement layer — state Poincaré + Ricci flow on Mathlib manifolds, no proofs",
+    "M1": "Riemannian geometry on manifolds — metric, connection, curvature, integration",
+    "M2": "Ricci flow PDE — short-time existence/uniqueness (Hamilton/DeTurck)",
+    "M3": "Maximum principles + evolution equations on closed manifolds",
+    "M4": "Hamilton-Ivey pinching, curvature estimates, blow-up limits",
+    "M5": "Perelman entropy/no-local-collapsing, kappa-solutions",
+    "M6": "Canonical neighborhoods + surgery",
+    "M7": "Finite extinction (Perelman/Colding-Minicozzi)",
+    "M8": "Assembly: extinction + surgery classification => Poincaré"
+  },
+  "tasks": [
+    {
+      "id": "L-schur-1",
+      "tier": "L",
+      "title": "Schur lemma piece: field-level covRicciDeriv for Einstein metric field",
+      "statement_spec": "In Poincare/ModelLaplacian.lean: for a metric field G with coordRicci = (R/n)·G as fields (Einstein), prove covRicciDeriv = d(R/n)·G using metric compatibility (∇g=0). Building block for Schur: Einstein => R constant (n≥3).",
+      "context": "sum_raised_pair_eq (26480fb1) done; combine with contracted Bianchi dR = 2 div Ric (42dfd302). See DEPENDENCY notes in memory/frontier.",
+      "deps": [],
+      "status": "open",
+      "files": ["Poincare/ModelLaplacian.lean"],
+      "difficulty": "medium"
+    },
+    {
+      "id": "M0-statement",
+      "tier": "M0",
+      "title": "Manifold-level statement of the Poincaré Conjecture",
+      "statement_spec": "New file Poincare/Global/Statement.lean: using Mathlib (ChartedSpace, IsManifold, CompactSpace, SimplyConnectedSpace, Homeomorph), define PoincareConjecture : Prop := for every M [TopologicalSpace M] [T2Space M] with a smooth 3-manifold structure, compact, connected, simply connected => Nonempty (M ≃ₜ (EuclideanSpace ℝ (Fin 4)) sphere 1). Must compile with NO sorry; it is a def of a Prop, not a theorem. Also state RicciFlow existence skeleton as Prop defs. Every def must be genuinely quantified (vacuity audit: no opaque Prop fields, no True-instantiable certificate structures).",
+      "deps": [],
+      "status": "open",
+      "files": ["Poincare/Global/Statement.lean"],
+      "difficulty": "medium"
+    },
+    {
+      "id": "M0-gap-survey",
+      "tier": "M0",
+      "title": "Mathlib gap survey for the manifold program",
+      "statement_spec": "Report (harness/reports/mathlib_gaps.md): audit current Mathlib (as pinned in lake-manifest) for: smooth manifolds, Riemannian metrics, Levi-Civita on manifolds, geodesics, integration on manifolds, Sobolev/parabolic PDE, sphere eversion project imports, fundamental group / simply connected, Homeomorph classification tools. For each: exists / partial / absent, with exact module names. Output drives decomposition of M1/M2.",
+      "deps": [],
+      "status": "open",
+      "files": ["harness/reports/mathlib_gaps.md"],
+      "difficulty": "research"
+    },
+    {
+      "id": "M1-metric-bundle",
+      "tier": "M1",
+      "title": "Riemannian metric as a smooth section on a manifold",
+      "statement_spec": "Define RiemannianMetric on a smooth manifold via Mathlib's vector bundles (cotangent square / bilinear form bundle), smoothness, positivity. Blocked on M0-gap-survey outcome (Mathlib may have partial support).",
+      "deps": ["M0-gap-survey"],
+      "status": "blocked",
+      "files": ["Poincare/Global/Metric.lean"],
+      "difficulty": "hard"
+    },
+    {
+      "id": "M2-short-time",
+      "tier": "M2",
+      "title": "Short-time existence of Ricci flow (DeTurck)",
+      "statement_spec": "Decompose after M1. Requires parabolic PDE theory absent from Mathlib — expect a multi-quarter subtree.",
+      "deps": ["M1-metric-bundle"],
+      "status": "blocked",
+      "files": [],
+      "difficulty": "wall"
+    },
+    {
+      "id": "M3-max-principle",
+      "tier": "M3",
+      "title": "Scalar maximum principle on closed manifolds; R_min monotone",
+      "deps": ["M1-metric-bundle"],
+      "status": "blocked",
+      "files": [],
+      "difficulty": "hard"
+    },
+    {
+      "id": "M4-pinching",
+      "tier": "M4",
+      "title": "Hamilton-Ivey pinching (dim 3)",
+      "deps": ["M3-max-principle"],
+      "status": "blocked",
+      "files": [],
+      "difficulty": "wall"
+    },
+    {
+      "id": "M5-entropy",
+      "tier": "M5",
+      "title": "Perelman W-entropy, no-local-collapsing",
+      "deps": ["M2-short-time", "M3-max-principle"],
+      "status": "blocked",
+      "files": [],
+      "difficulty": "wall"
+    },
+    {
+      "id": "M6-surgery",
+      "tier": "M6",
+      "title": "Canonical neighborhoods + Ricci flow with surgery",
+      "deps": ["M4-pinching", "M5-entropy"],
+      "status": "blocked",
+      "files": [],
+      "difficulty": "wall"
+    },
+    {
+      "id": "M7-extinction",
+      "tier": "M7",
+      "title": "Finite-time extinction for simply connected M",
+      "deps": ["M6-surgery"],
+      "status": "blocked",
+      "files": [],
+      "difficulty": "wall"
+    },
+    {
+      "id": "M8-assembly",
+      "tier": "M8",
+      "title": "Assembly to PoincareConjecture",
+      "deps": ["M0-statement", "M7-extinction"],
+      "status": "blocked",
+      "files": [],
+      "difficulty": "hard"
+    }
+  ]
+}
