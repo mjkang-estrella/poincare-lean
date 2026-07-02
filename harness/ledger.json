@@ -275,12 +275,13 @@
       "deps": [
         "M1-lc-regularity"
       ],
-      "status": "open",
+      "status": "in_progress",
       "files": [
         "Poincare/Global/HessianSymmetry.lean"
       ],
       "difficulty": "hard",
-      "title": "Covariant Hessian symmetry"
+      "title": "Covariant Hessian symmetry",
+      "result": "Symmetry thm DONE (16005044, gate PASS) under genuine gradient-differentiability hypothesis. Remaining: smooth sharp-map bridge (inverse-metric bundle hom C^1 from smooth metric, or local-frame G^{-1} coefficient lemma) to discharge it from f C^2 — report filed."
     },
     {
       "id": "M3-evolution-ingredients",
