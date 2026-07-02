@@ -1149,6 +1149,73 @@ theorem metricDualVectorAt_eq_metricRaiseContinuousAt
     ClosedSmoothRiemannianMetric.metricRaiseContinuousAt_inner_apply]
   simp
 
+omit [T2Space M] [IsManifold I ∞ M] in
+/--
+Finite-dimensional reconstruction for manifold-domain CLM fields.
+
+This is the closed-manifold analogue of the model-space
+`differentiableAt_clm_of_apply`: differentiability after applying every fixed
+model vector determines differentiability of the CLM-valued field.
+-/
+theorem mdifferentiableAt_clm_of_apply
+    {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    {Φ : M → E →L[ℝ] F} {x : M}
+    (h : ∀ w : E, MDifferentiableAt I 𝓘(ℝ, F) (fun y : M ↦ Φ y w) x) :
+    MDifferentiableAt I 𝓘(ℝ, E →L[ℝ] F) Φ x := by
+  let bE := Module.finBasis ℝ E
+  let coordC : Fin (Module.finrank ℝ E) → (E →L[ℝ] ℝ) :=
+    fun i ↦ LinearMap.toContinuousLinearMap (bE.coord i)
+  have hrepr : ∀ ρ : E →L[ℝ] F,
+      ρ = ∑ i, (coordC i).smulRight (ρ (bE i)) := by
+    intro ρ
+    ext w
+    have hw := bE.sum_repr w
+    conv_lhs => rw [← hw]
+    rw [map_sum]
+    simp only [ContinuousLinearMap.coe_sum', Finset.sum_apply,
+      ContinuousLinearMap.smulRight_apply, map_smul]
+    refine Finset.sum_congr rfl ?_
+    intro i _
+    rw [show coordC i w = bE.coord i w from rfl, Module.Basis.coord_apply]
+  have hfun : Φ = fun y : M ↦ ∑ i, (coordC i).smulRight (Φ y (bE i)) := by
+    funext y
+    exact hrepr (Φ y)
+  rw [hfun]
+  have hsummand : ∀ i : Fin (Module.finrank ℝ E),
+      MDifferentiableAt I 𝓘(ℝ, E →L[ℝ] F)
+        (fun y : M ↦ (coordC i).smulRight (Φ y (bE i))) x := by
+    intro i
+    exact (ContinuousLinearMap.smulRightL ℝ E F (coordC i)).differentiableAt
+      |>.comp_mdifferentiableAt (h (bE i))
+  refine Finset.induction_on (Finset.univ) ?base ?step
+  · simpa using (mdifferentiableAt_const (c := (0 : E →L[ℝ] F)) (x := x))
+  · intro a s ha ih
+    simpa [Finset.sum_insert ha] using (hsummand a).add ih
+
+omit [T2Space M] [IsManifold I ∞ M] in
+/--
+Dual-valued specialization of `mdifferentiableAt_clm_of_apply`.
+-/
+theorem mdifferentiableAt_clm_dual_of_apply
+    {f : M → E →L[ℝ] ℝ} {x : M}
+    (h : ∀ w : E, MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ f y w) x) :
+    MDifferentiableAt I 𝓘(ℝ, E →L[ℝ] ℝ) f x := by
+  exact mdifferentiableAt_clm_of_apply (F := ℝ) h
+
+/--
+Scalar metric entries are differentiable for canonical extension sections.
+
+This is the verified scalar-entry fact currently available without moving raw
+model vectors through the preferred-chart tangent coordinates.
+-/
+theorem metric_pairing_extend_mdiffAt
+    (g : ClosedSmoothRiemannianMetric n M) {x : M} (p q : TM x) :
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ g.inner y (extend E p y) (extend E q y)) x := by
+  exact g.metric_pairing_mdiffAt
+    (mdifferentiableAt_extend I E p)
+    (mdifferentiableAt_extend I E q)
+
 /--
 The metric trace of a fiberwise bilinear form, computed in an arbitrary finite
 basis and paired with the `g`-raised dual coframe of that basis.
