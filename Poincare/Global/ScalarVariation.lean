@@ -87,6 +87,236 @@ def RicciEndoHasDerivAt
     (A' : TM x →L[ℝ] TM x) : Prop :=
   HasDerivAt (fun t ↦ (gt t).ricciEndoContinuousAt x) A' t₀
 
+/-- The metric index-raising map, packaged as a continuous linear map on the
+continuous dual of a fixed tangent fiber. -/
+noncomputable def metricRaiseContinuousAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    (TM x →L[ℝ] ℝ) →L[ℝ] TM x :=
+  letI : T2Space (TM x) := inferInstanceAs (T2Space E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  LinearMap.toContinuousLinearMap
+    (((LinearMap.BilinForm.toDual (g.metricBilinAt x)
+        (g.metricBilinAt_nondegenerate x)).symm.toLinearMap) ∘ₗ
+      (LinearMap.toContinuousLinearMap.symm :
+        (TM x →L[ℝ] ℝ) ≃ₗ[ℝ] (TM x →ₗ[ℝ] ℝ)).toLinearMap)
+
+/-- The Ricci tensor as a continuous-linear map into the continuous dual. -/
+noncomputable def ricciDualContinuousAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : TM x →L[ℝ] (TM x →L[ℝ] ℝ) :=
+  letI : T2Space (TM x) := inferInstanceAs (T2Space E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  LinearMap.toContinuousLinearMap
+    (((LinearMap.toContinuousLinearMap :
+        (TM x →ₗ[ℝ] ℝ) ≃ₗ[ℝ] (TM x →L[ℝ] ℝ)).toLinearMap) ∘ₗ
+      CovariantDerivative.ricciDualAt g.leviCivita x)
+
+@[simp] theorem ricciDualContinuousAt_apply
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) :
+    g.ricciDualContinuousAt x u w = g.ricciAt x u w :=
+  by
+    simp [ricciDualContinuousAt, ClosedSmoothRiemannianMetric.ricciAt,
+      CovariantDerivative.ricciDualAt]
+
+/-- The existing Ricci endomorphism wrapper is the raised Ricci-dual map. -/
+theorem ricciEndoContinuousAt_eq_metricRaise_comp_ricciDualContinuousAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    g.ricciEndoContinuousAt x =
+      (g.metricRaiseContinuousAt x).comp (g.ricciDualContinuousAt x) := by
+  ext u
+  simp [ricciEndoContinuousAt, ricciEndoAt, metricRaiseContinuousAt,
+    ricciDualContinuousAt]
+
+theorem ricciBilinearDeriv_add_left
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {δRic : TM x → TM x → ℝ}
+    (hRic : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic u w) t₀)
+    (u u' w : TM x) :
+    δRic (u + u') w = δRic u w + δRic u' w := by
+  have hsum := (hRic u w).add (hRic u' w)
+  have htarget := hRic (u + u') w
+  have hpath :
+      (fun t ↦ (gt t).ricciAt x (u + u') w) =
+        fun t ↦ (gt t).ricciAt x u w + (gt t).ricciAt x u' w := by
+    funext t
+    exact (gt t).ricciAt_add_left x u u' w
+  rw [hpath] at htarget
+  exact htarget.unique hsum
+
+theorem ricciBilinearDeriv_smul_left
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {δRic : TM x → TM x → ℝ}
+    (hRic : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic u w) t₀)
+    (c : ℝ) (u w : TM x) :
+    δRic (c • u) w = c • δRic u w := by
+  have hscale := (hRic u w).const_smul c
+  have htarget := hRic (c • u) w
+  have hpath :
+      (fun t ↦ (gt t).ricciAt x (c • u) w) =
+        fun t ↦ c • (gt t).ricciAt x u w := by
+    funext t
+    exact (gt t).ricciAt_smul_left x c u w
+  rw [hpath] at htarget
+  exact htarget.unique hscale
+
+theorem ricciBilinearDeriv_add_right
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {δRic : TM x → TM x → ℝ}
+    (hRic : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic u w) t₀)
+    (u w w' : TM x) :
+    δRic u (w + w') = δRic u w + δRic u w' := by
+  have hsum := (hRic u w).add (hRic u w')
+  have htarget := hRic u (w + w')
+  have hpath :
+      (fun t ↦ (gt t).ricciAt x u (w + w')) =
+        fun t ↦ (gt t).ricciAt x u w + (gt t).ricciAt x u w' := by
+    funext t
+    exact (gt t).ricciAt_add_right x u w w'
+  rw [hpath] at htarget
+  exact htarget.unique hsum
+
+theorem ricciBilinearDeriv_smul_right
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {δRic : TM x → TM x → ℝ}
+    (hRic : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic u w) t₀)
+    (c : ℝ) (u w : TM x) :
+    δRic u (c • w) = c • δRic u w := by
+  have hscale := (hRic u w).const_smul c
+  have htarget := hRic u (c • w)
+  have hpath :
+      (fun t ↦ (gt t).ricciAt x u (c • w)) =
+        fun t ↦ c • (gt t).ricciAt x u w := by
+    funext t
+    exact (gt t).ricciAt_smul_right x c u w
+  rw [hpath] at htarget
+  exact htarget.unique hscale
+
+/-- Package pointwise Ricci-variation components as a continuous-linear
+dual-valued map.  Linearity is obtained from the derivative hypotheses by
+uniqueness, not assumed separately. -/
+noncomputable def ricciDerivativeDualContinuousAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (δRic : TM x → TM x → ℝ)
+    (hRic : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic u w) t₀) :
+    TM x →L[ℝ] (TM x →L[ℝ] ℝ) :=
+  letI : T2Space (TM x) := inferInstanceAs (T2Space E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let δRicDual : TM x →ₗ[ℝ] Module.Dual ℝ (TM x) :=
+    { toFun := fun u ↦
+        { toFun := fun w ↦ δRic u w
+          map_add' := fun w w' ↦ ricciBilinearDeriv_add_right hRic u w w'
+          map_smul' := fun c w ↦ ricciBilinearDeriv_smul_right hRic c u w }
+      map_add' := by
+        intro u u'
+        ext w
+        exact ricciBilinearDeriv_add_left hRic u u' w
+      map_smul' := by
+        intro c u
+        ext w
+        exact ricciBilinearDeriv_smul_left hRic c u w }
+  LinearMap.toContinuousLinearMap
+    (((LinearMap.toContinuousLinearMap :
+        (TM x →ₗ[ℝ] ℝ) ≃ₗ[ℝ] (TM x →L[ℝ] ℝ)).toLinearMap) ∘ₗ
+      δRicDual)
+
+@[simp] theorem ricciDerivativeDualContinuousAt_apply
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {δRic : TM x → TM x → ℝ}
+    (hRic : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic u w) t₀)
+    (u w : TM x) :
+    ricciDerivativeDualContinuousAt (gt := gt) (t₀ := t₀) (x := x) δRic hRic u w =
+      δRic u w :=
+  by
+    simp [ricciDerivativeDualContinuousAt]
+
+theorem hasDerivAt_ricciDualContinuousAt_of_ricciBilinearHasDerivAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {δRic : TM x → TM x → ℝ}
+    (hRic : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic u w) t₀) :
+    HasDerivAt (fun t ↦ (gt t).ricciDualContinuousAt x)
+      (ricciDerivativeDualContinuousAt (gt := gt) (t₀ := t₀) (x := x) δRic hRic)
+      t₀ := by
+  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  apply RicciFlow.RicciFlow.hasDerivAt_clm_of_forall_apply'
+  intro u
+  apply RicciFlow.RicciFlow.hasDerivAt_clm_of_forall_apply'
+  intro w
+  simpa using hRic u w
+
+/--
+Lift pointwise Ricci bilinear derivatives to the raised Ricci endomorphism.
+
+The derivative of the metric raising map is supplied as an explicit honest
+hypothesis; the formula is the product rule
+`d(raise ∘ RicDual) = d(raise) ∘ RicDual + raise ∘ d(RicDual)`.
+-/
+theorem ricciEndoHasDerivAt_of_ricciBilinearHasDerivAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {δRic : TM x → TM x → ℝ}
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hRic : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic u w) t₀) :
+    RicciEndoHasDerivAt gt t₀ x
+      (raise'.comp ((gt t₀).ricciDualContinuousAt x) +
+        ((gt t₀).metricRaiseContinuousAt x).comp
+          (ricciDerivativeDualContinuousAt
+            (gt := gt) (t₀ := t₀) (x := x) δRic hRic)) := by
+  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  have hRicDual :=
+    hasDerivAt_ricciDualContinuousAt_of_ricciBilinearHasDerivAt
+      (gt := gt) (t₀ := t₀) (x := x) hRic
+  have hcomp : HasDerivAt
+      (fun t ↦ ((gt t).metricRaiseContinuousAt x).comp
+        ((gt t).ricciDualContinuousAt x))
+      (raise'.comp ((gt t₀).ricciDualContinuousAt x) +
+        ((gt t₀).metricRaiseContinuousAt x).comp
+          (ricciDerivativeDualContinuousAt
+            (gt := gt) (t₀ := t₀) (x := x) δRic hRic))
+      t₀ :=
+    @HasDerivAt.clm_comp ℝ _ (TM x →L[ℝ] ℝ) _ _ (TM x) _ _ t₀
+      (TM x) _ _
+      (fun t ↦ (gt t).metricRaiseContinuousAt x)
+      raise'
+      (fun t ↦ (gt t).ricciDualContinuousAt x)
+      (ricciDerivativeDualContinuousAt
+        (gt := gt) (t₀ := t₀) (x := x) δRic hRic)
+      hRaise hRicDual
+  unfold RicciEndoHasDerivAt
+  convert hcomp using 1
+
 /--
 The trace decomposition for scalar variation: differentiating the trace of the
 raised Ricci endomorphism gives the trace of the endomorphism derivative.
