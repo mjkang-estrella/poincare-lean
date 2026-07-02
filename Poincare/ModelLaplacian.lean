@@ -31714,6 +31714,57 @@ theorem covTensor2Deriv_smul_metric_field
   rw [hmc]
   ring
 
+/-- **Einstein field differentiates to scalar-gradient times the metric**:
+if `Ric = (R/n) g` as a tensor field, then
+`∇_v Ric(u,w) = d(R/n)(v) · g(u,w)`. -/
+theorem covRicciDeriv_eq_fderiv_coordScalar_div_finrank_mul_metric_of_einstein_field
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hEin : ∀ y : E,
+      coordRicciForm G y
+        (fun p ↦ differentiableAt_christoffelClosedOp (x := y) G (hG.of_le (by norm_num))
+          hinv p)
+        = (coordScalar G y / (Module.finrank ℝ E : ℝ)) • G y)
+    (v u w : E) :
+    covRicciDeriv G x v u w
+      = ((1 / (Module.finrank ℝ E : ℝ)) *
+          (fderiv ℝ (fun y ↦ coordScalar G y) x v)) * G x u w := by
+  let hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y :=
+    fun y p ↦ differentiableAt_christoffelClosedOp (x := y) G (hG.of_le (by norm_num))
+      hinv p
+  let hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x :=
+    fun p ↦ differentiableAt_fderiv_christoffelClosedOp G hG hinv p
+  let nR : ℝ := Module.finrank ℝ E
+  have hGd : DifferentiableAt ℝ G x := (hG.differentiable (by norm_num)).differentiableAt
+  have hRdiff : DifferentiableAt ℝ (fun y ↦ coordScalar G y) x :=
+    differentiableAt_coordScalar_of_christoffel hGd hinv hdiffΓ hdd
+  have hfdiv : DifferentiableAt ℝ (fun y ↦ coordScalar G y / nR) x := by
+    rw [show (fun y ↦ coordScalar G y / nR) =
+        fun y ↦ (1 / nR) * coordScalar G y by
+      funext y
+      ring]
+    exact hRdiff.const_mul (1 / nR)
+  have hdf : fderiv ℝ (fun y ↦ coordScalar G y / nR) x v
+      = (1 / nR) * (fderiv ℝ (fun y ↦ coordScalar G y) x v) := by
+    rw [show (fun y ↦ coordScalar G y / nR) =
+        fun y ↦ (1 / nR) * coordScalar G y by
+      funext y
+      ring]
+    rw [fderiv_const_mul hRdiff (1 / nR), ContinuousLinearMap.smul_apply, smul_eq_mul]
+  have hKd : DifferentiableAt ℝ (fun y ↦ coordRicciForm G y (hdiffΓ y)) x :=
+    differentiableAt_coordRicciForm_field hdiffΓ hdd
+  have hfield : (fun y ↦ coordRicciForm G y (hdiffΓ y))
+      = fun y ↦ (coordScalar G y / nR) • G y := by
+    funext y
+    exact hEin y
+  have hcov := covTensor2Deriv_coordRicciForm hdiffΓ hdd hKd v w u
+  rw [← hcov, hfield,
+    covTensor2Deriv_smul_metric_field hfdiv hGd hGsymm (hinv x) v w u,
+    hdf, hGsymm x w u]
+
 /--
 **Metric raising–lowering contraction.** Raising a covector's index with the
 inverse metric and then lowering it back against a vector `u` recovers the
