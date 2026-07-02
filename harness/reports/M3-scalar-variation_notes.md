@@ -275,3 +275,42 @@ Status from task `M3-predicates-14`:
   `TraceMetricVariationDerivAt`.
 - Verified: `lake build Poincare.Global.ScalarVariation` succeeds.  The build
   reports only existing linter warnings.
+
+Status from task `M3-predicates-15`:
+
+- Done: propagated the discharged Gram-route theorem
+  `traceMetricVariationDerivAt_of_covTensor2ExtDifferentiableAt` to the
+  time-variation case as
+  `traceMetricVariationDerivAt_timeDeriv_of_covTensor2ExtDifferentiableAt`.
+  This gives the inner-trace wrapper
+  `deltaGamma_innerTrace_eq_of_covTensor2ExtDifferentiableAt`, so the first
+  contraction no longer needs the older trace-product/cancellation inputs once
+  `CovTensor2ExtDifferentiableAt (timeDerivAt gt t₀) x` is available.
+- Done: proved the linear-algebraic Laplacian trace bridge
+  `laplacianAt_eq_sum_hessianAt`, exposing `laplacianAt` as the finite raised
+  trace of `hessianAt` in the same basis/dual-basis vocabulary used by the
+  divergence assemblies.
+- Partial/fallback: the two named general assemblies
+  `DeltaGammaDivergenceTraceAssemblyAt` and
+  `DeltaGammaContractionTraceAssemblyAt` are not fully discharged.  The exact
+  remaining second-derivative obligations are now named as
+  `DeltaGammaDivergenceTraceHessianAssemblyAt` and
+  `DeltaGammaContractionTraceHessianAssemblyAt`; verified adapters
+  `deltaGammaDivergenceTraceAssemblyAt_of_hessianAssembly` and
+  `deltaGammaContractionTraceAssemblyAt_of_hessianAssembly` convert them to the
+  original target predicates using only `laplacianAt_eq_sum_hessianAt`.
+- Done: added Hessian-assembly consumer wrappers:
+  `deltaRicciAt_raised_trace_eq_doubleDivergence_sub_laplacian_of_hessianAssemblies`,
+  `hDeltaGammaTrace_of_hessianAssemblies`, and
+  `scalarVariation_lichnerowicz_of_hessianAssemblies`; and the Hamilton-side
+  package/adapters `HamiltonScalarEvolutionHessianPredicatesAt`,
+  `hamiltonScalarEvolutionPredicatesAt_of_hessianPredicates`,
+  `satisfiesHamiltonScalarEvolutionAt_of_ricciFlow_hessian_variation`, and
+  `hamiltonScalarEvolutionProgram_of_hessianPredicates`.
+- Exact next proof state: prove the two Hessian-trace assemblies by expanding
+  `covDeltaGammaDerivAt` and differentiating the already-propagated
+  `δΓ` trace identities; after that the original assembly predicates and
+  `scalarVariation_lichnerowicz` follow by the adapters above.
+- Verified: `lake build Poincare.Global.ScalarVariation
+  Poincare.Global.ScalarEvolution` succeeds.  The build reports only existing
+  linter warnings.
