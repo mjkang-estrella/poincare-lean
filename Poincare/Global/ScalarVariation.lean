@@ -697,6 +697,144 @@ theorem metricFlowRegularAt_const
     rw [hzero, leviCivita_zero_section]
     simp
 
+theorem MetricFlowRegularAt.iteratedConnection_hasDerivAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hreg : MetricFlowRegularAt gt t₀ x) (a u w : TM x) :
+    HasDerivAt
+      (fun t ↦ (gt t).leviCivita
+        (fun y ↦ (gt t).leviCivita (extend E w) y (extend E u y)) x a)
+      (iteratedConnectionDerivAt gt t₀ x a u w) t₀ := by
+  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  have h := (hreg.iteratedConnection_timeDifferentiable a u w).hasDerivAt
+  rwa [hreg.iteratedConnection_deriv_eq a u w] at h
+
+theorem MetricFlowRegularAt.bracketConnection_hasDerivAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hreg : MetricFlowRegularAt gt t₀ x) (a u w : TM x) :
+    HasDerivAt
+      (fun t ↦ (gt t).leviCivita (extend E w) x
+        (VectorField.mlieBracket I (extend E a) (extend E u) x))
+      (deltaGammaAt gt t₀ x
+        (VectorField.mlieBracket I (extend E a) (extend E u) x) w) t₀ := by
+  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  have h :=
+    (hreg.connection x
+      (VectorField.mlieBracket I (extend E a) (extend E u) x) w).hasDerivAt
+  simpa [deltaGammaAt] using h
+
+theorem deltaGammaAt_sub_left
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hΓ : ConnectionValueTimeDifferentiableAt gt t₀ x)
+    (v v' w : TM x) :
+    deltaGammaAt gt t₀ x (v - v') w =
+      deltaGammaAt gt t₀ x v w - deltaGammaAt gt t₀ x v' w := by
+  rw [sub_eq_add_neg, deltaGammaAt_add_left hΓ v (-v') w]
+  have hneg :
+      deltaGammaAt gt t₀ x (-v') w = -deltaGammaAt gt t₀ x v' w := by
+    simpa using deltaGammaAt_smul_left (gt := gt) (t₀ := t₀) (x := x)
+      hΓ (-1 : ℝ) v' w
+  rw [hneg]
+  abel
+
+theorem deltaGammaAt_mlieBracket_eq_sub
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hΓ : ConnectionValueTimeDifferentiableAt gt t₀ x)
+    (a u w : TM x) :
+    deltaGammaAt gt t₀ x
+        (VectorField.mlieBracket I (extend E a) (extend E u) x) w =
+      deltaGammaAt gt t₀ x ((gt t₀).leviCivita (extend E u) x a) w
+        - deltaGammaAt gt t₀ x ((gt t₀).leviCivita (extend E a) x u) w := by
+  have hbr :
+      (gt t₀).leviCivita (extend E u) x a
+          - (gt t₀).leviCivita (extend E a) x u =
+        VectorField.mlieBracket I (extend E a) (extend E u) x := by
+    have htf := (gt t₀).leviCivita_torsionFreeAt x
+      (by simpa [MDiffAtTangentField] using (mdifferentiableAt_extend I E a))
+      (by simpa [MDiffAtTangentField] using (mdifferentiableAt_extend I E u))
+    rwa [extend_apply_self, extend_apply_self] at htf
+  rw [← hbr]
+  exact deltaGammaAt_sub_left (gt := gt) (t₀ := t₀) (x := x) hΓ
+    ((gt t₀).leviCivita (extend E u) x a)
+    ((gt t₀).leviCivita (extend E a) x u) w
+
+theorem curvatureVariationByDeltaGammaAt_eq_iteratedConnectionDeriv_sub
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hΓ : ConnectionValueTimeDifferentiableAt gt t₀ x)
+    (a u w : TM x) :
+    iteratedConnectionDerivAt gt t₀ x a u w
+      - iteratedConnectionDerivAt gt t₀ x u a w
+      - deltaGammaAt gt t₀ x
+        (VectorField.mlieBracket I (extend E a) (extend E u) x) w =
+      curvatureVariationByDeltaGammaAt gt t₀ x a u w := by
+  rw [deltaGammaAt_mlieBracket_eq_sub (gt := gt) (t₀ := t₀) (x := x)
+    hΓ a u w]
+  unfold iteratedConnectionDerivAt curvatureVariationByDeltaGammaAt
+    covDeltaGammaDerivAt deltaGammaFieldAt
+  module
+
+theorem curvatureVariation_hasDerivAt_of_metricFlowRegularAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hreg : MetricFlowRegularAt gt t₀ x) (a u w : TM x) :
+    HasDerivAt
+      (fun t ↦ CovariantDerivative.curvatureOp (gt t).leviCivita
+        (extend E a) (extend E u) (extend E w) x)
+      (curvatureVariationByDeltaGammaAt gt t₀ x a u w) t₀ := by
+  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  have hA := hreg.iteratedConnection_hasDerivAt a u w
+  have hB := hreg.iteratedConnection_hasDerivAt u a w
+  have hC := hreg.bracketConnection_hasDerivAt a u w
+  have hraw :
+      HasDerivAt
+        (fun t ↦
+          (gt t).leviCivita
+              (fun y ↦ (gt t).leviCivita (extend E w) y
+                (extend E u y)) x a
+            - (gt t).leviCivita
+              (fun y ↦ (gt t).leviCivita (extend E w) y
+                (extend E a y)) x u
+            - (gt t).leviCivita (extend E w) x
+              (VectorField.mlieBracket I (extend E a) (extend E u) x))
+        (iteratedConnectionDerivAt gt t₀ x a u w
+          - iteratedConnectionDerivAt gt t₀ x u a w
+          - deltaGammaAt gt t₀ x
+            (VectorField.mlieBracket I (extend E a) (extend E u) x) w)
+        t₀ := by
+    simpa using (hA.sub hB).sub hC
+  have hraw' :
+      HasDerivAt
+        (fun t ↦
+          (gt t).leviCivita
+              (fun y ↦ (gt t).leviCivita (extend E w) y
+                (extend E u y)) x a
+            - (gt t).leviCivita
+              (fun y ↦ (gt t).leviCivita (extend E w) y
+                (extend E a y)) x u
+            - (gt t).leviCivita (extend E w) x
+              (VectorField.mlieBracket I (extend E a) (extend E u) x))
+        (curvatureVariationByDeltaGammaAt gt t₀ x a u w) t₀ := by
+    simpa [curvatureVariationByDeltaGammaAt_eq_iteratedConnectionDeriv_sub
+      (gt := gt) (t₀ := t₀) (x := x) (hreg.connection x) a u w] using hraw
+  have hpath :
+      (fun t ↦ CovariantDerivative.curvatureOp (gt t).leviCivita
+        (extend E a) (extend E u) (extend E w) x) =
+        fun t ↦
+          (gt t).leviCivita
+              (fun y ↦ (gt t).leviCivita (extend E w) y
+                (extend E u y)) x a
+            - (gt t).leviCivita
+              (fun y ↦ (gt t).leviCivita (extend E w) y
+                (extend E a y)) x u
+            - (gt t).leviCivita (extend E w) x
+              (VectorField.mlieBracket I (extend E a) (extend E u) x) := by
+    funext t
+    rw [CovariantDerivative.curvatureOp_apply]
+    rw [extend_apply_self, extend_apply_self]
+  rw [hpath]
+  exact hraw'
+
 /-- The divergence contraction `Σᵢ eⁱ((∇_{eᵢ} δΓ)(u,w))`. -/
 noncomputable def deltaGammaDivergenceAt
     (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
@@ -787,6 +925,16 @@ theorem ricciVariation_eq_deltaGamma_contractions
   intro i _
   exact (LinearMap.toContinuousLinearMap (b.coord i)).hasFDerivAt.comp_hasDerivAt
     t₀ (hCurv (b i))
+
+theorem ricciVariation_eq_deltaGamma_contractions'
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hreg : MetricFlowRegularAt gt t₀ x) (u w : TM x) :
+    HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+      (deltaRicciAt gt t₀ x u w) t₀ :=
+  ricciVariation_eq_deltaGamma_contractions (gt := gt) (t₀ := t₀) (x := x)
+    u w (fun a ↦ curvatureVariation_hasDerivAt_of_metricFlowRegularAt hreg a u w)
 
 /-- Raise a cotangent vector with the metric at a fixed point. -/
 noncomputable def metricDualVectorAt
