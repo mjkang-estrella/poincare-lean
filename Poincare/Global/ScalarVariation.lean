@@ -1832,6 +1832,29 @@ theorem hTraceSwap
   exact hswap.symm
 
 /--
+Exact `hTraceDeriv` obligation: the contracted covariant derivative of `h`
+is the exterior derivative of its metric trace.
+-/
+def TraceMetricVariationDerivAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M) : Prop :=
+  ∀ w : TM x,
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      ∑ i, covTensor2DerivAt g h x w ((Module.finBasis ℝ (TM x)) i)
+        (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i)))
+      =
+        extDerivFun (fun y ↦ traceMetricVariationAt g h y) x w
+
+theorem traceMetricVariationDerivAt_zero
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    TraceMetricVariationDerivAt g
+      (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x := by
+  intro w
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  simp [extDerivFun_zero_at]
+
+/--
 Inner trace of the closed `δΓ` Koszul identity.
 
 The two trace-commute hypotheses are the remaining closed-manifold
