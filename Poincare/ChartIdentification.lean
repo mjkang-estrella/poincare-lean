@@ -98,6 +98,57 @@ theorem extDerivFun_apply_chart {f : M → 𝕜} {x : M} (hf : MDiffAt f x)
     I.range_eq_univ, fderivWithin_univ]
   rfl
 
+/--
+In a fixed boundaryless chart, the exterior derivative of a scalar function is
+the ordinary derivative of the fixed-chart representative applied to the
+chart-pushed tangent vector.
+-/
+theorem extDerivFun_apply_fixed_chart {f : M → 𝕜} {x₀ y : M}
+    (hy : y ∈ (extChartAt I x₀).source) (hf : MDiffAt f y)
+    (v : TangentSpace I y) :
+    extDerivFun f y v =
+      fderiv 𝕜 (f ∘ (extChartAt I x₀).symm) (extChartAt I x₀ y)
+        (mfderiv% (extChartAt I x₀) y v) := by
+  have hys : y ∈ (chartAt H x₀).source := by
+    rwa [extChartAt_source] at hy
+  have htarget : extChartAt I x₀ y ∈ (extChartAt I x₀).target :=
+    (extChartAt I x₀).map_source hy
+  have hleft : (extChartAt I x₀).symm (extChartAt I x₀ y) = y :=
+    (extChartAt I x₀).left_inv hy
+  have hsmWithin :
+      CMDiffAt[range I] 1 ((extChartAt I x₀).symm : E → M)
+        (extChartAt I x₀ y) :=
+    contMDiffWithinAt_extChartAt_symm_range (n := 1) x₀ htarget
+  have hsm :
+      CMDiffAt 1 ((extChartAt I x₀).symm : E → M)
+        (extChartAt I x₀ y) := by
+    rwa [I.range_eq_univ, contMDiffWithinAt_univ] at hsmWithin
+  have hrep :
+      DifferentiableAt 𝕜 (f ∘ (extChartAt I x₀).symm)
+        (extChartAt I x₀ y) := by
+    exact mdifferentiableAt_iff_differentiableAt.mp
+      (MDifferentiableAt.comp_of_eq
+        (I := 𝓘(𝕜, E)) (I' := I) (I'' := 𝓘(𝕜, 𝕜))
+        (g := f) (f := ((extChartAt I x₀).symm : E → M))
+        (x := extChartAt I x₀ y)
+        hf (hsm.mdifferentiableAt one_ne_zero) hleft)
+  have hfeq : f =ᶠ[𝓝 y]
+      (f ∘ (extChartAt I x₀).symm) ∘ (extChartAt I x₀) := by
+    filter_upwards [(isOpen_extChartAt_source (I := I) x₀).mem_nhds hy]
+      with z hz
+    simp only [Function.comp_apply]
+    rw [(extChartAt I x₀).left_inv hz]
+  have hcomp : mfderiv% f y =
+      (fderiv 𝕜 (f ∘ (extChartAt I x₀).symm) (extChartAt I x₀ y)) ∘L
+        mfderiv% (extChartAt I x₀) y := by
+    rw [hfeq.mfderiv_eq, mfderiv_comp y
+      (mdifferentiableAt_iff_differentiableAt.mpr hrep)
+      (mdifferentiableAt_extChartAt hys)]
+    congr 1
+    exact mfderiv_eq_fderiv
+  simp only [extDerivFun, ContinuousLinearMap.comp_apply, hcomp]
+  rfl
+
 end Boundaryless
 
 section DerivationIdentity
