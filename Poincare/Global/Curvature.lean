@@ -172,6 +172,43 @@ theorem scalarAt_eq_nat_mul_of_isEinsteinAt {lam : ℝ} {x : M}
       rw [finrank_euclideanSpace_fin]
       ring
 
+/-- The canonical Ricci tensor is additive in its first argument. -/
+theorem ricciAt_add_left (x : M) (u u' w : TM x) :
+    g.ricciAt x (u + u') w = g.ricciAt x u w + g.ricciAt x u' w := by
+  simpa [ricciAt] using
+    CovariantDerivative.ricciBilinearAt_add_left g.leviCivita x u u' w
+
+/-- The canonical Ricci tensor is homogeneous in its first argument. -/
+theorem ricciAt_smul_left (x : M) (c : ℝ) (u w : TM x) :
+    g.ricciAt x (c • u) w = c • g.ricciAt x u w := by
+  simpa [ricciAt] using
+    CovariantDerivative.ricciBilinearAt_smul_left g.leviCivita x c u w
+
+/-- The canonical Ricci tensor is additive in its second argument. -/
+theorem ricciAt_add_right (x : M) (u w w' : TM x) :
+    g.ricciAt x u (w + w') = g.ricciAt x u w + g.ricciAt x u w' := by
+  simpa [ricciAt] using
+    CovariantDerivative.ricciBilinearAt_add_right g.leviCivita x u w w'
+
+/-- The canonical Ricci tensor is homogeneous in its second argument. -/
+theorem ricciAt_smul_right (x : M) (c : ℝ) (u w : TM x) :
+    g.ricciAt x u (c • w) = c • g.ricciAt x u w := by
+  simpa [ricciAt] using
+    CovariantDerivative.ricciBilinearAt_smul_right g.leviCivita x c u w
+
+/-- The canonical Ricci tensor is symmetric. -/
+theorem ricciAt_symm (x : M) (u w : TM x) :
+    g.ricciAt x u w = g.ricciAt x w u := by
+  simpa [ricciAt] using
+    CovariantDerivative.ricciBilinearAt_symm g.leviCivita
+      (fun y ↦ g.leviCivita_torsionFreeAt y)
+      (fun y ↦ g.leviCivita_metricCompatibleAt y)
+      (fun v w ↦ g.inner_symm x v w)
+      (fun v hv ↦ LeviCivitaExistence.metric_nondegenerate g x v hv)
+      (fun A B hA hB ↦ metric_pairing_contMDiffAt_two g hA hB)
+      (fun A B hA hB ↦ metric_pairing_mdiffAt g hA hB)
+      u w
+
 end Curvature
 
 end ClosedSmoothRiemannianMetric
