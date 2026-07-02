@@ -21,6 +21,7 @@ import Poincare.Global.RiemannianContext
 import Poincare.Global.LeviCivita
 import Poincare.Global.LeviCivitaExistence
 import Poincare.Global.LeviCivitaTransport
+import Poincare.Global.LeviCivitaRegularity
 import Poincare.Global.Curvature
 import Poincare.Global.RicciNorm
 import Poincare.Global.Laplacian
