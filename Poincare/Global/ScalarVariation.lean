@@ -2914,6 +2914,19 @@ noncomputable def covTensor2DerivAt
     - h x ((g.leviCivita (extend E p) x v)) q
     - h x p ((g.leviCivita (extend E q) x v))
 
+/-- Unfolding bridge from the flat derivative of `h` on canonical extension
+slots to its covariant derivative and the two Levi-Civita slot corrections. -/
+theorem extDerivFun_h_extend_eq_covTensor2DerivAt_add_corrections
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (v p q : TM x) :
+    extDerivFun (fun y : M ↦ h y (extend E p y) (extend E q y)) x v =
+      covTensor2DerivAt g h x v p q
+        + h x ((g.leviCivita (extend E p) x v)) q
+        + h x p ((g.leviCivita (extend E q) x v)) := by
+  unfold covTensor2DerivAt
+  ring
+
 @[simp] theorem covTensor2DerivAt_zero
     (g : ClosedSmoothRiemannianMetric n M) (x : M)
     (v p q : TM x) :
