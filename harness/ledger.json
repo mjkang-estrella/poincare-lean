@@ -234,9 +234,10 @@
       "deps": [
         "M1-lc-regularity"
       ],
-      "status": "open",
+      "status": "done",
       "files": [],
-      "difficulty": "hard"
+      "difficulty": "hard",
+      "result": "DONE 2026-07-01, commit 2507f4b2, gate PASS. gradientAt/gradient (metric duality + linearity), hessianAt/hessianDualAt, laplacianAt (trace), linearity + const sanity theorems. Hessian SYMMETRY blocked on gradient-field regularity + scalar 2nd-derivative commutation (tracked under M1-lc-regularity), report filed."
     },
     {
       "id": "M1-ricci-norm",
