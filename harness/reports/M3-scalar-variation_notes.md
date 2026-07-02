@@ -108,3 +108,22 @@ Status from task `M3-scalar-variation-5`:
   `ricciDeriv_raised_trace_contracted_lichnerowicz`.
 - Verified: `lake build Poincare.Global.ScalarVariation` succeeds after this
   assembly theorem.
+
+Status from task `M3-scalar-variation-7`:
+
+- Done: added verified trace-unpack lemmas
+  `trace_metricRaise_ricciDerivativeDualContinuousAt`,
+  `trace_metricRaise_deltaRicciAt_eq_sum`, and
+  `deltaRicciAt_raised_trace_eq_deltaGamma_contractions`.  These expose the
+  current `hDeltaGammaTrace` LHS as the explicit raised-basis sum of
+  `deltaRicciAt`, then split that sum into the two `δΓ` contractions from the
+  definition of `deltaRicciAt`.
+- Done: added verified `deltaGamma_innerTrace_eq`, contracting
+  `deltaGamma_koszul` over `(eᵢ, ♯eⁱ)` and proving the algebraic collapse to
+  `div h - 1/2 d(tr h)`.  It carries exactly two named first-order trace
+  obligations: `hTraceSwap` (contracted derivative/first-slot swap) and
+  `hTraceDeriv` (contracted `∇h` trace equals derivative of `tr_g h`).  Both
+  are used directly; they are the next metric-compatibility facts to port,
+  not curvature commutation facts.
+- Verified: `lake build Poincare.Global.ScalarVariation` succeeds after these
+  lemmas.
