@@ -4667,6 +4667,174 @@ noncomputable def closedCurvatureCovDerivAt
         (extend E u) (extend E w)
         (extend E (g.leviCivita (extend E z) x v)) x
 
+/-- Closed curvature operator field in canonical extension slots. -/
+noncomputable def closedCurvatureFieldAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (u w z : TM x) : ∀ y : M, TM y :=
+  fun y ↦
+    CovariantDerivative.curvatureOp g.leviCivita
+      (extend E u) (extend E w) (extend E z) y
+
+/--
+Differentiability of the closed curvature fields in anchored extension slots.
+
+This is the non-vacuous regularity atom needed to differentiate scalar
+curvature entries.  The derivative bridge below uses it only to invoke metric
+compatibility on the vector-valued curvature field.
+-/
+def ClosedCurvatureFieldMDifferentiableAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : Prop :=
+  ∀ u w z : TM x,
+    MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+      (T% (closedCurvatureFieldAt g u w z)) x
+
+/--
+Scalar-entry derivative bridge for closed curvature values.
+
+For fixed base vectors `a`, `u`, `w`, and `q`, it identifies the exterior
+derivative of
+`y ↦ g(R_y(extend a, extend u) extend w, extend q)` with the covariant
+curvature derivative and the three curvature-slot plus output-slot
+Levi-Civita corrections.
+-/
+structure ClosedCurvatureEntryDerivativeBridgeAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : Prop where
+  mdifferentiable :
+    ∀ a u w q : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦
+          g.inner y
+            (CovariantDerivative.curvatureOp g.leviCivita
+              (extend E a) (extend E u) (extend E w) y)
+            (extend E q y)) x
+  extDeriv_eq :
+    ∀ v a u w q : TM x,
+      extDerivFun
+        (fun y : M ↦
+          g.inner y
+            (CovariantDerivative.curvatureOp g.leviCivita
+              (extend E a) (extend E u) (extend E w) y)
+            (extend E q y)) x v
+      =
+        g.inner x (closedCurvatureCovDerivAt g x v a u w) q
+        + g.inner x
+            (CovariantDerivative.curvatureOp g.leviCivita
+              (extend E (g.leviCivita (extend E a) x v))
+              (extend E u) (extend E w) x) q
+        + g.inner x
+            (CovariantDerivative.curvatureOp g.leviCivita
+              (extend E a)
+              (extend E (g.leviCivita (extend E u) x v))
+              (extend E w) x) q
+        + g.inner x
+            (CovariantDerivative.curvatureOp g.leviCivita
+              (extend E a) (extend E u)
+              (extend E (g.leviCivita (extend E w) x v)) x) q
+        + g.inner x
+            (CovariantDerivative.curvatureOp g.leviCivita
+              (extend E a) (extend E u) (extend E w) x)
+            (g.leviCivita (extend E q) x v)
+
+/--
+Triple product-rule bridge for scalar closed-curvature entries.
+
+This is the curvature analogue of
+`deltaGammaEntryDerivativeBridgeAt_of_deltaGammaFieldMDifferentiableAt`:
+metric compatibility differentiates the pairing, while the definition of
+`closedCurvatureCovDerivAt` supplies the three curvature-slot corrections.
+-/
+theorem closedCurvatureEntryDerivativeBridgeAt_of_curvatureFieldMDifferentiableAt
+    {g : ClosedSmoothRiemannianMetric n M}
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M}
+    (hR : ClosedCurvatureFieldMDifferentiableAt g x) :
+    ClosedCurvatureEntryDerivativeBridgeAt g x where
+  mdifferentiable := by
+    intro a u w q
+    exact g.metric_pairing_mdiffAt
+      (hR a u w)
+      (mdifferentiableAt_extend I E q)
+  extDeriv_eq := by
+    intro v a u w q
+    let R : ∀ y : M, TM y := closedCurvatureFieldAt g a u w
+    let Q : ∀ y : M, TM y := extend E q
+    have hRdiff :
+        MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% R) x := by
+      simpa [R] using hR a u w
+    have hQdiff :
+        MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% Q) x := by
+      simpa [Q] using (mdifferentiableAt_extend I E q)
+    have hcompat :=
+      g.leviCivita_metricCompatibleAt x
+        (Y := R) (Z := Q)
+        (by simpa [MDiffAtTangentField] using hRdiff)
+        (by simpa [MDiffAtTangentField] using hQdiff)
+        v
+    have hcov :
+        g.leviCivita R x v =
+          closedCurvatureCovDerivAt g x v a u w
+            + CovariantDerivative.curvatureOp g.leviCivita
+              (extend E (g.leviCivita (extend E a) x v))
+              (extend E u) (extend E w) x
+            + CovariantDerivative.curvatureOp g.leviCivita
+              (extend E a)
+              (extend E (g.leviCivita (extend E u) x v))
+              (extend E w) x
+            + CovariantDerivative.curvatureOp g.leviCivita
+              (extend E a) (extend E u)
+              (extend E (g.leviCivita (extend E w) x v)) x := by
+      unfold closedCurvatureCovDerivAt
+      change g.leviCivita R x v =
+        (g.leviCivita R x v
+          - CovariantDerivative.curvatureOp g.leviCivita
+              (extend E (g.leviCivita (extend E a) x v))
+              (extend E u) (extend E w) x
+          - CovariantDerivative.curvatureOp g.leviCivita
+              (extend E a)
+              (extend E (g.leviCivita (extend E u) x v))
+              (extend E w) x
+          - CovariantDerivative.curvatureOp g.leviCivita
+              (extend E a) (extend E u)
+              (extend E (g.leviCivita (extend E w) x v)) x)
+        + CovariantDerivative.curvatureOp g.leviCivita
+              (extend E (g.leviCivita (extend E a) x v))
+              (extend E u) (extend E w) x
+        + CovariantDerivative.curvatureOp g.leviCivita
+              (extend E a)
+              (extend E (g.leviCivita (extend E u) x v))
+              (extend E w) x
+        + CovariantDerivative.curvatureOp g.leviCivita
+              (extend E a) (extend E u)
+              (extend E (g.leviCivita (extend E w) x v)) x
+      abel
+    change
+      extDerivFun (fun y : M ↦ g.inner y (R y) (Q y)) x v =
+        g.inner x (closedCurvatureCovDerivAt g x v a u w) q
+        + g.inner x
+            (CovariantDerivative.curvatureOp g.leviCivita
+              (extend E (g.leviCivita (extend E a) x v))
+              (extend E u) (extend E w) x) q
+        + g.inner x
+            (CovariantDerivative.curvatureOp g.leviCivita
+              (extend E a)
+              (extend E (g.leviCivita (extend E u) x v))
+              (extend E w) x) q
+        + g.inner x
+            (CovariantDerivative.curvatureOp g.leviCivita
+              (extend E a) (extend E u)
+              (extend E (g.leviCivita (extend E w) x v)) x) q
+        + g.inner x
+            (CovariantDerivative.curvatureOp g.leviCivita
+              (extend E a) (extend E u) (extend E w) x)
+            (g.leviCivita (extend E q) x v)
+    rw [hcompat, hcov]
+    simp [R, Q, closedCurvatureFieldAt, extend_apply_self]
+
 /-- Trace of the closed curvature covariant derivative giving `∇ Ric`. -/
 noncomputable def closedCovRicciDerivAt
     (g : ClosedSmoothRiemannianMetric n M)
