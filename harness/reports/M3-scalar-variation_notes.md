@@ -412,3 +412,33 @@ Status from task `M3-predicates-22`:
 - Verified: `lake build Poincare.Global.ScalarVariation
   Poincare.Global.ScalarEvolution` succeeds.  The build reports only existing
   linter warnings.
+
+Status from task `M3-predicates-24`:
+
+- Done: added the lower-slot inner-trace anchored Gram infrastructure
+  `deltaGammaInnerTraceFieldAt_eq_trace_in_basis` and
+  `deltaGammaInnerTraceFieldAt_eq_sum_gram_inv`.
+- Done: recorded that the inner-trace entries are the same scalar
+  `g(δΓ(extend p, extend q), extend w)` entries handled by the existing
+  `DeltaGammaEntryDerivativeBridgeAt`, via
+  `deltaGammaInnerTraceEntry_mdiffAt_of_entryBridge` and
+  `deltaGammaInnerTraceEntry_extDeriv_eq_of_entryBridge`.
+- Done: proved the verified derivative reduction
+  `deltaGammaInnerTraceFieldDerivativeTraceAt_of_entryBridge`, identifying the
+  covariant derivative of the moving inner-trace field with
+  `Σᵢ g((∇_u δΓ)(eᵢ,eⁱ), w)` after the expected test-slot Levi-Civita
+  correction is subtracted.
+- Blocked: the frozen target
+  `DeltaGammaInnerTraceFieldCovariantDerivativeAt` needs the different cyclic
+  divergence trace `Σᵢ g((∇_{eᵢ} δΓ)(w,u), eⁱ)`.  No existing theorem derives
+  the required cyclic trace identity for `covDeltaGammaDerivAt` from the
+  current regularity and scalar-entry bridge hypotheses.
+- Exact remaining non-regularity predicate list:
+  `DeltaGammaInnerTraceFieldCovariantDerivativeAt`,
+  `DeltaGammaDivergenceTraceInnerHessianDerivativeAt`,
+  `TensorDoubleDivergenceTimeDerivNegTwoRicciAt`,
+  `TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt`,
+  `TensorDoubleDivergenceNegTwoRicciLinearityAt`, and
+  `ClosedContractedBianchiAt`.
+- Verified so far: `lake env lean Poincare/Global/ScalarVariation.lean`
+  succeeds with existing linter warnings and `simp` suggestions only.
