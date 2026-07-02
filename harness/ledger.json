@@ -245,11 +245,12 @@
       "deps": [
         "M1-levi-civita"
       ],
-      "status": "open",
+      "status": "done",
       "files": [
         "Poincare/Global/RicciNorm.lean"
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "result": "DONE 2026-07-01, commit e4c492eb, gate PASS. ricciEndoAt (self-adjoint), ricciNormSqAt, scalarAt=trace(ricciEndo), pinching R^2<=n|Ric|^2 + equality iff Einstein operator condition. Pinching suite ported to closed manifolds."
     }
   ]
 }
