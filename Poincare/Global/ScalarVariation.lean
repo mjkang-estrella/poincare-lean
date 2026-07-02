@@ -1180,6 +1180,24 @@ theorem coord_eq_inner_metricDualVectorAt_of_basis
   exact (metricDualVectorAt_inner_apply g x (b.coord i) v).symm
 
 /--
+The raised dual vector of any basis coordinate covector is the continuous
+metric-raise map applied to the same coordinate covector.
+-/
+theorem metricDualVectorAt_basisCoord_eq_metricRaiseContinuousAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    [T2Space (TM x)] [FiniteDimensional ℝ (TM x)]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι ℝ (TM x)) (i : ι) :
+    metricDualVectorAt g x (b.coord i) =
+      g.metricRaiseContinuousAt x (LinearMap.toContinuousLinearMap (b.coord i)) := by
+  letI : T2Space (TM x) := inferInstanceAs (T2Space E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  simpa using
+    (metricDualVectorAt_eq_metricRaiseContinuousAt
+      (g := g) (x := x)
+      (φ := LinearMap.toContinuousLinearMap (b.coord i)))
+
+/--
 The arbitrary-basis metric trace is the trace of the raised endomorphism, hence
 is basis-free.
 -/
@@ -1324,6 +1342,48 @@ theorem traceMetricVariationAt_eq_chartTangentBasisAt_sum
   rw [traceMetricVariationAt_eq_chartTangentBasisAt
     (g := g) (h := h) (x₀ := x₀) (hz := hz) (B := B) hB]
   rfl
+
+/-- The chart-frame raised coframe rewritten through the continuous raise map. -/
+theorem metricDualVectorAt_chartTangentBasisAt_coord_eq_metricRaiseContinuousAt
+    (g : ClosedSmoothRiemannianMetric n M) (x₀ : M)
+    {z : E} (hz : z ∈ (extChartAt I x₀).target)
+    [T2Space (TM ((extChartAt I x₀).symm z))]
+    [FiniteDimensional ℝ (TM ((extChartAt I x₀).symm z))]
+    (i : Fin (Module.finrank ℝ E)) :
+    metricDualVectorAt g ((extChartAt I x₀).symm z)
+        ((chartTangentBasisAt (n := n) (M := M) x₀ hz).coord i) =
+      g.metricRaiseContinuousAt ((extChartAt I x₀).symm z)
+        (LinearMap.toContinuousLinearMap
+          ((chartTangentBasisAt (n := n) (M := M) x₀ hz).coord i)) := by
+  letI : FiniteDimensional ℝ (TM ((extChartAt I x₀).symm z)) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  exact metricDualVectorAt_basisCoord_eq_metricRaiseContinuousAt
+    (g := g) (x := (extChartAt I x₀).symm z)
+    (b := chartTangentBasisAt (n := n) (M := M) x₀ hz) i
+
+/--
+The chart-frame trace sum with the raised dual coframe expressed via
+`metricRaiseContinuousAt`.
+-/
+theorem traceMetricVariationAt_eq_chartTangentBasisAt_continuousRaise_sum
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x₀ : M)
+    {z : E} (hz : z ∈ (extChartAt I x₀).target)
+    [T2Space (TM ((extChartAt I x₀).symm z))]
+    [FiniteDimensional ℝ (TM ((extChartAt I x₀).symm z))]
+    (B : LinearMap.BilinForm ℝ (TM ((extChartAt I x₀).symm z)))
+    (hB : ∀ p q : TM ((extChartAt I x₀).symm z),
+      B p q = h ((extChartAt I x₀).symm z) p q) :
+    traceMetricVariationAt g h ((extChartAt I x₀).symm z) =
+      ∑ i, B (chartTangentBasisAt (n := n) (M := M) x₀ hz i)
+        (g.metricRaiseContinuousAt ((extChartAt I x₀).symm z)
+          (LinearMap.toContinuousLinearMap
+            ((chartTangentBasisAt (n := n) (M := M) x₀ hz).coord i))) := by
+  rw [traceMetricVariationAt_eq_chartTangentBasisAt_sum
+    (g := g) (h := h) (x₀ := x₀) (hz := hz) (B := B) hB]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [metricDualVectorAt_chartTangentBasisAt_coord_eq_metricRaiseContinuousAt
+    (g := g) (x₀ := x₀) (hz := hz) (i := i)]
 
 /-- Coordinates are metric pairings with the corresponding raised dual basis vector. -/
 theorem coord_eq_inner_metricDualVectorAt
