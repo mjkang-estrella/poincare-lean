@@ -230,13 +230,26 @@
       "id": "M1-closed-laplacian",
       "tier": "M1",
       "title": "Closed-manifold scalar Laplacian + Hessian API",
-      "statement_spec": "closedLaplacian / covariant Hessian for scalar functions on (M, g) via g.leviCivita; prerequisite for scalar evolution + Bochner ports (audit lemma #5 infra).",
+      "statement_spec": "closedLaplacian / covariant Hessian for scalar functions on (M, g) via g.leviCivita; prerequisite for scalar evolution + Bochner ports (audit lemma #5 infra). UNBLOCKED early: carries the regularity hypothesis pattern from Curvature.lean instead of waiting for M1-lc-regularity.",
       "deps": [
         "M1-lc-regularity"
       ],
-      "status": "blocked",
+      "status": "open",
       "files": [],
       "difficulty": "hard"
+    },
+    {
+      "id": "M1-ricci-norm",
+      "tier": "M1",
+      "title": "Ricci endomorphism, |Ric|^2, pinching inequality (port)",
+      "deps": [
+        "M1-levi-civita"
+      ],
+      "status": "open",
+      "files": [
+        "Poincare/Global/RicciNorm.lean"
+      ],
+      "difficulty": "medium"
     }
   ]
 }
