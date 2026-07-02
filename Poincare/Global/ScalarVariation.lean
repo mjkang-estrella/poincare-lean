@@ -1217,6 +1217,270 @@ theorem metric_pairing_extend_mdiffAt
     (mdifferentiableAt_extend I E q)
 
 /--
+Gram matrix of the metric in the canonical extension frame seeded at `x` and
+evaluated at `y`.
+-/
+noncomputable def gramMatrix
+    (g : ClosedSmoothRiemannianMetric n M) (x y : M) :
+    Matrix (Fin (Module.finrank ℝ (TM x))) (Fin (Module.finrank ℝ (TM x))) ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  fun i j ↦ g.inner y (extend E (b i) y) (extend E (b j) y)
+
+/-- At the seed point, the canonical-extension Gram matrix is the metric matrix
+in the finite basis of `TM x`. -/
+theorem gramMatrix_at_base
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    gramMatrix g x x =
+      (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E);
+      LinearMap.toMatrix₂ (Module.finBasis ℝ (TM x))
+        (Module.finBasis ℝ (TM x)) (g.metricBilinAt x)) := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ext i j
+  simp [gramMatrix, LinearMap.toMatrix₂_apply, g.metricBilinAt_apply]
+
+/-- The base Gram determinant is nonzero by metric nondegeneracy. -/
+theorem gramMatrix_at_base_det_ne_zero
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    (gramMatrix g x x).det ≠ 0 := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  rw [gramMatrix_at_base]
+  exact (LinearMap.nondegenerate_iff_det_ne_zero
+    (b := Module.finBasis ℝ (TM x))).mp (g.metricBilinAt_nondegenerate x)
+
+/-- The base Gram matrix is a unit. -/
+theorem gramMatrix_at_base_isUnit
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    IsUnit (gramMatrix g x x) := by
+  rw [Matrix.isUnit_iff_isUnit_det]
+  exact isUnit_iff_ne_zero.mpr (gramMatrix_at_base_det_ne_zero (g := g) (x := x))
+
+/-- Each canonical-extension Gram entry is differentiable at the seed point. -/
+theorem gramMatrix_entry_mdiffAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (i j : Fin (Module.finrank ℝ (TM x))) :
+    MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ gramMatrix g x y i j) x := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  simpa [gramMatrix, b] using
+    (metric_pairing_extend_mdiffAt (g := g) (x := x) (b i) (b j))
+
+omit [T2Space M] [IsManifold I ∞ M] in
+/-- Determinants of finite matrix fields are differentiable when all entries are. -/
+theorem mdifferentiableAt_matrix_det_of_entries
+    {ι : Type} [Fintype ι] [DecidableEq ι]
+    {A : M → Matrix ι ι ℝ} {x : M}
+    (hA : ∀ i j, MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ A y i j) x) :
+    MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ (A y).det) x := by
+  classical
+  rw [show (fun y : M ↦ (A y).det) =
+      fun y : M ↦ ∑ σ : Equiv.Perm ι,
+        ((↑↑(Equiv.Perm.sign σ) : ℝ) * ∏ i, A y (σ i) i) by
+    funext y
+    rw [Matrix.det_apply']]
+  have hsum : MDifferentiableAt I 𝓘(ℝ)
+      (∑ σ ∈ (Finset.univ : Finset (Equiv.Perm ι)),
+        fun y : M ↦ (↑↑(Equiv.Perm.sign σ) : ℝ) * ∏ i, A y (σ i) i) x := by
+    refine MDifferentiableAt.sum (t := (Finset.univ : Finset (Equiv.Perm ι))) ?_
+    intro σ _hσ
+    have hprod : MDifferentiableAt I 𝓘(ℝ)
+        (∏ i ∈ (Finset.univ : Finset ι), fun y : M ↦ A y (σ i) i) x := by
+      refine MDifferentiableAt.prod (t := (Finset.univ : Finset ι)) ?_
+      intro i _hi
+      exact hA (σ i) i
+    have hprod' : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ ∏ i, A y (σ i) i) x :=
+      hprod.congr_of_eventuallyEq (Filter.Eventually.of_forall fun y ↦ by simp)
+    have hconst : MDifferentiableAt I 𝓘(ℝ)
+        (fun _ : M ↦ (↑↑(Equiv.Perm.sign σ) : ℝ)) x := mdifferentiableAt_const
+    simpa using hconst.mul hprod'
+  exact hsum.congr_of_eventuallyEq (Filter.Eventually.of_forall fun y ↦ by simp)
+
+/-- The canonical-extension Gram determinant is differentiable at the seed point. -/
+theorem gramMatrix_det_mdiffAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ (gramMatrix g x y).det) x := by
+  exact mdifferentiableAt_matrix_det_of_entries
+    (A := fun y : M ↦ gramMatrix g x y)
+    (fun i j ↦ gramMatrix_entry_mdiffAt (g := g) x i j)
+
+/-- The canonical-extension Gram matrix is invertible eventually near the seed point. -/
+theorem gramMatrix_eventually_isUnit
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    ∀ᶠ y in nhds x, IsUnit (gramMatrix g x y) := by
+  have hdetCont :
+      ContinuousAt (fun y : M ↦ (gramMatrix g x y).det) x :=
+    (gramMatrix_det_mdiffAt (g := g) x).continuousAt
+  have hdet_ne :
+      (fun y : M ↦ (gramMatrix g x y).det) x ≠ 0 :=
+    gramMatrix_at_base_det_ne_zero (g := g) (x := x)
+  exact (hdetCont.eventually_ne hdet_ne).mono fun y hy ↦ by
+    rw [Matrix.isUnit_iff_isUnit_det]
+    exact isUnit_iff_ne_zero.mpr hy
+
+/-- Adjugate entries of the canonical-extension Gram matrix are differentiable
+at the seed point. -/
+theorem gramMatrix_adjugate_entry_mdiffAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (i j : Fin (Module.finrank ℝ (TM x))) :
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ (gramMatrix g x y).adjugate i j) x := by
+  let row : Fin (Module.finrank ℝ (TM x)) → ℝ := Pi.single i (1 : ℝ)
+  let A : M → Matrix (Fin (Module.finrank ℝ (TM x)))
+      (Fin (Module.finrank ℝ (TM x))) ℝ :=
+    fun y : M ↦ (gramMatrix g x y).updateRow j row
+  have hentries : ∀ a b,
+      MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ A y a b) x := by
+    intro a b
+    by_cases ha : a = j
+    · subst a
+      simpa [A, Matrix.updateRow] using
+        (mdifferentiableAt_const (c := row b) (x := x))
+    · simpa [A, Matrix.updateRow, ha] using
+        (gramMatrix_entry_mdiffAt (g := g) x a b)
+  have hdet : MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ (A y).det) x :=
+    mdifferentiableAt_matrix_det_of_entries (A := A) hentries
+  exact hdet.congr_of_eventuallyEq (Filter.Eventually.of_forall fun y ↦ by
+    simp [A, row, Matrix.adjugate_apply])
+
+/-- Inverse Gram entries are differentiable at the seed point. -/
+theorem gramMatrix_inv_entry_mdiffAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (i j : Fin (Module.finrank ℝ (TM x))) :
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x := by
+  have hdetInv : MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ ((gramMatrix g x y).det)⁻¹) x :=
+    (gramMatrix_det_mdiffAt (g := g) x).inv
+      (gramMatrix_at_base_det_ne_zero (g := g) (x := x))
+  have hadj : MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ (gramMatrix g x y).adjugate i j) x :=
+    gramMatrix_adjugate_entry_mdiffAt (g := g) x i j
+  exact (hdetInv.mul hadj).congr_of_eventuallyEq
+    (Filter.Eventually.of_forall fun y ↦ by simp [Matrix.inv_def])
+
+omit [T2Space M] in
+/-- The canonical extension frame seeded at `x` and evaluated in the fiber over `y`. -/
+noncomputable def gramFrame (x y : M) :
+    Fin (Module.finrank ℝ (TM x)) → TM y :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  fun i ↦ extend E ((Module.finBasis ℝ (TM x)) i) y
+
+omit [T2Space M] in
+/-- If its Gram matrix is invertible, the canonical extension frame is linearly independent. -/
+theorem gramFrame_linearIndependent_of_isUnit
+    (g : ClosedSmoothRiemannianMetric n M) {x y : M}
+    (hG : IsUnit (gramMatrix g x y)) :
+    LinearIndependent ℝ (gramFrame (n := n) (M := M) x y) := by
+  classical
+  letI : NormedAddCommGroup (TM y) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM y) := inferInstanceAs (NormedSpace ℝ E)
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let e : Fin (Module.finrank ℝ (TM x)) → TM y := fun i ↦ extend E (b i) y
+  change LinearIndependent ℝ e
+  refine Fintype.linearIndependent_iff.mpr ?_
+  intro c hc i
+  have hvec : Matrix.vecMul c (gramMatrix g x y) = 0 := by
+    ext j
+    let φ : TM y →L[ℝ] ℝ :=
+      (ContinuousLinearMap.apply ℝ ℝ (e j)).comp (g.inner y)
+    have hφ := congrArg φ hc
+    change φ (∑ i, c i • e i) = φ 0 at hφ
+    simp [φ, e, b, smul_eq_mul] at hφ
+    simpa [Matrix.vecMul, dotProduct] using hφ
+  have hinj : Function.Injective (fun v ↦ Matrix.vecMul v (gramMatrix g x y)) :=
+    Matrix.vecMul_injective_iff_isUnit.mpr hG
+  have hc0 : c = 0 := hinj (by simpa using hvec)
+  simpa using congrFun hc0 i
+
+/-- The canonical extension frame as a basis whenever its Gram matrix is invertible. -/
+noncomputable def gramFrameBasis
+    (g : ClosedSmoothRiemannianMetric n M) (x y : M)
+    (hG : IsUnit (gramMatrix g x y)) :
+    Module.Basis (Fin (Module.finrank ℝ (TM x))) ℝ (TM y) :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  basisOfLinearIndependentOfCardEqFinrank'
+    (gramFrame (n := n) (M := M) x y)
+    (gramFrame_linearIndependent_of_isUnit (g := g) hG)
+    (by
+      rw [show Module.finrank ℝ (TM x) = Module.finrank ℝ E from rfl,
+        show Module.finrank ℝ (TM y) = Module.finrank ℝ E from rfl]
+      simp)
+
+omit [T2Space M] in
+@[simp] theorem gramFrameBasis_apply
+    (g : ClosedSmoothRiemannianMetric n M) (x y : M)
+    (hG : IsUnit (gramMatrix g x y))
+    (i : Fin (Module.finrank ℝ (TM x))) :
+    gramFrameBasis (n := n) (M := M) g x y hG i =
+      gramFrame (n := n) (M := M) x y i := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  unfold gramFrameBasis
+  rw [coe_basisOfLinearIndependentOfCardEqFinrank']
+
+/--
+The metric-raised dual coframe of the canonical Gram frame is obtained by the
+rows of the inverse Gram matrix.
+-/
+theorem metricDualVectorAt_gramFrameBasis_coord_eq_sum_inv
+    (g : ClosedSmoothRiemannianMetric n M) {x y : M}
+    (hG : IsUnit (gramMatrix g x y))
+    (i : Fin (Module.finrank ℝ (TM x))) :
+    metricDualVectorAt g y ((gramFrameBasis g x y hG).coord i) =
+      ∑ j, (gramMatrix g x y)⁻¹ i j • gramFrame x y j := by
+  classical
+  letI : NormedAddCommGroup (TM y) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM y) := inferInstanceAs (NormedSpace ℝ E)
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let B := gramFrameBasis g x y hG
+  let G := gramMatrix g x y
+  have hdet : IsUnit G.det := (Matrix.isUnit_iff_isUnit_det G).mp hG
+  apply (LinearMap.BilinForm.toDual (g.metricBilinAt y)
+    (g.metricBilinAt_nondegenerate y)).injective
+  apply B.ext
+  intro k
+  have hmatrix : ∑ j, G⁻¹ i j * G j k = if i = k then 1 else 0 := by
+    have hmul := congrArg (fun A : Matrix (Fin (Module.finrank ℝ (TM x)))
+        (Fin (Module.finrank ℝ (TM x))) ℝ ↦ A i k)
+      (Matrix.nonsing_inv_mul G hdet)
+    simpa [Matrix.mul_apply, G] using hmul
+  calc
+    ((LinearMap.BilinForm.toDual (g.metricBilinAt y)
+        (g.metricBilinAt_nondegenerate y))
+        (metricDualVectorAt g y (B.coord i))) (B k)
+        = B.coord i (B k) := by
+          simp [metricDualVectorAt, B]
+    _ = if i = k then 1 else 0 := by
+          rw [Module.Basis.coord_apply, Module.Basis.repr_self_apply]
+          by_cases hik : i = k <;> simp [hik, eq_comm]
+    _ = ∑ j, G⁻¹ i j * G j k := hmatrix.symm
+    _ = ((LinearMap.BilinForm.toDual (g.metricBilinAt y)
+        (g.metricBilinAt_nondegenerate y))
+        (∑ j, G⁻¹ i j • gramFrame x y j)) (B k) := by
+          simp [LinearMap.BilinForm.toDual_def,
+            ClosedSmoothRiemannianMetric.metricBilinAt_apply,
+            G, B, gramMatrix, gramFrame, smul_eq_mul]
+
+/--
 The metric trace of a fiberwise bilinear form, computed in an arbitrary finite
 basis and paired with the `g`-raised dual coframe of that basis.
 -/
@@ -1342,6 +1606,59 @@ theorem traceMetricVariationAt_eq_metricTraceInBasisAt
           metricTraceInBasisAt_eq_metricTraceInBasisAt
             (g := g) (x := x) (B := B)
             (b := Module.finBasis ℝ (TM x)) (c := b)
+
+/--
+Gram-inverse form of the metric trace in the canonical extension frame.  The
+fiber value of `h` is supplied as a bilinear form, matching the existing
+basis-invariant trace bridge.
+-/
+theorem traceMetricVariationAt_eq_sum_gram_inv
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x y : M)
+    (hG : IsUnit (gramMatrix g x y))
+    (B : LinearMap.BilinForm ℝ (TM y))
+    (hB : ∀ p q : TM y, B p q = h y p q) :
+    traceMetricVariationAt g h y =
+      ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+        h y (gramFrame x y i) (gramFrame x y j) := by
+  classical
+  letI : NormedAddCommGroup (TM y) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM y) := inferInstanceAs (NormedSpace ℝ E)
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := gramFrameBasis g x y hG
+  calc
+    traceMetricVariationAt g h y = metricTraceInBasisAt g y B b := by
+      exact traceMetricVariationAt_eq_metricTraceInBasisAt
+        (g := g) (h := h) (x := y) (B := B) (b := b) hB
+    _ = ∑ i, B (b i) (metricDualVectorAt g y (b.coord i)) := rfl
+    _ = ∑ i, B (gramFrame x y i)
+        (∑ j, (gramMatrix g x y)⁻¹ i j • gramFrame x y j) := by
+      apply Finset.sum_congr rfl
+      intro i _hi
+      simp [b, metricDualVectorAt_gramFrameBasis_coord_eq_sum_inv]
+    _ = ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+        h y (gramFrame x y i) (gramFrame x y j) := by
+      apply Finset.sum_congr rfl
+      intro i _hi
+      calc
+        B (gramFrame x y i)
+            (∑ j, (gramMatrix g x y)⁻¹ i j • gramFrame x y j) =
+            ∑ j, B (gramFrame x y i)
+              ((gramMatrix g x y)⁻¹ i j • gramFrame x y j) := by
+          rw [map_sum]
+        _ = ∑ j, (gramMatrix g x y)⁻¹ i j *
+              B (gramFrame x y i) (gramFrame x y j) := by
+          apply Finset.sum_congr rfl
+          intro j _hj
+          simp [smul_eq_mul]
+        _ = ∑ j, (gramMatrix g x y)⁻¹ i j *
+              h y (gramFrame x y i) (gramFrame x y j) := by
+          apply Finset.sum_congr rfl
+          intro j _hj
+          simp [hB]
 
 /--
 Basis-free trace form of `traceMetricVariationAt`: once the fiber value of
@@ -2234,6 +2551,87 @@ def CovTensor2ExtDifferentiableAt
   ∀ p q : TM x,
     MDifferentiableAt I 𝓘(ℝ)
       (fun y : M ↦ h y (extend E p y) (extend E q y)) x
+
+/--
+The Gram-inverse scalar trace formula gives an honest differentiability proof
+for `tr_g h` from canonical-extension scalar regularity.  The fiber value of
+`h` is supplied as bilinear witnesses so the basis-invariant trace identity can
+be used near `x`.
+-/
+theorem traceMetricVariationAt_mdiffAt_of_covTensor2ExtDifferentiableAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (B : ∀ y : M, LinearMap.BilinForm ℝ (TM y))
+    (hB : ∀ y : M, ∀ p q : TM y, B y p q = h y p q) :
+    MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ traceMetricVariationAt g h y) x := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let rhs : M → ℝ := fun y : M ↦
+    ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+      h y (gramFrame x y i) (gramFrame x y j)
+  have hsum : MDifferentiableAt I 𝓘(ℝ)
+      (∑ i ∈ (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x)))),
+        fun y : M ↦ ∑ j, (gramMatrix g x y)⁻¹ i j *
+          h y (gramFrame x y i) (gramFrame x y j)) x := by
+    refine MDifferentiableAt.sum
+      (t := (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x))))) ?_
+    intro i _hi
+    have hinner : MDifferentiableAt I 𝓘(ℝ)
+        (∑ j ∈ (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x)))),
+          fun y : M ↦ (gramMatrix g x y)⁻¹ i j *
+            h y (gramFrame x y i) (gramFrame x y j)) x := by
+      refine MDifferentiableAt.sum
+        (t := (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x))))) ?_
+      intro j _hj
+      have hinv : MDifferentiableAt I 𝓘(ℝ)
+          (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x :=
+        gramMatrix_inv_entry_mdiffAt (g := g) x i j
+      have hh : MDifferentiableAt I 𝓘(ℝ)
+          (fun y : M ↦ h y (gramFrame x y i) (gramFrame x y j)) x := by
+        simpa [gramFrame, b, CovTensor2ExtDifferentiableAt] using hDiff (b i) (b j)
+      exact hinv.mul hh
+    exact hinner.congr_of_eventuallyEq (Filter.Eventually.of_forall fun y ↦ by simp)
+  have hrhs : MDifferentiableAt I 𝓘(ℝ) rhs x :=
+    hsum.congr_of_eventuallyEq (Filter.Eventually.of_forall fun y ↦ by simp [rhs])
+  have heq : (fun y : M ↦ traceMetricVariationAt g h y) =ᶠ[nhds x] rhs := by
+    exact (gramMatrix_eventually_isUnit (g := g) x).mono fun y hy ↦ by
+      simpa [rhs] using
+        (traceMetricVariationAt_eq_sum_gram_inv
+          (g := g) (h := h) (x := x) (y := y) (hG := hy)
+          (B := B y) (hB := hB y))
+  exact hrhs.congr_of_eventuallyEq heq
+
+/--
+Exterior-derivative bridge for the Gram-inverse scalar trace formula.  Near
+`x`, `tr_g h` is the scalar Gram RHS, so their exterior derivatives at `x`
+agree.
+-/
+theorem traceMetricVariationAt_extDerivFun_eq_gram_rhs
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (B : ∀ y : M, LinearMap.BilinForm ℝ (TM y))
+    (hB : ∀ y : M, ∀ p q : TM y, B y p q = h y p q)
+    (w : TM x) :
+    extDerivFun (fun y : M ↦ traceMetricVariationAt g h y) x w =
+      extDerivFun
+        (fun y : M ↦ ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+          h y (gramFrame x y i) (gramFrame x y j)) x w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let rhs : M → ℝ := fun y : M ↦
+    ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+      h y (gramFrame x y i) (gramFrame x y j)
+  have heq : (fun y : M ↦ traceMetricVariationAt g h y) =ᶠ[nhds x] rhs := by
+    exact (gramMatrix_eventually_isUnit (g := g) x).mono fun y hy ↦ by
+      simpa [rhs] using
+        (traceMetricVariationAt_eq_sum_gram_inv
+          (g := g) (h := h) (x := x) (y := y) (hG := hy)
+          (B := B y) (hB := hB y))
+  exact congrArg (fun L : TM x →L[ℝ] ℝ ↦ L w)
+    (CovariantDerivative.extDerivFun_congr heq)
 
 /--
 Fixed-vector spatial differentiability for a raw `(0,2)` variation tensor.
