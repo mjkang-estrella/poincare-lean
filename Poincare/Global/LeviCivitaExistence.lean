@@ -86,6 +86,38 @@ noncomputable def closedLeviCivitaConnection
     (fun y v hv => metric_nondegenerate g y v hv)
     (pairingRegularity g)
 
+/-- The specialized Koszul candidate is compatible with the closed smooth metric. -/
+theorem closedLeviCivitaConnection_metricCompatible
+    (g : ClosedSmoothRiemannianMetric n M) :
+    IsMetricCompatible g (closedLeviCivitaConnection g) := by
+  intro x X Y hX hY v
+  simpa [closedLeviCivitaConnection] using
+    (CovariantDerivative.leviCivitaConnection_metricCompatibleAt g.inner
+      (fun y v w => g.inner_symm y v w)
+      (fun y v hv => metric_nondegenerate g y v hv)
+      (pairingRegularity g) x
+      (by simpa [MDiffAtTangentField] using hX)
+      (by simpa [MDiffAtTangentField] using hY) v)
+
+/-- The specialized Koszul candidate has zero Mathlib torsion tensor. -/
+theorem closedLeviCivitaConnection_torsion
+    (g : ClosedSmoothRiemannianMetric n M) :
+    (closedLeviCivitaConnection g).torsion = 0 := by
+  rw [CovariantDerivative.torsion_eq_zero_iff]
+  intro X Y x hX hY
+  simpa [closedLeviCivitaConnection] using
+    (CovariantDerivative.leviCivitaConnection_torsionFreeAt g.inner
+      (fun y v w => g.inner_symm y v w)
+      (fun y v hv => metric_nondegenerate g y v hv)
+      (pairingRegularity g) x hX hY)
+
 end LeviCivitaExistence
+
+/-- Existence of the Levi-Civita connection for a closed smooth Riemannian metric. -/
+theorem levi_civita_exists (g : ClosedSmoothRiemannianMetric n M) :
+    ∃ cov, IsMetricCompatible g cov ∧ cov.torsion = 0 :=
+  ⟨LeviCivitaExistence.closedLeviCivitaConnection g,
+    LeviCivitaExistence.closedLeviCivitaConnection_metricCompatible g,
+    LeviCivitaExistence.closedLeviCivitaConnection_torsion g⟩
 
 end Poincare

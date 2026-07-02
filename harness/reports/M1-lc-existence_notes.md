@@ -21,36 +21,44 @@ Exact Lean declarations added in `Poincare.Global.LeviCivitaExistence`:
 - `Poincare.LeviCivitaExistence.metric_pairing_mdiffAt`
 - `Poincare.LeviCivitaExistence.metric_nondegenerate`
 - `Poincare.LeviCivitaExistence.closedLeviCivitaConnection`
+- `Poincare.LeviCivitaExistence.closedLeviCivitaConnection_metricCompatible`
+- `Poincare.LeviCivitaExistence.closedLeviCivitaConnection_torsion`
+- `Poincare.levi_civita_exists`
 
 ## Remaining decomposition
 
-1. Prove compatibility of the specialized candidate with the global predicate:
+The target existence statement is discharged in this layer. Remaining follow-up work is now hardening and Route-B independence:
+
+1. Prove smooth regularity of the global specialized connection:
    ```lean
-   theorem closedLeviCivitaConnection_metricCompatible
+   theorem closedLeviCivitaConnection_contMDiff
        (g : ClosedSmoothRiemannianMetric n M) :
-       IsMetricCompatible g (closedLeviCivitaConnection g)
+       CovariantDerivative.ContMDiffCovariantDerivative
+         (LeviCivitaExistence.closedLeviCivitaConnection g) 1
    ```
-2. Convert pointwise torsion-freeness to Mathlib's bundled torsion tensor:
+2. Prove the specialized existence theorem with the full standard closed-manifold context explicitly documented:
    ```lean
-   theorem closedLeviCivitaConnection_torsion
+   theorem levi_civita_exists_closed_context
+       [SecondCountableTopology M] [CompactSpace M] [ConnectedSpace M]
        (g : ClosedSmoothRiemannianMetric n M) :
-       (closedLeviCivitaConnection g).torsion = 0
-   ```
-3. Package the target existence theorem:
-   ```lean
-   theorem levi_civita_exists (g : ClosedSmoothRiemannianMetric n M) :
        ∃ cov, IsMetricCompatible g cov ∧ cov.torsion = 0
    ```
-4. If a chart-transport proof is later needed independently, prove a pulled-back local operator statement:
+3. If a chart-transport proof is later needed independently, prove a pulled-back local operator statement:
    ```lean
    theorem chartLeviCivita_isCovariantDerivativeOn_chartTarget
        (...) :
        IsCovariantDerivativeOn E (...) (extChartAt I x₀).source
    ```
-5. Prove overlap agreement for chart-transport gluing via uniqueness:
+4. Prove overlap agreement for chart-transport gluing via uniqueness:
    ```lean
    theorem chartLeviCivita_agree_on_overlap
        (...) :
        EqOn (localChartCov x₀) (localChartCov x₁)
          ((extChartAt I x₀).source ∩ (extChartAt I x₁).source)
+   ```
+5. Package chart gluing via Mathlib's open-cover constructor:
+   ```lean
+   theorem levi_civita_exists_by_chart_gluing
+       (g : ClosedSmoothRiemannianMetric n M) :
+       ∃ cov, IsMetricCompatible g cov ∧ cov.torsion = 0
    ```
