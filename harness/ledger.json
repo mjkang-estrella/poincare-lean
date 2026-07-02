@@ -37,9 +37,10 @@
       "title": "Manifold-level statement of the Poincaré Conjecture",
       "statement_spec": "New file Poincare/Global/Statement.lean: using Mathlib (ChartedSpace, IsManifold, CompactSpace, SimplyConnectedSpace, Homeomorph), define PoincareConjecture : Prop := for every M [TopologicalSpace M] [T2Space M] with a smooth 3-manifold structure, compact, connected, simply connected => Nonempty (M ≃ₜ (EuclideanSpace ℝ (Fin 4)) sphere 1). Must compile with NO sorry; it is a def of a Prop, not a theorem. Also state RicciFlow existence skeleton as Prop defs. Every def must be genuinely quantified (vacuity audit: no opaque Prop fields, no True-instantiable certificate structures).",
       "deps": [],
-      "status": "open",
+      "status": "done",
       "files": ["Poincare/Global/Statement.lean"],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "result": "PROVEN 2026-07-01, commit fbb9a98f, gate PASS. def Poincare.PoincareConjecture (universe-polymorphic, inline instance hypotheses, IsManifold (𝓡 3) ∞); sphere instances verified inhabited."
     },
     {
       "id": "M0-gap-survey",
