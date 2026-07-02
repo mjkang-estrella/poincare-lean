@@ -8166,6 +8166,193 @@ noncomputable def tensorDoubleDivergenceAt
   unfold tensorDoubleDivergenceAt
   simp [tensorDivergenceOneFormAt_zero, extDerivFun_zero_at]
 
+theorem covTensor2DerivAt_congr_of_eventuallyEq
+    (g : ClosedSmoothRiemannianMetric n M)
+    {h k : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hEq : ∀ᶠ y in nhds x, ∀ v w : TM y, h y v w = k y v w)
+    (v p q : TM x) :
+    covTensor2DerivAt g h x v p q =
+      covTensor2DerivAt g k x v p q := by
+  have hEntry :
+      (fun y : M ↦ h y (extend E p y) (extend E q y)) =ᶠ[nhds x]
+        fun y : M ↦ k y (extend E p y) (extend E q y) := by
+    exact hEq.mono fun y hy ↦ hy _ _
+  have hx : ∀ v w : TM x, h x v w = k x v w :=
+    hEq.self_of_nhds
+  unfold covTensor2DerivAt
+  rw [CovariantDerivative.extDerivFun_congr hEntry]
+  rw [hx (g.leviCivita (extend E p) x v) q]
+  rw [hx p (g.leviCivita (extend E q) x v)]
+
+theorem covTensor2DerivAt_smul_field
+    (g : ClosedSmoothRiemannianMetric n M)
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (c : ℝ) (v p q : TM x) :
+    covTensor2DerivAt g (fun y v w ↦ c * h y v w) x v p q =
+      c * covTensor2DerivAt g h x v p q := by
+  have hEntry :
+      (fun y : M ↦ c * h y (extend E p y) (extend E q y)) =
+        c • (fun y : M ↦ h y (extend E p y) (extend E q y)) := by
+    funext y
+    simp [Pi.smul_apply, smul_eq_mul]
+  unfold covTensor2DerivAt
+  rw [hEntry]
+  rw [extDerivFun_const_smul_at (hDiff p q) c]
+  simp [Pi.smul_apply, smul_eq_mul]
+  ring
+
+theorem tensorDivergenceOneFormAt_congr_of_eventuallyEq
+    (g : ClosedSmoothRiemannianMetric n M)
+    {h k : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hEq : ∀ᶠ y in nhds x, ∀ v w : TM y, h y v w = k y v w)
+    (w : TM x) :
+    tensorDivergenceOneFormAt g h x w =
+      tensorDivergenceOneFormAt g k x w := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  unfold tensorDivergenceOneFormAt
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact covTensor2DerivAt_congr_of_eventuallyEq
+    (g := g) (h := h) (k := k) (x := x) hEq _ _ _
+
+theorem tensorDivergenceOneFormAt_smul_field
+    (g : ClosedSmoothRiemannianMetric n M)
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (c : ℝ) (w : TM x) :
+    tensorDivergenceOneFormAt g (fun y v w ↦ c * h y v w) x w =
+      c * tensorDivergenceOneFormAt g h x w := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  unfold tensorDivergenceOneFormAt
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact covTensor2DerivAt_smul_field
+    (g := g) (h := h) (x := x) hDiff c _ _ _
+
+theorem tensorDoubleDivergenceAt_congr_of_eventuallyEq
+    (g : ClosedSmoothRiemannianMetric n M)
+    {h k : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hEq : ∀ᶠ y in nhds x, ∀ v w : TM y, h y v w = k y v w) :
+    tensorDoubleDivergenceAt g h x =
+      tensorDoubleDivergenceAt g k x := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun j ↦ metricDualVectorAt g x (b.coord j)
+  change
+    (∑ j,
+      (extDerivFun
+          (fun y : M ↦ tensorDivergenceOneFormAt g h y
+            (extend E (b j) y)) x (sharp j)
+        - tensorDivergenceOneFormAt g h x
+          (g.leviCivita (extend E (b j)) x (sharp j)))) =
+    (∑ j,
+      (extDerivFun
+          (fun y : M ↦ tensorDivergenceOneFormAt g k y
+            (extend E (b j) y)) x (sharp j)
+        - tensorDivergenceOneFormAt g k x
+          (g.leviCivita (extend E (b j)) x (sharp j))))
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  have hDiv :
+      (fun y : M ↦ tensorDivergenceOneFormAt g h y
+        (extend E (b j) y)) =ᶠ[nhds x]
+        fun y : M ↦ tensorDivergenceOneFormAt g k y
+          (extend E (b j) y) := by
+    filter_upwards [hEq.eventually_nhds] with y hy
+    exact tensorDivergenceOneFormAt_congr_of_eventuallyEq
+      (g := g) (h := h) (k := k) (x := y) hy _
+  have hDeriv :
+      extDerivFun
+          (fun y : M ↦ tensorDivergenceOneFormAt g h y
+            (extend E (b j) y)) x (sharp j) =
+        extDerivFun
+          (fun y : M ↦ tensorDivergenceOneFormAt g k y
+            (extend E (b j) y)) x (sharp j) := by
+    exact congrArg (fun L : TM x →L[ℝ] ℝ ↦ L (sharp j))
+      (CovariantDerivative.extDerivFun_congr hDiv)
+  have hCorr :
+      tensorDivergenceOneFormAt g h x
+          (g.leviCivita (extend E (b j)) x (sharp j)) =
+        tensorDivergenceOneFormAt g k x
+          (g.leviCivita (extend E (b j)) x (sharp j)) :=
+    tensorDivergenceOneFormAt_congr_of_eventuallyEq
+      (g := g) (h := h) (k := k) (x := x) hEq _
+  rw [hDeriv, hCorr]
+
+theorem tensorDoubleDivergenceAt_smul_field
+    (g : ClosedSmoothRiemannianMetric n M)
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hDiff : ∀ y : M, CovTensor2ExtDifferentiableAt h y)
+    (hDivDiff : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ tensorDivergenceOneFormAt g h y (extend E w y)) x)
+    (c : ℝ) :
+    tensorDoubleDivergenceAt g (fun y v w ↦ c * h y v w) x =
+      c * tensorDoubleDivergenceAt g h x := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun j ↦ metricDualVectorAt g x (b.coord j)
+  change
+    (∑ j,
+      (extDerivFun
+          (fun y : M ↦ tensorDivergenceOneFormAt g
+            (fun z v w ↦ c * h z v w) y (extend E (b j) y))
+          x (sharp j)
+        - tensorDivergenceOneFormAt g
+          (fun z v w ↦ c * h z v w) x
+          (g.leviCivita (extend E (b j)) x (sharp j)))) =
+      c * (∑ j,
+        (extDerivFun
+            (fun y : M ↦ tensorDivergenceOneFormAt g h y
+              (extend E (b j) y)) x (sharp j)
+          - tensorDivergenceOneFormAt g h x
+            (g.leviCivita (extend E (b j)) x (sharp j))))
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  let f : M → ℝ :=
+    fun y ↦ tensorDivergenceOneFormAt g h y (extend E (b j) y)
+  have hDiv :
+      (fun y : M ↦ tensorDivergenceOneFormAt g
+        (fun z v w ↦ c * h z v w) y (extend E (b j) y)) =ᶠ[nhds x]
+        c • f := by
+    refine Filter.Eventually.of_forall fun y ↦ ?_
+    change tensorDivergenceOneFormAt g
+        (fun z v w ↦ c * h z v w) y (extend E (b j) y) =
+      c * tensorDivergenceOneFormAt g h y (extend E (b j) y)
+    exact tensorDivergenceOneFormAt_smul_field
+      (g := g) (h := h) (x := y) (hDiff y) c _
+  have hDerivCongr :
+      extDerivFun
+          (fun y : M ↦ tensorDivergenceOneFormAt g
+            (fun z v w ↦ c * h z v w) y (extend E (b j) y))
+          x (sharp j) =
+        extDerivFun (c • f) x (sharp j) := by
+    exact congrArg (fun L : TM x →L[ℝ] ℝ ↦ L (sharp j))
+      (CovariantDerivative.extDerivFun_congr hDiv)
+  have hDerivScale :
+      extDerivFun (c • f) x (sharp j) =
+        c * extDerivFun f x (sharp j) := by
+    have h :=
+      congrArg (fun L : TM x →L[ℝ] ℝ ↦ L (sharp j))
+        (extDerivFun_const_smul_at
+          (n := n) (M := M) (f := f) (x := x) (hDivDiff (b j)) c)
+    simpa [Pi.smul_apply, smul_eq_mul, f] using h
+  have hCorr :
+      tensorDivergenceOneFormAt g
+          (fun z v w ↦ c * h z v w) x
+          (g.leviCivita (extend E (b j)) x (sharp j)) =
+        c * tensorDivergenceOneFormAt g h x
+          (g.leviCivita (extend E (b j)) x (sharp j)) :=
+    tensorDivergenceOneFormAt_smul_field
+      (g := g) (h := h) (x := x) (hDiff x) c _
+  rw [hDerivCongr, hDerivScale, hCorr]
+  ring
+
 /-- The double divergence of the Ricci tensor, `div div Ric`. -/
 noncomputable def ricciDoubleDivergenceAt
     (g : ClosedSmoothRiemannianMetric n M)
@@ -8183,6 +8370,26 @@ def TensorDoubleDivergenceNegTwoRicciLinearityAt
     (x : M) : Prop :=
   tensorDoubleDivergenceAt g (negTwoRicciVariationField g) x =
     -2 * ricciDoubleDivergenceAt g x
+
+theorem TensorDoubleDivergenceNegTwoRicciLinearityAt.of_covTensor2Regular
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hRicDiff : ∀ y : M,
+      CovTensor2ExtDifferentiableAt (ricciVariationField g) y)
+    (hRicDivDiff : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦
+          tensorDivergenceOneFormAt g (ricciVariationField g) y
+            (extend E w y)) x) :
+    TensorDoubleDivergenceNegTwoRicciLinearityAt g x := by
+  unfold TensorDoubleDivergenceNegTwoRicciLinearityAt
+  unfold ricciDoubleDivergenceAt
+  unfold negTwoRicciVariationField
+  simpa [ricciVariationField] using
+    tensorDoubleDivergenceAt_smul_field
+      (g := g) (h := ricciVariationField g) (x := x)
+      hRicDiff hRicDivDiff (-2 : ℝ)
 
 /-- Substitution of `h = -2 Ric` in the double-divergence term. -/
 theorem tensorDoubleDivergenceAt_negTwoRicci
@@ -8233,6 +8440,46 @@ def TensorDoubleDivergenceTimeDerivNegTwoRicciAt
   tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x =
     tensorDoubleDivergenceAt (gt t₀) (negTwoRicciVariationField (gt t₀)) x
 
+theorem eventually_timeDerivAt_eq_negTwoRicci_of_isClosedRicciFlowSolutionAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hNear :
+      ∀ᶠ y in nhds x,
+        IsClosedRicciFlowSolutionAt gt t₀ y ∧
+        ClosedRicciFlowExtensionRegularAt gt t₀ y) :
+    ∀ᶠ y in nhds x, ∀ v w : TM y,
+      timeDerivAt gt t₀ y v w = -2 * (gt t₀).ricciAt y v w := by
+  exact hNear.mono fun y hy v w ↦
+    isClosedRicciFlowSolutionAt_timeDerivAt_eq_neg_two_ricciAt
+      hy.1 hy.2 v w
+
+theorem TensorDoubleDivergenceTimeDerivNegTwoRicciAt.of_eventually_eq
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hEq : ∀ᶠ y in nhds x, ∀ v w : TM y,
+      timeDerivAt gt t₀ y v w = -2 * (gt t₀).ricciAt y v w) :
+    TensorDoubleDivergenceTimeDerivNegTwoRicciAt gt t₀ x := by
+  change
+    tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x =
+      tensorDoubleDivergenceAt (gt t₀)
+        (negTwoRicciVariationField (gt t₀)) x
+  apply tensorDoubleDivergenceAt_congr_of_eventuallyEq
+  exact hEq.mono fun y hy v w ↦ by
+    simpa [negTwoRicciVariationField] using hy v w
+
+theorem TensorDoubleDivergenceTimeDerivNegTwoRicciAt.of_isClosedRicciFlowSolutionAt_near
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hNear :
+      ∀ᶠ y in nhds x,
+        IsClosedRicciFlowSolutionAt gt t₀ y ∧
+        ClosedRicciFlowExtensionRegularAt gt t₀ y) :
+    TensorDoubleDivergenceTimeDerivNegTwoRicciAt gt t₀ x :=
+  TensorDoubleDivergenceTimeDerivNegTwoRicciAt.of_eventually_eq
+    (eventually_timeDerivAt_eq_negTwoRicci_of_isClosedRicciFlowSolutionAt
+      (gt := gt) (t₀ := t₀) (x := x) hNear)
+
 /--
 Honest substitution obligation under the scalar Laplacian:
 `Δ(tr h) = Δ(-2 R)` for the Ricci-flow variation field.
@@ -8245,6 +8492,80 @@ def TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt
   (gt t₀).laplacianAt
       (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x =
     -2 * (gt t₀).laplacianAt (fun y ↦ (gt t₀).scalarAt y) x
+
+theorem TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt.of_eventually_eq
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hEq : ∀ᶠ y in nhds x, ∀ v w : TM y,
+      timeDerivAt gt t₀ y v w = -2 * (gt t₀).ricciAt y v w)
+    (hTraceGrad :
+      let g : ClosedSmoothRiemannianMetric n M := gt t₀
+      let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+      let f : M → ℝ := fun y ↦ traceMetricVariationAt g H y
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x)
+    (hNegScalarGrad :
+      let g : ClosedSmoothRiemannianMetric n M := gt t₀
+      let f : M → ℝ := fun y ↦ (-2 : ℝ) * g.scalarAt y
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x)
+    (hScalarDiff : ∀ y : M,
+      MDifferentiableAt I 𝓘(ℝ) (fun z : M ↦ (gt t₀).scalarAt z) y)
+    (hScalarGrad :
+      let g : ClosedSmoothRiemannianMetric n M := gt t₀
+      let f : M → ℝ := fun y ↦ g.scalarAt y
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x) :
+    TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt gt t₀ x := by
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+  let fTrace : M → ℝ := fun y ↦ traceMetricVariationAt g H y
+  let fScalar : M → ℝ := fun y ↦ g.scalarAt y
+  let fNegScalar : M → ℝ := fun y ↦ (-2 : ℝ) * fScalar y
+  have hTraceEq : fTrace =ᶠ[nhds x] fNegScalar := by
+    filter_upwards [hEq] with y hy
+    exact traceMetricVariationAt_timeDeriv_eq_negTwoRicci
+      (gt := gt) (t₀ := t₀) (x := y) hy
+  have hCongr :
+      g.laplacianAt fTrace x = g.laplacianAt fNegScalar x :=
+    g.laplacianAt_congr_of_eventuallyEq hTraceEq hTraceGrad hNegScalarGrad
+  have hScale :
+      g.laplacianAt fNegScalar x =
+        -2 * g.laplacianAt fScalar x := by
+    have h :=
+      g.laplacianAt_const_smul
+        (f := fScalar) (x := x) (-2 : ℝ) hScalarDiff hScalarGrad
+    simpa [fNegScalar, fScalar, Pi.smul_apply, smul_eq_mul] using h
+  change g.laplacianAt fTrace x =
+    -2 * g.laplacianAt fScalar x
+  rw [hCongr, hScale]
+
+theorem TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt.of_isClosedRicciFlowSolutionAt_near
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hNear :
+      ∀ᶠ y in nhds x,
+        IsClosedRicciFlowSolutionAt gt t₀ y ∧
+        ClosedRicciFlowExtensionRegularAt gt t₀ y)
+    (hTraceGrad :
+      let g : ClosedSmoothRiemannianMetric n M := gt t₀
+      let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+      let f : M → ℝ := fun y ↦ traceMetricVariationAt g H y
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x)
+    (hNegScalarGrad :
+      let g : ClosedSmoothRiemannianMetric n M := gt t₀
+      let f : M → ℝ := fun y ↦ (-2 : ℝ) * g.scalarAt y
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x)
+    (hScalarDiff : ∀ y : M,
+      MDifferentiableAt I 𝓘(ℝ) (fun z : M ↦ (gt t₀).scalarAt z) y)
+    (hScalarGrad :
+      let g : ClosedSmoothRiemannianMetric n M := gt t₀
+      let f : M → ℝ := fun y ↦ g.scalarAt y
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x) :
+    TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt gt t₀ x :=
+  TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt.of_eventually_eq
+    (eventually_timeDerivAt_eq_negTwoRicci_of_isClosedRicciFlowSolutionAt
+      (gt := gt) (t₀ := t₀) (x := x) hNear)
+    hTraceGrad hNegScalarGrad hScalarDiff hScalarGrad
 
 /--
 Exact divergence assembly for the first `δΓ` contraction:
