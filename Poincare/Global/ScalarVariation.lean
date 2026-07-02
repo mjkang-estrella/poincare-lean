@@ -546,4 +546,156 @@ theorem connectionValueTimeDifferentiableAt_const
   unfold deltaGammaAt
   rw [deriv_const]
 
+/--
+The Ricci tensor is the basis trace of the curvature operator in the first
+curvature slot, written in the same explicit contraction form as the model
+`coordRicci`.
+-/
+theorem ricciAt_eq_curvature_contraction
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) :
+    g.ricciAt x u w =
+      letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      ∑ i, (Module.finBasis ℝ (TM x)).coord i
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E ((Module.finBasis ℝ (TM x)) i)) (extend E u)
+          (extend E w) x) := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  change g.ricciAt x u w =
+    ∑ i, b.coord i
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E (b i)) (extend E u) (extend E w) x)
+  unfold ClosedSmoothRiemannianMetric.ricciAt
+    CovariantDerivative.ricciBilinearAt CovariantDerivative.ricciTraceAt
+  rw [LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+  change b.coord i
+      (CovariantDerivative.curvatureEndAt g.leviCivita
+        (CovariantDerivative.derivRegularAt_extend g.leviCivita w) u (b i)) =
+    b.coord i
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E (b i)) (extend E u) (extend E w) x)
+  rw [CovariantDerivative.curvatureEndAt_apply]
+  congr 1
+
+/--
+Covariant derivative of the connection variation, viewed as a `(1,2)` tensor
+and evaluated on canonical extensions of the two tensor slots.
+-/
+noncomputable def covDeltaGammaDerivAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (a u w : TM x) : TM x :=
+  let T : ∀ y : M, TM y :=
+    fun y ↦ deltaGammaAt gt t₀ y (extend E u y) (extend E w y)
+  (gt t₀).leviCivita T x a
+    - deltaGammaAt gt t₀ x ((gt t₀).leviCivita (extend E u) x a) w
+    - deltaGammaAt gt t₀ x u ((gt t₀).leviCivita (extend E w) x a)
+
+/--
+The curvature variation predicted by the tensorial `δΓ` formula:
+`δRm(a,u)w = (∇_a δΓ)(u,w) - (∇_u δΓ)(a,w)`.
+-/
+noncomputable def curvatureVariationByDeltaGammaAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (a u w : TM x) : TM x :=
+  covDeltaGammaDerivAt gt t₀ x a u w
+    - covDeltaGammaDerivAt gt t₀ x u a w
+
+/-- The divergence contraction `Σᵢ eⁱ((∇_{eᵢ} δΓ)(u,w))`. -/
+noncomputable def deltaGammaDivergenceAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (u w : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ i, (Module.finBasis ℝ (TM x)).coord i
+    (covDeltaGammaDerivAt gt t₀ x ((Module.finBasis ℝ (TM x)) i) u w)
+
+/-- The trace-derivative contraction `Σᵢ eⁱ((∇_u δΓ)(eᵢ,w))`. -/
+noncomputable def deltaGammaContractionDerivAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (u w : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ i, (Module.finBasis ℝ (TM x)).coord i
+    (covDeltaGammaDerivAt gt t₀ x u ((Module.finBasis ℝ (TM x)) i) w)
+
+/-- The Ricci variation candidate obtained by contracting covariant `δΓ`. -/
+noncomputable def deltaRicciAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (u w : TM x) : ℝ :=
+  deltaGammaDivergenceAt gt t₀ x u w
+    - deltaGammaContractionDerivAt gt t₀ x u w
+
+/-- `deltaRicciAt` as the basis trace of the predicted curvature variation. -/
+theorem deltaRicciAt_eq_curvatureVariation_contraction
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (u w : TM x) :
+    deltaRicciAt gt t₀ x u w =
+      letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      ∑ i, (Module.finBasis ℝ (TM x)).coord i
+        (curvatureVariationByDeltaGammaAt gt t₀ x
+          ((Module.finBasis ℝ (TM x)) i) u w) := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  change deltaRicciAt gt t₀ x u w =
+    ∑ i, b.coord i
+      (curvatureVariationByDeltaGammaAt gt t₀ x (b i) u w)
+  unfold deltaRicciAt deltaGammaDivergenceAt deltaGammaContractionDerivAt
+    curvatureVariationByDeltaGammaAt
+  rw [← Finset.sum_sub_distrib]
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [map_sub]
+
+/--
+Trace-through-time form of the Ricci variation formula.  The hypothesis is the
+remaining curvature-variation bridge: the time derivative of the curvature
+operator is the antisymmetrized covariant derivative of `deltaGammaAt`.
+-/
+theorem ricciVariation_eq_deltaGamma_contractions
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (u w : TM x)
+    (hCurv : ∀ a : TM x,
+      HasDerivAt
+        (fun t ↦ CovariantDerivative.curvatureOp (gt t).leviCivita
+          (extend E a) (extend E u) (extend E w) x)
+        (curvatureVariationByDeltaGammaAt gt t₀ x a u w) t₀) :
+    HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+      (deltaRicciAt gt t₀ x u w) t₀ := by
+  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  letI : T2Space (TM x) := inferInstanceAs (T2Space E)
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  have hpath :
+      (fun t ↦ (gt t).ricciAt x u w) =
+        fun t ↦ ∑ i, b.coord i
+          (CovariantDerivative.curvatureOp (gt t).leviCivita
+            (extend E (b i)) (extend E u) (extend E w) x) := by
+    funext t
+    simpa [b] using
+      (ricciAt_eq_curvature_contraction (g := gt t) x u w)
+  have hdelta :
+      deltaRicciAt gt t₀ x u w =
+        ∑ i, b.coord i
+          (curvatureVariationByDeltaGammaAt gt t₀ x (b i) u w) := by
+    simpa [b] using
+      (deltaRicciAt_eq_curvatureVariation_contraction gt t₀ x u w)
+  rw [hpath, hdelta]
+  apply HasDerivAt.fun_sum
+  intro i _
+  exact (LinearMap.toContinuousLinearMap (b.coord i)).hasFDerivAt.comp_hasDerivAt
+    t₀ (hCurv (b i))
+
 end Poincare
