@@ -5011,6 +5011,347 @@ theorem closedCurvatureCovDerivAt_cyclic_inner_expansion
       (g := g) (x := x) (v := w) (a := v) (u := u) (w := z) (q := q)]
   ring
 
+/--
+Scalar field for an iterated closed connection value:
+`g(∇_p (∇_u w), q)` with `u`, `w` transported by canonical extensions.
+-/
+noncomputable def closedIteratedConnectionEntryFieldAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    {x : M} (u w : TM x) : ∀ y : M, TM y → TM y → ℝ :=
+  fun y p q ↦
+    g.inner y
+      (g.leviCivita
+        (fun r : M ↦ g.leviCivita (extend E w) r (extend E u r))
+        y p) q
+
+/--
+Scalar field for the bracket connection value in the defining curvature
+identity: `g(∇_[a,u] w, q)`.
+-/
+noncomputable def closedBracketConnectionEntryFieldAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    {x : M} (a u w : TM x) : ∀ y : M, TM y → ℝ :=
+  fun y q ↦
+    g.inner y
+      (g.leviCivita (extend E w) y
+        (VectorField.mlieBracket I (extend E a) (extend E u) y)) q
+
+/--
+Covariant derivative of the scalar bracket-connection entry in the output
+slot.  The raw exterior derivative is recovered by adding the output
+Levi-Civita correction.
+-/
+noncomputable def closedBracketConnectionEntryDerivAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (x : M) (v a u w q : TM x) : ℝ :=
+  extDerivFun
+      (fun y : M ↦
+        closedBracketConnectionEntryFieldAt g a u w y (extend E q y)) x v
+    - closedBracketConnectionEntryFieldAt g a u w x
+        (g.leviCivita (extend E q) x v)
+
+/--
+Closed curvature defining expansion after differentiating the three scalar
+terms.  The first two terms are second connection-entry derivatives, and the
+remaining summands are the connection-product corrections from transported
+slots.
+-/
+noncomputable def closedCurvatureDefExpansionAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (x : M) (v a u w q : TM x) : ℝ :=
+  covTensor2DerivAt g (closedIteratedConnectionEntryFieldAt g u w) x v a q
+    - covTensor2DerivAt g (closedIteratedConnectionEntryFieldAt g a w) x v u q
+    - closedBracketConnectionEntryDerivAt g x v a u w q
+    + closedIteratedConnectionEntryFieldAt g u w x
+        (g.leviCivita (extend E a) x v) q
+    - closedIteratedConnectionEntryFieldAt g a w x
+        (g.leviCivita (extend E u) x v) q
+    + closedIteratedConnectionEntryFieldAt g u w x a
+        (g.leviCivita (extend E q) x v)
+    - closedIteratedConnectionEntryFieldAt g a w x u
+        (g.leviCivita (extend E q) x v)
+    - closedBracketConnectionEntryFieldAt g a u w x
+        (g.leviCivita (extend E q) x v)
+
+theorem closedIteratedConnectionEntry_mdiffAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (a u w q : TM x) :
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦
+        closedIteratedConnectionEntryFieldAt g u w y
+          (extend E a y) (extend E q y)) x := by
+  let X : Π y : M, TM y := extend E a
+  let Y : Π y : M, TM y := extend E u
+  let Z : Π y : M, TM y := extend E w
+  let Q : Π y : M, TM y := extend E q
+  have hXdiff :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% X) x := by
+    simpa [X] using (mdifferentiableAt_extend I E a)
+  have hQdiff :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% Q) x := by
+    simpa [Q] using (mdifferentiableAt_extend I E q)
+  have hY2 :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% Y) x := by
+    simpa [Y] using (FiberBundle.contMDiffAt_extend' (k := 2) I E u)
+  have hZ3 :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 3 (T% Z) x := by
+    simpa [Z] using (FiberBundle.contMDiffAt_extend' (k := 3) I E w)
+  haveI : CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 2 :=
+    ClosedSmoothRiemannianMetric.leviCivita_contMDiff₂ g
+  have hInner :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2
+        (T% (fun y : M ↦ g.leviCivita Z y (Y y))) x :=
+    CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_two
+      (cov := g.leviCivita) hZ3 hY2
+  have hTerm :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (fun y : M ↦
+          g.leviCivita (fun r : M ↦ g.leviCivita Z r (Y r)) y (X y))) x :=
+    CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt
+      (cov := g.leviCivita) hInner hXdiff
+  exact g.metric_pairing_mdiffAt
+    (by simpa [closedIteratedConnectionEntryFieldAt, X, Y, Z] using hTerm)
+    hQdiff
+
+theorem closedBracketConnectionEntry_mdiffAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (a u w q : TM x) :
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦
+        closedBracketConnectionEntryFieldAt g a u w y
+          (extend E q y)) x := by
+  let X : Π y : M, TM y := extend E a
+  let Y : Π y : M, TM y := extend E u
+  let Z : Π y : M, TM y := extend E w
+  let Q : Π y : M, TM y := extend E q
+  have hZ2 :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% Z) x := by
+    simpa [Z] using (FiberBundle.contMDiffAt_extend' (k := 2) I E w)
+  have hX2 :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% X) x := by
+    simpa [X] using (FiberBundle.contMDiffAt_extend' (k := 2) I E a)
+  have hY2 :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% Y) x := by
+    simpa [Y] using (FiberBundle.contMDiffAt_extend' (k := 2) I E u)
+  haveI : CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 2 :=
+    ClosedSmoothRiemannianMetric.leviCivita_contMDiff₂ g
+  haveI : IsManifold I 3 M := IsManifold.of_le (n := ∞) (by
+    rw [show (3 : ℕ∞ω) = ((3 : ℕ∞) : ℕ∞ω) from rfl,
+      show (∞ : ℕ∞ω) = ((⊤ : ℕ∞) : ℕ∞ω) from rfl]
+    exact WithTop.coe_le_coe.mpr le_top)
+  haveI : IsManifold I (minSmoothness ℝ 2) M := by
+    rw [minSmoothness_of_isRCLikeNormedField]
+    infer_instance
+  haveI : IsManifold I (((2 : ℕ∞) : ℕ∞ω) + 1) M := by
+    exact_mod_cast (inferInstance : IsManifold I 3 M)
+  have hbr :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (VectorField.mlieBracket I X Y)) x := by
+    have h2 : minSmoothness ℝ ((1 : ℕ∞) + 1) ≤ ((2 : ℕ∞) : ℕ∞ω) := by
+      simp
+      norm_num
+    exact (ContMDiffAt.mlieBracket_vectorField (m := 1) (n := 2)
+      hX2 hY2 h2).mdifferentiableAt one_ne_zero
+  have hTerm :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (fun y : M ↦
+          g.leviCivita Z y (VectorField.mlieBracket I X Y y))) x :=
+    CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt
+      (cov := g.leviCivita) hZ2 hbr
+  have hQdiff :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% Q) x := by
+    simpa [Q] using (mdifferentiableAt_extend I E q)
+  exact g.metric_pairing_mdiffAt
+    (by simpa [closedBracketConnectionEntryFieldAt, X, Y, Z] using hTerm)
+    hQdiff
+
+/--
+Neighborhood form of the curvature defining identity in canonical extension
+slots.
+-/
+theorem curvature_def_eventually
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a u w q : TM x) :
+    (fun y : M ↦
+      g.inner y
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u) (extend E w) y)
+        (extend E q y))
+      =ᶠ[nhds x]
+    (fun y : M ↦
+      closedIteratedConnectionEntryFieldAt g u w y
+          (extend E a y) (extend E q y)
+        - closedIteratedConnectionEntryFieldAt g a w y
+          (extend E u y) (extend E q y)
+        - closedBracketConnectionEntryFieldAt g a u w y
+          (extend E q y)) := by
+  exact Filter.Eventually.of_forall fun y ↦ by
+    simp [closedIteratedConnectionEntryFieldAt,
+      closedBracketConnectionEntryFieldAt, CovariantDerivative.curvatureOp]
+
+/--
+Exterior-derivative form of the curvature defining identity, split into the
+two iterated-connection terms and the bracket term.
+-/
+theorem curvature_def_extDerivFun
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v a u w q : TM x) :
+    closedCurvatureEntryDerivAt g x v a u w q =
+      extDerivFun
+          (fun y : M ↦
+            closedIteratedConnectionEntryFieldAt g u w y
+              (extend E a y) (extend E q y)) x v
+        - extDerivFun
+          (fun y : M ↦
+            closedIteratedConnectionEntryFieldAt g a w y
+              (extend E u y) (extend E q y)) x v
+        - extDerivFun
+          (fun y : M ↦
+            closedBracketConnectionEntryFieldAt g a u w y
+              (extend E q y)) x v := by
+  let A : M → ℝ := fun y : M ↦
+    closedIteratedConnectionEntryFieldAt g u w y
+      (extend E a y) (extend E q y)
+  let B : M → ℝ := fun y : M ↦
+    closedIteratedConnectionEntryFieldAt g a w y
+      (extend E u y) (extend E q y)
+  let C : M → ℝ := fun y : M ↦
+    closedBracketConnectionEntryFieldAt g a u w y
+      (extend E q y)
+  let L : M → ℝ := fun y : M ↦
+    g.inner y
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E a) (extend E u) (extend E w) y)
+      (extend E q y)
+  have hevent :
+      L =ᶠ[nhds x] fun y : M ↦ A y - B y - C y := by
+    simpa [L, A, B, C] using
+      curvature_def_eventually (g := g) (x := x) a u w q
+  have hderiv :
+      extDerivFun L x v =
+        extDerivFun (fun y : M ↦ A y - B y - C y) x v := by
+    exact congrArg (fun L' : TM x →L[ℝ] ℝ ↦ L' v)
+      (CovariantDerivative.extDerivFun_congr hevent)
+  have hA : MDifferentiableAt I 𝓘(ℝ) A x := by
+    simpa [A] using closedIteratedConnectionEntry_mdiffAt
+      (g := g) (a := a) (u := u) (w := w) (q := q)
+  have hB : MDifferentiableAt I 𝓘(ℝ) B x := by
+    simpa [B] using closedIteratedConnectionEntry_mdiffAt
+      (g := g) (a := u) (u := a) (w := w) (q := q)
+  have hC : MDifferentiableAt I 𝓘(ℝ) C x := by
+    simpa [C] using closedBracketConnectionEntry_mdiffAt
+      (g := g) (a := a) (u := u) (w := w) (q := q)
+  have hsplit :
+      extDerivFun (fun y : M ↦ A y - B y - C y) x v =
+        extDerivFun A x v - extDerivFun B x v - extDerivFun C x v := by
+    have hnegB : MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ -B y) x := hB.neg
+    have hraw := extDerivFun_add_sub_at
+      (n := n) (M := M)
+      (f := A) (g := fun y : M ↦ -B y) (h := C) (x := x)
+      hA hnegB hC v
+    have hneg :
+        extDerivFun (fun y : M ↦ -B y) x v = -extDerivFun B x v := by
+      have hfun : (fun y : M ↦ -B y) = (-1 : ℝ) • B := by
+        funext y
+        simp
+      rw [hfun]
+      have h := congrArg (fun L' : TM x →L[ℝ] ℝ ↦ L' v)
+        (extDerivFun_const_smul_at
+          (n := n) (M := M) (f := B) (x := x) hB (-1 : ℝ))
+      simpa [Pi.smul_apply, smul_eq_mul] using h
+    have hfun :
+        (fun y : M ↦ A y - B y - C y) =
+          fun y : M ↦ A y + (-B y) - C y := by
+      funext y
+      ring
+    rw [hfun, hraw, hneg]
+    ring
+  unfold closedCurvatureEntryDerivAt
+  calc
+    extDerivFun L x v =
+        extDerivFun (fun y : M ↦ A y - B y - C y) x v := hderiv
+    _ = extDerivFun A x v - extDerivFun B x v - extDerivFun C x v := hsplit
+
+theorem closedIteratedConnectionEntry_extDerivFun_eq
+    (g : ClosedSmoothRiemannianMetric n M)
+    (x : M) (v a u w q : TM x) :
+    extDerivFun
+        (fun y : M ↦
+          closedIteratedConnectionEntryFieldAt g u w y
+            (extend E a y) (extend E q y)) x v =
+      covTensor2DerivAt g (closedIteratedConnectionEntryFieldAt g u w) x v a q
+        + closedIteratedConnectionEntryFieldAt g u w x
+          (g.leviCivita (extend E a) x v) q
+        + closedIteratedConnectionEntryFieldAt g u w x a
+          (g.leviCivita (extend E q) x v) := by
+  unfold covTensor2DerivAt
+  ring
+
+theorem closedBracketConnectionEntry_extDerivFun_eq
+    (g : ClosedSmoothRiemannianMetric n M)
+    (x : M) (v a u w q : TM x) :
+    extDerivFun
+        (fun y : M ↦
+          closedBracketConnectionEntryFieldAt g a u w y
+            (extend E q y)) x v =
+      closedBracketConnectionEntryDerivAt g x v a u w q
+        + closedBracketConnectionEntryFieldAt g a u w x
+          (g.leviCivita (extend E q) x v) := by
+  unfold closedBracketConnectionEntryDerivAt
+  ring
+
+/--
+Closed curvature Koszul expansion: the flat derivative of the scalar
+curvature entry is the differentiated defining identity, i.e. second
+connection-entry derivatives plus the transported-slot connection products.
+-/
+theorem closedCurvature_koszul
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v a u w q : TM x) :
+    closedCurvatureEntryDerivAt g x v a u w q =
+      closedCurvatureDefExpansionAt g x v a u w q := by
+  rw [curvature_def_extDerivFun (g := g) (x := x)
+    (v := v) (a := a) (u := u) (w := w) (q := q)]
+  rw [closedIteratedConnectionEntry_extDerivFun_eq
+      (g := g) (x := x) (v := v) (a := a) (u := u) (w := w) (q := q),
+    closedIteratedConnectionEntry_extDerivFun_eq
+      (g := g) (x := x) (v := v) (a := u) (u := a) (w := w) (q := q),
+    closedBracketConnectionEntry_extDerivFun_eq
+      (g := g) (x := x) (v := v) (a := a) (u := u) (w := w) (q := q)]
+  unfold closedCurvatureDefExpansionAt
+  ring
+
+/-- Flat sanity check for the closed curvature Koszul expansion. -/
+theorem closedCurvature_koszul_flat
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v a u w q : TM x)
+    (hflat : CovariantDerivative.IsFlat g.leviCivita) :
+    closedCurvatureDefExpansionAt g x v a u w q = 0 := by
+  rw [← closedCurvature_koszul (g := g) (x := x)
+    (v := v) (a := a) (u := u) (w := w) (q := q)]
+  unfold closedCurvatureEntryDerivAt
+  have hzero :
+      (fun y : M ↦
+        g.inner y
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E a) (extend E u) (extend E w) y)
+          (extend E q y)) = fun _ : M ↦ (0 : ℝ) := by
+    funext y
+    have hfield :
+        CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u) (extend E w) y = 0 :=
+      congrArg (fun R : ∀ y : M, TM y ↦ R y)
+        (hflat (extend E a) (extend E u) (extend E w))
+    simp [hfield]
+  rw [hzero]
+  simp [extDerivFun_zero_at]
+
 private theorem eventually_contMDiffAt_two_extend
     {x : M} (v : TM x) :
     ∀ᶠ y in nhds x,
