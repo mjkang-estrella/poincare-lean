@@ -1149,6 +1149,242 @@ theorem metricDualVectorAt_eq_metricRaiseContinuousAt
     ClosedSmoothRiemannianMetric.metricRaiseContinuousAt_inner_apply]
   simp
 
+/--
+The metric trace of a fiberwise bilinear form, computed in an arbitrary finite
+basis and paired with the `g`-raised dual coframe of that basis.
+-/
+noncomputable def metricTraceInBasisAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (B : LinearMap.BilinForm ℝ (TM x))
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι ℝ (TM x)) : ℝ :=
+  ∑ i, B (b i) (metricDualVectorAt g x (b.coord i))
+
+/-- The endomorphism obtained by raising one index of a fiberwise bilinear form. -/
+noncomputable def metricTraceEndomorphismAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (B : LinearMap.BilinForm ℝ (TM x)) : TM x →ₗ[ℝ] TM x :=
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  ((LinearMap.BilinForm.toDual (g.metricBilinAt x)
+      (g.metricBilinAt_nondegenerate x)).symm.toLinearMap) ∘ₗ B
+
+/-- Coordinates in any basis are metric pairings with the raised dual vector. -/
+theorem coord_eq_inner_metricDualVectorAt_of_basis
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    [FiniteDimensional ℝ (TM x)]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι ℝ (TM x)) (i : ι) (v : TM x) :
+    b.coord i v =
+      (g.inner x v (metricDualVectorAt g x (b.coord i))) := by
+  rw [g.inner_symm x v (metricDualVectorAt g x (b.coord i))]
+  exact (metricDualVectorAt_inner_apply g x (b.coord i) v).symm
+
+/--
+The raised dual vector of any basis coordinate covector is the continuous
+metric-raise map applied to the same coordinate covector.
+-/
+theorem metricDualVectorAt_basisCoord_eq_metricRaiseContinuousAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    [T2Space (TM x)] [FiniteDimensional ℝ (TM x)]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι ℝ (TM x)) (i : ι) :
+    metricDualVectorAt g x (b.coord i) =
+      g.metricRaiseContinuousAt x (LinearMap.toContinuousLinearMap (b.coord i)) := by
+  letI : T2Space (TM x) := inferInstanceAs (T2Space E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  simpa using
+    (metricDualVectorAt_eq_metricRaiseContinuousAt
+      (g := g) (x := x)
+      (φ := LinearMap.toContinuousLinearMap (b.coord i)))
+
+/--
+The arbitrary-basis metric trace is the trace of the raised endomorphism, hence
+is basis-free.
+-/
+theorem metricTraceInBasisAt_eq_linearMap_trace
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    [FiniteDimensional ℝ (TM x)]
+    (B : LinearMap.BilinForm ℝ (TM x))
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι ℝ (TM x)) :
+    metricTraceInBasisAt g x B b =
+      LinearMap.trace ℝ (TM x) (metricTraceEndomorphismAt g x B) := by
+  rw [LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]
+  unfold metricTraceInBasisAt
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+  change B (b i) (metricDualVectorAt g x (b.coord i)) =
+    b.coord i ((metricTraceEndomorphismAt g x B) (b i))
+  rw [coord_eq_inner_metricDualVectorAt_of_basis (g := g) (x := x) (b := b)]
+  unfold metricTraceEndomorphismAt
+  simp only [LinearMap.comp_apply, LinearEquiv.coe_coe]
+  change B (b i) (metricDualVectorAt g x (b.coord i)) =
+    g.metricBilinAt x
+      ((LinearMap.BilinForm.toDual (g.metricBilinAt x)
+        (g.metricBilinAt_nondegenerate x)).symm (B (b i)))
+      (metricDualVectorAt g x (b.coord i))
+  rw [LinearMap.BilinForm.apply_toDual_symm_apply]
+
+/-- Computing the same fiberwise metric trace in two finite bases gives the same scalar. -/
+theorem metricTraceInBasisAt_eq_metricTraceInBasisAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    [FiniteDimensional ℝ (TM x)]
+    (B : LinearMap.BilinForm ℝ (TM x))
+    {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
+    (b : Module.Basis ι ℝ (TM x)) (c : Module.Basis κ ℝ (TM x)) :
+    metricTraceInBasisAt g x B b = metricTraceInBasisAt g x B c := by
+  rw [metricTraceInBasisAt_eq_linearMap_trace (g := g) (x := x) (B := B) (b := b),
+    metricTraceInBasisAt_eq_linearMap_trace (g := g) (x := x) (B := B) (b := c)]
+
+/--
+For the canonical finite basis, the arbitrary-basis bilinear trace agrees with
+the existing raw-field trace definition.
+-/
+theorem metricTraceInBasisAt_finBasis_eq_traceMetricVariationAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    [FiniteDimensional ℝ (TM x)]
+    (B : LinearMap.BilinForm ℝ (TM x))
+    (hB : ∀ p q : TM x, B p q = h x p q) :
+    metricTraceInBasisAt g x B (Module.finBasis ℝ (TM x)) =
+      traceMetricVariationAt g h x := by
+  unfold metricTraceInBasisAt traceMetricVariationAt
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [hB]
+
+/--
+Basis-invariant bridge from the existing `traceMetricVariationAt` definition to
+an arbitrary finite basis, once the fiber value of `h` is packaged as a genuine
+bilinear form.
+-/
+theorem traceMetricVariationAt_eq_metricTraceInBasisAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    [FiniteDimensional ℝ (TM x)]
+    (B : LinearMap.BilinForm ℝ (TM x))
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι ℝ (TM x))
+    (hB : ∀ p q : TM x, B p q = h x p q) :
+    traceMetricVariationAt g h x = metricTraceInBasisAt g x B b := by
+  calc
+    traceMetricVariationAt g h x =
+        metricTraceInBasisAt g x B (Module.finBasis ℝ (TM x)) :=
+          (metricTraceInBasisAt_finBasis_eq_traceMetricVariationAt
+            (g := g) (h := h) (x := x) (B := B) hB).symm
+    _ = metricTraceInBasisAt g x B b :=
+          metricTraceInBasisAt_eq_metricTraceInBasisAt
+            (g := g) (x := x) (B := B)
+            (b := Module.finBasis ℝ (TM x)) (c := b)
+
+/--
+The chart frame at a chart target point: transport the fixed model finite basis
+through the derivative of the inverse chart.
+-/
+noncomputable def chartTangentBasisAt
+    (x₀ : M) {z : E} (hz : z ∈ (extChartAt I x₀).target) :
+    Module.Basis (Fin (Module.finrank ℝ E)) ℝ (TM ((extChartAt I x₀).symm z)) :=
+  let hInv := isInvertible_mfderivWithin_extChartAt_symm (x := x₀) hz
+  (Module.finBasis ℝ E).map (Classical.choose hInv).toLinearEquiv
+
+/-- The chart-frame basis vectors are exactly the inverse-chart derivative of the model basis. -/
+theorem chartTangentBasisAt_apply
+    (x₀ : M) {z : E} (hz : z ∈ (extChartAt I x₀).target)
+    (i : Fin (Module.finrank ℝ E)) :
+    chartTangentBasisAt (n := n) (M := M) x₀ hz i =
+      mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm) (Set.range I) z
+        ((Module.finBasis ℝ E) i) := by
+  let hInv := isInvertible_mfderivWithin_extChartAt_symm (x := x₀) hz
+  have hchoose :
+      ((Classical.choose hInv :
+          E ≃L[ℝ] TM ((extChartAt I x₀).symm z)) : E →L[ℝ]
+            TM ((extChartAt I x₀).symm z)) =
+        mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm) (Set.range I) z :=
+    Classical.choose_spec hInv
+  unfold chartTangentBasisAt
+  rw [Module.Basis.map_apply]
+  simpa [hInv] using
+    congrArg
+      (fun L : E →L[ℝ] TM ((extChartAt I x₀).symm z) =>
+        L ((Module.finBasis ℝ E) i)) hchoose
+
+/--
+Specialization of the basis-invariant trace bridge to the chart frame on the
+target of `extChartAt`.
+-/
+theorem traceMetricVariationAt_eq_chartTangentBasisAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x₀ : M)
+    {z : E} (hz : z ∈ (extChartAt I x₀).target)
+    (B : LinearMap.BilinForm ℝ (TM ((extChartAt I x₀).symm z)))
+    (hB : ∀ p q : TM ((extChartAt I x₀).symm z),
+      B p q = h ((extChartAt I x₀).symm z) p q) :
+    traceMetricVariationAt g h ((extChartAt I x₀).symm z) =
+      metricTraceInBasisAt g ((extChartAt I x₀).symm z) B
+        (chartTangentBasisAt (n := n) (M := M) x₀ hz) := by
+  letI : FiniteDimensional ℝ (TM ((extChartAt I x₀).symm z)) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  exact traceMetricVariationAt_eq_metricTraceInBasisAt
+    (g := g) (h := h) (x := (extChartAt I x₀).symm z)
+    (B := B) (b := chartTangentBasisAt (n := n) (M := M) x₀ hz) hB
+
+/-- The chart-frame specialization unfolded as the finite frame/coframe sum. -/
+theorem traceMetricVariationAt_eq_chartTangentBasisAt_sum
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x₀ : M)
+    {z : E} (hz : z ∈ (extChartAt I x₀).target)
+    (B : LinearMap.BilinForm ℝ (TM ((extChartAt I x₀).symm z)))
+    (hB : ∀ p q : TM ((extChartAt I x₀).symm z),
+      B p q = h ((extChartAt I x₀).symm z) p q) :
+    traceMetricVariationAt g h ((extChartAt I x₀).symm z) =
+      ∑ i, B (chartTangentBasisAt (n := n) (M := M) x₀ hz i)
+        (metricDualVectorAt g ((extChartAt I x₀).symm z)
+          ((chartTangentBasisAt (n := n) (M := M) x₀ hz).coord i)) := by
+  rw [traceMetricVariationAt_eq_chartTangentBasisAt
+    (g := g) (h := h) (x₀ := x₀) (hz := hz) (B := B) hB]
+  rfl
+
+/-- The chart-frame raised coframe rewritten through the continuous raise map. -/
+theorem metricDualVectorAt_chartTangentBasisAt_coord_eq_metricRaiseContinuousAt
+    (g : ClosedSmoothRiemannianMetric n M) (x₀ : M)
+    {z : E} (hz : z ∈ (extChartAt I x₀).target)
+    [T2Space (TM ((extChartAt I x₀).symm z))]
+    [FiniteDimensional ℝ (TM ((extChartAt I x₀).symm z))]
+    (i : Fin (Module.finrank ℝ E)) :
+    metricDualVectorAt g ((extChartAt I x₀).symm z)
+        ((chartTangentBasisAt (n := n) (M := M) x₀ hz).coord i) =
+      g.metricRaiseContinuousAt ((extChartAt I x₀).symm z)
+        (LinearMap.toContinuousLinearMap
+          ((chartTangentBasisAt (n := n) (M := M) x₀ hz).coord i)) := by
+  letI : FiniteDimensional ℝ (TM ((extChartAt I x₀).symm z)) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  exact metricDualVectorAt_basisCoord_eq_metricRaiseContinuousAt
+    (g := g) (x := (extChartAt I x₀).symm z)
+    (b := chartTangentBasisAt (n := n) (M := M) x₀ hz) i
+
+/--
+The chart-frame trace sum with the raised dual coframe expressed via
+`metricRaiseContinuousAt`.
+-/
+theorem traceMetricVariationAt_eq_chartTangentBasisAt_continuousRaise_sum
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x₀ : M)
+    {z : E} (hz : z ∈ (extChartAt I x₀).target)
+    [T2Space (TM ((extChartAt I x₀).symm z))]
+    [FiniteDimensional ℝ (TM ((extChartAt I x₀).symm z))]
+    (B : LinearMap.BilinForm ℝ (TM ((extChartAt I x₀).symm z)))
+    (hB : ∀ p q : TM ((extChartAt I x₀).symm z),
+      B p q = h ((extChartAt I x₀).symm z) p q) :
+    traceMetricVariationAt g h ((extChartAt I x₀).symm z) =
+      ∑ i, B (chartTangentBasisAt (n := n) (M := M) x₀ hz i)
+        (g.metricRaiseContinuousAt ((extChartAt I x₀).symm z)
+          (LinearMap.toContinuousLinearMap
+            ((chartTangentBasisAt (n := n) (M := M) x₀ hz).coord i))) := by
+  rw [traceMetricVariationAt_eq_chartTangentBasisAt_sum
+    (g := g) (h := h) (x₀ := x₀) (hz := hz) (B := B) hB]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [metricDualVectorAt_chartTangentBasisAt_coord_eq_metricRaiseContinuousAt
+    (g := g) (x₀ := x₀) (hz := hz) (i := i)]
+
 /-- Coordinates are metric pairings with the corresponding raised dual basis vector. -/
 theorem coord_eq_inner_metricDualVectorAt
     (g : ClosedSmoothRiemannianMetric n M) (x : M)
