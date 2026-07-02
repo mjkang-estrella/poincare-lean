@@ -2956,6 +2956,45 @@ def Tensor2SMulRight
   ∀ y : M, ∀ (c : ℝ) (p q : TM y),
     h y p (c • q) = c * h y p q
 
+theorem tensor2AddLeft_ricciVariationField
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1] :
+    Tensor2AddLeft (ricciVariationField g) := by
+  intro y p₁ p₂ q
+  simpa [ricciVariationField] using g.ricciAt_add_left y p₁ p₂ q
+
+theorem tensor2SMulLeft_ricciVariationField
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1] :
+    Tensor2SMulLeft (ricciVariationField g) := by
+  intro y c p q
+  simpa [ricciVariationField, smul_eq_mul] using g.ricciAt_smul_left y c p q
+
+theorem tensor2AddRight_ricciVariationField
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1] :
+    Tensor2AddRight (ricciVariationField g) := by
+  intro y p q₁ q₂
+  simpa [ricciVariationField] using g.ricciAt_add_right y p q₁ q₂
+
+theorem tensor2SMulRight_ricciVariationField
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1] :
+    Tensor2SMulRight (ricciVariationField g) := by
+  intro y c p q
+  simpa [ricciVariationField, smul_eq_mul] using g.ricciAt_smul_right y c p q
+
+/-- The closed Ricci tensor packaged as a bilinear form for Gram-trace lemmas. -/
+noncomputable def ricciVariationBilinForm
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (y : M) : LinearMap.BilinForm ℝ (TM y) :=
+  LinearMap.mk₂ ℝ (fun p q ↦ ricciVariationField g y p q)
+    (fun p p' q ↦ tensor2AddLeft_ricciVariationField g y p p' q)
+    (fun c p q ↦ tensor2SMulLeft_ricciVariationField g y c p q)
+    (fun p q q' ↦ tensor2AddRight_ricciVariationField g y p q q')
+    (fun c p q ↦ tensor2SMulRight_ricciVariationField g y c p q)
+
 private theorem tensor2_sum_left
     {ι : Type} [Fintype ι] [DecidableEq ι]
     {h : ∀ y : M, TM y → TM y → ℝ}
@@ -4671,6 +4710,37 @@ noncomputable def closedScalarContractionDerivTraceAt
   let b := Module.finBasis ℝ (TM x)
   ∑ i, closedCovRicciDerivAt g x w
     (metricDualVectorAt g x (b.coord i)) (b i)
+
+/--
+Moving-point Ricci derivative expansion in canonical extension slots.
+
+This is the closed analogue of the model trace-derivative computation feeding
+`covRicciDeriv_eq_tensor_deriv`: the exterior derivative of the Ricci entries
+is the curvature-level covariant Ricci derivative plus the two tensor-slot
+Levi-Civita corrections.
+-/
+def ClosedRicciDerivativeExpansionAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : Prop :=
+  ∀ v u w : TM x,
+    extDerivFun
+        (fun y : M ↦ g.ricciAt y (extend E u y) (extend E w y)) x v =
+      closedCovRicciDerivAt g x v u w
+        + g.ricciAt x (g.leviCivita (extend E u) x v) w
+        + g.ricciAt x u (g.leviCivita (extend E w) x v)
+
+theorem covTensor2DerivAt_ricciVariationField_eq_closedCovRicciDerivAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hRic : ClosedRicciDerivativeExpansionAt g x)
+    (v u w : TM x) :
+    covTensor2DerivAt g (ricciVariationField g) x v u w =
+      closedCovRicciDerivAt g x v u w := by
+  unfold covTensor2DerivAt ricciVariationField
+  rw [hRic v u w]
+  ring
 
 /--
 Raw double contraction of the closed first-contracted Bianchi identity.
@@ -6532,6 +6602,40 @@ theorem tensorDivergenceOneFormAt_ricciVariationField_swap
     (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i))
     ((Module.finBasis ℝ (TM x)) i) w
 
+theorem tensorDivergenceOneFormAt_ricciVariationField_eq_closedRicciDivergenceTraceAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hRic : ClosedRicciDerivativeExpansionAt g x)
+    (w : TM x) :
+    tensorDivergenceOneFormAt g (ricciVariationField g) x w =
+      closedRicciDivergenceTraceAt g x w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  rw [tensorDivergenceOneFormAt_ricciVariationField_swap (g := g) (x := x) w]
+  unfold closedRicciDivergenceTraceAt
+  change (∑ i, covTensor2DerivAt g (ricciVariationField g) x (sharp i) w (b i)) =
+    ∑ i, closedCovRicciDerivAt g x (sharp i) w (b i)
+  exact Finset.sum_congr rfl fun i _ ↦
+    covTensor2DerivAt_ricciVariationField_eq_closedCovRicciDerivAt
+      (g := g) (x := x) hRic (sharp i) w (b i)
+
+theorem eventually_tensorDivergenceOneFormAt_ricciVariationField_eq_closedRicciDivergenceTraceAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hRic : ∀ᶠ y in nhds x, ClosedRicciDerivativeExpansionAt g y) :
+    ∀ᶠ y in nhds x, ∀ w : TM y,
+      tensorDivergenceOneFormAt g (ricciVariationField g) y w =
+        closedRicciDivergenceTraceAt g y w :=
+  hRic.mono fun y hy w ↦
+    tensorDivergenceOneFormAt_ricciVariationField_eq_closedRicciDivergenceTraceAt
+      (g := g) (x := y) hy w
+
 /--
 Derivative identification for the inner `δΓ` trace-form field after the already
 proved first-order reduction to `div h - 1/2 d(tr h)`.
@@ -6746,6 +6850,70 @@ theorem traceMetricVariationDerivAt_timeDeriv_of_covTensor2ExtDifferentiableAt
     (by
       intro y p q
       rfl)
+
+theorem closedScalarContractionDerivTraceAt_eq_extDerivFun_scalarAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hRic : ClosedRicciDerivativeExpansionAt g x)
+    (hDiff : CovTensor2ExtDifferentiableAt (ricciVariationField g) x)
+    (w : TM x) :
+    closedScalarContractionDerivTraceAt g x w =
+      extDerivFun (fun y : M ↦ g.scalarAt y) x w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hTrace : TraceMetricVariationDerivAt g (ricciVariationField g) x :=
+    traceMetricVariationDerivAt_of_covTensor2ExtDifferentiableAt
+      (g := g) (h := ricciVariationField g) (x := x)
+      hDiff
+      (tensor2AddLeft_ricciVariationField g)
+      (tensor2SMulLeft_ricciVariationField g)
+      (tensor2AddRight_ricciVariationField g)
+      (tensor2SMulRight_ricciVariationField g)
+      (ricciVariationBilinForm g)
+      (by intro y p q; rfl)
+  have hTraceW :
+      (∑ i, covTensor2DerivAt g (ricciVariationField g) x w (b i) (sharp i)) =
+        extDerivFun
+          (fun y : M ↦ traceMetricVariationAt g (ricciVariationField g) y)
+          x w := by
+    simpa [b, sharp] using hTrace w
+  calc
+    closedScalarContractionDerivTraceAt g x w =
+        ∑ i, closedCovRicciDerivAt g x w (sharp i) (b i) := by
+          simp [closedScalarContractionDerivTraceAt, b, sharp]
+    _ = ∑ i, covTensor2DerivAt g (ricciVariationField g) x w (sharp i) (b i) := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          exact (covTensor2DerivAt_ricciVariationField_eq_closedCovRicciDerivAt
+            (g := g) (x := x) hRic w (sharp i) (b i)).symm
+    _ = ∑ i, covTensor2DerivAt g (ricciVariationField g) x w (b i) (sharp i) := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          exact covTensor2DerivAt_ricciVariationField_symm
+            (g := g) (x := x) w (sharp i) (b i)
+    _ = extDerivFun
+          (fun y : M ↦ traceMetricVariationAt g (ricciVariationField g) y)
+          x w := hTraceW
+    _ = extDerivFun (fun y : M ↦ g.scalarAt y) x w := by
+          exact extDerivFun_traceMetricVariationAt_ricci (g := g) x w
+
+theorem eventually_closedScalarContractionDerivTraceAt_eq_extDerivFun_scalarAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hRic : ∀ᶠ y in nhds x, ClosedRicciDerivativeExpansionAt g y)
+    (hDiff :
+      ∀ᶠ y in nhds x, CovTensor2ExtDifferentiableAt (ricciVariationField g) y) :
+    ∀ᶠ y in nhds x, ∀ w : TM y,
+      closedScalarContractionDerivTraceAt g y w =
+        extDerivFun (fun z : M ↦ g.scalarAt z) y w := by
+  filter_upwards [hRic, hDiff] with y hyRic hyDiff
+  intro w
+  exact closedScalarContractionDerivTraceAt_eq_extDerivFun_scalarAt
+    (g := g) (x := y) hyRic hyDiff w
 
 set_option maxHeartbeats 5000000 in
 /--
