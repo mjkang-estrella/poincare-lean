@@ -182,6 +182,20 @@
       "status": "blocked",
       "files": [],
       "difficulty": "hard"
+    },
+    {
+      "id": "M1-lc-regularity",
+      "tier": "M1",
+      "title": "C^1 regularity of the Koszul Levi-Civita connection",
+      "statement_spec": "Prove instance CovariantDerivative.ContMDiffCovariantDerivative (LeviCivitaExistence.closedLeviCivitaConnection g) 1 (and ideally ∞) from g's smoothness, discharging the carried hypothesis in Poincare/Global/Curvature.lean. Route: smoothness of the Koszul RHS + smooth dependence of the metric inverse.",
+      "deps": [
+        "M1-levi-civita"
+      ],
+      "status": "open",
+      "files": [
+        "Poincare/Global/LeviCivitaExistence.lean"
+      ],
+      "difficulty": "hard"
     }
   ]
 }
