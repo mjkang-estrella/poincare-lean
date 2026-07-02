@@ -1431,6 +1431,97 @@ theorem metricRaise_trace_ricciDualContinuousAt_eq_neg
   exact metricRaiseDeriv_trace_ricciDualContinuousAt
     (gt := gt) (t₀ := t₀) (x := x) hgt
 
+theorem trace_metricRaise_ricciDerivativeDualContinuousAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {δRic : TM x → TM x → ℝ}
+    (hRic : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic u w) t₀) :
+    LinearMap.trace ℝ (TM x)
+      (((((gt t₀).metricRaiseContinuousAt x).comp
+          (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+            (gt := gt) (t₀ := t₀) (x := x) δRic hRic)) : TM x →L[ℝ] TM x) :
+        TM x →ₗ[ℝ] TM x)
+      =
+        letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+        ∑ j, δRic ((Module.finBasis ℝ (TM x)) j)
+          (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord j)) := by
+  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun j ↦ metricDualVectorAt g x (b.coord j)
+  rw [LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]
+  have hdiag :
+      (∑ j,
+        ((LinearMap.toMatrix b b)
+          ↑((((gt t₀).metricRaiseContinuousAt x).comp
+            (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+              (gt := gt) (t₀ := t₀) (x := x) δRic hRic)))).diag j) =
+        ∑ j, b.coord j
+          (((gt t₀).metricRaiseContinuousAt x)
+            (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+              (gt := gt) (t₀ := t₀) (x := x) δRic hRic (b j))) := by
+    refine Finset.sum_congr rfl fun j _ ↦ ?_
+    rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+    rfl
+  rw [hdiag]
+  change (∑ j, b.coord j
+      (g.metricRaiseContinuousAt x
+        (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+          (gt := gt) (t₀ := t₀) (x := x) δRic hRic (b j)))) =
+    ∑ j, δRic (b j) (sharp j)
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [coord_eq_inner_metricDualVectorAt]
+  rw [ClosedSmoothRiemannianMetric.metricRaiseContinuousAt_inner_apply]
+  simp [g, b, sharp]
+
+theorem trace_metricRaise_deltaRicciAt_eq_sum
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hreg : MetricFlowRegularAt gt t₀ x) :
+    LinearMap.trace ℝ (TM x)
+        (((((gt t₀).metricRaiseContinuousAt x).comp
+            (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+              (gt := gt) (t₀ := t₀) (x := x)
+              (deltaRicciAt gt t₀ x)
+              (fun u w ↦ ricciVariation_eq_deltaGamma_contractions' hreg u w))) :
+            TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x)
+      =
+        letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+        ∑ j, deltaRicciAt gt t₀ x ((Module.finBasis ℝ (TM x)) j)
+          (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord j)) := by
+  let hRic : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+        (deltaRicciAt gt t₀ x u w) t₀ :=
+    fun u w ↦ ricciVariation_eq_deltaGamma_contractions' hreg u w
+  simpa [hRic] using
+    (trace_metricRaise_ricciDerivativeDualContinuousAt
+      (gt := gt) (t₀ := t₀) (x := x)
+      (δRic := deltaRicciAt gt t₀ x) hRic)
+
+theorem deltaRicciAt_raised_trace_eq_deltaGamma_contractions
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    (letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+      ∑ j, deltaRicciAt gt t₀ x ((Module.finBasis ℝ (TM x)) j)
+        (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord j)))
+      =
+        (letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+          ∑ j, deltaGammaDivergenceAt gt t₀ x ((Module.finBasis ℝ (TM x)) j)
+            (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord j)))
+        -
+        (letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+          ∑ j, deltaGammaContractionDerivAt gt t₀ x ((Module.finBasis ℝ (TM x)) j)
+            (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord j))) := by
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  unfold deltaRicciAt
+  rw [Finset.sum_sub_distrib]
+
 omit [T2Space M] [IsManifold I ∞ M] in
 private theorem extDerivFun_zero_at (x : M) :
     (extDerivFun (fun _ : M ↦ (0 : ℝ)) x : TM x →L[ℝ] ℝ) = 0 := by
@@ -1634,6 +1725,103 @@ noncomputable def tensorDivergenceOneFormAt
       (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x w = 0 := by
   unfold tensorDivergenceOneFormAt
   simp
+
+/--
+Inner trace of the closed `δΓ` Koszul identity.
+
+The two trace-commute hypotheses are the remaining closed-manifold
+metric-compatibility obligations:
+* `hTraceSwap` swaps the contracted derivative slot with the first tensor slot.
+* `hTraceDeriv` identifies the contracted `∇h` trace with the derivative of
+  `tr_g h`.
+
+Both are used directly here; this lemma isolates the algebraic contraction of
+`deltaGamma_koszul` from those still-open first-order trace facts.
+-/
+theorem deltaGamma_innerTrace_eq
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hExt :
+      ∀ a b c : TM x,
+        HasDerivAt
+          (fun t ↦
+            extDerivFun
+              (fun y : M ↦ (gt t).inner y (extend E b y) (extend E c y)) x a)
+          (extDerivFun
+            (fun y : M ↦ timeDerivAt gt t₀ y (extend E b y) (extend E c y))
+            x a) t₀)
+    (hTraceSwap :
+      ∀ w : TM x,
+        (letI : FiniteDimensional ℝ (TM x) :=
+            inferInstanceAs (FiniteDimensional ℝ E)
+          ∑ i, covTensor2DerivAt (gt t₀) (timeDerivAt gt t₀) x
+            ((Module.finBasis ℝ (TM x)) i)
+            (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord i))
+            w)
+          = tensorDivergenceOneFormAt (gt t₀) (timeDerivAt gt t₀) x w)
+    (hTraceDeriv :
+      ∀ w : TM x,
+        (letI : FiniteDimensional ℝ (TM x) :=
+            inferInstanceAs (FiniteDimensional ℝ E)
+          ∑ i, covTensor2DerivAt (gt t₀) (timeDerivAt gt t₀) x w
+            ((Module.finBasis ℝ (TM x)) i)
+            (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord i)))
+          = extDerivFun
+            (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x w)
+    (w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+      ∑ i, (gt t₀).inner x
+        (deltaGammaAt gt t₀ x ((Module.finBasis ℝ (TM x)) i)
+          (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord i))) w)
+      =
+        tensorDivergenceOneFormAt (gt t₀) (timeDerivAt gt t₀) x w
+          - (1 / 2 : ℝ) *
+            extDerivFun
+              (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y)
+              x w := by
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hkoszul : ∀ i : Fin (Module.finrank ℝ (TM x)),
+      g.inner x (deltaGammaAt gt t₀ x (b i) (sharp i)) w =
+        (1 / 2 : ℝ) *
+          (covTensor2DerivAt g H x (b i) (sharp i) w
+            + covTensor2DerivAt g H x (sharp i) (b i) w
+            - covTensor2DerivAt g H x w (b i) (sharp i)) := by
+    intro i
+    have hk := deltaGamma_koszul
+      (gt := gt) (t₀ := t₀) (x := x) hreg hgt hExt (b i) (sharp i) w
+    change 2 * g.inner x (deltaGammaAt gt t₀ x (b i) (sharp i)) w =
+      covTensor2DerivAt g H x (b i) (sharp i) w
+        + covTensor2DerivAt g H x (sharp i) (b i) w
+        - covTensor2DerivAt g H x w (b i) (sharp i) at hk
+    linarith
+  have hA :
+      (∑ i, covTensor2DerivAt g H x (b i) (sharp i) w) =
+        tensorDivergenceOneFormAt g H x w := by
+    simpa [g, H, b, sharp] using hTraceSwap w
+  have hB :
+      (∑ i, covTensor2DerivAt g H x (sharp i) (b i) w) =
+        tensorDivergenceOneFormAt g H x w := by
+    simp [tensorDivergenceOneFormAt, g, H, b, sharp]
+  have hC :
+      (∑ i, covTensor2DerivAt g H x w (b i) (sharp i)) =
+        extDerivFun
+          (fun y ↦ traceMetricVariationAt g H y) x w := by
+    simpa [g, H, b, sharp] using hTraceDeriv w
+  change (∑ i, g.inner x (deltaGammaAt gt t₀ x (b i) (sharp i)) w) =
+    tensorDivergenceOneFormAt g H x w
+      - (1 / 2 : ℝ) * extDerivFun
+        (fun y ↦ traceMetricVariationAt g H y) x w
+  rw [Finset.sum_congr rfl (fun i _ ↦ hkoszul i), ← Finset.mul_sum,
+    Finset.sum_sub_distrib, Finset.sum_add_distrib, hA, hB, hC]
+  ring
 
 /--
 The double divergence of a raw metric variation:
