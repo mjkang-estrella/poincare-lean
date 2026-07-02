@@ -1270,6 +1270,100 @@ theorem gramMatrix_entry_mdiffAt
   simpa [gramMatrix, b] using
     (metric_pairing_extend_mdiffAt (g := g) (x := x) (b i) (b j))
 
+omit [T2Space M] [IsManifold I ∞ M] in
+/-- Determinants of finite matrix fields are differentiable when all entries are. -/
+theorem mdifferentiableAt_matrix_det_of_entries
+    {ι : Type} [Fintype ι] [DecidableEq ι]
+    {A : M → Matrix ι ι ℝ} {x : M}
+    (hA : ∀ i j, MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ A y i j) x) :
+    MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ (A y).det) x := by
+  classical
+  rw [show (fun y : M ↦ (A y).det) =
+      fun y : M ↦ ∑ σ : Equiv.Perm ι,
+        ((↑↑(Equiv.Perm.sign σ) : ℝ) * ∏ i, A y (σ i) i) by
+    funext y
+    rw [Matrix.det_apply']]
+  have hsum : MDifferentiableAt I 𝓘(ℝ)
+      (∑ σ ∈ (Finset.univ : Finset (Equiv.Perm ι)),
+        fun y : M ↦ (↑↑(Equiv.Perm.sign σ) : ℝ) * ∏ i, A y (σ i) i) x := by
+    refine MDifferentiableAt.sum (t := (Finset.univ : Finset (Equiv.Perm ι))) ?_
+    intro σ _hσ
+    have hprod : MDifferentiableAt I 𝓘(ℝ)
+        (∏ i ∈ (Finset.univ : Finset ι), fun y : M ↦ A y (σ i) i) x := by
+      refine MDifferentiableAt.prod (t := (Finset.univ : Finset ι)) ?_
+      intro i _hi
+      exact hA (σ i) i
+    have hprod' : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ ∏ i, A y (σ i) i) x :=
+      hprod.congr_of_eventuallyEq (Filter.Eventually.of_forall fun y ↦ by simp)
+    have hconst : MDifferentiableAt I 𝓘(ℝ)
+        (fun _ : M ↦ (↑↑(Equiv.Perm.sign σ) : ℝ)) x := mdifferentiableAt_const
+    simpa using hconst.mul hprod'
+  exact hsum.congr_of_eventuallyEq (Filter.Eventually.of_forall fun y ↦ by simp)
+
+/-- The canonical-extension Gram determinant is differentiable at the seed point. -/
+theorem gramMatrix_det_mdiffAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ (gramMatrix g x y).det) x := by
+  exact mdifferentiableAt_matrix_det_of_entries
+    (A := fun y : M ↦ gramMatrix g x y)
+    (fun i j ↦ gramMatrix_entry_mdiffAt (g := g) x i j)
+
+/-- The canonical-extension Gram matrix is invertible eventually near the seed point. -/
+theorem gramMatrix_eventually_isUnit
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    ∀ᶠ y in nhds x, IsUnit (gramMatrix g x y) := by
+  have hdetCont :
+      ContinuousAt (fun y : M ↦ (gramMatrix g x y).det) x :=
+    (gramMatrix_det_mdiffAt (g := g) x).continuousAt
+  have hdet_ne :
+      (fun y : M ↦ (gramMatrix g x y).det) x ≠ 0 :=
+    gramMatrix_at_base_det_ne_zero (g := g) (x := x)
+  exact (hdetCont.eventually_ne hdet_ne).mono fun y hy ↦ by
+    rw [Matrix.isUnit_iff_isUnit_det]
+    exact isUnit_iff_ne_zero.mpr hy
+
+/-- Adjugate entries of the canonical-extension Gram matrix are differentiable
+at the seed point. -/
+theorem gramMatrix_adjugate_entry_mdiffAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (i j : Fin (Module.finrank ℝ (TM x))) :
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ (gramMatrix g x y).adjugate i j) x := by
+  let row : Fin (Module.finrank ℝ (TM x)) → ℝ := Pi.single i (1 : ℝ)
+  let A : M → Matrix (Fin (Module.finrank ℝ (TM x)))
+      (Fin (Module.finrank ℝ (TM x))) ℝ :=
+    fun y : M ↦ (gramMatrix g x y).updateRow j row
+  have hentries : ∀ a b,
+      MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ A y a b) x := by
+    intro a b
+    by_cases ha : a = j
+    · subst a
+      simpa [A, Matrix.updateRow] using
+        (mdifferentiableAt_const (c := row b) (x := x))
+    · simpa [A, Matrix.updateRow, ha] using
+        (gramMatrix_entry_mdiffAt (g := g) x a b)
+  have hdet : MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ (A y).det) x :=
+    mdifferentiableAt_matrix_det_of_entries (A := A) hentries
+  exact hdet.congr_of_eventuallyEq (Filter.Eventually.of_forall fun y ↦ by
+    simp [A, row, Matrix.adjugate_apply])
+
+/-- Inverse Gram entries are differentiable at the seed point. -/
+theorem gramMatrix_inv_entry_mdiffAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (i j : Fin (Module.finrank ℝ (TM x))) :
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x := by
+  have hdetInv : MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ ((gramMatrix g x y).det)⁻¹) x :=
+    (gramMatrix_det_mdiffAt (g := g) x).inv
+      (gramMatrix_at_base_det_ne_zero (g := g) (x := x))
+  have hadj : MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ (gramMatrix g x y).adjugate i j) x :=
+    gramMatrix_adjugate_entry_mdiffAt (g := g) x i j
+  exact (hdetInv.mul hadj).congr_of_eventuallyEq
+    (Filter.Eventually.of_forall fun y ↦ by simp [Matrix.inv_def])
+
 /--
 The metric trace of a fiberwise bilinear form, computed in an arbitrary finite
 basis and paired with the `g`-raised dual coframe of that basis.
