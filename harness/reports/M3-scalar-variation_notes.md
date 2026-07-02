@@ -188,3 +188,22 @@ Status from task `M3-predicates-1`:
   bridge.
 - Verified: `lake build Poincare.Global.ScalarVariation
   Poincare.Global.ScalarEvolution` succeeds after these changes.
+
+Status from task `M3-predicates-5`:
+
+- Done: added the fixed-vector spatial regularity vocabulary
+  `VariationSpatiallyDifferentiableAt`, plus the time-variation specialization
+  `TimeVariationSpatiallyDifferentiableAt` and the adapter
+  `variationSpatiallyDifferentiableAt_timeDeriv_of_regular`.
+- Done: added satisfiability witnesses for static/zero fields and static metric
+  time derivatives:
+  `variationSpatiallyDifferentiableAt_static`,
+  `variationSpatiallyDifferentiableAt_zero`,
+  `timeVariationSpatiallyDifferentiableAt_const`, and
+  `variationSpatiallyDifferentiableAt_const_timeDeriv`.
+- Blocked for nonzero `TraceMetricVariationDerivAt`: the remaining honest proof
+  is the chart transport bridge from closed `traceMetricVariationAt` and
+  `covTensor2DerivAt` to the model `tensorMetricTrace`/`covTensor2Deriv`
+  theorem `fderiv_tensorMetricTrace_eq`.  The model cancellation is already
+  proved, but the closed file still lacks the theorem identifying the canonical
+  Levi-Civita/canonical-extension expression with the chart-model expression.
