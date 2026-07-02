@@ -75,6 +75,32 @@ theorem contDiff_three_blendedChartMetric
     hthree_add_one_le_top hχ hχsupp hg3
 
 /--
+On the cutoff-one chart neighborhood, the transported model Levi-Civita value
+is the public closed metric connection `g.leviCivita`.
+-/
+theorem chartTransportedLeviCivitaValueAt_eq_leviCivita_of_eventually_eq_one
+    (g : ClosedSmoothRiemannianMetric n M)
+    (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (x₀ : M) (hχ0 : ∀ z, 0 ≤ χ z) (hχ1 : ∀ z, χ z ≤ 1)
+    (hsupp : ∀ z, χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z).IsInvertible)
+    (hbl : Differentiable ℝ (CovariantDerivative.blendedChartMetric χ G₀ g.inner x₀))
+    (hG₀symm : ∀ v w : E, G₀ v w = G₀ w v)
+    {σ : Π y : M, TM y} {y : M}
+    (hy : y ∈ (extChartAt I x₀).source)
+    (hχone : ∀ᶠ z' in nhds (extChartAt I x₀ y), χ z' = 1)
+    (hσ : MDiffAtTangentField σ y)
+    (v : TM y) :
+    CovariantDerivative.chartTransportedLeviCivitaValueAt χ G₀ hG₀pos g.inner
+        (fun y u hu => g.inner_pos y (v := u) hu) x₀ hχ0 hχ1 hsupp σ hy v =
+      g.leviCivita σ y v := by
+  simpa [leviCivita] using
+    (LeviCivitaTransport.chartTransportedLeviCivitaValueAt_eq_closed_of_eventually_eq_one
+      g χ G₀ hG₀pos x₀ hχ0 hχ1 hsupp hbl hG₀symm hy hχone hσ v)
+
+/--
 The raised Ricci endomorphism as a continuous-linear map on the tangent fiber.
 
 The underlying geometric object is `g.ricciEndoAt x`; the wrapper lets us use
