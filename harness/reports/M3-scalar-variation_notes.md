@@ -452,3 +452,26 @@ Status from task `M3-predicates-24`:
   `ClosedContractedBianchiAt`.
 - Verified so far: `lake env lean Poincare/Global/ScalarVariation.lean`
   succeeds with existing linter warnings and `simp` suggestions only.
+
+Status from task `M3-predicates-31`:
+
+- Done: proved the positive-block identity
+  `deltaGammaDivergenceTraceSecondDerivPositiveBlockAt_eq_tensorDoubleDivergenceAt`.
+  The proof identifies the inner trace of each second-derivative summand with
+  the divergence one-form derivative, traces once more to
+  `tensorDoubleDivergenceAt`, and uses
+  `sum_metricDualVectorAt_contraction_swap` to show the two positive summands
+  agree under the double trace.
+- Done: added
+  `deltaGammaDivergenceTraceHessianAssemblyAt_of_covTensor2Regular`, which
+  combines the already-proved trace block with the new positive block and
+  discharges the direct `DeltaGammaDivergenceTraceHessianAssemblyAt` route from
+  regularity hypotheses.
+- Current final remaining non-regularity/algebraic predicate list:
+  `TensorDoubleDivergenceTimeDerivNegTwoRicciAt`,
+  `TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt`,
+  `TensorDoubleDivergenceNegTwoRicciLinearityAt`, and
+  `ClosedContractedBianchiAt`.
+- Verified: `lake env lean Poincare/Global/ScalarVariation.lean` succeeds, and
+  `lake build Poincare.Global.ScalarVariation
+  Poincare.Global.ScalarEvolution` succeeds with linter warnings only.
