@@ -112,6 +112,42 @@ theorem chartTransportedLeviCivitaSection_mlieBracket_apply_chart
     hsm (by simp)
   simpa [chartTransportedLeviCivitaSection, I.range_eq_univ] using hbracket
 
+/--
+The inverse-chart pullback of a differentiable tangent field is
+differentiable at source points after applying the chart.
+-/
+theorem chartTransportedLeviCivitaSection_mdiffAt_apply_chart
+    [IsManifold I (minSmoothness ℝ 2) M] [I.Boundaryless] [CompleteSpace E]
+    (x₀ : M) {X : Π y : M, TangentSpace I y} {y : M}
+    (hy : y ∈ (extChartAt I x₀).source) (hX : MDiffAt (T% X) y) :
+    MDiffAt (T% (chartTransportedLeviCivitaSection (I := I) x₀ X))
+      (extChartAt I x₀ y) := by
+  have hleft : (extChartAt I x₀).symm (extChartAt I x₀ y) = y :=
+    (extChartAt I x₀).left_inv hy
+  have htarget : extChartAt I x₀ y ∈ (extChartAt I x₀).target :=
+    (extChartAt I x₀).map_source hy
+  have hsmWithin :
+      CMDiffAt[range I] 2 ((extChartAt I x₀).symm : E → M)
+        (extChartAt I x₀ y) :=
+    contMDiffWithinAt_extChartAt_symm_range (n := 2) x₀ htarget
+  have hsm :
+      CMDiffAt 2 ((extChartAt I x₀).symm : E → M)
+        (extChartAt I x₀ y) := by
+    rwa [I.range_eq_univ, contMDiffWithinAt_univ] at hsmWithin
+  have hinv :
+      (mfderiv% ((extChartAt I x₀).symm : E → M)
+        (extChartAt I x₀ y)).IsInvertible := by
+    have hinvWithin := isInvertible_mfderivWithin_extChartAt_symm htarget
+    rwa [I.range_eq_univ, mfderivWithin_univ] at hinvWithin
+  have hX' :
+      MDiffAt[univ] (T% X) (((extChartAt I x₀).symm : E → M)
+        (extChartAt I x₀ y)) := by
+    rw [hleft, mdifferentiableWithinAt_univ]
+    exact hX
+  have hpull := hX'.mpullback_vectorField_preimage hsm hinv (by norm_num)
+  rw [preimage_univ, mdifferentiableWithinAt_univ] at hpull
+  simpa [chartTransportedLeviCivitaSection, I.range_eq_univ] using hpull
+
 section ChartConnection
 
 variable [FiniteDimensional ℝ E] [CompleteSpace E]
@@ -215,6 +251,93 @@ theorem chartTransportedLeviCivita_direction_roundtrip
     (mfderivWithin_extChartAt_symm_comp_mfderiv_extChartAt'
       (I := I) (x := x₀) hy)
   simpa [ContinuousLinearMap.comp_apply] using h
+
+/--
+At a chart-source point, the value-level transported chart Levi-Civita
+operator has zero torsion. This is the torsion-free theorem for the
+transported values; the remaining bridge obstruction is packaging these
+values as a bundled manifold `CovariantDerivative`.
+-/
+theorem chartTransported_torsionFreeAt
+    [IsManifold I (minSmoothness ℝ 2) M] [I.Boundaryless]
+    (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (hgpos : ∀ (y : M) (u : TangentSpace I y), u ≠ 0 → 0 < g y u u)
+    (x₀ : M) (hχ0 : ∀ z, 0 ≤ χ z) (hχ1 : ∀ z, χ z ≤ 1)
+    (hsupp : ∀ z, χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (range I) z).IsInvertible)
+    (hbl : Differentiable ℝ (blendedChartMetric χ G₀ g x₀))
+    (hG₀symm : ∀ v w : E, G₀ v w = G₀ w v)
+    (hgsymm : ∀ (y : M) (v w : TangentSpace I y), g y v w = g y w v)
+    {X Y : Π y : M, TangentSpace I y} {y : M}
+    (hy : y ∈ (extChartAt I x₀).source)
+    (hX : MDiffAt (T% X) y) (hY : MDiffAt (T% Y) y) :
+    chartTransportedLeviCivitaValueAt χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1
+        hsupp Y hy (X y)
+      - chartTransportedLeviCivitaValueAt χ G₀ hG₀pos g hgpos x₀ hχ0
+        hχ1 hsupp X hy (Y y) =
+      VectorField.mlieBracket I X Y y := by
+  let z : E := extChartAt I x₀ y
+  let D : TangentSpace 𝓘(ℝ, E) z →L[ℝ] TangentSpace I y :=
+    mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm) (range I) z
+  let Xc : Π z : E, TangentSpace 𝓘(ℝ, E) z :=
+    chartTransportedLeviCivitaSection (I := I) x₀ X
+  let Yc : Π z : E, TangentSpace 𝓘(ℝ, E) z :=
+    chartTransportedLeviCivitaSection (I := I) x₀ Y
+  let covC := chartLeviCivita χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1 hsupp
+  have hXc : MDiffAt (T% Xc) z := by
+    simpa [Xc, z] using
+      chartTransportedLeviCivitaSection_mdiffAt_apply_chart
+        (I := I) x₀ hy hX
+  have hYc : MDiffAt (T% Yc) z := by
+    simpa [Yc, z] using
+      chartTransportedLeviCivitaSection_mdiffAt_apply_chart
+        (I := I) x₀ hy hY
+  have ht :
+      covC Yc z (Xc z) - covC Xc z (Yc z) =
+        VectorField.mlieBracket 𝓘(ℝ, E) Xc Yc z :=
+    chartLeviCivita_torsionFreeAt χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1
+      hsupp hbl hG₀symm hgsymm z hXc hYc
+  have hpush :
+      D (covC Yc z (Xc z)) - D (covC Xc z (Yc z)) =
+        D (VectorField.mlieBracket 𝓘(ℝ, E) Xc Yc z) := by
+    simpa [D, map_sub] using congrArg D ht
+  have hbr :
+      D (VectorField.mlieBracket 𝓘(ℝ, E) Xc Yc z) =
+        VectorField.mlieBracket I X Y y := by
+    have hbrc :
+        chartTransportedLeviCivitaSection (I := I) x₀
+            (VectorField.mlieBracket I X Y) z =
+          VectorField.mlieBracket 𝓘(ℝ, E) Xc Yc z := by
+      simpa [Xc, Yc, z] using
+        chartTransportedLeviCivitaSection_mlieBracket_apply_chart
+          (I := I) x₀ (X := X) (Y := Y) hy hX hY
+    rw [← hbrc, chartTransportedLeviCivitaSection_apply_chart x₀
+      (VectorField.mlieBracket I X Y) hy]
+    exact chartTransportedLeviCivita_direction_roundtrip (I := I) x₀ hy
+      (VectorField.mlieBracket I X Y y)
+  have hXcz :
+      Xc z = mfderiv% (extChartAt I x₀) y (X y) := by
+    simpa [Xc, z] using
+      chartTransportedLeviCivitaSection_apply_chart (I := I) x₀ X hy
+  have hYcz :
+      Yc z = mfderiv% (extChartAt I x₀) y (Y y) := by
+    simpa [Yc, z] using
+      chartTransportedLeviCivitaSection_apply_chart (I := I) x₀ Y hy
+  calc
+    chartTransportedLeviCivitaValueAt χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1
+        hsupp Y hy (X y)
+      - chartTransportedLeviCivitaValueAt χ G₀ hG₀pos g hgpos x₀ hχ0
+        hχ1 hsupp X hy (Y y)
+        = D (covC Yc z (mfderiv% (extChartAt I x₀) y (X y)))
+            - D (covC Xc z (mfderiv% (extChartAt I x₀) y (Y y))) := by
+          rfl
+    _ = D (covC Yc z (Xc z)) - D (covC Xc z (Yc z)) := by
+          rw [hXcz, hYcz]
+    _ = D (VectorField.mlieBracket 𝓘(ℝ, E) Xc Yc z) := hpush
+    _ = VectorField.mlieBracket I X Y y := hbr
 
 end ChartConnection
 
