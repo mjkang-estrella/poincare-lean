@@ -31679,6 +31679,41 @@ theorem differentiableAt_coordScalar_of_christoffel
   rw [hfield]
   exact htrace
 
+/-- **Covariant derivative of a scalar multiple of the metric**:
+`∇(f g) = df ⊗ g`. The metric-compatibility identity cancels the
+`f·∇g` part, leaving only the ordinary derivative of the scalar factor. -/
+theorem covTensor2Deriv_smul_metric_field
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {f : E → ℝ}
+    (hf : DifferentiableAt ℝ f x)
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : (G x).IsInvertible) (v p q : E) :
+    covTensor2Deriv G (fun y ↦ f y • G y) x v p q
+      = (fderiv ℝ f x v) * G x p q := by
+  unfold covTensor2Deriv
+  haveI : IsBoundedSMul ℝ (E →L[ℝ] ℝ) :=
+    IsBoundedSMul.of_norm_smul_le
+      (fun c (T : E →L[ℝ] ℝ) ↦ ContinuousLinearMap.opNorm_smul_le c T)
+  haveI : IsBoundedSMul ℝ (E →L[ℝ] E →L[ℝ] ℝ) :=
+    IsBoundedSMul.of_norm_smul_le
+      (fun c (T : E →L[ℝ] E →L[ℝ] ℝ) ↦ ContinuousLinearMap.opNorm_smul_le c T)
+  have hflat : ((fderiv ℝ (fun y ↦ f y • G y) x v) p q)
+      = f x * ((fderiv ℝ G x v) p q) + (fderiv ℝ f x v) * G x p q := by
+    have hDfull : fderiv ℝ (fun y ↦ f y • G y) x
+        = f x • fderiv ℝ G x + (fderiv ℝ f x).smulRight (G x) := by
+      exact fderiv_fun_smul (c := f) (f := G) hf hGd
+    have hD := congrArg (fun (L : E →L[ℝ] E →L[ℝ] E →L[ℝ] ℝ) ↦ L v)
+      hDfull
+    have hDapp := congrArg (fun (K : E →L[ℝ] E →L[ℝ] ℝ) ↦ K p q) hD
+    simpa only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
+      ContinuousLinearMap.smulRight_apply, smul_eq_mul, mul_comm, mul_left_comm, mul_assoc]
+      using hDapp
+  rw [hflat]
+  have hmc := coord_metric_compatible hGd hGsymm hinv v p q
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  rw [hmc]
+  ring
+
 /--
 **Metric raising–lowering contraction.** Raising a covector's index with the
 inverse metric and then lowering it back against a vector `u` recovers the
