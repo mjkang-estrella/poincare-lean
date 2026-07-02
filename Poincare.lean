@@ -15,6 +15,7 @@ import Poincare.MaximumPrinciple
 import Poincare.ModelLaplacian
 import Poincare.ModelLaplacianRootAliases
 import Poincare.Statement
+import Poincare.Global.Statement
 import Poincare.Milestones
 import Poincare.Assembly
 import Poincare.CanonicalBridges
