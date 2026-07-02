@@ -255,3 +255,47 @@ one identifying that transported operator with the global Koszul construction.
    `closedLeviCivitaConnection g`.
 
 No forbidden Lean placeholder or oracle declarations were added.
+
+## M1-lc-regularity-4 resolution update
+
+The value-level local identification obstruction for the transported
+Levi-Civita connection is now resolved on the restricted chart
+sub-neighborhood where the blending cutoff is eventually `1` at the chart
+coordinate:
+
+```lean
+Poincare.LeviCivitaTransport.chartTransportedLeviCivitaValueAt_eq_closed_of_eventually_eq_one
+```
+
+It combines the verified pointwise torsion theorem, the new transported metric
+compatibility theorem, and a pointwise uniqueness argument for the two value
+operators at the fixed manifold point. The theorem assumes
+
+```lean
+hχone : ∀ᶠ z' in 𝓝 (extChartAt I x₀ y), χ z' = 1
+```
+
+which is the explicit restricted-neighborhood hypothesis requested in the
+task. No remaining wall is known for this local value identification slice.
+
+Supporting declarations added in this task:
+
+```lean
+extDerivFun_apply_fixed_chart
+CovariantDerivative.chartMetric_chartTransportedLeviCivitaSection
+CovariantDerivative.chartTransported_metricCompatibleAt
+CovariantDerivative.leviCivita_unique_at_values
+Poincare.LeviCivitaTransport.chartTransportedLeviCivitaValueAt_eq_closed_of_eventually_eq_one
+```
+
+Verification so far:
+
+```bash
+lake build Poincare.ChartIdentification
+lake build Poincare.LeviCivitaUniqueness
+lake build Poincare.Global.LeviCivitaTransport
+lake build
+```
+
+All commands succeeded, with only pre-existing linter warnings/nonfatal
+`LibrarySuggestions` noise during the full build.

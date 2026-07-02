@@ -117,6 +117,83 @@ theorem leviCivita_unique_at
   rw [hv] at h0
   simpa using h0
 
+/--
+Pointwise-value form of Levi-Civita uniqueness.  This is the same S₃
+argument as `leviCivita_unique_at`, but it only assumes two value operators at
+the fixed point `x` rather than globally bundled covariant derivatives.
+-/
+theorem leviCivita_unique_at_values
+    (cov cov' :
+      (Π y : M, TangentSpace I y) → TangentSpace I x →L[ℝ] TangentSpace I x)
+    (hgsymm : ∀ v w : TangentSpace I x, g x v w = g x w v)
+    (hgnd : ∀ v : TangentSpace I x, (∀ w, g x v w = 0) → v = 0)
+    (hc : ∀ {Y Z : Π y : M, TangentSpace I y},
+      MDiffAt (T% Y) x → MDiffAt (T% Z) x →
+        ∀ v : TangentSpace I x,
+          extDerivFun (fun y ↦ g y (Y y) (Z y)) x v =
+            g x (cov Y v) (Z x) + g x (Y x) (cov Z v))
+    (hc' : ∀ {Y Z : Π y : M, TangentSpace I y},
+      MDiffAt (T% Y) x → MDiffAt (T% Z) x →
+        ∀ v : TangentSpace I x,
+          extDerivFun (fun y ↦ g y (Y y) (Z y)) x v =
+            g x (cov' Y v) (Z x) + g x (Y x) (cov' Z v))
+    (ht : ∀ {X Y : Π y : M, TangentSpace I y},
+      MDiffAt (T% X) x → MDiffAt (T% Y) x →
+        cov Y (X x) - cov X (Y x) = VectorField.mlieBracket I X Y x)
+    (ht' : ∀ {X Y : Π y : M, TangentSpace I y},
+      MDiffAt (T% X) x → MDiffAt (T% Y) x →
+        cov' Y (X x) - cov' X (Y x) = VectorField.mlieBracket I X Y x)
+    {σ : Π y : M, TangentSpace I y} (hσ : MDiffAt (T% σ) x) :
+    cov σ = cov' σ := by
+  set D : (Π y : M, TangentSpace I y) → (Π y : M, TangentSpace I y) →
+      TangentSpace I x :=
+    fun X Y ↦ cov Y (X x) - cov' Y (X x) with hD
+  have hA : ∀ {X Y Z : Π y : M, TangentSpace I y},
+      MDiffAt (T% X) x → MDiffAt (T% Y) x → MDiffAt (T% Z) x →
+        g x (D X Y) (Z x) = - g x (D X Z) (Y x) := by
+    intro X Y Z hX hY hZ
+    have h3 : g x (cov Y (X x)) (Z x) + g x (Y x) (cov Z (X x)) =
+        g x (cov' Y (X x)) (Z x) + g x (Y x) (cov' Z (X x)) :=
+      (hc hY hZ (X x)).symm.trans (hc' hY hZ (X x))
+    have e1 : g x (D X Y) (Z x) =
+        g x (cov Y (X x)) (Z x) - g x (cov' Y (X x)) (Z x) := by
+      simp [hD, map_sub]
+    have e2 : g x (D X Z) (Y x) =
+        g x (Y x) (cov Z (X x)) - g x (Y x) (cov' Z (X x)) := by
+      rw [hgsymm]
+      simp [hD, map_sub]
+    linarith
+  have hB : ∀ {X Y : Π y : M, TangentSpace I y},
+      MDiffAt (T% X) x → MDiffAt (T% Y) x → D X Y = D Y X := by
+    intro X Y hX hY
+    have t1 := ht hX hY
+    have t1' := ht' hX hY
+    have : (cov Y (X x) - cov X (Y x)) -
+        (cov' Y (X x) - cov' X (Y x)) = 0 := by
+      rw [t1, t1']
+      abel
+    simp only [hD]
+    linear_combination (norm := module) this
+  have hS3 : ∀ {X Y Z : Π y : M, TangentSpace I y},
+      MDiffAt (T% X) x → MDiffAt (T% Y) x → MDiffAt (T% Z) x →
+        g x (D X Y) (Z x) = 0 := by
+    intro X Y Z hX hY hZ
+    have s1 : g x (D X Y) (Z x) = - g x (D X Z) (Y x) := hA hX hY hZ
+    have s2 : g x (D X Z) (Y x) = g x (D Z X) (Y x) := by rw [hB hX hZ]
+    have s3 : g x (D Z X) (Y x) = - g x (D Z Y) (X x) := hA hZ hX hY
+    have s4 : g x (D Z Y) (X x) = g x (D Y Z) (X x) := by rw [hB hZ hY]
+    have s5 : g x (D Y Z) (X x) = - g x (D Y X) (Z x) := hA hY hZ hX
+    have s6 : g x (D Y X) (Z x) = g x (D X Y) (Z x) := by rw [hB hY hX]
+    linarith
+  ext v
+  have hv : D (extend E v) σ = cov σ v - cov' σ v := by
+    simp [hD]
+  refine sub_eq_zero.mp (hgnd _ fun w ↦ ?_)
+  have h0 : g x (D (extend E v) σ) (extend E w x) = 0 :=
+    hS3 (mdifferentiableAt_extend ..) hσ (mdifferentiableAt_extend ..)
+  rw [hv] at h0
+  simpa using h0
+
 end CovariantDerivative
 
 namespace CovariantDerivative
