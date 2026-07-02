@@ -101,6 +101,25 @@ noncomputable def metricRaiseContinuousAt
       (LinearMap.toContinuousLinearMap.symm :
         (TM x →L[ℝ] ℝ) ≃ₗ[ℝ] (TM x →ₗ[ℝ] ℝ)).toLinearMap)
 
+/-- Lowering the metric-raised continuous covector recovers the covector. -/
+theorem metricRaiseContinuousAt_inner_apply
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (φ : TM x →L[ℝ] ℝ) (v : TM x) :
+    (g.inner x ((g.metricRaiseContinuousAt x) φ)) v = φ v := by
+  letI : T2Space (TM x) := inferInstanceAs (T2Space E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  change g.metricBilinAt x ((g.metricRaiseContinuousAt x) φ) v = φ v
+  unfold metricRaiseContinuousAt
+  let A := LinearMap.BilinForm.toDual (g.metricBilinAt x)
+    (g.metricBilinAt_nondegenerate x)
+  let ψ : Module.Dual ℝ (TM x) := LinearMap.toContinuousLinearMap.symm φ
+  have h : A (A.symm ψ) = ψ := LinearEquiv.apply_symm_apply A ψ
+  have hv : (A (A.symm ψ)) v = ψ v :=
+    congrArg (fun η : Module.Dual ℝ (TM x) ↦ η v) h
+  change (g.metricBilinAt x) (A.symm ψ) v = φ v
+  change (A (A.symm ψ)) v = ψ v
+  exact hv
+
 /-- The Ricci tensor as a continuous-linear map into the continuous dual. -/
 noncomputable def ricciDualContinuousAt
     (g : ClosedSmoothRiemannianMetric n M)
@@ -1100,6 +1119,318 @@ theorem metricVariationRicciPairingAt_smul
   unfold metricVariationRicciPairingAt
   simp
 
+/-- Lowering the raised algebraic covector recovers the covector. -/
+theorem metricDualVectorAt_inner_apply
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (φ : Module.Dual ℝ (TM x)) (v : TM x) :
+    (g.inner x (metricDualVectorAt g x φ)) v = φ v := by
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  change g.metricBilinAt x (metricDualVectorAt g x φ) v = φ v
+  unfold metricDualVectorAt
+  exact LinearMap.BilinForm.apply_toDual_symm_apply
+    (B := g.metricBilinAt x) (hB := g.metricBilinAt_nondegenerate x) φ v
+
+/-- Coordinates are metric pairings with the corresponding raised dual basis vector. -/
+theorem coord_eq_inner_metricDualVectorAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    [FiniteDimensional ℝ (TM x)]
+    (i : Fin (Module.finrank ℝ (TM x))) (v : TM x) :
+    (Module.finBasis ℝ (TM x)).coord i v =
+      (g.inner x v
+        (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i))) := by
+  rw [g.inner_symm x v
+    (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i))]
+  exact (metricDualVectorAt_inner_apply g x
+    ((Module.finBasis ℝ (TM x)).coord i) v).symm
+
+/-- The raised-coordinate matrix of the metric dual basis is symmetric. -/
+theorem metricDualVectorAt_coord_symm
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    [FiniteDimensional ℝ (TM x)]
+    (i j : Fin (Module.finrank ℝ (TM x))) :
+    (Module.finBasis ℝ (TM x)).coord i
+      (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord j)) =
+    (Module.finBasis ℝ (TM x)).coord j
+      (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i)) := by
+  rw [coord_eq_inner_metricDualVectorAt g x i,
+    coord_eq_inner_metricDualVectorAt g x j]
+  exact g.inner_symm x _ _
+
+/-- Coordinates of the raised Ricci covector are Ricci evaluated on the raised dual basis. -/
+theorem coord_metricRaiseContinuousAt_ricciDualContinuousAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) [FiniteDimensional ℝ (TM x)]
+    (i j : Fin (Module.finrank ℝ (TM x))) :
+    (Module.finBasis ℝ (TM x)).coord i
+      (g.metricRaiseContinuousAt x
+        (g.ricciDualContinuousAt x ((Module.finBasis ℝ (TM x)) j))) =
+      g.ricciAt x ((Module.finBasis ℝ (TM x)) j)
+        (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i)) := by
+  rw [coord_eq_inner_metricDualVectorAt]
+  rw [ClosedSmoothRiemannianMetric.metricRaiseContinuousAt_inner_apply]
+  simp
+
+/--
+The double raised-basis definition of `⟨h,Ric⟩` is the same contraction as
+`Σⱼ h(♯Ric(eⱼ), ♯eʲ)`.
+-/
+theorem metricVariationRicciPairingAt_eq_raise_ricci_sum
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hgt : TimeDifferentiableAt gt t₀ x) :
+    metricVariationRicciPairingAt (gt t₀) (timeDerivAt gt t₀) x =
+      letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+      ∑ j, timeDerivAt gt t₀ x
+        ((gt t₀).metricRaiseContinuousAt x
+          ((gt t₀).ricciDualContinuousAt x ((Module.finBasis ℝ (TM x)) j)))
+        (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord j)) := by
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  let ricSharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun j ↦ g.metricRaiseContinuousAt x (g.ricciDualContinuousAt x (b j))
+  have hH_expand : ∀ j k : Fin (Module.finrank ℝ (TM x)),
+      timeDerivAt gt t₀ x (sharp j) (sharp k) =
+        ∑ i, b.coord i (sharp k) * timeDerivAt gt t₀ x (sharp j) (b i) := by
+    intro j k
+    have hrepr : sharp k = ∑ i, b.coord i (sharp k) • b i := by
+      conv_lhs => rw [(b.sum_repr (sharp k)).symm]
+      simp [Module.Basis.coord_apply]
+    calc
+      timeDerivAt gt t₀ x (sharp j) (sharp k) =
+          (timeDerivContinuousAt gt t₀ x hgt (sharp j)) (sharp k) := by
+            simp
+      _ = (timeDerivContinuousAt gt t₀ x hgt (sharp j))
+          (∑ i, b.coord i (sharp k) • b i) :=
+            congrArg (fun u ↦ (timeDerivContinuousAt gt t₀ x hgt (sharp j)) u)
+              hrepr
+      _ = ∑ i, b.coord i (sharp k) * timeDerivAt gt t₀ x (sharp j) (b i) := by
+            rw [map_sum]
+            simp [timeDerivContinuousAt_apply]
+  have hRic_expand : ∀ j i : Fin (Module.finrank ℝ (TM x)),
+      g.ricciAt x (b j) (sharp i) =
+        ∑ k, b.coord k (sharp i) * g.ricciAt x (b j) (b k) := by
+    intro j i
+    have hrepr : sharp i = ∑ k, b.coord k (sharp i) • b k := by
+      conv_lhs => rw [(b.sum_repr (sharp i)).symm]
+      simp [Module.Basis.coord_apply]
+    calc
+      g.ricciAt x (b j) (sharp i) = (g.ricciDualContinuousAt x (b j)) (sharp i) := by
+        simp
+      _ = (g.ricciDualContinuousAt x (b j)) (∑ k, b.coord k (sharp i) • b k) :=
+            congrArg (fun u ↦ (g.ricciDualContinuousAt x (b j)) u) hrepr
+      _ = ∑ k, b.coord k (sharp i) * g.ricciAt x (b j) (b k) := by
+            rw [map_sum]
+            simp
+  have htrace_expand : ∀ j : Fin (Module.finrank ℝ (TM x)),
+      timeDerivAt gt t₀ x (ricSharp j) (sharp j) =
+        ∑ i, ∑ k,
+          b.coord k (sharp i) * g.ricciAt x (b j) (b k) *
+            timeDerivAt gt t₀ x (b i) (sharp j) := by
+    intro j
+    have hfirst : timeDerivAt gt t₀ x (ricSharp j) (sharp j) =
+        ∑ i, b.coord i (ricSharp j) * timeDerivAt gt t₀ x (b i) (sharp j) := by
+      have hrepr : ricSharp j = ∑ i, b.coord i (ricSharp j) • b i := by
+        conv_lhs => rw [(b.sum_repr (ricSharp j)).symm]
+        simp [Module.Basis.coord_apply]
+      calc
+        timeDerivAt gt t₀ x (ricSharp j) (sharp j) =
+            (timeDerivContinuousAt gt t₀ x hgt (ricSharp j)) (sharp j) := by
+              simp
+        _ = (timeDerivContinuousAt gt t₀ x hgt
+              (∑ i, b.coord i (ricSharp j) • b i)) (sharp j) :=
+              congrArg (fun u ↦ (timeDerivContinuousAt gt t₀ x hgt u) (sharp j))
+                hrepr
+        _ = ∑ i, b.coord i (ricSharp j) * timeDerivAt gt t₀ x (b i) (sharp j) := by
+              rw [map_sum]
+              simp [timeDerivContinuousAt_apply]
+    rw [hfirst]
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    rw [coord_metricRaiseContinuousAt_ricciDualContinuousAt]
+    rw [hRic_expand j i]
+    rw [Finset.sum_mul]
+  calc
+    metricVariationRicciPairingAt (gt t₀) (timeDerivAt gt t₀) x
+        = ∑ j, ∑ k, timeDerivAt gt t₀ x (sharp j) (sharp k) *
+            g.ricciAt x (b k) (b j) := by
+            simp [metricVariationRicciPairingAt, g, b, sharp]
+    _ = ∑ j, ∑ k, (∑ i, b.coord i (sharp k) *
+          timeDerivAt gt t₀ x (sharp j) (b i)) * g.ricciAt x (b k) (b j) := by
+            refine Finset.sum_congr rfl fun j _ ↦ ?_
+            refine Finset.sum_congr rfl fun k _ ↦ ?_
+            rw [hH_expand]
+    _ = ∑ j, ∑ k, ∑ i,
+          b.coord i (sharp k) * timeDerivAt gt t₀ x (sharp j) (b i) *
+            g.ricciAt x (b k) (b j) := by
+            refine Finset.sum_congr rfl fun j _ ↦ ?_
+            refine Finset.sum_congr rfl fun k _ ↦ ?_
+            rw [Finset.sum_mul]
+    _ = ∑ j, ∑ i, ∑ k,
+          b.coord k (sharp i) * g.ricciAt x (b j) (b k) *
+            timeDerivAt gt t₀ x (b i) (sharp j) := by
+            refine Finset.sum_congr rfl fun j _ ↦ ?_
+            rw [Finset.sum_comm]
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            refine Finset.sum_congr rfl fun k _ ↦ ?_
+            rw [metricDualVectorAt_coord_symm]
+            rw [ClosedSmoothRiemannianMetric.ricciAt_symm]
+            rw [timeDerivAt_symm gt t₀ x (sharp j) (b i)]
+            ring
+    _ = ∑ j, timeDerivAt gt t₀ x (ricSharp j) (sharp j) := by
+            refine (Finset.sum_congr rfl fun j _ ↦ ?_).symm
+            exact htrace_expand j
+    _ = (letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+      ∑ j, timeDerivAt gt t₀ x
+        ((gt t₀).metricRaiseContinuousAt x
+          ((gt t₀).ricciDualContinuousAt x ((Module.finBasis ℝ (TM x)) j)))
+        (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord j))) := by
+            rfl
+
+/-- The derivative of the metric index-raising map is `-♯ ∘ h^♭ ∘ ♯`. -/
+noncomputable def metricRaiseDerivAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (hgt : TimeDifferentiableAt gt t₀ x) :
+    (TM x →L[ℝ] ℝ) →L[ℝ] TM x :=
+  -(((gt t₀).metricRaiseContinuousAt x).comp
+      ((timeDerivContinuousAt gt t₀ x hgt).comp
+        ((gt t₀).metricRaiseContinuousAt x)))
+
+/-- Pairing the explicit raise-map derivative with the metric lowers it to `-h`. -/
+theorem metricRaiseDerivAt_inner_apply
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hgt : TimeDifferentiableAt gt t₀ x)
+    (φ : TM x →L[ℝ] ℝ) (v : TM x) :
+    (gt t₀).inner x (metricRaiseDerivAt gt t₀ x hgt φ) v =
+      -timeDerivAt gt t₀ x ((gt t₀).metricRaiseContinuousAt x φ) v := by
+  unfold metricRaiseDerivAt
+  simp only [ContinuousLinearMap.neg_apply, ContinuousLinearMap.comp_apply, map_neg]
+  rw [ClosedSmoothRiemannianMetric.metricRaiseContinuousAt_inner_apply]
+  simp
+
+/-- Any derivative of the metric raise map is the explicit inverse-metric derivative. -/
+theorem metricRaise_deriv_eq_of_hasDerivAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hgt : TimeDifferentiableAt gt t₀ x)
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀) :
+    raise' = metricRaiseDerivAt gt t₀ x hgt := by
+  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  ext φ
+  apply sub_eq_zero.mp
+  refine LeviCivitaExistence.metric_nondegenerate (gt t₀) x
+    (raise' φ - metricRaiseDerivAt gt t₀ x hgt φ) ?_
+  intro v
+  have hφ : HasDerivAt (fun _ : ℝ ↦ φ) 0 t₀ := hasDerivAt_const t₀ φ
+  have hraiseφ : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x φ)
+      (raise' φ) t₀ := by
+    simpa using hRaise.clm_apply hφ
+  have hinner :=
+    hasDerivAt_inner_of_timeDifferentiableAt (gt := gt) (t₀ := t₀) (x := x) hgt
+  have hpairCLM : HasDerivAt
+      (fun t ↦ (gt t).inner x ((gt t).metricRaiseContinuousAt x φ))
+      (timeDerivContinuousAt gt t₀ x hgt ((gt t₀).metricRaiseContinuousAt x φ) +
+        (gt t₀).inner x (raise' φ)) t₀ := by
+    simpa using hinner.clm_apply hraiseφ
+  have hv : HasDerivAt (fun _ : ℝ ↦ v) 0 t₀ := hasDerivAt_const t₀ v
+  have hpair : HasDerivAt
+      (fun t ↦ (gt t).inner x ((gt t).metricRaiseContinuousAt x φ) v)
+      (timeDerivAt gt t₀ x ((gt t₀).metricRaiseContinuousAt x φ) v +
+        (gt t₀).inner x (raise' φ) v) t₀ := by
+    simpa using hpairCLM.clm_apply hv
+  have hconst : HasDerivAt
+      (fun t ↦ (gt t).inner x ((gt t).metricRaiseContinuousAt x φ) v)
+      0 t₀ := by
+    have hid :
+        (fun t ↦ (gt t).inner x ((gt t).metricRaiseContinuousAt x φ) v) =
+          fun _ : ℝ ↦ φ v := by
+      funext t
+      exact ClosedSmoothRiemannianMetric.metricRaiseContinuousAt_inner_apply
+        (gt t) x φ v
+    simpa [hid] using (hasDerivAt_const t₀ (φ v))
+  have hzero :
+      timeDerivAt gt t₀ x ((gt t₀).metricRaiseContinuousAt x φ) v +
+        (gt t₀).inner x (raise' φ) v = 0 :=
+    hpair.unique hconst
+  rw [map_sub]
+  simp only [ContinuousLinearMap.sub_apply]
+  rw [metricRaiseDerivAt_inner_apply hgt]
+  linarith
+
+/-- The explicit raise-map derivative contributes `-⟨h,Ric⟩` to scalar variation. -/
+theorem metricRaiseDeriv_trace_ricciDualContinuousAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hgt : TimeDifferentiableAt gt t₀ x) :
+    LinearMap.trace ℝ (TM x)
+      (((metricRaiseDerivAt gt t₀ x hgt).comp
+          ((gt t₀).ricciDualContinuousAt x) : TM x →L[ℝ] TM x) :
+        TM x →ₗ[ℝ] TM x)
+      = -metricVariationRicciPairingAt (gt t₀) (timeDerivAt gt t₀) x := by
+  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun j ↦ metricDualVectorAt g x (b.coord j)
+  have hpair := metricVariationRicciPairingAt_eq_raise_ricci_sum
+    (gt := gt) (t₀ := t₀) (x := x) hgt
+  rw [LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]
+  have hdiag :
+      (∑ i,
+        ((LinearMap.toMatrix b b)
+          ↑((metricRaiseDerivAt gt t₀ x hgt).comp
+            ((gt t₀).ricciDualContinuousAt x))).diag i) =
+        ∑ j, b.coord j
+          ((metricRaiseDerivAt gt t₀ x hgt)
+            (g.ricciDualContinuousAt x (b j))) := by
+    refine Finset.sum_congr rfl fun j _ ↦ ?_
+    rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+    rfl
+  rw [hdiag]
+  change (∑ j, b.coord j
+      ((metricRaiseDerivAt gt t₀ x hgt)
+        (g.ricciDualContinuousAt x (b j)))) =
+    -metricVariationRicciPairingAt g (timeDerivAt gt t₀) x
+  rw [hpair]
+  calc
+    (∑ j, b.coord j
+      ((metricRaiseDerivAt gt t₀ x hgt)
+        (g.ricciDualContinuousAt x (b j)))) =
+        ∑ j, -timeDerivAt gt t₀ x
+          (g.metricRaiseContinuousAt x (g.ricciDualContinuousAt x (b j)))
+          (sharp j) := by
+            refine Finset.sum_congr rfl fun j _ ↦ ?_
+            rw [coord_eq_inner_metricDualVectorAt]
+            rw [metricRaiseDerivAt_inner_apply hgt]
+    _ = -∑ j, timeDerivAt gt t₀ x
+          (g.metricRaiseContinuousAt x (g.ricciDualContinuousAt x (b j)))
+          (sharp j) := by
+            rw [Finset.sum_neg_distrib]
+
+/-- The actual derivative of the raise-map has the `-⟨h,Ric⟩` trace. -/
+theorem metricRaise_trace_ricciDualContinuousAt_eq_neg
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hgt : TimeDifferentiableAt gt t₀ x)
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀) :
+    LinearMap.trace ℝ (TM x)
+      ((raise'.comp ((gt t₀).ricciDualContinuousAt x) : TM x →L[ℝ] TM x) :
+        TM x →ₗ[ℝ] TM x)
+      = -metricVariationRicciPairingAt (gt t₀) (timeDerivAt gt t₀) x := by
+  rw [metricRaise_deriv_eq_of_hasDerivAt hgt hRaise]
+  exact metricRaiseDeriv_trace_ricciDualContinuousAt
+    (gt := gt) (t₀ := t₀) (x := x) hgt
+
 omit [T2Space M] [IsManifold I ∞ M] in
 private theorem extDerivFun_zero_at (x : M) :
     (extDerivFun (fun _ : M ↦ (0 : ℝ)) x : TM x →L[ℝ] ℝ) = 0 := by
@@ -1425,5 +1756,43 @@ theorem scalarVariation_lichnerowicz_shape
             (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x by
       simpa [hRic] using hDeltaGammaTrace]
   ring
+
+/--
+Scalar variation in Lichnerowicz form with the raise-map trace discharged.
+The remaining hypothesis is the raised `deltaRicciAt` trace contraction.
+-/
+theorem scalarVariation_lichnerowicz_shape'
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : TimeDifferentiableAt gt t₀ x)
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hDeltaGammaTrace :
+      let hRic : ∀ u w : TM x,
+          HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+            (deltaRicciAt gt t₀ x u w) t₀ :=
+        fun u w ↦ ricciVariation_eq_deltaGamma_contractions' hreg u w
+      LinearMap.trace ℝ (TM x)
+        (((((gt t₀).metricRaiseContinuousAt x).comp
+            (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+              (gt := gt) (t₀ := t₀) (x := x)
+              (deltaRicciAt gt t₀ x) hRic)) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x)
+        = tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+          - (gt t₀).laplacianAt
+            (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x) :
+    deriv (fun t ↦ (gt t).scalarAt x) t₀ =
+      tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+        - (gt t₀).laplacianAt
+          (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x
+        - metricVariationRicciPairingAt (gt t₀) (timeDerivAt gt t₀) x :=
+  scalarVariation_lichnerowicz_shape
+    (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
+    hreg hRaise
+    (metricRaise_trace_ricciDualContinuousAt_eq_neg
+      (gt := gt) (t₀ := t₀) (x := x) hgt hRaise)
+    hDeltaGammaTrace
 
 end Poincare
