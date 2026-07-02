@@ -66,6 +66,52 @@ theorem chartTransportedLeviCivitaSection_apply_chart
     exact hinv0
   rw [hinv, hleft]
 
+/--
+In the boundaryless case, inverse-chart transport commutes with Lie brackets
+at source points where the original fields are differentiable.
+-/
+theorem chartTransportedLeviCivitaSection_mlieBracket_apply_chart
+    [IsManifold I (minSmoothness ℝ 2) M] [I.Boundaryless] [CompleteSpace E]
+    (x₀ : M) {X Y : Π y : M, TangentSpace I y} {y : M}
+    (hy : y ∈ (extChartAt I x₀).source)
+    (hX : MDiffAt (T% X) y) (hY : MDiffAt (T% Y) y) :
+    chartTransportedLeviCivitaSection (I := I) x₀
+        (VectorField.mlieBracket I X Y) (extChartAt I x₀ y) =
+      VectorField.mlieBracket 𝓘(ℝ, E)
+        (chartTransportedLeviCivitaSection (I := I) x₀ X)
+        (chartTransportedLeviCivitaSection (I := I) x₀ Y)
+        (extChartAt I x₀ y) := by
+  have hleft : (extChartAt I x₀).symm (extChartAt I x₀ y) = y :=
+    (extChartAt I x₀).left_inv hy
+  have htarget : extChartAt I x₀ y ∈ (extChartAt I x₀).target :=
+    (extChartAt I x₀).map_source hy
+  have hsmWithin :
+      CMDiffAt[range I] 2 ((extChartAt I x₀).symm : E → M)
+        (extChartAt I x₀ y) :=
+    contMDiffWithinAt_extChartAt_symm_range (n := 2) x₀ htarget
+  have hsm :
+      CMDiffAt 2 ((extChartAt I x₀).symm : E → M)
+        (extChartAt I x₀ y) := by
+    rwa [I.range_eq_univ, contMDiffWithinAt_univ] at hsmWithin
+  have hX' :
+      MDiffAt (T% X) (((extChartAt I x₀).symm : E → M)
+        (extChartAt I x₀ y)) := by
+    rw [hleft]
+    exact hX
+  have hY' :
+      MDiffAt (T% Y) (((extChartAt I x₀).symm : E → M)
+        (extChartAt I x₀ y)) := by
+    rw [hleft]
+    exact hY
+  have hbracket := VectorField.mpullback_mlieBracket
+    (I := 𝓘(ℝ, E)) (I' := I)
+    (f := ((extChartAt I x₀).symm : E → M))
+    (V := X) (W := Y) (x₀ := extChartAt I x₀ y)
+    (n := 2)
+    hX' hY'
+    hsm (by simp)
+  simpa [chartTransportedLeviCivitaSection, I.range_eq_univ] using hbracket
+
 section ChartConnection
 
 variable [FiniteDimensional ℝ E] [CompleteSpace E]
