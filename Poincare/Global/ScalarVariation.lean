@@ -698,4 +698,177 @@ theorem ricciVariation_eq_deltaGamma_contractions
   exact (LinearMap.toContinuousLinearMap (b.coord i)).hasFDerivAt.comp_hasDerivAt
     t₀ (hCurv (b i))
 
+/-- Raise a cotangent vector with the metric at a fixed point. -/
+noncomputable def metricDualVectorAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (φ : Module.Dual ℝ (TM x)) : TM x :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  (LinearMap.BilinForm.toDual (g.metricBilinAt x)
+    (g.metricBilinAt_nondegenerate x)).symm φ
+
+/--
+The metric trace of a raw metric variation `h`: `tr_g h`.
+
+This is the closed-manifold analogue of the model `tensorMetricTrace`, written
+with the tangent-space basis and metric-dual raised basis covectors.
+-/
+noncomputable def traceMetricVariationAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ i, h x ((Module.finBasis ℝ (TM x)) i)
+    (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i))
+
+theorem traceMetricVariationAt_add
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h k : ∀ y : M, TM y → TM y → ℝ) (x : M) :
+    traceMetricVariationAt g (fun y v w ↦ h y v w + k y v w) x =
+      traceMetricVariationAt g h x + traceMetricVariationAt g k x := by
+  unfold traceMetricVariationAt
+  rw [Finset.sum_add_distrib]
+
+theorem traceMetricVariationAt_smul
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (c : ℝ) (x : M) :
+    traceMetricVariationAt g (fun y v w ↦ c * h y v w) x =
+      c * traceMetricVariationAt g h x := by
+  unfold traceMetricVariationAt
+  rw [Finset.mul_sum]
+
+@[simp] theorem traceMetricVariationAt_zero
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    traceMetricVariationAt g (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x = 0 := by
+  unfold traceMetricVariationAt
+  simp
+
+/--
+The metric pairing `⟨h, Ric⟩_g = h^{ij} Ric_{ij}` for a raw metric variation.
+
+Both slots of `h` are raised by `g`, then paired with the Ricci tensor in the
+chosen finite-dimensional tangent basis.
+-/
+noncomputable def metricVariationRicciPairingAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ j, ∑ i,
+    h x
+      (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord j))
+      (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i)) *
+        g.ricciAt x ((Module.finBasis ℝ (TM x)) i)
+          ((Module.finBasis ℝ (TM x)) j)
+
+theorem metricVariationRicciPairingAt_add
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h k : ∀ y : M, TM y → TM y → ℝ) (x : M) :
+    metricVariationRicciPairingAt g (fun y v w ↦ h y v w + k y v w) x =
+      metricVariationRicciPairingAt g h x +
+        metricVariationRicciPairingAt g k x := by
+  unfold metricVariationRicciPairingAt
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  ring
+
+theorem metricVariationRicciPairingAt_smul
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (c : ℝ) (x : M) :
+    metricVariationRicciPairingAt g (fun y v w ↦ c * h y v w) x =
+      c * metricVariationRicciPairingAt g h x := by
+  unfold metricVariationRicciPairingAt
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  ring
+
+@[simp] theorem metricVariationRicciPairingAt_zero
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    metricVariationRicciPairingAt g
+      (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x = 0 := by
+  unfold metricVariationRicciPairingAt
+  simp
+
+private theorem extDerivFun_zero_at (x : M) :
+    (extDerivFun (fun _ : M ↦ (0 : ℝ)) x : TM x →L[ℝ] ℝ) = 0 := by
+  unfold extDerivFun
+  simp
+
+/--
+Covariant derivative of a raw `(0,2)` variation tensor:
+`(∇_v h)(p,q) = D_v(h(p,q)) - h(∇_v p,q) - h(p,∇_v q)`.
+
+The tensor slots are evaluated on canonical extensions, matching the rest of
+this closed-manifold scalar-variation layer.
+-/
+noncomputable def covTensor2DerivAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (v p q : TM x) : ℝ :=
+  extDerivFun (fun y : M ↦ h y (extend E p y) (extend E q y)) x v
+    - h x ((g.leviCivita (extend E p) x v)) q
+    - h x p ((g.leviCivita (extend E q) x v))
+
+@[simp] theorem covTensor2DerivAt_zero
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (v p q : TM x) :
+    covTensor2DerivAt g (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x v p q = 0 := by
+  simp [covTensor2DerivAt, extDerivFun_zero_at]
+
+/--
+The divergence one-form of a raw metric variation:
+`(div h)(w) = Σᵢ (∇_{♯eⁱ}h)(eᵢ,w)`.
+-/
+noncomputable def tensorDivergenceOneFormAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M) (w : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ i, covTensor2DerivAt g h x
+    (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i))
+    ((Module.finBasis ℝ (TM x)) i) w
+
+@[simp] theorem tensorDivergenceOneFormAt_zero
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) (w : TM x) :
+    tensorDivergenceOneFormAt g
+      (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x w = 0 := by
+  unfold tensorDivergenceOneFormAt
+  simp
+
+/--
+The double divergence of a raw metric variation:
+`div div h = Σⱼ (∇_{♯eʲ} div h)(eⱼ)`.
+
+This is the closed-manifold analogue of the model `tensorDoubleDivergence`;
+the outer one-form derivative is written directly with `extDerivFun` and the
+canonical Levi-Civita correction on the test slot.
+-/
+noncomputable def tensorDoubleDivergenceAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  ∑ j,
+    (extDerivFun
+        (fun y : M ↦ tensorDivergenceOneFormAt g h y
+          (extend E (b j) y)) x
+        (metricDualVectorAt g x (b.coord j))
+      - tensorDivergenceOneFormAt g h x
+        ((g.leviCivita (extend E (b j)) x
+          (metricDualVectorAt g x (b.coord j)))))
+
+@[simp] theorem tensorDoubleDivergenceAt_zero
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    tensorDoubleDivergenceAt g
+      (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x = 0 := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  unfold tensorDoubleDivergenceAt
+  simp [tensorDivergenceOneFormAt_zero, extDerivFun_zero_at]
+
 end Poincare
