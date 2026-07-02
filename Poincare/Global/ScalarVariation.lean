@@ -2957,10 +2957,161 @@ def MetricExtSecondDifferentiableAt
           (fun z : M ↦ g.inner z (extend E p z) (extend E q z)) y
           (extend E v y)) x
 
+/--
+Neighborhood-form scalar-entry regularity for a raw `(0,2)` tensor in the
+canonical extension frame.
+
+Unlike `CovTensor2ExtSecondDifferentiableAt`, this asks the scalar entries
+themselves to be `C^k` at `x`.  At `k = 2` this is the honest local hypothesis
+needed to apply product, inverse, and second exterior-derivative rules near the
+base point.
+-/
+def CovTensor2ExtContMDiffAt
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M) (k : ℕ∞) : Prop :=
+  ∀ p q : TM x,
+    ContMDiffAt I 𝓘(ℝ) k
+      (fun y : M ↦ h y (extend E p y) (extend E q y)) x
+
+/-- Neighborhood-form scalar-entry regularity for metric Gram entries. -/
+def MetricExtContMDiffAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) (k : ℕ∞) : Prop :=
+  ∀ p q : TM x,
+    ContMDiffAt I 𝓘(ℝ) k
+      (fun y : M ↦ g.inner y (extend E p y) (extend E q y)) x
+
+/--
+Neighborhood-form scalar-entry regularity for the metric time-variation tensor.
+For `h = timeDerivAt gt t₀`, this is the natural spatial part of a jointly
+smooth metric-flow hypothesis.
+-/
+def TimeVariationExtContMDiffAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (k : ℕ∞) : Prop :=
+  CovTensor2ExtContMDiffAt (timeDerivAt gt t₀) x k
+
+/-- Combined Cᵏ vocabulary for the trace Gram route. -/
+def TraceMetricVariationEntriesExtContMDiffAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M) (k : ℕ∞) : Prop :=
+  CovTensor2ExtContMDiffAt h x k ∧ MetricExtContMDiffAt g x k
+
+/-- Combined Cᵏ vocabulary specialized to a metric flow at `t₀`. -/
+def TimeVariationTraceEntriesExtContMDiffAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (k : ℕ∞) : Prop :=
+  TraceMetricVariationEntriesExtContMDiffAt
+    (gt t₀) (timeDerivAt gt t₀) x k
+
+/-- A `C²` canonical-entry tensor is pointwise differentiable in the old sense. -/
+theorem covTensor2ExtDifferentiableAt_of_contMDiffAt_two
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hC2 : CovTensor2ExtContMDiffAt h x 2) :
+    CovTensor2ExtDifferentiableAt h x := by
+  intro p q
+  exact (hC2 p q).mdifferentiableAt two_ne_zero
+
+/--
+A `C²` canonical-entry tensor has the old second-differentiability field
+predicate.
+-/
+theorem covTensor2ExtSecondDifferentiableAt_of_contMDiffAt_two
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hC2 : CovTensor2ExtContMDiffAt h x 2) :
+    CovTensor2ExtSecondDifferentiableAt h x := by
+  intro p q v
+  have hv : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (extend E v)) x := by
+    simpa using (mdifferentiableAt_extend I E v)
+  exact CovariantDerivative.mdiffAt_extDerivFun_apply (hC2 p q) hv
+
+/-- A `C²` metric-entry class has the old metric second-differentiability predicate. -/
+theorem metricExtSecondDifferentiableAt_of_contMDiffAt_two
+    {g : ClosedSmoothRiemannianMetric n M} {x : M}
+    (hC2 : MetricExtContMDiffAt g x 2) :
+    MetricExtSecondDifferentiableAt g x := by
+  intro p q v
+  have hv : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (extend E v)) x := by
+    simpa using (mdifferentiableAt_extend I E v)
+  exact CovariantDerivative.mdiffAt_extDerivFun_apply (hC2 p q) hv
+
+/-- The combined C² vocabulary implies all older point-at-`x` entry classes. -/
+theorem traceMetricVariationEntriesExtContMDiffAt_two_old_regularities
+    {g : ClosedSmoothRiemannianMetric n M}
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hC2 : TraceMetricVariationEntriesExtContMDiffAt g h x 2) :
+    CovTensor2ExtDifferentiableAt h x ∧
+      CovTensor2ExtSecondDifferentiableAt h x ∧
+      MetricExtSecondDifferentiableAt g x := by
+  rcases hC2 with ⟨hh, hg⟩
+  exact ⟨covTensor2ExtDifferentiableAt_of_contMDiffAt_two hh,
+    covTensor2ExtSecondDifferentiableAt_of_contMDiffAt_two hh,
+    metricExtSecondDifferentiableAt_of_contMDiffAt_two hg⟩
+
+/-- The zero tensor satisfies the neighborhood scalar-entry vocabulary. -/
+theorem covTensor2ExtContMDiffAt_zero (x : M) (k : ℕ∞) :
+    CovTensor2ExtContMDiffAt
+      (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x k := by
+  intro p q
+  simpa using
+    (contMDiffAt_const :
+      ContMDiffAt I 𝓘(ℝ) k (fun _ : M ↦ (0 : ℝ)) x)
+
+/-- Smooth metrics satisfy the metric-entry C² vocabulary. -/
+theorem metricExtContMDiffAt_two
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    MetricExtContMDiffAt g x 2 := by
+  intro p q
+  exact g.metric_pairing_contMDiffAt_two
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E p)
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E q)
+
+/-- Zero variation plus a smooth metric satisfies the combined trace-entry C² vocabulary. -/
+theorem traceMetricVariationEntriesExtContMDiffAt_zero
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    TraceMetricVariationEntriesExtContMDiffAt g
+      (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x 2 :=
+  ⟨covTensor2ExtContMDiffAt_zero x 2,
+    metricExtContMDiffAt_two g x⟩
+
 /-- C² scalar-entry regularity for the metric time-variation tensor. -/
 def TimeVariationExtSecondDifferentiableAt
     (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop :=
   CovTensor2ExtSecondDifferentiableAt (timeDerivAt gt t₀) x
+
+/-- The time-variation C² vocabulary implies the older time-variation entry classes. -/
+theorem timeVariationTraceEntriesExtContMDiffAt_two_old_regularities
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hC2 : TimeVariationTraceEntriesExtContMDiffAt gt t₀ x 2) :
+    CovTensor2ExtDifferentiableAt (timeDerivAt gt t₀) x ∧
+      TimeVariationExtSecondDifferentiableAt gt t₀ x ∧
+      MetricExtSecondDifferentiableAt (gt t₀) x := by
+  simpa [TimeVariationExtSecondDifferentiableAt,
+    TimeVariationTraceEntriesExtContMDiffAt]
+    using
+      traceMetricVariationEntriesExtContMDiffAt_two_old_regularities
+        (g := gt t₀) (h := timeDerivAt gt t₀) (x := x) hC2
+
+omit [T2Space M] in
+/-- Static metric flows have zero time-variation entries, hence satisfy the Cᵏ vocabulary. -/
+theorem timeVariationExtContMDiffAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) (k : ℕ∞) :
+    TimeVariationExtContMDiffAt (fun _ : ℝ ↦ g) t₀ x k := by
+  intro p q
+  have hzero :
+      (fun y : M ↦
+        timeDerivAt (fun _ : ℝ ↦ g) t₀ y (extend E p y) (extend E q y)) =
+        fun _ : M ↦ (0 : ℝ) := by
+    funext y
+    simp
+  rw [hzero]
+  exact contMDiffAt_const
+
+/-- Static metric flows satisfy the combined trace-entry C² vocabulary. -/
+theorem timeVariationTraceEntriesExtContMDiffAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    TimeVariationTraceEntriesExtContMDiffAt (fun _ : ℝ ↦ g) t₀ x 2 := by
+  exact
+    ⟨timeVariationExtContMDiffAt_const (n := n) (M := M) g t₀ x 2,
+      metricExtContMDiffAt_two g x⟩
 
 /--
 Second-order regularity of the scalar metric trace itself.
