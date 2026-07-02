@@ -1952,6 +1952,44 @@ theorem deltaGamma_innerTrace_eq
   ring
 
 /--
+Inner trace of `δΓ`, restated with named first-order trace regularity
+obligations.
+-/
+theorem deltaGamma_innerTrace_eq'
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hExt :
+      ∀ a b c : TM x,
+        HasDerivAt
+          (fun t ↦
+            extDerivFun
+              (fun y : M ↦ (gt t).inner y (extend E b y) (extend E c y)) x a)
+          (extDerivFun
+            (fun y : M ↦ timeDerivAt gt t₀ y (extend E b y) (extend E c y))
+            x a) t₀)
+    (hTraceSwap :
+      CovTensor2DerivTraceSwapAt (gt t₀) (timeDerivAt gt t₀) x)
+    (hTraceDeriv :
+      TraceMetricVariationDerivAt (gt t₀) (timeDerivAt gt t₀) x)
+    (w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+      ∑ i, (gt t₀).inner x
+        (deltaGammaAt gt t₀ x ((Module.finBasis ℝ (TM x)) i)
+          (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord i))) w)
+      =
+        tensorDivergenceOneFormAt (gt t₀) (timeDerivAt gt t₀) x w
+          - (1 / 2 : ℝ) *
+            extDerivFun
+              (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y)
+              x w :=
+  deltaGamma_innerTrace_eq
+    (gt := gt) (t₀ := t₀) (x := x)
+    hreg hgt hExt hTraceSwap hTraceDeriv w
+
+/--
 The double divergence of a raw metric variation:
 `div div h = Σⱼ (∇_{♯eʲ} div h)(eⱼ)`.
 
