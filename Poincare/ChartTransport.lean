@@ -55,6 +55,38 @@ theorem chartMetric_apply [FiniteDimensional ℝ E]
         (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm) (range I) z w) :=
   rfl
 
+/--
+At a point in the chart source, the chart metric evaluated on chart-pushed
+tangent vectors is the original manifold metric.
+-/
+theorem chartMetric_apply_chart [FiniteDimensional ℝ E]
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (x₀ : M) {y : M} (hy : y ∈ (extChartAt I x₀).source)
+    (v w : TangentSpace I y) :
+    chartMetric g x₀ (extChartAt I x₀ y)
+        (mfderiv% (extChartAt I x₀) y v)
+        (mfderiv% (extChartAt I x₀) y w) =
+      g y v w := by
+  rw [chartMetric_apply]
+  have hleft : (extChartAt I x₀).symm (extChartAt I x₀ y) = y :=
+    (extChartAt I x₀).left_inv hy
+  rw [hleft]
+  have hv :
+      mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm) (range I)
+          (extChartAt I x₀ y) (mfderiv% (extChartAt I x₀) y v) = v := by
+    have h := congrArg (fun L => L v)
+      (mfderivWithin_extChartAt_symm_comp_mfderiv_extChartAt'
+        (I := I) (x := x₀) hy)
+    simpa [ContinuousLinearMap.comp_apply] using h
+  have hw :
+      mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm) (range I)
+          (extChartAt I x₀ y) (mfderiv% (extChartAt I x₀) y w) = w := by
+    have h := congrArg (fun L => L w)
+      (mfderivWithin_extChartAt_symm_comp_mfderiv_extChartAt'
+        (I := I) (x := x₀) hy)
+    simpa [ContinuousLinearMap.comp_apply] using h
+  exact congrArg₂ (fun a b => g y a b) hv hw
+
 /-- The chart metric inherits symmetry from `g`. -/
 theorem chartMetric_symm [FiniteDimensional ℝ E]
     (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
@@ -741,6 +773,11 @@ namespace CovariantDerivative
 /-- Theorem contract for `chartMetric_apply`. -/
 theorem chartMetric_apply_eq :
     @CovariantDerivative.chartMetric_apply = @CovariantDerivative.chartMetric_apply :=
+  rfl
+
+/-- Theorem contract for `chartMetric_apply_chart`. -/
+theorem chartMetric_apply_chart_eq :
+    @CovariantDerivative.chartMetric_apply_chart = @CovariantDerivative.chartMetric_apply_chart :=
   rfl
 
 /-- Theorem contract for `chartMetric_symm`. -/
