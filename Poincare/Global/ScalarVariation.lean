@@ -2241,6 +2241,33 @@ theorem tensorDoubleDivergenceAt_negTwoRicci
   hlin
 
 /--
+Closed twice-contracted Bianchi obligation:
+`div div Ric = (1 / 2) ΔR` at `x`.
+
+This is the closed-manifold analogue of the proved model-space
+`coord_twice_contracted_bianchi`; its intrinsic closed proof is future work.
+-/
+def ClosedContractedBianchiAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : Prop :=
+  ricciDoubleDivergenceAt g x =
+    (1 / 2 : ℝ) * g.laplacianAt (fun y ↦ g.scalarAt y) x
+
+/-- Under twice-contracted Bianchi, `div div (-2 Ric) = -ΔR`. -/
+theorem tensorDoubleDivergenceAt_negTwoRicci_eq_neg_laplacian_scalar
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hlin : TensorDoubleDivergenceNegTwoRicciLinearityAt g x)
+    (hBianchi : ClosedContractedBianchiAt g x) :
+    tensorDoubleDivergenceAt g (negTwoRicciVariationField g) x =
+      -g.laplacianAt (fun y ↦ g.scalarAt y) x := by
+  rw [tensorDoubleDivergenceAt_negTwoRicci g x hlin]
+  rw [hBianchi]
+  ring
+
+/--
 Exact divergence assembly for the first `δΓ` contraction:
 the divergence of the inner-trace one-form gives
 `div div h - 1/2 Δ tr h`.
