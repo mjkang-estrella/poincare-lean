@@ -2526,6 +2526,40 @@ private theorem extDerivFun_const_smul_at {f : M → ℝ} {x : M}
   simp [Pi.smul_apply, smul_eq_mul] at hmul ⊢
   exact hmul
 
+omit [T2Space M] in
+private theorem extDerivFun_sum_at {ι : Type} [DecidableEq ι]
+    (s : Finset ι) (f : ι → M → ℝ) {x : M}
+    (hf : ∀ i ∈ s, MDifferentiableAt I 𝓘(ℝ) (f i) x)
+    (v : TM x) :
+    extDerivFun (∑ i ∈ s, f i) x v =
+      ∑ i ∈ s, extDerivFun (f i) x v := by
+  classical
+  induction s using Finset.induction_on with
+  | empty =>
+      simpa using congrArg (fun L : TM x →L[ℝ] ℝ ↦ L v)
+        (extDerivFun_zero_at (n := n) (M := M) (x := x))
+  | insert a s ha ih =>
+      have haDiff : MDifferentiableAt I 𝓘(ℝ) (f a) x :=
+        hf a (Finset.mem_insert_self a s)
+      have hsDiff : MDifferentiableAt I 𝓘(ℝ)
+          (∑ i ∈ s, f i) x := by
+        exact @MDifferentiableAt.sum ℝ _ E _ _ E _ I M _ _ ℝ _ _ x ι s f
+          (fun i hi ↦ hf i (Finset.mem_insert_of_mem hi))
+      have hAdd := congrArg (fun L : TM x →L[ℝ] ℝ ↦ L v)
+        (extDerivFun_add haDiff hsDiff)
+      calc
+        extDerivFun (∑ i ∈ insert a s, f i) x v =
+            extDerivFun (f a + ∑ i ∈ s, f i) x v := by
+              rw [Finset.sum_insert ha]
+        _ = extDerivFun (f a) x v
+              + extDerivFun (∑ i ∈ s, f i) x v := by
+              simpa using hAdd
+        _ = extDerivFun (f a) x v
+              + ∑ i ∈ s, extDerivFun (f i) x v := by
+              rw [ih (fun i hi ↦ hf i (Finset.mem_insert_of_mem hi))]
+        _ = ∑ i ∈ insert a s, extDerivFun (f i) x v := by
+              simp [Finset.sum_insert, ha]
+
 def Tensor2AddLeft
     (h : ∀ y : M, TM y → TM y → ℝ) : Prop :=
   ∀ y : M, ∀ p₁ p₂ q : TM y,
