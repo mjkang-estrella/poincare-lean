@@ -152,15 +152,55 @@ theorem chartTransportedLeviCivitaHom_eq_closed_of_eventually_eq_one
   exact chartTransportedLeviCivitaValueAt_eq_closed_of_eventually_eq_one
     g χ G₀ hG₀pos x₀ hχ0 hχ1 hsupp hbl hG₀symm hy hχone hσ v
 
+theorem chartTransportedLeviCivitaHom_eventuallyEq_closed
+    (g : ClosedSmoothRiemannianMetric n M)
+    (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (x₀ : M) (hχ0 : ∀ z, 0 ≤ χ z) (hχ1 : ∀ z, χ z ≤ 1)
+    (hsupp : ∀ z, χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z).IsInvertible)
+    (hbl : Differentiable ℝ (CovariantDerivative.blendedChartMetric χ G₀ g.inner x₀))
+    (hG₀symm : ∀ v w : E, G₀ v w = G₀ w v)
+    {σ : Π y : M, TM y}
+    (hχone : ∀ᶠ z in 𝓝 (extChartAt I x₀ x₀), χ z = 1)
+    (hσ : ContMDiffOn I ((I).prod 𝓘(ℝ, E)) 2 (T% σ) Set.univ) :
+    (fun y : M =>
+      (⟨y,
+        (CovariantDerivative.chartTransportedLeviCivitaHom χ G₀ hG₀pos g.inner
+          (fun y u hu => g.inner_pos y (v := u) hu) x₀ hχ0 hχ1 hsupp σ y)⟩ :
+        TotalSpace (E →L[ℝ] E) (fun y : M => TM y →L[ℝ] TM y)))
+      =ᶠ[𝓝 x₀]
+    (fun y : M =>
+      (⟨y, (LeviCivitaExistence.closedLeviCivitaConnection g) σ y⟩ :
+        TotalSpace (E →L[ℝ] E) (fun y : M => TM y →L[ℝ] TM y))) := by
+  let oneLocus : Set E := {z | ∀ᶠ z' in 𝓝 z, χ z' = 1}
+  have hopen : IsOpen oneLocus := isOpen_setOf_eventually_nhds
+  have hone_mem : oneLocus ∈ 𝓝 (extChartAt I x₀ x₀) :=
+    hopen.mem_nhds hχone
+  have hcont : ContinuousAt (fun y : M => extChartAt I x₀ y) x₀ := by
+    simpa only using (continuousAt_extChartAt x₀)
+  have hone_pre : (extChartAt I x₀) ⁻¹' oneLocus ∈ 𝓝 x₀ :=
+    hcont.preimage_mem_nhds hone_mem
+  have hsource : (extChartAt I x₀).source ∈ 𝓝 x₀ :=
+    extChartAt_source_mem_nhds x₀
+  filter_upwards [hsource, hone_pre] with y hy hyloc
+  have hσy : MDiffAtTangentField σ y := by
+    simpa [MDiffAtTangentField] using
+      ((hσ.contMDiffAt Filter.univ_mem).mdifferentiableAt (by simp))
+  have hclm := chartTransportedLeviCivitaHom_eq_closed_of_eventually_eq_one
+    g χ G₀ hG₀pos x₀ hχ0 hχ1 hsupp hbl hG₀symm hy hyloc hσy
+  simp [hclm]
+
 end LeviCivitaTransport
 
 /-!
 The full theorem
 `closedLeviCivitaConnection_contMDiff` is not introduced here yet: the
-remaining step is to convert the value-level identification theorem
-`chartTransportedLeviCivitaValueAt_eq_closed_of_eventually_eq_one` into
-an eventually-equal statement for the hom-bundle section required by
-`CovariantDerivative.ContMDiffCovariantDerivative`.
+remaining step is to prove the local `ContMDiffAt` regularity of the
+chart-transported hom-bundle section, then combine it with
+`chartTransportedLeviCivitaHom_eventuallyEq_closed` by
+`ContMDiffAt.congr_of_eventuallyEq`.
 -/
 
 end Poincare
