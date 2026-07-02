@@ -475,3 +475,32 @@ Status from task `M3-predicates-31`:
 - Verified: `lake env lean Poincare/Global/ScalarVariation.lean` succeeds, and
   `lake build Poincare.Global.ScalarVariation
   Poincare.Global.ScalarEvolution` succeeds with linter warnings only.
+
+Status from task `M3-predicates-33`:
+
+- Done: proved the decomposition lemma
+  `ClosedContractedBianchiAt.of_tensorDivergenceOneForm_eq_half_extDerivFun_near`.
+  It shows that the frozen predicate
+  `ClosedContractedBianchiAt g x` follows from the neighborhood one-form
+  contracted Bianchi identity
+  `tensorDivergenceOneFormAt g (ricciVariationField g) y w =
+  (1 / 2) * extDerivFun (fun z => g.scalarAt z) y w`, plus scalar C2 and the
+  needed differentiability of the scalar exterior-derivative fields.  The proof
+  traces the covariant derivative of that one-form, cancels the Levi-Civita
+  correction term, uses Hessian symmetry, and rewrites the raised Hessian trace
+  by `laplacianAt_eq_sum_hessianAt`.
+- Blocked: the remaining hard theorem is the closed directional Ricci-divergence
+  identity above, i.e. the closed analogue of the model
+  `tensorDivCLM_coordRicciForm_eq_half_grad_field` /
+  `fderiv_coordScalar_eq_two_ricciDivergenceForm_of_contDiff`.  No native
+  closed proof currently identifies
+  `tensorDivergenceOneFormAt g (ricciVariationField g)` with half the scalar
+  exterior derivative from the existing manifold first-Bianchi asset.
+- Current final non-regularity predicate list remains exactly
+  `ClosedContractedBianchiAt`; the new lemma isolates its remaining core
+  one-form identity but does not replace or weaken the frozen predicate.
+- Verified: forbidden-placeholder scan on
+  `Poincare/Global/ScalarVariation.lean` and
+  `Poincare/Global/ScalarEvolution.lean` found no matches, and
+  `lake build Poincare.Global.ScalarVariation
+  Poincare.Global.ScalarEvolution` succeeds with existing linter warnings.
