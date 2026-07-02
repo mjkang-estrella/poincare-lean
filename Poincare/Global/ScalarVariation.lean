@@ -5163,7 +5163,7 @@ theorem covTensor2SecondDerivAt_add_left
     {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
     (hSecond : CovTensor2DerivExtDifferentiableAt g h x)
     (hDiff : ∀ y : M, CovTensor2ExtDifferentiableAt h y)
-    (hAddL : Tensor2AddLeft h) (hAddR : Tensor2AddRight h)
+    (hAddL : Tensor2AddLeft h)
     (u v p₁ p₂ q : TM x) :
     covTensor2SecondDerivAt g h x u v (p₁ + p₂) q =
       covTensor2SecondDerivAt g h x u v p₁ q
@@ -5257,7 +5257,7 @@ theorem covTensor2SecondDerivAt_add_right
     {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
     (hSecond : CovTensor2DerivExtDifferentiableAt g h x)
     (hDiff : ∀ y : M, CovTensor2ExtDifferentiableAt h y)
-    (hAddL : Tensor2AddLeft h) (hAddR : Tensor2AddRight h)
+    (hAddR : Tensor2AddRight h)
     (u v p q₁ q₂ : TM x) :
     covTensor2SecondDerivAt g h x u v p (q₁ + q₂) =
       covTensor2SecondDerivAt g h x u v p q₁
@@ -8772,7 +8772,7 @@ theorem tensorDoubleDivergenceAt_eq_sum_sum_positive_T2
         refine Finset.sum_congr rfl fun i _hi ↦ ?_
         exact covTensor2SecondDerivAt_add_right
           (g := g) (h := H) (x := x)
-          hSecond hCovDiff hHAddL hHAddR a (b i) (sharp i) q₁ q₂)
+          hSecond hCovDiff hHAddR a (b i) (sharp i) q₁ q₂)
       (fun c a q ↦ by
         dsimp only
         rw [Finset.smul_sum]
@@ -8804,7 +8804,7 @@ theorem tensorDoubleDivergenceAt_eq_sum_sum_positive_T2
         dsimp only
         exact covTensor2SecondDerivAt_add_left
           (g := g) (h := H) (x := x)
-          hSecond hCovDiff hHAddL hHAddR (b j) a p₁ p₂ (sharp j))
+          hSecond hCovDiff hHAddL (b j) a p₁ p₂ (sharp j))
       (fun c a p ↦ by
         dsimp only
         exact covTensor2SecondDerivAt_smul_left
@@ -8864,7 +8864,7 @@ theorem deltaGammaDivergenceTraceSecondDerivPositiveBlockAt_eq_tensorDoubleDiver
         dsimp only
         exact covTensor2SecondDerivAt_add_left
           (g := g) (h := H) (x := x)
-          hSecond hCovDiff hHAddL hHAddR (b i) a p₁ p₂ (sharp i))
+          hSecond hCovDiff hHAddL (b i) a p₁ p₂ (sharp i))
       (fun c a p ↦ by
         dsimp only
         exact covTensor2SecondDerivAt_smul_left
