@@ -1,4 +1,5 @@
 import Poincare.Global.LeviCivitaExistence
+import Poincare.Global.LeviCivitaRegularity
 import Poincare.CurvatureConditions
 
 /-!
@@ -7,12 +8,10 @@ import Poincare.CurvatureConditions
 This module specializes the manifold-level curvature API to the canonical
 Levi-Civita connection attached to a `ClosedSmoothRiemannianMetric`.
 
-The current global Koszul construction proves metric compatibility and zero
-torsion for the canonical connection, but the repository does not yet expose a
-proof that this constructed connection is a `C¹` covariant derivative.
-Consequently the Ricci and scalar wrappers below carry
-`ContMDiffCovariantDerivative g.leviCivita 1` as an explicit typeclass
-hypothesis, matching the existing curvature layer.
+The global Koszul construction proves metric compatibility, zero torsion, and
+now `C¹` covariant-derivative regularity for the canonical connection.  The
+legacy wrappers below keep their explicit typeclass parameter, and the primed
+Ricci symmetry theorem at the end demonstrates that the instance can supply it.
 -/
 
 noncomputable section
@@ -38,6 +37,13 @@ local notation "TM" => (TangentSpace I : M → Type _)
 def leviCivita (g : ClosedSmoothRiemannianMetric n M) :
     CovariantDerivative I E TM :=
   LeviCivitaExistence.closedLeviCivitaConnection g
+
+/-- The canonical Levi-Civita connection has the regularity needed for curvature. -/
+@[instance]
+theorem leviCivita_contMDiff (g : ClosedSmoothRiemannianMetric n M) :
+    CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1 := by
+  simpa [leviCivita] using
+    LeviCivitaExistence.closedLeviCivitaConnection_contMDiff g
 
 /-- The canonical connection is metric-compatible with the metric. -/
 theorem leviCivita_metricCompatible (g : ClosedSmoothRiemannianMetric n M) :
@@ -210,6 +216,20 @@ theorem ricciAt_symm (x : M) (u w : TM x) :
       u w
 
 end Curvature
+
+section CurvatureRegularityInstance
+
+variable (g : ClosedSmoothRiemannianMetric n M)
+
+/--
+The canonical Ricci tensor is symmetric; the Levi-Civita regularity hypothesis
+is supplied by the canonical instance.
+-/
+theorem ricciAt_symm' (x : M) (u w : TM x) :
+    g.ricciAt x u w = g.ricciAt x w u := by
+  exact g.ricciAt_symm x u w
+
+end CurvatureRegularityInstance
 
 end ClosedSmoothRiemannianMetric
 end Poincare
