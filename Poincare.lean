@@ -20,6 +20,7 @@ import Poincare.Global.Alignment
 import Poincare.Global.RiemannianContext
 import Poincare.Global.LeviCivita
 import Poincare.Global.LeviCivitaExistence
+import Poincare.Global.LeviCivitaTransport
 import Poincare.Global.Curvature
 import Poincare.Global.RicciFlow
 import Poincare.Milestones
