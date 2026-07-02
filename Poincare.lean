@@ -16,7 +16,11 @@ import Poincare.ModelLaplacian
 import Poincare.ModelLaplacianRootAliases
 import Poincare.Statement
 import Poincare.Global.Statement
+<<<<<<< HEAD
 import Poincare.Global.Alignment
+=======
+import Poincare.Global.RiemannianContext
+>>>>>>> worker/M1-riemannian-context
 import Poincare.Milestones
 import Poincare.Assembly
 import Poincare.CanonicalBridges
