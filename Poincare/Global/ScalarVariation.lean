@@ -3378,6 +3378,177 @@ noncomputable def deltaGammaFirstSlotTraceFieldAt
   ∑ i, (Module.finBasis ℝ (TM y)).coord i
     (deltaGammaAt gt t₀ y ((Module.finBasis ℝ (TM y)) i) w)
 
+/-- The first-slot `δΓ` endomorphism whose trace is
+`deltaGammaFirstSlotTraceFieldAt`. -/
+noncomputable def deltaGammaFirstSlotEndomorphismAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ)
+    (y : M) (hΓ : ConnectionValueTimeDifferentiableAt gt t₀ y)
+    (w : TM y) : TM y →ₗ[ℝ] TM y :=
+  IsLinearMap.mk' (fun v ↦ deltaGammaAt gt t₀ y v w)
+    ⟨(fun p q ↦ deltaGammaAt_add_left
+        (gt := gt) (t₀ := t₀) (x := y) hΓ p q w),
+      (fun c p ↦ deltaGammaAt_smul_left
+        (gt := gt) (t₀ := t₀) (x := y) hΓ c p w)⟩
+
+@[simp] theorem deltaGammaFirstSlotEndomorphismAt_apply
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ)
+    (y : M) (hΓ : ConnectionValueTimeDifferentiableAt gt t₀ y)
+    (w v : TM y) :
+    deltaGammaFirstSlotEndomorphismAt gt t₀ y hΓ w v =
+      deltaGammaAt gt t₀ y v w := rfl
+
+/-- The first-slot `δΓ` field is the ordinary trace of its first-slot
+endomorphism. -/
+theorem deltaGammaFirstSlotTraceFieldAt_eq_linearMap_trace
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ)
+    (y : M) (hΓ : ConnectionValueTimeDifferentiableAt gt t₀ y)
+    (w : TM y) :
+    deltaGammaFirstSlotTraceFieldAt gt t₀ y w =
+      LinearMap.trace ℝ (TM y)
+        (deltaGammaFirstSlotEndomorphismAt gt t₀ y hΓ w) := by
+  classical
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM y)
+  unfold deltaGammaFirstSlotTraceFieldAt
+  change (∑ i, b.coord i (deltaGammaAt gt t₀ y (b i) w)) =
+    LinearMap.trace ℝ (TM y)
+      (deltaGammaFirstSlotEndomorphismAt gt t₀ y hΓ w)
+  rw [LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]
+  refine Finset.sum_congr rfl fun i _hi ↦ ?_
+  rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+  rfl
+
+/-- The first-slot `δΓ` trace can be computed in any finite basis. -/
+theorem deltaGammaFirstSlotTraceFieldAt_eq_trace_in_basis
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ)
+    (y : M) (hΓ : ConnectionValueTimeDifferentiableAt gt t₀ y)
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι ℝ (TM y)) (w : TM y) :
+    deltaGammaFirstSlotTraceFieldAt gt t₀ y w =
+      ∑ i, b.coord i (deltaGammaAt gt t₀ y (b i) w) := by
+  classical
+  rw [deltaGammaFirstSlotTraceFieldAt_eq_linearMap_trace
+    (gt := gt) (t₀ := t₀) (y := y) hΓ w]
+  rw [LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]
+  refine Finset.sum_congr rfl fun i _hi ↦ ?_
+  rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+  rfl
+
+/-- Trace-cyclicity cancellation for the closed first-slot `δΓ` trace. -/
+theorem deltaGammaFirstSlotTrace_leviCivita_slot_cancel
+    (g : ClosedSmoothRiemannianMetric n M)
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (hΓ : ConnectionValueTimeDifferentiableAt gt t₀ x)
+    (u w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      ∑ i, b.coord i
+        (g.leviCivita
+          (extend E (deltaGammaAt gt t₀ x (b i) w)) x u))
+      =
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      ∑ i, b.coord i
+        (deltaGammaAt gt t₀ x
+          (g.leviCivita (extend E (b i)) x u) w)) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let Γ : TM x → TM x := fun p ↦ g.leviCivita (extend E p) x u
+  let Δ : TM x →ₗ[ℝ] TM x :=
+    deltaGammaFirstSlotEndomorphismAt gt t₀ x hΓ w
+  set Γlin : TM x →ₗ[ℝ] TM x :=
+    IsLinearMap.mk' Γ
+      ⟨(by
+          intro p q
+          change g.leviCivita (extend E (p + q)) x u =
+            g.leviCivita (extend E p) x u +
+              g.leviCivita (extend E q) x u
+          rw [extend_tangent_add (x := x) p q]
+          have hadd := g.leviCivita.isCovariantDerivativeOnUniv.add
+            (by simpa [MDiffAtTangentField] using
+              (mdifferentiableAt_extend I E p))
+            (by simpa [MDiffAtTangentField] using
+              (mdifferentiableAt_extend I E q))
+          simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L u) hadd),
+        (by
+          intro c p
+          change g.leviCivita (extend E (c • p)) x u =
+            c • g.leviCivita (extend E p) x u
+          rw [extend_tangent_smul (x := x) c p]
+          have hsmul := g.leviCivita.isCovariantDerivativeOnUniv.smul_const c
+            (by simpa [MDiffAtTangentField] using
+              (mdifferentiableAt_extend I E p))
+          simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L u) hsmul)⟩
+      with hΓlin
+  change (∑ i, b.coord i (Γ (Δ (b i)))) =
+    ∑ i, b.coord i (Δ (Γ (b i)))
+  calc
+    (∑ i, b.coord i (Γ (Δ (b i)))) =
+        LinearMap.trace ℝ (TM x) (Γlin.comp Δ) := by
+          rw [LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]
+          refine Finset.sum_congr rfl fun i _hi ↦ ?_
+          rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+          rfl
+    _ = LinearMap.trace ℝ (TM x) (Δ.comp Γlin) :=
+          (LinearMap.trace_comp_comm' Γlin Δ).symm
+    _ = ∑ i, b.coord i (Δ (Γ (b i))) := by
+          rw [LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]
+          refine Finset.sum_congr rfl fun i _hi ↦ ?_
+          rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+          rfl
+
+/-- Anchored Gram-inverse form of the first-slot `δΓ` trace field.  This is
+the moving-field analogue of `traceMetricVariationAt_eq_sum_gram_inv`. -/
+theorem deltaGammaFirstSlotTraceFieldAt_eq_sum_gram_inv
+    (g : ClosedSmoothRiemannianMetric n M)
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ)
+    {x y : M}
+    (hΓ : ConnectionValueTimeDifferentiableAt gt t₀ y)
+    (hG : IsUnit (gramMatrix g x y))
+    (w : TM y) :
+    deltaGammaFirstSlotTraceFieldAt gt t₀ y w =
+      ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+        g.inner y (deltaGammaAt gt t₀ y (gramFrame x y i) w)
+          (gramFrame x y j) := by
+  classical
+  letI : NormedAddCommGroup (TM y) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM y) := inferInstanceAs (NormedSpace ℝ E)
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := gramFrameBasis g x y hG
+  calc
+    deltaGammaFirstSlotTraceFieldAt gt t₀ y w =
+        ∑ i, b.coord i (deltaGammaAt gt t₀ y (b i) w) := by
+          exact deltaGammaFirstSlotTraceFieldAt_eq_trace_in_basis
+            (gt := gt) (t₀ := t₀) (y := y) hΓ b w
+    _ = ∑ i,
+        g.inner y (deltaGammaAt gt t₀ y (b i) w)
+          (metricDualVectorAt g y (b.coord i)) := by
+          refine Finset.sum_congr rfl fun i _hi ↦ ?_
+          rw [coord_eq_inner_metricDualVectorAt_of_basis
+            (g := g) (x := y) (b := b)]
+    _ = ∑ i,
+        g.inner y (deltaGammaAt gt t₀ y (gramFrame x y i) w)
+          (∑ j, (gramMatrix g x y)⁻¹ i j • gramFrame x y j) := by
+          refine Finset.sum_congr rfl fun i _hi ↦ ?_
+          simp [b, metricDualVectorAt_gramFrameBasis_coord_eq_sum_inv]
+    _ = ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+        g.inner y (deltaGammaAt gt t₀ y (gramFrame x y i) w)
+          (gramFrame x y j) := by
+          refine Finset.sum_congr rfl fun i _hi ↦ ?_
+          have hmap := map_sum
+            (g.inner y (deltaGammaAt gt t₀ y (gramFrame x y i) w))
+            (fun j ↦ (gramMatrix g x y)⁻¹ i j • gramFrame x y j)
+            Finset.univ
+          simpa [smul_eq_mul] using hmap
+
 /-- Lower-slot inner trace form of `δΓ`, evaluated fiberwise. -/
 noncomputable def deltaGammaInnerTraceFieldAt
     (g : ClosedSmoothRiemannianMetric n M)
