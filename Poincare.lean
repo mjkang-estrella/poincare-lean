@@ -22,6 +22,7 @@ import Poincare.Global.LeviCivita
 import Poincare.Global.LeviCivitaExistence
 import Poincare.Global.LeviCivitaTransport
 import Poincare.Global.Curvature
+import Poincare.Global.RicciNorm
 import Poincare.Global.RicciFlow
 import Poincare.Milestones
 import Poincare.Assembly
