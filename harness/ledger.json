@@ -288,12 +288,13 @@
       "deps": [
         "M3-scalar-evolution-statement"
       ],
-      "status": "open",
+      "status": "done",
       "files": [
         "Poincare/Global/MetricVariation.lean"
       ],
       "difficulty": "medium",
-      "title": "Metric time-derivative vocabulary"
+      "title": "Metric time-derivative vocabulary",
+      "result": "DONE 2026-07-01, commit 3eb6acae, gate PASS. timeDerivAt + full bilinearity/symmetry suite, timeDerivBilinAt, const sanity, isClosedRicciFlowSolutionAt_timeDerivAt unfolding theorem (goal-2 step b complete)."
     }
   ]
 }
