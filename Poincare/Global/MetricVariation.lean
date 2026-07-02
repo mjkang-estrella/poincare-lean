@@ -199,4 +199,48 @@ theorem isClosedRicciFlowSolutionAt_timeDerivAt
   simpa [timeDerivAt, IsClosedRicciFlowSolutionAt] using
     hflow.flow hZ hreg w
 
+/--
+Regularity needed to test the Ricci-flow equation on canonical extensions of
+arbitrary tangent vectors at `x`.
+
+This is the honest bridge from the section-tested flow equation to the
+pointwise bilinear variation tensor: global `C²` admissibility feeds the flow
+field, while `DerivRegularAt` feeds the Ricci trace.
+-/
+def ClosedRicciFlowExtensionRegularAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop :=
+  ∀ v : TM x,
+    ClosedC2TangentField (extend E v) ∧
+      CovariantDerivative.DerivRegularAt (gt t₀).leviCivita (extend E v) x
+
+/--
+Under the closed Ricci-flow equation, the metric time derivative is
+pointwise `-2 Ric` on tangent vectors once canonical extensions are admissible.
+-/
+theorem isClosedRicciFlowSolutionAt_timeDerivAt_eq_neg_two_ricciAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hflow : IsClosedRicciFlowSolutionAt gt t₀ x)
+    (hext : ClosedRicciFlowExtensionRegularAt gt t₀ x)
+    (v w : TM x) :
+    timeDerivAt gt t₀ x v w = -2 * (gt t₀).ricciAt x v w := by
+  rcases hext v with ⟨hZ, hreg⟩
+  have hflow' :=
+    isClosedRicciFlowSolutionAt_timeDerivAt
+      (gt := gt) (t₀ := t₀) (x := x) hflow
+      (Z := extend E v) hZ hreg w
+  have htrace :
+      CovariantDerivative.ricciTraceAt (gt t₀).leviCivita hreg w =
+        (gt t₀).ricciAt x v w := by
+    have h :=
+      CovariantDerivative.ricciTraceAt_eq_ricciBilinearAt
+        (cov := (gt t₀).leviCivita) (Z := extend E v) (x := x)
+        (FiberBundle.contMDiffAt_extend' (k := 2) I E v) hreg w
+    calc
+      CovariantDerivative.ricciTraceAt (gt t₀).leviCivita hreg w =
+          (gt t₀).ricciAt x w v := by
+            simpa [ClosedSmoothRiemannianMetric.ricciAt] using h
+      _ = (gt t₀).ricciAt x v w := (gt t₀).ricciAt_symm x w v
+  rw [htrace] at hflow'
+  simpa using hflow'
+
 end Poincare
