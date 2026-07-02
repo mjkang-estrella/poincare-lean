@@ -2957,10 +2957,161 @@ def MetricExtSecondDifferentiableAt
           (fun z : M ↦ g.inner z (extend E p z) (extend E q z)) y
           (extend E v y)) x
 
+/--
+Neighborhood-form scalar-entry regularity for a raw `(0,2)` tensor in the
+canonical extension frame.
+
+Unlike `CovTensor2ExtSecondDifferentiableAt`, this asks the scalar entries
+themselves to be `C^k` at `x`.  At `k = 2` this is the honest local hypothesis
+needed to apply product, inverse, and second exterior-derivative rules near the
+base point.
+-/
+def CovTensor2ExtContMDiffAt
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M) (k : ℕ∞) : Prop :=
+  ∀ p q : TM x,
+    ContMDiffAt I 𝓘(ℝ) k
+      (fun y : M ↦ h y (extend E p y) (extend E q y)) x
+
+/-- Neighborhood-form scalar-entry regularity for metric Gram entries. -/
+def MetricExtContMDiffAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) (k : ℕ∞) : Prop :=
+  ∀ p q : TM x,
+    ContMDiffAt I 𝓘(ℝ) k
+      (fun y : M ↦ g.inner y (extend E p y) (extend E q y)) x
+
+/--
+Neighborhood-form scalar-entry regularity for the metric time-variation tensor.
+For `h = timeDerivAt gt t₀`, this is the natural spatial part of a jointly
+smooth metric-flow hypothesis.
+-/
+def TimeVariationExtContMDiffAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (k : ℕ∞) : Prop :=
+  CovTensor2ExtContMDiffAt (timeDerivAt gt t₀) x k
+
+/-- Combined Cᵏ vocabulary for the trace Gram route. -/
+def TraceMetricVariationEntriesExtContMDiffAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M) (k : ℕ∞) : Prop :=
+  CovTensor2ExtContMDiffAt h x k ∧ MetricExtContMDiffAt g x k
+
+/-- Combined Cᵏ vocabulary specialized to a metric flow at `t₀`. -/
+def TimeVariationTraceEntriesExtContMDiffAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (k : ℕ∞) : Prop :=
+  TraceMetricVariationEntriesExtContMDiffAt
+    (gt t₀) (timeDerivAt gt t₀) x k
+
+/-- A `C²` canonical-entry tensor is pointwise differentiable in the old sense. -/
+theorem covTensor2ExtDifferentiableAt_of_contMDiffAt_two
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hC2 : CovTensor2ExtContMDiffAt h x 2) :
+    CovTensor2ExtDifferentiableAt h x := by
+  intro p q
+  exact (hC2 p q).mdifferentiableAt two_ne_zero
+
+/--
+A `C²` canonical-entry tensor has the old second-differentiability field
+predicate.
+-/
+theorem covTensor2ExtSecondDifferentiableAt_of_contMDiffAt_two
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hC2 : CovTensor2ExtContMDiffAt h x 2) :
+    CovTensor2ExtSecondDifferentiableAt h x := by
+  intro p q v
+  have hv : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (extend E v)) x := by
+    simpa using (mdifferentiableAt_extend I E v)
+  exact CovariantDerivative.mdiffAt_extDerivFun_apply (hC2 p q) hv
+
+/-- A `C²` metric-entry class has the old metric second-differentiability predicate. -/
+theorem metricExtSecondDifferentiableAt_of_contMDiffAt_two
+    {g : ClosedSmoothRiemannianMetric n M} {x : M}
+    (hC2 : MetricExtContMDiffAt g x 2) :
+    MetricExtSecondDifferentiableAt g x := by
+  intro p q v
+  have hv : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (extend E v)) x := by
+    simpa using (mdifferentiableAt_extend I E v)
+  exact CovariantDerivative.mdiffAt_extDerivFun_apply (hC2 p q) hv
+
+/-- The combined C² vocabulary implies all older point-at-`x` entry classes. -/
+theorem traceMetricVariationEntriesExtContMDiffAt_two_old_regularities
+    {g : ClosedSmoothRiemannianMetric n M}
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hC2 : TraceMetricVariationEntriesExtContMDiffAt g h x 2) :
+    CovTensor2ExtDifferentiableAt h x ∧
+      CovTensor2ExtSecondDifferentiableAt h x ∧
+      MetricExtSecondDifferentiableAt g x := by
+  rcases hC2 with ⟨hh, hg⟩
+  exact ⟨covTensor2ExtDifferentiableAt_of_contMDiffAt_two hh,
+    covTensor2ExtSecondDifferentiableAt_of_contMDiffAt_two hh,
+    metricExtSecondDifferentiableAt_of_contMDiffAt_two hg⟩
+
+/-- The zero tensor satisfies the neighborhood scalar-entry vocabulary. -/
+theorem covTensor2ExtContMDiffAt_zero (x : M) (k : ℕ∞) :
+    CovTensor2ExtContMDiffAt
+      (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x k := by
+  intro p q
+  simpa using
+    (contMDiffAt_const :
+      ContMDiffAt I 𝓘(ℝ) k (fun _ : M ↦ (0 : ℝ)) x)
+
+/-- Smooth metrics satisfy the metric-entry C² vocabulary. -/
+theorem metricExtContMDiffAt_two
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    MetricExtContMDiffAt g x 2 := by
+  intro p q
+  exact g.metric_pairing_contMDiffAt_two
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E p)
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E q)
+
+/-- Zero variation plus a smooth metric satisfies the combined trace-entry C² vocabulary. -/
+theorem traceMetricVariationEntriesExtContMDiffAt_zero
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    TraceMetricVariationEntriesExtContMDiffAt g
+      (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x 2 :=
+  ⟨covTensor2ExtContMDiffAt_zero x 2,
+    metricExtContMDiffAt_two g x⟩
+
 /-- C² scalar-entry regularity for the metric time-variation tensor. -/
 def TimeVariationExtSecondDifferentiableAt
     (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop :=
   CovTensor2ExtSecondDifferentiableAt (timeDerivAt gt t₀) x
+
+/-- The time-variation C² vocabulary implies the older time-variation entry classes. -/
+theorem timeVariationTraceEntriesExtContMDiffAt_two_old_regularities
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hC2 : TimeVariationTraceEntriesExtContMDiffAt gt t₀ x 2) :
+    CovTensor2ExtDifferentiableAt (timeDerivAt gt t₀) x ∧
+      TimeVariationExtSecondDifferentiableAt gt t₀ x ∧
+      MetricExtSecondDifferentiableAt (gt t₀) x := by
+  simpa [TimeVariationExtSecondDifferentiableAt,
+    TimeVariationTraceEntriesExtContMDiffAt]
+    using
+      traceMetricVariationEntriesExtContMDiffAt_two_old_regularities
+        (g := gt t₀) (h := timeDerivAt gt t₀) (x := x) hC2
+
+omit [T2Space M] in
+/-- Static metric flows have zero time-variation entries, hence satisfy the Cᵏ vocabulary. -/
+theorem timeVariationExtContMDiffAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) (k : ℕ∞) :
+    TimeVariationExtContMDiffAt (fun _ : ℝ ↦ g) t₀ x k := by
+  intro p q
+  have hzero :
+      (fun y : M ↦
+        timeDerivAt (fun _ : ℝ ↦ g) t₀ y (extend E p y) (extend E q y)) =
+        fun _ : M ↦ (0 : ℝ) := by
+    funext y
+    simp
+  rw [hzero]
+  exact contMDiffAt_const
+
+/-- Static metric flows satisfy the combined trace-entry C² vocabulary. -/
+theorem timeVariationTraceEntriesExtContMDiffAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    TimeVariationTraceEntriesExtContMDiffAt (fun _ : ℝ ↦ g) t₀ x 2 := by
+  exact
+    ⟨timeVariationExtContMDiffAt_const (n := n) (M := M) g t₀ x 2,
+      metricExtContMDiffAt_two g x⟩
 
 /--
 Second-order regularity of the scalar metric trace itself.
@@ -2993,6 +3144,230 @@ theorem traceMetricVariationExtSecondDifferentiableAt_of_contMDiffAt
   have hW : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (extend E w)) x := by
     simpa using (mdifferentiableAt_extend I E w)
   exact CovariantDerivative.mdiffAt_extDerivFun_apply hTrace hW
+
+/-- Finite products of real-valued `C²` scalar fields are `C²`. -/
+theorem contMDiffAt_two_finset_prod_real
+    {ι : Type} [DecidableEq ι] {t : Finset ι}
+    {f : ι → M → ℝ} {x : M}
+    (hf : ∀ i ∈ t, ContMDiffAt I 𝓘(ℝ) 2 (f i) x) :
+    ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ ∏ i ∈ t, f i y) x := by
+  classical
+  revert hf
+  refine Finset.induction_on t ?base ?step
+  · intro _hf
+    simpa using
+      (contMDiffAt_const :
+        ContMDiffAt I 𝓘(ℝ) 2 (fun _ : M ↦ (1 : ℝ)) x)
+  · intro a s ha ih hf
+    have hfa : ContMDiffAt I 𝓘(ℝ) 2 (f a) x :=
+      hf a (Finset.mem_insert_self a s)
+    have hs : ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ ∏ i ∈ s, f i y) x :=
+      ih fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)
+    have hmul := hfa.smul hs
+    simpa [Finset.prod_insert ha, smul_eq_mul] using hmul
+
+/-- Finite sums of real-valued `C²` scalar fields are `C²`. -/
+theorem contMDiffAt_two_finset_sum_real
+    {ι : Type} [DecidableEq ι] {t : Finset ι}
+    {f : ι → M → ℝ} {x : M}
+    (hf : ∀ i ∈ t, ContMDiffAt I 𝓘(ℝ) 2 (f i) x) :
+    ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ ∑ i ∈ t, f i y) x := by
+  classical
+  revert hf
+  refine Finset.induction_on t ?base ?step
+  · intro _hf
+    simpa using
+      (contMDiffAt_const :
+        ContMDiffAt I 𝓘(ℝ) 2 (fun _ : M ↦ (0 : ℝ)) x)
+  · intro a s ha ih hf
+    have hfa : ContMDiffAt I 𝓘(ℝ) 2 (f a) x :=
+      hf a (Finset.mem_insert_self a s)
+    have hs : ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ ∑ i ∈ s, f i y) x :=
+      ih fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)
+    have hadd := hfa.add hs
+    simpa [Finset.sum_insert ha] using hadd
+
+/-- Determinants of finite matrix fields are `C²` when all entries are `C²`. -/
+theorem contMDiffAt_two_matrix_det_of_entries
+    {ι : Type} [Fintype ι] [DecidableEq ι]
+    {A : M → Matrix ι ι ℝ} {x : M}
+    (hA : ∀ i j, ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ A y i j) x) :
+    ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ (A y).det) x := by
+  classical
+  rw [show (fun y : M ↦ (A y).det) =
+      fun y : M ↦ ∑ σ : Equiv.Perm ι,
+        ((↑↑(Equiv.Perm.sign σ) : ℝ) * ∏ i, A y (σ i) i) by
+    funext y
+    rw [Matrix.det_apply']]
+  have hsum : ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ ∑ σ : Equiv.Perm ι,
+        (↑↑(Equiv.Perm.sign σ) : ℝ) * ∏ i, A y (σ i) i) x := by
+    refine contMDiffAt_two_finset_sum_real (n := n) (M := M)
+      (t := (Finset.univ : Finset (Equiv.Perm ι))) ?_
+    intro σ _hσ
+    have hprod : ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ ∏ i, A y (σ i) i) x := by
+      simpa using
+        (contMDiffAt_two_finset_prod_real (n := n) (M := M)
+        (t := (Finset.univ : Finset ι))
+        (f := fun i y ↦ A y (σ i) i)
+        (fun i _hi ↦ hA (σ i) i))
+    have hconst : ContMDiffAt I 𝓘(ℝ) 2
+        (fun _ : M ↦ (↑↑(Equiv.Perm.sign σ) : ℝ)) x := contMDiffAt_const
+    simpa [smul_eq_mul] using hconst.smul hprod
+  exact hsum
+
+/-- Canonical Gram entries are `C²` under the metric-entry neighborhood class. -/
+theorem gramMatrix_entry_contMDiffAt_two_of_metricExtContMDiffAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (hMetric : MetricExtContMDiffAt g x 2)
+    (i j : Fin (Module.finrank ℝ (TM x))) :
+    ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ gramMatrix g x y i j) x := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  simpa [gramMatrix, b] using hMetric (b i) (b j)
+
+/-- The canonical Gram determinant is `C²` under the metric-entry neighborhood class. -/
+theorem gramMatrix_det_contMDiffAt_two_of_metricExtContMDiffAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (hMetric : MetricExtContMDiffAt g x 2) :
+    ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ (gramMatrix g x y).det) x :=
+  contMDiffAt_two_matrix_det_of_entries
+    (A := fun y : M ↦ gramMatrix g x y)
+    (fun i j ↦
+      gramMatrix_entry_contMDiffAt_two_of_metricExtContMDiffAt
+        (g := g) (x := x) hMetric i j)
+
+/-- Adjugate Gram entries are `C²` under the metric-entry neighborhood class. -/
+theorem gramMatrix_adjugate_entry_contMDiffAt_two_of_metricExtContMDiffAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (hMetric : MetricExtContMDiffAt g x 2)
+    (i j : Fin (Module.finrank ℝ (TM x))) :
+    ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ (gramMatrix g x y).adjugate i j) x := by
+  let row : Fin (Module.finrank ℝ (TM x)) → ℝ := Pi.single i (1 : ℝ)
+  let A : M → Matrix (Fin (Module.finrank ℝ (TM x)))
+      (Fin (Module.finrank ℝ (TM x))) ℝ :=
+    fun y : M ↦ (gramMatrix g x y).updateRow j row
+  have hentries : ∀ a b,
+      ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ A y a b) x := by
+    intro a b
+    by_cases ha : a = j
+    · subst a
+      simpa [A, Matrix.updateRow] using
+        (contMDiffAt_const :
+          ContMDiffAt I 𝓘(ℝ) 2 (fun _ : M ↦ row b) x)
+    · simpa [A, Matrix.updateRow, ha] using
+        (gramMatrix_entry_contMDiffAt_two_of_metricExtContMDiffAt
+          (g := g) (x := x) hMetric a b)
+  have hdet : ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ (A y).det) x :=
+    contMDiffAt_two_matrix_det_of_entries (A := A) hentries
+  exact hdet.congr_of_eventuallyEq (Filter.Eventually.of_forall fun y ↦ by
+    simp [A, row, Matrix.adjugate_apply])
+
+/-- Inverse Gram entries are `C²` under the metric-entry neighborhood class. -/
+theorem gramMatrix_inv_entry_contMDiffAt_two_of_metricExtContMDiffAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (hMetric : MetricExtContMDiffAt g x 2)
+    (i j : Fin (Module.finrank ℝ (TM x))) :
+    ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x := by
+  have hdetInv : ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ ((gramMatrix g x y).det)⁻¹) x :=
+    (gramMatrix_det_contMDiffAt_two_of_metricExtContMDiffAt
+      (g := g) (x := x) hMetric).inv₀
+      (gramMatrix_at_base_det_ne_zero (g := g) (x := x))
+  have hadj : ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ (gramMatrix g x y).adjugate i j) x :=
+    gramMatrix_adjugate_entry_contMDiffAt_two_of_metricExtContMDiffAt
+      (g := g) (x := x) hMetric i j
+  exact (hdetInv.smul hadj).congr_of_eventuallyEq
+    (Filter.Eventually.of_forall fun y ↦ by simp [Matrix.inv_def])
+
+/--
+The Gram-inverse trace formula gives scalar `C²` regularity of `tr_g h` from
+neighborhood `C²` regularity of the canonical tensor and metric entries.
+-/
+theorem traceMetricVariationAt_contMDiffAt_two_of_entries
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (hEntries : TraceMetricVariationEntriesExtContMDiffAt g h x 2)
+    (B : ∀ y : M, LinearMap.BilinForm ℝ (TM y))
+    (hB : ∀ y : M, ∀ p q : TM y, B y p q = h y p q) :
+    ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ traceMetricVariationAt g h y) x := by
+  classical
+  rcases hEntries with ⟨hCov, hMetric⟩
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let rhs : M → ℝ := fun y : M ↦
+    ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+      h y (gramFrame x y i) (gramFrame x y j)
+  have hsum : ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+          h y (gramFrame x y i) (gramFrame x y j)) x := by
+    refine contMDiffAt_two_finset_sum_real (n := n) (M := M)
+      (t := (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x))))) ?_
+    intro i _hi
+    have hinner : ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ ∑ j, (gramMatrix g x y)⁻¹ i j *
+          h y (gramFrame x y i) (gramFrame x y j)) x := by
+      refine contMDiffAt_two_finset_sum_real (n := n) (M := M)
+        (t := (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x))))) ?_
+      intro j _hj
+      have hinv : ContMDiffAt I 𝓘(ℝ) 2
+          (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x :=
+        gramMatrix_inv_entry_contMDiffAt_two_of_metricExtContMDiffAt
+          (g := g) (x := x) hMetric i j
+      have hh : ContMDiffAt I 𝓘(ℝ) 2
+          (fun y : M ↦ h y (gramFrame x y i) (gramFrame x y j)) x := by
+        simpa [gramFrame, b, CovTensor2ExtContMDiffAt] using hCov (b i) (b j)
+      simpa [smul_eq_mul] using hinv.smul hh
+    exact hinner
+  have hrhs : ContMDiffAt I 𝓘(ℝ) 2 rhs x :=
+    by simpa [rhs] using hsum
+  have heq : (fun y : M ↦ traceMetricVariationAt g h y) =ᶠ[nhds x] rhs := by
+    exact (gramMatrix_eventually_isUnit (g := g) x).mono fun y hy ↦ by
+      simpa [rhs] using
+        (traceMetricVariationAt_eq_sum_gram_inv
+          (g := g) (h := h) (x := x) (y := y) (hG := hy)
+          (B := B y) (hB := hB y))
+  exact hrhs.congr_of_eventuallyEq heq
+
+/--
+Trace second-differentiability follows from the strengthened neighborhood
+entry vocabulary.
+-/
+theorem traceMetricVariationExtSecondDifferentiableAt_of_entries_contMDiffAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (hEntries : TraceMetricVariationEntriesExtContMDiffAt g h x 2)
+    (B : ∀ y : M, LinearMap.BilinForm ℝ (TM y))
+    (hB : ∀ y : M, ∀ p q : TM y, B y p q = h y p q) :
+    TraceMetricVariationExtSecondDifferentiableAt g h x :=
+  traceMetricVariationExtSecondDifferentiableAt_of_contMDiffAt
+    (g := g) (h := h) (x := x)
+    (traceMetricVariationAt_contMDiffAt_two_of_entries
+      (g := g) (h := h) (x := x) hEntries B hB)
+
+/-- Time-variation specialization of the trace C² discharge. -/
+theorem traceMetricVariationExtSecondDifferentiableAt_timeDeriv_of_entries_contMDiffAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hEntries : TimeVariationTraceEntriesExtContMDiffAt gt t₀ x 2) :
+    TraceMetricVariationExtSecondDifferentiableAt
+      (gt t₀) (timeDerivAt gt t₀) x :=
+  traceMetricVariationExtSecondDifferentiableAt_of_entries_contMDiffAt
+    (g := gt t₀) (h := timeDerivAt gt t₀) (x := x)
+    hEntries
+    (fun y ↦ timeDerivBilinAt gt t₀ y (hgt y))
+    (by
+      intro y p q
+      rfl)
 
 /-- First-slot trace form of `δΓ`, evaluated fiberwise. -/
 noncomputable def deltaGammaFirstSlotTraceFieldAt
@@ -3046,6 +3421,32 @@ def DeltaGammaFirstSlotTraceFieldCovariantDerivativeAt
           x u
         - deltaGammaFirstSlotTraceFieldAt gt t₀ x
           (g.leviCivita (extend E w) x u)
+
+/-- Static sanity witness for the first-slot trace-field covariant derivative. -/
+theorem deltaGammaFirstSlotTraceFieldCovariantDerivativeAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    DeltaGammaFirstSlotTraceFieldCovariantDerivativeAt
+      (fun _ : ℝ ↦ g) t₀ x := by
+  intro u w
+  have hfield :
+      (fun y : M ↦
+        deltaGammaFirstSlotTraceFieldAt (fun _ : ℝ ↦ g) t₀ y (extend E w y)) =
+        fun _ : M ↦ (0 : ℝ) := by
+    funext y
+    simp [deltaGammaFirstSlotTraceFieldAt]
+  have hpoint :
+      deltaGammaFirstSlotTraceFieldAt (fun _ : ℝ ↦ g) t₀ x
+        (g.leviCivita (extend E w) x u) = 0 := by
+    simp [deltaGammaFirstSlotTraceFieldAt]
+  change deltaGammaContractionDerivAt (fun _ : ℝ ↦ g) t₀ x u w =
+    extDerivFun
+        (fun y : M ↦
+          deltaGammaFirstSlotTraceFieldAt (fun _ : ℝ ↦ g) t₀ y (extend E w y))
+        x u
+      - deltaGammaFirstSlotTraceFieldAt (fun _ : ℝ ↦ g) t₀ x
+        (g.leviCivita (extend E w) x u)
+  rw [deltaGammaContractionDerivAt_const, hfield, hpoint]
+  simp [extDerivFun_zero_at]
 
 /--
 Hessian identification for the covariant derivative of the first-slot `δΓ`
@@ -5643,6 +6044,53 @@ theorem deltaGammaContractionTraceHessianDerivativeAt_of_firstSlot_trace_extSeco
     (deltaGammaFirstSlotTraceFieldHessianAt_of_trace_extSecond
       (gt := gt) (t₀ := t₀) (x := x)
       hreg hgt hExt hCovDiff hNear hTrace₂ hgrad)
+
+theorem deltaGammaContractionTraceHessianDerivativeAt_of_firstSlot_entries_contMDiffAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hField : DeltaGammaFirstSlotTraceFieldCovariantDerivativeAt gt t₀ x)
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hExt :
+      ∀ a b c : TM x,
+        HasDerivAt
+          (fun t ↦
+            extDerivFun
+              (fun y : M ↦ (gt t).inner y (extend E b y) (extend E c y)) x a)
+          (extDerivFun
+            (fun y : M ↦ timeDerivAt gt t₀ y (extend E b y) (extend E c y))
+            x a) t₀)
+    (hNear :
+      ∀ᶠ y in nhds x,
+        MetricFlowRegularAt gt t₀ y ∧
+        CovTensor2ExtDifferentiableAt (timeDerivAt gt t₀) y ∧
+        (∀ a b c : TM y,
+          HasDerivAt
+            (fun t ↦
+              extDerivFun
+                (fun z : M ↦ (gt t).inner z (extend E b z) (extend E c z))
+                y a)
+            (extDerivFun
+              (fun z : M ↦ timeDerivAt gt t₀ z (extend E b z) (extend E c z))
+              y a) t₀))
+    (hEntries : TimeVariationTraceEntriesExtContMDiffAt gt t₀ x 2)
+    (hgrad :
+      let g : ClosedSmoothRiemannianMetric n M := gt t₀
+      let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+      let f : M → ℝ := fun y ↦ traceMetricVariationAt g H y
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x) :
+    DeltaGammaContractionTraceHessianDerivativeAt gt t₀ x := by
+  have hOld :=
+    timeVariationTraceEntriesExtContMDiffAt_two_old_regularities
+      (gt := gt) (t₀ := t₀) (x := x) hEntries
+  exact
+    deltaGammaContractionTraceHessianDerivativeAt_of_firstSlot_trace_extSecond
+      (gt := gt) (t₀ := t₀) (x := x)
+      hField hreg hgt hExt hOld.1 hNear
+      (traceMetricVariationExtSecondDifferentiableAt_timeDeriv_of_entries_contMDiffAt
+        (gt := gt) (t₀ := t₀) (x := x) hgt hEntries)
+      hgrad
 
 theorem deltaGammaDivergenceTraceInnerHessianDerivativeAt_of_innerTraceField
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
