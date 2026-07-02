@@ -151,6 +151,27 @@ noncomputable def scalarAt (x : M) : ℝ :=
 def IsEinsteinAt (lam : ℝ) (x : M) : Prop :=
   CovariantDerivative.IsEinsteinAt g.leviCivita g.inner lam x
 
+theorem isEinsteinAt_iff (lam : ℝ) (x : M) :
+    g.IsEinsteinAt lam x ↔
+      ∀ u w : TM x, g.ricciAt x u w = lam * g.inner x u w :=
+  Iff.rfl
+
+/-- An Einstein metric has scalar curvature `n * lam`. -/
+theorem scalarAt_eq_nat_mul_of_isEinsteinAt {lam : ℝ} {x : M}
+    (hEin : g.IsEinsteinAt lam x) :
+    g.scalarAt x = n * lam := by
+  have hscalar :=
+    CovariantDerivative.scalarCurvatureAt_of_einstein
+      (cov := g.leviCivita) (g := g.inner) (lam := lam) (x := x)
+      (b := g.metricBilinAt x) (hb := g.metricBilinAt_nondegenerate x)
+      (fun v w ↦ g.metricBilinAt_apply x v w) hEin
+  calc
+    g.scalarAt x = lam * Module.finrank ℝ E := by
+      simpa [scalarAt] using hscalar
+    _ = n * lam := by
+      rw [finrank_euclideanSpace_fin]
+      ring
+
 end Curvature
 
 end ClosedSmoothRiemannianMetric
