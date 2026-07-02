@@ -3422,6 +3422,32 @@ def DeltaGammaFirstSlotTraceFieldCovariantDerivativeAt
         - deltaGammaFirstSlotTraceFieldAt gt t₀ x
           (g.leviCivita (extend E w) x u)
 
+/-- Static sanity witness for the first-slot trace-field covariant derivative. -/
+theorem deltaGammaFirstSlotTraceFieldCovariantDerivativeAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    DeltaGammaFirstSlotTraceFieldCovariantDerivativeAt
+      (fun _ : ℝ ↦ g) t₀ x := by
+  intro u w
+  have hfield :
+      (fun y : M ↦
+        deltaGammaFirstSlotTraceFieldAt (fun _ : ℝ ↦ g) t₀ y (extend E w y)) =
+        fun _ : M ↦ (0 : ℝ) := by
+    funext y
+    simp [deltaGammaFirstSlotTraceFieldAt]
+  have hpoint :
+      deltaGammaFirstSlotTraceFieldAt (fun _ : ℝ ↦ g) t₀ x
+        (g.leviCivita (extend E w) x u) = 0 := by
+    simp [deltaGammaFirstSlotTraceFieldAt]
+  change deltaGammaContractionDerivAt (fun _ : ℝ ↦ g) t₀ x u w =
+    extDerivFun
+        (fun y : M ↦
+          deltaGammaFirstSlotTraceFieldAt (fun _ : ℝ ↦ g) t₀ y (extend E w y))
+        x u
+      - deltaGammaFirstSlotTraceFieldAt (fun _ : ℝ ↦ g) t₀ x
+        (g.leviCivita (extend E w) x u)
+  rw [deltaGammaContractionDerivAt_const, hfield, hpoint]
+  simp [extDerivFun_zero_at]
+
 /--
 Hessian identification for the covariant derivative of the first-slot `δΓ`
 trace-form field.
@@ -6018,6 +6044,53 @@ theorem deltaGammaContractionTraceHessianDerivativeAt_of_firstSlot_trace_extSeco
     (deltaGammaFirstSlotTraceFieldHessianAt_of_trace_extSecond
       (gt := gt) (t₀ := t₀) (x := x)
       hreg hgt hExt hCovDiff hNear hTrace₂ hgrad)
+
+theorem deltaGammaContractionTraceHessianDerivativeAt_of_firstSlot_entries_contMDiffAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hField : DeltaGammaFirstSlotTraceFieldCovariantDerivativeAt gt t₀ x)
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hExt :
+      ∀ a b c : TM x,
+        HasDerivAt
+          (fun t ↦
+            extDerivFun
+              (fun y : M ↦ (gt t).inner y (extend E b y) (extend E c y)) x a)
+          (extDerivFun
+            (fun y : M ↦ timeDerivAt gt t₀ y (extend E b y) (extend E c y))
+            x a) t₀)
+    (hNear :
+      ∀ᶠ y in nhds x,
+        MetricFlowRegularAt gt t₀ y ∧
+        CovTensor2ExtDifferentiableAt (timeDerivAt gt t₀) y ∧
+        (∀ a b c : TM y,
+          HasDerivAt
+            (fun t ↦
+              extDerivFun
+                (fun z : M ↦ (gt t).inner z (extend E b z) (extend E c z))
+                y a)
+            (extDerivFun
+              (fun z : M ↦ timeDerivAt gt t₀ z (extend E b z) (extend E c z))
+              y a) t₀))
+    (hEntries : TimeVariationTraceEntriesExtContMDiffAt gt t₀ x 2)
+    (hgrad :
+      let g : ClosedSmoothRiemannianMetric n M := gt t₀
+      let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+      let f : M → ℝ := fun y ↦ traceMetricVariationAt g H y
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x) :
+    DeltaGammaContractionTraceHessianDerivativeAt gt t₀ x := by
+  have hOld :=
+    timeVariationTraceEntriesExtContMDiffAt_two_old_regularities
+      (gt := gt) (t₀ := t₀) (x := x) hEntries
+  exact
+    deltaGammaContractionTraceHessianDerivativeAt_of_firstSlot_trace_extSecond
+      (gt := gt) (t₀ := t₀) (x := x)
+      hField hreg hgt hExt hOld.1 hNear
+      (traceMetricVariationExtSecondDifferentiableAt_timeDeriv_of_entries_contMDiffAt
+        (gt := gt) (t₀ := t₀) (x := x) hgt hEntries)
+      hgrad
 
 theorem deltaGammaDivergenceTraceInnerHessianDerivativeAt_of_innerTraceField
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
