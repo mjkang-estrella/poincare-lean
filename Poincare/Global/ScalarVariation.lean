@@ -2648,6 +2648,49 @@ private theorem extDerivFun_const_smul_at {f : M → ℝ} {x : M}
   exact hmul
 
 omit [T2Space M] in
+private theorem extDerivFun_add_sub_at {f g h : M → ℝ} {x : M}
+    (hf : MDifferentiableAt I 𝓘(ℝ) f x)
+    (hg : MDifferentiableAt I 𝓘(ℝ) g x)
+    (hh : MDifferentiableAt I 𝓘(ℝ) h x)
+    (v : TM x) :
+    extDerivFun (fun y : M ↦ f y + g y - h y) x v =
+      extDerivFun f x v + extDerivFun g x v - extDerivFun h x v := by
+  have hfg : MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ f y + g y) x :=
+    hf.add hg
+  have hneg : MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ -h y) x := by
+    simpa using hh.neg
+  have hsum := congrArg (fun L : TM x →L[ℝ] ℝ ↦ L v)
+    (extDerivFun_add hfg hneg)
+  have hfg' := congrArg (fun L : TM x →L[ℝ] ℝ ↦ L v)
+    (extDerivFun_add hf hg)
+  have hsum' :
+      extDerivFun ((fun y : M ↦ f y + g y) + fun y : M ↦ -h y) x v =
+        extDerivFun (fun y : M ↦ f y + g y) x v +
+          extDerivFun (fun y : M ↦ -h y) x v := by
+    simpa using hsum
+  have hfg'' :
+      extDerivFun (fun y : M ↦ f y + g y) x v =
+        extDerivFun f x v + extDerivFun g x v := by
+    simpa using hfg'
+  have hnegFun : (fun y : M ↦ -h y) = (-1 : ℝ) • h := by
+    funext y
+    simp
+  have hneg' : extDerivFun (fun y : M ↦ -h y) x v =
+      -extDerivFun h x v := by
+    rw [hnegFun]
+    have h := congrArg (fun L : TM x →L[ℝ] ℝ ↦ L v)
+      (extDerivFun_const_smul_at (n := n) (M := M) hh (-1 : ℝ))
+    simpa [Pi.smul_apply, smul_eq_mul] using h
+  have hfun :
+      (fun y : M ↦ f y + g y - h y) =
+        (fun y : M ↦ f y + g y) + fun y : M ↦ -h y := by
+    funext y
+    simp [sub_eq_add_neg]
+  rw [hfun]
+  rw [hsum', hfg'', hneg']
+  ring
+
+omit [T2Space M] in
 private theorem extDerivFun_sum_at {ι : Type} [DecidableEq ι]
     (s : Finset ι) (f : ι → M → ℝ) {x : M}
     (hf : ∀ i ∈ s, MDifferentiableAt I 𝓘(ℝ) (f i) x)
@@ -4727,6 +4770,94 @@ theorem gram_inv_deriv_contraction_eq_leviCivita_corrections
     covTensor2DerivAt g (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x v p q = 0 := by
   simp [covTensor2DerivAt, extDerivFun_zero_at]
 
+/--
+Spatial differentiability of the covariant derivative of a raw `(0,2)` tensor
+when all three tensor slots are transported by canonical extensions.
+-/
+def CovTensor2DerivExtDifferentiableAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M) : Prop :=
+  ∀ v p q : TM x,
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ covTensor2DerivAt g h y
+        (extend E v y) (extend E p y) (extend E q y)) x
+
+/--
+The closed second covariant derivative of a raw `(0,2)` tensor, obtained by
+differentiating `covTensor2DerivAt` and subtracting the three transported-slot
+Levi-Civita corrections.
+-/
+noncomputable def covTensor2SecondDerivAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (u v p q : TM x) : ℝ :=
+  extDerivFun
+      (fun y : M ↦ covTensor2DerivAt g h y
+        (extend E v y) (extend E p y) (extend E q y)) x u
+    - covTensor2DerivAt g h x (g.leviCivita (extend E v) x u) p q
+    - covTensor2DerivAt g h x v (g.leviCivita (extend E p) x u) q
+    - covTensor2DerivAt g h x v p (g.leviCivita (extend E q) x u)
+
+/-- The expanded right-hand side of differentiating a `covTensor2DerivAt` entry. -/
+noncomputable def covTensor2SecondDerivExpansionAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (u v p q : TM x) : ℝ :=
+  covTensor2SecondDerivAt g h x u v p q
+    + covTensor2DerivAt g h x (g.leviCivita (extend E v) x u) p q
+    + covTensor2DerivAt g h x v (g.leviCivita (extend E p) x u) q
+    + covTensor2DerivAt g h x v p (g.leviCivita (extend E q) x u)
+
+/-- Unfolding bridge from the raw derivative of `∇h` to `∇²h` plus corrections. -/
+theorem extDerivFun_covTensor2DerivAt_extend_eq_secondDerivExpansion
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (u v p q : TM x) :
+    extDerivFun
+        (fun y : M ↦ covTensor2DerivAt g h y
+          (extend E v y) (extend E p y) (extend E q y)) x u =
+      covTensor2SecondDerivExpansionAt g h x u v p q := by
+  unfold covTensor2SecondDerivExpansionAt covTensor2SecondDerivAt
+  ring
+
+theorem covTensor2DerivExtDifferentiableAt_zero
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    CovTensor2DerivExtDifferentiableAt g
+      (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x := by
+  intro v p q
+  have hzero :
+      (fun y : M ↦ covTensor2DerivAt g
+        (fun z : M ↦ fun _ _ : TM z ↦ (0 : ℝ)) y
+        (extend E v y) (extend E p y) (extend E q y)) =
+        fun _ : M ↦ (0 : ℝ) := by
+    funext y
+    simp
+  rw [hzero]
+  exact mdifferentiableAt_const
+
+@[simp] theorem covTensor2SecondDerivAt_zero
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (u v p q : TM x) :
+    covTensor2SecondDerivAt g
+      (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x u v p q = 0 := by
+  unfold covTensor2SecondDerivAt
+  have hzero :
+      (fun y : M ↦ covTensor2DerivAt g
+        (fun z : M ↦ fun _ _ : TM z ↦ (0 : ℝ)) y
+        (extend E v y) (extend E p y) (extend E q y)) =
+        fun _ : M ↦ (0 : ℝ) := by
+    funext y
+    simp
+  rw [hzero]
+  simp [extDerivFun_zero_at]
+
+@[simp] theorem covTensor2SecondDerivExpansionAt_zero
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (u v p q : TM x) :
+    covTensor2SecondDerivExpansionAt g
+      (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x u v p q = 0 := by
+  simp [covTensor2SecondDerivExpansionAt]
+
 theorem covTensor2DerivAt_add_deriv
     {g : ClosedSmoothRiemannianMetric n M}
     {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
@@ -5243,6 +5374,136 @@ theorem deltaGamma_koszul_eventually
     exact deltaGamma_koszul
       (gt := gt) (t₀ := t₀) (x := y)
       hreg hgt hExt (extend E v y) (extend E w y) (extend E z y)
+
+/--
+Exterior-derivative form of the neighborhood `δΓ` Koszul identity.
+
+The left side is still the product-rule output
+`2 * (g(∇δΓ,z) + δΓ-slot corrections)`.  The right side has each raw
+derivative of `∇h` rewritten as `∇²h` plus the three first-order slot
+corrections.
+-/
+theorem deltaGamma_koszul_extDerivFun
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hNear :
+      ∀ᶠ y in nhds x,
+        MetricFlowRegularAt gt t₀ y ∧
+        (∀ a b c : TM y,
+          HasDerivAt
+            (fun t ↦
+              extDerivFun
+                (fun z : M ↦ (gt t).inner z (extend E b z) (extend E c z))
+                y a)
+            (extDerivFun
+              (fun z : M ↦ timeDerivAt gt t₀ z (extend E b z) (extend E c z))
+              y a) t₀))
+    (hBridge : DeltaGammaEntryDerivativeBridgeAt gt t₀ x)
+    (hSecond :
+      CovTensor2DerivExtDifferentiableAt
+        (gt t₀) (timeDerivAt gt t₀) x)
+    (u v w z : TM x) :
+    2 *
+      ((gt t₀).inner x (covDeltaGammaDerivAt gt t₀ x u v w) z
+        + (gt t₀).inner x
+          (deltaGammaAt gt t₀ x
+            ((gt t₀).leviCivita (extend E v) x u) w) z
+        + (gt t₀).inner x
+          (deltaGammaAt gt t₀ x v
+            ((gt t₀).leviCivita (extend E w) x u)) z
+        + (gt t₀).inner x
+          (deltaGammaAt gt t₀ x v w)
+          ((gt t₀).leviCivita (extend E z) x u))
+      =
+        covTensor2SecondDerivExpansionAt
+            (gt t₀) (timeDerivAt gt t₀) x u v w z
+          + covTensor2SecondDerivExpansionAt
+            (gt t₀) (timeDerivAt gt t₀) x u w v z
+          - covTensor2SecondDerivExpansionAt
+            (gt t₀) (timeDerivAt gt t₀) x u z v w := by
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+  let S : M → ℝ := fun y : M ↦
+    g.inner y
+      (deltaGammaAt gt t₀ y (extend E v y) (extend E w y))
+      (extend E z y)
+  let A : M → ℝ := fun y : M ↦
+    covTensor2DerivAt g H y (extend E v y) (extend E w y) (extend E z y)
+  let B : M → ℝ := fun y : M ↦
+    covTensor2DerivAt g H y (extend E w y) (extend E v y) (extend E z y)
+  let C : M → ℝ := fun y : M ↦
+    covTensor2DerivAt g H y (extend E z y) (extend E v y) (extend E w y)
+  have hevent := deltaGamma_koszul_eventually
+    (gt := gt) (t₀ := t₀) (x := x) hgt hNear v w z
+  have hderiv :
+      extDerivFun (fun y : M ↦ 2 * S y) x u =
+        extDerivFun (fun y : M ↦ A y + B y - C y) x u := by
+    exact congrArg (fun L : TM x →L[ℝ] ℝ ↦ L u)
+      (CovariantDerivative.extDerivFun_congr (by
+        simpa [S, A, B, C, g, H] using hevent))
+  have hscale :
+      extDerivFun (fun y : M ↦ 2 * S y) x u =
+        2 * extDerivFun S x u := by
+    have h := congrArg (fun L : TM x →L[ℝ] ℝ ↦ L u)
+      (extDerivFun_const_smul_at
+        (n := n) (M := M) (f := S) (x := x)
+        (by simpa [S, g] using hBridge.mdifferentiable v z w)
+        (2 : ℝ))
+    simpa [Pi.smul_apply, smul_eq_mul] using h
+  have hentry :
+      extDerivFun S x u =
+        g.inner x (covDeltaGammaDerivAt gt t₀ x u v w) z
+        + g.inner x
+          (deltaGammaAt gt t₀ x (g.leviCivita (extend E v) x u) w) z
+        + g.inner x
+          (deltaGammaAt gt t₀ x v (g.leviCivita (extend E w) x u)) z
+        + g.inner x (deltaGammaAt gt t₀ x v w)
+          (g.leviCivita (extend E z) x u) := by
+    simpa [S, g] using hBridge.extDeriv_eq u v z w
+  have hleft :
+      extDerivFun (fun y : M ↦ 2 * S y) x u =
+        2 *
+          (g.inner x (covDeltaGammaDerivAt gt t₀ x u v w) z
+            + g.inner x
+              (deltaGammaAt gt t₀ x (g.leviCivita (extend E v) x u) w) z
+            + g.inner x
+              (deltaGammaAt gt t₀ x v (g.leviCivita (extend E w) x u)) z
+            + g.inner x (deltaGammaAt gt t₀ x v w)
+              (g.leviCivita (extend E z) x u)) := by
+    rw [hscale, hentry]
+  have hright :
+      extDerivFun (fun y : M ↦ A y + B y - C y) x u =
+        covTensor2SecondDerivExpansionAt g H x u v w z
+          + covTensor2SecondDerivExpansionAt g H x u w v z
+          - covTensor2SecondDerivExpansionAt g H x u z v w := by
+    rw [extDerivFun_add_sub_at
+      (n := n) (M := M)
+      (f := A) (g := B) (h := C) (x := x)
+      (by simpa [A, g, H] using hSecond v w z)
+      (by simpa [B, g, H] using hSecond w v z)
+      (by simpa [C, g, H] using hSecond z v w) u]
+    rw [extDerivFun_covTensor2DerivAt_extend_eq_secondDerivExpansion
+      (g := g) (h := H) (x := x) (u := u) (v := v) (p := w) (q := z)]
+    rw [extDerivFun_covTensor2DerivAt_extend_eq_secondDerivExpansion
+      (g := g) (h := H) (x := x) (u := u) (v := w) (p := v) (q := z)]
+    rw [extDerivFun_covTensor2DerivAt_extend_eq_secondDerivExpansion
+      (g := g) (h := H) (x := x) (u := u) (v := z) (p := v) (q := w)]
+  calc
+    2 *
+      (g.inner x (covDeltaGammaDerivAt gt t₀ x u v w) z
+        + g.inner x
+          (deltaGammaAt gt t₀ x (g.leviCivita (extend E v) x u) w) z
+        + g.inner x
+          (deltaGammaAt gt t₀ x v (g.leviCivita (extend E w) x u)) z
+        + g.inner x (deltaGammaAt gt t₀ x v w)
+          (g.leviCivita (extend E z) x u))
+        = extDerivFun (fun y : M ↦ 2 * S y) x u := hleft.symm
+    _ = extDerivFun (fun y : M ↦ A y + B y - C y) x u := hderiv
+    _ = covTensor2SecondDerivExpansionAt g H x u v w z
+          + covTensor2SecondDerivExpansionAt g H x u w v z
+          - covTensor2SecondDerivExpansionAt g H x u z v w := hright
 
 /--
 The divergence one-form of a raw metric variation:
