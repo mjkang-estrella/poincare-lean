@@ -9996,6 +9996,37 @@ theorem closedConnectionEntry_contMDiffAt_two
     (by simpa [W, Z] using hA) hQ2
 
 /--
+Metric-compatibility derivative of the scalar connection entry
+`g(∇_u z, q)`: the exterior derivative is the iterated connection entry plus
+the output-slot Levi-Civita correction.
+-/
+theorem closedConnectionEntry_extDerivFun_eq_iterated_add_output
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (v u z q : TM x) :
+    extDerivFun (closedConnectionEntryFieldAt g u z q) x v =
+      closedIteratedConnectionEntryFieldAt g u z x v q
+        + closedConnectionEntryFieldAt g u z
+          (g.leviCivita (extend E q) x v) x := by
+  let U : Π y : M, TM y := extend E u
+  let Z : Π y : M, TM y := extend E z
+  let Q : Π y : M, TM y := extend E q
+  let A : Π y : M, TM y := fun y ↦ g.leviCivita Z y (U y)
+  have hZ2 : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% Z) x := by
+    simpa [Z] using (FiberBundle.contMDiffAt_extend' (k := 2) I E z)
+  have hU : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% U) x := by
+    simpa [U] using (mdifferentiableAt_extend I E u)
+  have hA : MDiffAtTangentField A x := by
+    simpa [MDiffAtTangentField, A] using
+      (CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt
+        (cov := g.leviCivita) hZ2 hU)
+  have hQ : MDiffAtTangentField Q x := by
+    simpa [MDiffAtTangentField, Q] using (mdifferentiableAt_extend I E q)
+  have h := g.leviCivita_metricCompatibleAt x hA hQ v
+  simpa [closedConnectionEntryFieldAt, closedIteratedConnectionEntryFieldAt,
+    A, U, Z, Q] using h
+
+/--
 Corrected second directional derivative of a scalar field in canonical
 extension directions.  This is the scalar `∂∂` block after subtracting the
 first-order connection correction from the moving inner direction.
