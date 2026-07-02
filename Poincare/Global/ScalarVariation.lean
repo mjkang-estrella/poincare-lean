@@ -417,6 +417,36 @@ theorem deltaGammaAt_eq_of_hasDerivAt
   unfold deltaGammaAt
   exact hΓ.deriv
 
+/-- The canonical extension is additive in its seed tangent vector. -/
+theorem extend_tangent_add {x : M} (w w' : TM x) :
+    extend E (w + w') = extend E w + extend E w' := by
+  funext y
+  let e := trivializationAt E (TangentSpace I) x
+  have hx : x ∈ e.baseSet := FiberBundle.mem_baseSet_trivializationAt' x
+  have hcoord :
+      (e ⟨x, w + w'⟩).2 = (e ⟨x, w⟩).2 + (e ⟨x, w'⟩).2 := by
+    simpa using (e.linear ℝ hx).map_add w w'
+  change e.symm y ((e ⟨x, w + w'⟩).2) =
+    e.symm y ((e ⟨x, w⟩).2) + e.symm y ((e ⟨x, w'⟩).2)
+  rw [hcoord]
+  simpa [Trivialization.symmL_apply] using
+    (map_add (e.symmL ℝ y) ((e ⟨x, w⟩).2) ((e ⟨x, w'⟩).2))
+
+/-- The canonical extension is homogeneous in its seed tangent vector. -/
+theorem extend_tangent_smul {x : M} (c : ℝ) (w : TM x) :
+    extend E (c • w) = (fun _ : M ↦ c) • extend E w := by
+  funext y
+  let e := trivializationAt E (TangentSpace I) x
+  have hx : x ∈ e.baseSet := FiberBundle.mem_baseSet_trivializationAt' x
+  have hcoord :
+      (e ⟨x, c • w⟩).2 = c • (e ⟨x, w⟩).2 := by
+    simpa using (e.linear ℝ hx).map_smul c w
+  change e.symm y ((e ⟨x, c • w⟩).2) = c • e.symm y ((e ⟨x, w⟩).2)
+  rw [hcoord]
+  change (e.symmL ℝ y) (c • (e ⟨x, w⟩).2) =
+    c • (e.symmL ℝ y) ((e ⟨x, w⟩).2)
+  exact map_smul (e.symmL ℝ y) c ((e ⟨x, w⟩).2)
+
 /-- Additivity of `δΓ` in its direction slot. -/
 theorem deltaGammaAt_add_left
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
@@ -450,6 +480,52 @@ theorem deltaGammaAt_smul_left
         fun t ↦ c • (gt t).leviCivita (extend E w) x v := by
     funext t
     simp
+  rw [hfun]
+  exact deriv_fun_const_smul c (hΓ v w)
+
+/-- Additivity of `δΓ` in its differentiated-section slot. -/
+theorem deltaGammaAt_add_right
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hΓ : ConnectionValueTimeDifferentiableAt gt t₀ x)
+    (v w w' : TM x) :
+    deltaGammaAt gt t₀ x v (w + w') =
+      deltaGammaAt gt t₀ x v w + deltaGammaAt gt t₀ x v w' := by
+  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  unfold deltaGammaAt
+  have hfun :
+      (fun t ↦ (gt t).leviCivita (extend E (w + w')) x v) =
+        fun t ↦ (gt t).leviCivita (extend E w) x v +
+          (gt t).leviCivita (extend E w') x v := by
+    funext t
+    rw [extend_tangent_add (x := x) w w']
+    have hadd := (gt t).leviCivita.isCovariantDerivativeOnUniv.add
+      (by simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E w))
+      (by simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E w'))
+    simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L v) hadd
+  rw [hfun]
+  exact deriv_fun_add (hΓ v w) (hΓ v w')
+
+/-- Homogeneity of `δΓ` in its differentiated-section slot. -/
+theorem deltaGammaAt_smul_right
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hΓ : ConnectionValueTimeDifferentiableAt gt t₀ x)
+    (c : ℝ) (v w : TM x) :
+    deltaGammaAt gt t₀ x v (c • w) = c • deltaGammaAt gt t₀ x v w := by
+  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  unfold deltaGammaAt
+  have hfun :
+      (fun t ↦ (gt t).leviCivita (extend E (c • w)) x v) =
+        fun t ↦ c • (gt t).leviCivita (extend E w) x v := by
+    funext t
+    rw [extend_tangent_smul (x := x) c w]
+    have hsmul := (gt t).leviCivita.isCovariantDerivativeOnUniv.smul_const c
+      (by simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E w))
+    simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L v) hsmul
   rw [hfun]
   exact deriv_fun_const_smul c (hΓ v w)
 
