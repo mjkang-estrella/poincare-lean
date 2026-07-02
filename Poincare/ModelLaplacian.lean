@@ -31654,6 +31654,117 @@ end RicciFlow
 
 namespace RicciFlow
 
+/-- **Scalar curvature is differentiable from the Ricci-field trace**:
+if the metric is differentiable, invertible, and the Christoffel data are
+regular enough to make the Ricci tensor field differentiable, then
+`coordScalar = tr_g Ric` is differentiable at the base point. -/
+theorem differentiableAt_coordScalar_of_christoffel
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x) :
+    DifferentiableAt ℝ (fun y ↦ coordScalar G y) x := by
+  have hRic : DifferentiableAt ℝ (fun y ↦ coordRicciForm G y (hdiffΓ y)) x :=
+    differentiableAt_coordRicciForm_field hdiffΓ hdd
+  have htrace : DifferentiableAt ℝ
+      (tensorMetricTrace G (fun y ↦ coordRicciForm G y (hdiffΓ y))) x :=
+    differentiableAt_tensorMetricTrace hRic hinv hGd
+  have hfield : (fun y ↦ coordScalar G y)
+      = tensorMetricTrace G (fun y ↦ coordRicciForm G y (hdiffΓ y)) := by
+    funext y
+    exact (tensorMetricTrace_coordRicciForm hdiffΓ).symm
+  rw [hfield]
+  exact htrace
+
+/-- **Covariant derivative of a scalar multiple of the metric**:
+`∇(f g) = df ⊗ g`. The metric-compatibility identity cancels the
+`f·∇g` part, leaving only the ordinary derivative of the scalar factor. -/
+theorem covTensor2Deriv_smul_metric_field
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} {f : E → ℝ}
+    (hf : DifferentiableAt ℝ f x)
+    (hGd : DifferentiableAt ℝ G x)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : (G x).IsInvertible) (v p q : E) :
+    covTensor2Deriv G (fun y ↦ f y • G y) x v p q
+      = (fderiv ℝ f x v) * G x p q := by
+  unfold covTensor2Deriv
+  haveI : IsBoundedSMul ℝ (E →L[ℝ] ℝ) :=
+    IsBoundedSMul.of_norm_smul_le
+      (fun c (T : E →L[ℝ] ℝ) ↦ ContinuousLinearMap.opNorm_smul_le c T)
+  haveI : IsBoundedSMul ℝ (E →L[ℝ] E →L[ℝ] ℝ) :=
+    IsBoundedSMul.of_norm_smul_le
+      (fun c (T : E →L[ℝ] E →L[ℝ] ℝ) ↦ ContinuousLinearMap.opNorm_smul_le c T)
+  have hflat : ((fderiv ℝ (fun y ↦ f y • G y) x v) p q)
+      = f x * ((fderiv ℝ G x v) p q) + (fderiv ℝ f x v) * G x p q := by
+    have hDfull : fderiv ℝ (fun y ↦ f y • G y) x
+        = f x • fderiv ℝ G x + (fderiv ℝ f x).smulRight (G x) := by
+      exact fderiv_fun_smul (c := f) (f := G) hf hGd
+    have hD := congrArg (fun (L : E →L[ℝ] E →L[ℝ] E →L[ℝ] ℝ) ↦ L v)
+      hDfull
+    have hDapp := congrArg (fun (K : E →L[ℝ] E →L[ℝ] ℝ) ↦ K p q) hD
+    simpa only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
+      ContinuousLinearMap.smulRight_apply, smul_eq_mul, mul_comm, mul_left_comm, mul_assoc]
+      using hDapp
+  rw [hflat]
+  have hmc := coord_metric_compatible hGd hGsymm hinv v p q
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  rw [hmc]
+  ring
+
+/-- **Einstein field differentiates to scalar-gradient times the metric**:
+if `Ric = (R/n) g` as a tensor field, then
+`∇_v Ric(u,w) = d(R/n)(v) · g(u,w)`. -/
+theorem covRicciDeriv_eq_fderiv_coordScalar_div_finrank_mul_metric_of_einstein_field
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hEin : ∀ y : E,
+      coordRicciForm G y
+        (fun p ↦ differentiableAt_christoffelClosedOp (x := y) G (hG.of_le (by norm_num))
+          hinv p)
+        = (coordScalar G y / (Module.finrank ℝ E : ℝ)) • G y)
+    (v u w : E) :
+    covRicciDeriv G x v u w
+      = ((1 / (Module.finrank ℝ E : ℝ)) *
+          (fderiv ℝ (fun y ↦ coordScalar G y) x v)) * G x u w := by
+  let hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y :=
+    fun y p ↦ differentiableAt_christoffelClosedOp (x := y) G (hG.of_le (by norm_num))
+      hinv p
+  let hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x :=
+    fun p ↦ differentiableAt_fderiv_christoffelClosedOp G hG hinv p
+  let nR : ℝ := Module.finrank ℝ E
+  have hGd : DifferentiableAt ℝ G x := (hG.differentiable (by norm_num)).differentiableAt
+  have hRdiff : DifferentiableAt ℝ (fun y ↦ coordScalar G y) x :=
+    differentiableAt_coordScalar_of_christoffel hGd hinv hdiffΓ hdd
+  have hfdiv : DifferentiableAt ℝ (fun y ↦ coordScalar G y / nR) x := by
+    rw [show (fun y ↦ coordScalar G y / nR) =
+        fun y ↦ (1 / nR) * coordScalar G y by
+      funext y
+      ring]
+    exact hRdiff.const_mul (1 / nR)
+  have hdf : fderiv ℝ (fun y ↦ coordScalar G y / nR) x v
+      = (1 / nR) * (fderiv ℝ (fun y ↦ coordScalar G y) x v) := by
+    rw [show (fun y ↦ coordScalar G y / nR) =
+        fun y ↦ (1 / nR) * coordScalar G y by
+      funext y
+      ring]
+    rw [fderiv_const_mul hRdiff (1 / nR), ContinuousLinearMap.smul_apply, smul_eq_mul]
+  have hKd : DifferentiableAt ℝ (fun y ↦ coordRicciForm G y (hdiffΓ y)) x :=
+    differentiableAt_coordRicciForm_field hdiffΓ hdd
+  have hfield : (fun y ↦ coordRicciForm G y (hdiffΓ y))
+      = fun y ↦ (coordScalar G y / nR) • G y := by
+    funext y
+    exact hEin y
+  have hcov := covTensor2Deriv_coordRicciForm hdiffΓ hdd hKd v w u
+  rw [← hcov, hfield,
+    covTensor2Deriv_smul_metric_field hfdiv hGd hGsymm (hinv x) v w u,
+    hdf, hGsymm x w u]
+
 /--
 **Metric raising–lowering contraction.** Raising a covector's index with the
 inverse metric and then lowering it back against a vector `u` recovers the
@@ -31699,6 +31810,91 @@ theorem sum_raised_pair_eq
     exact Finset.sum_congr rfl (fun k _ ↦ (map_smul _ _ _).symm)
   rw [hlin, hraise, hGsymm u ((G x).inverse φ),
     (hinv.inverse_apply_eq.mp rfl).symm]
+
+/-- **Einstein divergence contraction**: under the field-level Einstein
+identity, `div Ric = (1/n) dR`. This is the raised-pair contraction of
+`∇Ric = d(R/n) ⊗ g`. -/
+theorem ricciDivergence_eq_one_div_finrank_mul_fderiv_coordScalar_of_einstein_field
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hEin : ∀ y : E,
+      coordRicciForm G y
+        (fun p ↦ differentiableAt_christoffelClosedOp (x := y) G (hG.of_le (by norm_num))
+          hinv p)
+        = (coordScalar G y / (Module.finrank ℝ E : ℝ)) • G y)
+    (u : E) :
+    ricciDivergence G x u
+      = (1 / (Module.finrank ℝ E : ℝ)) *
+          (fderiv ℝ (fun y ↦ coordScalar G y) x u) := by
+  let φ : E →L[ℝ] ℝ := fderiv ℝ (fun y ↦ coordScalar G y) x
+  let nR : ℝ := Module.finrank ℝ E
+  unfold ricciDivergence
+  calc
+    ∑ k, covRicciDeriv G x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord k)))
+        u ((Module.finBasis ℝ E) k)
+        = ∑ k, ((1 / nR) * φ ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord k))))
+          * G x u ((Module.finBasis ℝ E) k) := by
+          refine Finset.sum_congr rfl fun k _ ↦ ?_
+          exact covRicciDeriv_eq_fderiv_coordScalar_div_finrank_mul_metric_of_einstein_field
+            hG hGsymm hinv hEin
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k))) u ((Module.finBasis ℝ E) k)
+    _ = (1 / nR) * ∑ k, φ ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord k))) * G x u ((Module.finBasis ℝ E) k) := by
+          rw [Finset.mul_sum]
+          refine Finset.sum_congr rfl fun k _ ↦ ?_
+          ring
+    _ = (1 / nR) * φ u := by
+          have hsum := sum_raised_pair_eq G (hinv x) (hGsymm x) φ u
+          rw [show ∑ k, φ ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k))) * G x u ((Module.finBasis ℝ E) k)
+              = φ u by
+            simpa [smul_eq_mul] using hsum]
+
+/-- **Schur lemma, local model form**: in dimension at least three, a
+field-level Einstein metric has constant scalar curvature at the point:
+`dR_x = 0`. -/
+theorem schur_fderiv_coordScalar_eq_zero_of_einstein_field
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hn : 2 < Module.finrank ℝ E)
+    (hEin : ∀ y : E,
+      coordRicciForm G y
+        (fun p ↦ differentiableAt_christoffelClosedOp (x := y) G (hG.of_le (by norm_num))
+          hinv p)
+        = (coordScalar G y / (Module.finrank ℝ E : ℝ)) • G y) :
+    fderiv ℝ (fun y ↦ coordScalar G y) x = 0 := by
+  ext u
+  let nR : ℝ := Module.finrank ℝ E
+  have hdiv := ricciDivergence_eq_one_div_finrank_mul_fderiv_coordScalar_of_einstein_field
+    hG hGsymm hinv hEin (x := x) u
+  have hb := congrArg (fun (η : E →L[ℝ] ℝ) ↦ η u)
+    (fderiv_coordScalar_eq_two_ricciDivergenceForm_of_contDiff (x := x) hG hGsymm hinv)
+  simp only [ContinuousLinearMap.smul_apply, ricciDivergenceForm_apply, smul_eq_mul] at hb
+  rw [hdiv] at hb
+  have h0lt : 0 < Module.finrank ℝ E := lt_trans (by norm_num : 0 < 2) hn
+  have hn0nat : Module.finrank ℝ E ≠ 0 := Nat.ne_of_gt h0lt
+  have hn0 : nR ≠ 0 := by
+    dsimp [nR]
+    exact_mod_cast hn0nat
+  have hn2nat : Module.finrank ℝ E ≠ 2 := ne_of_gt hn
+  have hn2 : nR ≠ 2 := by
+    dsimp [nR]
+    exact_mod_cast hn2nat
+  have hb' := hb
+  field_simp [nR, hn0] at hb'
+  have hcoef :
+      (nR - 2) * ((fderiv ℝ (fun y ↦ coordScalar G y) x) u) = 0 := by
+    linarith
+  have hcoef_ne : nR - 2 ≠ 0 := sub_ne_zero.mpr hn2
+  have hzero : ((fderiv ℝ (fun y ↦ coordScalar G y) x) u) = 0 :=
+    (mul_eq_zero.mp hcoef).resolve_left hcoef_ne
+  simpa using hzero
 
 end RicciFlow
 
