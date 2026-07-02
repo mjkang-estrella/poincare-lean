@@ -6,7 +6,7 @@
     "workers": "codex exec, gpt-5.5, reasoning=xhigh",
     "prime_directive": "Never fabricate completion. The gate (compile + no sorry/axiom + non-vacuity + frozen statement) is the only judge.",
     "structural_finding": "The single-chart model (Poincare/ModelLaplacian.lean etc., ~710 thms) is at its structural ceiling: it cannot state global objects (closed 3-manifold, S^3, homeomorphism, integration, Betti numbers). The whole proof requires a new manifold-level layer (tier M) built on Mathlib's smooth-manifold library, with the local model results ported as chart-level lemmas.",
-    "current_goal": "ACHIEVED 2026-07-01: closedLeviCivitaConnection_contMDiff on main, gate PASS, curvature layer hypothesis-free. Next candidate goal: Hessian symmetry + HamiltonScalarEvolutionProgram port."
+    "current_goal": "GOAL 2 (set 2026-07-01, continuing): prove HamiltonScalarEvolutionProgram foundations — (a) hessianAt_symm (M1-hessian-symmetry), (b) metric time-derivative vocabulary (M3-evolution-ingredients), then (c) the Lichnerowicz variation formula and (d) the scalar-evolution theorem itself. Iterate until (a)+(b) merged, then spec (c)."
   },
   "tiers": {
     "L": "Local model (single chart) — finish remaining genuine local threads; the porting source",
@@ -268,6 +268,32 @@
       ],
       "difficulty": "medium",
       "result": "DONE 2026-07-01, commit 384d6dd9, gate PASS. SatisfiesHamiltonScalarEvolutionAt + iff, Ricci-flat vanishing chain (ricciNormSqAt_eq_zero, scalarAt/laplacian vanish), hamilton_scalar_evolution_static_flat sanity, HamiltonScalarEvolutionProgram (documented unproven port target)."
+    },
+    {
+      "id": "M1-hessian-symmetry",
+      "tier": "M1",
+      "deps": [
+        "M1-lc-regularity"
+      ],
+      "status": "open",
+      "files": [
+        "Poincare/Global/HessianSymmetry.lean"
+      ],
+      "difficulty": "hard",
+      "title": "Covariant Hessian symmetry"
+    },
+    {
+      "id": "M3-evolution-ingredients",
+      "tier": "M3",
+      "deps": [
+        "M3-scalar-evolution-statement"
+      ],
+      "status": "open",
+      "files": [
+        "Poincare/Global/MetricVariation.lean"
+      ],
+      "difficulty": "medium",
+      "title": "Metric time-derivative vocabulary"
     }
   ]
 }
