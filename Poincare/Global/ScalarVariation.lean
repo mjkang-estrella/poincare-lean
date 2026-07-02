@@ -375,6 +375,42 @@ theorem deriv_scalarAt_eq_trace_of_ricciEndoHasDerivAt
 
 end ClosedSmoothRiemannianMetric
 
+/-- The metric time derivative, packaged as a continuous bilinear form. -/
+noncomputable def timeDerivContinuousAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (hgt : TimeDifferentiableAt gt t₀ x) :
+    TM x →L[ℝ] TM x →L[ℝ] ℝ :=
+  letI : T2Space (TM x) := inferInstanceAs (T2Space E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  LinearMap.toContinuousLinearMap
+    (((LinearMap.toContinuousLinearMap :
+        (TM x →ₗ[ℝ] ℝ) ≃ₗ[ℝ] (TM x →L[ℝ] ℝ)).toLinearMap) ∘ₗ
+      timeDerivBilinAt gt t₀ x hgt)
+
+omit [T2Space M] in
+@[simp] theorem timeDerivContinuousAt_apply
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (hgt : TimeDifferentiableAt gt t₀ x) (v w : TM x) :
+    timeDerivContinuousAt gt t₀ x hgt v w = timeDerivAt gt t₀ x v w := by
+  simp [timeDerivContinuousAt, timeDerivBilinAt]
+
+omit [T2Space M] in
+/-- Pointwise time differentiability of a metric gives a derivative of the
+metric tensor as a continuous bilinear form on the fixed tangent fiber. -/
+theorem hasDerivAt_inner_of_timeDifferentiableAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hgt : TimeDifferentiableAt gt t₀ x) :
+    HasDerivAt (fun t ↦ (gt t).inner x)
+      (timeDerivContinuousAt gt t₀ x hgt) t₀ := by
+  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  apply RicciFlow.RicciFlow.hasDerivAt_clm_of_forall_apply'
+  intro v
+  apply RicciFlow.RicciFlow.hasDerivAt_clm_of_forall_apply'
+  intro w
+  simpa [timeDerivAt] using (hgt v w).hasDerivAt
+
 /--
 Honest time differentiability hypothesis for canonical connection values on
 canonical extended sections.
@@ -1090,6 +1126,163 @@ noncomputable def covTensor2DerivAt
     (v p q : TM x) :
     covTensor2DerivAt g (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x v p q = 0 := by
   simp [covTensor2DerivAt, extDerivFun_zero_at]
+
+/--
+The closed Koszul master identity for the connection variation.
+
+The two extra hypotheses are the honest analytic product rules not implied by
+pointwise `TimeDifferentiableAt` alone: differentiating the spatial
+`extDerivFun` terms through the time parameter, and differentiating the
+metric pairing of the time-varying connection value.  The conclusion is the
+coordinate-free variation formula
+`2 g(δΓ(v,w),z) = (∇_v h)(w,z)+(∇_w h)(v,z)-(∇_z h)(v,w)`.
+-/
+theorem deltaGamma_koszul
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hExt :
+      ∀ a b c : TM x,
+        HasDerivAt
+          (fun t ↦
+            extDerivFun
+              (fun y : M ↦ (gt t).inner y (extend E b y) (extend E c y)) x a)
+          (extDerivFun
+            (fun y : M ↦ timeDerivAt gt t₀ y (extend E b y) (extend E c y))
+            x a) t₀)
+    (v w z : TM x) :
+    2 * (gt t₀).inner x (deltaGammaAt gt t₀ x v w) z =
+      covTensor2DerivAt (gt t₀) (timeDerivAt gt t₀) x v w z
+        + covTensor2DerivAt (gt t₀) (timeDerivAt gt t₀) x w v z
+        - covTensor2DerivAt (gt t₀) (timeDerivAt gt t₀) x z v w := by
+  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  let X : ∀ y : M, TM y := extend E v
+  let Y : ∀ y : M, TM y := extend E w
+  let Z : ∀ y : M, TM y := extend E z
+  let Γvw : TM x := (gt t₀).leviCivita Y x v
+  let δΓvw : TM x := deltaGammaAt gt t₀ x v w
+  have hΓ : HasDerivAt (fun t ↦ (gt t).leviCivita Y x v) δΓvw t₀ := by
+    have h := (hreg.connection x v w).hasDerivAt
+    simpa [Y, δΓvw, deltaGammaAt] using h
+  have hinner := hasDerivAt_inner_of_timeDifferentiableAt (hgt x)
+  have hpairCLM :
+      HasDerivAt (fun t ↦ (gt t).inner x ((gt t).leviCivita Y x v))
+        (timeDerivContinuousAt gt t₀ x (hgt x) Γvw +
+          (gt t₀).inner x δΓvw) t₀ := by
+    simpa [Γvw, δΓvw] using hinner.clm_apply hΓ
+  have hpair :
+      HasDerivAt
+        (fun t ↦ (gt t).inner x ((gt t).leviCivita Y x v) z)
+        (timeDerivAt gt t₀ x Γvw z + (gt t₀).inner x δΓvw z) t₀ := by
+    have hz : HasDerivAt (fun _ : ℝ ↦ z) 0 t₀ := hasDerivAt_const t₀ z
+    simpa [Γvw] using hpairCLM.clm_apply hz
+  have hleft :
+      HasDerivAt
+        (fun t ↦ 2 * (gt t).inner x ((gt t).leviCivita Y x v) z)
+        (2 * (timeDerivAt gt t₀ x Γvw z + (gt t₀).inner x δΓvw z)) t₀ :=
+    hpair.const_mul 2
+  let Bvw : TM x := VectorField.mlieBracket I X Y x
+  let Bvz : TM x := VectorField.mlieBracket I X Z x
+  let Bwz : TM x := VectorField.mlieBracket I Y Z x
+  let rhs : ℝ → ℝ := fun t ↦
+    extDerivFun (fun y : M ↦ (gt t).inner y (Y y) (Z y)) x v
+      + extDerivFun (fun y : M ↦ (gt t).inner y (X y) (Z y)) x w
+      - extDerivFun (fun y : M ↦ (gt t).inner y (X y) (Y y)) x z
+      + (gt t).inner x Bvw z
+      - (gt t).inner x Bvz w
+      - (gt t).inner x Bwz v
+  let rhs' : ℝ :=
+    extDerivFun (fun y : M ↦ timeDerivAt gt t₀ y (Y y) (Z y)) x v
+      + extDerivFun (fun y : M ↦ timeDerivAt gt t₀ y (X y) (Z y)) x w
+      - extDerivFun (fun y : M ↦ timeDerivAt gt t₀ y (X y) (Y y)) x z
+      + timeDerivAt gt t₀ x Bvw z
+      - timeDerivAt gt t₀ x Bvz w
+      - timeDerivAt gt t₀ x Bwz v
+  have hright : HasDerivAt rhs rhs' t₀ := by
+    have h1 := hExt v w z
+    have h2 := hExt w v z
+    have h3 := hExt z v w
+    have h4 : HasDerivAt (fun t ↦ (gt t).inner x Bvw z)
+        (timeDerivAt gt t₀ x Bvw z) t₀ := by
+      simpa [timeDerivAt] using (hgt x Bvw z).hasDerivAt
+    have h5 : HasDerivAt (fun t ↦ (gt t).inner x Bvz w)
+        (timeDerivAt gt t₀ x Bvz w) t₀ := by
+      simpa [timeDerivAt] using (hgt x Bvz w).hasDerivAt
+    have h6 : HasDerivAt (fun t ↦ (gt t).inner x Bwz v)
+        (timeDerivAt gt t₀ x Bwz v) t₀ := by
+      simpa [timeDerivAt] using (hgt x Bwz v).hasDerivAt
+    simpa [rhs, rhs', X, Y, Z, Bvw, Bvz, Bwz] using
+      (((h1.add h2).sub h3).add h4).sub h5 |>.sub h6
+  have hkoszul_fun :
+      (fun t ↦ 2 * (gt t).inner x ((gt t).leviCivita Y x v) z) = rhs := by
+    funext t
+    have hK := CovariantDerivative.koszul_formula
+      (g := (gt t).inner) (cov := (gt t).leviCivita) (x := x)
+      ((gt t).inner_symm x)
+      ((gt t).leviCivita_metricCompatibleAt x)
+      ((gt t).leviCivita_torsionFreeAt x)
+      (X := X) (Y := Y) (Z := Z)
+      (by simpa [X] using (mdifferentiableAt_extend ..))
+      (by simpa [Y] using (mdifferentiableAt_extend ..))
+      (by simpa [Z] using (mdifferentiableAt_extend ..))
+    simpa [rhs, X, Y, Z] using hK
+  have hleft_on_rhs : HasDerivAt rhs
+      (2 * (timeDerivAt gt t₀ x Γvw z + (gt t₀).inner x δΓvw z)) t₀ := by
+    simpa [hkoszul_fun] using hleft
+  have hderiv :
+      2 * (timeDerivAt gt t₀ x Γvw z + (gt t₀).inner x δΓvw z) = rhs' :=
+    hleft_on_rhs.unique hright
+  have hBvw :
+      Bvw = Γvw - (gt t₀).leviCivita X x w := by
+    have ht := (gt t₀).leviCivita_torsionFreeAt x
+      (X := X) (Y := Y)
+      (by simpa [X] using (mdifferentiableAt_extend ..))
+      (by simpa [Y] using (mdifferentiableAt_extend ..))
+    simpa [Bvw, Γvw, X, Y] using ht.symm
+  have hBvz :
+      Bvz = (gt t₀).leviCivita Z x v - (gt t₀).leviCivita X x z := by
+    have ht := (gt t₀).leviCivita_torsionFreeAt x
+      (X := X) (Y := Z)
+      (by simpa [X] using (mdifferentiableAt_extend ..))
+      (by simpa [Z] using (mdifferentiableAt_extend ..))
+    simpa [Bvz, X, Z] using ht.symm
+  have hBwz :
+      Bwz = (gt t₀).leviCivita Z x w - (gt t₀).leviCivita Y x z := by
+    have ht := (gt t₀).leviCivita_torsionFreeAt x
+      (X := Y) (Y := Z)
+      (by simpa [Y] using (mdifferentiableAt_extend ..))
+      (by simpa [Z] using (mdifferentiableAt_extend ..))
+    simpa [Bwz, Y, Z] using ht.symm
+  have hcov :
+      covTensor2DerivAt (gt t₀) (timeDerivAt gt t₀) x v w z
+        + covTensor2DerivAt (gt t₀) (timeDerivAt gt t₀) x w v z
+        - covTensor2DerivAt (gt t₀) (timeDerivAt gt t₀) x z v w =
+          rhs' - 2 * timeDerivAt gt t₀ x Γvw z := by
+    have hsub_left : ∀ a b c : TM x,
+        timeDerivAt gt t₀ x (a - b) c =
+          timeDerivAt gt t₀ x a c - timeDerivAt gt t₀ x b c := by
+      intro a b c
+      have hneg :
+          timeDerivAt gt t₀ x (-b) c = -timeDerivAt gt t₀ x b c := by
+        simpa using (timeDerivAt_smul_left (hgt x) (-1 : ℝ) b c)
+      rw [sub_eq_add_neg, timeDerivAt_add_left (hgt x)]
+      rw [hneg]
+      ring
+    simp only [covTensor2DerivAt, rhs', X, Y, Z, Γvw]
+    rw [hBvw, hBvz, hBwz]
+    rw [hsub_left Γvw ((gt t₀).leviCivita X x w) z]
+    rw [hsub_left ((gt t₀).leviCivita Z x v) ((gt t₀).leviCivita X x z) w]
+    rw [hsub_left ((gt t₀).leviCivita Z x w) ((gt t₀).leviCivita Y x z) v]
+    rw [timeDerivAt_symm gt t₀ x w ((gt t₀).leviCivita Z x v)]
+    rw [timeDerivAt_symm gt t₀ x v ((gt t₀).leviCivita Z x w)]
+    rw [timeDerivAt_symm gt t₀ x v ((gt t₀).leviCivita Y x z)]
+    simp only [X, Y, Z, Γvw]
+    ring_nf
+  rw [hcov]
+  nlinarith
 
 /--
 The divergence one-form of a raw metric variation:
