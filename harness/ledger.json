@@ -82,11 +82,12 @@
       "deps": [
         "M0-gap-survey"
       ],
-      "status": "open",
+      "status": "done",
       "files": [
         "Poincare/Global/RiemannianContext.lean"
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "result": "DONE 2026-07-01, commit 2d32c467, gate PASS. Poincare.ClosedSmoothRiemannianMetric (abbrev over ContMDiffRiemannianMetric) + derived RiemannianBundle/IsContMDiffRiemannianBundle/EMetricSpace/IsRiemannianManifold/MetricSpace chain; induced_edist_ne_top via clopen argument (compact+connected => finite distances)."
     },
     {
       "id": "M1-levi-civita",
@@ -96,7 +97,7 @@
       "deps": [
         "M1-riemannian-context"
       ],
-      "status": "blocked",
+      "status": "open",
       "files": [],
       "difficulty": "hard"
     },
