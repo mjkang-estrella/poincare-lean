@@ -31654,6 +31654,31 @@ end RicciFlow
 
 namespace RicciFlow
 
+/-- **Scalar curvature is differentiable from the Ricci-field trace**:
+if the metric is differentiable, invertible, and the Christoffel data are
+regular enough to make the Ricci tensor field differentiable, then
+`coordScalar = tr_g Ric` is differentiable at the base point. -/
+theorem differentiableAt_coordScalar_of_christoffel
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E}
+    (hGd : DifferentiableAt ℝ G x)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hdiffΓ : ∀ (y : E) (p : E),
+      DifferentiableAt ℝ (fun z ↦ christoffelClosedOp G z p) y)
+    (hdd : ∀ p : E, DifferentiableAt ℝ
+      (fun y ↦ fderiv ℝ (fun z ↦ christoffelClosedOp G z p) y) x) :
+    DifferentiableAt ℝ (fun y ↦ coordScalar G y) x := by
+  have hRic : DifferentiableAt ℝ (fun y ↦ coordRicciForm G y (hdiffΓ y)) x :=
+    differentiableAt_coordRicciForm_field hdiffΓ hdd
+  have htrace : DifferentiableAt ℝ
+      (tensorMetricTrace G (fun y ↦ coordRicciForm G y (hdiffΓ y))) x :=
+    differentiableAt_tensorMetricTrace hRic hinv hGd
+  have hfield : (fun y ↦ coordScalar G y)
+      = tensorMetricTrace G (fun y ↦ coordRicciForm G y (hdiffΓ y)) := by
+    funext y
+    exact (tensorMetricTrace_coordRicciForm hdiffΓ).symm
+  rw [hfield]
+  exact htrace
+
 /--
 **Metric raising–lowering contraction.** Raising a covector's index with the
 inverse metric and then lowering it back against a vector `u` recovers the
