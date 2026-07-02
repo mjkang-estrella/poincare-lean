@@ -793,6 +793,7 @@ theorem metricVariationRicciPairingAt_smul
   unfold metricVariationRicciPairingAt
   simp
 
+omit [T2Space M] [IsManifold I ∞ M] in
 private theorem extDerivFun_zero_at (x : M) :
     (extDerivFun (fun _ : M ↦ (0 : ℝ)) x : TM x →L[ℝ] ℝ) = 0 := by
   unfold extDerivFun
