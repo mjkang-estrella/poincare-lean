@@ -1,4 +1,5 @@
 import Poincare.Global.MetricVariation
+import Poincare.Global.Laplacian
 import Poincare.Global.RicciNorm
 
 /-!
@@ -1141,5 +1142,95 @@ noncomputable def tensorDoubleDivergenceAt
     inferInstanceAs (FiniteDimensional ℝ E)
   unfold tensorDoubleDivergenceAt
   simp [tensorDivergenceOneFormAt_zero, extDerivFun_zero_at]
+
+/--
+First closed Lichnerowicz assembly, with the two remaining algebraic/analytic
+bridges stated as honest named obligations.
+
+Open obligation `hRaiseTrace`: the trace contribution from differentiating the
+metric inverse is `-⟨h,Ric⟩`.
+
+Open obligation `hDeltaGammaTrace`: the metric-raised trace of the `δΓ`
+contraction formula is the double-divergence minus Laplacian trace term.  This
+is the closed analogue of the model
+`ricciDeriv_raised_trace_contracted_lichnerowicz`, whose core is the
+`deltaGamma_koszul`/inner-trace keystone.
+-/
+theorem scalarVariation_lichnerowicz_shape
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hRaiseTrace :
+      LinearMap.trace ℝ (TM x)
+        ((raise'.comp ((gt t₀).ricciDualContinuousAt x) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x)
+        = -metricVariationRicciPairingAt (gt t₀) (timeDerivAt gt t₀) x)
+    (hDeltaGammaTrace :
+      let hRic : ∀ u w : TM x,
+          HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+            (deltaRicciAt gt t₀ x u w) t₀ :=
+        fun u w ↦ ricciVariation_eq_deltaGamma_contractions' hreg u w
+      LinearMap.trace ℝ (TM x)
+        (((((gt t₀).metricRaiseContinuousAt x).comp
+            (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+              (gt := gt) (t₀ := t₀) (x := x)
+              (deltaRicciAt gt t₀ x) hRic)) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x)
+        = tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+          - (gt t₀).laplacianAt
+            (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x) :
+    deriv (fun t ↦ (gt t).scalarAt x) t₀ =
+      tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+        - (gt t₀).laplacianAt
+          (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x
+        - metricVariationRicciPairingAt (gt t₀) (timeDerivAt gt t₀) x := by
+  let hRic : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+        (deltaRicciAt gt t₀ x u w) t₀ :=
+    fun u w ↦ ricciVariation_eq_deltaGamma_contractions' hreg u w
+  have hscalar :=
+    deriv_scalarAt_eq_trace_deltaRicciAt_of_metricFlowRegularAt
+      (gt := gt) (t₀ := t₀) (x := x) (raise' := raise') hreg hRaise
+  have hscalar' :
+      deriv (fun t ↦ (gt t).scalarAt x) t₀ =
+        LinearMap.trace ℝ (TM x)
+          (((raise'.comp ((gt t₀).ricciDualContinuousAt x) +
+              ((gt t₀).metricRaiseContinuousAt x).comp
+                (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+                  (gt := gt) (t₀ := t₀) (x := x)
+                  (deltaRicciAt gt t₀ x) hRic)) : TM x →L[ℝ] TM x) :
+            TM x →ₗ[ℝ] TM x) := by
+    simpa [hRic] using hscalar
+  rw [hscalar']
+  change
+      LinearMap.trace ℝ (TM x)
+          (((raise'.comp ((gt t₀).ricciDualContinuousAt x) : TM x →L[ℝ] TM x) :
+              TM x →ₗ[ℝ] TM x) +
+            (((((gt t₀).metricRaiseContinuousAt x).comp
+                (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+                  (gt := gt) (t₀ := t₀) (x := x)
+                  (deltaRicciAt gt t₀ x) hRic)) : TM x →L[ℝ] TM x) :
+              TM x →ₗ[ℝ] TM x)) =
+        tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+          - (gt t₀).laplacianAt
+            (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x
+          - metricVariationRicciPairingAt (gt t₀) (timeDerivAt gt t₀) x
+  rw [map_add]
+  rw [hRaiseTrace]
+  rw [show
+      LinearMap.trace ℝ (TM x)
+        (((((gt t₀).metricRaiseContinuousAt x).comp
+            (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+              (gt := gt) (t₀ := t₀) (x := x)
+              (deltaRicciAt gt t₀ x) hRic)) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x)
+        = tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+          - (gt t₀).laplacianAt
+            (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x by
+      simpa [hRic] using hDeltaGammaTrace]
+  ring
 
 end Poincare

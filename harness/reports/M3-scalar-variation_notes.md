@@ -89,3 +89,22 @@ Remaining work, with exact Lean statement targets:
 6. Specialize the formula to Ricci flow:
    `theorem satisfiesHamiltonScalarEvolutionAt_of_ricciFlow_variation ... : IsClosedRicciFlowSolutionAt gt t₀ x -> SatisfiesHamiltonScalarEvolutionAt gt t₀ x`
    by substituting `timeDerivAt gt t₀ x = -2 Ric` and using the closed Bianchi identity, as in `hamilton_scalar_evolution_of_bianchi`.
+
+Status from task `M3-scalar-variation-5`:
+
+- Done: added verified theorem `scalarVariation_lichnerowicz_shape` in
+  `Poincare/Global/ScalarVariation.lean`.  It assembles the existing scalar
+  derivative trace theorem with the Lichnerowicz RHS vocabulary and uses
+  `h = timeDerivAt gt t₀`.
+- The theorem keeps two explicit open obligations, both used in the proof:
+  `hRaiseTrace`, identifying the derivative of metric raising with
+  `-metricVariationRicciPairingAt`, and `hDeltaGammaTrace`, identifying the
+  raised `deltaRicciAt` trace with `tensorDoubleDivergenceAt - laplacianAt
+  (traceMetricVariationAt ...)`.
+- The closed `deltaGamma_koszul` master identity and its inner-trace
+  contractions remain the real next proof target.  The current theorem is the
+  honest assembly point they should discharge, mirroring the model chain
+  `deltaGamma_innerTrace_eq` ->
+  `ricciDeriv_raised_trace_contracted_lichnerowicz`.
+- Verified: `lake build Poincare.Global.ScalarVariation` succeeds after this
+  assembly theorem.
