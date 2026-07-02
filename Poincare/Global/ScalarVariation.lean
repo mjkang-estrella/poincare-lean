@@ -2022,6 +2022,103 @@ noncomputable def tensorDoubleDivergenceAt
   simp [tensorDivergenceOneFormAt_zero, extDerivFun_zero_at]
 
 /--
+Exact divergence assembly for the first `δΓ` contraction:
+the divergence of the inner-trace one-form gives
+`div div h - 1/2 Δ tr h`.
+-/
+def DeltaGammaDivergenceTraceAssemblyAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop :=
+  (letI : FiniteDimensional ℝ (TM x) :=
+      inferInstanceAs (FiniteDimensional ℝ E)
+    ∑ j, deltaGammaDivergenceAt gt t₀ x ((Module.finBasis ℝ (TM x)) j)
+      (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord j)))
+    =
+      tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+        - (1 / 2 : ℝ) * (gt t₀).laplacianAt
+          (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x
+
+/--
+Exact divergence assembly for the second `δΓ` contraction:
+the trace derivative contributes the remaining `1/2 Δ tr h`.
+-/
+def DeltaGammaContractionTraceAssemblyAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop :=
+  (letI : FiniteDimensional ℝ (TM x) :=
+      inferInstanceAs (FiniteDimensional ℝ E)
+    ∑ j, deltaGammaContractionDerivAt gt t₀ x ((Module.finBasis ℝ (TM x)) j)
+      (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord j)))
+    =
+      (1 / 2 : ℝ) * (gt t₀).laplacianAt
+        (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x
+
+theorem deltaRicciAt_raised_trace_eq_doubleDivergence_sub_laplacian
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (hDiv : DeltaGammaDivergenceTraceAssemblyAt gt t₀ x)
+    (hCon : DeltaGammaContractionTraceAssemblyAt gt t₀ x) :
+    (letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+      ∑ j, deltaRicciAt gt t₀ x ((Module.finBasis ℝ (TM x)) j)
+        (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord j)))
+      =
+        tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+          - (gt t₀).laplacianAt
+            (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x := by
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun j ↦ metricDualVectorAt (gt t₀) x (b.coord j)
+  let L : ℝ := (gt t₀).laplacianAt
+    (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x
+  have hsplit := deltaRicciAt_raised_trace_eq_deltaGamma_contractions gt t₀ x
+  change (∑ j, deltaRicciAt gt t₀ x (b j) (sharp j)) =
+    tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x - L
+  change (∑ j, deltaRicciAt gt t₀ x (b j) (sharp j)) =
+      (∑ j, deltaGammaDivergenceAt gt t₀ x (b j) (sharp j)) -
+        (∑ j, deltaGammaContractionDerivAt gt t₀ x (b j) (sharp j)) at hsplit
+  rw [hsplit]
+  have hDiv' :
+      (∑ j, deltaGammaDivergenceAt gt t₀ x (b j) (sharp j)) =
+        tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+          - (1 / 2 : ℝ) * L := by
+    simpa [DeltaGammaDivergenceTraceAssemblyAt, b, sharp, L] using hDiv
+  have hCon' :
+      (∑ j, deltaGammaContractionDerivAt gt t₀ x (b j) (sharp j)) =
+        (1 / 2 : ℝ) * L := by
+    simpa [DeltaGammaContractionTraceAssemblyAt, b, sharp, L] using hCon
+  rw [hDiv', hCon']
+  ring
+
+theorem hDeltaGammaTrace
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hDiv : DeltaGammaDivergenceTraceAssemblyAt gt t₀ x)
+    (hCon : DeltaGammaContractionTraceAssemblyAt gt t₀ x) :
+      let hRic : ∀ u w : TM x,
+          HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+            (deltaRicciAt gt t₀ x u w) t₀ :=
+        fun u w ↦ ricciVariation_eq_deltaGamma_contractions' hreg u w
+      LinearMap.trace ℝ (TM x)
+        (((((gt t₀).metricRaiseContinuousAt x).comp
+            (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+              (gt := gt) (t₀ := t₀) (x := x)
+              (deltaRicciAt gt t₀ x) hRic)) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x)
+        = tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+          - (gt t₀).laplacianAt
+            (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x := by
+  let hRic : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+        (deltaRicciAt gt t₀ x u w) t₀ :=
+    fun u w ↦ ricciVariation_eq_deltaGamma_contractions' hreg u w
+  have htrace :=
+    trace_metricRaise_deltaRicciAt_eq_sum (gt := gt) (t₀ := t₀) (x := x) hreg
+  have hassembly :=
+    deltaRicciAt_raised_trace_eq_doubleDivergence_sub_laplacian
+      gt t₀ x hDiv hCon
+  simpa [hRic] using htrace.trans hassembly
+
+/--
 First closed Lichnerowicz assembly, with the two remaining algebraic/analytic
 bridges stated as honest named obligations.
 
@@ -2148,5 +2245,29 @@ theorem scalarVariation_lichnerowicz_shape'
     (metricRaise_trace_ricciDualContinuousAt_eq_neg
       (gt := gt) (t₀ := t₀) (x := x) hgt hRaise)
     hDeltaGammaTrace
+
+/--
+Closed scalar variation in Lichnerowicz form after the raised `δRic` trace is
+assembled from the two named `δΓ` divergence contractions.
+-/
+theorem scalarVariation_lichnerowicz
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : TimeDifferentiableAt gt t₀ x)
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hDiv : DeltaGammaDivergenceTraceAssemblyAt gt t₀ x)
+    (hCon : DeltaGammaContractionTraceAssemblyAt gt t₀ x) :
+    deriv (fun t ↦ (gt t).scalarAt x) t₀ =
+      tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+        - (gt t₀).laplacianAt
+          (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x
+        - metricVariationRicciPairingAt (gt t₀) (timeDerivAt gt t₀) x :=
+  scalarVariation_lichnerowicz_shape'
+    (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
+    hreg hgt hRaise
+    (hDeltaGammaTrace (gt := gt) (t₀ := t₀) (x := x) hreg hDiv hCon)
 
 end Poincare
