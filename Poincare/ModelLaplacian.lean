@@ -31855,6 +31855,47 @@ theorem ricciDivergence_eq_one_div_finrank_mul_fderiv_coordScalar_of_einstein_fi
               = φ u by
             simpa [smul_eq_mul] using hsum]
 
+/-- **Schur lemma, local model form**: in dimension at least three, a
+field-level Einstein metric has constant scalar curvature at the point:
+`dR_x = 0`. -/
+theorem schur_fderiv_coordScalar_eq_zero_of_einstein_field
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hn : 2 < Module.finrank ℝ E)
+    (hEin : ∀ y : E,
+      coordRicciForm G y
+        (fun p ↦ differentiableAt_christoffelClosedOp (x := y) G (hG.of_le (by norm_num))
+          hinv p)
+        = (coordScalar G y / (Module.finrank ℝ E : ℝ)) • G y) :
+    fderiv ℝ (fun y ↦ coordScalar G y) x = 0 := by
+  ext u
+  let nR : ℝ := Module.finrank ℝ E
+  have hdiv := ricciDivergence_eq_one_div_finrank_mul_fderiv_coordScalar_of_einstein_field
+    hG hGsymm hinv hEin (x := x) u
+  have hb := congrArg (fun (η : E →L[ℝ] ℝ) ↦ η u)
+    (fderiv_coordScalar_eq_two_ricciDivergenceForm_of_contDiff (x := x) hG hGsymm hinv)
+  simp only [ContinuousLinearMap.smul_apply, ricciDivergenceForm_apply, smul_eq_mul] at hb
+  rw [hdiv] at hb
+  have h0lt : 0 < Module.finrank ℝ E := lt_trans (by norm_num : 0 < 2) hn
+  have hn0nat : Module.finrank ℝ E ≠ 0 := Nat.ne_of_gt h0lt
+  have hn0 : nR ≠ 0 := by
+    dsimp [nR]
+    exact_mod_cast hn0nat
+  have hn2nat : Module.finrank ℝ E ≠ 2 := ne_of_gt hn
+  have hn2 : nR ≠ 2 := by
+    dsimp [nR]
+    exact_mod_cast hn2nat
+  have hb' := hb
+  field_simp [nR, hn0] at hb'
+  have hcoef :
+      (nR - 2) * ((fderiv ℝ (fun y ↦ coordScalar G y) x) u) = 0 := by
+    linarith
+  have hcoef_ne : nR - 2 ≠ 0 := sub_ne_zero.mpr hn2
+  have hzero : ((fderiv ℝ (fun y ↦ coordScalar G y) x) u) = 0 :=
+    (mul_eq_zero.mp hcoef).resolve_left hcoef_ne
+  simpa using hzero
+
 end RicciFlow
 
 /-!
