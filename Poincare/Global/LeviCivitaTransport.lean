@@ -146,3 +146,72 @@ theorem chartTransportedLeviCivita_direction_roundtrip
 end ChartConnection
 
 end CovariantDerivative
+
+namespace Poincare
+
+universe u
+
+variable {n : ℕ} {M : Type u}
+variable [TopologicalSpace M] [T2Space M]
+variable [ChartedSpace (ClosedSmoothModel n) M]
+variable [IsManifold (closedSmoothModelWithCorners n) ∞ M]
+
+namespace LeviCivitaTransport
+
+local notation "I" => closedSmoothModelWithCorners n
+local notation "E" => ClosedSmoothModel n
+local notation "TM" => (TangentSpace I : M → Type _)
+
+/--
+Local uniqueness bridge for the transported chart value.  Once a candidate
+local covariant derivative `covT` is shown to have the displayed
+chart-transport value and to be torsion-free and metric-compatible at `y`, it
+agrees there with the closed smooth Levi-Civita connection.
+-/
+theorem chartTransportedLeviCivitaValueAt_eq_closed_of_isLeviCivitaAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (x₀ : M) (hχ0 : ∀ z, 0 ≤ χ z) (hχ1 : ∀ z, χ z ≤ 1)
+    (hsupp : ∀ z, χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z).IsInvertible)
+    (covT : CovariantDerivative I E TM)
+    {σ : Π y : M, TM y} {y : M}
+    (hy : y ∈ (extChartAt I x₀).source)
+    (hcT : CovariantDerivative.MetricCompatibleAt g.inner covT y)
+    (htT : CovariantDerivative.TorsionFreeAt covT y)
+    (hσ : MDiffAtTangentField σ y)
+    (htransport : ∀ v : TM y,
+      covT σ y v =
+        CovariantDerivative.chartTransportedLeviCivitaValueAt χ G₀ hG₀pos g.inner
+          (fun y u hu => g.inner_pos y (v := u) hu) x₀ hχ0 hχ1 hsupp σ hy v)
+    (v : TM y) :
+    CovariantDerivative.chartTransportedLeviCivitaValueAt χ G₀ hG₀pos g.inner
+        (fun y u hu => g.inner_pos y (v := u) hu) x₀ hχ0 hχ1 hsupp σ hy v =
+      (LeviCivitaExistence.closedLeviCivitaConnection g) σ y v := by
+  have hcClosed :
+      CovariantDerivative.MetricCompatibleAt g.inner
+        (LeviCivitaExistence.closedLeviCivitaConnection g) y := by
+    intro Y Z hY hZ w
+    exact LeviCivitaExistence.closedLeviCivitaConnection_metricCompatible g
+      (by simpa [MDiffAtTangentField] using hY)
+      (by simpa [MDiffAtTangentField] using hZ) w
+  have htClosed :
+      CovariantDerivative.TorsionFreeAt
+        (LeviCivitaExistence.closedLeviCivitaConnection g) y := by
+    have ht := LeviCivitaExistence.closedLeviCivitaConnection_torsion g
+    rw [CovariantDerivative.torsion_eq_zero_iff] at ht
+    intro X Y hX hY
+    exact ht hX hY
+  have huniq := CovariantDerivative.leviCivita_unique_at (g := g.inner)
+    (cov := covT) (cov' := LeviCivitaExistence.closedLeviCivitaConnection g)
+    (g.inner_symm y)
+    (fun u hu => LeviCivitaExistence.metric_nondegenerate g y u hu)
+    hcT hcClosed htT htClosed
+    (by simpa [MDiffAtTangentField] using hσ)
+  exact (htransport v).symm.trans (congrArg (fun L => L v) huniq)
+
+end LeviCivitaTransport
+
+end Poincare
