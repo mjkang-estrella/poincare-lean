@@ -2168,6 +2168,74 @@ def CovTensor2ExtDifferentiableAt
     MDifferentiableAt I 𝓘(ℝ)
       (fun y : M ↦ h y (extend E p y) (extend E q y)) x
 
+/--
+Fixed-vector spatial differentiability for a raw `(0,2)` variation tensor.
+
+Unlike `TraceMetricVariationDerivAt`, this says only that every scalar
+component `y ↦ h_y(p,q)` with fixed model vectors `p q : E` is
+manifold-differentiable at `x`; it contains no covariant-derivative or trace
+identity.
+-/
+def VariationSpatiallyDifferentiableAt
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M) : Prop :=
+  ∀ p q : E,
+    MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ h y p q) x
+
+/--
+Honest regularity class for time-variation tensors whose fixed-vector
+components are spatially differentiable.
+-/
+def TimeVariationSpatiallyDifferentiableAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop :=
+  ∀ p q : E,
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ timeDerivAt gt t₀ y p q) x
+
+omit [T2Space M] in
+theorem variationSpatiallyDifferentiableAt_timeDeriv_of_regular
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hreg : TimeVariationSpatiallyDifferentiableAt gt t₀ x) :
+    VariationSpatiallyDifferentiableAt (timeDerivAt gt t₀) x := by
+  intro p q
+  exact hreg p q
+
+omit [T2Space M] [IsManifold I ∞ M] in
+theorem variationSpatiallyDifferentiableAt_static
+    (H : E → E → ℝ) (x : M) :
+    VariationSpatiallyDifferentiableAt
+      (fun y : M ↦ fun p q : TM y ↦ H p q) x := by
+  intro p q
+  simpa [VariationSpatiallyDifferentiableAt] using
+    (mdifferentiableAt_const (c := H p q) (x := x))
+
+omit [T2Space M] [IsManifold I ∞ M] in
+theorem variationSpatiallyDifferentiableAt_zero (x : M) :
+    VariationSpatiallyDifferentiableAt
+      (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x := by
+  simpa using
+    (variationSpatiallyDifferentiableAt_static
+      (n := n) (M := M) (fun _ _ : E ↦ (0 : ℝ)) x)
+
+omit [T2Space M] in
+theorem timeVariationSpatiallyDifferentiableAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    TimeVariationSpatiallyDifferentiableAt (fun _ : ℝ ↦ g) t₀ x := by
+  intro p q
+  have hfun :
+      (fun y : M ↦ timeDerivAt (fun _ : ℝ ↦ g) t₀ y p q) =
+        fun _ : M ↦ (0 : ℝ) := by
+    funext y
+    exact timeDerivAt_const g t₀ y p q
+  rw [hfun]
+  exact mdifferentiableAt_const
+
+omit [T2Space M] in
+theorem variationSpatiallyDifferentiableAt_const_timeDeriv
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    VariationSpatiallyDifferentiableAt (timeDerivAt (fun _ : ℝ ↦ g) t₀) x :=
+  variationSpatiallyDifferentiableAt_timeDeriv_of_regular
+    (timeVariationSpatiallyDifferentiableAt_const (n := n) (M := M) g t₀ x)
+
 omit [T2Space M] [IsManifold I ∞ M] in
 theorem tensor2AddLeft_zero :
     Tensor2AddLeft (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) := by
