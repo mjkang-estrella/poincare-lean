@@ -5205,6 +5205,46 @@ theorem deltaGamma_koszul
   nlinarith
 
 /--
+Neighborhood form of the closed `δΓ` Koszul identity, with all tensor slots
+transported by canonical extensions from the anchor point.
+-/
+theorem deltaGamma_koszul_eventually
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hNear :
+      ∀ᶠ y in nhds x,
+        MetricFlowRegularAt gt t₀ y ∧
+        (∀ a b c : TM y,
+          HasDerivAt
+            (fun t ↦
+              extDerivFun
+                (fun z : M ↦ (gt t).inner z (extend E b z) (extend E c z))
+                y a)
+            (extDerivFun
+              (fun z : M ↦ timeDerivAt gt t₀ z (extend E b z) (extend E c z))
+              y a) t₀))
+    (v w z : TM x) :
+    (fun y : M ↦
+      2 * (gt t₀).inner y
+        (deltaGammaAt gt t₀ y (extend E v y) (extend E w y))
+        (extend E z y))
+      =ᶠ[nhds x]
+    (fun y : M ↦
+      covTensor2DerivAt (gt t₀) (timeDerivAt gt t₀) y
+          (extend E v y) (extend E w y) (extend E z y)
+        + covTensor2DerivAt (gt t₀) (timeDerivAt gt t₀) y
+          (extend E w y) (extend E v y) (extend E z y)
+        - covTensor2DerivAt (gt t₀) (timeDerivAt gt t₀) y
+          (extend E z y) (extend E v y) (extend E w y)) := by
+  exact hNear.mono fun y hy ↦ by
+    rcases hy with ⟨hreg, hExt⟩
+    exact deltaGamma_koszul
+      (gt := gt) (t₀ := t₀) (x := y)
+      hreg hgt hExt (extend E v y) (extend E w y) (extend E z y)
+
+/--
 The divergence one-form of a raw metric variation:
 `(div h)(w) = Σᵢ (∇_{♯eⁱ}h)(eᵢ,w)`.
 -/
