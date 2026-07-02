@@ -673,6 +673,35 @@ noncomputable def deltaGammaFieldAt
   fun y ↦ deltaGammaAt gt t₀ y (extend E u y) (extend E w y)
 
 /--
+First-order spatial regularity for the vector-valued `δΓ` field in canonical
+extension slots.
+
+This is the analytic input needed for the scalar entry product rule: the
+field `y ↦ δΓ_y(extend p, extend w)` must be a differentiable tangent section
+at the base point.
+-/
+def DeltaGammaFieldMDifferentiableAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop :=
+  ∀ p w : TM x,
+    MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+      (T% (deltaGammaFieldAt gt t₀ p w)) x
+
+/-- Static metric flows have a zero `δΓ` field, hence satisfy the field regularity class. -/
+theorem deltaGammaFieldMDifferentiableAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    DeltaGammaFieldMDifferentiableAt (fun _ : ℝ ↦ g) t₀ x := by
+  intro p w
+  have hzero :
+      deltaGammaFieldAt (fun _ : ℝ ↦ g) t₀ p w =
+        fun y : M ↦ (0 : TM y) := by
+    funext y
+    simp [deltaGammaFieldAt]
+  rw [hzero]
+  simpa using
+    (Bundle.mdifferentiableAt_zeroSection ℝ
+      (TangentSpace I : M → Type _) (x := x))
+
+/--
 The expected time derivative of an iterated connection value
 `∇^t_a (∇^t_u w)` at `t₀`.
 
@@ -3654,6 +3683,67 @@ theorem deltaGammaEntryDerivativeBridgeAt_const
     rw [hzero]
     simp [extDerivFun_zero_at]
 
+/--
+Triple product-rule bridge for scalar `δΓ` entries.
+
+The only analytic input is differentiability of the vector-valued
+`δΓ(extend p, extend w)` field. Metric compatibility differentiates the
+pairing, and the definition of `covDeltaGammaDerivAt` supplies the two
+extension-slot corrections.
+-/
+theorem deltaGammaEntryDerivativeBridgeAt_of_deltaGammaFieldMDifferentiableAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hδ : DeltaGammaFieldMDifferentiableAt gt t₀ x) :
+    DeltaGammaEntryDerivativeBridgeAt gt t₀ x where
+  mdifferentiable := by
+    intro p q w
+    exact (gt t₀).metric_pairing_mdiffAt
+      (hδ p w)
+      (mdifferentiableAt_extend I E q)
+  extDeriv_eq := by
+    intro u p q w
+    let g : ClosedSmoothRiemannianMetric n M := gt t₀
+    let A : ∀ y : M, TM y := deltaGammaFieldAt gt t₀ p w
+    let B : ∀ y : M, TM y := extend E q
+    have hA :
+        MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% A) x := by
+      simpa [A] using hδ p w
+    have hB :
+        MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% B) x := by
+      simpa [B] using (mdifferentiableAt_extend I E q)
+    have hcompat :=
+      g.leviCivita_metricCompatibleAt x
+        (Y := A) (Z := B)
+        (by simpa [MDiffAtTangentField] using hA)
+        (by simpa [MDiffAtTangentField] using hB)
+        u
+    have hcov :
+        g.leviCivita A x u =
+          covDeltaGammaDerivAt gt t₀ x u p w
+            + deltaGammaAt gt t₀ x
+                (g.leviCivita (extend E p) x u) w
+            + deltaGammaAt gt t₀ x p
+                (g.leviCivita (extend E w) x u) := by
+      unfold covDeltaGammaDerivAt
+      change g.leviCivita A x u =
+        (g.leviCivita A x u
+          - deltaGammaAt gt t₀ x (g.leviCivita (extend E p) x u) w
+          - deltaGammaAt gt t₀ x p (g.leviCivita (extend E w) x u))
+        + deltaGammaAt gt t₀ x (g.leviCivita (extend E p) x u) w
+        + deltaGammaAt gt t₀ x p (g.leviCivita (extend E w) x u)
+      abel
+    change
+      extDerivFun (fun y : M ↦ g.inner y (A y) (B y)) x u =
+        g.inner x (covDeltaGammaDerivAt gt t₀ x u p w) q
+        + g.inner x
+            (deltaGammaAt gt t₀ x (g.leviCivita (extend E p) x u) w) q
+        + g.inner x
+            (deltaGammaAt gt t₀ x p (g.leviCivita (extend E w) x u)) q
+        + g.inner x (deltaGammaAt gt t₀ x p w)
+            (g.leviCivita (extend E q) x u)
+    rw [hcompat, hcov]
+    simp [A, B, g, deltaGammaFieldAt, extend_apply_self]
+
 /-- Static sanity witness for the first-slot trace-field covariant derivative. -/
 theorem deltaGammaFirstSlotTraceFieldCovariantDerivativeAt_const
     (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
@@ -6589,6 +6679,53 @@ theorem deltaGammaContractionTraceHessianDerivativeAt_of_entryBridge_entries_con
     (gt := gt) (t₀ := t₀) (x := x)
     (deltaGammaFirstSlotTraceFieldCovariantDerivativeAt_of_entryBridge
       (gt := gt) (t₀ := t₀) (x := x) hreg hBridge)
+    hreg hgt hExt hNear hEntries hgrad
+
+/--
+Final trace-Hessian route with the scalar-entry bridge discharged from the
+`δΓ` field differentiability product rule.
+-/
+theorem deltaGammaContractionTraceHessianDerivativeAt_of_deltaGammaFieldMDifferentiableAt_entries_contMDiffAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hδ : DeltaGammaFieldMDifferentiableAt gt t₀ x)
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hExt :
+      ∀ a b c : TM x,
+        HasDerivAt
+          (fun t ↦
+            extDerivFun
+              (fun y : M ↦ (gt t).inner y (extend E b y) (extend E c y)) x a)
+          (extDerivFun
+            (fun y : M ↦ timeDerivAt gt t₀ y (extend E b y) (extend E c y))
+            x a) t₀)
+    (hNear :
+      ∀ᶠ y in nhds x,
+        MetricFlowRegularAt gt t₀ y ∧
+        CovTensor2ExtDifferentiableAt (timeDerivAt gt t₀) y ∧
+        (∀ a b c : TM y,
+          HasDerivAt
+            (fun t ↦
+              extDerivFun
+                (fun z : M ↦ (gt t).inner z (extend E b z) (extend E c z))
+                y a)
+            (extDerivFun
+              (fun z : M ↦ timeDerivAt gt t₀ z (extend E b z) (extend E c z))
+              y a) t₀))
+    (hEntries : TimeVariationTraceEntriesExtContMDiffAt gt t₀ x 2)
+    (hgrad :
+      let g : ClosedSmoothRiemannianMetric n M := gt t₀
+      let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+      let f : M → ℝ := fun y ↦ traceMetricVariationAt g H y
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x) :
+    DeltaGammaContractionTraceHessianDerivativeAt gt t₀ x :=
+  deltaGammaContractionTraceHessianDerivativeAt_of_entryBridge_entries_contMDiffAt
+    (gt := gt) (t₀ := t₀) (x := x)
+    (hBridge :=
+      deltaGammaEntryDerivativeBridgeAt_of_deltaGammaFieldMDifferentiableAt
+        (gt := gt) (t₀ := t₀) (x := x) hδ)
     hreg hgt hExt hNear hEntries hgrad
 
 theorem deltaGammaDivergenceTraceInnerHessianDerivativeAt_of_innerTraceField
