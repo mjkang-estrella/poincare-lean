@@ -253,6 +253,75 @@ theorem hessianAt_const (g : ClosedSmoothRiemannianMetric n M)
   rw [hgrad]
   simp
 
+/--
+Symmetry of the covariant Hessian, assuming the gradient field has the
+pointwise differentiability needed to apply torsion-freeness.
+-/
+theorem hessianAt_symm (g : ClosedSmoothRiemannianMetric n M)
+    {f : M → ℝ} {x : M}
+    (hf : ContMDiffAt I 𝓘(ℝ) 2 f x)
+    (hgrad : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x)
+    (v w : TM x) :
+    g.hessianAt f x v w = g.hessianAt f x w v := by
+  haveI : ModelWithCorners.Boundaryless I := by infer_instance
+  let X : ∀ y : M, TM y := extend E v
+  let Y : ∀ y : M, TM y := extend E w
+  have hX : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% X) x := by
+    simpa [X] using (mdifferentiableAt_extend (σ₀ := v) ..)
+  have hY : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% Y) x := by
+    simpa [Y] using (mdifferentiableAt_extend (σ₀ := w) ..)
+  have hXx : X x = v := by simp [X]
+  have hYx : Y x = w := by simp [Y]
+  have hpairX :
+      (fun y : M => g.inner y ((g.gradient f) y) (X y)) =
+        fun y : M => extDerivFun f y (X y) := by
+    funext y
+    simpa [gradient] using g.inner_gradientAt f y (X y)
+  have hpairY :
+      (fun y : M => g.inner y ((g.gradient f) y) (Y y)) =
+        fun y : M => extDerivFun f y (Y y) := by
+    funext y
+    simpa [gradient] using g.inner_gradientAt f y (Y y)
+  have hgrad_covY :
+      g.inner x ((g.gradient f) x) (g.leviCivita Y x v) =
+        extDerivFun f x (g.leviCivita Y x v) := by
+    simpa [gradient] using g.inner_gradientAt f x (g.leviCivita Y x v)
+  have hgrad_covX :
+      g.inner x ((g.gradient f) x) (g.leviCivita X x w) =
+        extDerivFun f x (g.leviCivita X x w) := by
+    simpa [gradient] using g.inner_gradientAt f x (g.leviCivita X x w)
+  have hcompatY :
+      extDerivFun (fun y : M => extDerivFun f y (Y y)) x v =
+        g.hessianAt f x v w + extDerivFun f x (g.leviCivita Y x v) := by
+    have h := g.leviCivita_metricCompatibleAt x hgrad hY v
+    rw [hpairY, hYx, hgrad_covY] at h
+    simpa [hessianAt] using h
+  have hcompatX :
+      extDerivFun (fun y : M => extDerivFun f y (X y)) x w =
+        g.hessianAt f x w v + extDerivFun f x (g.leviCivita X x w) := by
+    have h := g.leviCivita_metricCompatibleAt x hgrad hX w
+    rw [hpairX, hXx, hgrad_covX] at h
+    simpa [hessianAt] using h
+  have htangent :
+      g.leviCivita Y x v - g.leviCivita X x w =
+        VectorField.mlieBracket I X Y x := by
+    have h := g.leviCivita_torsionFreeAt x hX hY
+    simpa [hXx, hYx] using h
+  have htorsion :
+      extDerivFun f x (g.leviCivita Y x v) -
+          extDerivFun f x (g.leviCivita X x w) =
+        extDerivFun f x (VectorField.mlieBracket I X Y x) := by
+    have h := congrArg (fun z : TM x => (extDerivFun f x : TM x →L[ℝ] ℝ) z)
+      htangent
+    simpa using h
+  have hbracket :
+      extDerivFun (fun y : M => extDerivFun f y (Y y)) x v -
+          extDerivFun (fun y : M => extDerivFun f y (X y)) x w =
+        extDerivFun f x (VectorField.mlieBracket I X Y x) := by
+    have h := (extDerivFun_apply_mlieBracket (I' := I) hf hX hY).symm
+    simpa [hXx, hYx] using h
+  linarith
+
 theorem hessianDualAt_add (g : ClosedSmoothRiemannianMetric n M)
     {f h : M → ℝ} {x : M}
     (hf : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) f y)
