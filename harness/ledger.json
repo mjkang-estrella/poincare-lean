@@ -196,6 +196,44 @@
         "Poincare/Global/LeviCivitaExistence.lean"
       ],
       "difficulty": "hard"
+    },
+    {
+      "id": "M1-asset-audit",
+      "tier": "M1",
+      "title": "Manifold-layer asset audit",
+      "deps": [],
+      "status": "done",
+      "files": [
+        "harness/reports/manifold_assets.md"
+      ],
+      "difficulty": "research",
+      "result": "DONE 2026-07-01, commit d5f8b76e. Manifold CovariantDerivative track GENUINE (KoszulExistence, CurvatureTensoriality, BianchiIdentity, RicciFlowEquation: IsRicciFlowSolutionAt is a real pointwise PDE). Legacy package/certificate layers VACUOUS or LEGACY-SCAFFOLD (RicciFlowInterface vacuous per INTEGRITY_ASSESSMENT). Frontier lemma list: (1) LC regularity [dispatched], (2-3) closed Ricci/scalar [done in M1-scalar-curvature], (4) closed Ricci-flow wrapper, (5) scalar-evolution skeleton needing closedLaplacian/closedRicciNormSq. Port list from ModelLaplacian recorded."
+    },
+    {
+      "id": "M1-ricci-flow-wrapper",
+      "tier": "M1",
+      "title": "Closed-manifold pointwise Ricci-flow solution wrapper",
+      "statement_spec": "isClosedRicciFlowSolutionAt_of_metric per audit lemma #4: specialize isRicciFlowSolutionAt_of_metric to fun t => (gt t).inner with the canonical closedLeviCivitaConnection; exposes exact closed-manifold regularity hypotheses.",
+      "deps": [
+        "M1-levi-civita"
+      ],
+      "status": "open",
+      "files": [
+        "Poincare/Global/RicciFlow.lean"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "M1-closed-laplacian",
+      "tier": "M1",
+      "title": "Closed-manifold scalar Laplacian + Hessian API",
+      "statement_spec": "closedLaplacian / covariant Hessian for scalar functions on (M, g) via g.leviCivita; prerequisite for scalar evolution + Bochner ports (audit lemma #5 infra).",
+      "deps": [
+        "M1-lc-regularity"
+      ],
+      "status": "blocked",
+      "files": [],
+      "difficulty": "hard"
     }
   ]
 }
