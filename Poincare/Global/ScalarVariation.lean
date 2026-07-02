@@ -607,6 +607,96 @@ noncomputable def curvatureVariationByDeltaGammaAt
   covDeltaGammaDerivAt gt t₀ x a u w
     - covDeltaGammaDerivAt gt t₀ x u a w
 
+/--
+The derivative field of the inner connection value
+`y ↦ ∂ₜ (∇^t_{extend u} extend w)_y`, written in terms of `δΓ`.
+-/
+noncomputable def deltaGammaFieldAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ)
+    {x : M} (u w : TM x) : ∀ y : M, TM y :=
+  fun y ↦ deltaGammaAt gt t₀ y (extend E u y) (extend E w y)
+
+/--
+The expected time derivative of an iterated connection value
+`∇^t_a (∇^t_u w)` at `t₀`.
+
+The first term is the spatial covariant derivative of the connection
+variation; the second is the outer connection's own time variation applied to
+the `t₀` inner connection value.
+-/
+noncomputable def iteratedConnectionDerivAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (a u w : TM x) : TM x :=
+  (gt t₀).leviCivita (deltaGammaFieldAt gt t₀ u w) x a
+    + deltaGammaAt gt t₀ x a ((gt t₀).leviCivita (extend E w) x u)
+
+/-- Time-dependent metric regularity needed to differentiate closed curvature. -/
+structure MetricFlowRegularAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop where
+  /-- Pointwise connection values are time differentiable at every base point. -/
+  connection :
+    ∀ y : M, ConnectionValueTimeDifferentiableAt gt t₀ y
+  /--
+  The iterated connection values appearing in the closed curvature definition
+  are time differentiable.
+  -/
+  iteratedConnection_timeDifferentiable :
+    ∀ a u w : TM x, DifferentiableAt ℝ
+      (fun t ↦ (gt t).leviCivita
+        (fun y ↦ (gt t).leviCivita (extend E w) y (extend E u y)) x a) t₀
+  /--
+  Schwarz/mixed-partial obligation: the derivative of
+  `t ↦ ∇^t_a(∇^t_u w)` is the covariant spatial derivative of `δΓ(u,w)`,
+  plus the outer `δΓ` correction.
+  -/
+  iteratedConnection_deriv_eq :
+    ∀ a u w : TM x,
+      deriv
+        (fun t ↦ (gt t).leviCivita
+          (fun y ↦ (gt t).leviCivita (extend E w) y (extend E u y)) x a) t₀ =
+        iteratedConnectionDerivAt gt t₀ x a u w
+
+private theorem leviCivita_zero_section
+    (g : ClosedSmoothRiemannianMetric n M) :
+    g.leviCivita (0 : ∀ y : M, TM y) = 0 := by
+  ext y v
+  have hzero :
+      g.leviCivita (0 : ∀ y : M, TM y) y = 0 :=
+    g.leviCivita.isCovariantDerivativeOnUniv.zero
+  exact congrArg (fun L : TM y →L[ℝ] TM y ↦ L v) hzero
+
+theorem metricFlowRegularAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    MetricFlowRegularAt (fun _ : ℝ ↦ g) t₀ x where
+  connection := fun y ↦ connectionValueTimeDifferentiableAt_const g t₀ y
+  iteratedConnection_timeDifferentiable := by
+    intro a u w
+    exact differentiableAt_const
+      (c := g.leviCivita
+        (fun y ↦ g.leviCivita (extend E w) y (extend E u y)) x a)
+      (x := t₀)
+  iteratedConnection_deriv_eq := by
+    intro a u w
+    letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+    letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+    change deriv
+        (fun _ : ℝ ↦
+          g.leviCivita
+            (fun y ↦ g.leviCivita (extend E w) y (extend E u y)) x a) t₀ =
+        iteratedConnectionDerivAt (fun _ : ℝ ↦ g) t₀ x a u w
+    trans 0
+    · exact (hasDerivAt_const t₀
+        (g.leviCivita
+          (fun y ↦ g.leviCivita (extend E w) y (extend E u y)) x a)).deriv
+    unfold iteratedConnectionDerivAt deltaGammaFieldAt
+    have hzero :
+        (fun y : M ↦ deltaGammaAt (fun _ : ℝ ↦ g) t₀ y
+          (extend E u y) (extend E w y)) = (0 : ∀ y : M, TM y) := by
+      funext y
+      simp
+    rw [hzero, leviCivita_zero_section]
+    simp
+
 /-- The divergence contraction `Σᵢ eⁱ((∇_{eᵢ} δΓ)(u,w))`. -/
 noncomputable def deltaGammaDivergenceAt
     (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
