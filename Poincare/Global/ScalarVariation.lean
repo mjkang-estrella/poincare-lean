@@ -1435,6 +1435,52 @@ omit [T2Space M] in
   rw [coe_basisOfLinearIndependentOfCardEqFinrank']
 
 /--
+The metric-raised dual coframe of the canonical Gram frame is obtained by the
+rows of the inverse Gram matrix.
+-/
+theorem metricDualVectorAt_gramFrameBasis_coord_eq_sum_inv
+    (g : ClosedSmoothRiemannianMetric n M) {x y : M}
+    (hG : IsUnit (gramMatrix g x y))
+    (i : Fin (Module.finrank ℝ (TM x))) :
+    metricDualVectorAt g y ((gramFrameBasis g x y hG).coord i) =
+      ∑ j, (gramMatrix g x y)⁻¹ i j • gramFrame x y j := by
+  classical
+  letI : NormedAddCommGroup (TM y) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM y) := inferInstanceAs (NormedSpace ℝ E)
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let B := gramFrameBasis g x y hG
+  let G := gramMatrix g x y
+  have hdet : IsUnit G.det := (Matrix.isUnit_iff_isUnit_det G).mp hG
+  apply (LinearMap.BilinForm.toDual (g.metricBilinAt y)
+    (g.metricBilinAt_nondegenerate y)).injective
+  apply B.ext
+  intro k
+  have hmatrix : ∑ j, G⁻¹ i j * G j k = if i = k then 1 else 0 := by
+    have hmul := congrArg (fun A : Matrix (Fin (Module.finrank ℝ (TM x)))
+        (Fin (Module.finrank ℝ (TM x))) ℝ ↦ A i k)
+      (Matrix.nonsing_inv_mul G hdet)
+    simpa [Matrix.mul_apply, G] using hmul
+  calc
+    ((LinearMap.BilinForm.toDual (g.metricBilinAt y)
+        (g.metricBilinAt_nondegenerate y))
+        (metricDualVectorAt g y (B.coord i))) (B k)
+        = B.coord i (B k) := by
+          simp [metricDualVectorAt, B]
+    _ = if i = k then 1 else 0 := by
+          rw [Module.Basis.coord_apply, Module.Basis.repr_self_apply]
+          by_cases hik : i = k <;> simp [hik, eq_comm]
+    _ = ∑ j, G⁻¹ i j * G j k := hmatrix.symm
+    _ = ((LinearMap.BilinForm.toDual (g.metricBilinAt y)
+        (g.metricBilinAt_nondegenerate y))
+        (∑ j, G⁻¹ i j • gramFrame x y j)) (B k) := by
+          simp [LinearMap.BilinForm.toDual_def,
+            ClosedSmoothRiemannianMetric.metricBilinAt_apply,
+            G, B, gramMatrix, gramFrame, smul_eq_mul]
+
+/--
 The metric trace of a fiberwise bilinear form, computed in an arbitrary finite
 basis and paired with the `g`-raised dual coframe of that basis.
 -/
@@ -1560,6 +1606,59 @@ theorem traceMetricVariationAt_eq_metricTraceInBasisAt
           metricTraceInBasisAt_eq_metricTraceInBasisAt
             (g := g) (x := x) (B := B)
             (b := Module.finBasis ℝ (TM x)) (c := b)
+
+/--
+Gram-inverse form of the metric trace in the canonical extension frame.  The
+fiber value of `h` is supplied as a bilinear form, matching the existing
+basis-invariant trace bridge.
+-/
+theorem traceMetricVariationAt_eq_sum_gram_inv
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x y : M)
+    (hG : IsUnit (gramMatrix g x y))
+    (B : LinearMap.BilinForm ℝ (TM y))
+    (hB : ∀ p q : TM y, B p q = h y p q) :
+    traceMetricVariationAt g h y =
+      ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+        h y (gramFrame x y i) (gramFrame x y j) := by
+  classical
+  letI : NormedAddCommGroup (TM y) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM y) := inferInstanceAs (NormedSpace ℝ E)
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := gramFrameBasis g x y hG
+  calc
+    traceMetricVariationAt g h y = metricTraceInBasisAt g y B b := by
+      exact traceMetricVariationAt_eq_metricTraceInBasisAt
+        (g := g) (h := h) (x := y) (B := B) (b := b) hB
+    _ = ∑ i, B (b i) (metricDualVectorAt g y (b.coord i)) := rfl
+    _ = ∑ i, B (gramFrame x y i)
+        (∑ j, (gramMatrix g x y)⁻¹ i j • gramFrame x y j) := by
+      apply Finset.sum_congr rfl
+      intro i _hi
+      simp [b, metricDualVectorAt_gramFrameBasis_coord_eq_sum_inv]
+    _ = ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+        h y (gramFrame x y i) (gramFrame x y j) := by
+      apply Finset.sum_congr rfl
+      intro i _hi
+      calc
+        B (gramFrame x y i)
+            (∑ j, (gramMatrix g x y)⁻¹ i j • gramFrame x y j) =
+            ∑ j, B (gramFrame x y i)
+              ((gramMatrix g x y)⁻¹ i j • gramFrame x y j) := by
+          rw [map_sum]
+        _ = ∑ j, (gramMatrix g x y)⁻¹ i j *
+              B (gramFrame x y i) (gramFrame x y j) := by
+          apply Finset.sum_congr rfl
+          intro j _hj
+          simp [smul_eq_mul]
+        _ = ∑ j, (gramMatrix g x y)⁻¹ i j *
+              h y (gramFrame x y i) (gramFrame x y j) := by
+          apply Finset.sum_congr rfl
+          intro j _hj
+          simp [hB]
 
 /--
 Basis-free trace form of `traceMetricVariationAt`: once the fiber value of
