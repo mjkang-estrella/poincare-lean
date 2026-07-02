@@ -3589,6 +3589,134 @@ noncomputable def deltaGammaInnerTraceFieldAt
   ∑ i, g.inner y
     (deltaGammaAt gt t₀ y (b i) (metricDualVectorAt g y (b.coord i))) w
 
+/-- The lower-slot inner `δΓ` trace can be computed in any finite basis. -/
+theorem deltaGammaInnerTraceFieldAt_eq_trace_in_basis
+    (g : ClosedSmoothRiemannianMetric n M)
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ)
+    (y : M) (hΓ : ConnectionValueTimeDifferentiableAt gt t₀ y)
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι ℝ (TM y)) (w : TM y) :
+    deltaGammaInnerTraceFieldAt g gt t₀ y w =
+      ∑ i, g.inner y
+        (deltaGammaAt gt t₀ y (b i)
+          (metricDualVectorAt g y (b.coord i))) w := by
+  classical
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let B : LinearMap.BilinForm ℝ (TM y) :=
+    LinearMap.mk₂ ℝ (fun p q ↦ g.inner y (deltaGammaAt gt t₀ y p q) w)
+      (fun p p' q ↦ by
+        dsimp
+        rw [deltaGammaAt_add_left
+          (gt := gt) (t₀ := t₀) (x := y) hΓ p p' q]
+        exact (congrArg (fun L : TM y →L[ℝ] ℝ ↦ L w)
+          (map_add (g.inner y)
+            (deltaGammaAt gt t₀ y p q)
+            (deltaGammaAt gt t₀ y p' q)) : _))
+      (fun c p q ↦ by
+        dsimp
+        rw [deltaGammaAt_smul_left
+          (gt := gt) (t₀ := t₀) (x := y) hΓ c p q]
+        simpa [smul_eq_mul] using
+          (congrArg (fun L : TM y →L[ℝ] ℝ ↦ L w)
+            (map_smul (g.inner y) c (deltaGammaAt gt t₀ y p q)) : _))
+      (fun p q q' ↦ by
+        dsimp
+        rw [deltaGammaAt_add_right
+          (gt := gt) (t₀ := t₀) (x := y) hΓ p q q']
+        exact (congrArg (fun L : TM y →L[ℝ] ℝ ↦ L w)
+          (map_add (g.inner y)
+            (deltaGammaAt gt t₀ y p q)
+            (deltaGammaAt gt t₀ y p q')) : _))
+      (fun c p q ↦ by
+        dsimp
+        rw [deltaGammaAt_smul_right
+          (gt := gt) (t₀ := t₀) (x := y) hΓ c p q]
+        simpa [smul_eq_mul] using
+          (congrArg (fun L : TM y →L[ℝ] ℝ ↦ L w)
+            (map_smul (g.inner y) c (deltaGammaAt gt t₀ y p q)) : _))
+  calc
+    deltaGammaInnerTraceFieldAt g gt t₀ y w =
+        metricTraceInBasisAt g y B (Module.finBasis ℝ (TM y)) := by
+          unfold deltaGammaInnerTraceFieldAt metricTraceInBasisAt
+          simp [B]
+    _ = metricTraceInBasisAt g y B b := by
+          exact metricTraceInBasisAt_eq_metricTraceInBasisAt
+            (g := g) (x := y) (B := B)
+            (b := Module.finBasis ℝ (TM y)) (c := b)
+    _ = ∑ i, g.inner y
+        (deltaGammaAt gt t₀ y (b i)
+          (metricDualVectorAt g y (b.coord i))) w := by
+          unfold metricTraceInBasisAt
+          simp [B]
+
+/-- Anchored Gram-inverse form of the lower-slot inner `δΓ` trace field. -/
+theorem deltaGammaInnerTraceFieldAt_eq_sum_gram_inv
+    (g : ClosedSmoothRiemannianMetric n M)
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ)
+    {x y : M}
+    (hΓ : ConnectionValueTimeDifferentiableAt gt t₀ y)
+    (hG : IsUnit (gramMatrix g x y))
+    (w : TM y) :
+    deltaGammaInnerTraceFieldAt g gt t₀ y w =
+      ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+        g.inner y (deltaGammaAt gt t₀ y (gramFrame x y i)
+          (gramFrame x y j)) w := by
+  classical
+  letI : NormedAddCommGroup (TM y) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM y) := inferInstanceAs (NormedSpace ℝ E)
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := gramFrameBasis g x y hG
+  calc
+    deltaGammaInnerTraceFieldAt g gt t₀ y w =
+        ∑ i, g.inner y
+          (deltaGammaAt gt t₀ y (b i)
+            (metricDualVectorAt g y (b.coord i))) w := by
+          exact deltaGammaInnerTraceFieldAt_eq_trace_in_basis
+            (g := g) (gt := gt) (t₀ := t₀) (y := y) hΓ b w
+    _ = ∑ i, g.inner y
+          (deltaGammaAt gt t₀ y (gramFrame x y i)
+            (∑ j, (gramMatrix g x y)⁻¹ i j • gramFrame x y j)) w := by
+          refine Finset.sum_congr rfl fun i _hi ↦ ?_
+          simp [b, metricDualVectorAt_gramFrameBasis_coord_eq_sum_inv]
+    _ = ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+        g.inner y (deltaGammaAt gt t₀ y (gramFrame x y i)
+          (gramFrame x y j)) w := by
+          refine Finset.sum_congr rfl fun i _hi ↦ ?_
+          let L : TM y →ₗ[ℝ] ℝ :=
+            IsLinearMap.mk'
+              (fun q ↦ g.inner y
+                (deltaGammaAt gt t₀ y (gramFrame x y i) q) w)
+              ⟨(by
+                  intro q q'
+                  rw [deltaGammaAt_add_right
+                    (gt := gt) (t₀ := t₀) (x := y) hΓ
+                    (gramFrame x y i) q q']
+                  exact (congrArg (fun L : TM y →L[ℝ] ℝ ↦ L w)
+                    (map_add (g.inner y)
+                      (deltaGammaAt gt t₀ y (gramFrame x y i) q)
+                      (deltaGammaAt gt t₀ y (gramFrame x y i) q')) : _)),
+                (by
+                  intro c q
+                  rw [deltaGammaAt_smul_right
+                    (gt := gt) (t₀ := t₀) (x := y) hΓ c
+                    (gramFrame x y i) q]
+                  simpa [smul_eq_mul] using
+                    (congrArg (fun L : TM y →L[ℝ] ℝ ↦ L w)
+                      (map_smul (g.inner y) c
+                        (deltaGammaAt gt t₀ y (gramFrame x y i) q)) : _))⟩
+          change L (∑ j, (gramMatrix g x y)⁻¹ i j • gramFrame x y j) =
+            ∑ j, (gramMatrix g x y)⁻¹ i j *
+              L (gramFrame x y j)
+          have hmap :=
+            map_sum L
+              (fun j ↦ (gramMatrix g x y)⁻¹ i j • gramFrame x y j)
+              Finset.univ
+          simpa [smul_eq_mul] using hmap
+
 /-- Differentiability of the closed first-slot `δΓ` trace-form field. -/
 def DeltaGammaFirstSlotTraceFieldDifferentiableAt
     (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop :=
