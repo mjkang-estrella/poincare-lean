@@ -349,3 +349,40 @@ Status from task `M3-predicates-16`:
 - Verified: `lake build Poincare.Global.ScalarVariation
   Poincare.Global.ScalarEvolution` succeeds.  The build reports only existing
   linter warnings.
+
+Status from task `M3-predicates-17`:
+
+- Done: added the C² scalar-entry vocabulary needed by the Gram route one
+  derivative higher:
+  `CovTensor2ExtSecondDifferentiableAt`, `MetricExtSecondDifferentiableAt`,
+  and `TimeVariationExtSecondDifferentiableAt`.  The time-variation zero/static
+  witness is verified as `timeVariationExtSecondDifferentiableAt_const`, with
+  the raw zero tensor witness `covTensor2ExtSecondDifferentiableAt_zero`.
+- Done: named the two actual closed `δΓ` trace-form fields as
+  `deltaGammaFirstSlotTraceFieldAt` and `deltaGammaInnerTraceFieldAt`, plus
+  their differentiability predicates
+  `DeltaGammaFirstSlotTraceFieldDifferentiableAt` and
+  `DeltaGammaInnerTraceFieldDifferentiableAt`.
+- Done: added field-derivative adapter predicates
+  `DeltaGammaFirstSlotTraceFieldCovariantDerivativeAt`,
+  `DeltaGammaFirstSlotTraceFieldHessianAt`, and
+  `DeltaGammaInnerTraceFieldCovariantDerivativeAt`, with verified adapters
+  `deltaGammaContractionTraceHessianDerivativeAt_of_firstSlotTraceField` and
+  `deltaGammaDivergenceTraceInnerHessianDerivativeAt_of_innerTraceField` into
+  the frozen bridge predicates.
+- Done: proved static sanity witnesses for both frozen bridges:
+  `deltaGammaContractionTraceHessianDerivativeAt_const` and
+  `deltaGammaDivergenceTraceInnerHessianDerivativeAt_const`, using the new
+  static reductions
+  `covDeltaGammaDerivAt_const`, `deltaGammaDivergenceAt_const`, and
+  `deltaGammaContractionDerivAt_const`.
+- Remaining non-static goal: prove the new trace-field derivative predicates
+  from the Gram RHS near `x`, using the C² scalar-entry hypotheses and the same
+  inverse-Gram cancellation pattern as the first-order trace proof.  This is now
+  isolated from the frozen Hamilton consumers: once those field predicates are
+  proved, the existing adapters discharge
+  `DeltaGammaContractionTraceHessianDerivativeAt` and
+  `DeltaGammaDivergenceTraceInnerHessianDerivativeAt`.
+- Verified: `lake build Poincare.Global.ScalarVariation
+  Poincare.Global.ScalarEvolution` succeeds.  The build reports only existing
+  linter warnings.

@@ -721,6 +721,26 @@ private theorem leviCivita_zero_section
     g.leviCivita.isCovariantDerivativeOnUniv.zero
   exact congrArg (fun L : TM y →L[ℝ] TM y ↦ L v) hzero
 
+@[simp] theorem covDeltaGammaDerivAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (a u w : TM x) :
+    covDeltaGammaDerivAt (fun _ : ℝ ↦ g) t₀ x a u w = 0 := by
+  unfold covDeltaGammaDerivAt
+  have hzero :
+      (fun y : M ↦ deltaGammaAt (fun _ : ℝ ↦ g) t₀ y
+        (extend E u y) (extend E w y)) = (0 : ∀ y : M, TM y) := by
+    funext y
+    simp
+  change (g.leviCivita
+      (fun y : M ↦ deltaGammaAt (fun _ : ℝ ↦ g) t₀ y
+        (extend E u y) (extend E w y)) x) a
+      - deltaGammaAt (fun _ : ℝ ↦ g) t₀ x
+        (g.leviCivita (extend E u) x a) w
+      - deltaGammaAt (fun _ : ℝ ↦ g) t₀ x u
+        (g.leviCivita (extend E w) x a) = 0
+  rw [hzero, leviCivita_zero_section]
+  simp
+
 theorem metricFlowRegularAt_const
     (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
     MetricFlowRegularAt (fun _ : ℝ ↦ g) t₀ x where
@@ -908,6 +928,20 @@ noncomputable def deltaGammaContractionDerivAt
     inferInstanceAs (FiniteDimensional ℝ E)
   ∑ i, (Module.finBasis ℝ (TM x)).coord i
     (covDeltaGammaDerivAt gt t₀ x u ((Module.finBasis ℝ (TM x)) i) w)
+
+@[simp] theorem deltaGammaDivergenceAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (u w : TM x) :
+    deltaGammaDivergenceAt (fun _ : ℝ ↦ g) t₀ x u w = 0 := by
+  unfold deltaGammaDivergenceAt
+  simp
+
+@[simp] theorem deltaGammaContractionDerivAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (u w : TM x) :
+    deltaGammaContractionDerivAt (fun _ : ℝ ↦ g) t₀ x u w = 0 := by
+  unfold deltaGammaContractionDerivAt
+  simp
 
 /-- The Ricci variation candidate obtained by contracting covariant `δΓ`. -/
 noncomputable def deltaRicciAt
@@ -2897,6 +2931,109 @@ def CovTensor2ExtDifferentiableAt
       (fun y : M ↦ h y (extend E p y) (extend E q y)) x
 
 /--
+Second-order scalar-entry regularity for a raw `(0,2)` variation tensor in the
+canonical extension frame.
+
+This is the C² analogue of `CovTensor2ExtDifferentiableAt`: after taking one
+exterior derivative of each scalar entry, the resulting scalar field is still
+differentiable in every canonical extension direction.
+-/
+def CovTensor2ExtSecondDifferentiableAt
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M) : Prop :=
+  ∀ p q v : TM x,
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦
+        extDerivFun
+          (fun z : M ↦ h z (extend E p z) (extend E q z)) y
+          (extend E v y)) x
+
+/-- Second-order scalar-entry regularity for the metric Gram entries. -/
+def MetricExtSecondDifferentiableAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) : Prop :=
+  ∀ p q v : TM x,
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦
+        extDerivFun
+          (fun z : M ↦ g.inner z (extend E p z) (extend E q z)) y
+          (extend E v y)) x
+
+/-- C² scalar-entry regularity for the metric time-variation tensor. -/
+def TimeVariationExtSecondDifferentiableAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop :=
+  CovTensor2ExtSecondDifferentiableAt (timeDerivAt gt t₀) x
+
+/-- First-slot trace form of `δΓ`, evaluated fiberwise. -/
+noncomputable def deltaGammaFirstSlotTraceFieldAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ)
+    (y : M) (w : TM y) : ℝ :=
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ i, (Module.finBasis ℝ (TM y)).coord i
+    (deltaGammaAt gt t₀ y ((Module.finBasis ℝ (TM y)) i) w)
+
+/-- Lower-slot inner trace form of `δΓ`, evaluated fiberwise. -/
+noncomputable def deltaGammaInnerTraceFieldAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ)
+    (y : M) (w : TM y) : ℝ :=
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM y)
+  ∑ i, g.inner y
+    (deltaGammaAt gt t₀ y (b i) (metricDualVectorAt g y (b.coord i))) w
+
+/-- Differentiability of the closed first-slot `δΓ` trace-form field. -/
+def DeltaGammaFirstSlotTraceFieldDifferentiableAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop :=
+  ∀ w : TM x,
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦
+        deltaGammaFirstSlotTraceFieldAt gt t₀ y (extend E w y)) x
+
+/-- Differentiability of the closed inner `δΓ` trace-form field. -/
+def DeltaGammaInnerTraceFieldDifferentiableAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop :=
+  ∀ w : TM x,
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ deltaGammaInnerTraceFieldAt g gt t₀ y (extend E w y)) x
+
+/--
+Derivative identification for the first-slot `δΓ` trace-form field.
+
+It says that the covariant derivative of the one-form field obtained by tracing
+the first `δΓ` slot is represented by `deltaGammaContractionDerivAt`.
+-/
+def DeltaGammaFirstSlotTraceFieldCovariantDerivativeAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop :=
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  ∀ u w : TM x,
+    deltaGammaContractionDerivAt gt t₀ x u w =
+      extDerivFun
+          (fun y : M ↦ deltaGammaFirstSlotTraceFieldAt gt t₀ y (extend E w y))
+          x u
+        - deltaGammaFirstSlotTraceFieldAt gt t₀ x
+          (g.leviCivita (extend E w) x u)
+
+/--
+Hessian identification for the covariant derivative of the first-slot `δΓ`
+trace-form field.
+-/
+def DeltaGammaFirstSlotTraceFieldHessianAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop :=
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+  let f : M → ℝ := fun y ↦ traceMetricVariationAt g H y
+  ∀ u w : TM x,
+      extDerivFun
+          (fun y : M ↦ deltaGammaFirstSlotTraceFieldAt gt t₀ y (extend E w y))
+          x u
+        - deltaGammaFirstSlotTraceFieldAt gt t₀ x
+          (g.leviCivita (extend E w) x u)
+      =
+        (1 / 2 : ℝ) * g.hessianAt f x u w
+
+/--
 The Gram-inverse scalar trace formula gives an honest differentiability proof
 for `tr_g h` from canonical-extension scalar regularity.  The fiber value of
 `h` is supplied as bilinear witnesses so the basis-invariant trace identity can
@@ -3290,6 +3427,45 @@ theorem covTensor2ExtDifferentiableAt_zero (x : M) :
   intro p q
   simpa [CovTensor2ExtDifferentiableAt] using
     (mdifferentiableAt_const (c := (0 : ℝ)) (x := x))
+
+omit [T2Space M] in
+theorem covTensor2ExtSecondDifferentiableAt_zero (x : M) :
+    CovTensor2ExtSecondDifferentiableAt
+      (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x := by
+  intro p q v
+  have hfun :
+      (fun y : M ↦
+        extDerivFun
+          (fun z : M ↦ (0 : ℝ)) y (extend E v y)) =
+        fun _ : M ↦ (0 : ℝ) := by
+    funext y
+    simp [extDerivFun_zero_at]
+  rw [hfun]
+  exact mdifferentiableAt_const
+
+omit [T2Space M] in
+theorem timeVariationExtSecondDifferentiableAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    TimeVariationExtSecondDifferentiableAt (fun _ : ℝ ↦ g) t₀ x := by
+  intro p q v
+  have hfun :
+      (fun y : M ↦
+        extDerivFun
+          (fun z : M ↦
+            timeDerivAt (fun _ : ℝ ↦ g) t₀ z (extend E p z) (extend E q z))
+          y (extend E v y)) =
+        fun _ : M ↦ (0 : ℝ) := by
+    funext y
+    have hzero :
+        (fun z : M ↦
+          timeDerivAt (fun _ : ℝ ↦ g) t₀ z (extend E p z) (extend E q z)) =
+          fun _ : M ↦ (0 : ℝ) := by
+      funext z
+      simp
+    rw [hzero]
+    simp [extDerivFun_zero_at]
+  rw [hfun]
+  exact mdifferentiableAt_const
 
 omit [T2Space M] in
 theorem tensor2AddLeft_timeDerivAt
@@ -4116,6 +4292,24 @@ noncomputable def tensorDivergenceOneFormAt
   ∑ i, covTensor2DerivAt g h x
     (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i))
     ((Module.finBasis ℝ (TM x)) i) w
+
+/--
+Derivative identification for the inner `δΓ` trace-form field after the already
+proved first-order reduction to `div h - 1/2 d(tr h)`.
+-/
+def DeltaGammaInnerTraceFieldCovariantDerivativeAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop :=
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+  let f : M → ℝ := fun y ↦ traceMetricVariationAt g H y
+  ∀ u w : TM x,
+    deltaGammaDivergenceAt gt t₀ x w u =
+      (extDerivFun
+          (fun y : M ↦ tensorDivergenceOneFormAt g H y (extend E w y))
+          x u
+        - tensorDivergenceOneFormAt g H x
+          (g.leviCivita (extend E w) x u))
+      - (1 / 2 : ℝ) * g.hessianAt f x w u
 
 @[simp] theorem tensorDivergenceOneFormAt_zero
     (g : ClosedSmoothRiemannianMetric n M) (x : M) (w : TM x) :
@@ -5053,6 +5247,99 @@ def DeltaGammaDivergenceTraceInnerHessianDerivativeAt
           (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x
           ((Module.finBasis ℝ (TM x)) j)
           (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord j)))
+
+theorem deltaGammaContractionTraceHessianDerivativeAt_of_firstSlotTraceField
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hField : DeltaGammaFirstSlotTraceFieldCovariantDerivativeAt gt t₀ x)
+    (hHess : DeltaGammaFirstSlotTraceFieldHessianAt gt t₀ x) :
+    DeltaGammaContractionTraceHessianDerivativeAt gt t₀ x := by
+  intro u w
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+  let f : M → ℝ := fun y ↦ traceMetricVariationAt g H y
+  have hField' :
+      deltaGammaContractionDerivAt gt t₀ x u w =
+        extDerivFun
+            (fun y : M ↦ deltaGammaFirstSlotTraceFieldAt gt t₀ y (extend E w y))
+            x u
+          - deltaGammaFirstSlotTraceFieldAt gt t₀ x
+            (g.leviCivita (extend E w) x u) := by
+    simpa [DeltaGammaFirstSlotTraceFieldCovariantDerivativeAt, g] using hField u w
+  have hHess' :
+        extDerivFun
+            (fun y : M ↦ deltaGammaFirstSlotTraceFieldAt gt t₀ y (extend E w y))
+            x u
+          - deltaGammaFirstSlotTraceFieldAt gt t₀ x
+            (g.leviCivita (extend E w) x u)
+      =
+        (1 / 2 : ℝ) * g.hessianAt f x u w := by
+    simpa [DeltaGammaFirstSlotTraceFieldHessianAt, g, H, f] using hHess u w
+  rw [hField', hHess']
+
+theorem deltaGammaDivergenceTraceInnerHessianDerivativeAt_of_innerTraceField
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hField : DeltaGammaInnerTraceFieldCovariantDerivativeAt gt t₀ x) :
+    DeltaGammaDivergenceTraceInnerHessianDerivativeAt gt t₀ x := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+  let f : M → ℝ := fun y ↦ traceMetricVariationAt g H y
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun j ↦ metricDualVectorAt g x (b.coord j)
+  let A : Fin (Module.finrank ℝ (TM x)) → ℝ := fun j ↦
+    extDerivFun
+        (fun y : M ↦ tensorDivergenceOneFormAt g H y (extend E (b j) y))
+        x (sharp j)
+      - tensorDivergenceOneFormAt g H x
+        (g.leviCivita (extend E (b j)) x (sharp j))
+  let B : Fin (Module.finrank ℝ (TM x)) → ℝ := fun j ↦
+    g.hessianAt f x (b j) (sharp j)
+  have hsum :
+      (∑ j, deltaGammaDivergenceAt gt t₀ x (b j) (sharp j)) =
+        ∑ j, (A j - (1 / 2 : ℝ) * B j) := by
+    refine Finset.sum_congr rfl fun j _hj ↦ ?_
+    simpa [DeltaGammaInnerTraceFieldCovariantDerivativeAt, g, H, f, b, sharp, A, B]
+      using hField (sharp j) (b j)
+  change (∑ j, deltaGammaDivergenceAt gt t₀ x (b j) (sharp j)) =
+    (∑ j, A j) - (1 / 2 : ℝ) * ∑ j, B j
+  rw [hsum, Finset.sum_sub_distrib, ← Finset.mul_sum]
+
+theorem deltaGammaContractionTraceHessianDerivativeAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    DeltaGammaContractionTraceHessianDerivativeAt (fun _ : ℝ ↦ g) t₀ x := by
+  intro u w
+  have hH :
+      timeDerivAt (fun _ : ℝ ↦ g) t₀ =
+        (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) := by
+    funext y v w
+    simp
+  have htrace :
+      (fun y : M ↦
+        traceMetricVariationAt g (timeDerivAt (fun _ : ℝ ↦ g) t₀) y) =
+        fun _ : M ↦ (0 : ℝ) := by
+    funext y
+    simp [hH]
+  change deltaGammaContractionDerivAt (fun _ : ℝ ↦ g) t₀ x u w =
+    (1 / 2 : ℝ) *
+      g.hessianAt
+        (fun y : M ↦
+          traceMetricVariationAt g (timeDerivAt (fun _ : ℝ ↦ g) t₀) y) x u w
+  rw [deltaGammaContractionDerivAt_const, htrace,
+    ClosedSmoothRiemannianMetric.hessianAt_const]
+  ring
+
+theorem deltaGammaDivergenceTraceInnerHessianDerivativeAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    DeltaGammaDivergenceTraceInnerHessianDerivativeAt (fun _ : ℝ ↦ g) t₀ x := by
+  have hH :
+      timeDerivAt (fun _ : ℝ ↦ g) t₀ =
+        (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) := by
+    funext y v w
+    simp
+  simp [DeltaGammaDivergenceTraceInnerHessianDerivativeAt, hH,
+    extDerivFun_zero_at, ClosedSmoothRiemannianMetric.hessianAt_const]
 
 theorem deltaGammaDivergenceTraceHessianAssemblyAt_of_innerHessianDerivative
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
