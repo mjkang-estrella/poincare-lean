@@ -3589,6 +3589,134 @@ noncomputable def deltaGammaInnerTraceFieldAt
   ∑ i, g.inner y
     (deltaGammaAt gt t₀ y (b i) (metricDualVectorAt g y (b.coord i))) w
 
+/-- The lower-slot inner `δΓ` trace can be computed in any finite basis. -/
+theorem deltaGammaInnerTraceFieldAt_eq_trace_in_basis
+    (g : ClosedSmoothRiemannianMetric n M)
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ)
+    (y : M) (hΓ : ConnectionValueTimeDifferentiableAt gt t₀ y)
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι ℝ (TM y)) (w : TM y) :
+    deltaGammaInnerTraceFieldAt g gt t₀ y w =
+      ∑ i, g.inner y
+        (deltaGammaAt gt t₀ y (b i)
+          (metricDualVectorAt g y (b.coord i))) w := by
+  classical
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let B : LinearMap.BilinForm ℝ (TM y) :=
+    LinearMap.mk₂ ℝ (fun p q ↦ g.inner y (deltaGammaAt gt t₀ y p q) w)
+      (fun p p' q ↦ by
+        dsimp
+        rw [deltaGammaAt_add_left
+          (gt := gt) (t₀ := t₀) (x := y) hΓ p p' q]
+        exact (congrArg (fun L : TM y →L[ℝ] ℝ ↦ L w)
+          (map_add (g.inner y)
+            (deltaGammaAt gt t₀ y p q)
+            (deltaGammaAt gt t₀ y p' q)) : _))
+      (fun c p q ↦ by
+        dsimp
+        rw [deltaGammaAt_smul_left
+          (gt := gt) (t₀ := t₀) (x := y) hΓ c p q]
+        simpa [smul_eq_mul] using
+          (congrArg (fun L : TM y →L[ℝ] ℝ ↦ L w)
+            (map_smul (g.inner y) c (deltaGammaAt gt t₀ y p q)) : _))
+      (fun p q q' ↦ by
+        dsimp
+        rw [deltaGammaAt_add_right
+          (gt := gt) (t₀ := t₀) (x := y) hΓ p q q']
+        exact (congrArg (fun L : TM y →L[ℝ] ℝ ↦ L w)
+          (map_add (g.inner y)
+            (deltaGammaAt gt t₀ y p q)
+            (deltaGammaAt gt t₀ y p q')) : _))
+      (fun c p q ↦ by
+        dsimp
+        rw [deltaGammaAt_smul_right
+          (gt := gt) (t₀ := t₀) (x := y) hΓ c p q]
+        simpa [smul_eq_mul] using
+          (congrArg (fun L : TM y →L[ℝ] ℝ ↦ L w)
+            (map_smul (g.inner y) c (deltaGammaAt gt t₀ y p q)) : _))
+  calc
+    deltaGammaInnerTraceFieldAt g gt t₀ y w =
+        metricTraceInBasisAt g y B (Module.finBasis ℝ (TM y)) := by
+          unfold deltaGammaInnerTraceFieldAt metricTraceInBasisAt
+          simp [B]
+    _ = metricTraceInBasisAt g y B b := by
+          exact metricTraceInBasisAt_eq_metricTraceInBasisAt
+            (g := g) (x := y) (B := B)
+            (b := Module.finBasis ℝ (TM y)) (c := b)
+    _ = ∑ i, g.inner y
+        (deltaGammaAt gt t₀ y (b i)
+          (metricDualVectorAt g y (b.coord i))) w := by
+          unfold metricTraceInBasisAt
+          simp [B]
+
+/-- Anchored Gram-inverse form of the lower-slot inner `δΓ` trace field. -/
+theorem deltaGammaInnerTraceFieldAt_eq_sum_gram_inv
+    (g : ClosedSmoothRiemannianMetric n M)
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ)
+    {x y : M}
+    (hΓ : ConnectionValueTimeDifferentiableAt gt t₀ y)
+    (hG : IsUnit (gramMatrix g x y))
+    (w : TM y) :
+    deltaGammaInnerTraceFieldAt g gt t₀ y w =
+      ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+        g.inner y (deltaGammaAt gt t₀ y (gramFrame x y i)
+          (gramFrame x y j)) w := by
+  classical
+  letI : NormedAddCommGroup (TM y) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM y) := inferInstanceAs (NormedSpace ℝ E)
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := gramFrameBasis g x y hG
+  calc
+    deltaGammaInnerTraceFieldAt g gt t₀ y w =
+        ∑ i, g.inner y
+          (deltaGammaAt gt t₀ y (b i)
+            (metricDualVectorAt g y (b.coord i))) w := by
+          exact deltaGammaInnerTraceFieldAt_eq_trace_in_basis
+            (g := g) (gt := gt) (t₀ := t₀) (y := y) hΓ b w
+    _ = ∑ i, g.inner y
+          (deltaGammaAt gt t₀ y (gramFrame x y i)
+            (∑ j, (gramMatrix g x y)⁻¹ i j • gramFrame x y j)) w := by
+          refine Finset.sum_congr rfl fun i _hi ↦ ?_
+          simp [b, metricDualVectorAt_gramFrameBasis_coord_eq_sum_inv]
+    _ = ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+        g.inner y (deltaGammaAt gt t₀ y (gramFrame x y i)
+          (gramFrame x y j)) w := by
+          refine Finset.sum_congr rfl fun i _hi ↦ ?_
+          let L : TM y →ₗ[ℝ] ℝ :=
+            IsLinearMap.mk'
+              (fun q ↦ g.inner y
+                (deltaGammaAt gt t₀ y (gramFrame x y i) q) w)
+              ⟨(by
+                  intro q q'
+                  rw [deltaGammaAt_add_right
+                    (gt := gt) (t₀ := t₀) (x := y) hΓ
+                    (gramFrame x y i) q q']
+                  exact (congrArg (fun L : TM y →L[ℝ] ℝ ↦ L w)
+                    (map_add (g.inner y)
+                      (deltaGammaAt gt t₀ y (gramFrame x y i) q)
+                      (deltaGammaAt gt t₀ y (gramFrame x y i) q')) : _)),
+                (by
+                  intro c q
+                  rw [deltaGammaAt_smul_right
+                    (gt := gt) (t₀ := t₀) (x := y) hΓ c
+                    (gramFrame x y i) q]
+                  simpa [smul_eq_mul] using
+                    (congrArg (fun L : TM y →L[ℝ] ℝ ↦ L w)
+                      (map_smul (g.inner y) c
+                        (deltaGammaAt gt t₀ y (gramFrame x y i) q)) : _))⟩
+          change L (∑ j, (gramMatrix g x y)⁻¹ i j • gramFrame x y j) =
+            ∑ j, (gramMatrix g x y)⁻¹ i j *
+              L (gramFrame x y j)
+          have hmap :=
+            map_sum L
+              (fun j ↦ (gramMatrix g x y)⁻¹ i j • gramFrame x y j)
+              Finset.univ
+          simpa [smul_eq_mul] using hmap
+
 /-- Differentiability of the closed first-slot `δΓ` trace-form field. -/
 def DeltaGammaFirstSlotTraceFieldDifferentiableAt
     (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop :=
@@ -3743,6 +3871,47 @@ theorem deltaGammaEntryDerivativeBridgeAt_of_deltaGammaFieldMDifferentiableAt
             (g.leviCivita (extend E q) x u)
     rw [hcompat, hcov]
     simp [A, B, g, deltaGammaFieldAt, extend_apply_self]
+
+/--
+The inner-trace route uses the same scalar `δΓ` entries as the first-slot
+route, with the paired output vector occupying the bridge's `q` slot.
+-/
+theorem deltaGammaInnerTraceEntry_mdiffAt_of_entryBridge
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hBridge : DeltaGammaEntryDerivativeBridgeAt gt t₀ x)
+    (p q w : TM x) :
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦
+        (gt t₀).inner y
+          (deltaGammaAt gt t₀ y (extend E p y) (extend E q y))
+          (extend E w y)) x := by
+  simpa using hBridge.mdifferentiable p w q
+
+/--
+Exterior-derivative form of the reused scalar-entry bridge for the
+inner-trace route.
+-/
+theorem deltaGammaInnerTraceEntry_extDeriv_eq_of_entryBridge
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hBridge : DeltaGammaEntryDerivativeBridgeAt gt t₀ x)
+    (u p q w : TM x) :
+    extDerivFun
+      (fun y : M ↦
+        (gt t₀).inner y
+          (deltaGammaAt gt t₀ y (extend E p y) (extend E q y))
+          (extend E w y)) x u
+      =
+        (gt t₀).inner x (covDeltaGammaDerivAt gt t₀ x u p q) w
+        + (gt t₀).inner x
+            (deltaGammaAt gt t₀ x
+              ((gt t₀).leviCivita (extend E p) x u) q) w
+        + (gt t₀).inner x
+            (deltaGammaAt gt t₀ x p
+              ((gt t₀).leviCivita (extend E q) x u)) w
+        + (gt t₀).inner x
+            (deltaGammaAt gt t₀ x p q)
+            ((gt t₀).leviCivita (extend E w) x u) := by
+  simpa using hBridge.extDeriv_eq u p w q
 
 /-- Static sanity witness for the first-slot trace-field covariant derivative. -/
 theorem deltaGammaFirstSlotTraceFieldCovariantDerivativeAt_const
@@ -5262,6 +5431,176 @@ theorem traceMetricVariationDerivAt_timeDeriv_of_covTensor2ExtDifferentiableAt
     (by
       intro y p q
       rfl)
+
+set_option maxHeartbeats 5000000 in
+/--
+The scalar-entry bridge identifies the covariant derivative of the moving
+inner-trace field with the fixed-base trace of
+`g((∇_u δΓ)(eᵢ,eⁱ), w)`.
+-/
+theorem deltaGammaInnerTraceFieldDerivativeTraceAt_of_entryBridge
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hBridge : DeltaGammaEntryDerivativeBridgeAt gt t₀ x) :
+    ∀ u w : TM x,
+      (letI : FiniteDimensional ℝ (TM x) :=
+          inferInstanceAs (FiniteDimensional ℝ E)
+        let g : ClosedSmoothRiemannianMetric n M := gt t₀
+        let b := Module.finBasis ℝ (TM x)
+        let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+          fun i ↦ metricDualVectorAt g x (b.coord i)
+        ∑ i, g.inner x (covDeltaGammaDerivAt gt t₀ x u (b i) (sharp i)) w)
+      =
+        (let g : ClosedSmoothRiemannianMetric n M := gt t₀
+        extDerivFun
+            (fun y : M ↦ deltaGammaInnerTraceFieldAt g gt t₀ y (extend E w y))
+            x u
+          - deltaGammaInnerTraceFieldAt g gt t₀ x
+            (g.leviCivita (extend E w) x u)) := by
+  intro u w
+  classical
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let hδ : ∀ y : M, TM y → TM y → ℝ :=
+    fun y p q ↦ g.inner y (deltaGammaAt gt t₀ y p q) (extend E w y)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hDiff : CovTensor2ExtDifferentiableAt hδ x := by
+    intro p q
+    simpa [hδ, g] using
+      deltaGammaInnerTraceEntry_mdiffAt_of_entryBridge
+        (gt := gt) (t₀ := t₀) (x := x) hBridge p q w
+  have hAddL : Tensor2AddLeft hδ := by
+    intro y p₁ p₂ q
+    dsimp [hδ]
+    rw [deltaGammaAt_add_left (gt := gt) (t₀ := t₀) (x := y)
+      (hreg.connection y) p₁ p₂ q]
+    exact (congrArg (fun L : TM y →L[ℝ] ℝ ↦ L (extend E w y))
+      (map_add (g.inner y)
+        (deltaGammaAt gt t₀ y p₁ q)
+        (deltaGammaAt gt t₀ y p₂ q)) : _)
+  have hSMulL : Tensor2SMulLeft hδ := by
+    intro y c p q
+    dsimp [hδ]
+    rw [deltaGammaAt_smul_left (gt := gt) (t₀ := t₀) (x := y)
+      (hreg.connection y) c p q]
+    simpa [smul_eq_mul] using
+      (congrArg (fun L : TM y →L[ℝ] ℝ ↦ L (extend E w y))
+        (map_smul (g.inner y) c (deltaGammaAt gt t₀ y p q)) : _)
+  have hAddR : Tensor2AddRight hδ := by
+    intro y p q₁ q₂
+    dsimp [hδ]
+    rw [deltaGammaAt_add_right (gt := gt) (t₀ := t₀) (x := y)
+      (hreg.connection y) p q₁ q₂]
+    exact (congrArg (fun L : TM y →L[ℝ] ℝ ↦ L (extend E w y))
+      (map_add (g.inner y)
+        (deltaGammaAt gt t₀ y p q₁)
+        (deltaGammaAt gt t₀ y p q₂)) : _)
+  have hSMulR : Tensor2SMulRight hδ := by
+    intro y c p q
+    dsimp [hδ]
+    rw [deltaGammaAt_smul_right (gt := gt) (t₀ := t₀) (x := y)
+      (hreg.connection y) c p q]
+    simpa [smul_eq_mul] using
+      (congrArg (fun L : TM y →L[ℝ] ℝ ↦ L (extend E w y))
+        (map_smul (g.inner y) c (deltaGammaAt gt t₀ y p q)) : _)
+  let B : ∀ y : M, LinearMap.BilinForm ℝ (TM y) :=
+    fun y ↦ LinearMap.mk₂ ℝ (hδ y)
+      (fun p p' q ↦ hAddL y p p' q)
+      (fun c p q ↦ hSMulL y c p q)
+      (fun p q q' ↦ hAddR y p q q')
+      (fun c p q ↦ hSMulR y c p q)
+  have hTraceDeriv : TraceMetricVariationDerivAt g hδ x :=
+    traceMetricVariationDerivAt_of_covTensor2ExtDifferentiableAt
+      (g := g) (h := hδ) (x := x)
+      hDiff hAddL hSMulL hAddR hSMulR B (by intro y p q; rfl)
+  have hFieldTrace :
+      (fun y : M ↦ deltaGammaInnerTraceFieldAt g gt t₀ y (extend E w y)) =
+        fun y : M ↦ traceMetricVariationAt g hδ y := by
+    funext y
+    letI : FiniteDimensional ℝ (TM y) := inferInstanceAs (FiniteDimensional ℝ E)
+    unfold deltaGammaInnerTraceFieldAt traceMetricVariationAt
+    refine Finset.sum_congr rfl fun i _hi ↦ ?_
+    simp [hδ]
+  have hCovEntry : ∀ i : Fin (Module.finrank ℝ (TM x)),
+      covTensor2DerivAt g hδ x u (b i) (sharp i) =
+        g.inner x (covDeltaGammaDerivAt gt t₀ x u (b i) (sharp i)) w
+        + g.inner x (deltaGammaAt gt t₀ x (b i) (sharp i))
+            (g.leviCivita (extend E w) x u) := by
+    intro i
+    have hbridge :=
+      deltaGammaInnerTraceEntry_extDeriv_eq_of_entryBridge
+        (gt := gt) (t₀ := t₀) (x := x) hBridge u (b i) (sharp i) w
+    have hflat :
+      extDerivFun
+          (fun y : M ↦
+            g.inner y
+              (deltaGammaAt gt t₀ y (extend E (b i) y)
+                (extend E (sharp i) y))
+              (extend E w y)) x u
+      =
+          covTensor2DerivAt g hδ x u (b i) (sharp i)
+          + g.inner x
+              (deltaGammaAt gt t₀ x
+                (g.leviCivita (extend E (b i)) x u) (sharp i)) w
+          + g.inner x
+              (deltaGammaAt gt t₀ x (b i)
+                (g.leviCivita (extend E (sharp i)) x u)) w := by
+      simpa [hδ] using
+        extDerivFun_h_extend_eq_covTensor2DerivAt_add_corrections
+          (g := g) (h := hδ) (x := x) (v := u)
+          (p := b i) (q := sharp i)
+    have heq := hflat.symm.trans hbridge
+    linarith
+  have hCovTrace :
+      (∑ i, covTensor2DerivAt g hδ x u (b i) (sharp i)) =
+        (∑ i, g.inner x
+          (covDeltaGammaDerivAt gt t₀ x u (b i) (sharp i)) w)
+        + deltaGammaInnerTraceFieldAt g gt t₀ x
+            (g.leviCivita (extend E w) x u) := by
+    calc
+      (∑ i, covTensor2DerivAt g hδ x u (b i) (sharp i))
+          =
+          ∑ i,
+            (g.inner x
+              (covDeltaGammaDerivAt gt t₀ x u (b i) (sharp i)) w
+              + g.inner x (deltaGammaAt gt t₀ x (b i) (sharp i))
+                (g.leviCivita (extend E w) x u)) := by
+            exact Finset.sum_congr rfl fun i _hi ↦ hCovEntry i
+      _ =
+          (∑ i, g.inner x
+            (covDeltaGammaDerivAt gt t₀ x u (b i) (sharp i)) w)
+          + ∑ i, g.inner x (deltaGammaAt gt t₀ x (b i) (sharp i))
+              (g.leviCivita (extend E w) x u) := by
+            rw [Finset.sum_add_distrib]
+      _ =
+          (∑ i, g.inner x
+            (covDeltaGammaDerivAt gt t₀ x u (b i) (sharp i)) w)
+          + deltaGammaInnerTraceFieldAt g gt t₀ x
+              (g.leviCivita (extend E w) x u) := by
+            simp [deltaGammaInnerTraceFieldAt, b, sharp]
+  have hTrace := hTraceDeriv u
+  have hTrace' :
+      (∑ i, g.inner x
+          (covDeltaGammaDerivAt gt t₀ x u (b i) (sharp i)) w)
+        + deltaGammaInnerTraceFieldAt g gt t₀ x
+            (g.leviCivita (extend E w) x u)
+      =
+        extDerivFun
+          (fun y : M ↦ deltaGammaInnerTraceFieldAt g gt t₀ y (extend E w y))
+          x u := by
+    rw [hFieldTrace]
+    exact hCovTrace.symm.trans hTrace
+  change (∑ i, g.inner x
+      (covDeltaGammaDerivAt gt t₀ x u (b i) (sharp i)) w) =
+    extDerivFun
+        (fun y : M ↦ deltaGammaInnerTraceFieldAt g gt t₀ y (extend E w y))
+        x u
+      - deltaGammaInnerTraceFieldAt g gt t₀ x
+        (g.leviCivita (extend E w) x u)
+  rw [← hTrace']
+  ring
 
 set_option maxHeartbeats 5000000 in
 /--
