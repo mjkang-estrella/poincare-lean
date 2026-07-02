@@ -4930,6 +4930,87 @@ theorem closedCurvatureEntryDerivativeBridgeAt_canonical
   closedCurvatureEntryDerivativeBridgeAt_of_curvatureFieldMDifferentiableAt
     (closedCurvatureFieldMDifferentiableAt_canonical g x)
 
+/-- Flat exterior derivative of a scalar closed-curvature entry. -/
+noncomputable def closedCurvatureEntryDerivAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v a u w q : TM x) : ℝ :=
+  extDerivFun
+    (fun y : M ↦
+      g.inner y
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u) (extend E w) y)
+        (extend E q y)) x v
+
+/--
+The four Christoffel-slot corrections in the scalar-entry derivative bridge
+for `closedCurvatureCovDerivAt`.
+-/
+noncomputable def closedCurvatureCovDerivAtCorrectionAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v a u w q : TM x) : ℝ :=
+  g.inner x
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E (g.leviCivita (extend E a) x v))
+        (extend E u) (extend E w) x) q
+    + g.inner x
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E a)
+        (extend E (g.leviCivita (extend E u) x v))
+        (extend E w) x) q
+    + g.inner x
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E a) (extend E u)
+        (extend E (g.leviCivita (extend E w) x v)) x) q
+    + g.inner x
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E a) (extend E u) (extend E w) x)
+      (g.leviCivita (extend E q) x v)
+
+/--
+Scalar-paired expansion of `closedCurvatureCovDerivAt` through the canonical
+curvature-entry derivative bridge.
+-/
+theorem closedCurvatureCovDerivAt_inner_eq_entry_deriv_sub_correction
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v a u w q : TM x) :
+    g.inner x (closedCurvatureCovDerivAt g x v a u w) q =
+      closedCurvatureEntryDerivAt g x v a u w q
+        - closedCurvatureCovDerivAtCorrectionAt g x v a u w q := by
+  unfold closedCurvatureEntryDerivAt closedCurvatureCovDerivAtCorrectionAt
+  have h :=
+    (closedCurvatureEntryDerivativeBridgeAt_canonical g x).extDeriv_eq
+      v a u w q
+  linarith
+
+/--
+Cyclic scalar-paired expansion of the closed second-Bianchi expression.  The
+remaining intrinsic second-Bianchi atom is exactly the cancellation of the
+three flat entry derivatives against these cyclic Christoffel corrections.
+-/
+theorem closedCurvatureCovDerivAt_cyclic_inner_expansion
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u v w z q : TM x) :
+    g.inner x (closedCurvatureCovDerivAt g x v u w z) q
+      + g.inner x (closedCurvatureCovDerivAt g x u w v z) q
+      + g.inner x (closedCurvatureCovDerivAt g x w v u z) q =
+        closedCurvatureEntryDerivAt g x v u w z q
+          + closedCurvatureEntryDerivAt g x u w v z q
+          + closedCurvatureEntryDerivAt g x w v u z q
+          - (closedCurvatureCovDerivAtCorrectionAt g x v u w z q
+            + closedCurvatureCovDerivAtCorrectionAt g x u w v z q
+            + closedCurvatureCovDerivAtCorrectionAt g x w v u z q) := by
+  rw [closedCurvatureCovDerivAt_inner_eq_entry_deriv_sub_correction
+      (g := g) (x := x) (v := v) (a := u) (u := w) (w := z) (q := q),
+    closedCurvatureCovDerivAt_inner_eq_entry_deriv_sub_correction
+      (g := g) (x := x) (v := u) (a := w) (u := v) (w := z) (q := q),
+    closedCurvatureCovDerivAt_inner_eq_entry_deriv_sub_correction
+      (g := g) (x := x) (v := w) (a := v) (u := u) (w := z) (q := q)]
+  ring
+
 private theorem eventually_contMDiffAt_two_extend
     {x : M} (v : TM x) :
     ∀ᶠ y in nhds x,
