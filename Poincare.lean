@@ -16,6 +16,7 @@ import Poincare.ModelLaplacian
 import Poincare.ModelLaplacianRootAliases
 import Poincare.Statement
 import Poincare.Global.Statement
+import Poincare.Global.RiemannianContext
 import Poincare.Milestones
 import Poincare.Assembly
 import Poincare.CanonicalBridges
