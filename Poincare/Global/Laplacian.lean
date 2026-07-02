@@ -565,6 +565,21 @@ theorem laplacianAt_add (g : ClosedSmoothRiemannianMetric n M)
   simp [LinearMap.comp_add]
 
 /--
+Additivity of the scalar Laplacian with the gradient-field regularity
+discharged from pointwise `C²` scalar regularity.
+-/
+theorem laplacianAt_add' (g : ClosedSmoothRiemannianMetric n M)
+    {f h : M → ℝ} {x : M}
+    (hf : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2 f y)
+    (hh : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2 h y) :
+    g.laplacianAt (f + h) x = g.laplacianAt f x + g.laplacianAt h x :=
+  g.laplacianAt_add
+    (fun y ↦ (hf y).mdifferentiableAt two_ne_zero)
+    (fun y ↦ (hh y).mdifferentiableAt two_ne_zero)
+    (g.mdifferentiableAt_gradient (hf x))
+    (g.mdifferentiableAt_gradient (hh x))
+
+/--
 Homogeneity of the scalar Laplacian.
 
 The gradient-field differentiability hypothesis is carried for ledger task
@@ -578,6 +593,18 @@ theorem laplacianAt_const_smul (g : ClosedSmoothRiemannianMetric n M)
   unfold laplacianAt
   rw [g.hessianDualAt_const_smul c hf hgradf]
   simp [LinearMap.comp_smul, smul_eq_mul]
+
+/--
+Homogeneity of the scalar Laplacian with the gradient-field regularity
+discharged from pointwise `C²` scalar regularity.
+-/
+theorem laplacianAt_const_smul' (g : ClosedSmoothRiemannianMetric n M)
+    {f : M → ℝ} {x : M} (c : ℝ)
+    (hf : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2 f y) :
+    g.laplacianAt (c • f) x = c * g.laplacianAt f x :=
+  g.laplacianAt_const_smul c
+    (fun y ↦ (hf y).mdifferentiableAt two_ne_zero)
+    (g.mdifferentiableAt_gradient (hf x))
 
 theorem laplacianAt_const (g : ClosedSmoothRiemannianMetric n M)
     (c : ℝ) (x : M) :
