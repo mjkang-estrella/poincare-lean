@@ -2979,6 +2979,21 @@ def TraceMetricVariationExtSecondDifferentiableAt
         extDerivFun (fun z : M ↦ traceMetricVariationAt g h z) y
           (extend E w y)) x
 
+/--
+Scalar `C²` regularity of the metric trace is enough for the closed
+second-exterior-derivative predicate.
+-/
+theorem traceMetricVariationExtSecondDifferentiableAt_of_contMDiffAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (hTrace :
+      ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ traceMetricVariationAt g h y) x) :
+    TraceMetricVariationExtSecondDifferentiableAt g h x := by
+  intro w
+  have hW : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (extend E w)) x := by
+    simpa using (mdifferentiableAt_extend I E w)
+  exact CovariantDerivative.mdiffAt_extDerivFun_apply hTrace hW
+
 /-- First-slot trace form of `δΓ`, evaluated fiberwise. -/
 noncomputable def deltaGammaFirstSlotTraceFieldAt
     (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ)
@@ -5117,6 +5132,51 @@ theorem extDerivFun_extDerivFun_extend_eq_hessianAt_add
   have h := g.leviCivita_metricCompatibleAt x hgrad hY u
   rw [hpair, hYx, hgrad_cov] at h
   simpa [ClosedSmoothRiemannianMetric.hessianAt, Y] using h
+
+omit [T2Space M] in
+/--
+Closed Schwarz identity for canonical extensions, in its raw antisymmetric
+form.  The obstruction to swapping the two exterior-derivative directions is
+exactly the derivative along the manifold Lie bracket of the two extended
+direction fields.
+-/
+theorem extDerivFun_extDerivFun_extend_sub_swap_eq_bracket
+    {f : M → ℝ} {x : M}
+    (hf : ContMDiffAt I 𝓘(ℝ) 2 f x) (u v : TM x) :
+    extDerivFun (fun y : M ↦ extDerivFun f y (extend E v y)) x u -
+        extDerivFun (fun y : M ↦ extDerivFun f y (extend E u y)) x v =
+      extDerivFun f x (VectorField.mlieBracket I (extend E u) (extend E v) x) := by
+  have hU : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (extend E u)) x := by
+    simpa using (mdifferentiableAt_extend I E u)
+  have hV : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (extend E v)) x := by
+    simpa using (mdifferentiableAt_extend I E v)
+  have h := (extDerivFun_apply_mlieBracket (I' := I) hf hU hV).symm
+  simpa using h
+
+/--
+Closed Schwarz identity after subtracting the first-order connection
+corrections introduced by moving the canonical extension fields.  This is the
+form supplied by `hessianAt_symm'` and the Hessian compatibility bridge.
+-/
+theorem extDerivFun_extDerivFun_extend_corrected_symm
+    (g : ClosedSmoothRiemannianMetric n M) {f : M → ℝ} {x : M}
+    (hf : ContMDiffAt I 𝓘(ℝ) 2 f x) (u v : TM x) :
+    extDerivFun (fun y : M ↦ extDerivFun f y (extend E v y)) x u -
+        extDerivFun f x (g.leviCivita (extend E v) x u) =
+      extDerivFun (fun y : M ↦ extDerivFun f y (extend E u y)) x v -
+        extDerivFun f x (g.leviCivita (extend E u) x v) := by
+  have hgrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x :=
+    g.mdifferentiableAt_gradient hf
+  have huv :=
+    extDerivFun_extDerivFun_extend_eq_hessianAt_add
+      (g := g) (f := f) (x := x) hgrad u v
+  have hvu :=
+    extDerivFun_extDerivFun_extend_eq_hessianAt_add
+      (g := g) (f := f) (x := x) hgrad v u
+  have hsymm := g.hessianAt_symm' hf u v
+  rw [huv, hvu, hsymm]
+  ring
 
 /--
 Hessian identification for the first-slot trace field from the local
