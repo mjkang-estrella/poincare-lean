@@ -4264,6 +4264,23 @@ theorem traceMetricVariationDerivAt_of_covTensor2ExtDifferentiableAt
   rw [hTrace, hProduct, hSplit, hFirst, hSecond]
   ring
 
+theorem traceMetricVariationDerivAt_timeDeriv_of_covTensor2ExtDifferentiableAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hDiff : CovTensor2ExtDifferentiableAt (timeDerivAt gt t₀) x) :
+    TraceMetricVariationDerivAt (gt t₀) (timeDerivAt gt t₀) x :=
+  traceMetricVariationDerivAt_of_covTensor2ExtDifferentiableAt
+    (g := gt t₀) (h := timeDerivAt gt t₀) (x := x)
+    hDiff
+    (tensor2AddLeft_timeDerivAt hgt)
+    (tensor2SMulLeft_timeDerivAt hgt)
+    (tensor2AddRight_timeDerivAt hgt)
+    (tensor2SMulRight_timeDerivAt hgt)
+    (fun y ↦ timeDerivBilinAt gt t₀ y (hgt y))
+    (by
+      intro y p q
+      rfl)
+
 /--
 Product-rule obligation for differentiating the metric trace.
 
@@ -4596,6 +4613,40 @@ theorem deltaGamma_innerTrace_eq_of_covTensor2Regular
     (covTensor2DerivTraceSwapAt_timeDeriv_of_regular
       (gt := gt) (t₀ := t₀) (x := x) hgt hCovDiff)
     hTraceDeriv w
+
+theorem deltaGamma_innerTrace_eq_of_covTensor2ExtDifferentiableAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hExt :
+      ∀ a b c : TM x,
+        HasDerivAt
+          (fun t ↦
+            extDerivFun
+              (fun y : M ↦ (gt t).inner y (extend E b y) (extend E c y)) x a)
+          (extDerivFun
+            (fun y : M ↦ timeDerivAt gt t₀ y (extend E b y) (extend E c y))
+            x a) t₀)
+    (hCovDiff : CovTensor2ExtDifferentiableAt (timeDerivAt gt t₀) x)
+    (w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+      ∑ i, (gt t₀).inner x
+        (deltaGammaAt gt t₀ x ((Module.finBasis ℝ (TM x)) i)
+          (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord i))) w)
+      =
+        tensorDivergenceOneFormAt (gt t₀) (timeDerivAt gt t₀) x w
+          - (1 / 2 : ℝ) *
+            extDerivFun
+              (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y)
+              x w :=
+  deltaGamma_innerTrace_eq_of_covTensor2Regular
+    (gt := gt) (t₀ := t₀) (x := x)
+    hreg hgt hExt hCovDiff
+    (traceMetricVariationDerivAt_timeDeriv_of_covTensor2ExtDifferentiableAt
+      (gt := gt) (t₀ := t₀) (x := x) hgt hCovDiff)
+    w
 
 theorem deltaGamma_innerTrace_eq_of_covTensor2Regular_traceProduct
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
