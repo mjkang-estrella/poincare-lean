@@ -5602,6 +5602,107 @@ theorem deltaGammaInnerTraceFieldDerivativeTraceAt_of_entryBridge
   rw [← hTrace']
   ring
 
+/-- The divergence contraction rewritten using the metric-dual raised basis. -/
+theorem deltaGammaDivergenceAt_eq_inner_sum
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (u w : TM x) :
+    deltaGammaDivergenceAt gt t₀ x u w =
+      (letI : FiniteDimensional ℝ (TM x) :=
+          inferInstanceAs (FiniteDimensional ℝ E)
+        let g : ClosedSmoothRiemannianMetric n M := gt t₀
+        let b := Module.finBasis ℝ (TM x)
+        let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+          fun i ↦ metricDualVectorAt g x (b.coord i)
+        ∑ i, g.inner x (covDeltaGammaDerivAt gt t₀ x (b i) u w) (sharp i)) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  unfold deltaGammaDivergenceAt
+  change (∑ i, b.coord i (covDeltaGammaDerivAt gt t₀ x (b i) u w)) =
+    ∑ i, g.inner x (covDeltaGammaDerivAt gt t₀ x (b i) u w) (sharp i)
+  refine Finset.sum_congr rfl fun i _hi ↦ ?_
+  simpa [g, b, sharp] using
+    coord_eq_inner_metricDualVectorAt (g := g) (x := x) i
+      (covDeltaGammaDerivAt gt t₀ x (b i) u w)
+
+/--
+The exact cyclic `∇δΓ` trace identity needed to replace the verified
+inner-trace derivative contraction by `deltaGammaDivergenceAt`.
+
+This lemma does not prove the cyclic identity; it records that, once the
+curvature-free cyclic trace equality is supplied, the existing scalar-entry
+bridge gives the divergence side in corrected inner-trace-field form.
+-/
+theorem deltaGammaDivergenceAt_eq_innerTraceFieldDerivative_of_entryBridge
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hBridge : DeltaGammaEntryDerivativeBridgeAt gt t₀ x)
+    (hcyclic :
+      ∀ u w : TM x,
+        (letI : FiniteDimensional ℝ (TM x) :=
+            inferInstanceAs (FiniteDimensional ℝ E)
+          let g : ClosedSmoothRiemannianMetric n M := gt t₀
+          let b := Module.finBasis ℝ (TM x)
+          let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+            fun i ↦ metricDualVectorAt g x (b.coord i)
+          ∑ i, g.inner x
+            (covDeltaGammaDerivAt gt t₀ x u (b i) (sharp i)) w)
+        =
+        (letI : FiniteDimensional ℝ (TM x) :=
+            inferInstanceAs (FiniteDimensional ℝ E)
+          let g : ClosedSmoothRiemannianMetric n M := gt t₀
+          let b := Module.finBasis ℝ (TM x)
+          let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+            fun i ↦ metricDualVectorAt g x (b.coord i)
+          ∑ i, g.inner x
+            (covDeltaGammaDerivAt gt t₀ x (b i) w u) (sharp i))) :
+    ∀ u w : TM x,
+      deltaGammaDivergenceAt gt t₀ x w u =
+        (let g : ClosedSmoothRiemannianMetric n M := gt t₀
+        extDerivFun
+            (fun y : M ↦ deltaGammaInnerTraceFieldAt g gt t₀ y (extend E w y))
+            x u
+          - deltaGammaInnerTraceFieldAt g gt t₀ x
+            (g.leviCivita (extend E w) x u)) := by
+  intro u w
+  classical
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hderiv :
+      (∑ i, g.inner x
+          (covDeltaGammaDerivAt gt t₀ x u (b i) (sharp i)) w)
+        =
+        extDerivFun
+            (fun y : M ↦ deltaGammaInnerTraceFieldAt g gt t₀ y (extend E w y))
+            x u
+          - deltaGammaInnerTraceFieldAt g gt t₀ x
+            (g.leviCivita (extend E w) x u) := by
+    simpa [g, b, sharp] using
+      deltaGammaInnerTraceFieldDerivativeTraceAt_of_entryBridge
+        (gt := gt) (t₀ := t₀) (x := x) hreg hBridge u w
+  have hcyclic' :
+      (∑ i, g.inner x
+          (covDeltaGammaDerivAt gt t₀ x u (b i) (sharp i)) w)
+        =
+      (∑ i, g.inner x
+          (covDeltaGammaDerivAt gt t₀ x (b i) w u) (sharp i)) := by
+    simpa [g, b, sharp] using hcyclic u w
+  have hdiv :
+      deltaGammaDivergenceAt gt t₀ x w u =
+        ∑ i, g.inner x
+          (covDeltaGammaDerivAt gt t₀ x (b i) w u) (sharp i) := by
+    simpa [g, b, sharp] using
+      deltaGammaDivergenceAt_eq_inner_sum
+        (gt := gt) (t₀ := t₀) (x := x) (u := w) (w := u)
+  rw [hdiv]
+  exact hcyclic'.symm.trans hderiv
+
 set_option maxHeartbeats 5000000 in
 /--
 The scalar-entry derivative bridge closes the covariant derivative identity for
