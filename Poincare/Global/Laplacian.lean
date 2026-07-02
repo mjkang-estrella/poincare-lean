@@ -514,6 +514,14 @@ theorem hessianAt_symm (g : ClosedSmoothRiemannianMetric n M)
     simpa [hXx, hYx] using h
   linarith
 
+/-- Symmetry of the covariant Hessian from `C²` regularity of the scalar function alone. -/
+theorem hessianAt_symm' (g : ClosedSmoothRiemannianMetric n M)
+    {f : M → ℝ} {x : M}
+    (hf : ContMDiffAt I 𝓘(ℝ) 2 f x)
+    (v w : TM x) :
+    g.hessianAt f x v w = g.hessianAt f x w v :=
+  g.hessianAt_symm hf (g.mdifferentiableAt_gradient hf) v w
+
 theorem hessianDualAt_add (g : ClosedSmoothRiemannianMetric n M)
     {f h : M → ℝ} {x : M}
     (hf : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) f y)
