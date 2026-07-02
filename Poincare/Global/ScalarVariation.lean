@@ -2728,6 +2728,36 @@ theorem spatialMetricDerivAt_eq_leviCivita
     v
   simpa using h
 
+/-- The exterior derivative of a canonical Gram entry is the closed spatial
+metric derivative of the seeded basis vectors. -/
+theorem gramMatrix_extDerivFun_eq_spatialMetricDerivAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (v : TM x) (i j : Fin (Module.finrank ℝ (TM x))) :
+    extDerivFun (fun y : M ↦ gramMatrix g x y i j) x v =
+      (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E);
+      spatialMetricDerivAt g x v ((Module.finBasis ℝ (TM x)) i)
+        ((Module.finBasis ℝ (TM x)) j)) := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  simp [gramMatrix, spatialMetricDerivAt]
+
+/-- Gram-entry derivative in Levi-Civita correction form. -/
+theorem gramMatrix_extDerivFun_eq_leviCivita
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (v : TM x) (i j : Fin (Module.finrank ℝ (TM x))) :
+    extDerivFun (fun y : M ↦ gramMatrix g x y i j) x v =
+      (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E);
+      g.inner x
+        (g.leviCivita (extend E ((Module.finBasis ℝ (TM x)) i)) x v)
+        ((Module.finBasis ℝ (TM x)) j)
+        +
+      g.inner x ((Module.finBasis ℝ (TM x)) i)
+        (g.leviCivita (extend E ((Module.finBasis ℝ (TM x)) j)) x v)) := by
+  rw [gramMatrix_extDerivFun_eq_spatialMetricDerivAt,
+    spatialMetricDerivAt_eq_leviCivita]
+
 /-- The covector `q ↦ g(p, ∇ᵥ q)` in the closed canonical-extension vocabulary. -/
 noncomputable def leviCivitaRightCovectorLinearAt
     (g : ClosedSmoothRiemannianMetric n M) (x : M)
