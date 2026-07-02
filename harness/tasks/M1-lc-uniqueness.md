@@ -1,0 +1,13 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M1-lc-uniqueness: uniqueness of the Levi-Civita connection (Mathlib manifold layer)
+
+Context on main: `Poincare/Global/RiemannianContext.lean` gives `Poincare.ClosedSmoothRiemannianMetric n M` (= Mathlib `ContMDiffRiemannianMetric` on the tangent bundle) with the derived bundle instances. Pinned Mathlib has `Mathlib/Geometry/Manifold/VectorBundle/CovariantDerivative/Basic.lean` (`IsCovariantDerivativeOn`, `CovariantDerivative`, `CovariantDerivative.difference` — the difference-tensor API) and `.../Torsion.lean` (`CovariantDerivative.torsion`, `torsion_eq_zero_iff`). Read both files carefully first to get the exact current API.
+
+Deliverable: NEW file `Poincare/Global/LeviCivita.lean` (+ import in `Poincare.lean`):
+
+1. `def IsMetricCompatible` — a covariant derivative ∇ on the tangent bundle is compatible with g: for smooth vector fields X, Y and any direction v at x, the derivative of y ↦ ⟪X y, Y y⟫_g in direction v equals ⟪∇_v X, Y x⟫ + ⟪X x, ∇_v Y⟫. Spell the differentiation using Mathlib's manifold derivative of the scalar function (e.g. `mfderiv` of `fun y => g.inner ... (X y) (Y y)` — find the workable formulation; the RiemannianContext `contMDiff_inner`/`ContMDiff.inner_bundle` lemmas help with differentiability side conditions). Choose the formulation that makes the uniqueness proof go through; record design notes as comments.
+2. `theorem levi_civita_unique`: two covariant derivatives on the tangent bundle that are both torsion-free and metric-compatible agree (pointwise on smooth vector fields, or as elements of `CovariantDerivative` if extensionality is available). Proof = the standard Koszul/S₃ argument on the difference tensor: the difference D(v,w) is tensorial (Mathlib's `CovariantDerivative.difference` gives this), metric compatibility makes ⟪D(v,w),z⟫ antisymmetric in (w,z), torsion-freeness makes it symmetric in (v,w); symmetric-in-two + antisymmetric-in-two ⟹ zero (the S₃ rotation trick — this exact argument is already formalized in the flat model in `Poincare/LeviCivitaUniqueness.lean`; mirror its algebra).
+3. If the full theorem stalls, commit the partial verified lemmas (e.g. the abstract S₃ algebra lemma over an inner-product space, the antisymmetry step) and file `harness/reports/M1-lc-uniqueness_blocked.md` with the precise obstruction. Partial verified progress is a success outcome.
+
+No sorry/axiom. Build `lake build Poincare.Global.LeviCivita`, commit (git works in your worktree now). Report exact final declaration names and any API mismatches found in Mathlib's CovariantDerivative layer.
