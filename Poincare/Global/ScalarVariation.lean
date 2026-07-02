@@ -10049,6 +10049,73 @@ theorem closedConnectionEntry_mixed_second_cyclic_cancel
   ring
 
 /--
+Torsion-free alignment for the bracket connection entry:
+`∇_[a,u] w` is the difference of the two connection-slot products coming
+from `∇_a u - ∇_u a`.
+-/
+theorem closedBracketConnectionEntryFieldAt_eq_connectionEntry_sub
+    (g : ClosedSmoothRiemannianMetric n M) {x : M} (a u w q : TM x) :
+    closedBracketConnectionEntryFieldAt g a u w x q =
+      closedConnectionEntryFieldAt g (g.leviCivita (extend E u) x a) w q x
+        - closedConnectionEntryFieldAt g (g.leviCivita (extend E a) x u) w q x := by
+  have hbr :
+      g.leviCivita (extend E u) x a - g.leviCivita (extend E a) x u =
+        VectorField.mlieBracket I (extend E a) (extend E u) x := by
+    have htf := g.leviCivita_torsionFreeAt x
+      (by simpa [MDiffAtTangentField] using (mdifferentiableAt_extend I E a))
+      (by simpa [MDiffAtTangentField] using (mdifferentiableAt_extend I E u))
+    rwa [extend_apply_self, extend_apply_self] at htf
+  unfold closedBracketConnectionEntryFieldAt closedConnectionEntryFieldAt
+  rw [← hbr]
+  simp [map_sub]
+
+/--
+The same torsion-free bracket alignment in the output connection slot used by
+`closedCurvatureDefExpansionAt`.
+-/
+theorem closedBracketConnectionEntryFieldAt_outputConnection_eq_connectionEntry_sub
+    (g : ClosedSmoothRiemannianMetric n M) {x : M} (v a u w q : TM x) :
+    closedBracketConnectionEntryFieldAt g a u w x
+        (g.leviCivita (extend E q) x v) =
+      closedConnectionEntryFieldAt g (g.leviCivita (extend E u) x a) w
+          (g.leviCivita (extend E q) x v) x
+        - closedConnectionEntryFieldAt g (g.leviCivita (extend E a) x u) w
+          (g.leviCivita (extend E q) x v) x := by
+  simpa using
+    closedBracketConnectionEntryFieldAt_eq_connectionEntry_sub
+      (g := g) (a := a) (u := u) (w := w)
+      (q := g.leviCivita (extend E q) x v)
+
+/--
+Cyclic form of the output-slot bracket block after the torsion-free
+alignment.  This is the bracket part of the group-2 bookkeeping in the
+cyclic second-Bianchi expansion.
+-/
+theorem closedBracketConnectionEntryFieldAt_cyclic_outputConnection_eq_connectionEntry_sub
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) (u v w z q : TM x) :
+    closedBracketConnectionEntryFieldAt g u w z x (g.leviCivita (extend E q) x v)
+      + closedBracketConnectionEntryFieldAt g w v z x (g.leviCivita (extend E q) x u)
+      + closedBracketConnectionEntryFieldAt g v u z x (g.leviCivita (extend E q) x w) =
+        (closedConnectionEntryFieldAt g (g.leviCivita (extend E w) x u) z
+            (g.leviCivita (extend E q) x v) x
+          - closedConnectionEntryFieldAt g (g.leviCivita (extend E u) x w) z
+            (g.leviCivita (extend E q) x v) x)
+        + (closedConnectionEntryFieldAt g (g.leviCivita (extend E v) x w) z
+            (g.leviCivita (extend E q) x u) x
+          - closedConnectionEntryFieldAt g (g.leviCivita (extend E w) x v) z
+            (g.leviCivita (extend E q) x u) x)
+        + (closedConnectionEntryFieldAt g (g.leviCivita (extend E u) x v) z
+            (g.leviCivita (extend E q) x w) x
+          - closedConnectionEntryFieldAt g (g.leviCivita (extend E v) x u) z
+            (g.leviCivita (extend E q) x w) x) := by
+  rw [closedBracketConnectionEntryFieldAt_outputConnection_eq_connectionEntry_sub
+      (g := g) (x := x) (v := v) (a := u) (u := w) (w := z) (q := q),
+    closedBracketConnectionEntryFieldAt_outputConnection_eq_connectionEntry_sub
+      (g := g) (x := x) (v := u) (a := w) (u := v) (w := z) (q := q),
+    closedBracketConnectionEntryFieldAt_outputConnection_eq_connectionEntry_sub
+      (g := g) (x := x) (v := w) (a := v) (u := u) (w := z) (q := q)]
+
+/--
 Hessian identification for the first-slot trace field from the local
 first-order identity and scalar trace C² regularity.
 -/
