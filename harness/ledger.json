@@ -323,7 +323,7 @@
       ],
       "difficulty": "hard",
       "title": "Predicate discharge: trace swap + slot linearity",
-      "result": "DONE 2026-07-02, commit d803f146, gate PASS. covTensor2DerivAt slot-linearity, CovTensor2DerivTraceSwapAt discharged, hTraceSwap eliminated downstream, zero/static witnesses. TraceMetricVariationDerivAt blocked on SPATIAL raised-basis derivative bridge (spatial metricRaiseDerivAt analogue + Christoffel cancellation) — report filed."
+      "result": "DONE 2026-07-02, commit d803f146, gate PASS. covTensor2DerivAt slot-linearity, CovTensor2DerivTraceSwapAt discharged, hTraceSwap eliminated downstream, zero/static witnesses. TraceMetricVariationDerivAt blocked on SPATIAL raised-basis derivative bridge (spatial metricRaiseDerivAt analogue + Christoffel cancellation) — report filed. | GRAM ROUTE BREAKTHROUGH (predicates-12, 6 commits, gate PASS): gramMatrix + inverse-entry differentiability + gramFrameBasis + trace identity traceMetricVariationAt_eq_sum_gram_inv + differentiability half + extDerivFun Gram RHS. Remaining for TraceMetricVariationDerivAt: product-rule expansion + covariant cancellation (pure algebra)."
     }
   ]
 }
