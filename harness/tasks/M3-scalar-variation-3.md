@@ -1,0 +1,13 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M3-scalar-variation-3: discharge hCurv (curvature variation) + double-divergence vocabulary
+
+Read `harness/reports/M3-scalar-variation_notes.md` (latest). On main: `ricciVariation_eq_deltaGamma_contractions` is proven MODULO `hCurv` — the curvature-variation formula: the time derivative of the closed-manifold curvature values equals the antisymmetrized covariant derivative of `deltaGammaAt` (`covDeltaGammaDerivAt` vocabulary already defined). Model template: ModelLaplacian.lean's `hasDerivAt_coordCurvature` / `curvatureDerivOp_eq_covDeltaGamma` chain (grep for exact names; the memory notes also cite `curvatureDerivOp` ~line 4316 and `curvatureDerivOp_eq_covDeltaGamma` as proven).
+
+Deliverables, extending `Poincare/Global/ScalarVariation.lean` (each its own commit):
+
+1. **Discharge hCurv**: prove the curvature-variation formula for the canonical connection family — from `ConnectionValueTimeDifferentiableAt`-style honest hypotheses, the t-derivative of the curvature values used in `ricciAt` equals the `covDeltaGammaDerivAt` antisymmetrization. Differentiate the curvature's defining formula (∇∇ − ∇∇ − ∇_[,]) termwise: product rule on compositions of connection values; the second-derivative cross terms cancel pairwise, leaving ∇(δΓ) antisymmetrized (the classical computation; the model file has it done once already — port its proof skeleton). Then state `ricciVariation_eq_deltaGamma_contractions'` unconditionally (or with only the honest time-differentiability hypotheses).
+2. **Subtask 4** (roadmap): `tensorDoubleDivergenceAt (g) (h : ∀ y, TM y → TM y → ℝ) (x) : ℝ` — trace of the covariant divergence of the raised variation tensor, via `g.leviCivita` + the trace machinery used by `laplacianAt`/`scalarAt` (keep argument shapes consistent). Plus `traceMetricVariationAt` and `metricVariationRicciPairingAt` (the ⟨h, Ric⟩ pairing) — the full RHS vocabulary of the Lichnerowicz shape from the notes. Sanity lemmas: linearity in h; vanishing for h = 0.
+3. If momentum allows, start subtask 5's LHS-side: state the Lichnerowicz formula as the notes specify (prove only what's within reach; the contracted-Bianchi core may need its own task — the model's `deltaGammaDivergenceTrace`-keystone journey shows the hard part; check whether the closed-manifold layer can instead reuse `einstein_tensor_divergence_free_of_contDiff`-style contracted Bianchi already in ModelLaplacian via chart transport, or needs a native manifold proof — record the assessment in the notes).
+
+No sorry/axiom; blocked → greens + notes update. `lake build Poincare.Global.ScalarVariation`, report names.
