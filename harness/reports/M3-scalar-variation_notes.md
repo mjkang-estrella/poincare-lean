@@ -258,3 +258,20 @@ Status from task `M3-predicates-12`:
   inverse-Gram derivative terms against the Levi-Civita corrections in
   `covTensor2DerivAt`.  See `M3-predicates-12_blocked.md` for the exact reduced
   goal.
+
+Status from task `M3-predicates-14`:
+
+- Done: proved the finite-dimensional inverse-Gram derivative identity via
+  differentiating `(gramMatrix g x y)⁻¹ * gramMatrix g x y = 1`, exposed as
+  `gramMatrix_inv_extDerivFun_eq_neg_sum`.
+- Done: proved the displayed inverse-Gram cancellation from
+  `M3-predicates-13_blocked.md` as
+  `gram_inv_deriv_contraction_eq_leviCivita_corrections`.
+- Done: added the fixed-frame product contraction
+  `gram_h_extDerivFun_contraction_eq_covTensor2DerivAt_add_corrections` and the
+  direct trace bridge
+  `traceMetricVariationDerivAt_of_covTensor2ExtDifferentiableAt`, so the
+  Gram-RHS product rule plus the inverse-Gram cancellation now discharge
+  `TraceMetricVariationDerivAt`.
+- Verified: `lake build Poincare.Global.ScalarVariation` succeeds.  The build
+  reports only existing linter warnings.
