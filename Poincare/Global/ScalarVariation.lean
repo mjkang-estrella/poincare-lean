@@ -1364,6 +1364,76 @@ theorem gramMatrix_inv_entry_mdiffAt
   exact (hdetInv.mul hadj).congr_of_eventuallyEq
     (Filter.Eventually.of_forall fun y ↦ by simp [Matrix.inv_def])
 
+omit [T2Space M] in
+/-- The canonical extension frame seeded at `x` and evaluated in the fiber over `y`. -/
+noncomputable def gramFrame (x y : M) :
+    Fin (Module.finrank ℝ (TM x)) → TM y :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  fun i ↦ extend E ((Module.finBasis ℝ (TM x)) i) y
+
+omit [T2Space M] in
+/-- If its Gram matrix is invertible, the canonical extension frame is linearly independent. -/
+theorem gramFrame_linearIndependent_of_isUnit
+    (g : ClosedSmoothRiemannianMetric n M) {x y : M}
+    (hG : IsUnit (gramMatrix g x y)) :
+    LinearIndependent ℝ (gramFrame (n := n) (M := M) x y) := by
+  classical
+  letI : NormedAddCommGroup (TM y) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM y) := inferInstanceAs (NormedSpace ℝ E)
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let e : Fin (Module.finrank ℝ (TM x)) → TM y := fun i ↦ extend E (b i) y
+  change LinearIndependent ℝ e
+  refine Fintype.linearIndependent_iff.mpr ?_
+  intro c hc i
+  have hvec : Matrix.vecMul c (gramMatrix g x y) = 0 := by
+    ext j
+    let φ : TM y →L[ℝ] ℝ :=
+      (ContinuousLinearMap.apply ℝ ℝ (e j)).comp (g.inner y)
+    have hφ := congrArg φ hc
+    change φ (∑ i, c i • e i) = φ 0 at hφ
+    simp [φ, e, b, smul_eq_mul] at hφ
+    simpa [Matrix.vecMul, dotProduct] using hφ
+  have hinj : Function.Injective (fun v ↦ Matrix.vecMul v (gramMatrix g x y)) :=
+    Matrix.vecMul_injective_iff_isUnit.mpr hG
+  have hc0 : c = 0 := hinj (by simpa using hvec)
+  simpa using congrFun hc0 i
+
+/-- The canonical extension frame as a basis whenever its Gram matrix is invertible. -/
+noncomputable def gramFrameBasis
+    (g : ClosedSmoothRiemannianMetric n M) (x y : M)
+    (hG : IsUnit (gramMatrix g x y)) :
+    Module.Basis (Fin (Module.finrank ℝ (TM x))) ℝ (TM y) :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  basisOfLinearIndependentOfCardEqFinrank'
+    (gramFrame (n := n) (M := M) x y)
+    (gramFrame_linearIndependent_of_isUnit (g := g) hG)
+    (by
+      rw [show Module.finrank ℝ (TM x) = Module.finrank ℝ E from rfl,
+        show Module.finrank ℝ (TM y) = Module.finrank ℝ E from rfl]
+      simp)
+
+omit [T2Space M] in
+@[simp] theorem gramFrameBasis_apply
+    (g : ClosedSmoothRiemannianMetric n M) (x y : M)
+    (hG : IsUnit (gramMatrix g x y))
+    (i : Fin (Module.finrank ℝ (TM x))) :
+    gramFrameBasis (n := n) (M := M) g x y hG i =
+      gramFrame (n := n) (M := M) x y i := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  unfold gramFrameBasis
+  rw [coe_basisOfLinearIndependentOfCardEqFinrank']
+
 /--
 The metric trace of a fiberwise bilinear form, computed in an arbitrary finite
 basis and paired with the `g`-raised dual coframe of that basis.
