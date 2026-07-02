@@ -98,6 +98,20 @@ theorem inner_gradientAt (g : ClosedSmoothRiemannianMetric n M)
   change (A (A.symm ψ)) w = ψ w
   exact hw
 
+theorem gradientAt_congr_of_eventuallyEq
+    (g : ClosedSmoothRiemannianMetric n M)
+    {f h : M → ℝ} {x : M}
+    (hEq : f =ᶠ[𝓝 x] h) :
+    g.gradientAt f x = g.gradientAt h x := by
+  letI : FiniteDimensional ℝ (TM x) := tangentFiniteDimensional x
+  letI : T2Space (TM x) := tangentT2Space x
+  have hdf :
+      (extDerivFun f x : TM x →L[ℝ] ℝ) =
+        (extDerivFun h x : TM x →L[ℝ] ℝ) :=
+    CovariantDerivative.extDerivFun_congr hEq
+  unfold gradientAt
+  rw [hdf]
+
 theorem gradientAt_add (g : ClosedSmoothRiemannianMetric n M)
     {f h : M → ℝ} {x : M}
     (hf : MDifferentiableAt I 𝓘(ℝ) f x)
@@ -357,6 +371,27 @@ noncomputable def hessianAt (g : ClosedSmoothRiemannianMetric n M)
     (f : M → ℝ) (x : M) (v w : TM x) : ℝ :=
   g.inner x (g.leviCivita (g.gradient f) x v) w
 
+theorem hessianAt_congr_of_eventuallyEq
+    (g : ClosedSmoothRiemannianMetric n M)
+    {f h : M → ℝ} {x : M}
+    (hEq : f =ᶠ[𝓝 x] h)
+    (hgradf :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x)
+    (hgradh :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient h)) x)
+    (v w : TM x) :
+    g.hessianAt f x v w = g.hessianAt h x v w := by
+  have hgradEq : ∀ᶠ y in 𝓝 x, g.gradient f y = g.gradient h y := by
+    filter_upwards [hEq.eventually_nhds] with y hy
+    exact g.gradientAt_congr_of_eventuallyEq hy
+  have hcov :
+    g.leviCivita (g.gradient f) x =
+        g.leviCivita (g.gradient h) x :=
+    g.leviCivita.isCovariantDerivativeOnUniv.congr_of_eventuallyEq
+      hgradf hgradh univ_mem hgradEq
+  unfold hessianAt
+  rw [hcov]
+
 /-- The Hessian at `x` as a dual-valued linear map. -/
 noncomputable def hessianDualAt (g : ClosedSmoothRiemannianMetric n M)
     (f : M → ℝ) (x : M) : TM x →ₗ[ℝ] Module.Dual ℝ (TM x) where
@@ -383,6 +418,18 @@ theorem hessianDualAt_apply (g : ClosedSmoothRiemannianMetric n M)
     g.hessianDualAt f x v w = g.hessianAt f x v w :=
   rfl
 
+theorem hessianDualAt_congr_of_eventuallyEq
+    (g : ClosedSmoothRiemannianMetric n M)
+    {f h : M → ℝ} {x : M}
+    (hEq : f =ᶠ[𝓝 x] h)
+    (hgradf :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x)
+    (hgradh :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient h)) x) :
+    g.hessianDualAt f x = g.hessianDualAt h x := by
+  ext v w
+  exact g.hessianAt_congr_of_eventuallyEq hEq hgradf hgradh v w
+
 /--
 The scalar Laplacian at a point, defined as the metric trace of the covariant
 Hessian.
@@ -395,6 +442,18 @@ noncomputable def laplacianAt (g : ClosedSmoothRiemannianMetric n M)
     (((LinearMap.BilinForm.toDual (g.metricBilinAt x)
         (g.metricBilinAt_nondegenerate x)).symm.toLinearMap) ∘ₗ
       g.hessianDualAt f x)
+
+theorem laplacianAt_congr_of_eventuallyEq
+    (g : ClosedSmoothRiemannianMetric n M)
+    {f h : M → ℝ} {x : M}
+    (hEq : f =ᶠ[𝓝 x] h)
+    (hgradf :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x)
+    (hgradh :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient h)) x) :
+    g.laplacianAt f x = g.laplacianAt h x := by
+  unfold laplacianAt
+  rw [g.hessianDualAt_congr_of_eventuallyEq hEq hgradf hgradh]
 
 /--
 Additivity of the Hessian in the scalar function.

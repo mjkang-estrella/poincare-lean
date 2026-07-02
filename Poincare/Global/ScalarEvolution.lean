@@ -306,6 +306,75 @@ theorem satisfiesHamiltonScalarEvolutionAt_of_ricciFlow_variation
   exact hRhs.symm
 
 /--
+Hamilton scalar evolution with the three algebraic substitution predicates
+discharged from a Ricci-flow solution on a neighborhood of `x`.
+
+The remaining non-algebraic curvature identity is the closed twice-contracted
+Bianchi predicate; the other hypotheses are the regularity and assembly data
+needed by the existing scalar-variation formula and by the Laplacian/double
+divergence linearity lemmas.
+-/
+theorem satisfiesHamiltonScalarEvolutionAt_of_ricciFlow_variation_algebraic_tail
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hNearFlow :
+      ∀ᶠ y in nhds x,
+        IsClosedRicciFlowSolutionAt gt t₀ y ∧
+        ClosedRicciFlowExtensionRegularAt gt t₀ y)
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : TimeDifferentiableAt gt t₀ x)
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hDiv : DeltaGammaDivergenceTraceAssemblyAt gt t₀ x)
+    (hCon : DeltaGammaContractionTraceAssemblyAt gt t₀ x)
+    (hTraceGrad :
+      let g : ClosedSmoothRiemannianMetric n M := gt t₀
+      let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+      let f : M → ℝ := fun y ↦ traceMetricVariationAt g H y
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x)
+    (hNegScalarGrad :
+      let g : ClosedSmoothRiemannianMetric n M := gt t₀
+      let f : M → ℝ := fun y ↦ (-2 : ℝ) * g.scalarAt y
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x)
+    (hScalarDiff : ∀ y : M,
+      MDifferentiableAt I 𝓘(ℝ) (fun z : M ↦ (gt t₀).scalarAt z) y)
+    (hScalarGrad :
+      let g : ClosedSmoothRiemannianMetric n M := gt t₀
+      let f : M → ℝ := fun y ↦ g.scalarAt y
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x)
+    (hRicDiff : ∀ y : M,
+      CovTensor2ExtDifferentiableAt (ricciVariationField (gt t₀)) y)
+    (hRicDivDiff : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦
+          tensorDivergenceOneFormAt (gt t₀) (ricciVariationField (gt t₀)) y
+            (extend E w y)) x)
+    (hBianchi : ClosedContractedBianchiAt (gt t₀) x) :
+    SatisfiesHamiltonScalarEvolutionAt gt t₀ x := by
+  have hflow : IsClosedRicciFlowSolutionAt gt t₀ x :=
+    (hNearFlow.self_of_nhds).1
+  have hext : ClosedRicciFlowExtensionRegularAt gt t₀ x :=
+    (hNearFlow.self_of_nhds).2
+  have hTensorSub :
+      TensorDoubleDivergenceTimeDerivNegTwoRicciAt gt t₀ x :=
+    TensorDoubleDivergenceTimeDerivNegTwoRicciAt.of_isClosedRicciFlowSolutionAt_near
+      (gt := gt) (t₀ := t₀) (x := x) hNearFlow
+  have hTraceLap :
+      TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt gt t₀ x :=
+    TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt.of_isClosedRicciFlowSolutionAt_near
+      (gt := gt) (t₀ := t₀) (x := x) hNearFlow
+      hTraceGrad hNegScalarGrad hScalarDiff hScalarGrad
+  have hlin : TensorDoubleDivergenceNegTwoRicciLinearityAt (gt t₀) x :=
+    TensorDoubleDivergenceNegTwoRicciLinearityAt.of_covTensor2Regular
+      (gt t₀) x hRicDiff hRicDivDiff
+  exact
+    satisfiesHamiltonScalarEvolutionAt_of_ricciFlow_variation
+      (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
+      hflow hext hreg hgt hRaise hDiv hCon
+      hTensorSub hTraceLap hlin hBianchi
+
+/--
 Hamilton scalar evolution from the Hessian-trace form of the two `δΓ`
 assemblies.
 -/
