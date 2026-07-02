@@ -1,4 +1,5 @@
 import Poincare.Global.Curvature
+import Poincare.ModelLaplacian
 
 /-!
 # Scalar gradients, Hessians, and Laplacians on closed smooth manifolds
@@ -17,8 +18,8 @@ canonical Levi-Civita construction.
 
 noncomputable section
 
-open Bundle FiberBundle
-open scoped Manifold ContDiff
+open Bundle FiberBundle Set Filter
+open scoped Manifold ContDiff Topology RealInnerProductSpace
 
 universe u
 
@@ -156,6 +157,197 @@ theorem gradient_const (g : ClosedSmoothRiemannianMetric n M)
     g.gradient (fun _ : M ↦ c) = 0 := by
   funext x
   exact g.gradientAt_const c x
+
+/--
+The metric gradient is differentiable at `x` whenever `f` is `C²` there.
+
+In a chart around `x`, the gradient is the model field
+`(Ghat z)⁻¹ (df_z)` for the smoothly blended chart metric `Ghat`.  This
+model field is differentiable by smoothness of operator inversion and of
+`df`, and the pulled-back field agrees locally with the intrinsic gradient by
+the defining metric-duality property.
+-/
+theorem mdifferentiableAt_gradient (g : ClosedSmoothRiemannianMetric n M)
+    {f : M → ℝ} {x : M}
+    (hf : ContMDiffAt I 𝓘(ℝ) 2 f x) :
+    MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x := by
+  haveI : ModelWithCorners.Boundaryless I := by infer_instance
+  let G₀ : E →L[ℝ] E →L[ℝ] ℝ := innerSL ℝ
+  have hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v := by
+    intro v hv
+    change 0 < ((innerSL ℝ) v) v
+    rw [innerSL_apply_apply]
+    exact (real_inner_self_pos).2 hv
+  obtain ⟨χ, hχ, hχ0, hχ1, hχsupp, hχone⟩ :=
+    @CovariantDerivative.exists_blending_cutoff E _ _ E _ I M _ _ _ _ _ x
+  have hsupp : ∀ z, χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x).symm)
+        (Set.range I) z).IsInvertible := by
+    intro z hz
+    exact isInvertible_mfderivWithin_extChartAt_symm
+      (hχsupp (subset_tsupport χ (Function.mem_support.mpr hz)))
+  have htwo_le_top : (2 : ℕ∞ω) ≤ (∞ : ℕ∞ω) := by
+    rw [show (2 : ℕ∞ω) = ((2 : ℕ∞) : ℕ∞ω) from rfl,
+      show (∞ : ℕ∞ω) = ((⊤ : ℕ∞) : ℕ∞ω) from rfl]
+    exact WithTop.coe_le_coe.mpr le_top
+  have htwo_add_one_le_top : (2 : ℕ∞ω) + 1 ≤ (∞ : ℕ∞ω) := by
+    rw [show (2 : ℕ∞ω) + 1 = ((3 : ℕ∞) : ℕ∞ω) from rfl,
+      show (∞ : ℕ∞ω) = ((⊤ : ℕ∞) : ℕ∞ω) from rfl]
+    exact WithTop.coe_le_coe.mpr le_top
+  have hg2 :
+      ContMDiff I ((I).prod 𝓘(ℝ, E →L[ℝ] E →L[ℝ] ℝ)) 2
+        (fun y : M =>
+          (⟨y, g.inner y⟩ :
+            TotalSpace (E →L[ℝ] E →L[ℝ] ℝ)
+              (fun y : M => TM y →L[ℝ] TM y →L[ℝ] ℝ))) := by
+    simpa using g.contMDiff_inner.of_le htwo_le_top
+  let Ghat : E → E →L[ℝ] E →L[ℝ] ℝ :=
+    CovariantDerivative.blendedChartMetric χ G₀ g.inner x
+  have hGhat : ContDiff ℝ 2 Ghat := by
+    simpa [Ghat] using
+      CovariantDerivative.contDiff_blendedChartMetric χ G₀ g.inner x
+        htwo_add_one_le_top hχ hχsupp hg2
+  have hGhatInv : ∀ z : E, (Ghat z).IsInvertible := by
+    intro z
+    exact CovariantDerivative.metric_isInvertible Ghat
+      (CovariantDerivative.chartBilin χ G₀ g.inner x z)
+      (CovariantDerivative.chartBilin_nondegenerate χ G₀ hG₀pos g.inner
+        (fun y u hu => g.inner_pos y (v := u) hu) x hχ0 hχ1 hsupp z)
+      (by intro v w; rfl)
+  let F : E → ℝ := f ∘ (extChartAt I x).symm
+  have hF : ContDiffAt ℝ 2 F (extChartAt I x x) := by
+    have h := (contMDiffAt_iff.mp hf).2
+    rw [ModelWithCorners.range_eq_univ I, contDiffWithinAt_univ] at h
+    have heq :
+        (extChartAt 𝓘(ℝ, ℝ) (f x)) ∘ f ∘ (extChartAt I x).symm =
+          f ∘ (extChartAt I x).symm := by
+      funext z
+      simp
+    rw [heq] at h
+    simpa [F] using h
+  let V : ∀ z : E, TangentSpace 𝓘(ℝ, E) z :=
+    fun z ↦ RicciFlow.RicciFlow.coordGradient Ghat F z
+  have hVdiff : DifferentiableAt ℝ V (extChartAt I x x) := by
+    have hInvDiff :
+        DifferentiableAt ℝ (fun z : E => (Ghat z).inverse)
+          (extChartAt I x x) :=
+      (((hGhatInv (extChartAt I x x)).contDiffAt_map_inverse (n := 1)).differentiableAt
+          one_ne_zero).comp (extChartAt I x x)
+        ((hGhat.contDiffAt).differentiableAt (by norm_num))
+    have hdfd : DifferentiableAt ℝ (fderiv ℝ F) (extChartAt I x x) :=
+      ((hF.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero)
+    simpa [V, RicciFlow.RicciFlow.coordGradient] using hInvDiff.clm_apply hdfd
+  have hVmdiff :
+      MDifferentiableAt 𝓘(ℝ, E) ((𝓘(ℝ, E)).prod 𝓘(ℝ, E)) (T% V)
+        (extChartAt I x x) :=
+    mdiffAt_vectorSpace_iff_differentiableAt.mpr hVdiff
+  let W : ∀ y : M, TM y :=
+    VectorField.mpullback I 𝓘(ℝ, E)
+      ((extChartAt I x : PartialEquiv M E) : M → E) V
+  have hChart :
+      ContMDiffAt I 𝓘(ℝ, E) 2
+        ((extChartAt I x : PartialEquiv M E) : M → E) x := by
+    simpa only using (contMDiffAt_extChartAt :
+      ContMDiffAt I 𝓘(ℝ, E) 2
+        ((extChartAt I x : PartialEquiv M E) : M → E) x)
+  have hChartInv :
+      (mfderiv I 𝓘(ℝ, E)
+        ((extChartAt I x : PartialEquiv M E) : M → E) x).IsInvertible := by
+    exact (isInvertible_mfderiv_extChartAt (mem_extChartAt_source x) :
+      (mfderiv I 𝓘(ℝ, E)
+        ((extChartAt I x : PartialEquiv M E) : M → E) x).IsInvertible)
+  have hW :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% W) x := by
+    simpa [W] using
+      hVmdiff.mpullback_vectorField
+        (f := ((extChartAt I x : PartialEquiv M E) : M → E))
+        hChart hChartInv (by norm_num)
+  have hsource : ∀ᶠ y in 𝓝 x, y ∈ (extChartAt I x).source :=
+    (isOpen_extChartAt_source x).mem_nhds (mem_extChartAt_source x)
+  have hχpre : ∀ᶠ y in 𝓝 x, χ (extChartAt I x y) = 1 :=
+    (continuousAt_extChartAt x).eventually hχone
+  have hf1 : ∀ᶠ y in 𝓝 x, MDifferentiableAt I 𝓘(ℝ) f y := by
+    obtain ⟨u, hu, hfu⟩ :=
+      (contMDiffAt_iff_contMDiffOn_nhds (n := 2) (by norm_num)).mp hf
+    filter_upwards [interior_mem_nhds.mpr hu] with y hy
+    exact (((hfu.mono interior_subset) y hy).contMDiffAt
+      (isOpen_interior.mem_nhds hy)).mdifferentiableAt two_ne_zero
+  have hev : (T% (g.gradient f)) =ᶠ[𝓝 x] (T% W) := by
+    filter_upwards [hsource, hχpre, hf1] with y hy hχy hfy
+    have hgrad_eq : g.gradient f y = W y := by
+      have hzero :
+          g.gradient f y - W y = 0 :=
+        LeviCivitaExistence.metric_nondegenerate g y
+          (g.gradient f y - W y) (by
+            intro w
+            have hleft :
+                g.inner y (g.gradient f y) w = extDerivFun f y w := by
+              simpa [gradient] using g.inner_gradientAt f y w
+            have hA :
+                (mfderiv I 𝓘(ℝ, E)
+                  ((extChartAt I x : PartialEquiv M E) : M → E) y)
+                    (W y) = V (extChartAt I x y) := by
+              have hInv :=
+                isInvertible_mfderiv_extChartAt hy
+              change
+                (mfderiv I 𝓘(ℝ, E)
+                    ((extChartAt I x : PartialEquiv M E) : M → E) y)
+                  ((mfderiv I 𝓘(ℝ, E)
+                    ((extChartAt I x : PartialEquiv M E) : M → E) y).inverse
+                    (V (extChartAt I x y))) =
+                  V (extChartAt I x y)
+              exact hInv.self_apply_inverse _
+            have hmetric :
+                g.inner y (W y) w =
+                  CovariantDerivative.chartMetric g.inner x
+                    (extChartAt I x y) (V (extChartAt I x y))
+                    ((mfderiv I 𝓘(ℝ, E)
+                      ((extChartAt I x : PartialEquiv M E) : M → E) y) w) := by
+              have hchart := CovariantDerivative.chartMetric_apply_chart
+                g.inner x hy (W y) w
+              rw [← hchart, hA]
+            have hGchart :
+                Ghat (extChartAt I x y) =
+                  CovariantDerivative.chartMetric g.inner x (extChartAt I x y) :=
+              CovariantDerivative.blendedChartMetric_eq_chartMetric_of_eq_one
+                χ G₀ g.inner x hχy
+            have hmodel :
+                Ghat (extChartAt I x y) (V (extChartAt I x y))
+                  ((mfderiv I 𝓘(ℝ, E)
+                    ((extChartAt I x : PartialEquiv M E) : M → E) y) w) =
+                    fderiv ℝ F (extChartAt I x y)
+                      ((mfderiv I 𝓘(ℝ, E)
+                        ((extChartAt I x : PartialEquiv M E) : M → E) y) w) :=
+              RicciFlow.RicciFlow.g_coordGradient Ghat hGhatInv F (extChartAt I x y)
+                ((mfderiv I 𝓘(ℝ, E)
+                  ((extChartAt I x : PartialEquiv M E) : M → E) y) w)
+            have hright :
+                g.inner y (W y) w = extDerivFun f y w := by
+              calc
+                g.inner y (W y) w
+                    = CovariantDerivative.chartMetric g.inner x
+                        (extChartAt I x y) (V (extChartAt I x y))
+                        ((mfderiv I 𝓘(ℝ, E)
+                          ((extChartAt I x : PartialEquiv M E) : M → E) y) w) := hmetric
+                _ = Ghat (extChartAt I x y) (V (extChartAt I x y))
+                        ((mfderiv I 𝓘(ℝ, E)
+                          ((extChartAt I x : PartialEquiv M E) : M → E) y) w) := by
+                    rw [hGchart]
+                _ = fderiv ℝ F (extChartAt I x y)
+                        ((mfderiv I 𝓘(ℝ, E)
+                          ((extChartAt I x : PartialEquiv M E) : M → E) y) w) := hmodel
+                _ = extDerivFun f y w := by
+                    symm
+                    simpa [F] using
+                      extDerivFun_apply_fixed_chart hy hfy w
+            calc
+              g.inner y (g.gradient f y - W y) w
+                  = g.inner y (g.gradient f y) w - g.inner y (W y) w := by
+                    simp only [map_sub, ContinuousLinearMap.sub_apply]
+              _ = 0 := by rw [hleft, hright, sub_self])
+      simpa using (sub_eq_zero.mp hzero)
+    rw [hgrad_eq]
+  exact hW.congr_of_eventuallyEq hev
 
 /--
 The covariant Hessian of a scalar function at `x`:
