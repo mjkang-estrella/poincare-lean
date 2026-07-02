@@ -53,6 +53,51 @@ model keystone shape.
 
 ## Current proof status
 
-In progress.  The direct route should bypass
-`DeltaGammaInnerTraceFieldCovariantDerivativeAt` and target the summed
-`DeltaGammaDivergenceTraceHessianAssemblyAt` from `covDeltaGamma_koszul`.
+The pointwise false route was bypassed.  In
+`Poincare/Global/ScalarVariation.lean`, the following verified proof-bearing
+pieces were added:
+
+- `covDeltaGamma_koszul_secondDerivAt`: one summand of
+  `covDeltaGamma_koszul` collapses to the pure three-term
+  `covTensor2SecondDerivAt` expression after substituting first-order
+  `deltaGamma_koszul` into the three connection-correction terms.
+- `deltaGammaDivergenceTrace_sndDerivAt`: the full double trace of
+  `deltaGammaDivergenceAt` is now expressed as the closed analogue of the
+  model's `deltaGammaDivergenceTrace_sndDeriv`.
+- `deltaGammaDivergenceTraceSecondDerivPositiveBlockAt` and
+  `deltaGammaDivergenceTraceSecondDerivTraceBlockAt`: named numeric blocks for
+  the `(T1 + T2)` and `T3` double traces.
+- `deltaGammaDivergenceTrace_sndDerivAt_blocks`: the summed trace is split as
+  positive block minus `1/2` times the trace block.
+- `deltaGammaDivergenceTraceHessianAssemblyAt_of_sndDeriv_groups`: the frozen
+  `DeltaGammaDivergenceTraceHessianAssemblyAt` follows from the two exact group
+  evaluations.
+
+The remaining unproved analytic content is exactly the two model sub-identities
+in closed form:
+
+```lean
+deltaGammaDivergenceTraceSecondDerivPositiveBlockAt
+  (gt t₀) (timeDerivAt gt t₀) x
+= tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+```
+
+and
+
+```lean
+deltaGammaDivergenceTraceSecondDerivTraceBlockAt
+  (gt t₀) (timeDerivAt gt t₀) x
+=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+  let f : M → ℝ := fun y ↦ traceMetricVariationAt g H y
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun j ↦ metricDualVectorAt g x (b.coord j)
+  ∑ j, g.hessianAt f x (b j) (sharp j)
+```
+
+I stopped here rather than introducing a fake closed proof of those two
+second-order trace-commute/group-evaluation identities.
