@@ -48,18 +48,39 @@
       "title": "Mathlib gap survey for the manifold program",
       "statement_spec": "Report (harness/reports/mathlib_gaps.md): audit current Mathlib (as pinned in lake-manifest) for: smooth manifolds, Riemannian metrics, Levi-Civita on manifolds, geodesics, integration on manifolds, Sobolev/parabolic PDE, sphere eversion project imports, fundamental group / simply connected, Homeomorph classification tools. For each: exists / partial / absent, with exact module names. Output drives decomposition of M1/M2.",
       "deps": [],
-      "status": "open",
+      "status": "done",
       "files": ["harness/reports/mathlib_gaps.md"],
-      "difficulty": "research"
+      "difficulty": "research",
+      "result": "DONE 2026-07-01, commit 0cb9cf22. Key: Mathlib has RiemannianMetric bundles + CovariantDerivative/torsion (M1 cheaper than feared); integration on manifolds ABSENT; Mathlib has proof_wanted Poincaré stubs in Geometry/Manifold/PoincareConjecture.lean; no prior geometric-flow art."
     },
     {
-      "id": "M1-metric-bundle",
+      "id": "M0-align-mathlib",
+      "tier": "M0",
+      "title": "Align PoincareConjecture with Mathlib's proof_wanted spelling",
+      "statement_spec": "Theorem in Poincare/Global/Statement.lean (or new Alignment.lean): restate Mathlib's SimplyConnectedSpace.nonempty_homeomorph_sphere_three proof_wanted statement locally and prove our PoincareConjecture implies it (and the converse if hypotheses match). Vacuity insurance: pins our statement to the community spelling.",
+      "deps": ["M0-statement"],
+      "status": "open",
+      "files": ["Poincare/Global/Alignment.lean"],
+      "difficulty": "medium"
+    },
+    {
+      "id": "M1-riemannian-context",
       "tier": "M1",
-      "title": "Riemannian metric as a smooth section on a manifold",
-      "statement_spec": "Define RiemannianMetric on a smooth manifold via Mathlib's vector bundles (cotangent square / bilinear form bundle), smoothness, positivity. Blocked on M0-gap-survey outcome (Mathlib may have partial support).",
+      "title": "Standard Riemannian context wrapper (bridge 1)",
+      "statement_spec": "Poincare/Global/RiemannianContext.lean packaging IsManifold + RiemannianBundle + IsContMDiffRiemannianBundle + IsRiemannianManifold for compact smooth Riemannian manifolds; instance plumbing + basic lemmas.",
       "deps": ["M0-gap-survey"],
+      "status": "open",
+      "files": ["Poincare/Global/RiemannianContext.lean"],
+      "difficulty": "medium"
+    },
+    {
+      "id": "M1-levi-civita",
+      "tier": "M1",
+      "title": "Levi-Civita connection on Mathlib's CovariantDerivative layer",
+      "statement_spec": "Existence+uniqueness of metric-compatible torsion-free CovariantDerivative from a ContMDiffRiemannianMetric, porting the local model's Koszul/uniqueness proofs (Poincare/LeviCivitaUniqueness.lean, KoszulExistence.lean) to the bundle setting. Decompose after M1-riemannian-context lands.",
+      "deps": ["M1-riemannian-context"],
       "status": "blocked",
-      "files": ["Poincare/Global/Metric.lean"],
+      "files": [],
       "difficulty": "hard"
     },
     {
@@ -67,7 +88,7 @@
       "tier": "M2",
       "title": "Short-time existence of Ricci flow (DeTurck)",
       "statement_spec": "Decompose after M1. Requires parabolic PDE theory absent from Mathlib — expect a multi-quarter subtree.",
-      "deps": ["M1-metric-bundle"],
+      "deps": ["M1-levi-civita"],
       "status": "blocked",
       "files": [],
       "difficulty": "wall"
@@ -76,7 +97,7 @@
       "id": "M3-max-principle",
       "tier": "M3",
       "title": "Scalar maximum principle on closed manifolds; R_min monotone",
-      "deps": ["M1-metric-bundle"],
+      "deps": ["M1-levi-civita"],
       "status": "blocked",
       "files": [],
       "difficulty": "hard"
