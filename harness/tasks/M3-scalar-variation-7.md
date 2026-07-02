@@ -1,0 +1,13 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M3-scalar-variation-7: contract deltaGamma_koszul → discharge hDeltaGammaTrace
+
+THE LAST OBLIGATION of the Lichnerowicz formula. On main (Global/ScalarVariation.lean): `deltaGamma_koszul` (master identity: 2·g(δΓ(v,w),z) in ∇h 3-term form, honest hypotheses), `scalarVariation_lichnerowicz_shape'` carrying ONLY `hDeltaGammaTrace`: the raised `deltaRicciAt` trace = `tensorDoubleDivergenceAt h − laplacianAt (traceMetricVariationAt h)` with `h = timeDerivAt`. Model journey (completed; use as template): `deltaGamma_innerTrace_eq` → `divergence_innerTrace_field_eq` → `deltaGammaDivergenceTrace_sndDeriv` → `sum_sum_covTensor2SndDeriv_eq_curvedLap` — the repo memory calls this "the keystone"; ~30 model commits, but the ROUTE is now known and documented (see also RIEMANNIAN_FOUNDATION.md and the frontier notes: the identity is CURVATURE-FREE — metric compatibility + Koszul + div∘grad=Δ, NOT a curvature commutation).
+
+Recommended decomposition (each its own commit; adjust freely if the API suggests better):
+1. Inner trace: `Σᵢ g(δΓ(eᵢ,♯eⁱ),w) = (div h)(w) − ½·d(tr h)(w)` — contract deltaGamma_koszul over a dual pair of basis slots; the 3-term ∇h form collapses (two terms give div h by trace symmetry, one gives d(tr h)) — model `deltaGamma_innerTrace_eq`.
+2. deltaRicciAt's trace decomposes via its definition (deltaGammaDivergenceAt − deltaGammaContractionDerivAt contractions) into: divergence of the inner trace [→ div div h − ½Δ(tr h)] minus the contraction-derivative trace [→ ½Δ(tr h)]; net: div div h − Δ(tr h). Wire through `tensorDoubleDivergenceAt`/`laplacianAt` definitions (they were built to match — check argument shapes early and report ANY mismatch immediately rather than fighting it).
+3. Assemble hDeltaGammaTrace; state `scalarVariation_lichnerowicz` (no primes, no carried obligations beyond the honest regularity classes).
+4. If momentum: subtask 6 — substitute `timeDerivAt = −2·ricci` (from `isClosedRicciFlowSolutionAt_timeDerivAt`), use the closed contracted Bianchi (div Ric = ½dR — check what the closed layer has; the model's `fderiv_coordScalar_eq_two_ricciDivergenceForm_of_contDiff` may need a closed-manifold port as its own honest obligation) → `satisfiesHamiltonScalarEvolutionAt_of_ricciFlow_variation`.
+
+This may take multiple sessions — partial verified progress + refined notes is success. Named-honest-hypothesis fallback (the hCurv/hRaiseTrace pattern) is allowed for any sub-identity that stalls, PROVIDED it is used and stated exactly. No sorry/axiom. `lake build Poincare.Global.ScalarVariation`, report names.
