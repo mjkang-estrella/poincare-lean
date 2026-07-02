@@ -1,0 +1,13 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M3-scalar-variation-4: joint regularity class + discharge hCurv
+
+Read `harness/reports/M3-scalar-variation_notes.md` §"Blocked for hCurv" — this task is that discharge. On main: `deltaGammaAt`, `covDeltaGammaDerivAt`, `deltaRicciAt`, conditional `ricciVariation_eq_deltaGamma_contractions` (hypothesis `hCurv`), full Lichnerowicz RHS vocabulary. Model templates: `hasDerivAt_coordCurvatureOp` + `curvatureDerivOp_eq_covDeltaGamma` (ModelLaplacian.lean).
+
+Deliverables, extending Global/ScalarVariation.lean (each its own commit):
+
+1. **Joint regularity class**: define an honest hypothesis structure/class for a metric time-family near (t₀, x) capturing what the curvature differentiation actually needs, e.g. `MetricFlowRegularAt gt t₀ x` bundling: (i) `ConnectionValueTimeDifferentiableAt` at all relevant points/slots, (ii) time-differentiability of the ITERATED connection values `fun t => (gt t).leviCivita (fun y => (gt t).leviCivita σ y ...) x ...` for the section shapes appearing in the closed curvature definition, (iii) the deriv/spatial-derivative exchange data: the time derivative of `y ↦ (gt t).leviCivita σ y v` fields relates to `covDeltaGammaDerivAt` (state precisely; this is the ∂ₜ∘∇ = ∇∘∂ₜ + [δΓ-correction] commutation — on the flat second-derivative level it is Schwarz symmetry of mixed (t,y) partials, Mathlib `IsSymmSndFDerivAt`/`second_derivative_symmetric` on the (t,y)-joint function; you may phrase (iii) directly as the needed EQUATION-hypothesis if deriving it from joint C² stalls, but then keep it a FIELD of the class with a comment naming it as the Schwarz obligation). Every field must be genuinely satisfiable — add a static-family instance lemma (`MetricFlowRegularAt` holds for constant families) as the non-vacuity witness.
+2. **Discharge hCurv**: under `MetricFlowRegularAt`, prove the curvature-variation formula — t-derivative of the closed curvature values = antisymmetrized `covDeltaGammaDerivAt` (the second-derivative cross terms cancel pairwise via the class's commutation field; mirror the model cancellation). Then `ricciVariation_eq_deltaGamma_contractions'` with hCurv replaced by the class.
+3. **Chain to scalar**: combine with `ricciEndoHasDerivAt_of_ricciBilinearHasDerivAt` + `deriv_scalarAt_eq_trace_of_ricciEndoHasDerivAt` to get: under `MetricFlowRegularAt` (+ the metric-dual time-differentiability), `deriv (fun t => (gt t).scalarAt x) t₀ = trace expression in deltaRicciAt` — the LHS of subtask 5 fully in δΓ vocabulary.
+
+No sorry/axiom; blocked → greens + notes update. `lake build Poincare.Global.ScalarVariation`, report names.
