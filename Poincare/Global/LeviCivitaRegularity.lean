@@ -63,6 +63,54 @@ theorem chartTransportedLeviCivitaSection_contMDiffAt_apply_chart
   have hpull := hX'.mpullback_vectorField_preimage hsm hinv hm
   simpa [chartTransportedLeviCivitaSection, I.range_eq_univ] using hpull
 
+section ChartHom
+
+variable [FiniteDimensional ℝ E] [CompleteSpace E]
+
+/--
+The hom-valued manifold section obtained by applying the chart Levi-Civita
+connection to the inverse-chart pullback of a tangent field and pushing the
+result back to the manifold tangent fiber.
+-/
+noncomputable def chartTransportedLeviCivitaHom
+    (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (hgpos : ∀ (y : M) (u : TangentSpace I y), u ≠ 0 → 0 < g y u u)
+    (x₀ : M) (hχ0 : ∀ z, 0 ≤ χ z) (hχ1 : ∀ z, χ z ≤ 1)
+    (hsupp : ∀ z, χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z).IsInvertible)
+    (σ : Π y : M, TangentSpace I y) (y : M) :
+    TangentSpace I y →L[ℝ] TangentSpace I y :=
+  let z : E := extChartAt I x₀ y
+  let D : TangentSpace 𝓘(ℝ, E) z →L[ℝ] TangentSpace I y :=
+    mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm) (Set.range I) z
+  let σc : Π z : E, TangentSpace 𝓘(ℝ, E) z :=
+    chartTransportedLeviCivitaSection (I := I) x₀ σ
+  let covC :=
+    chartLeviCivita χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1 hsupp
+  D.comp ((covC σc z).comp (mfderiv I 𝓘(ℝ, E) (extChartAt I x₀) y))
+
+theorem chartTransportedLeviCivitaHom_apply
+    (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (hgpos : ∀ (y : M) (u : TangentSpace I y), u ≠ 0 → 0 < g y u u)
+    (x₀ : M) (hχ0 : ∀ z, 0 ≤ χ z) (hχ1 : ∀ z, χ z ≤ 1)
+    (hsupp : ∀ z, χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z).IsInvertible)
+    (σ : Π y : M, TangentSpace I y) {y : M}
+    (hy : y ∈ (extChartAt I x₀).source) (v : TangentSpace I y) :
+    chartTransportedLeviCivitaHom χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1
+        hsupp σ y v =
+      chartTransportedLeviCivitaValueAt χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1
+        hsupp σ hy v := by
+  rfl
+
+end ChartHom
+
 end CovariantDerivative
 
 namespace Poincare
@@ -77,4 +125,3 @@ an eventually-equal statement for the hom-bundle section required by
 -/
 
 end Poincare
-
