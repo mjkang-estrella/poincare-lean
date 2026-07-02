@@ -43,6 +43,37 @@ local notation "TM" => (TangentSpace I : M → Type _)
 
 namespace ClosedSmoothRiemannianMetric
 
+omit [T2Space M] in
+/--
+The blended chart representative of a closed smooth metric is `C³`.
+
+This is the regularity input needed to apply the model contracted Bianchi
+identity to the cutoff chart metric.
+-/
+theorem contDiff_three_blendedChartMetric
+    (g : ClosedSmoothRiemannianMetric n M)
+    (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ) (x₀ : M)
+    (hχ : ContDiff ℝ ∞ χ)
+    (hχsupp : tsupport χ ⊆ (extChartAt I x₀).target) :
+    ContDiff ℝ 3 (CovariantDerivative.blendedChartMetric χ G₀ g.inner x₀) := by
+  have hthree_le_top : (3 : ℕ∞ω) ≤ (∞ : ℕ∞ω) := by
+    rw [show (3 : ℕ∞ω) = ((3 : ℕ∞) : ℕ∞ω) from rfl,
+      show (∞ : ℕ∞ω) = ((⊤ : ℕ∞) : ℕ∞ω) from rfl]
+    exact WithTop.coe_le_coe.mpr le_top
+  have hthree_add_one_le_top : (3 : ℕ∞ω) + 1 ≤ (∞ : ℕ∞ω) := by
+    rw [show (3 : ℕ∞ω) + 1 = ((4 : ℕ∞) : ℕ∞ω) from rfl,
+      show (∞ : ℕ∞ω) = ((⊤ : ℕ∞) : ℕ∞ω) from rfl]
+    exact WithTop.coe_le_coe.mpr le_top
+  have hg3 :
+      ContMDiff I ((I).prod 𝓘(ℝ, E →L[ℝ] E →L[ℝ] ℝ)) 3
+        (fun y : M =>
+          (⟨y, g.inner y⟩ :
+            TotalSpace (E →L[ℝ] E →L[ℝ] ℝ)
+              (fun y : M => TM y →L[ℝ] TM y →L[ℝ] ℝ))) := by
+    simpa using g.contMDiff_inner.of_le hthree_le_top
+  exact CovariantDerivative.contDiff_blendedChartMetric χ G₀ g.inner x₀
+    hthree_add_one_le_top hχ hχsupp hg3
+
 /--
 The raised Ricci endomorphism as a continuous-linear map on the tangent fiber.
 
