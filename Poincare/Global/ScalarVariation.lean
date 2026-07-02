@@ -3872,6 +3872,47 @@ theorem deltaGammaEntryDerivativeBridgeAt_of_deltaGammaFieldMDifferentiableAt
     rw [hcompat, hcov]
     simp [A, B, g, deltaGammaFieldAt, extend_apply_self]
 
+/--
+The inner-trace route uses the same scalar `δΓ` entries as the first-slot
+route, with the paired output vector occupying the bridge's `q` slot.
+-/
+theorem deltaGammaInnerTraceEntry_mdiffAt_of_entryBridge
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hBridge : DeltaGammaEntryDerivativeBridgeAt gt t₀ x)
+    (p q w : TM x) :
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦
+        (gt t₀).inner y
+          (deltaGammaAt gt t₀ y (extend E p y) (extend E q y))
+          (extend E w y)) x := by
+  simpa using hBridge.mdifferentiable p w q
+
+/--
+Exterior-derivative form of the reused scalar-entry bridge for the
+inner-trace route.
+-/
+theorem deltaGammaInnerTraceEntry_extDeriv_eq_of_entryBridge
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hBridge : DeltaGammaEntryDerivativeBridgeAt gt t₀ x)
+    (u p q w : TM x) :
+    extDerivFun
+      (fun y : M ↦
+        (gt t₀).inner y
+          (deltaGammaAt gt t₀ y (extend E p y) (extend E q y))
+          (extend E w y)) x u
+      =
+        (gt t₀).inner x (covDeltaGammaDerivAt gt t₀ x u p q) w
+        + (gt t₀).inner x
+            (deltaGammaAt gt t₀ x
+              ((gt t₀).leviCivita (extend E p) x u) q) w
+        + (gt t₀).inner x
+            (deltaGammaAt gt t₀ x p
+              ((gt t₀).leviCivita (extend E q) x u)) w
+        + (gt t₀).inner x
+            (deltaGammaAt gt t₀ x p q)
+            ((gt t₀).leviCivita (extend E w) x u) := by
+  simpa using hBridge.extDeriv_eq u p w q
+
 /-- Static sanity witness for the first-slot trace-field covariant derivative. -/
 theorem deltaGammaFirstSlotTraceFieldCovariantDerivativeAt_const
     (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
