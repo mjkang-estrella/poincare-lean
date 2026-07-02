@@ -31811,6 +31811,50 @@ theorem sum_raised_pair_eq
   rw [hlin, hraise, hGsymm u ((G x).inverse φ),
     (hinv.inverse_apply_eq.mp rfl).symm]
 
+/-- **Einstein divergence contraction**: under the field-level Einstein
+identity, `div Ric = (1/n) dR`. This is the raised-pair contraction of
+`∇Ric = d(R/n) ⊗ g`. -/
+theorem ricciDivergence_eq_one_div_finrank_mul_fderiv_coordScalar_of_einstein_field
+    {G : E → E →L[ℝ] E →L[ℝ] ℝ} {x : E} (hG : ContDiff ℝ 3 G)
+    (hGsymm : ∀ (y : E) (p q : E), G y p q = G y q p)
+    (hinv : ∀ y : E, (G y).IsInvertible)
+    (hEin : ∀ y : E,
+      coordRicciForm G y
+        (fun p ↦ differentiableAt_christoffelClosedOp (x := y) G (hG.of_le (by norm_num))
+          hinv p)
+        = (coordScalar G y / (Module.finrank ℝ E : ℝ)) • G y)
+    (u : E) :
+    ricciDivergence G x u
+      = (1 / (Module.finrank ℝ E : ℝ)) *
+          (fderiv ℝ (fun y ↦ coordScalar G y) x u) := by
+  let φ : E →L[ℝ] ℝ := fderiv ℝ (fun y ↦ coordScalar G y) x
+  let nR : ℝ := Module.finrank ℝ E
+  unfold ricciDivergence
+  calc
+    ∑ k, covRicciDeriv G x
+        ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord k)))
+        u ((Module.finBasis ℝ E) k)
+        = ∑ k, ((1 / nR) * φ ((G x).inverse (LinearMap.toContinuousLinearMap
+            ((Module.finBasis ℝ E).coord k))))
+          * G x u ((Module.finBasis ℝ E) k) := by
+          refine Finset.sum_congr rfl fun k _ ↦ ?_
+          exact covRicciDeriv_eq_fderiv_coordScalar_div_finrank_mul_metric_of_einstein_field
+            hG hGsymm hinv hEin
+            ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k))) u ((Module.finBasis ℝ E) k)
+    _ = (1 / nR) * ∑ k, φ ((G x).inverse (LinearMap.toContinuousLinearMap
+          ((Module.finBasis ℝ E).coord k))) * G x u ((Module.finBasis ℝ E) k) := by
+          rw [Finset.mul_sum]
+          refine Finset.sum_congr rfl fun k _ ↦ ?_
+          ring
+    _ = (1 / nR) * φ u := by
+          have hsum := sum_raised_pair_eq G (hinv x) (hGsymm x) φ u
+          rw [show ∑ k, φ ((G x).inverse (LinearMap.toContinuousLinearMap
+              ((Module.finBasis ℝ E).coord k))) * G x u ((Module.finBasis ℝ E) k)
+              = φ u by
+            simpa [smul_eq_mul] using hsum]
+
 end RicciFlow
 
 /-!
