@@ -115,6 +115,45 @@ end CovariantDerivative
 
 namespace Poincare
 
+universe u
+
+variable {n : ℕ} {M : Type u}
+variable [TopologicalSpace M] [T2Space M]
+variable [ChartedSpace (ClosedSmoothModel n) M]
+variable [IsManifold (closedSmoothModelWithCorners n) ∞ M]
+
+namespace LeviCivitaTransport
+
+local notation "I" => closedSmoothModelWithCorners n
+local notation "E" => ClosedSmoothModel n
+local notation "TM" => (TangentSpace I : M → Type _)
+
+theorem chartTransportedLeviCivitaHom_eq_closed_of_eventually_eq_one
+    (g : ClosedSmoothRiemannianMetric n M)
+    (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (x₀ : M) (hχ0 : ∀ z, 0 ≤ χ z) (hχ1 : ∀ z, χ z ≤ 1)
+    (hsupp : ∀ z, χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z).IsInvertible)
+    (hbl : Differentiable ℝ (CovariantDerivative.blendedChartMetric χ G₀ g.inner x₀))
+    (hG₀symm : ∀ v w : E, G₀ v w = G₀ w v)
+    {σ : Π y : M, TM y} {y : M}
+    (hy : y ∈ (extChartAt I x₀).source)
+    (hχone : ∀ᶠ z' in 𝓝 (extChartAt I x₀ y), χ z' = 1)
+    (hσ : MDiffAtTangentField σ y) :
+    CovariantDerivative.chartTransportedLeviCivitaHom χ G₀ hG₀pos g.inner
+        (fun y u hu => g.inner_pos y (v := u) hu) x₀ hχ0 hχ1 hsupp σ y =
+      (LeviCivitaExistence.closedLeviCivitaConnection g) σ y := by
+  ext v
+  rw [CovariantDerivative.chartTransportedLeviCivitaHom_apply χ G₀ hG₀pos
+    g.inner (fun y u hu => g.inner_pos y (v := u) hu) x₀ hχ0 hχ1
+    hsupp σ hy v]
+  exact chartTransportedLeviCivitaValueAt_eq_closed_of_eventually_eq_one
+    g χ G₀ hG₀pos x₀ hχ0 hχ1 hsupp hbl hG₀symm hy hχone hσ v
+
+end LeviCivitaTransport
+
 /-!
 The full theorem
 `closedLeviCivitaConnection_contMDiff` is not introduced here yet: the
