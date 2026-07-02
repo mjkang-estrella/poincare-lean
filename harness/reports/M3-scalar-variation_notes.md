@@ -433,9 +433,19 @@ Status from task `M3-predicates-24`:
   divergence trace `Σᵢ g((∇_{eᵢ} δΓ)(w,u), eⁱ)`.  No existing theorem derives
   the required cyclic trace identity for `covDeltaGammaDerivAt` from the
   current regularity and scalar-entry bridge hypotheses.
+- M3-predicates-28 correction: the frozen pointwise target
+  `DeltaGammaInnerTraceFieldCovariantDerivativeAt` is false in the flat
+  2-torus model with `h_11 = cos y`, evaluated at `y = 0` and `u = w = e_1`.
+  Its left side is the divergence-order trace
+  `Σᵢ ∂ᵢ δΓⁱ_11 = 1/2`, while its right side is the derivative of
+  `div h - 1/2 d tr(h)`, which is `0`.  The valid route is to bypass this
+  pointwise predicate and prove the summed divergence trace directly from
+  `covDeltaGamma_koszul`, targeting
+  `DeltaGammaDivergenceTraceHessianAssemblyAt` or a direct proof of the summed
+  `DeltaGammaDivergenceTraceInnerHessianDerivativeAt`.
 - Exact remaining non-regularity predicate list:
-  `DeltaGammaInnerTraceFieldCovariantDerivativeAt`,
-  `DeltaGammaDivergenceTraceInnerHessianDerivativeAt`,
+  direct `DeltaGammaDivergenceTraceHessianAssemblyAt` (or direct summed
+  `DeltaGammaDivergenceTraceInnerHessianDerivativeAt`),
   `TensorDoubleDivergenceTimeDerivNegTwoRicciAt`,
   `TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt`,
   `TensorDoubleDivergenceNegTwoRicciLinearityAt`, and
