@@ -1,0 +1,13 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M3-predicates-16: the two Hessian-trace assemblies
+
+Read the latest status in `harness/reports/M3-scalar-variation_notes.md` ("Exact next proof state"). On main: the Hamilton chain is fully wired modulo `DeltaGammaDivergenceTraceHessianAssemblyAt` and `DeltaGammaContractionTraceHessianAssemblyAt` (Global/ScalarVariation.lean ~4854 — read the exact statements first); adapters convert them to everything downstream. Also on main and load-bearing: `deltaGamma_innerTrace_eq_of_covTensor2ExtDifferentiableAt` (the unconditional-modulo-classes inner trace), `traceMetricVariationDerivAt_*` (the discharged trace derivative + its timeDeriv specialization), the whole Gram-route toolkit, `covDeltaGammaDerivAt`'s definition, `laplacianAt_eq_sum_hessianAt`, `hessianAt`/`hessianAt_symm'`.
+
+Deliverable: prove both Hessian-trace assemblies (each its own commit; contraction one first — likely easier):
+
+1. **`DeltaGammaContractionTraceHessianAssemblyAt`**: expand `deltaGammaContractionDerivAt`'s trace; substitute the proven inner-trace identity (δΓ contracted = div h − ½ d(tr h) shaped); the remaining derivative-of-trace term is exactly what `traceMetricVariationDerivAt` now computes; recognize the Hessian sum via `hessianAt`'s definition (∇ of the gradient of tr h — the gradient raise of d(tr h) is the metricDualVectorAt machinery; connect through `laplacianAt_eq_sum_hessianAt`).
+2. **`DeltaGammaDivergenceTraceHessianAssemblyAt`**: the divergence-side analogue — differentiate the inner-trace FIELD identity (`deltaGamma_innerTrace_eq_of_covTensor2ExtDifferentiableAt` holds at every point y near x with the same hypotheses; promote to a field statement on a neighborhood if needed — the hypotheses classes are y-uniform or add the honest uniform variant) and trace the derivative: use the Gram route AGAIN for the outer trace (this is the "same technology one derivative higher" — the tr-h and div-h fields' derivatives via `traceMetricVariationAt_eq_sum_gram_inv` patterns applied to the derived fields).
+3. Chain: both assemblies → the adapters (already on main) fire automatically → verify `scalarVariation_lichnerowicz` and `satisfiesHamiltonScalarEvolutionAt_of_ricciFlow_hessian_variation` now need only the honest regularity classes + ClosedContractedBianchiAt + substitution predicates; state the cleaned-up versions; notes.
+
+Named-honest-hypothesis fallback per genuinely-new second-order fact (exact statement, used directly). Exact-goal-state rule on failure. No sorry/axiom. `lake build Poincare.Global.ScalarVariation Poincare.Global.ScalarEvolution`, report names.
