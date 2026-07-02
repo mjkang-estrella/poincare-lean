@@ -191,11 +191,12 @@
       "deps": [
         "M1-levi-civita"
       ],
-      "status": "open",
+      "status": "in_progress",
       "files": [
         "Poincare/Global/LeviCivitaExistence.lean"
       ],
-      "difficulty": "hard"
+      "difficulty": "hard",
+      "result": "Partial 2026-07-01 (f4bbd645, gate PASS): model-space leviCivitaConnection_contMDiff at any order k via Christoffel-form identification. Global instance blocked on chart transport; 4-sublemma decomposition in harness/reports/M1-lc-regularity_blocked.md (transport chartLeviCivita, local identification with global Koszul, local regularity, glue via contMDiffOn_of_locally_contMDiffOn)."
     },
     {
       "id": "M1-asset-audit",
