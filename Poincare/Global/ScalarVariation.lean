@@ -2979,6 +2979,21 @@ def TraceMetricVariationExtSecondDifferentiableAt
         extDerivFun (fun z : M ↦ traceMetricVariationAt g h z) y
           (extend E w y)) x
 
+/--
+Scalar `C²` regularity of the metric trace is enough for the closed
+second-exterior-derivative predicate.
+-/
+theorem traceMetricVariationExtSecondDifferentiableAt_of_contMDiffAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (hTrace :
+      ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ traceMetricVariationAt g h y) x) :
+    TraceMetricVariationExtSecondDifferentiableAt g h x := by
+  intro w
+  have hW : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (extend E w)) x := by
+    simpa using (mdifferentiableAt_extend I E w)
+  exact CovariantDerivative.mdiffAt_extDerivFun_apply hTrace hW
+
 /-- First-slot trace form of `δΓ`, evaluated fiberwise. -/
 noncomputable def deltaGammaFirstSlotTraceFieldAt
     (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ)
