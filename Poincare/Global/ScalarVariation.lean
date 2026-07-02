@@ -4692,6 +4692,91 @@ def ClosedCurvatureFieldMDifferentiableAt
       (T% (closedCurvatureFieldAt g u w z)) x
 
 /--
+The canonical Levi-Civita curvature fields in anchored extension slots are
+differentiable.  This is the fixed-metric witness supplied by the `C²`
+regularity of the closed Levi-Civita connection.
+-/
+theorem closedCurvatureFieldMDifferentiableAt_canonical
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    ClosedCurvatureFieldMDifferentiableAt g x := by
+  intro u w z
+  let X : Π y : M, TM y := extend E u
+  let Y : Π y : M, TM y := extend E w
+  let Z : Π y : M, TM y := extend E z
+  have hX2 :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% X) x := by
+    simpa [X] using (FiberBundle.contMDiffAt_extend' (k := 2) I E u)
+  have hY2 :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% Y) x := by
+    simpa [Y] using (FiberBundle.contMDiffAt_extend' (k := 2) I E w)
+  have hZ2 :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% Z) x := by
+    simpa [Z] using (FiberBundle.contMDiffAt_extend' (k := 2) I E z)
+  have hZ3 :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 3 (T% Z) x := by
+    simpa [Z] using (FiberBundle.contMDiffAt_extend' (k := 3) I E z)
+  have hXdiff :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% X) x :=
+    hX2.mdifferentiableAt two_ne_zero
+  have hYdiff :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% Y) x :=
+    hY2.mdifferentiableAt two_ne_zero
+  have hInnerY :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2
+        (T% (fun y : M ↦ g.leviCivita Z y (Y y))) x :=
+    CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_two
+      (cov := g.leviCivita) hZ3 hY2
+  have hInnerX :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2
+        (T% (fun y : M ↦ g.leviCivita Z y (X y))) x :=
+    CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_two
+      (cov := g.leviCivita) hZ3 hX2
+  have hTermXY :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (fun y : M ↦
+          g.leviCivita (fun p : M ↦ g.leviCivita Z p (Y p)) y (X y))) x :=
+    CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt
+      (cov := g.leviCivita) hInnerY hXdiff
+  have hTermYX :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (fun y : M ↦
+          g.leviCivita (fun p : M ↦ g.leviCivita Z p (X p)) y (Y y))) x :=
+    CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt
+      (cov := g.leviCivita) hInnerX hYdiff
+  haveI : IsManifold I 3 M := IsManifold.of_le (n := ∞) (by
+    rw [show (3 : ℕ∞ω) = ((3 : ℕ∞) : ℕ∞ω) from rfl,
+      show (∞ : ℕ∞ω) = ((⊤ : ℕ∞) : ℕ∞ω) from rfl]
+    exact WithTop.coe_le_coe.mpr le_top)
+  haveI : IsManifold I (minSmoothness ℝ 2) M := by
+    rw [minSmoothness_of_isRCLikeNormedField]
+    infer_instance
+  haveI : IsManifold I (((2 : ℕ∞) : ℕ∞ω) + 1) M := by
+    exact_mod_cast (inferInstance : IsManifold I 3 M)
+  have hbr :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (VectorField.mlieBracket I X Y)) x := by
+    have h2 : minSmoothness ℝ ((1 : ℕ∞) + 1) ≤ ((2 : ℕ∞) : ℕ∞ω) := by
+      simp
+      norm_num
+    exact (ContMDiffAt.mlieBracket_vectorField (m := 1) (n := 2)
+      hX2 hY2 h2).mdifferentiableAt one_ne_zero
+  have hTermBracket :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (fun y : M ↦
+          g.leviCivita Z y (VectorField.mlieBracket I X Y y))) x :=
+    CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt
+      (cov := g.leviCivita) hZ2 hbr
+  have hcurv :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (fun y : M ↦
+          g.leviCivita (fun p : M ↦ g.leviCivita Z p (Y p)) y (X y)
+            - g.leviCivita (fun p : M ↦ g.leviCivita Z p (X p)) y (Y y)
+            - g.leviCivita Z y (VectorField.mlieBracket I X Y y))) x :=
+    mdifferentiableAt_sub_section
+      (mdifferentiableAt_sub_section hTermXY hTermYX) hTermBracket
+  simpa [closedCurvatureFieldAt, CovariantDerivative.curvatureOp, X, Y, Z] using hcurv
+
+/--
 Scalar-entry derivative bridge for closed curvature values.
 
 For fixed base vectors `a`, `u`, `w`, and `q`, it identifies the exterior
@@ -4834,6 +4919,13 @@ theorem closedCurvatureEntryDerivativeBridgeAt_of_curvatureFieldMDifferentiableA
             (g.leviCivita (extend E q) x v)
     rw [hcompat, hcov]
     simp [R, Q, closedCurvatureFieldAt, extend_apply_self]
+
+/-- Canonical scalar-entry derivative bridge for closed curvature values. -/
+theorem closedCurvatureEntryDerivativeBridgeAt_canonical
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    ClosedCurvatureEntryDerivativeBridgeAt g x :=
+  closedCurvatureEntryDerivativeBridgeAt_of_curvatureFieldMDifferentiableAt
+    (closedCurvatureFieldMDifferentiableAt_canonical g x)
 
 /-- Trace of the closed curvature covariant derivative giving `∇ Ric`. -/
 noncomputable def closedCovRicciDerivAt

@@ -45,6 +45,13 @@ theorem leviCivita_contMDiff (g : ClosedSmoothRiemannianMetric n M) :
   simpa [leviCivita] using
     LeviCivitaExistence.closedLeviCivitaConnection_contMDiff g
 
+/-- The canonical Levi-Civita connection is `C²`. -/
+@[instance]
+theorem leviCivita_contMDiff₂ (g : ClosedSmoothRiemannianMetric n M) :
+    CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 2 := by
+  simpa [leviCivita] using
+    LeviCivitaExistence.closedLeviCivitaConnection_contMDiff₂ g
+
 /-- The canonical connection is metric-compatible with the metric. -/
 theorem leviCivita_metricCompatible (g : ClosedSmoothRiemannianMetric n M) :
     IsMetricCompatible g g.leviCivita := by
