@@ -2553,6 +2553,87 @@ def CovTensor2ExtDifferentiableAt
       (fun y : M ↦ h y (extend E p y) (extend E q y)) x
 
 /--
+The Gram-inverse scalar trace formula gives an honest differentiability proof
+for `tr_g h` from canonical-extension scalar regularity.  The fiber value of
+`h` is supplied as bilinear witnesses so the basis-invariant trace identity can
+be used near `x`.
+-/
+theorem traceMetricVariationAt_mdiffAt_of_covTensor2ExtDifferentiableAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (B : ∀ y : M, LinearMap.BilinForm ℝ (TM y))
+    (hB : ∀ y : M, ∀ p q : TM y, B y p q = h y p q) :
+    MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ traceMetricVariationAt g h y) x := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let rhs : M → ℝ := fun y : M ↦
+    ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+      h y (gramFrame x y i) (gramFrame x y j)
+  have hsum : MDifferentiableAt I 𝓘(ℝ)
+      (∑ i ∈ (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x)))),
+        fun y : M ↦ ∑ j, (gramMatrix g x y)⁻¹ i j *
+          h y (gramFrame x y i) (gramFrame x y j)) x := by
+    refine MDifferentiableAt.sum
+      (t := (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x))))) ?_
+    intro i _hi
+    have hinner : MDifferentiableAt I 𝓘(ℝ)
+        (∑ j ∈ (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x)))),
+          fun y : M ↦ (gramMatrix g x y)⁻¹ i j *
+            h y (gramFrame x y i) (gramFrame x y j)) x := by
+      refine MDifferentiableAt.sum
+        (t := (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x))))) ?_
+      intro j _hj
+      have hinv : MDifferentiableAt I 𝓘(ℝ)
+          (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x :=
+        gramMatrix_inv_entry_mdiffAt (g := g) x i j
+      have hh : MDifferentiableAt I 𝓘(ℝ)
+          (fun y : M ↦ h y (gramFrame x y i) (gramFrame x y j)) x := by
+        simpa [gramFrame, b, CovTensor2ExtDifferentiableAt] using hDiff (b i) (b j)
+      exact hinv.mul hh
+    exact hinner.congr_of_eventuallyEq (Filter.Eventually.of_forall fun y ↦ by simp)
+  have hrhs : MDifferentiableAt I 𝓘(ℝ) rhs x :=
+    hsum.congr_of_eventuallyEq (Filter.Eventually.of_forall fun y ↦ by simp [rhs])
+  have heq : (fun y : M ↦ traceMetricVariationAt g h y) =ᶠ[nhds x] rhs := by
+    exact (gramMatrix_eventually_isUnit (g := g) x).mono fun y hy ↦ by
+      simpa [rhs] using
+        (traceMetricVariationAt_eq_sum_gram_inv
+          (g := g) (h := h) (x := x) (y := y) (hG := hy)
+          (B := B y) (hB := hB y))
+  exact hrhs.congr_of_eventuallyEq heq
+
+/--
+Exterior-derivative bridge for the Gram-inverse scalar trace formula.  Near
+`x`, `tr_g h` is the scalar Gram RHS, so their exterior derivatives at `x`
+agree.
+-/
+theorem traceMetricVariationAt_extDerivFun_eq_gram_rhs
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (B : ∀ y : M, LinearMap.BilinForm ℝ (TM y))
+    (hB : ∀ y : M, ∀ p q : TM y, B y p q = h y p q)
+    (w : TM x) :
+    extDerivFun (fun y : M ↦ traceMetricVariationAt g h y) x w =
+      extDerivFun
+        (fun y : M ↦ ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+          h y (gramFrame x y i) (gramFrame x y j)) x w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let rhs : M → ℝ := fun y : M ↦
+    ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+      h y (gramFrame x y i) (gramFrame x y j)
+  have heq : (fun y : M ↦ traceMetricVariationAt g h y) =ᶠ[nhds x] rhs := by
+    exact (gramMatrix_eventually_isUnit (g := g) x).mono fun y hy ↦ by
+      simpa [rhs] using
+        (traceMetricVariationAt_eq_sum_gram_inv
+          (g := g) (h := h) (x := x) (y := y) (hG := hy)
+          (B := B y) (hB := hB y))
+  exact congrArg (fun L : TM x →L[ℝ] ℝ ↦ L w)
+    (CovariantDerivative.extDerivFun_congr heq)
+
+/--
 Fixed-vector spatial differentiability for a raw `(0,2)` variation tensor.
 
 Unlike `TraceMetricVariationDerivAt`, this says only that every scalar
