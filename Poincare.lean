@@ -26,6 +26,7 @@ import Poincare.Global.Curvature
 import Poincare.Global.RicciNorm
 import Poincare.Global.Laplacian
 import Poincare.Global.RicciFlow
+import Poincare.Global.ScalarEvolution
 import Poincare.Milestones
 import Poincare.Assembly
 import Poincare.CanonicalBridges
