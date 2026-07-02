@@ -386,3 +386,29 @@ Status from task `M3-predicates-17`:
 - Verified: `lake build Poincare.Global.ScalarVariation
   Poincare.Global.ScalarEvolution` succeeds.  The build reports only existing
   linter warnings.
+
+Status from task `M3-predicates-22`:
+
+- Done: added the δΓ scalar-entry derivative bridge vocabulary
+  `DeltaGammaEntryDerivativeBridgeAt`, with static witness
+  `deltaGammaEntryDerivativeBridgeAt_const`.  The bridge states the exact
+  derivative of
+  `y ↦ g(δΓ_y(extend p, extend w), extend q)` as
+  `g(covDeltaGammaDerivAt ..., q)` plus the three Levi-Civita slot
+  corrections.
+- Done: proved
+  `deltaGammaFirstSlotTraceFieldCovariantDerivativeAt_of_entryBridge`.  For
+  fixed `w`, the proof packages
+  `hδ_y(p,q) = g(δΓ_y(p, extend w), q)` as a bilinear scalar tensor, uses the
+  existing Gram/product-rule trace derivative theorem, and identifies the
+  covariant derivative of `hδ` through the new entry bridge.
+- Done: added contraction-side cascade wrappers
+  `deltaGammaContractionTraceHessianDerivativeAt_of_entryBridge_trace_extSecond`
+  and
+  `deltaGammaContractionTraceHessianDerivativeAt_of_entryBridge_entries_contMDiffAt`.
+  These feed the new first-slot field theorem into the existing Hessian
+  adapter, discharging `DeltaGammaContractionTraceHessianDerivativeAt` from the
+  δΓ-entry bridge plus the already-recorded trace C² data.
+- Verified: `lake build Poincare.Global.ScalarVariation
+  Poincare.Global.ScalarEvolution` succeeds.  The build reports only existing
+  linter warnings.
