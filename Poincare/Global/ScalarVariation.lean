@@ -3145,6 +3145,230 @@ theorem traceMetricVariationExtSecondDifferentiableAt_of_contMDiffAt
     simpa using (mdifferentiableAt_extend I E w)
   exact CovariantDerivative.mdiffAt_extDerivFun_apply hTrace hW
 
+/-- Finite products of real-valued `C²` scalar fields are `C²`. -/
+theorem contMDiffAt_two_finset_prod_real
+    {ι : Type} [DecidableEq ι] {t : Finset ι}
+    {f : ι → M → ℝ} {x : M}
+    (hf : ∀ i ∈ t, ContMDiffAt I 𝓘(ℝ) 2 (f i) x) :
+    ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ ∏ i ∈ t, f i y) x := by
+  classical
+  revert hf
+  refine Finset.induction_on t ?base ?step
+  · intro _hf
+    simpa using
+      (contMDiffAt_const :
+        ContMDiffAt I 𝓘(ℝ) 2 (fun _ : M ↦ (1 : ℝ)) x)
+  · intro a s ha ih hf
+    have hfa : ContMDiffAt I 𝓘(ℝ) 2 (f a) x :=
+      hf a (Finset.mem_insert_self a s)
+    have hs : ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ ∏ i ∈ s, f i y) x :=
+      ih fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)
+    have hmul := hfa.smul hs
+    simpa [Finset.prod_insert ha, smul_eq_mul] using hmul
+
+/-- Finite sums of real-valued `C²` scalar fields are `C²`. -/
+theorem contMDiffAt_two_finset_sum_real
+    {ι : Type} [DecidableEq ι] {t : Finset ι}
+    {f : ι → M → ℝ} {x : M}
+    (hf : ∀ i ∈ t, ContMDiffAt I 𝓘(ℝ) 2 (f i) x) :
+    ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ ∑ i ∈ t, f i y) x := by
+  classical
+  revert hf
+  refine Finset.induction_on t ?base ?step
+  · intro _hf
+    simpa using
+      (contMDiffAt_const :
+        ContMDiffAt I 𝓘(ℝ) 2 (fun _ : M ↦ (0 : ℝ)) x)
+  · intro a s ha ih hf
+    have hfa : ContMDiffAt I 𝓘(ℝ) 2 (f a) x :=
+      hf a (Finset.mem_insert_self a s)
+    have hs : ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ ∑ i ∈ s, f i y) x :=
+      ih fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)
+    have hadd := hfa.add hs
+    simpa [Finset.sum_insert ha] using hadd
+
+/-- Determinants of finite matrix fields are `C²` when all entries are `C²`. -/
+theorem contMDiffAt_two_matrix_det_of_entries
+    {ι : Type} [Fintype ι] [DecidableEq ι]
+    {A : M → Matrix ι ι ℝ} {x : M}
+    (hA : ∀ i j, ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ A y i j) x) :
+    ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ (A y).det) x := by
+  classical
+  rw [show (fun y : M ↦ (A y).det) =
+      fun y : M ↦ ∑ σ : Equiv.Perm ι,
+        ((↑↑(Equiv.Perm.sign σ) : ℝ) * ∏ i, A y (σ i) i) by
+    funext y
+    rw [Matrix.det_apply']]
+  have hsum : ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ ∑ σ : Equiv.Perm ι,
+        (↑↑(Equiv.Perm.sign σ) : ℝ) * ∏ i, A y (σ i) i) x := by
+    refine contMDiffAt_two_finset_sum_real (n := n) (M := M)
+      (t := (Finset.univ : Finset (Equiv.Perm ι))) ?_
+    intro σ _hσ
+    have hprod : ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ ∏ i, A y (σ i) i) x := by
+      simpa using
+        (contMDiffAt_two_finset_prod_real (n := n) (M := M)
+        (t := (Finset.univ : Finset ι))
+        (f := fun i y ↦ A y (σ i) i)
+        (fun i _hi ↦ hA (σ i) i))
+    have hconst : ContMDiffAt I 𝓘(ℝ) 2
+        (fun _ : M ↦ (↑↑(Equiv.Perm.sign σ) : ℝ)) x := contMDiffAt_const
+    simpa [smul_eq_mul] using hconst.smul hprod
+  exact hsum
+
+/-- Canonical Gram entries are `C²` under the metric-entry neighborhood class. -/
+theorem gramMatrix_entry_contMDiffAt_two_of_metricExtContMDiffAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (hMetric : MetricExtContMDiffAt g x 2)
+    (i j : Fin (Module.finrank ℝ (TM x))) :
+    ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ gramMatrix g x y i j) x := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  simpa [gramMatrix, b] using hMetric (b i) (b j)
+
+/-- The canonical Gram determinant is `C²` under the metric-entry neighborhood class. -/
+theorem gramMatrix_det_contMDiffAt_two_of_metricExtContMDiffAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (hMetric : MetricExtContMDiffAt g x 2) :
+    ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ (gramMatrix g x y).det) x :=
+  contMDiffAt_two_matrix_det_of_entries
+    (A := fun y : M ↦ gramMatrix g x y)
+    (fun i j ↦
+      gramMatrix_entry_contMDiffAt_two_of_metricExtContMDiffAt
+        (g := g) (x := x) hMetric i j)
+
+/-- Adjugate Gram entries are `C²` under the metric-entry neighborhood class. -/
+theorem gramMatrix_adjugate_entry_contMDiffAt_two_of_metricExtContMDiffAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (hMetric : MetricExtContMDiffAt g x 2)
+    (i j : Fin (Module.finrank ℝ (TM x))) :
+    ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ (gramMatrix g x y).adjugate i j) x := by
+  let row : Fin (Module.finrank ℝ (TM x)) → ℝ := Pi.single i (1 : ℝ)
+  let A : M → Matrix (Fin (Module.finrank ℝ (TM x)))
+      (Fin (Module.finrank ℝ (TM x))) ℝ :=
+    fun y : M ↦ (gramMatrix g x y).updateRow j row
+  have hentries : ∀ a b,
+      ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ A y a b) x := by
+    intro a b
+    by_cases ha : a = j
+    · subst a
+      simpa [A, Matrix.updateRow] using
+        (contMDiffAt_const :
+          ContMDiffAt I 𝓘(ℝ) 2 (fun _ : M ↦ row b) x)
+    · simpa [A, Matrix.updateRow, ha] using
+        (gramMatrix_entry_contMDiffAt_two_of_metricExtContMDiffAt
+          (g := g) (x := x) hMetric a b)
+  have hdet : ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ (A y).det) x :=
+    contMDiffAt_two_matrix_det_of_entries (A := A) hentries
+  exact hdet.congr_of_eventuallyEq (Filter.Eventually.of_forall fun y ↦ by
+    simp [A, row, Matrix.adjugate_apply])
+
+/-- Inverse Gram entries are `C²` under the metric-entry neighborhood class. -/
+theorem gramMatrix_inv_entry_contMDiffAt_two_of_metricExtContMDiffAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (hMetric : MetricExtContMDiffAt g x 2)
+    (i j : Fin (Module.finrank ℝ (TM x))) :
+    ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x := by
+  have hdetInv : ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ ((gramMatrix g x y).det)⁻¹) x :=
+    (gramMatrix_det_contMDiffAt_two_of_metricExtContMDiffAt
+      (g := g) (x := x) hMetric).inv₀
+      (gramMatrix_at_base_det_ne_zero (g := g) (x := x))
+  have hadj : ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ (gramMatrix g x y).adjugate i j) x :=
+    gramMatrix_adjugate_entry_contMDiffAt_two_of_metricExtContMDiffAt
+      (g := g) (x := x) hMetric i j
+  exact (hdetInv.smul hadj).congr_of_eventuallyEq
+    (Filter.Eventually.of_forall fun y ↦ by simp [Matrix.inv_def])
+
+/--
+The Gram-inverse trace formula gives scalar `C²` regularity of `tr_g h` from
+neighborhood `C²` regularity of the canonical tensor and metric entries.
+-/
+theorem traceMetricVariationAt_contMDiffAt_two_of_entries
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (hEntries : TraceMetricVariationEntriesExtContMDiffAt g h x 2)
+    (B : ∀ y : M, LinearMap.BilinForm ℝ (TM y))
+    (hB : ∀ y : M, ∀ p q : TM y, B y p q = h y p q) :
+    ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ traceMetricVariationAt g h y) x := by
+  classical
+  rcases hEntries with ⟨hCov, hMetric⟩
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let rhs : M → ℝ := fun y : M ↦
+    ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+      h y (gramFrame x y i) (gramFrame x y j)
+  have hsum : ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+          h y (gramFrame x y i) (gramFrame x y j)) x := by
+    refine contMDiffAt_two_finset_sum_real (n := n) (M := M)
+      (t := (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x))))) ?_
+    intro i _hi
+    have hinner : ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ ∑ j, (gramMatrix g x y)⁻¹ i j *
+          h y (gramFrame x y i) (gramFrame x y j)) x := by
+      refine contMDiffAt_two_finset_sum_real (n := n) (M := M)
+        (t := (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x))))) ?_
+      intro j _hj
+      have hinv : ContMDiffAt I 𝓘(ℝ) 2
+          (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x :=
+        gramMatrix_inv_entry_contMDiffAt_two_of_metricExtContMDiffAt
+          (g := g) (x := x) hMetric i j
+      have hh : ContMDiffAt I 𝓘(ℝ) 2
+          (fun y : M ↦ h y (gramFrame x y i) (gramFrame x y j)) x := by
+        simpa [gramFrame, b, CovTensor2ExtContMDiffAt] using hCov (b i) (b j)
+      simpa [smul_eq_mul] using hinv.smul hh
+    exact hinner
+  have hrhs : ContMDiffAt I 𝓘(ℝ) 2 rhs x :=
+    by simpa [rhs] using hsum
+  have heq : (fun y : M ↦ traceMetricVariationAt g h y) =ᶠ[nhds x] rhs := by
+    exact (gramMatrix_eventually_isUnit (g := g) x).mono fun y hy ↦ by
+      simpa [rhs] using
+        (traceMetricVariationAt_eq_sum_gram_inv
+          (g := g) (h := h) (x := x) (y := y) (hG := hy)
+          (B := B y) (hB := hB y))
+  exact hrhs.congr_of_eventuallyEq heq
+
+/--
+Trace second-differentiability follows from the strengthened neighborhood
+entry vocabulary.
+-/
+theorem traceMetricVariationExtSecondDifferentiableAt_of_entries_contMDiffAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (hEntries : TraceMetricVariationEntriesExtContMDiffAt g h x 2)
+    (B : ∀ y : M, LinearMap.BilinForm ℝ (TM y))
+    (hB : ∀ y : M, ∀ p q : TM y, B y p q = h y p q) :
+    TraceMetricVariationExtSecondDifferentiableAt g h x :=
+  traceMetricVariationExtSecondDifferentiableAt_of_contMDiffAt
+    (g := g) (h := h) (x := x)
+    (traceMetricVariationAt_contMDiffAt_two_of_entries
+      (g := g) (h := h) (x := x) hEntries B hB)
+
+/-- Time-variation specialization of the trace C² discharge. -/
+theorem traceMetricVariationExtSecondDifferentiableAt_timeDeriv_of_entries_contMDiffAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hEntries : TimeVariationTraceEntriesExtContMDiffAt gt t₀ x 2) :
+    TraceMetricVariationExtSecondDifferentiableAt
+      (gt t₀) (timeDerivAt gt t₀) x :=
+  traceMetricVariationExtSecondDifferentiableAt_of_entries_contMDiffAt
+    (g := gt t₀) (h := timeDerivAt gt t₀) (x := x)
+    hEntries
+    (fun y ↦ timeDerivBilinAt gt t₀ y (hgt y))
+    (by
+      intro y p q
+      rfl)
+
 /-- First-slot trace form of `δΓ`, evaluated fiberwise. -/
 noncomputable def deltaGammaFirstSlotTraceFieldAt
     (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ)
