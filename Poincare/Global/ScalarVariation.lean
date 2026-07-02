@@ -2268,6 +2268,31 @@ theorem tensorDoubleDivergenceAt_negTwoRicci_eq_neg_laplacian_scalar
   ring
 
 /--
+Honest substitution obligation for the double-divergence operator: the
+time-variation field has the same double divergence as `-2 Ric`.
+-/
+def TensorDoubleDivergenceTimeDerivNegTwoRicciAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1] :
+    Prop :=
+  tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x =
+    tensorDoubleDivergenceAt (gt t₀) (negTwoRicciVariationField (gt t₀)) x
+
+/--
+Honest substitution obligation under the scalar Laplacian:
+`Δ(tr h) = Δ(-2 R)` for the Ricci-flow variation field.
+-/
+def TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1] :
+    Prop :=
+  (gt t₀).laplacianAt
+      (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x =
+    -2 * (gt t₀).laplacianAt (fun y ↦ (gt t₀).scalarAt y) x
+
+/--
 Exact divergence assembly for the first `δΓ` contraction:
 the divergence of the inner-trace one-form gives
 `div div h - 1/2 Δ tr h`.
@@ -2515,5 +2540,52 @@ theorem scalarVariation_lichnerowicz
     (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
     hreg hgt hRaise
     (hDeltaGammaTrace (gt := gt) (t₀ := t₀) (x := x) hreg hDiv hCon)
+
+/-- `HasDerivAt` form of the closed Lichnerowicz scalar-variation formula. -/
+theorem hasDerivAt_scalarAt_lichnerowicz
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : TimeDifferentiableAt gt t₀ x)
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hDiv : DeltaGammaDivergenceTraceAssemblyAt gt t₀ x)
+    (hCon : DeltaGammaContractionTraceAssemblyAt gt t₀ x) :
+    HasDerivAt (fun t ↦ (gt t).scalarAt x)
+      (tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+        - (gt t₀).laplacianAt
+          (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x
+        - metricVariationRicciPairingAt (gt t₀) (timeDerivAt gt t₀) x) t₀ := by
+  let hRic : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+        (deltaRicciAt gt t₀ x u w) t₀ :=
+    fun u w ↦ ricciVariation_eq_deltaGamma_contractions' hreg u w
+  let A' : TM x →L[ℝ] TM x :=
+    raise'.comp ((gt t₀).ricciDualContinuousAt x) +
+      ((gt t₀).metricRaiseContinuousAt x).comp
+        (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+          (gt := gt) (t₀ := t₀) (x := x) (deltaRicciAt gt t₀ x) hRic)
+  have hA : ClosedSmoothRiemannianMetric.RicciEndoHasDerivAt gt t₀ x A' := by
+    dsimp [A']
+    exact ClosedSmoothRiemannianMetric.ricciEndoHasDerivAt_of_ricciBilinearHasDerivAt
+      (gt := gt) (t₀ := t₀) (x := x)
+      (δRic := deltaRicciAt gt t₀ x) (raise' := raise') hRaise hRic
+  have hHas :=
+    ClosedSmoothRiemannianMetric.hasDerivAt_scalarAt_of_ricciEndoHasDerivAt
+      (gt := gt) (t₀ := t₀) (x := x) hA
+  have hDeriv := scalarVariation_lichnerowicz
+    (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
+    hreg hgt hRaise hDiv hCon
+  have hTrace :
+      LinearMap.trace ℝ (TM x) (A' : TM x →ₗ[ℝ] TM x) =
+        tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+          - (gt t₀).laplacianAt
+            (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x
+          - metricVariationRicciPairingAt (gt t₀) (timeDerivAt gt t₀) x := by
+    rw [← hHas.deriv]
+    exact hDeriv
+  convert hHas using 1
+  exact hTrace.symm
 
 end Poincare
