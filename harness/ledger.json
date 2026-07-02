@@ -253,6 +253,21 @@
       ],
       "difficulty": "medium",
       "result": "DONE 2026-07-01, commit e4c492eb, gate PASS. ricciEndoAt (self-adjoint), ricciNormSqAt, scalarAt=trace(ricciEndo), pinching R^2<=n|Ric|^2 + equality iff Einstein operator condition. Pinching suite ported to closed manifolds."
+    },
+    {
+      "id": "M3-scalar-evolution-statement",
+      "tier": "M3",
+      "title": "Hamilton scalar evolution statement layer",
+      "deps": [
+        "M1-closed-laplacian",
+        "M1-ricci-norm"
+      ],
+      "status": "done",
+      "files": [
+        "Poincare/Global/ScalarEvolution.lean"
+      ],
+      "difficulty": "medium",
+      "result": "DONE 2026-07-01, commit 384d6dd9, gate PASS. SatisfiesHamiltonScalarEvolutionAt + iff, Ricci-flat vanishing chain (ricciNormSqAt_eq_zero, scalarAt/laplacian vanish), hamilton_scalar_evolution_static_flat sanity, HamiltonScalarEvolutionProgram (documented unproven port target)."
     }
   ]
 }
