@@ -2872,6 +2872,95 @@ def TraceMetricVariationDerivAt
       =
         extDerivFun (fun y ↦ traceMetricVariationAt g h y) x w
 
+/--
+Product-rule obligation for differentiating the metric trace.
+
+It isolates the normed-space calculus step: the exterior derivative of
+`tr_g h` is the finite sum of fixed-slot derivatives of `h` plus the
+derivative of the raised dual basis vector.
+-/
+def TraceMetricVariationProductRuleAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M) : Prop :=
+  ∀ w : TM x,
+    extDerivFun (fun y ↦ traceMetricVariationAt g h y) x w =
+      (letI : FiniteDimensional ℝ (TM x) :=
+          inferInstanceAs (FiniteDimensional ℝ E);
+        letI : T2Space (TM x) := inferInstanceAs (T2Space E);
+        let b := Module.finBasis ℝ (TM x);
+        let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+          fun i ↦ metricDualVectorAt g x (b.coord i);
+        ∑ i,
+          (extDerivFun (fun y : M ↦ h y (extend E (b i) y) (extend E (sharp i) y))
+              x w
+            + h x (b i)
+              (spatialMetricDualVectorDerivAt g x w
+                (LinearMap.toContinuousLinearMap (b.coord i)))))
+
+/--
+Raised-index cancellation obligation for the trace derivative.
+
+This is the finite-sum algebra left after the derivative of the raised dual
+basis has been identified as `spatialMetricDualVectorDerivAt`.
+-/
+def TraceMetricVariationRaiseCancellationAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M) : Prop :=
+  ∀ w : TM x,
+      (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E);
+      letI : T2Space (TM x) := inferInstanceAs (T2Space E);
+      let b := Module.finBasis ℝ (TM x);
+      ∑ i, h x (b i)
+        (spatialMetricDualVectorDerivAt g x w
+          (LinearMap.toContinuousLinearMap (b.coord i)))) =
+      (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E);
+      letI : T2Space (TM x) := inferInstanceAs (T2Space E);
+      let b := Module.finBasis ℝ (TM x);
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i);
+      ∑ i,
+        (-h x (g.leviCivita (extend E (b i)) x w) (sharp i)
+          - h x (b i) (g.leviCivita (extend E (sharp i)) x w)))
+
+theorem traceMetricVariationDerivAt_of_productRule_raiseCancellation
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (hProduct : TraceMetricVariationProductRuleAt g h x)
+    (hCancel : TraceMetricVariationRaiseCancellationAt g h x) :
+    TraceMetricVariationDerivAt g h x := by
+  intro w
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  letI : T2Space (TM x) := inferInstanceAs (T2Space E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hProduct' :
+      extDerivFun (fun y ↦ traceMetricVariationAt g h y) x w =
+        ∑ i,
+          (extDerivFun
+              (fun y : M ↦ h y (extend E (b i) y) (extend E (sharp i) y))
+              x w
+            + h x (b i)
+              (spatialMetricDualVectorDerivAt g x w
+                (LinearMap.toContinuousLinearMap (b.coord i)))) := by
+    simpa [b, sharp] using hProduct w
+  have hCancel' :
+      (∑ i, h x (b i)
+        (spatialMetricDualVectorDerivAt g x w
+          (LinearMap.toContinuousLinearMap (b.coord i)))) =
+        ∑ i,
+          (-h x (g.leviCivita (extend E (b i)) x w) (sharp i)
+            - h x (b i) (g.leviCivita (extend E (sharp i)) x w)) := by
+    simpa [b, sharp] using hCancel w
+  change (∑ i, covTensor2DerivAt g h x w (b i) (sharp i)) =
+    extDerivFun (fun y ↦ traceMetricVariationAt g h y) x w
+  rw [hProduct', Finset.sum_add_distrib, hCancel', ← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  simp only [covTensor2DerivAt]
+  ring
+
 theorem traceMetricVariationDerivAt_zero
     (g : ClosedSmoothRiemannianMetric n M) (x : M) :
     TraceMetricVariationDerivAt g
@@ -3060,6 +3149,45 @@ theorem deltaGamma_innerTrace_eq_of_covTensor2Regular
     (covTensor2DerivTraceSwapAt_timeDeriv_of_regular
       (gt := gt) (t₀ := t₀) (x := x) hgt hCovDiff)
     hTraceDeriv w
+
+theorem deltaGamma_innerTrace_eq_of_covTensor2Regular_traceProduct
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hExt :
+      ∀ a b c : TM x,
+        HasDerivAt
+          (fun t ↦
+            extDerivFun
+              (fun y : M ↦ (gt t).inner y (extend E b y) (extend E c y)) x a)
+          (extDerivFun
+            (fun y : M ↦ timeDerivAt gt t₀ y (extend E b y) (extend E c y))
+            x a) t₀)
+    (hCovDiff : CovTensor2ExtDifferentiableAt (timeDerivAt gt t₀) x)
+    (hTraceProduct :
+      TraceMetricVariationProductRuleAt (gt t₀) (timeDerivAt gt t₀) x)
+    (hTraceCancel :
+      TraceMetricVariationRaiseCancellationAt (gt t₀) (timeDerivAt gt t₀) x)
+    (w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+      ∑ i, (gt t₀).inner x
+        (deltaGammaAt gt t₀ x ((Module.finBasis ℝ (TM x)) i)
+          (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord i))) w)
+      =
+        tensorDivergenceOneFormAt (gt t₀) (timeDerivAt gt t₀) x w
+          - (1 / 2 : ℝ) *
+            extDerivFun
+              (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y)
+              x w :=
+  deltaGamma_innerTrace_eq_of_covTensor2Regular
+    (gt := gt) (t₀ := t₀) (x := x)
+    hreg hgt hExt hCovDiff
+    (traceMetricVariationDerivAt_of_productRule_raiseCancellation
+      (g := gt t₀) (h := timeDerivAt gt t₀) (x := x)
+      hTraceProduct hTraceCancel)
+    w
 
 /--
 The double divergence of a raw metric variation:
