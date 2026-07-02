@@ -1130,6 +1130,25 @@ theorem metricDualVectorAt_inner_apply
   exact LinearMap.BilinForm.apply_toDual_symm_apply
     (B := g.metricBilinAt x) (hB := g.metricBilinAt_nondegenerate x) φ v
 
+/-- The algebraic raised dual vector is the continuous metric-raise map applied
+to the same covector. -/
+theorem metricDualVectorAt_eq_metricRaiseContinuousAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (φ : TM x →L[ℝ] ℝ) :
+    metricDualVectorAt g x (φ : Module.Dual ℝ (TM x)) =
+      g.metricRaiseContinuousAt x φ := by
+  letI : T2Space (TM x) := inferInstanceAs (T2Space E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  refine sub_eq_zero.mp (LeviCivitaExistence.metric_nondegenerate g x
+    (metricDualVectorAt g x (φ : Module.Dual ℝ (TM x)) -
+      g.metricRaiseContinuousAt x φ) ?_)
+  intro v
+  rw [map_sub]
+  simp only [ContinuousLinearMap.sub_apply]
+  rw [metricDualVectorAt_inner_apply g x (φ : Module.Dual ℝ (TM x)) v,
+    ClosedSmoothRiemannianMetric.metricRaiseContinuousAt_inner_apply]
+  simp
+
 /-- Coordinates are metric pairings with the corresponding raised dual basis vector. -/
 theorem coord_eq_inner_metricDualVectorAt
     (g : ClosedSmoothRiemannianMetric n M) (x : M)
