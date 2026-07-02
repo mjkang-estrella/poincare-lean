@@ -1156,6 +1156,61 @@ theorem metricDualVectorAt_coord_symm
     coord_eq_inner_metricDualVectorAt g x j]
   exact g.inner_symm x _ _
 
+/--
+Raised-dual-basis contraction swap on one closed tangent fiber.
+
+For any scalar form linear in both slots, contracting the metric-dual raised
+basis in the first slot is the same as contracting it in the second slot.
+-/
+theorem sum_metricDualVectorAt_contraction_swap
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    [FiniteDimensional ℝ (TM x)]
+    (F : TM x → TM x → ℝ)
+    (hadd1 : ∀ p₁ p₂ q, F (p₁ + p₂) q = F p₁ q + F p₂ q)
+    (hsmul1 : ∀ (c : ℝ) p q, F (c • p) q = c • F p q)
+    (hadd2 : ∀ p q₁ q₂, F p (q₁ + q₂) = F p q₁ + F p q₂)
+    (hsmul2 : ∀ (c : ℝ) p q, F p (c • q) = c • F p q) :
+    ∑ k, F (metricDualVectorAt g x
+        ((Module.finBasis ℝ (TM x)).coord k)) ((Module.finBasis ℝ (TM x)) k)
+      = ∑ k, F ((Module.finBasis ℝ (TM x)) k)
+          (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord k)) := by
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun k ↦ metricDualVectorAt g x (b.coord k)
+  have hrepr : ∀ k, sharp k = ∑ i, b.coord i (sharp k) • b i := by
+    intro k
+    exact (b.sum_repr (sharp k)).symm
+  have hexp1 : ∀ k, F (sharp k) (b k)
+      = ∑ i, b.coord i (sharp k) • F (b i) (b k) := by
+    intro k
+    conv_lhs => rw [hrepr k]
+    set L : TM x →ₗ[ℝ] ℝ :=
+      IsLinearMap.mk' (fun p ↦ F p (b k))
+        ⟨fun p₁ p₂ ↦ hadd1 p₁ p₂ (b k),
+         fun c p ↦ hsmul1 c p (b k)⟩ with hL
+    have hmap := map_sum L (fun i ↦ b.coord i (sharp k) • b i) Finset.univ
+    simp only [map_smul] at hmap
+    exact hmap
+  have hexp2 : ∀ k, F (b k) (sharp k)
+      = ∑ i, b.coord i (sharp k) • F (b k) (b i) := by
+    intro k
+    conv_lhs => rw [hrepr k]
+    set L : TM x →ₗ[ℝ] ℝ :=
+      IsLinearMap.mk' (fun q ↦ F (b k) q)
+        ⟨fun q₁ q₂ ↦ hadd2 (b k) q₁ q₂,
+         fun c q ↦ hsmul2 c (b k) q⟩ with hL
+    have hmap := map_sum L (fun i ↦ b.coord i (sharp k) • b i) Finset.univ
+    simp only [map_smul] at hmap
+    exact hmap
+  change (∑ k, F (sharp k) (b k)) = ∑ k, F (b k) (sharp k)
+  rw [Finset.sum_congr rfl (fun k _ ↦ hexp1 k),
+    Finset.sum_congr rfl (fun k _ ↦ hexp2 k), Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro i _
+  apply Finset.sum_congr rfl
+  intro k _
+  rw [metricDualVectorAt_coord_symm g x i k]
+
 /-- Coordinates of the raised Ricci covector are Ricci evaluated on the raised dual basis. -/
 theorem coord_metricRaiseContinuousAt_ricciDualContinuousAt
     (g : ClosedSmoothRiemannianMetric n M)
@@ -1725,6 +1780,56 @@ noncomputable def tensorDivergenceOneFormAt
       (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x w = 0 := by
   unfold tensorDivergenceOneFormAt
   simp
+
+/-- Exact trace-swap obligation for `covTensor2DerivAt`. -/
+def CovTensor2DerivTraceSwapAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M) : Prop :=
+  ∀ w : TM x,
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      ∑ i, covTensor2DerivAt g h x ((Module.finBasis ℝ (TM x)) i)
+        (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i)) w)
+      = tensorDivergenceOneFormAt g h x w
+
+/--
+Closed `hTraceSwap`: slot-linearity of `covTensor2DerivAt` implies the
+contracted raised/lowered slot exchange.
+-/
+theorem hTraceSwap
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (hadd1 : ∀ w p₁ p₂ q : TM x,
+      covTensor2DerivAt g h x (p₁ + p₂) q w =
+        covTensor2DerivAt g h x p₁ q w + covTensor2DerivAt g h x p₂ q w)
+    (hsmul1 : ∀ (c : ℝ) (w p q : TM x),
+      covTensor2DerivAt g h x (c • p) q w =
+        c • covTensor2DerivAt g h x p q w)
+    (hadd2 : ∀ w p q₁ q₂ : TM x,
+      covTensor2DerivAt g h x p (q₁ + q₂) w =
+        covTensor2DerivAt g h x p q₁ w + covTensor2DerivAt g h x p q₂ w)
+    (hsmul2 : ∀ (c : ℝ) (w p q : TM x),
+      covTensor2DerivAt g h x p (c • q) w =
+        c • covTensor2DerivAt g h x p q w) :
+    CovTensor2DerivTraceSwapAt g h x := by
+  intro w
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hswap := sum_metricDualVectorAt_contraction_swap
+    (g := g) (x := x)
+    (F := fun p q ↦ covTensor2DerivAt g h x p q w)
+    (fun p₁ p₂ q ↦ hadd1 w p₁ p₂ q)
+    (fun c p q ↦ hsmul1 c w p q)
+    (fun p q₁ q₂ ↦ hadd2 w p q₁ q₂)
+    (fun c p q ↦ hsmul2 c w p q)
+  change (∑ i, covTensor2DerivAt g h x (b i) (sharp i) w) =
+    tensorDivergenceOneFormAt g h x w
+  unfold tensorDivergenceOneFormAt
+  change (∑ i, covTensor2DerivAt g h x (b i) (sharp i) w) =
+    ∑ i, covTensor2DerivAt g h x (sharp i) (b i) w
+  exact hswap.symm
 
 /--
 Inner trace of the closed `δΓ` Koszul identity.
