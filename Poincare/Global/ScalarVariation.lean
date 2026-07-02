@@ -2667,6 +2667,86 @@ theorem traceMetricVariationAt_extDerivFun_eq_gram_rhs
   exact congrArg (fun L : TM x →L[ℝ] ℝ ↦ L w)
     (CovariantDerivative.extDerivFun_congr heq)
 
+/-- Product-rule expansion of the differentiated canonical Gram RHS. -/
+theorem gram_rhs_extDerivFun_eq_sum_product
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (w : TM x) :
+    extDerivFun
+        (fun y : M ↦ ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+          h y (gramFrame x y i) (gramFrame x y j)) x w =
+      ∑ i, ∑ j,
+        ((gramMatrix g x x)⁻¹ i j *
+          extDerivFun
+            (fun y : M ↦ h y (gramFrame x y i) (gramFrame x y j)) x w
+         + extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x w *
+            h x (gramFrame x x i) (gramFrame x x j)) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let term : Fin (Module.finrank ℝ (TM x)) →
+      Fin (Module.finrank ℝ (TM x)) → M → ℝ :=
+    fun i j y ↦ (gramMatrix g x y)⁻¹ i j *
+      h y (gramFrame x y i) (gramFrame x y j)
+  have htermDiff : ∀ i j,
+      MDifferentiableAt I 𝓘(ℝ) (term i j) x := by
+    intro i j
+    have hinv : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x :=
+      gramMatrix_inv_entry_mdiffAt (g := g) x i j
+    have hh : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ h y (gramFrame x y i) (gramFrame x y j)) x := by
+      simpa [gramFrame, b, CovTensor2ExtDifferentiableAt] using hDiff (b i) (b j)
+    exact hinv.mul hh
+  have hinnerDiff : ∀ i,
+      MDifferentiableAt I 𝓘(ℝ) (∑ j, term i j) x := by
+    intro i
+    exact MDifferentiableAt.sum
+      (t := (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x)))))
+      (fun j _hj ↦ htermDiff i j)
+  have houter := extDerivFun_sum_at
+    (n := n) (M := M)
+    (s := (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x)))))
+    (f := fun i ↦ ∑ j, term i j)
+    (x := x)
+    (fun i _hi ↦ hinnerDiff i) w
+  have hfun :
+      (fun y : M ↦ ∑ i, ∑ j, (gramMatrix g x y)⁻¹ i j *
+        h y (gramFrame x y i) (gramFrame x y j)) =
+        (∑ i, ∑ j, term i j) := by
+    funext y
+    simp [term]
+  rw [hfun]
+  change extDerivFun (∑ i, ∑ j, term i j) x w =
+    ∑ i, ∑ j,
+      ((gramMatrix g x x)⁻¹ i j *
+        extDerivFun
+          (fun y : M ↦ h y (gramFrame x y i) (gramFrame x y j)) x w
+       + extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x w *
+          h x (gramFrame x x i) (gramFrame x x j))
+  rw [houter]
+  refine Finset.sum_congr rfl fun i _hi ↦ ?_
+  have hinner := extDerivFun_sum_at
+    (n := n) (M := M)
+    (s := (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x)))))
+    (f := fun j ↦ term i j)
+    (x := x)
+    (fun j _hj ↦ htermDiff i j) w
+  rw [hinner]
+  refine Finset.sum_congr rfl fun j _hj ↦ ?_
+  have hinv : MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x :=
+    gramMatrix_inv_entry_mdiffAt (g := g) x i j
+  have hh : MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ h y (gramFrame x y i) (gramFrame x y j)) x := by
+    simpa [gramFrame, b, CovTensor2ExtDifferentiableAt] using hDiff (b i) (b j)
+  have hmul := CovariantDerivative.extDerivFun_mul
+    (p := fun y : M ↦ (gramMatrix g x y)⁻¹ i j)
+    (q := fun y : M ↦ h y (gramFrame x y i) (gramFrame x y j))
+    (x := x) hinv hh w
+  simpa [term] using hmul
+
 /--
 Fixed-vector spatial differentiability for a raw `(0,2)` variation tensor.
 
