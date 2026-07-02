@@ -10027,6 +10027,89 @@ theorem closedConnectionEntry_extDerivFun_eq_iterated_add_output
     A, U, Z, Q] using h
 
 /--
+Output-slot correction field in the moving first-derivative bridge for
+`g(∇_u z, q)`: the extra term from differentiating the output section `q`.
+-/
+noncomputable def closedConnectionEntryOutputConnectionFieldAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    {x : M} (a u z q : TM x) : M → ℝ :=
+  fun y : M ↦
+    g.inner y
+      (g.leviCivita (extend E z) y (extend E u y))
+      (g.leviCivita (extend E q) y (extend E a y))
+
+/--
+Moving-field form of the metric-compatibility derivative bridge for
+`g(∇_u z, q)`, with the differentiating slot supplied by `extend E a`.
+-/
+theorem closedConnectionEntry_extDerivFun_extend_eq_iterated_add_output_eventually
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (a u z q : TM x) :
+    (fun y : M ↦
+      extDerivFun (closedConnectionEntryFieldAt g u z q) y (extend E a y))
+      =ᶠ[nhds x]
+    (fun y : M ↦
+      closedIteratedConnectionEntryFieldAt g u z y
+          (extend E a y) (extend E q y)
+        + closedConnectionEntryOutputConnectionFieldAt g a u z q y) := by
+  let U : Π y : M, TM y := extend E u
+  let Z : Π y : M, TM y := extend E z
+  let Q : Π y : M, TM y := extend E q
+  let A : Π y : M, TM y := fun y ↦ g.leviCivita Z y (U y)
+  have hZev := eventually_contMDiffAt_two_extend (n := n) (M := M) z
+  have hUev := eventually_contMDiffAt_two_extend (n := n) (M := M) u
+  have hQev := eventually_contMDiffAt_two_extend (n := n) (M := M) q
+  filter_upwards [hZev, hUev, hQev] with y hZ2 hU2 hQ2
+  have hU : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% U) y := by
+    exact hU2.mdifferentiableAt (by norm_num)
+  have hA : MDiffAtTangentField A y := by
+    simpa [MDiffAtTangentField, A] using
+      (CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt
+        (cov := g.leviCivita) hZ2 hU)
+  have hQ : MDiffAtTangentField Q y := by
+    simpa [MDiffAtTangentField, Q] using
+      hQ2.mdifferentiableAt (by norm_num)
+  have h := g.leviCivita_metricCompatibleAt y hA hQ (extend E a y)
+  simpa [closedConnectionEntryFieldAt, closedIteratedConnectionEntryFieldAt,
+    closedConnectionEntryOutputConnectionFieldAt, A, U, Z, Q] using h
+
+/-- First-order regularity of the output-slot correction field. -/
+theorem closedConnectionEntryOutputConnection_mdiffAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (a u z q : TM x) :
+    MDifferentiableAt I 𝓘(ℝ)
+      (closedConnectionEntryOutputConnectionFieldAt g a u z q) x := by
+  let A : Π y : M, TM y := extend E a
+  let U : Π y : M, TM y := extend E u
+  let Z : Π y : M, TM y := extend E z
+  let Q : Π y : M, TM y := extend E q
+  have hU : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% U) x := by
+    simpa [U] using (mdifferentiableAt_extend I E u)
+  have hA : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% A) x := by
+    simpa [A] using (mdifferentiableAt_extend I E a)
+  have hZ2 : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% Z) x := by
+    simpa [Z] using (FiberBundle.contMDiffAt_extend' (k := 2) I E z)
+  have hQ2 : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% Q) x := by
+    simpa [Q] using (FiberBundle.contMDiffAt_extend' (k := 2) I E q)
+  have hLeft :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (fun y : M ↦ g.leviCivita Z y (U y))) x :=
+    CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt
+      (cov := g.leviCivita) hZ2 hU
+  have hRight :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (fun y : M ↦ g.leviCivita Q y (A y))) x :=
+    CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt
+      (cov := g.leviCivita) hQ2 hA
+  exact g.metric_pairing_mdiffAt
+    (by
+      simpa [closedConnectionEntryOutputConnectionFieldAt, A, U, Z, Q] using hLeft)
+    (by
+      simpa [closedConnectionEntryOutputConnectionFieldAt, A, U, Z, Q] using hRight)
+
+/--
 Corrected second directional derivative of a scalar field in canonical
 extension directions.  This is the scalar `∂∂` block after subtracting the
 first-order connection correction from the moving inner direction.
@@ -10036,6 +10119,175 @@ noncomputable def closedSecondDirectionalEntryAt
     (x : M) (v u : TM x) : ℝ :=
   extDerivFun (fun y : M ↦ extDerivFun f y (extend E u y)) x v
     - extDerivFun f x (g.leviCivita (extend E u) x v)
+
+/--
+Corrected second directional derivative of `g(∇_u z, q)` after the
+metric-compatibility bridge.  This exposes the raw iterated-connection
+derivative plus the output-slot correction derivative.
+-/
+theorem closedSecondDirectionalEntryAt_connectionEntry_eq_iterated_add_output
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (v a u z q : TM x) :
+    closedSecondDirectionalEntryAt g
+        (closedConnectionEntryFieldAt g u z q) x v a =
+      extDerivFun
+          (fun y : M ↦
+            closedIteratedConnectionEntryFieldAt g u z y
+              (extend E a y) (extend E q y)) x v
+        + extDerivFun
+          (closedConnectionEntryOutputConnectionFieldAt g a u z q) x v
+        - (closedIteratedConnectionEntryFieldAt g u z x
+            (g.leviCivita (extend E a) x v) q
+          + closedConnectionEntryOutputConnectionFieldAt g
+            (g.leviCivita (extend E a) x v) u z q x) := by
+  let F : M → ℝ := fun y : M ↦
+    extDerivFun (closedConnectionEntryFieldAt g u z q) y (extend E a y)
+  let A : M → ℝ := fun y : M ↦
+    closedIteratedConnectionEntryFieldAt g u z y
+      (extend E a y) (extend E q y)
+  let B : M → ℝ := closedConnectionEntryOutputConnectionFieldAt g a u z q
+  have heq : F =ᶠ[nhds x] fun y : M ↦ A y + B y := by
+    simpa [F, A, B] using
+      closedConnectionEntry_extDerivFun_extend_eq_iterated_add_output_eventually
+        (g := g) (x := x) a u z q
+  have hderiv :
+      extDerivFun F x v =
+        extDerivFun (fun y : M ↦ A y + B y) x v := by
+    exact congrArg (fun L : TM x →L[ℝ] ℝ ↦ L v)
+      (CovariantDerivative.extDerivFun_congr heq)
+  have hA : MDifferentiableAt I 𝓘(ℝ) A x := by
+    simpa [A] using closedIteratedConnectionEntry_mdiffAt
+      (g := g) (a := a) (u := u) (w := z) (q := q)
+  have hB : MDifferentiableAt I 𝓘(ℝ) B x := by
+    simpa [B] using closedConnectionEntryOutputConnection_mdiffAt
+      (g := g) (a := a) (u := u) (z := z) (q := q)
+  have hsplit :
+      extDerivFun (fun y : M ↦ A y + B y) x v =
+        extDerivFun A x v + extDerivFun B x v := by
+    have h :=
+      congrArg (fun L : TM x →L[ℝ] ℝ ↦ L v)
+        (extDerivFun_add hA hB)
+    simpa using h
+  have hcorr :
+      extDerivFun (closedConnectionEntryFieldAt g u z q) x
+          (g.leviCivita (extend E a) x v) =
+        closedIteratedConnectionEntryFieldAt g u z x
+          (g.leviCivita (extend E a) x v) q
+          + closedConnectionEntryOutputConnectionFieldAt g
+            (g.leviCivita (extend E a) x v) u z q x := by
+    simpa [closedConnectionEntryFieldAt,
+      closedConnectionEntryOutputConnectionFieldAt] using
+      closedConnectionEntry_extDerivFun_eq_iterated_add_output
+        (g := g) (x := x)
+        (v := g.leviCivita (extend E a) x v)
+        (u := u) (z := z) (q := q)
+  unfold closedSecondDirectionalEntryAt
+  change extDerivFun F x v
+      - extDerivFun (closedConnectionEntryFieldAt g u z q) x
+        (g.leviCivita (extend E a) x v) =
+    extDerivFun A x v + extDerivFun B x v
+      - (closedIteratedConnectionEntryFieldAt g u z x
+          (g.leviCivita (extend E a) x v) q
+        + closedConnectionEntryOutputConnectionFieldAt g
+          (g.leviCivita (extend E a) x v) u z q x)
+  calc
+    extDerivFun F x v
+        - extDerivFun (closedConnectionEntryFieldAt g u z q) x
+          (g.leviCivita (extend E a) x v)
+        =
+      extDerivFun (fun y : M ↦ A y + B y) x v
+        - extDerivFun (closedConnectionEntryFieldAt g u z q) x
+          (g.leviCivita (extend E a) x v) := by rw [hderiv]
+    _ =
+      (extDerivFun A x v + extDerivFun B x v)
+        - extDerivFun (closedConnectionEntryFieldAt g u z q) x
+          (g.leviCivita (extend E a) x v) := by rw [hsplit]
+    _ =
+      extDerivFun A x v + extDerivFun B x v
+        - (closedIteratedConnectionEntryFieldAt g u z x
+            (g.leviCivita (extend E a) x v) q
+          + closedConnectionEntryOutputConnectionFieldAt g
+          (g.leviCivita (extend E a) x v) u z q x) := by
+      rw [hcorr]
+
+/--
+One curvature defining expansion rewritten through the raw corrected
+second-directional connection-entry block.  The remaining terms are exactly
+the output-slot and bracket residue that the cyclic group-2/3 bookkeeping must
+cancel.
+-/
+theorem closedCurvatureDefExpansionAt_eq_secondDirectional_residue
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v a u z q : TM x) :
+    closedCurvatureDefExpansionAt g x v a u z q =
+      closedSecondDirectionalEntryAt g
+          (closedConnectionEntryFieldAt g u z q) x v a
+        - closedSecondDirectionalEntryAt g
+          (closedConnectionEntryFieldAt g a z q) x v u
+        - extDerivFun
+          (fun y : M ↦
+            closedBracketConnectionEntryFieldAt g a u z y
+              (extend E q y)) x v
+        - extDerivFun
+          (closedConnectionEntryOutputConnectionFieldAt g a u z q) x v
+        + extDerivFun
+          (closedConnectionEntryOutputConnectionFieldAt g u a z q) x v
+        + closedIteratedConnectionEntryFieldAt g u z x
+          (g.leviCivita (extend E a) x v) q
+        - closedIteratedConnectionEntryFieldAt g a z x
+          (g.leviCivita (extend E u) x v) q
+        + closedConnectionEntryOutputConnectionFieldAt g
+          (g.leviCivita (extend E a) x v) u z q x
+        - closedConnectionEntryOutputConnectionFieldAt g
+          (g.leviCivita (extend E u) x v) a z q x := by
+  rw [closedSecondDirectionalEntryAt_connectionEntry_eq_iterated_add_output
+      (g := g) (x := x) (v := v) (a := a) (u := u) (z := z) (q := q),
+    closedSecondDirectionalEntryAt_connectionEntry_eq_iterated_add_output
+      (g := g) (x := x) (v := v) (a := u) (u := a) (z := z) (q := q)]
+  unfold closedCurvatureDefExpansionAt covTensor2DerivAt
+    closedBracketConnectionEntryDerivAt
+  ring
+
+/--
+The non-Schwarz residue in one differentiated curvature defining expansion
+after extracting the raw corrected second-directional connection-entry pair.
+-/
+noncomputable def closedCurvatureDefExpansionResidueAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (x : M) (v a u z q : TM x) : ℝ :=
+  - extDerivFun
+      (fun y : M ↦
+        closedBracketConnectionEntryFieldAt g a u z y
+          (extend E q y)) x v
+    - extDerivFun
+      (closedConnectionEntryOutputConnectionFieldAt g a u z q) x v
+    + extDerivFun
+      (closedConnectionEntryOutputConnectionFieldAt g u a z q) x v
+    + closedIteratedConnectionEntryFieldAt g u z x
+      (g.leviCivita (extend E a) x v) q
+    - closedIteratedConnectionEntryFieldAt g a z x
+      (g.leviCivita (extend E u) x v) q
+    + closedConnectionEntryOutputConnectionFieldAt g
+      (g.leviCivita (extend E a) x v) u z q x
+    - closedConnectionEntryOutputConnectionFieldAt g
+      (g.leviCivita (extend E u) x v) a z q x
+
+theorem closedCurvatureDefExpansionAt_eq_secondDirectional_add_residue
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v a u z q : TM x) :
+    closedCurvatureDefExpansionAt g x v a u z q =
+      closedSecondDirectionalEntryAt g
+          (closedConnectionEntryFieldAt g u z q) x v a
+        - closedSecondDirectionalEntryAt g
+          (closedConnectionEntryFieldAt g a z q) x v u
+        + closedCurvatureDefExpansionResidueAt g x v a u z q := by
+  rw [closedCurvatureDefExpansionAt_eq_secondDirectional_residue
+      (g := g) (x := x) (v := v) (a := a) (u := u) (z := z) (q := q)]
+  unfold closedCurvatureDefExpansionResidueAt
+  ring
 
 /-- Closed Schwarz symmetry for corrected scalar second directional entries. -/
 theorem closedSecondDirectionalEntryAt_comm
@@ -10078,6 +10330,56 @@ theorem closedConnectionEntry_mixed_second_cyclic_cancel
     closedConnectionEntry_secondDirectional_comm
       (g := g) (w := u) (z := z) (q := q) (u := v) (v := w)]
   ring
+
+/--
+Group-1 wiring for the cyclic differentiated curvature defining expansion:
+after the raw mixed-second derivatives cancel, only the three explicit
+residue blocks remain.
+-/
+theorem closedCurvatureDefExpansionAt_cyclic_eq_residue_cyclic
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u v w z q : TM x) :
+    closedCurvatureDefExpansionAt g x v u w z q
+      + closedCurvatureDefExpansionAt g x u w v z q
+      + closedCurvatureDefExpansionAt g x w v u z q =
+        closedCurvatureDefExpansionResidueAt g x v u w z q
+          + closedCurvatureDefExpansionResidueAt g x u w v z q
+          + closedCurvatureDefExpansionResidueAt g x w v u z q := by
+  rw [closedCurvatureDefExpansionAt_eq_secondDirectional_add_residue
+      (g := g) (x := x) (v := v) (a := u) (u := w) (z := z) (q := q),
+    closedCurvatureDefExpansionAt_eq_secondDirectional_add_residue
+      (g := g) (x := x) (v := u) (a := w) (u := v) (z := z) (q := q),
+    closedCurvatureDefExpansionAt_eq_secondDirectional_add_residue
+      (g := g) (x := x) (v := w) (a := v) (u := u) (z := z) (q := q)]
+  have hraw :=
+    closedConnectionEntry_mixed_second_cyclic_cancel
+      (g := g) (x := x) (u := u) (v := v) (w := w) (z := z) (q := q)
+  linarith
+
+/--
+After group-1 wiring, the displayed scalar cancellation is reduced exactly to
+the cyclic residue block minus the cyclic curvature-slot correction block.
+-/
+theorem closedCurvatureDefExpansionAt_cyclic_sub_corrections_eq_residue_sub_corrections
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u v w z q : TM x) :
+    closedCurvatureDefExpansionAt g x v u w z q
+      + closedCurvatureDefExpansionAt g x u w v z q
+      + closedCurvatureDefExpansionAt g x w v u z q
+      - (closedCurvatureCovDerivAtCorrectionAt g x v u w z q
+        + closedCurvatureCovDerivAtCorrectionAt g x u w v z q
+        + closedCurvatureCovDerivAtCorrectionAt g x w v u z q)
+      =
+        closedCurvatureDefExpansionResidueAt g x v u w z q
+          + closedCurvatureDefExpansionResidueAt g x u w v z q
+          + closedCurvatureDefExpansionResidueAt g x w v u z q
+          - (closedCurvatureCovDerivAtCorrectionAt g x v u w z q
+            + closedCurvatureCovDerivAtCorrectionAt g x u w v z q
+            + closedCurvatureCovDerivAtCorrectionAt g x w v u z q) := by
+  rw [closedCurvatureDefExpansionAt_cyclic_eq_residue_cyclic
+      (g := g) (x := x) (u := u) (v := v) (w := w) (z := z) (q := q)]
 
 /--
 Torsion-free alignment for the bracket connection entry:
