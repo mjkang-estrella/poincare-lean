@@ -1649,6 +1649,22 @@ theorem traceMetricVariationAt_eq_metricTraceInBasisAt
             (g := g) (x := x) (B := B)
             (b := Module.finBasis ℝ (TM x)) (c := b)
 
+theorem laplacianAt_eq_sum_hessianAt
+    (g : ClosedSmoothRiemannianMetric n M) (f : M → ℝ) (x : M) :
+    g.laplacianAt f x =
+      (letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+        ∑ i, g.hessianAt f x ((Module.finBasis ℝ (TM x)) i)
+          (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i))) := by
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  have htrace :=
+    metricTraceInBasisAt_eq_linearMap_trace
+      (g := g) (x := x) (B := g.hessianDualAt f x) (b := b)
+  change g.laplacianAt f x =
+    ∑ i, g.hessianAt f x (b i) (metricDualVectorAt g x (b.coord i))
+  simpa [ClosedSmoothRiemannianMetric.laplacianAt, metricTraceEndomorphismAt,
+    metricTraceInBasisAt, b] using htrace.symm
+
 /--
 Gram-inverse form of the metric trace in the canonical extension frame.  The
 fiber value of `h` is supplied as a bilinear form, matching the existing
@@ -4829,6 +4845,102 @@ def DeltaGammaContractionTraceAssemblyAt
       (1 / 2 : ℝ) * (gt t₀).laplacianAt
         (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x
 
+/--
+Hessian-trace form of `DeltaGammaDivergenceTraceAssemblyAt`.
+
+This isolates the remaining second-derivative content from the purely
+linear-algebraic recognition of the Laplacian as the raised Hessian trace.
+-/
+def DeltaGammaDivergenceTraceHessianAssemblyAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop :=
+  (letI : FiniteDimensional ℝ (TM x) :=
+      inferInstanceAs (FiniteDimensional ℝ E)
+    ∑ j, deltaGammaDivergenceAt gt t₀ x ((Module.finBasis ℝ (TM x)) j)
+      (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord j)))
+    =
+      tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+        - (1 / 2 : ℝ) *
+          (letI : FiniteDimensional ℝ (TM x) :=
+            inferInstanceAs (FiniteDimensional ℝ E)
+          ∑ j, (gt t₀).hessianAt
+            (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x
+            ((Module.finBasis ℝ (TM x)) j)
+            (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord j)))
+
+/--
+Hessian-trace form of `DeltaGammaContractionTraceAssemblyAt`.
+
+The remaining proof obligation is the second-derivative trace identity for the
+`δΓ` contraction; the conversion from Hessian trace to `laplacianAt` is
+separate and already proved by `laplacianAt_eq_sum_hessianAt`.
+-/
+def DeltaGammaContractionTraceHessianAssemblyAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop :=
+  (letI : FiniteDimensional ℝ (TM x) :=
+      inferInstanceAs (FiniteDimensional ℝ E)
+    ∑ j, deltaGammaContractionDerivAt gt t₀ x ((Module.finBasis ℝ (TM x)) j)
+      (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord j)))
+    =
+      (1 / 2 : ℝ) *
+        (letI : FiniteDimensional ℝ (TM x) :=
+          inferInstanceAs (FiniteDimensional ℝ E)
+        ∑ j, (gt t₀).hessianAt
+          (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x
+          ((Module.finBasis ℝ (TM x)) j)
+          (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord j)))
+
+theorem deltaGammaDivergenceTraceAssemblyAt_of_hessianAssembly
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hDiv : DeltaGammaDivergenceTraceHessianAssemblyAt gt t₀ x) :
+    DeltaGammaDivergenceTraceAssemblyAt gt t₀ x := by
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let f : M → ℝ :=
+    fun y ↦ traceMetricVariationAt g (timeDerivAt gt t₀) y
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun j ↦ metricDualVectorAt g x (b.coord j)
+  have hlap :
+      g.laplacianAt f x =
+        ∑ j, g.hessianAt f x (b j) (sharp j) := by
+    simpa [g, f, b, sharp] using
+      (laplacianAt_eq_sum_hessianAt (g := g) (f := f) (x := x))
+  have hDiv' :
+      (∑ j, deltaGammaDivergenceAt gt t₀ x (b j) (sharp j)) =
+        tensorDoubleDivergenceAt g (timeDerivAt gt t₀) x
+          - (1 / 2 : ℝ) *
+            (∑ j, g.hessianAt f x (b j) (sharp j)) := by
+    simpa [DeltaGammaDivergenceTraceHessianAssemblyAt, g, f, b, sharp] using hDiv
+  change (∑ j, deltaGammaDivergenceAt gt t₀ x (b j) (sharp j)) =
+    tensorDoubleDivergenceAt g (timeDerivAt gt t₀) x
+      - (1 / 2 : ℝ) * g.laplacianAt f x
+  rw [hDiv', hlap]
+
+theorem deltaGammaContractionTraceAssemblyAt_of_hessianAssembly
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hCon : DeltaGammaContractionTraceHessianAssemblyAt gt t₀ x) :
+    DeltaGammaContractionTraceAssemblyAt gt t₀ x := by
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let f : M → ℝ :=
+    fun y ↦ traceMetricVariationAt g (timeDerivAt gt t₀) y
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun j ↦ metricDualVectorAt g x (b.coord j)
+  have hlap :
+      g.laplacianAt f x =
+        ∑ j, g.hessianAt f x (b j) (sharp j) := by
+    simpa [g, f, b, sharp] using
+      (laplacianAt_eq_sum_hessianAt (g := g) (f := f) (x := x))
+  have hCon' :
+      (∑ j, deltaGammaContractionDerivAt gt t₀ x (b j) (sharp j)) =
+        (1 / 2 : ℝ) *
+          (∑ j, g.hessianAt f x (b j) (sharp j)) := by
+    simpa [DeltaGammaContractionTraceHessianAssemblyAt, g, f, b, sharp] using hCon
+  change (∑ j, deltaGammaContractionDerivAt gt t₀ x (b j) (sharp j)) =
+    (1 / 2 : ℝ) * g.laplacianAt f x
+  rw [hCon', hlap]
+
 theorem deltaRicciAt_raised_trace_eq_doubleDivergence_sub_laplacian
     (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
     (hDiv : DeltaGammaDivergenceTraceAssemblyAt gt t₀ x)
@@ -4865,6 +4977,21 @@ theorem deltaRicciAt_raised_trace_eq_doubleDivergence_sub_laplacian
   rw [hDiv', hCon']
   ring
 
+theorem deltaRicciAt_raised_trace_eq_doubleDivergence_sub_laplacian_of_hessianAssemblies
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (hDiv : DeltaGammaDivergenceTraceHessianAssemblyAt gt t₀ x)
+    (hCon : DeltaGammaContractionTraceHessianAssemblyAt gt t₀ x) :
+    (letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+      ∑ j, deltaRicciAt gt t₀ x ((Module.finBasis ℝ (TM x)) j)
+        (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord j)))
+      =
+        tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+          - (gt t₀).laplacianAt
+            (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x :=
+  deltaRicciAt_raised_trace_eq_doubleDivergence_sub_laplacian gt t₀ x
+    (deltaGammaDivergenceTraceAssemblyAt_of_hessianAssembly hDiv)
+    (deltaGammaContractionTraceAssemblyAt_of_hessianAssembly hCon)
+
 theorem hDeltaGammaTrace
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
     [∀ t : ℝ,
@@ -4895,6 +5022,31 @@ theorem hDeltaGammaTrace
     deltaRicciAt_raised_trace_eq_doubleDivergence_sub_laplacian
       gt t₀ x hDiv hCon
   simpa [hRic] using htrace.trans hassembly
+
+theorem hDeltaGammaTrace_of_hessianAssemblies
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hDiv : DeltaGammaDivergenceTraceHessianAssemblyAt gt t₀ x)
+    (hCon : DeltaGammaContractionTraceHessianAssemblyAt gt t₀ x) :
+      let hRic : ∀ u w : TM x,
+          HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+            (deltaRicciAt gt t₀ x u w) t₀ :=
+        fun u w ↦ ricciVariation_eq_deltaGamma_contractions' hreg u w
+      LinearMap.trace ℝ (TM x)
+        (((((gt t₀).metricRaiseContinuousAt x).comp
+            (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+              (gt := gt) (t₀ := t₀) (x := x)
+              (deltaRicciAt gt t₀ x) hRic)) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x)
+        = tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+          - (gt t₀).laplacianAt
+            (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x :=
+  hDeltaGammaTrace
+    (gt := gt) (t₀ := t₀) (x := x) hreg
+    (deltaGammaDivergenceTraceAssemblyAt_of_hessianAssembly hDiv)
+    (deltaGammaContractionTraceAssemblyAt_of_hessianAssembly hCon)
 
 /--
 First closed Lichnerowicz assembly, with the two remaining algebraic/analytic
@@ -5047,6 +5199,27 @@ theorem scalarVariation_lichnerowicz
     (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
     hreg hgt hRaise
     (hDeltaGammaTrace (gt := gt) (t₀ := t₀) (x := x) hreg hDiv hCon)
+
+theorem scalarVariation_lichnerowicz_of_hessianAssemblies
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : TimeDifferentiableAt gt t₀ x)
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hDiv : DeltaGammaDivergenceTraceHessianAssemblyAt gt t₀ x)
+    (hCon : DeltaGammaContractionTraceHessianAssemblyAt gt t₀ x) :
+    deriv (fun t ↦ (gt t).scalarAt x) t₀ =
+      tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+        - (gt t₀).laplacianAt
+          (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x
+        - metricVariationRicciPairingAt (gt t₀) (timeDerivAt gt t₀) x :=
+  scalarVariation_lichnerowicz
+    (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
+    hreg hgt hRaise
+    (deltaGammaDivergenceTraceAssemblyAt_of_hessianAssembly hDiv)
+    (deltaGammaContractionTraceAssemblyAt_of_hessianAssembly hCon)
 
 /-- `HasDerivAt` form of the closed Lichnerowicz scalar-variation formula. -/
 theorem hasDerivAt_scalarAt_lichnerowicz
