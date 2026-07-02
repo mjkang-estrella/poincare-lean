@@ -39,6 +39,33 @@ theorem chartTransportedLeviCivitaSection_apply
         (σ ((extChartAt I x₀).symm z)) :=
   rfl
 
+/--
+At a point in the chart source, the transported model section is the chart
+derivative of the original tangent field.
+-/
+theorem chartTransportedLeviCivitaSection_apply_chart
+    (x₀ : M) (σ : Π y : M, TangentSpace I y) {y : M}
+    (hy : y ∈ (extChartAt I x₀).source) :
+    chartTransportedLeviCivitaSection (I := I) x₀ σ (extChartAt I x₀ y) =
+      mfderiv% (extChartAt I x₀) y (σ y) := by
+  rw [chartTransportedLeviCivitaSection_apply]
+  have htarget : extChartAt I x₀ y ∈ (extChartAt I x₀).target :=
+    (extChartAt I x₀).map_source hy
+  have hleft : (extChartAt I x₀).symm (extChartAt I x₀ y) = y :=
+    (extChartAt I x₀).left_inv hy
+  have h1 := mfderiv_extChartAt_comp_mfderivWithin_extChartAt_symm
+    (I := I) (x := x₀) htarget
+  have h2 := mfderivWithin_extChartAt_symm_comp_mfderiv_extChartAt
+    (I := I) (x := x₀) htarget
+  have hinv :
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm) (range I)
+        (extChartAt I x₀ y)).inverse =
+        mfderiv% (extChartAt I x₀) y := by
+    have hinv0 := ContinuousLinearMap.inverse_eq h2 h1
+    rw [hleft] at hinv0
+    exact hinv0
+  rw [hinv, hleft]
+
 section ChartConnection
 
 variable [FiniteDimensional ℝ E] [CompleteSpace E]
