@@ -21,6 +21,7 @@ codex exec \
   -c model_reasoning_effort=xhigh \
   --cd "$WT" \
   --sandbox workspace-write \
+  -c "sandbox_workspace_write.writable_roots=[\"$REPO/.git\"]" \
   - < "$PROMPT_FILE" \
   > "$REPO/harness/logs/$TASK.log" 2>&1
 echo "worker $TASK finished; log: harness/logs/$TASK.log"

@@ -35,7 +35,9 @@ if [ ${#TARGETS[@]} -gt 0 ]; then
     echo "REJECT: axiom audit failed"; exit 5
   fi
   # every listed axiom must be a Mathlib-core one
-  if echo "$AX_OUT" | grep -oE "'[^']+'" | grep -vE "propext|Classical.choice|Quot.sound" | grep -q .; then
+  if echo "$AX_OUT" | grep -oE 'depends on axioms: \[[^]]*\]' \
+       | sed -E 's/.*\[|\]//g' | tr ',' '\n' | tr -d " '" | grep -v '^$' \
+       | grep -vxE "propext|Classical\.choice|Quot\.sound" | grep -q .; then
     echo "REJECT: non-core axiom in closure"; exit 5
   fi
 fi

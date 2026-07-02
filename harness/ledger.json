@@ -28,7 +28,9 @@
       "context": "sum_raised_pair_eq (26480fb1) done; combine with contracted Bianchi dR = 2 div Ric (42dfd302). See DEPENDENCY notes in memory/frontier.",
       "deps": [],
       "status": "open",
-      "files": ["Poincare/ModelLaplacian.lean"],
+      "files": [
+        "Poincare/ModelLaplacian.lean"
+      ],
       "difficulty": "medium"
     },
     {
@@ -38,7 +40,9 @@
       "statement_spec": "New file Poincare/Global/Statement.lean: using Mathlib (ChartedSpace, IsManifold, CompactSpace, SimplyConnectedSpace, Homeomorph), define PoincareConjecture : Prop := for every M [TopologicalSpace M] [T2Space M] with a smooth 3-manifold structure, compact, connected, simply connected => Nonempty (M ≃ₜ (EuclideanSpace ℝ (Fin 4)) sphere 1). Must compile with NO sorry; it is a def of a Prop, not a theorem. Also state RicciFlow existence skeleton as Prop defs. Every def must be genuinely quantified (vacuity audit: no opaque Prop fields, no True-instantiable certificate structures).",
       "deps": [],
       "status": "done",
-      "files": ["Poincare/Global/Statement.lean"],
+      "files": [
+        "Poincare/Global/Statement.lean"
+      ],
       "difficulty": "medium",
       "result": "PROVEN 2026-07-01, commit fbb9a98f, gate PASS. def Poincare.PoincareConjecture (universe-polymorphic, inline instance hypotheses, IsManifold (𝓡 3) ∞); sphere instances verified inhabited."
     },
@@ -49,7 +53,9 @@
       "statement_spec": "Report (harness/reports/mathlib_gaps.md): audit current Mathlib (as pinned in lake-manifest) for: smooth manifolds, Riemannian metrics, Levi-Civita on manifolds, geodesics, integration on manifolds, Sobolev/parabolic PDE, sphere eversion project imports, fundamental group / simply connected, Homeomorph classification tools. For each: exists / partial / absent, with exact module names. Output drives decomposition of M1/M2.",
       "deps": [],
       "status": "done",
-      "files": ["harness/reports/mathlib_gaps.md"],
+      "files": [
+        "harness/reports/mathlib_gaps.md"
+      ],
       "difficulty": "research",
       "result": "DONE 2026-07-01, commit 0cb9cf22. Key: Mathlib has RiemannianMetric bundles + CovariantDerivative/torsion (M1 cheaper than feared); integration on manifolds ABSENT; Mathlib has proof_wanted Poincaré stubs in Geometry/Manifold/PoincareConjecture.lean; no prior geometric-flow art."
     },
@@ -58,19 +64,28 @@
       "tier": "M0",
       "title": "Align PoincareConjecture with Mathlib's proof_wanted spelling",
       "statement_spec": "Theorem in Poincare/Global/Statement.lean (or new Alignment.lean): restate Mathlib's SimplyConnectedSpace.nonempty_homeomorph_sphere_three proof_wanted statement locally and prove our PoincareConjecture implies it (and the converse if hypotheses match). Vacuity insurance: pins our statement to the community spelling.",
-      "deps": ["M0-statement"],
-      "status": "open",
-      "files": ["Poincare/Global/Alignment.lean"],
-      "difficulty": "medium"
+      "deps": [
+        "M0-statement"
+      ],
+      "status": "done",
+      "files": [
+        "Poincare/Global/Alignment.lean"
+      ],
+      "difficulty": "medium",
+      "result": "DONE 2026-07-01, gate PASS. MathlibPoincareStatement (topological, verbatim transcription) -> PoincareConjecture proven; iff impossible honestly (Mathlib stub lacks IsManifold smoothness + second countability; ConnectedSpace redundant via SimplyConnected). Notes: harness/reports/M0-align_notes.md."
     },
     {
       "id": "M1-riemannian-context",
       "tier": "M1",
       "title": "Standard Riemannian context wrapper (bridge 1)",
       "statement_spec": "Poincare/Global/RiemannianContext.lean packaging IsManifold + RiemannianBundle + IsContMDiffRiemannianBundle + IsRiemannianManifold for compact smooth Riemannian manifolds; instance plumbing + basic lemmas.",
-      "deps": ["M0-gap-survey"],
+      "deps": [
+        "M0-gap-survey"
+      ],
       "status": "open",
-      "files": ["Poincare/Global/RiemannianContext.lean"],
+      "files": [
+        "Poincare/Global/RiemannianContext.lean"
+      ],
       "difficulty": "medium"
     },
     {
@@ -78,7 +93,9 @@
       "tier": "M1",
       "title": "Levi-Civita connection on Mathlib's CovariantDerivative layer",
       "statement_spec": "Existence+uniqueness of metric-compatible torsion-free CovariantDerivative from a ContMDiffRiemannianMetric, porting the local model's Koszul/uniqueness proofs (Poincare/LeviCivitaUniqueness.lean, KoszulExistence.lean) to the bundle setting. Decompose after M1-riemannian-context lands.",
-      "deps": ["M1-riemannian-context"],
+      "deps": [
+        "M1-riemannian-context"
+      ],
       "status": "blocked",
       "files": [],
       "difficulty": "hard"
@@ -88,7 +105,9 @@
       "tier": "M2",
       "title": "Short-time existence of Ricci flow (DeTurck)",
       "statement_spec": "Decompose after M1. Requires parabolic PDE theory absent from Mathlib — expect a multi-quarter subtree.",
-      "deps": ["M1-levi-civita"],
+      "deps": [
+        "M1-levi-civita"
+      ],
       "status": "blocked",
       "files": [],
       "difficulty": "wall"
@@ -97,7 +116,9 @@
       "id": "M3-max-principle",
       "tier": "M3",
       "title": "Scalar maximum principle on closed manifolds; R_min monotone",
-      "deps": ["M1-levi-civita"],
+      "deps": [
+        "M1-levi-civita"
+      ],
       "status": "blocked",
       "files": [],
       "difficulty": "hard"
@@ -106,7 +127,9 @@
       "id": "M4-pinching",
       "tier": "M4",
       "title": "Hamilton-Ivey pinching (dim 3)",
-      "deps": ["M3-max-principle"],
+      "deps": [
+        "M3-max-principle"
+      ],
       "status": "blocked",
       "files": [],
       "difficulty": "wall"
@@ -115,7 +138,10 @@
       "id": "M5-entropy",
       "tier": "M5",
       "title": "Perelman W-entropy, no-local-collapsing",
-      "deps": ["M2-short-time", "M3-max-principle"],
+      "deps": [
+        "M2-short-time",
+        "M3-max-principle"
+      ],
       "status": "blocked",
       "files": [],
       "difficulty": "wall"
@@ -124,7 +150,10 @@
       "id": "M6-surgery",
       "tier": "M6",
       "title": "Canonical neighborhoods + Ricci flow with surgery",
-      "deps": ["M4-pinching", "M5-entropy"],
+      "deps": [
+        "M4-pinching",
+        "M5-entropy"
+      ],
       "status": "blocked",
       "files": [],
       "difficulty": "wall"
@@ -133,7 +162,9 @@
       "id": "M7-extinction",
       "tier": "M7",
       "title": "Finite-time extinction for simply connected M",
-      "deps": ["M6-surgery"],
+      "deps": [
+        "M6-surgery"
+      ],
       "status": "blocked",
       "files": [],
       "difficulty": "wall"
@@ -142,7 +173,10 @@
       "id": "M8-assembly",
       "tier": "M8",
       "title": "Assembly to PoincareConjecture",
-      "deps": ["M0-statement", "M7-extinction"],
+      "deps": [
+        "M0-statement",
+        "M7-extinction"
+      ],
       "status": "blocked",
       "files": [],
       "difficulty": "hard"
