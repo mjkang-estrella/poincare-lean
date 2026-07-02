@@ -6501,6 +6501,171 @@ theorem traceMetricVariationDerivAt_timeDeriv_of_covTensor2ExtDifferentiableAt
 
 set_option maxHeartbeats 5000000 in
 /--
+The divergence-slot trace of the second covariant derivative is the covariant
+derivative of the divergence one-form.
+-/
+theorem covTensor2SecondDerivAt_timeDeriv_divergence_trace_eq
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hCovDiff :
+      ∀ y : M, CovTensor2ExtDifferentiableAt (timeDerivAt gt t₀) y)
+    (hSecond :
+      CovTensor2DerivExtDifferentiableAt
+        (gt t₀) (timeDerivAt gt t₀) x)
+    (u w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let g : ClosedSmoothRiemannianMetric n M := gt t₀
+      let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+      let b := Module.finBasis ℝ (TM x)
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i)
+      ∑ i, covTensor2SecondDerivAt g H x u (b i) (sharp i) w)
+      =
+      (let g : ClosedSmoothRiemannianMetric n M := gt t₀
+      let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+      extDerivFun
+          (fun y : M ↦ tensorDivergenceOneFormAt g H y (extend E w y))
+          x u
+        - tensorDivergenceOneFormAt g H x
+          (g.leviCivita (extend E w) x u)) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  let Γw : TM x := g.leviCivita (extend E w) x u
+  let K : ∀ y : M, TM y → TM y → ℝ :=
+    fun y p q ↦ covTensor2DerivAt g H y p q (extend E w y)
+  have hHAddL : Tensor2AddLeft H := tensor2AddLeft_timeDerivAt hgt
+  have hHSMulL : Tensor2SMulLeft H := tensor2SMulLeft_timeDerivAt hgt
+  have hHAddR : Tensor2AddRight H := tensor2AddRight_timeDerivAt hgt
+  have hHSMulR : Tensor2SMulRight H := tensor2SMulRight_timeDerivAt hgt
+  have hKDiff : CovTensor2ExtDifferentiableAt K x := by
+    intro p q
+    simpa [K, g, H] using hSecond p q w
+  have hKAddL : Tensor2AddLeft K := by
+    intro y p₁ p₂ q
+    dsimp [K]
+    exact covTensor2DerivAt_add_deriv
+      (g := g) (h := H) (x := y) hHAddL hHAddR
+      p₁ p₂ q (extend E w y)
+  have hKSMulL : Tensor2SMulLeft K := by
+    intro y c p q
+    dsimp [K]
+    exact covTensor2DerivAt_smul_deriv
+      (g := g) (h := H) (x := y) hHSMulL hHSMulR
+      c p q (extend E w y)
+  have hKAddR : Tensor2AddRight K := by
+    intro y p q₁ q₂
+    dsimp [K]
+    exact covTensor2DerivAt_add_left
+      (g := g) (h := H) (x := y) (hCovDiff y) hHAddL
+      p q₁ q₂ (extend E w y)
+  have hKSMulR : Tensor2SMulRight K := by
+    intro y c p q
+    dsimp [K]
+    exact covTensor2DerivAt_smul_left
+      (g := g) (h := H) (x := y) (hCovDiff y) hHSMulL
+      c p q (extend E w y)
+  let BK : ∀ y : M, LinearMap.BilinForm ℝ (TM y) :=
+    fun y ↦ LinearMap.mk₂ ℝ (K y)
+      (fun p p' q ↦ hKAddL y p p' q)
+      (fun c p q ↦ hKSMulL y c p q)
+      (fun p q q' ↦ hKAddR y p q q')
+      (fun c p q ↦ hKSMulR y c p q)
+  have hTraceK : TraceMetricVariationDerivAt g K x :=
+    traceMetricVariationDerivAt_of_covTensor2ExtDifferentiableAt
+      (g := g) (h := K) (x := x)
+      hKDiff hKAddL hKSMulL hKAddR hKSMulR BK
+      (by intro y p q; rfl)
+  have hTraceField :
+      (fun y : M ↦ traceMetricVariationAt g K y) =
+        fun y : M ↦ tensorDivergenceOneFormAt g H y (extend E w y) := by
+    funext y
+    have hswap : CovTensor2DerivTraceSwapAt g H y :=
+      covTensor2DerivTraceSwapAt_timeDeriv_of_regular
+        (gt := gt) (t₀ := t₀) (x := y) hgt (hCovDiff y)
+    simpa [TraceMetricVariationDerivAt, traceMetricVariationAt,
+      tensorDivergenceOneFormAt, K, g, H] using hswap (extend E w y)
+  have hTraceK' :
+      (∑ i, covTensor2DerivAt g K x u (b i) (sharp i)) =
+        extDerivFun
+          (fun y : M ↦ tensorDivergenceOneFormAt g H y (extend E w y))
+          x u := by
+    have h := hTraceK u
+    rw [hTraceField] at h
+    simpa [TraceMetricVariationDerivAt, traceMetricVariationAt, b, sharp] using h
+  have hEntry : ∀ i : Fin (Module.finrank ℝ (TM x)),
+      covTensor2DerivAt g K x u (b i) (sharp i) =
+        covTensor2SecondDerivAt g H x u (b i) (sharp i) w
+          + covTensor2DerivAt g H x (b i) (sharp i) Γw := by
+    intro i
+    let A : ℝ :=
+      extDerivFun
+        (fun y : M ↦ covTensor2DerivAt g H y
+          (extend E (b i) y) (extend E (sharp i) y) (extend E w y)) x u
+    let Cv : ℝ :=
+      covTensor2DerivAt g H x
+        (g.leviCivita (extend E (b i)) x u) (sharp i) w
+    let Cp : ℝ :=
+      covTensor2DerivAt g H x (b i)
+        (g.leviCivita (extend E (sharp i)) x u) w
+    let Cq : ℝ :=
+      covTensor2DerivAt g H x (b i) (sharp i) Γw
+    have hKentry :
+        covTensor2DerivAt g K x u (b i) (sharp i) = A - Cv - Cp := by
+      unfold covTensor2DerivAt
+      simp [A, Cv, Cp, K, g, H]
+    have hSecondEntry :
+        covTensor2SecondDerivAt g H x u (b i) (sharp i) w =
+          A - Cv - Cp - Cq := by
+      unfold covTensor2SecondDerivAt
+      simp [A, Cv, Cp, Cq, Γw, g, H]
+    rw [hKentry, hSecondEntry]
+    ring
+  have hTraceSum :
+      (∑ i, covTensor2DerivAt g K x u (b i) (sharp i)) =
+        (∑ i, covTensor2SecondDerivAt g H x u (b i) (sharp i) w)
+          + ∑ i, covTensor2DerivAt g H x (b i) (sharp i) Γw := by
+    calc
+      (∑ i, covTensor2DerivAt g K x u (b i) (sharp i))
+          =
+          ∑ i,
+            (covTensor2SecondDerivAt g H x u (b i) (sharp i) w
+              + covTensor2DerivAt g H x (b i) (sharp i) Γw) := by
+            exact Finset.sum_congr rfl fun i _hi ↦ hEntry i
+      _ =
+          (∑ i, covTensor2SecondDerivAt g H x u (b i) (sharp i) w)
+            + ∑ i, covTensor2DerivAt g H x (b i) (sharp i) Γw := by
+            rw [Finset.sum_add_distrib]
+  have hGammaTrace :
+      (∑ i, covTensor2DerivAt g H x (b i) (sharp i) Γw) =
+        tensorDivergenceOneFormAt g H x Γw := by
+    have hswap : CovTensor2DerivTraceSwapAt g H x :=
+      covTensor2DerivTraceSwapAt_timeDeriv_of_regular
+        (gt := gt) (t₀ := t₀) (x := x) hgt (hCovDiff x)
+    simpa [CovTensor2DerivTraceSwapAt, tensorDivergenceOneFormAt,
+      g, H, b, sharp] using hswap Γw
+  have hmain :
+      (∑ i, covTensor2SecondDerivAt g H x u (b i) (sharp i) w)
+          + tensorDivergenceOneFormAt g H x Γw =
+        extDerivFun
+          (fun y : M ↦ tensorDivergenceOneFormAt g H y (extend E w y))
+          x u := by
+    rw [← hGammaTrace]
+    exact hTraceSum.symm.trans hTraceK'
+  change (∑ i, covTensor2SecondDerivAt g H x u (b i) (sharp i) w) =
+    extDerivFun
+        (fun y : M ↦ tensorDivergenceOneFormAt g H y (extend E w y))
+        x u
+      - tensorDivergenceOneFormAt g H x Γw
+  linarith
+
+set_option maxHeartbeats 5000000 in
+/--
 The scalar-entry bridge identifies the covariant derivative of the moving
 inner-trace field with the fixed-base trace of
 `g((∇_u δΓ)(eᵢ,eⁱ), w)`.
