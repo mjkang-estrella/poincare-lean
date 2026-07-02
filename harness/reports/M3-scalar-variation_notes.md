@@ -231,3 +231,30 @@ Status from task `M3-predicates-6`:
 - Verified: `lake env lean Poincare/Global/ScalarVariation.lean` and
   `lake build Poincare.Global.ScalarVariation Poincare.Global.ScalarEvolution`
   both succeed after these native lemmas.
+
+Status from task `M3-predicates-12`:
+
+- Done: abandoned the raw constant tangent-section route and added the
+  canonical-extension Gram matrix:
+  `gramMatrix`, `gramMatrix_at_base`, `gramMatrix_at_base_det_ne_zero`,
+  `gramMatrix_at_base_isUnit`, and `gramMatrix_entry_mdiffAt`.
+- Done: proved local invertibility and inverse-entry differentiability:
+  `gramMatrix_det_mdiffAt`, `gramMatrix_eventually_isUnit`,
+  `gramMatrix_adjugate_entry_mdiffAt`, and
+  `gramMatrix_inv_entry_mdiffAt`.
+- Done: constructed the canonical extension frame basis from Gram
+  invertibility:
+  `gramFrame`, `gramFrame_linearIndependent_of_isUnit`, and
+  `gramFrameBasis`.
+- Done: proved the raised-dual coframe formula and Gram-inverse trace identity:
+  `metricDualVectorAt_gramFrameBasis_coord_eq_sum_inv` and
+  `traceMetricVariationAt_eq_sum_gram_inv`.
+- Done: proved the scalar differentiability half of the Gram route:
+  `traceMetricVariationAt_mdiffAt_of_covTensor2ExtDifferentiableAt` and
+  `traceMetricVariationAt_extDerivFun_eq_gram_rhs`.
+- Still blocked for full nonzero `TraceMetricVariationDerivAt`: the scalar
+  functions are now differentiable, but the remaining proof is the explicit
+  product-rule expansion of the Gram RHS plus the covariant cancellation of
+  inverse-Gram derivative terms against the Levi-Civita corrections in
+  `covTensor2DerivAt`.  See `M3-predicates-12_blocked.md` for the exact reduced
+  goal.
