@@ -27,11 +27,12 @@
       "statement_spec": "In Poincare/ModelLaplacian.lean: for a metric field G with coordRicci = (R/n)·G as fields (Einstein), prove covRicciDeriv = d(R/n)·G using metric compatibility (∇g=0). Building block for Schur: Einstein => R constant (n≥3).",
       "context": "sum_raised_pair_eq (26480fb1) done; combine with contracted Bianchi dR = 2 div Ric (42dfd302). See DEPENDENCY notes in memory/frontier.",
       "deps": [],
-      "status": "open",
+      "status": "done",
       "files": [
         "Poincare/ModelLaplacian.lean"
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "result": "DONE 2026-07-01 (5 commits ending 6108dfed, gate PASS). RicciFlow.RicciFlow.schur_fderiv_coordScalar_eq_zero_of_einstein_field: Einstein field (n>2) => dR=0 at x, via Einstein covariant Ricci derivative + divergence contraction + contracted 2nd Bianchi + (n-2) cancellation. Local model Schur thread complete."
     },
     {
       "id": "M0-statement",
