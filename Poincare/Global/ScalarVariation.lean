@@ -1258,6 +1258,73 @@ theorem traceMetricVariationAt_eq_metricTraceInBasisAt
             (g := g) (x := x) (B := B)
             (b := Module.finBasis ℝ (TM x)) (c := b)
 
+/--
+The chart frame at a chart target point: transport the fixed model finite basis
+through the derivative of the inverse chart.
+-/
+noncomputable def chartTangentBasisAt
+    (x₀ : M) {z : E} (hz : z ∈ (extChartAt I x₀).target) :
+    Module.Basis (Fin (Module.finrank ℝ E)) ℝ (TM ((extChartAt I x₀).symm z)) :=
+  let hInv := isInvertible_mfderivWithin_extChartAt_symm (x := x₀) hz
+  (Module.finBasis ℝ E).map (Classical.choose hInv).toLinearEquiv
+
+/-- The chart-frame basis vectors are exactly the inverse-chart derivative of the model basis. -/
+theorem chartTangentBasisAt_apply
+    (x₀ : M) {z : E} (hz : z ∈ (extChartAt I x₀).target)
+    (i : Fin (Module.finrank ℝ E)) :
+    chartTangentBasisAt (n := n) (M := M) x₀ hz i =
+      mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm) (Set.range I) z
+        ((Module.finBasis ℝ E) i) := by
+  let hInv := isInvertible_mfderivWithin_extChartAt_symm (x := x₀) hz
+  have hchoose :
+      ((Classical.choose hInv :
+          E ≃L[ℝ] TM ((extChartAt I x₀).symm z)) : E →L[ℝ]
+            TM ((extChartAt I x₀).symm z)) =
+        mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm) (Set.range I) z :=
+    Classical.choose_spec hInv
+  unfold chartTangentBasisAt
+  rw [Module.Basis.map_apply]
+  simpa [hInv] using
+    congrArg
+      (fun L : E →L[ℝ] TM ((extChartAt I x₀).symm z) =>
+        L ((Module.finBasis ℝ E) i)) hchoose
+
+/--
+Specialization of the basis-invariant trace bridge to the chart frame on the
+target of `extChartAt`.
+-/
+theorem traceMetricVariationAt_eq_chartTangentBasisAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x₀ : M)
+    {z : E} (hz : z ∈ (extChartAt I x₀).target)
+    (B : LinearMap.BilinForm ℝ (TM ((extChartAt I x₀).symm z)))
+    (hB : ∀ p q : TM ((extChartAt I x₀).symm z),
+      B p q = h ((extChartAt I x₀).symm z) p q) :
+    traceMetricVariationAt g h ((extChartAt I x₀).symm z) =
+      metricTraceInBasisAt g ((extChartAt I x₀).symm z) B
+        (chartTangentBasisAt (n := n) (M := M) x₀ hz) := by
+  letI : FiniteDimensional ℝ (TM ((extChartAt I x₀).symm z)) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  exact traceMetricVariationAt_eq_metricTraceInBasisAt
+    (g := g) (h := h) (x := (extChartAt I x₀).symm z)
+    (B := B) (b := chartTangentBasisAt (n := n) (M := M) x₀ hz) hB
+
+/-- The chart-frame specialization unfolded as the finite frame/coframe sum. -/
+theorem traceMetricVariationAt_eq_chartTangentBasisAt_sum
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x₀ : M)
+    {z : E} (hz : z ∈ (extChartAt I x₀).target)
+    (B : LinearMap.BilinForm ℝ (TM ((extChartAt I x₀).symm z)))
+    (hB : ∀ p q : TM ((extChartAt I x₀).symm z),
+      B p q = h ((extChartAt I x₀).symm z) p q) :
+    traceMetricVariationAt g h ((extChartAt I x₀).symm z) =
+      ∑ i, B (chartTangentBasisAt (n := n) (M := M) x₀ hz i)
+        (metricDualVectorAt g ((extChartAt I x₀).symm z)
+          ((chartTangentBasisAt (n := n) (M := M) x₀ hz).coord i)) := by
+  rw [traceMetricVariationAt_eq_chartTangentBasisAt
+    (g := g) (h := h) (x₀ := x₀) (hz := hz) (B := B) hB]
+  rfl
+
 /-- Coordinates are metric pairings with the corresponding raised dual basis vector. -/
 theorem coord_eq_inner_metricDualVectorAt
     (g : ClosedSmoothRiemannianMetric n M) (x : M)
