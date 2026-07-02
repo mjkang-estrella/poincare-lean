@@ -4668,6 +4668,151 @@ noncomputable def closedCurvatureCovDerivAt
         (extend E u) (extend E w)
         (extend E (g.leviCivita (extend E z) x v)) x
 
+omit [T2Space M] in
+theorem curvatureOp_congr_fst_of_value_eq
+    (cov : CovariantDerivative I E TM)
+    [CovariantDerivative.ContMDiffCovariantDerivative cov 1]
+    {x : M} {X X' Y Z : ∀ y : M, TM y}
+    (hreg : CovariantDerivative.DerivRegularAt cov Z x)
+    (hX : MDiffAtTangentField X x) (hX' : MDiffAtTangentField X' x)
+    (hY : MDiffAtTangentField Y x) (hXX' : X x = X' x) :
+    CovariantDerivative.curvatureOp cov X Y Z x =
+      CovariantDerivative.curvatureOp cov X' Y Z x := by
+  rw [← CovariantDerivative.curvatureTensorAt_apply (cov := cov) (hreg := hreg)
+      (X := X) (Y := Y)
+      (by simpa [MDiffAtTangentField] using hX)
+      (by simpa [MDiffAtTangentField] using hY),
+    ← CovariantDerivative.curvatureTensorAt_apply (cov := cov) (hreg := hreg)
+      (X := X') (Y := Y)
+      (by simpa [MDiffAtTangentField] using hX')
+      (by simpa [MDiffAtTangentField] using hY)]
+  rw [hXX']
+
+omit [T2Space M] in
+theorem curvatureOp_congr_snd_of_value_eq
+    (cov : CovariantDerivative I E TM)
+    [CovariantDerivative.ContMDiffCovariantDerivative cov 1]
+    {x : M} {X Y Y' Z : ∀ y : M, TM y}
+    (hreg : CovariantDerivative.DerivRegularAt cov Z x)
+    (hX : MDiffAtTangentField X x)
+    (hY : MDiffAtTangentField Y x) (hY' : MDiffAtTangentField Y' x)
+    (hYY' : Y x = Y' x) :
+    CovariantDerivative.curvatureOp cov X Y Z x =
+      CovariantDerivative.curvatureOp cov X Y' Z x := by
+  rw [← CovariantDerivative.curvatureTensorAt_apply (cov := cov) (hreg := hreg)
+      (X := X) (Y := Y)
+      (by simpa [MDiffAtTangentField] using hX)
+      (by simpa [MDiffAtTangentField] using hY),
+    ← CovariantDerivative.curvatureTensorAt_apply (cov := cov) (hreg := hreg)
+      (X := X) (Y := Y')
+      (by simpa [MDiffAtTangentField] using hX)
+      (by simpa [MDiffAtTangentField] using hY')]
+  rw [hYY']
+
+/--
+The canonical closed curvature derivative agrees with the abstract covariant
+derivative of the curvature operator in actual field slots.  This replaces
+the constant extensions of the three connection-slot values by the
+corresponding covariant-derivative vector fields using curvature tensoriality.
+-/
+theorem closedCurvatureCovDerivAt_eq_field_slots
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v u w z : TM x) :
+    let X : ∀ y : M, TM y := extend E v
+    let U : ∀ y : M, TM y := extend E u
+    let W : ∀ y : M, TM y := extend E w
+    let Z : ∀ y : M, TM y := extend E z
+    let Γu : ∀ y : M, TM y := fun y ↦ g.leviCivita U y (X y)
+    let Γw : ∀ y : M, TM y := fun y ↦ g.leviCivita W y (X y)
+    let Γz : ∀ y : M, TM y := fun y ↦ g.leviCivita Z y (X y)
+    closedCurvatureCovDerivAt g x v u w z =
+      g.leviCivita (CovariantDerivative.curvatureOp g.leviCivita U W Z) x v
+        - CovariantDerivative.curvatureOp g.leviCivita Γu W Z x
+        - CovariantDerivative.curvatureOp g.leviCivita U Γw Z x
+        - CovariantDerivative.curvatureOp g.leviCivita U W Γz x := by
+  intro X U W Z Γu Γw Γz
+  have hX : MDiffAtTangentField X x := by
+    simpa [MDiffAtTangentField, X] using (mdifferentiableAt_extend I E v)
+  have hU : MDiffAtTangentField U x := by
+    simpa [MDiffAtTangentField, U] using (mdifferentiableAt_extend I E u)
+  have hW : MDiffAtTangentField W x := by
+    simpa [MDiffAtTangentField, W] using (mdifferentiableAt_extend I E w)
+  have hΓu : MDiffAtTangentField Γu x := by
+    have hU2 : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% U) x := by
+      simpa [U] using (FiberBundle.contMDiffAt_extend' (k := 2) I E u)
+    simpa [MDiffAtTangentField, Γu] using
+      (CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt
+        (cov := g.leviCivita) hU2 (by simpa [MDiffAtTangentField] using hX))
+  have hΓw : MDiffAtTangentField Γw x := by
+    have hW2 : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% W) x := by
+      simpa [W] using (FiberBundle.contMDiffAt_extend' (k := 2) I E w)
+    simpa [MDiffAtTangentField, Γw] using
+      (CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt
+        (cov := g.leviCivita) hW2 (by simpa [MDiffAtTangentField] using hX))
+  have hΓz₂ : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% Γz) x := by
+    haveI : CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 2 :=
+      ClosedSmoothRiemannianMetric.leviCivita_contMDiff₂ g
+    have hZ3 : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 3 (T% Z) x := by
+      simpa [Z] using (FiberBundle.contMDiffAt_extend' (k := 3) I E z)
+    have hX2 : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% X) x := by
+      simpa [X] using (FiberBundle.contMDiffAt_extend' (k := 2) I E v)
+    simpa [Γz] using
+      (CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_two
+        (cov := g.leviCivita) hZ3 hX2)
+  have hΓz : MDiffAtTangentField Γz x := by
+    exact hΓz₂.mdifferentiableAt two_ne_zero
+  have hregZ : CovariantDerivative.DerivRegularAt g.leviCivita Z x := by
+    simpa [Z] using
+      (CovariantDerivative.derivRegularAt_extend (cov := g.leviCivita) z)
+  have hfirst :
+      CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (g.leviCivita U x v)) W Z x =
+        CovariantDerivative.curvatureOp g.leviCivita Γu W Z x := by
+    refine curvatureOp_congr_fst_of_value_eq
+      (cov := g.leviCivita) (x := x) (Y := W) (Z := Z)
+      hregZ ?_ hΓu hW ?_
+    · simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E (g.leviCivita U x v))
+    · simp [Γu, X]
+  have hsecond :
+      CovariantDerivative.curvatureOp g.leviCivita U
+          (extend E (g.leviCivita W x v)) Z x =
+        CovariantDerivative.curvatureOp g.leviCivita U Γw Z x := by
+    refine curvatureOp_congr_snd_of_value_eq
+      (cov := g.leviCivita) (x := x) (X := U) (Z := Z)
+      hregZ hU ?_ hΓw ?_
+    · simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E (g.leviCivita W x v))
+    · simp [Γw, X]
+  have hthird :
+      CovariantDerivative.curvatureOp g.leviCivita U W
+          (extend E (g.leviCivita Z x v)) x =
+        CovariantDerivative.curvatureOp g.leviCivita U W Γz x := by
+    refine CovariantDerivative.curvatureOp_congr_of_value_eq
+      (cov := g.leviCivita)
+      (X := U) (Y := W)
+      (Z := extend E (g.leviCivita Z x v)) (Z' := Γz)
+      ?_ hΓz₂ ?_ ?_ ?_
+    · simpa using
+        (FiberBundle.contMDiffAt_extend' (k := 2) I E (g.leviCivita Z x v))
+    · simp [Γz, X]
+    · simpa [MDiffAtTangentField] using hU
+    · simpa [MDiffAtTangentField] using hW
+  unfold closedCurvatureCovDerivAt
+  change g.leviCivita (CovariantDerivative.curvatureOp g.leviCivita U W Z) x v
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (g.leviCivita U x v)) W Z x
+      - CovariantDerivative.curvatureOp g.leviCivita U
+          (extend E (g.leviCivita W x v)) Z x
+      - CovariantDerivative.curvatureOp g.leviCivita U W
+          (extend E (g.leviCivita Z x v)) x =
+    g.leviCivita (CovariantDerivative.curvatureOp g.leviCivita U W Z) x v
+      - CovariantDerivative.curvatureOp g.leviCivita Γu W Z x
+      - CovariantDerivative.curvatureOp g.leviCivita U Γw Z x
+      - CovariantDerivative.curvatureOp g.leviCivita U W Γz x
+  rw [hfirst, hsecond, hthird]
+
 /-- Closed curvature operator field in canonical extension slots. -/
 noncomputable def closedCurvatureFieldAt
     (g : ClosedSmoothRiemannianMetric n M)
@@ -5012,6 +5157,47 @@ theorem closedCurvatureCovDerivAt_cyclic_inner_expansion
   ring
 
 /--
+Scalar-paired cyclic cancellation implies the vector-valued closed cyclic
+second-Bianchi identity at a point.
+-/
+theorem closed_cyclic_second_bianchi_at_of_inner_sum
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hScalar : ∀ u v w z q : TM x,
+      g.inner x (closedCurvatureCovDerivAt g x v u w z) q
+        + g.inner x (closedCurvatureCovDerivAt g x u w v z) q
+        + g.inner x (closedCurvatureCovDerivAt g x w v u z) q = 0) :
+    ∀ u v w z : TM x,
+      closedCurvatureCovDerivAt g x v u w z
+        + closedCurvatureCovDerivAt g x u w v z
+        + closedCurvatureCovDerivAt g x w v u z = 0 := by
+  intro u v w z
+  refine LeviCivitaExistence.metric_nondegenerate g x _ ?_
+  intro q
+  have hq := hScalar u v w z q
+  simpa [map_add] using hq
+
+/--
+Neighborhood version of `closed_cyclic_second_bianchi_at_of_inner_sum`, in
+the exact vector-valued shape consumed by the twice-contracted Bianchi bridge.
+-/
+theorem eventually_closed_cyclic_second_bianchi_of_inner_sum
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hScalar : ∀ᶠ y in nhds x, ∀ u v w z q : TM y,
+      g.inner y (closedCurvatureCovDerivAt g y v u w z) q
+        + g.inner y (closedCurvatureCovDerivAt g y u w v z) q
+        + g.inner y (closedCurvatureCovDerivAt g y w v u z) q = 0) :
+    ∀ᶠ y in nhds x, ∀ u v w z : TM y,
+      closedCurvatureCovDerivAt g y v u w z
+        + closedCurvatureCovDerivAt g y u w v z
+        + closedCurvatureCovDerivAt g y w v u z = 0 := by
+  filter_upwards [hScalar] with y hy
+  exact closed_cyclic_second_bianchi_at_of_inner_sum (g := g) (x := y) hy
+
+/--
 Scalar field for an iterated closed connection value:
 `g(∇_p (∇_u w), q)` with `u`, `w` transported by canonical extensions.
 -/
@@ -5325,6 +5511,32 @@ theorem closedCurvature_koszul
       (g := g) (x := x) (v := v) (a := a) (u := u) (w := w) (q := q)]
   unfold closedCurvatureDefExpansionAt
   ring
+
+/--
+Cyclic scalar-paired second-Bianchi expansion after substituting the closed
+curvature Koszul formula in each entry derivative.
+-/
+theorem closedCurvatureCovDerivAt_cyclic_inner_koszul_expansion
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u v w z q : TM x) :
+    g.inner x (closedCurvatureCovDerivAt g x v u w z) q
+      + g.inner x (closedCurvatureCovDerivAt g x u w v z) q
+      + g.inner x (closedCurvatureCovDerivAt g x w v u z) q =
+        closedCurvatureDefExpansionAt g x v u w z q
+          + closedCurvatureDefExpansionAt g x u w v z q
+          + closedCurvatureDefExpansionAt g x w v u z q
+          - (closedCurvatureCovDerivAtCorrectionAt g x v u w z q
+            + closedCurvatureCovDerivAtCorrectionAt g x u w v z q
+            + closedCurvatureCovDerivAtCorrectionAt g x w v u z q) := by
+  rw [closedCurvatureCovDerivAt_cyclic_inner_expansion
+      (g := g) (x := x) (u := u) (v := v) (w := w) (z := z) (q := q),
+    closedCurvature_koszul (g := g) (x := x)
+      (v := v) (a := u) (u := w) (w := z) (q := q),
+    closedCurvature_koszul (g := g) (x := x)
+      (v := u) (a := w) (u := v) (w := z) (q := q),
+    closedCurvature_koszul (g := g) (x := x)
+      (v := w) (a := v) (u := u) (w := z) (q := q)]
 
 /-- Flat sanity check for the closed curvature Koszul expansion. -/
 theorem closedCurvature_koszul_flat
