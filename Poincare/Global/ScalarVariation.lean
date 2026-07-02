@@ -1156,6 +1156,197 @@ theorem metricDualVectorAt_coord_symm
     coord_eq_inner_metricDualVectorAt g x j]
   exact g.inner_symm x _ _
 
+/-- The Ricci tensor as a raw `(0,2)` variation field for a fixed metric. -/
+noncomputable def ricciVariationField
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1] :
+    ∀ y : M, TM y → TM y → ℝ :=
+  fun y v w ↦ g.ricciAt y v w
+
+/-- The raw metric variation field `-2 Ric`. -/
+noncomputable def negTwoRicciVariationField
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1] :
+    ∀ y : M, TM y → TM y → ℝ :=
+  fun y v w ↦ -2 * g.ricciAt y v w
+
+/-- The metric trace of the Ricci variation field is scalar curvature. -/
+theorem traceMetricVariationAt_ricci
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    traceMetricVariationAt g (ricciVariationField g) x = g.scalarAt x := by
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  rw [g.scalarAt_eq_trace_ricciEndoAt]
+  rw [LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]
+  unfold traceMetricVariationAt ricciVariationField
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+  change g.ricciAt x (b i) (metricDualVectorAt g x (b.coord i)) =
+    b.coord i (g.ricciEndoAt x (b i))
+  rw [coord_eq_inner_metricDualVectorAt]
+  rw [g.inner_ricciEndoAt]
+
+/-- Tracing `-2 Ric` gives `-2 R`. -/
+theorem traceMetricVariationAt_negTwoRicci
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    traceMetricVariationAt g (negTwoRicciVariationField g) x =
+      -2 * g.scalarAt x := by
+  unfold negTwoRicciVariationField
+  rw [traceMetricVariationAt_smul]
+  simpa [ricciVariationField] using
+    congrArg (fun r : ℝ ↦ -2 * r) (traceMetricVariationAt_ricci g x)
+
+/-- Contracting coordinates against the metric reconstructs the metric pairing. -/
+theorem sum_coord_inner_eq_inner
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    [FiniteDimensional ℝ (TM x)] (u v : TM x) :
+    (∑ i, (Module.finBasis ℝ (TM x)).coord i u *
+      g.inner x ((Module.finBasis ℝ (TM x)) i) v) = g.inner x u v := by
+  let b := Module.finBasis ℝ (TM x)
+  have hrepr : u = ∑ i, b.coord i u • b i := (b.sum_repr u).symm
+  calc
+    (∑ i, b.coord i u * g.inner x (b i) v) =
+        ∑ i, g.inner x (b.coord i u • b i) v := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          simp [smul_eq_mul]
+    _ = g.inner x (∑ i, b.coord i u • b i) v := by
+          have hmap :=
+            congrArg (fun L : TM x →L[ℝ] ℝ ↦ L v)
+              (map_sum (g.inner x) (fun i ↦ b.coord i u • b i) Finset.univ)
+          simpa using hmap.symm
+    _ = g.inner x u v := by
+          rw [← hrepr]
+
+/-- The Ricci/Ricci metric-variation pairing is the squared Ricci norm. -/
+theorem metricVariationRicciPairingAt_ricci
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    metricVariationRicciPairingAt g (ricciVariationField g) x =
+      g.ricciNormSqAt x := by
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  rw [g.ricciNormSqAt_eq_trace]
+  rw [LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]
+  unfold metricVariationRicciPairingAt ricciVariationField
+  change (∑ j, ∑ i, g.ricciAt x (sharp j) (sharp i) *
+      g.ricciAt x (b i) (b j)) =
+    ∑ j, ((LinearMap.toMatrix b b)
+      (g.ricciEndoAt x ∘ₗ g.ricciEndoAt x)).diag j
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+  change (∑ i, g.ricciAt x (sharp j) (sharp i) *
+      g.ricciAt x (b i) (b j)) =
+    b.coord j ((g.ricciEndoAt x ∘ₗ g.ricciEndoAt x) (b j))
+  rw [LinearMap.comp_apply, coord_eq_inner_metricDualVectorAt]
+  have hcoord : ∀ i,
+      g.ricciAt x (sharp j) (sharp i) =
+        b.coord i (g.ricciEndoAt x (sharp j)) := by
+    intro i
+    rw [coord_eq_inner_metricDualVectorAt]
+    rw [g.inner_ricciEndoAt]
+  have hslot : ∀ i,
+      g.ricciAt x (b i) (b j) =
+        g.inner x (b i) (g.ricciEndoAt x (b j)) := by
+    intro i
+    calc
+      g.ricciAt x (b i) (b j) = g.ricciAt x (b j) (b i) := g.ricciAt_symm x (b i) (b j)
+      _ = g.inner x (g.ricciEndoAt x (b j)) (b i) := by
+            rw [g.inner_ricciEndoAt]
+      _ = g.inner x (b i) (g.ricciEndoAt x (b j)) := g.inner_symm x _ _
+  calc
+    (∑ i, g.ricciAt x (sharp j) (sharp i) *
+        g.ricciAt x (b i) (b j)) =
+        ∑ i, b.coord i (g.ricciEndoAt x (sharp j)) *
+          g.inner x (b i) (g.ricciEndoAt x (b j)) := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          rw [hcoord i, hslot i]
+    _ = g.inner x (g.ricciEndoAt x (sharp j))
+        (g.ricciEndoAt x (b j)) := by
+          exact sum_coord_inner_eq_inner g x
+            (g.ricciEndoAt x (sharp j)) (g.ricciEndoAt x (b j))
+    _ = g.inner x (sharp j) (g.ricciEndoAt x (g.ricciEndoAt x (b j))) := by
+          exact g.ricciEndoAt_selfAdjoint x (sharp j)
+            (g.ricciEndoAt x (b j))
+    _ = g.inner x (g.ricciEndoAt x (g.ricciEndoAt x (b j))) (sharp j) := by
+          rw [g.inner_symm]
+
+/-- Pairing `-2 Ric` with Ricci gives `-2 |Ric|²`. -/
+theorem metricVariationRicciPairingAt_negTwoRicci
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    metricVariationRicciPairingAt g (negTwoRicciVariationField g) x =
+      -2 * g.ricciNormSqAt x := by
+  unfold negTwoRicciVariationField
+  rw [metricVariationRicciPairingAt_smul]
+  simpa [ricciVariationField] using
+    congrArg (fun r : ℝ ↦ -2 * r) (metricVariationRicciPairingAt_ricci g x)
+
+/-- Pointwise equality at `x` is enough to identify metric traces at `x`. -/
+theorem traceMetricVariationAt_congr_at
+    (g : ClosedSmoothRiemannianMetric n M)
+    {h k : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hEq : ∀ v w : TM x, h x v w = k x v w) :
+    traceMetricVariationAt g h x = traceMetricVariationAt g k x := by
+  unfold traceMetricVariationAt
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact hEq _ _
+
+/-- Pointwise equality at `x` is enough to identify Ricci pairings at `x`. -/
+theorem metricVariationRicciPairingAt_congr_at
+    (g : ClosedSmoothRiemannianMetric n M)
+    {h k : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hEq : ∀ v w : TM x, h x v w = k x v w) :
+    metricVariationRicciPairingAt g h x =
+      metricVariationRicciPairingAt g k x := by
+  unfold metricVariationRicciPairingAt
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [hEq]
+
+/-- Under pointwise `h = -2 Ric`, the metric trace is `-2 R`. -/
+theorem traceMetricVariationAt_timeDeriv_eq_negTwoRicci
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hEq : ∀ v w : TM x,
+      timeDerivAt gt t₀ x v w = -2 * (gt t₀).ricciAt x v w) :
+    traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) x =
+      -2 * (gt t₀).scalarAt x := by
+  calc
+    traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) x =
+        traceMetricVariationAt (gt t₀) (negTwoRicciVariationField (gt t₀)) x := by
+          apply traceMetricVariationAt_congr_at
+          intro v w
+          simpa [negTwoRicciVariationField] using hEq v w
+    _ = -2 * (gt t₀).scalarAt x :=
+          traceMetricVariationAt_negTwoRicci (gt t₀) x
+
+/-- Under pointwise `h = -2 Ric`, the Ricci pairing is `-2 |Ric|²`. -/
+theorem metricVariationRicciPairingAt_timeDeriv_eq_negTwoRicci
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hEq : ∀ v w : TM x,
+      timeDerivAt gt t₀ x v w = -2 * (gt t₀).ricciAt x v w) :
+    metricVariationRicciPairingAt (gt t₀) (timeDerivAt gt t₀) x =
+      -2 * (gt t₀).ricciNormSqAt x := by
+  calc
+    metricVariationRicciPairingAt (gt t₀) (timeDerivAt gt t₀) x =
+        metricVariationRicciPairingAt (gt t₀) (negTwoRicciVariationField (gt t₀)) x := by
+          apply metricVariationRicciPairingAt_congr_at
+          intro v w
+          simpa [negTwoRicciVariationField] using hEq v w
+    _ = -2 * (gt t₀).ricciNormSqAt x :=
+          metricVariationRicciPairingAt_negTwoRicci (gt t₀) x
+
 /--
 Raised-dual-basis contraction swap on one closed tangent fiber.
 
@@ -2021,6 +2212,86 @@ noncomputable def tensorDoubleDivergenceAt
   unfold tensorDoubleDivergenceAt
   simp [tensorDivergenceOneFormAt_zero, extDerivFun_zero_at]
 
+/-- The double divergence of the Ricci tensor, `div div Ric`. -/
+noncomputable def ricciDoubleDivergenceAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : ℝ :=
+  tensorDoubleDivergenceAt g (ricciVariationField g) x
+
+/--
+Honest analytic linearity obligation for the closed double-divergence operator
+on the Ricci field under multiplication by `-2`.
+-/
+def TensorDoubleDivergenceNegTwoRicciLinearityAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : Prop :=
+  tensorDoubleDivergenceAt g (negTwoRicciVariationField g) x =
+    -2 * ricciDoubleDivergenceAt g x
+
+/-- Substitution of `h = -2 Ric` in the double-divergence term. -/
+theorem tensorDoubleDivergenceAt_negTwoRicci
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hlin : TensorDoubleDivergenceNegTwoRicciLinearityAt g x) :
+    tensorDoubleDivergenceAt g (negTwoRicciVariationField g) x =
+      -2 * ricciDoubleDivergenceAt g x :=
+  hlin
+
+/--
+Closed twice-contracted Bianchi obligation:
+`div div Ric = (1 / 2) ΔR` at `x`.
+
+This is the closed-manifold analogue of the proved model-space
+`coord_twice_contracted_bianchi`; its intrinsic closed proof is future work.
+-/
+def ClosedContractedBianchiAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : Prop :=
+  ricciDoubleDivergenceAt g x =
+    (1 / 2 : ℝ) * g.laplacianAt (fun y ↦ g.scalarAt y) x
+
+/-- Under twice-contracted Bianchi, `div div (-2 Ric) = -ΔR`. -/
+theorem tensorDoubleDivergenceAt_negTwoRicci_eq_neg_laplacian_scalar
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hlin : TensorDoubleDivergenceNegTwoRicciLinearityAt g x)
+    (hBianchi : ClosedContractedBianchiAt g x) :
+    tensorDoubleDivergenceAt g (negTwoRicciVariationField g) x =
+      -g.laplacianAt (fun y ↦ g.scalarAt y) x := by
+  rw [tensorDoubleDivergenceAt_negTwoRicci g x hlin]
+  rw [hBianchi]
+  ring
+
+/--
+Honest substitution obligation for the double-divergence operator: the
+time-variation field has the same double divergence as `-2 Ric`.
+-/
+def TensorDoubleDivergenceTimeDerivNegTwoRicciAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1] :
+    Prop :=
+  tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x =
+    tensorDoubleDivergenceAt (gt t₀) (negTwoRicciVariationField (gt t₀)) x
+
+/--
+Honest substitution obligation under the scalar Laplacian:
+`Δ(tr h) = Δ(-2 R)` for the Ricci-flow variation field.
+-/
+def TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1] :
+    Prop :=
+  (gt t₀).laplacianAt
+      (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x =
+    -2 * (gt t₀).laplacianAt (fun y ↦ (gt t₀).scalarAt y) x
+
 /--
 Exact divergence assembly for the first `δΓ` contraction:
 the divergence of the inner-trace one-form gives
@@ -2269,5 +2540,52 @@ theorem scalarVariation_lichnerowicz
     (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
     hreg hgt hRaise
     (hDeltaGammaTrace (gt := gt) (t₀ := t₀) (x := x) hreg hDiv hCon)
+
+/-- `HasDerivAt` form of the closed Lichnerowicz scalar-variation formula. -/
+theorem hasDerivAt_scalarAt_lichnerowicz
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : TimeDifferentiableAt gt t₀ x)
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hDiv : DeltaGammaDivergenceTraceAssemblyAt gt t₀ x)
+    (hCon : DeltaGammaContractionTraceAssemblyAt gt t₀ x) :
+    HasDerivAt (fun t ↦ (gt t).scalarAt x)
+      (tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+        - (gt t₀).laplacianAt
+          (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x
+        - metricVariationRicciPairingAt (gt t₀) (timeDerivAt gt t₀) x) t₀ := by
+  let hRic : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+        (deltaRicciAt gt t₀ x u w) t₀ :=
+    fun u w ↦ ricciVariation_eq_deltaGamma_contractions' hreg u w
+  let A' : TM x →L[ℝ] TM x :=
+    raise'.comp ((gt t₀).ricciDualContinuousAt x) +
+      ((gt t₀).metricRaiseContinuousAt x).comp
+        (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+          (gt := gt) (t₀ := t₀) (x := x) (deltaRicciAt gt t₀ x) hRic)
+  have hA : ClosedSmoothRiemannianMetric.RicciEndoHasDerivAt gt t₀ x A' := by
+    dsimp [A']
+    exact ClosedSmoothRiemannianMetric.ricciEndoHasDerivAt_of_ricciBilinearHasDerivAt
+      (gt := gt) (t₀ := t₀) (x := x)
+      (δRic := deltaRicciAt gt t₀ x) (raise' := raise') hRaise hRic
+  have hHas :=
+    ClosedSmoothRiemannianMetric.hasDerivAt_scalarAt_of_ricciEndoHasDerivAt
+      (gt := gt) (t₀ := t₀) (x := x) hA
+  have hDeriv := scalarVariation_lichnerowicz
+    (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
+    hreg hgt hRaise hDiv hCon
+  have hTrace :
+      LinearMap.trace ℝ (TM x) (A' : TM x →ₗ[ℝ] TM x) =
+        tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+          - (gt t₀).laplacianAt
+            (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x
+          - metricVariationRicciPairingAt (gt t₀) (timeDerivAt gt t₀) x := by
+    rw [← hHas.deriv]
+    exact hDeriv
+  convert hHas using 1
+  exact hTrace.symm
 
 end Poincare
