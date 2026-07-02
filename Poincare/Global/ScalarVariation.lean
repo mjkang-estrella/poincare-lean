@@ -1277,6 +1277,108 @@ theorem traceMetricVariationAt_eq_metricTraceInBasisAt
             (b := Module.finBasis ℝ (TM x)) (c := b)
 
 /--
+Basis-free trace form of `traceMetricVariationAt`: once the fiber value of
+`h` is packaged as a bilinear form, the metric trace is the linear trace of the
+endomorphism obtained by raising one index.
+-/
+theorem traceMetricVariationAt_eq_linearMap_trace
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    [FiniteDimensional ℝ (TM x)]
+    (B : LinearMap.BilinForm ℝ (TM x))
+    (hB : ∀ p q : TM x, B p q = h x p q) :
+    traceMetricVariationAt g h x =
+      LinearMap.trace ℝ (TM x) (metricTraceEndomorphismAt g x B) := by
+  rw [traceMetricVariationAt_eq_metricTraceInBasisAt
+    (g := g) (h := h) (x := x) (B := B)
+    (b := Module.finBasis ℝ (TM x)) hB]
+  exact metricTraceInBasisAt_eq_linearMap_trace
+    (g := g) (x := x) (B := B) (b := Module.finBasis ℝ (TM x))
+
+/-- Continuous-linear version of `metricTraceEndomorphismAt`. -/
+noncomputable def metricTraceEndomorphismContinuousAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (B : LinearMap.BilinForm ℝ (TM x)) : TM x →L[ℝ] TM x :=
+  letI : T2Space (TM x) := inferInstanceAs (T2Space E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  LinearMap.toContinuousLinearMap (metricTraceEndomorphismAt g x B)
+
+@[simp] theorem metricTraceEndomorphismContinuousAt_coe
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (B : LinearMap.BilinForm ℝ (TM x)) :
+    (metricTraceEndomorphismContinuousAt g x B : TM x →ₗ[ℝ] TM x) =
+      metricTraceEndomorphismAt g x B := by
+  letI : T2Space (TM x) := inferInstanceAs (T2Space E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  rfl
+
+/-- `traceMetricVariationAt` as trace of the continuous raised endomorphism. -/
+theorem traceMetricVariationAt_eq_trace_metricTraceEndomorphismContinuousAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    [FiniteDimensional ℝ (TM x)]
+    (B : LinearMap.BilinForm ℝ (TM x))
+    (hB : ∀ p q : TM x, B p q = h x p q) :
+    traceMetricVariationAt g h x =
+      LinearMap.trace ℝ (TM x)
+        (metricTraceEndomorphismContinuousAt g x B : TM x →ₗ[ℝ] TM x) := by
+  rw [metricTraceEndomorphismContinuousAt_coe]
+  exact traceMetricVariationAt_eq_linearMap_trace
+    (g := g) (h := h) (x := x) (B := B) hB
+
+/-- Specialization of the basis-free trace bridge to the metric time derivative. -/
+theorem traceMetricVariationAt_timeDeriv_eq_linearMap_trace
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hgt : TimeDifferentiableAt gt t₀ x) :
+    traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) x =
+      LinearMap.trace ℝ (TM x)
+        (metricTraceEndomorphismAt (gt t₀) x
+          (timeDerivBilinAt gt t₀ x hgt)) := by
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  exact traceMetricVariationAt_eq_linearMap_trace
+    (g := gt t₀) (h := timeDerivAt gt t₀) (x := x)
+    (B := timeDerivBilinAt gt t₀ x hgt)
+    (by intro p q; rfl)
+
+/--
+The finite-dimensional trace as a continuous linear functional on the fixed
+endomorphism space of a closed tangent fiber.
+-/
+noncomputable def endomorphismTraceContinuousAt (x : M) :
+    (TM x →L[ℝ] TM x) →L[ℝ] ℝ :=
+  letI : T2Space (TM x) := inferInstanceAs (T2Space E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  LinearMap.toContinuousLinearMap
+    ((LinearMap.trace ℝ (TM x)) ∘ₗ
+      (ContinuousLinearMap.coeLM ℝ :
+        (TM x →L[ℝ] TM x) →ₗ[ℝ] (TM x →ₗ[ℝ] TM x)))
+
+omit [T2Space M] [IsManifold I ∞ M] in
+@[simp] theorem endomorphismTraceContinuousAt_apply
+    (x : M) (A : TM x →L[ℝ] TM x) :
+    endomorphismTraceContinuousAt (n := n) (M := M) x A =
+      LinearMap.trace ℝ (TM x) (A : TM x →ₗ[ℝ] TM x) := by
+  letI : T2Space (TM x) := inferInstanceAs (T2Space E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  rfl
+
+omit [T2Space M] [IsManifold I ∞ M] in
+/-- Differentiating a finite-dimensional trace is applying trace to the derivative. -/
+theorem hasDerivAt_trace_endomorphismContinuousAt
+    {x : M} {A : ℝ → TM x →L[ℝ] TM x} {A' : TM x →L[ℝ] TM x} {t₀ : ℝ}
+    (hA : HasDerivAt A A' t₀) :
+    HasDerivAt
+      (fun t ↦ LinearMap.trace ℝ (TM x) (A t : TM x →ₗ[ℝ] TM x))
+      (LinearMap.trace ℝ (TM x) (A' : TM x →ₗ[ℝ] TM x)) t₀ := by
+  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  letI : T2Space (TM x) := inferInstanceAs (T2Space E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  simpa using
+    ((endomorphismTraceContinuousAt (n := n) (M := M) x).hasFDerivAt.comp_hasDerivAt
+      t₀ hA)
+
+/--
 The chart frame at a chart target point: transport the fixed model finite basis
 through the derivative of the inverse chart.
 -/
