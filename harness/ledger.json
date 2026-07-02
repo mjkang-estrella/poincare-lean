@@ -217,11 +217,12 @@
       "deps": [
         "M1-levi-civita"
       ],
-      "status": "open",
+      "status": "done",
       "files": [
         "Poincare/Global/RicciFlow.lean"
       ],
-      "difficulty": "medium"
+      "difficulty": "medium",
+      "result": "DONE 2026-07-01, commit 01bb1a61, gate PASS. IsClosedRicciFlowSolutionAt + unfolding iff + of_metric specialization (all side conditions discharged from g; canonical-connection agreement lemma) + Ricci-flat static instance."
     },
     {
       "id": "M1-closed-laplacian",
