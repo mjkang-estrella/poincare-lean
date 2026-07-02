@@ -1217,6 +1217,60 @@ theorem metric_pairing_extend_mdiffAt
     (mdifferentiableAt_extend I E q)
 
 /--
+Gram matrix of the metric in the canonical extension frame seeded at `x` and
+evaluated at `y`.
+-/
+noncomputable def gramMatrix
+    (g : ClosedSmoothRiemannianMetric n M) (x y : M) :
+    Matrix (Fin (Module.finrank ℝ (TM x))) (Fin (Module.finrank ℝ (TM x))) ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  fun i j ↦ g.inner y (extend E (b i) y) (extend E (b j) y)
+
+/-- At the seed point, the canonical-extension Gram matrix is the metric matrix
+in the finite basis of `TM x`. -/
+theorem gramMatrix_at_base
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    gramMatrix g x x =
+      (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E);
+      LinearMap.toMatrix₂ (Module.finBasis ℝ (TM x))
+        (Module.finBasis ℝ (TM x)) (g.metricBilinAt x)) := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ext i j
+  simp [gramMatrix, LinearMap.toMatrix₂_apply, g.metricBilinAt_apply]
+
+/-- The base Gram determinant is nonzero by metric nondegeneracy. -/
+theorem gramMatrix_at_base_det_ne_zero
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    (gramMatrix g x x).det ≠ 0 := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  rw [gramMatrix_at_base]
+  exact (LinearMap.nondegenerate_iff_det_ne_zero
+    (b := Module.finBasis ℝ (TM x))).mp (g.metricBilinAt_nondegenerate x)
+
+/-- The base Gram matrix is a unit. -/
+theorem gramMatrix_at_base_isUnit
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    IsUnit (gramMatrix g x x) := by
+  rw [Matrix.isUnit_iff_isUnit_det]
+  exact isUnit_iff_ne_zero.mpr (gramMatrix_at_base_det_ne_zero (g := g) (x := x))
+
+/-- Each canonical-extension Gram entry is differentiable at the seed point. -/
+theorem gramMatrix_entry_mdiffAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (i j : Fin (Module.finrank ℝ (TM x))) :
+    MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ gramMatrix g x y i j) x := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  simpa [gramMatrix, b] using
+    (metric_pairing_extend_mdiffAt (g := g) (x := x) (b i) (b j))
+
+/--
 The metric trace of a fiberwise bilinear form, computed in an arbitrary finite
 basis and paired with the `g`-raised dual coframe of that basis.
 -/
