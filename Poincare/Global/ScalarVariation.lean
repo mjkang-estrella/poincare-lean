@@ -5437,6 +5437,27 @@ theorem scalarVariation_lichnerowicz_of_hessianAssemblies
     (deltaGammaDivergenceTraceAssemblyAt_of_hessianAssembly hDiv)
     (deltaGammaContractionTraceAssemblyAt_of_hessianAssembly hCon)
 
+theorem scalarVariation_lichnerowicz_of_traceHessianDerivatives
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : TimeDifferentiableAt gt t₀ x)
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hDiv : DeltaGammaDivergenceTraceInnerHessianDerivativeAt gt t₀ x)
+    (hCon : DeltaGammaContractionTraceHessianDerivativeAt gt t₀ x) :
+    deriv (fun t ↦ (gt t).scalarAt x) t₀ =
+      tensorDoubleDivergenceAt (gt t₀) (timeDerivAt gt t₀) x
+        - (gt t₀).laplacianAt
+          (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y) x
+        - metricVariationRicciPairingAt (gt t₀) (timeDerivAt gt t₀) x :=
+  scalarVariation_lichnerowicz_of_hessianAssemblies
+    (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
+    hreg hgt hRaise
+    (deltaGammaDivergenceTraceHessianAssemblyAt_of_innerHessianDerivative hDiv)
+    (deltaGammaContractionTraceHessianAssemblyAt_of_traceHessianDerivative hCon)
+
 /-- `HasDerivAt` form of the closed Lichnerowicz scalar-variation formula. -/
 theorem hasDerivAt_scalarAt_lichnerowicz
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}

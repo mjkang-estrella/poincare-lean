@@ -187,6 +187,27 @@ def HamiltonScalarEvolutionHessianPredicatesAt
     TensorDoubleDivergenceNegTwoRicciLinearityAt (gt t₀) x ∧
     ClosedContractedBianchiAt (gt t₀) x
 
+/--
+Variant predicate package where the two Hessian assemblies are supplied by the
+more local second-order trace-derivative bridges.
+-/
+def HamiltonScalarEvolutionTraceDerivativePredicatesAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1] :
+    Prop :=
+  ∃ raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x,
+    ClosedRicciFlowExtensionRegularAt gt t₀ x ∧
+    MetricFlowRegularAt gt t₀ x ∧
+    TimeDifferentiableAt gt t₀ x ∧
+    HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀ ∧
+    DeltaGammaDivergenceTraceInnerHessianDerivativeAt gt t₀ x ∧
+    DeltaGammaContractionTraceHessianDerivativeAt gt t₀ x ∧
+    TensorDoubleDivergenceTimeDerivNegTwoRicciAt gt t₀ x ∧
+    TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt gt t₀ x ∧
+    TensorDoubleDivergenceNegTwoRicciLinearityAt (gt t₀) x ∧
+    ClosedContractedBianchiAt (gt t₀) x
+
 theorem hamiltonScalarEvolutionPredicatesAt_of_hessianPredicates
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
     [∀ t : ℝ,
@@ -201,6 +222,30 @@ theorem hamiltonScalarEvolutionPredicatesAt_of_hessianPredicates
       deltaGammaDivergenceTraceAssemblyAt_of_hessianAssembly hDiv,
       deltaGammaContractionTraceAssemblyAt_of_hessianAssembly hCon,
       hTensorSub, hTraceLap, hlin, hBianchi⟩
+
+theorem hamiltonScalarEvolutionHessianPredicatesAt_of_traceDerivativePredicates
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hPred : HamiltonScalarEvolutionTraceDerivativePredicatesAt gt t₀ x) :
+    HamiltonScalarEvolutionHessianPredicatesAt gt t₀ x := by
+  rcases hPred with
+    ⟨raise', hext, hreg, hgt, hRaise, hDiv, hCon,
+      hTensorSub, hTraceLap, hlin, hBianchi⟩
+  exact
+    ⟨raise', hext, hreg, hgt, hRaise,
+      deltaGammaDivergenceTraceHessianAssemblyAt_of_innerHessianDerivative hDiv,
+      deltaGammaContractionTraceHessianAssemblyAt_of_traceHessianDerivative hCon,
+      hTensorSub, hTraceLap, hlin, hBianchi⟩
+
+theorem hamiltonScalarEvolutionPredicatesAt_of_traceDerivativePredicates
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hPred : HamiltonScalarEvolutionTraceDerivativePredicatesAt gt t₀ x) :
+    HamiltonScalarEvolutionPredicatesAt gt t₀ x :=
+  hamiltonScalarEvolutionPredicatesAt_of_hessianPredicates
+    (hamiltonScalarEvolutionHessianPredicatesAt_of_traceDerivativePredicates hPred)
 
 /--
 Hamilton scalar evolution follows from a closed Ricci-flow solution once the
@@ -288,6 +333,30 @@ theorem satisfiesHamiltonScalarEvolutionAt_of_ricciFlow_hessian_variation
     (deltaGammaContractionTraceAssemblyAt_of_hessianAssembly hCon)
     hTensorSub hTraceLap hlin hBianchi
 
+theorem satisfiesHamiltonScalarEvolutionAt_of_ricciFlow_trace_derivative_variation
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hflow : IsClosedRicciFlowSolutionAt gt t₀ x)
+    (hext : ClosedRicciFlowExtensionRegularAt gt t₀ x)
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : TimeDifferentiableAt gt t₀ x)
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hDiv : DeltaGammaDivergenceTraceInnerHessianDerivativeAt gt t₀ x)
+    (hCon : DeltaGammaContractionTraceHessianDerivativeAt gt t₀ x)
+    (hTensorSub : TensorDoubleDivergenceTimeDerivNegTwoRicciAt gt t₀ x)
+    (hTraceLap : TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt gt t₀ x)
+    (hlin : TensorDoubleDivergenceNegTwoRicciLinearityAt (gt t₀) x)
+    (hBianchi : ClosedContractedBianchiAt (gt t₀) x) :
+    SatisfiesHamiltonScalarEvolutionAt gt t₀ x :=
+  satisfiesHamiltonScalarEvolutionAt_of_ricciFlow_hessian_variation
+    (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
+    hflow hext hreg hgt hRaise
+    (deltaGammaDivergenceTraceHessianAssemblyAt_of_innerHessianDerivative hDiv)
+    (deltaGammaContractionTraceHessianAssemblyAt_of_traceHessianDerivative hCon)
+    hTensorSub hTraceLap hlin hBianchi
+
 /--
 The unproven closed-manifold Hamilton scalar evolution frontier.
 
@@ -356,6 +425,27 @@ theorem hamiltonScalarEvolutionProgram_of_hessianPredicates
           CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1 :=
         hcurv
       exact hamiltonScalarEvolutionPredicatesAt_of_hessianPredicates
+        (hPred gt t₀ x hflow hcurv))
+
+theorem hamiltonScalarEvolutionProgram_of_traceDerivativePredicates
+    (hPred :
+      ∀ (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M),
+        IsClosedRicciFlowSolutionAt gt t₀ x →
+          ∀ hcurv : ∀ t : ℝ,
+            CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1,
+            letI : ∀ t : ℝ,
+                CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1 :=
+              hcurv
+            HamiltonScalarEvolutionTraceDerivativePredicatesAt
+              (n := n) (M := M) gt t₀ x) :
+    HamiltonScalarEvolutionProgram (n := n) (M := M) :=
+  hamiltonScalarEvolutionProgram_of_hessianPredicates
+    (n := n) (M := M)
+    (fun gt t₀ x hflow hcurv ↦ by
+      letI : ∀ t : ℝ,
+          CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1 :=
+        hcurv
+      exact hamiltonScalarEvolutionHessianPredicatesAt_of_traceDerivativePredicates
         (hPred gt t₀ x hflow hcurv))
 
 end Poincare

@@ -314,3 +314,38 @@ Status from task `M3-predicates-15`:
 - Verified: `lake build Poincare.Global.ScalarVariation
   Poincare.Global.ScalarEvolution` succeeds.  The build reports only existing
   linter warnings.
+
+Status from task `M3-predicates-16`:
+
+- Done in commit `dae985db`: added the closed first-slot trace theorem
+  `deltaGamma_firstSlot_trace_eq_of_covTensor2ExtDifferentiableAt`, plus the
+  supporting symmetry lemma `covTensor2DerivAt_timeDeriv_symm`.  This proves
+  the first-order identity `Σᵢ eⁱ(δΓ(eᵢ,w)) = 1/2 d(tr_g h)(w)` from the
+  existing Koszul identity, trace-swap adapter, and discharged Gram-route
+  `TraceMetricVariationDerivAt`.
+- Done in commit `dae985db`: introduced the honest second-order bridge
+  `DeltaGammaContractionTraceHessianDerivativeAt` and proved
+  `deltaGammaContractionTraceHessianAssemblyAt_of_traceHessianDerivative`,
+  so `DeltaGammaContractionTraceHessianAssemblyAt` is discharged once the
+  trace-form covariant derivative is identified with the Hessian.
+- Done in commit `49f483db`: introduced the honest divergence-side
+  second-order bridge `DeltaGammaDivergenceTraceInnerHessianDerivativeAt` and
+  proved `deltaGammaDivergenceTraceHessianAssemblyAt_of_innerHessianDerivative`,
+  recognizing the explicit covariant divergence sum as
+  `tensorDoubleDivergenceAt` and the scalar trace part as the Hessian trace.
+- Done after those commits: added downstream cleaned wrappers
+  `scalarVariation_lichnerowicz_of_traceHessianDerivatives`,
+  `HamiltonScalarEvolutionTraceDerivativePredicatesAt`,
+  `hamiltonScalarEvolutionHessianPredicatesAt_of_traceDerivativePredicates`,
+  `hamiltonScalarEvolutionPredicatesAt_of_traceDerivativePredicates`,
+  `satisfiesHamiltonScalarEvolutionAt_of_ricciFlow_trace_derivative_variation`,
+  and `hamiltonScalarEvolutionProgram_of_traceDerivativePredicates`.
+- Exact next proof state: discharge the two second-order field-derivative
+  bridges `DeltaGammaContractionTraceHessianDerivativeAt` and
+  `DeltaGammaDivergenceTraceInnerHessianDerivativeAt` from a genuine
+  differentiability theorem for the closed `δΓ` trace-form fields.  The
+  frozen Hessian assembly predicates now follow from those bridge facts by
+  verified adapters.
+- Verified: `lake build Poincare.Global.ScalarVariation
+  Poincare.Global.ScalarEvolution` succeeds.  The build reports only existing
+  linter warnings.
