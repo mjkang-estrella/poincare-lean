@@ -14,7 +14,7 @@ tangent vector back through the inverse chart derivative.
 
 noncomputable section
 
-open Bundle Set
+open Bundle Set FiberBundle
 open scoped Manifold ContDiff Topology
 
 namespace CovariantDerivative
@@ -616,6 +616,164 @@ theorem chartTransportedLeviCivitaValueAt_eq_closed_of_isLeviCivitaAt
     hcT hcClosed htT htClosed
     (by simpa [MDiffAtTangentField] using hσ)
   exact (htransport v).symm.trans (congrArg (fun L => L v) huniq)
+
+/--
+On a chart sub-neighborhood where the blending cutoff is identically `1`, the
+transported chart Levi-Civita value agrees with the closed smooth
+Levi-Civita connection.
+-/
+theorem chartTransportedLeviCivitaValueAt_eq_closed_of_eventually_eq_one
+    (g : ClosedSmoothRiemannianMetric n M)
+    (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (x₀ : M) (hχ0 : ∀ z, 0 ≤ χ z) (hχ1 : ∀ z, χ z ≤ 1)
+    (hsupp : ∀ z, χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z).IsInvertible)
+    (hbl : Differentiable ℝ (CovariantDerivative.blendedChartMetric χ G₀ g.inner x₀))
+    (hG₀symm : ∀ v w : E, G₀ v w = G₀ w v)
+    {σ : Π y : M, TM y} {y : M}
+    (hy : y ∈ (extChartAt I x₀).source)
+    (hχone : ∀ᶠ z' in 𝓝 (extChartAt I x₀ y), χ z' = 1)
+    (hσ : MDiffAtTangentField σ y)
+    (v : TM y) :
+    CovariantDerivative.chartTransportedLeviCivitaValueAt χ G₀ hG₀pos g.inner
+        (fun y u hu => g.inner_pos y (v := u) hu) x₀ hχ0 hχ1 hsupp σ hy v =
+      (LeviCivitaExistence.closedLeviCivitaConnection g) σ y v := by
+  haveI : IsManifold I (minSmoothness ℝ 2) M := by
+    rw [minSmoothness_of_isRCLikeNormedField]
+    infer_instance
+  haveI : ModelWithCorners.Boundaryless (closedSmoothModelWithCorners n) := by
+    infer_instance
+  let z : E := extChartAt I x₀ y
+  let D : TangentSpace 𝓘(ℝ, E) z →L[ℝ] TM y :=
+    mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm) (Set.range I) z
+  let covC :=
+    CovariantDerivative.chartLeviCivita χ G₀ hG₀pos g.inner
+      (fun y u hu => g.inner_pos y (v := u) hu) x₀ hχ0 hχ1 hsupp
+  let covT : (Π y : M, TM y) → TM y →L[ℝ] TM y :=
+    fun X =>
+      let Xc : Π z : E, TangentSpace 𝓘(ℝ, E) z :=
+        CovariantDerivative.chartTransportedLeviCivitaSection x₀ X
+      D.comp ((covC Xc z).comp (mfderiv I 𝓘(ℝ, E) (extChartAt I x₀) y))
+  let covClosed : (Π y : M, TM y) → TM y →L[ℝ] TM y :=
+    fun X => (LeviCivitaExistence.closedLeviCivitaConnection g) X y
+  have hcompatT :
+      ∀ {Y Z : Π y : M, TM y},
+        MDiffAtTangentField Y y → MDiffAtTangentField Z y →
+          ∀ v : TM y,
+            extDerivFun (fun p => g.inner p (Y p) (Z p)) y v =
+              g.inner y (covT Y v) (Z y) + g.inner y (Y y) (covT Z v) := by
+    intro Y Z hY hZ w
+    have hYZ :
+        MDifferentiableAt I 𝓘(ℝ) (fun p : M => g.inner p (Y p) (Z p)) y := by
+      exact LeviCivitaExistence.metric_pairing_mdiffAt g hY hZ
+    simpa [covT, covC, D, z, CovariantDerivative.chartTransportedLeviCivitaValueAt,
+      CovariantDerivative.chartTransportedLeviCivitaModelValue] using
+      (CovariantDerivative.chartTransported_metricCompatibleAt χ G₀ hG₀pos
+        g.inner (fun y u hu => g.inner_pos y (v := u) hu) x₀ hχ0 hχ1
+        hsupp hbl hG₀symm (fun y v w => g.inner_symm y v w)
+        hy hχone
+        (by simpa [MDiffAtTangentField] using hY)
+        (by simpa [MDiffAtTangentField] using hZ)
+        hYZ w)
+  have hcompatClosed :
+      ∀ {Y Z : Π y : M, TM y},
+        MDiffAtTangentField Y y → MDiffAtTangentField Z y →
+          ∀ v : TM y,
+            extDerivFun (fun p => g.inner p (Y p) (Z p)) y v =
+              g.inner y (covClosed Y v) (Z y) + g.inner y (Y y) (covClosed Z v) := by
+    intro Y Z hY hZ w
+    simpa [covClosed] using
+      LeviCivitaExistence.closedLeviCivitaConnection_metricCompatible g hY hZ w
+  have htorsionT :
+      ∀ {X Y : Π y : M, TM y},
+        MDiffAtTangentField X y → MDiffAtTangentField Y y →
+          covT Y (X y) - covT X (Y y) = VectorField.mlieBracket I X Y y := by
+    intro X Y hX hY
+    simpa [covT, covC, D, z, CovariantDerivative.chartTransportedLeviCivitaValueAt,
+      CovariantDerivative.chartTransportedLeviCivitaModelValue] using
+      (CovariantDerivative.chartTransported_torsionFreeAt χ G₀ hG₀pos g.inner
+        (fun y u hu => g.inner_pos y (v := u) hu) x₀ hχ0 hχ1 hsupp
+        hbl hG₀symm (fun y v w => g.inner_symm y v w) hy
+        (by simpa [MDiffAtTangentField] using hX)
+        (by simpa [MDiffAtTangentField] using hY))
+  have htorsionClosed :
+      ∀ {X Y : Π y : M, TM y},
+        MDiffAtTangentField X y → MDiffAtTangentField Y y →
+          covClosed Y (X y) - covClosed X (Y y) = VectorField.mlieBracket I X Y y := by
+    have ht := LeviCivitaExistence.closedLeviCivitaConnection_torsion g
+    rw [CovariantDerivative.torsion_eq_zero_iff] at ht
+    intro X Y hX hY
+    simpa [covClosed] using ht
+      (by simpa [MDiffAtTangentField] using hX)
+      (by simpa [MDiffAtTangentField] using hY)
+  have huniq : covT σ = covClosed σ := by
+    set Δ : (Π y : M, TM y) → (Π y : M, TM y) → TM y :=
+      fun X Y => covT Y (X y) - covClosed Y (X y) with hΔ
+    have hA : ∀ {X Y Z : Π y : M, TM y},
+        MDiffAtTangentField X y → MDiffAtTangentField Y y →
+          MDiffAtTangentField Z y →
+            g.inner y (Δ X Y) (Z y) = -g.inner y (Δ X Z) (Y y) := by
+      intro X Y Z hX hY hZ
+      have h3 :
+          g.inner y (covT Y (X y)) (Z y) + g.inner y (Y y) (covT Z (X y)) =
+            g.inner y (covClosed Y (X y)) (Z y) +
+              g.inner y (Y y) (covClosed Z (X y)) :=
+        (hcompatT hY hZ (X y)).symm.trans (hcompatClosed hY hZ (X y))
+      have e1 : g.inner y (Δ X Y) (Z y) =
+          g.inner y (covT Y (X y)) (Z y) -
+            g.inner y (covClosed Y (X y)) (Z y) := by
+        simp [hΔ, map_sub]
+      have e2 : g.inner y (Δ X Z) (Y y) =
+          g.inner y (Y y) (covT Z (X y)) -
+            g.inner y (Y y) (covClosed Z (X y)) := by
+        rw [g.inner_symm y]
+        simp [hΔ, map_sub]
+      linarith
+    have hB : ∀ {X Y : Π y : M, TM y},
+        MDiffAtTangentField X y → MDiffAtTangentField Y y → Δ X Y = Δ Y X := by
+      intro X Y hX hY
+      have t1 := htorsionT hX hY
+      have t1' := htorsionClosed hX hY
+      have : (covT Y (X y) - covT X (Y y)) -
+          (covClosed Y (X y) - covClosed X (Y y)) = 0 := by
+        rw [t1, t1']
+        abel
+      simp only [hΔ]
+      linear_combination (norm := module) this
+    have hS3 : ∀ {X Y Z : Π y : M, TM y},
+        MDiffAtTangentField X y → MDiffAtTangentField Y y →
+          MDiffAtTangentField Z y → g.inner y (Δ X Y) (Z y) = 0 := by
+      intro X Y Z hX hY hZ
+      have s1 : g.inner y (Δ X Y) (Z y) =
+          -g.inner y (Δ X Z) (Y y) := hA hX hY hZ
+      have s2 : g.inner y (Δ X Z) (Y y) =
+          g.inner y (Δ Z X) (Y y) := by rw [hB hX hZ]
+      have s3 : g.inner y (Δ Z X) (Y y) =
+          -g.inner y (Δ Z Y) (X y) := hA hZ hX hY
+      have s4 : g.inner y (Δ Z Y) (X y) =
+          g.inner y (Δ Y Z) (X y) := by rw [hB hZ hY]
+      have s5 : g.inner y (Δ Y Z) (X y) =
+          -g.inner y (Δ Y X) (Z y) := hA hY hZ hX
+      have s6 : g.inner y (Δ Y X) (Z y) =
+          g.inner y (Δ X Y) (Z y) := by rw [hB hY hX]
+      linarith
+    ext w
+    have hw : Δ (extend E w) σ = covT σ w - covClosed σ w := by
+      simp [hΔ]
+    refine sub_eq_zero.mp (LeviCivitaExistence.metric_nondegenerate g y _ fun z' => ?_)
+    have h0 : g.inner y (Δ (extend E w) σ) (extend E z' y) = 0 :=
+      hS3
+        (by simpa [MDiffAtTangentField] using (mdifferentiableAt_extend ..))
+        hσ
+        (by simpa [MDiffAtTangentField] using (mdifferentiableAt_extend ..))
+    rw [hw] at h0
+    simpa using h0
+  simpa [covT, covClosed, covC, D, z,
+    CovariantDerivative.chartTransportedLeviCivitaValueAt,
+    CovariantDerivative.chartTransportedLeviCivitaModelValue] using
+    congrArg (fun L : TM y →L[ℝ] TM y => L v) huniq
 
 end LeviCivitaTransport
 
