@@ -97,10 +97,10 @@
       "deps": [
         "M1-riemannian-context"
       ],
-      "status": "in_progress",
+      "status": "done",
       "files": [],
       "difficulty": "hard",
-      "result": "Uniqueness half DONE 2026-07-01 (commit 5f9d2bc4, gate PASS): Poincare.levi_civita_unique via Koszul/S3 difference-tensor argument on Mathlib CovariantDerivative; IsMetricCompatible (extDerivFun Leibniz), MDiffAtTangentField. Existence half remains (chart-based Christoffel construction)."
+      "result": "DONE 2026-07-01 (uniqueness 5f9d2bc4 + existence 8fdc8283/9c80e9cc, both gate PASS). Poincare.levi_civita_unique + Poincare.levi_civita_exists on Mathlib CovariantDerivative layer. Existence specializes the repo pre-existing manifold-level Koszul construction (Poincare/KoszulExistence.lean, audited genuine: koszulRHS tensoriality, leviCivitaConnection, 0 sorry) with hypotheses discharged from ClosedSmoothRiemannianMetric."
     },
     {
       "id": "M2-short-time",
