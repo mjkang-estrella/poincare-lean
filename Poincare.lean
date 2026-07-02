@@ -19,6 +19,7 @@ import Poincare.Global.Statement
 import Poincare.Global.Alignment
 import Poincare.Global.RiemannianContext
 import Poincare.Global.LeviCivita
+import Poincare.Global.LeviCivitaExistence
 import Poincare.Milestones
 import Poincare.Assembly
 import Poincare.CanonicalBridges
