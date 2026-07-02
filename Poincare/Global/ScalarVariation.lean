@@ -2236,6 +2236,110 @@ theorem variationSpatiallyDifferentiableAt_const_timeDeriv
   variationSpatiallyDifferentiableAt_timeDeriv_of_regular
     (timeVariationSpatiallyDifferentiableAt_const (n := n) (M := M) g t₀ x)
 
+/--
+Spatial derivative of the metric pairing in the closed vocabulary, evaluated on
+canonical extensions of two fixed tangent vectors.
+-/
+noncomputable def spatialMetricDerivAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (v p q : TM x) : ℝ :=
+  extDerivFun (fun y : M ↦ g.inner y (extend E p y) (extend E q y)) x v
+
+/--
+Metric compatibility for the closed spatial metric derivative, unwrapped on
+canonical extensions.
+-/
+theorem spatialMetricDerivAt_eq_leviCivita
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (v p q : TM x) :
+    spatialMetricDerivAt g x v p q =
+      g.inner x (g.leviCivita (extend E p) x v) q +
+        g.inner x p (g.leviCivita (extend E q) x v) := by
+  unfold spatialMetricDerivAt
+  have h := g.leviCivita_metricCompatibleAt x
+    (Y := extend E p) (Z := extend E q)
+    (by simpa [MDiffAtTangentField] using (mdifferentiableAt_extend I E p))
+    (by simpa [MDiffAtTangentField] using (mdifferentiableAt_extend I E q))
+    v
+  simpa using h
+
+/-- The covector `q ↦ g(p, ∇ᵥ q)` in the closed canonical-extension vocabulary. -/
+noncomputable def leviCivitaRightCovectorLinearAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (v p : TM x) : TM x →ₗ[ℝ] ℝ where
+  toFun := fun q : TM x ↦ g.inner x p (g.leviCivita (extend E q) x v)
+  map_add' := by
+    intro q₁ q₂
+    have hΓ :
+        g.leviCivita (extend E (q₁ + q₂)) x v =
+          g.leviCivita (extend E q₁) x v +
+            g.leviCivita (extend E q₂) x v := by
+      rw [extend_tangent_add (x := x) q₁ q₂]
+      have hadd := g.leviCivita.isCovariantDerivativeOnUniv.add
+        (by simpa [MDiffAtTangentField] using
+          (mdifferentiableAt_extend I E q₁))
+        (by simpa [MDiffAtTangentField] using
+          (mdifferentiableAt_extend I E q₂))
+      simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L v) hadd
+    rw [hΓ]
+    exact map_add (g.inner x p) _ _
+  map_smul' := by
+    intro c q
+    have hΓ :
+        g.leviCivita (extend E (c • q)) x v =
+          c • g.leviCivita (extend E q) x v := by
+      rw [extend_tangent_smul (x := x) c q]
+      have hsmul := g.leviCivita.isCovariantDerivativeOnUniv.smul_const c
+        (by simpa [MDiffAtTangentField] using
+          (mdifferentiableAt_extend I E q))
+      simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L v) hsmul
+    rw [hΓ]
+    exact map_smul (g.inner x p) c _
+
+/-- Continuous-linear packaging of `q ↦ g(p, ∇ᵥ q)`. -/
+noncomputable def leviCivitaRightCovectorAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (v p : TM x) : TM x →L[ℝ] ℝ :=
+  letI : T2Space (TM x) := inferInstanceAs (T2Space E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  LinearMap.toContinuousLinearMap (leviCivitaRightCovectorLinearAt g x v p)
+
+/--
+Closed algebraic candidate for the spatial derivative of a raised fixed
+covector.  The two terms are the two metric-compatibility corrections.
+-/
+noncomputable def spatialMetricDualVectorDerivAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) (v : TM x)
+    (φ : TM x →L[ℝ] ℝ) : TM x :=
+  let p : TM x := g.metricRaiseContinuousAt x φ;
+  let ψ : Module.Dual ℝ (TM x) := leviCivitaRightCovectorAt g x v p;
+  -g.leviCivita (extend E p) x v - metricDualVectorAt g x ψ
+
+/--
+Pairing the closed spatial raised-covector derivative candidate with `g`
+recovers `-∂ᵥ g(♯φ, -)`.
+-/
+theorem spatialMetricDualVectorDerivAt_inner_apply
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) (v : TM x)
+    (φ : TM x →L[ℝ] ℝ) (z : TM x) :
+    g.inner x (spatialMetricDualVectorDerivAt g x v φ) z =
+      -spatialMetricDerivAt g x v (g.metricRaiseContinuousAt x φ) z := by
+  let p : TM x := g.metricRaiseContinuousAt x φ
+  let ψ : Module.Dual ℝ (TM x) := leviCivitaRightCovectorAt g x v p
+  have hψ : g.inner x (metricDualVectorAt g x ψ) z = ψ z :=
+    metricDualVectorAt_inner_apply g x ψ z
+  unfold spatialMetricDualVectorDerivAt
+  simp only [map_sub, map_neg]
+  change -g.inner x (g.leviCivita (extend E p) x v) z -
+      g.inner x (metricDualVectorAt g x ψ) z =
+    -spatialMetricDerivAt g x v p z
+  rw [hψ]
+  change -g.inner x (g.leviCivita (extend E p) x v) z -
+      g.inner x p (g.leviCivita (extend E z) x v) =
+    -spatialMetricDerivAt g x v p z
+  rw [spatialMetricDerivAt_eq_leviCivita]
+  ring
+
 omit [T2Space M] [IsManifold I ∞ M] in
 theorem tensor2AddLeft_zero :
     Tensor2AddLeft (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) := by

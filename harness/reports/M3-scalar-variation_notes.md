@@ -207,3 +207,27 @@ Status from task `M3-predicates-5`:
   theorem `fderiv_tensorMetricTrace_eq`.  The model cancellation is already
   proved, but the closed file still lacks the theorem identifying the canonical
   Levi-Civita/canonical-extension expression with the chart-model expression.
+
+Status from task `M3-predicates-6`:
+
+- Done: added native closed spatial metric-compatibility vocabulary:
+  `spatialMetricDerivAt` and `spatialMetricDerivAt_eq_leviCivita`.  This avoids
+  the prior closed-to-model route and states `∂ᵥ g(p,q)` directly in the
+  canonical-extension connection vocabulary used by `covTensor2DerivAt`.
+- Done: added native closed inverse-raise cancellation algebra:
+  `leviCivitaRightCovectorLinearAt`, `leviCivitaRightCovectorAt`,
+  `spatialMetricDualVectorDerivAt`, and
+  `spatialMetricDualVectorDerivAt_inner_apply`.  The last theorem proves that
+  pairing the candidate spatial derivative of `♯φ` with `g` gives
+  `-∂ᵥ g(♯φ,-)`, matching the metric-compatibility cancellation used in the
+  model proof.
+- Still blocked for full nonzero `TraceMetricVariationDerivAt`: the remaining
+  closed theorem is not the old model-transport bridge, but an actual manifold
+  derivative/product-rule layer showing that
+  `y ↦ metricDualVectorAt g y φ` has derivative
+  `spatialMetricDualVectorDerivAt g x v φ`, and that
+  `VariationSpatiallyDifferentiableAt h x` plus slot-linearity feeds the
+  canonical-extension derivative in `covTensor2DerivAt`.
+- Verified: `lake env lean Poincare/Global/ScalarVariation.lean` and
+  `lake build Poincare.Global.ScalarVariation Poincare.Global.ScalarEvolution`
+  both succeed after these native lemmas.
