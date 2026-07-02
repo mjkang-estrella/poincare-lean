@@ -5,7 +5,8 @@
     "orchestrator": "Claude Fable 5",
     "workers": "codex exec, gpt-5.5, reasoning=xhigh",
     "prime_directive": "Never fabricate completion. The gate (compile + no sorry/axiom + non-vacuity + frozen statement) is the only judge.",
-    "structural_finding": "The single-chart model (Poincare/ModelLaplacian.lean etc., ~710 thms) is at its structural ceiling: it cannot state global objects (closed 3-manifold, S^3, homeomorphism, integration, Betti numbers). The whole proof requires a new manifold-level layer (tier M) built on Mathlib's smooth-manifold library, with the local model results ported as chart-level lemmas."
+    "structural_finding": "The single-chart model (Poincare/ModelLaplacian.lean etc., ~710 thms) is at its structural ceiling: it cannot state global objects (closed 3-manifold, S^3, homeomorphism, integration, Betti numbers). The whole proof requires a new manifold-level layer (tier M) built on Mathlib's smooth-manifold library, with the local model results ported as chart-level lemmas.",
+    "current_goal": "GOAL (set 2026-07-01, user-directed): prove + merge closedLeviCivitaConnection_contMDiff (global ContMDiffCovariantDerivative g.leviCivita 1 instance), discharging the carried hypothesis in Global/Curvature.lean. Iterate workers until achieved. Chain: [done] model regularity, transport API, uniqueness bridge, torsion-freeness | [in flight] metric compat + identification (M1-lc-regularity-4) | [next] local regularity composition + gluing (M1-lc-regularity-5)."
   },
   "tiers": {
     "L": "Local model (single chart) — finish remaining genuine local threads; the porting source",
