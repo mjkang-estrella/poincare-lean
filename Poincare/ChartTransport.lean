@@ -250,6 +250,16 @@ theorem blendedChartMetric_apply (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ
       χ z * chartMetric g x₀ z v w + (1 - χ z) * G₀ v w := by
   simp [blendedChartMetric]
 
+/-- Where the cutoff is `1`, the blended metric is the chart metric. -/
+theorem blendedChartMetric_eq_chartMetric_of_eq_one (χ : E → ℝ)
+    (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (x₀ : M) {z : E} (hz : χ z = 1) :
+    blendedChartMetric χ G₀ g x₀ z = chartMetric g x₀ z := by
+  ext v w
+  rw [blendedChartMetric_apply, hz]
+  simp
+
 theorem blendedChartMetric_symm (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
     (hG₀ : ∀ v w : E, G₀ v w = G₀ w v)
     (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
@@ -776,6 +786,12 @@ theorem mfderivWithin_extChartAt_symm_target_eq_range_eq :
 /-- Theorem contract for `blendedChartMetric_apply`. -/
 theorem blendedChartMetric_apply_eq :
     @CovariantDerivative.blendedChartMetric_apply = @CovariantDerivative.blendedChartMetric_apply :=
+  rfl
+
+/-- Theorem contract for `blendedChartMetric_eq_chartMetric_of_eq_one`. -/
+theorem blendedChartMetric_eq_chartMetric_of_eq_one_eq :
+    @CovariantDerivative.blendedChartMetric_eq_chartMetric_of_eq_one =
+      @CovariantDerivative.blendedChartMetric_eq_chartMetric_of_eq_one :=
   rfl
 
 /-- Theorem contract for `blendedChartMetric_symm`. -/
