@@ -8416,6 +8416,21 @@ def ClosedContractedBianchiAt
     (1 / 2 : ℝ) * g.laplacianAt (fun y ↦ g.scalarAt y) x
 
 /--
+Closed contracted Bianchi in one-form form:
+`div Ric = 1/2 dR` at `x`.
+
+This is the remaining intrinsic identity needed before tracing once more to
+obtain `ClosedContractedBianchiAt`.
+-/
+def ClosedContractedBianchiOneFormAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : Prop :=
+  ∀ w : TM x,
+    tensorDivergenceOneFormAt g (ricciVariationField g) x w =
+      (1 / 2 : ℝ) * extDerivFun (fun y : M ↦ g.scalarAt y) x w
+
+/--
 If the closed Ricci divergence one-form is the half-gradient of scalar
 curvature on a neighborhood of `x`, then tracing its covariant derivative gives
 the frozen closed twice-contracted Bianchi predicate.
@@ -8527,6 +8542,26 @@ theorem ClosedContractedBianchiAt.of_tensorDivergenceOneForm_eq_half_extDerivFun
             g.hessianAt_symm hScalar₂ hgrad (sharp j) (b j)
     _ = (1 / 2 : ℝ) * g.laplacianAt f x := by
           rw [laplacianAt_eq_sum_hessianAt (g := g) (f := f) (x := x)]
+
+/--
+Predicate-form wrapper for the local one-form contracted Bianchi identity.
+-/
+theorem ClosedContractedBianchiAt.of_oneForm_near
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hOne :
+      ∀ᶠ y in nhds x, ClosedContractedBianchiOneFormAt g y)
+    (hScalar₂ : ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ g.scalarAt y) x)
+    (hScalarExt₂ : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦
+          extDerivFun (fun z : M ↦ g.scalarAt z) y (extend E w y)) x) :
+    ClosedContractedBianchiAt g x :=
+  ClosedContractedBianchiAt.of_tensorDivergenceOneForm_eq_half_extDerivFun_near
+    (g := g) (x := x)
+    (hOne.mono fun _ hy w ↦ hy w)
+    hScalar₂ hScalarExt₂
 
 /-- Under twice-contracted Bianchi, `div div (-2 Ric) = -ΔR`. -/
 theorem tensorDoubleDivergenceAt_negTwoRicci_eq_neg_laplacian_scalar
