@@ -1774,6 +1774,107 @@ private theorem extDerivFun_zero_at (x : M) :
   unfold extDerivFun
   simp
 
+omit [T2Space M] in
+private theorem extDerivFun_const_smul_at {f : M → ℝ} {x : M}
+    (hf : MDifferentiableAt I 𝓘(ℝ) f x) (c : ℝ) :
+    (extDerivFun (c • f) x : TM x →L[ℝ] ℝ) =
+      c • (extDerivFun f x : TM x →L[ℝ] ℝ) := by
+  ext v
+  have hmul := CovariantDerivative.extDerivFun_mul
+    (p := fun _ : M ↦ c) (q := f) (x := x) mdifferentiableAt_const hf v
+  simp [Pi.smul_apply, smul_eq_mul] at hmul ⊢
+  exact hmul
+
+def Tensor2AddLeft
+    (h : ∀ y : M, TM y → TM y → ℝ) : Prop :=
+  ∀ y : M, ∀ p₁ p₂ q : TM y,
+    h y (p₁ + p₂) q = h y p₁ q + h y p₂ q
+
+def Tensor2SMulLeft
+    (h : ∀ y : M, TM y → TM y → ℝ) : Prop :=
+  ∀ y : M, ∀ (c : ℝ) (p q : TM y),
+    h y (c • p) q = c * h y p q
+
+def Tensor2AddRight
+    (h : ∀ y : M, TM y → TM y → ℝ) : Prop :=
+  ∀ y : M, ∀ p q₁ q₂ : TM y,
+    h y p (q₁ + q₂) = h y p q₁ + h y p q₂
+
+def Tensor2SMulRight
+    (h : ∀ y : M, TM y → TM y → ℝ) : Prop :=
+  ∀ y : M, ∀ (c : ℝ) (p q : TM y),
+    h y p (c • q) = c * h y p q
+
+def CovTensor2ExtDifferentiableAt
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M) : Prop :=
+  ∀ p q : TM x,
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ h y (extend E p y) (extend E q y)) x
+
+omit [T2Space M] [IsManifold I ∞ M] in
+theorem tensor2AddLeft_zero :
+    Tensor2AddLeft (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) := by
+  intro y p₁ p₂ q
+  simp
+
+omit [T2Space M] [IsManifold I ∞ M] in
+theorem tensor2SMulLeft_zero :
+    Tensor2SMulLeft (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) := by
+  intro y c p q
+  simp
+
+omit [T2Space M] [IsManifold I ∞ M] in
+theorem tensor2AddRight_zero :
+    Tensor2AddRight (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) := by
+  intro y p q₁ q₂
+  simp
+
+omit [T2Space M] [IsManifold I ∞ M] in
+theorem tensor2SMulRight_zero :
+    Tensor2SMulRight (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) := by
+  intro y c p q
+  simp
+
+omit [T2Space M] in
+theorem covTensor2ExtDifferentiableAt_zero (x : M) :
+    CovTensor2ExtDifferentiableAt
+      (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x := by
+  intro p q
+  simpa [CovTensor2ExtDifferentiableAt] using
+    (mdifferentiableAt_const (c := (0 : ℝ)) (x := x))
+
+omit [T2Space M] in
+theorem tensor2AddLeft_timeDerivAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ}
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y) :
+    Tensor2AddLeft (timeDerivAt gt t₀) := by
+  intro y p₁ p₂ q
+  exact timeDerivAt_add_left (hgt y) p₁ p₂ q
+
+omit [T2Space M] in
+theorem tensor2SMulLeft_timeDerivAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ}
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y) :
+    Tensor2SMulLeft (timeDerivAt gt t₀) := by
+  intro y c p q
+  exact timeDerivAt_smul_left (hgt y) c p q
+
+omit [T2Space M] in
+theorem tensor2AddRight_timeDerivAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ}
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y) :
+    Tensor2AddRight (timeDerivAt gt t₀) := by
+  intro y p q₁ q₂
+  exact timeDerivAt_add_right (hgt y) p q₁ q₂
+
+omit [T2Space M] in
+theorem tensor2SMulRight_timeDerivAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ}
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y) :
+    Tensor2SMulRight (timeDerivAt gt t₀) := by
+  intro y c p q
+  exact timeDerivAt_smul_right (hgt y) c p q
+
 /--
 Covariant derivative of a raw `(0,2)` variation tensor:
 `(∇_v h)(p,q) = D_v(h(p,q)) - h(∇_v p,q) - h(p,∇_v q)`.
@@ -1794,6 +1895,168 @@ noncomputable def covTensor2DerivAt
     (v p q : TM x) :
     covTensor2DerivAt g (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x v p q = 0 := by
   simp [covTensor2DerivAt, extDerivFun_zero_at]
+
+theorem covTensor2DerivAt_add_deriv
+    {g : ClosedSmoothRiemannianMetric n M}
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hAddL : Tensor2AddLeft h) (hAddR : Tensor2AddRight h)
+    (v₁ v₂ p q : TM x) :
+    covTensor2DerivAt g h x (v₁ + v₂) p q =
+      covTensor2DerivAt g h x v₁ p q + covTensor2DerivAt g h x v₂ p q := by
+  unfold covTensor2DerivAt
+  rw [map_add]
+  simp only [ContinuousLinearMap.map_add]
+  rw [hAddL x ((g.leviCivita (extend E p) x v₁))
+      ((g.leviCivita (extend E p) x v₂)) q]
+  rw [hAddR x p ((g.leviCivita (extend E q) x v₁))
+      ((g.leviCivita (extend E q) x v₂))]
+  ring
+
+theorem covTensor2DerivAt_smul_deriv
+    {g : ClosedSmoothRiemannianMetric n M}
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hSMulL : Tensor2SMulLeft h) (hSMulR : Tensor2SMulRight h)
+    (c : ℝ) (v p q : TM x) :
+    covTensor2DerivAt g h x (c • v) p q =
+      c • covTensor2DerivAt g h x v p q := by
+  unfold covTensor2DerivAt
+  rw [map_smul]
+  simp only [ContinuousLinearMap.map_smul]
+  rw [hSMulL x c ((g.leviCivita (extend E p) x v)) q]
+  rw [hSMulR x c p ((g.leviCivita (extend E q) x v))]
+  ring
+
+theorem covTensor2DerivAt_add_left
+    {g : ClosedSmoothRiemannianMetric n M}
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (hAddL : Tensor2AddLeft h)
+    (v p₁ p₂ q : TM x) :
+    covTensor2DerivAt g h x v (p₁ + p₂) q =
+      covTensor2DerivAt g h x v p₁ q + covTensor2DerivAt g h x v p₂ q := by
+  unfold covTensor2DerivAt
+  have hfun :
+      (fun y : M ↦ h y (extend E (p₁ + p₂) y) (extend E q y)) =
+        (fun y : M ↦ h y (extend E p₁ y) (extend E q y)) +
+          fun y : M ↦ h y (extend E p₂ y) (extend E q y) := by
+    funext y
+    rw [extend_tangent_add (x := x) p₁ p₂]
+    exact hAddL y (extend E p₁ y) (extend E p₂ y) (extend E q y)
+  rw [hfun]
+  rw [extDerivFun_add (hDiff p₁ q) (hDiff p₂ q)]
+  have hΓ :
+      g.leviCivita (extend E (p₁ + p₂)) x v =
+        g.leviCivita (extend E p₁) x v + g.leviCivita (extend E p₂) x v := by
+    rw [extend_tangent_add (x := x) p₁ p₂]
+    have hadd := g.leviCivita.isCovariantDerivativeOnUniv.add
+      (by simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E p₁))
+      (by simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E p₂))
+    simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L v) hadd
+  rw [hΓ]
+  rw [hAddL x ((g.leviCivita (extend E p₁) x v))
+    ((g.leviCivita (extend E p₂) x v)) q]
+  rw [hAddL x p₁ p₂ ((g.leviCivita (extend E q) x v))]
+  simp only [ContinuousLinearMap.add_apply]
+  ring_nf
+
+theorem covTensor2DerivAt_smul_left
+    {g : ClosedSmoothRiemannianMetric n M}
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (hSMulL : Tensor2SMulLeft h)
+    (c : ℝ) (v p q : TM x) :
+    covTensor2DerivAt g h x v (c • p) q =
+      c • covTensor2DerivAt g h x v p q := by
+  unfold covTensor2DerivAt
+  have hfun :
+      (fun y : M ↦ h y (extend E (c • p) y) (extend E q y)) =
+        c • (fun y : M ↦ h y (extend E p y) (extend E q y)) := by
+    funext y
+    rw [extend_tangent_smul (x := x) c p]
+    exact hSMulL y c (extend E p y) (extend E q y)
+  rw [hfun]
+  rw [extDerivFun_const_smul_at (hDiff p q) c]
+  have hΓ :
+      g.leviCivita (extend E (c • p)) x v =
+        c • g.leviCivita (extend E p) x v := by
+    rw [extend_tangent_smul (x := x) c p]
+    have hsmul := g.leviCivita.isCovariantDerivativeOnUniv.smul_const c
+      (by simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E p))
+    simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L v) hsmul
+  rw [hΓ]
+  rw [hSMulL x c ((g.leviCivita (extend E p) x v)) q]
+  rw [hSMulL x c p ((g.leviCivita (extend E q) x v))]
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  ring_nf
+
+theorem covTensor2DerivAt_add_right
+    {g : ClosedSmoothRiemannianMetric n M}
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (hAddR : Tensor2AddRight h)
+    (v p q₁ q₂ : TM x) :
+    covTensor2DerivAt g h x v p (q₁ + q₂) =
+      covTensor2DerivAt g h x v p q₁ + covTensor2DerivAt g h x v p q₂ := by
+  unfold covTensor2DerivAt
+  have hfun :
+      (fun y : M ↦ h y (extend E p y) (extend E (q₁ + q₂) y)) =
+        (fun y : M ↦ h y (extend E p y) (extend E q₁ y)) +
+          fun y : M ↦ h y (extend E p y) (extend E q₂ y) := by
+    funext y
+    rw [extend_tangent_add (x := x) q₁ q₂]
+    exact hAddR y (extend E p y) (extend E q₁ y) (extend E q₂ y)
+  rw [hfun]
+  rw [extDerivFun_add (hDiff p q₁) (hDiff p q₂)]
+  have hΓ :
+      g.leviCivita (extend E (q₁ + q₂)) x v =
+        g.leviCivita (extend E q₁) x v + g.leviCivita (extend E q₂) x v := by
+    rw [extend_tangent_add (x := x) q₁ q₂]
+    have hadd := g.leviCivita.isCovariantDerivativeOnUniv.add
+      (by simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E q₁))
+      (by simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E q₂))
+    simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L v) hadd
+  rw [hΓ]
+  rw [hAddR x ((g.leviCivita (extend E p) x v)) q₁ q₂]
+  rw [hAddR x p ((g.leviCivita (extend E q₁) x v))
+    ((g.leviCivita (extend E q₂) x v))]
+  simp only [ContinuousLinearMap.add_apply]
+  ring_nf
+
+theorem covTensor2DerivAt_smul_right
+    {g : ClosedSmoothRiemannianMetric n M}
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (hSMulR : Tensor2SMulRight h)
+    (c : ℝ) (v p q : TM x) :
+    covTensor2DerivAt g h x v p (c • q) =
+      c • covTensor2DerivAt g h x v p q := by
+  unfold covTensor2DerivAt
+  have hfun :
+      (fun y : M ↦ h y (extend E p y) (extend E (c • q) y)) =
+        c • (fun y : M ↦ h y (extend E p y) (extend E q y)) := by
+    funext y
+    rw [extend_tangent_smul (x := x) c q]
+    exact hSMulR y c (extend E p y) (extend E q y)
+  rw [hfun]
+  rw [extDerivFun_const_smul_at (hDiff p q) c]
+  have hΓ :
+      g.leviCivita (extend E (c • q)) x v =
+        c • g.leviCivita (extend E q) x v := by
+    rw [extend_tangent_smul (x := x) c q]
+    have hsmul := g.leviCivita.isCovariantDerivativeOnUniv.smul_const c
+      (by simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E q))
+    simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L v) hsmul
+  rw [hΓ]
+  rw [hSMulR x c ((g.leviCivita (extend E p) x v)) q]
+  rw [hSMulR x c p ((g.leviCivita (extend E q) x v))]
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  ring_nf
 
 /--
 The closed Koszul master identity for the connection variation.
@@ -2022,6 +2285,49 @@ theorem hTraceSwap
     ∑ i, covTensor2DerivAt g h x (sharp i) (b i) w
   exact hswap.symm
 
+theorem covTensor2DerivTraceSwapAt_of_regular
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (hAddL : Tensor2AddLeft h) (hSMulL : Tensor2SMulLeft h)
+    (hAddR : Tensor2AddRight h) (hSMulR : Tensor2SMulRight h) :
+    CovTensor2DerivTraceSwapAt g h x :=
+  hTraceSwap g h x
+    (fun w p₁ p₂ q ↦
+      covTensor2DerivAt_add_deriv (g := g) (h := h) (x := x)
+        hAddL hAddR p₁ p₂ q w)
+    (fun c w p q ↦
+      covTensor2DerivAt_smul_deriv (g := g) (h := h) (x := x)
+        hSMulL hSMulR c p q w)
+    (fun w p q₁ q₂ ↦
+      covTensor2DerivAt_add_left (g := g) (h := h) (x := x)
+        hDiff hAddL p q₁ q₂ w)
+    (fun c w p q ↦
+      covTensor2DerivAt_smul_left (g := g) (h := h) (x := x)
+        hDiff hSMulL c p q w)
+
+theorem covTensor2DerivTraceSwapAt_zero
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    CovTensor2DerivTraceSwapAt g
+      (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x :=
+  covTensor2DerivTraceSwapAt_of_regular g
+    (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) x
+    (covTensor2ExtDifferentiableAt_zero x)
+    tensor2AddLeft_zero tensor2SMulLeft_zero
+    tensor2AddRight_zero tensor2SMulRight_zero
+
+theorem covTensor2DerivTraceSwapAt_timeDeriv_of_regular
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hDiff : CovTensor2ExtDifferentiableAt (timeDerivAt gt t₀) x) :
+    CovTensor2DerivTraceSwapAt (gt t₀) (timeDerivAt gt t₀) x :=
+  covTensor2DerivTraceSwapAt_of_regular (gt t₀) (timeDerivAt gt t₀) x
+    hDiff
+    (tensor2AddLeft_timeDerivAt hgt)
+    (tensor2SMulLeft_timeDerivAt hgt)
+    (tensor2AddRight_timeDerivAt hgt)
+    (tensor2SMulRight_timeDerivAt hgt)
+
 /--
 Exact `hTraceDeriv` obligation: the contracted covariant derivative of `h`
 is the exterior derivative of its metric trace.
@@ -2044,6 +2350,16 @@ theorem traceMetricVariationDerivAt_zero
   intro w
   letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
   simp [extDerivFun_zero_at]
+
+theorem traceMetricVariationDerivAt_const_timeDeriv
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    TraceMetricVariationDerivAt g (timeDerivAt (fun _ : ℝ ↦ g) t₀) x := by
+  have hzero :
+      timeDerivAt (fun _ : ℝ ↦ g) t₀ =
+        (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) := by
+    funext y v w
+    exact timeDerivAt_const g t₀ y v w
+  simpa [hzero] using traceMetricVariationDerivAt_zero (g := g) (x := x)
 
 /--
 Inner trace of the closed `δΓ` Koszul identity.
@@ -2179,6 +2495,42 @@ theorem deltaGamma_innerTrace_eq'
   deltaGamma_innerTrace_eq
     (gt := gt) (t₀ := t₀) (x := x)
     hreg hgt hExt hTraceSwap hTraceDeriv w
+
+theorem deltaGamma_innerTrace_eq_of_covTensor2Regular
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hExt :
+      ∀ a b c : TM x,
+        HasDerivAt
+          (fun t ↦
+            extDerivFun
+              (fun y : M ↦ (gt t).inner y (extend E b y) (extend E c y)) x a)
+          (extDerivFun
+            (fun y : M ↦ timeDerivAt gt t₀ y (extend E b y) (extend E c y))
+            x a) t₀)
+    (hCovDiff : CovTensor2ExtDifferentiableAt (timeDerivAt gt t₀) x)
+    (hTraceDeriv :
+      TraceMetricVariationDerivAt (gt t₀) (timeDerivAt gt t₀) x)
+    (w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+      ∑ i, (gt t₀).inner x
+        (deltaGammaAt gt t₀ x ((Module.finBasis ℝ (TM x)) i)
+          (metricDualVectorAt (gt t₀) x ((Module.finBasis ℝ (TM x)).coord i))) w)
+      =
+        tensorDivergenceOneFormAt (gt t₀) (timeDerivAt gt t₀) x w
+          - (1 / 2 : ℝ) *
+            extDerivFun
+              (fun y ↦ traceMetricVariationAt (gt t₀) (timeDerivAt gt t₀) y)
+              x w :=
+  deltaGamma_innerTrace_eq'
+    (gt := gt) (t₀ := t₀) (x := x)
+    hreg hgt hExt
+    (covTensor2DerivTraceSwapAt_timeDeriv_of_regular
+      (gt := gt) (t₀ := t₀) (x := x) hgt hCovDiff)
+    hTraceDeriv w
 
 /--
 The double divergence of a raw metric variation:

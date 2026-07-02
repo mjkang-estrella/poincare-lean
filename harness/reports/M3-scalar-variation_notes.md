@@ -151,3 +151,40 @@ Status from task `M3-scalar-variation-8`:
   `scalarVariation_lichnerowicz` under those two exact divergence sub-identities.
 - Verified: `lake build Poincare.Global.ScalarVariation` succeeds after the
   divergence assembly and final wrapper.
+
+Status from task `M3-predicates-1`:
+
+- Done: added honest closed regularity vocabulary for the first-order
+  `covTensor2DerivAt` slot-linearity proof:
+  `Tensor2AddLeft`, `Tensor2SMulLeft`, `Tensor2AddRight`,
+  `Tensor2SMulRight`, and `CovTensor2ExtDifferentiableAt`.
+- Done: proved additivity and homogeneity of `covTensor2DerivAt` in the
+  derivative slot and both tensor slots under those hypotheses:
+  `covTensor2DerivAt_add_deriv`, `covTensor2DerivAt_smul_deriv`,
+  `covTensor2DerivAt_add_left`, `covTensor2DerivAt_smul_left`,
+  `covTensor2DerivAt_add_right`, and `covTensor2DerivAt_smul_right`.
+- Done: discharged `CovTensor2DerivTraceSwapAt` from those hypotheses via
+  `covTensor2DerivTraceSwapAt_of_regular`; for metric variations, the
+  fiberwise bilinearity side conditions are discharged from
+  `TimeDifferentiableAt` by `covTensor2DerivTraceSwapAt_timeDeriv_of_regular`,
+  leaving only the scalar-field differentiability hypothesis
+  `CovTensor2ExtDifferentiableAt (timeDerivAt gt t₀) x`.
+- Done: propagated this to `deltaGamma_innerTrace_eq_of_covTensor2Regular`,
+  eliminating the `hTraceSwap` argument from the inner-trace wrapper.  The
+  remaining input is the genuine trace-commutation predicate
+  `TraceMetricVariationDerivAt`.
+- Done: added satisfiability witnesses for the new regularity and trace
+  predicates in the zero/static case, including
+  `covTensor2DerivTraceSwapAt_zero` and
+  `traceMetricVariationDerivAt_const_timeDeriv`.
+- Blocked for full nonzero `TraceMetricVariationDerivAt`: the closed layer
+  still lacks a spatial analogue of the existing time `metricRaiseDerivAt`
+  machinery, i.e. a smooth raised-basis vector-field derivative theorem for
+  `y ↦ metricDualVectorAt g y ((Module.finBasis ℝ (TM y)).coord i)` and its
+  metric-compatibility cancellation against the Levi-Civita correction terms.
+  The model proof `fderiv_tensorMetricTrace_eq` uses exactly this inverse-raise
+  derivative plus Christoffel cancellation; the closed vocabulary currently
+  only has the time-raise derivative, not the needed spatial moving-frame
+  bridge.
+- Verified: `lake build Poincare.Global.ScalarVariation
+  Poincare.Global.ScalarEvolution` succeeds after these changes.
