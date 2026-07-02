@@ -97,9 +97,10 @@
       "deps": [
         "M1-riemannian-context"
       ],
-      "status": "open",
+      "status": "in_progress",
       "files": [],
-      "difficulty": "hard"
+      "difficulty": "hard",
+      "result": "Uniqueness half DONE 2026-07-01 (commit 5f9d2bc4, gate PASS): Poincare.levi_civita_unique via Koszul/S3 difference-tensor argument on Mathlib CovariantDerivative; IsMetricCompatible (extDerivFun Leibniz), MDiffAtTangentField. Existence half remains (chart-based Christoffel construction)."
     },
     {
       "id": "M2-short-time",
