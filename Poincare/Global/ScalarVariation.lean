@@ -8415,6 +8415,119 @@ def ClosedContractedBianchiAt
   ricciDoubleDivergenceAt g x =
     (1 / 2 : ℝ) * g.laplacianAt (fun y ↦ g.scalarAt y) x
 
+/--
+If the closed Ricci divergence one-form is the half-gradient of scalar
+curvature on a neighborhood of `x`, then tracing its covariant derivative gives
+the frozen closed twice-contracted Bianchi predicate.
+-/
+theorem ClosedContractedBianchiAt.of_tensorDivergenceOneForm_eq_half_extDerivFun_near
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hDiv :
+      ∀ᶠ y in nhds x, ∀ w : TM y,
+        tensorDivergenceOneFormAt g (ricciVariationField g) y w =
+          (1 / 2 : ℝ) *
+            extDerivFun (fun z : M ↦ g.scalarAt z) y w)
+    (hScalar₂ : ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ g.scalarAt y) x)
+    (hScalarExt₂ : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦
+          extDerivFun (fun z : M ↦ g.scalarAt z) y (extend E w y)) x) :
+    ClosedContractedBianchiAt g x := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let f : M → ℝ := fun y ↦ g.scalarAt y
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun j ↦ metricDualVectorAt g x (b.coord j)
+  have hgrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x := by
+    simpa [f] using g.mdifferentiableAt_gradient hScalar₂
+  unfold ClosedContractedBianchiAt ricciDoubleDivergenceAt tensorDoubleDivergenceAt
+  change
+    (∑ j,
+      (extDerivFun
+          (fun y : M ↦
+            tensorDivergenceOneFormAt g (ricciVariationField g) y
+              (extend E (b j) y)) x (sharp j)
+        - tensorDivergenceOneFormAt g (ricciVariationField g) x
+          (g.leviCivita (extend E (b j)) x (sharp j)))) =
+      (1 / 2 : ℝ) * g.laplacianAt f x
+  have hterm : ∀ j,
+      (extDerivFun
+          (fun y : M ↦
+            tensorDivergenceOneFormAt g (ricciVariationField g) y
+              (extend E (b j) y)) x (sharp j)
+        - tensorDivergenceOneFormAt g (ricciVariationField g) x
+          (g.leviCivita (extend E (b j)) x (sharp j))) =
+        (1 / 2 : ℝ) * g.hessianAt f x (sharp j) (b j) := by
+    intro j
+    let F : M → ℝ :=
+      fun y ↦ extDerivFun f y (extend E (b j) y)
+    have hDivField :
+        (fun y : M ↦
+          tensorDivergenceOneFormAt g (ricciVariationField g) y
+            (extend E (b j) y)) =ᶠ[nhds x]
+          fun y : M ↦ (1 / 2 : ℝ) * F y := by
+      filter_upwards [hDiv] with y hy
+      simpa [F, f] using hy (extend E (b j) y)
+    have hDerivCongr :
+        extDerivFun
+            (fun y : M ↦
+              tensorDivergenceOneFormAt g (ricciVariationField g) y
+                (extend E (b j) y)) x (sharp j) =
+          extDerivFun (fun y : M ↦ (1 / 2 : ℝ) * F y) x
+            (sharp j) := by
+      exact congrArg (fun L : TM x →L[ℝ] ℝ ↦ L (sharp j))
+        (CovariantDerivative.extDerivFun_congr hDivField)
+    have hDerivScale :
+        extDerivFun (fun y : M ↦ (1 / 2 : ℝ) * F y) x (sharp j) =
+          (1 / 2 : ℝ) * extDerivFun F x (sharp j) := by
+      have h :=
+        congrArg (fun L : TM x →L[ℝ] ℝ ↦ L (sharp j))
+          (extDerivFun_const_smul_at
+            (n := n) (M := M) (f := F) (x := x)
+            (by simpa [F, f] using hScalarExt₂ (b j)) (1 / 2 : ℝ))
+      simpa [Pi.smul_apply, smul_eq_mul, F] using h
+    have hCompat :
+        extDerivFun F x (sharp j) =
+          g.hessianAt f x (sharp j) (b j) +
+            extDerivFun f x
+              (g.leviCivita (extend E (b j)) x (sharp j)) := by
+      simpa [F] using
+        extDerivFun_extDerivFun_extend_eq_hessianAt_add
+          (g := g) (f := f) (x := x) hgrad (sharp j) (b j)
+    have hCorr :
+        tensorDivergenceOneFormAt g (ricciVariationField g) x
+            (g.leviCivita (extend E (b j)) x (sharp j)) =
+          (1 / 2 : ℝ) * extDerivFun f x
+            (g.leviCivita (extend E (b j)) x (sharp j)) := by
+      simpa [f] using
+        (hDiv.self_of_nhds
+          (g.leviCivita (extend E (b j)) x (sharp j)))
+    rw [hDerivCongr, hDerivScale, hCompat, hCorr]
+    ring
+  calc
+    (∑ j,
+      (extDerivFun
+          (fun y : M ↦
+            tensorDivergenceOneFormAt g (ricciVariationField g) y
+              (extend E (b j) y)) x (sharp j)
+        - tensorDivergenceOneFormAt g (ricciVariationField g) x
+          (g.leviCivita (extend E (b j)) x (sharp j))))
+        = ∑ j, (1 / 2 : ℝ) * g.hessianAt f x (sharp j) (b j) := by
+          exact Finset.sum_congr rfl fun j _ ↦ hterm j
+    _ = (1 / 2 : ℝ) * ∑ j, g.hessianAt f x (sharp j) (b j) := by
+          rw [Finset.mul_sum]
+    _ = (1 / 2 : ℝ) * ∑ j, g.hessianAt f x (b j) (sharp j) := by
+          congr 1
+          exact Finset.sum_congr rfl fun j _ ↦
+            g.hessianAt_symm hScalar₂ hgrad (sharp j) (b j)
+    _ = (1 / 2 : ℝ) * g.laplacianAt f x := by
+          rw [laplacianAt_eq_sum_hessianAt (g := g) (f := f) (x := x)]
+
 /-- Under twice-contracted Bianchi, `div div (-2 Ric) = -ΔR`. -/
 theorem tensorDoubleDivergenceAt_negTwoRicci_eq_neg_laplacian_scalar
     (g : ClosedSmoothRiemannianMetric n M)
