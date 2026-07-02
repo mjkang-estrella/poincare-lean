@@ -510,6 +510,48 @@ theorem modelLeviCivita_contMDiff {k : ℕ∞ω}
   exact hgoal.congr_of_eventuallyEq (Filter.Eventually.of_forall
     fun y ↦ inCoordinates_tangent_bundle_core_model_space x y x y _)
 
+/--
+**Regularity of the model-space Koszul Levi-Civita connection**: once the
+Koszul construction is identified with the Christoffel-form connection, the
+existing model-space smoothness theorem supplies the `C^k` covariant-derivative
+regularity class.
+-/
+theorem leviCivitaConnection_contMDiff {k : ℕ∞ω}
+    (hGd : Differentiable ℝ G) (hGc : ContDiff ℝ (k + 1) G)
+    (hGsymm : ∀ (y : F) (p q : F), G y p q = G y q p)
+    (hGnd : ∀ (y : F) (v : F), (∀ w, G y v w = 0) → v = 0)
+    (b : Π x : F, LinearMap.BilinForm ℝ F)
+    (hb : ∀ x, (b x).Nondegenerate)
+    (hbg : ∀ (x : F) (v w : F), b x v w = G x v w) :
+    CovariantDerivative.ContMDiffCovariantDerivative
+      (leviCivitaConnection G hGsymm hGnd (metric_pairing_mdiff G hGd)) k := by
+  haveI : CovariantDerivative.ContMDiffCovariantDerivative
+      (modelLeviCivita G b hb) k :=
+    modelLeviCivita_contMDiff G hGc b hb hbg
+  constructor
+  constructor
+  intro σ hσ
+  have hmodel :=
+    (CovariantDerivative.ContMDiffCovariantDerivative.contMDiff
+      (cov := modelLeviCivita G b hb) (k := k)).contMDiff
+      (σ := σ) hσ
+  have heq :
+      (fun y : F ↦ TotalSpace.mk' (F →L[ℝ] F)
+        (E := fun y : F ↦ TangentSpace 𝓘(ℝ, F) y →L[ℝ]
+          TangentSpace 𝓘(ℝ, F) y)
+        y ((leviCivitaConnection G hGsymm hGnd
+          (metric_pairing_mdiff G hGd)) σ y)) =
+      (fun y : F ↦ TotalSpace.mk' (F →L[ℝ] F)
+        (E := fun y : F ↦ TangentSpace 𝓘(ℝ, F) y →L[ℝ]
+          TangentSpace 𝓘(ℝ, F) y)
+        y ((modelLeviCivita G b hb) σ y)) := by
+    funext y
+    have hσy : MDiffAt (T% σ) y :=
+      (hσ.contMDiffAt Filter.univ_mem).mdifferentiableAt (by simp)
+    rw [leviCivitaConnection_eq_modelLeviCivita G hGd hGsymm hGnd b hb hbg hσy]
+  rw [heq]
+  exact hmodel
+
 
 /--
 **The Ricci tensor of a smooth metric is symmetric** (model space): the
