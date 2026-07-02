@@ -109,6 +109,54 @@ theorem chartTransportedLeviCivitaHom_apply
         hsupp σ hy v := by
   rfl
 
+theorem chartTransportedLeviCivitaHom_inCoordinates_apply_chart
+    (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (hgpos : ∀ (y : M) (u : TangentSpace I y), u ≠ 0 → 0 < g y u u)
+    (x₀ : M) (hχ0 : ∀ z, 0 ≤ χ z) (hχ1 : ∀ z, χ z ≤ 1)
+    (hsupp : ∀ z, χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z).IsInvertible)
+    (σ : Π y : M, TangentSpace I y) {y : M}
+    (hy : y ∈ (extChartAt I x₀).source) :
+    ContinuousLinearMap.inCoordinates E (TangentSpace I) E (TangentSpace I)
+        x₀ y x₀ y
+        (chartTransportedLeviCivitaHom χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1
+          hsupp σ y) =
+      (chartLeviCivita χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1 hsupp)
+        (chartTransportedLeviCivitaSection (I := I) x₀ σ)
+        (extChartAt I x₀ y) := by
+  have hy_chart : y ∈ (chartAt H x₀).source := by
+    simpa [extChartAt_source] using hy
+  have hround :
+      (mfderiv I 𝓘(ℝ, E) (extChartAt I x₀) y).comp
+        (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+          (Set.range I) (extChartAt I x₀ y)) =
+        ContinuousLinearMap.id ℝ E := by
+    simpa using mfderiv_extChartAt_comp_mfderivWithin_extChartAt_symm'
+      (I := I) hy
+  ext v
+  rw [ContinuousLinearMap.inCoordinates]
+  simp only [chartTransportedLeviCivitaHom]
+  rw [TangentBundle.continuousLinearMapAt_trivializationAt hy_chart,
+    TangentBundle.symmL_trivializationAt hy_chart]
+  let A : TangentSpace I y →L[ℝ] TangentSpace 𝓘(ℝ, E) (extChartAt I x₀ y) :=
+    mfderiv I 𝓘(ℝ, E) (extChartAt I x₀) y
+  let D : TangentSpace 𝓘(ℝ, E) (extChartAt I x₀ y) →L[ℝ] TangentSpace I y :=
+    mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+      (Set.range I) (extChartAt I x₀ y)
+  let C : TangentSpace 𝓘(ℝ, E) (extChartAt I x₀ y) →L[ℝ]
+      TangentSpace 𝓘(ℝ, E) (extChartAt I x₀ y) :=
+    (chartLeviCivita χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1 hsupp)
+      (chartTransportedLeviCivitaSection (I := I) x₀ σ) (extChartAt I x₀ y)
+  change (A.comp D) (C ((A.comp D) v)) = C v
+  have hAD : A.comp D = ContinuousLinearMap.id ℝ E := by
+    simpa [A, D] using hround
+  rw [hAD]
+  change C ((ContinuousLinearMap.id ℝ E) v) = C v
+  rw [ContinuousLinearMap.id_apply]
+
 end ChartHom
 
 end CovariantDerivative
