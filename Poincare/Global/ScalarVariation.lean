@@ -2898,6 +2898,61 @@ def TraceMetricVariationProductRuleAt
                 (LinearMap.toContinuousLinearMap (b.coord i)))))
 
 /--
+Discharge the trace product-rule obligation from its two local analytic pieces:
+termwise differentiation in the transported finite frame, and the summand
+product rule that uses the fixed-vector component regularity of `h`.
+-/
+theorem traceMetricVariationProductRuleAt_of_spatiallyDifferentiable
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (hSpatial : VariationSpatiallyDifferentiableAt h x)
+    (hFrame : ∀ w : TM x,
+      extDerivFun (fun y ↦ traceMetricVariationAt g h y) x w =
+        (letI : FiniteDimensional ℝ (TM x) :=
+            inferInstanceAs (FiniteDimensional ℝ E);
+          let b := Module.finBasis ℝ (TM x);
+          ∑ i, extDerivFun
+            (fun y : M ↦ h y (extend E (b i) y)
+              (metricDualVectorAt g y (b.coord i))) x w))
+    (hSummand :
+      ∀ (w : TM x) (i : Fin (Module.finrank ℝ (TM x))),
+        (letI : FiniteDimensional ℝ (TM x) :=
+            inferInstanceAs (FiniteDimensional ℝ E);
+          letI : T2Space (TM x) := inferInstanceAs (T2Space E);
+          let b := Module.finBasis ℝ (TM x);
+          let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+            fun i ↦ metricDualVectorAt g x (b.coord i);
+          MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ h y (b i) (sharp i)) x →
+          extDerivFun
+            (fun y : M ↦ h y (extend E (b i) y)
+              (metricDualVectorAt g y (b.coord i))) x w =
+            extDerivFun
+              (fun y : M ↦ h y (extend E (b i) y) (extend E (sharp i) y))
+              x w
+              + h x (b i)
+                (spatialMetricDualVectorDerivAt g x w
+                  (LinearMap.toContinuousLinearMap (b.coord i))))) :
+    TraceMetricVariationProductRuleAt g h x := by
+  intro w
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  letI : T2Space (TM x) := inferInstanceAs (T2Space E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hFrame' :
+      extDerivFun (fun y ↦ traceMetricVariationAt g h y) x w =
+        ∑ i, extDerivFun
+          (fun y : M ↦ h y (extend E (b i) y)
+            (metricDualVectorAt g y (b.coord i))) x w := by
+    simpa [b] using hFrame w
+  rw [hFrame']
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  have hcomp :
+      MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ h y (b i) (sharp i)) x :=
+    hSpatial (b i) (sharp i)
+  simpa [b, sharp] using hSummand w i hcomp
+
+/--
 Raised-index cancellation obligation for the trace derivative.
 
 This is the finite-sum algebra left after the derivative of the raised dual
