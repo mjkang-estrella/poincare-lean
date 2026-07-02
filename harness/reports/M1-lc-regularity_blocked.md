@@ -72,6 +72,85 @@ like the right route, but they still need to be connected to the new
 `chartTransportedLeviCivitaValueAt` API and the neighborhood where the blended
 metric equals `chartMetric`.
 
+## M1-lc-regularity-3 update
+
+Added and verified the local metric/neighborhood and bracket/value transport
+lemmas needed for the torsion half of the IF:
+
+```lean
+CovariantDerivative.blendedChartMetric_eq_chartMetric_of_eq_one
+CovariantDerivative.chartMetric_apply_chart
+CovariantDerivative.chartTransportedLeviCivitaSection_apply_chart
+CovariantDerivative.chartTransportedLeviCivitaSection_mlieBracket_apply_chart
+CovariantDerivative.chartTransportedLeviCivitaSection_mdiffAt_apply_chart
+CovariantDerivative.chartTransported_torsionFreeAt
+```
+
+The final theorem in this list is the value-level torsion-free statement for
+the transported chart Levi-Civita values at a chart-source point:
+
+```lean
+chartTransportedLeviCivitaValueAt ... Y hy (X y)
+  - chartTransportedLeviCivitaValueAt ... X hy (Y y)
+    = VectorField.mlieBracket I X Y y
+```
+
+It is proved by pulling differentiable fields to the model chart, using
+`chartLeviCivita_torsionFreeAt`, pushing the identity back through the inverse
+chart derivative, and rewriting the model bracket with
+`chartTransportedLeviCivitaSection_mlieBracket_apply_chart`.
+
+Verification command:
+
+```bash
+lake build Poincare.Global.LeviCivitaTransport
+```
+
+Result: success. The build reported only pre-existing linter warnings from
+imported modules.
+
+Commits:
+
+```text
+a65ca4a5 Expose local blended chart metric equality
+deebafc3 Add chart transported section intertwining
+5e649f40 Expose chart metric source isometry
+8e77e254 Add chart transported bracket intertwining
+a6b4d859 Prove chart transported torsion values
+```
+
+### Remaining obstruction after M1-lc-regularity-3
+
+The IF is not fully discharged. The torsion side is proved for the transported
+values, but the metric-compatibility side still needs a fixed-chart scalar
+derivative transport theorem at arbitrary `y ∈ (extChartAt I x₀).source`.
+
+The current scalar derivative lemmas in `ChartIdentification.lean`, especially
+`extDerivFun_apply_chart` and `extDerivFun_section_eventually_chart`, are
+centered at the differentiation point's own `extChartAt I y`. The metric
+compatibility proof needs the derivative of
+
+```lean
+fun p => g p (Y p) (Z p)
+```
+
+at `y` along `v` to be identified with the model derivative in the fixed
+chart at `x₀`, evaluated at `extChartAt I x₀ y` along
+`mfderiv% (extChartAt I x₀) y v`. After that, the pointwise metric terms can
+use the already proved neighborhood ingredients:
+
+```lean
+CovariantDerivative.blendedChartMetric_eq_chartMetric_of_eq_one
+CovariantDerivative.chartMetric_apply_chart
+CovariantDerivative.chartTransportedLeviCivitaSection_apply_chart
+```
+
+There is still also no bundled local transported
+`CovariantDerivative I E (TangentSpace I)` whose value is
+`chartTransportedLeviCivitaValueAt`; the existing uniqueness bridge
+`chartTransportedLeviCivitaValueAt_eq_closed_of_isLeviCivitaAt` still requires
+such a `covT` (or an equivalent bridge theorem avoiding the bundled operator).
+
 ## Verified progress
 
 Added and verified:
