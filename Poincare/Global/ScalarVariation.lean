@@ -2236,6 +2236,33 @@ theorem variationSpatiallyDifferentiableAt_const_timeDeriv
   variationSpatiallyDifferentiableAt_timeDeriv_of_regular
     (timeVariationSpatiallyDifferentiableAt_const (n := n) (M := M) g t₀ x)
 
+/--
+Spatial derivative of the metric pairing in the closed vocabulary, evaluated on
+canonical extensions of two fixed tangent vectors.
+-/
+noncomputable def spatialMetricDerivAt
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (v p q : TM x) : ℝ :=
+  extDerivFun (fun y : M ↦ g.inner y (extend E p y) (extend E q y)) x v
+
+/--
+Metric compatibility for the closed spatial metric derivative, unwrapped on
+canonical extensions.
+-/
+theorem spatialMetricDerivAt_eq_leviCivita
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (v p q : TM x) :
+    spatialMetricDerivAt g x v p q =
+      g.inner x (g.leviCivita (extend E p) x v) q +
+        g.inner x p (g.leviCivita (extend E q) x v) := by
+  unfold spatialMetricDerivAt
+  have h := g.leviCivita_metricCompatibleAt x
+    (Y := extend E p) (Z := extend E q)
+    (by simpa [MDiffAtTangentField] using (mdifferentiableAt_extend I E p))
+    (by simpa [MDiffAtTangentField] using (mdifferentiableAt_extend I E q))
+    v
+  simpa using h
+
 omit [T2Space M] [IsManifold I ∞ M] in
 theorem tensor2AddLeft_zero :
     Tensor2AddLeft (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) := by
