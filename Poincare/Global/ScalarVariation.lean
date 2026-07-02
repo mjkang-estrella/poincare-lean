@@ -5020,6 +5020,331 @@ theorem covTensor2DerivAt_smul_right
   simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
   ring_nf
 
+theorem covTensor2SecondDerivAt_add_outer
+    {g : ClosedSmoothRiemannianMetric n M}
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (hAddL : Tensor2AddLeft h) (hAddR : Tensor2AddRight h)
+    (u₁ u₂ v p q : TM x) :
+    covTensor2SecondDerivAt g h x (u₁ + u₂) v p q =
+      covTensor2SecondDerivAt g h x u₁ v p q
+        + covTensor2SecondDerivAt g h x u₂ v p q := by
+  unfold covTensor2SecondDerivAt
+  simp only [ContinuousLinearMap.map_add]
+  rw [covTensor2DerivAt_add_deriv
+      (g := g) (h := h) (x := x) hAddL hAddR
+      (g.leviCivita (extend E v) x u₁)
+      (g.leviCivita (extend E v) x u₂) p q]
+  rw [covTensor2DerivAt_add_left
+      (g := g) (h := h) (x := x) hDiff hAddL
+      v (g.leviCivita (extend E p) x u₁)
+      (g.leviCivita (extend E p) x u₂) q]
+  rw [covTensor2DerivAt_add_right
+      (g := g) (h := h) (x := x) hDiff hAddR
+      v p (g.leviCivita (extend E q) x u₁)
+      (g.leviCivita (extend E q) x u₂)]
+  ring
+
+theorem covTensor2SecondDerivAt_smul_outer
+    {g : ClosedSmoothRiemannianMetric n M}
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (hSMulL : Tensor2SMulLeft h) (hSMulR : Tensor2SMulRight h)
+    (c : ℝ) (u v p q : TM x) :
+    covTensor2SecondDerivAt g h x (c • u) v p q =
+      c • covTensor2SecondDerivAt g h x u v p q := by
+  unfold covTensor2SecondDerivAt
+  simp only [ContinuousLinearMap.map_smul]
+  rw [covTensor2DerivAt_smul_deriv
+      (g := g) (h := h) (x := x) hSMulL hSMulR c
+      (g.leviCivita (extend E v) x u) p q]
+  rw [covTensor2DerivAt_smul_left
+      (g := g) (h := h) (x := x) hDiff hSMulL c
+      v (g.leviCivita (extend E p) x u) q]
+  rw [covTensor2DerivAt_smul_right
+      (g := g) (h := h) (x := x) hDiff hSMulR c
+      v p (g.leviCivita (extend E q) x u)]
+  simp only [smul_eq_mul]
+  ring
+
+theorem covTensor2SecondDerivAt_add_inner
+    {g : ClosedSmoothRiemannianMetric n M}
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hSecond : CovTensor2DerivExtDifferentiableAt g h x)
+    (hAddL : Tensor2AddLeft h) (hAddR : Tensor2AddRight h)
+    (u v₁ v₂ p q : TM x) :
+    covTensor2SecondDerivAt g h x u (v₁ + v₂) p q =
+      covTensor2SecondDerivAt g h x u v₁ p q
+        + covTensor2SecondDerivAt g h x u v₂ p q := by
+  unfold covTensor2SecondDerivAt
+  have hfun :
+      (fun y : M ↦ covTensor2DerivAt g h y
+          (extend E (v₁ + v₂) y) (extend E p y) (extend E q y)) =
+        (fun y : M ↦ covTensor2DerivAt g h y
+          (extend E v₁ y) (extend E p y) (extend E q y)) +
+        fun y : M ↦ covTensor2DerivAt g h y
+          (extend E v₂ y) (extend E p y) (extend E q y) := by
+    funext y
+    rw [extend_tangent_add (x := x) v₁ v₂]
+    exact covTensor2DerivAt_add_deriv
+      (g := g) (h := h) (x := y) hAddL hAddR
+      (extend E v₁ y) (extend E v₂ y) (extend E p y) (extend E q y)
+  rw [hfun]
+  rw [extDerivFun_add (hSecond v₁ p q) (hSecond v₂ p q)]
+  have hΓv :
+      g.leviCivita (extend E (v₁ + v₂)) x u =
+        g.leviCivita (extend E v₁) x u
+          + g.leviCivita (extend E v₂) x u := by
+    rw [extend_tangent_add (x := x) v₁ v₂]
+    have hadd := g.leviCivita.isCovariantDerivativeOnUniv.add
+      (by simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E v₁))
+      (by simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E v₂))
+    simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L u) hadd
+  rw [hΓv]
+  rw [covTensor2DerivAt_add_deriv
+      (g := g) (h := h) (x := x) hAddL hAddR
+      (g.leviCivita (extend E v₁) x u)
+      (g.leviCivita (extend E v₂) x u) p q]
+  rw [covTensor2DerivAt_add_deriv
+      (g := g) (h := h) (x := x) hAddL hAddR
+      v₁ v₂ (g.leviCivita (extend E p) x u) q]
+  rw [covTensor2DerivAt_add_deriv
+      (g := g) (h := h) (x := x) hAddL hAddR
+      v₁ v₂ p (g.leviCivita (extend E q) x u)]
+  simp only [ContinuousLinearMap.add_apply]
+  ring
+
+theorem covTensor2SecondDerivAt_smul_inner
+    {g : ClosedSmoothRiemannianMetric n M}
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hSecond : CovTensor2DerivExtDifferentiableAt g h x)
+    (hSMulL : Tensor2SMulLeft h) (hSMulR : Tensor2SMulRight h)
+    (c : ℝ) (u v p q : TM x) :
+    covTensor2SecondDerivAt g h x u (c • v) p q =
+      c • covTensor2SecondDerivAt g h x u v p q := by
+  unfold covTensor2SecondDerivAt
+  have hfun :
+      (fun y : M ↦ covTensor2DerivAt g h y
+          (extend E (c • v) y) (extend E p y) (extend E q y)) =
+        c • (fun y : M ↦ covTensor2DerivAt g h y
+          (extend E v y) (extend E p y) (extend E q y)) := by
+    funext y
+    rw [extend_tangent_smul (x := x) c v]
+    exact covTensor2DerivAt_smul_deriv
+      (g := g) (h := h) (x := y) hSMulL hSMulR
+      c (extend E v y) (extend E p y) (extend E q y)
+  rw [hfun]
+  rw [extDerivFun_const_smul_at (hSecond v p q) c]
+  have hΓv :
+      g.leviCivita (extend E (c • v)) x u =
+        c • g.leviCivita (extend E v) x u := by
+    rw [extend_tangent_smul (x := x) c v]
+    have hsmul := g.leviCivita.isCovariantDerivativeOnUniv.smul_const c
+      (by simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E v))
+    simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L u) hsmul
+  rw [hΓv]
+  rw [covTensor2DerivAt_smul_deriv
+      (g := g) (h := h) (x := x) hSMulL hSMulR c
+      (g.leviCivita (extend E v) x u) p q]
+  rw [covTensor2DerivAt_smul_deriv
+      (g := g) (h := h) (x := x) hSMulL hSMulR c
+      v (g.leviCivita (extend E p) x u) q]
+  rw [covTensor2DerivAt_smul_deriv
+      (g := g) (h := h) (x := x) hSMulL hSMulR c
+      v p (g.leviCivita (extend E q) x u)]
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  ring
+
+theorem covTensor2SecondDerivAt_add_left
+    {g : ClosedSmoothRiemannianMetric n M}
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hSecond : CovTensor2DerivExtDifferentiableAt g h x)
+    (hDiff : ∀ y : M, CovTensor2ExtDifferentiableAt h y)
+    (hAddL : Tensor2AddLeft h) (hAddR : Tensor2AddRight h)
+    (u v p₁ p₂ q : TM x) :
+    covTensor2SecondDerivAt g h x u v (p₁ + p₂) q =
+      covTensor2SecondDerivAt g h x u v p₁ q
+        + covTensor2SecondDerivAt g h x u v p₂ q := by
+  unfold covTensor2SecondDerivAt
+  have hfun :
+      (fun y : M ↦ covTensor2DerivAt g h y
+          (extend E v y) (extend E (p₁ + p₂) y) (extend E q y)) =
+        (fun y : M ↦ covTensor2DerivAt g h y
+          (extend E v y) (extend E p₁ y) (extend E q y)) +
+        fun y : M ↦ covTensor2DerivAt g h y
+          (extend E v y) (extend E p₂ y) (extend E q y) := by
+    funext y
+    rw [extend_tangent_add (x := x) p₁ p₂]
+    exact covTensor2DerivAt_add_left
+      (g := g) (h := h) (x := y) (hDiff y) hAddL
+      (extend E v y) (extend E p₁ y) (extend E p₂ y)
+      (extend E q y)
+  rw [hfun]
+  rw [extDerivFun_add (hSecond v p₁ q) (hSecond v p₂ q)]
+  have hΓp :
+      g.leviCivita (extend E (p₁ + p₂)) x u =
+        g.leviCivita (extend E p₁) x u
+          + g.leviCivita (extend E p₂) x u := by
+    rw [extend_tangent_add (x := x) p₁ p₂]
+    have hadd := g.leviCivita.isCovariantDerivativeOnUniv.add
+      (by simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E p₁))
+      (by simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E p₂))
+    simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L u) hadd
+  rw [hΓp]
+  rw [covTensor2DerivAt_add_left
+      (g := g) (h := h) (x := x) (hDiff x) hAddL
+      (g.leviCivita (extend E v) x u) p₁ p₂ q]
+  rw [covTensor2DerivAt_add_left
+      (g := g) (h := h) (x := x) (hDiff x) hAddL
+      v (g.leviCivita (extend E p₁) x u)
+      (g.leviCivita (extend E p₂) x u) q]
+  rw [covTensor2DerivAt_add_left
+      (g := g) (h := h) (x := x) (hDiff x) hAddL
+      v p₁ p₂ (g.leviCivita (extend E q) x u)]
+  simp only [ContinuousLinearMap.add_apply]
+  ring
+
+theorem covTensor2SecondDerivAt_smul_left
+    {g : ClosedSmoothRiemannianMetric n M}
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hSecond : CovTensor2DerivExtDifferentiableAt g h x)
+    (hDiff : ∀ y : M, CovTensor2ExtDifferentiableAt h y)
+    (hSMulL : Tensor2SMulLeft h)
+    (c : ℝ) (u v p q : TM x) :
+    covTensor2SecondDerivAt g h x u v (c • p) q =
+      c • covTensor2SecondDerivAt g h x u v p q := by
+  unfold covTensor2SecondDerivAt
+  have hfun :
+      (fun y : M ↦ covTensor2DerivAt g h y
+          (extend E v y) (extend E (c • p) y) (extend E q y)) =
+        c • (fun y : M ↦ covTensor2DerivAt g h y
+          (extend E v y) (extend E p y) (extend E q y)) := by
+    funext y
+    rw [extend_tangent_smul (x := x) c p]
+    exact covTensor2DerivAt_smul_left
+      (g := g) (h := h) (x := y) (hDiff y) hSMulL
+      c (extend E v y) (extend E p y) (extend E q y)
+  rw [hfun]
+  rw [extDerivFun_const_smul_at (hSecond v p q) c]
+  have hΓp :
+      g.leviCivita (extend E (c • p)) x u =
+        c • g.leviCivita (extend E p) x u := by
+    rw [extend_tangent_smul (x := x) c p]
+    have hsmul := g.leviCivita.isCovariantDerivativeOnUniv.smul_const c
+      (by simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E p))
+    simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L u) hsmul
+  rw [hΓp]
+  rw [covTensor2DerivAt_smul_left
+      (g := g) (h := h) (x := x) (hDiff x) hSMulL
+      c (g.leviCivita (extend E v) x u) p q]
+  rw [covTensor2DerivAt_smul_left
+      (g := g) (h := h) (x := x) (hDiff x) hSMulL
+      c v (g.leviCivita (extend E p) x u) q]
+  rw [covTensor2DerivAt_smul_left
+      (g := g) (h := h) (x := x) (hDiff x) hSMulL
+      c v p (g.leviCivita (extend E q) x u)]
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  ring
+
+theorem covTensor2SecondDerivAt_add_right
+    {g : ClosedSmoothRiemannianMetric n M}
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hSecond : CovTensor2DerivExtDifferentiableAt g h x)
+    (hDiff : ∀ y : M, CovTensor2ExtDifferentiableAt h y)
+    (hAddL : Tensor2AddLeft h) (hAddR : Tensor2AddRight h)
+    (u v p q₁ q₂ : TM x) :
+    covTensor2SecondDerivAt g h x u v p (q₁ + q₂) =
+      covTensor2SecondDerivAt g h x u v p q₁
+        + covTensor2SecondDerivAt g h x u v p q₂ := by
+  unfold covTensor2SecondDerivAt
+  have hfun :
+      (fun y : M ↦ covTensor2DerivAt g h y
+          (extend E v y) (extend E p y) (extend E (q₁ + q₂) y)) =
+        (fun y : M ↦ covTensor2DerivAt g h y
+          (extend E v y) (extend E p y) (extend E q₁ y)) +
+        fun y : M ↦ covTensor2DerivAt g h y
+          (extend E v y) (extend E p y) (extend E q₂ y) := by
+    funext y
+    rw [extend_tangent_add (x := x) q₁ q₂]
+    exact covTensor2DerivAt_add_right
+      (g := g) (h := h) (x := y) (hDiff y) hAddR
+      (extend E v y) (extend E p y) (extend E q₁ y) (extend E q₂ y)
+  rw [hfun]
+  rw [extDerivFun_add (hSecond v p q₁) (hSecond v p q₂)]
+  have hΓq :
+      g.leviCivita (extend E (q₁ + q₂)) x u =
+        g.leviCivita (extend E q₁) x u
+          + g.leviCivita (extend E q₂) x u := by
+    rw [extend_tangent_add (x := x) q₁ q₂]
+    have hadd := g.leviCivita.isCovariantDerivativeOnUniv.add
+      (by simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E q₁))
+      (by simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E q₂))
+    simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L u) hadd
+  rw [hΓq]
+  rw [covTensor2DerivAt_add_right
+      (g := g) (h := h) (x := x) (hDiff x) hAddR
+      (g.leviCivita (extend E v) x u) p q₁ q₂]
+  rw [covTensor2DerivAt_add_right
+      (g := g) (h := h) (x := x) (hDiff x) hAddR
+      v (g.leviCivita (extend E p) x u) q₁ q₂]
+  rw [covTensor2DerivAt_add_right
+      (g := g) (h := h) (x := x) (hDiff x) hAddR
+      v p (g.leviCivita (extend E q₁) x u)
+      (g.leviCivita (extend E q₂) x u)]
+  simp only [ContinuousLinearMap.add_apply]
+  ring
+
+theorem covTensor2SecondDerivAt_smul_right
+    {g : ClosedSmoothRiemannianMetric n M}
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hSecond : CovTensor2DerivExtDifferentiableAt g h x)
+    (hDiff : ∀ y : M, CovTensor2ExtDifferentiableAt h y)
+    (hSMulR : Tensor2SMulRight h)
+    (c : ℝ) (u v p q : TM x) :
+    covTensor2SecondDerivAt g h x u v p (c • q) =
+      c • covTensor2SecondDerivAt g h x u v p q := by
+  unfold covTensor2SecondDerivAt
+  have hfun :
+      (fun y : M ↦ covTensor2DerivAt g h y
+          (extend E v y) (extend E p y) (extend E (c • q) y)) =
+        c • (fun y : M ↦ covTensor2DerivAt g h y
+          (extend E v y) (extend E p y) (extend E q y)) := by
+    funext y
+    rw [extend_tangent_smul (x := x) c q]
+    exact covTensor2DerivAt_smul_right
+      (g := g) (h := h) (x := y) (hDiff y) hSMulR
+      c (extend E v y) (extend E p y) (extend E q y)
+  rw [hfun]
+  rw [extDerivFun_const_smul_at (hSecond v p q) c]
+  have hΓq :
+      g.leviCivita (extend E (c • q)) x u =
+        c • g.leviCivita (extend E q) x u := by
+    rw [extend_tangent_smul (x := x) c q]
+    have hsmul := g.leviCivita.isCovariantDerivativeOnUniv.smul_const c
+      (by simpa [MDiffAtTangentField] using
+        (mdifferentiableAt_extend I E q))
+    simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L u) hsmul
+  rw [hΓq]
+  rw [covTensor2DerivAt_smul_right
+      (g := g) (h := h) (x := x) (hDiff x) hSMulR
+      c (g.leviCivita (extend E v) x u) p q]
+  rw [covTensor2DerivAt_smul_right
+      (g := g) (h := h) (x := x) (hDiff x) hSMulR
+      c v (g.leviCivita (extend E p) x u) q]
+  rw [covTensor2DerivAt_smul_right
+      (g := g) (h := h) (x := x) (hDiff x) hSMulR
+      c v p (g.leviCivita (extend E q) x u)]
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  ring
+
 private theorem covTensor2DerivAt_sum_right
     {ι : Type} [Fintype ι] [DecidableEq ι]
     {g : ClosedSmoothRiemannianMetric n M}
