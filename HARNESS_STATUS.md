@@ -38,15 +38,23 @@ and blocked-decompositions.
 - Ricci flow statement: `IsClosedRicciFlowSolutionAt` + `of_metric`
   constructor + Ricci-flat static instance (`Global/RicciFlow.lean`).
 
-### Levi-Civita regularity chain (ACTIVE GOAL)
-Target: `closedLeviCivitaConnection_contMDiff`, discharging the carried
-hypothesis in `Global/Curvature.lean`. Links done (all gate PASS):
-model-space regularity at any order (`ModelChristoffel.lean`); chart-transport
-API; uniqueness bridges (bundled + pointwise); transported torsion-freeness;
-transported metric compatibility; local identification
-`chartTransportedLeviCivitaValueAt_eq_closed_of_eventually_eq_one`
-(`Global/LeviCivitaTransport.lean`). In flight: local regularity composition +
-gluing (task `M1-lc-regularity-5`).
+### Levi-Civita regularity chain (GOAL ACHIEVED 2026-07-01)
+`closedLeviCivitaConnection_contMDiff` proven and registered as the instance
+`leviCivita_contMDiff` (`Global/Curvature.lean`), so the curvature layer is
+hypothesis-free (`ricciAt_symm'` demonstration). Full chain, every link gate
+PASS: model-space regularity at any order (`ModelChristoffel.lean`);
+chart-transport API + uniqueness bridges; transported torsion-freeness and
+metric compatibility; local identification on cutoff-one neighborhoods;
+chart-side hom smoothness; hom-bundle `EventuallyEq` lift; bump-localization +
+germ locality + `inCoordinates` gluing (`Global/LeviCivitaRegularity.lean`,
+`Global/LeviCivitaTransport.lean`).
+
+### Tier M3 — evolution equations (opened)
+- Hamilton scalar evolution stated on closed manifolds:
+  `SatisfiesHamiltonScalarEvolutionAt` + unfolding iff; proven static-flat
+  sanity instance (`hamilton_scalar_evolution_static_flat`); documented
+  unproven port target `HamiltonScalarEvolutionProgram`
+  (`Global/ScalarEvolution.lean`).
 
 ### Tier L — single-chart model
 - Schur lemma completed: `schur_fderiv_coordScalar_eq_zero_of_einstein_field`
