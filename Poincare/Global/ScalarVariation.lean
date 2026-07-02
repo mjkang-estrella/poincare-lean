@@ -936,6 +936,38 @@ theorem ricciVariation_eq_deltaGamma_contractions'
   ricciVariation_eq_deltaGamma_contractions (gt := gt) (t₀ := t₀) (x := x)
     u w (fun a ↦ curvatureVariation_hasDerivAt_of_metricFlowRegularAt hreg a u w)
 
+theorem deriv_scalarAt_eq_trace_deltaRicciAt_of_metricFlowRegularAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀) :
+    deriv (fun t ↦ (gt t).scalarAt x) t₀ =
+      let hRic : ∀ u w : TM x,
+          HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+            (deltaRicciAt gt t₀ x u w) t₀ :=
+        fun u w ↦ ricciVariation_eq_deltaGamma_contractions' hreg u w
+      LinearMap.trace ℝ (TM x)
+        (((raise'.comp ((gt t₀).ricciDualContinuousAt x) +
+            ((gt t₀).metricRaiseContinuousAt x).comp
+              (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+                (gt := gt) (t₀ := t₀) (x := x)
+                (deltaRicciAt gt t₀ x) hRic)) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x) := by
+  let hRic : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+        (deltaRicciAt gt t₀ x u w) t₀ :=
+    fun u w ↦ ricciVariation_eq_deltaGamma_contractions' hreg u w
+  have hA :=
+    ClosedSmoothRiemannianMetric.ricciEndoHasDerivAt_of_ricciBilinearHasDerivAt
+      (gt := gt) (t₀ := t₀) (x := x)
+      (δRic := deltaRicciAt gt t₀ x) (raise' := raise')
+      hRaise hRic
+  simpa [hRic] using
+    (ClosedSmoothRiemannianMetric.deriv_scalarAt_eq_trace_of_ricciEndoHasDerivAt
+      (gt := gt) (t₀ := t₀) (x := x) hA)
+
 /-- Raise a cotangent vector with the metric at a fixed point. -/
 noncomputable def metricDualVectorAt
     (g : ClosedSmoothRiemannianMetric n M) (x : M)
