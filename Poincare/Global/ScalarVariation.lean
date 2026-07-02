@@ -9961,6 +9961,93 @@ theorem extDerivFun_extDerivFun_extend_corrected_symm
   rw [huv, hvu, hsymm]
   ring
 
+/-- Scalar connection-entry field `g(∇_w z, q)` in canonical extension slots. -/
+noncomputable def closedConnectionEntryFieldAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    {x : M} (w z q : TM x) : M → ℝ :=
+  fun y : M ↦
+    g.inner y
+      (g.leviCivita (extend E z) y (extend E w y))
+      (extend E q y)
+
+/-- The scalar connection entries used in the mixed second-connection block are `C²`. -/
+theorem closedConnectionEntry_contMDiffAt_two
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (w z q : TM x) :
+    ContMDiffAt I 𝓘(ℝ) 2 (closedConnectionEntryFieldAt g w z q) x := by
+  let W : Π y : M, TM y := extend E w
+  let Z : Π y : M, TM y := extend E z
+  let Q : Π y : M, TM y := extend E q
+  have hW2 : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% W) x := by
+    simpa [W] using (FiberBundle.contMDiffAt_extend' (k := 2) I E w)
+  have hZ3 : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 3 (T% Z) x := by
+    simpa [Z] using (FiberBundle.contMDiffAt_extend' (k := 3) I E z)
+  have hQ2 : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% Q) x := by
+    simpa [Q] using (FiberBundle.contMDiffAt_extend' (k := 2) I E q)
+  haveI : CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 2 :=
+    ClosedSmoothRiemannianMetric.leviCivita_contMDiff₂ g
+  have hA :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2
+        (T% (fun y : M ↦ g.leviCivita Z y (W y))) x :=
+    CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_two
+      (cov := g.leviCivita) hZ3 hW2
+  exact g.metric_pairing_contMDiffAt_two
+    (by simpa [W, Z] using hA) hQ2
+
+/--
+Corrected second directional derivative of a scalar field in canonical
+extension directions.  This is the scalar `∂∂` block after subtracting the
+first-order connection correction from the moving inner direction.
+-/
+noncomputable def closedSecondDirectionalEntryAt
+    (g : ClosedSmoothRiemannianMetric n M) (f : M → ℝ)
+    (x : M) (v u : TM x) : ℝ :=
+  extDerivFun (fun y : M ↦ extDerivFun f y (extend E u y)) x v
+    - extDerivFun f x (g.leviCivita (extend E u) x v)
+
+/-- Closed Schwarz symmetry for corrected scalar second directional entries. -/
+theorem closedSecondDirectionalEntryAt_comm
+    (g : ClosedSmoothRiemannianMetric n M) {f : M → ℝ} {x : M}
+    (hf : ContMDiffAt I 𝓘(ℝ) 2 f x) (u v : TM x) :
+    closedSecondDirectionalEntryAt g f x v u =
+      closedSecondDirectionalEntryAt g f x u v := by
+  simpa [closedSecondDirectionalEntryAt] using
+    (extDerivFun_extDerivFun_extend_corrected_symm
+      (g := g) (f := f) (x := x) hf u v).symm
+
+/-- Closed Schwarz symmetry for scalar connection entries `g(∇_w z, q)`. -/
+theorem closedConnectionEntry_secondDirectional_comm
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (w z q u v : TM x) :
+    closedSecondDirectionalEntryAt g (closedConnectionEntryFieldAt g w z q) x v u =
+      closedSecondDirectionalEntryAt g (closedConnectionEntryFieldAt g w z q) x u v :=
+  closedSecondDirectionalEntryAt_comm (g := g)
+    (closedConnectionEntry_contMDiffAt_two (g := g) w z q) u v
+
+/--
+The three raw mixed second-connection scalar-entry pairs in the cyclic
+second-Bianchi expansion cancel by closed Schwarz symmetry.
+-/
+theorem closedConnectionEntry_mixed_second_cyclic_cancel
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u v w z q : TM x) :
+    closedSecondDirectionalEntryAt g (closedConnectionEntryFieldAt g w z q) x v u
+      - closedSecondDirectionalEntryAt g (closedConnectionEntryFieldAt g w z q) x u v
+      + closedSecondDirectionalEntryAt g (closedConnectionEntryFieldAt g v z q) x u w
+      - closedSecondDirectionalEntryAt g (closedConnectionEntryFieldAt g v z q) x w u
+      + closedSecondDirectionalEntryAt g (closedConnectionEntryFieldAt g u z q) x w v
+      - closedSecondDirectionalEntryAt g (closedConnectionEntryFieldAt g u z q) x v w = 0 := by
+  rw [closedConnectionEntry_secondDirectional_comm
+      (g := g) (w := w) (z := z) (q := q) (u := u) (v := v),
+    closedConnectionEntry_secondDirectional_comm
+      (g := g) (w := v) (z := z) (q := q) (u := w) (v := u),
+    closedConnectionEntry_secondDirectional_comm
+      (g := g) (w := u) (z := z) (q := q) (u := v) (v := w)]
+  ring
+
 /--
 Hessian identification for the first-slot trace field from the local
 first-order identity and scalar trace C² regularity.
