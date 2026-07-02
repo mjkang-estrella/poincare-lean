@@ -5506,6 +5506,112 @@ theorem deltaGamma_koszul_extDerivFun
           - covTensor2SecondDerivExpansionAt g H x u z v w := hright
 
 /--
+Closed Koszul formula for the covariant derivative of the connection
+variation.
+
+This is the differentiated `deltaGamma_koszul` identity solved for
+`2 * g((∇_u δΓ)(v,w), z)`.  The right side is the three-term second-derivative
+Koszul form, with the first-order slot corrections from differentiating the
+metric-paired `δΓ` entry subtracted explicitly.
+-/
+theorem covDeltaGamma_koszul
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hNear :
+      ∀ᶠ y in nhds x,
+        MetricFlowRegularAt gt t₀ y ∧
+        (∀ a b c : TM y,
+          HasDerivAt
+            (fun t ↦
+              extDerivFun
+                (fun z : M ↦ (gt t).inner z (extend E b z) (extend E c z))
+                y a)
+            (extDerivFun
+              (fun z : M ↦ timeDerivAt gt t₀ z (extend E b z) (extend E c z))
+              y a) t₀))
+    (hBridge : DeltaGammaEntryDerivativeBridgeAt gt t₀ x)
+    (hSecond :
+      CovTensor2DerivExtDifferentiableAt
+        (gt t₀) (timeDerivAt gt t₀) x)
+    (u v w z : TM x) :
+    2 * (gt t₀).inner x (covDeltaGammaDerivAt gt t₀ x u v w) z =
+        covTensor2SecondDerivExpansionAt
+            (gt t₀) (timeDerivAt gt t₀) x u v w z
+          + covTensor2SecondDerivExpansionAt
+            (gt t₀) (timeDerivAt gt t₀) x u w v z
+          - covTensor2SecondDerivExpansionAt
+            (gt t₀) (timeDerivAt gt t₀) x u z v w
+          - 2 *
+            ((gt t₀).inner x
+              (deltaGammaAt gt t₀ x
+                ((gt t₀).leviCivita (extend E v) x u) w) z
+            + (gt t₀).inner x
+              (deltaGammaAt gt t₀ x v
+                ((gt t₀).leviCivita (extend E w) x u)) z
+            + (gt t₀).inner x
+              (deltaGammaAt gt t₀ x v w)
+              ((gt t₀).leviCivita (extend E z) x u)) := by
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+  let main : ℝ := g.inner x (covDeltaGammaDerivAt gt t₀ x u v w) z
+  let c₁ : ℝ :=
+    g.inner x (deltaGammaAt gt t₀ x (g.leviCivita (extend E v) x u) w) z
+  let c₂ : ℝ :=
+    g.inner x (deltaGammaAt gt t₀ x v (g.leviCivita (extend E w) x u)) z
+  let c₃ : ℝ :=
+    g.inner x (deltaGammaAt gt t₀ x v w)
+      (g.leviCivita (extend E z) x u)
+  let corr : ℝ := c₁ + c₂ + c₃
+  let rhs : ℝ :=
+    covTensor2SecondDerivExpansionAt g H x u v w z
+      + covTensor2SecondDerivExpansionAt g H x u w v z
+      - covTensor2SecondDerivExpansionAt g H x u z v w
+  have hdiff :
+      2 * (main + corr) = rhs := by
+    have hraw :
+        2 * (main + c₁ + c₂ + c₃) = rhs := by
+      simpa [main, c₁, c₂, c₃, rhs, g, H] using
+        deltaGamma_koszul_extDerivFun
+          (gt := gt) (t₀ := t₀) (x := x)
+          hgt hNear hBridge hSecond u v w z
+    change 2 * (main + (c₁ + c₂ + c₃)) = rhs
+    linarith
+  have hfinal : 2 * main = rhs - 2 * corr := by
+    linarith
+  simpa [main, corr, c₁, c₂, c₃, rhs, g, H] using hfinal
+
+/-- Static sanity witness: the covariant `δΓ` Koszul formula is zero for a
+time-constant metric family. -/
+theorem covDeltaGamma_koszul_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (u v w z : TM x) :
+    2 * g.inner x (covDeltaGammaDerivAt (fun _ : ℝ ↦ g) t₀ x u v w) z =
+        covTensor2SecondDerivExpansionAt
+            g (timeDerivAt (fun _ : ℝ ↦ g) t₀) x u v w z
+          + covTensor2SecondDerivExpansionAt
+            g (timeDerivAt (fun _ : ℝ ↦ g) t₀) x u w v z
+          - covTensor2SecondDerivExpansionAt
+            g (timeDerivAt (fun _ : ℝ ↦ g) t₀) x u z v w
+          - 2 *
+            (g.inner x
+              (deltaGammaAt (fun _ : ℝ ↦ g) t₀ x
+                (g.leviCivita (extend E v) x u) w) z
+            + g.inner x
+              (deltaGammaAt (fun _ : ℝ ↦ g) t₀ x v
+                (g.leviCivita (extend E w) x u)) z
+            + g.inner x
+              (deltaGammaAt (fun _ : ℝ ↦ g) t₀ x v w)
+              (g.leviCivita (extend E z) x u)) := by
+  have hH :
+      timeDerivAt (fun _ : ℝ ↦ g) t₀ =
+        (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) := by
+    funext y p q
+    simp
+  simp [hH]
+
+/--
 The divergence one-form of a raw metric variation:
 `(div h)(w) = Σᵢ (∇_{♯eⁱ}h)(eᵢ,w)`.
 -/
