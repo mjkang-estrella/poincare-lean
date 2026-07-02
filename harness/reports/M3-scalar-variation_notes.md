@@ -127,3 +127,27 @@ Status from task `M3-scalar-variation-7`:
   not curvature commutation facts.
 - Verified: `lake build Poincare.Global.ScalarVariation` succeeds after these
   lemmas.
+
+Status from task `M3-scalar-variation-8`:
+
+- Done: added verified fiberwise linear-algebra theorem
+  `sum_metricDualVectorAt_contraction_swap`, the closed `hTraceSwap` adapter,
+  and the exact obligation predicate `CovTensor2DerivTraceSwapAt`.
+  The adapter proves the trace swap from slot-linearity of
+  `covTensor2DerivAt`; discharging that slot-linearity from spatial
+  differentiability of the metric variation remains analytic regularity work.
+- Done: named the exact `hTraceDeriv` obligation as
+  `TraceMetricVariationDerivAt`, with verified zero sanity lemma
+  `traceMetricVariationDerivAt_zero`.  The fully analytic proof still needs
+  a smooth-varying-frame/metric-compatibility bridge for differentiating
+  `traceMetricVariationAt`.
+- Done: added `deltaGamma_innerTrace_eq'`, restating the inner trace using
+  the named trace regularity predicates.
+- Done: added divergence assembly predicates
+  `DeltaGammaDivergenceTraceAssemblyAt` and
+  `DeltaGammaContractionTraceAssemblyAt`, proved
+  `deltaRicciAt_raised_trace_eq_doubleDivergence_sub_laplacian`, proved
+  `hDeltaGammaTrace`, and added final wrapper
+  `scalarVariation_lichnerowicz` under those two exact divergence sub-identities.
+- Verified: `lake build Poincare.Global.ScalarVariation` succeeds after the
+  divergence assembly and final wrapper.
