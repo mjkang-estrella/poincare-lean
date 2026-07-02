@@ -2107,6 +2107,21 @@ theorem traceMetricVariationAt_ricci
   rw [coord_eq_inner_metricDualVectorAt]
   rw [g.inner_ricciEndoAt]
 
+theorem extDerivFun_traceMetricVariationAt_ricci
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (w : TM x) :
+    extDerivFun
+        (fun y : M ↦ traceMetricVariationAt g (ricciVariationField g) y)
+        x w =
+      extDerivFun (fun y : M ↦ g.scalarAt y) x w := by
+  have hfun :
+      (fun y : M ↦ traceMetricVariationAt g (ricciVariationField g) y) =
+        fun y : M ↦ g.scalarAt y := by
+    funext y
+    exact traceMetricVariationAt_ricci g y
+  rw [hfun]
+
 /-- Tracing `-2 Ric` gives `-2 R`. -/
 theorem traceMetricVariationAt_negTwoRicci
     (g : ClosedSmoothRiemannianMetric n M)
@@ -4568,6 +4583,162 @@ theorem covTensor2DerivAt_timeDeriv_symm
   rw [timeDerivAt_symm gt t₀ x p (g.leviCivita (extend E q) x v)]
   ring
 
+theorem covTensor2DerivAt_ricciVariationField_symm
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v p q : TM x) :
+    covTensor2DerivAt g (ricciVariationField g) x v p q =
+      covTensor2DerivAt g (ricciVariationField g) x v q p := by
+  unfold covTensor2DerivAt ricciVariationField
+  have hfun :
+      (fun y : M ↦ g.ricciAt y (extend E p y) (extend E q y)) =
+        fun y : M ↦ g.ricciAt y (extend E q y) (extend E p y) := by
+    funext y
+    exact g.ricciAt_symm y (extend E p y) (extend E q y)
+  rw [hfun]
+  rw [g.ricciAt_symm x (g.leviCivita (extend E p) x v) q]
+  rw [g.ricciAt_symm x p (g.leviCivita (extend E q) x v)]
+  ring
+
+/--
+Covariant derivative of the closed curvature operator in anchored
+extend-frame slots.
+
+This is the intrinsic closed analogue of the model-space `covCurvDeriv`.
+The remaining native Bianchi work is to identify this expression with the
+extend-frame derivative expansion and prove its cyclic second-Bianchi sum.
+-/
+noncomputable def closedCurvatureCovDerivAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v u w z : TM x) : TM x :=
+  let R : ∀ y : M, TM y :=
+    fun y ↦
+      CovariantDerivative.curvatureOp g.leviCivita
+        (extend E u) (extend E w) (extend E z) y
+  g.leviCivita R x v
+    - CovariantDerivative.curvatureOp g.leviCivita
+        (extend E (g.leviCivita (extend E u) x v))
+        (extend E w) (extend E z) x
+    - CovariantDerivative.curvatureOp g.leviCivita
+        (extend E u)
+        (extend E (g.leviCivita (extend E w) x v))
+        (extend E z) x
+    - CovariantDerivative.curvatureOp g.leviCivita
+        (extend E u) (extend E w)
+        (extend E (g.leviCivita (extend E z) x v)) x
+
+/-- Trace of the closed curvature covariant derivative giving `∇ Ric`. -/
+noncomputable def closedCovRicciDerivAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v u w : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ i, (Module.finBasis ℝ (TM x)).coord i
+    (closedCurvatureCovDerivAt g x v
+      ((Module.finBasis ℝ (TM x)) i) u w)
+
+/-- Divergence trace of the closed curvature covariant derivative. -/
+noncomputable def closedCurvatureDivergenceAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w z : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ i, (Module.finBasis ℝ (TM x)).coord i
+    (closedCurvatureCovDerivAt g x
+      ((Module.finBasis ℝ (TM x)) i) u w z)
+
+/-- Model-shaped Ricci divergence trace, using raised dual basis vectors. -/
+noncomputable def closedRicciDivergenceTraceAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (w : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  ∑ i, closedCovRicciDerivAt g x
+    (metricDualVectorAt g x (b.coord i)) w (b i)
+
+/-- Model-shaped derivative of the scalar Ricci trace. -/
+noncomputable def closedScalarContractionDerivTraceAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (w : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  ∑ i, closedCovRicciDerivAt g x w
+    (metricDualVectorAt g x (b.coord i)) (b i)
+
+/--
+Raw double contraction of the closed first-contracted Bianchi identity.
+This is the closed analogue of `coord_twice_contracted_bianchi_raw`; the
+native second-Bianchi proof supplies `hFirst`, and the raised contraction
+machinery supplies the middle-term identification.
+-/
+theorem closed_twice_contracted_bianchi_raw_of_first_contracted
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hFirst :
+      ∀ v w z : TM x,
+        closedCovRicciDerivAt g x v w z
+          + closedCurvatureDivergenceAt g x w v z
+          - closedCovRicciDerivAt g x w v z = 0)
+    (w : TM x) :
+    closedRicciDivergenceTraceAt g x w
+      + (letI : FiniteDimensional ℝ (TM x) :=
+          inferInstanceAs (FiniteDimensional ℝ E)
+        let b := Module.finBasis ℝ (TM x)
+        ∑ i, closedCurvatureDivergenceAt g x w
+          (metricDualVectorAt g x (b.coord i)) (b i))
+      = closedScalarContractionDerivTraceAt g x w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  unfold closedRicciDivergenceTraceAt closedScalarContractionDerivTraceAt
+  change (∑ i, closedCovRicciDerivAt g x (sharp i) w (b i))
+      + (∑ i, closedCurvatureDivergenceAt g x w (sharp i) (b i)) =
+    ∑ i, closedCovRicciDerivAt g x w (sharp i) (b i)
+  rw [← Finset.sum_add_distrib, ← sub_eq_zero, ← Finset.sum_sub_distrib]
+  apply Finset.sum_eq_zero
+  intro i _
+  have h := hFirst (sharp i) w (b i)
+  linarith
+
+theorem closed_twice_contracted_bianchi_trace_of_raw
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hRaw :
+      ∀ w : TM x,
+        closedRicciDivergenceTraceAt g x w
+          + (letI : FiniteDimensional ℝ (TM x) :=
+              inferInstanceAs (FiniteDimensional ℝ E)
+            let b := Module.finBasis ℝ (TM x)
+            ∑ i, closedCurvatureDivergenceAt g x w
+              (metricDualVectorAt g x (b.coord i)) (b i))
+          = closedScalarContractionDerivTraceAt g x w)
+    (hMiddle :
+      ∀ w : TM x,
+        (letI : FiniteDimensional ℝ (TM x) :=
+            inferInstanceAs (FiniteDimensional ℝ E)
+          let b := Module.finBasis ℝ (TM x)
+          ∑ i, closedCurvatureDivergenceAt g x w
+            (metricDualVectorAt g x (b.coord i)) (b i))
+          = closedRicciDivergenceTraceAt g x w)
+    (w : TM x) :
+    2 * closedRicciDivergenceTraceAt g x w =
+      closedScalarContractionDerivTraceAt g x w := by
+  have h := hRaw w
+  rw [hMiddle w] at h
+  linarith
+
 set_option maxHeartbeats 5000000 in
 /-- The inverse-Gram derivative contraction cancels the two Levi-Civita slot corrections. -/
 theorem gram_inv_deriv_contraction_eq_leviCivita_corrections
@@ -6338,6 +6509,26 @@ noncomputable def tensorDivergenceOneFormAt
   letI : FiniteDimensional ℝ (TM x) :=
     inferInstanceAs (FiniteDimensional ℝ E)
   ∑ i, covTensor2DerivAt g h x
+    (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i))
+    ((Module.finBasis ℝ (TM x)) i) w
+
+theorem tensorDivergenceOneFormAt_ricciVariationField_swap
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (w : TM x) :
+    tensorDivergenceOneFormAt g (ricciVariationField g) x w =
+      (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      ∑ i, covTensor2DerivAt g (ricciVariationField g) x
+        (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i))
+        w ((Module.finBasis ℝ (TM x)) i)) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  unfold tensorDivergenceOneFormAt
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  exact covTensor2DerivAt_ricciVariationField_symm
+    (g := g) (x := x)
     (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i))
     ((Module.finBasis ℝ (TM x)) i) w
 
@@ -8487,6 +8678,42 @@ def ClosedContractedBianchiOneFormAt
     tensorDivergenceOneFormAt g (ricciVariationField g) x w =
       (1 / 2 : ℝ) * extDerivFun (fun y : M ↦ g.scalarAt y) x w
 
+theorem ClosedContractedBianchiOneFormAt.of_two_tensorDivergenceOneForm_eq_extDerivFun
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (h :
+      ∀ w : TM x,
+        2 * tensorDivergenceOneFormAt g (ricciVariationField g) x w =
+          extDerivFun (fun y : M ↦ g.scalarAt y) x w) :
+    ClosedContractedBianchiOneFormAt g x := by
+  intro w
+  have hw := h w
+  linarith
+
+theorem ClosedContractedBianchiOneFormAt.of_closed_trace_contraction
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hDivTrace :
+      ∀ w : TM x,
+        tensorDivergenceOneFormAt g (ricciVariationField g) x w =
+          closedRicciDivergenceTraceAt g x w)
+    (hScalarTrace :
+      ∀ w : TM x,
+        closedScalarContractionDerivTraceAt g x w =
+          extDerivFun (fun y : M ↦ g.scalarAt y) x w)
+    (hTraceBianchi :
+      ∀ w : TM x,
+        2 * closedRicciDivergenceTraceAt g x w =
+          closedScalarContractionDerivTraceAt g x w) :
+    ClosedContractedBianchiOneFormAt g x := by
+  refine
+    ClosedContractedBianchiOneFormAt.of_two_tensorDivergenceOneForm_eq_extDerivFun
+      (g := g) (x := x) ?_
+  intro w
+  rw [hDivTrace w, hTraceBianchi w, hScalarTrace w]
+
 /--
 If the closed Ricci divergence one-form is the half-gradient of scalar
 curvature on a neighborhood of `x`, then tracing its covariant derivative gives
@@ -8619,6 +8846,34 @@ theorem ClosedContractedBianchiAt.of_oneForm_near
     (g := g) (x := x)
     (hOne.mono fun _ hy w ↦ hy w)
     hScalar₂ hScalarExt₂
+
+theorem ClosedContractedBianchiAt.of_closed_trace_contraction_near
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hDivTrace :
+      ∀ᶠ y in nhds x, ∀ w : TM y,
+        tensorDivergenceOneFormAt g (ricciVariationField g) y w =
+          closedRicciDivergenceTraceAt g y w)
+    (hScalarTrace :
+      ∀ᶠ y in nhds x, ∀ w : TM y,
+        closedScalarContractionDerivTraceAt g y w =
+          extDerivFun (fun z : M ↦ g.scalarAt z) y w)
+    (hTraceBianchi :
+      ∀ᶠ y in nhds x, ∀ w : TM y,
+        2 * closedRicciDivergenceTraceAt g y w =
+          closedScalarContractionDerivTraceAt g y w)
+    (hScalar₂ : ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ g.scalarAt y) x)
+    (hScalarExt₂ : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦
+          extDerivFun (fun z : M ↦ g.scalarAt z) y (extend E w y)) x) :
+    ClosedContractedBianchiAt g x := by
+  refine ClosedContractedBianchiAt.of_oneForm_near
+    (g := g) (x := x) ?_ hScalar₂ hScalarExt₂
+  filter_upwards [hDivTrace, hScalarTrace, hTraceBianchi] with y hyDiv hyScalar hyBianchi
+  exact ClosedContractedBianchiOneFormAt.of_closed_trace_contraction
+    (g := g) (x := y) hyDiv hyScalar hyBianchi
 
 /-- Under twice-contracted Bianchi, `div div (-2 Ric) = -ΔR`. -/
 theorem tensorDoubleDivergenceAt_negTwoRicci_eq_neg_laplacian_scalar
