@@ -5252,6 +5252,117 @@ noncomputable def closedCurvatureDivergenceAt
     (closedCurvatureCovDerivAt g x
       ((Module.finBasis ℝ (TM x)) i) u w z)
 
+theorem closedCurvatureCovDerivAt_antisymm
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v u w z : TM x) :
+    closedCurvatureCovDerivAt g x v u w z =
+      -closedCurvatureCovDerivAt g x v w u z := by
+  let Ruw : ∀ y : M, TM y := closedCurvatureFieldAt g u w z
+  let Rwu : ∀ y : M, TM y := closedCurvatureFieldAt g w u z
+  have hRuw : MDiffAtTangentField Ruw x := by
+    simpa [MDiffAtTangentField, Ruw] using
+      (closedCurvatureFieldMDifferentiableAt_canonical g x u w z)
+  have hfield : Rwu = (-1 : ℝ) • Ruw := by
+    funext y
+    change
+      CovariantDerivative.curvatureOp g.leviCivita
+          (extend E w) (extend E u) (extend E z) y =
+        (-1 : ℝ) •
+          CovariantDerivative.curvatureOp g.leviCivita
+            (extend E u) (extend E w) (extend E z) y
+    rw [CovariantDerivative.curvatureOp_antisymm_apply]
+    simp
+  have hcov_neg :
+      g.leviCivita Rwu x v = -g.leviCivita Ruw x v := by
+    have hsmul :=
+      g.leviCivita.isCovariantDerivativeOnUniv.smul_const
+        (-1 : ℝ) hRuw
+    rw [hfield]
+    have happ := congrArg (fun L : TM x →L[ℝ] TM x ↦ L v) hsmul
+    simpa using happ
+  let Γu : TM x := g.leviCivita (extend E u) x v
+  let Γw : TM x := g.leviCivita (extend E w) x v
+  let Γz : TM x := g.leviCivita (extend E z) x v
+  have hΓu :
+      CovariantDerivative.curvatureOp g.leviCivita
+          (extend E w) (extend E Γu) (extend E z) x =
+        -CovariantDerivative.curvatureOp g.leviCivita
+          (extend E Γu) (extend E w) (extend E z) x := by
+    simpa [Γu] using
+      CovariantDerivative.curvatureOp_antisymm_apply
+        (cov := g.leviCivita)
+        (extend E w) (extend E Γu) (extend E z) x
+  have hΓw :
+      CovariantDerivative.curvatureOp g.leviCivita
+          (extend E Γw) (extend E u) (extend E z) x =
+        -CovariantDerivative.curvatureOp g.leviCivita
+          (extend E u) (extend E Γw) (extend E z) x := by
+    simpa [Γw] using
+      CovariantDerivative.curvatureOp_antisymm_apply
+        (cov := g.leviCivita)
+        (extend E Γw) (extend E u) (extend E z) x
+  have hΓz :
+      CovariantDerivative.curvatureOp g.leviCivita
+          (extend E w) (extend E u) (extend E Γz) x =
+        -CovariantDerivative.curvatureOp g.leviCivita
+          (extend E u) (extend E w) (extend E Γz) x := by
+    simpa [Γz] using
+      CovariantDerivative.curvatureOp_antisymm_apply
+        (cov := g.leviCivita)
+        (extend E w) (extend E u) (extend E Γz) x
+  unfold closedCurvatureCovDerivAt
+  change g.leviCivita Ruw x v
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E Γu) (extend E w) (extend E z) x
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E u) (extend E Γw) (extend E z) x
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E u) (extend E w) (extend E Γz) x =
+    -(g.leviCivita Rwu x v
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E Γw) (extend E u) (extend E z) x
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E w) (extend E Γu) (extend E z) x
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E w) (extend E u) (extend E Γz) x)
+  rw [hcov_neg, hΓu, hΓw, hΓz]
+  module
+
+theorem closed_first_contracted_bianchi_of_second_bianchi
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hSecond :
+      ∀ u v w z : TM x,
+        closedCurvatureCovDerivAt g x v u w z
+          + closedCurvatureCovDerivAt g x u w v z
+          + closedCurvatureCovDerivAt g x w v u z = 0)
+    (v w z : TM x) :
+    closedCovRicciDerivAt g x v w z
+      + closedCurvatureDivergenceAt g x w v z
+      - closedCovRicciDerivAt g x w v z = 0 := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  unfold closedCovRicciDerivAt closedCurvatureDivergenceAt
+  change
+      (∑ i, b.coord i (closedCurvatureCovDerivAt g x v (b i) w z))
+        + (∑ i, b.coord i (closedCurvatureCovDerivAt g x (b i) w v z))
+        - (∑ i, b.coord i (closedCurvatureCovDerivAt g x w (b i) v z)) = 0
+  rw [← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]
+  apply Finset.sum_eq_zero
+  intro i _
+  have hcyc := hSecond (b i) v w z
+  have hanti :
+      closedCurvatureCovDerivAt g x w v (b i) z =
+        -closedCurvatureCovDerivAt g x w (b i) v z :=
+    closedCurvatureCovDerivAt_antisymm (g := g) (x := x) w v (b i) z
+  rw [hanti] at hcyc
+  have happ := congrArg (fun m : TM x ↦ b.coord i m) hcyc
+  simpa [map_add, map_neg] using happ
+
 /-- Model-shaped Ricci divergence trace, using raised dual basis vectors. -/
 noncomputable def closedRicciDivergenceTraceAt
     (g : ClosedSmoothRiemannianMetric n M)
@@ -5371,6 +5482,80 @@ theorem closed_twice_contracted_bianchi_trace_of_raw
   have h := hRaw w
   rw [hMiddle w] at h
   linarith
+
+theorem closed_twice_contracted_bianchi_raw_of_second_bianchi
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hSecond :
+      ∀ u v w z : TM x,
+        closedCurvatureCovDerivAt g x v u w z
+          + closedCurvatureCovDerivAt g x u w v z
+          + closedCurvatureCovDerivAt g x w v u z = 0)
+    (w : TM x) :
+    closedRicciDivergenceTraceAt g x w
+      + (letI : FiniteDimensional ℝ (TM x) :=
+          inferInstanceAs (FiniteDimensional ℝ E)
+        let b := Module.finBasis ℝ (TM x)
+        ∑ i, closedCurvatureDivergenceAt g x w
+          (metricDualVectorAt g x (b.coord i)) (b i))
+      = closedScalarContractionDerivTraceAt g x w :=
+  closed_twice_contracted_bianchi_raw_of_first_contracted
+    (g := g) (x := x)
+    (closed_first_contracted_bianchi_of_second_bianchi
+      (g := g) (x := x) hSecond)
+    w
+
+theorem closed_twice_contracted_bianchi_trace_of_second_bianchi
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hSecond :
+      ∀ u v w z : TM x,
+        closedCurvatureCovDerivAt g x v u w z
+          + closedCurvatureCovDerivAt g x u w v z
+          + closedCurvatureCovDerivAt g x w v u z = 0)
+    (hMiddle :
+      ∀ w : TM x,
+        (letI : FiniteDimensional ℝ (TM x) :=
+            inferInstanceAs (FiniteDimensional ℝ E)
+          let b := Module.finBasis ℝ (TM x)
+          ∑ i, closedCurvatureDivergenceAt g x w
+            (metricDualVectorAt g x (b.coord i)) (b i))
+          = closedRicciDivergenceTraceAt g x w)
+    (w : TM x) :
+    2 * closedRicciDivergenceTraceAt g x w =
+      closedScalarContractionDerivTraceAt g x w :=
+  closed_twice_contracted_bianchi_trace_of_raw
+    (g := g) (x := x)
+    (closed_twice_contracted_bianchi_raw_of_second_bianchi
+      (g := g) (x := x) hSecond)
+    hMiddle w
+
+theorem eventually_closed_twice_contracted_bianchi_trace_of_second_bianchi
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hSecond :
+      ∀ᶠ y in nhds x, ∀ u v w z : TM y,
+        closedCurvatureCovDerivAt g y v u w z
+          + closedCurvatureCovDerivAt g y u w v z
+          + closedCurvatureCovDerivAt g y w v u z = 0)
+    (hMiddle :
+      ∀ᶠ y in nhds x, ∀ w : TM y,
+        (letI : FiniteDimensional ℝ (TM y) :=
+            inferInstanceAs (FiniteDimensional ℝ E)
+          let b := Module.finBasis ℝ (TM y)
+          ∑ i, closedCurvatureDivergenceAt g y w
+            (metricDualVectorAt g y (b.coord i)) (b i))
+          = closedRicciDivergenceTraceAt g y w) :
+    ∀ᶠ y in nhds x, ∀ w : TM y,
+      2 * closedRicciDivergenceTraceAt g y w =
+        closedScalarContractionDerivTraceAt g y w := by
+  filter_upwards [hSecond, hMiddle] with y hySecond hyMiddle
+  intro w
+  exact closed_twice_contracted_bianchi_trace_of_second_bianchi
+    (g := g) (x := y) hySecond hyMiddle w
 
 set_option maxHeartbeats 5000000 in
 /-- The inverse-Gram derivative contraction cancels the two Levi-Civita slot corrections. -/
