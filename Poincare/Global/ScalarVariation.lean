@@ -13898,6 +13898,21 @@ theorem ricciQuadraticAt_eq_two_lichnerowiczCurvatureAt_ricciVariationField
       2 * lichnerowiczCurvatureAt g (ricciVariationField g) x u w := by
   rfl
 
+/--
+Pointwise commutation target for the Ricci second-derivative contraction.
+
+This is the tensor-level Ricci-evolution RHS before it is packaged as a
+time-derivative statement.
+-/
+def RicciSecondDerivCommutationAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : Prop :=
+  ∀ u w : TM x,
+    deltaRicciSecondDerivContractionAt g (negTwoRicciVariationField g) x u w =
+      lichnerowiczLaplacianAt g (ricciVariationField g) x u w
+        + ricciQuadraticAt g x u w
+
 theorem lichnerowiczCurvatureAt_ricciQuadraticAt_trace_cancellation
     (g : ClosedSmoothRiemannianMetric n M)
     [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
