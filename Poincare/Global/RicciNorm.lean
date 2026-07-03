@@ -312,6 +312,10 @@ abbrev Euclidean3 : Type :=
 abbrev FourLinearEuclidean3 : Type :=
   Euclidean3 →ₗ[ℝ] Euclidean3 →ₗ[ℝ] Euclidean3 →ₗ[ℝ] Euclidean3 →ₗ[ℝ] ℝ
 
+/-- A bundled four-linear real form on a real vector space. -/
+abbrev FourLinear (V : Type) [AddCommGroup V] [Module ℝ V] : Type :=
+  V →ₗ[ℝ] V →ₗ[ℝ] V →ₗ[ℝ] V →ₗ[ℝ] ℝ
+
 /-- The standard orthonormal basis vector in the Euclidean three-dimensional fiber. -/
 noncomputable def euclidean3Basis (i : Fin 3) : Euclidean3 :=
   (EuclideanSpace.basisFun (Fin 3) ℝ) i
@@ -482,6 +486,141 @@ theorem fourLinearEuclidean3_apply_eq_zero_of_riemann_symm_and_trace
     hFirstPair hSecondPair hPairExchange hBianchi hRicciTrace
   rw [hW]
   rfl
+
+/--
+Transport the Euclidean three-dimensional Weyl-vanishing lemma across an
+orthonormal basis of an arbitrary real inner-product space.
+-/
+theorem fourLinear_eq_zero_of_orthonormal_riemann_symm_and_trace
+    {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
+    (b : OrthonormalBasis (Fin 3) ℝ V)
+    (W : FourLinear V)
+    (hFirstPair : ∀ x y z t : V, W x y z t = -W y x z t)
+    (hSecondPair : ∀ x y z t : V, W x y z t = -W x y t z)
+    (hPairExchange : ∀ x y z t : V, W x y z t = W z t x y)
+    (hBianchi : ∀ x y z t : V, W x y z t + W y z x t + W z x y t = 0)
+    (hRicciTrace : ∀ u w : V, (∑ i : Fin 3, W (b i) u (b i) w) = 0) :
+    W = 0 := by
+  classical
+  let Wb : FourLinearEuclidean3 :=
+    { toFun := fun x =>
+        { toFun := fun y =>
+            { toFun := fun z =>
+                { toFun := fun t => W (b.repr.symm x) (b.repr.symm y)
+                    (b.repr.symm z) (b.repr.symm t)
+                  map_add' := by
+                    intro t₁ t₂
+                    simp
+                  map_smul' := by
+                    intro c t
+                    simp }
+              map_add' := by
+                intro z₁ z₂
+                apply LinearMap.ext
+                intro t
+                simp
+              map_smul' := by
+                intro c z
+                apply LinearMap.ext
+                intro t
+                simp }
+          map_add' := by
+            intro y₁ y₂
+            apply LinearMap.ext
+            intro z
+            apply LinearMap.ext
+            intro t
+            simp
+          map_smul' := by
+            intro c y
+            apply LinearMap.ext
+            intro z
+            apply LinearMap.ext
+            intro t
+            simp }
+      map_add' := by
+        intro x₁ x₂
+        apply LinearMap.ext
+        intro y
+        apply LinearMap.ext
+        intro z
+        apply LinearMap.ext
+        intro t
+        simp
+      map_smul' := by
+        intro c x
+        apply LinearMap.ext
+        intro y
+        apply LinearMap.ext
+        intro z
+        apply LinearMap.ext
+        intro t
+        simp }
+  have hFirstPair' :
+      ∀ x y z t : Euclidean3, Wb x y z t = -Wb y x z t := by
+    intro x y z t
+    exact hFirstPair _ _ _ _
+  have hSecondPair' :
+      ∀ x y z t : Euclidean3, Wb x y z t = -Wb x y t z := by
+    intro x y z t
+    exact hSecondPair _ _ _ _
+  have hPairExchange' :
+      ∀ x y z t : Euclidean3, Wb x y z t = Wb z t x y := by
+    intro x y z t
+    exact hPairExchange _ _ _ _
+  have hBianchi' :
+      ∀ x y z t : Euclidean3, Wb x y z t + Wb y z x t + Wb z x y t = 0 := by
+    intro x y z t
+    exact hBianchi _ _ _ _
+  have hRicciTrace' :
+      ∀ u w : Euclidean3,
+        (∑ i : Fin 3, Wb (euclidean3Basis i) u (euclidean3Basis i) w) = 0 := by
+    intro u w
+    simpa [Wb, euclidean3Basis] using
+      hRicciTrace (b.repr.symm u) (b.repr.symm w)
+  have hWb := fourLinearEuclidean3_eq_zero_of_riemann_symm_and_trace Wb
+    hFirstPair' hSecondPair' hPairExchange' hBianchi' hRicciTrace'
+  apply LinearMap.ext
+  intro x
+  apply LinearMap.ext
+  intro y
+  apply LinearMap.ext
+  intro z
+  apply LinearMap.ext
+  intro t
+  have hzero : Wb (b.repr x) (b.repr y) (b.repr z) (b.repr t) = 0 := by
+    rw [hWb]
+    rfl
+  simpa [Wb] using hzero
+
+/--
+Trace-convention bridge for an orthonormal frame: a zero contraction in the
+last slot, `Σᵢ W(eᵢ,u,w,eᵢ)`, is equivalent to the Ricci trace used by the
+Euclidean vanishing lemma once the second-pair antisymmetry is available.
+-/
+theorem fourLinear_eq_zero_of_orthonormal_riemann_symm_and_last_trace
+    {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
+    (b : OrthonormalBasis (Fin 3) ℝ V)
+    (W : FourLinear V)
+    (hFirstPair : ∀ x y z t : V, W x y z t = -W y x z t)
+    (hSecondPair : ∀ x y z t : V, W x y z t = -W x y t z)
+    (hPairExchange : ∀ x y z t : V, W x y z t = W z t x y)
+    (hBianchi : ∀ x y z t : V, W x y z t + W y z x t + W z x y t = 0)
+    (hLastTrace : ∀ u w : V, (∑ i : Fin 3, W (b i) u w (b i)) = 0) :
+    W = 0 := by
+  refine fourLinear_eq_zero_of_orthonormal_riemann_symm_and_trace b W
+    hFirstPair hSecondPair hPairExchange hBianchi ?_
+  intro u w
+  calc
+    (∑ i : Fin 3, W (b i) u (b i) w)
+        = ∑ i : Fin 3, -W (b i) u w (b i) := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          exact hSecondPair (b i) u (b i) w
+    _ = -(∑ i : Fin 3, W (b i) u w (b i)) := by
+          rw [Finset.sum_neg_distrib]
+    _ = 0 := by
+          rw [hLastTrace u w]
+          ring
 
 /-- Squared Ricci norm for a diagonal 3D Ricci operator with entries `a,b,c`. -/
 noncomputable def diagonalRicciNormSq3 (a b c : ℝ) : ℝ :=
