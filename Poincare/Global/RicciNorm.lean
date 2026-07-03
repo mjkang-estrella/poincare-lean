@@ -869,6 +869,64 @@ theorem diagonalRicciEvolutionReaction3_one_one_two :
     diagonalTwoLichnerowiczPure3Entry2, diagonalTwoLichnerowiczPure3Entry3,
     diagonalRicciNormSq3, diagonalScalar3]
 
+/--
+Diagonal contribution `2⟨reaction,Ric⟩` to the `|Ric|^2` evolution after the
+3D Ricci-evolution reaction has been substituted.
+-/
+noncomputable def diagonalRicciNormEvolutionReactionTrace3 (a b c : ℝ) : ℝ :=
+  2 * (a * diagonalRicciEvolutionReaction3Entry1 a b c
+    + b * diagonalRicciEvolutionReaction3Entry2 a b c
+    + c * diagonalRicciEvolutionReaction3Entry3 a b c)
+
+theorem diagonalRicciNormEvolutionReactionTrace3_eq (a b c : ℝ) :
+    diagonalRicciNormEvolutionReactionTrace3 a b c =
+      2 * (a * (3 * diagonalScalar3 a b c * a - 6 * a ^ 2
+          + 2 * diagonalRicciNormSq3 a b c - (diagonalScalar3 a b c) ^ 2)
+        + b * (3 * diagonalScalar3 a b c * b - 6 * b ^ 2
+          + 2 * diagonalRicciNormSq3 a b c - (diagonalScalar3 a b c) ^ 2)
+        + c * (3 * diagonalScalar3 a b c * c - 6 * c ^ 2
+          + 2 * diagonalRicciNormSq3 a b c - (diagonalScalar3 a b c) ^ 2)) := by
+  unfold diagonalRicciNormEvolutionReactionTrace3
+  rw [diagonalRicciEvolutionReaction3Entry1_eq,
+    diagonalRicciEvolutionReaction3Entry2_eq,
+    diagonalRicciEvolutionReaction3Entry3_eq]
+
+/-- Space-form validation: the diagonal `|Ric|^2` reaction trace vanishes. -/
+theorem diagonalRicciNormEvolutionReactionTrace3_spaceForm (lam : ℝ) :
+    diagonalRicciNormEvolutionReactionTrace3 lam lam lam = 0 := by
+  unfold diagonalRicciNormEvolutionReactionTrace3
+    diagonalRicciEvolutionReaction3Entry1 diagonalRicciEvolutionReaction3Entry2
+    diagonalRicciEvolutionReaction3Entry3 diagonalTwoLichnerowiczPure3Entry1
+    diagonalTwoLichnerowiczPure3Entry2 diagonalTwoLichnerowiczPure3Entry3
+    diagonalRicciNormSq3 diagonalScalar3
+  ring
+
+/-- Non-Einstein `(1,1,2)` validation: `2⟨reaction,Ric⟩ = -8`. -/
+theorem diagonalRicciNormEvolutionReactionTrace3_one_one_two :
+    diagonalRicciNormEvolutionReactionTrace3 1 1 2 = -8 := by
+  norm_num [diagonalRicciNormEvolutionReactionTrace3,
+    diagonalRicciEvolutionReaction3Entry1, diagonalRicciEvolutionReaction3Entry2,
+    diagonalRicciEvolutionReaction3Entry3, diagonalTwoLichnerowiczPure3Entry1,
+    diagonalTwoLichnerowiczPure3Entry2, diagonalTwoLichnerowiczPure3Entry3,
+    diagonalRicciNormSq3, diagonalScalar3]
+
+/--
+Diagonal metric-motion contribution for Ricci flow, where `h = -2 Ric`.
+The inverse-metric derivative contributes `+4 tr(Ric^3)` to `d |Ric|^2/dt`.
+-/
+noncomputable def diagonalRicciNormMetricMotionNegTwoRicci3 (a b c : ℝ) : ℝ :=
+  4 * (a ^ 3 + b ^ 3 + c ^ 3)
+
+theorem diagonalRicciNormMetricMotionNegTwoRicci3_spaceForm (lam : ℝ) :
+    diagonalRicciNormMetricMotionNegTwoRicci3 lam lam lam = 12 * lam ^ 3 := by
+  unfold diagonalRicciNormMetricMotionNegTwoRicci3
+  ring
+
+/-- Non-Einstein `(1,1,2)` validation: the `+4 tr(Ric^3)` motion term is `40`. -/
+theorem diagonalRicciNormMetricMotionNegTwoRicci3_one_one_two :
+    diagonalRicciNormMetricMotionNegTwoRicci3 1 1 2 = 40 := by
+  norm_num [diagonalRicciNormMetricMotionNegTwoRicci3]
+
 end PinchingAlgebra
 
 end Poincare
