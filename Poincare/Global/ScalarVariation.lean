@@ -17434,6 +17434,407 @@ theorem closedCurvatureFourLinearAt_spaceForm_coeff
           (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q) u w a b := by
           exact g.riemannFromRicci3At_spaceForm_coeff hRic hScal u w a b
 
+/--
+Contracting the metric Kulkarni-Nomizu term against the raised Ricci endomorphism
+gives `2 Ric - 2 R g`.
+-/
+theorem metricKulkarniNomizuAt_ricciEndo_finBasis_trace_eq
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i)
+      let A : TM x →ₗ[ℝ] TM x := g.ricciEndoAt x
+      ∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+        (n := n) (M := M) x
+        (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q)
+        (b i) u w (A (sharp i))) =
+      2 * g.ricciAt x u w - 2 * g.scalarAt x * g.inner x u w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  let A : TM x →ₗ[ℝ] TM x := g.ricciEndoAt x
+  have hcross :
+      (∑ i, g.inner x (b i) w * g.inner x u (A (sharp i))) =
+        g.ricciAt x u w := by
+    calc
+      (∑ i, g.inner x (b i) w * g.inner x u (A (sharp i))) =
+          ∑ i, g.inner x w (b i) * g.ricciAt x u (sharp i) := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            have hA :
+                g.inner x u (A (sharp i)) = g.ricciAt x u (sharp i) := by
+              calc
+                g.inner x u (A (sharp i)) =
+                    g.inner x (A u) (sharp i) := by
+                      exact (g.ricciEndoAt_selfAdjoint x u (sharp i)).symm
+                _ = g.ricciAt x u (sharp i) := by
+                      rw [ClosedSmoothRiemannianMetric.inner_ricciEndoAt]
+            rw [g.inner_symm x (b i) w, hA]
+      _ = g.ricciAt x u w := by
+            simpa [b, sharp, ricciVariationField] using
+              (tensor2_metricDual_expansion_right (g := g)
+                (h := ricciVariationField g)
+                (tensor2AddRight_ricciVariationField g)
+                (tensor2SMulRight_ricciVariationField g)
+                x u w).symm
+  have htrace :
+      (∑ i, g.inner x (b i) (A (sharp i))) = g.scalarAt x := by
+    calc
+      (∑ i, g.inner x (b i) (A (sharp i))) =
+          ∑ i, g.ricciAt x (b i) (sharp i) := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            calc
+              g.inner x (b i) (A (sharp i)) =
+                  g.inner x (A (sharp i)) (b i) := by
+                    rw [g.inner_symm]
+              _ = g.ricciAt x (sharp i) (b i) := by
+                    rw [ClosedSmoothRiemannianMetric.inner_ricciEndoAt]
+              _ = g.ricciAt x (b i) (sharp i) := by
+                    rw [g.ricciAt_symm]
+      _ = g.scalarAt x := by
+            simpa [b, sharp, traceMetricVariationAt, ricciVariationField] using
+              traceMetricVariationAt_ricci (g := g) x
+  unfold ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+  calc
+    (∑ i, (g.inner x (b i) w * g.inner x u (A (sharp i))
+        + g.inner x u (A (sharp i)) * g.inner x (b i) w
+        - g.inner x (b i) (A (sharp i)) * g.inner x u w
+        - g.inner x u w * g.inner x (b i) (A (sharp i)))) =
+        (∑ i, g.inner x (b i) w * g.inner x u (A (sharp i)))
+          + (∑ i, g.inner x u (A (sharp i)) * g.inner x (b i) w)
+          - (∑ i, g.inner x (b i) (A (sharp i))) * g.inner x u w
+          - g.inner x u w * (∑ i, g.inner x (b i) (A (sharp i))) := by
+          simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib,
+            Finset.sum_mul, Finset.mul_sum]
+    _ = 2 * g.ricciAt x u w - 2 * g.scalarAt x * g.inner x u w := by
+          have hcross' :
+              (∑ i, g.inner x u (A (sharp i)) * g.inner x (b i) w) =
+                g.ricciAt x u w := by
+            calc
+              (∑ i, g.inner x u (A (sharp i)) * g.inner x (b i) w) =
+                  ∑ i, g.inner x (b i) w * g.inner x u (A (sharp i)) := by
+                    refine Finset.sum_congr rfl fun i _ ↦ ?_
+                    ring
+              _ = g.ricciAt x u w := hcross
+          rw [hcross, hcross', htrace]
+          ring
+
+/--
+Contracting the Ricci-metric Kulkarni-Nomizu term against the raised Ricci
+endomorphism gives `2 Ric² - |Ric|² g - R Ric`.
+-/
+theorem ricciMetricKulkarniNomizuAt_ricciEndo_finBasis_trace_eq
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i)
+      let A : TM x →ₗ[ℝ] TM x := g.ricciEndoAt x
+      ∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+        (n := n) (M := M) x
+        (fun p q ↦ g.ricciAt x p q) (fun p q ↦ g.inner x p q)
+        (b i) u w (A (sharp i))) =
+      2 * g.ricciAt x (g.ricciEndoAt x u) w
+        - g.ricciNormSqAt x * g.inner x u w
+        - g.scalarAt x * g.ricciAt x u w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  let A : TM x →ₗ[ℝ] TM x := g.ricciEndoAt x
+  have hleft :
+      (∑ i, g.ricciAt x (b i) w * g.inner x u (A (sharp i))) =
+        g.ricciAt x (A u) w := by
+    calc
+      (∑ i, g.ricciAt x (b i) w * g.inner x u (A (sharp i))) =
+          ∑ i, g.inner x (A u) (sharp i) * g.ricciAt x (b i) w := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            have hA :
+                g.inner x u (A (sharp i)) = g.inner x (A u) (sharp i) := by
+              exact (g.ricciEndoAt_selfAdjoint x u (sharp i)).symm
+            rw [hA]
+            ring
+      _ = g.ricciAt x (A u) w := by
+            simpa [b, sharp, ricciVariationField] using
+              (tensor2_basis_expansion_left (g := g)
+                (h := ricciVariationField g)
+                (tensor2AddLeft_ricciVariationField g)
+                (tensor2SMulLeft_ricciVariationField g)
+                x (A u) w).symm
+  have hright :
+      (∑ i, g.ricciAt x u (A (sharp i)) * g.inner x (b i) w) =
+        g.ricciAt x (A u) w := by
+    calc
+      (∑ i, g.ricciAt x u (A (sharp i)) * g.inner x (b i) w) =
+          ∑ i, g.inner x w (b i) * g.ricciAt x (A u) (sharp i) := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            have hRic :
+                g.ricciAt x u (A (sharp i)) = g.ricciAt x (A u) (sharp i) := by
+              calc
+                g.ricciAt x u (A (sharp i)) =
+                    g.inner x (A u) (A (sharp i)) := by
+                      rw [ClosedSmoothRiemannianMetric.inner_ricciEndoAt]
+                _ = g.inner x (A (A u)) (sharp i) := by
+                      exact (g.ricciEndoAt_selfAdjoint x (A u) (sharp i)).symm
+                _ = g.ricciAt x (A u) (sharp i) := by
+                      rw [ClosedSmoothRiemannianMetric.inner_ricciEndoAt]
+            rw [g.inner_symm x (b i) w, hRic]
+            ring
+      _ = g.ricciAt x (A u) w := by
+            simpa [b, sharp, ricciVariationField] using
+              (tensor2_metricDual_expansion_right (g := g)
+                (h := ricciVariationField g)
+                (tensor2AddRight_ricciVariationField g)
+                (tensor2SMulRight_ricciVariationField g)
+                x (A u) w).symm
+  have hnorm :
+      (∑ i, g.ricciAt x (b i) (A (sharp i))) =
+        g.ricciNormSqAt x := by
+    have hcoord : ∀ i : Fin (Module.finrank ℝ (TM x)),
+        g.ricciAt x (b i) (A (sharp i)) =
+          b.coord i ((A ∘ₗ A) (b i)) := by
+      intro i
+      calc
+        g.ricciAt x (b i) (A (sharp i)) =
+            g.inner x (A (b i)) (A (sharp i)) := by
+              rw [ClosedSmoothRiemannianMetric.inner_ricciEndoAt]
+        _ = g.inner x (A (A (b i))) (sharp i) := by
+              exact (g.ricciEndoAt_selfAdjoint x (A (b i)) (sharp i)).symm
+        _ = b.coord i ((A ∘ₗ A) (b i)) := by
+              rw [LinearMap.comp_apply, coord_eq_inner_metricDualVectorAt]
+    calc
+      (∑ i, g.ricciAt x (b i) (A (sharp i))) =
+          ∑ i, b.coord i ((A ∘ₗ A) (b i)) := by
+            exact Finset.sum_congr rfl fun i _ ↦ hcoord i
+      _ = LinearMap.trace ℝ (TM x) (A ∘ₗ A) := by
+            rw [LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+            rfl
+      _ = g.ricciNormSqAt x := by
+            exact (g.ricciNormSqAt_eq_trace x).symm
+  have htrace :
+      (∑ i, g.inner x (b i) (A (sharp i))) = g.scalarAt x := by
+    calc
+      (∑ i, g.inner x (b i) (A (sharp i))) =
+          ∑ i, g.ricciAt x (b i) (sharp i) := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            calc
+              g.inner x (b i) (A (sharp i)) =
+                  g.inner x (A (sharp i)) (b i) := by
+                    rw [g.inner_symm]
+              _ = g.ricciAt x (sharp i) (b i) := by
+                    rw [ClosedSmoothRiemannianMetric.inner_ricciEndoAt]
+              _ = g.ricciAt x (b i) (sharp i) := by
+                    rw [g.ricciAt_symm]
+      _ = g.scalarAt x := by
+            simpa [b, sharp, traceMetricVariationAt, ricciVariationField] using
+              traceMetricVariationAt_ricci (g := g) x
+  unfold ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+  calc
+    (∑ i, (g.ricciAt x (b i) w * g.inner x u (A (sharp i))
+        + g.ricciAt x u (A (sharp i)) * g.inner x (b i) w
+        - g.ricciAt x (b i) (A (sharp i)) * g.inner x u w
+        - g.ricciAt x u w * g.inner x (b i) (A (sharp i)))) =
+        (∑ i, g.ricciAt x (b i) w * g.inner x u (A (sharp i)))
+          + (∑ i, g.ricciAt x u (A (sharp i)) * g.inner x (b i) w)
+          - (∑ i, g.ricciAt x (b i) (A (sharp i))) * g.inner x u w
+          - g.ricciAt x u w * (∑ i, g.inner x (b i) (A (sharp i))) := by
+          simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib,
+            Finset.sum_mul, Finset.mul_sum]
+    _ = 2 * g.ricciAt x (g.ricciEndoAt x u) w
+        - g.ricciNormSqAt x * g.inner x u w
+        - g.scalarAt x * g.ricciAt x u w := by
+          rw [hleft, hright, hnorm, htrace]
+          ring
+
+/--
+In dimension three, the corrected mixed Lichnerowicz curvature contraction on
+the Ricci field has the pinned Hamilton reaction coefficients.
+-/
+theorem two_lichnerowiczCurvatureAt_ricciVariationField_eq_pinned3
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hn : n = 3) (x : M) (u w : TM x) :
+    2 * lichnerowiczCurvatureAt g (ricciVariationField g) x u w =
+      3 * g.scalarAt x * g.ricciAt x u w
+        - 4 * g.ricciAt x (g.ricciEndoAt x u) w
+        + (2 * g.ricciNormSqAt x - (g.scalarAt x) ^ 2) * g.inner x u w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  let A : TM x →ₗ[ℝ] TM x := g.ricciEndoAt x
+  have hL :
+      lichnerowiczCurvatureAt g (ricciVariationField g) x u w =
+        ∑ i, g.riemannFromRicci3At x (b i) u w (A (sharp i)) := by
+    unfold lichnerowiczCurvatureAt ricciVariationField
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    let Rv : TM x :=
+      CovariantDerivative.curvatureOp g.leviCivita
+        (extend E (b i)) (extend E u) (extend E w) x
+    calc
+      g.ricciAt x Rv (sharp i) =
+          g.inner x Rv (A (sharp i)) := by
+            calc
+              g.ricciAt x Rv (sharp i) =
+                  g.inner x (A Rv) (sharp i) := by
+                    exact (ClosedSmoothRiemannianMetric.inner_ricciEndoAt
+                      (g := g) x Rv (sharp i)).symm
+              _ = g.inner x Rv (A (sharp i)) := by
+                    exact g.ricciEndoAt_selfAdjoint x Rv (sharp i)
+      _ = g.riemannFromRicci3At x (b i) u w (A (sharp i)) := by
+            exact RiemannDeterminedByRicci3At_closedCurvature
+              (g := g) hn x (b i) u w (A (sharp i))
+  have hMetric :
+      (∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+        (n := n) (M := M) x
+        (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q)
+        (b i) u w (A (sharp i))) =
+      2 * g.ricciAt x u w - 2 * g.scalarAt x * g.inner x u w := by
+    simpa [b, sharp, A] using
+      metricKulkarniNomizuAt_ricciEndo_finBasis_trace_eq
+        (g := g) (x := x) u w
+  have hRic :
+      (∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+        (n := n) (M := M) x
+        (fun p q ↦ g.ricciAt x p q) (fun p q ↦ g.inner x p q)
+        (b i) u w (A (sharp i))) =
+      2 * g.ricciAt x (g.ricciEndoAt x u) w
+        - g.ricciNormSqAt x * g.inner x u w
+        - g.scalarAt x * g.ricciAt x u w := by
+    simpa [b, sharp, A] using
+      ricciMetricKulkarniNomizuAt_ricciEndo_finBasis_trace_eq
+        (g := g) (x := x) u w
+  have hExpand :
+      (∑ i, g.riemannFromRicci3At x (b i) u w (A (sharp i))) =
+        (g.scalarAt x / 4) *
+          (∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+            (n := n) (M := M) x
+            (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q)
+            (b i) u w (A (sharp i)))
+          -
+          (∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+            (n := n) (M := M) x
+            (fun p q ↦ g.ricciAt x p q) (fun p q ↦ g.inner x p q)
+            (b i) u w (A (sharp i))) := by
+    calc
+      (∑ i, g.riemannFromRicci3At x (b i) u w (A (sharp i))) =
+          ∑ i, ((g.scalarAt x / 4) *
+            ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+              (n := n) (M := M) x
+              (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q)
+              (b i) u w (A (sharp i))
+            - ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+              (n := n) (M := M) x
+              (fun p q ↦ g.ricciAt x p q) (fun p q ↦ g.inner x p q)
+              (b i) u w (A (sharp i))) := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            unfold ClosedSmoothRiemannianMetric.riemannFromRicci3At
+            rfl
+      _ =
+          (∑ i, (g.scalarAt x / 4) *
+            ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+              (n := n) (M := M) x
+              (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q)
+              (b i) u w (A (sharp i)))
+          -
+          (∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+            (n := n) (M := M) x
+            (fun p q ↦ g.ricciAt x p q) (fun p q ↦ g.inner x p q)
+            (b i) u w (A (sharp i))) := by
+            rw [Finset.sum_sub_distrib]
+      _ =
+          (g.scalarAt x / 4) *
+            (∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+              (n := n) (M := M) x
+              (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q)
+              (b i) u w (A (sharp i)))
+          -
+          (∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+            (n := n) (M := M) x
+            (fun p q ↦ g.ricciAt x p q) (fun p q ↦ g.inner x p q)
+            (b i) u w (A (sharp i))) := by
+            rw [← Finset.mul_sum]
+  calc
+    2 * lichnerowiczCurvatureAt g (ricciVariationField g) x u w =
+        2 * ((g.scalarAt x / 4) *
+          (∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+            (n := n) (M := M) x
+            (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q)
+            (b i) u w (A (sharp i)))
+          -
+          (∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+            (n := n) (M := M) x
+            (fun p q ↦ g.ricciAt x p q) (fun p q ↦ g.inner x p q)
+            (b i) u w (A (sharp i)))) := by
+          rw [hL, hExpand]
+    _ = 3 * g.scalarAt x * g.ricciAt x u w
+        - 4 * g.ricciAt x (g.ricciEndoAt x u) w
+        + (2 * g.ricciNormSqAt x - (g.scalarAt x) ^ 2) * g.inner x u w := by
+          rw [hMetric, hRic]
+          ring
+
+/-- The Ricci-endomorphism action on the Ricci field is `2 Ric²`. -/
+theorem ricciActionOnTensorAt_ricciVariationField_eq_two_ricciSqAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) :
+    ricciActionOnTensorAt g (ricciVariationField g) x u w =
+      2 * g.ricciAt x (g.ricciEndoAt x u) w := by
+  let A : TM x →ₗ[ℝ] TM x := g.ricciEndoAt x
+  have hright :
+      g.ricciAt x u (A w) = g.ricciAt x (A u) w := by
+    calc
+      g.ricciAt x u (A w) =
+          g.inner x (A u) (A w) := by
+            rw [ClosedSmoothRiemannianMetric.inner_ricciEndoAt]
+      _ = g.inner x (A (A u)) w := by
+            exact (g.ricciEndoAt_selfAdjoint x (A u) w).symm
+      _ = g.ricciAt x (A u) w := by
+            rw [ClosedSmoothRiemannianMetric.inner_ricciEndoAt]
+  unfold ricciActionOnTensorAt ricciVariationField
+  change g.ricciAt x (A u) w + g.ricciAt x u (A w) =
+    2 * g.ricciAt x (A u) w
+  rw [hright]
+  ring
+
+/--
+In dimension three, the Ricci evolution tensor RHS has the pinned reaction
+shape `rough + 3 R Ric - 6 Ric² + (2 |Ric|² - R²) g`.
+-/
+theorem ricciEvolution3ReactionAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hn : n = 3) (x : M) (u w : TM x) :
+    ricciEvolutionTensorRHSAt g x u w =
+      roughTensorLaplacianAt g (ricciVariationField g) x u w
+        + 3 * g.scalarAt x * g.ricciAt x u w
+        - 6 * g.ricciAt x (g.ricciEndoAt x u) w
+        + (2 * g.ricciNormSqAt x - (g.scalarAt x) ^ 2) * g.inner x u w := by
+  have hL :=
+    two_lichnerowiczCurvatureAt_ricciVariationField_eq_pinned3
+      (g := g) hn x u w
+  have hA :=
+    ricciActionOnTensorAt_ricciVariationField_eq_two_ricciSqAt
+      (g := g) (x := x) u w
+  unfold ricciEvolutionTensorRHSAt
+  rw [hL, hA]
+  ring
+
 set_option maxHeartbeats 5000000 in
 /--
 The Ricci-endomorphism trace of a curvature endomorphism is zero.  This is the
