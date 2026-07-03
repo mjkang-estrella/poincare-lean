@@ -2510,6 +2510,25 @@ theorem metricVariationRicciPairingAt_ricci
     _ = g.inner x (g.ricciEndoAt x (g.ricciEndoAt x (b j))) (sharp j) := by
           rw [g.inner_symm]
 
+/--
+The spatial derivative of `ricciNormSqAt` can be computed by differentiating
+the closed Ricci/Ricci metric pairing.
+-/
+theorem extDerivFun_ricciNormSqAt_eq_metricVariationRicciPairingAt_ricci
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (w : TM x) :
+    extDerivFun (fun y : M ↦ g.ricciNormSqAt y) x w =
+      extDerivFun
+        (fun y : M ↦ metricVariationRicciPairingAt g (ricciVariationField g) y)
+        x w := by
+  have hfun :
+      (fun y : M ↦ g.ricciNormSqAt y) =
+        fun y : M ↦ metricVariationRicciPairingAt g (ricciVariationField g) y := by
+    funext y
+    exact (metricVariationRicciPairingAt_ricci g y).symm
+  rw [hfun]
+
 /-- Pairing `-2 Ric` with Ricci gives `-2 |Ric|²`. -/
 theorem metricVariationRicciPairingAt_negTwoRicci
     (g : ClosedSmoothRiemannianMetric n M)
@@ -5304,6 +5323,38 @@ theorem covRicciNormSqAt_eq_metricOrthogonalBasis_sum
             (g.metricBilinAt x (b a) (b a) *
               g.metricBilinAt x (b i) (b i) *
               g.metricBilinAt x (b j) (b j)) := by
+  rfl
+
+/--
+Metric pairing of the first covariant Ricci derivative with Ricci:
+`⟨∇_v Ric, Ric⟩_g`.
+-/
+noncomputable def covRicciRicciPairingAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  ∑ j, ∑ i,
+    covTensor2DerivAt g (ricciVariationField g) x v (sharp j) (sharp i) *
+      g.ricciAt x (b i) (b j)
+
+/-- The basis-sum form of `covRicciRicciPairingAt`. -/
+theorem covRicciRicciPairingAt_eq_sum
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) :
+    covRicciRicciPairingAt g x v =
+      (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i)
+      ∑ j, ∑ i,
+        covTensor2DerivAt g (ricciVariationField g) x v (sharp j) (sharp i) *
+          g.ricciAt x (b i) (b j)) := by
   rfl
 
 /-- The covariant Ricci derivative norm is nonnegative, by the
