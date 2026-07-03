@@ -72,6 +72,34 @@ These combine the corrected fixed-metric tensor trace `ΔR` with the existing
 `metricVariationRicciPairingAt_timeDeriv_eq_negTwoRicci` lemma, matching the
 scalar-variation chain's `- metricVariationRicciPairingAt` term.
 
+## Corrected tensor evolution chain
+
+The corrected CA fold is now formalized as:
+
+* `covTensor2SecondDerivCurvatureActionAt_ricciVariationField_trace_eq_action_sub_quadratic`
+
+It proves the pinned identity
+`CAu + CAw = ricciActionOnTensorAt Ric - ricciQuadraticAt`, so the
+M4-prep-15 Hessian-cancelled assembly
+`roughTensorLaplacianAt Ric - CAu - CAw` becomes
+`roughTensorLaplacianAt Ric - ricciActionOnTensorAt Ric + ricciQuadraticAt`,
+which is definitionally the corrected classical RHS via:
+
+* `ricciEvolutionTensorRHSAt_eq_rough_sub_action_add_quadratic`
+
+The corrected assembly target is discharged by:
+
+* `RicciSecondDerivCurvatureCommutationAt.of_traceSecondRegularity`
+
+The Ricci-flow chain is fired by:
+
+* `satisfiesRicciEvolutionAt_of_ricciFlow_traceSecondRegularity`
+
+This theorem packages the second-regularity assumptions, derives the corrected
+`RicciSecondDerivCurvatureCommutationAt`, and passes it through the existing
+`satisfiesRicciEvolutionAt_of_ricciFlow_curvatureCommutation` bridge to prove
+`SatisfiesRicciEvolutionAt` for the corrected RHS.
+
 Narrow verification:
 
 ```text

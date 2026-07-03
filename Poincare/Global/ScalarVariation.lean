@@ -16412,6 +16412,488 @@ theorem covTensor2SecondDerivCurvatureActionAt_ricciVariationField_antisymm
     (hRight := tensor2SMulRight_ricciVariationField g)
     x u v p q
 
+theorem closedCurvatureOp_first_bianchiAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u v w : TM x) :
+    CovariantDerivative.curvatureOp g.leviCivita
+        (extend E u) (extend E v) (extend E w) x
+      + CovariantDerivative.curvatureOp g.leviCivita
+        (extend E v) (extend E w) (extend E u) x
+      + CovariantDerivative.curvatureOp g.leviCivita
+        (extend E w) (extend E u) (extend E v) x = 0 := by
+  simpa using
+    CovariantDerivative.bianchi_first_at
+      (cov := g.leviCivita)
+      (fun y ↦ g.leviCivita_torsionFreeAt y)
+      (X := extend E u) (Y := extend E v) (Z := extend E w) (x := x)
+      (FiberBundle.contMDiffAt_extend' (k := 2) I E u)
+      (FiberBundle.contMDiffAt_extend' (k := 2) I E v)
+      (FiberBundle.contMDiffAt_extend' (k := 2) I E w)
+
+set_option maxHeartbeats 5000000 in
+/--
+The Ricci-endomorphism trace of a curvature endomorphism is zero.  This is the
+closed-manifold version of `tr(Ric# ∘ R(u,w)) = 0`, using trace cyclicity,
+Ricci self-adjointness, and curvature skew-adjointness.
+-/
+theorem ricciEndo_curvatureTraceAt_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i);
+      ∑ i, g.ricciAt x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E u) (extend E w) (extend E (b i)) x)
+        (sharp i)) = 0 := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  let Rlin : TM x →ₗ[ℝ] TM x :=
+    CovariantDerivative.pairCurvatureEndAt g.leviCivita x u w
+  let A : TM x →ₗ[ℝ] TM x := g.ricciEndoAt x
+  have hTraceAR :
+      (∑ i, g.inner x (A (Rlin (b i))) (sharp i)) =
+        LinearMap.trace ℝ (TM x) (A.comp Rlin) := by
+    rw [LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+    exact (coord_eq_inner_metricDualVectorAt
+      (g := g) (x := x) i ((A.comp Rlin) (b i))).symm
+  have hTraceRA :
+      (∑ i, g.inner x (Rlin (A (b i))) (sharp i)) =
+        LinearMap.trace ℝ (TM x) (Rlin.comp A) := by
+    rw [LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+    exact (coord_eq_inner_metricDualVectorAt
+      (g := g) (x := x) i ((Rlin.comp A) (b i))).symm
+  have hRicTrace :
+      (∑ i, g.ricciAt x (Rlin (b i)) (sharp i)) =
+        LinearMap.trace ℝ (TM x) (A.comp Rlin) := by
+    calc
+      (∑ i, g.ricciAt x (Rlin (b i)) (sharp i)) =
+          ∑ i, g.inner x (A (Rlin (b i))) (sharp i) := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            rw [ClosedSmoothRiemannianMetric.inner_ricciEndoAt]
+      _ = LinearMap.trace ℝ (TM x) (A.comp Rlin) := hTraceAR
+  let F : TM x → TM x → ℝ :=
+    fun p q ↦ g.inner x (A (Rlin p)) q
+  have hswap := sum_metricDualVectorAt_contraction_swap
+    (g := g) (x := x) (F := F)
+    (fun p₁ p₂ q ↦ by
+      dsimp [F]
+      simp [map_add])
+    (fun c p q ↦ by
+      dsimp [F]
+      simp [smul_eq_mul])
+    (fun p q₁ q₂ ↦ by
+      dsimp [F]
+      simp)
+    (fun c p q ↦ by
+      dsimp [F]
+      simp [smul_eq_mul])
+  have hRAneg :
+      LinearMap.trace ℝ (TM x) (Rlin.comp A) =
+        -LinearMap.trace ℝ (TM x) (A.comp Rlin) := by
+    rw [← hTraceRA, ← hTraceAR]
+    calc
+      (∑ i, g.inner x (Rlin (A (b i))) (sharp i))
+          =
+        ∑ i, -g.inner x (A (b i)) (Rlin (sharp i)) := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          have hskew := closedCurvaturePairLastPairAntisymmAt
+            (g := g) (x := x) u w (A (b i)) (sharp i)
+          calc
+            g.inner x (Rlin (A (b i))) (sharp i) =
+                -g.inner x (Rlin (sharp i)) (A (b i)) := by
+                  simpa [Rlin] using hskew
+            _ = -g.inner x (A (b i)) (Rlin (sharp i)) := by
+                  rw [g.inner_symm x (Rlin (sharp i)) (A (b i))]
+      _ =
+        -∑ i, g.inner x (A (b i)) (Rlin (sharp i)) := by
+          rw [Finset.sum_neg_distrib]
+      _ =
+        -∑ i, g.inner x (b i) (A (Rlin (sharp i))) := by
+          congr 1
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          exact g.ricciEndoAt_selfAdjoint x (b i) (Rlin (sharp i))
+      _ =
+        -∑ i, g.inner x (A (Rlin (sharp i))) (b i) := by
+          congr 1
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          rw [g.inner_symm x (b i) (A (Rlin (sharp i)))]
+      _ =
+        -∑ i, g.inner x (A (Rlin (b i))) (sharp i) := by
+          simpa [F, b, sharp] using congrArg Neg.neg hswap
+  have hcyc :
+      LinearMap.trace ℝ (TM x) (A.comp Rlin) =
+        LinearMap.trace ℝ (TM x) (Rlin.comp A) :=
+    (LinearMap.trace_comp_comm' A Rlin).symm
+  have hzero :
+      LinearMap.trace ℝ (TM x) (A.comp Rlin) = 0 := by
+    linarith
+  change
+    (∑ i, g.ricciAt x
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E u) (extend E w) (extend E (b i)) x)
+      (sharp i)) = 0
+  simpa [Rlin] using hRicTrace.trans hzero
+
+/-- The corrected mixed Lichnerowicz curvature contraction is symmetric on Ricci. -/
+theorem lichnerowiczCurvatureAt_ricciVariationField_symm
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) :
+    lichnerowiczCurvatureAt g (ricciVariationField g) x u w =
+      lichnerowiczCurvatureAt g (ricciVariationField g) x w u := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hzero :
+      (∑ i, g.ricciAt x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E u) (extend E w) (extend E (b i)) x)
+        (sharp i)) = 0 := by
+    simpa [b, sharp] using
+      ricciEndo_curvatureTraceAt_eq_zero (g := g) (x := x) u w
+  have hentry :
+      ∀ i : Fin (Module.finrank ℝ (TM x)),
+        g.ricciAt x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E (b i)) (extend E u) (extend E w) x)
+          (sharp i)
+        =
+          -g.ricciAt x
+            (CovariantDerivative.curvatureOp g.leviCivita
+              (extend E u) (extend E w) (extend E (b i)) x)
+            (sharp i)
+          + g.ricciAt x
+            (CovariantDerivative.curvatureOp g.leviCivita
+              (extend E (b i)) (extend E w) (extend E u) x)
+            (sharp i) := by
+    intro i
+    have hb := closedCurvatureOp_first_bianchiAt
+      (g := g) (x := x) (b i) u w
+    have hwu :
+        CovariantDerivative.curvatureOp g.leviCivita
+            (extend E w) (extend E (b i)) (extend E u) x =
+          -CovariantDerivative.curvatureOp g.leviCivita
+            (extend E (b i)) (extend E w) (extend E u) x := by
+      rw [CovariantDerivative.curvatureOp_antisymm_apply]
+    have hvec :
+        CovariantDerivative.curvatureOp g.leviCivita
+            (extend E (b i)) (extend E u) (extend E w) x =
+          -CovariantDerivative.curvatureOp g.leviCivita
+            (extend E u) (extend E w) (extend E (b i)) x
+          + CovariantDerivative.curvatureOp g.leviCivita
+            (extend E (b i)) (extend E w) (extend E u) x := by
+      rw [hwu] at hb
+      linear_combination (norm := module) hb
+    let Ruw : TM x := CovariantDerivative.curvatureOp g.leviCivita
+      (extend E u) (extend E w) (extend E (b i)) x
+    let Rbw : TM x := CovariantDerivative.curvatureOp g.leviCivita
+      (extend E (b i)) (extend E w) (extend E u) x
+    rw [hvec]
+    change g.ricciAt x (-Ruw + Rbw) (sharp i) =
+      -g.ricciAt x Ruw (sharp i) + g.ricciAt x Rbw (sharp i)
+    calc
+      g.ricciAt x (-Ruw + Rbw) (sharp i) =
+          g.ricciAt x (-Ruw) (sharp i) + g.ricciAt x Rbw (sharp i) := by
+            rw [g.ricciAt_add_left]
+      _ = -g.ricciAt x Ruw (sharp i) + g.ricciAt x Rbw (sharp i) := by
+            have hneg := g.ricciAt_smul_left x (-1 : ℝ) Ruw (sharp i)
+            simpa using congrArg
+              (fun r : ℝ ↦ r + g.ricciAt x Rbw (sharp i)) hneg
+  change
+    (∑ i, g.ricciAt x
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E (b i)) (extend E u) (extend E w) x)
+      (sharp i))
+      =
+    (∑ i, g.ricciAt x
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E (b i)) (extend E w) (extend E u) x)
+      (sharp i))
+  calc
+    (∑ i, g.ricciAt x
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E (b i)) (extend E u) (extend E w) x)
+      (sharp i))
+        =
+      ∑ i,
+        (-g.ricciAt x
+            (CovariantDerivative.curvatureOp g.leviCivita
+              (extend E u) (extend E w) (extend E (b i)) x)
+            (sharp i)
+          + g.ricciAt x
+            (CovariantDerivative.curvatureOp g.leviCivita
+              (extend E (b i)) (extend E w) (extend E u) x)
+            (sharp i)) := by
+        exact Finset.sum_congr rfl fun i _ ↦ hentry i
+    _ =
+      -(∑ i, g.ricciAt x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E u) (extend E w) (extend E (b i)) x)
+          (sharp i))
+        + ∑ i, g.ricciAt x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E (b i)) (extend E w) (extend E u) x)
+          (sharp i) := by
+        rw [Finset.sum_add_distrib, Finset.sum_neg_distrib]
+    _ =
+      ∑ i, g.ricciAt x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (b i)) (extend E w) (extend E u) x)
+        (sharp i) := by
+        rw [hzero]
+        ring
+
+theorem curvatureOp_trace_sharp_inner_eq_neg_ricciAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u z : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i);
+      ∑ i, g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (b i)) (extend E u) (extend E (sharp i)) x)
+        z)
+      =
+        -g.ricciAt x u z := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hentry : ∀ i : Fin (Module.finrank ℝ (TM x)),
+      g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (b i)) (extend E u) (extend E (sharp i)) x)
+        z
+      =
+        -g.inner x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E (b i)) (extend E u) (extend E z) x)
+          (sharp i) := by
+    intro i
+    exact closedCurvaturePairLastPairAntisymmAt
+      (g := g) (x := x) (b i) u (sharp i) z
+  have hric :
+      g.ricciAt x u z =
+        ∑ i, g.inner x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E (b i)) (extend E u) (extend E z) x)
+          (sharp i) := by
+    simpa [b, sharp] using
+      ricciAt_eq_curvature_inner_contraction (g := g) (x := x) u z
+  change
+    (∑ i, g.inner x
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E (b i)) (extend E u) (extend E (sharp i)) x)
+      z)
+      =
+        -g.ricciAt x u z
+  calc
+    (∑ i, g.inner x
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E (b i)) (extend E u) (extend E (sharp i)) x)
+      z)
+        =
+      ∑ i, -g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (b i)) (extend E u) (extend E z) x)
+        (sharp i) := by
+        exact Finset.sum_congr rfl fun i _ ↦ hentry i
+    _ =
+      -∑ i, g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (b i)) (extend E u) (extend E z) x)
+        (sharp i) := by
+        rw [Finset.sum_neg_distrib]
+    _ = -g.ricciAt x u z := by
+        rw [← hric]
+
+theorem covTensor2SecondDerivCurvatureActionAt_ricciVariationField_trace_eq_neg_lichnerowicz_add_ricciEndo
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i);
+      ∑ i, covTensor2SecondDerivCurvatureActionAt
+        g (ricciVariationField g) x (b i) u w (sharp i))
+      =
+        -lichnerowiczCurvatureAt g (ricciVariationField g) x u w
+          + g.ricciAt x (g.ricciEndoAt x u) w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  let A : TM x →ₗ[ℝ] TM x := g.ricciEndoAt x
+  have hfirst :
+      (∑ i, -g.ricciAt x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (b i)) (extend E u) (extend E w) x)
+        (sharp i))
+      =
+        -lichnerowiczCurvatureAt g (ricciVariationField g) x u w := by
+    unfold lichnerowiczCurvatureAt ricciVariationField
+    rw [Finset.sum_neg_distrib]
+  have hRicEndo :
+      g.ricciAt x u (A w) = g.ricciAt x (A u) w := by
+    calc
+      g.ricciAt x u (A w) =
+          g.inner x (A u) (A w) := by
+            rw [ClosedSmoothRiemannianMetric.inner_ricciEndoAt]
+      _ = g.inner x (A (A u)) w := by
+            exact (g.ricciEndoAt_selfAdjoint x (A u) w).symm
+      _ = g.ricciAt x (A u) w := by
+            rw [ClosedSmoothRiemannianMetric.inner_ricciEndoAt]
+  have hsecondRaw :
+      (∑ i, g.ricciAt x w
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (b i)) (extend E u) (extend E (sharp i)) x))
+      =
+        -g.ricciAt x (A u) w := by
+    calc
+      (∑ i, g.ricciAt x w
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (b i)) (extend E u) (extend E (sharp i)) x))
+          =
+        ∑ i, g.inner x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E (b i)) (extend E u) (extend E (sharp i)) x)
+          (A w) := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          calc
+            g.ricciAt x w
+              (CovariantDerivative.curvatureOp g.leviCivita
+                (extend E (b i)) (extend E u) (extend E (sharp i)) x)
+                =
+              g.inner x (A w)
+                (CovariantDerivative.curvatureOp g.leviCivita
+                  (extend E (b i)) (extend E u) (extend E (sharp i)) x) := by
+                rw [ClosedSmoothRiemannianMetric.inner_ricciEndoAt]
+            _ =
+              g.inner x
+                (CovariantDerivative.curvatureOp g.leviCivita
+                  (extend E (b i)) (extend E u) (extend E (sharp i)) x)
+                (A w) := by
+                rw [g.inner_symm x (A w)]
+      _ = -g.ricciAt x u (A w) := by
+          simpa [b, sharp, A] using
+            curvatureOp_trace_sharp_inner_eq_neg_ricciAt
+              (g := g) (x := x) (u := u) (z := A w)
+      _ = -g.ricciAt x (A u) w := by
+          rw [hRicEndo]
+  have hsecond :
+      (∑ i, -g.ricciAt x w
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (b i)) (extend E u) (extend E (sharp i)) x))
+      =
+        g.ricciAt x (A u) w := by
+    rw [Finset.sum_neg_distrib, hsecondRaw]
+    ring
+  change
+    (∑ i,
+      (-g.ricciAt x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (b i)) (extend E u) (extend E w) x)
+        (sharp i)
+      - g.ricciAt x w
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (b i)) (extend E u) (extend E (sharp i)) x)))
+      =
+        -lichnerowiczCurvatureAt g (ricciVariationField g) x u w
+          + g.ricciAt x (A u) w
+  rw [Finset.sum_sub_distrib, hfirst, hsecondRaw]
+  ring
+
+theorem covTensor2SecondDerivCurvatureActionAt_ricciVariationField_trace_eq_action_sub_quadratic
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i);
+      (∑ i, covTensor2SecondDerivCurvatureActionAt
+        g (ricciVariationField g) x (b i) u w (sharp i))
+      + (∑ i, covTensor2SecondDerivCurvatureActionAt
+        g (ricciVariationField g) x (b i) w u (sharp i)))
+      =
+        ricciActionOnTensorAt g (ricciVariationField g) x u w
+          - ricciQuadraticAt g x u w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hU :
+      (∑ i, covTensor2SecondDerivCurvatureActionAt
+        g (ricciVariationField g) x (b i) u w (sharp i))
+      =
+        -lichnerowiczCurvatureAt g (ricciVariationField g) x u w
+          + g.ricciAt x (g.ricciEndoAt x u) w := by
+    simpa [b, sharp] using
+      covTensor2SecondDerivCurvatureActionAt_ricciVariationField_trace_eq_neg_lichnerowicz_add_ricciEndo
+        (g := g) (x := x) u w
+  have hW :
+      (∑ i, covTensor2SecondDerivCurvatureActionAt
+        g (ricciVariationField g) x (b i) w u (sharp i))
+      =
+        -lichnerowiczCurvatureAt g (ricciVariationField g) x w u
+          + g.ricciAt x (g.ricciEndoAt x w) u := by
+    simpa [b, sharp] using
+      covTensor2SecondDerivCurvatureActionAt_ricciVariationField_trace_eq_neg_lichnerowicz_add_ricciEndo
+        (g := g) (x := x) w u
+  have hLsym :
+      lichnerowiczCurvatureAt g (ricciVariationField g) x w u =
+        lichnerowiczCurvatureAt g (ricciVariationField g) x u w :=
+    (lichnerowiczCurvatureAt_ricciVariationField_symm
+      (g := g) (x := x) u w).symm
+  have hRicSymm :
+      g.ricciAt x (g.ricciEndoAt x w) u =
+        g.ricciAt x u (g.ricciEndoAt x w) := by
+    rw [g.ricciAt_symm]
+  have hQ :
+      ricciQuadraticAt g x u w =
+        2 * lichnerowiczCurvatureAt g (ricciVariationField g) x u w :=
+    ricciQuadraticAt_eq_two_lichnerowiczCurvatureAt_ricciVariationField
+      (g := g) (x := x) u w
+  change
+    (∑ i, covTensor2SecondDerivCurvatureActionAt
+      g (ricciVariationField g) x (b i) u w (sharp i))
+    + (∑ i, covTensor2SecondDerivCurvatureActionAt
+      g (ricciVariationField g) x (b i) w u (sharp i))
+      =
+        ricciActionOnTensorAt g (ricciVariationField g) x u w
+          - ricciQuadraticAt g x u w
+  rw [hU, hW, hLsym, hRicSymm, hQ]
+  unfold ricciActionOnTensorAt ricciVariationField
+  ring
+
 theorem covTensor2SecondDerivAt_ricciVariationField_antisymm_eq_curvatureAction
     (g : ClosedSmoothRiemannianMetric n M)
     [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
@@ -16837,6 +17319,85 @@ theorem deltaRicciSecondDerivContractionAt_negTwoRicci_eq_rough_sub_curvatureAct
     simp [T, Finset.mul_sum]
   rw [hFirst, hSecond, hA, hB, hDu, hDw, hT, hHsymm]
   ring
+
+set_option maxHeartbeats 5000000 in
+/--
+Corrected curvature-commutation assembly: the M4-prep-15 Hessian-cancelled
+identity gives `rough - CAu - CAw`, and the corrected CA fold gives
+`CAu + CAw = A - Q`.
+-/
+theorem RicciSecondDerivCurvatureCommutationAt.of_traceSecondRegularity
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hRicSecond :
+      CovTensor2DerivExtDifferentiableAt g (ricciVariationField g) x)
+    (hRicC2 : CovTensor2ExtContMDiffAt (ricciVariationField g) x 2)
+    (hScalar₂ : ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ g.scalarAt y) x)
+    (hScalarExt₂ : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦
+          extDerivFun (fun z : M ↦ g.scalarAt z) y (extend E w y)) x) :
+    RicciSecondDerivCurvatureCommutationAt g x := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  intro u w
+  have hAsm :
+      deltaRicciSecondDerivContractionAt g (negTwoRicciVariationField g) x u w =
+        roughTensorLaplacianAt g (ricciVariationField g) x u w
+          -
+          (∑ i, covTensor2SecondDerivCurvatureActionAt
+            g (ricciVariationField g) x (b i) u w (sharp i))
+          -
+          (∑ i, covTensor2SecondDerivCurvatureActionAt
+            g (ricciVariationField g) x (b i) w u (sharp i)) := by
+    simpa [b, sharp] using
+      deltaRicciSecondDerivContractionAt_negTwoRicci_eq_rough_sub_curvatureActions
+        (g := g) (x := x) hRicSecond hRicC2 hScalar₂ hScalarExt₂ u w
+  have hCA :
+      (∑ i, covTensor2SecondDerivCurvatureActionAt
+        g (ricciVariationField g) x (b i) u w (sharp i))
+        + (∑ i, covTensor2SecondDerivCurvatureActionAt
+          g (ricciVariationField g) x (b i) w u (sharp i))
+      =
+        ricciActionOnTensorAt g (ricciVariationField g) x u w
+          - ricciQuadraticAt g x u w := by
+    simpa [b, sharp] using
+      covTensor2SecondDerivCurvatureActionAt_ricciVariationField_trace_eq_action_sub_quadratic
+        (g := g) (x := x) u w
+  have hRHS :=
+    ricciEvolutionTensorRHSAt_eq_rough_sub_action_add_quadratic
+      (g := g) (x := x) u w
+  calc
+    deltaRicciSecondDerivContractionAt g (negTwoRicciVariationField g) x u w =
+        roughTensorLaplacianAt g (ricciVariationField g) x u w
+          -
+          (∑ i, covTensor2SecondDerivCurvatureActionAt
+            g (ricciVariationField g) x (b i) u w (sharp i))
+          -
+          (∑ i, covTensor2SecondDerivCurvatureActionAt
+            g (ricciVariationField g) x (b i) w u (sharp i)) := hAsm
+    _ = roughTensorLaplacianAt g (ricciVariationField g) x u w
+          -
+          ((∑ i, covTensor2SecondDerivCurvatureActionAt
+              g (ricciVariationField g) x (b i) u w (sharp i))
+            + (∑ i, covTensor2SecondDerivCurvatureActionAt
+              g (ricciVariationField g) x (b i) w u (sharp i))) := by
+          ring
+    _ = roughTensorLaplacianAt g (ricciVariationField g) x u w
+          -
+          (ricciActionOnTensorAt g (ricciVariationField g) x u w
+            - ricciQuadraticAt g x u w) := by
+          rw [hCA]
+    _ = roughTensorLaplacianAt g (ricciVariationField g) x u w
+          - ricciActionOnTensorAt g (ricciVariationField g) x u w
+          + ricciQuadraticAt g x u w := by
+          ring
+    _ = ricciEvolutionTensorRHSAt g x u w := hRHS.symm
 
 theorem lichnerowiczCurvatureAt_ricciQuadraticAt_trace_cancellation
     (g : ClosedSmoothRiemannianMetric n M)
@@ -17597,6 +18158,62 @@ theorem satisfiesRicciEvolutionAt_of_ricciFlow_curvatureCommutation
         hCyclic hCurvComm
   exact satisfiesRicciEvolutionAt_of_secondDerivCommutation
     (gt := gt) (t₀ := t₀) (x := x) hDeltaRic hComm
+
+theorem satisfiesRicciEvolutionAt_of_ricciFlow_traceSecondRegularity
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hExt :
+      ∀ a b c : TM x,
+        HasDerivAt
+          (fun t ↦
+            extDerivFun
+              (fun y : M ↦ (gt t).inner y (extend E b y) (extend E c y)) x a)
+          (extDerivFun
+            (fun y : M ↦ timeDerivAt gt t₀ y (extend E b y) (extend E c y))
+            x a) t₀)
+    (hNear :
+      ∀ᶠ y in nhds x,
+        MetricFlowRegularAt gt t₀ y ∧
+        (∀ a b c : TM y,
+          HasDerivAt
+            (fun t ↦
+              extDerivFun
+                (fun z : M ↦ (gt t).inner z (extend E b z) (extend E c z))
+                y a)
+            (extDerivFun
+              (fun z : M ↦ timeDerivAt gt t₀ z (extend E b z) (extend E c z))
+              y a) t₀))
+    (hBridge : DeltaGammaEntryDerivativeBridgeAt gt t₀ x)
+    (hSecond :
+      CovTensor2DerivExtDifferentiableAt
+        (gt t₀) (timeDerivAt gt t₀) x)
+    (hFlowNear :
+      ∀ᶠ y in nhds x,
+        IsClosedRicciFlowSolutionAt gt t₀ y ∧
+        ClosedRicciFlowExtensionRegularAt gt t₀ y)
+    (hRicSecond :
+      CovTensor2DerivExtDifferentiableAt
+        (gt t₀) (ricciVariationField (gt t₀)) x)
+    (hRicC2 :
+      CovTensor2ExtContMDiffAt (ricciVariationField (gt t₀)) x 2)
+    (hScalar₂ :
+      ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ (gt t₀).scalarAt y) x)
+    (hScalarExt₂ : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦
+          extDerivFun (fun z : M ↦ (gt t₀).scalarAt z) y
+            (extend E w y)) x) :
+    SatisfiesRicciEvolutionAt gt t₀ x := by
+  have hCurvComm : RicciSecondDerivCurvatureCommutationAt (gt t₀) x :=
+    RicciSecondDerivCurvatureCommutationAt.of_traceSecondRegularity
+      (g := gt t₀) (x := x)
+      hRicSecond hRicC2 hScalar₂ hScalarExt₂
+  exact satisfiesRicciEvolutionAt_of_ricciFlow_curvatureCommutation
+    (gt := gt) (t₀ := t₀) (x := x)
+    hreg hgt hExt hNear hBridge hSecond hFlowNear hCurvComm
 
 /--
 Exact divergence assembly for the first `δΓ` contraction:
