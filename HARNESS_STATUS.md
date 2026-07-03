@@ -67,6 +67,17 @@ germ locality + `inCoordinates` gluing (`Global/LeviCivitaRegularity.lean`,
   Bianchi. Two proposed intermediate identities were REFUTED by flat-torus
   counterexamples and rerouted — no false statement survived.
 
+### Tier M4 — tensor evolution (RICCI EVOLUTION EQUATION PROVEN 2026-07-03)
+- `satisfiesRicciEvolutionAt_of_ricciFlow_traceSecondRegularity`
+  (`Global/ScalarVariation.lean`): under Ricci flow,
+  `∂ₜRic = ΔRic + 2·Rm(Ric,·) − 2·Ric²` (classical Hamilton form), with the
+  moving-metric trace reconciliation formalized against the proven scalar
+  equation. Foundation: the closed tensor Ricci identity (antisymmetrized
+  ∇² = curvature action), the differentiated contracted-Bianchi bridge, and
+  the corrected Lichnerowicz vocabulary. Three definition/target errors were
+  caught pre-proof by test-metric coefficient pinning (space form +
+  non-Einstein diagonal) and sanctioned-corrected with full history.
+
 ### Tier L — single-chart model
 - Schur lemma completed: `schur_fderiv_coordScalar_eq_zero_of_einstein_field`
   (Einstein field, n > 2 ⇒ dR = 0), closing the last bounded local thread.
