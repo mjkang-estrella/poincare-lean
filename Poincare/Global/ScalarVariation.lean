@@ -451,6 +451,148 @@ theorem deriv_scalarAt_eq_trace_of_ricciEndoHasDerivAt
       LinearMap.trace ℝ (TM x) (A' : TM x →ₗ[ℝ] TM x) :=
   (hasDerivAt_scalarAt_of_ricciEndoHasDerivAt hA).deriv
 
+/--
+Differentiating the squared Ricci norm `tr(Ric# o Ric#)` gives
+`2 tr(A' o Ric#)`, where `A'` is the time derivative of the raised Ricci
+endomorphism.
+-/
+theorem hasDerivAt_ricciNormSqAt_of_ricciEndoHasDerivAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {A' : TM x →L[ℝ] TM x}
+    (hA : RicciEndoHasDerivAt gt t₀ x A') :
+    HasDerivAt (fun t ↦ (gt t).ricciNormSqAt x)
+      (2 * LinearMap.trace ℝ (TM x)
+        ((A'.comp ((gt t₀).ricciEndoContinuousAt x)) : TM x →ₗ[ℝ] TM x)) t₀ := by
+  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  simpa [ricciNormSqAt, ricciEndoContinuousAt] using
+    (RicciFlow.RicciFlow.hasDerivAt_trace_sq hA)
+
+/-- Formula for `deriv ricciNormSqAt` once the raised-Ricci derivative is known. -/
+theorem deriv_ricciNormSqAt_eq_trace_of_ricciEndoHasDerivAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {A' : TM x →L[ℝ] TM x}
+    (hA : RicciEndoHasDerivAt gt t₀ x A') :
+    deriv (fun t ↦ (gt t).ricciNormSqAt x) t₀ =
+      2 * LinearMap.trace ℝ (TM x)
+        ((A'.comp ((gt t₀).ricciEndoContinuousAt x)) : TM x →ₗ[ℝ] TM x) :=
+  (hasDerivAt_ricciNormSqAt_of_ricciEndoHasDerivAt hA).deriv
+
+/--
+Honest decomposition of `d/dt |Ric|^2`: the derivative of the raised Ricci
+endomorphism is the sum of the metric-raising motion term and the derivative
+of the lower Ricci tensor.
+-/
+theorem hasDerivAt_ricciNormSqAt_of_ricciBilinearHasDerivAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {δRic : TM x → TM x → ℝ}
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hRic : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic u w) t₀) :
+    HasDerivAt (fun t ↦ (gt t).ricciNormSqAt x)
+      (2 * LinearMap.trace ℝ (TM x)
+        ((((raise'.comp ((gt t₀).ricciDualContinuousAt x) +
+            ((gt t₀).metricRaiseContinuousAt x).comp
+              (ricciDerivativeDualContinuousAt
+                (gt := gt) (t₀ := t₀) (x := x) δRic hRic)).comp
+            ((gt t₀).ricciEndoContinuousAt x)) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x)) t₀ := by
+  have hA :=
+    ricciEndoHasDerivAt_of_ricciBilinearHasDerivAt
+      (gt := gt) (t₀ := t₀) (x := x) (δRic := δRic)
+      (raise' := raise') hRaise hRic
+  simpa using hasDerivAt_ricciNormSqAt_of_ricciEndoHasDerivAt hA
+
+/-- Quotient-rule numerator for the scalar-normalized Ricci pinching quantity. -/
+noncomputable def pinchingQuotientDerivativeAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (N' R' : ℝ) : ℝ :=
+  (N' * ((gt t₀).scalarAt x) ^ 2
+      - (gt t₀).ricciNormSqAt x *
+        (2 * ((gt t₀).scalarAt x) ^ (2 - 1) * R')) /
+    (((gt t₀).scalarAt x) ^ 2) ^ 2
+
+/-- Differentiating `|Ric|^2/R^2` from separate Ricci-norm and scalar derivatives. -/
+theorem hasDerivAt_pinchingQuotientAt_of_scalar_and_ricciNorm
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {N' R' : ℝ}
+    (hN : HasDerivAt (fun t ↦ (gt t).ricciNormSqAt x) N' t₀)
+    (hR : HasDerivAt (fun t ↦ (gt t).scalarAt x) R' t₀)
+    (hRne : (gt t₀).scalarAt x ≠ 0) :
+    HasDerivAt (fun t ↦ (gt t).pinchingQuotientAt x)
+      (pinchingQuotientDerivativeAt (gt := gt) (t₀ := t₀) (x := x) N' R') t₀ := by
+  have hden := hR.pow 2
+  have hquot := hN.div hden (pow_ne_zero 2 hRne)
+  simpa [pinchingQuotientAt, pinchingQuotientDerivativeAt] using hquot
+
+/-- Differentiating the pinching quotient from raised-Ricci and scalar derivative data. -/
+theorem hasDerivAt_pinchingQuotientAt_of_ricciEndoHasDerivAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {A' : TM x →L[ℝ] TM x} {R' : ℝ}
+    (hA : RicciEndoHasDerivAt gt t₀ x A')
+    (hR : HasDerivAt (fun t ↦ (gt t).scalarAt x) R' t₀)
+    (hRne : (gt t₀).scalarAt x ≠ 0) :
+    HasDerivAt (fun t ↦ (gt t).pinchingQuotientAt x)
+      (pinchingQuotientDerivativeAt (gt := gt) (t₀ := t₀) (x := x)
+        (2 * LinearMap.trace ℝ (TM x)
+          ((A'.comp ((gt t₀).ricciEndoContinuousAt x)) : TM x →ₗ[ℝ] TM x))
+        R') t₀ :=
+  hasDerivAt_pinchingQuotientAt_of_scalar_and_ricciNorm
+    (hasDerivAt_ricciNormSqAt_of_ricciEndoHasDerivAt hA) hR hRne
+
+/-- The closed quotient's Hamilton drift term `2/R <grad R, grad Q>`. -/
+noncomputable def pinchingQuotientGradientDrift3At
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : ℝ :=
+  (2 / g.scalarAt x) *
+    g.inner x
+      (g.gradientAt (fun y ↦ g.scalarAt y) x)
+      (g.gradientAt (fun y ↦ g.pinchingQuotientAt y) x)
+
+/--
+Statement-layer target for the 3D Hamilton pinching inequality for
+`Q = |Ric|^2/R^2`: heat operator plus scalar-gradient drift plus the concrete
+negative traceless-Ricci damping term.  The proof of this predicate is a later
+curvature-evolution campaign.
+-/
+def SatisfiesHamiltonPinchingEvolutionInequality3At
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1] :
+    Prop :=
+  0 < (gt t₀).scalarAt x ∧
+    ∃ Q' : ℝ,
+      HasDerivAt (fun t ↦ (gt t).pinchingQuotientAt x) Q' t₀ ∧
+        Q' ≤
+          (gt t₀).laplacianAt (fun y ↦ (gt t₀).pinchingQuotientAt y) x
+            + (gt t₀).pinchingQuotientGradientDrift3At x
+            + (gt t₀).pinchingTracelessDampingAt x
+
+/-
+Hamilton pinching proof roadmap:
+1. Connect `riemannFromRicci3At` to the actual curvature tensor in dimension three.
+2. Specialize the proven Ricci evolution equation through the 3D decomposition.
+3. Expand `d/dt |Ric|^2` with the raised-Ricci derivative and metric-motion term.
+4. Combine scalar evolution with the quotient rule for `|Ric|^2 / R^2`.
+5. Rewrite the quadratic remainder as the signed traceless-Ricci damping term.
+6. Feed the resulting inequality into the scalar-positive maximum-principle step.
+-/
+
 end ClosedSmoothRiemannianMetric
 
 /-- The metric time derivative, packaged as a continuous bilinear form. -/
