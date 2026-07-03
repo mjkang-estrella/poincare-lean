@@ -13356,6 +13356,93 @@ theorem deltaRicciAt_eq_negTwoRicci_secondDerivContractionAt_of_isClosedRicciFlo
     u w
 
 /--
+The rough connection Laplacian of a raw `(0,2)` tensor, written as the metric
+trace of `covTensor2SecondDerivAt` over the two derivative slots.
+-/
+noncomputable def roughTensorLaplacianAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (u w : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  ∑ i, covTensor2SecondDerivAt g h x (b i) (sharp i) u w
+
+/--
+The curvature action part of the Lichnerowicz Laplacian, mirroring the model
+`lichnerowiczCurvature`: trace the curvature operator over one raised basis
+pair and let it act on both tensor slots.
+-/
+noncomputable def lichnerowiczCurvatureAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (u w : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  ∑ i,
+    (h x
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E (b i)) (extend E (sharp i)) (extend E u) x)
+      w
+      + h x u
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (b i)) (extend E (sharp i)) (extend E w) x))
+
+/--
+The Ricci-endomorphism action on a `(0,2)` tensor:
+`h(Ric♯ u,w) + h(u,Ric♯ w)`.
+-/
+noncomputable def ricciActionOnTensorAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (u w : TM x) : ℝ :=
+  h x (g.ricciEndoAt x u) w + h x u (g.ricciEndoAt x w)
+
+/--
+The closed-manifold Lichnerowicz Laplacian on a raw `(0,2)` tensor.
+
+This is intended for symmetric two-tensors; symmetry is deliberately not
+baked into the type so it can be reused with the existing raw tensor fields.
+The convention mirrors the model definition:
+`Δ_L h = Δ_∇ h - 2 Rm·h + Ric·h + h·Ric`.
+-/
+noncomputable def lichnerowiczLaplacianAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (u w : TM x) : ℝ :=
+  roughTensorLaplacianAt g h x u w
+    - 2 * lichnerowiczCurvatureAt g h x u w
+    + ricciActionOnTensorAt g h x u w
+
+/--
+The curvature-quadratic Ricci reaction vocabulary for the Ricci tensor
+evolution target.  It is a concrete `Rm * Ric` contraction: one curvature
+operator slot is traced against a raised basis vector, and the resulting vector
+is paired with the Ricci tensor.
+-/
+noncomputable def ricciQuadraticAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  2 * ∑ i,
+    g.ricciAt x
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E (b i)) (extend E u) (extend E w) x)
+      (sharp i)
+
+/--
 Exact divergence assembly for the first `δΓ` contraction:
 the divergence of the inner-trace one-form gives
 `div div h - 1/2 Δ tr h`.
