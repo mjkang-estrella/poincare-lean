@@ -2,6 +2,7 @@ import Poincare.Global.Laplacian
 import Poincare.Global.RicciNorm
 import Poincare.Global.RicciFlow
 import Poincare.Global.ScalarVariation
+import Poincare.MaximumPrinciple
 
 /-!
 # Closed-manifold scalar evolution statement
@@ -726,6 +727,61 @@ theorem hamilton_scalar_minimum_riccati_step_at
       (gt := gt) (t₀ := t₀) (x := x) hn hHam with
     ⟨R', hR', hineq⟩
   exact ⟨R', hR', by linarith⟩
+
+/--
+Finite-time Riccati obstruction for a closed Hamilton scalar evolution track.
+
+The interval variable is shifted: `τ ∈ [0,T]` corresponds to geometric time
+`t₀ + τ`.  The hypothesis `hMinLap` is the spatial-minimum input along the
+track.  Thus any smooth extension satisfying these Hamilton/minimum hypotheses
+on `[t₀, t₀ + T]` must have `T < n / (2 R(t₀,x₀))`.
+-/
+theorem hamilton_finite_time_singularity
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ T : ℝ} {x₀ : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hn : 0 < (n : ℝ)) (hT0 : 0 ≤ T)
+    (hHam : ∀ τ ∈ Set.Icc (0 : ℝ) T,
+      SatisfiesHamiltonScalarEvolutionAt gt (t₀ + τ) x₀)
+    (hMinLap : ∀ τ ∈ Set.Icc (0 : ℝ) T,
+      0 ≤ (gt (t₀ + τ)).laplacianAt
+        (fun y ↦ (gt (t₀ + τ)).scalarAt y) x₀)
+    (hRpos : 0 < (gt t₀).scalarAt x₀) :
+    T < (n : ℝ) / (2 * (gt t₀).scalarAt x₀) := by
+  let u : ℝ → ℝ := fun τ ↦ (gt (t₀ + τ)).scalarAt x₀
+  let u' : ℝ → ℝ := fun τ ↦
+    (gt (t₀ + τ)).laplacianAt
+        (fun y ↦ (gt (t₀ + τ)).scalarAt y) x₀
+      + 2 * (gt (t₀ + τ)).ricciNormSqAt x₀
+  have ha : 0 < 2 / (n : ℝ) := by positivity
+  have hd : ∀ τ ∈ Set.Icc (0 : ℝ) T, HasDerivAt u (u' τ) τ := by
+    intro τ hτ
+    have hbase :
+        HasDerivAt (fun t ↦ (gt t).scalarAt x₀) (u' τ) (t₀ + τ) := by
+      simpa [SatisfiesHamiltonScalarEvolutionAt, u'] using hHam τ hτ
+    have hshift : HasDerivAt (fun s : ℝ ↦ t₀ + s) 1 τ := by
+      simpa using (hasDerivAt_id τ).const_add t₀
+    simpa [u] using hbase.comp τ hshift
+  have hineq : ∀ τ ∈ Set.Icc (0 : ℝ) T, (2 / (n : ℝ)) * u τ ^ 2 ≤ u' τ := by
+    intro τ hτ
+    have hreact :=
+      hamilton_scalar_reaction_bound_at
+        (g := gt (t₀ + τ)) (x := x₀) hn
+    have hlap := hMinLap τ hτ
+    dsimp [u, u']
+    linarith
+  have hfinite :=
+    RicciFlow.riccati_forces_finite_time
+      (u := u) (u' := u') (a := 2 / (n : ℝ)) (T := T)
+      ha hT0 hd hineq (by simpa [u] using hRpos)
+  have hu0pos : 0 < u 0 := by
+    simpa [u] using hRpos
+  calc
+    T < 1 / ((2 / (n : ℝ)) * u 0) := hfinite
+    _ = (n : ℝ) / (2 * u 0) := by
+        field_simp [ne_of_gt hn, ne_of_gt hu0pos]
+    _ = (n : ℝ) / (2 * (gt t₀).scalarAt x₀) := by
+        simp [u]
 
 /--
 The unproven closed-manifold Hamilton scalar evolution frontier.
