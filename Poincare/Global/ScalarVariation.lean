@@ -10777,6 +10777,56 @@ theorem closedConnectionEntryOutputConnection_extDerivFun_cyclic_eq_covTensor2De
       (g := g) (x := x) (v := v) (a := w) (u := u) (w := z) (q := q)] at hraw
   linarith
 
+/-- Cyclic covariant derivative block for the iterated connection-entry field. -/
+noncomputable def closedIteratedConnectionEntryCovDerivCyclicAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (x : M) (u v w z q : TM x) : ℝ :=
+  covTensor2DerivAt g (closedIteratedConnectionEntryFieldAt g w z) x v u q
+    - covTensor2DerivAt g (closedIteratedConnectionEntryFieldAt g w z) x u v q
+    + covTensor2DerivAt g (closedIteratedConnectionEntryFieldAt g v z) x u w q
+    - covTensor2DerivAt g (closedIteratedConnectionEntryFieldAt g v z) x w u q
+    + covTensor2DerivAt g (closedIteratedConnectionEntryFieldAt g u z) x w v q
+    - covTensor2DerivAt g (closedIteratedConnectionEntryFieldAt g u z) x v w q
+
+theorem closedConnectionEntryOutputConnection_extDerivFun_cyclic_eq_packaged
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u v w z q : TM x) :
+    - extDerivFun (closedConnectionEntryOutputConnectionFieldAt g u w z q) x v
+      + extDerivFun (closedConnectionEntryOutputConnectionFieldAt g w u z q) x v
+      - extDerivFun (closedConnectionEntryOutputConnectionFieldAt g w v z q) x u
+      + extDerivFun (closedConnectionEntryOutputConnectionFieldAt g v w z q) x u
+      - extDerivFun (closedConnectionEntryOutputConnectionFieldAt g v u z q) x w
+      + extDerivFun (closedConnectionEntryOutputConnectionFieldAt g u v z q) x w =
+        closedIteratedConnectionEntryCovDerivCyclicAt g x u v w z q
+        + closedIteratedConnectionEntryFieldAt g w z x u
+          (g.leviCivita (extend E q) x v)
+        - closedIteratedConnectionEntryFieldAt g w z x v
+          (g.leviCivita (extend E q) x u)
+        + closedIteratedConnectionEntryFieldAt g v z x w
+          (g.leviCivita (extend E q) x u)
+        - closedIteratedConnectionEntryFieldAt g v z x u
+          (g.leviCivita (extend E q) x w)
+        + closedIteratedConnectionEntryFieldAt g u z x v
+          (g.leviCivita (extend E q) x w)
+        - closedIteratedConnectionEntryFieldAt g u z x w
+          (g.leviCivita (extend E q) x v)
+        - closedConnectionEntryOutputConnectionFieldAt g
+          (g.leviCivita (extend E u) x v) w z q x
+        + closedConnectionEntryOutputConnectionFieldAt g
+          (g.leviCivita (extend E v) x u) w z q x
+        - closedConnectionEntryOutputConnectionFieldAt g
+          (g.leviCivita (extend E w) x u) v z q x
+        + closedConnectionEntryOutputConnectionFieldAt g
+          (g.leviCivita (extend E u) x w) v z q x
+        - closedConnectionEntryOutputConnectionFieldAt g
+          (g.leviCivita (extend E v) x w) u z q x
+        + closedConnectionEntryOutputConnectionFieldAt g
+          (g.leviCivita (extend E w) x v) u z q x := by
+  simpa [closedIteratedConnectionEntryCovDerivCyclicAt] using
+    closedConnectionEntryOutputConnection_extDerivFun_cyclic_eq_covTensor2DerivAt_cyclic
+      (g := g) (x := x) (u := u) (v := v) (w := w) (z := z) (q := q)
+
 /--
 Hessian identification for the first-slot trace field from the local
 first-order identity and scalar trace C² regularity.
