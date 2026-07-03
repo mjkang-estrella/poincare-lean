@@ -512,6 +512,18 @@ theorem laplacianAt_congr_of_eventuallyEq
   unfold laplacianAt
   rw [g.hessianDualAt_congr_of_eventuallyEq hEq hgradf hgradh]
 
+/-- Leibniz rule for multiplying a vector field by a scalar function. -/
+theorem leviCivita_smul_function (g : ClosedSmoothRiemannianMetric n M)
+    {f : M → ℝ} {X : ∀ y : M, TM y} {x : M}
+    (hf : MDifferentiableAt I 𝓘(ℝ) f x)
+    (hX : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% X) x)
+    (v : TM x) :
+    g.leviCivita (f • X) x v =
+      f x • g.leviCivita X x v + extDerivFun f x v • X x := by
+  have h := g.leviCivita.isCovariantDerivativeOnUniv.leibniz hX hf
+  have hv := congrArg (fun L : TM x →L[ℝ] TM x ↦ L v) h
+  simpa [ContinuousLinearMap.smulRight_apply] using hv
+
 /--
 Additivity of the Hessian in the scalar function.
 
