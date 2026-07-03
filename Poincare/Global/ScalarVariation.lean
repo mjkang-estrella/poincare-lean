@@ -5710,6 +5710,22 @@ theorem closedCurvature_koszul
   ring
 
 /--
+Single-entry scalar-paired closed curvature derivative after substituting the
+closed Koszul expansion.
+-/
+theorem closedCurvatureCovDerivAt_inner_koszul_expansion
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v a u w q : TM x) :
+    g.inner x (closedCurvatureCovDerivAt g x v a u w) q =
+      closedCurvatureDefExpansionAt g x v a u w q
+        - closedCurvatureCovDerivAtCorrectionAt g x v a u w q := by
+  rw [closedCurvatureCovDerivAt_inner_eq_entry_deriv_sub_correction
+      (g := g) (x := x) (v := v) (a := a) (u := u) (w := w) (q := q),
+    closedCurvature_koszul
+      (g := g) (x := x) (v := v) (a := a) (u := u) (w := w) (q := q)]
+
+/--
 Cyclic scalar-paired second-Bianchi expansion after substituting the closed
 curvature Koszul formula in each entry derivative.
 -/
@@ -13962,6 +13978,75 @@ theorem RicciSecondDerivCommutationAt.of_closed_bianchi
           + ricciQuadraticAt g x u w := by
         rw [lichnerowiczLaplacianAt]
 
+/--
+Curvature-action side of the `(0,2)` tensor Ricci identity in the closed
+`covTensor2SecondDerivAt` API.
+
+The intended next commutator is
+`∇²_{u,v} h - ∇²_{v,u} h = covTensor2SecondDerivCurvatureActionAt g h ...`.
+-/
+noncomputable def covTensor2SecondDerivCurvatureActionAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (u v p q : TM x) : ℝ :=
+  -h x
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E u) (extend E v) (extend E p) x) q
+    - h x p
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E u) (extend E v) (extend E q) x)
+
+/--
+The curvature-action obstruction is antisymmetric in the two differentiated
+directions for any bilinear `(0,2)` tensor field.
+-/
+theorem covTensor2SecondDerivCurvatureActionAt_antisymm
+    (g : ClosedSmoothRiemannianMetric n M)
+    {h : ∀ y : M, TM y → TM y → ℝ}
+    (hLeft : Tensor2SMulLeft h) (hRight : Tensor2SMulRight h)
+    (x : M) (u v p q : TM x) :
+    covTensor2SecondDerivCurvatureActionAt g h x u v p q =
+      -covTensor2SecondDerivCurvatureActionAt g h x v u p q := by
+  let Ruvp : TM x :=
+    CovariantDerivative.curvatureOp g.leviCivita
+      (extend E u) (extend E v) (extend E p) x
+  let Ruvq : TM x :=
+    CovariantDerivative.curvatureOp g.leviCivita
+      (extend E u) (extend E v) (extend E q) x
+  have hp :
+      h x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E v) (extend E u) (extend E p) x) q =
+        -h x Ruvp q := by
+    rw [CovariantDerivative.curvatureOp_antisymm_apply]
+    simpa [Ruvp] using hLeft x (-1 : ℝ) Ruvp q
+  have hq :
+      h x p
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E v) (extend E u) (extend E q) x) =
+        -h x p Ruvq := by
+    rw [CovariantDerivative.curvatureOp_antisymm_apply]
+    simpa [Ruvq] using hRight x (-1 : ℝ) p Ruvq
+  unfold covTensor2SecondDerivCurvatureActionAt
+  rw [hp, hq]
+  ring
+
+/--
+Ricci-field specialization of the closed curvature-action antisymmetry needed
+by the tensor Ricci-identity discharge.
+-/
+theorem covTensor2SecondDerivCurvatureActionAt_ricciVariationField_antisymm
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u v p q : TM x) :
+    covTensor2SecondDerivCurvatureActionAt g (ricciVariationField g) x u v p q =
+      -covTensor2SecondDerivCurvatureActionAt g (ricciVariationField g) x v u p q :=
+  covTensor2SecondDerivCurvatureActionAt_antisymm
+    (g := g)
+    (hLeft := tensor2SMulLeft_ricciVariationField g)
+    (hRight := tensor2SMulRight_ricciVariationField g)
+    x u v p q
+
 theorem lichnerowiczCurvatureAt_ricciQuadraticAt_trace_cancellation
     (g : ClosedSmoothRiemannianMetric n M)
     [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
@@ -14318,6 +14403,19 @@ def SatisfiesRicciEvolutionAt
               (gt t₀) (ricciVariationField (gt t₀)) x u w
             + ricciQuadraticAt (gt t₀) x u w) t₀ :=
   Iff.rfl
+
+theorem satisfiesRicciEvolutionAt_of_secondDerivCommutation
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hDeltaRic : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+        (deltaRicciSecondDerivContractionAt
+          (gt t₀) (negTwoRicciVariationField (gt t₀)) x u w) t₀)
+    (hComm : RicciSecondDerivCommutationAt (gt t₀) x) :
+    SatisfiesRicciEvolutionAt gt t₀ x := by
+  intro u w
+  simpa [SatisfiesRicciEvolutionAt, hComm u w] using hDeltaRic u w
 
 /--
 Exact divergence assembly for the first `δΓ` contraction:
