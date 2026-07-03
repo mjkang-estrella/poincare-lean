@@ -16040,6 +16040,212 @@ theorem covTensor2SecondDerivAt_ricciVariationField_symm
     v p (g.leviCivita (extend E q) x u)]
   ring
 
+theorem covTensor2SecondDerivAt_ricciVariationField_trace_swap_inner_left
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hRicSecond :
+      CovTensor2DerivExtDifferentiableAt g (ricciVariationField g) x)
+    (u w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i);
+      ∑ i, covTensor2SecondDerivAt g (ricciVariationField g) x
+        u (sharp i) (b i) w)
+      =
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i);
+      ∑ i, covTensor2SecondDerivAt g (ricciVariationField g) x
+        u (b i) w (sharp i)) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  let F : TM x → TM x → ℝ :=
+    fun p q ↦ covTensor2SecondDerivAt g (ricciVariationField g) x u p q w
+  have hswap := sum_metricDualVectorAt_contraction_swap
+    (g := g) (x := x) (F := F)
+    (hadd1 := by
+      intro p₁ p₂ q
+      dsimp [F]
+      exact covTensor2SecondDerivAt_add_inner
+        (g := g) (h := ricciVariationField g) (x := x)
+        hRicSecond
+        (tensor2AddLeft_ricciVariationField g)
+        (tensor2AddRight_ricciVariationField g)
+        u p₁ p₂ q w)
+    (hsmul1 := by
+      intro c p q
+      dsimp [F]
+      exact covTensor2SecondDerivAt_smul_inner
+        (g := g) (h := ricciVariationField g) (x := x)
+        hRicSecond
+        (tensor2SMulLeft_ricciVariationField g)
+        (tensor2SMulRight_ricciVariationField g)
+        c u p q w)
+    (hadd2 := by
+      intro p q₁ q₂
+      dsimp [F]
+      exact covTensor2SecondDerivAt_add_left
+        (g := g) (h := ricciVariationField g) (x := x)
+        hRicSecond
+        (fun y ↦ covTensor2ExtDifferentiableAt_ricciVariationField_canonical
+          (g := g) y)
+        (tensor2AddLeft_ricciVariationField g)
+        u p q₁ q₂ w)
+    (hsmul2 := by
+      intro c p q
+      dsimp [F]
+      exact covTensor2SecondDerivAt_smul_left
+        (g := g) (h := ricciVariationField g) (x := x)
+        hRicSecond
+        (fun y ↦ covTensor2ExtDifferentiableAt_ricciVariationField_canonical
+          (g := g) y)
+        (tensor2SMulLeft_ricciVariationField g)
+        c u p q w)
+  change (∑ i, F (sharp i) (b i)) =
+    ∑ i, covTensor2SecondDerivAt g (ricciVariationField g) x
+      u (b i) w (sharp i)
+  rw [hswap]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  dsimp [F]
+  exact covTensor2SecondDerivAt_ricciVariationField_symm
+    (g := g) (x := x) u (b i) (sharp i) w
+
+theorem deltaRicciSecondDerivContractionAt_ricciVariationField_trace_cancel
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hRicSecond :
+      CovTensor2DerivExtDifferentiableAt g (ricciVariationField g) x)
+    (u w : TM x) :
+    deltaRicciSecondDerivContractionAt g (ricciVariationField g) x u w =
+      (letI : FiniteDimensional ℝ (TM x) :=
+          inferInstanceAs (FiniteDimensional ℝ E)
+        let b := Module.finBasis ℝ (TM x)
+        let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+          fun i ↦ metricDualVectorAt g x (b.coord i);
+        (∑ i, (1 / 2 : ℝ) *
+          (covTensor2SecondDerivAt g (ricciVariationField g) x
+              (b i) u w (sharp i)
+            + covTensor2SecondDerivAt g (ricciVariationField g) x
+              (b i) w u (sharp i)
+            - covTensor2SecondDerivAt g (ricciVariationField g) x
+              (b i) (sharp i) u w))
+          -
+        (∑ i, (1 / 2 : ℝ) *
+          covTensor2SecondDerivAt g (ricciVariationField g) x
+            u w (b i) (sharp i))) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hswap :
+      (∑ i, covTensor2SecondDerivAt g (ricciVariationField g) x
+        u (sharp i) (b i) w) =
+      ∑ i, covTensor2SecondDerivAt g (ricciVariationField g) x
+        u (b i) w (sharp i) := by
+    simpa [b, sharp] using
+      covTensor2SecondDerivAt_ricciVariationField_trace_swap_inner_left
+        (g := g) (x := x) hRicSecond u w
+  have hcon :
+      (∑ i, (1 / 2 : ℝ) *
+        (covTensor2SecondDerivAt g (ricciVariationField g) x
+            u (b i) w (sharp i)
+          + covTensor2SecondDerivAt g (ricciVariationField g) x
+            u w (b i) (sharp i)
+          - covTensor2SecondDerivAt g (ricciVariationField g) x
+            u (sharp i) (b i) w))
+        =
+      ∑ i, (1 / 2 : ℝ) *
+        covTensor2SecondDerivAt g (ricciVariationField g) x
+          u w (b i) (sharp i) := by
+    have hswap' :
+        (∑ i, (1 / 2 : ℝ) *
+          covTensor2SecondDerivAt g (ricciVariationField g) x
+            u (sharp i) (b i) w) =
+        ∑ i, (1 / 2 : ℝ) *
+          covTensor2SecondDerivAt g (ricciVariationField g) x
+            u (b i) w (sharp i) := by
+      rw [← Finset.mul_sum, ← Finset.mul_sum, hswap]
+    calc
+      (∑ i, (1 / 2 : ℝ) *
+        (covTensor2SecondDerivAt g (ricciVariationField g) x
+            u (b i) w (sharp i)
+          + covTensor2SecondDerivAt g (ricciVariationField g) x
+            u w (b i) (sharp i)
+          - covTensor2SecondDerivAt g (ricciVariationField g) x
+            u (sharp i) (b i) w))
+          =
+        ∑ i,
+          ((1 / 2 : ℝ) *
+            covTensor2SecondDerivAt g (ricciVariationField g) x
+              u (b i) w (sharp i)
+          + (1 / 2 : ℝ) *
+            covTensor2SecondDerivAt g (ricciVariationField g) x
+              u w (b i) (sharp i)
+          - (1 / 2 : ℝ) *
+            covTensor2SecondDerivAt g (ricciVariationField g) x
+              u (sharp i) (b i) w) := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            ring
+      _ =
+        (∑ i, (1 / 2 : ℝ) *
+          covTensor2SecondDerivAt g (ricciVariationField g) x
+            u (b i) w (sharp i))
+        + (∑ i, (1 / 2 : ℝ) *
+          covTensor2SecondDerivAt g (ricciVariationField g) x
+            u w (b i) (sharp i))
+        - (∑ i, (1 / 2 : ℝ) *
+          covTensor2SecondDerivAt g (ricciVariationField g) x
+            u (sharp i) (b i) w) := by
+          rw [Finset.sum_sub_distrib, Finset.sum_add_distrib]
+      _ =
+        ∑ i, (1 / 2 : ℝ) *
+          covTensor2SecondDerivAt g (ricciVariationField g) x
+            u w (b i) (sharp i) := by
+          rw [hswap']
+          ring
+  unfold deltaRicciSecondDerivContractionAt
+  change
+    (∑ i, (1 / 2 : ℝ) *
+      (covTensor2SecondDerivAt g (ricciVariationField g) x
+          (b i) u w (sharp i)
+        + covTensor2SecondDerivAt g (ricciVariationField g) x
+          (b i) w u (sharp i)
+        - covTensor2SecondDerivAt g (ricciVariationField g) x
+          (b i) (sharp i) u w))
+      -
+    (∑ i, (1 / 2 : ℝ) *
+      (covTensor2SecondDerivAt g (ricciVariationField g) x
+          u (b i) w (sharp i)
+        + covTensor2SecondDerivAt g (ricciVariationField g) x
+          u w (b i) (sharp i)
+        - covTensor2SecondDerivAt g (ricciVariationField g) x
+          u (sharp i) (b i) w))
+      =
+    (∑ i, (1 / 2 : ℝ) *
+      (covTensor2SecondDerivAt g (ricciVariationField g) x
+          (b i) u w (sharp i)
+        + covTensor2SecondDerivAt g (ricciVariationField g) x
+          (b i) w u (sharp i)
+        - covTensor2SecondDerivAt g (ricciVariationField g) x
+          (b i) (sharp i) u w))
+      -
+    (∑ i, (1 / 2 : ℝ) *
+      covTensor2SecondDerivAt g (ricciVariationField g) x
+        u w (b i) (sharp i))
+  rw [hcon]
+
 theorem lichnerowiczCurvatureAt_ricciQuadraticAt_trace_cancellation
     (g : ClosedSmoothRiemannianMetric n M)
     [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
