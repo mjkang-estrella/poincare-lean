@@ -626,7 +626,7 @@ theorem extDerivFun_extDerivFun_extend_eq_fderiv_fderiv_chart
       (VectorField.mpullback 𝓘(ℝ, E) I (extChartAt I x).symm (extend E v) z)
   let B : E → ℝ := fun z ↦ fderiv ℝ F z v
   have hchart :=
-    extDerivFun_extDerivFun_chart
+    _root_.extDerivFun_extDerivFun_chart
       (I' := I) (f := f) (U := extend E v) (x := x)
       hf (by simpa using (mdifferentiableAt_extend (σ₀ := v) ..)) v
   have hAB : A =ᶠ[nhds (extChartAt I x x)] B := by
@@ -12953,6 +12953,407 @@ theorem TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt.of_isClosedRicciFlow
     (eventually_timeDerivAt_eq_negTwoRicci_of_isClosedRicciFlowSolutionAt
       (gt := gt) (t₀ := t₀) (x := x) hNear)
     hTraceGrad hNegScalarGrad hScalarDiff hScalarGrad
+
+theorem covTensor2SecondDerivAt_congr_of_eventuallyEq
+    (g : ClosedSmoothRiemannianMetric n M)
+    {h k : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hEq : ∀ᶠ y in nhds x, ∀ v w : TM y, h y v w = k y v w)
+    (u v p q : TM x) :
+    covTensor2SecondDerivAt g h x u v p q =
+      covTensor2SecondDerivAt g k x u v p q := by
+  have hEntry :
+      (fun y : M ↦ covTensor2DerivAt g h y
+        (extend E v y) (extend E p y) (extend E q y))
+        =ᶠ[nhds x]
+      (fun y : M ↦ covTensor2DerivAt g k y
+        (extend E v y) (extend E p y) (extend E q y)) := by
+    filter_upwards [hEq.eventually_nhds] with y hy
+    exact covTensor2DerivAt_congr_of_eventuallyEq
+      (g := g) (h := h) (k := k) (x := y) hy _ _ _
+  have hDeriv :
+      extDerivFun
+          (fun y : M ↦ covTensor2DerivAt g h y
+            (extend E v y) (extend E p y) (extend E q y)) x u =
+        extDerivFun
+          (fun y : M ↦ covTensor2DerivAt g k y
+            (extend E v y) (extend E p y) (extend E q y)) x u := by
+    exact congrArg (fun L : TM x →L[ℝ] ℝ ↦ L u)
+      (CovariantDerivative.extDerivFun_congr hEntry)
+  have hV :
+      covTensor2DerivAt g h x (g.leviCivita (extend E v) x u) p q =
+        covTensor2DerivAt g k x (g.leviCivita (extend E v) x u) p q :=
+    covTensor2DerivAt_congr_of_eventuallyEq
+      (g := g) (h := h) (k := k) (x := x) hEq _ _ _
+  have hP :
+      covTensor2DerivAt g h x v (g.leviCivita (extend E p) x u) q =
+        covTensor2DerivAt g k x v (g.leviCivita (extend E p) x u) q :=
+    covTensor2DerivAt_congr_of_eventuallyEq
+      (g := g) (h := h) (k := k) (x := x) hEq _ _ _
+  have hQ :
+      covTensor2DerivAt g h x v p (g.leviCivita (extend E q) x u) =
+        covTensor2DerivAt g k x v p (g.leviCivita (extend E q) x u) :=
+    covTensor2DerivAt_congr_of_eventuallyEq
+      (g := g) (h := h) (k := k) (x := x) hEq _ _ _
+  unfold covTensor2SecondDerivAt
+  rw [hDeriv, hV, hP, hQ]
+
+/--
+Ricci-flow specialization of the first connection-variation Koszul formula.
+
+The `IsClosedRicciFlowSolutionAt` neighborhood hypothesis supplies
+`timeDerivAt = -2 Ric`; the remaining hypotheses are exactly the regularity
+needed by the already-proved `deltaGamma_koszul` and tensor-linearity lemmas.
+-/
+theorem deltaGamma_koszul_negTwoRicci_of_isClosedRicciFlowSolutionAt_near
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hExt :
+      ∀ a b c : TM x,
+        HasDerivAt
+          (fun t ↦
+            extDerivFun
+              (fun y : M ↦ (gt t).inner y (extend E b y) (extend E c y)) x a)
+          (extDerivFun
+            (fun y : M ↦ timeDerivAt gt t₀ y (extend E b y) (extend E c y))
+            x a) t₀)
+    (hFlowNear :
+      ∀ᶠ y in nhds x,
+        IsClosedRicciFlowSolutionAt gt t₀ y ∧
+        ClosedRicciFlowExtensionRegularAt gt t₀ y)
+    (hRicDiff :
+      CovTensor2ExtDifferentiableAt (ricciVariationField (gt t₀)) x)
+    (v w z : TM x) :
+    2 * (gt t₀).inner x (deltaGammaAt gt t₀ x v w) z =
+      -2 * covTensor2DerivAt (gt t₀) (ricciVariationField (gt t₀)) x v w z
+        - 2 * covTensor2DerivAt (gt t₀) (ricciVariationField (gt t₀)) x w v z
+        + 2 * covTensor2DerivAt (gt t₀) (ricciVariationField (gt t₀)) x z v w := by
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  have hEq :
+      ∀ᶠ y in nhds x, ∀ v w : TM y,
+        timeDerivAt gt t₀ y v w = -2 * g.ricciAt y v w :=
+    eventually_timeDerivAt_eq_negTwoRicci_of_isClosedRicciFlowSolutionAt
+      (gt := gt) (t₀ := t₀) (x := x) hFlowNear
+  have h1 :
+      covTensor2DerivAt g (timeDerivAt gt t₀) x v w z =
+        covTensor2DerivAt g (negTwoRicciVariationField g) x v w z := by
+    exact covTensor2DerivAt_congr_of_eventuallyEq
+      (g := g) (h := timeDerivAt gt t₀)
+      (k := negTwoRicciVariationField g) (x := x)
+      (hEq.mono fun y hy a b ↦ by
+        simpa [g, negTwoRicciVariationField] using hy a b) _ _ _
+  have h2 :
+      covTensor2DerivAt g (timeDerivAt gt t₀) x w v z =
+        covTensor2DerivAt g (negTwoRicciVariationField g) x w v z := by
+    exact covTensor2DerivAt_congr_of_eventuallyEq
+      (g := g) (h := timeDerivAt gt t₀)
+      (k := negTwoRicciVariationField g) (x := x)
+      (hEq.mono fun y hy a b ↦ by
+        simpa [g, negTwoRicciVariationField] using hy a b) _ _ _
+  have h3 :
+      covTensor2DerivAt g (timeDerivAt gt t₀) x z v w =
+        covTensor2DerivAt g (negTwoRicciVariationField g) x z v w := by
+    exact covTensor2DerivAt_congr_of_eventuallyEq
+      (g := g) (h := timeDerivAt gt t₀)
+      (k := negTwoRicciVariationField g) (x := x)
+      (hEq.mono fun y hy a b ↦ by
+        simpa [g, negTwoRicciVariationField] using hy a b) _ _ _
+  have hs1 :
+      covTensor2DerivAt g (negTwoRicciVariationField g) x v w z =
+        -2 * covTensor2DerivAt g (ricciVariationField g) x v w z := by
+    let K : ∀ y : M, TM y → TM y → ℝ :=
+      fun y a b ↦ (-2 : ℝ) * ricciVariationField g y a b
+    have hK : K = negTwoRicciVariationField g := by
+      funext y a b
+      simp [K, negTwoRicciVariationField, ricciVariationField]
+    rw [← hK]
+    exact
+      covTensor2DerivAt_smul_field
+        (g := g) (h := ricciVariationField g) (x := x)
+        hRicDiff (-2 : ℝ) v w z
+  have hs2 :
+      covTensor2DerivAt g (negTwoRicciVariationField g) x w v z =
+        -2 * covTensor2DerivAt g (ricciVariationField g) x w v z := by
+    let K : ∀ y : M, TM y → TM y → ℝ :=
+      fun y a b ↦ (-2 : ℝ) * ricciVariationField g y a b
+    have hK : K = negTwoRicciVariationField g := by
+      funext y a b
+      simp [K, negTwoRicciVariationField, ricciVariationField]
+    rw [← hK]
+    exact
+      covTensor2DerivAt_smul_field
+        (g := g) (h := ricciVariationField g) (x := x)
+        hRicDiff (-2 : ℝ) w v z
+  have hs3 :
+      covTensor2DerivAt g (negTwoRicciVariationField g) x z v w =
+        -2 * covTensor2DerivAt g (ricciVariationField g) x z v w := by
+    let K : ∀ y : M, TM y → TM y → ℝ :=
+      fun y a b ↦ (-2 : ℝ) * ricciVariationField g y a b
+    have hK : K = negTwoRicciVariationField g := by
+      funext y a b
+      simp [K, negTwoRicciVariationField, ricciVariationField]
+    rw [← hK]
+    exact
+      covTensor2DerivAt_smul_field
+        (g := g) (h := ricciVariationField g) (x := x)
+        hRicDiff (-2 : ℝ) z v w
+  calc
+    2 * g.inner x (deltaGammaAt gt t₀ x v w) z =
+        covTensor2DerivAt g (timeDerivAt gt t₀) x v w z
+          + covTensor2DerivAt g (timeDerivAt gt t₀) x w v z
+          - covTensor2DerivAt g (timeDerivAt gt t₀) x z v w := by
+          simpa [g] using
+            deltaGamma_koszul
+              (gt := gt) (t₀ := t₀) (x := x)
+              hreg hgt hExt v w z
+    _ = covTensor2DerivAt g (negTwoRicciVariationField g) x v w z
+          + covTensor2DerivAt g (negTwoRicciVariationField g) x w v z
+          - covTensor2DerivAt g (negTwoRicciVariationField g) x z v w := by
+          rw [h1, h2, h3]
+    _ = -2 * covTensor2DerivAt g (ricciVariationField g) x v w z
+          - 2 * covTensor2DerivAt g (ricciVariationField g) x w v z
+          + 2 * covTensor2DerivAt g (ricciVariationField g) x z v w := by
+          rw [hs1, hs2, hs3]
+          ring
+
+/--
+The explicit second-covariant-derivative contraction obtained by substituting
+the differentiated Koszul identity into both `δΓ` contractions in `deltaRicciAt`.
+-/
+noncomputable def deltaRicciSecondDerivContractionAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (u w : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  (∑ i, (1 / 2 : ℝ) *
+    (covTensor2SecondDerivAt g h x (b i) u w (sharp i)
+      + covTensor2SecondDerivAt g h x (b i) w u (sharp i)
+      - covTensor2SecondDerivAt g h x (b i) (sharp i) u w))
+    -
+  (∑ i, (1 / 2 : ℝ) *
+    (covTensor2SecondDerivAt g h x u (b i) w (sharp i)
+      + covTensor2SecondDerivAt g h x u w (b i) (sharp i)
+      - covTensor2SecondDerivAt g h x u (sharp i) (b i) w))
+
+theorem deltaRicciSecondDerivContractionAt_congr_of_eventuallyEq
+    (g : ClosedSmoothRiemannianMetric n M)
+    {h k : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hEq : ∀ᶠ y in nhds x, ∀ v w : TM y, h y v w = k y v w)
+    (u w : TM x) :
+    deltaRicciSecondDerivContractionAt g h x u w =
+      deltaRicciSecondDerivContractionAt g k x u w := by
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  unfold deltaRicciSecondDerivContractionAt
+  change
+    (∑ i, (1 / 2 : ℝ) *
+      (covTensor2SecondDerivAt g h x (b i) u w (sharp i)
+        + covTensor2SecondDerivAt g h x (b i) w u (sharp i)
+        - covTensor2SecondDerivAt g h x (b i) (sharp i) u w))
+      -
+    (∑ i, (1 / 2 : ℝ) *
+      (covTensor2SecondDerivAt g h x u (b i) w (sharp i)
+        + covTensor2SecondDerivAt g h x u w (b i) (sharp i)
+        - covTensor2SecondDerivAt g h x u (sharp i) (b i) w))
+      =
+    (∑ i, (1 / 2 : ℝ) *
+      (covTensor2SecondDerivAt g k x (b i) u w (sharp i)
+        + covTensor2SecondDerivAt g k x (b i) w u (sharp i)
+        - covTensor2SecondDerivAt g k x (b i) (sharp i) u w))
+      -
+    (∑ i, (1 / 2 : ℝ) *
+      (covTensor2SecondDerivAt g k x u (b i) w (sharp i)
+        + covTensor2SecondDerivAt g k x u w (b i) (sharp i)
+        - covTensor2SecondDerivAt g k x u (sharp i) (b i) w))
+  congr 1
+  · refine Finset.sum_congr rfl fun i _ ↦ ?_
+    rw [covTensor2SecondDerivAt_congr_of_eventuallyEq
+      (g := g) (h := h) (k := k) (x := x) hEq (b i) u w (sharp i)]
+    rw [covTensor2SecondDerivAt_congr_of_eventuallyEq
+      (g := g) (h := h) (k := k) (x := x) hEq (b i) w u (sharp i)]
+    rw [covTensor2SecondDerivAt_congr_of_eventuallyEq
+      (g := g) (h := h) (k := k) (x := x) hEq (b i) (sharp i) u w]
+  · refine Finset.sum_congr rfl fun i _ ↦ ?_
+    rw [covTensor2SecondDerivAt_congr_of_eventuallyEq
+      (g := g) (h := h) (k := k) (x := x) hEq u (b i) w (sharp i)]
+    rw [covTensor2SecondDerivAt_congr_of_eventuallyEq
+      (g := g) (h := h) (k := k) (x := x) hEq u w (b i) (sharp i)]
+    rw [covTensor2SecondDerivAt_congr_of_eventuallyEq
+      (g := g) (h := h) (k := k) (x := x) hEq u (sharp i) (b i) w]
+
+set_option maxHeartbeats 5000000 in
+theorem deltaRicciAt_eq_secondDerivContractionAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hExt :
+      ∀ a b c : TM x,
+        HasDerivAt
+          (fun t ↦
+            extDerivFun
+              (fun y : M ↦ (gt t).inner y (extend E b y) (extend E c y)) x a)
+          (extDerivFun
+            (fun y : M ↦ timeDerivAt gt t₀ y (extend E b y) (extend E c y))
+            x a) t₀)
+    (hNear :
+      ∀ᶠ y in nhds x,
+        MetricFlowRegularAt gt t₀ y ∧
+        (∀ a b c : TM y,
+          HasDerivAt
+            (fun t ↦
+              extDerivFun
+                (fun z : M ↦ (gt t).inner z (extend E b z) (extend E c z))
+                y a)
+            (extDerivFun
+              (fun z : M ↦ timeDerivAt gt t₀ z (extend E b z) (extend E c z))
+              y a) t₀))
+    (hBridge : DeltaGammaEntryDerivativeBridgeAt gt t₀ x)
+    (hSecond :
+      CovTensor2DerivExtDifferentiableAt
+        (gt t₀) (timeDerivAt gt t₀) x)
+    (u w : TM x) :
+    deltaRicciAt gt t₀ x u w =
+      deltaRicciSecondDerivContractionAt
+        (gt t₀) (timeDerivAt gt t₀) x u w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hdiv :
+      (∑ i, b.coord i (covDeltaGammaDerivAt gt t₀ x (b i) u w)) =
+        ∑ i, (1 / 2 : ℝ) *
+          (covTensor2SecondDerivAt g H x (b i) u w (sharp i)
+            + covTensor2SecondDerivAt g H x (b i) w u (sharp i)
+            - covTensor2SecondDerivAt g H x (b i) (sharp i) u w) := by
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    have hcoord :
+        b.coord i (covDeltaGammaDerivAt gt t₀ x (b i) u w) =
+          g.inner x (covDeltaGammaDerivAt gt t₀ x (b i) u w) (sharp i) := by
+      simpa [g, b, sharp] using
+        coord_eq_inner_metricDualVectorAt (g := g) (x := x) i
+          (covDeltaGammaDerivAt gt t₀ x (b i) u w)
+    have hk :=
+      covDeltaGamma_koszul_secondDerivAt
+        (gt := gt) (t₀ := t₀) (x := x)
+        hreg hgt hExt hNear hBridge hSecond
+        (b i) u w (sharp i)
+    change
+      2 * g.inner x (covDeltaGammaDerivAt gt t₀ x (b i) u w) (sharp i) =
+        covTensor2SecondDerivAt g H x (b i) u w (sharp i)
+          + covTensor2SecondDerivAt g H x (b i) w u (sharp i)
+          - covTensor2SecondDerivAt g H x (b i) (sharp i) u w at hk
+    rw [hcoord]
+    nlinarith
+  have hcon :
+      (∑ i, b.coord i (covDeltaGammaDerivAt gt t₀ x u (b i) w)) =
+        ∑ i, (1 / 2 : ℝ) *
+          (covTensor2SecondDerivAt g H x u (b i) w (sharp i)
+            + covTensor2SecondDerivAt g H x u w (b i) (sharp i)
+            - covTensor2SecondDerivAt g H x u (sharp i) (b i) w) := by
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    have hcoord :
+        b.coord i (covDeltaGammaDerivAt gt t₀ x u (b i) w) =
+          g.inner x (covDeltaGammaDerivAt gt t₀ x u (b i) w) (sharp i) := by
+      simpa [g, b, sharp] using
+        coord_eq_inner_metricDualVectorAt (g := g) (x := x) i
+          (covDeltaGammaDerivAt gt t₀ x u (b i) w)
+    have hk :=
+      covDeltaGamma_koszul_secondDerivAt
+        (gt := gt) (t₀ := t₀) (x := x)
+        hreg hgt hExt hNear hBridge hSecond
+        u (b i) w (sharp i)
+    change
+      2 * g.inner x (covDeltaGammaDerivAt gt t₀ x u (b i) w) (sharp i) =
+        covTensor2SecondDerivAt g H x u (b i) w (sharp i)
+          + covTensor2SecondDerivAt g H x u w (b i) (sharp i)
+          - covTensor2SecondDerivAt g H x u (sharp i) (b i) w at hk
+    rw [hcoord]
+    nlinarith
+  unfold deltaRicciAt deltaGammaDivergenceAt deltaGammaContractionDerivAt
+    deltaRicciSecondDerivContractionAt
+  change
+    (∑ i, b.coord i (covDeltaGammaDerivAt gt t₀ x (b i) u w))
+      - (∑ i, b.coord i (covDeltaGammaDerivAt gt t₀ x u (b i) w)) =
+    (∑ i, (1 / 2 : ℝ) *
+      (covTensor2SecondDerivAt g H x (b i) u w (sharp i)
+        + covTensor2SecondDerivAt g H x (b i) w u (sharp i)
+        - covTensor2SecondDerivAt g H x (b i) (sharp i) u w))
+      -
+    (∑ i, (1 / 2 : ℝ) *
+      (covTensor2SecondDerivAt g H x u (b i) w (sharp i)
+        + covTensor2SecondDerivAt g H x u w (b i) (sharp i)
+        - covTensor2SecondDerivAt g H x u (sharp i) (b i) w))
+  rw [hdiv, hcon]
+
+theorem deltaRicciAt_eq_negTwoRicci_secondDerivContractionAt_of_isClosedRicciFlowSolutionAt_near
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hExt :
+      ∀ a b c : TM x,
+        HasDerivAt
+          (fun t ↦
+            extDerivFun
+              (fun y : M ↦ (gt t).inner y (extend E b y) (extend E c y)) x a)
+          (extDerivFun
+            (fun y : M ↦ timeDerivAt gt t₀ y (extend E b y) (extend E c y))
+            x a) t₀)
+    (hNear :
+      ∀ᶠ y in nhds x,
+        MetricFlowRegularAt gt t₀ y ∧
+        (∀ a b c : TM y,
+          HasDerivAt
+            (fun t ↦
+              extDerivFun
+                (fun z : M ↦ (gt t).inner z (extend E b z) (extend E c z))
+                y a)
+            (extDerivFun
+              (fun z : M ↦ timeDerivAt gt t₀ z (extend E b z) (extend E c z))
+              y a) t₀))
+    (hBridge : DeltaGammaEntryDerivativeBridgeAt gt t₀ x)
+    (hSecond :
+      CovTensor2DerivExtDifferentiableAt
+        (gt t₀) (timeDerivAt gt t₀) x)
+    (hFlowNear :
+      ∀ᶠ y in nhds x,
+        IsClosedRicciFlowSolutionAt gt t₀ y ∧
+        ClosedRicciFlowExtensionRegularAt gt t₀ y)
+    (u w : TM x) :
+    deltaRicciAt gt t₀ x u w =
+      deltaRicciSecondDerivContractionAt
+        (gt t₀) (negTwoRicciVariationField (gt t₀)) x u w := by
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  have hEq :
+      ∀ᶠ y in nhds x, ∀ v w : TM y,
+        timeDerivAt gt t₀ y v w = -2 * g.ricciAt y v w :=
+    eventually_timeDerivAt_eq_negTwoRicci_of_isClosedRicciFlowSolutionAt
+      (gt := gt) (t₀ := t₀) (x := x) hFlowNear
+  rw [deltaRicciAt_eq_secondDerivContractionAt
+    (gt := gt) (t₀ := t₀) (x := x)
+    hreg hgt hExt hNear hBridge hSecond u w]
+  exact deltaRicciSecondDerivContractionAt_congr_of_eventuallyEq
+    (g := g) (h := timeDerivAt gt t₀)
+    (k := negTwoRicciVariationField g) (x := x)
+    (hEq.mono fun y hy a b ↦ by
+      simpa [g, negTwoRicciVariationField] using hy a b)
+    u w
 
 /--
 Exact divergence assembly for the first `δΓ` contraction:
