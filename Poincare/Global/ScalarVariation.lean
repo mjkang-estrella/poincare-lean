@@ -10827,6 +10827,272 @@ theorem closedConnectionEntryOutputConnection_extDerivFun_cyclic_eq_packaged
     closedConnectionEntryOutputConnection_extDerivFun_cyclic_eq_covTensor2DerivAt_cyclic
       (g := g) (x := x) (u := u) (v := v) (w := w) (z := z) (q := q)
 
+theorem closedLeviCivita_extend_symm_at
+    (g : ClosedSmoothRiemannianMetric n M) {x : M} (u v : TM x) :
+    g.leviCivita (extend E u) x v =
+      g.leviCivita (extend E v) x u := by
+  have htf := g.leviCivita_torsionFreeAt x
+    (X := extend E u) (Y := extend E v)
+    (by simpa [MDiffAtTangentField] using (mdifferentiableAt_extend I E u))
+    (by simpa [MDiffAtTangentField] using (mdifferentiableAt_extend I E v))
+  have hbr := mlieBracket_extend_extend_apply_self (n := n) (M := M)
+    (x := x) u v
+  rw [extend_apply_self, extend_apply_self, hbr] at htf
+  exact (sub_eq_zero.mp htf).symm
+
+theorem closedConnectionEntryOutputConnection_extDerivFun_eq_iterated_pair
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (v a u z q : TM x) :
+    extDerivFun (closedConnectionEntryOutputConnectionFieldAt g a u z q) x v =
+      closedIteratedConnectionEntryFieldAt g u z x v
+        (g.leviCivita (extend E q) x a)
+      + closedIteratedConnectionEntryFieldAt g a q x v
+        (g.leviCivita (extend E z) x u) := by
+  let A : Π y : M, TM y :=
+    fun y ↦ g.leviCivita (extend E z) y (extend E u y)
+  let B : Π y : M, TM y :=
+    fun y ↦ g.leviCivita (extend E q) y (extend E a y)
+  have hU :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (extend E u)) x := by
+    simpa using (mdifferentiableAt_extend I E u)
+  have hAsec : MDiffAtTangentField A x := by
+    have hZ2 :
+        ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2
+          (T% (extend E z)) x := by
+      simpa using (FiberBundle.contMDiffAt_extend' (k := 2) I E z)
+    simpa [MDiffAtTangentField, A] using
+      (CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt
+        (cov := g.leviCivita) hZ2 hU)
+  have hAext :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (extend E a)) x := by
+    simpa using (mdifferentiableAt_extend I E a)
+  have hBsec : MDiffAtTangentField B x := by
+    have hQ2 :
+        ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2
+          (T% (extend E q)) x := by
+      simpa using (FiberBundle.contMDiffAt_extend' (k := 2) I E q)
+    simpa [MDiffAtTangentField, B] using
+      (CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt
+        (cov := g.leviCivita) hQ2 hAext)
+  have hcompat := g.leviCivita_metricCompatibleAt x hAsec hBsec v
+  have hsym :
+      g.inner x (A x) (g.leviCivita B x v) =
+        g.inner x (g.leviCivita B x v) (A x) :=
+    g.inner_symm x _ _
+  change
+    (extDerivFun (fun y : M => g.inner y (A y) (B y)) x) v =
+      closedIteratedConnectionEntryFieldAt g u z x v
+        (g.leviCivita (extend E q) x a)
+      + closedIteratedConnectionEntryFieldAt g a q x v
+        (g.leviCivita (extend E z) x u)
+  rw [hcompat, hsym]
+  simp [closedIteratedConnectionEntryFieldAt, A, B, extend_apply_self]
+
+theorem closedCurvaturePairSymmAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a b c d : TM x) :
+    g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E b) (extend E c) x) d =
+      g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E c) (extend E d) (extend E a) x) b := by
+  exact CovariantDerivative.curvature_pair_symm
+    (cov := g.leviCivita) (g := g.inner)
+    (fun y ↦ g.leviCivita_torsionFreeAt y)
+    (fun y ↦ g.leviCivita_metricCompatibleAt y)
+    (fun v w ↦ g.inner_symm x v w)
+    (fun A B hA hB ↦ g.metric_pairing_contMDiffAt_two hA hB)
+    (fun A B hA hB ↦ g.metric_pairing_mdiffAt hA hB)
+    a b c d
+
+theorem closedCurvaturePairLastPairAntisymmAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a b c d : TM x) :
+    g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E b) (extend E c) x) d =
+      -g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E b) (extend E d) x) c := by
+  rw [closedCurvaturePairSymmAt (g := g) (x := x) a b c d,
+    closedCurvaturePairSymmAt (g := g) (x := x) a b d c]
+  rw [CovariantDerivative.curvatureOp_antisymm_apply]
+  simp
+
+theorem closedCurvaturePairSwapAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a b c d : TM x) :
+    g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E b) (extend E c) x) d =
+      g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E b) (extend E a) (extend E d) x) c := by
+  rw [closedCurvaturePairLastPairAntisymmAt
+      (g := g) (x := x) a b c d]
+  rw [CovariantDerivative.curvatureOp_antisymm_apply]
+  simp
+
+theorem closedCurvatureEntryAt_eq_iteratedConnectionEntry_sub
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a u w q : TM x) :
+    g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u) (extend E w) x) q =
+      closedIteratedConnectionEntryFieldAt g u w x a q
+        - closedIteratedConnectionEntryFieldAt g a w x u q := by
+  have h :=
+    (curvature_def_eventually (g := g) (x := x) a u w q).self_of_nhds
+  have hb := closedBracketConnectionEntryFieldAt_apply_self_eq_zero
+    (g := g) (x := x) a u w q
+  simpa [extend_apply_self, hb] using h
+
+set_option maxHeartbeats 5000000 in
+theorem closedIteratedConnectionEntry_output_q_cyclic_eq_middle_z_cyclic
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u v w z q : TM x) :
+    - closedIteratedConnectionEntryFieldAt g u q x v
+        (g.leviCivita (extend E z) x w)
+      + closedIteratedConnectionEntryFieldAt g w q x v
+        (g.leviCivita (extend E z) x u)
+      - closedIteratedConnectionEntryFieldAt g w q x u
+        (g.leviCivita (extend E z) x v)
+      + closedIteratedConnectionEntryFieldAt g v q x u
+        (g.leviCivita (extend E z) x w)
+      - closedIteratedConnectionEntryFieldAt g v q x w
+        (g.leviCivita (extend E z) x u)
+      + closedIteratedConnectionEntryFieldAt g u q x w
+        (g.leviCivita (extend E z) x v) =
+        closedIteratedConnectionEntryFieldAt g w
+          (g.leviCivita (extend E z) x v) x u q
+        - closedIteratedConnectionEntryFieldAt g u
+          (g.leviCivita (extend E z) x v) x w q
+        + closedIteratedConnectionEntryFieldAt g v
+          (g.leviCivita (extend E z) x u) x w q
+        - closedIteratedConnectionEntryFieldAt g w
+          (g.leviCivita (extend E z) x u) x v q
+        + closedIteratedConnectionEntryFieldAt g u
+          (g.leviCivita (extend E z) x w) x v q
+        - closedIteratedConnectionEntryFieldAt g v
+          (g.leviCivita (extend E z) x w) x u q := by
+  let Γzu : TM x := g.leviCivita (extend E z) x u
+  let Γzv : TM x := g.leviCivita (extend E z) x v
+  let Γzw : TM x := g.leviCivita (extend E z) x w
+  have hE_u := closedCurvatureEntryAt_eq_iteratedConnectionEntry_sub
+    (g := g) (x := x) (a := v) (u := w) (w := q) (q := Γzu)
+  have hM_u := closedCurvatureEntryAt_eq_iteratedConnectionEntry_sub
+    (g := g) (x := x) (a := w) (u := v) (w := Γzu) (q := q)
+  have hswap_u := closedCurvaturePairSwapAt
+    (g := g) (x := x) (a := v) (b := w) (c := q) (d := Γzu)
+  have hu :
+      closedIteratedConnectionEntryFieldAt g w q x v Γzu
+        - closedIteratedConnectionEntryFieldAt g v q x w Γzu =
+      closedIteratedConnectionEntryFieldAt g v Γzu x w q
+        - closedIteratedConnectionEntryFieldAt g w Γzu x v q := by
+    linarith
+  have hE_w := closedCurvatureEntryAt_eq_iteratedConnectionEntry_sub
+    (g := g) (x := x) (a := u) (u := v) (w := q) (q := Γzw)
+  have hM_w := closedCurvatureEntryAt_eq_iteratedConnectionEntry_sub
+    (g := g) (x := x) (a := v) (u := u) (w := Γzw) (q := q)
+  have hswap_w := closedCurvaturePairSwapAt
+    (g := g) (x := x) (a := u) (b := v) (c := q) (d := Γzw)
+  have hw :
+      closedIteratedConnectionEntryFieldAt g v q x u Γzw
+        - closedIteratedConnectionEntryFieldAt g u q x v Γzw =
+      closedIteratedConnectionEntryFieldAt g u Γzw x v q
+        - closedIteratedConnectionEntryFieldAt g v Γzw x u q := by
+    linarith
+  have hE_v := closedCurvatureEntryAt_eq_iteratedConnectionEntry_sub
+    (g := g) (x := x) (a := w) (u := u) (w := q) (q := Γzv)
+  have hM_v := closedCurvatureEntryAt_eq_iteratedConnectionEntry_sub
+    (g := g) (x := x) (a := u) (u := w) (w := Γzv) (q := q)
+  have hswap_v := closedCurvaturePairSwapAt
+    (g := g) (x := x) (a := w) (b := u) (c := q) (d := Γzv)
+  have hv :
+      closedIteratedConnectionEntryFieldAt g u q x w Γzv
+        - closedIteratedConnectionEntryFieldAt g w q x u Γzv =
+      closedIteratedConnectionEntryFieldAt g w Γzv x u q
+        - closedIteratedConnectionEntryFieldAt g u Γzv x w q := by
+    linarith
+  change
+    -closedIteratedConnectionEntryFieldAt g u q x v Γzw
+      + closedIteratedConnectionEntryFieldAt g w q x v Γzu
+      - closedIteratedConnectionEntryFieldAt g w q x u Γzv
+      + closedIteratedConnectionEntryFieldAt g v q x u Γzw
+      - closedIteratedConnectionEntryFieldAt g v q x w Γzu
+      + closedIteratedConnectionEntryFieldAt g u q x w Γzv =
+        closedIteratedConnectionEntryFieldAt g w Γzv x u q
+        - closedIteratedConnectionEntryFieldAt g u Γzv x w q
+        + closedIteratedConnectionEntryFieldAt g v Γzu x w q
+        - closedIteratedConnectionEntryFieldAt g w Γzu x v q
+        + closedIteratedConnectionEntryFieldAt g u Γzw x v q
+        - closedIteratedConnectionEntryFieldAt g v Γzw x u q
+  linarith
+
+set_option maxHeartbeats 5000000 in
+theorem closedIteratedConnectionEntryCovDerivCyclicAt_eq_correction_iterated_cyclic
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u v w z q : TM x) :
+    closedIteratedConnectionEntryCovDerivCyclicAt g x u v w z q =
+      - closedIteratedConnectionEntryFieldAt g
+        (g.leviCivita (extend E u) x v) z x w q
+      + closedIteratedConnectionEntryFieldAt g
+        (g.leviCivita (extend E w) x v) z x u q
+      + closedIteratedConnectionEntryFieldAt g w
+        (g.leviCivita (extend E z) x v) x u q
+      - closedIteratedConnectionEntryFieldAt g u
+        (g.leviCivita (extend E z) x v) x w q
+      - closedIteratedConnectionEntryFieldAt g
+        (g.leviCivita (extend E w) x u) z x v q
+      + closedIteratedConnectionEntryFieldAt g
+        (g.leviCivita (extend E v) x u) z x w q
+      + closedIteratedConnectionEntryFieldAt g v
+        (g.leviCivita (extend E z) x u) x w q
+      - closedIteratedConnectionEntryFieldAt g w
+        (g.leviCivita (extend E z) x u) x v q
+      - closedIteratedConnectionEntryFieldAt g
+        (g.leviCivita (extend E v) x w) z x u q
+      + closedIteratedConnectionEntryFieldAt g
+        (g.leviCivita (extend E u) x w) z x v q
+      + closedIteratedConnectionEntryFieldAt g u
+        (g.leviCivita (extend E z) x w) x v q
+      - closedIteratedConnectionEntryFieldAt g v
+        (g.leviCivita (extend E z) x w) x u q := by
+  have hout :=
+    closedConnectionEntryOutputConnection_extDerivFun_cyclic_eq_packaged
+      (g := g) (x := x) (u := u) (v := v) (w := w) (z := z) (q := q)
+  rw [closedConnectionEntryOutputConnection_extDerivFun_eq_iterated_pair
+      (g := g) (x := x) (v := v) (a := u) (u := w) (z := z) (q := q),
+    closedConnectionEntryOutputConnection_extDerivFun_eq_iterated_pair
+      (g := g) (x := x) (v := v) (a := w) (u := u) (z := z) (q := q),
+    closedConnectionEntryOutputConnection_extDerivFun_eq_iterated_pair
+      (g := g) (x := x) (v := u) (a := w) (u := v) (z := z) (q := q),
+    closedConnectionEntryOutputConnection_extDerivFun_eq_iterated_pair
+      (g := g) (x := x) (v := u) (a := v) (u := w) (z := z) (q := q),
+    closedConnectionEntryOutputConnection_extDerivFun_eq_iterated_pair
+      (g := g) (x := x) (v := w) (a := v) (u := u) (z := z) (q := q),
+    closedConnectionEntryOutputConnection_extDerivFun_eq_iterated_pair
+      (g := g) (x := x) (v := w) (a := u) (u := v) (z := z) (q := q)] at hout
+  have hpair :=
+    closedIteratedConnectionEntry_output_q_cyclic_eq_middle_z_cyclic
+      (g := g) (x := x) (u := u) (v := v) (w := w) (z := z) (q := q)
+  have huv := closedLeviCivita_extend_symm_at (g := g) (x := x) u v
+  have huw := closedLeviCivita_extend_symm_at (g := g) (x := x) u w
+  have hvw := closedLeviCivita_extend_symm_at (g := g) (x := x) v w
+  rw [huv, huw, hvw] at hout ⊢
+  ring_nf at hout hpair ⊢
+  linarith
+
 /--
 Hessian identification for the first-slot trace field from the local
 first-order identity and scalar trace C² regularity.
