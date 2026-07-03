@@ -10820,6 +10820,1542 @@ theorem covTensor2ExtDifferentiableAt_ricciVariationField_canonical
           (g := g) (u := p) (w := q) (y := y)).symm
   exact hTraceDiff.congr_of_eventuallyEq heq
 
+omit [T2Space M] in
+private theorem extDerivFun_mul_four_at {f₁ f₂ f₃ f₄ : M → ℝ} {x : M}
+    (hf₁ : MDifferentiableAt I 𝓘(ℝ) f₁ x)
+    (hf₂ : MDifferentiableAt I 𝓘(ℝ) f₂ x)
+    (hf₃ : MDifferentiableAt I 𝓘(ℝ) f₃ x)
+    (hf₄ : MDifferentiableAt I 𝓘(ℝ) f₄ x)
+    (v : TM x) :
+    extDerivFun (fun y : M ↦ f₁ y * f₂ y * f₃ y * f₄ y) x v =
+      extDerivFun f₁ x v * f₂ x * f₃ x * f₄ x
+        + f₁ x * extDerivFun f₂ x v * f₃ x * f₄ x
+        + f₁ x * f₂ x * extDerivFun f₃ x v * f₄ x
+        + f₁ x * f₂ x * f₃ x * extDerivFun f₄ x v := by
+  let f₁₂ : M → ℝ := fun y ↦ f₁ y * f₂ y
+  let f₁₂₃ : M → ℝ := fun y ↦ f₁ y * f₂ y * f₃ y
+  have hf₁₂ : MDifferentiableAt I 𝓘(ℝ) f₁₂ x := by
+    exact hf₁.mul hf₂
+  have hf₁₂₃ : MDifferentiableAt I 𝓘(ℝ) f₁₂₃ x := by
+    exact hf₁₂.mul hf₃
+  have h₁₂ := CovariantDerivative.extDerivFun_mul
+    (p := f₁) (q := f₂) (x := x) hf₁ hf₂ v
+  have h₁₂₃ := CovariantDerivative.extDerivFun_mul
+    (p := f₁₂) (q := f₃) (x := x) hf₁₂ hf₃ v
+  have h₁₂₃₄ := CovariantDerivative.extDerivFun_mul
+    (p := f₁₂₃) (q := f₄) (x := x) hf₁₂₃ hf₄ v
+  calc
+    extDerivFun (fun y : M ↦ f₁ y * f₂ y * f₃ y * f₄ y) x v =
+        f₁₂₃ x * extDerivFun f₄ x v + extDerivFun f₁₂₃ x v * f₄ x := by
+          simpa [f₁₂₃] using h₁₂₃₄
+    _ =
+        extDerivFun f₁ x v * f₂ x * f₃ x * f₄ x
+          + f₁ x * extDerivFun f₂ x v * f₃ x * f₄ x
+          + f₁ x * f₂ x * extDerivFun f₃ x v * f₄ x
+          + f₁ x * f₂ x * f₃ x * extDerivFun f₄ x v := by
+          have h₁₂' :
+              extDerivFun f₁₂ x v =
+                f₁ x * extDerivFun f₂ x v + extDerivFun f₁ x v * f₂ x := by
+            simpa [f₁₂] using h₁₂
+          have h₁₂₃' :
+              extDerivFun f₁₂₃ x v =
+                f₁₂ x * extDerivFun f₃ x v + extDerivFun f₁₂ x v * f₃ x := by
+            simpa [f₁₂₃, f₁₂] using h₁₂₃
+          rw [h₁₂₃', h₁₂']
+          simp [f₁₂, f₁₂₃]
+          ring
+
+omit [T2Space M] in
+private theorem extDerivFun_sum_four_at
+    {ι₁ ι₂ ι₃ ι₄ : Type} [Fintype ι₁] [DecidableEq ι₁]
+    [Fintype ι₂] [DecidableEq ι₂] [Fintype ι₃] [DecidableEq ι₃]
+    [Fintype ι₄] [DecidableEq ι₄]
+    (f : ι₁ → ι₂ → ι₃ → ι₄ → M → ℝ) {x : M}
+    (hf : ∀ a b c d, MDifferentiableAt I 𝓘(ℝ) (f a b c d) x)
+    (v : TM x) :
+    extDerivFun (fun y : M ↦ ∑ a, ∑ b, ∑ c, ∑ d, f a b c d y) x v =
+      ∑ a, ∑ b, ∑ c, ∑ d, extDerivFun (f a b c d) x v := by
+  classical
+  have hd : ∀ a b c,
+      MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ ∑ d, f a b c d y) x := by
+    intro a b c
+    exact (MDifferentiableAt.sum
+      (t := (Finset.univ : Finset ι₄)) (fun d _ ↦ hf a b c d)).congr_of_eventuallyEq
+      (Filter.Eventually.of_forall fun y ↦ by simp)
+  have hc : ∀ a b,
+      MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ ∑ c, ∑ d, f a b c d y) x := by
+    intro a b
+    exact (MDifferentiableAt.sum
+      (t := (Finset.univ : Finset ι₃)) (fun c _ ↦ hd a b c)).congr_of_eventuallyEq
+      (Filter.Eventually.of_forall fun y ↦ by simp)
+  have hb : ∀ a,
+      MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ ∑ b, ∑ c, ∑ d, f a b c d y) x := by
+    intro a
+    exact (MDifferentiableAt.sum
+      (t := (Finset.univ : Finset ι₂)) (fun b _ ↦ hc a b)).congr_of_eventuallyEq
+      (Filter.Eventually.of_forall fun y ↦ by simp)
+  have ha := extDerivFun_sum_at
+    (n := n) (M := M)
+    (s := (Finset.univ : Finset ι₁))
+    (f := fun a y ↦ ∑ b, ∑ c, ∑ d, f a b c d y)
+    (x := x) (fun a _ ↦ hb a) v
+  have hfun₁ :
+      (fun y : M ↦ ∑ a, ∑ b, ∑ c, ∑ d, f a b c d y) =
+        (∑ a, fun y : M ↦ ∑ b, ∑ c, ∑ d, f a b c d y) := by
+    funext y
+    simp
+  rw [hfun₁]
+  rw [ha]
+  refine Finset.sum_congr rfl fun a _ ↦ ?_
+  have hb' := extDerivFun_sum_at
+    (n := n) (M := M)
+    (s := (Finset.univ : Finset ι₂))
+    (f := fun b y ↦ ∑ c, ∑ d, f a b c d y)
+    (x := x) (fun b _ ↦ hc a b) v
+  have hfun₂ :
+      (fun y : M ↦ ∑ b, ∑ c, ∑ d, f a b c d y) =
+        (∑ b, fun y : M ↦ ∑ c, ∑ d, f a b c d y) := by
+    funext y
+    simp
+  rw [hfun₂]
+  rw [hb']
+  refine Finset.sum_congr rfl fun b _ ↦ ?_
+  have hc' := extDerivFun_sum_at
+    (n := n) (M := M)
+    (s := (Finset.univ : Finset ι₃))
+    (f := fun c y ↦ ∑ d, f a b c d y)
+    (x := x) (fun c _ ↦ hd a b c) v
+  have hfun₃ :
+      (fun y : M ↦ ∑ c, ∑ d, f a b c d y) =
+        (∑ c, fun y : M ↦ ∑ d, f a b c d y) := by
+    funext y
+    simp
+  rw [hfun₃]
+  rw [hc']
+  refine Finset.sum_congr rfl fun c _ ↦ ?_
+  have hd' := extDerivFun_sum_at
+    (n := n) (M := M)
+    (s := (Finset.univ : Finset ι₄))
+    (f := fun d ↦ f a b c d)
+    (x := x) (fun d _ ↦ hf a b c d) v
+  have hfun₄ :
+      (fun y : M ↦ ∑ d, f a b c d y) =
+        (∑ d, f a b c d) := by
+    funext y
+    simp
+  rw [hfun₄]
+  exact hd'
+
+/-- The anchored four-index Gram expression for the Ricci/Ricci pairing. -/
+noncomputable def ricciPairingGramRHS
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x y : M) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    (gramMatrix g x y)⁻¹ a c *
+      (gramMatrix g x y)⁻¹ b d *
+      g.ricciAt y (gramFrame x y a) (gramFrame x y b) *
+      g.ricciAt y (gramFrame x y c) (gramFrame x y d)
+
+/-- Product-rule group differentiating the first inverse-Gram factor. -/
+noncomputable def ricciPairingGramInvFirstDerivGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ a c) x v *
+      (gramMatrix g x x)⁻¹ b d *
+      g.ricciAt x (gramFrame x x a) (gramFrame x x b) *
+      g.ricciAt x (gramFrame x x c) (gramFrame x x d)
+
+/-- Product-rule group differentiating the second inverse-Gram factor. -/
+noncomputable def ricciPairingGramInvSecondDerivGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ b d) x v *
+      g.ricciAt x (gramFrame x x a) (gramFrame x x b) *
+      g.ricciAt x (gramFrame x x c) (gramFrame x x d)
+
+/-- Product-rule group differentiating the first Ricci entry. -/
+noncomputable def ricciPairingRicciFirstDerivGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      (gramMatrix g x x)⁻¹ b d *
+      extDerivFun
+        (fun y : M ↦ g.ricciAt y (gramFrame x y a) (gramFrame x y b)) x v *
+      g.ricciAt x (gramFrame x x c) (gramFrame x x d)
+
+/-- Product-rule group differentiating the second Ricci entry. -/
+noncomputable def ricciPairingRicciSecondDerivGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      (gramMatrix g x x)⁻¹ b d *
+      g.ricciAt x (gramFrame x x a) (gramFrame x x b) *
+      extDerivFun
+        (fun y : M ↦ g.ricciAt y (gramFrame x y c) (gramFrame x y d)) x v
+
+/-- The four product-rule groups for the anchored Ricci/Ricci pairing. -/
+noncomputable def ricciPairingGramProductRuleRHS
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  ricciPairingGramInvFirstDerivGroup g x v
+    + ricciPairingGramInvSecondDerivGroup g x v
+    + ricciPairingRicciFirstDerivGroup g x v
+    + ricciPairingRicciSecondDerivGroup g x v
+
+set_option maxHeartbeats 5000000 in
+/--
+Product-rule expansion of the anchored four-factor Ricci/Ricci Gram sum.
+This is pure finite-sum calculus: each summand has two inverse-Gram factors
+and two Ricci-entry factors.
+-/
+theorem pairing_gram_product_rule_expand
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) :
+    extDerivFun (fun y : M ↦ ricciPairingGramRHS g x y) x v =
+      ricciPairingGramProductRuleRHS g x v := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let term :
+      Fin (Module.finrank ℝ (TM x)) →
+      Fin (Module.finrank ℝ (TM x)) →
+      Fin (Module.finrank ℝ (TM x)) →
+      Fin (Module.finrank ℝ (TM x)) → M → ℝ :=
+    fun a b' c d y ↦
+      (gramMatrix g x y)⁻¹ a c *
+        (gramMatrix g x y)⁻¹ b' d *
+        g.ricciAt y (gramFrame x y a) (gramFrame x y b') *
+        g.ricciAt y (gramFrame x y c) (gramFrame x y d)
+  have hRicDiff : ∀ a b',
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ g.ricciAt y (gramFrame x y a) (gramFrame x y b')) x := by
+    intro a b'
+    have h :=
+      covTensor2ExtDifferentiableAt_ricciVariationField_canonical
+        (g := g) x (b a) (b b')
+    simpa [ricciVariationField, gramFrame, b] using h
+  have htermDiff : ∀ a b' c d,
+      MDifferentiableAt I 𝓘(ℝ) (term a b' c d) x := by
+    intro a b' c d
+    have hA : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ (gramMatrix g x y)⁻¹ a c) x :=
+      gramMatrix_inv_entry_mdiffAt (g := g) x a c
+    have hB : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ (gramMatrix g x y)⁻¹ b' d) x :=
+      gramMatrix_inv_entry_mdiffAt (g := g) x b' d
+    have hR₁ := hRicDiff a b'
+    have hR₂ := hRicDiff c d
+    exact (((hA.mul hB).mul hR₁).mul hR₂).congr_of_eventuallyEq
+      (Filter.Eventually.of_forall fun y ↦ by simp [term])
+  have hsum := extDerivFun_sum_four_at
+    (n := n) (M := M)
+    (f := term) (x := x) htermDiff v
+  have htermDeriv : ∀ a b' c d,
+      extDerivFun (term a b' c d) x v =
+        extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ a c) x v *
+            (gramMatrix g x x)⁻¹ b' d *
+            g.ricciAt x (gramFrame x x a) (gramFrame x x b') *
+            g.ricciAt x (gramFrame x x c) (gramFrame x x d)
+          + (gramMatrix g x x)⁻¹ a c *
+            extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ b' d) x v *
+            g.ricciAt x (gramFrame x x a) (gramFrame x x b') *
+            g.ricciAt x (gramFrame x x c) (gramFrame x x d)
+          + (gramMatrix g x x)⁻¹ a c *
+            (gramMatrix g x x)⁻¹ b' d *
+            extDerivFun
+              (fun y : M ↦ g.ricciAt y (gramFrame x y a) (gramFrame x y b')) x v *
+            g.ricciAt x (gramFrame x x c) (gramFrame x x d)
+          + (gramMatrix g x x)⁻¹ a c *
+            (gramMatrix g x x)⁻¹ b' d *
+            g.ricciAt x (gramFrame x x a) (gramFrame x x b') *
+            extDerivFun
+              (fun y : M ↦ g.ricciAt y (gramFrame x y c) (gramFrame x y d)) x v := by
+    intro a b' c d
+    have hA : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ (gramMatrix g x y)⁻¹ a c) x :=
+      gramMatrix_inv_entry_mdiffAt (g := g) x a c
+    have hB : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ (gramMatrix g x y)⁻¹ b' d) x :=
+      gramMatrix_inv_entry_mdiffAt (g := g) x b' d
+    have hR₁ := hRicDiff a b'
+    have hR₂ := hRicDiff c d
+    simpa [term, mul_comm, mul_left_comm, mul_assoc] using
+      extDerivFun_mul_four_at
+        (n := n) (M := M)
+        (f₁ := fun y : M ↦ (gramMatrix g x y)⁻¹ a c)
+        (f₂ := fun y : M ↦ (gramMatrix g x y)⁻¹ b' d)
+        (f₃ := fun y : M ↦
+          g.ricciAt y (gramFrame x y a) (gramFrame x y b'))
+        (f₄ := fun y : M ↦
+          g.ricciAt y (gramFrame x y c) (gramFrame x y d))
+        hA hB hR₁ hR₂ v
+  calc
+    extDerivFun (fun y : M ↦ ricciPairingGramRHS g x y) x v =
+        ∑ a, ∑ b', ∑ c, ∑ d, extDerivFun (term a b' c d) x v := by
+          simpa [ricciPairingGramRHS, term] using hsum
+    _ =
+        ∑ a, ∑ b', ∑ c, ∑ d,
+          (extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ a c) x v *
+              (gramMatrix g x x)⁻¹ b' d *
+              g.ricciAt x (gramFrame x x a) (gramFrame x x b') *
+              g.ricciAt x (gramFrame x x c) (gramFrame x x d)
+            + (gramMatrix g x x)⁻¹ a c *
+              extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ b' d) x v *
+              g.ricciAt x (gramFrame x x a) (gramFrame x x b') *
+              g.ricciAt x (gramFrame x x c) (gramFrame x x d)
+            + (gramMatrix g x x)⁻¹ a c *
+              (gramMatrix g x x)⁻¹ b' d *
+              extDerivFun
+                (fun y : M ↦ g.ricciAt y (gramFrame x y a) (gramFrame x y b')) x v *
+              g.ricciAt x (gramFrame x x c) (gramFrame x x d)
+            + (gramMatrix g x x)⁻¹ a c *
+              (gramMatrix g x x)⁻¹ b' d *
+              g.ricciAt x (gramFrame x x a) (gramFrame x x b') *
+              extDerivFun
+                (fun y : M ↦ g.ricciAt y (gramFrame x y c) (gramFrame x y d)) x v) := by
+          refine Finset.sum_congr rfl fun a _ ↦ ?_
+          refine Finset.sum_congr rfl fun b' _ ↦ ?_
+          refine Finset.sum_congr rfl fun c _ ↦ ?_
+          refine Finset.sum_congr rfl fun d _ ↦ ?_
+          exact htermDeriv a b' c d
+    _ = ricciPairingGramProductRuleRHS g x v := by
+          unfold ricciPairingGramProductRuleRHS
+          unfold ricciPairingGramInvFirstDerivGroup
+          unfold ricciPairingGramInvSecondDerivGroup
+          unfold ricciPairingRicciFirstDerivGroup
+          unfold ricciPairingRicciSecondDerivGroup
+          simp [Finset.sum_add_distrib, add_assoc]
+
+/-- Tensor contracted against the first inverse-Gram derivative group. -/
+noncomputable def ricciPairingInvFirstContractionTensor
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : ∀ y : M, TM y → TM y → ℝ :=
+  fun y p q ↦
+    letI : FiniteDimensional ℝ (TM x) :=
+      inferInstanceAs (FiniteDimensional ℝ E)
+    let b := Module.finBasis ℝ (TM x)
+    ∑ b', ∑ d,
+      (gramMatrix g x x)⁻¹ b' d *
+        g.ricciAt y p (extend E (b b') y) *
+        g.ricciAt y q (extend E (b d) y)
+
+/-- Tensor contracted against the second inverse-Gram derivative group. -/
+noncomputable def ricciPairingInvSecondContractionTensor
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : ∀ y : M, TM y → TM y → ℝ :=
+  fun y p q ↦
+    letI : FiniteDimensional ℝ (TM x) :=
+      inferInstanceAs (FiniteDimensional ℝ E)
+    let b := Module.finBasis ℝ (TM x)
+    ∑ a, ∑ c,
+      (gramMatrix g x x)⁻¹ a c *
+        g.ricciAt y (extend E (b a) y) p *
+        g.ricciAt y (extend E (b c) y) q
+
+/-- The two Levi-Civita correction terms produced by the first inverse-Gram derivative. -/
+noncomputable def ricciPairingInvFirstLeviCorrectionGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  let Γ : TM x → TM x := fun p ↦ g.leviCivita (extend E p) x v
+  let H := ricciPairingInvFirstContractionTensor g x
+  ∑ i, H x (Γ (b i)) (sharp i)
+    + ∑ i, H x (b i) (Γ (sharp i))
+
+/-- The two Levi-Civita correction terms produced by the second inverse-Gram derivative. -/
+noncomputable def ricciPairingInvSecondLeviCorrectionGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  let Γ : TM x → TM x := fun p ↦ g.leviCivita (extend E p) x v
+  let H := ricciPairingInvSecondContractionTensor g x
+  ∑ i, H x (Γ (b i)) (sharp i)
+    + ∑ i, H x (b i) (Γ (sharp i))
+
+set_option maxHeartbeats 5000000 in
+private theorem tensor2AddLeft_ricciPairingInvFirstContractionTensor
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    Tensor2AddLeft (ricciPairingInvFirstContractionTensor g x) := by
+  intro y p₁ p₂ q
+  classical
+  unfold ricciPairingInvFirstContractionTensor
+  simp [g.ricciAt_add_left y, Finset.sum_add_distrib, mul_add, add_mul,
+    mul_assoc]
+
+set_option maxHeartbeats 5000000 in
+private theorem tensor2SMulLeft_ricciPairingInvFirstContractionTensor
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    Tensor2SMulLeft (ricciPairingInvFirstContractionTensor g x) := by
+  intro y c p q
+  classical
+  unfold ricciPairingInvFirstContractionTensor
+  simp [g.ricciAt_smul_left y, Finset.mul_sum, mul_comm, mul_left_comm,
+    mul_assoc]
+
+set_option maxHeartbeats 5000000 in
+private theorem tensor2AddRight_ricciPairingInvFirstContractionTensor
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    Tensor2AddRight (ricciPairingInvFirstContractionTensor g x) := by
+  intro y p q₁ q₂
+  classical
+  unfold ricciPairingInvFirstContractionTensor
+  simp [g.ricciAt_add_left y, Finset.sum_add_distrib, mul_add, add_mul,
+    mul_assoc]
+
+set_option maxHeartbeats 5000000 in
+private theorem tensor2SMulRight_ricciPairingInvFirstContractionTensor
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    Tensor2SMulRight (ricciPairingInvFirstContractionTensor g x) := by
+  intro y c p q
+  classical
+  unfold ricciPairingInvFirstContractionTensor
+  simp [g.ricciAt_smul_left y, Finset.mul_sum, mul_comm, mul_left_comm,
+    mul_assoc]
+
+set_option maxHeartbeats 5000000 in
+private theorem tensor2AddLeft_ricciPairingInvSecondContractionTensor
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    Tensor2AddLeft (ricciPairingInvSecondContractionTensor g x) := by
+  intro y p₁ p₂ q
+  classical
+  unfold ricciPairingInvSecondContractionTensor
+  simp [g.ricciAt_add_right y, Finset.sum_add_distrib, mul_add, add_mul,
+    mul_assoc]
+
+set_option maxHeartbeats 5000000 in
+private theorem tensor2SMulLeft_ricciPairingInvSecondContractionTensor
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    Tensor2SMulLeft (ricciPairingInvSecondContractionTensor g x) := by
+  intro y c p q
+  classical
+  unfold ricciPairingInvSecondContractionTensor
+  simp [g.ricciAt_smul_right y, Finset.mul_sum, mul_comm, mul_left_comm,
+    mul_assoc]
+
+set_option maxHeartbeats 5000000 in
+private theorem tensor2AddRight_ricciPairingInvSecondContractionTensor
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    Tensor2AddRight (ricciPairingInvSecondContractionTensor g x) := by
+  intro y p q₁ q₂
+  classical
+  unfold ricciPairingInvSecondContractionTensor
+  simp [g.ricciAt_add_right y, Finset.sum_add_distrib, mul_add, add_mul,
+    mul_assoc]
+
+set_option maxHeartbeats 5000000 in
+private theorem tensor2SMulRight_ricciPairingInvSecondContractionTensor
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    Tensor2SMulRight (ricciPairingInvSecondContractionTensor g x) := by
+  intro y c p q
+  classical
+  unfold ricciPairingInvSecondContractionTensor
+  simp [g.ricciAt_smul_right y, Finset.mul_sum, mul_comm, mul_left_comm,
+    mul_assoc]
+
+set_option maxHeartbeats 5000000 in
+/--
+The two inverse-Gram product-rule groups are exactly the corresponding
+Levi-Civita slot-correction contractions, with the sign from differentiating
+the inverse Gram matrix.
+-/
+theorem pairing_gram_inv_deriv_groups_eq_leviCivita_corrections
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) :
+    ricciPairingGramInvFirstDerivGroup g x v =
+        -ricciPairingInvFirstLeviCorrectionGroup g x v
+      ∧
+      ricciPairingGramInvSecondDerivGroup g x v =
+        -ricciPairingInvSecondLeviCorrectionGroup g x v := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  constructor
+  · let H := ricciPairingInvFirstContractionTensor g x
+    have hraw :=
+      gram_inv_deriv_contraction_eq_leviCivita_corrections
+        (g := g) (h := H) (x := x)
+        (tensor2AddLeft_ricciPairingInvFirstContractionTensor (g := g) x)
+        (tensor2SMulLeft_ricciPairingInvFirstContractionTensor (g := g) x)
+        (tensor2AddRight_ricciPairingInvFirstContractionTensor (g := g) x)
+        (tensor2SMulRight_ricciPairingInvFirstContractionTensor (g := g) x)
+        v
+    have hlhs :
+        ricciPairingGramInvFirstDerivGroup g x v =
+          ∑ i, ∑ j,
+            extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x v *
+              H x (gramFrame x x i) (gramFrame x x j) := by
+      let D : Fin (Module.finrank ℝ (TM x)) →
+          Fin (Module.finrank ℝ (TM x)) → ℝ :=
+        fun i j ↦ extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x v
+      let C : Fin (Module.finrank ℝ (TM x)) →
+          Fin (Module.finrank ℝ (TM x)) → ℝ :=
+        fun i j ↦ (gramMatrix g x x)⁻¹ i j
+      let R : TM x → TM x → ℝ := fun p q ↦ g.ricciAt x p q
+      unfold ricciPairingGramInvFirstDerivGroup H
+      unfold ricciPairingInvFirstContractionTensor
+      simp only [gramFrame, extend_apply_self]
+      change
+        (∑ a, ∑ b', ∑ c, ∑ d,
+          D a c * C b' d * R (b a) (b b') * R (b c) (b d))
+          =
+        ∑ i, ∑ j, D i j *
+          (∑ b', ∑ d, C b' d * R (b i) (b b') * R (b j) (b d))
+      calc
+        (∑ a, ∑ b', ∑ c, ∑ d,
+          D a c * C b' d * R (b a) (b b') * R (b c) (b d))
+          =
+          ∑ a, ∑ c, ∑ b', ∑ d,
+            D a c * C b' d * R (b a) (b b') * R (b c) (b d) := by
+            refine Finset.sum_congr rfl fun a _ ↦ ?_
+            rw [Finset.sum_comm]
+        _ =
+          ∑ i, ∑ j, D i j *
+            (∑ b', ∑ d, C b' d * R (b i) (b b') * R (b j) (b d)) := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            refine Finset.sum_congr rfl fun j _ ↦ ?_
+            rw [Finset.mul_sum]
+            refine Finset.sum_congr rfl fun b' _ ↦ ?_
+            rw [Finset.mul_sum]
+            refine Finset.sum_congr rfl fun d _ ↦ ?_
+            ring
+    calc
+      ricciPairingGramInvFirstDerivGroup g x v =
+          ∑ i, ∑ j,
+            extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x v *
+              H x (gramFrame x x i) (gramFrame x x j) := hlhs
+      _ =
+          -∑ i, H x (g.leviCivita (extend E (b i)) x v)
+              (metricDualVectorAt g x (b.coord i))
+            - ∑ i, H x (b i)
+              (g.leviCivita
+                (extend E (metricDualVectorAt g x (b.coord i))) x v) := by
+          simpa [H, b] using hraw
+      _ = -ricciPairingInvFirstLeviCorrectionGroup g x v := by
+          unfold ricciPairingInvFirstLeviCorrectionGroup
+          simp [H, b]
+          ring
+  · let H := ricciPairingInvSecondContractionTensor g x
+    have hraw :=
+      gram_inv_deriv_contraction_eq_leviCivita_corrections
+        (g := g) (h := H) (x := x)
+        (tensor2AddLeft_ricciPairingInvSecondContractionTensor (g := g) x)
+        (tensor2SMulLeft_ricciPairingInvSecondContractionTensor (g := g) x)
+        (tensor2AddRight_ricciPairingInvSecondContractionTensor (g := g) x)
+        (tensor2SMulRight_ricciPairingInvSecondContractionTensor (g := g) x)
+        v
+    have hlhs :
+        ricciPairingGramInvSecondDerivGroup g x v =
+          ∑ i, ∑ j,
+            extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x v *
+              H x (gramFrame x x i) (gramFrame x x j) := by
+      let D : Fin (Module.finrank ℝ (TM x)) →
+          Fin (Module.finrank ℝ (TM x)) → ℝ :=
+        fun i j ↦ extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x v
+      let C : Fin (Module.finrank ℝ (TM x)) →
+          Fin (Module.finrank ℝ (TM x)) → ℝ :=
+        fun i j ↦ (gramMatrix g x x)⁻¹ i j
+      let R : TM x → TM x → ℝ := fun p q ↦ g.ricciAt x p q
+      unfold ricciPairingGramInvSecondDerivGroup H
+      unfold ricciPairingInvSecondContractionTensor
+      simp only [gramFrame, extend_apply_self]
+      change
+        (∑ a, ∑ b', ∑ c, ∑ d,
+          C a c * D b' d * R (b a) (b b') * R (b c) (b d))
+          =
+        ∑ i, ∑ j, D i j *
+          (∑ a, ∑ c, C a c * R (b a) (b i) * R (b c) (b j))
+      calc
+        (∑ a, ∑ b', ∑ c, ∑ d,
+          C a c * D b' d * R (b a) (b b') * R (b c) (b d))
+          =
+          ∑ b', ∑ a, ∑ c, ∑ d,
+            C a c * D b' d * R (b a) (b b') * R (b c) (b d) := by
+            rw [Finset.sum_comm]
+        _ =
+          ∑ b', ∑ d, ∑ a, ∑ c,
+            C a c * D b' d * R (b a) (b b') * R (b c) (b d) := by
+            refine Finset.sum_congr rfl fun b' _ ↦ ?_
+            calc
+              (∑ a, ∑ c, ∑ d,
+                C a c * D b' d * R (b a) (b b') * R (b c) (b d))
+                =
+                ∑ a, ∑ d, ∑ c,
+                  C a c * D b' d * R (b a) (b b') * R (b c) (b d) := by
+                  refine Finset.sum_congr rfl fun a _ ↦ ?_
+                  rw [Finset.sum_comm]
+              _ =
+                ∑ d, ∑ a, ∑ c,
+                  C a c * D b' d * R (b a) (b b') * R (b c) (b d) := by
+                  rw [Finset.sum_comm]
+        _ =
+          ∑ i, ∑ j, D i j *
+            (∑ a, ∑ c, C a c * R (b a) (b i) * R (b c) (b j)) := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            refine Finset.sum_congr rfl fun j _ ↦ ?_
+            rw [Finset.mul_sum]
+            refine Finset.sum_congr rfl fun a _ ↦ ?_
+            rw [Finset.mul_sum]
+            refine Finset.sum_congr rfl fun c _ ↦ ?_
+            ring
+    calc
+      ricciPairingGramInvSecondDerivGroup g x v =
+          ∑ i, ∑ j,
+            extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x v *
+              H x (gramFrame x x i) (gramFrame x x j) := hlhs
+      _ =
+          -∑ i, H x (g.leviCivita (extend E (b i)) x v)
+              (metricDualVectorAt g x (b.coord i))
+            - ∑ i, H x (b i)
+              (g.leviCivita
+                (extend E (metricDualVectorAt g x (b.coord i))) x v) := by
+          simpa [H, b] using hraw
+      _ = -ricciPairingInvSecondLeviCorrectionGroup g x v := by
+          unfold ricciPairingInvSecondLeviCorrectionGroup
+          simp [H, b]
+          ring
+
+/-- The covariant-Ricci part produced by differentiating the first Ricci entry. -/
+noncomputable def ricciPairingRicciFirstCovariantGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  ∑ a, ∑ b', ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      (gramMatrix g x x)⁻¹ b' d *
+      closedCovRicciDerivAt g x v (b a) (b b') *
+      g.ricciAt x (b c) (b d)
+
+/-- The covariant-Ricci part produced by differentiating the second Ricci entry. -/
+noncomputable def ricciPairingRicciSecondCovariantGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  ∑ a, ∑ b', ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      (gramMatrix g x x)⁻¹ b' d *
+      g.ricciAt x (b a) (b b') *
+      closedCovRicciDerivAt g x v (b c) (b d)
+
+/-- Levi-Civita correction from the first slot of the first Ricci entry. -/
+noncomputable def ricciPairingRicciFirstLeftLeviCorrectionGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let Γ : TM x → TM x := fun p ↦ g.leviCivita (extend E p) x v
+  ∑ a, ∑ b', ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      (gramMatrix g x x)⁻¹ b' d *
+      g.ricciAt x (Γ (b a)) (b b') *
+      g.ricciAt x (b c) (b d)
+
+/-- Levi-Civita correction from the second slot of the first Ricci entry. -/
+noncomputable def ricciPairingRicciFirstRightLeviCorrectionGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let Γ : TM x → TM x := fun p ↦ g.leviCivita (extend E p) x v
+  ∑ a, ∑ b', ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      (gramMatrix g x x)⁻¹ b' d *
+      g.ricciAt x (b a) (Γ (b b')) *
+      g.ricciAt x (b c) (b d)
+
+/-- Levi-Civita correction from the first slot of the second Ricci entry. -/
+noncomputable def ricciPairingRicciSecondLeftLeviCorrectionGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let Γ : TM x → TM x := fun p ↦ g.leviCivita (extend E p) x v
+  ∑ a, ∑ b', ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      (gramMatrix g x x)⁻¹ b' d *
+      g.ricciAt x (b a) (b b') *
+      g.ricciAt x (Γ (b c)) (b d)
+
+/-- Levi-Civita correction from the second slot of the second Ricci entry. -/
+noncomputable def ricciPairingRicciSecondRightLeviCorrectionGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let Γ : TM x → TM x := fun p ↦ g.leviCivita (extend E p) x v
+  ∑ a, ∑ b', ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      (gramMatrix g x x)⁻¹ b' d *
+      g.ricciAt x (b a) (b b') *
+      g.ricciAt x (b c) (Γ (b d))
+
+/-- The two Levi-Civita corrections produced by the first Ricci-entry derivative. -/
+noncomputable def ricciPairingRicciFirstLeviCorrectionGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  ricciPairingRicciFirstLeftLeviCorrectionGroup g x v
+    + ricciPairingRicciFirstRightLeviCorrectionGroup g x v
+
+/-- The two Levi-Civita corrections produced by the second Ricci-entry derivative. -/
+noncomputable def ricciPairingRicciSecondLeviCorrectionGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  ricciPairingRicciSecondLeftLeviCorrectionGroup g x v
+    + ricciPairingRicciSecondRightLeviCorrectionGroup g x v
+
+set_option maxHeartbeats 5000000 in
+/--
+The Ricci-entry derivative product-rule groups split into their covariant
+Ricci derivative terms and the two canonical Levi-Civita slot corrections.
+-/
+theorem pairing_ricci_deriv_groups_eq_covariant_plus_leviCivita_corrections
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) :
+    ricciPairingRicciFirstDerivGroup g x v =
+        ricciPairingRicciFirstCovariantGroup g x v
+          + ricciPairingRicciFirstLeviCorrectionGroup g x v
+      ∧
+      ricciPairingRicciSecondDerivGroup g x v =
+        ricciPairingRicciSecondCovariantGroup g x v
+          + ricciPairingRicciSecondLeviCorrectionGroup g x v := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  constructor
+  · have hsplit :
+        ricciPairingRicciFirstDerivGroup g x v =
+          ∑ a, ∑ b', ∑ c, ∑ d,
+            (gramMatrix g x x)⁻¹ a c *
+              (gramMatrix g x x)⁻¹ b' d *
+              (closedCovRicciDerivAt g x v (b a) (b b')
+                + g.ricciAt x (g.leviCivita (extend E (b a)) x v) (b b')
+                + g.ricciAt x (b a)
+                    (g.leviCivita (extend E (b b')) x v)) *
+              g.ricciAt x (b c) (b d) := by
+      unfold ricciPairingRicciFirstDerivGroup
+      simp only [gramFrame, extend_apply_self]
+      refine Finset.sum_congr rfl fun a _ ↦ ?_
+      refine Finset.sum_congr rfl fun b' _ ↦ ?_
+      refine Finset.sum_congr rfl fun c _ ↦ ?_
+      refine Finset.sum_congr rfl fun d _ ↦ ?_
+      rw [closedRicciDerivativeExpansionAt_canonical (g := g) x v (b a) (b b')]
+    calc
+      ricciPairingRicciFirstDerivGroup g x v =
+          ∑ a, ∑ b', ∑ c, ∑ d,
+            (gramMatrix g x x)⁻¹ a c *
+              (gramMatrix g x x)⁻¹ b' d *
+              (closedCovRicciDerivAt g x v (b a) (b b')
+                + g.ricciAt x (g.leviCivita (extend E (b a)) x v) (b b')
+                + g.ricciAt x (b a)
+                    (g.leviCivita (extend E (b b')) x v)) *
+              g.ricciAt x (b c) (b d) := hsplit
+      _ = ricciPairingRicciFirstCovariantGroup g x v
+            + ricciPairingRicciFirstLeviCorrectionGroup g x v := by
+          unfold ricciPairingRicciFirstCovariantGroup
+          unfold ricciPairingRicciFirstLeviCorrectionGroup
+          unfold ricciPairingRicciFirstLeftLeviCorrectionGroup
+          unfold ricciPairingRicciFirstRightLeviCorrectionGroup
+          simp [b, Finset.sum_add_distrib, mul_add, add_mul, add_assoc]
+  · have hsplit :
+        ricciPairingRicciSecondDerivGroup g x v =
+          ∑ a, ∑ b', ∑ c, ∑ d,
+            (gramMatrix g x x)⁻¹ a c *
+              (gramMatrix g x x)⁻¹ b' d *
+              g.ricciAt x (b a) (b b') *
+              (closedCovRicciDerivAt g x v (b c) (b d)
+                + g.ricciAt x (g.leviCivita (extend E (b c)) x v) (b d)
+                + g.ricciAt x (b c)
+                    (g.leviCivita (extend E (b d)) x v)) := by
+      unfold ricciPairingRicciSecondDerivGroup
+      simp only [gramFrame, extend_apply_self]
+      refine Finset.sum_congr rfl fun a _ ↦ ?_
+      refine Finset.sum_congr rfl fun b' _ ↦ ?_
+      refine Finset.sum_congr rfl fun c _ ↦ ?_
+      refine Finset.sum_congr rfl fun d _ ↦ ?_
+      rw [closedRicciDerivativeExpansionAt_canonical (g := g) x v (b c) (b d)]
+    calc
+      ricciPairingRicciSecondDerivGroup g x v =
+          ∑ a, ∑ b', ∑ c, ∑ d,
+            (gramMatrix g x x)⁻¹ a c *
+              (gramMatrix g x x)⁻¹ b' d *
+              g.ricciAt x (b a) (b b') *
+              (closedCovRicciDerivAt g x v (b c) (b d)
+                + g.ricciAt x (g.leviCivita (extend E (b c)) x v) (b d)
+                + g.ricciAt x (b c)
+                    (g.leviCivita (extend E (b d)) x v)) := hsplit
+      _ = ricciPairingRicciSecondCovariantGroup g x v
+            + ricciPairingRicciSecondLeviCorrectionGroup g x v := by
+          unfold ricciPairingRicciSecondCovariantGroup
+          unfold ricciPairingRicciSecondLeviCorrectionGroup
+          unfold ricciPairingRicciSecondLeftLeviCorrectionGroup
+          unfold ricciPairingRicciSecondRightLeviCorrectionGroup
+          simp [b, Finset.sum_add_distrib, mul_add, add_mul, add_assoc]
+
+set_option maxHeartbeats 5000000 in
+/--
+The inverse-Gram derivative groups cancel the four Levi-Civita slot-correction
+groups produced by differentiating the two Ricci entries.
+-/
+theorem pairing_gram_inv_deriv_groups_cancel_ricci_leviCivita_corrections
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) :
+    ricciPairingGramInvFirstDerivGroup g x v
+      + ricciPairingGramInvSecondDerivGroup g x v
+      + ricciPairingRicciFirstLeviCorrectionGroup g x v
+      + ricciPairingRicciSecondLeviCorrectionGroup g x v = 0 := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let G : Matrix (Fin (Module.finrank ℝ (TM x)))
+      (Fin (Module.finrank ℝ (TM x))) ℝ := gramMatrix g x x
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  let Γ : TM x → TM x := fun p ↦ g.leviCivita (extend E p) x v
+  let H₁ := ricciPairingInvFirstContractionTensor g x
+  let H₂ := ricciPairingInvSecondContractionTensor g x
+  have hsharp : ∀ i, sharp i = ∑ j, G⁻¹ i j • b j := by
+    intro i
+    simpa [sharp, b, G] using
+      metricDualVectorAt_finBasis_coord_eq_sum_gram_inv (g := g) (x := x) i
+  set Γlin : TM x →ₗ[ℝ] TM x :=
+    IsLinearMap.mk' Γ
+      ⟨(by
+          intro p q
+          change g.leviCivita (extend E (p + q)) x v =
+            g.leviCivita (extend E p) x v + g.leviCivita (extend E q) x v
+          rw [extend_tangent_add (x := x) p q]
+          have hadd := g.leviCivita.isCovariantDerivativeOnUniv.add
+            (by simpa [MDiffAtTangentField] using
+              (mdifferentiableAt_extend I E p))
+            (by simpa [MDiffAtTangentField] using
+              (mdifferentiableAt_extend I E q))
+          simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L v) hadd),
+        (by
+          intro c p
+          change g.leviCivita (extend E (c • p)) x v =
+            c • g.leviCivita (extend E p) x v
+          rw [extend_tangent_smul (x := x) c p]
+          have hsmul := g.leviCivita.isCovariantDerivativeOnUniv.smul_const c
+            (by simpa [MDiffAtTangentField] using
+              (mdifferentiableAt_extend I E p))
+          simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L v) hsmul)⟩
+      with hΓlin
+  have hΓsharp : ∀ i, Γ (sharp i) = ∑ j, G⁻¹ i j • Γ (b j) := by
+    intro i
+    change Γlin (sharp i) = ∑ j, G⁻¹ i j • Γlin (b j)
+    rw [hsharp i]
+    simpa using map_sum Γlin (fun j ↦ G⁻¹ i j • b j) Finset.univ
+  have hFirstLeft :
+      (∑ i, H₁ x (Γ (b i)) (sharp i)) =
+        ricciPairingRicciFirstLeftLeviCorrectionGroup g x v := by
+    calc
+      (∑ i, H₁ x (Γ (b i)) (sharp i)) =
+          ∑ i, ∑ c, G⁻¹ i c * H₁ x (Γ (b i)) (b c) := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            rw [hsharp i]
+            exact tensor2_sum_right
+              (h := H₁)
+              (tensor2AddRight_ricciPairingInvFirstContractionTensor
+                (g := g) x)
+              (tensor2SMulRight_ricciPairingInvFirstContractionTensor
+                (g := g) x)
+              x (Γ (b i)) (fun c ↦ G⁻¹ i c) b
+      _ = ricciPairingRicciFirstLeftLeviCorrectionGroup g x v := by
+            unfold H₁
+            unfold ricciPairingInvFirstContractionTensor
+            unfold ricciPairingRicciFirstLeftLeviCorrectionGroup
+            simp only [extend_apply_self]
+            change
+              (∑ i, ∑ c, G⁻¹ i c *
+                (∑ b', ∑ d, G⁻¹ b' d *
+                  g.ricciAt x (Γ (b i)) (b b') *
+                  g.ricciAt x (b c) (b d))) =
+              ∑ a, ∑ b', ∑ c, ∑ d,
+                G⁻¹ a c * G⁻¹ b' d *
+                  g.ricciAt x (Γ (b a)) (b b') *
+                  g.ricciAt x (b c) (b d)
+            calc
+              (∑ i, ∑ c, G⁻¹ i c *
+                (∑ b', ∑ d, G⁻¹ b' d *
+                  g.ricciAt x (Γ (b i)) (b b') *
+                  g.ricciAt x (b c) (b d))) =
+                ∑ i, ∑ c, ∑ b', ∑ d,
+                  G⁻¹ i c * G⁻¹ b' d *
+                    g.ricciAt x (Γ (b i)) (b b') *
+                    g.ricciAt x (b c) (b d) := by
+                  refine Finset.sum_congr rfl fun i _ ↦ ?_
+                  refine Finset.sum_congr rfl fun c _ ↦ ?_
+                  rw [Finset.mul_sum]
+                  refine Finset.sum_congr rfl fun b' _ ↦ ?_
+                  rw [Finset.mul_sum]
+                  refine Finset.sum_congr rfl fun d _ ↦ ?_
+                  ring
+              _ = ∑ a, ∑ b', ∑ c, ∑ d,
+                  G⁻¹ a c * G⁻¹ b' d *
+                    g.ricciAt x (Γ (b a)) (b b') *
+                    g.ricciAt x (b c) (b d) := by
+                  refine Finset.sum_congr rfl fun a _ ↦ ?_
+                  rw [Finset.sum_comm]
+  have hFirstRight :
+      (∑ i, H₁ x (b i) (Γ (sharp i))) =
+        ricciPairingRicciSecondLeftLeviCorrectionGroup g x v := by
+    calc
+      (∑ i, H₁ x (b i) (Γ (sharp i))) =
+          ∑ i, ∑ c, G⁻¹ i c * H₁ x (b i) (Γ (b c)) := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            rw [hΓsharp i]
+            exact tensor2_sum_right
+              (h := H₁)
+              (tensor2AddRight_ricciPairingInvFirstContractionTensor
+                (g := g) x)
+              (tensor2SMulRight_ricciPairingInvFirstContractionTensor
+                (g := g) x)
+              x (b i) (fun c ↦ G⁻¹ i c) (fun c ↦ Γ (b c))
+      _ = ricciPairingRicciSecondLeftLeviCorrectionGroup g x v := by
+            unfold H₁
+            unfold ricciPairingInvFirstContractionTensor
+            unfold ricciPairingRicciSecondLeftLeviCorrectionGroup
+            simp only [extend_apply_self]
+            change
+              (∑ i, ∑ c, G⁻¹ i c *
+                (∑ b', ∑ d, G⁻¹ b' d *
+                  g.ricciAt x (b i) (b b') *
+                  g.ricciAt x (Γ (b c)) (b d))) =
+              ∑ a, ∑ b', ∑ c, ∑ d,
+                G⁻¹ a c * G⁻¹ b' d *
+                  g.ricciAt x (b a) (b b') *
+                  g.ricciAt x (Γ (b c)) (b d)
+            calc
+              (∑ i, ∑ c, G⁻¹ i c *
+                (∑ b', ∑ d, G⁻¹ b' d *
+                  g.ricciAt x (b i) (b b') *
+                  g.ricciAt x (Γ (b c)) (b d))) =
+                ∑ i, ∑ c, ∑ b', ∑ d,
+                  G⁻¹ i c * G⁻¹ b' d *
+                    g.ricciAt x (b i) (b b') *
+                    g.ricciAt x (Γ (b c)) (b d) := by
+                  refine Finset.sum_congr rfl fun i _ ↦ ?_
+                  refine Finset.sum_congr rfl fun c _ ↦ ?_
+                  rw [Finset.mul_sum]
+                  refine Finset.sum_congr rfl fun b' _ ↦ ?_
+                  rw [Finset.mul_sum]
+                  refine Finset.sum_congr rfl fun d _ ↦ ?_
+                  ring
+              _ = ∑ a, ∑ b', ∑ c, ∑ d,
+                  G⁻¹ a c * G⁻¹ b' d *
+                    g.ricciAt x (b a) (b b') *
+                    g.ricciAt x (Γ (b c)) (b d) := by
+                  refine Finset.sum_congr rfl fun a _ ↦ ?_
+                  rw [Finset.sum_comm]
+  have hSecondLeft :
+      (∑ i, H₂ x (Γ (b i)) (sharp i)) =
+        ricciPairingRicciFirstRightLeviCorrectionGroup g x v := by
+    calc
+      (∑ i, H₂ x (Γ (b i)) (sharp i)) =
+          ∑ i, ∑ d, G⁻¹ i d * H₂ x (Γ (b i)) (b d) := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            rw [hsharp i]
+            exact tensor2_sum_right
+              (h := H₂)
+              (tensor2AddRight_ricciPairingInvSecondContractionTensor
+                (g := g) x)
+              (tensor2SMulRight_ricciPairingInvSecondContractionTensor
+                (g := g) x)
+              x (Γ (b i)) (fun d ↦ G⁻¹ i d) b
+      _ = ricciPairingRicciFirstRightLeviCorrectionGroup g x v := by
+            unfold H₂
+            unfold ricciPairingInvSecondContractionTensor
+            unfold ricciPairingRicciFirstRightLeviCorrectionGroup
+            simp only [extend_apply_self]
+            change
+              (∑ i, ∑ d, G⁻¹ i d *
+                (∑ a, ∑ c, G⁻¹ a c *
+                  g.ricciAt x (b a) (Γ (b i)) *
+                  g.ricciAt x (b c) (b d))) =
+              ∑ a, ∑ b', ∑ c, ∑ d,
+                G⁻¹ a c * G⁻¹ b' d *
+                  g.ricciAt x (b a) (Γ (b b')) *
+                  g.ricciAt x (b c) (b d)
+            calc
+              (∑ i, ∑ d, G⁻¹ i d *
+                (∑ a, ∑ c, G⁻¹ a c *
+                  g.ricciAt x (b a) (Γ (b i)) *
+                  g.ricciAt x (b c) (b d))) =
+                ∑ i, ∑ d, ∑ a, ∑ c,
+                  G⁻¹ i d * G⁻¹ a c *
+                    g.ricciAt x (b a) (Γ (b i)) *
+                    g.ricciAt x (b c) (b d) := by
+                  refine Finset.sum_congr rfl fun i _ ↦ ?_
+                  refine Finset.sum_congr rfl fun d _ ↦ ?_
+                  rw [Finset.mul_sum]
+                  refine Finset.sum_congr rfl fun a _ ↦ ?_
+                  rw [Finset.mul_sum]
+                  refine Finset.sum_congr rfl fun c _ ↦ ?_
+                  ring
+              _ = ∑ a, ∑ b', ∑ c, ∑ d,
+                  G⁻¹ a c * G⁻¹ b' d *
+                    g.ricciAt x (b a) (Γ (b b')) *
+                    g.ricciAt x (b c) (b d) := by
+                  calc
+                    (∑ i, ∑ d, ∑ a, ∑ c,
+                      G⁻¹ i d * G⁻¹ a c *
+                        g.ricciAt x (b a) (Γ (b i)) *
+                        g.ricciAt x (b c) (b d)) =
+                        ∑ i, ∑ a, ∑ d, ∑ c,
+                          G⁻¹ i d * G⁻¹ a c *
+                            g.ricciAt x (b a) (Γ (b i)) *
+                            g.ricciAt x (b c) (b d) := by
+                          refine Finset.sum_congr rfl fun i _ ↦ ?_
+                          rw [Finset.sum_comm]
+                    _ = ∑ a, ∑ i, ∑ d, ∑ c,
+                          G⁻¹ i d * G⁻¹ a c *
+                            g.ricciAt x (b a) (Γ (b i)) *
+                            g.ricciAt x (b c) (b d) := by
+                          rw [Finset.sum_comm]
+                    _ = ∑ a, ∑ i, ∑ c, ∑ d,
+                          G⁻¹ i d * G⁻¹ a c *
+                            g.ricciAt x (b a) (Γ (b i)) *
+                            g.ricciAt x (b c) (b d) := by
+                          refine Finset.sum_congr rfl fun a _ ↦ ?_
+                          refine Finset.sum_congr rfl fun i _ ↦ ?_
+                          rw [Finset.sum_comm]
+                    _ = ∑ a, ∑ b', ∑ c, ∑ d,
+                          G⁻¹ a c * G⁻¹ b' d *
+                            g.ricciAt x (b a) (Γ (b b')) *
+                            g.ricciAt x (b c) (b d) := by
+                          refine Finset.sum_congr rfl fun a _ ↦ ?_
+                          refine Finset.sum_congr rfl fun b' _ ↦ ?_
+                          refine Finset.sum_congr rfl fun c _ ↦ ?_
+                          refine Finset.sum_congr rfl fun d _ ↦ ?_
+                          ring
+  have hSecondRight :
+      (∑ i, H₂ x (b i) (Γ (sharp i))) =
+        ricciPairingRicciSecondRightLeviCorrectionGroup g x v := by
+    calc
+      (∑ i, H₂ x (b i) (Γ (sharp i))) =
+          ∑ i, ∑ d, G⁻¹ i d * H₂ x (b i) (Γ (b d)) := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            rw [hΓsharp i]
+            exact tensor2_sum_right
+              (h := H₂)
+              (tensor2AddRight_ricciPairingInvSecondContractionTensor
+                (g := g) x)
+              (tensor2SMulRight_ricciPairingInvSecondContractionTensor
+                (g := g) x)
+              x (b i) (fun d ↦ G⁻¹ i d) (fun d ↦ Γ (b d))
+      _ = ricciPairingRicciSecondRightLeviCorrectionGroup g x v := by
+            unfold H₂
+            unfold ricciPairingInvSecondContractionTensor
+            unfold ricciPairingRicciSecondRightLeviCorrectionGroup
+            simp only [extend_apply_self]
+            change
+              (∑ i, ∑ d, G⁻¹ i d *
+                (∑ a, ∑ c, G⁻¹ a c *
+                  g.ricciAt x (b a) (b i) *
+                  g.ricciAt x (b c) (Γ (b d)))) =
+              ∑ a, ∑ b', ∑ c, ∑ d,
+                G⁻¹ a c * G⁻¹ b' d *
+                  g.ricciAt x (b a) (b b') *
+                  g.ricciAt x (b c) (Γ (b d))
+            calc
+              (∑ i, ∑ d, G⁻¹ i d *
+                (∑ a, ∑ c, G⁻¹ a c *
+                  g.ricciAt x (b a) (b i) *
+                  g.ricciAt x (b c) (Γ (b d)))) =
+                ∑ i, ∑ d, ∑ a, ∑ c,
+                  G⁻¹ i d * G⁻¹ a c *
+                    g.ricciAt x (b a) (b i) *
+                    g.ricciAt x (b c) (Γ (b d)) := by
+                  refine Finset.sum_congr rfl fun i _ ↦ ?_
+                  refine Finset.sum_congr rfl fun d _ ↦ ?_
+                  rw [Finset.mul_sum]
+                  refine Finset.sum_congr rfl fun a _ ↦ ?_
+                  rw [Finset.mul_sum]
+                  refine Finset.sum_congr rfl fun c _ ↦ ?_
+                  ring
+              _ = ∑ a, ∑ b', ∑ c, ∑ d,
+                  G⁻¹ a c * G⁻¹ b' d *
+                    g.ricciAt x (b a) (b b') *
+                    g.ricciAt x (b c) (Γ (b d)) := by
+                  calc
+                    (∑ i, ∑ d, ∑ a, ∑ c,
+                      G⁻¹ i d * G⁻¹ a c *
+                        g.ricciAt x (b a) (b i) *
+                        g.ricciAt x (b c) (Γ (b d))) =
+                        ∑ i, ∑ a, ∑ d, ∑ c,
+                          G⁻¹ i d * G⁻¹ a c *
+                            g.ricciAt x (b a) (b i) *
+                            g.ricciAt x (b c) (Γ (b d)) := by
+                          refine Finset.sum_congr rfl fun i _ ↦ ?_
+                          rw [Finset.sum_comm]
+                    _ = ∑ a, ∑ i, ∑ d, ∑ c,
+                          G⁻¹ i d * G⁻¹ a c *
+                            g.ricciAt x (b a) (b i) *
+                            g.ricciAt x (b c) (Γ (b d)) := by
+                          rw [Finset.sum_comm]
+                    _ = ∑ a, ∑ i, ∑ c, ∑ d,
+                          G⁻¹ i d * G⁻¹ a c *
+                            g.ricciAt x (b a) (b i) *
+                            g.ricciAt x (b c) (Γ (b d)) := by
+                          refine Finset.sum_congr rfl fun a _ ↦ ?_
+                          refine Finset.sum_congr rfl fun i _ ↦ ?_
+                          rw [Finset.sum_comm]
+                    _ = ∑ a, ∑ b', ∑ c, ∑ d,
+                          G⁻¹ a c * G⁻¹ b' d *
+                            g.ricciAt x (b a) (b b') *
+                            g.ricciAt x (b c) (Γ (b d)) := by
+                          refine Finset.sum_congr rfl fun a _ ↦ ?_
+                          refine Finset.sum_congr rfl fun b' _ ↦ ?_
+                          refine Finset.sum_congr rfl fun c _ ↦ ?_
+                          refine Finset.sum_congr rfl fun d _ ↦ ?_
+                          ring
+  have hInvFirst :
+      ricciPairingInvFirstLeviCorrectionGroup g x v =
+        ricciPairingRicciFirstLeftLeviCorrectionGroup g x v
+          + ricciPairingRicciSecondLeftLeviCorrectionGroup g x v := by
+    unfold ricciPairingInvFirstLeviCorrectionGroup
+    simp [H₁, b, sharp, Γ, hFirstLeft, hFirstRight]
+  have hInvSecond :
+      ricciPairingInvSecondLeviCorrectionGroup g x v =
+        ricciPairingRicciFirstRightLeviCorrectionGroup g x v
+          + ricciPairingRicciSecondRightLeviCorrectionGroup g x v := by
+    unfold ricciPairingInvSecondLeviCorrectionGroup
+    simp [H₂, b, sharp, Γ, hSecondLeft, hSecondRight]
+  have hInv :=
+    pairing_gram_inv_deriv_groups_eq_leviCivita_corrections
+      (g := g) x v
+  have hFirst :
+      ricciPairingGramInvFirstDerivGroup g x v =
+        -(ricciPairingRicciFirstLeftLeviCorrectionGroup g x v
+          + ricciPairingRicciSecondLeftLeviCorrectionGroup g x v) := by
+    rw [hInv.1, hInvFirst]
+  have hSecond :
+      ricciPairingGramInvSecondDerivGroup g x v =
+        -(ricciPairingRicciFirstRightLeviCorrectionGroup g x v
+          + ricciPairingRicciSecondRightLeviCorrectionGroup g x v) := by
+    rw [hInv.2, hInvSecond]
+  unfold ricciPairingRicciFirstLeviCorrectionGroup
+  unfold ricciPairingRicciSecondLeviCorrectionGroup
+  rw [hFirst, hSecond]
+  ring
+
+private theorem gramMatrix_inv_at_base_symm
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    [FiniteDimensional ℝ (TM x)]
+    (i j : Fin (Module.finrank ℝ (TM x))) :
+    (gramMatrix g x x)⁻¹ i j = (gramMatrix g x x)⁻¹ j i := by
+  classical
+  let b := Module.finBasis ℝ (TM x)
+  let G : Matrix (Fin (Module.finrank ℝ (TM x)))
+      (Fin (Module.finrank ℝ (TM x))) ℝ := gramMatrix g x x
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun k ↦ metricDualVectorAt g x (b.coord k)
+  have hsharp : ∀ k, sharp k = ∑ l, G⁻¹ k l • b l := by
+    intro k
+    simpa [sharp, b, G] using
+      metricDualVectorAt_finBasis_coord_eq_sum_gram_inv (g := g) (x := x) k
+  have hcoord : ∀ k l, b.coord l (sharp k) = G⁻¹ k l := by
+    intro k l
+    rw [hsharp k]
+    calc
+      b.coord l (∑ m, G⁻¹ k m • b m) =
+          ∑ m, G⁻¹ k m * b.coord l (b m) := by
+          have hmap := map_sum (b.coord l)
+            (fun m ↦ G⁻¹ k m • b m) Finset.univ
+          simpa using hmap
+      _ = G⁻¹ k l := by
+          rw [Finset.sum_eq_single l]
+          · simp
+          · intro m _ hm
+            simp [Module.Basis.coord_apply, hm]
+          · intro hnot
+            exact False.elim (hnot (Finset.mem_univ l))
+  calc
+    (gramMatrix g x x)⁻¹ i j = G⁻¹ i j := rfl
+    _ = b.coord j (sharp i) := (hcoord i j).symm
+    _ = b.coord i (sharp j) := by
+          simpa [b, sharp] using
+            metricDualVectorAt_coord_symm (g := g) (x := x) j i
+    _ = G⁻¹ j i := hcoord j i
+    _ = (gramMatrix g x x)⁻¹ j i := rfl
+
+set_option maxHeartbeats 5000000 in
+theorem ricciPairingRicciFirstCovariantGroup_eq_covRicciRicciPairingAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) :
+    ricciPairingRicciFirstCovariantGroup g x v =
+      covRicciRicciPairingAt g x v := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let G : Matrix (Fin (Module.finrank ℝ (TM x)))
+      (Fin (Module.finrank ℝ (TM x))) ℝ := gramMatrix g x x
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hsharp : ∀ i, sharp i = ∑ j, G⁻¹ i j • b j := by
+    intro i
+    simpa [sharp, b, G] using
+      metricDualVectorAt_finBasis_coord_eq_sum_gram_inv (g := g) (x := x) i
+  have hslot : ∀ j i,
+      covTensor2DerivAt g (ricciVariationField g) x v (sharp j) (sharp i) =
+        ∑ a, ∑ b',
+          G⁻¹ j a * G⁻¹ i b' *
+            closedCovRicciDerivAt g x v (b a) (b b') := by
+    intro j i
+    calc
+      covTensor2DerivAt g (ricciVariationField g) x v (sharp j) (sharp i) =
+          ∑ a, G⁻¹ j a *
+            covTensor2DerivAt g (ricciVariationField g) x v (b a) (sharp i) := by
+            rw [hsharp j]
+            exact covTensor2DerivAt_sum_left
+              (g := g) (h := ricciVariationField g) (x := x)
+              (covTensor2ExtDifferentiableAt_ricciVariationField_canonical g x)
+              (tensor2AddLeft_ricciVariationField g)
+              (tensor2SMulLeft_ricciVariationField g)
+              v (sharp i) (fun a ↦ G⁻¹ j a) b
+      _ = ∑ a, G⁻¹ j a *
+            (∑ b', G⁻¹ i b' *
+              covTensor2DerivAt g (ricciVariationField g) x v (b a) (b b')) := by
+            refine Finset.sum_congr rfl fun a _ ↦ ?_
+            rw [hsharp i]
+            rw [covTensor2DerivAt_sum_right
+              (g := g) (h := ricciVariationField g) (x := x)
+              (covTensor2ExtDifferentiableAt_ricciVariationField_canonical g x)
+              (tensor2AddRight_ricciVariationField g)
+              (tensor2SMulRight_ricciVariationField g)
+              v (b a) (fun b' ↦ G⁻¹ i b') b]
+      _ = ∑ a, ∑ b',
+            G⁻¹ j a * G⁻¹ i b' *
+              closedCovRicciDerivAt g x v (b a) (b b') := by
+            refine Finset.sum_congr rfl fun a _ ↦ ?_
+            rw [Finset.mul_sum]
+            refine Finset.sum_congr rfl fun b' _ ↦ ?_
+            rw [covTensor2DerivAt_ricciVariationField_eq_closedCovRicciDerivAt
+              (g := g) (x := x)
+              (closedRicciDerivativeExpansionAt_canonical g x)
+              v (b a) (b b')]
+            ring
+  have hPair :
+      covRicciRicciPairingAt g x v =
+        ∑ a, ∑ b', ∑ c, ∑ d,
+          G⁻¹ a c * G⁻¹ b' d *
+            closedCovRicciDerivAt g x v (b a) (b b') *
+            g.ricciAt x (b c) (b d) := by
+    calc
+      covRicciRicciPairingAt g x v =
+          ∑ j, ∑ i,
+            covTensor2DerivAt g (ricciVariationField g) x v (sharp j) (sharp i) *
+              g.ricciAt x (b i) (b j) := by
+            unfold covRicciRicciPairingAt
+            simp [b, sharp]
+      _ = ∑ j, ∑ i,
+            (∑ a, ∑ b',
+              G⁻¹ j a * G⁻¹ i b' *
+                closedCovRicciDerivAt g x v (b a) (b b')) *
+              g.ricciAt x (b i) (b j) := by
+            refine Finset.sum_congr rfl fun j _ ↦ ?_
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            rw [hslot j i]
+      _ = ∑ j, ∑ i, ∑ a, ∑ b',
+            G⁻¹ j a * G⁻¹ i b' *
+              closedCovRicciDerivAt g x v (b a) (b b') *
+            g.ricciAt x (b i) (b j) := by
+            refine Finset.sum_congr rfl fun j _ ↦ ?_
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            rw [Finset.sum_mul]
+            refine Finset.sum_congr rfl fun a _ ↦ ?_
+            rw [Finset.sum_mul]
+      _ = ∑ a, ∑ b', ∑ c, ∑ d,
+            G⁻¹ a c * G⁻¹ b' d *
+              closedCovRicciDerivAt g x v (b a) (b b') *
+              g.ricciAt x (b c) (b d) := by
+            calc
+              (∑ j, ∑ i, ∑ a, ∑ b',
+                G⁻¹ j a * G⁻¹ i b' *
+                  closedCovRicciDerivAt g x v (b a) (b b') *
+                  g.ricciAt x (b i) (b j)) =
+                  ∑ j, ∑ a, ∑ i, ∑ b',
+                    G⁻¹ j a * G⁻¹ i b' *
+                      closedCovRicciDerivAt g x v (b a) (b b') *
+                      g.ricciAt x (b i) (b j) := by
+                    refine Finset.sum_congr rfl fun j _ ↦ ?_
+                    rw [Finset.sum_comm]
+              _ = ∑ a, ∑ j, ∑ i, ∑ b',
+                    G⁻¹ j a * G⁻¹ i b' *
+                      closedCovRicciDerivAt g x v (b a) (b b') *
+                      g.ricciAt x (b i) (b j) := by
+                    rw [Finset.sum_comm]
+              _ = ∑ a, ∑ j, ∑ b', ∑ i,
+                    G⁻¹ j a * G⁻¹ i b' *
+                      closedCovRicciDerivAt g x v (b a) (b b') *
+                      g.ricciAt x (b i) (b j) := by
+                    refine Finset.sum_congr rfl fun a _ ↦ ?_
+                    refine Finset.sum_congr rfl fun j _ ↦ ?_
+                    rw [Finset.sum_comm]
+              _ = ∑ a, ∑ b', ∑ j, ∑ i,
+                    G⁻¹ j a * G⁻¹ i b' *
+                      closedCovRicciDerivAt g x v (b a) (b b') *
+                      g.ricciAt x (b i) (b j) := by
+                    refine Finset.sum_congr rfl fun a _ ↦ ?_
+                    rw [Finset.sum_comm]
+              _ = ∑ a, ∑ b', ∑ c, ∑ d,
+                    G⁻¹ a c * G⁻¹ b' d *
+                      closedCovRicciDerivAt g x v (b a) (b b') *
+                      g.ricciAt x (b c) (b d) := by
+                    refine Finset.sum_congr rfl fun a _ ↦ ?_
+                    refine Finset.sum_congr rfl fun b' _ ↦ ?_
+                    refine Finset.sum_congr rfl fun c _ ↦ ?_
+                    refine Finset.sum_congr rfl fun d _ ↦ ?_
+                    rw [gramMatrix_inv_at_base_symm (g := g) (x := x) c a]
+                    rw [gramMatrix_inv_at_base_symm (g := g) (x := x) d b']
+                    rw [g.ricciAt_symm x (b d) (b c)]
+  calc
+    ricciPairingRicciFirstCovariantGroup g x v =
+        ∑ a, ∑ b', ∑ c, ∑ d,
+          G⁻¹ a c * G⁻¹ b' d *
+            closedCovRicciDerivAt g x v (b a) (b b') *
+            g.ricciAt x (b c) (b d) := by
+          unfold ricciPairingRicciFirstCovariantGroup
+          rfl
+    _ = covRicciRicciPairingAt g x v := hPair.symm
+
+set_option maxHeartbeats 5000000 in
+theorem ricciPairingRicciSecondCovariantGroup_eq_covRicciRicciPairingAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) :
+    ricciPairingRicciSecondCovariantGroup g x v =
+      covRicciRicciPairingAt g x v := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let G : Matrix (Fin (Module.finrank ℝ (TM x)))
+      (Fin (Module.finrank ℝ (TM x))) ℝ := gramMatrix g x x
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hsharp : ∀ i, sharp i = ∑ j, G⁻¹ i j • b j := by
+    intro i
+    simpa [sharp, b, G] using
+      metricDualVectorAt_finBasis_coord_eq_sum_gram_inv (g := g) (x := x) i
+  have hslot : ∀ j i,
+      covTensor2DerivAt g (ricciVariationField g) x v (sharp j) (sharp i) =
+        ∑ c, ∑ d,
+          G⁻¹ j c * G⁻¹ i d *
+            closedCovRicciDerivAt g x v (b c) (b d) := by
+    intro j i
+    calc
+      covTensor2DerivAt g (ricciVariationField g) x v (sharp j) (sharp i) =
+          ∑ c, G⁻¹ j c *
+            covTensor2DerivAt g (ricciVariationField g) x v (b c) (sharp i) := by
+            rw [hsharp j]
+            exact covTensor2DerivAt_sum_left
+              (g := g) (h := ricciVariationField g) (x := x)
+              (covTensor2ExtDifferentiableAt_ricciVariationField_canonical g x)
+              (tensor2AddLeft_ricciVariationField g)
+              (tensor2SMulLeft_ricciVariationField g)
+              v (sharp i) (fun c ↦ G⁻¹ j c) b
+      _ = ∑ c, G⁻¹ j c *
+            (∑ d, G⁻¹ i d *
+              covTensor2DerivAt g (ricciVariationField g) x v (b c) (b d)) := by
+            refine Finset.sum_congr rfl fun c _ ↦ ?_
+            rw [hsharp i]
+            rw [covTensor2DerivAt_sum_right
+              (g := g) (h := ricciVariationField g) (x := x)
+              (covTensor2ExtDifferentiableAt_ricciVariationField_canonical g x)
+              (tensor2AddRight_ricciVariationField g)
+              (tensor2SMulRight_ricciVariationField g)
+              v (b c) (fun d ↦ G⁻¹ i d) b]
+      _ = ∑ c, ∑ d,
+            G⁻¹ j c * G⁻¹ i d *
+              closedCovRicciDerivAt g x v (b c) (b d) := by
+            refine Finset.sum_congr rfl fun c _ ↦ ?_
+            rw [Finset.mul_sum]
+            refine Finset.sum_congr rfl fun d _ ↦ ?_
+            rw [covTensor2DerivAt_ricciVariationField_eq_closedCovRicciDerivAt
+              (g := g) (x := x)
+              (closedRicciDerivativeExpansionAt_canonical g x)
+              v (b c) (b d)]
+            ring
+  have hPair :
+      covRicciRicciPairingAt g x v =
+        ∑ a, ∑ b', ∑ c, ∑ d,
+          G⁻¹ a c * G⁻¹ b' d *
+            g.ricciAt x (b a) (b b') *
+            closedCovRicciDerivAt g x v (b c) (b d) := by
+    calc
+      covRicciRicciPairingAt g x v =
+          ∑ a, ∑ b',
+            covTensor2DerivAt g (ricciVariationField g) x v (sharp a) (sharp b') *
+              g.ricciAt x (b b') (b a) := by
+            unfold covRicciRicciPairingAt
+            simp [b, sharp]
+      _ = ∑ a, ∑ b',
+            (∑ c, ∑ d,
+              G⁻¹ a c * G⁻¹ b' d *
+                closedCovRicciDerivAt g x v (b c) (b d)) *
+              g.ricciAt x (b b') (b a) := by
+            refine Finset.sum_congr rfl fun a _ ↦ ?_
+            refine Finset.sum_congr rfl fun b' _ ↦ ?_
+            rw [hslot a b']
+      _ = ∑ a, ∑ b', ∑ c, ∑ d,
+            G⁻¹ a c * G⁻¹ b' d *
+            g.ricciAt x (b a) (b b') *
+            closedCovRicciDerivAt g x v (b c) (b d) := by
+            refine Finset.sum_congr rfl fun a _ ↦ ?_
+            refine Finset.sum_congr rfl fun b' _ ↦ ?_
+            rw [Finset.sum_mul]
+            refine Finset.sum_congr rfl fun c _ ↦ ?_
+            rw [Finset.sum_mul]
+            refine Finset.sum_congr rfl fun d _ ↦ ?_
+            rw [g.ricciAt_symm x (b b') (b a)]
+            ring
+  calc
+    ricciPairingRicciSecondCovariantGroup g x v =
+        ∑ a, ∑ b', ∑ c, ∑ d,
+          G⁻¹ a c * G⁻¹ b' d *
+            g.ricciAt x (b a) (b b') *
+            closedCovRicciDerivAt g x v (b c) (b d) := by
+          unfold ricciPairingRicciSecondCovariantGroup
+          rfl
+    _ = covRicciRicciPairingAt g x v := hPair.symm
+
+theorem ricciPairingCovariantGroups_eq_two_covRicciRicciPairingAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) :
+    ricciPairingRicciFirstCovariantGroup g x v
+      + ricciPairingRicciSecondCovariantGroup g x v =
+        2 * covRicciRicciPairingAt g x v := by
+  rw [ricciPairingRicciFirstCovariantGroup_eq_covRicciRicciPairingAt
+      (g := g) x v,
+    ricciPairingRicciSecondCovariantGroup_eq_covRicciRicciPairingAt
+      (g := g) x v]
+  ring
+
+set_option maxHeartbeats 5000000 in
+/-- Differentiating the Ricci/Ricci pairing gives twice `⟨∇ Ric, Ric⟩`. -/
+theorem extDerivFun_ricciPairing_eq_two_covRicciRicciPairingAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) :
+    extDerivFun
+        (fun y : M ↦ metricVariationRicciPairingAt g (ricciVariationField g) y)
+        x v =
+      2 * covRicciRicciPairingAt g x v := by
+  classical
+  have hPairEvent :
+      (fun y : M ↦ metricVariationRicciPairingAt g (ricciVariationField g) y)
+        =ᶠ[nhds x]
+      fun y : M ↦ ricciPairingGramRHS g x y := by
+    filter_upwards [gramMatrix_eventually_isUnit (g := g) x] with y hG
+    exact metricVariationRicciPairingAt_ricci_eq_sum_gram_inv
+      (g := g) x y hG
+  have hAnchored :
+      extDerivFun
+          (fun y : M ↦ metricVariationRicciPairingAt g (ricciVariationField g) y)
+          x v =
+        extDerivFun (fun y : M ↦ ricciPairingGramRHS g x y) x v := by
+    exact congrArg (fun L : TM x →L[ℝ] ℝ ↦ L v)
+      (CovariantDerivative.extDerivFun_congr hPairEvent)
+  have hProd := pairing_gram_product_rule_expand (g := g) x v
+  have hRic :=
+    pairing_ricci_deriv_groups_eq_covariant_plus_leviCivita_corrections
+      (g := g) x v
+  have hCancel :=
+    pairing_gram_inv_deriv_groups_cancel_ricci_leviCivita_corrections
+      (g := g) x v
+  have hCov :=
+    ricciPairingCovariantGroups_eq_two_covRicciRicciPairingAt
+      (g := g) x v
+  calc
+    extDerivFun
+        (fun y : M ↦ metricVariationRicciPairingAt g (ricciVariationField g) y)
+        x v =
+        extDerivFun (fun y : M ↦ ricciPairingGramRHS g x y) x v := hAnchored
+    _ = ricciPairingGramProductRuleRHS g x v := hProd
+    _ =
+        ricciPairingRicciFirstCovariantGroup g x v
+          + ricciPairingRicciSecondCovariantGroup g x v := by
+          unfold ricciPairingGramProductRuleRHS
+          rw [hRic.1, hRic.2]
+          linarith only [hCancel]
+    _ = 2 * covRicciRicciPairingAt g x v := hCov
+
 theorem eventually_tensorDivergenceOneFormAt_ricciVariationField_eq_closedRicciDivergenceTraceAt_canonical
     (g : ClosedSmoothRiemannianMetric n M) (x : M) :
     ∀ᶠ y in nhds x, ∀ w : TM y,
