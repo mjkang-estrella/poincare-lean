@@ -15154,6 +15154,49 @@ noncomputable def covTensor2SecondDerivCurvatureActionAt
       (CovariantDerivative.curvatureOp g.leviCivita
         (extend E u) (extend E v) (extend E q) x)
 
+theorem tensor2_connection_slot_antisymm_corrections_eq_curvatureAction
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (hAddL : Tensor2AddLeft h) (hSMulL : Tensor2SMulLeft h)
+    (hAddR : Tensor2AddRight h) (hSMulR : Tensor2SMulRight h)
+    (u v p q : TM x) :
+    - (extDerivFun
+          (fun y : M ↦
+            h y
+              (g.leviCivita (extend E p) y (extend E v y))
+              (extend E q y)) x u
+        - extDerivFun
+          (fun y : M ↦
+            h y
+              (g.leviCivita (extend E p) y (extend E u y))
+              (extend E q y)) x v)
+      - (extDerivFun
+          (fun y : M ↦
+            h y (extend E p y)
+              (g.leviCivita (extend E q) y (extend E v y))) x u
+        - extDerivFun
+          (fun y : M ↦
+            h y (extend E p y)
+              (g.leviCivita (extend E q) y (extend E u y))) x v)
+      - (covTensor2DerivAt g h x v
+          (g.leviCivita (extend E p) x u) q
+        - covTensor2DerivAt g h x u
+          (g.leviCivita (extend E p) x v) q)
+      - (covTensor2DerivAt g h x v p
+          (g.leviCivita (extend E q) x u)
+        - covTensor2DerivAt g h x u p
+          (g.leviCivita (extend E q) x v))
+      =
+    covTensor2SecondDerivCurvatureActionAt g h x u v p q := by
+  rw [tensor2_moving_left_connection_antisymm_extDerivFun_eq
+      (g := g) (h := h) (x := x) hDiff hAddL hSMulL u v p q]
+  rw [tensor2_moving_right_connection_antisymm_extDerivFun_eq
+      (g := g) (h := h) (x := x) hDiff hAddR hSMulR u v p q]
+  unfold covTensor2SecondDerivCurvatureActionAt
+  ring
+
 /--
 The curvature-action obstruction is antisymmetric in the two differentiated
 directions for any bilinear `(0,2)` tensor field.
