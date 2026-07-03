@@ -434,6 +434,165 @@ theorem hessian_nonneg_of_isLocalMin {f : E → ℝ} (hf : ContDiff ℝ 2 f)
   have := secondDeriv_nonneg_of_isLocalMin hd1 hd2 hcont hgmin
   simpa [hg'', hℓ0] using this
 
+/--
+Local multivariate second-derivative test.  This is the pointwise form needed
+after passing a manifold statement to a single chart.
+-/
+theorem fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt {f : E → ℝ}
+    {x₀ : E} (hf : ContDiffAt ℝ 2 f x₀) (hmin : IsLocalMin f x₀) (v : E) :
+    0 ≤ fderiv ℝ (fderiv ℝ f) x₀ v v := by
+  set ℓ : ℝ → E := fun t ↦ x₀ + t • v with hℓ
+  have hℓ0 : ℓ 0 = x₀ := by simp [hℓ]
+  have hℓC2 : ContDiffAt ℝ 2 ℓ 0 := by
+    simpa [hℓ] using (contDiffAt_const.add (contDiffAt_id.smul contDiffAt_const))
+  have hgC2 : ContDiffAt ℝ 2 (fun t : ℝ ↦ f (ℓ t)) 0 := by
+    have hfℓ0 : ContDiffAt ℝ 2 f (ℓ 0) := by simpa [hℓ0] using hf
+    exact hfℓ0.comp 0 hℓC2
+  have hdfC1 : ContDiffAt ℝ 1 (fderiv ℝ f) x₀ :=
+    hf.fderiv_right (m := 1) (by norm_num)
+  have hddfCont : ContinuousAt (fderiv ℝ (fderiv ℝ f)) x₀ :=
+    hdfC1.continuousAt_fderiv (by norm_num)
+  have hℓd : ∀ t : ℝ, HasDerivAt ℓ v t := by
+    intro t
+    simpa [hℓ] using ((hasDerivAt_id t).smul_const v).const_add x₀
+  have hℓcontAt : ∀ t : ℝ, ContinuousAt ℓ t := fun t ↦ (hℓd t).continuousAt
+  set g : ℝ → ℝ := fun t ↦ f (ℓ t) with hg
+  set g' : ℝ → ℝ := fun t ↦ fderiv ℝ f (ℓ t) v with hg'
+  set g'' : ℝ → ℝ := fun t ↦ fderiv ℝ (fderiv ℝ f) (ℓ t) v v with hg''
+  have hg''cont : ContinuousAt g'' 0 := by
+    have hℓcont : ContinuousAt ℓ 0 := hℓC2.continuousAt
+    have hddfCont0 : ContinuousAt (fderiv ℝ (fderiv ℝ f)) (ℓ 0) := by
+      simpa [hℓ0] using hddfCont
+    simpa [g''] using
+      ((hddfCont0.comp' hℓcont).clm_apply continuousAt_const).clm_apply continuousAt_const
+  by_contra hneg
+  push_neg at hneg
+  have hneg' : g'' 0 < 0 := by
+    simpa [g'', hℓ0] using hneg
+  obtain ⟨δneg, hδneg, hballneg⟩ := Metric.eventually_nhds_iff.mp
+    (hg''cont.eventually_lt continuousAt_const hneg')
+  obtain ⟨U, hUmem, hUC2⟩ := hgC2.contDiffOn (m := 2) le_rfl (by intro h; cases h)
+  obtain ⟨δU, hδU, hδUsub⟩ := Metric.mem_nhds_iff.mp hUmem
+  obtain ⟨Sf, hSfmem, hSfC2⟩ := hf.contDiffOn (m := 2) le_rfl (by intro h; cases h)
+  obtain ⟨ρf, hρf, hρfsub⟩ := Metric.mem_nhds_iff.mp hSfmem
+  obtain ⟨Sdf, hSdfmem, hSdfC1⟩ :=
+    hdfC1.contDiffOn (m := 1) le_rfl (by intro h; cases h)
+  obtain ⟨ρdf, hρdf, hρdfsub⟩ := Metric.mem_nhds_iff.mp hSdfmem
+  set scale : ℝ := ‖v‖ + 1 with hscale_def
+  have hscale : 0 < scale := by positivity
+  set δ := min δneg (min δU (min (ρf / scale) (ρdf / scale))) with hδdef
+  have hδ : 0 < δ := by positivity
+  have hδ_le_neg : δ ≤ δneg := by simp [δ]
+  have hδ_le_U : δ ≤ δU := by simp [δ]
+  have hδ_le_f : δ ≤ ρf / scale := by simp [δ]
+  have hδ_le_df : δ ≤ ρdf / scale := by simp [δ]
+  have hline_mem_ball {ρ : ℝ} (hρ : 0 < ρ) {t : ℝ}
+      (hδρ : δ ≤ ρ / scale) (ht : |t| < δ) :
+      ℓ t ∈ Metric.ball x₀ ρ := by
+    rw [Metric.mem_ball, hℓ, dist_eq_norm, add_sub_cancel_left,
+      norm_smul, Real.norm_eq_abs]
+    have hnorm : 0 ≤ ‖v‖ := norm_nonneg v
+    have hfrac : ‖v‖ / scale < 1 := by
+      rw [div_lt_one hscale]
+      simp [scale]
+    calc
+      |t| * ‖v‖ ≤ δ * ‖v‖ :=
+        mul_le_mul_of_nonneg_right (le_of_lt ht) hnorm
+      _ ≤ (ρ / scale) * ‖v‖ :=
+        mul_le_mul_of_nonneg_right hδρ hnorm
+      _ = ρ * (‖v‖ / scale) := by ring
+      _ < ρ * 1 := mul_lt_mul_of_pos_left hfrac hρ
+      _ = ρ := by ring
+  have hf_at : ∀ t : ℝ, |t| < δ → ContDiffAt ℝ 2 f (ℓ t) := by
+    intro t ht
+    exact (hSfC2.mono fun y hy ↦ hρfsub hy).contDiffAt
+      (Metric.isOpen_ball.mem_nhds (hline_mem_ball hρf hδ_le_f ht))
+  have hdf_at : ∀ t : ℝ, |t| < δ → ContDiffAt ℝ 1 (fderiv ℝ f) (ℓ t) := by
+    intro t ht
+    exact (hSdfC1.mono fun y hy ↦ hρdfsub hy).contDiffAt
+      (Metric.isOpen_ball.mem_nhds (hline_mem_ball hρdf hδ_le_df ht))
+  have hg_at : ∀ t ∈ Metric.ball (0 : ℝ) δ, ContDiffAt ℝ 2 g t := by
+    intro t ht
+    exact (hUC2.mono fun y hy ↦ hδUsub (Metric.ball_subset_ball hδ_le_U hy)).contDiffAt
+      (Metric.isOpen_ball.mem_nhds ht)
+  have hg'0 : g' 0 = 0 := by
+    have hmin_line : IsLocalMin g 0 := by
+      have hm : IsLocalMin f (ℓ 0) := by simpa [hℓ0] using hmin
+      simpa [g] using hm.comp_continuous hℓC2.continuousAt
+    have hdg0 : HasDerivAt g (g' 0) 0 := by
+      have hfdiff0 : DifferentiableAt ℝ f (ℓ 0) := by
+        simpa [hℓ0] using hf.differentiableAt (by norm_num)
+      exact hfdiff0.hasFDerivAt.comp_hasDerivAt 0 (hℓd 0)
+    exact hmin_line.hasDerivAt_eq_zero hdg0
+  have hanti : StrictAntiOn g' (Set.Ioo (-δ) δ) := by
+    apply strictAntiOn_of_deriv_neg (convex_Ioo _ _)
+    · intro t ht
+      have htabs : |t| < δ := abs_lt.mpr ⟨by linarith [ht.1], ht.2⟩
+      have hcont :
+          ContinuousAt (fun s : ℝ ↦ fderiv ℝ f (ℓ s) v) t :=
+        ((hdf_at t htabs).continuousAt.comp' (hℓcontAt t)).clm_apply continuousAt_const
+      simpa [g'] using hcont.continuousWithinAt
+    · intro t ht
+      rw [interior_Ioo] at ht
+      have htabs : |t| < δ := abs_lt.mpr ⟨by linarith [ht.1], ht.2⟩
+      have hdg' : HasDerivAt g' (g'' t) t := by
+        have h1 : HasDerivAt (fun s ↦ fderiv ℝ f (ℓ s))
+            (fderiv ℝ (fderiv ℝ f) (ℓ t) v) t :=
+          (((hdf_at t htabs).differentiableAt
+              (by norm_num)).hasFDerivAt).comp_hasDerivAt t (hℓd t)
+        have h2 := (ContinuousLinearMap.apply ℝ ℝ v).hasFDerivAt.comp_hasDerivAt
+          t h1
+        simpa [g', g'', ContinuousLinearMap.apply_apply] using h2
+      rw [hdg'.deriv]
+      exact hballneg (by
+        rw [Real.dist_eq, sub_zero]
+        exact lt_of_lt_of_le (abs_lt.mpr ⟨by linarith [ht.1], ht.2⟩) hδ_le_neg)
+  have hganti : StrictAntiOn g (Set.Ico 0 δ) := by
+    apply strictAntiOn_of_deriv_neg (convex_Ico _ _)
+    · intro t ht
+      have htabs : |t| < δ := abs_lt.mpr ⟨by linarith [hδ, ht.1], ht.2⟩
+      have hcont : ContinuousAt (fun s : ℝ ↦ f (ℓ s)) t :=
+        (hf_at t htabs).continuousAt.comp' (hℓcontAt t)
+      simpa [g] using hcont.continuousWithinAt
+    · intro t ht
+      rw [interior_Ico] at ht
+      have htabs : |t| < δ := abs_lt.mpr ⟨by linarith [hδ, ht.1], ht.2⟩
+      have hdg : HasDerivAt g (g' t) t := by
+        exact (((hf_at t htabs).differentiableAt (by norm_num)).hasFDerivAt).comp_hasDerivAt
+          t (hℓd t)
+      rw [hdg.deriv]
+      have h0mem : (0 : ℝ) ∈ Set.Ioo (-δ) δ := by constructor <;> linarith
+      have hsmem : t ∈ Set.Ioo (-δ) δ := ⟨by linarith [hδ, ht.1], ht.2⟩
+      have := hanti h0mem hsmem ht.1
+      rwa [hg'0] at this
+  obtain ⟨ε, hε, hloc⟩ := Metric.eventually_nhds_iff.mp hmin
+  set t := min (δ / 2) (ε / (2 * ‖v‖ + 2)) with htdef
+  have htpos : 0 < t := by positivity
+  have htδ : t < δ := lt_of_le_of_lt (min_le_left _ _) (by linarith)
+  have hℓdist : dist (ℓ t) x₀ < ε := by
+    rw [hℓ, dist_eq_norm, add_sub_cancel_left]
+    have hdenpos : 0 < 2 * ‖v‖ + 2 := by positivity
+    have htε : t ≤ ε / (2 * ‖v‖ + 2) := min_le_right _ _
+    calc
+      ‖t • v‖ = ‖t‖ * ‖v‖ := norm_smul t v
+      _ = t * ‖v‖ := by rw [Real.norm_of_nonneg (le_of_lt htpos)]
+      _ ≤ (ε / (2 * ‖v‖ + 2)) * ‖v‖ := by
+        exact mul_le_mul_of_nonneg_right htε (norm_nonneg v)
+      _ < ε := by
+        have hvle : ‖v‖ < 2 * ‖v‖ + 2 := by nlinarith [norm_nonneg v]
+        have hfrac : ‖v‖ / (2 * ‖v‖ + 2) < 1 := by
+          rw [div_lt_one hdenpos]
+          exact hvle
+        have hεnonneg : 0 ≤ ε := le_of_lt hε
+        calc
+          (ε / (2 * ‖v‖ + 2)) * ‖v‖ = ε * (‖v‖ / (2 * ‖v‖ + 2)) := by ring
+          _ < ε * 1 := mul_lt_mul_of_pos_left hfrac hε
+          _ = ε := by ring
+  have hlt : g t < g 0 :=
+    hganti (left_mem_Ico.mpr hδ) ⟨le_of_lt htpos, htδ⟩ htpos
+  have hle : f (ℓ 0) ≤ f (ℓ t) := by simpa [hℓ0] using hloc hℓdist
+  exact absurd (by simpa [g, hℓ0] using hle) (not_le.mpr (by simpa [g, hℓ0] using hlt))
+
 end RicciFlow
 
 namespace RicciFlow
@@ -549,6 +708,12 @@ theorem secondDeriv_nonneg_of_isLocalMin_eq :
 /-- Theorem contract for `hessian_nonneg_of_isLocalMin`. -/
 theorem hessian_nonneg_of_isLocalMin_eq :
     @RicciFlow.hessian_nonneg_of_isLocalMin = @RicciFlow.hessian_nonneg_of_isLocalMin :=
+  rfl
+
+/-- Theorem contract for `fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt`. -/
+theorem fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt_eq :
+    @RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt =
+      @RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt :=
   rfl
 
 /-- Theorem contract for `exists_first_zero`. -/
