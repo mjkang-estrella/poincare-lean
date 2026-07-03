@@ -136,6 +136,28 @@ theorem gradient_add (g : ClosedSmoothRiemannianMetric n M)
   funext x
   exact g.gradientAt_add (hf x) (hh x)
 
+theorem gradientAt_mul (g : ClosedSmoothRiemannianMetric n M)
+    {f h : M → ℝ} {x : M}
+    (hf : MDifferentiableAt I 𝓘(ℝ) f x)
+    (hh : MDifferentiableAt I 𝓘(ℝ) h x) :
+    g.gradientAt (f * h) x =
+      f x • g.gradientAt h x + h x • g.gradientAt f x := by
+  apply sub_eq_zero.mp
+  refine LeviCivitaExistence.metric_nondegenerate g x _ ?_
+  intro w
+  have hmul := CovariantDerivative.extDerivFun_mul
+    (p := f) (q := h) (x := x) hf hh w
+  simp [map_sub, map_add, map_smul, inner_gradientAt, hmul, smul_eq_mul]
+  ring
+
+theorem gradient_mul (g : ClosedSmoothRiemannianMetric n M)
+    {f h : M → ℝ}
+    (hf : ∀ x : M, MDifferentiableAt I 𝓘(ℝ) f x)
+    (hh : ∀ x : M, MDifferentiableAt I 𝓘(ℝ) h x) :
+    g.gradient (f * h) = f • g.gradient h + h • g.gradient f := by
+  funext x
+  exact g.gradientAt_mul (hf x) (hh x)
+
 theorem gradientAt_const_smul (g : ClosedSmoothRiemannianMetric n M)
     {f : M → ℝ} {x : M} (c : ℝ)
     (hf : MDifferentiableAt I 𝓘(ℝ) f x) :
