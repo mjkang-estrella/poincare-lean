@@ -2454,6 +2454,90 @@ theorem sum_coord_inner_eq_inner
     _ = g.inner x u v := by
           rw [← hrepr]
 
+/-- Contracting arbitrary-basis coordinates against the metric reconstructs
+the metric pairing. -/
+theorem sum_basis_coord_inner_eq_inner
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    [FiniteDimensional ℝ (TM x)]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι ℝ (TM x)) (u v : TM x) :
+    (∑ i, b.coord i u * g.inner x (b i) v) = g.inner x u v := by
+  have hrepr : u = ∑ i, b.coord i u • b i := (b.sum_repr u).symm
+  calc
+    (∑ i, b.coord i u * g.inner x (b i) v) =
+        ∑ i, g.inner x (b.coord i u • b i) v := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          simp [smul_eq_mul]
+    _ = g.inner x (∑ i, b.coord i u • b i) v := by
+          have hmap :=
+            congrArg (fun L : TM x →L[ℝ] ℝ ↦ L v)
+              (map_sum (g.inner x) (fun i ↦ b.coord i u • b i) Finset.univ)
+          simpa using hmap.symm
+    _ = g.inner x u v := by
+          rw [← hrepr]
+
+/-- The Ricci norm squared written in an arbitrary basis and its raised dual
+coframe. -/
+theorem ricciNormSqAt_eq_basis_sum
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) [FiniteDimensional ℝ (TM x)]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι ℝ (TM x)) :
+    g.ricciNormSqAt x =
+      ∑ j, ∑ i,
+        g.ricciAt x (metricDualVectorAt g x (b.coord j))
+          (metricDualVectorAt g x (b.coord i)) *
+          g.ricciAt x (b i) (b j) := by
+  let sharp : ι → TM x := fun i ↦ metricDualVectorAt g x (b.coord i)
+  rw [g.ricciNormSqAt_eq_trace]
+  rw [LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]
+  change ∑ j, ((LinearMap.toMatrix b b)
+      (g.ricciEndoAt x ∘ₗ g.ricciEndoAt x)).diag j =
+    ∑ j, ∑ i,
+        g.ricciAt x (sharp j) (sharp i) * g.ricciAt x (b i) (b j)
+  symm
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+  change (∑ i, g.ricciAt x (sharp j) (sharp i) *
+      g.ricciAt x (b i) (b j)) =
+    b.coord j ((g.ricciEndoAt x ∘ₗ g.ricciEndoAt x) (b j))
+  rw [LinearMap.comp_apply, coord_eq_inner_metricDualVectorAt_of_basis]
+  have hcoord : ∀ i,
+      g.ricciAt x (sharp j) (sharp i) =
+        b.coord i (g.ricciEndoAt x (sharp j)) := by
+    intro i
+    rw [coord_eq_inner_metricDualVectorAt_of_basis]
+    rw [g.inner_ricciEndoAt]
+  have hslot : ∀ i,
+      g.ricciAt x (b i) (b j) =
+        g.inner x (b i) (g.ricciEndoAt x (b j)) := by
+    intro i
+    calc
+      g.ricciAt x (b i) (b j) =
+          g.ricciAt x (b j) (b i) := g.ricciAt_symm x (b i) (b j)
+      _ = g.inner x (g.ricciEndoAt x (b j)) (b i) := by
+            rw [g.inner_ricciEndoAt]
+      _ = g.inner x (b i) (g.ricciEndoAt x (b j)) := g.inner_symm x _ _
+  calc
+    (∑ i, g.ricciAt x (sharp j) (sharp i) *
+        g.ricciAt x (b i) (b j)) =
+        ∑ i, b.coord i (g.ricciEndoAt x (sharp j)) *
+          g.inner x (b i) (g.ricciEndoAt x (b j)) := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          rw [hcoord i, hslot i]
+    _ = g.inner x (g.ricciEndoAt x (sharp j))
+        (g.ricciEndoAt x (b j)) := by
+          exact sum_basis_coord_inner_eq_inner g x b _ _
+    _ = g.ricciAt x (sharp j) (g.ricciEndoAt x (b j)) := by
+          rw [g.inner_ricciEndoAt]
+    _ = g.ricciAt x (g.ricciEndoAt x (b j)) (sharp j) :=
+          g.ricciAt_symm x (sharp j) (g.ricciEndoAt x (b j))
+    _ = g.inner x (g.ricciEndoAt x (g.ricciEndoAt x (b j))) (sharp j) := by
+          rw [g.inner_ricciEndoAt]
+    _ = g.inner x ((g.ricciEndoAt x ∘ₗ g.ricciEndoAt x) (b j)) (sharp j) := by
+          rfl
+
 /-- The Ricci/Ricci metric-variation pairing is the squared Ricci norm. -/
 theorem metricVariationRicciPairingAt_ricci
     (g : ClosedSmoothRiemannianMetric n M)
@@ -3516,6 +3600,110 @@ private theorem tensor2_gramFrame_expansion_right
           refine Finset.sum_congr rfl fun i _hi ↦ ?_
           rw [gramFrameBasis_coord_eq_sum_inv_inner (g := g) (x := x) (y := y) hG]
           simp [B]
+
+set_option maxHeartbeats 5000000 in
+/--
+Anchored Gram-frame expansion of the Ricci/Ricci metric pairing.  Both raised
+Ricci slots are expanded in the Gram-frame coframe seeded at `x`.
+-/
+theorem metricVariationRicciPairingAt_ricci_eq_sum_gram_inv
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x y : M) (hG : IsUnit (gramMatrix g x y)) :
+    metricVariationRicciPairingAt g (ricciVariationField g) y =
+      ∑ a, ∑ b, ∑ c, ∑ d,
+        (gramMatrix g x y)⁻¹ a c *
+          (gramMatrix g x y)⁻¹ b d *
+          g.ricciAt y (gramFrame x y a) (gramFrame x y b) *
+          g.ricciAt y (gramFrame x y c) (gramFrame x y d) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let B := gramFrameBasis g x y hG
+  let G : Matrix (Fin (Module.finrank ℝ (TM x)))
+      (Fin (Module.finrank ℝ (TM x))) ℝ := gramMatrix g x y
+  let e : Fin (Module.finrank ℝ (TM x)) → TM y := gramFrame x y
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM y :=
+    fun i ↦ metricDualVectorAt g y (B.coord i)
+  have hsharp : ∀ i, sharp i = ∑ j, G⁻¹ i j • e j := by
+    intro i
+    simpa [sharp, B, G, e] using
+      metricDualVectorAt_gramFrameBasis_coord_eq_sum_inv
+        (g := g) (x := x) (y := y) hG i
+  have hRicSharp : ∀ b a,
+      g.ricciAt y (sharp b) (sharp a) =
+        ∑ c, ∑ d,
+          G⁻¹ a c * G⁻¹ b d *
+            g.ricciAt y (e c) (e d) := by
+    intro b a
+    calc
+      g.ricciAt y (sharp b) (sharp a) =
+          ricciVariationField g y (sharp b) (sharp a) := rfl
+      _ = ricciVariationField g y (∑ d, G⁻¹ b d • e d)
+            (∑ c, G⁻¹ a c • e c) := by
+            rw [hsharp b, hsharp a]
+      _ = ∑ c, G⁻¹ a c *
+            ricciVariationField g y (∑ d, G⁻¹ b d • e d) (e c) := by
+            exact tensor2_sum_right
+              (h := ricciVariationField g)
+              (tensor2AddRight_ricciVariationField g)
+              (tensor2SMulRight_ricciVariationField g)
+              y (∑ d, G⁻¹ b d • e d) (fun c ↦ G⁻¹ a c) e
+      _ = ∑ c, G⁻¹ a c *
+            (∑ d, G⁻¹ b d * ricciVariationField g y (e d) (e c)) := by
+            refine Finset.sum_congr rfl fun c _ ↦ ?_
+            rw [tensor2_sum_left
+              (h := ricciVariationField g)
+              (tensor2AddLeft_ricciVariationField g)
+              (tensor2SMulLeft_ricciVariationField g)
+              y (fun d ↦ G⁻¹ b d) e (e c)]
+      _ = ∑ c, ∑ d,
+          G⁻¹ a c * G⁻¹ b d *
+            g.ricciAt y (e c) (e d) := by
+            simp [ricciVariationField, g.ricciAt_symm y, Finset.mul_sum,
+              mul_comm, mul_left_comm, mul_assoc]
+  have hbase :
+      metricVariationRicciPairingAt g (ricciVariationField g) y =
+        ∑ b, ∑ a, g.ricciAt y (sharp b) (sharp a) *
+          g.ricciAt y (e a) (e b) := by
+    calc
+      metricVariationRicciPairingAt g (ricciVariationField g) y =
+          g.ricciNormSqAt y := metricVariationRicciPairingAt_ricci g y
+      _ = ∑ b, ∑ a,
+            g.ricciAt y (metricDualVectorAt g y (B.coord b))
+              (metricDualVectorAt g y (B.coord a)) *
+              g.ricciAt y (B a) (B b) := by
+            simpa using ricciNormSqAt_eq_basis_sum (g := g) (x := y) B
+      _ = ∑ b, ∑ a, g.ricciAt y (sharp b) (sharp a) *
+          g.ricciAt y (e a) (e b) := by
+            simp [sharp, e, B]
+  calc
+    metricVariationRicciPairingAt g (ricciVariationField g) y =
+        ∑ b, ∑ a, g.ricciAt y (sharp b) (sharp a) *
+          g.ricciAt y (e a) (e b) := hbase
+    _ = ∑ b, ∑ a, (∑ c, ∑ d,
+          G⁻¹ a c * G⁻¹ b d * g.ricciAt y (e c) (e d)) *
+          g.ricciAt y (e a) (e b) := by
+          refine Finset.sum_congr rfl fun b _ ↦ ?_
+          refine Finset.sum_congr rfl fun a _ ↦ ?_
+          rw [hRicSharp b a]
+    _ = ∑ a, ∑ b, ∑ c, ∑ d,
+        G⁻¹ a c * G⁻¹ b d *
+          g.ricciAt y (e a) (e b) *
+          g.ricciAt y (e c) (e d) := by
+          rw [Finset.sum_comm]
+          refine Finset.sum_congr rfl fun a _ ↦ ?_
+          refine Finset.sum_congr rfl fun b _ ↦ ?_
+          simp [Finset.sum_mul, Finset.mul_sum, mul_comm, mul_left_comm,
+            mul_assoc]
+    _ = ∑ a, ∑ b, ∑ c, ∑ d,
+        (gramMatrix g x y)⁻¹ a c *
+          (gramMatrix g x y)⁻¹ b d *
+          g.ricciAt y (gramFrame x y a) (gramFrame x y b) *
+          g.ricciAt y (gramFrame x y c) (gramFrame x y d) := by
+          simp [G, e]
 
 theorem tensor2_moving_left_eventually_eq_sum_gram_inv
     {h : ∀ y : M, TM y → TM y → ℝ}
