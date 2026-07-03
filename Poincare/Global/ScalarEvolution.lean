@@ -433,6 +433,188 @@ theorem satisfiesHamiltonScalarEvolutionAt_of_ricciFlow
     hNearFlow hreg hgt hRaise hDiv hCon hTraceGrad hNegScalarGrad
     hScalarDiff hScalarGrad hRicDiff hRicDivDiff hBianchi
 
+/-
+Remaining hypotheses in `satisfiesHamiltonScalarEvolutionAt_of_ricciFlow'`.
+
+* `hNearFlow`: neighborhood Ricci-flow equation plus extension regularity; used
+  to substitute `timeDerivAt = -2 Ric` in the algebraic tail.
+* `hNearRegExt`: neighborhood metric-flow regularity and differentiated metric
+  entries in canonical extension slots; supplies `hreg` and the `hExt` witness
+  for both Hessian-trace `δΓ` discharge wrappers.
+* `hgt`: pointwise metric time differentiability for every nearby fiber; gives
+  the actual bilinear witnesses for trace-entry regularity and supplies the
+  base-point `TimeDifferentiableAt` hypothesis.
+* `hRaise`: derivative of the metric-raise map at `x`; this is the remaining
+  time derivative witness needed by the scalar-variation formula.
+* `hBridge`: the scalar-entry derivative bridge for `δΓ`; this is the
+  contraction-side canonical wrapper input.
+* `hSecond`, `hTimeCovDiff`: second and first covariant differentiability of
+  `timeDerivAt`; these discharge the divergence-side Hessian trace.
+* `hEntries`: `C²` trace-entry regularity for `timeDerivAt`; this discharges
+  the contraction-side Hessian derivative and the trace-gradient witness.
+* `hScalar₂`: scalar curvature is `C²` at every point of the time-slice; this
+  supplies scalar differentiability, the scalar gradient witness, and the
+  canonical contracted-Bianchi scalar-extension witnesses.
+* `hRicDivDiff`: differentiability of the Ricci divergence one-form at `x`;
+  together with canonical Ricci tensor differentiability it supplies the
+  `-2 Ric` double-divergence linearity predicate.
+-/
+theorem satisfiesHamiltonScalarEvolutionAt_of_ricciFlow'
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hNearFlow :
+      ∀ᶠ y in nhds x,
+        IsClosedRicciFlowSolutionAt gt t₀ y ∧
+        ClosedRicciFlowExtensionRegularAt gt t₀ y)
+    (hNearRegExt :
+      ∀ᶠ y in nhds x,
+        MetricFlowRegularAt gt t₀ y ∧
+        (∀ a b c : TM y,
+          HasDerivAt
+            (fun t ↦
+              extDerivFun
+                (fun z : M ↦ (gt t).inner z (extend E b z) (extend E c z))
+                y a)
+            (extDerivFun
+              (fun z : M ↦ timeDerivAt gt t₀ z (extend E b z) (extend E c z))
+              y a) t₀))
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hBridge : DeltaGammaEntryDerivativeBridgeAt gt t₀ x)
+    (hSecond :
+      CovTensor2DerivExtDifferentiableAt
+        (gt t₀) (timeDerivAt gt t₀) x)
+    (hTimeCovDiff :
+      ∀ y : M, CovTensor2ExtDifferentiableAt (timeDerivAt gt t₀) y)
+    (hEntries : TimeVariationTraceEntriesExtContMDiffAt gt t₀ x 2)
+    (hScalar₂ : ∀ y : M,
+      ContMDiffAt I 𝓘(ℝ) 2 (fun z : M ↦ (gt t₀).scalarAt z) y)
+    (hRicDivDiff : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦
+          tensorDivergenceOneFormAt (gt t₀) (ricciVariationField (gt t₀)) y
+            (extend E w y)) x) :
+    SatisfiesHamiltonScalarEvolutionAt gt t₀ x := by
+  have hreg : MetricFlowRegularAt gt t₀ x :=
+    (hNearRegExt.self_of_nhds).1
+  have hExt :
+      ∀ a b c : TM x,
+        HasDerivAt
+          (fun t ↦
+            extDerivFun
+              (fun y : M ↦ (gt t).inner y (extend E b y) (extend E c y))
+              x a)
+          (extDerivFun
+            (fun y : M ↦ timeDerivAt gt t₀ y (extend E b y) (extend E c y))
+            x a) t₀ :=
+    (hNearRegExt.self_of_nhds).2
+  have hNearCon :
+      ∀ᶠ y in nhds x,
+        MetricFlowRegularAt gt t₀ y ∧
+        CovTensor2ExtDifferentiableAt (timeDerivAt gt t₀) y ∧
+        (∀ a b c : TM y,
+          HasDerivAt
+            (fun t ↦
+              extDerivFun
+                (fun z : M ↦ (gt t).inner z (extend E b z) (extend E c z))
+                y a)
+            (extDerivFun
+              (fun z : M ↦ timeDerivAt gt t₀ z (extend E b z) (extend E c z))
+              y a) t₀) := by
+    filter_upwards [hNearRegExt] with y hy
+    exact ⟨hy.1, hTimeCovDiff y, hy.2⟩
+  have hDiv : DeltaGammaDivergenceTraceAssemblyAt gt t₀ x :=
+    deltaGammaDivergenceTraceAssemblyAt_of_hessianAssembly
+      (deltaGammaDivergenceTraceHessianAssemblyAt_of_covTensor2Regular
+        (gt := gt) (t₀ := t₀) (x := x)
+        hreg hgt hExt hNearRegExt hBridge hSecond hTimeCovDiff
+        (by
+          let g : ClosedSmoothRiemannianMetric n M := gt t₀
+          let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+          let f : M → ℝ := fun y ↦ traceMetricVariationAt g H y
+          have hTrace₂ :
+              ContMDiffAt I 𝓘(ℝ) 2 f x := by
+            simpa [g, H, f] using
+              traceMetricVariationAt_contMDiffAt_two_of_entries
+                (g := gt t₀) (h := timeDerivAt gt t₀) (x := x)
+                hEntries
+                (fun y ↦ timeDerivBilinAt gt t₀ y (hgt y))
+                (by intro y p q; rfl)
+          simpa [g, H, f] using (gt t₀).mdifferentiableAt_gradient hTrace₂))
+  have hConHessian :
+      DeltaGammaContractionTraceHessianAssemblyAt gt t₀ x :=
+    deltaGammaContractionTraceHessianAssemblyAt_of_traceHessianDerivative
+      (deltaGammaContractionTraceHessianDerivativeAt_of_entryBridge_entries_contMDiffAt
+        (gt := gt) (t₀ := t₀) (x := x)
+        hBridge hreg hgt hExt hNearCon hEntries
+        (by
+          let g : ClosedSmoothRiemannianMetric n M := gt t₀
+          let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+          let f : M → ℝ := fun y ↦ traceMetricVariationAt g H y
+          have hTrace₂ :
+              ContMDiffAt I 𝓘(ℝ) 2 f x := by
+            simpa [g, H, f] using
+              traceMetricVariationAt_contMDiffAt_two_of_entries
+                (g := gt t₀) (h := timeDerivAt gt t₀) (x := x)
+                hEntries
+                (fun y ↦ timeDerivBilinAt gt t₀ y (hgt y))
+                (by intro y p q; rfl)
+          simpa [g, H, f] using (gt t₀).mdifferentiableAt_gradient hTrace₂))
+  have hCon : DeltaGammaContractionTraceAssemblyAt gt t₀ x :=
+    deltaGammaContractionTraceAssemblyAt_of_hessianAssembly hConHessian
+  have hTraceGrad :
+      let g : ClosedSmoothRiemannianMetric n M := gt t₀
+      let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+      let f : M → ℝ := fun y ↦ traceMetricVariationAt g H y
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x := by
+    let g : ClosedSmoothRiemannianMetric n M := gt t₀
+    let H : ∀ y : M, TM y → TM y → ℝ := timeDerivAt gt t₀
+    let f : M → ℝ := fun y ↦ traceMetricVariationAt g H y
+    have hTrace₂ : ContMDiffAt I 𝓘(ℝ) 2 f x := by
+      simpa [g, H, f] using
+        traceMetricVariationAt_contMDiffAt_two_of_entries
+          (g := gt t₀) (h := timeDerivAt gt t₀) (x := x)
+          hEntries
+          (fun y ↦ timeDerivBilinAt gt t₀ y (hgt y))
+          (by intro y p q; rfl)
+    simpa [g, H, f] using (gt t₀).mdifferentiableAt_gradient hTrace₂
+  have hNegScalarGrad :
+      let g : ClosedSmoothRiemannianMetric n M := gt t₀
+      let f : M → ℝ := fun y ↦ (-2 : ℝ) * g.scalarAt y
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x := by
+    let g : ClosedSmoothRiemannianMetric n M := gt t₀
+    let f : M → ℝ := fun y ↦ g.scalarAt y
+    have hNeg₂ :
+        ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ (-2 : ℝ) * g.scalarAt y) x := by
+      have hconst :
+          ContMDiffAt I 𝓘(ℝ) 2 (fun _ : M ↦ (-2 : ℝ)) x :=
+        contMDiffAt_const
+      simpa [g, f, Pi.smul_apply, smul_eq_mul] using
+        hconst.smul (hScalar₂ x)
+    simpa [g] using (gt t₀).mdifferentiableAt_gradient hNeg₂
+  have hScalarDiff : ∀ y : M,
+      MDifferentiableAt I 𝓘(ℝ) (fun z : M ↦ (gt t₀).scalarAt z) y :=
+    fun y ↦ (hScalar₂ y).mdifferentiableAt two_ne_zero
+  have hScalarExt₂ : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦
+          extDerivFun (fun z : M ↦ (gt t₀).scalarAt z) y (extend E w y)) x := by
+    intro w
+    have hW : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (extend E w)) x := by
+      simpa using (mdifferentiableAt_extend I E w)
+    exact CovariantDerivative.mdiffAt_extDerivFun_apply (hScalar₂ x) hW
+  exact
+    satisfiesHamiltonScalarEvolutionAt_of_ricciFlow
+      (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
+      hNearFlow hreg (hgt x) hRaise hDiv hCon hTraceGrad hNegScalarGrad
+      hScalarDiff (hScalar₂ x) hScalarExt₂
+      (fun y ↦
+        covTensor2ExtDifferentiableAt_ricciVariationField_canonical
+          (g := gt t₀) (x := y))
+      hRicDivDiff
+
 /--
 Hamilton scalar evolution from the Hessian-trace form of the two `δΓ`
 assemblies.
