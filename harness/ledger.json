@@ -6,7 +6,7 @@
     "workers": "codex exec, gpt-5.5, reasoning=xhigh",
     "prime_directive": "Never fabricate completion. The gate (compile + no sorry/axiom + non-vacuity + frozen statement) is the only judge.",
     "structural_finding": "The single-chart model (Poincare/ModelLaplacian.lean etc., ~710 thms) is at its structural ceiling: it cannot state global objects (closed 3-manifold, S^3, homeomorphism, integration, Betti numbers). The whole proof requires a new manifold-level layer (tier M) built on Mathlib's smooth-manifold library, with the local model results ported as chart-level lemmas.",
-    "current_goal": "GOAL 2 substantially achieved 2026-07-01: Hamilton scalar evolution proven from exact named predicate bundle. GOAL 3 (next): discharge HamiltonScalarEvolutionPredicatesAt predicates one by one (all have model templates)."
+    "current_goal": "GOAL 2 ACHIEVED 2026-07-02: satisfiesHamiltonScalarEvolutionAt_of_ricciFlow on main, gate PASS — Hamilton dR/dt = LapR + 2|Ric|^2 for closed Ricci-flow solutions, contracted Bianchi discharged internally via the proven cyclic second Bianchi chain; hypotheses = flow + honest regularity classes + the two assembly predicates (Hessian-trace discharge forms proven). 55-task predicate campaign complete."
   },
   "tiers": {
     "L": "Local model (single chart) — finish remaining genuine local threads; the porting source",
@@ -324,6 +324,19 @@
       "difficulty": "hard",
       "title": "Predicate discharge: trace swap + slot linearity",
       "result": "DONE 2026-07-02, commit d803f146, gate PASS. covTensor2DerivAt slot-linearity, CovTensor2DerivTraceSwapAt discharged, hTraceSwap eliminated downstream, zero/static witnesses. TraceMetricVariationDerivAt blocked on SPATIAL raised-basis derivative bridge (spatial metricRaiseDerivAt analogue + Christoffel cancellation) — report filed. | GRAM ROUTE BREAKTHROUGH (predicates-12, 6 commits, gate PASS): gramMatrix + inverse-entry differentiability + gramFrameBasis + trace identity traceMetricVariationAt_eq_sum_gram_inv + differentiability half + extDerivFun Gram RHS. Remaining for TraceMetricVariationDerivAt: product-rule expansion + covariant cancellation (pure algebra). | TraceMetricVariationDerivAt DISCHARGED (predicates-14, 1f494a05, gate PASS): gramMatrix_inv_extDerivFun_eq_neg_sum + gram_inv_deriv_contraction_eq_leviCivita_corrections + traceMetricVariationDerivAt_of_covTensor2ExtDifferentiableAt. 14-task siege complete. Remaining predicates: 2 divergence assemblies, ClosedContractedBianchiAt, 2 substitution predicates."
+    },
+    {
+      "id": "M3-hamilton-theorem",
+      "tier": "M3",
+      "deps": [
+        "M3-scalar-variation"
+      ],
+      "status": "done",
+      "files": [
+        "Poincare/Global/ScalarEvolution.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DONE 2026-07-02 (predicates-15..55, ~40 gated merges): satisfiesHamiltonScalarEvolutionAt_of_ricciFlow + closedContractedBianchiAt_canonical + eventually_closed_cyclic_second_bianchi + hMiddle. Axiom closures clean throughout. Includes 2 refuted false intermediates (torus counterexamples) and 1 salvaged killed-worker finish."
     }
   ]
 }
