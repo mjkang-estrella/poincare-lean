@@ -136,6 +136,28 @@ theorem gradient_add (g : ClosedSmoothRiemannianMetric n M)
   funext x
   exact g.gradientAt_add (hf x) (hh x)
 
+theorem gradientAt_mul (g : ClosedSmoothRiemannianMetric n M)
+    {f h : M → ℝ} {x : M}
+    (hf : MDifferentiableAt I 𝓘(ℝ) f x)
+    (hh : MDifferentiableAt I 𝓘(ℝ) h x) :
+    g.gradientAt (f * h) x =
+      f x • g.gradientAt h x + h x • g.gradientAt f x := by
+  apply sub_eq_zero.mp
+  refine LeviCivitaExistence.metric_nondegenerate g x _ ?_
+  intro w
+  have hmul := CovariantDerivative.extDerivFun_mul
+    (p := f) (q := h) (x := x) hf hh w
+  simp [map_sub, map_add, map_smul, inner_gradientAt, hmul, smul_eq_mul]
+  ring
+
+theorem gradient_mul (g : ClosedSmoothRiemannianMetric n M)
+    {f h : M → ℝ}
+    (hf : ∀ x : M, MDifferentiableAt I 𝓘(ℝ) f x)
+    (hh : ∀ x : M, MDifferentiableAt I 𝓘(ℝ) h x) :
+    g.gradient (f * h) = f • g.gradient h + h • g.gradient f := by
+  funext x
+  exact g.gradientAt_mul (hf x) (hh x)
+
 theorem gradientAt_const_smul (g : ClosedSmoothRiemannianMetric n M)
     {f : M → ℝ} {x : M} (c : ℝ)
     (hf : MDifferentiableAt I 𝓘(ℝ) f x) :
@@ -171,6 +193,13 @@ theorem gradient_const (g : ClosedSmoothRiemannianMetric n M)
     g.gradient (fun _ : M ↦ c) = 0 := by
   funext x
   exact g.gradientAt_const c x
+
+/-- The pointwise squared norm of the scalar-curvature gradient. -/
+noncomputable def scalarGradNormSqAt (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : ℝ :=
+  g.inner x (g.gradientAt (fun y ↦ g.scalarAt y) x)
+    (g.gradientAt (fun y ↦ g.scalarAt y) x)
 
 /--
 The metric gradient is differentiable at `x` whenever `f` is `C²` there.
@@ -490,6 +519,18 @@ theorem laplacianAt_congr_of_eventuallyEq
   unfold laplacianAt
   rw [g.hessianDualAt_congr_of_eventuallyEq hEq hgradf hgradh]
 
+/-- Leibniz rule for multiplying a vector field by a scalar function. -/
+theorem leviCivita_smul_function (g : ClosedSmoothRiemannianMetric n M)
+    {f : M → ℝ} {X : ∀ y : M, TM y} {x : M}
+    (hf : MDifferentiableAt I 𝓘(ℝ) f x)
+    (hX : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% X) x)
+    (v : TM x) :
+    g.leviCivita (f • X) x v =
+      f x • g.leviCivita X x v + extDerivFun f x v • X x := by
+  have h := g.leviCivita.isCovariantDerivativeOnUniv.leibniz hX hf
+  have hv := congrArg (fun L : TM x →L[ℝ] TM x ↦ L v) h
+  simpa [ContinuousLinearMap.smulRight_apply] using hv
+
 /--
 Additivity of the Hessian in the scalar function.
 
@@ -530,6 +571,48 @@ theorem hessianAt_const_smul (g : ClosedSmoothRiemannianMetric n M)
   unfold hessianAt
   rw [hgrad, g.leviCivita.isCovariantDerivativeOnUniv.smul_const c hgradf]
   simp [smul_eq_mul]
+
+theorem hessianAt_mul (g : ClosedSmoothRiemannianMetric n M)
+    {f h : M → ℝ} {x : M}
+    (hf : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) f y)
+    (hh : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) h y)
+    (hgradf : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x)
+    (hgradh : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient h)) x)
+    (v w : TM x) :
+    g.hessianAt (f * h) x v w =
+      f x * g.hessianAt h x v w + h x * g.hessianAt f x v w
+        + extDerivFun f x v * extDerivFun h x w
+        + extDerivFun h x v * extDerivFun f x w := by
+  have hgrad : g.gradient (f * h) = f • g.gradient h + h • g.gradient f :=
+    g.gradient_mul hf hh
+  have hfgradh :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (f • g.gradient h)) x :=
+    (hf x).smul_section hgradh
+  have hhgradf :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (h • g.gradient f)) x :=
+    (hh x).smul_section hgradf
+  unfold hessianAt
+  rw [hgrad, g.leviCivita.isCovariantDerivativeOnUniv.add hfgradh hhgradf]
+  simp only [ContinuousLinearMap.add_apply]
+  rw [g.leviCivita_smul_function (hf x) hgradh v,
+    g.leviCivita_smul_function (hh x) hgradf v]
+  simp [map_add, map_smul, gradient, inner_gradientAt, smul_eq_mul]
+  ring_nf
+
+theorem hessianContinuousAt_mul (g : ClosedSmoothRiemannianMetric n M)
+    {f h : M → ℝ} {x : M}
+    (hf : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) f y)
+    (hh : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) h y)
+    (hgradf : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x)
+    (hgradh : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient h)) x) :
+    g.hessianContinuousAt (f * h) x =
+      f x • g.hessianContinuousAt h x + h x • g.hessianContinuousAt f x
+        + (extDerivFun f x).smulRight (extDerivFun h x)
+        + (extDerivFun h x).smulRight (extDerivFun f x) := by
+  ext v w
+  rw [hessianContinuousAt_apply, g.hessianAt_mul hf hh hgradf hgradh]
+  simp [hessianContinuousAt_apply, ContinuousLinearMap.smulRight_apply,
+    smul_eq_mul]
 
 theorem hessianAt_const (g : ClosedSmoothRiemannianMetric n M)
     (c : ℝ) (x : M) (v w : TM x) :
@@ -699,6 +782,96 @@ theorem laplacianAt_const_smul' (g : ClosedSmoothRiemannianMetric n M)
   g.laplacianAt_const_smul c
     (fun y ↦ (hf y).mdifferentiableAt two_ne_zero)
     (g.mdifferentiableAt_gradient (hf x))
+
+theorem laplacianAt_mul (g : ClosedSmoothRiemannianMetric n M)
+    {f h : M → ℝ} {x : M}
+    (hf : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) f y)
+    (hh : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) h y)
+    (hgradf : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x)
+    (hgradh : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient h)) x) :
+    g.laplacianAt (f * h) x =
+      f x * g.laplacianAt h x + h x * g.laplacianAt f x
+        + 2 * g.inner x (g.gradientAt f x) (g.gradientAt h x) := by
+  letI : FiniteDimensional ℝ (TM x) := tangentFiniteDimensional x
+  letI : T2Space (TM x) := tangentT2Space x
+  let A := (LinearMap.BilinForm.toDual (g.metricBilinAt x)
+        (g.metricBilinAt_nondegenerate x)).symm.toLinearMap
+  have hcross : ∀ φ ψ : TM x →L[ℝ] ℝ,
+      LinearMap.trace ℝ (TM x)
+        (A ∘ₗ
+          (LinearMap.toContinuousLinearMap.symm.toLinearMap.comp
+            ((φ.smulRight ψ).toLinearMap))) =
+      φ ((LinearMap.BilinForm.toDual (g.metricBilinAt x)
+        (g.metricBilinAt_nondegenerate x)).symm
+          (LinearMap.toContinuousLinearMap.symm ψ)) := by
+    intro φ ψ
+    have hcomp : A ∘ₗ
+        (LinearMap.toContinuousLinearMap.symm.toLinearMap.comp
+          ((φ.smulRight ψ).toLinearMap)) =
+        LinearMap.smulRight (φ.toLinearMap)
+          ((LinearMap.BilinForm.toDual (g.metricBilinAt x)
+            (g.metricBilinAt_nondegenerate x)).symm
+            (LinearMap.toContinuousLinearMap.symm ψ)) := by
+      apply LinearMap.ext
+      intro v
+      have h1 : (φ.smulRight ψ).toLinearMap v = φ v • ψ := rfl
+      simp only [A, LinearMap.comp_apply, LinearEquiv.coe_coe, h1, map_smul,
+        LinearMap.smulRight_apply, ContinuousLinearMap.coe_coe]
+    rw [hcomp, LinearMap.trace_smulRight]
+    rfl
+  rw [g.laplacianAt_eq_trace_hessianContinuousAt (f * h) x,
+    g.laplacianAt_eq_trace_hessianContinuousAt h x,
+    g.laplacianAt_eq_trace_hessianContinuousAt f x]
+  rw [g.hessianContinuousAt_mul hf hh hgradf hgradh]
+  simp only [ContinuousLinearMap.coe_add, ContinuousLinearMap.coe_smul,
+    LinearMap.comp_add, LinearMap.comp_smul, map_add, map_smul, smul_eq_mul]
+  have hT1 := hcross (extDerivFun f x) (extDerivFun h x)
+  have hT2 := hcross (extDerivFun h x) (extDerivFun f x)
+  rw [hT1, hT2]
+  have hraise_h :
+      ((LinearMap.BilinForm.toDual (g.metricBilinAt x)
+        (g.metricBilinAt_nondegenerate x)).symm
+          (LinearMap.toContinuousLinearMap.symm (extDerivFun h x))) =
+        g.gradientAt h x := by
+    unfold gradientAt
+    rfl
+  have hraise_f :
+      ((LinearMap.BilinForm.toDual (g.metricBilinAt x)
+        (g.metricBilinAt_nondegenerate x)).symm
+          (LinearMap.toContinuousLinearMap.symm (extDerivFun f x))) =
+        g.gradientAt f x := by
+    unfold gradientAt
+    rfl
+  rw [hraise_h, hraise_f]
+  rw [← g.inner_gradientAt f x (g.gradientAt h x),
+    ← g.inner_gradientAt h x (g.gradientAt f x)]
+  rw [g.inner_symm x (g.gradientAt h x) (g.gradientAt f x)]
+  ring
+
+theorem laplacianAt_mul' (g : ClosedSmoothRiemannianMetric n M)
+    {f h : M → ℝ} {x : M}
+    (hf : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2 f y)
+    (hh : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2 h y) :
+    g.laplacianAt (f * h) x =
+      f x * g.laplacianAt h x + h x * g.laplacianAt f x
+        + 2 * g.inner x (g.gradientAt f x) (g.gradientAt h x) :=
+  g.laplacianAt_mul
+    (fun y ↦ (hf y).mdifferentiableAt two_ne_zero)
+    (fun y ↦ (hh y).mdifferentiableAt two_ne_zero)
+    (g.mdifferentiableAt_gradient (hf x))
+    (g.mdifferentiableAt_gradient (hh x))
+
+theorem laplacianAt_sq (g : ClosedSmoothRiemannianMetric n M)
+    {f : M → ℝ} {x : M}
+    (hf : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2 f y) :
+    g.laplacianAt (fun y ↦ f y ^ 2) x =
+      2 * f x * g.laplacianAt f x +
+        2 * g.inner x (g.gradientAt f x) (g.gradientAt f x) := by
+  have hfun : (fun y : M ↦ f y ^ 2) = f * f := by
+    funext y
+    simp [Pi.mul_apply, pow_two]
+  rw [hfun, g.laplacianAt_mul' hf hf]
+  ring
 
 theorem laplacianAt_const (g : ClosedSmoothRiemannianMetric n M)
     (c : ℝ) (x : M) :

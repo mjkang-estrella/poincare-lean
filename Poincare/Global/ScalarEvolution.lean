@@ -63,6 +63,49 @@ def SatisfiesHamiltonScalarEvolutionAt
           2 * (gt t₀).ricciNormSqAt x) t₀ :=
   Iff.rfl
 
+/--
+Scalar-square parabolic form following from Hamilton's scalar evolution:
+`∂ₜ(R²) = Δ(R²) - 2 |∇R|² + 4 R |Ric|²`.
+-/
+theorem hasDerivAt_scalarAt_sq_of_satisfiesHamiltonScalarEvolutionAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hHam : SatisfiesHamiltonScalarEvolutionAt gt t₀ x)
+    (hScalar₂ :
+      ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2
+        (fun z : M ↦ (gt t₀).scalarAt z) y) :
+    HasDerivAt (fun t ↦ (gt t).scalarAt x ^ 2)
+      ((gt t₀).laplacianAt (fun y ↦ (gt t₀).scalarAt y ^ 2) x
+        - 2 * (gt t₀).scalarGradNormSqAt x
+        + 4 * (gt t₀).scalarAt x * (gt t₀).ricciNormSqAt x) t₀ := by
+  have hsq_lap :=
+    (gt t₀).laplacianAt_sq
+      (f := fun y : M ↦ (gt t₀).scalarAt y) (x := x) hScalar₂
+  have hprod :
+      HasDerivAt
+        (fun t ↦ (gt t).scalarAt x * (gt t).scalarAt x)
+        (((gt t₀).laplacianAt (fun y ↦ (gt t₀).scalarAt y) x
+            + 2 * (gt t₀).ricciNormSqAt x) * (gt t₀).scalarAt x
+          + (gt t₀).scalarAt x *
+            ((gt t₀).laplacianAt (fun y ↦ (gt t₀).scalarAt y) x
+              + 2 * (gt t₀).ricciNormSqAt x)) t₀ := by
+    simpa [SatisfiesHamiltonScalarEvolutionAt] using hHam.mul hHam
+  have htarget :
+      (gt t₀).laplacianAt (fun y ↦ (gt t₀).scalarAt y ^ 2) x
+          - 2 * (gt t₀).scalarGradNormSqAt x
+          + 4 * (gt t₀).scalarAt x * (gt t₀).ricciNormSqAt x =
+        (((gt t₀).laplacianAt (fun y ↦ (gt t₀).scalarAt y) x
+            + 2 * (gt t₀).ricciNormSqAt x) * (gt t₀).scalarAt x
+          + (gt t₀).scalarAt x *
+            ((gt t₀).laplacianAt (fun y ↦ (gt t₀).scalarAt y) x
+              + 2 * (gt t₀).ricciNormSqAt x)) := by
+    rw [hsq_lap]
+    simp [ClosedSmoothRiemannianMetric.scalarGradNormSqAt]
+    ring
+  rw [htarget]
+  simpa [pow_two] using hprod
+
 namespace ClosedSmoothRiemannianMetric
 
 section StaticFlat
