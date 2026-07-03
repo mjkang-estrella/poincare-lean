@@ -10820,6 +10820,335 @@ theorem covTensor2ExtDifferentiableAt_ricciVariationField_canonical
           (g := g) (u := p) (w := q) (y := y)).symm
   exact hTraceDiff.congr_of_eventuallyEq heq
 
+omit [T2Space M] in
+private theorem extDerivFun_mul_four_at {f₁ f₂ f₃ f₄ : M → ℝ} {x : M}
+    (hf₁ : MDifferentiableAt I 𝓘(ℝ) f₁ x)
+    (hf₂ : MDifferentiableAt I 𝓘(ℝ) f₂ x)
+    (hf₃ : MDifferentiableAt I 𝓘(ℝ) f₃ x)
+    (hf₄ : MDifferentiableAt I 𝓘(ℝ) f₄ x)
+    (v : TM x) :
+    extDerivFun (fun y : M ↦ f₁ y * f₂ y * f₃ y * f₄ y) x v =
+      extDerivFun f₁ x v * f₂ x * f₃ x * f₄ x
+        + f₁ x * extDerivFun f₂ x v * f₃ x * f₄ x
+        + f₁ x * f₂ x * extDerivFun f₃ x v * f₄ x
+        + f₁ x * f₂ x * f₃ x * extDerivFun f₄ x v := by
+  let f₁₂ : M → ℝ := fun y ↦ f₁ y * f₂ y
+  let f₁₂₃ : M → ℝ := fun y ↦ f₁ y * f₂ y * f₃ y
+  have hf₁₂ : MDifferentiableAt I 𝓘(ℝ) f₁₂ x := by
+    exact hf₁.mul hf₂
+  have hf₁₂₃ : MDifferentiableAt I 𝓘(ℝ) f₁₂₃ x := by
+    exact hf₁₂.mul hf₃
+  have h₁₂ := CovariantDerivative.extDerivFun_mul
+    (p := f₁) (q := f₂) (x := x) hf₁ hf₂ v
+  have h₁₂₃ := CovariantDerivative.extDerivFun_mul
+    (p := f₁₂) (q := f₃) (x := x) hf₁₂ hf₃ v
+  have h₁₂₃₄ := CovariantDerivative.extDerivFun_mul
+    (p := f₁₂₃) (q := f₄) (x := x) hf₁₂₃ hf₄ v
+  calc
+    extDerivFun (fun y : M ↦ f₁ y * f₂ y * f₃ y * f₄ y) x v =
+        f₁₂₃ x * extDerivFun f₄ x v + extDerivFun f₁₂₃ x v * f₄ x := by
+          simpa [f₁₂₃] using h₁₂₃₄
+    _ =
+        extDerivFun f₁ x v * f₂ x * f₃ x * f₄ x
+          + f₁ x * extDerivFun f₂ x v * f₃ x * f₄ x
+          + f₁ x * f₂ x * extDerivFun f₃ x v * f₄ x
+          + f₁ x * f₂ x * f₃ x * extDerivFun f₄ x v := by
+          have h₁₂' :
+              extDerivFun f₁₂ x v =
+                f₁ x * extDerivFun f₂ x v + extDerivFun f₁ x v * f₂ x := by
+            simpa [f₁₂] using h₁₂
+          have h₁₂₃' :
+              extDerivFun f₁₂₃ x v =
+                f₁₂ x * extDerivFun f₃ x v + extDerivFun f₁₂ x v * f₃ x := by
+            simpa [f₁₂₃, f₁₂] using h₁₂₃
+          rw [h₁₂₃', h₁₂']
+          simp [f₁₂, f₁₂₃]
+          ring
+
+omit [T2Space M] in
+private theorem extDerivFun_sum_four_at
+    {ι₁ ι₂ ι₃ ι₄ : Type} [Fintype ι₁] [DecidableEq ι₁]
+    [Fintype ι₂] [DecidableEq ι₂] [Fintype ι₃] [DecidableEq ι₃]
+    [Fintype ι₄] [DecidableEq ι₄]
+    (f : ι₁ → ι₂ → ι₃ → ι₄ → M → ℝ) {x : M}
+    (hf : ∀ a b c d, MDifferentiableAt I 𝓘(ℝ) (f a b c d) x)
+    (v : TM x) :
+    extDerivFun (fun y : M ↦ ∑ a, ∑ b, ∑ c, ∑ d, f a b c d y) x v =
+      ∑ a, ∑ b, ∑ c, ∑ d, extDerivFun (f a b c d) x v := by
+  classical
+  have hd : ∀ a b c,
+      MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ ∑ d, f a b c d y) x := by
+    intro a b c
+    exact (MDifferentiableAt.sum
+      (t := (Finset.univ : Finset ι₄)) (fun d _ ↦ hf a b c d)).congr_of_eventuallyEq
+      (Filter.Eventually.of_forall fun y ↦ by simp)
+  have hc : ∀ a b,
+      MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ ∑ c, ∑ d, f a b c d y) x := by
+    intro a b
+    exact (MDifferentiableAt.sum
+      (t := (Finset.univ : Finset ι₃)) (fun c _ ↦ hd a b c)).congr_of_eventuallyEq
+      (Filter.Eventually.of_forall fun y ↦ by simp)
+  have hb : ∀ a,
+      MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ ∑ b, ∑ c, ∑ d, f a b c d y) x := by
+    intro a
+    exact (MDifferentiableAt.sum
+      (t := (Finset.univ : Finset ι₂)) (fun b _ ↦ hc a b)).congr_of_eventuallyEq
+      (Filter.Eventually.of_forall fun y ↦ by simp)
+  have ha := extDerivFun_sum_at
+    (n := n) (M := M)
+    (s := (Finset.univ : Finset ι₁))
+    (f := fun a y ↦ ∑ b, ∑ c, ∑ d, f a b c d y)
+    (x := x) (fun a _ ↦ hb a) v
+  have hfun₁ :
+      (fun y : M ↦ ∑ a, ∑ b, ∑ c, ∑ d, f a b c d y) =
+        (∑ a, fun y : M ↦ ∑ b, ∑ c, ∑ d, f a b c d y) := by
+    funext y
+    simp
+  rw [hfun₁]
+  rw [ha]
+  refine Finset.sum_congr rfl fun a _ ↦ ?_
+  have hb' := extDerivFun_sum_at
+    (n := n) (M := M)
+    (s := (Finset.univ : Finset ι₂))
+    (f := fun b y ↦ ∑ c, ∑ d, f a b c d y)
+    (x := x) (fun b _ ↦ hc a b) v
+  have hfun₂ :
+      (fun y : M ↦ ∑ b, ∑ c, ∑ d, f a b c d y) =
+        (∑ b, fun y : M ↦ ∑ c, ∑ d, f a b c d y) := by
+    funext y
+    simp
+  rw [hfun₂]
+  rw [hb']
+  refine Finset.sum_congr rfl fun b _ ↦ ?_
+  have hc' := extDerivFun_sum_at
+    (n := n) (M := M)
+    (s := (Finset.univ : Finset ι₃))
+    (f := fun c y ↦ ∑ d, f a b c d y)
+    (x := x) (fun c _ ↦ hd a b c) v
+  have hfun₃ :
+      (fun y : M ↦ ∑ c, ∑ d, f a b c d y) =
+        (∑ c, fun y : M ↦ ∑ d, f a b c d y) := by
+    funext y
+    simp
+  rw [hfun₃]
+  rw [hc']
+  refine Finset.sum_congr rfl fun c _ ↦ ?_
+  have hd' := extDerivFun_sum_at
+    (n := n) (M := M)
+    (s := (Finset.univ : Finset ι₄))
+    (f := fun d ↦ f a b c d)
+    (x := x) (fun d _ ↦ hf a b c d) v
+  have hfun₄ :
+      (fun y : M ↦ ∑ d, f a b c d y) =
+        (∑ d, f a b c d) := by
+    funext y
+    simp
+  rw [hfun₄]
+  exact hd'
+
+/-- The anchored four-index Gram expression for the Ricci/Ricci pairing. -/
+noncomputable def ricciPairingGramRHS
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x y : M) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    (gramMatrix g x y)⁻¹ a c *
+      (gramMatrix g x y)⁻¹ b d *
+      g.ricciAt y (gramFrame x y a) (gramFrame x y b) *
+      g.ricciAt y (gramFrame x y c) (gramFrame x y d)
+
+/-- Product-rule group differentiating the first inverse-Gram factor. -/
+noncomputable def ricciPairingGramInvFirstDerivGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ a c) x v *
+      (gramMatrix g x x)⁻¹ b d *
+      g.ricciAt x (gramFrame x x a) (gramFrame x x b) *
+      g.ricciAt x (gramFrame x x c) (gramFrame x x d)
+
+/-- Product-rule group differentiating the second inverse-Gram factor. -/
+noncomputable def ricciPairingGramInvSecondDerivGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ b d) x v *
+      g.ricciAt x (gramFrame x x a) (gramFrame x x b) *
+      g.ricciAt x (gramFrame x x c) (gramFrame x x d)
+
+/-- Product-rule group differentiating the first Ricci entry. -/
+noncomputable def ricciPairingRicciFirstDerivGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      (gramMatrix g x x)⁻¹ b d *
+      extDerivFun
+        (fun y : M ↦ g.ricciAt y (gramFrame x y a) (gramFrame x y b)) x v *
+      g.ricciAt x (gramFrame x x c) (gramFrame x x d)
+
+/-- Product-rule group differentiating the second Ricci entry. -/
+noncomputable def ricciPairingRicciSecondDerivGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      (gramMatrix g x x)⁻¹ b d *
+      g.ricciAt x (gramFrame x x a) (gramFrame x x b) *
+      extDerivFun
+        (fun y : M ↦ g.ricciAt y (gramFrame x y c) (gramFrame x y d)) x v
+
+/-- The four product-rule groups for the anchored Ricci/Ricci pairing. -/
+noncomputable def ricciPairingGramProductRuleRHS
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) : ℝ :=
+  ricciPairingGramInvFirstDerivGroup g x v
+    + ricciPairingGramInvSecondDerivGroup g x v
+    + ricciPairingRicciFirstDerivGroup g x v
+    + ricciPairingRicciSecondDerivGroup g x v
+
+set_option maxHeartbeats 5000000 in
+/--
+Product-rule expansion of the anchored four-factor Ricci/Ricci Gram sum.
+This is pure finite-sum calculus: each summand has two inverse-Gram factors
+and two Ricci-entry factors.
+-/
+theorem pairing_gram_product_rule_expand
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) :
+    extDerivFun (fun y : M ↦ ricciPairingGramRHS g x y) x v =
+      ricciPairingGramProductRuleRHS g x v := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let term :
+      Fin (Module.finrank ℝ (TM x)) →
+      Fin (Module.finrank ℝ (TM x)) →
+      Fin (Module.finrank ℝ (TM x)) →
+      Fin (Module.finrank ℝ (TM x)) → M → ℝ :=
+    fun a b' c d y ↦
+      (gramMatrix g x y)⁻¹ a c *
+        (gramMatrix g x y)⁻¹ b' d *
+        g.ricciAt y (gramFrame x y a) (gramFrame x y b') *
+        g.ricciAt y (gramFrame x y c) (gramFrame x y d)
+  have hRicDiff : ∀ a b',
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ g.ricciAt y (gramFrame x y a) (gramFrame x y b')) x := by
+    intro a b'
+    have h :=
+      covTensor2ExtDifferentiableAt_ricciVariationField_canonical
+        (g := g) x (b a) (b b')
+    simpa [ricciVariationField, gramFrame, b] using h
+  have htermDiff : ∀ a b' c d,
+      MDifferentiableAt I 𝓘(ℝ) (term a b' c d) x := by
+    intro a b' c d
+    have hA : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ (gramMatrix g x y)⁻¹ a c) x :=
+      gramMatrix_inv_entry_mdiffAt (g := g) x a c
+    have hB : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ (gramMatrix g x y)⁻¹ b' d) x :=
+      gramMatrix_inv_entry_mdiffAt (g := g) x b' d
+    have hR₁ := hRicDiff a b'
+    have hR₂ := hRicDiff c d
+    exact (((hA.mul hB).mul hR₁).mul hR₂).congr_of_eventuallyEq
+      (Filter.Eventually.of_forall fun y ↦ by simp [term])
+  have hsum := extDerivFun_sum_four_at
+    (n := n) (M := M)
+    (f := term) (x := x) htermDiff v
+  have htermDeriv : ∀ a b' c d,
+      extDerivFun (term a b' c d) x v =
+        extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ a c) x v *
+            (gramMatrix g x x)⁻¹ b' d *
+            g.ricciAt x (gramFrame x x a) (gramFrame x x b') *
+            g.ricciAt x (gramFrame x x c) (gramFrame x x d)
+          + (gramMatrix g x x)⁻¹ a c *
+            extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ b' d) x v *
+            g.ricciAt x (gramFrame x x a) (gramFrame x x b') *
+            g.ricciAt x (gramFrame x x c) (gramFrame x x d)
+          + (gramMatrix g x x)⁻¹ a c *
+            (gramMatrix g x x)⁻¹ b' d *
+            extDerivFun
+              (fun y : M ↦ g.ricciAt y (gramFrame x y a) (gramFrame x y b')) x v *
+            g.ricciAt x (gramFrame x x c) (gramFrame x x d)
+          + (gramMatrix g x x)⁻¹ a c *
+            (gramMatrix g x x)⁻¹ b' d *
+            g.ricciAt x (gramFrame x x a) (gramFrame x x b') *
+            extDerivFun
+              (fun y : M ↦ g.ricciAt y (gramFrame x y c) (gramFrame x y d)) x v := by
+    intro a b' c d
+    have hA : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ (gramMatrix g x y)⁻¹ a c) x :=
+      gramMatrix_inv_entry_mdiffAt (g := g) x a c
+    have hB : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ (gramMatrix g x y)⁻¹ b' d) x :=
+      gramMatrix_inv_entry_mdiffAt (g := g) x b' d
+    have hR₁ := hRicDiff a b'
+    have hR₂ := hRicDiff c d
+    simpa [term, mul_comm, mul_left_comm, mul_assoc] using
+      extDerivFun_mul_four_at
+        (n := n) (M := M)
+        (f₁ := fun y : M ↦ (gramMatrix g x y)⁻¹ a c)
+        (f₂ := fun y : M ↦ (gramMatrix g x y)⁻¹ b' d)
+        (f₃ := fun y : M ↦
+          g.ricciAt y (gramFrame x y a) (gramFrame x y b'))
+        (f₄ := fun y : M ↦
+          g.ricciAt y (gramFrame x y c) (gramFrame x y d))
+        hA hB hR₁ hR₂ v
+  calc
+    extDerivFun (fun y : M ↦ ricciPairingGramRHS g x y) x v =
+        ∑ a, ∑ b', ∑ c, ∑ d, extDerivFun (term a b' c d) x v := by
+          simpa [ricciPairingGramRHS, term] using hsum
+    _ =
+        ∑ a, ∑ b', ∑ c, ∑ d,
+          (extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ a c) x v *
+              (gramMatrix g x x)⁻¹ b' d *
+              g.ricciAt x (gramFrame x x a) (gramFrame x x b') *
+              g.ricciAt x (gramFrame x x c) (gramFrame x x d)
+            + (gramMatrix g x x)⁻¹ a c *
+              extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ b' d) x v *
+              g.ricciAt x (gramFrame x x a) (gramFrame x x b') *
+              g.ricciAt x (gramFrame x x c) (gramFrame x x d)
+            + (gramMatrix g x x)⁻¹ a c *
+              (gramMatrix g x x)⁻¹ b' d *
+              extDerivFun
+                (fun y : M ↦ g.ricciAt y (gramFrame x y a) (gramFrame x y b')) x v *
+              g.ricciAt x (gramFrame x x c) (gramFrame x x d)
+            + (gramMatrix g x x)⁻¹ a c *
+              (gramMatrix g x x)⁻¹ b' d *
+              g.ricciAt x (gramFrame x x a) (gramFrame x x b') *
+              extDerivFun
+                (fun y : M ↦ g.ricciAt y (gramFrame x y c) (gramFrame x y d)) x v) := by
+          refine Finset.sum_congr rfl fun a _ ↦ ?_
+          refine Finset.sum_congr rfl fun b' _ ↦ ?_
+          refine Finset.sum_congr rfl fun c _ ↦ ?_
+          refine Finset.sum_congr rfl fun d _ ↦ ?_
+          exact htermDeriv a b' c d
+    _ = ricciPairingGramProductRuleRHS g x v := by
+          unfold ricciPairingGramProductRuleRHS
+          unfold ricciPairingGramInvFirstDerivGroup
+          unfold ricciPairingGramInvSecondDerivGroup
+          unfold ricciPairingRicciFirstDerivGroup
+          unfold ricciPairingRicciSecondDerivGroup
+          simp [Finset.sum_add_distrib, add_assoc]
+
 theorem eventually_tensorDivergenceOneFormAt_ricciVariationField_eq_closedRicciDivergenceTraceAt_canonical
     (g : ClosedSmoothRiemannianMetric n M) (x : M) :
     ∀ᶠ y in nhds x, ∀ w : TM y,
