@@ -15869,7 +15869,47 @@ theorem ricciQuadraticAt_eq_two_lichnerowiczCurvatureAt_ricciVariationField
   rfl
 
 /--
-Pointwise commutation target for the Ricci second-derivative contraction.
+Corrected pointwise tensor RHS for Ricci evolution:
+`Δ_∇ Ric + 2 Rm(Ric, ·) - Ric·Ric - Ric·Ric`.
+-/
+noncomputable def ricciEvolutionTensorRHSAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) : ℝ :=
+  roughTensorLaplacianAt g (ricciVariationField g) x u w
+    + 2 * lichnerowiczCurvatureAt g (ricciVariationField g) x u w
+    - ricciActionOnTensorAt g (ricciVariationField g) x u w
+
+theorem ricciEvolutionTensorRHSAt_eq_rough_sub_action_add_quadratic
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) :
+    ricciEvolutionTensorRHSAt g x u w =
+      roughTensorLaplacianAt g (ricciVariationField g) x u w
+        - ricciActionOnTensorAt g (ricciVariationField g) x u w
+        + ricciQuadraticAt g x u w := by
+  rw [ricciQuadraticAt_eq_two_lichnerowiczCurvatureAt_ricciVariationField]
+  unfold ricciEvolutionTensorRHSAt
+  ring
+
+/--
+Deprecated correction-history version of the old pointwise tensor target.
+
+M4-prep-16/17 refuted this RHS: after `Q = 2L`, it collapses to
+`roughTensorLaplacianAt + ricciActionOnTensorAt`, not the classical Hamilton
+tensor evolution RHS.  It remains only as a ledger of the corrected target.
+-/
+def DeprecatedRicciSecondDerivCommutationAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : Prop :=
+  ∀ u w : TM x,
+    deltaRicciSecondDerivContractionAt g (negTwoRicciVariationField g) x u w =
+      lichnerowiczLaplacianAt g (ricciVariationField g) x u w
+        + ricciQuadraticAt g x u w
+
+/--
+Corrected pointwise commutation target for the Ricci second-derivative contraction.
 
 This is the tensor-level Ricci-evolution RHS before it is packaged as a
 time-derivative statement.
@@ -15880,14 +15920,18 @@ def RicciSecondDerivCommutationAt
     (x : M) : Prop :=
   ∀ u w : TM x,
     deltaRicciSecondDerivContractionAt g (negTwoRicciVariationField g) x u w =
-      lichnerowiczLaplacianAt g (ricciVariationField g) x u w
-        + ricciQuadraticAt g x u w
+      ricciEvolutionTensorRHSAt g x u w
 
 /--
-Expanded curvature-commutation form before folding the three Lichnerowicz
-blocks back into `lichnerowiczLaplacianAt`.
+Deprecated correction-history version of the old expanded
+curvature-commutation target.
+
+M4-prep-17 showed that the current curvature-action trace folds to
+`ricciActionOnTensorAt - ricciQuadraticAt`, so substituting it into the
+Hessian-cancelled assembly gives `rough - A + Q`, not this old
+`rough - 2L + A + Q` RHS.
 -/
-def RicciSecondDerivCurvatureCommutationAt
+def DeprecatedRicciSecondDerivCurvatureCommutationAt
     (g : ClosedSmoothRiemannianMetric n M)
     [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
     (x : M) : Prop :=
@@ -15897,6 +15941,20 @@ def RicciSecondDerivCurvatureCommutationAt
         - 2 * lichnerowiczCurvatureAt g (ricciVariationField g) x u w
         + ricciActionOnTensorAt g (ricciVariationField g) x u w
         + ricciQuadraticAt g x u w
+
+/--
+Corrected expanded curvature-commutation form.
+
+The CA trace is `A - Q`; the Hessian-cancelled assembly is
+`rough - (A - Q) = rough + 2L - A`.
+-/
+def RicciSecondDerivCurvatureCommutationAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : Prop :=
+  ∀ u w : TM x,
+    deltaRicciSecondDerivContractionAt g (negTwoRicciVariationField g) x u w =
+      ricciEvolutionTensorRHSAt g x u w
 
 theorem RicciSecondDerivCommutationAt.of_closed_bianchi
     (g : ClosedSmoothRiemannianMetric n M)
@@ -15924,13 +15982,7 @@ theorem RicciSecondDerivCommutationAt.of_closed_bianchi
   have hExpanded := hCurvComm u w
   calc
     deltaRicciSecondDerivContractionAt g (negTwoRicciVariationField g) x u w =
-        roughTensorLaplacianAt g (ricciVariationField g) x u w
-          - 2 * lichnerowiczCurvatureAt g (ricciVariationField g) x u w
-          + ricciActionOnTensorAt g (ricciVariationField g) x u w
-          + ricciQuadraticAt g x u w := hExpanded
-    _ = lichnerowiczLaplacianAt g (ricciVariationField g) x u w
-          + ricciQuadraticAt g x u w := by
-        rw [lichnerowiczLaplacianAt]
+        ricciEvolutionTensorRHSAt g x u w := hExpanded
 
 /--
 Antisymmetrizing the two differentiated slots of `covTensor2SecondDerivAt`
@@ -17114,11 +17166,9 @@ Target statement for the closed Ricci-tensor evolution equation under Ricci
 flow.
 
 This is a statement-layer target only: no theorem below claims the target from
-`IsClosedRicciFlowSolutionAt`.  The scalar trace of this target now matches the
-already-proved Hamilton scalar evolution statement under the honest
-`RicciEvolutionTraceSecondRegularityAt` class.  The remaining content for
-deriving this Prop from Ricci flow is the pointwise Ricci-identity commutation
-campaign producing the target equation itself.
+`IsClosedRicciFlowSolutionAt`.  Its fixed-metric trace is `ΔR`; the
+moving-metric trace derivative contributes the additional `+2 |Ric|²` under
+Ricci flow.
 -/
 def SatisfiesRicciEvolutionAt
     (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
@@ -17127,9 +17177,7 @@ def SatisfiesRicciEvolutionAt
     Prop :=
   ∀ u w : TM x,
     HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
-      (lichnerowiczLaplacianAt
-          (gt t₀) (ricciVariationField (gt t₀)) x u w
-        + ricciQuadraticAt (gt t₀) x u w) t₀
+      (ricciEvolutionTensorRHSAt (gt t₀) x u w) t₀
 
 @[simp] theorem satisfiesRicciEvolutionAt_iff
     (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
@@ -17138,9 +17186,7 @@ def SatisfiesRicciEvolutionAt
     SatisfiesRicciEvolutionAt gt t₀ x ↔
       ∀ u w : TM x,
         HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
-          (lichnerowiczLaplacianAt
-              (gt t₀) (ricciVariationField (gt t₀)) x u w
-            + ricciQuadraticAt (gt t₀) x u w) t₀ :=
+          (ricciEvolutionTensorRHSAt (gt t₀) x u w) t₀ :=
   Iff.rfl
 
 theorem satisfiesRicciEvolutionAt_of_secondDerivCommutation
