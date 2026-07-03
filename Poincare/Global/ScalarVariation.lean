@@ -13979,6 +13979,76 @@ theorem RicciSecondDerivCommutationAt.of_closed_bianchi
         rw [lichnerowiczLaplacianAt]
 
 /--
+Antisymmetrizing the two differentiated slots of `covTensor2SecondDerivAt`
+removes the connection correction in the differentiated-vector slot.  The
+remaining terms are the raw antisymmetrized derivative of `covTensor2DerivAt`
+and the two tensor-slot correction blocks.
+-/
+theorem covTensor2SecondDerivAt_antisymm_expansion
+    (g : ClosedSmoothRiemannianMetric n M)
+    {h : ∀ y : M, TM y → TM y → ℝ} (x : M)
+    (u v p q : TM x) :
+    covTensor2SecondDerivAt g h x u v p q
+        - covTensor2SecondDerivAt g h x v u p q =
+      (extDerivFun
+          (fun y : M ↦ covTensor2DerivAt g h y
+            (extend E v y) (extend E p y) (extend E q y)) x u
+        - extDerivFun
+          (fun y : M ↦ covTensor2DerivAt g h y
+            (extend E u y) (extend E p y) (extend E q y)) x v)
+        - (covTensor2DerivAt g h x v
+            (g.leviCivita (extend E p) x u) q
+          - covTensor2DerivAt g h x u
+            (g.leviCivita (extend E p) x v) q)
+        - (covTensor2DerivAt g h x v p
+            (g.leviCivita (extend E q) x u)
+          - covTensor2DerivAt g h x u p
+            (g.leviCivita (extend E q) x v)) := by
+  have huv :
+      g.leviCivita (extend E v) x u =
+        g.leviCivita (extend E u) x v :=
+    closedLeviCivita_extend_symm_at (g := g) (x := x) v u
+  unfold covTensor2SecondDerivAt
+  rw [huv]
+  ring
+
+/--
+Pure scalar-entry Schwarz cancellation for the `(0,2)` tensor commutator.
+This is the block before the two tensor-slot connection-correction families
+are folded into curvature.
+-/
+theorem covTensor2SecondDerivAt_pure_schwarz_cancel
+    (g : ClosedSmoothRiemannianMetric n M)
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hC2 : CovTensor2ExtContMDiffAt h x 2)
+    (u v p q : TM x) :
+    extDerivFun
+          (fun y : M ↦
+            extDerivFun
+              (fun z : M ↦ h z (extend E p z) (extend E q z)) y
+              (extend E v y)) x u
+      - extDerivFun
+          (fun y : M ↦
+            extDerivFun
+              (fun z : M ↦ h z (extend E p z) (extend E q z)) y
+              (extend E u y)) x v = 0 := by
+  let f : M → ℝ := fun z : M ↦ h z (extend E p z) (extend E q z)
+  have hcomm :
+      extDerivFun (fun y : M ↦ extDerivFun f y (extend E v y)) x u
+          - extDerivFun f x (g.leviCivita (extend E v) x u) =
+        extDerivFun (fun y : M ↦ extDerivFun f y (extend E u y)) x v
+          - extDerivFun f x (g.leviCivita (extend E u) x v) := by
+    simpa [f] using
+      extDerivFun_extDerivFun_extend_corrected_symm
+        (g := g) (f := f) (x := x) (hC2 p q) u v
+  have hΓ :
+      g.leviCivita (extend E v) x u =
+        g.leviCivita (extend E u) x v :=
+    closedLeviCivita_extend_symm_at (g := g) (x := x) v u
+  rw [hΓ] at hcomm
+  linarith
+
+/--
 Curvature-action side of the `(0,2)` tensor Ricci identity in the closed
 `covTensor2SecondDerivAt` API.
 
