@@ -5223,6 +5223,47 @@ noncomputable def closedBracketConnectionEntryFieldAt
         (VectorField.mlieBracket I (extend E a) (extend E u) y)) q
 
 /--
+The four Christoffel-slot corrections expanded through the same defining
+curvature-entry vocabulary as `closedCurvatureDefExpansionResidueAt`.
+-/
+theorem closedCurvatureCovDerivAtCorrectionAt_eq_connection_entry_terms
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v a u z q : TM x) :
+    closedCurvatureCovDerivAtCorrectionAt g x v a u z q =
+      (closedIteratedConnectionEntryFieldAt g u z x
+          (g.leviCivita (extend E a) x v) q
+        - closedIteratedConnectionEntryFieldAt g
+          (g.leviCivita (extend E a) x v) z x u q
+        - closedBracketConnectionEntryFieldAt g
+          (g.leviCivita (extend E a) x v) u z x q)
+      + (closedIteratedConnectionEntryFieldAt g
+          (g.leviCivita (extend E u) x v) z x a q
+        - closedIteratedConnectionEntryFieldAt g a z x
+          (g.leviCivita (extend E u) x v) q
+        - closedBracketConnectionEntryFieldAt g a
+          (g.leviCivita (extend E u) x v) z x q)
+      + (closedIteratedConnectionEntryFieldAt g u
+          (g.leviCivita (extend E z) x v) x a q
+        - closedIteratedConnectionEntryFieldAt g a
+          (g.leviCivita (extend E z) x v) x u q
+        - closedBracketConnectionEntryFieldAt g a u
+          (g.leviCivita (extend E z) x v) x q)
+      + (closedIteratedConnectionEntryFieldAt g u z x a
+          (g.leviCivita (extend E q) x v)
+        - closedIteratedConnectionEntryFieldAt g a z x u
+          (g.leviCivita (extend E q) x v)
+        - closedBracketConnectionEntryFieldAt g a u z x
+          (g.leviCivita (extend E q) x v)) := by
+  simp only [closedCurvatureCovDerivAtCorrectionAt,
+    CovariantDerivative.curvatureOp_apply,
+    closedIteratedConnectionEntryFieldAt,
+    closedBracketConnectionEntryFieldAt,
+    extend_apply_self,
+    map_sub,
+    ContinuousLinearMap.sub_apply]
+
+/--
 Covariant derivative of the scalar bracket-connection entry in the output
 slot.  The raw exterior derivative is recovered by adding the output
 Levi-Civita correction.
