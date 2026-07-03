@@ -11097,6 +11097,24 @@ theorem closedLeviCivita_extend_symm_at
   rw [extend_apply_self, extend_apply_self, hbr] at htf
   exact (sub_eq_zero.mp htf).symm
 
+/--
+Canonical-extension curvature bridge: antisymmetrizing the derivative of the
+slot connection field gives the closed curvature operator.  The bracket term
+in the definition of `curvatureOp` vanishes at the base point for canonical
+extensions.
+-/
+theorem closedChristoffel_antisymm_deriv_eq_curvature
+    (g : ClosedSmoothRiemannianMetric n M)
+    (x : M) (u v p : TM x) :
+    g.leviCivita (fun y : M ↦ g.leviCivita (extend E p) y (extend E v y)) x u
+        - g.leviCivita (fun y : M ↦ g.leviCivita (extend E p) y (extend E u y)) x v =
+      CovariantDerivative.curvatureOp g.leviCivita
+        (extend E u) (extend E v) (extend E p) x := by
+  rw [CovariantDerivative.curvatureOp_apply]
+  have hbr : VectorField.mlieBracket I (extend E u) (extend E v) x = 0 :=
+    mlieBracket_extend_extend_apply_self (n := n) (M := M) (x := x) u v
+  simp [extend_apply_self, hbr]
+
 theorem closedConnectionEntryOutputConnection_extDerivFun_eq_iterated_pair
     (g : ClosedSmoothRiemannianMetric n M)
     [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
