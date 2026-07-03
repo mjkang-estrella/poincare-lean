@@ -304,6 +304,185 @@ end ClosedSmoothRiemannianMetric
 
 namespace PinchingAlgebra
 
+/-- The Euclidean three-dimensional fiber used by the algebraic Weyl-vanishing lemma. -/
+abbrev Euclidean3 : Type :=
+  EuclideanSpace ℝ (Fin 3)
+
+/-- A bundled four-linear real form on the standard three-dimensional Euclidean fiber. -/
+abbrev FourLinearEuclidean3 : Type :=
+  Euclidean3 →ₗ[ℝ] Euclidean3 →ₗ[ℝ] Euclidean3 →ₗ[ℝ] Euclidean3 →ₗ[ℝ] ℝ
+
+/-- The standard orthonormal basis vector in the Euclidean three-dimensional fiber. -/
+noncomputable def euclidean3Basis (i : Fin 3) : Euclidean3 :=
+  (EuclideanSpace.basisFun (Fin 3) ℝ) i
+
+/--
+Four-linear forms on the standard three-dimensional Euclidean fiber are determined by
+their values on the four standard basis slots.
+-/
+theorem fourLinearEuclidean3_basis_ext {F G : FourLinearEuclidean3}
+    (h : ∀ i j k l : Fin 3,
+      F (euclidean3Basis i) (euclidean3Basis j) (euclidean3Basis k) (euclidean3Basis l) =
+        G (euclidean3Basis i) (euclidean3Basis j) (euclidean3Basis k)
+          (euclidean3Basis l)) :
+    F = G := by
+  apply Module.Basis.ext (EuclideanSpace.basisFun (Fin 3) ℝ).toBasis
+  intro i
+  apply Module.Basis.ext (EuclideanSpace.basisFun (Fin 3) ℝ).toBasis
+  intro j
+  apply Module.Basis.ext (EuclideanSpace.basisFun (Fin 3) ℝ).toBasis
+  intro k
+  apply Module.Basis.ext (EuclideanSpace.basisFun (Fin 3) ℝ).toBasis
+  intro l
+  exact h i j k l
+
+/-- A four-linear form is zero if all four-slot standard-basis coefficients vanish. -/
+theorem fourLinearEuclidean3_eq_zero_of_basis (F : FourLinearEuclidean3)
+    (h : ∀ i j k l : Fin 3,
+      F (euclidean3Basis i) (euclidean3Basis j) (euclidean3Basis k) (euclidean3Basis l) =
+        0) :
+    F = 0 := by
+  apply fourLinearEuclidean3_basis_ext
+  intro i j k l
+  simpa using h i j k l
+
+set_option maxHeartbeats 5000000 in
+/--
+In dimension three, a four-linear form with the algebraic Riemann symmetries and
+zero Ricci trace is identically zero.
+
+The trace hypothesis is stated in the standard orthonormal basis of
+`Euclidean3`: `sum_i W(e_i, u, e_i, w) = 0`.
+-/
+theorem fourLinearEuclidean3_eq_zero_of_riemann_symm_and_trace
+    (W : FourLinearEuclidean3)
+    (hFirstPair : ∀ x y z t : Euclidean3, W x y z t = -W y x z t)
+    (hSecondPair : ∀ x y z t : Euclidean3, W x y z t = -W x y t z)
+    (hPairExchange : ∀ x y z t : Euclidean3, W x y z t = W z t x y)
+    (hBianchi : ∀ x y z t : Euclidean3, W x y z t + W y z x t + W z x y t = 0)
+    (hRicciTrace : ∀ u w : Euclidean3,
+      (∑ i : Fin 3, W (euclidean3Basis i) u (euclidean3Basis i) w) = 0) :
+    W = 0 := by
+  let e0 := euclidean3Basis (0 : Fin 3)
+  let e1 := euclidean3Basis (1 : Fin 3)
+  let e2 := euclidean3Basis (2 : Fin 3)
+  have hdiag12 : ∀ a c d : Euclidean3, W a a c d = 0 := by
+    intro a c d
+    have h := hFirstPair a a c d
+    linarith
+  have hdiag34 : ∀ a b c : Euclidean3, W a b c c = 0 := by
+    intro a b c
+    have h := hSecondPair a b c c
+    linarith
+  have hB : W e0 e1 e0 e2 = 0 := by
+    have ht := hRicciTrace e1 e2
+    rw [Fin.sum_univ_three] at ht
+    have h11 : W e1 e1 e1 e2 = 0 := hdiag12 e1 e1 e2
+    have h22 : W e2 e1 e2 e2 = 0 := hdiag34 e2 e1 e2
+    linarith
+  have hC : W e0 e1 e1 e2 = 0 := by
+    have ht := hRicciTrace e0 e2
+    rw [Fin.sum_univ_three] at ht
+    have h00 : W e0 e0 e0 e2 = 0 := hdiag12 e0 e0 e2
+    have h22 : W e2 e0 e2 e2 = 0 := hdiag34 e2 e0 e2
+    have h10 : W e1 e0 e1 e2 = -W e0 e1 e1 e2 :=
+      hFirstPair e1 e0 e1 e2
+    have hBianchiUse := hBianchi e0 e1 e2 e1
+    linarith [hBianchiUse]
+  have hE : W e0 e2 e1 e2 = 0 := by
+    have ht := hRicciTrace e0 e1
+    rw [Fin.sum_univ_three] at ht
+    have h00 : W e0 e0 e0 e1 = 0 := hdiag12 e0 e0 e1
+    have h11 : W e1 e0 e1 e1 = 0 := hdiag34 e1 e0 e1
+    have h20a : W e2 e0 e2 e1 = -W e0 e2 e2 e1 :=
+      hFirstPair e2 e0 e2 e1
+    have h20b : W e0 e2 e2 e1 = -W e0 e2 e1 e2 :=
+      hSecondPair e0 e2 e2 e1
+    linarith
+  have hAD : W e0 e1 e0 e1 + W e0 e2 e0 e2 = 0 := by
+    have ht := hRicciTrace e0 e0
+    rw [Fin.sum_univ_three] at ht
+    have h00 : W e0 e0 e0 e0 = 0 := hdiag12 e0 e0 e0
+    have h10a : W e1 e0 e1 e0 = -W e0 e1 e1 e0 :=
+      hFirstPair e1 e0 e1 e0
+    have h10b : W e0 e1 e1 e0 = -W e0 e1 e0 e1 :=
+      hSecondPair e0 e1 e1 e0
+    have h20a : W e2 e0 e2 e0 = -W e0 e2 e2 e0 :=
+      hFirstPair e2 e0 e2 e0
+    have h20b : W e0 e2 e2 e0 = -W e0 e2 e0 e2 :=
+      hSecondPair e0 e2 e2 e0
+    linarith
+  have hAF : W e0 e1 e0 e1 + W e1 e2 e1 e2 = 0 := by
+    have ht := hRicciTrace e1 e1
+    rw [Fin.sum_univ_three] at ht
+    have h11 : W e1 e1 e1 e1 = 0 := hdiag12 e1 e1 e1
+    have h21a : W e2 e1 e2 e1 = -W e1 e2 e2 e1 :=
+      hFirstPair e2 e1 e2 e1
+    have h21b : W e1 e2 e2 e1 = -W e1 e2 e1 e2 :=
+      hSecondPair e1 e2 e2 e1
+    linarith
+  have hDF : W e0 e2 e0 e2 + W e1 e2 e1 e2 = 0 := by
+    have ht := hRicciTrace e2 e2
+    rw [Fin.sum_univ_three] at ht
+    have h22 : W e2 e2 e2 e2 = 0 := hdiag12 e2 e2 e2
+    linarith
+  have hA : W e0 e1 e0 e1 = 0 := by linarith
+  have hD : W e0 e2 e0 e2 = 0 := by linarith
+  have hF : W e1 e2 e1 e2 = 0 := by linarith
+  apply fourLinearEuclidean3_eq_zero_of_basis
+  intro i j k l
+  let ei := euclidean3Basis i
+  let ej := euclidean3Basis j
+  let ek := euclidean3Basis k
+  let el := euclidean3Basis l
+  have h12a := hFirstPair ei ej ek el
+  have h12b := hFirstPair ej ei ek el
+  have h12c := hFirstPair ei ej el ek
+  have h12d := hFirstPair ej ei el ek
+  have h12e := hFirstPair ek el ei ej
+  have h12f := hFirstPair el ek ei ej
+  have h12g := hFirstPair ek el ej ei
+  have h12h := hFirstPair el ek ej ei
+  have h34a := hSecondPair ei ej ek el
+  have h34b := hSecondPair ej ei ek el
+  have h34c := hSecondPair ei ej el ek
+  have h34d := hSecondPair ej ei el ek
+  have h34e := hSecondPair ek el ei ej
+  have h34f := hSecondPair el ek ei ej
+  have h34g := hSecondPair ek el ej ei
+  have h34h := hSecondPair el ek ej ei
+  have hpa := hPairExchange ei ej ek el
+  have hpb := hPairExchange ej ei ek el
+  have hpc := hPairExchange ei ej el ek
+  have hpd := hPairExchange ej ei el ek
+  have hpe := hPairExchange ek el ei ej
+  have hpf := hPairExchange el ek ei ej
+  have hpg := hPairExchange ek el ej ei
+  have hph := hPairExchange el ek ej ei
+  fin_cases i <;> fin_cases j <;> fin_cases k <;> fin_cases l <;>
+    norm_num [ei, ej, ek, el, e0, e1, e2] at * <;>
+    simp at * <;>
+    linarith [hA, hB, hC, hD, hE, hF,
+      h12a, h12b, h12c, h12d, h12e, h12f, h12g, h12h,
+      h34a, h34b, h34c, h34d, h34e, h34f, h34g, h34h,
+      hpa, hpb, hpc, hpd, hpe, hpf, hpg, hph]
+
+/-- Pointwise form of `fourLinearEuclidean3_eq_zero_of_riemann_symm_and_trace`. -/
+theorem fourLinearEuclidean3_apply_eq_zero_of_riemann_symm_and_trace
+    (W : FourLinearEuclidean3)
+    (hFirstPair : ∀ x y z t : Euclidean3, W x y z t = -W y x z t)
+    (hSecondPair : ∀ x y z t : Euclidean3, W x y z t = -W x y t z)
+    (hPairExchange : ∀ x y z t : Euclidean3, W x y z t = W z t x y)
+    (hBianchi : ∀ x y z t : Euclidean3, W x y z t + W y z x t + W z x y t = 0)
+    (hRicciTrace : ∀ u w : Euclidean3,
+      (∑ i : Fin 3, W (euclidean3Basis i) u (euclidean3Basis i) w) = 0)
+    (x y z t : Euclidean3) :
+    W x y z t = 0 := by
+  have hW := fourLinearEuclidean3_eq_zero_of_riemann_symm_and_trace W
+    hFirstPair hSecondPair hPairExchange hBianchi hRicciTrace
+  rw [hW]
+  rfl
+
 /-- Squared Ricci norm for a diagonal 3D Ricci operator with entries `a,b,c`. -/
 noncomputable def diagonalRicciNormSq3 (a b c : ℝ) : ℝ :=
   a ^ 2 + b ^ 2 + c ^ 2
