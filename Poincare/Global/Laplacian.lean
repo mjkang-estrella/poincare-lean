@@ -194,6 +194,13 @@ theorem gradient_const (g : ClosedSmoothRiemannianMetric n M)
   funext x
   exact g.gradientAt_const c x
 
+/-- The pointwise squared norm of the scalar-curvature gradient. -/
+noncomputable def scalarGradNormSqAt (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : ℝ :=
+  g.inner x (g.gradientAt (fun y ↦ g.scalarAt y) x)
+    (g.gradientAt (fun y ↦ g.scalarAt y) x)
+
 /--
 The metric gradient is differentiable at `x` whenever `f` is `C²` there.
 
@@ -853,6 +860,18 @@ theorem laplacianAt_mul' (g : ClosedSmoothRiemannianMetric n M)
     (fun y ↦ (hh y).mdifferentiableAt two_ne_zero)
     (g.mdifferentiableAt_gradient (hf x))
     (g.mdifferentiableAt_gradient (hh x))
+
+theorem laplacianAt_sq (g : ClosedSmoothRiemannianMetric n M)
+    {f : M → ℝ} {x : M}
+    (hf : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2 f y) :
+    g.laplacianAt (fun y ↦ f y ^ 2) x =
+      2 * f x * g.laplacianAt f x +
+        2 * g.inner x (g.gradientAt f x) (g.gradientAt f x) := by
+  have hfun : (fun y : M ↦ f y ^ 2) = f * f := by
+    funext y
+    simp [Pi.mul_apply, pow_two]
+  rw [hfun, g.laplacianAt_mul' hf hf]
+  ring
 
 theorem laplacianAt_const (g : ClosedSmoothRiemannianMetric n M)
     (c : ℝ) (x : M) :
