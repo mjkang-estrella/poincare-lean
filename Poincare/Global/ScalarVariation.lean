@@ -16007,6 +16007,39 @@ theorem covTensor2SecondDerivAt_ricciVariationField_antisymm_eq_curvatureAction
     (tensor2SMulRight_ricciVariationField g)
     u v p q
 
+/--
+The Ricci field remains symmetric after taking a closed second covariant
+derivative: the differentiated Ricci tensor and all transported-slot
+correction terms use the existing first-derivative Ricci symmetry.
+-/
+theorem covTensor2SecondDerivAt_ricciVariationField_symm
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u v p q : TM x) :
+    covTensor2SecondDerivAt g (ricciVariationField g) x u v p q =
+      covTensor2SecondDerivAt g (ricciVariationField g) x u v q p := by
+  unfold covTensor2SecondDerivAt
+  have hfun :
+      (fun y : M ↦ covTensor2DerivAt g (ricciVariationField g) y
+        (extend E v y) (extend E p y) (extend E q y))
+        =
+      fun y : M ↦ covTensor2DerivAt g (ricciVariationField g) y
+        (extend E v y) (extend E q y) (extend E p y) := by
+    funext y
+    exact covTensor2DerivAt_ricciVariationField_symm
+      (g := g) (x := y) (extend E v y) (extend E p y) (extend E q y)
+  rw [hfun]
+  rw [covTensor2DerivAt_ricciVariationField_symm
+    (g := g) (x := x)
+    (g.leviCivita (extend E v) x u) p q]
+  rw [covTensor2DerivAt_ricciVariationField_symm
+    (g := g) (x := x)
+    v (g.leviCivita (extend E p) x u) q]
+  rw [covTensor2DerivAt_ricciVariationField_symm
+    (g := g) (x := x)
+    v p (g.leviCivita (extend E q) x u)]
+  ring
+
 theorem lichnerowiczCurvatureAt_ricciQuadraticAt_trace_cancellation
     (g : ClosedSmoothRiemannianMetric n M)
     [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
