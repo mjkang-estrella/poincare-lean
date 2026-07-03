@@ -17287,6 +17287,153 @@ theorem riemannDifferenceFourLinearAt_metricTrace_eq_zero
   rw [hExpand, hCurv, hCand]
   ring
 
+/--
+In dimension three, the actual closed curvature four-linear form agrees with
+the Ricci-built algebraic candidate.
+-/
+theorem riemannDifferenceFourLinearAt_eq_zero_of_dim_three
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hn : n = 3) (x : M) :
+    riemannDifferenceFourLinearAt g x = 0 := by
+  classical
+  letI : RiemannianBundle TM := g.toRiemannianBundle
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  have hfin : Module.finrank ℝ (TM x) = 3 := by
+    simpa [hn] using
+      (ClosedSmoothRiemannianMetric.finrank_tangentSpace_eq
+        (n := n) (M := M) x)
+  let b0 := stdOrthonormalBasis ℝ (TM x)
+  let b : OrthonormalBasis (Fin 3) ℝ (TM x) :=
+    b0.reindex (finCongr hfin)
+  have hdual :
+      ∀ i : Fin 3, metricDualVectorAt g x (b.toBasis.coord i) = b i := by
+    intro i
+    refine sub_eq_zero.mp (LeviCivitaExistence.metric_nondegenerate g x
+      (metricDualVectorAt g x (b.toBasis.coord i) - b i) ?_)
+    intro v
+    calc
+      g.inner x (metricDualVectorAt g x (b.toBasis.coord i) - b i) v
+          = g.inner x (metricDualVectorAt g x (b.toBasis.coord i)) v
+              - g.inner x (b i) v := by
+            simp
+      _ = b.toBasis.coord i v - g.inner x (b i) v := by
+            rw [metricDualVectorAt_inner_apply]
+      _ = 0 := by
+            have hcoord : b.toBasis.coord i v = inner ℝ (b i) v := by
+              simpa using b.repr_apply_apply v i
+            have hinner : inner ℝ (b i) v = g.inner x (b i) v := by
+              simpa using
+                (ClosedSmoothRiemannianMetric.fiber_inner_eq g x (b i) v)
+            rw [hcoord, hinner]
+            ring
+  refine PinchingAlgebra.fourLinear_eq_zero_of_orthonormal_riemann_symm_and_last_trace
+    b (riemannDifferenceFourLinearAt g x) ?_ ?_ ?_ ?_ ?_
+  · intro a u w q
+    exact riemannDifferenceFourLinearAt_firstPair g x a u w q
+  · intro a u w q
+    exact riemannDifferenceFourLinearAt_secondPair g x a u w q
+  · intro a u w q
+    exact riemannDifferenceFourLinearAt_pairExchange g x a u w q
+  · intro a u w q
+    exact riemannDifferenceFourLinearAt_bianchi g x a u w q
+  · intro u w
+    let B : LinearMap.BilinForm ℝ (TM x) :=
+      { toFun := fun a =>
+          { toFun := fun q => riemannDifferenceFourLinearAt g x a u w q
+            map_add' := by
+              intro q₁ q₂
+              simpa using
+                (riemannDifferenceFourLinearAt g x a u w).map_add q₁ q₂
+            map_smul' := by
+              intro c q
+              simp }
+        map_add' := by
+          intro a₁ a₂
+          apply LinearMap.ext
+          intro q
+          change riemannDifferenceFourLinearAt g x (a₁ + a₂) u w q =
+            riemannDifferenceFourLinearAt g x a₁ u w q +
+              riemannDifferenceFourLinearAt g x a₂ u w q
+          simp
+        map_smul' := by
+          intro c a
+          apply LinearMap.ext
+          intro q
+          change riemannDifferenceFourLinearAt g x (c • a) u w q =
+            c * riemannDifferenceFourLinearAt g x a u w q
+          simp }
+    have hfinTrace :
+        metricTraceInBasisAt g x B (Module.finBasis ℝ (TM x)) = 0 := by
+      simpa [metricTraceInBasisAt, B] using
+        riemannDifferenceFourLinearAt_metricTrace_eq_zero (g := g) hn x u w
+    have hbasisTrace :
+        metricTraceInBasisAt g x B b.toBasis = 0 := by
+      rw [← metricTraceInBasisAt_eq_metricTraceInBasisAt
+        (g := g) (x := x) (B := B)
+        (b := Module.finBasis ℝ (TM x)) (c := b.toBasis)]
+      exact hfinTrace
+    calc
+      (∑ i : Fin 3, riemannDifferenceFourLinearAt g x (b i) u w (b i)) =
+          metricTraceInBasisAt g x B b.toBasis := by
+            unfold metricTraceInBasisAt
+            simp [B, hdual]
+      _ = 0 := hbasisTrace
+
+/-- The actual closed curvature tensor is determined by Ricci in dimension three. -/
+theorem RiemannDeterminedByRicci3At_closedCurvature
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hn : n = 3) (x : M) :
+    g.RiemannDeterminedByRicci3At x
+      (fun u w a b =>
+        g.inner x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E u) (extend E w) (extend E a) x) b) := by
+  intro u w a b
+  have hzero : riemannDifferenceFourLinearAt g x u w a b = 0 := by
+    rw [riemannDifferenceFourLinearAt_eq_zero_of_dim_three (g := g) hn x]
+    rfl
+  have hsub :
+      closedCurvatureFourLinearAt g x u w a b
+          - riemannFromRicci3FourLinearAt g x u w a b = 0 := by
+    simpa [riemannDifferenceFourLinearAt_apply] using hzero
+  have heq :=
+    sub_eq_zero.mp hsub
+  simpa [closedCurvatureFourLinearAt_apply,
+    riemannFromRicci3FourLinearAt_apply] using heq
+
+/--
+Space-form sanity check for the actual curvature in dimension three after the
+Ricci-determination theorem.
+-/
+theorem closedCurvatureFourLinearAt_spaceForm_coeff
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hn : n = 3) {x : M} {lam : ℝ}
+    (hRic : ∀ u w : TM x, g.ricciAt x u w = lam * g.inner x u w)
+    (hScal : g.scalarAt x = 3 * lam) (u w a b : TM x) :
+    g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E u) (extend E w) (extend E a) x) b =
+      -(lam / 4) *
+        ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+          (n := n) (M := M) x
+          (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q) u w a b := by
+  calc
+    g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E u) (extend E w) (extend E a) x) b =
+        g.riemannFromRicci3At x u w a b := by
+          exact RiemannDeterminedByRicci3At_closedCurvature
+            (g := g) hn x u w a b
+    _ = -(lam / 4) *
+        ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+          (n := n) (M := M) x
+          (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q) u w a b := by
+          exact g.riemannFromRicci3At_spaceForm_coeff hRic hScal u w a b
+
 set_option maxHeartbeats 5000000 in
 /--
 The Ricci-endomorphism trace of a curvature endomorphism is zero.  This is the
