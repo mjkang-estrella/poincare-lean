@@ -8601,6 +8601,23 @@ theorem closedRicciDerivativeExpansionAt_canonical
           + g.ricciAt x Γu w
           + g.ricciAt x u Γw := hCovTrace
 
+theorem closedCovRicciDerivAt_symm
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v u w : TM x) :
+    closedCovRicciDerivAt g x v u w =
+      closedCovRicciDerivAt g x v w u := by
+  rw [← covTensor2DerivAt_ricciVariationField_eq_closedCovRicciDerivAt
+      (g := g) (x := x)
+      (hRic := closedRicciDerivativeExpansionAt_canonical g x)
+      (v := v) (u := u) (w := w)]
+  rw [← covTensor2DerivAt_ricciVariationField_eq_closedCovRicciDerivAt
+      (g := g) (x := x)
+      (hRic := closedRicciDerivativeExpansionAt_canonical g x)
+      (v := v) (u := w) (w := u)]
+  exact covTensor2DerivAt_ricciVariationField_symm
+    (g := g) (x := x) v u w
+
 theorem eventually_closedRicciDerivativeExpansionAt_canonical
     (g : ClosedSmoothRiemannianMetric n M) (x : M) :
     ∀ᶠ y in nhds x, ClosedRicciDerivativeExpansionAt g y :=
@@ -11159,6 +11176,883 @@ theorem eventually_closed_cyclic_second_bianchi
     closedCurvatureCovDerivAt_cyclic_inner_eq_zero
       (g := g) (x := y) (u := u) (v := v) (w := w) (z := z) (q := q)
 
+theorem closedCurvatureEntry_pair_symm_eventually
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (a u w q : TM x) :
+    (fun y : M ↦
+      g.inner y
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u) (extend E w) y)
+        (extend E q y)) =ᶠ[nhds x]
+    (fun y : M ↦
+      g.inner y
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E w) (extend E q) (extend E a) y)
+        (extend E u y)) := by
+  have hA := eventually_contMDiffAt_two_extend (n := n) (M := M) a
+  have hU := eventually_contMDiffAt_two_extend (n := n) (M := M) u
+  have hW := eventually_contMDiffAt_two_extend (n := n) (M := M) w
+  have hQ := eventually_contMDiffAt_two_extend (n := n) (M := M) q
+  filter_upwards [hA, hU, hW, hQ] with y hA2 hU2 hW2 hQ2
+  let ay : TM y := extend E a y
+  let uy : TM y := extend E u y
+  let wy : TM y := extend E w y
+  let qy : TM y := extend E q y
+  have hLthird :
+      CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u) (extend E w) y =
+        CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u) (extend E wy) y := by
+    exact CovariantDerivative.curvatureOp_congr_of_value_eq
+      (cov := g.leviCivita)
+      (Z := extend E w) (Z' := extend E wy)
+      (X := extend E a) (Y := extend E u)
+      hW2
+      (FiberBundle.contMDiffAt_extend' (k := 2) I E wy)
+      (by simp [wy])
+      (hA2.mdifferentiableAt two_ne_zero)
+      (hU2.mdifferentiableAt two_ne_zero)
+  have hLfirst :
+      CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u) (extend E wy) y =
+        CovariantDerivative.curvatureOp g.leviCivita
+          (extend E ay) (extend E u) (extend E wy) y := by
+    refine curvatureOp_congr_fst_of_value_eq
+      (cov := g.leviCivita) (x := y)
+      (Y := extend E u) (Z := extend E wy)
+      (CovariantDerivative.derivRegularAt_extend g.leviCivita wy)
+      ?_ ?_ ?_ ?_
+    · simpa [MDiffAtTangentField] using hA2.mdifferentiableAt two_ne_zero
+    · simpa [MDiffAtTangentField] using (mdifferentiableAt_extend I E ay)
+    · simpa [MDiffAtTangentField] using hU2.mdifferentiableAt two_ne_zero
+    · simp [ay]
+  have hLsecond :
+      CovariantDerivative.curvatureOp g.leviCivita
+          (extend E ay) (extend E u) (extend E wy) y =
+        CovariantDerivative.curvatureOp g.leviCivita
+          (extend E ay) (extend E uy) (extend E wy) y := by
+    refine curvatureOp_congr_snd_of_value_eq
+      (cov := g.leviCivita) (x := y)
+      (X := extend E ay) (Z := extend E wy)
+      (CovariantDerivative.derivRegularAt_extend g.leviCivita wy)
+      ?_ ?_ ?_ ?_
+    · simpa [MDiffAtTangentField] using (mdifferentiableAt_extend I E ay)
+    · simpa [MDiffAtTangentField] using hU2.mdifferentiableAt two_ne_zero
+    · simpa [MDiffAtTangentField] using (mdifferentiableAt_extend I E uy)
+    · simp [uy]
+  have hL :
+      CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u) (extend E w) y =
+        CovariantDerivative.curvatureOp g.leviCivita
+          (extend E ay) (extend E uy) (extend E wy) y := by
+    rw [hLthird, hLfirst, hLsecond]
+  have hRthird :
+      CovariantDerivative.curvatureOp g.leviCivita
+          (extend E w) (extend E q) (extend E a) y =
+        CovariantDerivative.curvatureOp g.leviCivita
+          (extend E w) (extend E q) (extend E ay) y := by
+    exact CovariantDerivative.curvatureOp_congr_of_value_eq
+      (cov := g.leviCivita)
+      (Z := extend E a) (Z' := extend E ay)
+      (X := extend E w) (Y := extend E q)
+      hA2
+      (FiberBundle.contMDiffAt_extend' (k := 2) I E ay)
+      (by simp [ay])
+      (hW2.mdifferentiableAt two_ne_zero)
+      (hQ2.mdifferentiableAt two_ne_zero)
+  have hRfirst :
+      CovariantDerivative.curvatureOp g.leviCivita
+          (extend E w) (extend E q) (extend E ay) y =
+        CovariantDerivative.curvatureOp g.leviCivita
+          (extend E wy) (extend E q) (extend E ay) y := by
+    refine curvatureOp_congr_fst_of_value_eq
+      (cov := g.leviCivita) (x := y)
+      (Y := extend E q) (Z := extend E ay)
+      (CovariantDerivative.derivRegularAt_extend g.leviCivita ay)
+      ?_ ?_ ?_ ?_
+    · simpa [MDiffAtTangentField] using hW2.mdifferentiableAt two_ne_zero
+    · simpa [MDiffAtTangentField] using (mdifferentiableAt_extend I E wy)
+    · simpa [MDiffAtTangentField] using hQ2.mdifferentiableAt two_ne_zero
+    · simp [wy]
+  have hRsecond :
+      CovariantDerivative.curvatureOp g.leviCivita
+          (extend E wy) (extend E q) (extend E ay) y =
+        CovariantDerivative.curvatureOp g.leviCivita
+          (extend E wy) (extend E qy) (extend E ay) y := by
+    refine curvatureOp_congr_snd_of_value_eq
+      (cov := g.leviCivita) (x := y)
+      (X := extend E wy) (Z := extend E ay)
+      (CovariantDerivative.derivRegularAt_extend g.leviCivita ay)
+      ?_ ?_ ?_ ?_
+    · simpa [MDiffAtTangentField] using (mdifferentiableAt_extend I E wy)
+    · simpa [MDiffAtTangentField] using hQ2.mdifferentiableAt two_ne_zero
+    · simpa [MDiffAtTangentField] using (mdifferentiableAt_extend I E qy)
+    · simp [qy]
+  have hR :
+      CovariantDerivative.curvatureOp g.leviCivita
+          (extend E w) (extend E q) (extend E a) y =
+        CovariantDerivative.curvatureOp g.leviCivita
+          (extend E wy) (extend E qy) (extend E ay) y := by
+    rw [hRthird, hRfirst, hRsecond]
+  have hpair := closedCurvaturePairSymmAt (g := g) (x := y) ay uy wy qy
+  rw [hL, hR]
+  simpa [ay, uy, wy, qy] using hpair
+
+theorem closedCurvatureCovDerivAtCorrection_pair_symm
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v a u w q : TM x) :
+    closedCurvatureCovDerivAtCorrectionAt g x v a u w q =
+      closedCurvatureCovDerivAtCorrectionAt g x v w q a u := by
+  let Γa : TM x := g.leviCivita (extend E a) x v
+  let Γu : TM x := g.leviCivita (extend E u) x v
+  let Γw : TM x := g.leviCivita (extend E w) x v
+  let Γq : TM x := g.leviCivita (extend E q) x v
+  have h1 := closedCurvaturePairSymmAt (g := g) (x := x) Γa u w q
+  have h2 := closedCurvaturePairSymmAt (g := g) (x := x) a Γu w q
+  have h3 := closedCurvaturePairSymmAt (g := g) (x := x) a u Γw q
+  have h4 := closedCurvaturePairSymmAt (g := g) (x := x) a u w Γq
+  unfold closedCurvatureCovDerivAtCorrectionAt
+  change
+    g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E Γa) (extend E u) (extend E w) x) q
+      + g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E Γu) (extend E w) x) q
+      + g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u) (extend E Γw) x) q
+      + g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u) (extend E w) x) Γq
+      =
+    g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E Γw) (extend E q) (extend E a) x) u
+      + g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E w) (extend E Γq) (extend E a) x) u
+      + g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E w) (extend E q) (extend E Γa) x) u
+      + g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E w) (extend E q) (extend E a) x) Γu
+  rw [h1, h2, h3, h4]
+  ring
+
+theorem closedCurvatureCovDerivAt_pair_symm_inner
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v a u w q : TM x) :
+    g.inner x (closedCurvatureCovDerivAt g x v a u w) q =
+      g.inner x (closedCurvatureCovDerivAt g x v w q a) u := by
+  have hEntryEventual := closedCurvatureEntry_pair_symm_eventually
+    (g := g) (x := x) a u w q
+  have hEntry :
+      closedCurvatureEntryDerivAt g x v a u w q =
+        closedCurvatureEntryDerivAt g x v w q a u := by
+    exact congrArg (fun L : TM x →L[ℝ] ℝ ↦ L v)
+      (CovariantDerivative.extDerivFun_congr hEntryEventual)
+  have hCorr := closedCurvatureCovDerivAtCorrection_pair_symm
+    (g := g) (x := x) v a u w q
+  rw [closedCurvatureCovDerivAt_inner_eq_entry_deriv_sub_correction
+      (g := g) (x := x) (v := v) (a := a) (u := u) (w := w) (q := q),
+    closedCurvatureCovDerivAt_inner_eq_entry_deriv_sub_correction
+      (g := g) (x := x) (v := v) (a := w) (u := q) (w := a) (q := u),
+    hEntry, hCorr]
+
+theorem closedCurvatureEntryDerivAt_first_bianchi
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v a u w q : TM x) :
+    closedCurvatureEntryDerivAt g x v a u w q
+      + closedCurvatureEntryDerivAt g x v u w a q
+      + closedCurvatureEntryDerivAt g x v w a u q = 0 := by
+  let f₁ : M → ℝ := fun y ↦
+    g.inner y
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E a) (extend E u) (extend E w) y)
+      (extend E q y)
+  let f₂ : M → ℝ := fun y ↦
+    g.inner y
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E u) (extend E w) (extend E a) y)
+      (extend E q y)
+  let f₃ : M → ℝ := fun y ↦
+    g.inner y
+      (CovariantDerivative.curvatureOp g.leviCivita
+        (extend E w) (extend E a) (extend E u) y)
+      (extend E q y)
+  have hA := eventually_contMDiffAt_two_extend (n := n) (M := M) a
+  have hU := eventually_contMDiffAt_two_extend (n := n) (M := M) u
+  have hW := eventually_contMDiffAt_two_extend (n := n) (M := M) w
+  have hsum : (fun y : M ↦ f₁ y + f₂ y + f₃ y) =ᶠ[nhds x]
+      fun _ : M ↦ (0 : ℝ) := by
+    filter_upwards [hA, hU, hW] with y hA2 hU2 hW2
+    have hb := CovariantDerivative.bianchi_first_at
+      (cov := g.leviCivita) (x := y)
+      (fun y ↦ g.leviCivita_torsionFreeAt y)
+      hA2 hU2 hW2
+    have hp := congrArg (fun z : TM y ↦ g.inner y z (extend E q y)) hb
+    simpa [f₁, f₂, f₃, map_add] using hp
+  have hzero : extDerivFun (fun y : M ↦ f₁ y + f₂ y + f₃ y) x v = 0 := by
+    rw [CovariantDerivative.extDerivFun_congr hsum]
+    simp [extDerivFun_zero_at]
+  have h₁ := (closedCurvatureEntryDerivativeBridgeAt_canonical g x).mdifferentiable a u w q
+  have h₂ := (closedCurvatureEntryDerivativeBridgeAt_canonical g x).mdifferentiable u w a q
+  have h₃ := (closedCurvatureEntryDerivativeBridgeAt_canonical g x).mdifferentiable w a u q
+  unfold closedCurvatureEntryDerivAt
+  change extDerivFun f₁ x v + extDerivFun f₂ x v + extDerivFun f₃ x v = 0
+  have hadd12 := extDerivFun_add h₁ h₂
+  have hadd123 := extDerivFun_add (h₁.add h₂) h₃
+  have hsplit :
+      extDerivFun (fun y : M ↦ f₁ y + f₂ y + f₃ y) x v =
+        extDerivFun f₁ x v + extDerivFun f₂ x v + extDerivFun f₃ x v := by
+    change (extDerivFun ((f₁ + f₂) + f₃) x) v =
+      (extDerivFun f₁ x) v + (extDerivFun f₂ x) v + (extDerivFun f₃ x) v
+    rw [hadd123, hadd12]
+    rfl
+  rw [← hsplit]
+  exact hzero
+
+theorem closedCurvatureCovDerivAtCorrection_cyclic_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v a u w q : TM x) :
+    closedCurvatureCovDerivAtCorrectionAt g x v a u w q
+      + closedCurvatureCovDerivAtCorrectionAt g x v u w a q
+      + closedCurvatureCovDerivAtCorrectionAt g x v w a u q = 0 := by
+  let Γa : TM x := g.leviCivita (extend E a) x v
+  let Γu : TM x := g.leviCivita (extend E u) x v
+  let Γw : TM x := g.leviCivita (extend E w) x v
+  let Γq : TM x := g.leviCivita (extend E q) x v
+  have hbΓa := CovariantDerivative.bianchi_first_at
+    (cov := g.leviCivita) (x := x)
+    (fun y ↦ g.leviCivita_torsionFreeAt y)
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E Γa)
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E u)
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E w)
+  have hbΓu := CovariantDerivative.bianchi_first_at
+    (cov := g.leviCivita) (x := x)
+    (fun y ↦ g.leviCivita_torsionFreeAt y)
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E a)
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E Γu)
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E w)
+  have hbΓw := CovariantDerivative.bianchi_first_at
+    (cov := g.leviCivita) (x := x)
+    (fun y ↦ g.leviCivita_torsionFreeAt y)
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E a)
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E u)
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E Γw)
+  have hbΓq := CovariantDerivative.bianchi_first_at
+    (cov := g.leviCivita) (x := x)
+    (fun y ↦ g.leviCivita_torsionFreeAt y)
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E a)
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E u)
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E w)
+  have hΓa :
+      g.inner x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E Γa) (extend E u) (extend E w) x) q
+        + g.inner x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E u) (extend E w) (extend E Γa) x) q
+        + g.inner x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E w) (extend E Γa) (extend E u) x) q = 0 := by
+    simpa [map_add] using congrArg (fun z : TM x ↦ g.inner x z q) hbΓa
+  have hΓu :
+      g.inner x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E a) (extend E Γu) (extend E w) x) q
+        + g.inner x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E Γu) (extend E w) (extend E a) x) q
+        + g.inner x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E w) (extend E a) (extend E Γu) x) q = 0 := by
+    simpa [map_add] using congrArg (fun z : TM x ↦ g.inner x z q) hbΓu
+  have hΓw :
+      g.inner x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E a) (extend E u) (extend E Γw) x) q
+        + g.inner x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E u) (extend E Γw) (extend E a) x) q
+        + g.inner x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E Γw) (extend E a) (extend E u) x) q = 0 := by
+    simpa [map_add] using congrArg (fun z : TM x ↦ g.inner x z q) hbΓw
+  have hΓq :
+      g.inner x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E a) (extend E u) (extend E w) x) Γq
+        + g.inner x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E u) (extend E w) (extend E a) x) Γq
+        + g.inner x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E w) (extend E a) (extend E u) x) Γq = 0 := by
+    simpa [map_add] using congrArg (fun z : TM x ↦ g.inner x z Γq) hbΓq
+  unfold closedCurvatureCovDerivAtCorrectionAt
+  change
+    (g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E Γa) (extend E u) (extend E w) x) q
+      + g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E Γu) (extend E w) x) q
+      + g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u) (extend E Γw) x) q
+      + g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u) (extend E w) x) Γq)
+    +
+    (g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E Γu) (extend E w) (extend E a) x) q
+      + g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E u) (extend E Γw) (extend E a) x) q
+      + g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E u) (extend E w) (extend E Γa) x) q
+      + g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E u) (extend E w) (extend E a) x) Γq)
+    +
+    (g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E Γw) (extend E a) (extend E u) x) q
+      + g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E w) (extend E Γa) (extend E u) x) q
+      + g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E w) (extend E a) (extend E Γu) x) q
+      + g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E w) (extend E a) (extend E u) x) Γq) = 0
+  linarith
+
+theorem closedCurvatureCovDerivAt_first_bianchi_inner
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v a u w q : TM x) :
+    g.inner x (closedCurvatureCovDerivAt g x v a u w) q
+      + g.inner x (closedCurvatureCovDerivAt g x v u w a) q
+      + g.inner x (closedCurvatureCovDerivAt g x v w a u) q = 0 := by
+  have hEntry := closedCurvatureEntryDerivAt_first_bianchi
+    (g := g) (x := x) v a u w q
+  have hCorr := closedCurvatureCovDerivAtCorrection_cyclic_eq_zero
+    (g := g) (x := x) v a u w q
+  rw [closedCurvatureCovDerivAt_inner_eq_entry_deriv_sub_correction
+      (g := g) (x := x) (v := v) (a := a) (u := u) (w := w) (q := q),
+    closedCurvatureCovDerivAt_inner_eq_entry_deriv_sub_correction
+      (g := g) (x := x) (v := v) (a := u) (u := w) (w := a) (q := q),
+    closedCurvatureCovDerivAt_inner_eq_entry_deriv_sub_correction
+      (g := g) (x := x) (v := v) (a := w) (u := a) (w := u) (q := q)]
+  linarith
+
+theorem closedCurvatureCovDerivAt_applied_skew_inner
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v a u p q : TM x) :
+    g.inner x (closedCurvatureCovDerivAt g x v a u p) q =
+      -g.inner x (closedCurvatureCovDerivAt g x v a u q) p := by
+  rw [closedCurvatureCovDerivAt_pair_symm_inner
+      (g := g) (x := x) (v := v) (a := a) (u := u) (w := p) (q := q)]
+  rw [closedCurvatureCovDerivAt_antisymm (g := g) (x := x) v p q a]
+  simp only [map_neg, ContinuousLinearMap.neg_apply]
+  rw [closedCurvatureCovDerivAt_pair_symm_inner
+      (g := g) (x := x) (v := v) (a := q) (u := p) (w := a) (q := u)]
+
+theorem curvatureOp_extend_add_fst
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (a₁ a₂ u z : TM x) :
+    CovariantDerivative.curvatureOp g.leviCivita
+      (extend E (a₁ + a₂)) (extend E u) (extend E z) x =
+    CovariantDerivative.curvatureOp g.leviCivita
+      (extend E a₁) (extend E u) (extend E z) x +
+    CovariantDerivative.curvatureOp g.leviCivita
+      (extend E a₂) (extend E u) (extend E z) x := by
+  let hreg := CovariantDerivative.derivRegularAt_extend g.leviCivita z
+  have hleft := CovariantDerivative.curvatureTensorAt_apply
+    (cov := g.leviCivita) (hreg := hreg)
+    (X := extend E (a₁ + a₂)) (Y := extend E u)
+    (mdifferentiableAt_extend I E (a₁ + a₂))
+    (mdifferentiableAt_extend I E u)
+  have h1 := CovariantDerivative.curvatureTensorAt_apply
+    (cov := g.leviCivita) (hreg := hreg)
+    (X := extend E a₁) (Y := extend E u)
+    (mdifferentiableAt_extend I E a₁)
+    (mdifferentiableAt_extend I E u)
+  have h2 := CovariantDerivative.curvatureTensorAt_apply
+    (cov := g.leviCivita) (hreg := hreg)
+    (X := extend E a₂) (Y := extend E u)
+    (mdifferentiableAt_extend I E a₂)
+    (mdifferentiableAt_extend I E u)
+  rw [← hleft, ← h1, ← h2]
+  simp [ContinuousLinearMap.map_add]
+
+theorem curvatureOp_extend_smul_fst
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (c : ℝ) (a u z : TM x) :
+    CovariantDerivative.curvatureOp g.leviCivita
+      (extend E (c • a)) (extend E u) (extend E z) x =
+    c • CovariantDerivative.curvatureOp g.leviCivita
+      (extend E a) (extend E u) (extend E z) x := by
+  let hreg := CovariantDerivative.derivRegularAt_extend g.leviCivita z
+  have hleft := CovariantDerivative.curvatureTensorAt_apply
+    (cov := g.leviCivita) (hreg := hreg)
+    (X := extend E (c • a)) (Y := extend E u)
+    (mdifferentiableAt_extend I E (c • a))
+    (mdifferentiableAt_extend I E u)
+  have h1 := CovariantDerivative.curvatureTensorAt_apply
+    (cov := g.leviCivita) (hreg := hreg)
+    (X := extend E a) (Y := extend E u)
+    (mdifferentiableAt_extend I E a)
+    (mdifferentiableAt_extend I E u)
+  rw [← hleft, ← h1]
+  simp
+
+theorem curvatureOp_extend_add_snd
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (a u₁ u₂ z : TM x) :
+    CovariantDerivative.curvatureOp g.leviCivita
+      (extend E a) (extend E (u₁ + u₂)) (extend E z) x =
+    CovariantDerivative.curvatureOp g.leviCivita
+      (extend E a) (extend E u₁) (extend E z) x +
+    CovariantDerivative.curvatureOp g.leviCivita
+      (extend E a) (extend E u₂) (extend E z) x := by
+  let hreg := CovariantDerivative.derivRegularAt_extend g.leviCivita z
+  have hleft := CovariantDerivative.curvatureTensorAt_apply
+    (cov := g.leviCivita) (hreg := hreg)
+    (X := extend E a) (Y := extend E (u₁ + u₂))
+    (mdifferentiableAt_extend I E a)
+    (mdifferentiableAt_extend I E (u₁ + u₂))
+  have h1 := CovariantDerivative.curvatureTensorAt_apply
+    (cov := g.leviCivita) (hreg := hreg)
+    (X := extend E a) (Y := extend E u₁)
+    (mdifferentiableAt_extend I E a)
+    (mdifferentiableAt_extend I E u₁)
+  have h2 := CovariantDerivative.curvatureTensorAt_apply
+    (cov := g.leviCivita) (hreg := hreg)
+    (X := extend E a) (Y := extend E u₂)
+    (mdifferentiableAt_extend I E a)
+    (mdifferentiableAt_extend I E u₂)
+  rw [← hleft, ← h1, ← h2]
+  simp [ContinuousLinearMap.map_add]
+
+theorem curvatureOp_extend_smul_snd
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (c : ℝ) (a u z : TM x) :
+    CovariantDerivative.curvatureOp g.leviCivita
+      (extend E a) (extend E (c • u)) (extend E z) x =
+    c • CovariantDerivative.curvatureOp g.leviCivita
+      (extend E a) (extend E u) (extend E z) x := by
+  let hreg := CovariantDerivative.derivRegularAt_extend g.leviCivita z
+  have hleft := CovariantDerivative.curvatureTensorAt_apply
+    (cov := g.leviCivita) (hreg := hreg)
+    (X := extend E a) (Y := extend E (c • u))
+    (mdifferentiableAt_extend I E a)
+    (mdifferentiableAt_extend I E (c • u))
+  have h1 := CovariantDerivative.curvatureTensorAt_apply
+    (cov := g.leviCivita) (hreg := hreg)
+    (X := extend E a) (Y := extend E u)
+    (mdifferentiableAt_extend I E a)
+    (mdifferentiableAt_extend I E u)
+  rw [← hleft, ← h1]
+  simp
+
+theorem closedCurvatureCovDerivAt_add_deriv
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v₁ v₂ a u w : TM x) :
+    closedCurvatureCovDerivAt g x (v₁ + v₂) a u w =
+      closedCurvatureCovDerivAt g x v₁ a u w +
+      closedCurvatureCovDerivAt g x v₂ a u w := by
+  let R : ∀ y : M, TM y := fun y ↦
+    CovariantDerivative.curvatureOp g.leviCivita
+      (extend E a) (extend E u) (extend E w) y
+  have hΓa :
+      g.leviCivita (extend E a) x (v₁ + v₂) =
+        g.leviCivita (extend E a) x v₁ + g.leviCivita (extend E a) x v₂ := by
+    simp
+  have hΓu :
+      g.leviCivita (extend E u) x (v₁ + v₂) =
+        g.leviCivita (extend E u) x v₁ + g.leviCivita (extend E u) x v₂ := by
+    simp
+  have hΓw :
+      g.leviCivita (extend E w) x (v₁ + v₂) =
+        g.leviCivita (extend E w) x v₁ + g.leviCivita (extend E w) x v₂ := by
+    simp
+  unfold closedCurvatureCovDerivAt
+  change g.leviCivita R x (v₁ + v₂)
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (g.leviCivita (extend E a) x (v₁ + v₂)))
+          (extend E u) (extend E w) x
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a)
+          (extend E (g.leviCivita (extend E u) x (v₁ + v₂)))
+          (extend E w) x
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u)
+          (extend E (g.leviCivita (extend E w) x (v₁ + v₂))) x
+    =
+    (g.leviCivita R x v₁
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (g.leviCivita (extend E a) x v₁))
+          (extend E u) (extend E w) x
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a)
+          (extend E (g.leviCivita (extend E u) x v₁))
+          (extend E w) x
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u)
+          (extend E (g.leviCivita (extend E w) x v₁)) x)
+    +
+    (g.leviCivita R x v₂
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (g.leviCivita (extend E a) x v₂))
+          (extend E u) (extend E w) x
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a)
+          (extend E (g.leviCivita (extend E u) x v₂))
+          (extend E w) x
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u)
+          (extend E (g.leviCivita (extend E w) x v₂)) x)
+  rw [map_add, hΓa, hΓu, hΓw]
+  rw [curvatureOp_extend_add_fst]
+  rw [curvatureOp_extend_add_snd]
+  rw [CovariantDerivative.curvatureOp_extend_add]
+  abel
+
+theorem closedCurvatureCovDerivAt_smul_deriv
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (c : ℝ) (v a u w : TM x) :
+    closedCurvatureCovDerivAt g x (c • v) a u w =
+      c • closedCurvatureCovDerivAt g x v a u w := by
+  let R : ∀ y : M, TM y := fun y ↦
+    CovariantDerivative.curvatureOp g.leviCivita
+      (extend E a) (extend E u) (extend E w) y
+  have hΓa :
+      g.leviCivita (extend E a) x (c • v) =
+        c • g.leviCivita (extend E a) x v := by
+    simp
+  have hΓu :
+      g.leviCivita (extend E u) x (c • v) =
+        c • g.leviCivita (extend E u) x v := by
+    simp
+  have hΓw :
+      g.leviCivita (extend E w) x (c • v) =
+        c • g.leviCivita (extend E w) x v := by
+    simp
+  unfold closedCurvatureCovDerivAt
+  change g.leviCivita R x (c • v)
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (g.leviCivita (extend E a) x (c • v)))
+          (extend E u) (extend E w) x
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a)
+          (extend E (g.leviCivita (extend E u) x (c • v)))
+          (extend E w) x
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u)
+          (extend E (g.leviCivita (extend E w) x (c • v))) x
+    =
+    c •
+    (g.leviCivita R x v
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E (g.leviCivita (extend E a) x v))
+          (extend E u) (extend E w) x
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a)
+          (extend E (g.leviCivita (extend E u) x v))
+          (extend E w) x
+      - CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u)
+          (extend E (g.leviCivita (extend E w) x v)) x)
+  rw [map_smul, hΓa, hΓu, hΓw]
+  rw [curvatureOp_extend_smul_fst]
+  rw [curvatureOp_extend_smul_snd]
+  rw [CovariantDerivative.curvatureOp_extend_smul]
+  module
+
+theorem closedCurvatureCovDerivAt_skew_trace_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v a u : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i)
+      ∑ i, g.inner x (closedCurvatureCovDerivAt g x v a u (b i)) (sharp i))
+      = 0 := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  let F : TM x → TM x → ℝ :=
+    fun p q ↦ g.inner x (closedCurvatureCovDerivAt g x v a u p) q
+  have hswap := sum_metricDualVectorAt_contraction_swap
+    (g := g) (x := x) (F := F)
+    (hadd1 := by
+      intro p₁ p₂ q
+      have hskew12 := closedCurvatureCovDerivAt_applied_skew_inner
+        (g := g) (x := x) v a u (p₁ + p₂) q
+      have hskew1 := closedCurvatureCovDerivAt_applied_skew_inner
+        (g := g) (x := x) v a u p₁ q
+      have hskew2 := closedCurvatureCovDerivAt_applied_skew_inner
+        (g := g) (x := x) v a u p₂ q
+      dsimp [F]
+      rw [hskew12, hskew1, hskew2, map_add]
+      ring)
+    (hsmul1 := by
+      intro c p q
+      have hskewc := closedCurvatureCovDerivAt_applied_skew_inner
+        (g := g) (x := x) v a u (c • p) q
+      have hskew := closedCurvatureCovDerivAt_applied_skew_inner
+        (g := g) (x := x) v a u p q
+      dsimp [F]
+      rw [hskewc, hskew, map_smul]
+      simp [smul_eq_mul])
+    (hadd2 := by
+      intro p q₁ q₂
+      dsimp [F]
+      rw [map_add])
+    (hsmul2 := by
+      intro c p q
+      dsimp [F]
+      rw [map_smul]
+      simp [smul_eq_mul])
+  have hneg :
+      (∑ i, F (sharp i) (b i)) =
+        -∑ i, F (b i) (sharp i) := by
+    rw [← Finset.sum_neg_distrib]
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    dsimp [F]
+    rw [closedCurvatureCovDerivAt_applied_skew_inner
+      (g := g) (x := x) v a u (sharp i) (b i)]
+  change (∑ i, F (b i) (sharp i)) = 0
+  rw [hneg] at hswap
+  linarith
+
+set_option maxHeartbeats 5000000 in
+theorem closedCurvatureDivergenceAt_contraction_eq_closedRicciDivergenceTraceAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      ∑ i, closedCurvatureDivergenceAt g x w
+        (metricDualVectorAt g x (b.coord i)) (b i))
+      = closedRicciDivergenceTraceAt g x w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  unfold closedCurvatureDivergenceAt closedRicciDivergenceTraceAt
+    closedCovRicciDerivAt
+  change
+      (∑ k, ∑ j, b.coord j
+        (closedCurvatureCovDerivAt g x (b j) w (sharp k) (b k))) =
+      ∑ k, ∑ j, b.coord j
+        (closedCurvatureCovDerivAt g x (sharp k) (b j) w (b k))
+  calc
+    (∑ k, ∑ j, b.coord j
+        (closedCurvatureCovDerivAt g x (b j) w (sharp k) (b k)))
+        = ∑ k, ∑ j,
+            g.inner x
+              (closedCurvatureCovDerivAt g x (b j) w (sharp k) (b k))
+              (sharp j) := by
+          refine Finset.sum_congr rfl fun k _ ↦ ?_
+          refine Finset.sum_congr rfl fun j _ ↦ ?_
+          rw [coord_eq_inner_metricDualVectorAt_of_basis
+            (g := g) (x := x) (b := b)]
+    _ = ∑ k, ∑ j,
+            g.inner x
+              (closedCurvatureCovDerivAt g x (sharp j) (b k) (b j) w)
+              (sharp k) := by
+          refine Finset.sum_congr rfl fun k _ ↦ ?_
+          calc
+            (∑ j,
+              g.inner x
+                (closedCurvatureCovDerivAt g x (b j) w (sharp k) (b k))
+                (sharp j))
+                = ∑ j,
+                    g.inner x
+                      (closedCurvatureCovDerivAt g x (b j) (b k) (sharp j) w)
+                      (sharp k) := by
+                  refine Finset.sum_congr rfl fun j _ ↦ ?_
+                  exact closedCurvatureCovDerivAt_pair_symm_inner
+                    (g := g) (x := x) (v := b j)
+                    (a := w) (u := sharp k) (w := b k) (q := sharp j)
+            _ = ∑ j,
+                    g.inner x
+                      (closedCurvatureCovDerivAt g x (sharp j) (b k) (b j) w)
+                      (sharp k) := by
+                  exact sum_metricDualVectorAt_contraction_swap
+                    (g := g) (x := x)
+                    (F := fun p q ↦
+                      g.inner x
+                        (closedCurvatureCovDerivAt g x q (b k) p w)
+                        (sharp k))
+                    (hadd1 := by
+                      intro p₁ p₂ q
+                      have hp12 := closedCurvatureCovDerivAt_pair_symm_inner
+                        (g := g) (x := x) (v := q)
+                        (a := b k) (u := p₁ + p₂) (w := w) (q := sharp k)
+                      have hp1 := closedCurvatureCovDerivAt_pair_symm_inner
+                        (g := g) (x := x) (v := q)
+                        (a := b k) (u := p₁) (w := w) (q := sharp k)
+                      have hp2 := closedCurvatureCovDerivAt_pair_symm_inner
+                        (g := g) (x := x) (v := q)
+                        (a := b k) (u := p₂) (w := w) (q := sharp k)
+                      dsimp
+                      rw [hp12, hp1, hp2, map_add]
+                    )
+                    (hsmul1 := by
+                      intro c p q
+                      have hpc := closedCurvatureCovDerivAt_pair_symm_inner
+                        (g := g) (x := x) (v := q)
+                        (a := b k) (u := c • p) (w := w) (q := sharp k)
+                      have hp := closedCurvatureCovDerivAt_pair_symm_inner
+                        (g := g) (x := x) (v := q)
+                        (a := b k) (u := p) (w := w) (q := sharp k)
+                      dsimp
+                      rw [hpc, hp, map_smul]
+                      simp [smul_eq_mul])
+                    (hadd2 := by
+                      intro p q₁ q₂
+                      dsimp
+                      rw [closedCurvatureCovDerivAt_add_deriv]
+                      rw [map_add]
+                      simp [ContinuousLinearMap.add_apply])
+                    (hsmul2 := by
+                      intro c p q
+                      dsimp
+                      rw [closedCurvatureCovDerivAt_smul_deriv]
+                      rw [map_smul]
+                      simp [ContinuousLinearMap.smul_apply, smul_eq_mul])
+    _ = ∑ j, ∑ k,
+            g.inner x
+              (closedCurvatureCovDerivAt g x (sharp j) (b k) (b j) w)
+              (sharp k) := by
+          rw [Finset.sum_comm]
+    _ = ∑ j, ∑ k,
+            g.inner x
+              (closedCurvatureCovDerivAt g x (sharp j) (b k) w (b j))
+              (sharp k) := by
+          refine Finset.sum_congr rfl fun j _ ↦ ?_
+          have hzero := closedCurvatureCovDerivAt_skew_trace_zero
+            (g := g) (x := x) (v := sharp j) (a := b j) (u := w)
+          change
+            (∑ k,
+              g.inner x
+                (closedCurvatureCovDerivAt g x (sharp j) (b k) (b j) w)
+                (sharp k))
+              =
+            ∑ k,
+              g.inner x
+                (closedCurvatureCovDerivAt g x (sharp j) (b k) w (b j))
+                (sharp k)
+          calc
+            (∑ k,
+              g.inner x
+                (closedCurvatureCovDerivAt g x (sharp j) (b k) (b j) w)
+                (sharp k))
+                =
+              ∑ k,
+                (-g.inner x
+                    (closedCurvatureCovDerivAt g x (sharp j) (b j) w (b k))
+                    (sharp k)
+                  + g.inner x
+                    (closedCurvatureCovDerivAt g x (sharp j) (b k) w (b j))
+                    (sharp k)) := by
+                  refine Finset.sum_congr rfl fun k _ ↦ ?_
+                  have hFB := closedCurvatureCovDerivAt_first_bianchi_inner
+                    (g := g) (x := x) (v := sharp j)
+                    (a := b k) (u := b j) (w := w) (q := sharp k)
+                  have hAnti := closedCurvatureCovDerivAt_antisymm
+                    (g := g) (x := x) (v := sharp j) (u := w)
+                    (w := b k) (z := b j)
+                  have hPA :
+                      g.inner x
+                        (closedCurvatureCovDerivAt g x (sharp j) w (b k) (b j))
+                        (sharp k)
+                        =
+                      -g.inner x
+                        (closedCurvatureCovDerivAt g x (sharp j) (b k) w (b j))
+                        (sharp k) := by
+                    rw [hAnti, map_neg]
+                    simp
+                  linarith
+            _ =
+              (∑ k,
+                -g.inner x
+                    (closedCurvatureCovDerivAt g x (sharp j) (b j) w (b k))
+                    (sharp k))
+                +
+              ∑ k,
+                g.inner x
+                  (closedCurvatureCovDerivAt g x (sharp j) (b k) w (b j))
+                  (sharp k) := by
+                  rw [Finset.sum_add_distrib]
+            _ =
+              ∑ k,
+                g.inner x
+                  (closedCurvatureCovDerivAt g x (sharp j) (b k) w (b j))
+                  (sharp k) := by
+                  rw [Finset.sum_neg_distrib]
+                  change - (∑ k,
+                    g.inner x
+                      (closedCurvatureCovDerivAt g x (sharp j) (b j) w (b k))
+                      (sharp k))
+                    + _ = _
+                  rw [hzero]
+                  simp
+    _ = ∑ k, ∑ j,
+            g.inner x
+              (closedCurvatureCovDerivAt g x (sharp k) (b j) w (b k))
+              (sharp j) := by
+          rw [Finset.sum_comm]
+    _ = ∑ k, ∑ j, b.coord j
+        (closedCurvatureCovDerivAt g x (sharp k) (b j) w (b k)) := by
+          refine Finset.sum_congr rfl fun k _ ↦ ?_
+          refine Finset.sum_congr rfl fun j _ ↦ ?_
+          rw [coord_eq_inner_metricDualVectorAt_of_basis
+            (g := g) (x := x) (b := b)]
+
+theorem eventually_closedCurvatureDivergenceAt_contraction_eq_closedRicciDivergenceTraceAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    ∀ᶠ y in nhds x, ∀ w : TM y,
+      (letI : FiniteDimensional ℝ (TM y) :=
+          inferInstanceAs (FiniteDimensional ℝ E)
+        let b := Module.finBasis ℝ (TM y)
+        ∑ i, closedCurvatureDivergenceAt g y w
+          (metricDualVectorAt g y (b.coord i)) (b i))
+        = closedRicciDivergenceTraceAt g y w :=
+  Filter.Eventually.of_forall fun y w ↦
+    closedCurvatureDivergenceAt_contraction_eq_closedRicciDivergenceTraceAt
+      (g := g) (x := y) w
+
 /--
 Hessian identification for the first-slot trace field from the local
 first-order identity and scalar trace C² regularity.
@@ -11826,6 +12720,25 @@ theorem ClosedContractedBianchiAt.of_closed_trace_contraction_canonical
     (eventually_closedScalarContractionDerivTraceAt_eq_extDerivFun_scalarAt_canonical
       g x)
     hTraceBianchi hScalar₂ hScalarExt₂
+
+theorem closedContractedBianchiAt_canonical
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hScalar₂ : ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ g.scalarAt y) x)
+    (hScalarExt₂ : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦
+          extDerivFun (fun z : M ↦ g.scalarAt z) y (extend E w y)) x) :
+    ClosedContractedBianchiAt g x := by
+  exact ClosedContractedBianchiAt.of_closed_trace_contraction_canonical
+    (g := g) (x := x)
+    (eventually_closed_twice_contracted_bianchi_trace_of_second_bianchi
+      (g := g) (x := x)
+      (eventually_closed_cyclic_second_bianchi (g := g) x)
+      (eventually_closedCurvatureDivergenceAt_contraction_eq_closedRicciDivergenceTraceAt
+        (g := g) x))
+    hScalar₂ hScalarExt₂
 
 /-- Under twice-contracted Bianchi, `div div (-2 Ric) = -ΔR`. -/
 theorem tensorDoubleDivergenceAt_negTwoRicci_eq_neg_laplacian_scalar
