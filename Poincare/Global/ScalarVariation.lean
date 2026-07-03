@@ -5264,6 +5264,73 @@ theorem covTensor2DerivAt_ricciVariationField_symm
   rw [g.ricciAt_symm x p (g.leviCivita (extend E q) x v)]
   ring
 
+/-- A metric-orthogonal tangent frame, chosen noncomputably from the
+pointwise positive-definite metric bilinear form. -/
+noncomputable def metricOrthogonalBasisAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : Module.Basis (Fin (Module.finrank ℝ (TM x))) ℝ (TM x) :=
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  Classical.choose
+    (LinearMap.BilinForm.exists_orthogonal_basis
+      (B := g.metricBilinAt x) (g.metricBilinAt_isSymm x))
+
+/-- Pointwise squared norm of the covariant Ricci derivative.
+
+In the chosen metric-orthogonal frame this is the triple trace of
+`∇Ric ⊗ ∇Ric`, with the three diagonal metric weights divided out. -/
+noncomputable def covRicciNormSqAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let b := metricOrthogonalBasisAt g x
+  ∑ a : Fin (Module.finrank ℝ (TM x)), ∑ i : Fin (Module.finrank ℝ (TM x)),
+    ∑ j : Fin (Module.finrank ℝ (TM x)),
+      (covTensor2DerivAt g (ricciVariationField g) x (b a) (b i) (b j)) ^ 2 /
+        (g.metricBilinAt x (b a) (b a) *
+          g.metricBilinAt x (b i) (b i) *
+          g.metricBilinAt x (b j) (b j))
+
+theorem covRicciNormSqAt_eq_metricOrthogonalBasis_sum
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    covRicciNormSqAt g x =
+      let b := metricOrthogonalBasisAt g x
+      ∑ a : Fin (Module.finrank ℝ (TM x)), ∑ i : Fin (Module.finrank ℝ (TM x)),
+        ∑ j : Fin (Module.finrank ℝ (TM x)),
+          (covTensor2DerivAt g (ricciVariationField g) x (b a) (b i) (b j)) ^ 2 /
+            (g.metricBilinAt x (b a) (b a) *
+              g.metricBilinAt x (b i) (b i) *
+              g.metricBilinAt x (b j) (b j)) := by
+  rfl
+
+/-- The covariant Ricci derivative norm is nonnegative, by the
+sum-of-squares expression in a metric-orthogonal frame. -/
+theorem covRicciNormSqAt_nonneg
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    0 ≤ covRicciNormSqAt g x := by
+  classical
+  dsimp [covRicciNormSqAt]
+  let b := metricOrthogonalBasisAt g x
+  refine Finset.sum_nonneg ?_
+  intro a _
+  refine Finset.sum_nonneg ?_
+  intro i _
+  refine Finset.sum_nonneg ?_
+  intro j _
+  refine div_nonneg (sq_nonneg _) ?_
+  have ha_pos : 0 < g.metricBilinAt x (b a) (b a) :=
+    g.metricBilinAt_pos x (b.ne_zero a)
+  have hi_pos : 0 < g.metricBilinAt x (b i) (b i) :=
+    g.metricBilinAt_pos x (b.ne_zero i)
+  have hj_pos : 0 < g.metricBilinAt x (b j) (b j) :=
+    g.metricBilinAt_pos x (b.ne_zero j)
+  exact le_of_lt (mul_pos (mul_pos ha_pos hi_pos) hj_pos)
+
 /--
 Covariant derivative of the closed curvature operator in anchored
 extend-frame slots.
