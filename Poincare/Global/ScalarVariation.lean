@@ -8211,6 +8211,499 @@ theorem tensor2_moving_right_extDerivFun_eq_covTensor2DerivAt_add_corrections
   rw [hcovSwap] at hleft
   simpa [hswap, add_comm, add_left_comm, add_assoc] using hleft
 
+theorem tensor2_moving_left_mdiffAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    {K : ∀ y : M, TM y}
+    (hK : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% K) x)
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (hAddL : Tensor2AddLeft h) (hSMulL : Tensor2SMulLeft h)
+    (q : TM x) :
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ h y (K y) (extend E q y)) x := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let rhs : M → ℝ := fun y : M ↦
+    ∑ i, (∑ j, (gramMatrix g x y)⁻¹ i j *
+        g.inner y (K y) (gramFrame x y j)) *
+      h y (gramFrame x y i) (extend E q y)
+  have hevent :
+      (fun y : M ↦ h y (K y) (extend E q y)) =ᶠ[nhds x] rhs := by
+    simpa [rhs] using
+      tensor2_moving_left_eventually_eq_sum_gram_inv
+        (g := g) (h := h) hAddL hSMulL x K q
+  have hcoeffDiff : ∀ i j,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ (gramMatrix g x y)⁻¹ i j *
+          g.inner y (K y) (gramFrame x y j)) x := by
+    intro i j
+    exact (gramMatrix_inv_entry_mdiffAt (g := g) x i j).mul
+      (gramFrame_moving_inner_mdiffAt (g := g) hK j)
+  have htermDiff : ∀ i,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦
+          (∑ j, (gramMatrix g x y)⁻¹ i j *
+              g.inner y (K y) (gramFrame x y j)) *
+            h y (gramFrame x y i) (extend E q y)) x := by
+    intro i
+    have hC : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ ∑ j, (gramMatrix g x y)⁻¹ i j *
+          g.inner y (K y) (gramFrame x y j)) x := by
+      have hsum :
+          MDifferentiableAt I 𝓘(ℝ)
+            (∑ j, fun y : M ↦ (gramMatrix g x y)⁻¹ i j *
+              g.inner y (K y) (gramFrame x y j)) x :=
+        MDifferentiableAt.sum
+          (t := (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x)))))
+          (fun j _hj ↦ hcoeffDiff i j)
+      exact hsum.congr_of_eventuallyEq
+        (Filter.Eventually.of_forall fun y ↦ by simp)
+    have hH : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ h y (gramFrame x y i) (extend E q y)) x := by
+      simpa [gramFrame, b, CovTensor2ExtDifferentiableAt] using hDiff (b i) q
+    exact hC.mul hH
+  have hrhs : MDifferentiableAt I 𝓘(ℝ) rhs x := by
+    have hsum :
+        MDifferentiableAt I 𝓘(ℝ)
+          (∑ i, fun y : M ↦
+            (∑ j, (gramMatrix g x y)⁻¹ i j *
+                g.inner y (K y) (gramFrame x y j)) *
+              h y (gramFrame x y i) (extend E q y)) x :=
+      MDifferentiableAt.sum
+        (t := (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x)))))
+        (fun i _hi ↦ htermDiff i)
+    exact hsum.congr_of_eventuallyEq
+      (Filter.Eventually.of_forall fun y ↦ by simp [rhs])
+  exact hrhs.congr_of_eventuallyEq hevent
+
+theorem tensor2_moving_right_mdiffAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    {K : ∀ y : M, TM y}
+    (hK : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% K) x)
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (hAddR : Tensor2AddRight h) (hSMulR : Tensor2SMulRight h)
+    (p : TM x) :
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ h y (extend E p y) (K y)) x := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let rhs : M → ℝ := fun y : M ↦
+    ∑ i, (∑ j, (gramMatrix g x y)⁻¹ i j *
+        g.inner y (K y) (gramFrame x y j)) *
+      h y (extend E p y) (gramFrame x y i)
+  have hevent :
+      (fun y : M ↦ h y (extend E p y) (K y)) =ᶠ[nhds x] rhs := by
+    simpa [rhs] using
+      tensor2_moving_right_eventually_eq_sum_gram_inv
+        (g := g) (h := h) hAddR hSMulR x p K
+  have hcoeffDiff : ∀ i j,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ (gramMatrix g x y)⁻¹ i j *
+          g.inner y (K y) (gramFrame x y j)) x := by
+    intro i j
+    exact (gramMatrix_inv_entry_mdiffAt (g := g) x i j).mul
+      (gramFrame_moving_inner_mdiffAt (g := g) hK j)
+  have htermDiff : ∀ i,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦
+          (∑ j, (gramMatrix g x y)⁻¹ i j *
+              g.inner y (K y) (gramFrame x y j)) *
+            h y (extend E p y) (gramFrame x y i)) x := by
+    intro i
+    have hC : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ ∑ j, (gramMatrix g x y)⁻¹ i j *
+          g.inner y (K y) (gramFrame x y j)) x := by
+      have hsum :
+          MDifferentiableAt I 𝓘(ℝ)
+            (∑ j, fun y : M ↦ (gramMatrix g x y)⁻¹ i j *
+              g.inner y (K y) (gramFrame x y j)) x :=
+        MDifferentiableAt.sum
+          (t := (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x)))))
+          (fun j _hj ↦ hcoeffDiff i j)
+      exact hsum.congr_of_eventuallyEq
+        (Filter.Eventually.of_forall fun y ↦ by simp)
+    have hH : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ h y (extend E p y) (gramFrame x y i)) x := by
+      simpa [gramFrame, b, CovTensor2ExtDifferentiableAt] using hDiff p (b i)
+    exact hC.mul hH
+  have hrhs : MDifferentiableAt I 𝓘(ℝ) rhs x := by
+    have hsum :
+        MDifferentiableAt I 𝓘(ℝ)
+          (∑ i, fun y : M ↦
+            (∑ j, (gramMatrix g x y)⁻¹ i j *
+                g.inner y (K y) (gramFrame x y j)) *
+              h y (extend E p y) (gramFrame x y i)) x :=
+      MDifferentiableAt.sum
+        (t := (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x)))))
+        (fun i _hi ↦ htermDiff i)
+    exact hsum.congr_of_eventuallyEq
+      (Filter.Eventually.of_forall fun y ↦ by simp [rhs])
+  exact hrhs.congr_of_eventuallyEq hevent
+
+theorem tensor2_moving_both_eventually_eq_sum_gram_inv
+    {h : ∀ y : M, TM y → TM y → ℝ}
+    (g : ClosedSmoothRiemannianMetric n M)
+    (hAddL : Tensor2AddLeft h) (hSMulL : Tensor2SMulLeft h)
+    (x : M) (K L : ∀ y : M, TM y) :
+    (fun y : M ↦ h y (K y) (L y)) =ᶠ[nhds x]
+      fun y : M ↦
+        ∑ i, (∑ j, (gramMatrix g x y)⁻¹ i j *
+            g.inner y (K y) (gramFrame x y j)) *
+          h y (gramFrame x y i) (L y) := by
+  classical
+  filter_upwards [gramMatrix_eventually_isUnit (g := g) x] with y hG
+  simpa using
+    tensor2_gramFrame_expansion_left
+      (g := g) (h := h) hAddL hSMulL
+      (x := x) (y := y) hG (K y) (L y)
+
+set_option maxHeartbeats 5000000 in
+theorem moving_both_gram_rhs_extDerivFun_eq_sum_product
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    {K L : ∀ y : M, TM y}
+    (hK : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% K) x)
+    (hL : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% L) x)
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (hAddR : Tensor2AddRight h) (hSMulR : Tensor2SMulRight h)
+    (u : TM x) :
+    extDerivFun
+        (fun y : M ↦
+          ∑ i, (∑ j, (gramMatrix g x y)⁻¹ i j *
+              g.inner y (K y) (gramFrame x y j)) *
+            h y (gramFrame x y i) (L y)) x u =
+      (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E);
+      ∑ i,
+        (∑ j, (gramMatrix g x x)⁻¹ i j *
+            g.inner x (K x) (gramFrame x x j)) *
+          extDerivFun
+            (fun y : M ↦ h y (gramFrame x y i) (L y)) x u
+        + ∑ i, ∑ j,
+            extDerivFun
+              (fun y : M ↦ (gramMatrix g x y)⁻¹ i j *
+                g.inner y (K y) (gramFrame x y j)) x u *
+              h x (gramFrame x x i) (L x)) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let coeff : Fin (Module.finrank ℝ (TM x)) →
+      Fin (Module.finrank ℝ (TM x)) → M → ℝ :=
+    fun i j y ↦ (gramMatrix g x y)⁻¹ i j *
+      g.inner y (K y) (gramFrame x y j)
+  let C : Fin (Module.finrank ℝ (TM x)) → M → ℝ :=
+    fun i ↦ ∑ j, coeff i j
+  let H : Fin (Module.finrank ℝ (TM x)) → M → ℝ :=
+    fun i y ↦ h y (gramFrame x y i) (L y)
+  let term : Fin (Module.finrank ℝ (TM x)) → M → ℝ :=
+    fun i y ↦ C i y * H i y
+  have hcoeffDiff : ∀ i j,
+      MDifferentiableAt I 𝓘(ℝ) (coeff i j) x := by
+    intro i j
+    exact (gramMatrix_inv_entry_mdiffAt (g := g) x i j).mul
+      (gramFrame_moving_inner_mdiffAt (g := g) hK j)
+  have hCDiff : ∀ i,
+      MDifferentiableAt I 𝓘(ℝ) (C i) x := by
+    intro i
+    simpa [C] using
+      MDifferentiableAt.sum
+      (t := (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x)))))
+      (fun j _hj ↦ hcoeffDiff i j)
+  have hHDiff : ∀ i,
+      MDifferentiableAt I 𝓘(ℝ) (H i) x := by
+    intro i
+    simpa [H, gramFrame, b] using
+      tensor2_moving_right_mdiffAt
+        (g := g) (h := h) (x := x) (K := L)
+        hL hDiff hAddR hSMulR (b i)
+  have htermDiff : ∀ i,
+      MDifferentiableAt I 𝓘(ℝ) (term i) x := by
+    intro i
+    exact (hCDiff i).mul (hHDiff i)
+  have hsum := extDerivFun_sum_at
+    (n := n) (M := M)
+    (s := (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x)))))
+    (f := term) (x := x)
+    (fun i _hi ↦ htermDiff i) u
+  have hfun :
+      (fun y : M ↦
+        ∑ i, (∑ j, (gramMatrix g x y)⁻¹ i j *
+            g.inner y (K y) (gramFrame x y j)) *
+          h y (gramFrame x y i) (L y)) =
+        ∑ i, term i := by
+    funext y
+    simp [term, C, H, coeff]
+  rw [hfun]
+  rw [hsum]
+  have hrow : ∀ i,
+      extDerivFun (term i) x u =
+        C i x * extDerivFun (H i) x u
+          + (∑ j, extDerivFun (coeff i j) x u) * H i x := by
+    intro i
+    have hmul := CovariantDerivative.extDerivFun_mul
+      (p := C i) (q := H i) (x := x) (hCDiff i) (hHDiff i) u
+    have hCderiv := extDerivFun_sum_at
+      (n := n) (M := M)
+      (s := (Finset.univ : Finset (Fin (Module.finrank ℝ (TM x)))))
+      (f := fun j ↦ coeff i j) (x := x)
+      (fun j _hj ↦ hcoeffDiff i j) u
+    have hCderiv' :
+        extDerivFun (C i) x u = ∑ j, extDerivFun (coeff i j) x u := by
+      simpa [C] using hCderiv
+    rw [hCderiv'] at hmul
+    simpa [term] using hmul
+  calc
+    ∑ i, extDerivFun (term i) x u
+        = ∑ i,
+            (C i x * extDerivFun (H i) x u
+              + (∑ j, extDerivFun (coeff i j) x u) * H i x) := by
+          exact Finset.sum_congr rfl fun i _hi ↦ hrow i
+    _ =
+        ∑ i, C i x * extDerivFun (H i) x u
+          + ∑ i, (∑ j, extDerivFun (coeff i j) x u) * H i x := by
+          simp [Finset.sum_add_distrib]
+    _ =
+        ∑ i, C i x * extDerivFun (H i) x u
+          + ∑ i, ∑ j, extDerivFun (coeff i j) x u * H i x := by
+          congr 1
+          refine Finset.sum_congr rfl fun i _hi ↦ ?_
+          rw [Finset.sum_mul]
+    _ =
+        ∑ i,
+          (∑ j, (gramMatrix g x x)⁻¹ i j *
+              g.inner x (K x) (gramFrame x x j)) *
+            extDerivFun
+              (fun y : M ↦ h y (gramFrame x y i) (L y)) x u
+          + ∑ i, ∑ j,
+              extDerivFun
+                (fun y : M ↦ (gramMatrix g x y)⁻¹ i j *
+                  g.inner y (K y) (gramFrame x y j)) x u *
+                h x (gramFrame x x i) (L x) := by
+          simp [C, H, coeff, extend_apply_self]
+
+set_option maxHeartbeats 5000000 in
+theorem gram_h_extDerivFun_moving_both_contraction_eq_covTensor2DerivAt_add_corrections
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    {L : ∀ y : M, TM y}
+    (hL : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% L) x)
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (hAddL : Tensor2AddLeft h) (hSMulL : Tensor2SMulLeft h)
+    (hAddR : Tensor2AddRight h) (hSMulR : Tensor2SMulRight h)
+    (u p : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+      ∑ i,
+        (∑ j, (gramMatrix g x x)⁻¹ i j *
+            g.inner x p (gramFrame x x j)) *
+          extDerivFun
+            (fun y : M ↦ h y (gramFrame x y i) (L y)) x u)
+      =
+      covTensor2DerivAt g h x u p (L x)
+        + h x (g.leviCivita (extend E p) x u) (L x)
+        + h x p (g.leviCivita L x u) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let G : Matrix (Fin (Module.finrank ℝ (TM x)))
+      (Fin (Module.finrank ℝ (TM x))) ℝ := gramMatrix g x x
+  let Γ : TM x → TM x := fun r ↦ g.leviCivita (extend E r) x u
+  let ΓL : TM x := g.leviCivita L x u
+  let c : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+    fun i ↦ ∑ j, G⁻¹ i j * g.inner x p (b j)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hsharp : ∀ i, sharp i = ∑ j, G⁻¹ i j • b j := by
+    intro i
+    simpa [sharp, b, G] using
+      metricDualVectorAt_finBasis_coord_eq_sum_gram_inv (g := g) (x := x) i
+  have hc : ∀ i, c i = b.coord i p := by
+    intro i
+    calc
+      c i = g.inner x p (sharp i) := by
+        rw [hsharp i]
+        have hmap := map_sum (g.inner x p)
+          (fun j ↦ G⁻¹ i j • b j) Finset.univ
+        simpa [c, smul_eq_mul, mul_comm] using hmap.symm
+      _ = b.coord i p := by
+        rw [coord_eq_inner_metricDualVectorAt]
+  set Γlin : TM x →ₗ[ℝ] TM x :=
+    IsLinearMap.mk' Γ
+      ⟨(by
+          intro r s
+          change g.leviCivita (extend E (r + s)) x u =
+            g.leviCivita (extend E r) x u + g.leviCivita (extend E s) x u
+          rw [extend_tangent_add (x := x) r s]
+          have hadd := g.leviCivita.isCovariantDerivativeOnUniv.add
+            (by simpa [MDiffAtTangentField] using
+              (mdifferentiableAt_extend I E r))
+            (by simpa [MDiffAtTangentField] using
+              (mdifferentiableAt_extend I E s))
+          simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L u) hadd),
+        (by
+          intro a r
+          change g.leviCivita (extend E (a • r)) x u =
+            a • g.leviCivita (extend E r) x u
+          rw [extend_tangent_smul (x := x) a r]
+          have hsmul := g.leviCivita.isCovariantDerivativeOnUniv.smul_const a
+            (by simpa [MDiffAtTangentField] using
+              (mdifferentiableAt_extend I E r))
+          simpa using congrArg (fun L : TM x →L[ℝ] TM x ↦ L u) hsmul)⟩ with hΓlin
+  have hp_repr : p = ∑ i, b.coord i p • b i :=
+    (b.sum_repr p).symm
+  have hΓp : Γ p = ∑ i, b.coord i p • Γ (b i) := by
+    change Γlin p = ∑ i, b.coord i p • Γlin (b i)
+    rw [hp_repr]
+    simpa using map_sum Γlin (fun i ↦ b.coord i p • b i) Finset.univ
+  have hcov :
+      covTensor2DerivAt g h x u p (L x) =
+        ∑ i, b.coord i p * covTensor2DerivAt g h x u (b i) (L x) := by
+    calc
+      covTensor2DerivAt g h x u p (L x) =
+          covTensor2DerivAt g h x u (∑ i, b.coord i p • b i) (L x) := by
+            exact congrArg (fun r ↦ covTensor2DerivAt g h x u r (L x)) hp_repr
+      _ = ∑ i, b.coord i p * covTensor2DerivAt g h x u (b i) (L x) :=
+            covTensor2DerivAt_sum_left
+              (g := g) (h := h) (x := x) hDiff hAddL hSMulL
+              u (L x) (fun i ↦ b.coord i p) b
+  have hΓcorr :
+      h x (Γ p) (L x) =
+        ∑ i, b.coord i p * h x (Γ (b i)) (L x) := by
+    calc
+      h x (Γ p) (L x) = h x (∑ i, b.coord i p • Γ (b i)) (L x) := by
+        rw [hΓp]
+      _ = ∑ i, b.coord i p * h x (Γ (b i)) (L x) :=
+            tensor2_sum_left (h := h) hAddL hSMulL x
+              (fun i ↦ b.coord i p) (fun i ↦ Γ (b i)) (L x)
+  have hslotcorr :
+      h x p ΓL =
+        ∑ i, b.coord i p * h x (b i) ΓL := by
+    calc
+      h x p ΓL = h x (∑ i, b.coord i p • b i) ΓL := by
+        exact congrArg (fun r ↦ h x r ΓL) hp_repr
+      _ = ∑ i, b.coord i p * h x (b i) ΓL :=
+            tensor2_sum_left (h := h) hAddL hSMulL x
+              (fun i ↦ b.coord i p) b ΓL
+  have hentry : ∀ i,
+      extDerivFun
+          (fun y : M ↦ h y (gramFrame x y i) (L y)) x u =
+        covTensor2DerivAt g h x u (b i) (L x)
+          + h x (Γ (b i)) (L x)
+          + h x (b i) ΓL := by
+    intro i
+    have hbase :=
+      tensor2_moving_right_extDerivFun_eq_covTensor2DerivAt_add_corrections
+        (g := g) (h := h) (x := x) (K := L)
+        hL hDiff hAddR hSMulR u (b i)
+    simpa [gramFrame, b, Γ, ΓL] using hbase
+  calc
+    ∑ i,
+        (∑ j, (gramMatrix g x x)⁻¹ i j * g.inner x p (gramFrame x x j)) *
+          extDerivFun
+            (fun y : M ↦ h y (gramFrame x y i) (L y)) x u
+        =
+        ∑ i,
+          b.coord i p *
+            (covTensor2DerivAt g h x u (b i) (L x)
+              + h x (Γ (b i)) (L x)
+              + h x (b i) ΓL) := by
+          refine Finset.sum_congr rfl fun i _hi ↦ ?_
+          have hcoef :
+              (∑ j, (gramMatrix g x x)⁻¹ i j * g.inner x p (gramFrame x x j)) =
+                b.coord i p := by
+            simpa [c, G, b, gramFrame, extend_apply_self] using hc i
+          rw [hentry i]
+          rw [hcoef]
+    _ =
+        (∑ i, b.coord i p * covTensor2DerivAt g h x u (b i) (L x))
+          + (∑ i, b.coord i p * h x (Γ (b i)) (L x))
+          + (∑ i, b.coord i p * h x (b i) ΓL) := by
+          simp_rw [mul_add]
+          simp [Finset.sum_add_distrib]
+    _ =
+        covTensor2DerivAt g h x u p (L x) + h x (Γ p) (L x) + h x p ΓL := by
+          rw [← hcov, ← hΓcorr, ← hslotcorr]
+    _ =
+        covTensor2DerivAt g h x u p (L x)
+          + h x (g.leviCivita (extend E p) x u) (L x)
+          + h x p (g.leviCivita L x u) := by
+          simp [Γ, ΓL]
+
+set_option maxHeartbeats 5000000 in
+theorem tensor2_moving_both_extDerivFun_eq_covTensor2DerivAt_add_corrections
+    (g : ClosedSmoothRiemannianMetric n M)
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    {K L : ∀ y : M, TM y}
+    (hK : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% K) x)
+    (hL : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% L) x)
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (hAddL : Tensor2AddLeft h) (hSMulL : Tensor2SMulLeft h)
+    (hAddR : Tensor2AddRight h) (hSMulR : Tensor2SMulRight h)
+    (u : TM x) :
+    extDerivFun (fun y : M ↦ h y (K y) (L y)) x u =
+      covTensor2DerivAt g h x u (K x) (L x)
+        + h x (g.leviCivita K x u) (L x)
+        + h x (K x) (g.leviCivita L x u) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let rhs : M → ℝ := fun y : M ↦
+    ∑ i, (∑ j, (gramMatrix g x y)⁻¹ i j *
+        g.inner y (K y) (gramFrame x y j)) *
+      h y (gramFrame x y i) (L y)
+  have hevent :
+      (fun y : M ↦ h y (K y) (L y)) =ᶠ[nhds x] rhs := by
+    simpa [rhs] using
+      tensor2_moving_both_eventually_eq_sum_gram_inv
+        (g := g) (h := h) hAddL hSMulL x K L
+  have hcongr := congrArg (fun L' : TM x →L[ℝ] ℝ ↦ L' u)
+    (CovariantDerivative.extDerivFun_congr hevent)
+  have hprod :=
+    moving_both_gram_rhs_extDerivFun_eq_sum_product
+      (g := g) (h := h) (x := x) (K := K) (L := L)
+      hK hL hDiff hAddR hSMulR u
+  have hfixed :=
+    gram_h_extDerivFun_moving_both_contraction_eq_covTensor2DerivAt_add_corrections
+      (g := g) (h := h) (x := x) (L := L)
+      hL hDiff hAddL hSMulL hAddR hSMulR u (K x)
+  have hcoeff :=
+    gram_inv_moving_inner_deriv_contraction_eq_leviCivita_sub_correction
+      (g := g) (h := h) (x := x) (K := K)
+      hK hAddL hSMulL u (L x)
+  calc
+    extDerivFun (fun y : M ↦ h y (K y) (L y)) x u =
+        extDerivFun rhs x u := by
+          exact hcongr
+    _ =
+        (∑ i,
+          (∑ j, (gramMatrix g x x)⁻¹ i j *
+              g.inner x (K x) (gramFrame x x j)) *
+            extDerivFun
+              (fun y : M ↦ h y (gramFrame x y i) (L y)) x u)
+          + ∑ i, ∑ j,
+              extDerivFun
+                (fun y : M ↦ (gramMatrix g x y)⁻¹ i j *
+                  g.inner y (K y) (gramFrame x y j)) x u *
+                h x (gramFrame x x i) (L x) := by
+          simpa [rhs] using hprod
+    _ =
+        (covTensor2DerivAt g h x u (K x) (L x)
+          + h x (g.leviCivita (extend E (K x)) x u) (L x)
+          + h x (K x) (g.leviCivita L x u))
+          + (h x (g.leviCivita K x u) (L x)
+            - h x (g.leviCivita (extend E (K x)) x u) (L x)) := by
+          rw [hfixed, hcoeff]
+    _ =
+        covTensor2DerivAt g h x u (K x) (L x)
+          + h x (g.leviCivita K x u) (L x)
+          + h x (K x) (g.leviCivita L x u) := by
+          ring
+
 theorem leviCivita_extend_connection_field_mdiffAt
     (g : ClosedSmoothRiemannianMetric n M)
     [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
@@ -15136,6 +15629,145 @@ theorem covTensor2SecondDerivAt_pure_schwarz_cancel
   rw [hΓ] at hcomm
   linarith
 
+theorem covTensor2DerivAt_moving_extDerivFun_expansion
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hSecond : CovTensor2ExtSecondDifferentiableAt h x)
+    (hDiff : ∀ y : M, CovTensor2ExtDifferentiableAt h y)
+    (hAddL : Tensor2AddLeft h) (hSMulL : Tensor2SMulLeft h)
+    (hAddR : Tensor2AddRight h) (hSMulR : Tensor2SMulRight h)
+    (u v p q : TM x) :
+    extDerivFun
+        (fun y : M ↦ covTensor2DerivAt g h y
+          (extend E v y) (extend E p y) (extend E q y)) x u =
+      extDerivFun
+          (fun y : M ↦
+            extDerivFun
+              (fun z : M ↦ h z (extend E p z) (extend E q z)) y
+              (extend E v y)) x u
+        - extDerivFun
+            (fun y : M ↦
+              h y
+                (g.leviCivita (extend E p) y (extend E v y))
+                (extend E q y)) x u
+        - extDerivFun
+            (fun y : M ↦
+              h y (extend E p y)
+                (g.leviCivita (extend E q) y (extend E v y))) x u := by
+  let A : M → ℝ := fun y : M ↦
+    extDerivFun
+      (fun z : M ↦ h z (extend E p z) (extend E q z)) y
+      (extend E v y)
+  let B : M → ℝ := fun y : M ↦
+    h y
+      (g.leviCivita (extend E p) y (extend E v y))
+      (extend E q y)
+  let C : M → ℝ := fun y : M ↦
+    h y (extend E p y)
+      (g.leviCivita (extend E q) y (extend E v y))
+  have hevent :
+      (fun y : M ↦ covTensor2DerivAt g h y
+          (extend E v y) (extend E p y) (extend E q y)) =ᶠ[nhds x]
+        fun y : M ↦ A y - B y - C y := by
+    have hp_event := eventually_contMDiffAt_two_extend (n := n) (M := M) p
+    have hq_event := eventually_contMDiffAt_two_extend (n := n) (M := M) q
+    filter_upwards [hp_event, hq_event] with y hp2 hq2
+    have hp_mdiff :
+        MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (extend E p)) y :=
+      hp2.mdifferentiableAt two_ne_zero
+    have hq_mdiff :
+        MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (extend E q)) y :=
+      hq2.mdifferentiableAt two_ne_zero
+    have hbridge :=
+      tensor2_moving_both_extDerivFun_eq_covTensor2DerivAt_add_corrections
+        (g := g) (h := h) (x := y)
+        (K := extend E p) (L := extend E q)
+        hp_mdiff hq_mdiff
+        (hDiff y) hAddL hSMulL hAddR hSMulR (extend E v y)
+    change
+      covTensor2DerivAt g h y
+          (extend E v y) (extend E p y) (extend E q y) =
+        extDerivFun
+            (fun z : M ↦ h z (extend E p z) (extend E q z)) y
+            (extend E v y)
+          - h y
+              (g.leviCivita (extend E p) y (extend E v y))
+              (extend E q y)
+          - h y (extend E p y)
+              (g.leviCivita (extend E q) y (extend E v y))
+    rw [hbridge]
+    ring
+  have hA : MDifferentiableAt I 𝓘(ℝ) A x := by
+    simpa [A, CovTensor2ExtSecondDifferentiableAt] using hSecond p q v
+  let Γp : ∀ y : M, TM y :=
+    fun y : M ↦ g.leviCivita (extend E p) y (extend E v y)
+  let Γq : ∀ y : M, TM y :=
+    fun y : M ↦ g.leviCivita (extend E q) y (extend E v y)
+  have hΓp : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% Γp) x := by
+    simpa [Γp] using
+      leviCivita_extend_connection_field_mdiffAt
+        (g := g) (x := x) p v
+  have hΓq : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% Γq) x := by
+    simpa [Γq] using
+      leviCivita_extend_connection_field_mdiffAt
+        (g := g) (x := x) q v
+  have hB : MDifferentiableAt I 𝓘(ℝ) B x := by
+    simpa [B, Γp] using
+      tensor2_moving_left_mdiffAt
+        (g := g) (h := h) (x := x) (K := Γp)
+        hΓp (hDiff x) hAddL hSMulL q
+  have hC : MDifferentiableAt I 𝓘(ℝ) C x := by
+    simpa [C, Γq] using
+      tensor2_moving_right_mdiffAt
+        (g := g) (h := h) (x := x) (K := Γq)
+        hΓq (hDiff x) hAddR hSMulR p
+  have hnegB :
+      extDerivFun (fun y : M ↦ -B y) x u =
+        -extDerivFun B x u := by
+    have hnegFun : (fun y : M ↦ -B y) = (-1 : ℝ) • B := by
+      funext y
+      simp
+    rw [hnegFun]
+    have h := congrArg (fun L : TM x →L[ℝ] ℝ ↦ L u)
+      (extDerivFun_const_smul_at (n := n) (M := M) hB (-1 : ℝ))
+    simpa [Pi.smul_apply, smul_eq_mul] using h
+  have hsplit :
+      extDerivFun (fun y : M ↦ A y - B y - C y) x u =
+        extDerivFun A x u - extDerivFun B x u - extDerivFun C x u := by
+    have hsplit' :=
+      extDerivFun_add_sub_at
+        (n := n) (M := M)
+        (f := A) (g := fun y : M ↦ -B y) (h := C)
+        hA hB.neg hC u
+    rw [hnegB] at hsplit'
+    simpa [sub_eq_add_neg] using hsplit'
+  calc
+    extDerivFun
+        (fun y : M ↦ covTensor2DerivAt g h y
+          (extend E v y) (extend E p y) (extend E q y)) x u =
+        extDerivFun (fun y : M ↦ A y - B y - C y) x u := by
+          exact congrArg (fun L : TM x →L[ℝ] ℝ ↦ L u)
+            (CovariantDerivative.extDerivFun_congr hevent)
+    _ =
+        extDerivFun A x u - extDerivFun B x u - extDerivFun C x u := hsplit
+    _ =
+      extDerivFun
+          (fun y : M ↦
+            extDerivFun
+              (fun z : M ↦ h z (extend E p z) (extend E q z)) y
+              (extend E v y)) x u
+        - extDerivFun
+            (fun y : M ↦
+              h y
+                (g.leviCivita (extend E p) y (extend E v y))
+                (extend E q y)) x u
+        - extDerivFun
+            (fun y : M ↦
+              h y (extend E p y)
+                (g.leviCivita (extend E q) y (extend E v y))) x u := by
+          rfl
+
 /--
 Curvature-action side of the `(0,2)` tensor Ricci identity in the closed
 `covTensor2SecondDerivAt` API.
@@ -15198,6 +15830,113 @@ theorem tensor2_connection_slot_antisymm_corrections_eq_curvatureAction
   ring
 
 /--
+Closed tensor Ricci identity for a raw bilinear `(0,2)` tensor field.
+
+The `hDiff` hypothesis supplies the pointwise extension-independence bridge for
+the moving-anchor first covariant derivative; `hC2` supplies the fixed scalar
+Schwarz cancellation at `x`.
+-/
+theorem covTensor2SecondDerivAt_antisymm_eq_curvatureAction
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {h : ∀ y : M, TM y → TM y → ℝ} {x : M}
+    (hC2 : CovTensor2ExtContMDiffAt h x 2)
+    (hDiff : ∀ y : M, CovTensor2ExtDifferentiableAt h y)
+    (hAddL : Tensor2AddLeft h) (hSMulL : Tensor2SMulLeft h)
+    (hAddR : Tensor2AddRight h) (hSMulR : Tensor2SMulRight h)
+    (u v p q : TM x) :
+    covTensor2SecondDerivAt g h x u v p q
+        - covTensor2SecondDerivAt g h x v u p q =
+      covTensor2SecondDerivCurvatureActionAt g h x u v p q := by
+  let Av : ℝ :=
+    extDerivFun
+      (fun y : M ↦
+        extDerivFun
+          (fun z : M ↦ h z (extend E p z) (extend E q z)) y
+          (extend E v y)) x u
+  let Au : ℝ :=
+    extDerivFun
+      (fun y : M ↦
+        extDerivFun
+          (fun z : M ↦ h z (extend E p z) (extend E q z)) y
+          (extend E u y)) x v
+  let Bv : ℝ :=
+    extDerivFun
+      (fun y : M ↦
+        h y
+          (g.leviCivita (extend E p) y (extend E v y))
+          (extend E q y)) x u
+  let Bu : ℝ :=
+    extDerivFun
+      (fun y : M ↦
+        h y
+          (g.leviCivita (extend E p) y (extend E u y))
+          (extend E q y)) x v
+  let Cv : ℝ :=
+    extDerivFun
+      (fun y : M ↦
+        h y (extend E p y)
+          (g.leviCivita (extend E q) y (extend E v y))) x u
+  let Cu : ℝ :=
+    extDerivFun
+      (fun y : M ↦
+        h y (extend E p y)
+          (g.leviCivita (extend E q) y (extend E u y))) x v
+  let D : ℝ :=
+    covTensor2DerivAt g h x v
+        (g.leviCivita (extend E p) x u) q
+      - covTensor2DerivAt g h x u
+        (g.leviCivita (extend E p) x v) q
+  let F : ℝ :=
+    covTensor2DerivAt g h x v p
+        (g.leviCivita (extend E q) x u)
+      - covTensor2DerivAt g h x u p
+        (g.leviCivita (extend E q) x v)
+  have hraw :=
+    covTensor2SecondDerivAt_antisymm_expansion
+      (g := g) (h := h) (x := x) u v p q
+  have hbridgeV :=
+    covTensor2DerivAt_moving_extDerivFun_expansion
+      (g := g) (h := h) (x := x)
+      (covTensor2ExtSecondDifferentiableAt_of_contMDiffAt_two hC2)
+      hDiff hAddL hSMulL hAddR hSMulR u v p q
+  have hbridgeU :=
+    covTensor2DerivAt_moving_extDerivFun_expansion
+      (g := g) (h := h) (x := x)
+      (covTensor2ExtSecondDifferentiableAt_of_contMDiffAt_two hC2)
+      hDiff hAddL hSMulL hAddR hSMulR v u p q
+  have hschwarz :
+      Av - Au = 0 := by
+    simpa [Av, Au] using
+      covTensor2SecondDerivAt_pure_schwarz_cancel
+        (g := g) (h := h) (x := x) hC2 u v p q
+  have hconn :
+      - (Bv - Bu) - (Cv - Cu) - D - F =
+        covTensor2SecondDerivCurvatureActionAt g h x u v p q := by
+    simpa [Bv, Bu, Cv, Cu, D, F] using
+      tensor2_connection_slot_antisymm_corrections_eq_curvatureAction
+        (g := g) (h := h) (x := x)
+        (hDiff x) hAddL hSMulL hAddR hSMulR u v p q
+  calc
+    covTensor2SecondDerivAt g h x u v p q
+        - covTensor2SecondDerivAt g h x v u p q =
+        (extDerivFun
+            (fun y : M ↦ covTensor2DerivAt g h y
+              (extend E v y) (extend E p y) (extend E q y)) x u
+          - extDerivFun
+            (fun y : M ↦ covTensor2DerivAt g h y
+              (extend E u y) (extend E p y) (extend E q y)) x v)
+          - D - F := by
+          simpa [D, F] using hraw
+    _ = ((Av - Bv - Cv) - (Au - Bu - Cu)) - D - F := by
+          rw [hbridgeV, hbridgeU]
+    _ = (Av - Au) + (-(Bv - Bu) - (Cv - Cu) - D - F) := by
+          ring
+    _ = covTensor2SecondDerivCurvatureActionAt g h x u v p q := by
+          rw [hschwarz, hconn]
+          ring
+
+/--
 The curvature-action obstruction is antisymmetric in the two differentiated
 directions for any bilinear `(0,2)` tensor field.
 -/
@@ -15247,6 +15986,26 @@ theorem covTensor2SecondDerivCurvatureActionAt_ricciVariationField_antisymm
     (hLeft := tensor2SMulLeft_ricciVariationField g)
     (hRight := tensor2SMulRight_ricciVariationField g)
     x u v p q
+
+theorem covTensor2SecondDerivAt_ricciVariationField_antisymm_eq_curvatureAction
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hRicC2 : CovTensor2ExtContMDiffAt (ricciVariationField g) x 2)
+    (u v p q : TM x) :
+    covTensor2SecondDerivAt g (ricciVariationField g) x u v p q
+        - covTensor2SecondDerivAt g (ricciVariationField g) x v u p q =
+      covTensor2SecondDerivCurvatureActionAt
+        g (ricciVariationField g) x u v p q :=
+  covTensor2SecondDerivAt_antisymm_eq_curvatureAction
+    (g := g) (h := ricciVariationField g) (x := x)
+    hRicC2
+    (fun y ↦ covTensor2ExtDifferentiableAt_ricciVariationField_canonical g y)
+    (tensor2AddLeft_ricciVariationField g)
+    (tensor2SMulLeft_ricciVariationField g)
+    (tensor2AddRight_ricciVariationField g)
+    (tensor2SMulRight_ricciVariationField g)
+    u v p q
 
 theorem lichnerowiczCurvatureAt_ricciQuadraticAt_trace_cancellation
     (g : ClosedSmoothRiemannianMetric n M)
