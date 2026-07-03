@@ -17835,6 +17835,25 @@ theorem ricciEvolution3ReactionAt
   rw [hL, hA]
   ring
 
+/-- The pinned 3D Ricci-evolution reaction RHS, without the equality wrapper. -/
+noncomputable def ricciEvolution3ReactionRHSAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) : ℝ :=
+  roughTensorLaplacianAt g (ricciVariationField g) x u w
+    + 3 * g.scalarAt x * g.ricciAt x u w
+    - 6 * g.ricciAt x (g.ricciEndoAt x u) w
+    + (2 * g.ricciNormSqAt x - (g.scalarAt x) ^ 2) * g.inner x u w
+
+theorem ricciEvolution3ReactionAt_eq_ricciEvolution3ReactionRHSAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hn : n = 3) (x : M) (u w : TM x) :
+    ricciEvolutionTensorRHSAt g x u w =
+      ricciEvolution3ReactionRHSAt g x u w := by
+  simpa [ricciEvolution3ReactionRHSAt] using
+    ricciEvolution3ReactionAt (g := g) hn x u w
+
 set_option maxHeartbeats 5000000 in
 /--
 The Ricci-endomorphism trace of a curvature endomorphism is zero.  This is the
@@ -19483,6 +19502,112 @@ def SatisfiesRicciEvolutionAt
         HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
           (ricciEvolutionTensorRHSAt (gt t₀) x u w) t₀ :=
   Iff.rfl
+
+/--
+Substitute the Ricci-evolution equation into the abstract product rule for
+`d |Ric|^2/dt`.  The first summand is the inverse-metric motion term; the
+second summand is the lower Ricci tensor derivative paired with `Ric`.
+-/
+theorem hasDerivAt_ricciNormSqAt_of_satisfiesRicciEvolutionAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hEvol : SatisfiesRicciEvolutionAt gt t₀ x) :
+    let hRic : ∀ u w : TM x,
+        HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+          (ricciEvolutionTensorRHSAt (gt t₀) x u w) t₀ := hEvol
+    HasDerivAt (fun t ↦ (gt t).ricciNormSqAt x)
+      (2 * LinearMap.trace ℝ (TM x)
+        ((((raise'.comp ((gt t₀).ricciDualContinuousAt x) +
+            ((gt t₀).metricRaiseContinuousAt x).comp
+              (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+                (gt := gt) (t₀ := t₀) (x := x)
+                (fun u w ↦ ricciEvolutionTensorRHSAt (gt t₀) x u w) hRic)).comp
+            ((gt t₀).ricciEndoContinuousAt x)) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x)) t₀ := by
+  dsimp only
+  exact
+    ClosedSmoothRiemannianMetric.hasDerivAt_ricciNormSqAt_of_ricciBilinearHasDerivAt
+      (gt := gt) (t₀ := t₀) (x := x)
+      (δRic := fun u w ↦ ricciEvolutionTensorRHSAt (gt t₀) x u w)
+      (raise' := raise') hRaise hEvol
+
+/-- `deriv` form of `hasDerivAt_ricciNormSqAt_of_satisfiesRicciEvolutionAt`. -/
+theorem deriv_ricciNormSqAt_eq_trace_of_satisfiesRicciEvolutionAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hEvol : SatisfiesRicciEvolutionAt gt t₀ x) :
+    let hRic : ∀ u w : TM x,
+        HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+          (ricciEvolutionTensorRHSAt (gt t₀) x u w) t₀ := hEvol
+    deriv (fun t ↦ (gt t).ricciNormSqAt x) t₀ =
+      2 * LinearMap.trace ℝ (TM x)
+        ((((raise'.comp ((gt t₀).ricciDualContinuousAt x) +
+            ((gt t₀).metricRaiseContinuousAt x).comp
+              (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+                (gt := gt) (t₀ := t₀) (x := x)
+                (fun u w ↦ ricciEvolutionTensorRHSAt (gt t₀) x u w) hRic)).comp
+            ((gt t₀).ricciEndoContinuousAt x)) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x) := by
+  dsimp only
+  exact
+    (hasDerivAt_ricciNormSqAt_of_satisfiesRicciEvolutionAt
+      (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
+      hRaise hEvol).deriv
+
+/-- The proven 3D reaction form as Ricci-evolution derivative data. -/
+theorem SatisfiesRicciEvolutionAt.reaction3
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hEvol : SatisfiesRicciEvolutionAt gt t₀ x) (hn : n = 3) :
+    ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+        (ricciEvolution3ReactionRHSAt (gt t₀) x u w) t₀ := by
+  intro u w
+  have h := hEvol u w
+  convert h using 1
+  exact (ricciEvolution3ReactionAt_eq_ricciEvolution3ReactionRHSAt
+    (g := gt t₀) hn x u w).symm
+
+/--
+3D reaction-substituted `|Ric|^2` evolution expansion.  This is the same
+product rule as above, but the lower-Ricci derivative term is explicitly the
+pinned 3D reaction form supplied by `ricciEvolution3ReactionAt`.
+-/
+theorem hasDerivAt_ricciNormSqAt_of_satisfiesRicciEvolutionAt_reaction3
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hEvol : SatisfiesRicciEvolutionAt gt t₀ x) (hn : n = 3) :
+    let δRic3 : TM x → TM x → ℝ :=
+      fun u w ↦ ricciEvolution3ReactionRHSAt (gt t₀) x u w
+    let hRic3 : ∀ u w : TM x,
+        HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic3 u w) t₀ :=
+      SatisfiesRicciEvolutionAt.reaction3 (gt := gt) (t₀ := t₀) (x := x) hEvol hn
+    HasDerivAt (fun t ↦ (gt t).ricciNormSqAt x)
+      (2 * LinearMap.trace ℝ (TM x)
+        ((((raise'.comp ((gt t₀).ricciDualContinuousAt x) +
+            ((gt t₀).metricRaiseContinuousAt x).comp
+              (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+                (gt := gt) (t₀ := t₀) (x := x) δRic3 hRic3)).comp
+            ((gt t₀).ricciEndoContinuousAt x)) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x)) t₀ := by
+  dsimp only
+  exact
+    ClosedSmoothRiemannianMetric.hasDerivAt_ricciNormSqAt_of_ricciBilinearHasDerivAt
+      (gt := gt) (t₀ := t₀) (x := x)
+      (δRic := fun u w ↦ ricciEvolution3ReactionRHSAt (gt t₀) x u w)
+      (raise' := raise') hRaise
+      (SatisfiesRicciEvolutionAt.reaction3
+        (gt := gt) (t₀ := t₀) (x := x) hEvol hn)
 
 theorem satisfiesRicciEvolutionAt_of_secondDerivCommutation
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
