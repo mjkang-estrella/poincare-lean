@@ -729,6 +729,97 @@ theorem hamilton_scalar_minimum_riccati_step_at
   exact ⟨R', hR', by linarith⟩
 
 /--
+At a local spatial minimum, the closed scalar Laplacian is nonnegative.
+
+The proof passes to the fixed chart at `x`, applies the local flat
+second-derivative test to the chart representative, and then uses the
+canonical-extension Hessian identity.  The connection correction vanishes
+because `df x = 0` at a local minimum.
+-/
+theorem laplacianAt_nonneg_of_isLocalMin
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {f : M → ℝ} {x : M}
+    (hf : ContMDiffAt I 𝓘(ℝ) 2 f x)
+    (hgrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x)
+    (hmin : IsLocalMin f x) :
+    0 ≤ g.laplacianAt f x := by
+  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  letI : T2Space (TM x) := inferInstanceAs (T2Space E)
+  let F : E → ℝ := f ∘ (extChartAt I x).symm
+  let z₀ : E := extChartAt I x x
+  have hF₂ : ContDiffAt ℝ 2 F z₀ := by
+    have h := (contMDiffAt_iff.mp hf).2
+    rw [ModelWithCorners.range_eq_univ I, contDiffWithinAt_univ] at h
+    have heq : (extChartAt 𝓘(ℝ, ℝ) (f x)) ∘ f ∘ (extChartAt I x).symm = F := by
+      funext z
+      simp [F]
+    rwa [heq] at h
+  have hsymm_x : (extChartAt I x).symm z₀ = x := by
+    simp [z₀]
+  have hFmin : IsLocalMin F z₀ := by
+    have hxmin : IsLocalMin f ((extChartAt I x).symm z₀) := by
+      rw [hsymm_x]
+      exact hmin
+    have hcont : ContinuousAt ((extChartAt I x).symm : E → M) z₀ := by
+      exact continuousAt_extChartAt_symm x
+    simpa [F] using hxmin.comp_continuous hcont
+  have hdf0 : (extDerivFun f x : TM x →L[ℝ] ℝ) = 0 := by
+    ext ξ
+    have hchart :=
+      extDerivFun_apply_chart
+        (f := f) (x := x) (hf.mdifferentiableAt two_ne_zero) ξ
+    have hzero :=
+      congrArg (fun L : E →L[ℝ] ℝ => L (ξ : E)) hFmin.fderiv_eq_zero
+    rw [hchart]
+    simpa [F, z₀] using hzero
+  have hdiag : ∀ v : TM x, 0 ≤ g.hessianContinuousAt f x v v := by
+    intro v
+    have hflat :
+        0 ≤ fderiv ℝ (fderiv ℝ F) z₀ (v : E) (v : E) :=
+      RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt hF₂ hFmin (v : E)
+    have hchart :=
+      extDerivFun_extDerivFun_extend_eq_fderiv_fderiv_chart
+        (f := f) (x := x) hf v
+    have hhess :=
+      extDerivFun_extDerivFun_extend_eq_hessianAt_add
+        (g := g) (f := f) (x := x) hgrad v v
+    have hcorr :
+        extDerivFun f x (g.leviCivita (extend E v) x v) = 0 := by
+      rw [hdf0]
+      rfl
+    have hEq :
+        g.hessianAt f x v v =
+          fderiv ℝ (fderiv ℝ F) z₀ (v : E) (v : E) := by
+      have hsum :
+          g.hessianAt f x v v +
+              extDerivFun f x (g.leviCivita (extend E v) x v) =
+            fderiv ℝ (fderiv ℝ F) z₀ (v : E) (v : E) := by
+        rw [← hhess, hchart]
+      rwa [hcorr, add_zero] at hsum
+    simpa [ClosedSmoothRiemannianMetric.hessianContinuousAt_apply, hEq] using hflat
+  rw [g.laplacianAt_eq_trace_hessianContinuousAt f x]
+  exact RicciFlow.trace_dual_comp_nonneg
+    (g.metricBilinAt x) (g.metricBilinAt_nondegenerate x)
+    (g.metricBilinAt_isSymm x) (fun v hv ↦ g.metricBilinAt_pos x hv)
+    (g.hessianContinuousAt f x) hdiag
+
+/-- On a compact closed manifold, scalar curvature attains a global minimum. -/
+theorem exists_scalarAt_isMinOn
+    [CompactSpace M] [Nonempty M]
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hscalar :
+      ∀ x : M, ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ g.scalarAt y) x) :
+    ∃ x : M, IsMinOn (fun y : M ↦ g.scalarAt y) Set.univ x := by
+  obtain ⟨x, hx, hmin⟩ := isCompact_univ.exists_isMinOn
+    (Set.univ_nonempty) (fun y _ ↦ (hscalar y).continuousAt.continuousWithinAt)
+  exact ⟨x, hmin⟩
+
+/--
 Finite-time Riccati obstruction for a closed Hamilton scalar evolution track.
 
 The interval variable is shifted: `τ ∈ [0,T]` corresponds to geometric time
@@ -782,6 +873,38 @@ theorem hamilton_finite_time_singularity
         field_simp [ne_of_gt hn, ne_of_gt hu0pos]
     _ = (n : ℝ) / (2 * (gt t₀).scalarAt x₀) := by
         simp [u]
+
+/--
+Finite-time Riccati obstruction using honest spatial minimum hypotheses rather
+than prepackaged Laplacian nonnegativity.
+-/
+theorem hamilton_finite_time_singularity'
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ T : ℝ} {x₀ : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hn : 0 < (n : ℝ)) (hT0 : 0 ≤ T)
+    (hHam : ∀ τ ∈ Set.Icc (0 : ℝ) T,
+      SatisfiesHamiltonScalarEvolutionAt gt (t₀ + τ) x₀)
+    (hScalar₂ : ∀ τ ∈ Set.Icc (0 : ℝ) T,
+      ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ (gt (t₀ + τ)).scalarAt y) x₀)
+    (hScalarGrad : ∀ τ ∈ Set.Icc (0 : ℝ) T,
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% ((gt (t₀ + τ)).gradient
+          (fun y : M ↦ (gt (t₀ + τ)).scalarAt y))) x₀)
+    (hMin : ∀ τ ∈ Set.Icc (0 : ℝ) T,
+      IsMinOn (fun y : M ↦ (gt (t₀ + τ)).scalarAt y) Set.univ x₀)
+    (hRpos : 0 < (gt t₀).scalarAt x₀) :
+    T < (n : ℝ) / (2 * (gt t₀).scalarAt x₀) := by
+  refine hamilton_finite_time_singularity
+    (gt := gt) (t₀ := t₀) (T := T) (x₀ := x₀)
+    hn hT0 hHam ?_ hRpos
+  intro τ hτ
+  exact laplacianAt_nonneg_of_isLocalMin
+    (g := gt (t₀ + τ))
+    (f := fun y : M ↦ (gt (t₀ + τ)).scalarAt y)
+    (x := x₀) (hScalar₂ τ hτ) (hScalarGrad τ hτ)
+    ((hMin τ hτ).isLocalMin Filter.univ_mem)
 
 /--
 The unproven closed-manifold Hamilton scalar evolution frontier.
