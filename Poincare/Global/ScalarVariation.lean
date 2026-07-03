@@ -16616,6 +16616,72 @@ theorem satisfiesRicciEvolutionAt_of_secondDerivCommutation
   intro u w
   simpa [SatisfiesRicciEvolutionAt, hComm u w] using hDeltaRic u w
 
+theorem satisfiesRicciEvolutionAt_of_ricciFlow_curvatureCommutation
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hreg : MetricFlowRegularAt gt t₀ x)
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hExt :
+      ∀ a b c : TM x,
+        HasDerivAt
+          (fun t ↦
+            extDerivFun
+              (fun y : M ↦ (gt t).inner y (extend E b y) (extend E c y)) x a)
+          (extDerivFun
+            (fun y : M ↦ timeDerivAt gt t₀ y (extend E b y) (extend E c y))
+            x a) t₀)
+    (hNear :
+      ∀ᶠ y in nhds x,
+        MetricFlowRegularAt gt t₀ y ∧
+        (∀ a b c : TM y,
+          HasDerivAt
+            (fun t ↦
+              extDerivFun
+                (fun z : M ↦ (gt t).inner z (extend E b z) (extend E c z))
+                y a)
+            (extDerivFun
+              (fun z : M ↦ timeDerivAt gt t₀ z (extend E b z) (extend E c z))
+              y a) t₀))
+    (hBridge : DeltaGammaEntryDerivativeBridgeAt gt t₀ x)
+    (hSecond :
+      CovTensor2DerivExtDifferentiableAt
+        (gt t₀) (timeDerivAt gt t₀) x)
+    (hFlowNear :
+      ∀ᶠ y in nhds x,
+        IsClosedRicciFlowSolutionAt gt t₀ y ∧
+        ClosedRicciFlowExtensionRegularAt gt t₀ y)
+    (hCurvComm : RicciSecondDerivCurvatureCommutationAt (gt t₀) x) :
+    SatisfiesRicciEvolutionAt gt t₀ x := by
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  have hDeltaRic : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+        (deltaRicciSecondDerivContractionAt
+          (gt t₀) (negTwoRicciVariationField (gt t₀)) x u w) t₀ := by
+    intro u w
+    have hDeriv := ricciVariation_eq_deltaGamma_contractions'
+      (gt := gt) (t₀ := t₀) (x := x) hreg u w
+    have hEq :=
+      deltaRicciAt_eq_negTwoRicci_secondDerivContractionAt_of_isClosedRicciFlowSolutionAt_near
+        (gt := gt) (t₀ := t₀) (x := x)
+        hreg hgt hExt hNear hBridge hSecond hFlowNear u w
+    simpa [hEq] using hDeriv
+  have hCyclic :
+      ∀ u v w z : TM x,
+        closedCurvatureCovDerivAt g x v u w z
+          + closedCurvatureCovDerivAt g x u w v z
+          + closedCurvatureCovDerivAt g x w v u z = 0 := by
+    simpa [g] using
+      (eventually_closed_cyclic_second_bianchi (g := g) x).self_of_nhds
+  have hComm : RicciSecondDerivCommutationAt (gt t₀) x := by
+    simpa [g] using
+      RicciSecondDerivCommutationAt.of_closed_bianchi
+        (g := g) (x := x)
+        (closedRicciDerivativeExpansionAt_canonical (g := g) x)
+        hCyclic hCurvComm
+  exact satisfiesRicciEvolutionAt_of_secondDerivCommutation
+    (gt := gt) (t₀ := t₀) (x := x) hDeltaRic hComm
+
 /--
 Exact divergence assembly for the first `δΓ` contraction:
 the divergence of the inner-trace one-form gives
