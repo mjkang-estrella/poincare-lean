@@ -13443,6 +13443,40 @@ noncomputable def ricciQuadraticAt
       (sharp i)
 
 /--
+Target statement for the closed Ricci-tensor evolution equation under Ricci
+flow.
+
+This is a statement-layer target only: no theorem below claims the target from
+`IsClosedRicciFlowSolutionAt`.  The intended future theorem is that Ricci-flow
+regularity plus the curvature-commutation/trace identities prove this Prop.
+The scalar trace of this target is expected to match the already-proved
+Hamilton scalar evolution statement once the trace lemmas for
+`lichnerowiczLaplacianAt` and `ricciQuadraticAt` are available.
+-/
+def SatisfiesRicciEvolutionAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1] :
+    Prop :=
+  ∀ u w : TM x,
+    HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+      (lichnerowiczLaplacianAt
+          (gt t₀) (ricciVariationField (gt t₀)) x u w
+        + ricciQuadraticAt (gt t₀) x u w) t₀
+
+@[simp] theorem satisfiesRicciEvolutionAt_iff
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1] :
+    SatisfiesRicciEvolutionAt gt t₀ x ↔
+      ∀ u w : TM x,
+        HasDerivAt (fun t ↦ (gt t).ricciAt x u w)
+          (lichnerowiczLaplacianAt
+              (gt t₀) (ricciVariationField (gt t₀)) x u w
+            + ricciQuadraticAt (gt t₀) x u w) t₀ :=
+  Iff.rfl
+
+/--
 Exact divergence assembly for the first `δΓ` contraction:
 the divergence of the inner-trace one-form gives
 `div div h - 1/2 Δ tr h`.
