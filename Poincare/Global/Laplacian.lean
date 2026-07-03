@@ -418,6 +418,22 @@ theorem hessianDualAt_apply (g : ClosedSmoothRiemannianMetric n M)
     g.hessianDualAt f x v w = g.hessianAt f x v w :=
   rfl
 
+/-- The Hessian at `x` as a continuous bilinear map on the tangent fiber. -/
+noncomputable def hessianContinuousAt (g : ClosedSmoothRiemannianMetric n M)
+    (f : M → ℝ) (x : M) : TM x →L[ℝ] TM x →L[ℝ] ℝ :=
+  letI : FiniteDimensional ℝ (TM x) := tangentFiniteDimensional x
+  letI : T2Space (TM x) := tangentT2Space x
+  LinearMap.toContinuousLinearMap
+    (((LinearMap.toContinuousLinearMap :
+        (TM x →ₗ[ℝ] ℝ) ≃ₗ[ℝ] (TM x →L[ℝ] ℝ)).toLinearMap) ∘ₗ
+      g.hessianDualAt f x)
+
+@[simp]
+theorem hessianContinuousAt_apply (g : ClosedSmoothRiemannianMetric n M)
+    (f : M → ℝ) (x : M) (v w : TM x) :
+    g.hessianContinuousAt f x v w = g.hessianAt f x v w := by
+  simp [hessianContinuousAt]
+
 theorem hessianDualAt_congr_of_eventuallyEq
     (g : ClosedSmoothRiemannianMetric n M)
     {f h : M → ℝ} {x : M}
@@ -442,6 +458,25 @@ noncomputable def laplacianAt (g : ClosedSmoothRiemannianMetric n M)
     (((LinearMap.BilinForm.toDual (g.metricBilinAt x)
         (g.metricBilinAt_nondegenerate x)).symm.toLinearMap) ∘ₗ
       g.hessianDualAt f x)
+
+/--
+The algebraic-dual Laplacian trace is the same trace obtained by converting the
+continuous-bilinear Hessian back to algebraic duals.
+-/
+theorem laplacianAt_eq_trace_hessianContinuousAt
+    (g : ClosedSmoothRiemannianMetric n M) (f : M → ℝ) (x : M) :
+    g.laplacianAt f x =
+      (letI : FiniteDimensional ℝ (TM x) := tangentFiniteDimensional x
+       letI : T2Space (TM x) := tangentT2Space x
+       LinearMap.trace ℝ (TM x)
+          (((LinearMap.BilinForm.toDual (g.metricBilinAt x)
+              (g.metricBilinAt_nondegenerate x)).symm.toLinearMap) ∘ₗ
+            (LinearMap.toContinuousLinearMap.symm.toLinearMap.comp
+              ((g.hessianContinuousAt f x).toLinearMap)))) := by
+  letI : FiniteDimensional ℝ (TM x) := tangentFiniteDimensional x
+  letI : T2Space (TM x) := tangentT2Space x
+  unfold laplacianAt hessianContinuousAt
+  congr 1
 
 theorem laplacianAt_congr_of_eventuallyEq
     (g : ClosedSmoothRiemannianMetric n M)
