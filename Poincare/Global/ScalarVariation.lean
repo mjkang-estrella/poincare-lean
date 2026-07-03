@@ -4680,6 +4680,86 @@ theorem gramMatrix_extDerivFun_eq_leviCivita
   rw [gramMatrix_extDerivFun_eq_spatialMetricDerivAt,
     spatialMetricDerivAt_eq_leviCivita]
 
+/-- Moving-field Gram-frame inner coefficients are differentiable at the anchor. -/
+theorem gramFrame_moving_inner_mdiffAt
+    (g : ClosedSmoothRiemannianMetric n M) {x : M}
+    {K : ∀ y : M, TM y}
+    (hK : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% K) x)
+    (j : Fin (Module.finrank ℝ (TM x))) :
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ g.inner y (K y) (gramFrame x y j)) x := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  simpa [gramFrame, b] using
+    g.metric_pairing_mdiffAt hK (mdifferentiableAt_extend I E (b j))
+
+/--
+Derivative of the moving-field Gram-frame inner coefficient.
+
+The first term is the honest covariant derivative of `K`; the second is the
+canonical-frame Levi-Civita correction that later cancels against the
+inverse-Gram derivative block.
+-/
+theorem gramFrame_moving_inner_extDerivFun_eq_leviCivita
+    (g : ClosedSmoothRiemannianMetric n M) {x : M}
+    {K : ∀ y : M, TM y}
+    (hK : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% K) x)
+    (u : TM x) (j : Fin (Module.finrank ℝ (TM x))) :
+    extDerivFun (fun y : M ↦ g.inner y (K y) (gramFrame x y j)) x u =
+      (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E);
+      let b := Module.finBasis ℝ (TM x);
+      g.inner x (g.leviCivita K x u) (b j)
+        + g.inner x (K x) (g.leviCivita (extend E (b j)) x u)) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let B : ∀ y : M, TM y := extend E (b j)
+  have hB : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% B) x := by
+    simpa [B] using (mdifferentiableAt_extend I E (b j))
+  have hcompat :=
+    g.leviCivita_metricCompatibleAt x
+      (Y := K) (Z := B)
+      (by simpa [MDiffAtTangentField] using hK)
+      (by simpa [MDiffAtTangentField] using hB)
+      u
+  simpa [gramFrame, b, B, extend_apply_self] using hcompat
+
+/-- Product-rule derivative for the moving-K Gram coefficient block. -/
+theorem gram_inv_moving_inner_extDerivFun_eq_product
+    (g : ClosedSmoothRiemannianMetric n M) {x : M}
+    {K : ∀ y : M, TM y}
+    (hK : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% K) x)
+    (u : TM x)
+    (i j : Fin (Module.finrank ℝ (TM x))) :
+    extDerivFun
+        (fun y : M ↦ (gramMatrix g x y)⁻¹ i j *
+          g.inner y (K y) (gramFrame x y j)) x u =
+      (gramMatrix g x x)⁻¹ i j *
+          (letI : FiniteDimensional ℝ (TM x) :=
+            inferInstanceAs (FiniteDimensional ℝ E);
+          let b := Module.finBasis ℝ (TM x);
+          g.inner x (g.leviCivita K x u) (b j)
+            + g.inner x (K x) (g.leviCivita (extend E (b j)) x u))
+        + extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x u *
+          g.inner x (K x) (gramFrame x x j) := by
+  have hinv : MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ (gramMatrix g x y)⁻¹ i j) x :=
+    gramMatrix_inv_entry_mdiffAt (g := g) x i j
+  have hinner : MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ g.inner y (K y) (gramFrame x y j)) x :=
+    gramFrame_moving_inner_mdiffAt (g := g) hK j
+  have hmul := CovariantDerivative.extDerivFun_mul
+    (p := fun y : M ↦ (gramMatrix g x y)⁻¹ i j)
+    (q := fun y : M ↦ g.inner y (K y) (gramFrame x y j))
+    (x := x) hinv hinner u
+  rw [gramFrame_moving_inner_extDerivFun_eq_leviCivita
+    (g := g) (K := K) hK u j] at hmul
+  simpa using hmul
+
 /-- The covector `q ↦ g(p, ∇ᵥ q)` in the closed canonical-extension vocabulary. -/
 noncomputable def leviCivitaRightCovectorLinearAt
     (g : ClosedSmoothRiemannianMetric n M) (x : M)
