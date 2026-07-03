@@ -3264,6 +3264,132 @@ private theorem tensor2_metricDual_expansion_right
           exact tensor2_sum_right (h := h) hAddR hSMulR x p
             (fun i ↦ g.inner x v (b i)) sharp
 
+private theorem gramFrameBasis_coord_eq_sum_inv_inner
+    (g : ClosedSmoothRiemannianMetric n M) {x y : M}
+    (hG : IsUnit (gramMatrix g x y))
+    (i : Fin (Module.finrank ℝ (TM x))) (v : TM y) :
+    (gramFrameBasis g x y hG).coord i v =
+      ∑ j, (gramMatrix g x y)⁻¹ i j *
+        g.inner y v (gramFrame x y j) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let B := gramFrameBasis g x y hG
+  have hcoord :
+      B.coord i v =
+        g.inner y v (metricDualVectorAt g y (B.coord i)) := by
+    exact coord_eq_inner_metricDualVectorAt_of_basis
+      (g := g) (x := y) (b := B) i v
+  have hsharp :
+      metricDualVectorAt g y (B.coord i) =
+        ∑ j, (gramMatrix g x y)⁻¹ i j • gramFrame x y j := by
+    simpa [B] using
+      metricDualVectorAt_gramFrameBasis_coord_eq_sum_inv
+        (g := g) (x := x) (y := y) hG i
+  have hsum :
+      g.inner y v
+          (∑ j, (gramMatrix g x y)⁻¹ i j • gramFrame x y j) =
+        ∑ j, (gramMatrix g x y)⁻¹ i j *
+          g.inner y v (gramFrame x y j) := by
+    have hmap := map_sum (g.inner y v)
+      (fun j ↦ (gramMatrix g x y)⁻¹ i j • gramFrame x y j)
+      Finset.univ
+    simpa [smul_eq_mul] using hmap
+  rw [hcoord, hsharp, hsum]
+
+private theorem tensor2_gramFrame_expansion_left
+    {h : ∀ y : M, TM y → TM y → ℝ}
+    (g : ClosedSmoothRiemannianMetric n M)
+    (hAddL : Tensor2AddLeft h) (hSMulL : Tensor2SMulLeft h)
+    {x y : M} (hG : IsUnit (gramMatrix g x y)) (v q : TM y) :
+    h y v q =
+      ∑ i, (∑ j, (gramMatrix g x y)⁻¹ i j *
+          g.inner y v (gramFrame x y j)) *
+        h y (gramFrame x y i) q := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let B := gramFrameBasis g x y hG
+  have hrepr : v = ∑ i, B.coord i v • B i := (B.sum_repr v).symm
+  calc
+    h y v q = h y (∑ i, B.coord i v • B i) q :=
+          congrArg (fun u ↦ h y u q) hrepr
+    _ = ∑ i, B.coord i v * h y (B i) q := by
+          exact tensor2_sum_left (h := h) hAddL hSMulL y (fun i ↦ B.coord i v) B q
+    _ = ∑ i, (∑ j, (gramMatrix g x y)⁻¹ i j *
+          g.inner y v (gramFrame x y j)) *
+        h y (gramFrame x y i) q := by
+          refine Finset.sum_congr rfl fun i _hi ↦ ?_
+          rw [gramFrameBasis_coord_eq_sum_inv_inner (g := g) (x := x) (y := y) hG]
+          simp [B]
+
+private theorem tensor2_gramFrame_expansion_right
+    {h : ∀ y : M, TM y → TM y → ℝ}
+    (g : ClosedSmoothRiemannianMetric n M)
+    (hAddR : Tensor2AddRight h) (hSMulR : Tensor2SMulRight h)
+    {x y : M} (hG : IsUnit (gramMatrix g x y)) (p v : TM y) :
+    h y p v =
+      ∑ i, (∑ j, (gramMatrix g x y)⁻¹ i j *
+          g.inner y v (gramFrame x y j)) *
+        h y p (gramFrame x y i) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let B := gramFrameBasis g x y hG
+  have hrepr : v = ∑ i, B.coord i v • B i := (B.sum_repr v).symm
+  calc
+    h y p v = h y p (∑ i, B.coord i v • B i) :=
+          congrArg (fun u ↦ h y p u) hrepr
+    _ = ∑ i, B.coord i v * h y p (B i) := by
+          exact tensor2_sum_right (h := h) hAddR hSMulR y p
+            (fun i ↦ B.coord i v) B
+    _ = ∑ i, (∑ j, (gramMatrix g x y)⁻¹ i j *
+          g.inner y v (gramFrame x y j)) *
+        h y p (gramFrame x y i) := by
+          refine Finset.sum_congr rfl fun i _hi ↦ ?_
+          rw [gramFrameBasis_coord_eq_sum_inv_inner (g := g) (x := x) (y := y) hG]
+          simp [B]
+
+theorem tensor2_moving_left_eventually_eq_sum_gram_inv
+    {h : ∀ y : M, TM y → TM y → ℝ}
+    (g : ClosedSmoothRiemannianMetric n M)
+    (hAddL : Tensor2AddLeft h) (hSMulL : Tensor2SMulLeft h)
+    (x : M) (K : ∀ y : M, TM y) (q : TM x) :
+    (fun y : M ↦ h y (K y) (extend E q y)) =ᶠ[nhds x]
+      fun y : M ↦
+        ∑ i, (∑ j, (gramMatrix g x y)⁻¹ i j *
+            g.inner y (K y) (gramFrame x y j)) *
+          h y (gramFrame x y i) (extend E q y) := by
+  classical
+  filter_upwards [gramMatrix_eventually_isUnit (g := g) x] with y hG
+  simpa using
+    tensor2_gramFrame_expansion_left
+      (g := g) (h := h) hAddL hSMulL
+      (x := x) (y := y) hG (K y) (extend E q y)
+
+theorem tensor2_moving_right_eventually_eq_sum_gram_inv
+    {h : ∀ y : M, TM y → TM y → ℝ}
+    (g : ClosedSmoothRiemannianMetric n M)
+    (hAddR : Tensor2AddRight h) (hSMulR : Tensor2SMulRight h)
+    (x : M) (p : TM x) (K : ∀ y : M, TM y) :
+    (fun y : M ↦ h y (extend E p y) (K y)) =ᶠ[nhds x]
+      fun y : M ↦
+        ∑ i, (∑ j, (gramMatrix g x y)⁻¹ i j *
+            g.inner y (K y) (gramFrame x y j)) *
+          h y (extend E p y) (gramFrame x y i) := by
+  classical
+  filter_upwards [gramMatrix_eventually_isUnit (g := g) x] with y hG
+  simpa using
+    tensor2_gramFrame_expansion_right
+      (g := g) (h := h) hAddR hSMulR
+      (x := x) (y := y) hG (extend E p y) (K y)
+
 def CovTensor2ExtDifferentiableAt
     (h : ∀ y : M, TM y → TM y → ℝ) (x : M) : Prop :=
   ∀ p q : TM x,
