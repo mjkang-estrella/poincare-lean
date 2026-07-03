@@ -10702,6 +10702,81 @@ theorem closedBracketConnectionEntryFieldAt_cyclic_outputConnection_eq_connectio
     closedBracketConnectionEntryFieldAt_outputConnection_eq_connectionEntry_sub
       (g := g) (x := x) (v := w) (a := v) (u := u) (w := z) (q := q)]
 
+set_option maxHeartbeats 5000000 in
+/--
+Route-2 product-rule bridge for the cyclic output-connection derivative block.
+It is the raw mixed-second Schwarz cancellation expanded through
+`closedSecondDirectionalEntryAt_connectionEntry_eq_iterated_add_output`.
+-/
+theorem closedConnectionEntryOutputConnection_extDerivFun_cyclic_eq_covTensor2DerivAt_cyclic
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u v w z q : TM x) :
+    - extDerivFun (closedConnectionEntryOutputConnectionFieldAt g u w z q) x v
+      + extDerivFun (closedConnectionEntryOutputConnectionFieldAt g w u z q) x v
+      - extDerivFun (closedConnectionEntryOutputConnectionFieldAt g w v z q) x u
+      + extDerivFun (closedConnectionEntryOutputConnectionFieldAt g v w z q) x u
+      - extDerivFun (closedConnectionEntryOutputConnectionFieldAt g v u z q) x w
+      + extDerivFun (closedConnectionEntryOutputConnectionFieldAt g u v z q) x w =
+        covTensor2DerivAt g (closedIteratedConnectionEntryFieldAt g w z) x v u q
+        - covTensor2DerivAt g (closedIteratedConnectionEntryFieldAt g w z) x u v q
+        + covTensor2DerivAt g (closedIteratedConnectionEntryFieldAt g v z) x u w q
+        - covTensor2DerivAt g (closedIteratedConnectionEntryFieldAt g v z) x w u q
+        + covTensor2DerivAt g (closedIteratedConnectionEntryFieldAt g u z) x w v q
+        - covTensor2DerivAt g (closedIteratedConnectionEntryFieldAt g u z) x v w q
+        + closedIteratedConnectionEntryFieldAt g w z x u
+          (g.leviCivita (extend E q) x v)
+        - closedIteratedConnectionEntryFieldAt g w z x v
+          (g.leviCivita (extend E q) x u)
+        + closedIteratedConnectionEntryFieldAt g v z x w
+          (g.leviCivita (extend E q) x u)
+        - closedIteratedConnectionEntryFieldAt g v z x u
+          (g.leviCivita (extend E q) x w)
+        + closedIteratedConnectionEntryFieldAt g u z x v
+          (g.leviCivita (extend E q) x w)
+        - closedIteratedConnectionEntryFieldAt g u z x w
+          (g.leviCivita (extend E q) x v)
+        - closedConnectionEntryOutputConnectionFieldAt g
+          (g.leviCivita (extend E u) x v) w z q x
+        + closedConnectionEntryOutputConnectionFieldAt g
+          (g.leviCivita (extend E v) x u) w z q x
+        - closedConnectionEntryOutputConnectionFieldAt g
+          (g.leviCivita (extend E w) x u) v z q x
+        + closedConnectionEntryOutputConnectionFieldAt g
+          (g.leviCivita (extend E u) x w) v z q x
+        - closedConnectionEntryOutputConnectionFieldAt g
+          (g.leviCivita (extend E v) x w) u z q x
+        + closedConnectionEntryOutputConnectionFieldAt g
+          (g.leviCivita (extend E w) x v) u z q x := by
+  have hraw :=
+    closedConnectionEntry_mixed_second_cyclic_cancel
+      (g := g) (x := x) (u := u) (v := v) (w := w) (z := z) (q := q)
+  rw [closedSecondDirectionalEntryAt_connectionEntry_eq_iterated_add_output
+      (g := g) (x := x) (v := v) (a := u) (u := w) (z := z) (q := q),
+    closedSecondDirectionalEntryAt_connectionEntry_eq_iterated_add_output
+      (g := g) (x := x) (v := u) (a := v) (u := w) (z := z) (q := q),
+    closedSecondDirectionalEntryAt_connectionEntry_eq_iterated_add_output
+      (g := g) (x := x) (v := u) (a := w) (u := v) (z := z) (q := q),
+    closedSecondDirectionalEntryAt_connectionEntry_eq_iterated_add_output
+      (g := g) (x := x) (v := w) (a := u) (u := v) (z := z) (q := q),
+    closedSecondDirectionalEntryAt_connectionEntry_eq_iterated_add_output
+      (g := g) (x := x) (v := w) (a := v) (u := u) (z := z) (q := q),
+    closedSecondDirectionalEntryAt_connectionEntry_eq_iterated_add_output
+      (g := g) (x := x) (v := v) (a := w) (u := u) (z := z) (q := q)] at hraw
+  rw [closedIteratedConnectionEntry_extDerivFun_eq
+      (g := g) (x := x) (v := v) (a := u) (u := w) (w := z) (q := q),
+    closedIteratedConnectionEntry_extDerivFun_eq
+      (g := g) (x := x) (v := u) (a := v) (u := w) (w := z) (q := q),
+    closedIteratedConnectionEntry_extDerivFun_eq
+      (g := g) (x := x) (v := u) (a := w) (u := v) (w := z) (q := q),
+    closedIteratedConnectionEntry_extDerivFun_eq
+      (g := g) (x := x) (v := w) (a := u) (u := v) (w := z) (q := q),
+    closedIteratedConnectionEntry_extDerivFun_eq
+      (g := g) (x := x) (v := w) (a := v) (u := u) (w := z) (q := q),
+    closedIteratedConnectionEntry_extDerivFun_eq
+      (g := g) (x := x) (v := v) (a := w) (u := u) (w := z) (q := q)] at hraw
+  linarith
+
 /--
 Hessian identification for the first-slot trace field from the local
 first-order identity and scalar trace C² regularity.
