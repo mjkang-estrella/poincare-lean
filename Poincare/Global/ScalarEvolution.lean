@@ -667,6 +667,66 @@ theorem satisfiesHamiltonScalarEvolutionAt_of_ricciFlow_trace_derivative_variati
     (deltaGammaContractionTraceHessianAssemblyAt_of_traceHessianDerivative hCon)
     hTensorSub hTraceLap hlin hBianchi
 
+/-- The Ricci pinching inequality gives the Hamilton reaction lower bound. -/
+theorem hamilton_scalar_reaction_bound_at
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (hn : 0 < (n : ℝ)) :
+    (2 / (n : ℝ)) * g.scalarAt x ^ 2 ≤ 2 * g.ricciNormSqAt x := by
+  have hpinch := g.scalarAt_sq_le_nat_mul_ricciNormSqAt x
+  have hscale :=
+    mul_le_mul_of_nonneg_left hpinch
+      (show 0 ≤ 2 / (n : ℝ) by positivity)
+  calc
+    (2 / (n : ℝ)) * g.scalarAt x ^ 2
+        ≤ (2 / (n : ℝ)) * ((n : ℝ) * g.ricciNormSqAt x) := hscale
+    _ = 2 * g.ricciNormSqAt x := by
+        field_simp [ne_of_gt hn]
+
+/--
+Pointwise Hamilton-Riccati supersolution:
+`∂ₜR ≥ ΔR + (2/n) R²`, with the derivative supplied by
+`SatisfiesHamiltonScalarEvolutionAt`.
+-/
+theorem hamilton_scalar_riccati_supersolution_at
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hn : 0 < (n : ℝ))
+    (hHam : SatisfiesHamiltonScalarEvolutionAt gt t₀ x) :
+    ∃ R',
+      HasDerivAt (fun t ↦ (gt t).scalarAt x) R' t₀ ∧
+        (gt t₀).laplacianAt (fun y ↦ (gt t₀).scalarAt y) x
+            + (2 / (n : ℝ)) * (gt t₀).scalarAt x ^ 2 ≤ R' := by
+  refine ⟨(gt t₀).laplacianAt (fun y ↦ (gt t₀).scalarAt y) x
+      + 2 * (gt t₀).ricciNormSqAt x, ?_, ?_⟩
+  · simpa [SatisfiesHamiltonScalarEvolutionAt] using hHam
+  · have hreact :=
+      hamilton_scalar_reaction_bound_at
+        (g := gt t₀) (x := x) hn
+    linarith
+
+/--
+At a spatial minimum, the Laplacian contribution is nonnegative, so the scalar
+minimum obeys the pointwise Riccati differential inequality.  The hypothesis
+`hMinLap` is the honest spatial-minimum witness `0 ≤ ΔR` at `x`.
+-/
+theorem hamilton_scalar_minimum_riccati_step_at
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hn : 0 < (n : ℝ))
+    (hHam : SatisfiesHamiltonScalarEvolutionAt gt t₀ x)
+    (hMinLap :
+      0 ≤ (gt t₀).laplacianAt (fun y ↦ (gt t₀).scalarAt y) x) :
+    ∃ R',
+      HasDerivAt (fun t ↦ (gt t).scalarAt x) R' t₀ ∧
+        (2 / (n : ℝ)) * (gt t₀).scalarAt x ^ 2 ≤ R' := by
+  rcases hamilton_scalar_riccati_supersolution_at
+      (gt := gt) (t₀ := t₀) (x := x) hn hHam with
+    ⟨R', hR', hineq⟩
+  exact ⟨R', hR', by linarith⟩
+
 /--
 The unproven closed-manifold Hamilton scalar evolution frontier.
 
