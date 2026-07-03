@@ -11093,6 +11093,72 @@ theorem closedIteratedConnectionEntryCovDerivCyclicAt_eq_correction_iterated_cyc
   ring_nf at hout hpair ⊢
   linarith
 
+set_option maxHeartbeats 5000000 in
+theorem closedCurvatureDefExpansionResidueAt_cyclic_eq_correction_cyclic
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u v w z q : TM x) :
+    closedCurvatureDefExpansionResidueAt g x v u w z q
+      + closedCurvatureDefExpansionResidueAt g x u w v z q
+      + closedCurvatureDefExpansionResidueAt g x w v u z q =
+        closedCurvatureCovDerivAtCorrectionAt g x v u w z q
+          + closedCurvatureCovDerivAtCorrectionAt g x u w v z q
+          + closedCurvatureCovDerivAtCorrectionAt g x w v u z q := by
+  have hout :=
+    closedConnectionEntryOutputConnection_extDerivFun_cyclic_eq_packaged
+      (g := g) (x := x) (u := u) (v := v) (w := w) (z := z) (q := q)
+  have hcov :=
+    closedIteratedConnectionEntryCovDerivCyclicAt_eq_correction_iterated_cyclic
+      (g := g) (x := x) (u := u) (v := v) (w := w) (z := z) (q := q)
+  rw [closedCurvatureCovDerivAtCorrectionAt_eq_connection_entry_terms
+      (g := g) (x := x) (v := v) (a := u) (u := w) (z := z) (q := q),
+    closedCurvatureCovDerivAtCorrectionAt_eq_connection_entry_terms
+      (g := g) (x := x) (v := u) (a := w) (u := v) (z := z) (q := q),
+    closedCurvatureCovDerivAtCorrectionAt_eq_connection_entry_terms
+      (g := g) (x := x) (v := w) (a := v) (u := u) (z := z) (q := q)]
+  unfold closedCurvatureDefExpansionResidueAt
+  rw [closedBracketConnectionEntryFieldAt_extend_extDerivFun_eq_zero
+      (g := g) (x := x) (v := v) (a := u) (u := w) (w := z) (q := q),
+    closedBracketConnectionEntryFieldAt_extend_extDerivFun_eq_zero
+      (g := g) (x := x) (v := u) (a := w) (u := v) (w := z) (q := q),
+    closedBracketConnectionEntryFieldAt_extend_extDerivFun_eq_zero
+      (g := g) (x := x) (v := w) (a := v) (u := u) (w := z) (q := q)]
+  repeat rw [closedBracketConnectionEntryFieldAt_apply_self_eq_zero]
+  ring_nf at hout hcov ⊢
+  linarith
+
+set_option maxHeartbeats 5000000 in
+theorem closedCurvatureCovDerivAt_cyclic_inner_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u v w z q : TM x) :
+    g.inner x (closedCurvatureCovDerivAt g x v u w z) q
+      + g.inner x (closedCurvatureCovDerivAt g x u w v z) q
+      + g.inner x (closedCurvatureCovDerivAt g x w v u z) q = 0 := by
+  rw [closedCurvatureCovDerivAt_cyclic_inner_koszul_expansion
+      (g := g) (x := x) (u := u) (v := v) (w := w) (z := z) (q := q)]
+  have hsub :=
+    closedCurvatureDefExpansionAt_cyclic_sub_corrections_eq_residue_sub_corrections
+      (g := g) (x := x) (u := u) (v := v) (w := w) (z := z) (q := q)
+  have hres :=
+    closedCurvatureDefExpansionResidueAt_cyclic_eq_correction_cyclic
+      (g := g) (x := x) (u := u) (v := v) (w := w) (z := z) (q := q)
+  linarith
+
+theorem eventually_closed_cyclic_second_bianchi
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    ∀ᶠ y in nhds x, ∀ u v w z : TM y,
+      closedCurvatureCovDerivAt g y v u w z
+        + closedCurvatureCovDerivAt g y u w v z
+        + closedCurvatureCovDerivAt g y w v u z = 0 := by
+  refine eventually_closed_cyclic_second_bianchi_of_inner_sum
+    (g := g) (x := x) ?_
+  exact Filter.Eventually.of_forall fun y u v w z q =>
+    closedCurvatureCovDerivAt_cyclic_inner_eq_zero
+      (g := g) (x := y) (u := u) (v := v) (w := w) (z := z) (q := q)
+
 /--
 Hessian identification for the first-slot trace field from the local
 first-order identity and scalar trace C² regularity.
