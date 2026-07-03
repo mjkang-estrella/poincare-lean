@@ -13502,6 +13502,106 @@ theorem covTensor2SecondDerivAt_negTwoRicciVariationField
         (g := g) y)
       hRicSecond (-2 : ℝ) u v w z
 
+theorem deltaRicciSecondDerivContractionAt_negTwoRicci_eq_neg_two_ricci
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hRicSecond : CovTensor2DerivExtDifferentiableAt g (ricciVariationField g) x)
+    (u w : TM x) :
+    deltaRicciSecondDerivContractionAt g (negTwoRicciVariationField g) x u w =
+      -2 * deltaRicciSecondDerivContractionAt g (ricciVariationField g) x u w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  unfold deltaRicciSecondDerivContractionAt
+  change
+    (∑ i, (1 / 2 : ℝ) *
+      (covTensor2SecondDerivAt g (negTwoRicciVariationField g) x
+          (b i) u w (sharp i)
+        + covTensor2SecondDerivAt g (negTwoRicciVariationField g) x
+          (b i) w u (sharp i)
+        - covTensor2SecondDerivAt g (negTwoRicciVariationField g) x
+          (b i) (sharp i) u w))
+      -
+    (∑ i, (1 / 2 : ℝ) *
+      (covTensor2SecondDerivAt g (negTwoRicciVariationField g) x
+          u (b i) w (sharp i)
+        + covTensor2SecondDerivAt g (negTwoRicciVariationField g) x
+          u w (b i) (sharp i)
+        - covTensor2SecondDerivAt g (negTwoRicciVariationField g) x
+          u (sharp i) (b i) w))
+      =
+    -2 * ((∑ i, (1 / 2 : ℝ) *
+      (covTensor2SecondDerivAt g (ricciVariationField g) x
+          (b i) u w (sharp i)
+        + covTensor2SecondDerivAt g (ricciVariationField g) x
+          (b i) w u (sharp i)
+        - covTensor2SecondDerivAt g (ricciVariationField g) x
+          (b i) (sharp i) u w))
+      -
+    (∑ i, (1 / 2 : ℝ) *
+      (covTensor2SecondDerivAt g (ricciVariationField g) x
+          u (b i) w (sharp i)
+        + covTensor2SecondDerivAt g (ricciVariationField g) x
+          u w (b i) (sharp i)
+        - covTensor2SecondDerivAt g (ricciVariationField g) x
+          u (sharp i) (b i) w)))
+  have hdiv :
+      (∑ i, (1 / 2 : ℝ) *
+        (covTensor2SecondDerivAt g (negTwoRicciVariationField g) x
+            (b i) u w (sharp i)
+          + covTensor2SecondDerivAt g (negTwoRicciVariationField g) x
+            (b i) w u (sharp i)
+          - covTensor2SecondDerivAt g (negTwoRicciVariationField g) x
+            (b i) (sharp i) u w))
+        =
+      -2 * (∑ i, (1 / 2 : ℝ) *
+        (covTensor2SecondDerivAt g (ricciVariationField g) x
+            (b i) u w (sharp i)
+          + covTensor2SecondDerivAt g (ricciVariationField g) x
+            (b i) w u (sharp i)
+          - covTensor2SecondDerivAt g (ricciVariationField g) x
+            (b i) (sharp i) u w)) := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    rw [covTensor2SecondDerivAt_negTwoRicciVariationField
+      (g := g) (x := x) hRicSecond (b i) u w (sharp i)]
+    rw [covTensor2SecondDerivAt_negTwoRicciVariationField
+      (g := g) (x := x) hRicSecond (b i) w u (sharp i)]
+    rw [covTensor2SecondDerivAt_negTwoRicciVariationField
+      (g := g) (x := x) hRicSecond (b i) (sharp i) u w]
+    ring
+  have hcon :
+      (∑ i, (1 / 2 : ℝ) *
+        (covTensor2SecondDerivAt g (negTwoRicciVariationField g) x
+            u (b i) w (sharp i)
+          + covTensor2SecondDerivAt g (negTwoRicciVariationField g) x
+            u w (b i) (sharp i)
+          - covTensor2SecondDerivAt g (negTwoRicciVariationField g) x
+            u (sharp i) (b i) w))
+        =
+      -2 * (∑ i, (1 / 2 : ℝ) *
+        (covTensor2SecondDerivAt g (ricciVariationField g) x
+            u (b i) w (sharp i)
+          + covTensor2SecondDerivAt g (ricciVariationField g) x
+            u w (b i) (sharp i)
+          - covTensor2SecondDerivAt g (ricciVariationField g) x
+            u (sharp i) (b i) w)) := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    rw [covTensor2SecondDerivAt_negTwoRicciVariationField
+      (g := g) (x := x) hRicSecond u (b i) w (sharp i)]
+    rw [covTensor2SecondDerivAt_negTwoRicciVariationField
+      (g := g) (x := x) hRicSecond u w (b i) (sharp i)]
+    rw [covTensor2SecondDerivAt_negTwoRicciVariationField
+      (g := g) (x := x) hRicSecond u (sharp i) (b i) w]
+    ring
+  rw [hdiv, hcon]
+  ring
+
 set_option maxHeartbeats 5000000 in
 theorem deltaRicciAt_eq_secondDerivContractionAt
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
