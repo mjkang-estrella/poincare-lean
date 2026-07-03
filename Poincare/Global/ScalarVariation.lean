@@ -15962,6 +15962,33 @@ noncomputable def roughTensorLaplacianAt
   ∑ i, covTensor2SecondDerivAt g h x (b i) (sharp i) u w
 
 /--
+Metric trace pairing of the rough Ricci Laplacian with Ricci:
+`⟨Δ_∇ Ric, Ric⟩_g`.
+-/
+noncomputable def roughRicciLaplacianPairingAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : ℝ :=
+  metricVariationRicciPairingAt g
+    (fun y v w ↦ roughTensorLaplacianAt g (ricciVariationField g) y v w) x
+
+/-- The basis-sum form of `roughRicciLaplacianPairingAt`. -/
+theorem roughRicciLaplacianPairingAt_eq_sum
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    roughRicciLaplacianPairingAt g x =
+      (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i)
+      ∑ j, ∑ i,
+        roughTensorLaplacianAt g (ricciVariationField g) x (sharp j) (sharp i) *
+          g.ricciAt x (b i) (b j)) := by
+  rfl
+
+/--
 Deprecated correction-history version of the curvature action from M4-prep-1.
 
 This traced the antisymmetric first curvature pair `(bᵢ, ♯bⁱ)`.  The
