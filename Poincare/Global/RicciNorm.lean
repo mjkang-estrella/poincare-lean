@@ -404,6 +404,153 @@ theorem diagonalRiemannFromRicci3Section_one_one_two :
   norm_num [diagonalRiemannFromRicci3Section12, diagonalRiemannFromRicci3Section13,
     diagonalRiemannFromRicci3Section23]
 
+/--
+Diagonal `2 Rm(Ric,.)` entry in the first Ricci eigendirection, computed from
+the pinned 3D curvature decomposition.
+-/
+noncomputable def diagonalTwoLichnerowiczFromRicci3Entry1 (a b c : ℝ) : ℝ :=
+  2 * (b * (-diagonalRiemannFromRicci3Section12 a b c)
+    + c * (-diagonalRiemannFromRicci3Section13 a b c))
+
+/--
+Diagonal `2 Rm(Ric,.)` entry in the second Ricci eigendirection, computed from
+the pinned 3D curvature decomposition.
+-/
+noncomputable def diagonalTwoLichnerowiczFromRicci3Entry2 (a b c : ℝ) : ℝ :=
+  2 * (a * (-diagonalRiemannFromRicci3Section12 a b c)
+    + c * (-diagonalRiemannFromRicci3Section23 a b c))
+
+/--
+Diagonal `2 Rm(Ric,.)` entry in the third Ricci eigendirection, computed from
+the pinned 3D curvature decomposition.
+-/
+noncomputable def diagonalTwoLichnerowiczFromRicci3Entry3 (a b c : ℝ) : ℝ :=
+  2 * (a * (-diagonalRiemannFromRicci3Section13 a b c)
+    + b * (-diagonalRiemannFromRicci3Section23 a b c))
+
+/-- Pure 3D Ricci-quadratic formula for the first `2 Rm(Ric,.)` entry. -/
+noncomputable def diagonalTwoLichnerowiczPure3Entry1 (a b c : ℝ) : ℝ :=
+  3 * diagonalScalar3 a b c * a - 4 * a ^ 2
+    + 2 * diagonalRicciNormSq3 a b c - (diagonalScalar3 a b c) ^ 2
+
+/-- Pure 3D Ricci-quadratic formula for the second `2 Rm(Ric,.)` entry. -/
+noncomputable def diagonalTwoLichnerowiczPure3Entry2 (a b c : ℝ) : ℝ :=
+  3 * diagonalScalar3 a b c * b - 4 * b ^ 2
+    + 2 * diagonalRicciNormSq3 a b c - (diagonalScalar3 a b c) ^ 2
+
+/-- Pure 3D Ricci-quadratic formula for the third `2 Rm(Ric,.)` entry. -/
+noncomputable def diagonalTwoLichnerowiczPure3Entry3 (a b c : ℝ) : ℝ :=
+  3 * diagonalScalar3 a b c * c - 4 * c ^ 2
+    + 2 * diagonalRicciNormSq3 a b c - (diagonalScalar3 a b c) ^ 2
+
+theorem diagonalTwoLichnerowiczFromRicci3Entry1_eq_pure (a b c : ℝ) :
+    diagonalTwoLichnerowiczFromRicci3Entry1 a b c =
+      diagonalTwoLichnerowiczPure3Entry1 a b c := by
+  unfold diagonalTwoLichnerowiczFromRicci3Entry1 diagonalTwoLichnerowiczPure3Entry1
+    diagonalRiemannFromRicci3Section12 diagonalRiemannFromRicci3Section13
+    diagonalRicciNormSq3 diagonalScalar3
+  ring
+
+theorem diagonalTwoLichnerowiczFromRicci3Entry2_eq_pure (a b c : ℝ) :
+    diagonalTwoLichnerowiczFromRicci3Entry2 a b c =
+      diagonalTwoLichnerowiczPure3Entry2 a b c := by
+  unfold diagonalTwoLichnerowiczFromRicci3Entry2 diagonalTwoLichnerowiczPure3Entry2
+    diagonalRiemannFromRicci3Section12 diagonalRiemannFromRicci3Section23
+    diagonalRicciNormSq3 diagonalScalar3
+  ring
+
+theorem diagonalTwoLichnerowiczFromRicci3Entry3_eq_pure (a b c : ℝ) :
+    diagonalTwoLichnerowiczFromRicci3Entry3 a b c =
+      diagonalTwoLichnerowiczPure3Entry3 a b c := by
+  unfold diagonalTwoLichnerowiczFromRicci3Entry3 diagonalTwoLichnerowiczPure3Entry3
+    diagonalRiemannFromRicci3Section13 diagonalRiemannFromRicci3Section23
+    diagonalRicciNormSq3 diagonalScalar3
+  ring
+
+/--
+After subtracting `2 Ric^2`, the diagonal Ricci-evolution reaction in the
+first eigendirection is `3 R Ric - 6 Ric^2 + (2 |Ric|^2 - R^2) g`.
+-/
+noncomputable def diagonalRicciEvolutionReaction3Entry1 (a b c : ℝ) : ℝ :=
+  diagonalTwoLichnerowiczPure3Entry1 a b c - 2 * a ^ 2
+
+/--
+After subtracting `2 Ric^2`, the diagonal Ricci-evolution reaction in the
+second eigendirection is `3 R Ric - 6 Ric^2 + (2 |Ric|^2 - R^2) g`.
+-/
+noncomputable def diagonalRicciEvolutionReaction3Entry2 (a b c : ℝ) : ℝ :=
+  diagonalTwoLichnerowiczPure3Entry2 a b c - 2 * b ^ 2
+
+/--
+After subtracting `2 Ric^2`, the diagonal Ricci-evolution reaction in the
+third eigendirection is `3 R Ric - 6 Ric^2 + (2 |Ric|^2 - R^2) g`.
+-/
+noncomputable def diagonalRicciEvolutionReaction3Entry3 (a b c : ℝ) : ℝ :=
+  diagonalTwoLichnerowiczPure3Entry3 a b c - 2 * c ^ 2
+
+theorem diagonalRicciEvolutionReaction3Entry1_eq (a b c : ℝ) :
+    diagonalRicciEvolutionReaction3Entry1 a b c =
+      3 * diagonalScalar3 a b c * a - 6 * a ^ 2
+        + 2 * diagonalRicciNormSq3 a b c - (diagonalScalar3 a b c) ^ 2 := by
+  unfold diagonalRicciEvolutionReaction3Entry1 diagonalTwoLichnerowiczPure3Entry1
+  ring
+
+theorem diagonalRicciEvolutionReaction3Entry2_eq (a b c : ℝ) :
+    diagonalRicciEvolutionReaction3Entry2 a b c =
+      3 * diagonalScalar3 a b c * b - 6 * b ^ 2
+        + 2 * diagonalRicciNormSq3 a b c - (diagonalScalar3 a b c) ^ 2 := by
+  unfold diagonalRicciEvolutionReaction3Entry2 diagonalTwoLichnerowiczPure3Entry2
+  ring
+
+theorem diagonalRicciEvolutionReaction3Entry3_eq (a b c : ℝ) :
+    diagonalRicciEvolutionReaction3Entry3 a b c =
+      3 * diagonalScalar3 a b c * c - 6 * c ^ 2
+        + 2 * diagonalRicciNormSq3 a b c - (diagonalScalar3 a b c) ^ 2 := by
+  unfold diagonalRicciEvolutionReaction3Entry3 diagonalTwoLichnerowiczPure3Entry3
+  ring
+
+/-- Space-form validation: `2 Rm(Ric,.) = 2 lambda^2 g`. -/
+theorem diagonalTwoLichnerowiczFromRicci3_spaceForm (lam : ℝ) :
+    diagonalTwoLichnerowiczFromRicci3Entry1 lam lam lam = 2 * lam ^ 2 ∧
+      diagonalTwoLichnerowiczFromRicci3Entry2 lam lam lam = 2 * lam ^ 2 ∧
+      diagonalTwoLichnerowiczFromRicci3Entry3 lam lam lam = 2 * lam ^ 2 := by
+  simp [diagonalTwoLichnerowiczFromRicci3Entry1,
+    diagonalTwoLichnerowiczFromRicci3Entry2, diagonalTwoLichnerowiczFromRicci3Entry3,
+    diagonalRiemannFromRicci3Section12, diagonalRiemannFromRicci3Section13,
+    diagonalRiemannFromRicci3Section23]
+  ring_nf
+
+/-- Space-form validation: the Ricci-evolution reaction vanishes. -/
+theorem diagonalRicciEvolutionReaction3_spaceForm (lam : ℝ) :
+    diagonalRicciEvolutionReaction3Entry1 lam lam lam = 0 ∧
+      diagonalRicciEvolutionReaction3Entry2 lam lam lam = 0 ∧
+      diagonalRicciEvolutionReaction3Entry3 lam lam lam = 0 := by
+  simp [diagonalRicciEvolutionReaction3Entry1, diagonalRicciEvolutionReaction3Entry2,
+    diagonalRicciEvolutionReaction3Entry3, diagonalTwoLichnerowiczPure3Entry1,
+    diagonalTwoLichnerowiczPure3Entry2, diagonalTwoLichnerowiczPure3Entry3,
+    diagonalRicciNormSq3, diagonalScalar3]
+  ring_nf
+
+/-- Non-Einstein `(1,1,2)` validation: every `2 Rm(Ric,.)` diagonal entry is `4`. -/
+theorem diagonalTwoLichnerowiczFromRicci3_one_one_two :
+    diagonalTwoLichnerowiczFromRicci3Entry1 1 1 2 = 4 ∧
+      diagonalTwoLichnerowiczFromRicci3Entry2 1 1 2 = 4 ∧
+      diagonalTwoLichnerowiczFromRicci3Entry3 1 1 2 = 4 := by
+  norm_num [diagonalTwoLichnerowiczFromRicci3Entry1,
+    diagonalTwoLichnerowiczFromRicci3Entry2, diagonalTwoLichnerowiczFromRicci3Entry3,
+    diagonalRiemannFromRicci3Section12, diagonalRiemannFromRicci3Section13,
+    diagonalRiemannFromRicci3Section23]
+
+/-- Non-Einstein `(1,1,2)` validation: the reaction entries are `2,2,-4`. -/
+theorem diagonalRicciEvolutionReaction3_one_one_two :
+    diagonalRicciEvolutionReaction3Entry1 1 1 2 = 2 ∧
+      diagonalRicciEvolutionReaction3Entry2 1 1 2 = 2 ∧
+      diagonalRicciEvolutionReaction3Entry3 1 1 2 = -4 := by
+  norm_num [diagonalRicciEvolutionReaction3Entry1, diagonalRicciEvolutionReaction3Entry2,
+    diagonalRicciEvolutionReaction3Entry3, diagonalTwoLichnerowiczPure3Entry1,
+    diagonalTwoLichnerowiczPure3Entry2, diagonalTwoLichnerowiczPure3Entry3,
+    diagonalRicciNormSq3, diagonalScalar3]
+
 end PinchingAlgebra
 
 end Poincare
