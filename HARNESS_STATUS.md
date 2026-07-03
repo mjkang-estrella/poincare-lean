@@ -49,12 +49,23 @@ chart-side hom smoothness; hom-bundle `EventuallyEq` lift; bump-localization +
 germ locality + `inCoordinates` gluing (`Global/LeviCivitaRegularity.lean`,
 `Global/LeviCivitaTransport.lean`).
 
-### Tier M3 — evolution equations (opened)
-- Hamilton scalar evolution stated on closed manifolds:
-  `SatisfiesHamiltonScalarEvolutionAt` + unfolding iff; proven static-flat
-  sanity instance (`hamilton_scalar_evolution_static_flat`); documented
-  unproven port target `HamiltonScalarEvolutionProgram`
-  (`Global/ScalarEvolution.lean`).
+### Tier M3 — Hamilton scalar evolution (THEOREM PROVEN 2026-07-02)
+- `satisfiesHamiltonScalarEvolutionAt_of_ricciFlow`
+  (`Global/ScalarEvolution.lean`): for a closed Ricci-flow solution family,
+  `∂R/∂t = ΔR + 2|Ric|²` — with the closed twice-contracted Bianchi identity
+  discharged internally (`closedContractedBianchiAt_canonical`, from the
+  proven cyclic second Bianchi `eventually_closed_cyclic_second_bianchi` and
+  the curvature-divergence trace identification). Hypotheses: the flow
+  equation near the point + honest regularity classes (each with
+  satisfiability witnesses) + the two δΓ assembly predicates (whose
+  Hessian-trace discharge forms are proven; the `_hessian_variation` variant
+  consumes them).
+- Supporting campaign (~55 gated worker tasks over 2026-07-01/02, all
+  axiom-closure-clean): metric variation vocabulary, Lichnerowicz formula,
+  Gram-matrix trace-derivative machinery, Levi-Civita C² regularity,
+  curvature Koszul expansion, extend-bracket vanishing, cyclic second
+  Bianchi. Two proposed intermediate identities were REFUTED by flat-torus
+  counterexamples and rerouted — no false statement survived.
 
 ### Tier L — single-chart model
 - Schur lemma completed: `schur_fderiv_coordScalar_eq_zero_of_einstein_field`
