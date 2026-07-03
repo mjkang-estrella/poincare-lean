@@ -561,6 +561,100 @@ theorem extend_tangent_smul {x : M} (c : ℝ) (w : TM x) :
     c • (e.symmL ℝ y) ((e ⟨x, w⟩).2)
   exact map_smul (e.symmL ℝ y) c ((e ⟨x, w⟩).2)
 
+omit [T2Space M] in
+/--
+In the anchor chart, the canonical tangent extension has constant
+representative equal to its seed tangent vector.
+-/
+theorem mfderiv_extChartAt_extend_apply
+    {x y : M} (hy : y ∈ (extChartAt I x).source) (p : TM x) :
+    mfderiv I 𝓘(ℝ, E) (extChartAt I x) y (extend E p y) = p := by
+  let e := trivializationAt E (TangentSpace I) x
+  have hy_chart : y ∈ (chartAt E x).source := by
+    rwa [extChartAt_source] at hy
+  have hsymm :
+      e.symmL ℝ y =
+        mfderivWithin 𝓘(ℝ, E) I (extChartAt I x).symm
+          (Set.range I) (extChartAt I x y) := by
+    simpa [e] using
+      (@TangentBundle.symmL_trivializationAt ℝ _ E _ _ E _
+        I M _ _ (by infer_instance) x y hy_chart)
+  have hpcoord : (e ⟨x, p⟩).2 = p := by
+    have hround :
+        fderivWithin ℝ ((extChartAt I x) ∘ (extChartAt I x).symm)
+            (Set.range I) (extChartAt I x x) p = p := by
+      simpa using congrArg (fun L : E →L[ℝ] E => L p)
+        (@fderivWithin_extChartAt_comp_extChartAt_symm_range ℝ _
+          E _ _ E _ I M _ _ x)
+    simpa [e, TangentBundle.trivializationAt_apply,
+      ModelWithCorners.range_eq_univ I] using hround
+  have hext : extend E p y = e.symmL ℝ y p := by
+    simp [FiberBundle.extend, e, hpcoord, Trivialization.symmL_apply]
+  rw [hext, hsymm]
+  have hcomp :
+      (mfderiv I 𝓘(ℝ, E) (extChartAt I x) y) ∘L
+        (mfderivWithin 𝓘(ℝ, E) I (extChartAt I x).symm
+          (Set.range I) (extChartAt I x y)) =
+          ContinuousLinearMap.id ℝ E := by
+    simpa using
+      (@mfderiv_extChartAt_comp_mfderivWithin_extChartAt_symm' ℝ _
+        E _ _ E _ I M _ _ (by infer_instance) x y hy)
+  exact congrArg (fun L : E →L[ℝ] E => L p) hcomp
+
+omit [T2Space M] in
+/-- The inverse-chart transport of a canonical extension is constant in its anchor chart. -/
+theorem chartTransportedLeviCivitaSection_extend_apply_chart
+    {x y : M} (hy : y ∈ (extChartAt I x).source) (p : TM x) :
+    CovariantDerivative.chartTransportedLeviCivitaSection x
+        (extend E p) (extChartAt I x y) = p := by
+  rw [CovariantDerivative.chartTransportedLeviCivitaSection_apply_chart
+    x (extend E p) hy]
+  exact mfderiv_extChartAt_extend_apply (x := x) hy p
+
+omit [T2Space M] in
+/-- Canonical tangent extensions have zero Lie bracket at their common anchor. -/
+theorem mlieBracket_extend_extend_apply_self
+    {x : M} (p q : TM x) :
+    VectorField.mlieBracket I (extend E p) (extend E q) x = 0 := by
+  let Xc : E → E :=
+    VectorField.mpullbackWithin 𝓘(ℝ, E) I (extChartAt I x).symm
+      (extend E p) (Set.range I)
+  let Yc : E → E :=
+    VectorField.mpullbackWithin 𝓘(ℝ, E) I (extChartAt I x).symm
+      (extend E q) (Set.range I)
+  have hX : Xc =ᶠ[nhdsWithin (extChartAt I x x) (Set.range I)] fun _ : E => p := by
+    filter_upwards [extChartAt_target_mem_nhdsWithin x] with z hz
+    have hy : (extChartAt I x).symm z ∈ (extChartAt I x).source :=
+      (extChartAt I x).map_target hz
+    have hz_eq : extChartAt I x ((extChartAt I x).symm z) = z :=
+      (extChartAt I x).right_inv hz
+    have hval :=
+      chartTransportedLeviCivitaSection_extend_apply_chart (x := x)
+        (y := (extChartAt I x).symm z) hy p
+    rw [hz_eq] at hval
+    simpa [Xc, CovariantDerivative.chartTransportedLeviCivitaSection] using hval
+  have hY : Yc =ᶠ[nhdsWithin (extChartAt I x x) (Set.range I)] fun _ : E => q := by
+    filter_upwards [extChartAt_target_mem_nhdsWithin x] with z hz
+    have hy : (extChartAt I x).symm z ∈ (extChartAt I x).source :=
+      (extChartAt I x).map_target hz
+    have hz_eq : extChartAt I x ((extChartAt I x).symm z) = z :=
+      (extChartAt I x).right_inv hz
+    have hval :=
+      chartTransportedLeviCivitaSection_extend_apply_chart (x := x)
+        (y := (extChartAt I x).symm z) hy q
+    rw [hz_eq] at hval
+    simpa [Yc, CovariantDerivative.chartTransportedLeviCivitaSection] using hval
+  have hbr :
+      VectorField.lieBracketWithin ℝ Xc Yc (Set.range I) (extChartAt I x x) =
+        VectorField.lieBracketWithin ℝ (fun _ : E => p) (fun _ : E => q)
+          (Set.range I) (extChartAt I x x) :=
+    Filter.EventuallyEq.lieBracketWithin_vectorField_eq_of_mem
+      hX hY (Set.mem_range_self _)
+  rw [mlieBracket_apply_chart]
+  change VectorField.lieBracketWithin ℝ Xc Yc (Set.range I) (extChartAt I x x) = 0
+  rw [hbr]
+  simp [VectorField.lieBracketWithin]
+
 /-- Additivity of `δΓ` in its direction slot. -/
 theorem deltaGammaAt_add_left
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
@@ -5615,6 +5709,125 @@ private theorem eventually_contMDiffAt_two_extend
   filter_upwards [interior_mem_nhds.mpr hs] with y hy
   exact ((hscont.mono interior_subset) y hy).contMDiffAt
     (isOpen_interior.mem_nhds hy)
+
+/--
+On the anchor-chart neighborhood, canonical extensions have locally constant
+chart representatives, so their manifold Lie bracket vanishes near the
+anchor.
+-/
+theorem mlieBracket_extend_extend_eventually_eq_zero
+    {x : M} (p q : TM x) :
+    (fun y : M => VectorField.mlieBracket I (extend E p) (extend E q) y)
+      =ᶠ[nhds x] fun _ : M => (0 : E) := by
+  have hp := eventually_contMDiffAt_two_extend (n := n) (M := M) p
+  have hq := eventually_contMDiffAt_two_extend (n := n) (M := M) q
+  have hsrc : (extChartAt I x).source ∈ nhds x :=
+    extChartAt_source_mem_nhds x
+  filter_upwards [hsrc, hp, hq] with y hy hp2 hq2
+  let z : E := extChartAt I x y
+  let Xc : E → E := CovariantDerivative.chartTransportedLeviCivitaSection
+    x (extend E p)
+  let Yc : E → E := CovariantDerivative.chartTransportedLeviCivitaSection
+    x (extend E q)
+  have hXc : Xc =ᶠ[nhds z] fun _ : E => p := by
+    filter_upwards [(isOpen_extChartAt_target x).mem_nhds
+      ((extChartAt I x).map_source hy)] with z' hz'
+    have hy' : (extChartAt I x).symm z' ∈ (extChartAt I x).source :=
+      (extChartAt I x).map_target hz'
+    have hz_eq : extChartAt I x ((extChartAt I x).symm z') = z' :=
+      (extChartAt I x).right_inv hz'
+    have hval :=
+      chartTransportedLeviCivitaSection_extend_apply_chart (x := x)
+        (y := (extChartAt I x).symm z') hy' p
+    rw [hz_eq] at hval
+    simpa [Xc, z] using hval
+  have hYc : Yc =ᶠ[nhds z] fun _ : E => q := by
+    filter_upwards [(isOpen_extChartAt_target x).mem_nhds
+      ((extChartAt I x).map_source hy)] with z' hz'
+    have hy' : (extChartAt I x).symm z' ∈ (extChartAt I x).source :=
+      (extChartAt I x).map_target hz'
+    have hz_eq : extChartAt I x ((extChartAt I x).symm z') = z' :=
+      (extChartAt I x).right_inv hz'
+    have hval :=
+      chartTransportedLeviCivitaSection_extend_apply_chart (x := x)
+        (y := (extChartAt I x).symm z') hy' q
+    rw [hz_eq] at hval
+    simpa [Yc, z] using hval
+  have hmodel :
+      VectorField.mlieBracket 𝓘(ℝ, E) Xc Yc z = 0 := by
+    have hconst :
+        VectorField.mlieBracket 𝓘(ℝ, E) Xc Yc z =
+          VectorField.mlieBracket 𝓘(ℝ, E)
+            (fun _ : E => p) (fun _ : E => q) z := by
+      exact hXc.mlieBracket_vectorField_eq hYc
+    rw [hconst, mlieBracket_vectorSpace_eq]
+    simp [VectorField.lieBracket]
+    rfl
+  haveI : IsManifold I (minSmoothness ℝ 2) M := by
+    rw [minSmoothness_of_isRCLikeNormedField]
+    infer_instance
+  have hchart :=
+    CovariantDerivative.chartTransportedLeviCivitaSection_mlieBracket_apply_chart
+      x (X := extend E p) (Y := extend E q) hy
+      (hp2.mdifferentiableAt two_ne_zero)
+      (hq2.mdifferentiableAt two_ne_zero)
+  have hpush :
+      mfderiv I 𝓘(ℝ, E) (extChartAt I x) y
+          (VectorField.mlieBracket I (extend E p) (extend E q) y) = 0 := by
+    rw [hmodel] at hchart
+    rw [CovariantDerivative.chartTransportedLeviCivitaSection_apply_chart
+        x (VectorField.mlieBracket I (extend E p) (extend E q)) hy] at hchart
+    simpa [Xc, Yc, z] using hchart
+  have hround :=
+    CovariantDerivative.chartTransportedLeviCivita_direction_roundtrip
+      x hy (VectorField.mlieBracket I (extend E p) (extend E q) y)
+  rw [hpush] at hround
+  rw [map_zero] at hround
+  simpa using hround.symm
+
+/--
+The scalar bracket-entry field appearing in the cyclic residue is eventually
+zero at its own canonical-extension anchor.
+-/
+theorem closedBracketConnectionEntryFieldAt_extend_eventually_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    {x : M} (a u w q : TM x) :
+    (fun y : M => closedBracketConnectionEntryFieldAt g a u w y (extend E q y))
+      =ᶠ[nhds x] fun _ : M => (0 : ℝ) := by
+  filter_upwards [mlieBracket_extend_extend_eventually_eq_zero
+      (n := n) (M := M) (x := x) a u] with y hbr
+  simp only [closedBracketConnectionEntryFieldAt, hbr]
+  change g.inner y (g.leviCivita (extend E w) y 0) (extend E q y) = 0
+  simp
+
+/--
+Consequently the exterior derivative of the bracket-entry field in the
+cyclic residue vanishes at the anchor.
+-/
+theorem closedBracketConnectionEntryFieldAt_extend_extDerivFun_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    {x : M} (v a u w q : TM x) :
+    extDerivFun
+        (fun y : M =>
+          closedBracketConnectionEntryFieldAt g a u w y (extend E q y)) x v = 0 := by
+  have hzero :=
+    closedBracketConnectionEntryFieldAt_extend_eventually_eq_zero
+      (g := g) (x := x) a u w q
+  have h :=
+    congrArg (fun L : TM x →L[ℝ] ℝ => L v)
+      (CovariantDerivative.extDerivFun_congr hzero)
+  simpa [extDerivFun_zero_at] using h
+
+/-- At its anchor, every canonical-extension bracket connection entry vanishes. -/
+theorem closedBracketConnectionEntryFieldAt_apply_self_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    {x : M} (a u w q : TM x) :
+    closedBracketConnectionEntryFieldAt g a u w x q = 0 := by
+  have hbr := mlieBracket_extend_extend_apply_self (n := n) (M := M)
+    (x := x) a u
+  simp only [closedBracketConnectionEntryFieldAt, hbr]
+  change g.inner x (g.leviCivita (extend E w) x 0) q = 0
+  simp
 
 /--
 Auxiliary `(0,2)` curvature field whose metric trace is the moving Ricci entry
