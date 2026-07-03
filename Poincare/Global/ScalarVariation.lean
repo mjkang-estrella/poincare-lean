@@ -16573,6 +16573,720 @@ theorem closedCurvatureOp_first_bianchiAt
       (FiberBundle.contMDiffAt_extend' (k := 2) I E v)
       (FiberBundle.contMDiffAt_extend' (k := 2) I E w)
 
+/-- The closed curvature tensor, bundled as a four-linear real form on one fiber. -/
+noncomputable def closedCurvatureFourLinearAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : PinchingAlgebra.FourLinear (TM x) :=
+  { toFun := fun a =>
+      { toFun := fun u =>
+          { toFun := fun w =>
+              { toFun := fun q =>
+                  g.inner x
+                    (CovariantDerivative.curvatureOp g.leviCivita
+                      (extend E a) (extend E u) (extend E w) x) q
+                map_add' := by
+                  intro q₁ q₂
+                  simp
+                map_smul' := by
+                  intro c q
+                  simp [smul_eq_mul] }
+            map_add' := by
+              intro w₁ w₂
+              apply LinearMap.ext
+              intro q
+              dsimp
+              rw [CovariantDerivative.curvatureOp_extend_add]
+              simp
+            map_smul' := by
+              intro c w
+              apply LinearMap.ext
+              intro q
+              dsimp
+              rw [CovariantDerivative.curvatureOp_extend_smul]
+              simp [smul_eq_mul] }
+        map_add' := by
+          intro u₁ u₂
+          apply LinearMap.ext
+          intro w
+          apply LinearMap.ext
+          intro q
+          dsimp
+          rw [curvatureOp_extend_add_snd]
+          simp
+        map_smul' := by
+          intro c u
+          apply LinearMap.ext
+          intro w
+          apply LinearMap.ext
+          intro q
+          dsimp
+          rw [curvatureOp_extend_smul_snd]
+          simp [smul_eq_mul] }
+    map_add' := by
+      intro a₁ a₂
+      apply LinearMap.ext
+      intro u
+      apply LinearMap.ext
+      intro w
+      apply LinearMap.ext
+      intro q
+      dsimp
+      rw [curvatureOp_extend_add_fst]
+      simp
+    map_smul' := by
+      intro c a
+      apply LinearMap.ext
+      intro u
+      apply LinearMap.ext
+      intro w
+      apply LinearMap.ext
+      intro q
+      dsimp
+      rw [curvatureOp_extend_smul_fst]
+      simp [smul_eq_mul] }
+
+@[simp] theorem closedCurvatureFourLinearAt_apply
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a u w q : TM x) :
+    closedCurvatureFourLinearAt (g := g) x a u w q =
+      g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E a) (extend E u) (extend E w) x) q :=
+  rfl
+
+theorem closedCurvatureFourLinearAt_firstPair
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a u w q : TM x) :
+    closedCurvatureFourLinearAt (g := g) x a u w q =
+      -closedCurvatureFourLinearAt (g := g) x u a w q := by
+  rw [closedCurvatureFourLinearAt_apply, closedCurvatureFourLinearAt_apply,
+    CovariantDerivative.curvatureOp_antisymm_apply]
+  simp
+
+theorem closedCurvatureFourLinearAt_secondPair
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a u w q : TM x) :
+    closedCurvatureFourLinearAt (g := g) x a u w q =
+      -closedCurvatureFourLinearAt (g := g) x a u q w :=
+  closedCurvaturePairLastPairAntisymmAt (g := g) (x := x) a u w q
+
+theorem closedCurvatureFourLinearAt_pairExchange
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a u w q : TM x) :
+    closedCurvatureFourLinearAt (g := g) x a u w q =
+      closedCurvatureFourLinearAt (g := g) x w q a u :=
+  closedCurvaturePairSymmAt (g := g) (x := x) a u w q
+
+theorem closedCurvatureFourLinearAt_bianchi
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a u w q : TM x) :
+    closedCurvatureFourLinearAt (g := g) x a u w q
+      + closedCurvatureFourLinearAt (g := g) x u w a q
+      + closedCurvatureFourLinearAt (g := g) x w a u q = 0 := by
+  have hb := closedCurvatureOp_first_bianchiAt
+    (g := g) (x := x) a u w
+  simpa using congrArg (fun r : TM x ↦ g.inner x r q) hb
+
+set_option maxHeartbeats 5000000 in
+/-- The three-dimensional Ricci-built curvature candidate, bundled as a four-linear form. -/
+noncomputable def riemannFromRicci3FourLinearAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : PinchingAlgebra.FourLinear (TM x) :=
+  { toFun := fun a =>
+      { toFun := fun u =>
+          { toFun := fun w =>
+              { toFun := fun q => g.riemannFromRicci3At x a u w q
+                map_add' := by
+                  intro q₁ q₂
+                  unfold ClosedSmoothRiemannianMetric.riemannFromRicci3At
+                    ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+                  simp [g.ricciAt_add_right]
+                  ring
+                map_smul' := by
+                  intro c q
+                  unfold ClosedSmoothRiemannianMetric.riemannFromRicci3At
+                    ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+                  simp [g.ricciAt_smul_right, smul_eq_mul]
+                  ring }
+            map_add' := by
+              intro w₁ w₂
+              apply LinearMap.ext
+              intro q
+              unfold ClosedSmoothRiemannianMetric.riemannFromRicci3At
+                ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+              simp [g.ricciAt_add_left, g.ricciAt_add_right]
+              ring
+            map_smul' := by
+              intro c w
+              apply LinearMap.ext
+              intro q
+              unfold ClosedSmoothRiemannianMetric.riemannFromRicci3At
+                ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+              simp [g.ricciAt_smul_left, g.ricciAt_smul_right, smul_eq_mul]
+              ring }
+        map_add' := by
+          intro u₁ u₂
+          apply LinearMap.ext
+          intro w
+          apply LinearMap.ext
+          intro q
+          unfold ClosedSmoothRiemannianMetric.riemannFromRicci3At
+            ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+          simp [g.ricciAt_add_left, g.ricciAt_add_right]
+          ring
+        map_smul' := by
+          intro c u
+          apply LinearMap.ext
+          intro w
+          apply LinearMap.ext
+          intro q
+          unfold ClosedSmoothRiemannianMetric.riemannFromRicci3At
+            ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+          simp [g.ricciAt_smul_left, g.ricciAt_smul_right, smul_eq_mul]
+          ring }
+    map_add' := by
+      intro a₁ a₂
+      apply LinearMap.ext
+      intro u
+      apply LinearMap.ext
+      intro w
+      apply LinearMap.ext
+      intro q
+      unfold ClosedSmoothRiemannianMetric.riemannFromRicci3At
+        ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+      simp [g.ricciAt_add_left, g.ricciAt_add_right]
+      ring
+    map_smul' := by
+      intro c a
+      apply LinearMap.ext
+      intro u
+      apply LinearMap.ext
+      intro w
+      apply LinearMap.ext
+      intro q
+      unfold ClosedSmoothRiemannianMetric.riemannFromRicci3At
+        ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+      simp [g.ricciAt_smul_left, g.ricciAt_smul_right, smul_eq_mul]
+      ring }
+
+@[simp] theorem riemannFromRicci3FourLinearAt_apply
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a u w q : TM x) :
+    riemannFromRicci3FourLinearAt g x a u w q =
+      g.riemannFromRicci3At x a u w q :=
+  rfl
+
+theorem riemannFromRicci3FourLinearAt_firstPair
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a u w q : TM x) :
+    riemannFromRicci3FourLinearAt g x a u w q =
+      -riemannFromRicci3FourLinearAt g x u a w q := by
+  rw [riemannFromRicci3FourLinearAt_apply, riemannFromRicci3FourLinearAt_apply]
+  unfold ClosedSmoothRiemannianMetric.riemannFromRicci3At
+    ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+  ring
+
+theorem riemannFromRicci3FourLinearAt_secondPair
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a u w q : TM x) :
+    riemannFromRicci3FourLinearAt g x a u w q =
+      -riemannFromRicci3FourLinearAt g x a u q w := by
+  rw [riemannFromRicci3FourLinearAt_apply, riemannFromRicci3FourLinearAt_apply]
+  unfold ClosedSmoothRiemannianMetric.riemannFromRicci3At
+    ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+  ring
+
+theorem riemannFromRicci3FourLinearAt_pairExchange
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a u w q : TM x) :
+    riemannFromRicci3FourLinearAt g x a u w q =
+      riemannFromRicci3FourLinearAt g x w q a u := by
+  rw [riemannFromRicci3FourLinearAt_apply, riemannFromRicci3FourLinearAt_apply]
+  unfold ClosedSmoothRiemannianMetric.riemannFromRicci3At
+    ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+  simp [g.inner_symm x w a, g.inner_symm x q u,
+    g.inner_symm x w u, g.inner_symm x q a,
+    g.ricciAt_symm x w a, g.ricciAt_symm x q u,
+    g.ricciAt_symm x w u, g.ricciAt_symm x q a]
+  ring
+
+theorem riemannFromRicci3FourLinearAt_bianchi
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a u w q : TM x) :
+    riemannFromRicci3FourLinearAt g x a u w q
+      + riemannFromRicci3FourLinearAt g x u w a q
+      + riemannFromRicci3FourLinearAt g x w a u q = 0 := by
+  simp only [riemannFromRicci3FourLinearAt_apply]
+  unfold ClosedSmoothRiemannianMetric.riemannFromRicci3At
+    ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+  simp [g.inner_symm x u q, g.inner_symm x w q, g.inner_symm x a q,
+    g.inner_symm x a w, g.inner_symm x u a, g.inner_symm x w u,
+    g.ricciAt_symm x u q, g.ricciAt_symm x w q, g.ricciAt_symm x a q,
+    g.ricciAt_symm x a w, g.ricciAt_symm x u a, g.ricciAt_symm x w u]
+  ring
+
+namespace PinchingAlgebra
+
+/-- Pointwise subtraction of bundled four-linear forms. -/
+noncomputable def fourLinearSub {V : Type} [AddCommGroup V] [Module ℝ V]
+    (F G : FourLinear V) : FourLinear V :=
+  { toFun := fun a =>
+      { toFun := fun u =>
+          { toFun := fun w =>
+              { toFun := fun q => F a u w q - G a u w q
+                map_add' := by
+                  intro q₁ q₂
+                  simp
+                  ring
+                map_smul' := by
+                  intro c q
+                  simp [smul_eq_mul]
+                  ring }
+            map_add' := by
+              intro w₁ w₂
+              apply LinearMap.ext
+              intro q
+              simp
+              ring
+            map_smul' := by
+              intro c w
+              apply LinearMap.ext
+              intro q
+              simp [smul_eq_mul]
+              ring }
+        map_add' := by
+          intro u₁ u₂
+          apply LinearMap.ext
+          intro w
+          apply LinearMap.ext
+          intro q
+          simp
+          ring
+        map_smul' := by
+          intro c u
+          apply LinearMap.ext
+          intro w
+          apply LinearMap.ext
+          intro q
+          simp [smul_eq_mul]
+          ring }
+    map_add' := by
+      intro a₁ a₂
+      apply LinearMap.ext
+      intro u
+      apply LinearMap.ext
+      intro w
+      apply LinearMap.ext
+      intro q
+      simp
+      ring
+    map_smul' := by
+      intro c a
+      apply LinearMap.ext
+      intro u
+      apply LinearMap.ext
+      intro w
+      apply LinearMap.ext
+      intro q
+      simp [smul_eq_mul]
+      ring }
+
+@[simp] theorem fourLinearSub_apply {V : Type} [AddCommGroup V] [Module ℝ V]
+    (F G : FourLinear V) (a u w q : V) :
+    fourLinearSub F G a u w q = F a u w q - G a u w q :=
+  rfl
+
+end PinchingAlgebra
+
+/-- Difference between actual closed curvature and the three-dimensional Ricci-built candidate. -/
+noncomputable def riemannDifferenceFourLinearAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : PinchingAlgebra.FourLinear (TM x) :=
+  PinchingAlgebra.fourLinearSub
+    (closedCurvatureFourLinearAt g x) (riemannFromRicci3FourLinearAt g x)
+
+@[simp] theorem riemannDifferenceFourLinearAt_apply
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a u w q : TM x) :
+    riemannDifferenceFourLinearAt g x a u w q =
+      closedCurvatureFourLinearAt g x a u w q
+        - riemannFromRicci3FourLinearAt g x a u w q :=
+  rfl
+
+theorem riemannDifferenceFourLinearAt_firstPair
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a u w q : TM x) :
+    riemannDifferenceFourLinearAt g x a u w q =
+      -riemannDifferenceFourLinearAt g x u a w q := by
+  rw [riemannDifferenceFourLinearAt_apply, riemannDifferenceFourLinearAt_apply]
+  linarith [closedCurvatureFourLinearAt_firstPair (g := g) x a u w q,
+    riemannFromRicci3FourLinearAt_firstPair g x a u w q]
+
+theorem riemannDifferenceFourLinearAt_secondPair
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a u w q : TM x) :
+    riemannDifferenceFourLinearAt g x a u w q =
+      -riemannDifferenceFourLinearAt g x a u q w := by
+  rw [riemannDifferenceFourLinearAt_apply, riemannDifferenceFourLinearAt_apply]
+  linarith [closedCurvatureFourLinearAt_secondPair (g := g) x a u w q,
+    riemannFromRicci3FourLinearAt_secondPair g x a u w q]
+
+theorem riemannDifferenceFourLinearAt_pairExchange
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a u w q : TM x) :
+    riemannDifferenceFourLinearAt g x a u w q =
+      riemannDifferenceFourLinearAt g x w q a u := by
+  rw [riemannDifferenceFourLinearAt_apply, riemannDifferenceFourLinearAt_apply]
+  linarith [closedCurvatureFourLinearAt_pairExchange (g := g) x a u w q,
+    riemannFromRicci3FourLinearAt_pairExchange g x a u w q]
+
+theorem riemannDifferenceFourLinearAt_bianchi
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (a u w q : TM x) :
+    riemannDifferenceFourLinearAt g x a u w q
+      + riemannDifferenceFourLinearAt g x u w a q
+      + riemannDifferenceFourLinearAt g x w a u q = 0 := by
+  simp only [riemannDifferenceFourLinearAt_apply]
+  linarith [closedCurvatureFourLinearAt_bianchi (g := g) x a u w q,
+    riemannFromRicci3FourLinearAt_bianchi g x a u w q]
+
+theorem closedCurvatureFourLinearAt_metricTrace_eq_ricciAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i)
+      ∑ i, closedCurvatureFourLinearAt g x (b i) u w (sharp i)) =
+      g.ricciAt x u w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  simpa [b, sharp] using
+    (ricciAt_eq_curvature_inner_contraction (g := g) (x := x) u w).symm
+
+/-- The metric-dual trace of the canonical finite basis is the dimension in dimension three. -/
+theorem metricDualVectorAt_finBasis_trace_eq_three
+    (g : ClosedSmoothRiemannianMetric n M) (hn : n = 3) (x : M) :
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i)
+      ∑ i, g.inner x (b i) (sharp i)) = 3 := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hdim : (Module.finrank ℝ (TM x) : ℝ) = 3 := by
+    rw [ClosedSmoothRiemannianMetric.finrank_tangentSpace_eq (n := n) (M := M) x, hn]
+    norm_num
+  calc
+    (∑ i, g.inner x (b i) (sharp i)) =
+        ∑ _i : Fin (Module.finrank ℝ (TM x)), (1 : ℝ) := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          have hcoord :
+              b.coord i (b i) = g.inner x (b i) (sharp i) :=
+            coord_eq_inner_metricDualVectorAt_of_basis
+              (g := g) (x := x) (b := b) i (b i)
+          rw [← hcoord]
+          simp [b]
+    _ = (Module.finrank ℝ (TM x) : ℝ) := by
+          simp
+    _ = 3 := hdim
+
+/-- The metric Kulkarni-Nomizu term has trace `-4 g` in dimension three. -/
+theorem metricKulkarniNomizuAt_finBasis_trace_eq
+    (g : ClosedSmoothRiemannianMetric n M) (hn : n = 3)
+    (x : M) (u w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i)
+      ∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+        (n := n) (M := M) x
+        (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q)
+        (b i) u w (sharp i)) =
+      -4 * g.inner x u w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hsharp :
+      (∑ i, g.inner x (b i) (sharp i)) = 3 :=
+    metricDualVectorAt_finBasis_trace_eq_three (g := g) hn x
+  have hcross :
+      (∑ i, g.inner x (b i) w * g.inner x u (sharp i)) =
+        g.inner x u w := by
+    calc
+      (∑ i, g.inner x (b i) w * g.inner x u (sharp i)) =
+          ∑ i, b.coord i u * g.inner x (b i) w := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            have hcoord :
+                b.coord i u = g.inner x u (sharp i) :=
+              coord_eq_inner_metricDualVectorAt_of_basis
+                (g := g) (x := x) (b := b) i u
+            rw [hcoord]
+            ring
+      _ = g.inner x u w :=
+            sum_coord_inner_eq_inner (g := g) (x := x) u w
+  unfold ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+  calc
+    (∑ i, (g.inner x (b i) w * g.inner x u (sharp i)
+        + g.inner x u (sharp i) * g.inner x (b i) w
+        - g.inner x (b i) (sharp i) * g.inner x u w
+        - g.inner x u w * g.inner x (b i) (sharp i))) =
+        (∑ i, g.inner x (b i) w * g.inner x u (sharp i))
+          + (∑ i, g.inner x u (sharp i) * g.inner x (b i) w)
+          - (∑ i, g.inner x (b i) (sharp i)) * g.inner x u w
+          - g.inner x u w * (∑ i, g.inner x (b i) (sharp i)) := by
+          simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib,
+            Finset.sum_mul, Finset.mul_sum]
+    _ = -4 * g.inner x u w := by
+          have hcross' :
+              (∑ i, g.inner x u (sharp i) * g.inner x (b i) w) =
+                g.inner x u w := by
+            calc
+              (∑ i, g.inner x u (sharp i) * g.inner x (b i) w) =
+                  ∑ i, g.inner x (b i) w * g.inner x u (sharp i) := by
+                    refine Finset.sum_congr rfl fun i _ ↦ ?_
+                    ring
+              _ = g.inner x u w := hcross
+          rw [hcross, hcross', hsharp]
+          ring
+
+/-- The Ricci Kulkarni-Nomizu term has trace `-Ric - R g` in dimension three. -/
+theorem ricciMetricKulkarniNomizuAt_finBasis_trace_eq
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hn : n = 3) (x : M) (u w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i)
+      ∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+        (n := n) (M := M) x
+        (fun p q ↦ g.ricciAt x p q) (fun p q ↦ g.inner x p q)
+        (b i) u w (sharp i)) =
+      -g.ricciAt x u w - g.scalarAt x * g.inner x u w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hsharp :
+      (∑ i, g.inner x (b i) (sharp i)) = 3 :=
+    metricDualVectorAt_finBasis_trace_eq_three (g := g) hn x
+  have hRicLeft :
+      (∑ i, g.inner x u (sharp i) * g.ricciAt x (b i) w) =
+        g.ricciAt x u w := by
+    simpa [b, sharp, ricciVariationField] using
+      (tensor2_basis_expansion_left (g := g)
+        (h := ricciVariationField g)
+        (tensor2AddLeft_ricciVariationField g)
+        (tensor2SMulLeft_ricciVariationField g)
+        x u w).symm
+  have hRicLeft' :
+      (∑ i, g.ricciAt x (b i) w * g.inner x u (sharp i)) =
+        g.ricciAt x u w := by
+    calc
+      (∑ i, g.ricciAt x (b i) w * g.inner x u (sharp i)) =
+          ∑ i, g.inner x u (sharp i) * g.ricciAt x (b i) w := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            ring
+      _ = g.ricciAt x u w := hRicLeft
+  have hRicRight :
+      (∑ i, g.ricciAt x u (sharp i) * g.inner x (b i) w) =
+        g.ricciAt x u w := by
+    calc
+      (∑ i, g.ricciAt x u (sharp i) * g.inner x (b i) w) =
+          ∑ i, g.inner x w (b i) * g.ricciAt x u (sharp i) := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            rw [g.inner_symm x (b i) w]
+            ring
+      _ = g.ricciAt x u w := by
+            simpa [b, sharp, ricciVariationField] using
+              (tensor2_metricDual_expansion_right (g := g)
+                (h := ricciVariationField g)
+                (tensor2AddRight_ricciVariationField g)
+                (tensor2SMulRight_ricciVariationField g)
+                x u w).symm
+  have hRicTrace :
+      (∑ i, g.ricciAt x (b i) (sharp i)) = g.scalarAt x := by
+    simpa [b, sharp, traceMetricVariationAt, ricciVariationField] using
+      traceMetricVariationAt_ricci (g := g) x
+  have hRicTraceMul :
+      (∑ i, g.ricciAt x (b i) (sharp i) * g.inner x u w) =
+        g.scalarAt x * g.inner x u w := by
+    rw [← Finset.sum_mul, hRicTrace]
+  have hSharpTraceMul :
+      (∑ i, g.ricciAt x u w * g.inner x (b i) (sharp i)) =
+        g.ricciAt x u w * 3 := by
+    rw [← Finset.mul_sum, hsharp]
+  unfold ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+  calc
+    (∑ i, (g.ricciAt x (b i) w * g.inner x u (sharp i)
+        + g.ricciAt x u (sharp i) * g.inner x (b i) w
+        - g.ricciAt x (b i) (sharp i) * g.inner x u w
+        - g.ricciAt x u w * g.inner x (b i) (sharp i))) =
+        (∑ i, g.ricciAt x (b i) w * g.inner x u (sharp i))
+          + (∑ i, g.ricciAt x u (sharp i) * g.inner x (b i) w)
+          - (∑ i, g.ricciAt x (b i) (sharp i) * g.inner x u w)
+          - (∑ i, g.ricciAt x u w * g.inner x (b i) (sharp i)) := by
+          simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib,
+            Finset.sum_mul, Finset.mul_sum]
+    _ = -g.ricciAt x u w - g.scalarAt x * g.inner x u w := by
+          rw [hRicLeft', hRicRight, hRicTraceMul, hSharpTraceMul]
+          ring
+
+/-- The Ricci-built three-dimensional candidate has the same Ricci trace as the metric. -/
+theorem riemannFromRicci3FourLinearAt_metricTrace_eq_ricciAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hn : n = 3) (x : M) (u w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i)
+      ∑ i, riemannFromRicci3FourLinearAt g x (b i) u w (sharp i)) =
+      g.ricciAt x u w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hMetric :
+      (∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+        (n := n) (M := M) x
+        (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q)
+        (b i) u w (sharp i)) =
+        -4 * g.inner x u w := by
+    simpa [b, sharp] using
+      metricKulkarniNomizuAt_finBasis_trace_eq (g := g) hn x u w
+  have hRic :
+      (∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+        (n := n) (M := M) x
+        (fun p q ↦ g.ricciAt x p q) (fun p q ↦ g.inner x p q)
+        (b i) u w (sharp i)) =
+        -g.ricciAt x u w - g.scalarAt x * g.inner x u w := by
+    simpa [b, sharp] using
+      ricciMetricKulkarniNomizuAt_finBasis_trace_eq (g := g) hn x u w
+  have hExpand :
+      (∑ i, riemannFromRicci3FourLinearAt g x (b i) u w (sharp i)) =
+      (g.scalarAt x / 4) *
+        (∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+          (n := n) (M := M) x
+          (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q)
+          (b i) u w (sharp i))
+        - (∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+          (n := n) (M := M) x
+          (fun p q ↦ g.ricciAt x p q) (fun p q ↦ g.inner x p q)
+          (b i) u w (sharp i)) := by
+    calc
+      (∑ i, riemannFromRicci3FourLinearAt g x (b i) u w (sharp i)) =
+          ∑ i, ((g.scalarAt x / 4) *
+            ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+              (n := n) (M := M) x
+              (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q)
+              (b i) u w (sharp i)
+            - ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+              (n := n) (M := M) x
+              (fun p q ↦ g.ricciAt x p q) (fun p q ↦ g.inner x p q)
+              (b i) u w (sharp i)) := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            simp only [riemannFromRicci3FourLinearAt_apply]
+            unfold ClosedSmoothRiemannianMetric.riemannFromRicci3At
+            rfl
+      _ = (∑ i, (g.scalarAt x / 4) *
+            ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+              (n := n) (M := M) x
+              (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q)
+              (b i) u w (sharp i))
+          - (∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+            (n := n) (M := M) x
+            (fun p q ↦ g.ricciAt x p q) (fun p q ↦ g.inner x p q)
+            (b i) u w (sharp i)) := by
+            rw [Finset.sum_sub_distrib]
+      _ = (g.scalarAt x / 4) *
+            (∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+              (n := n) (M := M) x
+              (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q)
+              (b i) u w (sharp i))
+          - (∑ i, ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+            (n := n) (M := M) x
+            (fun p q ↦ g.ricciAt x p q) (fun p q ↦ g.inner x p q)
+            (b i) u w (sharp i)) := by
+            rw [← Finset.mul_sum]
+  rw [hExpand, hMetric, hRic]
+  ring
+
+/-- The actual-minus-Ricci-built curvature difference has zero Ricci trace in dimension three. -/
+theorem riemannDifferenceFourLinearAt_metricTrace_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hn : n = 3) (x : M) (u w : TM x) :
+    (letI : FiniteDimensional ℝ (TM x) :=
+        inferInstanceAs (FiniteDimensional ℝ E)
+      let b := Module.finBasis ℝ (TM x)
+      let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+        fun i ↦ metricDualVectorAt g x (b.coord i)
+      ∑ i, riemannDifferenceFourLinearAt g x (b i) u w (sharp i)) = 0 := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hCurv :
+      (∑ i, closedCurvatureFourLinearAt g x (b i) u w (sharp i)) =
+        g.ricciAt x u w := by
+    simpa [b, sharp] using
+      closedCurvatureFourLinearAt_metricTrace_eq_ricciAt (g := g) (x := x) u w
+  have hCand :
+      (∑ i, riemannFromRicci3FourLinearAt g x (b i) u w (sharp i)) =
+        g.ricciAt x u w := by
+    simpa [b, sharp] using
+      riemannFromRicci3FourLinearAt_metricTrace_eq_ricciAt (g := g) hn x u w
+  have hExpand :
+      (∑ i, riemannDifferenceFourLinearAt g x (b i) u w (sharp i)) =
+      (∑ i, closedCurvatureFourLinearAt g x (b i) u w (sharp i))
+        - (∑ i, riemannFromRicci3FourLinearAt g x (b i) u w (sharp i)) := by
+    simp only [riemannDifferenceFourLinearAt_apply, Finset.sum_sub_distrib]
+  rw [hExpand, hCurv, hCand]
+  ring
+
 set_option maxHeartbeats 5000000 in
 /--
 The Ricci-endomorphism trace of a curvature endomorphism is zero.  This is the
