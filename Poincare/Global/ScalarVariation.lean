@@ -13913,6 +13913,55 @@ def RicciSecondDerivCommutationAt
       lichnerowiczLaplacianAt g (ricciVariationField g) x u w
         + ricciQuadraticAt g x u w
 
+/--
+Expanded curvature-commutation form before folding the three Lichnerowicz
+blocks back into `lichnerowiczLaplacianAt`.
+-/
+def RicciSecondDerivCurvatureCommutationAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : Prop :=
+  ∀ u w : TM x,
+    deltaRicciSecondDerivContractionAt g (negTwoRicciVariationField g) x u w =
+      roughTensorLaplacianAt g (ricciVariationField g) x u w
+        - 2 * lichnerowiczCurvatureAt g (ricciVariationField g) x u w
+        + ricciActionOnTensorAt g (ricciVariationField g) x u w
+        + ricciQuadraticAt g x u w
+
+theorem RicciSecondDerivCommutationAt.of_closed_bianchi
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hRic : ClosedRicciDerivativeExpansionAt g x)
+    (hSecond : ∀ u v w z : TM x,
+      closedCurvatureCovDerivAt g x v u w z
+        + closedCurvatureCovDerivAt g x u w v z
+        + closedCurvatureCovDerivAt g x w v u z = 0)
+    (hCurvComm : RicciSecondDerivCurvatureCommutationAt g x) :
+    RicciSecondDerivCommutationAt g x := by
+  intro u w
+  have hRicEntry :
+      covTensor2DerivAt g (ricciVariationField g) x u w u =
+        closedCovRicciDerivAt g x u w u :=
+    covTensor2DerivAt_ricciVariationField_eq_closedCovRicciDerivAt
+      (g := g) (x := x) hRic u w u
+  have hFirst :
+      closedCovRicciDerivAt g x u w w
+        + closedCurvatureDivergenceAt g x w u w
+        - closedCovRicciDerivAt g x w u w = 0 :=
+    closed_first_contracted_bianchi_of_second_bianchi
+      (g := g) (x := x) hSecond u w w
+  have hExpanded := hCurvComm u w
+  calc
+    deltaRicciSecondDerivContractionAt g (negTwoRicciVariationField g) x u w =
+        roughTensorLaplacianAt g (ricciVariationField g) x u w
+          - 2 * lichnerowiczCurvatureAt g (ricciVariationField g) x u w
+          + ricciActionOnTensorAt g (ricciVariationField g) x u w
+          + ricciQuadraticAt g x u w := hExpanded
+    _ = lichnerowiczLaplacianAt g (ricciVariationField g) x u w
+          + ricciQuadraticAt g x u w := by
+        rw [lichnerowiczLaplacianAt]
+
 theorem lichnerowiczCurvatureAt_ricciQuadraticAt_trace_cancellation
     (g : ClosedSmoothRiemannianMetric n M)
     [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
