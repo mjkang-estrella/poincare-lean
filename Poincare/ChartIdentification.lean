@@ -299,6 +299,84 @@ theorem extDerivFun_section_eventually_chart {f : N → ℝ} {x : N}
   rfl
 
 /--
+The invariant iterated derivative of a scalar field along a tangent field is
+the ordinary derivative of the corresponding fixed-chart representative.
+-/
+theorem extDerivFun_extDerivFun_chart
+    {f : N → ℝ} {U : Π y : N, TangentSpace I' y} {x : N}
+    (hf : CMDiffAt 2 f x) (hU : MDiffAt (T% U) x)
+    (v : TangentSpace I' x) :
+    extDerivFun (fun y ↦ extDerivFun f y (U y)) x v =
+      fderiv ℝ (fun z ↦ fderiv ℝ (f ∘ (extChartAt I' x).symm) z
+          (mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm U z))
+        (extChartAt I' x x) v := by
+  have hFc : ContDiffAt ℝ 2 (f ∘ (extChartAt I' x).symm)
+      (extChartAt I' x x) := by
+    have h := (contMDiffAt_iff.mp hf).2
+    rw [I'.range_eq_univ, contDiffWithinAt_univ] at h
+    have heq : (extChartAt 𝓘(ℝ, ℝ) (f x)) ∘ f ∘ (extChartAt I' x).symm =
+        f ∘ (extChartAt I' x).symm := by
+      funext z
+      simp
+    rwa [heq] at h
+  have hinv : (mfderiv% (extChartAt I' x).symm
+      (extChartAt I' x x)).IsInvertible := by
+    have h := isInvertible_mfderivWithin_extChartAt_symm
+      (mem_extChartAt_target (I := I') x)
+    rwa [I'.range_eq_univ, mfderivWithin_univ] at h
+  have hpull : DifferentiableAt ℝ
+      (mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm U)
+      (extChartAt I' x x) := by
+    have hsm : CMDiffAt 2 ((extChartAt I' x).symm : E' → N)
+        (extChartAt I' x x) := by
+      have h := contMDiffWithinAt_extChartAt_symm_range (n := 2) x
+        (mem_extChartAt_target (I := I') x)
+      rwa [I'.range_eq_univ, contMDiffWithinAt_univ] at h
+    have hU' : MDiffAt[univ] (T% U)
+        ((extChartAt I' x).symm (extChartAt I' x x)) := by
+      rw [(extChartAt I' x).left_inv (mem_extChartAt_source x),
+        mdifferentiableWithinAt_univ]
+      exact hU
+    have h := hU'.mpullback_vectorField_preimage hsm hinv le_rfl
+    rw [preimage_univ, mdifferentiableWithinAt_univ] at h
+    exact mdiffAt_vectorSpace_iff_differentiableAt.mp h
+  set g : N → ℝ := fun y ↦ extDerivFun f y (U y) with hg
+  set c : E' → ℝ := fun z ↦ fderiv ℝ (f ∘ (extChartAt I' x).symm) z
+    (mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm U z) with hc
+  have hgc : g =ᶠ[𝓝 x] c ∘ (extChartAt I' x) := by
+    filter_upwards [extDerivFun_section_eventually_chart hf U] with y hy
+    exact hy
+  have hcd : DifferentiableAt ℝ c (extChartAt I' x x) := by
+    apply DifferentiableAt.clm_apply
+    · exact (hFc.fderiv_right (m := 1) (by norm_num)).differentiableAt
+        one_ne_zero
+    · exact hpull
+  have hgd : MDiffAt g x := by
+    refine MDifferentiableAt.congr_of_eventuallyEq ?_ hgc
+    exact (mdifferentiableAt_iff_differentiableAt.mpr hcd).comp x
+      (mdifferentiableAt_extChartAt (mem_chart_source H' x))
+  rw [extDerivFun_apply_chart hgd v]
+  congr 1
+  apply Filter.EventuallyEq.fderiv_eq
+  have hev : ∀ᶠ z in 𝓝 (extChartAt I' x x),
+      z ∈ (extChartAt I' x).target :=
+    (isOpen_extChartAt_target x).mem_nhds (mem_extChartAt_target x)
+  have hsx : (extChartAt I' x).symm (extChartAt I' x x) = x :=
+    (extChartAt I' x).left_inv (mem_extChartAt_source x)
+  have hgc2 : ∀ᶠ y in 𝓝 ((extChartAt I' x).symm (extChartAt I' x x)),
+      g y = (c ∘ (extChartAt I' x)) y := by
+    rw [hsx]
+    exact hgc
+  have hgc' := (continuousAt_extChartAt_symm (I := I') x).eventually hgc2
+  filter_upwards [hev, hgc'] with z hzT hzg
+  have h2 : (extChartAt I' x) ((extChartAt I' x).symm z) = z :=
+    (extChartAt I' x).right_inv hzT
+  show g ((extChartAt I' x).symm z) = c z
+  rw [hzg]
+  show c ((extChartAt I' x) ((extChartAt I' x).symm z)) = c z
+  rw [h2]
+
+/--
 **The bracket-derivation identity** (invariant form): on a boundaryless real
 manifold, `df([X,Y]) = X(Y f) - Y(X f)` at every point where `f` is `C²` and
 `X, Y` are differentiable.
@@ -421,6 +499,11 @@ theorem mpullback_extChartAt_symm_apply_eq :
 /-- Theorem contract for `extDerivFun_section_eventually_chart`. -/
 theorem extDerivFun_section_eventually_chart_eq :
     @extDerivFun_section_eventually_chart = @extDerivFun_section_eventually_chart :=
+  rfl
+
+/-- Theorem contract for `extDerivFun_extDerivFun_chart`. -/
+theorem extDerivFun_extDerivFun_chart_eq :
+    @extDerivFun_extDerivFun_chart = @extDerivFun_extDerivFun_chart :=
   rfl
 
 /-- Theorem contract for `extDerivFun_apply_mlieBracket`. -/

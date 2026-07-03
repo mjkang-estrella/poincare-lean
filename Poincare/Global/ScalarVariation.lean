@@ -2,6 +2,7 @@ import Poincare.Global.MetricVariation
 import Poincare.Global.Laplacian
 import Poincare.Global.RicciNorm
 import Poincare.LocalConnectionRegularity
+import Poincare.ChartIdentification
 
 /-!
 # Scalar curvature variation: first closed-manifold layer
@@ -610,6 +611,67 @@ theorem chartTransportedLeviCivitaSection_extend_apply_chart
   rw [CovariantDerivative.chartTransportedLeviCivitaSection_apply_chart
     x (extend E p) hy]
   exact mfderiv_extChartAt_extend_apply (x := x) hy p
+
+theorem extDerivFun_extDerivFun_extend_eq_fderiv_fderiv_chart
+    {f : M → ℝ} {x : M}
+    (hf : ContMDiffAt I 𝓘(ℝ) 2 f x) (v : TM x) :
+    extDerivFun (fun y : M ↦ extDerivFun f y (extend E v y)) x v =
+      fderiv ℝ (fderiv ℝ (f ∘ (extChartAt I x).symm))
+        (extChartAt I x x) v v := by
+  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  let F : E → ℝ := f ∘ (extChartAt I x).symm
+  let A : E → ℝ := fun z ↦
+    fderiv ℝ F z
+      (VectorField.mpullback 𝓘(ℝ, E) I (extChartAt I x).symm (extend E v) z)
+  let B : E → ℝ := fun z ↦ fderiv ℝ F z v
+  have hchart :=
+    extDerivFun_extDerivFun_chart
+      (I' := I) (f := f) (U := extend E v) (x := x)
+      hf (by simpa using (mdifferentiableAt_extend (σ₀ := v) ..)) v
+  have hAB : A =ᶠ[nhds (extChartAt I x x)] B := by
+    filter_upwards [(isOpen_extChartAt_target x).mem_nhds
+      (mem_extChartAt_target x)] with z hzT
+    have hy : (extChartAt I x).symm z ∈ (extChartAt I x).source :=
+      (extChartAt I x).map_target hzT
+    have hz_eq : extChartAt I x ((extChartAt I x).symm z) = z :=
+      (extChartAt I x).right_inv hzT
+    have hpull :=
+      mpullback_extChartAt_symm_apply (I' := I) (x := x)
+        (y := (extChartAt I x).symm z) hy (extend E v)
+    rw [hz_eq] at hpull
+    have hconst :=
+      mfderiv_extChartAt_extend_apply (x := x)
+        (y := (extChartAt I x).symm z) hy v
+    simpa [A, B] using
+      congrArg (fun w : E ↦ fderiv ℝ F z w) (hpull.trans hconst)
+  have hF : ContDiffAt ℝ 2 F (extChartAt I x x) := by
+    have h := (contMDiffAt_iff.mp hf).2
+    rw [ModelWithCorners.range_eq_univ I, contDiffWithinAt_univ] at h
+    have heq : (extChartAt 𝓘(ℝ, ℝ) (f x)) ∘ f ∘ (extChartAt I x).symm =
+        f ∘ (extChartAt I x).symm := by
+      funext z
+      simp
+    rwa [heq] at h
+  have hBderiv :
+      fderiv ℝ B (extChartAt I x x) v =
+        fderiv ℝ (fderiv ℝ F) (extChartAt I x x) v v := by
+    have hdf : DifferentiableAt ℝ (fderiv ℝ F) (extChartAt I x x) :=
+      (hF.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero
+    have hcomp :=
+      ((ContinuousLinearMap.apply ℝ ℝ (v : E)).hasFDerivAt.comp
+        (extChartAt I x x) hdf.hasFDerivAt).fderiv
+    simpa [B, ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply] using
+      congrArg (fun L : E →L[ℝ] ℝ ↦ L (v : E)) hcomp
+  calc
+    extDerivFun (fun y : M ↦ extDerivFun f y (extend E v y)) x v
+        = fderiv ℝ A (extChartAt I x x) v := by
+            simpa [A, F] using hchart
+    _ = fderiv ℝ B (extChartAt I x x) v := by
+            rw [Filter.EventuallyEq.fderiv_eq (𝕜 := ℝ) hAB]
+    _ = fderiv ℝ (fderiv ℝ F) (extChartAt I x x) v v := hBderiv
+    _ = fderiv ℝ (fderiv ℝ (f ∘ (extChartAt I x).symm))
+          (extChartAt I x x) v v := rfl
 
 omit [T2Space M] in
 /-- Canonical tangent extensions have zero Lie bracket at their common anchor. -/
