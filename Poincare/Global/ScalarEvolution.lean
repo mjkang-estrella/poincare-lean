@@ -20,6 +20,7 @@ the statement layer and a static Ricci-flat sanity instance.
 noncomputable section
 
 open Bundle FiberBundle
+open Set
 open scoped Manifold ContDiff
 
 universe u
@@ -818,6 +819,523 @@ theorem exists_scalarAt_isMinOn
   obtain ⟨x, hx, hmin⟩ := isCompact_univ.exists_isMinOn
     (Set.univ_nonempty) (fun y _ ↦ (hscalar y).continuousAt.continuousWithinAt)
   exact ⟨x, hmin⟩
+
+/-- The closed scalar-curvature minimum, defined as the infimum of the scalar range. -/
+noncomputable def scalarMinimumAt (g : ClosedSmoothRiemannianMetric n M) : ℝ :=
+  sInf (Set.range fun y : M ↦ g.scalarAt y)
+
+/-- The scalar-minimum track based at geometric time `t₀`. -/
+noncomputable def scalarMinimumTrack
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) : ℝ → ℝ :=
+  fun τ ↦ scalarMinimumAt (gt (t₀ + τ))
+
+/-- If scalar curvature attains its minimum at `x`, then the infimum definition equals it. -/
+theorem scalarMinimumAt_eq_of_isMinOn
+    (g : ClosedSmoothRiemannianMetric n M) {x : M}
+    (hmin : IsMinOn (fun y : M ↦ g.scalarAt y) Set.univ x) :
+    scalarMinimumAt g = g.scalarAt x := by
+  apply le_antisymm
+  · exact csInf_le
+      ⟨g.scalarAt x, fun y ⟨z, hzy⟩ ↦ hzy ▸ hmin trivial⟩
+      ⟨x, rfl⟩
+  · exact le_csInf ⟨g.scalarAt x, ⟨x, rfl⟩⟩
+      fun y ⟨z, hzy⟩ ↦ hzy ▸ hmin trivial
+
+/-- The scalar-curvature infimum lies below every point value on a compact closed slice. -/
+theorem scalarMinimumAt_le_scalarAt
+    [CompactSpace M] [Nonempty M]
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hscalar :
+      ∀ x : M, ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ g.scalarAt y) x)
+    (x : M) :
+    scalarMinimumAt g ≤ g.scalarAt x := by
+  obtain ⟨x₀, hx₀min⟩ := exists_scalarAt_isMinOn (g := g) hscalar
+  rw [scalarMinimumAt_eq_of_isMinOn (g := g) hx₀min]
+  exact hx₀min trivial
+
+omit [T2Space M] in
+/--
+Strict compact-manifold parabolic minimum principle with a time-dependent
+abstract Laplacian.  The only geometric input is the nonnegativity of the
+Laplacian at a spatial minimum.
+-/
+theorem closed_parabolic_min_principle_strict_var
+    [CompactSpace M] [Nonempty M]
+    {lap : ℝ → (M → ℝ) → M → ℝ}
+    {u u' : ℝ → M → ℝ} {c : ℝ → M → ℝ} {T : ℝ}
+    (hu_cont : Continuous ↿u)
+    (hud : ∀ x : M, ∀ t ∈ Icc (0 : ℝ) T,
+      HasDerivAt (fun s ↦ u s x) (u' t x) t)
+    (hsuper : ∀ t ∈ Icc (0 : ℝ) T, ∀ x : M,
+      lap t (u t) x + c t x * u t x < u' t x)
+    (hmin_lap : ∀ t ∈ Icc (0 : ℝ) T, ∀ x : M,
+      IsMinOn (u t) Set.univ x → 0 ≤ lap t (u t) x)
+    (h0 : ∀ x : M, 0 < u 0 x) :
+    ∀ t ∈ Icc (0 : ℝ) T, ∀ x : M, 0 < u t x := by
+  by_contra hviol
+  push Not at hviol
+  obtain ⟨t₁, ht₁, x₁, hux₁⟩ := hviol
+  set m : ℝ → ℝ := fun t ↦ sInf (u t '' (Set.univ : Set M)) with hm
+  have hmcont : Continuous m := (isCompact_univ : IsCompact (Set.univ : Set M)).continuous_sInf hu_cont
+  have hattain : ∀ t, ∃ x : M, IsMinOn (u t) Set.univ x ∧ m t = u t x := by
+    intro t
+    obtain ⟨x, hxK, hxmin⟩ :=
+      (isCompact_univ : IsCompact (Set.univ : Set M)).exists_isMinOn
+        (Set.univ_nonempty) ((hu_cont.comp (continuous_const.prodMk continuous_id)).continuousOn)
+    refine ⟨x, hxmin, le_antisymm ?_ ?_⟩
+    · exact csInf_le
+        ⟨u t x, fun y ⟨z, hz, hzy⟩ ↦ hzy ▸ hxmin hz⟩
+        ⟨x, hxK, rfl⟩
+    · exact le_csInf ((Set.univ_nonempty : (Set.univ : Set M).Nonempty).image (u t))
+        fun y ⟨z, hz, hzy⟩ ↦ hzy ▸ hxmin hz
+  have hmle : ∀ t (x : M), m t ≤ u t x := by
+    intro t x
+    exact csInf_le
+      ⟨m t, fun y ⟨z, hz, hzy⟩ ↦ by
+        obtain ⟨x', hmin', hmx'⟩ := hattain t
+        rw [← hzy, hmx']
+        exact hmin' hz⟩
+      ⟨x, trivial, rfl⟩
+  have hm0 : 0 < m 0 := by
+    obtain ⟨x, _, hmx⟩ := hattain 0
+    rw [hmx]
+    exact h0 x
+  have hmbad : ∃ t ∈ Icc (0 : ℝ) T, m t ≤ 0 :=
+    ⟨t₁, ht₁, le_trans (hmle t₁ x₁) hux₁⟩
+  obtain ⟨t₀, ht₀, hmt₀, hbefore⟩ :=
+    RicciFlow.exists_first_zero (hmcont.continuousOn) hm0 hmbad
+  have ht₀Icc : t₀ ∈ Icc (0 : ℝ) T := ⟨le_of_lt ht₀.1, ht₀.2⟩
+  obtain ⟨x₀, hx₀min, hmx₀⟩ := hattain t₀
+  have hux₀ : u t₀ x₀ = 0 := by rw [← hmx₀, hmt₀]
+  have hder := hud x₀ t₀ ht₀Icc
+  have hleft : u' t₀ x₀ ≤ 0 := by
+    by_contra hpos
+    push Not at hpos
+    have hslope := hasDerivAt_iff_tendsto_slope.mp hder
+    have hev : ∀ᶠ s in nhdsWithin t₀ {t₀}ᶜ,
+        0 < slope (fun s ↦ u s x₀) t₀ s :=
+      hslope.eventually (eventually_gt_nhds hpos)
+    have hlt : ∀ᶠ s in nhdsWithin t₀ (Iio t₀),
+        0 < slope (fun s ↦ u s x₀) t₀ s := by
+      apply hev.filter_mono
+      apply nhdsWithin_mono
+      intro s hs
+      exact ne_of_lt hs
+    have hIoo : ∀ᶠ s in nhdsWithin t₀ (Iio t₀), s ∈ Ioo (0 : ℝ) t₀ :=
+      Filter.eventually_of_mem (Ioo_mem_nhdsLT ht₀.1) fun s hs ↦ hs
+    obtain ⟨s, hsl, hsIoo⟩ := (hlt.and hIoo).exists
+    have hneg : u s x₀ < 0 := by
+      have hde : slope (fun s ↦ u s x₀) t₀ s =
+          (u s x₀ - u t₀ x₀) / (s - t₀) := by
+        rw [slope_def_field]
+      rw [hde, hux₀, sub_zero] at hsl
+      have hst : s - t₀ < 0 := by linarith [hsIoo.2]
+      by_contra hge
+      push Not at hge
+      have : u s x₀ / (s - t₀) ≤ 0 :=
+        div_nonpos_of_nonneg_of_nonpos hge (le_of_lt hst)
+      linarith
+    have hmpos := hbefore s ⟨le_of_lt hsIoo.1, hsIoo.2⟩
+    have := hmle s x₀
+    linarith
+  have hsup := hsuper t₀ ht₀Icc x₀
+  have hlap := hmin_lap t₀ ht₀Icc x₀ hx₀min
+  rw [hux₀] at hsup
+  simp only [mul_zero] at hsup
+  linarith
+
+omit [T2Space M] in
+/--
+Compact-manifold parabolic minimum principle with variable zeroth-order
+coefficient.  The constant-additivity hypothesis is only required for the
+specific evolving function `u`, which is exactly what the epsilon perturbation
+uses.
+-/
+theorem closed_parabolic_min_principle_var
+    [CompactSpace M] [Nonempty M]
+    {lap : ℝ → (M → ℝ) → M → ℝ}
+    {u u' : ℝ → M → ℝ} {c : ℝ → M → ℝ} {T M₀ : ℝ}
+    (hcM : ∀ t ∈ Icc (0 : ℝ) T, ∀ x : M, c t x ≤ M₀)
+    (hu_cont : Continuous ↿u)
+    (hud : ∀ x : M, ∀ t ∈ Icc (0 : ℝ) T,
+      HasDerivAt (fun s ↦ u s x) (u' t x) t)
+    (hlap_add_const : ∀ t ∈ Icc (0 : ℝ) T, ∀ k : ℝ, ∀ x : M,
+      lap t (fun y : M ↦ u t y + k) x = lap t (u t) x)
+    (hsuper : ∀ t ∈ Icc (0 : ℝ) T, ∀ x : M,
+      lap t (u t) x + c t x * u t x ≤ u' t x)
+    (hmin_lap : ∀ t ∈ Icc (0 : ℝ) T, ∀ x : M,
+      IsMinOn (u t) Set.univ x → 0 ≤ lap t (u t) x)
+    (h0 : ∀ x : M, 0 ≤ u 0 x) :
+    ∀ t ∈ Icc (0 : ℝ) T, ∀ x : M, 0 ≤ u t x := by
+  intro t ht x
+  by_contra hneg
+  push Not at hneg
+  set M' : ℝ := max M₀ 0 + 1 with hM'
+  set ε : ℝ := -u t x / (2 * Real.exp (M' * t)) with hε
+  have hexp : (0 : ℝ) < Real.exp (M' * t) := Real.exp_pos _
+  have hεpos : 0 < ε := by
+    rw [hε]
+    apply div_pos (by linarith) (by positivity)
+  have hvpos := closed_parabolic_min_principle_strict_var
+    (lap := lap)
+    (u := fun s y ↦ u s y + ε * Real.exp (M' * s))
+    (u' := fun s y ↦ u' s y + ε * M' * Real.exp (M' * s))
+    (c := c) (T := T)
+    (by
+      apply Continuous.add hu_cont
+      exact (continuous_const.mul ((continuous_const.mul
+        continuous_fst).rexp)).comp continuous_id)
+    (by
+      intro y s hs
+      have h1 := hud y s hs
+      have h2 : HasDerivAt (fun r ↦ ε * Real.exp (M' * r))
+          (ε * M' * Real.exp (M' * s)) s := by
+        have h3 := (((hasDerivAt_id s).const_mul M').exp).const_mul ε
+        simp only [id_eq] at h3
+        convert h3 using 1
+        ring
+      simpa using h1.add h2)
+    (by
+      intro s hs y
+      have hsup := hsuper s hs y
+      have hlap : lap s (fun z : M ↦ u s z + ε * Real.exp (M' * s)) y =
+          lap s (u s) y :=
+        hlap_add_const s hs (ε * Real.exp (M' * s)) y
+      simp only
+      rw [hlap]
+      have hcy := hcM s hs y
+      have hM1 : c s y < M' := by
+        rw [hM']
+        have : M₀ ≤ max M₀ 0 := le_max_left M₀ 0
+        linarith
+      have heps : 0 < ε * Real.exp (M' * s) := by positivity
+      nlinarith [mul_lt_mul_of_pos_right hM1 heps])
+    (by
+      intro s hs y hminv
+      have hminu : IsMinOn (u s) Set.univ y := by
+        intro z hz
+        have := hminv hz
+        simpa using this
+      have hlapu := hmin_lap s hs y hminu
+      rwa [hlap_add_const s hs (ε * Real.exp (M' * s)) y])
+    (by
+      intro y
+      have := h0 y
+      positivity)
+  have := hvpos t ht x
+  simp only at this
+  rw [hε] at this
+  have hne : Real.exp (M' * t) ≠ 0 := ne_of_gt hexp
+  field_simp at this
+  linarith
+
+/--
+Hamilton's positive scalar lower bound on a compact closed Ricci-flow track.
+If the initial scalar minimum is at least `c > 0`, then scalar curvature stays
+above the Riccati barrier `c / (1 - (2/n)cτ)` while that barrier is finite.
+-/
+theorem hamilton_scalar_lower_bound
+    [CompactSpace M] [Nonempty M]
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ T c B : ℝ}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hn : 0 < (n : ℝ)) (hc : 0 < c) (hT0 : 0 ≤ T)
+    (hT : (2 / (n : ℝ)) * c * T < 1)
+    (hR_cont : Continuous ↿(fun τ (x : M) ↦ (gt (t₀ + τ)).scalarAt x))
+    (hHam : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      SatisfiesHamiltonScalarEvolutionAt gt (t₀ + τ) x)
+    (hScalar₂ : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ (gt (t₀ + τ)).scalarAt y) x)
+    (hRB : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      (gt (t₀ + τ)).scalarAt x ≤ B)
+    (h0 : c ≤ scalarMinimumTrack gt t₀ 0) :
+    ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      c / (1 - (2 / (n : ℝ)) * c * τ) ≤ (gt (t₀ + τ)).scalarAt x := by
+  let a : ℝ := 2 / (n : ℝ)
+  let R : ℝ → M → ℝ := fun τ x ↦ (gt (t₀ + τ)).scalarAt x
+  let R' : ℝ → M → ℝ := fun τ x ↦
+    (gt (t₀ + τ)).laplacianAt (R τ) x +
+      2 * (gt (t₀ + τ)).ricciNormSqAt x
+  have ha : 0 < a := by
+    dsimp [a]
+    positivity
+  have hRd : ∀ x : M, ∀ τ ∈ Icc (0 : ℝ) T,
+      HasDerivAt (fun s ↦ R s x) (R' τ x) τ := by
+    intro x τ hτ
+    have hbase :
+        HasDerivAt (fun t ↦ (gt t).scalarAt x) (R' τ x) (t₀ + τ) := by
+      simpa [SatisfiesHamiltonScalarEvolutionAt, R, R'] using hHam τ hτ x
+    have hshift : HasDerivAt (fun s : ℝ ↦ t₀ + s) 1 τ := by
+      simpa using (hasDerivAt_id τ).const_add t₀
+    simpa [R] using hbase.comp τ hshift
+  have hevol : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      (gt (t₀ + τ)).laplacianAt (R τ) x + a * (R τ x) ^ 2 ≤ R' τ x := by
+    intro τ hτ x
+    have hreact :=
+      hamilton_scalar_reaction_bound_at
+        (g := gt (t₀ + τ)) (x := x) hn
+    dsimp [a, R, R']
+    linarith
+  have hscalar0 :
+      ∀ x : M, ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ (gt t₀).scalarAt y) x := by
+    intro x
+    simpa using hScalar₂ 0 ⟨le_refl 0, hT0⟩ x
+  have h0point : ∀ x : M, c ≤ R 0 x := by
+    intro x
+    have hminle :=
+      scalarMinimumAt_le_scalarAt
+        (g := gt t₀) hscalar0 x
+    exact le_trans h0 (by simpa [scalarMinimumTrack, scalarMinimumAt, R] using hminle)
+  set δ : ℝ := (1 - a * c * T) / 2 with hδ
+  have hδpos : 0 < δ := by rw [hδ]; linarith
+  set φ : ℝ → ℝ := fun t ↦ c / max (1 - a * c * t) δ with hφ
+  have hφeq : ∀ t ∈ Icc (0 : ℝ) T,
+      φ t = c / (1 - a * c * t) := by
+    intro t ht
+    rw [hφ]
+    simp only
+    congr 1
+    apply max_eq_left
+    have h1 : a * c * t ≤ a * c * T := by
+      apply mul_le_mul_of_nonneg_left ht.2 (by positivity)
+    rw [hδ]
+    linarith
+  have hden : ∀ t ∈ Icc (0 : ℝ) T, 0 < 1 - a * c * t := by
+    intro t ht
+    have h1 : a * c * t ≤ a * c * T := by
+      apply mul_le_mul_of_nonneg_left ht.2 (by positivity)
+    linarith
+  have hφd : ∀ t ∈ Icc (0 : ℝ) T,
+      HasDerivAt φ (a * (φ t) ^ 2) t := by
+    intro t ht
+    have hd := hden t ht
+    have hf : HasDerivAt (fun s ↦ 1 - a * c * s) (-(a * c)) t := by
+      simpa using ((hasDerivAt_id t).const_mul (a * c)).const_sub 1
+    have hinv : HasDerivAt (fun s ↦ (1 - a * c * s)⁻¹)
+        (a * c / (1 - a * c * t) ^ 2) t := by
+      have h2 := hf.inv (ne_of_gt hd)
+      convert h2 using 1
+      field_simp
+    have hexact := hinv.const_mul c
+    have hopen : ∀ᶠ s in nhds t, φ s = c * (1 - a * c * s)⁻¹ := by
+      have hcont : Continuous (fun s ↦ 1 - a * c * s) := by
+        continuity
+      have hδlt : δ < 1 - a * c * t := by
+        have h1 : a * c * t ≤ a * c * T := by
+          apply mul_le_mul_of_nonneg_left ht.2 (by positivity)
+        rw [hδ]
+        linarith
+      have hev : ∀ᶠ s in nhds t, δ < 1 - a * c * s :=
+        hcont.continuousAt.eventually_const_lt hδlt
+      filter_upwards [hev] with s hs
+      rw [hφ]
+      simp only
+      rw [max_eq_left (le_of_lt hs), div_eq_mul_inv]
+    have hres : HasDerivAt φ (c * (a * c / (1 - a * c * t) ^ 2)) t :=
+      hexact.congr_of_eventuallyEq hopen
+    convert hres using 1
+    rw [hφeq t ht]
+    field_simp
+  have hφmono : ∀ t ∈ Icc (0 : ℝ) T, φ t ≤ φ T := by
+    intro t ht
+    rw [hφeq t ht, hφeq T ⟨hT0, le_refl T⟩]
+    apply div_le_div_of_nonneg_left (le_of_lt hc) (hden T ⟨hT0, le_refl T⟩)
+    have : a * c * t ≤ a * c * T := by
+      apply mul_le_mul_of_nonneg_left ht.2 (by positivity)
+    linarith
+  have hkey := closed_parabolic_min_principle_var
+    (lap := fun τ f x ↦ (gt (t₀ + τ)).laplacianAt f x)
+    (u := fun τ x ↦ R τ x - φ τ)
+    (u' := fun τ x ↦ R' τ x - a * (φ τ) ^ 2)
+    (c := fun τ x ↦ a * (R τ x + φ τ))
+    (T := T) (M₀ := a * (B + φ T))
+    (by
+      intro τ hτ x
+      have h1 := hRB τ hτ x
+      have h2 := hφmono τ hτ
+      nlinarith)
+    (by
+      apply hR_cont.sub
+      have hφcont : Continuous φ := by
+        rw [hφ]
+        apply Continuous.div continuous_const
+        · exact (Continuous.max (by continuity) continuous_const)
+        · intro s
+          have : δ ≤ max (1 - a * c * s) δ := le_max_right _ _
+          intro hzero
+          rw [hzero] at this
+          linarith
+      exact hφcont.comp continuous_fst)
+    (by
+      intro x τ hτ
+      exact (hRd x τ hτ).sub (hφd τ hτ))
+    (by
+      intro τ hτ k x
+      have hf : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2
+          (fun z : M ↦ R τ z - φ τ) y := by
+        intro y
+        have hconst : ContMDiffAt I 𝓘(ℝ) 2 (fun _ : M ↦ φ τ) y :=
+          contMDiffAt_const
+        exact (hScalar₂ τ hτ y).sub hconst
+      have hk : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2 (fun _ : M ↦ k) y :=
+        fun _ ↦ contMDiffAt_const
+      change (gt (t₀ + τ)).laplacianAt (fun y : M ↦ R τ y - φ τ + k) x =
+        (gt (t₀ + τ)).laplacianAt (fun y : M ↦ R τ y - φ τ) x
+      rw [show (fun y : M ↦ R τ y - φ τ + k) =
+          (fun z : M ↦ R τ z - φ τ) + fun _ : M ↦ k from by
+            rfl]
+      rw [(gt (t₀ + τ)).laplacianAt_add'
+        (f := fun z : M ↦ R τ z - φ τ) (h := fun _ : M ↦ k)
+        (x := x) hf hk]
+      rw [(gt (t₀ + τ)).laplacianAt_const k x]
+      ring)
+    (by
+      intro τ hτ x
+      have hev := hevol τ hτ x
+      have hf : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2 (R τ) y := by
+        intro y
+        exact hScalar₂ τ hτ y
+      have hconst : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2
+          (fun _ : M ↦ -(φ τ)) y :=
+        fun _ ↦ contMDiffAt_const
+      have hlap : (gt (t₀ + τ)).laplacianAt (fun y : M ↦ R τ y - φ τ) x =
+          (gt (t₀ + τ)).laplacianAt (R τ) x := by
+        rw [show (fun y : M ↦ R τ y - φ τ) =
+            (fun y : M ↦ R τ y) + fun _ : M ↦ -(φ τ) from by
+              funext y
+              rw [sub_eq_add_neg]
+              rfl]
+        rw [(gt (t₀ + τ)).laplacianAt_add'
+          (f := R τ) (h := fun _ : M ↦ -(φ τ)) (x := x) hf hconst]
+        rw [(gt (t₀ + τ)).laplacianAt_const (-(φ τ)) x]
+        ring
+      change (gt (t₀ + τ)).laplacianAt (fun y : M ↦ R τ y - φ τ) x
+          + a * (R τ x + φ τ) * (R τ x - φ τ) ≤ R' τ x - a * φ τ ^ 2
+      rw [hlap]
+      nlinarith [hev])
+    (by
+      intro τ hτ x hmin
+      have hf : ContMDiffAt I 𝓘(ℝ) 2
+          (fun y : M ↦ R τ y - φ τ) x := by
+        have hconst : ContMDiffAt I 𝓘(ℝ) 2 (fun _ : M ↦ φ τ) x :=
+          contMDiffAt_const
+        exact (hScalar₂ τ hτ x).sub hconst
+      exact laplacianAt_nonneg_of_isLocalMin
+        (g := gt (t₀ + τ))
+        (f := fun y : M ↦ R τ y - φ τ)
+        (x := x) hf ((gt (t₀ + τ)).mdifferentiableAt_gradient hf)
+        (hmin.isLocalMin Filter.univ_mem))
+    (by
+      intro x
+      have h00 := h0point x
+      have hφ0 : φ 0 = c := by
+        rw [hφeq 0 ⟨le_refl 0, hT0⟩]
+        simp
+      simp only
+      rw [hφ0]
+      exact sub_nonneg.mpr h00)
+  intro τ hτ x
+  have hfin := hkey τ hτ x
+  simp only at hfin
+  have hφle : φ τ ≤ R τ x := by linarith
+  rw [hφeq τ hτ] at hφle
+  simpa [a, R] using hφle
+
+/--
+Hamilton's headline nonnegative-scalar-curvature preservation theorem on a
+compact closed Ricci-flow track.
+-/
+theorem hamilton_scalar_nonneg_preserved
+    [CompactSpace M] [Nonempty M]
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ T : ℝ}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hn : 0 < (n : ℝ)) (hT0 : 0 ≤ T)
+    (hR_cont : Continuous ↿(fun τ (x : M) ↦ (gt (t₀ + τ)).scalarAt x))
+    (hHam : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      SatisfiesHamiltonScalarEvolutionAt gt (t₀ + τ) x)
+    (hScalar₂ : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ (gt (t₀ + τ)).scalarAt y) x)
+    (h0 : 0 ≤ scalarMinimumTrack gt t₀ 0) :
+    ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      0 ≤ (gt (t₀ + τ)).scalarAt x := by
+  let R : ℝ → M → ℝ := fun τ x ↦ (gt (t₀ + τ)).scalarAt x
+  let R' : ℝ → M → ℝ := fun τ x ↦
+    (gt (t₀ + τ)).laplacianAt (R τ) x +
+      2 * (gt (t₀ + τ)).ricciNormSqAt x
+  have hRd : ∀ x : M, ∀ τ ∈ Icc (0 : ℝ) T,
+      HasDerivAt (fun s ↦ R s x) (R' τ x) τ := by
+    intro x τ hτ
+    have hbase :
+        HasDerivAt (fun t ↦ (gt t).scalarAt x) (R' τ x) (t₀ + τ) := by
+      simpa [SatisfiesHamiltonScalarEvolutionAt, R, R'] using hHam τ hτ x
+    have hshift : HasDerivAt (fun s : ℝ ↦ t₀ + s) 1 τ := by
+      simpa using (hasDerivAt_id τ).const_add t₀
+    simpa [R] using hbase.comp τ hshift
+  have hevol : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      (gt (t₀ + τ)).laplacianAt (R τ) x ≤ R' τ x := by
+    intro τ hτ x
+    have hreact :=
+      hamilton_scalar_reaction_bound_at
+        (g := gt (t₀ + τ)) (x := x) hn
+    have hsquare :
+        0 ≤ (2 / (n : ℝ)) * (gt (t₀ + τ)).scalarAt x ^ 2 := by
+      positivity
+    dsimp [R, R']
+    linarith
+  have hscalar0 :
+      ∀ x : M, ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ (gt t₀).scalarAt y) x := by
+    intro x
+    simpa using hScalar₂ 0 ⟨le_refl 0, hT0⟩ x
+  have h0point : ∀ x : M, 0 ≤ R 0 x := by
+    intro x
+    have hminle :=
+      scalarMinimumAt_le_scalarAt
+        (g := gt t₀) hscalar0 x
+    exact le_trans h0 (by simpa [scalarMinimumTrack, scalarMinimumAt, R] using hminle)
+  have hkey := closed_parabolic_min_principle_var
+    (lap := fun τ f x ↦ (gt (t₀ + τ)).laplacianAt f x)
+    (u := R) (u' := R') (c := fun _ _ ↦ (0 : ℝ))
+    (T := T) (M₀ := 0)
+    (by intro τ hτ x; exact le_refl (0 : ℝ))
+    hR_cont
+    hRd
+    (by
+      intro τ hτ k x
+      have hf : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2 (R τ) y := by
+        intro y
+        exact hScalar₂ τ hτ y
+      have hk : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2 (fun _ : M ↦ k) y :=
+        fun _ ↦ contMDiffAt_const
+      change (gt (t₀ + τ)).laplacianAt (fun y : M ↦ R τ y + k) x =
+        (gt (t₀ + τ)).laplacianAt (R τ) x
+      rw [show (fun y : M ↦ R τ y + k) = (R τ) + fun _ : M ↦ k from by
+        rfl]
+      rw [(gt (t₀ + τ)).laplacianAt_add'
+        (f := R τ) (h := fun _ : M ↦ k) (x := x) hf hk]
+      rw [(gt (t₀ + τ)).laplacianAt_const k x]
+      ring)
+    (by
+      intro τ hτ x
+      have hev := hevol τ hτ x
+      simpa using hev)
+    (by
+      intro τ hτ x hmin
+      have hf : ContMDiffAt I 𝓘(ℝ) 2 (R τ) x :=
+        hScalar₂ τ hτ x
+      exact laplacianAt_nonneg_of_isLocalMin
+        (g := gt (t₀ + τ))
+        (f := R τ)
+        (x := x) hf ((gt (t₀ + τ)).mdifferentiableAt_gradient hf)
+        (hmin.isLocalMin Filter.univ_mem))
+    h0point
+  intro τ hτ x
+  simpa [R] using hkey τ hτ x
 
 /--
 Finite-time Riccati obstruction for a closed Hamilton scalar evolution track.
