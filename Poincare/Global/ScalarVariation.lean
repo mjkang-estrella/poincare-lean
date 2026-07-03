@@ -8211,6 +8211,243 @@ theorem tensor2_moving_right_extDerivFun_eq_covTensor2DerivAt_add_corrections
   rw [hcovSwap] at hleft
   simpa [hswap, add_comm, add_left_comm, add_assoc] using hleft
 
+theorem leviCivita_extend_connection_field_mdiffAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (p v : TM x) :
+    MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+      (T% (fun y : M ↦ g.leviCivita (extend E p) y (extend E v y))) x := by
+  let P : Π y : M, TM y := extend E p
+  let V : Π y : M, TM y := extend E v
+  have hP2 :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% P) x := by
+    simpa [P] using (FiberBundle.contMDiffAt_extend' (k := 2) I E p)
+  have hV :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% V) x := by
+    simpa [V] using (mdifferentiableAt_extend I E v)
+  simpa [P, V, MDiffAtTangentField] using
+    (CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt
+      (cov := g.leviCivita) hP2 hV)
+
+theorem tensor2_moving_left_connection_extDerivFun_eq_covTensor2DerivAt_add_corrections
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (hAddL : Tensor2AddLeft h) (hSMulL : Tensor2SMulLeft h)
+    (u v p q : TM x) :
+    extDerivFun
+        (fun y : M ↦
+          h y
+            (g.leviCivita (extend E p) y (extend E v y))
+            (extend E q y)) x u =
+      covTensor2DerivAt g h x u
+          (g.leviCivita (extend E p) x v) q
+        + h x
+          (g.leviCivita
+            (fun y : M ↦ g.leviCivita (extend E p) y (extend E v y)) x u) q
+        + h x (g.leviCivita (extend E p) x v)
+          (g.leviCivita (extend E q) x u) := by
+  simpa [extend_apply_self] using
+    (tensor2_moving_left_extDerivFun_eq_covTensor2DerivAt_add_corrections
+      (g := g) (h := h) (x := x)
+      (K := fun y : M ↦ g.leviCivita (extend E p) y (extend E v y))
+      (leviCivita_extend_connection_field_mdiffAt
+        (g := g) (x := x) p v)
+      hDiff hAddL hSMulL u q)
+
+theorem tensor2_moving_right_connection_extDerivFun_eq_covTensor2DerivAt_add_corrections
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (hAddR : Tensor2AddRight h) (hSMulR : Tensor2SMulRight h)
+    (u v p q : TM x) :
+    extDerivFun
+        (fun y : M ↦
+          h y (extend E p y)
+            (g.leviCivita (extend E q) y (extend E v y))) x u =
+      covTensor2DerivAt g h x u p
+          (g.leviCivita (extend E q) x v)
+        + h x (g.leviCivita (extend E p) x u)
+          (g.leviCivita (extend E q) x v)
+        + h x p
+          (g.leviCivita
+            (fun y : M ↦ g.leviCivita (extend E q) y (extend E v y)) x u) := by
+  simpa [extend_apply_self] using
+    (tensor2_moving_right_extDerivFun_eq_covTensor2DerivAt_add_corrections
+      (g := g) (h := h) (x := x)
+      (K := fun y : M ↦ g.leviCivita (extend E q) y (extend E v y))
+      (leviCivita_extend_connection_field_mdiffAt
+        (g := g) (x := x) q v)
+      hDiff hAddR hSMulR u p)
+
+private theorem tensor2_sub_left
+    {h : ∀ y : M, TM y → TM y → ℝ}
+    (hAddL : Tensor2AddLeft h) (hSMulL : Tensor2SMulLeft h)
+    (x : M) (a b q : TM x) :
+    h x (a - b) q = h x a q - h x b q := by
+  rw [sub_eq_add_neg]
+  rw [hAddL x a (-b) q]
+  rw [show -b = (-1 : ℝ) • b by simp]
+  rw [hSMulL x (-1 : ℝ) b q]
+  ring
+
+private theorem tensor2_sub_right
+    {h : ∀ y : M, TM y → TM y → ℝ}
+    (hAddR : Tensor2AddRight h) (hSMulR : Tensor2SMulRight h)
+    (x : M) (p a b : TM x) :
+    h x p (a - b) = h x p a - h x p b := by
+  rw [sub_eq_add_neg]
+  rw [hAddR x p a (-b)]
+  rw [show -b = (-1 : ℝ) • b by simp]
+  rw [hSMulR x (-1 : ℝ) p b]
+  ring
+
+theorem tensor2_moving_left_connection_antisymm_extDerivFun_eq
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (hAddL : Tensor2AddLeft h) (hSMulL : Tensor2SMulLeft h)
+    (u v p q : TM x) :
+    extDerivFun
+        (fun y : M ↦
+          h y
+            (g.leviCivita (extend E p) y (extend E v y))
+            (extend E q y)) x u
+      - extDerivFun
+        (fun y : M ↦
+          h y
+            (g.leviCivita (extend E p) y (extend E u y))
+            (extend E q y)) x v =
+      (covTensor2DerivAt g h x u (g.leviCivita (extend E p) x v) q
+        - covTensor2DerivAt g h x v (g.leviCivita (extend E p) x u) q)
+        + h x
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E u) (extend E v) (extend E p) x) q
+        + (h x (g.leviCivita (extend E p) x v)
+            (g.leviCivita (extend E q) x u)
+          - h x (g.leviCivita (extend E p) x u)
+            (g.leviCivita (extend E q) x v)) := by
+  let A : TM x :=
+    g.leviCivita
+      (fun y : M ↦ g.leviCivita (extend E p) y (extend E v y)) x u
+  let B : TM x :=
+    g.leviCivita
+      (fun y : M ↦ g.leviCivita (extend E p) y (extend E u y)) x v
+  let R : TM x :=
+    CovariantDerivative.curvatureOp g.leviCivita
+      (extend E u) (extend E v) (extend E p) x
+  have hleft_v :=
+    tensor2_moving_left_connection_extDerivFun_eq_covTensor2DerivAt_add_corrections
+      (g := g) (h := h) (x := x) hDiff hAddL hSMulL u v p q
+  have hleft_u :=
+    tensor2_moving_left_connection_extDerivFun_eq_covTensor2DerivAt_add_corrections
+      (g := g) (h := h) (x := x) hDiff hAddL hSMulL v u p q
+  have hcurv_vec : A - B = R := by
+    change A - B =
+      CovariantDerivative.curvatureOp g.leviCivita
+        (extend E u) (extend E v) (extend E p) x
+    rw [CovariantDerivative.curvatureOp_apply]
+    have hbr : VectorField.mlieBracket I (extend E u) (extend E v) x = 0 :=
+      mlieBracket_extend_extend_apply_self (n := n) (M := M) (x := x) u v
+    simp [A, B, extend_apply_self, hbr]
+  have hcurv :
+      h x A q - h x B q = h x R q := by
+    rw [← tensor2_sub_left hAddL hSMulL x A B q, hcurv_vec]
+  rw [hleft_v, hleft_u]
+  change
+    (covTensor2DerivAt g h x u (g.leviCivita (extend E p) x v) q
+          + h x A q
+          + h x (g.leviCivita (extend E p) x v)
+            (g.leviCivita (extend E q) x u))
+      - (covTensor2DerivAt g h x v (g.leviCivita (extend E p) x u) q
+          + h x B q
+          + h x (g.leviCivita (extend E p) x u)
+            (g.leviCivita (extend E q) x v))
+      =
+    (covTensor2DerivAt g h x u (g.leviCivita (extend E p) x v) q
+        - covTensor2DerivAt g h x v (g.leviCivita (extend E p) x u) q)
+        + h x R q
+        + (h x (g.leviCivita (extend E p) x v)
+            (g.leviCivita (extend E q) x u)
+          - h x (g.leviCivita (extend E p) x u)
+            (g.leviCivita (extend E q) x v))
+  rw [← hcurv]
+  ring
+
+theorem tensor2_moving_right_connection_antisymm_extDerivFun_eq
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    (hDiff : CovTensor2ExtDifferentiableAt h x)
+    (hAddR : Tensor2AddRight h) (hSMulR : Tensor2SMulRight h)
+    (u v p q : TM x) :
+    extDerivFun
+        (fun y : M ↦
+          h y (extend E p y)
+            (g.leviCivita (extend E q) y (extend E v y))) x u
+      - extDerivFun
+        (fun y : M ↦
+          h y (extend E p y)
+            (g.leviCivita (extend E q) y (extend E u y))) x v =
+      (covTensor2DerivAt g h x u p (g.leviCivita (extend E q) x v)
+        - covTensor2DerivAt g h x v p (g.leviCivita (extend E q) x u))
+        + (h x (g.leviCivita (extend E p) x u)
+            (g.leviCivita (extend E q) x v)
+          - h x (g.leviCivita (extend E p) x v)
+            (g.leviCivita (extend E q) x u))
+        + h x p
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E u) (extend E v) (extend E q) x) := by
+  let A : TM x :=
+    g.leviCivita
+      (fun y : M ↦ g.leviCivita (extend E q) y (extend E v y)) x u
+  let B : TM x :=
+    g.leviCivita
+      (fun y : M ↦ g.leviCivita (extend E q) y (extend E u y)) x v
+  let R : TM x :=
+    CovariantDerivative.curvatureOp g.leviCivita
+      (extend E u) (extend E v) (extend E q) x
+  have hright_v :=
+    tensor2_moving_right_connection_extDerivFun_eq_covTensor2DerivAt_add_corrections
+      (g := g) (h := h) (x := x) hDiff hAddR hSMulR u v p q
+  have hright_u :=
+    tensor2_moving_right_connection_extDerivFun_eq_covTensor2DerivAt_add_corrections
+      (g := g) (h := h) (x := x) hDiff hAddR hSMulR v u p q
+  have hcurv_vec : A - B = R := by
+    change A - B =
+      CovariantDerivative.curvatureOp g.leviCivita
+        (extend E u) (extend E v) (extend E q) x
+    rw [CovariantDerivative.curvatureOp_apply]
+    have hbr : VectorField.mlieBracket I (extend E u) (extend E v) x = 0 :=
+      mlieBracket_extend_extend_apply_self (n := n) (M := M) (x := x) u v
+    simp [A, B, extend_apply_self, hbr]
+  have hcurv :
+      h x p A - h x p B = h x p R := by
+    rw [← tensor2_sub_right hAddR hSMulR x p A B, hcurv_vec]
+  rw [hright_v, hright_u]
+  change
+    (covTensor2DerivAt g h x u p (g.leviCivita (extend E q) x v)
+          + h x (g.leviCivita (extend E p) x u)
+            (g.leviCivita (extend E q) x v)
+          + h x p A)
+      - (covTensor2DerivAt g h x v p (g.leviCivita (extend E q) x u)
+          + h x (g.leviCivita (extend E p) x v)
+            (g.leviCivita (extend E q) x u)
+          + h x p B)
+      =
+    (covTensor2DerivAt g h x u p (g.leviCivita (extend E q) x v)
+        - covTensor2DerivAt g h x v p (g.leviCivita (extend E q) x u))
+        + (h x (g.leviCivita (extend E p) x u)
+            (g.leviCivita (extend E q) x v)
+          - h x (g.leviCivita (extend E p) x v)
+            (g.leviCivita (extend E q) x u))
+        + h x p R
+  rw [← hcurv]
+  ring
+
 set_option maxHeartbeats 5000000 in
 /-- The fixed-frame product-rule part contracts to the covariant trace plus the
 two Levi-Civita slot corrections. -/
