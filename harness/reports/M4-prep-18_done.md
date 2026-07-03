@@ -55,3 +55,25 @@ The corrected tensor trace `ΔR` plus this moving-metric term is exactly the
 proven Hamilton scalar RHS `ΔR + 2 |Ric|²`.  No residual coefficient error is
 visible in the merged `timeDerivAt` / trace-variation bookkeeping.
 
+## Formal trace witnesses
+
+Added the direct corrected trace lemmas:
+
+* `lichnerowiczCurvatureAt_ricciVariationField_trace_eq_ricciNormSqAt`
+* `ricciEvolutionTensorRHSAt_trace_eq_scalar_laplacian`
+* `ricciEvolutionTensorRHSAt_trace_eq_scalar_laplacian_of_traceSecondRegularity`
+
+Added the moving-metric reconciliation corollaries:
+
+* `ricciEvolutionTensorRHS_trace_sub_metricVariationRicciPairing_eq_hamilton_rhs`
+* `ricciEvolutionTensorRHS_trace_sub_metricVariationRicciPairing_eq_hamilton_rhs_of_traceSecondRegularity`
+
+These combine the corrected fixed-metric tensor trace `ΔR` with the existing
+`metricVariationRicciPairingAt_timeDeriv_eq_negTwoRicci` lemma, matching the
+scalar-variation chain's `- metricVariationRicciPairingAt` term.
+
+Narrow verification:
+
+```text
+lake build Poincare.Global.ScalarVariation
+```
