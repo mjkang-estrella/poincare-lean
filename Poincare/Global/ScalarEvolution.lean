@@ -123,6 +123,52 @@ private lemma quotient_derivative_sq_algebra
   norm_num
   field_simp [hR]
 
+/-- Quotient-rule numerator for a general scalar power `N / R^p`. -/
+noncomputable def quotientRpowDerivativeAt
+    (R N N' R' p : ℝ) : ℝ :=
+  (N' * R ^ p - N * ((p * R ^ (p - 1)) * R')) / (R ^ p) ^ 2
+
+/--
+Differentiating a positive-denominator real-power quotient from separate
+numerator and scalar-curvature derivatives.
+-/
+theorem hasDerivAt_quotient_rpow_of_derivatives
+    {N Rf : ℝ → ℝ} {t₀ N' R' p : ℝ}
+    (hN : HasDerivAt N N' t₀)
+    (hR : HasDerivAt Rf R' t₀)
+    (hRpos : 0 < Rf t₀) :
+    HasDerivAt (fun t ↦ N t / (Rf t) ^ p)
+      (quotientRpowDerivativeAt (Rf t₀) (N t₀) N' R' p) t₀ := by
+  have hden :
+      HasDerivAt (fun t ↦ (Rf t) ^ p)
+        ((p * (Rf t₀) ^ (p - 1)) * R') t₀ := by
+    simpa [mul_comm, mul_left_comm, mul_assoc] using
+      hR.rpow_const (p := p) (Or.inl (ne_of_gt hRpos))
+  have hden_ne : (Rf t₀) ^ p ≠ 0 :=
+    ne_of_gt (Real.rpow_pos_of_pos hRpos p)
+  have hquot := hN.div hden hden_ne
+  simpa [quotientRpowDerivativeAt, mul_comm, mul_left_comm, mul_assoc] using hquot
+
+/--
+Time derivative of the improved traceless quotient
+`|Ric°|² / R^(2 - δ)` from separate numerator and scalar derivatives.
+-/
+theorem ClosedSmoothRiemannianMetric.hasDerivAt_tracelessPinchingAt_of_scalar_and_tracelessNorm
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M} {δ U' R' : ℝ}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hU : HasDerivAt (fun t ↦ (gt t).tracelessRicciNormSqAt x) U' t₀)
+    (hR : HasDerivAt (fun t ↦ (gt t).scalarAt x) R' t₀)
+    (hRpos : 0 < (gt t₀).scalarAt x) :
+    HasDerivAt (fun t ↦ (gt t).tracelessPinchingAt x δ)
+      (quotientRpowDerivativeAt ((gt t₀).scalarAt x)
+        ((gt t₀).tracelessRicciNormSqAt x) U' R' (2 - δ)) t₀ := by
+  simpa [ClosedSmoothRiemannianMetric.tracelessPinchingAt] using
+    hasDerivAt_quotient_rpow_of_derivatives
+      (N := fun t ↦ (gt t).tracelessRicciNormSqAt x)
+      (Rf := fun t ↦ (gt t).scalarAt x)
+      (p := 2 - δ) hU hR hRpos
+
 /-- Algebra identifying the reaction quotient with the normalized remainder. -/
 private lemma pinching_reaction_remainder_algebra
     {R N M S : ℝ} (hR : R ≠ 0) :
@@ -1028,6 +1074,149 @@ theorem laplacianAt_quotient_eq_of_eventually_product_rule
     exact hmul
   rw [eq_div_iff hvx]
   linarith
+
+private lemma quotient_rpow_spatial_algebra
+    {R Rpm1 Rpm2 p Q LU LR S C IQ LQ : ℝ}
+    (hR : R ≠ 0) (hRpm2 : Rpm2 ≠ 0)
+    (hRp : R ^ p = Rpm1 * R)
+    (hRpm1 : Rpm1 = Rpm2 * R)
+    (hLap :
+      LQ =
+        (LU - Q * (p * Rpm1 * LR + p * (p - 1) * Rpm2 * S)
+          - 2 * (p * Rpm1 * IQ)) / R ^ p)
+    (hGrad : R ^ p * IQ = C - Q * (p * Rpm1 * S)) :
+    LQ + (p / R) * IQ =
+      LU / R ^ p - p * Q * LR / R - p * C / (R * R ^ p)
+        + p * Q * S / R ^ 2 := by
+  rw [hLap]
+  have hIQ : IQ = (C - Q * (p * Rpm1 * S)) / R ^ p := by
+    rw [eq_div_iff]
+    · simpa [mul_comm] using hGrad
+    · rw [hRp, hRpm1]
+      exact mul_ne_zero (mul_ne_zero hRpm2 hR) hR
+  rw [hIQ]
+  rw [hRp, hRpm1]
+  field_simp [hR, hRpm2]
+  ring
+
+set_option maxHeartbeats 8000000 in
+/--
+Spatial quotient/drift expansion for a positive real-power denominator.
+If `q * R^p = u` near `x`, then the `p/R ⟨∇q,∇R⟩` drift leaves only
+the numerator gradient pairing and one scalar-gradient-square term.
+-/
+theorem quotient_rpow_spatial_expansion_of_eventually_product_rule
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {u Rf q : M → ℝ} {x : M} {p : ℝ}
+    (hprod : (fun y : M ↦ q y * (Rf y) ^ p) =ᶠ[nhds x] u)
+    (hRpos : 0 < Rf x)
+    (hq : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) q y)
+    (hRdiff : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) Rf y)
+    (hRne : ∀ y : M, Rf y ≠ 0)
+    (hgradq : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient q)) x)
+    (hgradR : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient Rf)) x)
+    (hgradprod :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient ((fun y : M ↦ q y) * (fun y : M ↦ (Rf y) ^ p)))) x)
+    (hgradu : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient u)) x) :
+    g.laplacianAt q x
+        + (p / Rf x) * g.inner x (g.gradientAt q x) (g.gradientAt Rf x) =
+      g.laplacianAt u x / (Rf x) ^ p
+        - p * q x * g.laplacianAt Rf x / Rf x
+        - p * g.inner x (g.gradientAt u x) (g.gradientAt Rf x) /
+            (Rf x * (Rf x) ^ p)
+        + p * q x *
+            g.inner x (g.gradientAt Rf x) (g.gradientAt Rf x) / (Rf x) ^ 2 := by
+  classical
+  let Vf : M → ℝ := fun y ↦ (Rf y) ^ p
+  let cfun : M → ℝ := fun y ↦ p * (Rf y) ^ (p - 1)
+  let R : ℝ := Rf x
+  let Q : ℝ := q x
+  let LU : ℝ := g.laplacianAt u x
+  let LR : ℝ := g.laplacianAt Rf x
+  let S : ℝ := g.inner x (g.gradientAt Rf x) (g.gradientAt Rf x)
+  let C : ℝ := g.inner x (g.gradientAt u x) (g.gradientAt Rf x)
+  let IQ : ℝ := g.inner x (g.gradientAt q x) (g.gradientAt Rf x)
+  let LQ : ℝ := g.laplacianAt q x
+  have hRne_x : R ≠ 0 := ne_of_gt (by simpa [R] using hRpos)
+  have hVdiff : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) Vf y := by
+    intro y
+    exact mdifferentiableAt_rpow_const_of_ne (f := Rf) (x := y)
+      (p := p) (hRdiff y) (hRne y)
+  have hgradV_global : g.gradient Vf = cfun • g.gradient Rf := by
+    funext y
+    simpa [Vf, cfun] using
+      (g.gradientAt_rpow_const_of_ne (f := Rf) (x := y) (p := p)
+        (hRdiff y) (hRne y))
+  have hcfun : MDifferentiableAt I 𝓘(ℝ) cfun x := by
+    have hrpow :
+        MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ (Rf y) ^ (p - 1)) x :=
+      mdifferentiableAt_rpow_const_of_ne (f := Rf) (x := x)
+        (p := p - 1) (hRdiff x) (hRne x)
+    simpa [cfun] using mdifferentiableAt_const.mul hrpow
+  have hgradV :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient Vf)) x := by
+    rw [hgradV_global]
+    exact hcfun.smul_section hgradR
+  have hGradVeq :
+      g.gradientAt Vf x = (p * R ^ (p - 1)) • g.gradientAt Rf x := by
+    simpa [Vf, R] using
+      (g.gradientAt_rpow_const_of_ne (f := Rf) (x := x) (p := p)
+        (hRdiff x) (hRne x))
+  have hLapVeq :
+      g.laplacianAt Vf x =
+        (p * R ^ (p - 1)) * LR
+          + (p * (p - 1) * R ^ (p - 2)) * S := by
+    simpa [Vf, R, LR, S] using
+      (g.laplacianAt_rpow_const_of_ne (f := Rf) (x := x) (p := p)
+        hRdiff hRne hgradR)
+  have hLapQuot :
+      LQ =
+        (LU - Q * g.laplacianAt Vf x
+            - 2 * g.inner x (g.gradientAt q x) (g.gradientAt Vf x)) /
+          Vf x := by
+    simpa [LQ, LU, Q, Vf] using
+      (g.laplacianAt_quotient_eq_of_eventually_product_rule
+        (u := u) (v := Vf) (q := q) (x := x)
+        (by simpa [Vf] using hprod)
+        (ne_of_gt (Real.rpow_pos_of_pos hRpos p))
+        hq hVdiff hgradq hgradV
+        (by simpa [Vf] using hgradprod) hgradu)
+  have hGradQuot :
+      Vf x • g.gradientAt q x =
+        g.gradientAt u x - q x • g.gradientAt Vf x :=
+    g.gradientAt_quotient_eq_of_eventually_product_rule
+      (u := u) (v := Vf) (q := q) (x := x)
+      (by simpa [Vf] using hprod) (hq x) (hVdiff x)
+  have hInnerQV :
+      g.inner x (g.gradientAt q x) (g.gradientAt Vf x) =
+        (p * R ^ (p - 1)) * IQ := by
+    rw [hGradVeq]
+    simp [IQ, smul_eq_mul]
+  have hGradRel :
+      R ^ p * IQ = C - Q * ((p * R ^ (p - 1)) * S) := by
+    have h := congrArg
+      (fun v : TM x ↦ g.inner x v (g.gradientAt Rf x)) hGradQuot
+    rw [hGradVeq] at h
+    simpa [Vf, R, Q, C, IQ, S, smul_eq_mul, map_sub, map_smul,
+      mul_comm, mul_left_comm, mul_assoc] using h
+  have hRp : R ^ p = R ^ (p - 1) * R := by
+    have h := Real.rpow_add_one hRne_x (p - 1)
+    convert h using 2 <;> ring
+  have hRpm1 : R ^ (p - 1) = R ^ (p - 2) * R := by
+    have h := Real.rpow_add_one hRne_x (p - 2)
+    convert h using 2 <;> ring
+  have hRpm2_ne : R ^ (p - 2) ≠ 0 :=
+    ne_of_gt (Real.rpow_pos_of_pos (by simpa [R] using hRpos) (p - 2))
+  have hAlg := quotient_rpow_spatial_algebra
+    (R := R) (Rpm1 := R ^ (p - 1)) (Rpm2 := R ^ (p - 2))
+    (p := p) (Q := Q) (LU := LU) (LR := LR) (S := S) (C := C)
+    (IQ := IQ) (LQ := LQ) hRne_x hRpm2_ne hRp hRpm1
+    (by
+      rw [hLapQuot, hLapVeq, hInnerQV])
+    hGradRel
+  simpa [R, Q, LU, LR, S, C, IQ, LQ] using hAlg
 
 set_option maxHeartbeats 12000000 in
 /--
