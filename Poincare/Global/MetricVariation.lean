@@ -204,32 +204,26 @@ Regularity needed to test the Ricci-flow equation on canonical extensions of
 arbitrary tangent vectors at `x`.
 
 This is the honest bridge from the section-tested flow equation to the
-pointwise bilinear variation tensor: global `C²` admissibility feeds the flow
-field, while `DerivRegularAt` feeds the Ricci trace.
+pointwise bilinear variation tensor.  The canonical extensions only need local
+`DerivRegularAt`; the globally admissible test field is supplied by
+`bumpExtend`, which agrees with the canonical extension near the anchor.
 -/
 def ClosedRicciFlowExtensionRegularAt
     (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) : Prop :=
   ∀ v : TM x,
-    ClosedC2TangentField (extend E v) ∧
-      CovariantDerivative.DerivRegularAt (gt t₀).leviCivita (extend E v) x
+    CovariantDerivative.DerivRegularAt (gt t₀).leviCivita (extend E v) x
 
 /--
-Static metric families satisfy the extension-regularity bundle once the
-canonical extensions are known to be globally `C²`.
-
-The extra hypothesis is genuine: Mathlib's standard `extend` API supplies
-local smoothness at the anchor point, while `ClosedRicciFlowExtensionRegularAt`
-currently asks for global `ClosedC2TangentField` admissibility.
+Legacy constructor: global `C²` canonical extensions still imply the local
+extension-regularity bundle.
 -/
 theorem closedRicciFlowExtensionRegularAt_const_of_closedC2_extend
     (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
     (hExtend : ∀ v : TM x, ClosedC2TangentField (extend E v)) :
     ClosedRicciFlowExtensionRegularAt (fun _ : ℝ ↦ g) t₀ x := by
   intro v
-  refine ⟨hExtend v, ?_⟩
-  simpa using
-    (CovariantDerivative.derivRegularAt_extend
-      (cov := g.leviCivita) (x := x) v)
+  exact CovariantDerivative.derivRegularAt_of_contMDiff
+    (cov := g.leviCivita) (hExtend v) x
 
 /--
 Under the closed Ricci-flow equation, the metric time derivative is
@@ -241,24 +235,44 @@ theorem isClosedRicciFlowSolutionAt_timeDerivAt_eq_neg_two_ricciAt
     (hext : ClosedRicciFlowExtensionRegularAt gt t₀ x)
     (v w : TM x) :
     timeDerivAt gt t₀ x v w = -2 * (gt t₀).ricciAt x v w := by
-  rcases hext v with ⟨hZ, hreg⟩
+  let Z : ∀ y : M, TM y := bumpExtend (n := n) (M := M) x v
+  have hZ : ClosedC2TangentField Z := by
+    simpa [Z] using bumpExtend_closedC2TangentField (n := n) (M := M) x v
+  have hregZ : CovariantDerivative.DerivRegularAt (gt t₀).leviCivita Z x := by
+    exact CovariantDerivative.derivRegularAt_of_contMDiff
+      (cov := (gt t₀).leviCivita) hZ x
+  have hregExt :
+      CovariantDerivative.DerivRegularAt (gt t₀).leviCivita (extend E v) x :=
+    hext v
   have hflow' :=
     isClosedRicciFlowSolutionAt_timeDerivAt
       (gt := gt) (t₀ := t₀) (x := x) hflow
-      (Z := extend E v) hZ hreg w
+      (Z := Z) hZ hregZ w
+  have htraceCongr :
+      CovariantDerivative.ricciTraceAt (gt t₀).leviCivita hregZ w =
+        CovariantDerivative.ricciTraceAt (gt t₀).leviCivita hregExt w := by
+    exact ricciTraceAt_congr_of_eventuallyEq
+      (cov := (gt t₀).leviCivita)
+      (Z := Z) (Z' := extend E v) (x := x)
+      (by simpa [Z] using (hZ x))
+      (FiberBundle.contMDiffAt_extend' (k := 2) I E v)
+      hregZ hregExt
+      (by simpa [Z] using
+        (bumpExtend_eventuallyEq_extend (n := n) (M := M) x v))
+      w
   have htrace :
-      CovariantDerivative.ricciTraceAt (gt t₀).leviCivita hreg w =
+      CovariantDerivative.ricciTraceAt (gt t₀).leviCivita hregExt w =
         (gt t₀).ricciAt x v w := by
     have h :=
       CovariantDerivative.ricciTraceAt_eq_ricciBilinearAt
         (cov := (gt t₀).leviCivita) (Z := extend E v) (x := x)
-        (FiberBundle.contMDiffAt_extend' (k := 2) I E v) hreg w
+        (FiberBundle.contMDiffAt_extend' (k := 2) I E v) hregExt w
     calc
-      CovariantDerivative.ricciTraceAt (gt t₀).leviCivita hreg w =
+      CovariantDerivative.ricciTraceAt (gt t₀).leviCivita hregExt w =
           (gt t₀).ricciAt x w v := by
             simpa [ClosedSmoothRiemannianMetric.ricciAt] using h
       _ = (gt t₀).ricciAt x v w := (gt t₀).ricciAt_symm x w v
-  rw [htrace] at hflow'
-  simpa using hflow'
+  rw [htraceCongr, htrace] at hflow'
+  simpa [Z] using hflow'
 
 end Poincare

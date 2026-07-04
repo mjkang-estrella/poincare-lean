@@ -26,6 +26,32 @@ local notation "I" => closedSmoothModelWithCorners n
 local notation "E" => ClosedSmoothModel n
 local notation "TM" => (TangentSpace I : M → Type _)
 
+/--
+Germ locality of the Ricci trace in the field slot, specialized to closed
+tangent fields.
+-/
+theorem ricciTraceAt_congr_of_eventuallyEq
+    (cov : CovariantDerivative I E TM)
+    {Z Z' : ∀ y : M, TM y} {x : M}
+    (hZ : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% Z) x)
+    (hZ' : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% Z') x)
+    (hreg : CovariantDerivative.DerivRegularAt cov Z x)
+    (hreg' : CovariantDerivative.DerivRegularAt cov Z' x)
+    (hZZ' : Z =ᶠ[𝓝 x] Z') (w : TM x) :
+    CovariantDerivative.ricciTraceAt cov hreg w =
+      CovariantDerivative.ricciTraceAt cov hreg' w := by
+  unfold CovariantDerivative.ricciTraceAt
+  have hend :
+      CovariantDerivative.curvatureEndAt cov hreg w =
+        CovariantDerivative.curvatureEndAt cov hreg' w := by
+    apply LinearMap.ext
+    intro u
+    rw [CovariantDerivative.curvatureEndAt_apply,
+      CovariantDerivative.curvatureEndAt_apply]
+    exact CovariantDerivative.curvatureTensorAt_congr_of_eventuallyEq
+      cov hZ hZ' hreg hreg' hZZ' u w
+  rw [hend]
+
 private abbrev tangentExtend (x : M) (v : TM x) : (y : M) → TM y :=
   @FiberBundle.extend M E TM _ _ _ _ _ _ x v
 
