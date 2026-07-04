@@ -12844,6 +12844,77 @@ theorem covRicciPairing_gram_inv_deriv_groups_cancel_leviCorrections
   rw [hFirst, hSecond]
   ring
 
+set_option maxHeartbeats 5000000 in
+/--
+After the inverse-Gram cancellations, the exterior derivative of the moving
+`⟨∇Ric,Ric⟩` pairing has only the second-covariant, covariant-Ricci, and
+moving-direction correction terms.
+-/
+theorem extDerivFun_covRicciRicciPairingAt_extend_eq_secondCovariant_add_ricciCovariant_add_direction
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (hRicSecond :
+      CovTensor2DerivExtDifferentiableAt g (ricciVariationField g) x)
+    (u w : TM x) :
+    extDerivFun
+        (fun y : M ↦ covRicciRicciPairingAt g y (extend E w y)) x u =
+      covRicciPairingSecondCovariantGroup g x u w
+        + covRicciPairingRicciCovariantGroup g x u w
+        + covRicciRicciPairingAt g x
+            (g.leviCivita (extend E w) x u) := by
+  have hProd :=
+    extDerivFun_covRicciRicciPairingAt_extend_eq_covRicciPairingGramProductRuleRHS
+      (g := g) (x := x) hRicSecond u w
+  have hCov :=
+    covRicciPairingCovRicciDerivGroup_eq_secondDerivExpansionGroup
+      (g := g) x u w
+  have hSecondSplit :=
+    covRicciPairingSecondDerivExpansionGroup_eq_secondCovariant_plus_leviCorrections
+      (g := g) x u w
+  have hRicSplit :=
+    covRicciPairingRicciDerivGroup_eq_covariant_plus_leviCorrections
+      (g := g) x u w
+  have hDir :=
+    covRicciPairingDirectionLeviCorrectionGroup_eq_covRicciRicciPairingAt
+      (g := g) x u w
+  have hCancel :=
+    covRicciPairing_gram_inv_deriv_groups_cancel_leviCorrections
+      (g := g) x u w
+  calc
+    extDerivFun
+        (fun y : M ↦ covRicciRicciPairingAt g y (extend E w y)) x u =
+        covRicciPairingGramProductRuleRHS g x u w := hProd
+    _ =
+        covRicciPairingSecondCovariantGroup g x u w
+          + covRicciPairingRicciCovariantGroup g x u w
+          + covRicciRicciPairingAt g x
+              (g.leviCivita (extend E w) x u) := by
+          unfold covRicciPairingGramProductRuleRHS
+          rw [hCov, hSecondSplit, hRicSplit, hDir]
+          linarith only [hCancel]
+
+set_option maxHeartbeats 5000000 in
+/--
+The covariant/moving derivative form of `⟨∇Ric,Ric⟩`: the direction correction
+is subtracted, leaving the two survivor groups.
+-/
+theorem extDerivFun_covRicciRicciPairingAt_extend_sub_direction_eq_secondCovariant_add_ricciCovariant
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (hRicSecond :
+      CovTensor2DerivExtDifferentiableAt g (ricciVariationField g) x)
+    (u w : TM x) :
+    extDerivFun
+        (fun y : M ↦ covRicciRicciPairingAt g y (extend E w y)) x u
+      - covRicciRicciPairingAt g x
+          (g.leviCivita (extend E w) x u) =
+      covRicciPairingSecondCovariantGroup g x u w
+        + covRicciPairingRicciCovariantGroup g x u w := by
+  have h :=
+    extDerivFun_covRicciRicciPairingAt_extend_eq_secondCovariant_add_ricciCovariant_add_direction
+      (g := g) (x := x) hRicSecond u w
+  linarith
+
 /-- Tensor contracted against the first inverse-Gram derivative group. -/
 noncomputable def ricciPairingInvFirstContractionTensor
     (g : ClosedSmoothRiemannianMetric n M)
