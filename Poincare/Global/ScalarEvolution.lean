@@ -1276,6 +1276,23 @@ theorem pinchingMixedGradientPairingAt_absorption_bound (x : M) :
   linarith
 
 /--
+Total sign of the corrected traceless gradient contribution.  The estimate
+uses the reserve route: the completed-square mixed absorption plus
+`|∇R|² ≤ 3 |∇Ric|²`.  No epsilon-pinching hypothesis is needed for the gradient
+part itself; the honest admissible range here is `0 ≤ δ ≤ 2`.
+-/
+theorem tracelessPinchingGradientNumerator3At_nonpos
+    (hn : n = 3) (hδ0 : 0 ≤ δ) (hδ2 : δ ≤ 2) (x : M) :
+    PinchingAlgebra.tracelessPinchingGradientNumerator3
+      (g.scalarAt x) (g.ricciNormSqAt x) (covRicciNormSqAt g x)
+      (g.pinchingMixedGradientPairingAt x) (g.scalarGradNormSqAt x) δ ≤ 0 := by
+  exact
+    PinchingAlgebra.tracelessPinchingGradientNumerator3_nonpos_of_absorption
+      hδ0 hδ2
+      (g.scalarGradNormSqAt_le_three_covRicciNormSqAt hn x)
+      (g.pinchingMixedGradientPairingAt_absorption_bound x)
+
+/--
 Completed-square expansion with the real-power quotient coefficient
 `-2 / R^(p+2)`.
 -/
