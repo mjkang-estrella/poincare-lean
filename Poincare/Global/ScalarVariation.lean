@@ -24482,7 +24482,76 @@ def SatisfiesPinchingQuotientEvolutionAt
               (gt t₀).pinchingReactionRemainderAt x
                 ricciNormReactionMotionTrace
 
+/--
+Gradient form of the quotient product-rule trick.  If `q * v = u`, then
+`v ∇q = ∇u - q ∇v`.
+-/
+theorem gradientAt_quotient_eq_of_product_rule
+    {u v q : M → ℝ} {x : M}
+    (hprod : (fun y : M ↦ q y * v y) = u)
+    (hq : MDifferentiableAt I 𝓘(ℝ) q x)
+    (hv : MDifferentiableAt I 𝓘(ℝ) v x) :
+    v x • g.gradientAt q x =
+      g.gradientAt u x - q x • g.gradientAt v x := by
+  have hmul := g.gradientAt_mul (f := q) (h := v) hq hv
+  rw [← hprod]
+  change v x • g.gradientAt q x =
+    g.gradientAt (q * v) x - q x • g.gradientAt v x
+  rw [hmul]
+  simp [add_comm]
+
+/--
+Laplacian form of the quotient product-rule trick.  If `q * v = u` and
+`v x ≠ 0`, then `Δq` is obtained from `Δ(qv)` by solving the product rule.
+-/
+theorem laplacianAt_quotient_eq_of_product_rule
+    {u v q : M → ℝ} {x : M}
+    (hprod : (fun y : M ↦ q y * v y) = u)
+    (hvx : v x ≠ 0)
+    (hq : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) q y)
+    (hv : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) v y)
+    (hgradq : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient q)) x)
+    (hgradv : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient v)) x) :
+    g.laplacianAt q x =
+      (g.laplacianAt u x - q x * g.laplacianAt v x
+          - 2 * g.inner x (g.gradientAt q x) (g.gradientAt v x)) / v x := by
+  have hmul :=
+    g.laplacianAt_mul (f := q) (h := v) (x := x) hq hv hgradq hgradv
+  have hu :
+      g.laplacianAt u x =
+        q x * g.laplacianAt v x + v x * g.laplacianAt q x
+          + 2 * g.inner x (g.gradientAt q x) (g.gradientAt v x) := by
+    rw [← hprod]
+    exact hmul
+  rw [eq_div_iff hvx]
+  linarith
+
 end ClosedSmoothRiemannianMetric
+
+/--
+Time-derivative form of the quotient product-rule trick.  If `q * v = u` and
+`v t₀ ≠ 0`, then `q' = (u' - q v') / v`.
+-/
+theorem quotient_derivative_eq_of_product_rule
+    {u v q : ℝ → ℝ} {t₀ u' v' q' : ℝ}
+    (hprod : ∀ t : ℝ, q t * v t = u t)
+    (hq : HasDerivAt q q' t₀)
+    (hv : HasDerivAt v v' t₀)
+    (hu : HasDerivAt u u' t₀)
+    (hv₀ : v t₀ ≠ 0) :
+    q' = (u' - q t₀ * v') / v t₀ := by
+  have hfun : (fun t : ℝ ↦ q t * v t) = u := by
+    funext t
+    exact hprod t
+  have hmul : HasDerivAt (fun t : ℝ ↦ q t * v t)
+      (q' * v t₀ + q t₀ * v') t₀ :=
+    hq.mul hv
+  have hmul' : HasDerivAt (fun t : ℝ ↦ q t * v t) u' t₀ := by
+    simpa [hfun] using hu
+  have hderiv : q' * v t₀ + q t₀ * v' = u' :=
+    hmul.unique hmul'
+  rw [eq_div_iff hv₀]
+  linarith
 
 theorem satisfiesRicciEvolutionAt_of_secondDerivCommutation
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
