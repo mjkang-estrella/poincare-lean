@@ -24588,6 +24588,22 @@ theorem pinchingRicciNormReactionMotionTraceCubicAt_eq_diagonal_of_ricciEndoAt_e
   rw [pinchingRicciNormReactionMotionTraceCubicAt,
     PinchingAlgebra.diagonalRicciNormReactionMotionTrace3_eq_cubic, hR, hN, hC]
 
+/-- The scalar-normalized Ricci quotient is diagonalized by a Ricci eigenbasis. -/
+theorem pinchingQuotientAt_eq_diagonal_of_ricciEndoAt_eigenbasis
+    {x : M} (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ)
+    (hEig : ∀ i : Fin 3, g.ricciEndoAt x (b i) = μ i • b i) :
+    g.pinchingQuotientAt x =
+      PinchingAlgebra.diagonalPinchingQuotient3 (μ 0) (μ 1) (μ 2) := by
+  have hR :
+      g.scalarAt x = PinchingAlgebra.diagonalScalar3 (μ 0) (μ 1) (μ 2) := by
+    rw [g.scalarAt_eq_sum_eigenvalues_of_ricciEndoAt_eigenbasis b μ hEig]
+    simp [Fin.sum_univ_three, PinchingAlgebra.diagonalScalar3]
+  have hN :
+      g.ricciNormSqAt x = PinchingAlgebra.diagonalRicciNormSq3 (μ 0) (μ 1) (μ 2) := by
+    rw [g.ricciNormSqAt_eq_sum_eigenvalues_sq_of_ricciEndoAt_eigenbasis b μ hEig]
+    simp [Fin.sum_univ_three, PinchingAlgebra.diagonalRicciNormSq3]
+  rw [pinchingQuotientAt, PinchingAlgebra.diagonalPinchingQuotient3, hR, hN]
+
 /-- The scalar reaction is diagonalized by a Ricci-endomorphism eigenbasis. -/
 theorem pinchingScalarReactionAt_eq_diagonal_of_ricciEndoAt_eigenbasis
     {x : M} (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ)
@@ -24779,6 +24795,59 @@ theorem pinchingReactionRemainderAt_nonpos_of_scalar_pos
   exact
     g.pinchingReactionRemainderAt_nonpos_of_scalar_pos_of_ricciEndoAt_eigenbasis
       b μ hEig hRpos
+
+/--
+An eigenvalue floor at a point bounds the manifold pinching quotient by the
+corresponding diagonal endpoint value.
+-/
+theorem pinchingQuotientAt_le_of_eigenvalue_pinched
+    (hn : n = 3) {ε : ℝ} {x : M}
+    (hRpos : 0 < g.scalarAt x)
+    (hpin : ∀ (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ),
+      (∀ i : Fin 3, g.ricciEndoAt x (b i) = μ i • b i) →
+        ∀ i : Fin 3, ε * g.scalarAt x ≤ μ i) :
+    g.pinchingQuotientAt x ≤ 1 - 4 * ε + 6 * ε ^ 2 := by
+  obtain ⟨b, μ, hEig⟩ := g.exists_ricciEndoAt_eigenbasis_of_dim_three hn (x := x)
+  rw [g.pinchingQuotientAt_eq_diagonal_of_ricciEndoAt_eigenbasis b μ hEig]
+  have hR :
+      g.scalarAt x = PinchingAlgebra.diagonalScalar3 (μ 0) (μ 1) (μ 2) := by
+    rw [g.scalarAt_eq_sum_eigenvalues_of_ricciEndoAt_eigenbasis b μ hEig]
+    simp [Fin.sum_univ_three, PinchingAlgebra.diagonalScalar3]
+  exact PinchingAlgebra.diagonalPinchingQuotient3_le_of_eigenvalue_floor
+    (by simpa [← hR] using hRpos)
+    (by simpa [← hR] using hpin b μ hEig 0)
+    (by simpa [← hR] using hpin b μ hEig 1)
+    (by simpa [← hR] using hpin b μ hEig 2)
+
+/--
+Conversely, a pointwise quotient bound transports to the explicit eigenvalue
+floor `2 epsilon - 1/3` in every Ricci eigenbasis.
+-/
+theorem eigenvalue_pinched_of_pinchingQuotientAt_le
+    {ε : ℝ} {x : M}
+    (hεle : ε ≤ 1 / 3)
+    (hRpos : 0 < g.scalarAt x)
+    (hq : g.pinchingQuotientAt x ≤ 1 - 4 * ε + 6 * ε ^ 2)
+    (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ)
+    (hEig : ∀ i : Fin 3, g.ricciEndoAt x (b i) = μ i • b i) :
+    ∀ i : Fin 3, (2 * ε - 1 / 3) * g.scalarAt x ≤ μ i := by
+  have hQeq := g.pinchingQuotientAt_eq_diagonal_of_ricciEndoAt_eigenbasis b μ hEig
+  have hR :
+      g.scalarAt x = PinchingAlgebra.diagonalScalar3 (μ 0) (μ 1) (μ 2) := by
+    rw [g.scalarAt_eq_sum_eigenvalues_of_ricciEndoAt_eigenbasis b μ hEig]
+    simp [Fin.sum_univ_three, PinchingAlgebra.diagonalScalar3]
+  have hqdiag :
+      PinchingAlgebra.diagonalPinchingQuotient3 (μ 0) (μ 1) (μ 2) ≤
+        1 - 4 * ε + 6 * ε ^ 2 := by
+    simpa [hQeq] using hq
+  have hfloor :=
+    PinchingAlgebra.diagonal_eigenvalue_floor_of_pinchingQuotient3_le
+      hεle (by simpa [← hR] using hRpos) hqdiag
+  intro i
+  fin_cases i
+  · simpa [← hR] using hfloor.1
+  · simpa [← hR] using hfloor.2.1
+  · simpa [← hR] using hfloor.2.2
 
 /--
 The improved traceless pinching reaction is nonpositive in a Ricci eigenbasis

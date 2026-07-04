@@ -4510,6 +4510,78 @@ theorem hamilton_pinching_preserved
   simpa [Q, C] using hQle
 
 /--
+Eigenvalue-pinching consequence of Hamilton's preserved quotient maximum.
+An initial floor `lambda_i >= epsilon R` gives the explicit transported floor
+`lambda_i >= (2 epsilon - 1/3) R` along the flow.
+-/
+theorem hamilton_eigenvalue_pinching_floor_preserved
+    [CompactSpace M] [Nonempty M]
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ T ε : ℝ}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hn : n = 3) (hεle : ε ≤ 1 / 3) (hT0 : 0 ≤ T)
+    (hQ_cont :
+      Continuous ↿(fun τ (x : M) ↦ (gt (t₀ + τ)).pinchingQuotientAt x))
+    (hQ₂ : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ (gt (t₀ + τ)).pinchingQuotientAt y) x)
+    (hEvol : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      ClosedSmoothRiemannianMetric.SatisfiesPinchingQuotientEvolutionAt
+        gt (t₀ + τ) x
+          ((gt (t₀ + τ)).pinchingRicciNormReactionMotionTraceCubicAt x))
+    (hRpos : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      0 < (gt (t₀ + τ)).scalarAt x)
+    (hInitPin : ∀ x : M,
+      ∀ (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ),
+        (∀ i : Fin 3, (gt t₀).ricciEndoAt x (b i) = μ i • b i) →
+          ∀ i : Fin 3, ε * (gt t₀).scalarAt x ≤ μ i) :
+    ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      ∀ (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ),
+        (∀ i : Fin 3, (gt (t₀ + τ)).ricciEndoAt x (b i) = μ i • b i) →
+          ∀ i : Fin 3, (2 * ε - 1 / 3) * (gt (t₀ + τ)).scalarAt x ≤ μ i := by
+  let κ : ℝ := 1 - 4 * ε + 6 * ε ^ 2
+  have hmax_preserved :
+      ∀ τ ∈ Icc (0 : ℝ) T,
+        pinchingMaximumTrack gt t₀ τ ≤ pinchingMaximumTrack gt t₀ 0 :=
+    hamilton_pinching_preserved
+      (gt := gt) (t₀ := t₀) (T := T)
+      hn hT0 hQ_cont hQ₂ hEvol
+  have hQ0₂ :
+      ∀ x : M, ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ (gt t₀).pinchingQuotientAt y) x := by
+    intro x
+    simpa using hQ₂ 0 ⟨le_refl 0, hT0⟩ x
+  have hmax0_le : pinchingMaximumTrack gt t₀ 0 ≤ κ := by
+    obtain ⟨x₀, hx₀max⟩ :=
+      exists_pinchingQuotientAt_isMaxOn
+        (g := gt (t₀ + 0))
+        (by
+          intro x
+          simpa [add_zero] using hQ0₂ x)
+    rw [pinchingMaximumTrack, pinchingMaximumAt_eq_of_isMaxOn
+      (g := gt (t₀ + 0)) hx₀max]
+    have hinit := (gt t₀).pinchingQuotientAt_le_of_eigenvalue_pinched
+      hn (by simpa [add_zero] using hRpos 0 ⟨le_refl 0, hT0⟩ x₀) (hInitPin x₀)
+    simpa [add_zero] using hinit
+  intro τ hτ x b μ hEig i
+  have hpoint_le_max :
+      (gt (t₀ + τ)).pinchingQuotientAt x ≤
+        pinchingMaximumTrack gt t₀ τ := by
+    have hQτ₂ :
+        ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2
+          (fun z : M ↦ (gt (t₀ + τ)).pinchingQuotientAt z) y :=
+      hQ₂ τ hτ
+    simpa [pinchingMaximumTrack] using
+      pinchingQuotientAt_le_pinchingMaximumAt
+        (g := gt (t₀ + τ)) hQτ₂ x
+  have hq :
+      (gt (t₀ + τ)).pinchingQuotientAt x ≤ 1 - 4 * ε + 6 * ε ^ 2 := by
+    exact le_trans hpoint_le_max
+      (le_trans (hmax_preserved τ hτ) (by simpa [κ] using hmax0_le))
+  exact (gt (t₀ + τ)).eigenvalue_pinched_of_pinchingQuotientAt_le
+    hεle (hRpos τ hτ x) hq b μ hEig i
+
+/--
 Finite-time Riccati obstruction for a closed Hamilton scalar evolution track.
 
 The interval variable is shifted: `τ ∈ [0,T]` corresponds to geometric time
