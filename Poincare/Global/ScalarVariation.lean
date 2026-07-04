@@ -565,6 +565,16 @@ noncomputable def pinchingQuotientGradientDrift3At
       (g.gradientAt (fun y ↦ g.scalarAt y) x)
       (g.gradientAt (fun y ↦ g.pinchingQuotientAt y) x)
 
+/-- General-exponent drift for `|Ric°|^2 / R^(2 - delta)`. -/
+noncomputable def tracelessPinchingGradientDrift3At
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (δ : ℝ) : ℝ :=
+  ((2 - δ) / g.scalarAt x) *
+    g.inner x
+      (g.gradientAt (fun y ↦ g.scalarAt y) x)
+      (g.gradientAt (fun y ↦ g.tracelessPinchingAt y δ) x)
+
 /--
 Deprecated correction-history target for the 3D Hamilton pinching inequality.
 
@@ -24435,6 +24445,28 @@ theorem pinchingGradientDampingAt_nonpos {x : M}
   unfold pinchingGradientDampingAt
   exact mul_nonpos_of_nonpos_of_nonneg hcoef hsquare
 
+/--
+General-exponent completed-gradient damping for
+`|Ric°|^2 / R^(2 - delta)`.  At `delta = 0` this has the same coefficient as
+`pinchingGradientDampingAt`.
+-/
+noncomputable def tracelessPinchingGradientDampingAt (x : M) (δ : ℝ) : ℝ :=
+  -(2 / (g.scalarAt x) ^ (4 - δ)) * g.pinchingGradientSquareAt x
+
+theorem tracelessPinchingGradientDampingAt_nonpos {x : M} (δ : ℝ)
+    (hR : 0 < g.scalarAt x) :
+    g.tracelessPinchingGradientDampingAt x δ ≤ 0 := by
+  have hsquare : 0 ≤ g.pinchingGradientSquareAt x :=
+    g.pinchingGradientSquareAt_nonneg x
+  have hcoef : -(2 / (g.scalarAt x) ^ (4 - δ)) ≤ 0 := by
+    have hpow : 0 < (g.scalarAt x) ^ (4 - δ) :=
+      Real.rpow_pos_of_pos hR (4 - δ)
+    have hdiv : 0 < 2 / (g.scalarAt x) ^ (4 - δ) :=
+      div_pos (by norm_num) hpow
+    linarith
+  unfold tracelessPinchingGradientDampingAt
+  exact mul_nonpos_of_nonpos_of_nonneg hcoef hsquare
+
 /-- Scalar-curvature reaction in Hamilton scalar evolution: `R_t - ΔR = 2 |Ric|²`. -/
 noncomputable def pinchingScalarReactionAt (x : M) : ℝ :=
   2 * g.ricciNormSqAt x
@@ -24460,6 +24492,25 @@ noncomputable def pinchingReactionRemainderAt
     (x : M) (ricciNormReactionMotionTrace : ℝ) : ℝ :=
   (1 / 2 : ℝ) * (g.scalarAt x) ^ 2 * ricciNormReactionMotionTrace
     - g.scalarAt x * g.ricciNormSqAt x * g.pinchingScalarReactionAt x
+
+/--
+Traceless-Ricci reaction trace in dimension three:
+`(|Ric|^2)_react - (R^2 / 3)_react`.
+-/
+noncomputable def pinchingTracelessRicciReactionTrace3At
+    (x : M) (ricciNormReactionMotionTrace : ℝ) : ℝ :=
+  ricciNormReactionMotionTrace
+    - (2 / 3 : ℝ) * g.scalarAt x * g.pinchingScalarReactionAt x
+
+/--
+Zeroth-order reaction term for `|Ric°|^2 / R^(2 - delta)`, before applying the
+pinched eigenvalue sign lemma.
+-/
+noncomputable def tracelessPinchingReactionTermAt
+    (x : M) (δ : ℝ) (tracelessReactionTrace : ℝ) : ℝ :=
+  tracelessReactionTrace / (g.scalarAt x) ^ (2 - δ)
+    - (2 - δ) * g.tracelessRicciNormSqAt x * g.pinchingScalarReactionAt x /
+      (g.scalarAt x) ^ (3 - δ)
 
 /--
 The algebraic 3D Ricci-norm reaction/motion trace written in invariant form:
@@ -24648,6 +24699,44 @@ def SatisfiesPinchingQuotientEvolutionAt
             + (2 / ((gt t₀).scalarAt x) ^ 4) *
               (gt t₀).pinchingReactionRemainderAt x
                 ricciNormReactionMotionTrace
+
+/--
+Target parabolic inequality for the improved Hamilton pinching quantity
+`|Ric°|^2 / R^(2 - delta)`.
+
+The reaction term is deliberately still explicit.  The eigenvalue-level
+Hamilton lemma should later prove its sign after substituting the cubic
+three-dimensional reaction trace and the pinching floor.
+-/
+def SatisfiesTracelessPinchingImprovementEvolutionAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (δ ricciNormReactionMotionTrace : ℝ) :
+    Prop :=
+  0 < δ ∧
+    δ ≤ 1 ∧
+      0 < (gt t₀).scalarAt x ∧
+        ∃ F' : ℝ,
+          HasDerivAt (fun t ↦ (gt t).tracelessPinchingAt x δ) F' t₀ ∧
+            F' ≤
+              (gt t₀).laplacianAt
+                (fun y ↦ (gt t₀).tracelessPinchingAt y δ) x
+                + (gt t₀).tracelessPinchingGradientDrift3At x δ
+                + (gt t₀).tracelessPinchingGradientDampingAt x δ
+                + (gt t₀).tracelessPinchingReactionTermAt x δ
+                  ((gt t₀).pinchingTracelessRicciReactionTrace3At x
+                    ricciNormReactionMotionTrace)
+
+/-
+Goal 6 roadmap:
+1. Prove the general-exponent quotient calculus for `R^(2 - delta)`.
+2. Prove the eigenvalue lemma `TracelessPinchingEigenvalueImprovementLemma3`.
+3. Assemble the improved evolution target from Ricci-norm and scalar evolution.
+4. Reuse the completed-gradient square nonnegativity and prove its exponent coefficient.
+5. Combine the evolution inequality with the scalar-minimum blow-up from Goal 3.
+6. State and prove the closed-flow pinching-improvement theorem.
+-/
 
 /--
 Gradient form of the quotient product-rule trick.  If `q * v = u`, then
