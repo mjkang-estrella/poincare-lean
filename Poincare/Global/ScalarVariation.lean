@@ -11813,6 +11813,54 @@ theorem covRicci_pairing_gram_product_rule_expand
           unfold covRicciPairingRicciDerivGroup
           simp [Finset.sum_add_distrib, add_assoc]
 
+set_option maxHeartbeats 5000000 in
+/--
+The literal moving-frame derivative of `covRicciRicciPairingAt` is the anchored
+four-group product-rule RHS.
+-/
+theorem extDerivFun_covRicciRicciPairingAt_extend_eq_covRicciPairingGramProductRuleRHS
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (hRicSecond :
+      CovTensor2DerivExtDifferentiableAt g (ricciVariationField g) x)
+    (u w : TM x) :
+    extDerivFun
+        (fun y : M ↦ covRicciRicciPairingAt g y (extend E w y)) x u =
+      covRicciPairingGramProductRuleRHS g x u w := by
+  classical
+  have hPairEvent :
+      (fun y : M ↦ covRicciRicciPairingAt g y (extend E w y))
+        =ᶠ[nhds x]
+      fun y : M ↦ covRicciPairingGramRHS g x w y := by
+    filter_upwards [gramMatrix_eventually_isUnit (g := g) x] with y hG
+    calc
+      covRicciRicciPairingAt g y (extend E w y) =
+          metricVariationRicciPairingAt g
+            (fun z p q ↦
+              covTensor2DerivAt g (ricciVariationField g) z
+                (extend E w z) p q) y := by
+            simpa using
+              covRicciRicciPairingAt_eq_metricVariationRicciPairingAt_movingCovTensor2DerivAt
+                (g := g) (K := extend E w) y
+      _ = covRicciPairingGramRHS g x w y := by
+            simpa [covRicciPairingGramRHS] using
+              metricVariationRicciPairingAt_covTensor2DerivAt_eq_sum_gram_inv
+                (g := g) (K := extend E w) (x := x) (y := y) hG
+  have hAnchored :
+      extDerivFun
+          (fun y : M ↦ covRicciRicciPairingAt g y (extend E w y)) x u =
+        extDerivFun (fun y : M ↦ covRicciPairingGramRHS g x w y) x u := by
+    exact congrArg (fun L : TM x →L[ℝ] ℝ ↦ L u)
+      (CovariantDerivative.extDerivFun_congr hPairEvent)
+  calc
+    extDerivFun
+        (fun y : M ↦ covRicciRicciPairingAt g y (extend E w y)) x u =
+        extDerivFun (fun y : M ↦ covRicciPairingGramRHS g x w y) x u :=
+          hAnchored
+    _ = covRicciPairingGramProductRuleRHS g x u w :=
+        covRicci_pairing_gram_product_rule_expand
+          (g := g) (x := x) hRicSecond u w
+
 /-- Tensor contracted against the first inverse-Gram derivative group. -/
 noncomputable def ricciPairingInvFirstContractionTensor
     (g : ClosedSmoothRiemannianMetric n M)
