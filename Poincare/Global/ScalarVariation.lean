@@ -3,6 +3,7 @@ import Poincare.Global.Laplacian
 import Poincare.Global.RicciNorm
 import Poincare.LocalConnectionRegularity
 import Poincare.ChartIdentification
+import Mathlib.Analysis.InnerProductSpace.Spectrum
 
 /-!
 # Scalar curvature variation: first closed-manifold layer
@@ -24585,6 +24586,47 @@ theorem pinchingReactionRemainderAt_nonpos_of_scalar_pos_of_ricciEndoAt_eigenbas
   exact PinchingAlgebra.diagonalPinchingReactionRemainder3_nonpos_of_scalar_pos
     (by simpa [← hR] using hRpos)
 
+/-- In dimension three, the metric-self-adjoint Ricci endomorphism admits a
+`Fin 3` eigenbasis at every point. -/
+theorem exists_ricciEndoAt_eigenbasis_of_dim_three
+    (hn : n = 3) {x : M} :
+    ∃ (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ),
+      ∀ i : Fin 3, g.ricciEndoAt x (b i) = μ i • b i := by
+  letI : RiemannianBundle (tangentBundle (n := n) (M := M)) := g.toRiemannianBundle
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let A : TM x →ₗ[ℝ] TM x :=
+    { toFun := fun v ↦ g.ricciEndoAt x v
+      map_add' := by
+        intro u v
+        exact map_add (g.ricciEndoAt x) u v
+      map_smul' := by
+        intro c v
+        exact map_smul (g.ricciEndoAt x) c v }
+  have hsym : A.IsSymmetric := by
+    intro u w
+    rw [ClosedSmoothRiemannianMetric.fiber_inner_eq (g := g) x]
+    rw [ClosedSmoothRiemannianMetric.fiber_inner_eq (g := g) x]
+    exact g.ricciEndoAt_selfAdjoint x u w
+  have hdim : Module.finrank ℝ (TM x) = 3 := by
+    simpa [hn] using
+      ClosedSmoothRiemannianMetric.finrank_tangentSpace_eq (n := n) (M := M) x
+  refine ⟨(hsym.eigenvectorBasis hdim).toBasis, hsym.eigenvalues hdim, ?_⟩
+  intro i
+  exact hsym.apply_eigenvectorBasis hdim i
+
+/--
+Positive scalar curvature alone makes the intrinsic three-dimensional
+Hamilton reaction remainder nonpositive.
+-/
+theorem pinchingReactionRemainderAt_nonpos_of_scalar_pos
+    (hn : n = 3) {x : M} (hRpos : 0 < g.scalarAt x) :
+    g.pinchingReactionRemainderAt x
+        (g.pinchingRicciNormReactionMotionTraceCubicAt x) ≤ 0 := by
+  obtain ⟨b, μ, hEig⟩ := g.exists_ricciEndoAt_eigenbasis_of_dim_three hn (x := x)
+  exact
+    g.pinchingReactionRemainderAt_nonpos_of_scalar_pos_of_ricciEndoAt_eigenbasis
+      b μ hEig hRpos
+
 /--
 Corrected quotient-evolution target.  The reaction sign is intentionally not
 assumed here; step 5 is the separate algebraic proof that the named remainder
@@ -24618,7 +24660,9 @@ theorem gradientAt_quotient_eq_of_product_rule
     (hv : MDifferentiableAt I 𝓘(ℝ) v x) :
     v x • g.gradientAt q x =
       g.gradientAt u x - q x • g.gradientAt v x := by
-  have hmul := g.gradientAt_mul (f := q) (h := v) hq hv
+  have hmul :=
+    ClosedSmoothRiemannianMetric.gradientAt_mul
+      (g := g) (f := q) (h := v) hq hv
   rw [← hprod]
   change v x • g.gradientAt q x =
     g.gradientAt (q * v) x - q x • g.gradientAt v x
@@ -24641,7 +24685,8 @@ theorem laplacianAt_quotient_eq_of_product_rule
       (g.laplacianAt u x - q x * g.laplacianAt v x
           - 2 * g.inner x (g.gradientAt q x) (g.gradientAt v x)) / v x := by
   have hmul :=
-    g.laplacianAt_mul (f := q) (h := v) (x := x) hq hv hgradq hgradv
+    ClosedSmoothRiemannianMetric.laplacianAt_mul
+      (g := g) (f := q) (h := v) (x := x) hq hv hgradq hgradv
   have hu :
       g.laplacianAt u x =
         q x * g.laplacianAt v x + v x * g.laplacianAt q x
