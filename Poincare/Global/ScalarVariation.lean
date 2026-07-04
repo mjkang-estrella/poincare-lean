@@ -5547,7 +5547,22 @@ theorem covRicciRicciPairingAt_eq_sum
 
 /--
 `covRicciRicciPairingAt` is the ordinary Ricci pairing applied to the
-`(0,2)` tensor field `∇_{extend v} Ric`.
+`(0,2)` tensor field `∇_K Ric`.
+-/
+theorem covRicciRicciPairingAt_eq_metricVariationRicciPairingAt_movingCovTensor2DerivAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (K : ∀ y : M, TM y) (x : M) :
+    covRicciRicciPairingAt g x (K x) =
+      metricVariationRicciPairingAt g
+        (fun y p q ↦
+          covTensor2DerivAt g (ricciVariationField g) y (K y) p q) x := by
+  unfold covRicciRicciPairingAt metricVariationRicciPairingAt
+  simp
+
+/--
+Fixed-vector specialization of
+`covRicciRicciPairingAt_eq_metricVariationRicciPairingAt_movingCovTensor2DerivAt`.
 -/
 theorem covRicciRicciPairingAt_eq_metricVariationRicciPairingAt_covTensor2DerivAt
     (g : ClosedSmoothRiemannianMetric n M)
@@ -5557,8 +5572,9 @@ theorem covRicciRicciPairingAt_eq_metricVariationRicciPairingAt_covTensor2DerivA
       metricVariationRicciPairingAt g
         (fun y p q ↦
           covTensor2DerivAt g (ricciVariationField g) y (extend E v y) p q) x := by
-  unfold covRicciRicciPairingAt metricVariationRicciPairingAt
-  simp
+  simpa using
+    covRicciRicciPairingAt_eq_metricVariationRicciPairingAt_movingCovTensor2DerivAt
+      (g := g) (K := extend E v) x
 
 /-- The covariant Ricci derivative norm is nonnegative, by the
 sum-of-squares expression in a metric-orthogonal frame. -/
