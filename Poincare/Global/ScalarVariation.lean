@@ -2156,6 +2156,63 @@ theorem traceMetricVariationAt_eq_linearMap_trace
   exact metricTraceInBasisAt_eq_linearMap_trace
     (g := g) (x := x) (B := B) (b := Module.finBasis ℝ (TM x))
 
+/--
+The Ricci pairing of a fiberwise bilinear form, computed in an arbitrary basis
+as `tr(H^# ∘ Ric^#)`.
+-/
+noncomputable def metricRicciPairingTraceInBasisAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (B : LinearMap.BilinForm ℝ (TM x))
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι ℝ (TM x)) : ℝ :=
+  ∑ i, B (g.ricciEndoAt x (b i)) (metricDualVectorAt g x (b.coord i))
+
+/--
+The arbitrary-basis Ricci pairing trace is the trace of the raised `H`
+endomorphism composed with the Ricci endomorphism, hence is basis-free.
+-/
+theorem metricRicciPairingTraceInBasisAt_eq_linearMap_trace
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) [FiniteDimensional ℝ (TM x)]
+    (B : LinearMap.BilinForm ℝ (TM x))
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι ℝ (TM x)) :
+    metricRicciPairingTraceInBasisAt g x B b =
+      LinearMap.trace ℝ (TM x)
+        (metricTraceEndomorphismAt g x B ∘ₗ g.ricciEndoAt x) := by
+  rw [LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]
+  unfold metricRicciPairingTraceInBasisAt
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+  change B (g.ricciEndoAt x (b i)) (metricDualVectorAt g x (b.coord i)) =
+    b.coord i ((metricTraceEndomorphismAt g x B ∘ₗ g.ricciEndoAt x) (b i))
+  rw [coord_eq_inner_metricDualVectorAt_of_basis (g := g) (x := x) (b := b)]
+  unfold metricTraceEndomorphismAt
+  simp only [LinearMap.comp_apply, LinearEquiv.coe_coe]
+  change B (g.ricciEndoAt x (b i)) (metricDualVectorAt g x (b.coord i)) =
+    g.metricBilinAt x
+      ((LinearMap.BilinForm.toDual (g.metricBilinAt x)
+        (g.metricBilinAt_nondegenerate x)).symm (B (g.ricciEndoAt x (b i))))
+      (metricDualVectorAt g x (b.coord i))
+  rw [LinearMap.BilinForm.apply_toDual_symm_apply]
+
+/-- Computing the Ricci pairing trace in two finite bases gives the same scalar. -/
+theorem metricRicciPairingTraceInBasisAt_eq_metricRicciPairingTraceInBasisAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) [FiniteDimensional ℝ (TM x)]
+    (B : LinearMap.BilinForm ℝ (TM x))
+    {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
+    (b : Module.Basis ι ℝ (TM x)) (c : Module.Basis κ ℝ (TM x)) :
+    metricRicciPairingTraceInBasisAt g x B b =
+      metricRicciPairingTraceInBasisAt g x B c := by
+  rw [metricRicciPairingTraceInBasisAt_eq_linearMap_trace
+      (g := g) (x := x) (B := B) (b := b),
+    metricRicciPairingTraceInBasisAt_eq_linearMap_trace
+      (g := g) (x := x) (B := B) (b := c)]
+
 /-- Continuous-linear version of `metricTraceEndomorphismAt`. -/
 noncomputable def metricTraceEndomorphismContinuousAt
     (g : ClosedSmoothRiemannianMetric n M) (x : M)
