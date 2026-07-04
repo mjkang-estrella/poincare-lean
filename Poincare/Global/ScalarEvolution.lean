@@ -2142,6 +2142,58 @@ theorem scalarMinimumAt_le_scalarAt
   rw [scalarMinimumAt_eq_of_isMinOn (g := g) hx₀min]
   exact hx₀min trivial
 
+/-- On a compact closed manifold, the pinching quotient attains a global maximum. -/
+theorem exists_pinchingQuotientAt_isMaxOn
+    [CompactSpace M] [Nonempty M]
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hQ :
+      ∀ x : M, ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ g.pinchingQuotientAt y) x) :
+    ∃ x : M, IsMaxOn (fun y : M ↦ g.pinchingQuotientAt y) Set.univ x := by
+  obtain ⟨x, hx, hmax⟩ := isCompact_univ.exists_isMaxOn
+    (Set.univ_nonempty) (fun y _ ↦ (hQ y).continuousAt.continuousWithinAt)
+  exact ⟨x, hmax⟩
+
+/-- The closed pinching-quotient maximum, defined as the supremum of the range. -/
+noncomputable def pinchingMaximumAt (g : ClosedSmoothRiemannianMetric n M) : ℝ :=
+  sSup (Set.range fun y : M ↦ g.pinchingQuotientAt y)
+
+/-- The pinching-quotient maximum track based at geometric time `t₀`. -/
+noncomputable def pinchingMaximumTrack
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) : ℝ → ℝ :=
+  fun τ ↦ pinchingMaximumAt (gt (t₀ + τ))
+
+/-- If the pinching quotient attains its maximum at `x`, the supremum definition equals it. -/
+theorem pinchingMaximumAt_eq_of_isMaxOn
+    (g : ClosedSmoothRiemannianMetric n M) {x : M}
+    (hmax : IsMaxOn (fun y : M ↦ g.pinchingQuotientAt y) Set.univ x) :
+    pinchingMaximumAt g = g.pinchingQuotientAt x := by
+  let S : Set ℝ := Set.range fun y : M ↦ g.pinchingQuotientAt y
+  have hne : S.Nonempty := ⟨g.pinchingQuotientAt x, ⟨x, rfl⟩⟩
+  have hupper : ∀ y ∈ S, y ≤ g.pinchingQuotientAt x := by
+    intro y hy
+    rcases hy with ⟨z, hzy⟩
+    exact hzy ▸ hmax trivial
+  have hbdd : BddAbove S := ⟨g.pinchingQuotientAt x, hupper⟩
+  apply le_antisymm
+  · exact csSup_le hne hupper
+  · exact le_csSup hbdd ⟨x, rfl⟩
+
+/-- The pinching-quotient supremum lies above every point value on a compact closed slice. -/
+theorem pinchingQuotientAt_le_pinchingMaximumAt
+    [CompactSpace M] [Nonempty M]
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hQ :
+      ∀ x : M, ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ g.pinchingQuotientAt y) x)
+    (x : M) :
+    g.pinchingQuotientAt x ≤ pinchingMaximumAt g := by
+  obtain ⟨x₀, hx₀max⟩ := exists_pinchingQuotientAt_isMaxOn (g := g) hQ
+  rw [pinchingMaximumAt_eq_of_isMaxOn (g := g) hx₀max]
+  exact hx₀max trivial
+
 omit [T2Space M] in
 /--
 Strict compact-manifold parabolic minimum principle with a time-dependent
