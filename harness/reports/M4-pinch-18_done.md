@@ -62,6 +62,53 @@ The corrected target is `SatisfiesPinchingQuotientEvolutionAt`: it separates
 the completed gradient square from the reaction remainder.  The sign of the
 reaction remainder under 3D Ricci nonnegativity is deliberately left for step 5.
 
+## Implemented commits
+
+- `b864dfae` Correct pinching quotient target.
+- `e6fc2761` Add quotient product-rule lemmas.
+- `e8602ec7` Assemble pinching quotient evolution.
+
+## Formalized surface
+
+- `pinchingGradientSquareAt`: honest metric-orthogonal sum of squares for
+  `R * nabla Ric - nabla R tensor Ric`.
+- `pinchingGradientSquareAt_nonneg` and `pinchingGradientDampingAt_nonpos`.
+- `pinchingReactionRemainderAt`: explicit normalized reaction remainder
+  `(1/2) * R^2 * N_react - R * N * R_react`.
+- `gradientAt_quotient_eq_of_product_rule`,
+  `laplacianAt_quotient_eq_of_product_rule`, and
+  `quotient_derivative_eq_of_product_rule`.
+- `hasDerivAt_ricciNormSqAt_eq_laplacianAt_sub_two_covNormSq_add_reactionMotionTrace3`:
+  exact Ricci-norm parabolic form before dropping `|nabla Ric|^2`.
+- `satisfiesPinchingQuotientEvolutionAt_of_ricciFlow`: quotient assembly from
+  the scalar and Ricci-norm parabolic forms, with the spatial
+  completed-square algebra exposed as the named hypothesis
+  `PinchingQuotientCompletedSquareIdentityAt`.
+
+## Completed-square status
+
+The assembled theorem does not assume or prove any reaction sign.  It also does
+not hide the gradient algebra in the target: the remaining spatial identity is
+named explicitly as
+
+```text
+Delta N / R^2 - 2 N Delta R / R^3 - 2 |nabla Ric|^2 / R^2
+  =
+Delta Q + (2/R)<nabla R, nabla Q>
+  - (2/R^4)|R nabla Ric - nabla R tensor Ric|^2.
+```
+
+This is the next local algebra target before the step-5 reaction-sign lemma can
+be used to turn the corrected quotient evolution into a pinching estimate.
+
+## Verification
+
+- `lake env lean Poincare/Global/RicciNorm.lean`
+- `lake build Poincare.Global.RicciNorm`
+- `lake env lean Poincare/Global/ScalarVariation.lean`
+- `lake build Poincare.Global.ScalarVariation`
+- `lake env lean Poincare/Global/ScalarEvolution.lean`
+
 ## Step-5 outlook
 
 The next proof obligation is the 3D reaction-sign lemma:
