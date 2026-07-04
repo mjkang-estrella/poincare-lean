@@ -1409,6 +1409,212 @@ def TracelessPinchingEigenvalueImprovementLemma3 (ε δ : ℝ) : Prop :=
                   ε * diagonalScalar3 a b c ≤ c →
                     diagonalTracelessPinchingReactionNumerator3 δ a b c ≤ 0
 
+theorem diagonalRicciNormSq3_nonneg (a b c : ℝ) :
+    0 ≤ diagonalRicciNormSq3 a b c := by
+  unfold diagonalRicciNormSq3
+  positivity
+
+theorem diagonalTracelessRicciNormSq3_nonneg (a b c : ℝ) :
+    0 ≤ diagonalTracelessRicciNormSq3 a b c := by
+  rw [diagonalTracelessRicciNormSq3_eq_pairwise_div_three]
+  positivity
+
+theorem pinchedTracelessAdmissibleDelta3_le_actual_min_bound
+    {ε m R : ℝ} (hεpos : 0 < ε) (hεle : ε ≤ 1 / 3)
+    (hRpos : 0 < R) (hm : ε * R ≤ m) :
+    pinchedTracelessAdmissibleDelta3 ε ≤
+      6 * m ^ 2 / (R ^ 2 - 2 * m * R + 3 * m ^ 2) := by
+  have hDεpos : 0 < 1 - 2 * ε + 3 * ε ^ 2 := by
+    nlinarith [sq_nonneg (ε - 1 / 3)]
+  have hmpos : 0 < m := lt_of_lt_of_le (mul_pos hεpos hRpos) hm
+  have hDmpos : 0 < R ^ 2 - 2 * m * R + 3 * m ^ 2 := by
+    nlinarith [sq_nonneg (R - m), sq_pos_of_pos hmpos]
+  have hfac1 : 0 ≤ m - ε * R := sub_nonneg.mpr hm
+  have hfac2 : 0 ≤ m + ε * R - 2 * ε * m := by
+    nlinarith [hεpos.le, hεle, hRpos.le, hmpos.le]
+  have hcross : ε ^ 2 * (R ^ 2 - 2 * m * R + 3 * m ^ 2) ≤
+      m ^ 2 * (1 - 2 * ε + 3 * ε ^ 2) := by
+    nlinarith [mul_nonneg hfac1 hfac2]
+  have hquot : ε ^ 2 / (1 - 2 * ε + 3 * ε ^ 2) ≤
+      m ^ 2 / (R ^ 2 - 2 * m * R + 3 * m ^ 2) := by
+    exact (div_le_div_iff₀ hDεpos hDmpos).mpr hcross
+  unfold pinchedTracelessAdmissibleDelta3
+  calc
+    6 * ε ^ 2 / (1 - 2 * ε + 3 * ε ^ 2)
+        = 6 * (ε ^ 2 / (1 - 2 * ε + 3 * ε ^ 2)) := by ring
+    _ ≤ 6 * (m ^ 2 / (R ^ 2 - 2 * m * R + 3 * m ^ 2)) :=
+        mul_le_mul_of_nonneg_left hquot (by norm_num)
+    _ = 6 * m ^ 2 / (R ^ 2 - 2 * m * R + 3 * m ^ 2) := by ring
+
+theorem diagonalActualMinPinchingBoundaryNumerator3_eq_neg (a b c : ℝ) :
+    ((diagonalScalar3 a b c) ^ 2 - 2 * a * diagonalScalar3 a b c + 3 * a ^ 2) *
+        diagonalPinchingReactionSignNumerator3 a b c
+      + 12 * a ^ 2 * diagonalRicciNormSq3 a b c *
+        diagonalTracelessRicciNormSq3 a b c =
+      -4 * (c - b) ^ 2 *
+        (24 * a ^ 3 * (b - a) + 12 * a ^ 3 * (c - b)
+          + 49 * a ^ 2 * (b - a) ^ 2 + 49 * a ^ 2 * (b - a) * (c - b)
+          + 13 * a ^ 2 * (c - b) ^ 2 + 40 * a * (b - a) ^ 3
+          + 60 * a * (b - a) ^ 2 * (c - b)
+          + 32 * a * (b - a) * (c - b) ^ 2 + 6 * a * (c - b) ^ 3
+          + 12 * (b - a) ^ 4 + 24 * (b - a) ^ 3 * (c - b)
+          + 19 * (b - a) ^ 2 * (c - b) ^ 2 + 7 * (b - a) * (c - b) ^ 3
+          + (c - b) ^ 4) := by
+  rw [diagonalPinchingReactionSignNumerator3_eq_schur]
+  unfold diagonalTracelessRicciNormSq3 diagonalRicciNormSq3 diagonalScalar3
+  ring_nf
+
+theorem diagonalActualMinPinchingBoundaryNumerator3_nonpos
+    {a b c : ℝ} (ha : 0 ≤ a) (hab : a ≤ b) (hbc : b ≤ c) :
+    ((diagonalScalar3 a b c) ^ 2 - 2 * a * diagonalScalar3 a b c + 3 * a ^ 2) *
+        diagonalPinchingReactionSignNumerator3 a b c
+      + 12 * a ^ 2 * diagonalRicciNormSq3 a b c *
+        diagonalTracelessRicciNormSq3 a b c ≤ 0 := by
+  rw [diagonalActualMinPinchingBoundaryNumerator3_eq_neg]
+  have hpoly : 0 ≤
+        (24 * a ^ 3 * (b - a) + 12 * a ^ 3 * (c - b)
+          + 49 * a ^ 2 * (b - a) ^ 2 + 49 * a ^ 2 * (b - a) * (c - b)
+          + 13 * a ^ 2 * (c - b) ^ 2 + 40 * a * (b - a) ^ 3
+          + 60 * a * (b - a) ^ 2 * (c - b)
+          + 32 * a * (b - a) * (c - b) ^ 2 + 6 * a * (c - b) ^ 3
+          + 12 * (b - a) ^ 4 + 24 * (b - a) ^ 3 * (c - b)
+          + 19 * (b - a) ^ 2 * (c - b) ^ 2 + 7 * (b - a) * (c - b) ^ 3
+          + (c - b) ^ 4) := by
+    have hba : 0 ≤ b - a := sub_nonneg.mpr hab
+    have hcb : 0 ≤ c - b := sub_nonneg.mpr hbc
+    positivity
+  have hz2 : 0 ≤ (c - b) ^ 2 := sq_nonneg (c - b)
+  nlinarith [mul_nonneg (mul_nonneg (by norm_num : (0 : ℝ) ≤ 4) hz2) hpoly]
+
+theorem diagonalTracelessPinchingReactionNumerator3_nonpos_of_ordered_actual_min
+    {δ a b c : ℝ} (ha : 0 < a) (hab : a ≤ b) (hbc : b ≤ c) (hδnonneg : 0 ≤ δ)
+    (hδle : δ ≤
+      6 * a ^ 2 / ((diagonalScalar3 a b c) ^ 2 - 2 * a * diagonalScalar3 a b c + 3 * a ^ 2)) :
+    diagonalTracelessPinchingReactionNumerator3 δ a b c ≤ 0 := by
+  let Den : ℝ := (diagonalScalar3 a b c) ^ 2 - 2 * a * diagonalScalar3 a b c + 3 * a ^ 2
+  let Q : ℝ := diagonalRicciNormSq3 a b c
+  let T : ℝ := diagonalTracelessRicciNormSq3 a b c
+  let S : ℝ := diagonalPinchingReactionSignNumerator3 a b c
+  have hδle' : δ ≤ 6 * a ^ 2 / Den := by simpa [Den] using hδle
+  have hDenpos : 0 < Den := by
+    dsimp [Den]
+    nlinarith [sq_nonneg (diagonalScalar3 a b c - a), sq_pos_of_pos ha]
+  have hQ : 0 ≤ Q := by
+    dsimp [Q]
+    exact diagonalRicciNormSq3_nonneg a b c
+  have hT : 0 ≤ T := by
+    dsimp [T]
+    exact diagonalTracelessRicciNormSq3_nonneg a b c
+  have hQT : 0 ≤ Q * T := mul_nonneg hQ hT
+  have hcorr_nonneg : 0 ≤ 2 * δ * Q * T := by positivity
+  have hcorr_le : 2 * δ * Q * T ≤ (12 * a ^ 2 / Den) * Q * T := by
+    have htwo : 2 * δ ≤ 12 * a ^ 2 / Den := by
+      calc
+        2 * δ ≤ 2 * (6 * a ^ 2 / Den) :=
+          mul_le_mul_of_nonneg_left hδle' (by norm_num)
+        _ = 12 * a ^ 2 / Den := by ring
+    calc
+      2 * δ * Q * T = (2 * δ) * (Q * T) := by ring
+      _ ≤ (12 * a ^ 2 / Den) * (Q * T) :=
+          mul_le_mul_of_nonneg_right htwo hQT
+      _ = (12 * a ^ 2 / Den) * Q * T := by ring
+  have hboundary : Den * S + 12 * a ^ 2 * Q * T ≤ 0 := by
+    dsimp [Den, Q, T, S]
+    exact diagonalActualMinPinchingBoundaryNumerator3_nonpos ha.le hab hbc
+  have hupper : S + (12 * a ^ 2 / Den) * Q * T ≤ 0 := by
+    have hmul : Den * (S + (12 * a ^ 2 / Den) * Q * T) ≤ Den * 0 := by
+      have hrewrite : Den * (S + (12 * a ^ 2 / Den) * Q * T) =
+          Den * S + 12 * a ^ 2 * Q * T := by
+        field_simp [hDenpos.ne']
+      rw [hrewrite]
+      simpa using hboundary
+    exact le_of_mul_le_mul_left hmul hDenpos
+  rw [diagonalTracelessPinchingReactionNumerator3_eq_sign_add_delta]
+  dsimp [Q, T, S] at hcorr_nonneg hcorr_le hupper ⊢
+  linarith
+
+theorem diagonalTracelessPinchingReactionNumerator3_swap12 (δ a b c : ℝ) :
+    diagonalTracelessPinchingReactionNumerator3 δ a b c =
+      diagonalTracelessPinchingReactionNumerator3 δ b a c := by
+  unfold diagonalTracelessPinchingReactionNumerator3 diagonalTracelessRicciReactionTrace3
+    diagonalRicciNormReactionMotionTrace3 diagonalRicciNormEvolutionReactionTrace3
+    diagonalRicciEvolutionReaction3Entry1 diagonalRicciEvolutionReaction3Entry2
+    diagonalRicciEvolutionReaction3Entry3 diagonalTwoLichnerowiczPure3Entry1
+    diagonalTwoLichnerowiczPure3Entry2 diagonalTwoLichnerowiczPure3Entry3
+    diagonalRicciNormMetricMotionNegTwoRicci3 diagonalTracelessRicciNormSq3
+    diagonalScalarReaction3 diagonalRicciNormSq3 diagonalScalar3
+  ring
+
+theorem diagonalTracelessPinchingReactionNumerator3_swap23 (δ a b c : ℝ) :
+    diagonalTracelessPinchingReactionNumerator3 δ a b c =
+      diagonalTracelessPinchingReactionNumerator3 δ a c b := by
+  unfold diagonalTracelessPinchingReactionNumerator3 diagonalTracelessRicciReactionTrace3
+    diagonalRicciNormReactionMotionTrace3 diagonalRicciNormEvolutionReactionTrace3
+    diagonalRicciEvolutionReaction3Entry1 diagonalRicciEvolutionReaction3Entry2
+    diagonalRicciEvolutionReaction3Entry3 diagonalTwoLichnerowiczPure3Entry1
+    diagonalTwoLichnerowiczPure3Entry2 diagonalTwoLichnerowiczPure3Entry3
+    diagonalRicciNormMetricMotionNegTwoRicci3 diagonalTracelessRicciNormSq3
+    diagonalScalarReaction3 diagonalRicciNormSq3 diagonalScalar3
+  ring
+
+theorem TracelessPinchingEigenvalueImprovementLemma3_holds (ε δ : ℝ) :
+    TracelessPinchingEigenvalueImprovementLemma3 ε δ := by
+  intro hεpos hεle hδnonneg hδle a b c hRpos ha hb hc
+  have hordered : ∀ x y z : ℝ,
+      0 < diagonalScalar3 x y z →
+        ε * diagonalScalar3 x y z ≤ x →
+          x ≤ y → y ≤ z →
+            diagonalTracelessPinchingReactionNumerator3 δ x y z ≤ 0 := by
+    intro x y z hR hpin hxy hyz
+    have hxpos : 0 < x := lt_of_lt_of_le (mul_pos hεpos hR) hpin
+    have hδactual : δ ≤
+        6 * x ^ 2 / ((diagonalScalar3 x y z) ^ 2
+          - 2 * x * diagonalScalar3 x y z + 3 * x ^ 2) := by
+      exact le_trans hδle
+        (pinchedTracelessAdmissibleDelta3_le_actual_min_bound hεpos hεle hR hpin)
+    exact diagonalTracelessPinchingReactionNumerator3_nonpos_of_ordered_actual_min
+      hxpos hxy hyz hδnonneg hδactual
+  rcases le_total a b with hab | hba
+  · rcases le_total b c with hbc | hcb
+    · exact hordered a b c hRpos ha hab hbc
+    · rcases le_total a c with hac | hca
+      · have h := hordered a c b
+          (by simpa [diagonalScalar3, add_comm, add_left_comm, add_assoc] using hRpos)
+          (by simpa [diagonalScalar3, add_comm, add_left_comm, add_assoc] using ha)
+          hac hcb
+        rw [diagonalTracelessPinchingReactionNumerator3_swap23]
+        exact h
+      · have h := hordered c a b
+          (by simpa [diagonalScalar3, add_comm, add_left_comm, add_assoc] using hRpos)
+          (by simpa [diagonalScalar3, add_comm, add_left_comm, add_assoc] using hc)
+          hca hab
+        rw [diagonalTracelessPinchingReactionNumerator3_swap23,
+          diagonalTracelessPinchingReactionNumerator3_swap12]
+        exact h
+  · rcases le_total a c with hac | hca
+    · have h := hordered b a c
+        (by simpa [diagonalScalar3, add_comm, add_left_comm, add_assoc] using hRpos)
+        (by simpa [diagonalScalar3, add_comm, add_left_comm, add_assoc] using hb)
+        hba hac
+      rw [diagonalTracelessPinchingReactionNumerator3_swap12]
+      exact h
+    · rcases le_total b c with hbc | hcb
+      · have h := hordered b c a
+          (by simpa [diagonalScalar3, add_comm, add_left_comm, add_assoc] using hRpos)
+          (by simpa [diagonalScalar3, add_comm, add_left_comm, add_assoc] using hb)
+          hbc hca
+        rw [diagonalTracelessPinchingReactionNumerator3_swap12,
+          diagonalTracelessPinchingReactionNumerator3_swap23]
+        exact h
+      · have h := hordered c b a
+          (by simpa [diagonalScalar3, add_comm, add_left_comm, add_assoc] using hRpos)
+          (by simpa [diagonalScalar3, add_comm, add_left_comm, add_assoc] using hc)
+          hcb hba
+        rw [diagonalTracelessPinchingReactionNumerator3_swap12,
+          diagonalTracelessPinchingReactionNumerator3_swap23,
+          diagonalTracelessPinchingReactionNumerator3_swap12]
+        exact h
+
 end PinchingAlgebra
 
 end Poincare
