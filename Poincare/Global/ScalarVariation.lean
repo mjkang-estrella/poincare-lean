@@ -11861,6 +11861,53 @@ theorem extDerivFun_covRicciRicciPairingAt_extend_eq_covRicciPairingGramProductR
         covRicci_pairing_gram_product_rule_expand
           (g := g) (x := x) hRicSecond u w
 
+/-- The `∂(∇Ric)` product group after unfolding to `∇²Ric` plus slot corrections. -/
+noncomputable def covRicciPairingSecondDerivExpansionGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b₀ := Module.finBasis ℝ (TM x)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      (gramMatrix g x x)⁻¹ b d *
+      covTensor2SecondDerivExpansionAt g (ricciVariationField g) x u w
+        (b₀ b) (b₀ c) *
+      g.ricciAt x (b₀ a) (b₀ d)
+
+set_option maxHeartbeats 5000000 in
+/-- The covariant-Ricci product group is the second-derivative expansion group. -/
+theorem covRicciPairingCovRicciDerivGroup_eq_secondDerivExpansionGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) :
+    covRicciPairingCovRicciDerivGroup g x u w =
+      covRicciPairingSecondDerivExpansionGroup g x u w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b₀ := Module.finBasis ℝ (TM x)
+  unfold covRicciPairingCovRicciDerivGroup
+  unfold covRicciPairingSecondDerivExpansionGroup
+  simp only [gramFrame, extend_apply_self]
+  refine Finset.sum_congr rfl fun a _ ↦ ?_
+  refine Finset.sum_congr rfl fun b _ ↦ ?_
+  refine Finset.sum_congr rfl fun c _ ↦ ?_
+  refine Finset.sum_congr rfl fun d _ ↦ ?_
+  have hEntry :
+      extDerivFun
+          (fun y : M ↦
+            covTensor2DerivAt g (ricciVariationField g) y (extend E w y)
+              (extend E (b₀ b) y)
+              (extend E (b₀ c) y)) x u =
+        covTensor2SecondDerivExpansionAt g (ricciVariationField g) x u w
+          (b₀ b) (b₀ c) :=
+    extDerivFun_covTensor2DerivAt_extend_eq_secondDerivExpansion
+      (g := g) (h := ricciVariationField g) (x := x)
+      (u := u) (v := w) (p := b₀ b) (q := b₀ c)
+  rw [hEntry]
+
 /-- Tensor contracted against the first inverse-Gram derivative group. -/
 noncomputable def ricciPairingInvFirstContractionTensor
     (g : ClosedSmoothRiemannianMetric n M)
