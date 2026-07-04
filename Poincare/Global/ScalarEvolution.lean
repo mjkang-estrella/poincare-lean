@@ -1490,6 +1490,70 @@ theorem tracelessPinching_spatial_expansion
   simpa [Qf, Uf, Rf, p, ClosedSmoothRiemannianMetric.scalarGradNormSqAt] using
     hSpatial
 
+/--
+Vocabulary conversion for the traceless spatial expansion: replace the raw
+numerator-gradient pairing by the named mixed-gradient and scalar-gradient
+quantities.
+-/
+theorem tracelessPinching_spatial_expansion_with_numerator_bridge
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (δ : ℝ)
+    (hRicNormDiff : MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ g.ricciNormSqAt y) x)
+    (hScalarDiff : MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ g.scalarAt y) x)
+    (hSpatial :
+      g.laplacianAt (fun y : M ↦ g.tracelessPinchingAt y δ) x
+          + g.tracelessPinchingGradientDrift3At x δ =
+        g.laplacianAt (fun y : M ↦ g.tracelessRicciNormSqAt y) x /
+            (g.scalarAt x) ^ (2 - δ)
+          - (2 - δ) * g.tracelessPinchingAt x δ *
+              g.laplacianAt (fun y : M ↦ g.scalarAt y) x / g.scalarAt x
+          - (2 - δ) *
+              g.inner x
+                (g.gradientAt (fun y : M ↦ g.tracelessRicciNormSqAt y) x)
+                (g.gradientAt (fun y : M ↦ g.scalarAt y) x) /
+              (g.scalarAt x * (g.scalarAt x) ^ (2 - δ))
+          + (2 - δ) * g.tracelessPinchingAt x δ *
+              g.scalarGradNormSqAt x / (g.scalarAt x) ^ 2) :
+    g.laplacianAt (fun y : M ↦ g.tracelessPinchingAt y δ) x
+        + g.tracelessPinchingGradientDrift3At x δ =
+      g.laplacianAt (fun y : M ↦ g.tracelessRicciNormSqAt y) x /
+          (g.scalarAt x) ^ (2 - δ)
+        - (2 - δ) * g.tracelessPinchingAt x δ *
+            g.laplacianAt (fun y : M ↦ g.scalarAt y) x / g.scalarAt x
+        - (2 - δ) *
+            (2 * g.pinchingMixedGradientPairingAt x
+              - (2 / (n : ℝ)) * g.scalarAt x * g.scalarGradNormSqAt x) /
+            (g.scalarAt x * (g.scalarAt x) ^ (2 - δ))
+        + (2 - δ) * g.tracelessPinchingAt x δ *
+            g.scalarGradNormSqAt x / (g.scalarAt x) ^ 2 := by
+  rw [hSpatial]
+  rw [g.inner_gradientAt_tracelessRicciNormSqAt_scalarAt x hRicNormDiff hScalarDiff]
+
+/--
+Reaction vocabulary conversion for the real-power traceless quotient.  The
+second denominator is rewritten from `R * R^(2 - δ)` to `R^(3 - δ)`.
+-/
+theorem tracelessPinchingReactionTermAt_eq_rpow_reaction_expansion
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (δ tracelessReactionTrace : ℝ)
+    (hRpos : 0 < g.scalarAt x) :
+    tracelessReactionTrace / (g.scalarAt x) ^ (2 - δ)
+      - (2 - δ) * g.tracelessRicciNormSqAt x *
+          g.pinchingScalarReactionAt x /
+        (g.scalarAt x * (g.scalarAt x) ^ (2 - δ)) =
+      g.tracelessPinchingReactionTermAt x δ tracelessReactionTrace := by
+  have hpow :
+      (g.scalarAt x) ^ (3 - δ) =
+        (g.scalarAt x) ^ (2 - δ) * g.scalarAt x := by
+    have h := Real.rpow_add_one (ne_of_gt hRpos) (2 - δ)
+    convert h using 2 <;> ring
+  rw [ClosedSmoothRiemannianMetric.tracelessPinchingReactionTermAt, hpow]
+  ring
+
 set_option maxHeartbeats 12000000 in
 /--
 Spatial quotient/drift expansion for Hamilton's scalar-normalized Ricci
