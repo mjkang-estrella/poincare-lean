@@ -927,6 +927,149 @@ theorem diagonalRicciNormMetricMotionNegTwoRicci3_one_one_two :
     diagonalRicciNormMetricMotionNegTwoRicci3 1 1 2 = 40 := by
   norm_num [diagonalRicciNormMetricMotionNegTwoRicci3]
 
+/--
+The full diagonal algebraic contribution to `d |Ric|^2/dt` after the
+Ricci-evolution reaction and Ricci-flow inverse-metric motion have both been
+substituted.
+-/
+noncomputable def diagonalRicciNormReactionMotionTrace3 (a b c : ℝ) : ℝ :=
+  diagonalRicciNormEvolutionReactionTrace3 a b c
+    + diagonalRicciNormMetricMotionNegTwoRicci3 a b c
+
+/-- Scalar-curvature reaction `R_t - ΔR = 2 |Ric|^2` on a diagonal pattern. -/
+noncomputable def diagonalScalarReaction3 (a b c : ℝ) : ℝ :=
+  2 * diagonalRicciNormSq3 a b c
+
+/-- Scalar-square reaction `((R^2)_t - Δ(R^2) + 2|∇R|^2) = 2 R R_react`. -/
+noncomputable def diagonalScalarSqReaction3 (a b c : ℝ) : ℝ :=
+  2 * diagonalScalar3 a b c * diagonalScalarReaction3 a b c
+
+/--
+Reaction remainder normalized so that
+`(2 / R^4) * diagonalPinchingReactionRemainder3` is exactly the reaction part
+of the quotient evolution.
+-/
+noncomputable def diagonalPinchingReactionRemainder3 (a b c : ℝ) : ℝ :=
+  ((diagonalScalar3 a b c) ^ 2 *
+      diagonalRicciNormReactionMotionTrace3 a b c
+    - diagonalRicciNormSq3 a b c *
+      diagonalScalarSqReaction3 a b c) / 2
+
+theorem diagonalPinchingReactionQuotient_eq_remainder3
+    {a b c : ℝ} (hR : diagonalScalar3 a b c ≠ 0) :
+    diagonalRicciNormReactionMotionTrace3 a b c /
+        (diagonalScalar3 a b c) ^ 2
+      - diagonalRicciNormSq3 a b c *
+        diagonalScalarSqReaction3 a b c / (diagonalScalar3 a b c) ^ 4
+      =
+        (2 / (diagonalScalar3 a b c) ^ 4) *
+          diagonalPinchingReactionRemainder3 a b c := by
+  unfold diagonalPinchingReactionRemainder3
+  field_simp [hR]
+
+theorem diagonalRicciNormReactionMotionTrace3_spaceForm (lam : ℝ) :
+    diagonalRicciNormReactionMotionTrace3 lam lam lam = 12 * lam ^ 3 := by
+  rw [diagonalRicciNormReactionMotionTrace3,
+    diagonalRicciNormEvolutionReactionTrace3_spaceForm,
+    diagonalRicciNormMetricMotionNegTwoRicci3_spaceForm]
+  ring
+
+theorem diagonalScalarSqReaction3_spaceForm (lam : ℝ) :
+    diagonalScalarSqReaction3 lam lam lam = 36 * lam ^ 3 := by
+  unfold diagonalScalarSqReaction3 diagonalScalarReaction3 diagonalRicciNormSq3
+    diagonalScalar3
+  ring
+
+theorem diagonalPinchingReactionRemainder3_spaceForm (lam : ℝ) :
+    diagonalPinchingReactionRemainder3 lam lam lam = 0 := by
+  unfold diagonalPinchingReactionRemainder3 diagonalRicciNormReactionMotionTrace3
+    diagonalScalarSqReaction3 diagonalScalarReaction3
+    diagonalRicciNormEvolutionReactionTrace3
+    diagonalRicciEvolutionReaction3Entry1 diagonalRicciEvolutionReaction3Entry2
+    diagonalRicciEvolutionReaction3Entry3 diagonalTwoLichnerowiczPure3Entry1
+    diagonalTwoLichnerowiczPure3Entry2 diagonalTwoLichnerowiczPure3Entry3
+    diagonalRicciNormMetricMotionNegTwoRicci3 diagonalRicciNormSq3
+    diagonalScalar3
+  ring
+
+theorem diagonalRicciNormReactionMotionTrace3_one_one_two :
+    diagonalRicciNormReactionMotionTrace3 1 1 2 = 32 := by
+  norm_num [diagonalRicciNormReactionMotionTrace3,
+    diagonalRicciNormEvolutionReactionTrace3_one_one_two,
+    diagonalRicciNormMetricMotionNegTwoRicci3_one_one_two]
+
+theorem diagonalScalarSqReaction3_one_one_two :
+    diagonalScalarSqReaction3 1 1 2 = 96 := by
+  norm_num [diagonalScalarSqReaction3, diagonalScalarReaction3,
+    diagonalRicciNormSq3, diagonalScalar3]
+
+theorem diagonalPinchingReactionRemainder3_one_one_two :
+    diagonalPinchingReactionRemainder3 1 1 2 = -32 := by
+  norm_num [diagonalPinchingReactionRemainder3,
+    diagonalRicciNormReactionMotionTrace3, diagonalScalarSqReaction3,
+    diagonalScalarReaction3, diagonalRicciNormEvolutionReactionTrace3,
+    diagonalRicciEvolutionReaction3Entry1, diagonalRicciEvolutionReaction3Entry2,
+    diagonalRicciEvolutionReaction3Entry3, diagonalTwoLichnerowiczPure3Entry1,
+    diagonalTwoLichnerowiczPure3Entry2, diagonalTwoLichnerowiczPure3Entry3,
+    diagonalRicciNormMetricMotionNegTwoRicci3, diagonalRicciNormSq3,
+    diagonalScalar3]
+
+theorem diagonalPinchingReactionQuotient3_one_one_two :
+    diagonalRicciNormReactionMotionTrace3 1 1 2 /
+        (diagonalScalar3 1 1 2) ^ 2
+      - diagonalRicciNormSq3 1 1 2 *
+        diagonalScalarSqReaction3 1 1 2 / (diagonalScalar3 1 1 2) ^ 4
+      = -1 / 4 := by
+  norm_num [diagonalRicciNormReactionMotionTrace3,
+    diagonalScalarSqReaction3, diagonalScalarReaction3,
+    diagonalRicciNormEvolutionReactionTrace3,
+    diagonalRicciEvolutionReaction3Entry1, diagonalRicciEvolutionReaction3Entry2,
+    diagonalRicciEvolutionReaction3Entry3, diagonalTwoLichnerowiczPure3Entry1,
+    diagonalTwoLichnerowiczPure3Entry2, diagonalTwoLichnerowiczPure3Entry3,
+    diagonalRicciNormMetricMotionNegTwoRicci3, diagonalRicciNormSq3,
+    diagonalScalar3]
+
+theorem diagonalRicciNormReactionMotionTrace3_one_two_three :
+    diagonalRicciNormReactionMotionTrace3 1 2 3 = 120 := by
+  norm_num [diagonalRicciNormReactionMotionTrace3,
+    diagonalRicciNormEvolutionReactionTrace3,
+    diagonalRicciEvolutionReaction3Entry1, diagonalRicciEvolutionReaction3Entry2,
+    diagonalRicciEvolutionReaction3Entry3, diagonalTwoLichnerowiczPure3Entry1,
+    diagonalTwoLichnerowiczPure3Entry2, diagonalTwoLichnerowiczPure3Entry3,
+    diagonalRicciNormMetricMotionNegTwoRicci3, diagonalRicciNormSq3,
+    diagonalScalar3]
+
+theorem diagonalScalarSqReaction3_one_two_three :
+    diagonalScalarSqReaction3 1 2 3 = 336 := by
+  norm_num [diagonalScalarSqReaction3, diagonalScalarReaction3,
+    diagonalRicciNormSq3, diagonalScalar3]
+
+theorem diagonalPinchingReactionRemainder3_one_two_three :
+    diagonalPinchingReactionRemainder3 1 2 3 = -192 := by
+  norm_num [diagonalPinchingReactionRemainder3,
+    diagonalRicciNormReactionMotionTrace3, diagonalScalarSqReaction3,
+    diagonalScalarReaction3, diagonalRicciNormEvolutionReactionTrace3,
+    diagonalRicciEvolutionReaction3Entry1, diagonalRicciEvolutionReaction3Entry2,
+    diagonalRicciEvolutionReaction3Entry3, diagonalTwoLichnerowiczPure3Entry1,
+    diagonalTwoLichnerowiczPure3Entry2, diagonalTwoLichnerowiczPure3Entry3,
+    diagonalRicciNormMetricMotionNegTwoRicci3, diagonalRicciNormSq3,
+    diagonalScalar3]
+
+theorem diagonalPinchingReactionQuotient3_one_two_three :
+    diagonalRicciNormReactionMotionTrace3 1 2 3 /
+        (diagonalScalar3 1 2 3) ^ 2
+      - diagonalRicciNormSq3 1 2 3 *
+        diagonalScalarSqReaction3 1 2 3 / (diagonalScalar3 1 2 3) ^ 4
+      = -8 / 27 := by
+  norm_num [diagonalRicciNormReactionMotionTrace3,
+    diagonalScalarSqReaction3, diagonalScalarReaction3,
+    diagonalRicciNormEvolutionReactionTrace3,
+    diagonalRicciEvolutionReaction3Entry1, diagonalRicciEvolutionReaction3Entry2,
+    diagonalRicciEvolutionReaction3Entry3, diagonalTwoLichnerowiczPure3Entry1,
+    diagonalTwoLichnerowiczPure3Entry2, diagonalTwoLichnerowiczPure3Entry3,
+    diagonalRicciNormMetricMotionNegTwoRicci3, diagonalRicciNormSq3,
+    diagonalScalar3]
+
 end PinchingAlgebra
 
 end Poincare

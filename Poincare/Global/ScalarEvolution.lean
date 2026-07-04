@@ -106,6 +106,262 @@ theorem hasDerivAt_scalarAt_sq_of_satisfiesHamiltonScalarEvolutionAt
   rw [htarget]
   simpa [pow_two] using hprod
 
+/-- Algebra for the derivative of `N / R^2`. -/
+private lemma quotient_derivative_sq_algebra
+    {R N N' R' : ℝ} (hR : R ≠ 0) :
+    (N' * R ^ 2 - N * (2 * R ^ (2 - 1) * R')) / (R ^ 2) ^ 2 =
+      N' / R ^ 2 - 2 * N * R' / R ^ 3 := by
+  norm_num
+  field_simp [hR]
+
+/-- Algebra identifying the reaction quotient with the normalized remainder. -/
+private lemma pinching_reaction_remainder_algebra
+    {R N M S : ℝ} (hR : R ≠ 0) :
+    M / R ^ 2 - 2 * N * S / R ^ 3 =
+      (2 / R ^ 4) * ((1 / 2 : ℝ) * R ^ 2 * M - R * N * S) := by
+  field_simp [hR]
+
+/--
+The spatial completed-square identity needed to assemble Hamilton's corrected
+pinching quotient evolution.  This is intentionally named as a separate
+obligation: it is the gradient algebra, not the reaction sign.
+-/
+def PinchingQuotientCompletedSquareIdentityAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) : Prop :=
+  let R : ℝ := g.scalarAt x
+  let N : ℝ := g.ricciNormSqAt x
+  let A : ℝ := covRicciNormSqAt g x
+  R ≠ 0 →
+    g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x / R ^ 2
+      - 2 * N * g.laplacianAt (fun y : M ↦ g.scalarAt y) x / R ^ 3
+      - 2 * A / R ^ 2 =
+    g.laplacianAt (fun y : M ↦ g.pinchingQuotientAt y) x
+      + g.pinchingQuotientGradientDrift3At x
+      + g.pinchingGradientDampingAt x
+
+set_option maxHeartbeats 5000000 in
+/--
+Exact 3D `|Ric|^2` parabolic form before dropping the nonnegative
+`|∇Ric|^2` term.
+-/
+theorem hasDerivAt_ricciNormSqAt_eq_laplacianAt_sub_two_covNormSq_add_reactionMotionTrace3
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hEvol : SatisfiesRicciEvolutionAt gt t₀ x) (hn : n = 3)
+    (hRicNorm₂ : ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ (gt t₀).ricciNormSqAt y) x)
+    (hPairDiff : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ covRicciRicciPairingAt (gt t₀) y (extend E w y)) x)
+    (hRicSecond :
+      CovTensor2DerivExtDifferentiableAt
+        (gt t₀) (ricciVariationField (gt t₀)) x) :
+    let g : ClosedSmoothRiemannianMetric n M := gt t₀
+    let δRic3 : TM x → TM x → ℝ :=
+      fun u w ↦ ricciEvolution3ReactionRHSAt g x u w
+    let hRic3 : ∀ u w : TM x,
+        HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic3 u w) t₀ :=
+      SatisfiesRicciEvolutionAt.reaction3
+        (gt := gt) (t₀ := t₀) (x := x) hEvol hn
+    let fullTrace : ℝ :=
+      2 * LinearMap.trace ℝ (TM x)
+        ((((raise'.comp (g.ricciDualContinuousAt x) +
+            (g.metricRaiseContinuousAt x).comp
+              (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+                (gt := gt) (t₀ := t₀) (x := x) δRic3 hRic3)).comp
+            (g.ricciEndoContinuousAt x)) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x)
+    HasDerivAt (fun t ↦ (gt t).ricciNormSqAt x)
+      (g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x
+        - 2 * covRicciNormSqAt g x
+        + g.pinchingRicciNormReactionMotionTraceAt x fullTrace) t₀ := by
+  classical
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let δRic3 : TM x → TM x → ℝ :=
+    fun u w ↦ ricciEvolution3ReactionRHSAt g x u w
+  let hRic3 : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic3 u w) t₀ :=
+    SatisfiesRicciEvolutionAt.reaction3
+      (gt := gt) (t₀ := t₀) (x := x) hEvol hn
+  let fullTrace : ℝ :=
+    2 * LinearMap.trace ℝ (TM x)
+      ((((raise'.comp (g.ricciDualContinuousAt x) +
+          (g.metricRaiseContinuousAt x).comp
+            (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+              (gt := gt) (t₀ := t₀) (x := x) δRic3 hRic3)).comp
+          (g.ricciEndoContinuousAt x)) : TM x →L[ℝ] TM x) :
+        TM x →ₗ[ℝ] TM x)
+  change HasDerivAt (fun t ↦ (gt t).ricciNormSqAt x)
+    (g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x
+      - 2 * covRicciNormSqAt g x
+      + g.pinchingRicciNormReactionMotionTraceAt x fullTrace) t₀
+  have hDeriv :
+      HasDerivAt (fun t ↦ (gt t).ricciNormSqAt x) fullTrace t₀ := by
+    simpa [g, δRic3, hRic3, fullTrace] using
+      hasDerivAt_ricciNormSqAt_of_satisfiesRicciEvolutionAt_reaction3
+        (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
+        hRaise hEvol hn
+  have hBochner :
+      g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x =
+        2 * roughRicciLaplacianPairingAt g x + 2 * covRicciNormSqAt g x := by
+    simpa [g] using
+      laplacianAt_ricciNormSqAt_eq_two_roughPairing_add_two_covNormSq
+        (g := gt t₀) (x := x) hRicNorm₂ hPairDiff hRicSecond
+  convert hDeriv using 1
+  simp [ClosedSmoothRiemannianMetric.pinchingRicciNormReactionMotionTraceAt]
+  linarith
+
+set_option maxHeartbeats 8000000 in
+/--
+Assemble the corrected quotient evolution from the proved scalar and
+Ricci-norm parabolic forms, with the spatial completed-square algebra kept as
+an explicit named hypothesis.  No reaction-sign assumption is used.
+-/
+theorem satisfiesPinchingQuotientEvolutionAt_of_ricciFlow
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hRicci : SatisfiesRicciEvolutionAt gt t₀ x)
+    (hScalar : SatisfiesHamiltonScalarEvolutionAt gt t₀ x)
+    (hn : n = 3)
+    (hRpos : 0 < (gt t₀).scalarAt x)
+    (hRicNorm₂ : ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ (gt t₀).ricciNormSqAt y) x)
+    (hPairDiff : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ covRicciRicciPairingAt (gt t₀) y (extend E w y)) x)
+    (hRicSecond :
+      CovTensor2DerivExtDifferentiableAt
+        (gt t₀) (ricciVariationField (gt t₀)) x)
+    (hSquare :
+      PinchingQuotientCompletedSquareIdentityAt (gt t₀) x) :
+    let g : ClosedSmoothRiemannianMetric n M := gt t₀
+    let δRic3 : TM x → TM x → ℝ :=
+      fun u w ↦ ricciEvolution3ReactionRHSAt g x u w
+    let hRic3 : ∀ u w : TM x,
+        HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic3 u w) t₀ :=
+      SatisfiesRicciEvolutionAt.reaction3
+        (gt := gt) (t₀ := t₀) (x := x) hRicci hn
+    let fullTrace : ℝ :=
+      2 * LinearMap.trace ℝ (TM x)
+        ((((raise'.comp (g.ricciDualContinuousAt x) +
+            (g.metricRaiseContinuousAt x).comp
+              (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+                (gt := gt) (t₀ := t₀) (x := x) δRic3 hRic3)).comp
+            (g.ricciEndoContinuousAt x)) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x)
+    ClosedSmoothRiemannianMetric.SatisfiesPinchingQuotientEvolutionAt gt t₀ x
+      (g.pinchingRicciNormReactionMotionTraceAt x fullTrace) := by
+  classical
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let δRic3 : TM x → TM x → ℝ :=
+    fun u w ↦ ricciEvolution3ReactionRHSAt g x u w
+  let hRic3 : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic3 u w) t₀ :=
+    SatisfiesRicciEvolutionAt.reaction3
+      (gt := gt) (t₀ := t₀) (x := x) hRicci hn
+  let fullTrace : ℝ :=
+    2 * LinearMap.trace ℝ (TM x)
+      ((((raise'.comp (g.ricciDualContinuousAt x) +
+          (g.metricRaiseContinuousAt x).comp
+            (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+              (gt := gt) (t₀ := t₀) (x := x) δRic3 hRic3)).comp
+          (g.ricciEndoContinuousAt x)) : TM x →L[ℝ] TM x) :
+        TM x →ₗ[ℝ] TM x)
+  change ClosedSmoothRiemannianMetric.SatisfiesPinchingQuotientEvolutionAt gt t₀ x
+      (g.pinchingRicciNormReactionMotionTraceAt x fullTrace)
+  let R : ℝ := g.scalarAt x
+  let N : ℝ := g.ricciNormSqAt x
+  let lapN : ℝ := g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x
+  let lapR : ℝ := g.laplacianAt (fun y : M ↦ g.scalarAt y) x
+  let A : ℝ := covRicciNormSqAt g x
+  let Mreact : ℝ := g.pinchingRicciNormReactionMotionTraceAt x fullTrace
+  let Sreact : ℝ := g.pinchingScalarReactionAt x
+  let Nrhs : ℝ := lapN - 2 * A + Mreact
+  let Rrhs : ℝ := lapR + Sreact
+  have hRne : R ≠ 0 := ne_of_gt (by simpa [g, R] using hRpos)
+  have hN :
+      HasDerivAt (fun t ↦ (gt t).ricciNormSqAt x) Nrhs t₀ := by
+    simpa [g, δRic3, hRic3, fullTrace, R, N, lapN, A, Mreact, Nrhs] using
+      hasDerivAt_ricciNormSqAt_eq_laplacianAt_sub_two_covNormSq_add_reactionMotionTrace3
+        (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
+        hRaise hRicci hn hRicNorm₂ hPairDiff hRicSecond
+  have hR :
+      HasDerivAt (fun t ↦ (gt t).scalarAt x) Rrhs t₀ := by
+    simpa [SatisfiesHamiltonScalarEvolutionAt, g, lapR, Sreact, Rrhs,
+      ClosedSmoothRiemannianMetric.pinchingScalarReactionAt] using hScalar
+  have hQ :
+      HasDerivAt (fun t ↦ (gt t).pinchingQuotientAt x)
+        (ClosedSmoothRiemannianMetric.pinchingQuotientDerivativeAt
+          (gt := gt) (t₀ := t₀) (x := x)
+          Nrhs Rrhs) t₀ :=
+    ClosedSmoothRiemannianMetric.hasDerivAt_pinchingQuotientAt_of_scalar_and_ricciNorm
+      (gt := gt) (t₀ := t₀) (x := x) hN hR (by simpa [g, R] using hRne)
+  refine ⟨by simpa [g, R] using hRpos, ?_⟩
+  refine ⟨ClosedSmoothRiemannianMetric.pinchingQuotientDerivativeAt
+    (gt := gt) (t₀ := t₀) (x := x)
+    Nrhs Rrhs, hQ, ?_⟩
+  have hSquare' :
+      lapN / R ^ 2 - 2 * N * lapR / R ^ 3 - 2 * A / R ^ 2 =
+        g.laplacianAt (fun y : M ↦ g.pinchingQuotientAt y) x
+          + g.pinchingQuotientGradientDrift3At x
+          + g.pinchingGradientDampingAt x := by
+    simpa [PinchingQuotientCompletedSquareIdentityAt, g, R, N, A, lapN, lapR] using
+      hSquare hRne
+  have hReaction :
+      Mreact / R ^ 2 - 2 * N * Sreact / R ^ 3 =
+        (2 / R ^ 4) * (g.pinchingReactionRemainderAt x Mreact) := by
+    simpa [ClosedSmoothRiemannianMetric.pinchingReactionRemainderAt,
+      R, N, Sreact, Mreact] using
+      pinching_reaction_remainder_algebra
+        (R := R) (N := N) (M := Mreact) (S := Sreact) hRne
+  have hDerivAlg :
+      ClosedSmoothRiemannianMetric.pinchingQuotientDerivativeAt
+          (gt := gt) (t₀ := t₀) (x := x)
+          Nrhs Rrhs =
+        (lapN / R ^ 2 - 2 * N * lapR / R ^ 3 - 2 * A / R ^ 2)
+          + (Mreact / R ^ 2 - 2 * N * Sreact / R ^ 3) := by
+    change
+      (Nrhs * R ^ 2 - N * (2 * R ^ (2 - 1) * Rrhs)) / (R ^ 2) ^ 2 =
+        (lapN / R ^ 2 - 2 * N * lapR / R ^ 3 - 2 * A / R ^ 2)
+          + (Mreact / R ^ 2 - 2 * N * Sreact / R ^ 3)
+    rw [quotient_derivative_sq_algebra (R := R) (N := N)
+      (N' := Nrhs) (R' := Rrhs) hRne]
+    dsimp [Nrhs, Rrhs]
+    ring_nf
+  have hFinalEq :
+      ClosedSmoothRiemannianMetric.pinchingQuotientDerivativeAt
+          (gt := gt) (t₀ := t₀) (x := x) Nrhs Rrhs =
+        g.laplacianAt (fun y : M ↦ g.pinchingQuotientAt y) x
+          + g.pinchingQuotientGradientDrift3At x
+          + g.pinchingGradientDampingAt x
+          + (2 / (g.scalarAt x) ^ 4) *
+              (g.pinchingReactionRemainderAt x Mreact) := by
+    calc
+      ClosedSmoothRiemannianMetric.pinchingQuotientDerivativeAt
+          (gt := gt) (t₀ := t₀) (x := x) Nrhs Rrhs
+          = (lapN / R ^ 2 - 2 * N * lapR / R ^ 3 - 2 * A / R ^ 2)
+              + (Mreact / R ^ 2 - 2 * N * Sreact / R ^ 3) := hDerivAlg
+      _ = (g.laplacianAt (fun y : M ↦ g.pinchingQuotientAt y) x
+            + g.pinchingQuotientGradientDrift3At x
+            + g.pinchingGradientDampingAt x)
+          + (2 / R ^ 4) * (g.pinchingReactionRemainderAt x Mreact) := by
+            rw [hSquare', hReaction]
+      _ = g.laplacianAt (fun y : M ↦ g.pinchingQuotientAt y) x
+            + g.pinchingQuotientGradientDrift3At x
+            + g.pinchingGradientDampingAt x
+            + (2 / (g.scalarAt x) ^ 4) *
+                (g.pinchingReactionRemainderAt x Mreact) := by
+            simp [R, add_assoc]
+  exact le_of_eq hFinalEq
+
 namespace ClosedSmoothRiemannianMetric
 
 section StaticFlat
