@@ -12022,6 +12022,106 @@ theorem covRicciPairingDirectionLeviCorrectionGroup_eq_covRicciRicciPairingAt
       (g := g) (x := x) (v := Γw)
   rw [← hGram, ← hPair]
 
+/-- The covariant Ricci part produced by differentiating the Ricci entry in `⟨∇Ric,Ric⟩`. -/
+noncomputable def covRicciPairingRicciCovariantGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b₀ := Module.finBasis ℝ (TM x)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      (gramMatrix g x x)⁻¹ b d *
+      covTensor2DerivAt g (ricciVariationField g) x w
+        (b₀ b) (b₀ c) *
+      closedCovRicciDerivAt g x u (b₀ a) (b₀ d)
+
+/-- First Ricci-entry Levi-Civita slot correction in `⟨∇Ric,Ric⟩`. -/
+noncomputable def covRicciPairingRicciFirstSlotLeviCorrectionGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b₀ := Module.finBasis ℝ (TM x)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      (gramMatrix g x x)⁻¹ b d *
+      covTensor2DerivAt g (ricciVariationField g) x w
+        (b₀ b) (b₀ c) *
+      g.ricciAt x (g.leviCivita (extend E (b₀ a)) x u) (b₀ d)
+
+/-- Second Ricci-entry Levi-Civita slot correction in `⟨∇Ric,Ric⟩`. -/
+noncomputable def covRicciPairingRicciSecondSlotLeviCorrectionGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b₀ := Module.finBasis ℝ (TM x)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      (gramMatrix g x x)⁻¹ b d *
+      covTensor2DerivAt g (ricciVariationField g) x w
+        (b₀ b) (b₀ c) *
+      g.ricciAt x (b₀ a) (g.leviCivita (extend E (b₀ d)) x u)
+
+set_option maxHeartbeats 5000000 in
+/--
+The Ricci-entry derivative product-rule group splits into its covariant Ricci
+derivative part and the two canonical Levi-Civita slot corrections.
+-/
+theorem covRicciPairingRicciDerivGroup_eq_covariant_plus_leviCorrections
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) :
+    covRicciPairingRicciDerivGroup g x u w =
+      covRicciPairingRicciCovariantGroup g x u w
+        + covRicciPairingRicciFirstSlotLeviCorrectionGroup g x u w
+        + covRicciPairingRicciSecondSlotLeviCorrectionGroup g x u w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b₀ := Module.finBasis ℝ (TM x)
+  have hsplit :
+      covRicciPairingRicciDerivGroup g x u w =
+        ∑ a, ∑ b, ∑ c, ∑ d,
+          (gramMatrix g x x)⁻¹ a c *
+            (gramMatrix g x x)⁻¹ b d *
+            covTensor2DerivAt g (ricciVariationField g) x w
+              (b₀ b) (b₀ c) *
+            (closedCovRicciDerivAt g x u (b₀ a) (b₀ d)
+              + g.ricciAt x (g.leviCivita (extend E (b₀ a)) x u) (b₀ d)
+              + g.ricciAt x (b₀ a)
+                  (g.leviCivita (extend E (b₀ d)) x u)) := by
+    unfold covRicciPairingRicciDerivGroup
+    simp only [gramFrame, extend_apply_self]
+    refine Finset.sum_congr rfl fun a _ ↦ ?_
+    refine Finset.sum_congr rfl fun b _ ↦ ?_
+    refine Finset.sum_congr rfl fun c _ ↦ ?_
+    refine Finset.sum_congr rfl fun d _ ↦ ?_
+    rw [closedRicciDerivativeExpansionAt_canonical (g := g) x u (b₀ a) (b₀ d)]
+  calc
+    covRicciPairingRicciDerivGroup g x u w =
+        ∑ a, ∑ b, ∑ c, ∑ d,
+          (gramMatrix g x x)⁻¹ a c *
+            (gramMatrix g x x)⁻¹ b d *
+            covTensor2DerivAt g (ricciVariationField g) x w
+              (b₀ b) (b₀ c) *
+            (closedCovRicciDerivAt g x u (b₀ a) (b₀ d)
+              + g.ricciAt x (g.leviCivita (extend E (b₀ a)) x u) (b₀ d)
+              + g.ricciAt x (b₀ a)
+                  (g.leviCivita (extend E (b₀ d)) x u)) := hsplit
+    _ =
+      covRicciPairingRicciCovariantGroup g x u w
+        + covRicciPairingRicciFirstSlotLeviCorrectionGroup g x u w
+        + covRicciPairingRicciSecondSlotLeviCorrectionGroup g x u w := by
+        unfold covRicciPairingRicciCovariantGroup
+        unfold covRicciPairingRicciFirstSlotLeviCorrectionGroup
+        unfold covRicciPairingRicciSecondSlotLeviCorrectionGroup
+        simp [b₀, Finset.sum_add_distrib, mul_add, add_assoc, mul_assoc]
+
 /-- Tensor contracted against the first inverse-Gram derivative group. -/
 noncomputable def ricciPairingInvFirstContractionTensor
     (g : ClosedSmoothRiemannianMetric n M)
