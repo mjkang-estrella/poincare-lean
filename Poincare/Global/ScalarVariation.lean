@@ -565,10 +565,13 @@ noncomputable def pinchingQuotientGradientDrift3At
       (g.gradientAt (fun y ↦ g.pinchingQuotientAt y) x)
 
 /--
-Statement-layer target for the 3D Hamilton pinching inequality for
-`Q = |Ric|^2/R^2`: heat operator plus scalar-gradient drift plus the concrete
-negative traceless-Ricci damping term.  The proof of this predicate is a later
-curvature-evolution campaign.
+Deprecated correction-history target for the 3D Hamilton pinching inequality.
+
+M4-pinch-17 refuted the traceless-Ricci damping decomposition on the diagonal
+pattern `(1,1,2)`: the proven parabolic forms supply quotient reaction `-1/4`,
+while this target asks for the stronger `-1/3`.  New code should use
+`SatisfiesPinchingQuotientEvolutionAt`, which keeps the gradient square and
+reaction remainder separate.
 -/
 def SatisfiesHamiltonPinchingEvolutionInequality3At
     (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
@@ -24371,6 +24374,115 @@ theorem deriv_ricciNormSqAt_le_laplacianAt_add_reactionMotionTrace3
     _ ≤ g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x
         + (fullTrace - 2 * roughRicciLaplacianPairingAt g x) := by
           linarith
+
+namespace ClosedSmoothRiemannianMetric
+
+variable (g : ClosedSmoothRiemannianMetric n M)
+variable [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+
+/--
+Squared norm of Hamilton's completed gradient term
+`R * ∇Ric - ∇R ⊗ Ric`, written as a metric-orthogonal sum of squares.
+-/
+noncomputable def pinchingGradientSquareAt (x : M) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let b := metricOrthogonalBasisAt g x
+  ∑ a : Fin (Module.finrank ℝ (TM x)), ∑ i : Fin (Module.finrank ℝ (TM x)),
+    ∑ j : Fin (Module.finrank ℝ (TM x)),
+      ((g.scalarAt x *
+            covTensor2DerivAt g (ricciVariationField g) x (b a) (b i) (b j)
+          - extDerivFun (fun y : M ↦ g.scalarAt y) x (b a) *
+            g.ricciAt x (b i) (b j)) ^ 2) /
+        (g.metricBilinAt x (b a) (b a) *
+          g.metricBilinAt x (b i) (b i) *
+          g.metricBilinAt x (b j) (b j))
+
+/-- The completed gradient square is nonnegative by its sum-of-squares form. -/
+theorem pinchingGradientSquareAt_nonneg (x : M) :
+    0 ≤ g.pinchingGradientSquareAt x := by
+  classical
+  dsimp [pinchingGradientSquareAt]
+  let b := metricOrthogonalBasisAt g x
+  refine Finset.sum_nonneg ?_
+  intro a _
+  refine Finset.sum_nonneg ?_
+  intro i _
+  refine Finset.sum_nonneg ?_
+  intro j _
+  refine div_nonneg (sq_nonneg _) ?_
+  have ha_pos : 0 < g.metricBilinAt x (b a) (b a) :=
+    g.metricBilinAt_pos x (b.ne_zero a)
+  have hi_pos : 0 < g.metricBilinAt x (b i) (b i) :=
+    g.metricBilinAt_pos x (b.ne_zero i)
+  have hj_pos : 0 < g.metricBilinAt x (b j) (b j) :=
+    g.metricBilinAt_pos x (b.ne_zero j)
+  exact le_of_lt (mul_pos (mul_pos ha_pos hi_pos) hj_pos)
+
+/-- Hamilton's negative completed-gradient contribution for `Q = |Ric|^2/R^2`. -/
+noncomputable def pinchingGradientDampingAt (x : M) : ℝ :=
+  -(2 / (g.scalarAt x) ^ 4) * g.pinchingGradientSquareAt x
+
+theorem pinchingGradientDampingAt_nonpos {x : M}
+    (hR : 0 < g.scalarAt x) :
+    g.pinchingGradientDampingAt x ≤ 0 := by
+  have hsquare : 0 ≤ g.pinchingGradientSquareAt x :=
+    g.pinchingGradientSquareAt_nonneg x
+  have hcoef : -(2 / (g.scalarAt x) ^ 4) ≤ 0 := by
+    have hpow : 0 < (g.scalarAt x) ^ 4 := pow_pos hR 4
+    have hdiv : 0 < 2 / (g.scalarAt x) ^ 4 := div_pos (by norm_num) hpow
+    linarith
+  unfold pinchingGradientDampingAt
+  exact mul_nonpos_of_nonpos_of_nonneg hcoef hsquare
+
+/-- Scalar-curvature reaction in Hamilton scalar evolution: `R_t - ΔR = 2 |Ric|²`. -/
+noncomputable def pinchingScalarReactionAt (x : M) : ℝ :=
+  2 * g.ricciNormSqAt x
+
+/-- Scalar-square reaction supplied by the scalar parabolic form. -/
+noncomputable def pinchingScalarSqReactionAt (x : M) : ℝ :=
+  2 * g.scalarAt x * g.pinchingScalarReactionAt x
+
+/--
+The `|Ric|²` reaction/motion trace supplied by the Ricci-norm parabolic form,
+with the rough-Laplacian trace removed.
+-/
+noncomputable def pinchingRicciNormReactionMotionTraceAt
+    (x : M) (ricciNormFullTrace : ℝ) : ℝ :=
+  ricciNormFullTrace - 2 * roughRicciLaplacianPairingAt g x
+
+/--
+Hamilton's reaction remainder for the quotient evolution, normalized so that
+`(2 / R^4) * pinchingReactionRemainderAt` is
+`N_react / R^2 - 2 N R_react / R^3`.
+-/
+noncomputable def pinchingReactionRemainderAt
+    (x : M) (ricciNormReactionMotionTrace : ℝ) : ℝ :=
+  (1 / 2 : ℝ) * (g.scalarAt x) ^ 2 * ricciNormReactionMotionTrace
+    - g.scalarAt x * g.ricciNormSqAt x * g.pinchingScalarReactionAt x
+
+/--
+Corrected quotient-evolution target.  The reaction sign is intentionally not
+assumed here; step 5 is the separate algebraic proof that the named remainder
+has the required sign under the 3D nonnegative-Ricci hypothesis.
+-/
+def SatisfiesPinchingQuotientEvolutionAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (ricciNormReactionMotionTrace : ℝ) :
+    Prop :=
+  0 < (gt t₀).scalarAt x ∧
+    ∃ Q' : ℝ,
+      HasDerivAt (fun t ↦ (gt t).pinchingQuotientAt x) Q' t₀ ∧
+        Q' ≤
+          (gt t₀).laplacianAt (fun y ↦ (gt t₀).pinchingQuotientAt y) x
+            + (gt t₀).pinchingQuotientGradientDrift3At x
+            + (gt t₀).pinchingGradientDampingAt x
+            + (2 / ((gt t₀).scalarAt x) ^ 4) *
+              (gt t₀).pinchingReactionRemainderAt x
+                ricciNormReactionMotionTrace
+
+end ClosedSmoothRiemannianMetric
 
 theorem satisfiesRicciEvolutionAt_of_secondDerivCommutation
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
