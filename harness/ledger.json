@@ -6,7 +6,7 @@
     "workers": "codex exec, gpt-5.5, reasoning=xhigh",
     "prime_directive": "Never fabricate completion. The gate (compile + no sorry/axiom + non-vacuity + frozen statement) is the only judge.",
     "structural_finding": "The single-chart model (Poincare/ModelLaplacian.lean etc., ~710 thms) is at its structural ceiling: it cannot state global objects (closed 3-manifold, S^3, homeomorphism, integration, Betti numbers). The whole proof requires a new manifold-level layer (tier M) built on Mathlib's smooth-manifold library, with the local model results ported as chart-level lemmas.",
-    "current_goal": "GOAL 4 CORE ACHIEVED 2026-07-03: satisfiesRicciEvolutionAt_of_ricciFlow_traceSecondRegularity on main (gate PASS) — the Ricci tensor evolution equation dRic/dt = rough Laplacian + 2 Rm(Ric) - 2 Ric^2 (corrected classical form; frozen target sign error caught by coefficient-pinned test metrics and sanctioned-corrected; moving-metric trace reconciliation formalized). Next: M4 proper — 3D curvature-operator pinching / Hamilton-Ivey toward Hamilton 1982 (positive Ricci => sphere) and the M2 short-time wall."
+    "current_goal": "GOAL 5 ACHIEVED 2026-07-04: hamilton_pinching_preserved on main (gate PASS) — on a closed 3D Ricci flow with R > 0, the maximum of |Ric|^2/R^2 is nonincreasing (Hamilton 1982 pinching preservation). Full 24-task campaign: 3D Weyl vanishing + curvature-determined-by-Ricci, reaction form, Bochner identity, parabolic |Ric|^2 inequality, quotient evolution (corrected damping after (1,1,2) refutation), spectral reaction sign, max principle. Next horizons: strengthen toward Hamilton-Ivey / roundness (traceless pinching improvement, gradient estimates) or open the M2 short-time-existence wall."
   },
   "tiers": {
     "L": "Local model (single chart) — finish remaining genuine local threads; the porting source",
@@ -363,6 +363,21 @@
       ],
       "difficulty": "wall",
       "result": "DONE 2026-07-03 (M4-prep-1..18, all gate PASS): closed tensor Ricci identity, differentiated Bianchi bridge, corrected Lichnerowicz vocabulary (2 definition errors + 1 frozen-target sign error caught by test-metric coefficient pinning), formalized moving-metric trace reconciliation, satisfiesRicciEvolutionAt_of_ricciFlow_traceSecondRegularity."
+    },
+    {
+      "id": "M4-hamilton-pinching",
+      "tier": "M4",
+      "deps": [
+        "M4-ricci-evolution"
+      ],
+      "status": "done",
+      "files": [
+        "Poincare/Global/ScalarEvolution.lean",
+        "Poincare/Global/ScalarVariation.lean",
+        "Poincare/Global/RicciNorm.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DONE 2026-07-04 (M4-pinch-1..24, all gate PASS): hamilton_pinching_preserved via unconditional quotient evolution + spectral reaction sign + closed parabolic max principle. One frozen-target refutation (damping coefficient, caught by (1,1,2) two-metric check) sanctioned-corrected."
     }
   ]
 }
