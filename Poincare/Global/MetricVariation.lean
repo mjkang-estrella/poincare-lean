@@ -214,6 +214,24 @@ def ClosedRicciFlowExtensionRegularAt
       CovariantDerivative.DerivRegularAt (gt t₀).leviCivita (extend E v) x
 
 /--
+Static metric families satisfy the extension-regularity bundle once the
+canonical extensions are known to be globally `C²`.
+
+The extra hypothesis is genuine: Mathlib's standard `extend` API supplies
+local smoothness at the anchor point, while `ClosedRicciFlowExtensionRegularAt`
+currently asks for global `ClosedC2TangentField` admissibility.
+-/
+theorem closedRicciFlowExtensionRegularAt_const_of_closedC2_extend
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (hExtend : ∀ v : TM x, ClosedC2TangentField (extend E v)) :
+    ClosedRicciFlowExtensionRegularAt (fun _ : ℝ ↦ g) t₀ x := by
+  intro v
+  refine ⟨hExtend v, ?_⟩
+  simpa using
+    (CovariantDerivative.derivRegularAt_extend
+      (cov := g.leviCivita) (x := x) v)
+
+/--
 Under the closed Ricci-flow equation, the metric time derivative is
 pointwise `-2 Ric` on tangent vectors once canonical extensions are admissible.
 -/
