@@ -190,6 +190,12 @@ noncomputable def pinchingGapAt (x : M) : ℝ :=
 noncomputable def tracelessRicciNormSqAt (x : M) : ℝ :=
   g.ricciNormSqAt x - (g.scalarAt x) ^ 2 / n
 
+/-- The definition of the trace-form squared traceless-Ricci norm. -/
+theorem tracelessRicciNormSqAt_eq (x : M) :
+    g.tracelessRicciNormSqAt x =
+      g.ricciNormSqAt x - (g.scalarAt x) ^ 2 / n :=
+  rfl
+
 /-- The pinching gap is `n` times the trace-form traceless-Ricci norm. -/
 theorem pinchingGapAt_eq_nat_mul_tracelessRicciNormSqAt
     (x : M) (hn : (n : ℝ) ≠ 0) :
@@ -217,6 +223,52 @@ theorem tracelessRicciNormSqAt_nonneg (x : M) (hn : 0 < (n : ℝ)) :
   have hgap := g.pinchingGapAt_nonneg x
   rw [g.tracelessRicciNormSqAt_eq_pinchingGapAt_div x hn.ne']
   exact div_nonneg hgap (le_of_lt hn)
+
+/--
+The trace-form traceless-Ricci norm vanishes exactly at Einstein operator
+points.
+-/
+theorem tracelessRicciNormSqAt_eq_zero_iff_ricciEndoAt_eq_smul_id
+    (x : M) (hn : 0 < (n : ℝ)) :
+    g.tracelessRicciNormSqAt x = 0 ↔
+      g.ricciEndoAt x = (g.scalarAt x / n) • LinearMap.id := by
+  constructor
+  · intro htr
+    have hgap : g.pinchingGapAt x = 0 := by
+      rw [g.pinchingGapAt_eq_nat_mul_tracelessRicciNormSqAt x hn.ne', htr, mul_zero]
+    have heq : g.scalarAt x ^ 2 = n * g.ricciNormSqAt x := by
+      unfold pinchingGapAt at hgap
+      linarith
+    exact (g.ricciEndoAt_eq_smul_id_iff_scalarAt_sq_eq x hn).mpr heq
+  · intro hEin
+    have heq :
+        g.scalarAt x ^ 2 = n * g.ricciNormSqAt x :=
+      g.scalarAt_sq_eq_nat_mul_ricciNormSqAt_of_ricciEndoAt_eq_smul_id
+        x hn hEin
+    have hgap : g.pinchingGapAt x = 0 := by
+      unfold pinchingGapAt
+      linarith
+    rw [g.tracelessRicciNormSqAt_eq_pinchingGapAt_div x hn.ne', hgap, zero_div]
+
+/-- The improved traceless-Ricci pinching quantity `|Ric°|^2 / R^(2 - delta)`. -/
+noncomputable def tracelessPinchingAt (x : M) (δ : ℝ) : ℝ :=
+  g.tracelessRicciNormSqAt x / (g.scalarAt x) ^ (2 - δ)
+
+/-- The definition of the improved traceless-Ricci pinching quantity. -/
+theorem tracelessPinchingAt_eq (x : M) (δ : ℝ) :
+    g.tracelessPinchingAt x δ =
+      g.tracelessRicciNormSqAt x / (g.scalarAt x) ^ (2 - δ) :=
+  rfl
+
+/-- The improved quotient is nonnegative on the positive-scalar domain. -/
+theorem tracelessPinchingAt_nonneg_of_scalarAt_pos
+    (x : M) (δ : ℝ) (hn : 0 < (n : ℝ)) (hR : 0 < g.scalarAt x) :
+    0 ≤ g.tracelessPinchingAt x δ := by
+  have htr : 0 ≤ g.tracelessRicciNormSqAt x :=
+    g.tracelessRicciNormSqAt_nonneg x hn
+  have hden : 0 ≤ (g.scalarAt x) ^ (2 - δ) :=
+    (Real.rpow_pos_of_pos hR (2 - δ)).le
+  exact div_nonneg htr hden
 
 /-- Positive scalar curvature is the natural nonzero-denominator domain for the quotient. -/
 theorem scalarAt_sq_ne_zero_of_pos {x : M} (hR : 0 < g.scalarAt x) :
@@ -1224,6 +1276,138 @@ theorem diagonalPinchingReactionQuotient3_one_zero_zero :
   norm_num [diagonalRicciNormReactionMotionTrace3_one_zero_zero,
     diagonalScalarSqReaction3, diagonalScalarReaction3, diagonalRicciNormSq3,
     diagonalScalar3]
+
+/-- Improved diagonal traceless pinching quantity `|Ric°|^2 / R^(2 - delta)`. -/
+noncomputable def diagonalTracelessPinching3 (a b c δ : ℝ) : ℝ :=
+  diagonalTracelessRicciNormSq3 a b c / (diagonalScalar3 a b c) ^ (2 - δ)
+
+/--
+The diagonal traceless reaction trace for `|Ric°|^2 = |Ric|^2 - R^2 / 3`.
+It subtracts the scalar-square contribution from the pinned `|Ric|^2`
+reaction/motion trace.
+-/
+noncomputable def diagonalTracelessRicciReactionTrace3 (a b c : ℝ) : ℝ :=
+  diagonalRicciNormReactionMotionTrace3 a b c
+    - (2 / 3 : ℝ) * diagonalScalar3 a b c * diagonalScalarReaction3 a b c
+
+/--
+Reaction numerator for `|Ric°|^2 / R^(2 - delta)`, normalized by multiplying
+the zeroth-order reaction term by `R^(3 - delta)`.
+-/
+noncomputable def diagonalTracelessPinchingReactionNumerator3
+    (δ a b c : ℝ) : ℝ :=
+  diagonalScalar3 a b c * diagonalTracelessRicciReactionTrace3 a b c
+    - (2 - δ) * diagonalTracelessRicciNormSq3 a b c *
+      diagonalScalarReaction3 a b c
+
+/--
+The improved numerator is the old Hamilton-Schur numerator plus the
+general-exponent correction `2 delta |Ric|^2 |Ric°|^2`.
+-/
+theorem diagonalTracelessPinchingReactionNumerator3_eq_sign_add_delta
+    (δ a b c : ℝ) :
+    diagonalTracelessPinchingReactionNumerator3 δ a b c =
+      diagonalPinchingReactionSignNumerator3 a b c
+        + 2 * δ * diagonalRicciNormSq3 a b c *
+          diagonalTracelessRicciNormSq3 a b c := by
+  unfold diagonalTracelessPinchingReactionNumerator3
+    diagonalTracelessRicciReactionTrace3 diagonalPinchingReactionSignNumerator3
+    diagonalTracelessRicciNormSq3 diagonalScalarReaction3
+  ring
+
+/-- Space-form coefficient pin: the improved reaction numerator vanishes. -/
+theorem diagonalTracelessPinchingReactionNumerator3_one_one_one (δ : ℝ) :
+    diagonalTracelessPinchingReactionNumerator3 δ 1 1 1 = 0 := by
+  norm_num [diagonalTracelessPinchingReactionNumerator3,
+    diagonalTracelessRicciReactionTrace3, diagonalRicciNormReactionMotionTrace3,
+    diagonalRicciNormEvolutionReactionTrace3, diagonalRicciEvolutionReaction3Entry1,
+    diagonalRicciEvolutionReaction3Entry2, diagonalRicciEvolutionReaction3Entry3,
+    diagonalTwoLichnerowiczPure3Entry1, diagonalTwoLichnerowiczPure3Entry2,
+    diagonalTwoLichnerowiczPure3Entry3, diagonalRicciNormMetricMotionNegTwoRicci3,
+    diagonalTracelessRicciNormSq3, diagonalScalarReaction3, diagonalRicciNormSq3,
+    diagonalScalar3]
+
+/-- `(1,1,2)` coefficient pin for the improved reaction numerator. -/
+theorem diagonalTracelessPinchingReactionNumerator3_one_one_two (δ : ℝ) :
+    diagonalTracelessPinchingReactionNumerator3 δ 1 1 2 = -16 + 8 * δ := by
+  norm_num [diagonalTracelessPinchingReactionNumerator3,
+    diagonalTracelessRicciReactionTrace3, diagonalRicciNormReactionMotionTrace3,
+    diagonalRicciNormEvolutionReactionTrace3, diagonalRicciEvolutionReaction3Entry1,
+    diagonalRicciEvolutionReaction3Entry2, diagonalRicciEvolutionReaction3Entry3,
+    diagonalTwoLichnerowiczPure3Entry1, diagonalTwoLichnerowiczPure3Entry2,
+    diagonalTwoLichnerowiczPure3Entry3, diagonalRicciNormMetricMotionNegTwoRicci3,
+    diagonalTracelessRicciNormSq3, diagonalScalarReaction3, diagonalRicciNormSq3,
+    diagonalScalar3]
+  ring
+
+/-- `(1,2,3)` coefficient pin for the improved reaction numerator. -/
+theorem diagonalTracelessPinchingReactionNumerator3_one_two_three (δ : ℝ) :
+    diagonalTracelessPinchingReactionNumerator3 δ 1 2 3 = -64 + 56 * δ := by
+  norm_num [diagonalTracelessPinchingReactionNumerator3,
+    diagonalTracelessRicciReactionTrace3, diagonalRicciNormReactionMotionTrace3,
+    diagonalRicciNormEvolutionReactionTrace3, diagonalRicciEvolutionReaction3Entry1,
+    diagonalRicciEvolutionReaction3Entry2, diagonalRicciEvolutionReaction3Entry3,
+    diagonalTwoLichnerowiczPure3Entry1, diagonalTwoLichnerowiczPure3Entry2,
+    diagonalTwoLichnerowiczPure3Entry3, diagonalRicciNormMetricMotionNegTwoRicci3,
+    diagonalTracelessRicciNormSq3, diagonalScalarReaction3, diagonalRicciNormSq3,
+    diagonalScalar3]
+  ring
+
+/--
+Admissible exponent range from the pinching constant.  The boundary pattern is
+`(epsilon, (1 - epsilon) / 2, (1 - epsilon) / 2)` after normalizing `R = 1`.
+-/
+noncomputable def pinchedTracelessAdmissibleDelta3 (ε : ℝ) : ℝ :=
+  6 * ε ^ 2 / (1 - 2 * ε + 3 * ε ^ 2)
+
+/-- The `epsilon = 1/10` admissible exponent pin. -/
+theorem pinchedTracelessAdmissibleDelta3_one_tenth :
+    pinchedTracelessAdmissibleDelta3 (1 / 10) = 6 / 83 := by
+  norm_num [pinchedTracelessAdmissibleDelta3]
+
+/--
+Near-degenerate pinched pattern for `epsilon = 1/10`: eigenvalues
+`(1, 9/2, 9/2)` have scalar trace `10` and smallest eigenvalue `R / 10`.
+-/
+theorem diagonalTracelessPinchingReactionNumerator3_near_degenerate_tenth
+    (δ : ℝ) :
+    diagonalTracelessPinchingReactionNumerator3 δ 1 (9 / 2) (9 / 2) =
+      -49 + (4067 / 6) * δ := by
+  norm_num [diagonalTracelessPinchingReactionNumerator3,
+    diagonalTracelessRicciReactionTrace3, diagonalRicciNormReactionMotionTrace3,
+    diagonalRicciNormEvolutionReactionTrace3, diagonalRicciEvolutionReaction3Entry1,
+    diagonalRicciEvolutionReaction3Entry2, diagonalRicciEvolutionReaction3Entry3,
+    diagonalTwoLichnerowiczPure3Entry1, diagonalTwoLichnerowiczPure3Entry2,
+    diagonalTwoLichnerowiczPure3Entry3, diagonalRicciNormMetricMotionNegTwoRicci3,
+    diagonalTracelessRicciNormSq3, diagonalScalarReaction3, diagonalRicciNormSq3,
+    diagonalScalar3]
+  ring
+
+/-- The near-degenerate `epsilon = 1/10` pin is saturated at `delta = 6/83`. -/
+theorem diagonalTracelessPinchingReactionNumerator3_near_degenerate_tenth_saturates :
+    diagonalTracelessPinchingReactionNumerator3
+      (pinchedTracelessAdmissibleDelta3 (1 / 10)) 1 (9 / 2) (9 / 2) = 0 := by
+  rw [pinchedTracelessAdmissibleDelta3_one_tenth,
+    diagonalTracelessPinchingReactionNumerator3_near_degenerate_tenth]
+  norm_num
+
+/--
+Hamilton Lemma 10.1 statement layer for the improved traceless pinching
+reaction.  Under the Ricci pinching floor `lambda_i >= epsilon R`, choosing
+`delta` in the admissible range should make the improved reaction numerator
+nonpositive.
+-/
+def TracelessPinchingEigenvalueImprovementLemma3 (ε δ : ℝ) : Prop :=
+  0 < ε →
+    ε ≤ 1 / 3 →
+      0 ≤ δ →
+        δ ≤ pinchedTracelessAdmissibleDelta3 ε →
+          ∀ a b c : ℝ,
+            0 < diagonalScalar3 a b c →
+              ε * diagonalScalar3 a b c ≤ a →
+                ε * diagonalScalar3 a b c ≤ b →
+                  ε * diagonalScalar3 a b c ≤ c →
+                    diagonalTracelessPinchingReactionNumerator3 δ a b c ≤ 0
 
 end PinchingAlgebra
 
