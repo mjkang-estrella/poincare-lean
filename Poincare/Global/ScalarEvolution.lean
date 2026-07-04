@@ -2096,6 +2096,88 @@ theorem laplacianAt_nonneg_of_isLocalMin
     (g.metricBilinAt_isSymm x) (fun v hv ↦ g.metricBilinAt_pos x hv)
     (g.hessianContinuousAt f x) hdiag
 
+/-- At a local spatial minimum, the closed gradient vanishes. -/
+theorem gradientAt_eq_zero_of_isLocalMin
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {f : M → ℝ} {x : M}
+    (hf : ContMDiffAt I 𝓘(ℝ) 2 f x)
+    (hmin : IsLocalMin f x) :
+    g.gradientAt f x = 0 := by
+  refine LeviCivitaExistence.metric_nondegenerate g x (g.gradientAt f x) ?_
+  intro ξ
+  rw [g.inner_gradientAt f x ξ]
+  let F : E → ℝ := f ∘ (extChartAt I x).symm
+  let z₀ : E := extChartAt I x x
+  have hsymm_x : (extChartAt I x).symm z₀ = x := by
+    simp [z₀]
+  have hFmin : IsLocalMin F z₀ := by
+    have hxmin : IsLocalMin f ((extChartAt I x).symm z₀) := by
+      rw [hsymm_x]
+      exact hmin
+    have hcont : ContinuousAt ((extChartAt I x).symm : E → M) z₀ := by
+      exact continuousAt_extChartAt_symm x
+    simpa [F] using hxmin.comp_continuous hcont
+  have hchart :=
+    extDerivFun_apply_chart
+      (f := f) (x := x) (hf.mdifferentiableAt two_ne_zero) ξ
+  have hzero :=
+    congrArg (fun L : E →L[ℝ] ℝ => L (ξ : E)) hFmin.fderiv_eq_zero
+  rw [hchart]
+  simpa [F, z₀] using hzero
+
+/-- At a local spatial maximum, the closed gradient vanishes. -/
+theorem gradientAt_eq_zero_of_isLocalMax
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {f : M → ℝ} {x : M}
+    (hf : ContMDiffAt I 𝓘(ℝ) 2 f x)
+    (hmax : IsLocalMax f x) :
+    g.gradientAt f x = 0 := by
+  let nf : M → ℝ := fun y ↦ -f y
+  have hnf : ContMDiffAt I 𝓘(ℝ) 2 nf x := hf.neg
+  have hnfmin : IsLocalMin nf x := by
+    simpa [nf] using hmax.neg
+  have hgrad_neg :=
+    gradientAt_eq_zero_of_isLocalMin (g := g) (f := nf) (x := x) hnf hnfmin
+  have hfun : nf = (-1 : ℝ) • f := by
+    funext y
+    simp [nf]
+  have hneg :
+      (-1 : ℝ) • g.gradientAt f x = 0 := by
+    rw [← g.gradientAt_const_smul (c := -1) (f := f) (x := x)
+      (hf.mdifferentiableAt two_ne_zero)]
+    rw [← hfun]
+    exact hgrad_neg
+  simpa using (neg_eq_zero.mp (by simpa using hneg))
+
+/-- At a local spatial maximum, the closed scalar Laplacian is nonpositive. -/
+theorem laplacianAt_nonpos_of_isLocalMax
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {f : M → ℝ} {x : M}
+    (hf : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2 f y)
+    (hmax : IsLocalMax f x) :
+    g.laplacianAt f x ≤ 0 := by
+  let nf : M → ℝ := fun y ↦ -f y
+  have hnf : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2 nf y := fun y ↦ (hf y).neg
+  have hnfmin : IsLocalMin nf x := by
+    simpa [nf] using hmax.neg
+  have hnonneg :
+      0 ≤ g.laplacianAt nf x :=
+    laplacianAt_nonneg_of_isLocalMin
+      (g := g) (f := nf) (x := x) (hnf x)
+      (g.mdifferentiableAt_gradient (hnf x)) hnfmin
+  have hfun : nf = (-1 : ℝ) • f := by
+    funext y
+    simp [nf]
+  have hlap :
+      g.laplacianAt nf x = -g.laplacianAt f x := by
+    rw [hfun]
+    rw [g.laplacianAt_const_smul' (c := -1) (f := f) (x := x) hf]
+    simp
+  linarith
+
 /-- On a compact closed manifold, scalar curvature attains a global minimum. -/
 theorem exists_scalarAt_isMinOn
     [CompactSpace M] [Nonempty M]
@@ -2193,6 +2275,69 @@ theorem pinchingQuotientAt_le_pinchingMaximumAt
   obtain ⟨x₀, hx₀max⟩ := exists_pinchingQuotientAt_isMaxOn (g := g) hQ
   rw [pinchingMaximumAt_eq_of_isMaxOn (g := g) hx₀max]
   exact hx₀max trivial
+
+/--
+At a spatial maximum of the pinching quotient, Hamilton's quotient evolution
+has nonpositive time derivative in dimension three.
+-/
+theorem hamilton_pinching_spatial_max_step_at
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hn : n = 3)
+    (hEvol :
+      ClosedSmoothRiemannianMetric.SatisfiesPinchingQuotientEvolutionAt gt t₀ x
+        ((gt t₀).pinchingRicciNormReactionMotionTraceCubicAt x))
+    (hQ₂ :
+      ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2
+        (fun z : M ↦ (gt t₀).pinchingQuotientAt z) y)
+    (hmax :
+      IsMaxOn (fun y : M ↦ (gt t₀).pinchingQuotientAt y) Set.univ x) :
+    ∃ Q' : ℝ,
+      HasDerivAt (fun t ↦ (gt t).pinchingQuotientAt x) Q' t₀ ∧ Q' ≤ 0 := by
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let Qf : M → ℝ := fun y ↦ g.pinchingQuotientAt y
+  rcases hEvol with ⟨hRpos, Q', hQderiv, hQineq⟩
+  refine ⟨Q', hQderiv, ?_⟩
+  have hlocalMax : IsLocalMax Qf x := by
+    simpa [g, Qf] using hmax.isLocalMax Filter.univ_mem
+  have hlap :
+      g.laplacianAt Qf x ≤ 0 := by
+    exact laplacianAt_nonpos_of_isLocalMax
+      (g := g) (f := Qf) (x := x) (by simpa [g, Qf] using hQ₂) hlocalMax
+  have hgradQ :
+      g.gradientAt Qf x = 0 :=
+    gradientAt_eq_zero_of_isLocalMax
+      (g := g) (f := Qf) (x := x) (by simpa [g, Qf] using hQ₂ x) hlocalMax
+  have hdrift :
+      g.pinchingQuotientGradientDrift3At x = 0 := by
+    unfold ClosedSmoothRiemannianMetric.pinchingQuotientGradientDrift3At
+    rw [hgradQ]
+    simp
+  have hdamp :
+      g.pinchingGradientDampingAt x ≤ 0 :=
+    g.pinchingGradientDampingAt_nonpos hRpos
+  have hreact :
+      g.pinchingReactionRemainderAt x
+          (g.pinchingRicciNormReactionMotionTraceCubicAt x) ≤ 0 :=
+    g.pinchingReactionRemainderAt_nonpos_of_scalar_pos hn hRpos
+  have hcoef_nonneg :
+      0 ≤ 2 / (g.scalarAt x) ^ 4 := by
+    have hpow : 0 < (g.scalarAt x) ^ 4 := pow_pos hRpos 4
+    exact le_of_lt (div_pos (by norm_num) hpow)
+  have hreactTerm :
+      (2 / (g.scalarAt x) ^ 4) *
+          g.pinchingReactionRemainderAt x
+            (g.pinchingRicciNormReactionMotionTraceCubicAt x) ≤ 0 :=
+    mul_nonpos_of_nonneg_of_nonpos hcoef_nonneg hreact
+  have hrhs :
+      g.laplacianAt Qf x + g.pinchingQuotientGradientDrift3At x
+          + g.pinchingGradientDampingAt x
+          + (2 / (g.scalarAt x) ^ 4) *
+            g.pinchingReactionRemainderAt x
+              (g.pinchingRicciNormReactionMotionTraceCubicAt x) ≤ 0 := by
+    linarith
+  exact le_trans (by simpa [g, Qf] using hQineq) hrhs
 
 omit [T2Space M] in
 /--
