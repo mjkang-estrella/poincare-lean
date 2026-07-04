@@ -24461,6 +24461,131 @@ noncomputable def pinchingReactionRemainderAt
     - g.scalarAt x * g.ricciNormSqAt x * g.pinchingScalarReactionAt x
 
 /--
+The algebraic 3D Ricci-norm reaction/motion trace written in invariant form:
+`10 R |Ric|² - 2 R³ - 8 tr(Ric³)`.
+-/
+noncomputable def pinchingRicciNormReactionMotionTraceCubicAt (x : M) : ℝ :=
+  10 * g.scalarAt x * g.ricciNormSqAt x
+    - 2 * (g.scalarAt x) ^ 3 - 8 * g.ricciCubicTraceAt x
+
+/-- Scalar curvature is the sum of Ricci-endomorphism eigenvalues in any eigenbasis. -/
+theorem scalarAt_eq_sum_eigenvalues_of_ricciEndoAt_eigenbasis
+    {x : M} (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ)
+    (hEig : ∀ i : Fin 3, g.ricciEndoAt x (b i) = μ i • b i) :
+    g.scalarAt x = ∑ i : Fin 3, μ i := by
+  classical
+  rw [g.scalarAt_eq_trace_ricciEndoAt x,
+    LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+  simpa [hEig i]
+
+/-- The squared Ricci norm is the sum of squared eigenvalues in any eigenbasis. -/
+theorem ricciNormSqAt_eq_sum_eigenvalues_sq_of_ricciEndoAt_eigenbasis
+    {x : M} (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ)
+    (hEig : ∀ i : Fin 3, g.ricciEndoAt x (b i) = μ i • b i) :
+    g.ricciNormSqAt x = ∑ i : Fin 3, (μ i) ^ 2 := by
+  classical
+  let A : TM x →ₗ[ℝ] TM x := g.ricciEndoAt x
+  rw [g.ricciNormSqAt_eq_trace x,
+    LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+  change b.coord i ((A ∘ₗ A) (b i)) = (μ i) ^ 2
+  simp [A, LinearMap.comp_apply, hEig i, pow_two, smul_smul]
+
+/-- The cubic Ricci trace is the sum of cubed eigenvalues in any eigenbasis. -/
+theorem ricciCubicTraceAt_eq_sum_eigenvalues_cube_of_ricciEndoAt_eigenbasis
+    {x : M} (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ)
+    (hEig : ∀ i : Fin 3, g.ricciEndoAt x (b i) = μ i • b i) :
+    g.ricciCubicTraceAt x = ∑ i : Fin 3, (μ i) ^ 3 := by
+  classical
+  let A : TM x →ₗ[ℝ] TM x := g.ricciEndoAt x
+  rw [g.ricciCubicTraceAt_eq_trace x,
+    LinearMap.trace_eq_matrix_trace ℝ b, Matrix.trace]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [Matrix.diag_apply, LinearMap.toMatrix_apply]
+  have hA2 : (A ∘ₗ A) (b i) = (μ i) ^ 2 • b i := by
+    simp [A, LinearMap.comp_apply, hEig i, pow_two, smul_smul]
+  change b.coord i (((A ∘ₗ A) ∘ₗ A) (b i)) = (μ i) ^ 3
+  rw [LinearMap.comp_apply, hEig i, map_smul, hA2, smul_smul]
+  simp [pow_succ, mul_assoc]
+
+/--
+The invariant cubic reaction/motion trace agrees with the diagonal trace
+computed from Ricci eigenvalues.
+-/
+theorem pinchingRicciNormReactionMotionTraceCubicAt_eq_diagonal_of_ricciEndoAt_eigenbasis
+    {x : M} (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ)
+    (hEig : ∀ i : Fin 3, g.ricciEndoAt x (b i) = μ i • b i) :
+    g.pinchingRicciNormReactionMotionTraceCubicAt x =
+      PinchingAlgebra.diagonalRicciNormReactionMotionTrace3 (μ 0) (μ 1) (μ 2) := by
+  have hR :
+      g.scalarAt x = PinchingAlgebra.diagonalScalar3 (μ 0) (μ 1) (μ 2) := by
+    rw [g.scalarAt_eq_sum_eigenvalues_of_ricciEndoAt_eigenbasis b μ hEig]
+    simp [Fin.sum_univ_three, PinchingAlgebra.diagonalScalar3]
+  have hN :
+      g.ricciNormSqAt x = PinchingAlgebra.diagonalRicciNormSq3 (μ 0) (μ 1) (μ 2) := by
+    rw [g.ricciNormSqAt_eq_sum_eigenvalues_sq_of_ricciEndoAt_eigenbasis b μ hEig]
+    simp [Fin.sum_univ_three, PinchingAlgebra.diagonalRicciNormSq3]
+  have hC :
+      g.ricciCubicTraceAt x =
+        PinchingAlgebra.diagonalRicciCubicTrace3 (μ 0) (μ 1) (μ 2) := by
+    rw [g.ricciCubicTraceAt_eq_sum_eigenvalues_cube_of_ricciEndoAt_eigenbasis b μ hEig]
+    simp [Fin.sum_univ_three, PinchingAlgebra.diagonalRicciCubicTrace3]
+  rw [pinchingRicciNormReactionMotionTraceCubicAt,
+    PinchingAlgebra.diagonalRicciNormReactionMotionTrace3_eq_cubic, hR, hN, hC]
+
+/--
+Given a Ricci-endomorphism eigenbasis, the invariant manifold remainder is the
+diagonal Hamilton reaction remainder.
+-/
+theorem pinchingReactionRemainderAt_eq_diagonal_of_ricciEndoAt_eigenbasis
+    {x : M} (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ)
+    (hEig : ∀ i : Fin 3, g.ricciEndoAt x (b i) = μ i • b i) :
+    g.pinchingReactionRemainderAt x
+        (g.pinchingRicciNormReactionMotionTraceCubicAt x) =
+      PinchingAlgebra.diagonalPinchingReactionRemainder3 (μ 0) (μ 1) (μ 2) := by
+  have hR :
+      g.scalarAt x = PinchingAlgebra.diagonalScalar3 (μ 0) (μ 1) (μ 2) := by
+    rw [g.scalarAt_eq_sum_eigenvalues_of_ricciEndoAt_eigenbasis b μ hEig]
+    simp [Fin.sum_univ_three, PinchingAlgebra.diagonalScalar3]
+  have hN :
+      g.ricciNormSqAt x = PinchingAlgebra.diagonalRicciNormSq3 (μ 0) (μ 1) (μ 2) := by
+    rw [g.ricciNormSqAt_eq_sum_eigenvalues_sq_of_ricciEndoAt_eigenbasis b μ hEig]
+    simp [Fin.sum_univ_three, PinchingAlgebra.diagonalRicciNormSq3]
+  have hM :
+      g.pinchingRicciNormReactionMotionTraceCubicAt x =
+        PinchingAlgebra.diagonalRicciNormReactionMotionTrace3 (μ 0) (μ 1) (μ 2) :=
+    g.pinchingRicciNormReactionMotionTraceCubicAt_eq_diagonal_of_ricciEndoAt_eigenbasis
+      b μ hEig
+  rw [hM]
+  unfold pinchingReactionRemainderAt pinchingScalarReactionAt
+    PinchingAlgebra.diagonalPinchingReactionRemainder3
+    PinchingAlgebra.diagonalScalarSqReaction3
+    PinchingAlgebra.diagonalScalarReaction3
+  rw [hR, hN]
+  ring
+
+/--
+Positive scalar curvature transfers Hamilton's diagonal reaction sign to the
+manifold invariant remainder, once a Ricci-endomorphism eigenbasis is supplied.
+-/
+theorem pinchingReactionRemainderAt_nonpos_of_scalar_pos_of_ricciEndoAt_eigenbasis
+    {x : M} (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ)
+    (hEig : ∀ i : Fin 3, g.ricciEndoAt x (b i) = μ i • b i)
+    (hRpos : 0 < g.scalarAt x) :
+    g.pinchingReactionRemainderAt x
+        (g.pinchingRicciNormReactionMotionTraceCubicAt x) ≤ 0 := by
+  rw [g.pinchingReactionRemainderAt_eq_diagonal_of_ricciEndoAt_eigenbasis b μ hEig]
+  have hR :
+      g.scalarAt x = PinchingAlgebra.diagonalScalar3 (μ 0) (μ 1) (μ 2) := by
+    rw [g.scalarAt_eq_sum_eigenvalues_of_ricciEndoAt_eigenbasis b μ hEig]
+    simp [Fin.sum_univ_three, PinchingAlgebra.diagonalScalar3]
+  exact PinchingAlgebra.diagonalPinchingReactionRemainder3_nonpos_of_scalar_pos
+    (by simpa [← hR] using hRpos)
+
+/--
 Corrected quotient-evolution target.  The reaction sign is intentionally not
 assumed here; step 5 is the separate algebraic proof that the named remainder
 has the required sign under the 3D nonnegative-Ricci hypothesis.

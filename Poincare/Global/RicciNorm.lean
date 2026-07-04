@@ -80,6 +80,18 @@ theorem ricciNormSqAt_eq_trace (x : M) :
       LinearMap.trace ℝ (TM x) (g.ricciEndoAt x ∘ₗ g.ricciEndoAt x) :=
   rfl
 
+/-- The pointwise cubic Ricci trace `tr(Rc^3)`. -/
+noncomputable def ricciCubicTraceAt (x : M) : ℝ :=
+  LinearMap.trace ℝ (TM x)
+    ((g.ricciEndoAt x ∘ₗ g.ricciEndoAt x) ∘ₗ g.ricciEndoAt x)
+
+/-- The definition of `ricciCubicTraceAt` as `tr(Rc^3)`. -/
+theorem ricciCubicTraceAt_eq_trace (x : M) :
+    g.ricciCubicTraceAt x =
+      LinearMap.trace ℝ (TM x)
+        ((g.ricciEndoAt x ∘ₗ g.ricciEndoAt x) ∘ₗ g.ricciEndoAt x) :=
+  rfl
+
 /-- Scalar curvature is the trace of the Ricci endomorphism. -/
 theorem scalarAt_eq_trace_ricciEndoAt (x : M) :
     g.scalarAt x = LinearMap.trace ℝ (TM x) (g.ricciEndoAt x) := by
