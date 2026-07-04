@@ -714,6 +714,240 @@ theorem pinchingGradientSquareAt_eq_completedSquareExpansion (x : M) :
 
 end ClosedSmoothRiemannianMetric
 
+namespace ClosedSmoothRiemannianMetric
+
+/--
+Local gradient form of the quotient product-rule trick.  If `q * v = u`
+eventually at `x`, then `v ∇q = ∇u - q ∇v` at `x`.
+-/
+theorem gradientAt_quotient_eq_of_eventually_product_rule
+    (g : ClosedSmoothRiemannianMetric n M)
+    {u v q : M → ℝ} {x : M}
+    (hprod : (fun y : M ↦ q y * v y) =ᶠ[nhds x] u)
+    (hq : MDifferentiableAt I 𝓘(ℝ) q x)
+    (hv : MDifferentiableAt I 𝓘(ℝ) v x) :
+    v x • g.gradientAt q x =
+      g.gradientAt u x - q x • g.gradientAt v x := by
+  have hmul := g.gradientAt_mul (f := q) (h := v) hq hv
+  have hgrad :
+      g.gradientAt (q * v) x = g.gradientAt u x :=
+    g.gradientAt_congr_of_eventuallyEq hprod
+  rw [← hgrad, hmul]
+  simp [add_comm]
+
+/--
+Local Laplacian form of the quotient product-rule trick.  If `q * v = u`
+eventually at `x` and `v x ≠ 0`, then `Δq` is obtained from `Δ(qv)` by
+solving the product rule.
+-/
+theorem laplacianAt_quotient_eq_of_eventually_product_rule
+    (g : ClosedSmoothRiemannianMetric n M)
+    {u v q : M → ℝ} {x : M}
+    (hprod : (fun y : M ↦ q y * v y) =ᶠ[nhds x] u)
+    (hvx : v x ≠ 0)
+    (hq : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) q y)
+    (hv : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) v y)
+    (hgradq : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient q)) x)
+    (hgradv : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient v)) x)
+    (hgradprod :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient (q * v))) x)
+    (hgradu : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient u)) x) :
+    g.laplacianAt q x =
+      (g.laplacianAt u x - q x * g.laplacianAt v x
+          - 2 * g.inner x (g.gradientAt q x) (g.gradientAt v x)) / v x := by
+  have hmul :=
+    g.laplacianAt_mul (f := q) (h := v) (x := x) hq hv hgradq hgradv
+  have hlap :
+      g.laplacianAt (q * v) x = g.laplacianAt u x :=
+    g.laplacianAt_congr_of_eventuallyEq hprod hgradprod hgradu
+  have hu :
+      g.laplacianAt u x =
+        q x * g.laplacianAt v x + v x * g.laplacianAt q x
+          + 2 * g.inner x (g.gradientAt q x) (g.gradientAt v x) := by
+    rw [← hlap]
+    exact hmul
+  rw [eq_div_iff hvx]
+  linarith
+
+set_option maxHeartbeats 12000000 in
+/--
+Spatial quotient/drift expansion for Hamilton's scalar-normalized Ricci
+pinching quotient on the positive-scalar domain.
+-/
+theorem pinchingQuotient_spatial_expansion
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hRpos : 0 < g.scalarAt x)
+    (hScalarCont : ContinuousAt (fun y : M ↦ g.scalarAt y) x)
+    (hScalarDiff : ∀ y : M,
+      MDifferentiableAt I 𝓘(ℝ) (fun z : M ↦ g.scalarAt z) y)
+    (hQuotDiff : ∀ y : M,
+      MDifferentiableAt I 𝓘(ℝ) (fun z : M ↦ g.pinchingQuotientAt z) y)
+    (hScalarGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient (fun y : M ↦ g.scalarAt y))) x)
+    (hQuotGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient (fun y : M ↦ g.pinchingQuotientAt y))) x)
+    (hScalarSqGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient (fun y : M ↦
+          g.scalarAt y * g.scalarAt y))) x)
+    (hQuotScalarSqGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient ((fun y : M ↦ g.pinchingQuotientAt y) *
+          (fun y : M ↦ g.scalarAt y * g.scalarAt y)))) x)
+    (hRicNormGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient (fun y : M ↦ g.ricciNormSqAt y))) x) :
+    g.laplacianAt (fun y : M ↦ g.pinchingQuotientAt y) x
+        + g.pinchingQuotientGradientDrift3At x =
+      g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x / (g.scalarAt x) ^ 2
+        - 2 * g.ricciNormSqAt x *
+            g.laplacianAt (fun y : M ↦ g.scalarAt y) x / (g.scalarAt x) ^ 3
+        - 4 * g.pinchingMixedGradientPairingAt x / (g.scalarAt x) ^ 3
+        + 2 * g.pinchingScalarRicciGradientProductAt x / (g.scalarAt x) ^ 4 := by
+  classical
+  let Rf : M → ℝ := fun y ↦ g.scalarAt y
+  let Nf : M → ℝ := fun y ↦ g.ricciNormSqAt y
+  let Qf : M → ℝ := fun y ↦ g.pinchingQuotientAt y
+  let Vf : M → ℝ := fun y ↦ Rf y * Rf y
+  let R : ℝ := Rf x
+  let N : ℝ := Nf x
+  let S : ℝ := g.scalarGradNormSqAt x
+  let B : ℝ := g.pinchingMixedGradientPairingAt x
+  let G : ℝ := g.pinchingScalarRicciGradientProductAt x
+  let IQ : ℝ := g.inner x (g.gradientAt Qf x) (g.gradientAt Rf x)
+  have hRne : R ≠ 0 := ne_of_gt (by simpa [R, Rf] using hRpos)
+  have hVdiff : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) Vf y := by
+    intro y
+    dsimp [Vf, Rf]
+    exact (hScalarDiff y).mul (hScalarDiff y)
+  have hGradQ :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient Qf)) x := by
+    simpa [Qf] using hQuotGrad
+  have hGradV :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient Vf)) x := by
+    simpa [Vf, Rf] using hScalarSqGrad
+  have hGradProd :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient (Qf * Vf))) x := by
+    simpa [Qf, Vf, Rf] using hQuotScalarSqGrad
+  have hGradN :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient Nf)) x := by
+    simpa [Nf] using hRicNormGrad
+  have hRpos_event : ∀ᶠ y in nhds x, 0 < Rf y := by
+    simpa [Rf] using hScalarCont.eventually (eventually_gt_nhds hRpos)
+  have hprod : (fun y : M ↦ Qf y * Vf y) =ᶠ[nhds x] Nf := by
+    filter_upwards [hRpos_event] with y hy
+    dsimp [Qf, Vf, Rf, Nf]
+    rw [g.pinchingQuotientAt_eq y]
+    field_simp [ne_of_gt hy, pow_two]
+    rw [mul_div_assoc, div_self (ne_of_gt hy), mul_one]
+  have hVxne : Vf x ≠ 0 := by
+    dsimp [Vf, Rf]
+    exact mul_ne_zero hRne hRne
+  have hLapQuot :
+      g.laplacianAt Qf x =
+        (g.laplacianAt Nf x - Qf x * g.laplacianAt Vf x
+            - 2 * g.inner x (g.gradientAt Qf x) (g.gradientAt Vf x)) / Vf x :=
+    g.laplacianAt_quotient_eq_of_eventually_product_rule
+      hprod hVxne hQuotDiff hVdiff hGradQ hGradV hGradProd hGradN
+  have hGradQuot :
+      Vf x • g.gradientAt Qf x =
+        g.gradientAt Nf x - Qf x • g.gradientAt Vf x :=
+    g.gradientAt_quotient_eq_of_eventually_product_rule
+      hprod (hQuotDiff x) (hVdiff x)
+  have hGradVeq :
+      g.gradientAt Vf x = (2 * R) • g.gradientAt Rf x := by
+    have h := g.gradientAt_mul (f := Rf) (h := Rf)
+      (x := x) (hScalarDiff x) (hScalarDiff x)
+    change g.gradientAt (Rf * Rf) x = (2 * R) • g.gradientAt Rf x
+    calc
+      g.gradientAt (Rf * Rf) x =
+          Rf x • g.gradientAt Rf x + Rf x • g.gradientAt Rf x := h
+      _ = (2 * R) • g.gradientAt Rf x := by
+          rw [← add_smul]
+          congr 1
+          ring
+  have hLapVeq :
+      g.laplacianAt Vf x =
+        2 * R * g.laplacianAt Rf x + 2 * S := by
+    have h := g.laplacianAt_mul (f := Rf) (h := Rf)
+      (x := x) hScalarDiff hScalarDiff
+      (by simpa [Rf] using hScalarGrad)
+      (by simpa [Rf] using hScalarGrad)
+    change g.laplacianAt (Rf * Rf) x =
+      2 * R * g.laplacianAt Rf x + 2 * S
+    rw [h]
+    simp [Rf, R, S, scalarGradNormSqAt, mul_comm, mul_left_comm]
+    ring
+  have hInnerQV :
+      g.inner x (g.gradientAt Qf x) (g.gradientAt Vf x) = (2 * R) * IQ := by
+    rw [hGradVeq]
+    simp [IQ, smul_eq_mul]
+  have hINR :
+      g.inner x (g.gradientAt Nf x) (g.gradientAt Rf x) = 2 * B := by
+    calc
+      g.inner x (g.gradientAt Nf x) (g.gradientAt Rf x) =
+          extDerivFun Nf x (g.gradientAt Rf x) := by
+            simpa [Nf] using
+              g.inner_gradientAt Nf x (g.gradientAt Rf x)
+      _ = 2 * covRicciRicciPairingAt g x (g.gradientAt Rf x) := by
+            simpa [Nf, Rf] using
+              extDerivFun_ricciNormSqAt_eq_two_covRicciRicciPairingAt
+                (g := g) x (g.gradientAt Rf x)
+      _ = 2 * B := by
+            rw [← g.pinchingMixedGradientPairingAt_eq_covRicciRicciPairingAt_gradientAt_scalarAt x]
+  have hIVR :
+      g.inner x (g.gradientAt Vf x) (g.gradientAt Rf x) = (2 * R) * S := by
+    rw [hGradVeq]
+    simp [S, Rf, scalarGradNormSqAt, smul_eq_mul]
+  have hQx : Qf x = N / R ^ 2 := by
+    simpa [Qf, N, R, Rf] using g.pinchingQuotientAt_eq x
+  have hInnerQuot :
+      Vf x * IQ =
+        g.inner x (g.gradientAt Nf x) (g.gradientAt Rf x)
+          - Qf x * g.inner x (g.gradientAt Vf x) (g.gradientAt Rf x) := by
+    have h := congrArg
+      (fun v : TM x ↦ g.inner x v (g.gradientAt Rf x)) hGradQuot
+    simpa [IQ, smul_eq_mul, map_sub, map_smul] using h
+  have hInnerRel :
+      R ^ 2 * IQ = 2 * B - (N / R ^ 2) * ((2 * R) * S) := by
+    rw [hINR, hIVR, hQx] at hInnerQuot
+    simpa [Vf, Rf, R, pow_two, mul_comm, mul_left_comm, mul_assoc] using hInnerQuot
+  have hIQR :
+      IQ = (2 * B - (N / R ^ 2) * ((2 * R) * S)) / R ^ 2 := by
+    rw [eq_div_iff (pow_ne_zero 2 hRne)]
+    simpa [pow_two, mul_comm, mul_left_comm, mul_assoc] using hInnerRel
+  have hDrift :
+      g.pinchingQuotientGradientDrift3At x = (2 / R) * IQ := by
+    dsimp [pinchingQuotientGradientDrift3At, R, Rf, Qf, IQ]
+    rw [g.inner_symm x (g.gradientAt (fun y : M ↦ g.scalarAt y) x)
+      (g.gradientAt (fun y : M ↦ g.pinchingQuotientAt y) x)]
+  have hRaw : g.pinchingScalarRicciGradientProductAt x = S * N := by
+    simpa [S, N] using
+      g.pinchingScalarRicciGradientProductAt_eq_scalarGradNormSqAt_mul_ricciNormSqAt x
+  calc
+    g.laplacianAt (fun y : M ↦ g.pinchingQuotientAt y) x
+        + g.pinchingQuotientGradientDrift3At x =
+        (g.laplacianAt Nf x - Qf x * g.laplacianAt Vf x
+            - 2 * g.inner x (g.gradientAt Qf x) (g.gradientAt Vf x)) / Vf x
+          + (2 / R) * IQ := by
+          rw [hLapQuot, hDrift]
+    _ =
+      g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x / (g.scalarAt x) ^ 2
+        - 2 * g.ricciNormSqAt x *
+            g.laplacianAt (fun y : M ↦ g.scalarAt y) x / (g.scalarAt x) ^ 3
+        - 4 * g.pinchingMixedGradientPairingAt x / (g.scalarAt x) ^ 3
+        + 2 * g.pinchingScalarRicciGradientProductAt x / (g.scalarAt x) ^ 4 := by
+        rw [hLapVeq, hInnerQV, hIQR, hQx, hRaw]
+        simp [Vf, Rf, Nf, S, B, R, N, pow_two]
+        field_simp [hRne]
+        ring
+
+end ClosedSmoothRiemannianMetric
+
 private lemma pinching_completed_square_algebra
     {R N lapN lapR A B G lapQ drift square : ℝ} (hR : R ≠ 0)
     (hSpatial :
