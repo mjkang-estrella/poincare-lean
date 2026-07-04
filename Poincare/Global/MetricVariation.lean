@@ -1,4 +1,4 @@
-import Poincare.Global.RicciFlow
+import Poincare.Global.BumpExtend
 
 /-!
 # Metric time variation
