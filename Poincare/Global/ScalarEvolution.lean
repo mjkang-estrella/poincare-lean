@@ -121,6 +121,19 @@ private lemma pinching_reaction_remainder_algebra
       (2 / R ^ 4) * ((1 / 2 : ℝ) * R ^ 2 * M - R * N * S) := by
   field_simp [hR]
 
+private lemma finset_sum_completed_square
+    {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
+    (R : ℝ) (A B W : α → β → γ → ℝ) :
+  (∑ a, ∑ i, ∑ j, ((R * A a i j - B a i j) ^ 2 * W a i j)) =
+      R ^ 2 * (∑ a, ∑ i, ∑ j, (A a i j) ^ 2 * W a i j)
+        - 2 * R * (∑ a, ∑ i, ∑ j, A a i j * B a i j * W a i j)
+        + (∑ a, ∑ i, ∑ j, (B a i j) ^ 2 * W a i j) := by
+  simp_rw [sub_sq, add_mul, sub_mul, Finset.sum_add_distrib,
+    Finset.sum_sub_distrib]
+  ring_nf
+  simp_rw [Finset.mul_sum, Finset.sum_mul]
+  ring_nf
+
 /--
 The spatial completed-square identity needed to assemble Hamilton's corrected
 pinching quotient evolution.  This is intentionally named as a separate
@@ -140,6 +153,130 @@ def PinchingQuotientCompletedSquareIdentityAt
     g.laplacianAt (fun y : M ↦ g.pinchingQuotientAt y) x
       + g.pinchingQuotientGradientDrift3At x
       + g.pinchingGradientDampingAt x
+
+namespace ClosedSmoothRiemannianMetric
+
+variable (g : ClosedSmoothRiemannianMetric n M)
+variable [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+
+/--
+Mixed contraction `⟨∇Ric, ∇R ⊗ Ric⟩` in the same metric-orthogonal frame used
+by `pinchingGradientSquareAt`.
+-/
+noncomputable def pinchingMixedGradientPairingAt (x : M) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let b := metricOrthogonalBasisAt g x
+  ∑ a : Fin (Module.finrank ℝ (TM x)), ∑ i : Fin (Module.finrank ℝ (TM x)),
+    ∑ j : Fin (Module.finrank ℝ (TM x)),
+      (covTensor2DerivAt g (ricciVariationField g) x (b a) (b i) (b j) *
+          (extDerivFun (fun y : M ↦ g.scalarAt y) x (b a) *
+            g.ricciAt x (b i) (b j))) /
+        (g.metricBilinAt x (b a) (b a) *
+          g.metricBilinAt x (b i) (b i) *
+          g.metricBilinAt x (b j) (b j))
+
+/--
+The raw norm of `∇R ⊗ Ric`, written in the same orthogonal-frame contraction
+as `pinchingGradientSquareAt`.
+-/
+noncomputable def pinchingScalarRicciGradientProductAt (x : M) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let b := metricOrthogonalBasisAt g x
+  ∑ a : Fin (Module.finrank ℝ (TM x)), ∑ i : Fin (Module.finrank ℝ (TM x)),
+    ∑ j : Fin (Module.finrank ℝ (TM x)),
+      (extDerivFun (fun y : M ↦ g.scalarAt y) x (b a) *
+          g.ricciAt x (b i) (b j)) ^ 2 /
+        (g.metricBilinAt x (b a) (b a) *
+          g.metricBilinAt x (b i) (b i) *
+          g.metricBilinAt x (b j) (b j))
+
+set_option maxHeartbeats 3000000 in
+/-- Orthogonal-frame expansion of Hamilton's completed gradient square. -/
+theorem pinchingGradientSquareAt_eq_completedSquareExpansion (x : M) :
+    g.pinchingGradientSquareAt x =
+      (g.scalarAt x) ^ 2 * covRicciNormSqAt g x
+        - 2 * g.scalarAt x * g.pinchingMixedGradientPairingAt x
+        + g.pinchingScalarRicciGradientProductAt x := by
+  classical
+  dsimp [pinchingGradientSquareAt, covRicciNormSqAt,
+    pinchingMixedGradientPairingAt, pinchingScalarRicciGradientProductAt]
+  simp_rw [div_eq_mul_inv]
+  let b := metricOrthogonalBasisAt g x
+  let A :
+      Fin (Module.finrank ℝ (TM x)) →
+        Fin (Module.finrank ℝ (TM x)) →
+          Fin (Module.finrank ℝ (TM x)) → ℝ :=
+    fun a i j ↦ covTensor2DerivAt g (ricciVariationField g) x (b a) (b i) (b j)
+  let B :
+      Fin (Module.finrank ℝ (TM x)) →
+        Fin (Module.finrank ℝ (TM x)) →
+          Fin (Module.finrank ℝ (TM x)) → ℝ :=
+    fun a i j ↦
+      extDerivFun (fun y : M ↦ g.scalarAt y) x (b a) *
+        g.ricciAt x (b i) (b j)
+  let W :
+      Fin (Module.finrank ℝ (TM x)) →
+        Fin (Module.finrank ℝ (TM x)) →
+          Fin (Module.finrank ℝ (TM x)) → ℝ :=
+    fun a i j ↦
+      ((g.metricBilinAt x (b a) (b a)) *
+        (g.metricBilinAt x (b i) (b i)) *
+        (g.metricBilinAt x (b j) (b j)))⁻¹
+  simpa [b, A, B, W] using
+    finset_sum_completed_square (R := g.scalarAt x) (A := A) (B := B) (W := W)
+
+end ClosedSmoothRiemannianMetric
+
+private lemma pinching_completed_square_algebra
+    {R N lapN lapR A B G lapQ drift square : ℝ} (hR : R ≠ 0)
+    (hSpatial :
+      lapQ + drift =
+        lapN / R ^ 2 - 2 * N * lapR / R ^ 3 - 4 * B / R ^ 3
+          + 2 * G / R ^ 4)
+    (hSquare : square = R ^ 2 * A - 2 * R * B + G) :
+    lapN / R ^ 2 - 2 * N * lapR / R ^ 3 - 2 * A / R ^ 2 =
+      lapQ + drift + (-(2 / R ^ 4) * square) := by
+  subst square
+  rw [hSpatial]
+  field_simp [hR]
+  ring
+
+theorem pinchingQuotientCompletedSquareIdentityAt_of_spatial_expansions
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hSpatial : g.scalarAt x ≠ 0 →
+      g.laplacianAt (fun y : M ↦ g.pinchingQuotientAt y) x
+          + g.pinchingQuotientGradientDrift3At x =
+        g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x / (g.scalarAt x) ^ 2
+          - 2 * g.ricciNormSqAt x *
+              g.laplacianAt (fun y : M ↦ g.scalarAt y) x / (g.scalarAt x) ^ 3
+          - 4 * g.pinchingMixedGradientPairingAt x / (g.scalarAt x) ^ 3
+          + 2 * g.pinchingScalarRicciGradientProductAt x / (g.scalarAt x) ^ 4) :
+    PinchingQuotientCompletedSquareIdentityAt g x := by
+  intro hR
+  let R : ℝ := g.scalarAt x
+  let N : ℝ := g.ricciNormSqAt x
+  let A : ℝ := covRicciNormSqAt g x
+  let B : ℝ := g.pinchingMixedGradientPairingAt x
+  let G : ℝ := g.pinchingScalarRicciGradientProductAt x
+  have hSquare :
+      g.pinchingGradientSquareAt x = R ^ 2 * A - 2 * R * B + G := by
+    simpa [R, A, B, G] using
+      g.pinchingGradientSquareAt_eq_completedSquareExpansion x
+  have hAlg := pinching_completed_square_algebra
+    (R := R) (N := N)
+    (lapN := g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x)
+    (lapR := g.laplacianAt (fun y : M ↦ g.scalarAt y) x)
+    (A := A) (B := B) (G := G)
+    (lapQ := g.laplacianAt (fun y : M ↦ g.pinchingQuotientAt y) x)
+    (drift := g.pinchingQuotientGradientDrift3At x)
+    (square := g.pinchingGradientSquareAt x)
+    (by simpa [R] using hR)
+    (by simpa [R, N, B, G] using hSpatial hR)
+    hSquare
+  simpa [PinchingQuotientCompletedSquareIdentityAt,
+    ClosedSmoothRiemannianMetric.pinchingGradientDampingAt, R, N, A] using hAlg
 
 set_option maxHeartbeats 5000000 in
 /--
@@ -361,6 +498,64 @@ theorem satisfiesPinchingQuotientEvolutionAt_of_ricciFlow
                 (g.pinchingReactionRemainderAt x Mreact) := by
             simp [R, add_assoc]
   exact le_of_eq hFinalEq
+
+set_option maxHeartbeats 8000000 in
+/--
+Quotient evolution assembly with the completed-square obligation replaced by
+the explicit spatial quotient/drift expansion.
+-/
+theorem satisfiesPinchingQuotientEvolutionAt_of_ricciFlow_of_spatial_expansion
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hRicci : SatisfiesRicciEvolutionAt gt t₀ x)
+    (hScalar : SatisfiesHamiltonScalarEvolutionAt gt t₀ x)
+    (hn : n = 3)
+    (hRpos : 0 < (gt t₀).scalarAt x)
+    (hRicNorm₂ : ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ (gt t₀).ricciNormSqAt y) x)
+    (hPairDiff : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ covRicciRicciPairingAt (gt t₀) y (extend E w y)) x)
+    (hRicSecond :
+      CovTensor2DerivExtDifferentiableAt
+        (gt t₀) (ricciVariationField (gt t₀)) x)
+    (hSpatial : (gt t₀).scalarAt x ≠ 0 →
+      (gt t₀).laplacianAt (fun y : M ↦ (gt t₀).pinchingQuotientAt y) x
+          + (gt t₀).pinchingQuotientGradientDrift3At x =
+        (gt t₀).laplacianAt (fun y : M ↦ (gt t₀).ricciNormSqAt y) x /
+            ((gt t₀).scalarAt x) ^ 2
+          - 2 * (gt t₀).ricciNormSqAt x *
+              (gt t₀).laplacianAt (fun y : M ↦ (gt t₀).scalarAt y) x /
+                ((gt t₀).scalarAt x) ^ 3
+          - 4 * (gt t₀).pinchingMixedGradientPairingAt x /
+                ((gt t₀).scalarAt x) ^ 3
+          + 2 * (gt t₀).pinchingScalarRicciGradientProductAt x /
+                ((gt t₀).scalarAt x) ^ 4) :
+    let g : ClosedSmoothRiemannianMetric n M := gt t₀
+    let δRic3 : TM x → TM x → ℝ :=
+      fun u w ↦ ricciEvolution3ReactionRHSAt g x u w
+    let hRic3 : ∀ u w : TM x,
+        HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic3 u w) t₀ :=
+      SatisfiesRicciEvolutionAt.reaction3
+        (gt := gt) (t₀ := t₀) (x := x) hRicci hn
+    let fullTrace : ℝ :=
+      2 * LinearMap.trace ℝ (TM x)
+        ((((raise'.comp (g.ricciDualContinuousAt x) +
+            (g.metricRaiseContinuousAt x).comp
+              (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+                (gt := gt) (t₀ := t₀) (x := x) δRic3 hRic3)).comp
+            (g.ricciEndoContinuousAt x)) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x)
+    ClosedSmoothRiemannianMetric.SatisfiesPinchingQuotientEvolutionAt gt t₀ x
+      (g.pinchingRicciNormReactionMotionTraceAt x fullTrace) := by
+  exact satisfiesPinchingQuotientEvolutionAt_of_ricciFlow
+    (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
+    hRaise hRicci hScalar hn hRpos hRicNorm₂ hPairDiff hRicSecond
+    (pinchingQuotientCompletedSquareIdentityAt_of_spatial_expansions
+      (g := gt t₀) (x := x) hSpatial)
 
 namespace ClosedSmoothRiemannianMetric
 
