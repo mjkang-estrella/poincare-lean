@@ -1018,6 +1018,34 @@ theorem pinchingGradientSquareAt_eq_completedSquareExpansion (x : M) :
   simpa [b, A, B, W] using
     finset_sum_completed_square (R := g.scalarAt x) (A := A) (B := B) (W := W)
 
+/--
+Completed-square expansion with the real-power quotient coefficient
+`-2 / R^(p+2)`.
+-/
+theorem pinchingGradientSquareAt_rpowCoefficientExpansion (x : M) (p : ℝ) :
+    -(2 / (g.scalarAt x) ^ (p + 2)) * g.pinchingGradientSquareAt x =
+      -(2 / (g.scalarAt x) ^ (p + 2)) *
+        ((g.scalarAt x) ^ 2 * covRicciNormSqAt g x
+          - 2 * g.scalarAt x * g.pinchingMixedGradientPairingAt x
+          + g.pinchingScalarRicciGradientProductAt x) := by
+  rw [g.pinchingGradientSquareAt_eq_completedSquareExpansion x]
+
+/--
+The improved traceless quotient damping has the general-exponent completed
+square coefficient with `p = 2 - δ`, namely `-2 / R^(p+2)`.
+-/
+theorem tracelessPinchingGradientDampingAt_eq_rpowCoefficientExpansion
+    (x : M) (δ : ℝ) :
+    g.tracelessPinchingGradientDampingAt x δ =
+      -(2 / (g.scalarAt x) ^ ((2 - δ) + 2)) *
+        ((g.scalarAt x) ^ 2 * covRicciNormSqAt g x
+          - 2 * g.scalarAt x * g.pinchingMixedGradientPairingAt x
+          + g.pinchingScalarRicciGradientProductAt x) := by
+  rw [tracelessPinchingGradientDampingAt]
+  have hexp : (4 - δ : ℝ) = (2 - δ) + 2 := by ring
+  rw [hexp]
+  exact g.pinchingGradientSquareAt_rpowCoefficientExpansion x (2 - δ)
+
 end ClosedSmoothRiemannianMetric
 
 namespace ClosedSmoothRiemannianMetric
