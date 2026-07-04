@@ -11198,6 +11198,63 @@ theorem covTensor2ExtDifferentiableAt_ricciVariationField_canonical
           (g := g) (u := p) (w := q) (y := y)).symm
   exact hTraceDiff.congr_of_eventuallyEq heq
 
+/-- The covariant Ricci derivative in a moving direction, packaged as a bilinear form. -/
+noncomputable def covRicciDerivativeBilinFormAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (K : ∀ y : M, TM y) (y : M) :
+    LinearMap.BilinForm ℝ (TM y) :=
+  LinearMap.mk₂ ℝ
+    (fun p q ↦ covTensor2DerivAt g (ricciVariationField g) y (K y) p q)
+    (fun p p' q ↦
+      covTensor2DerivAt_add_left
+        (g := g) (h := ricciVariationField g) (x := y)
+        (covTensor2ExtDifferentiableAt_ricciVariationField_canonical g y)
+        (tensor2AddLeft_ricciVariationField g) (K y) p p' q)
+    (fun c p q ↦
+      covTensor2DerivAt_smul_left
+        (g := g) (h := ricciVariationField g) (x := y)
+        (covTensor2ExtDifferentiableAt_ricciVariationField_canonical g y)
+        (tensor2SMulLeft_ricciVariationField g) c (K y) p q)
+    (fun p q q' ↦
+      covTensor2DerivAt_add_right
+        (g := g) (h := ricciVariationField g) (x := y)
+        (covTensor2ExtDifferentiableAt_ricciVariationField_canonical g y)
+        (tensor2AddRight_ricciVariationField g) (K y) p q q')
+    (fun c p q ↦
+      covTensor2DerivAt_smul_right
+        (g := g) (h := ricciVariationField g) (x := y)
+        (covTensor2ExtDifferentiableAt_ricciVariationField_canonical g y)
+        (tensor2SMulRight_ricciVariationField g) c (K y) p q)
+
+/-- Anchored Gram-frame expansion of `⟨∇_K Ric,Ric⟩`. -/
+theorem metricVariationRicciPairingAt_covTensor2DerivAt_eq_sum_gram_inv
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (K : ∀ y : M, TM y) (x y : M)
+    (hG : IsUnit (gramMatrix g x y)) :
+    metricVariationRicciPairingAt g
+        (fun z p q ↦
+          covTensor2DerivAt g (ricciVariationField g) z (K z) p q) y =
+      ∑ a, ∑ b, ∑ c, ∑ d,
+        (gramMatrix g x y)⁻¹ a c *
+          (gramMatrix g x y)⁻¹ b d *
+          covTensor2DerivAt g (ricciVariationField g) y (K y)
+            (gramFrame x y b) (gramFrame x y c) *
+          g.ricciAt y (gramFrame x y a) (gramFrame x y d) := by
+  let H : ∀ z : M, TM z → TM z → ℝ :=
+    fun z p q ↦ covTensor2DerivAt g (ricciVariationField g) z (K z) p q
+  let B : LinearMap.BilinForm ℝ (TM y) :=
+    covRicciDerivativeBilinFormAt g K y
+  simpa [H, B, covRicciDerivativeBilinFormAt] using
+    metricVariationRicciPairingAt_eq_sum_gram_inv_of_symm
+      (g := g) (h := H) (x := x) (y := y) hG (B := B)
+      (by intro p q; rfl)
+      (by
+        intro p q
+        exact covTensor2DerivAt_ricciVariationField_symm
+          (g := g) y (K y) p q)
+
 omit [T2Space M] in
 private theorem extDerivFun_mul_four_at {f₁ f₂ f₃ f₄ : M → ℝ} {x : M}
     (hf₁ : MDifferentiableAt I 𝓘(ℝ) f₁ x)
