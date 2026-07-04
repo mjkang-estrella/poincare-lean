@@ -238,6 +238,91 @@ private lemma finset_sum_pairing_linearize
     _ = ∑ a, ∑ i, ∑ j, D a * C a i j * W i j :=
         finset_sum_comm_three (fun a i j ↦ D a * C a i j * W i j)
 
+private lemma weighted_trace_sq_le_card_mul_cov_sq
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (diag : ι → ℝ) (hdiag : ∀ i, 0 < diag i)
+    (C : ι → ι → ℝ) :
+    (∑ i, C i i / diag i) ^ 2 ≤
+      (Fintype.card ι : ℝ) *
+        ∑ i, ∑ j, (C i j) ^ 2 / (diag i * diag j) := by
+  classical
+  have hcs :
+      (∑ i, C i i / diag i) ^ 2 ≤
+        ((Finset.univ : Finset ι).card : ℝ) *
+          ∑ i, (C i i / diag i) ^ 2 := by
+    simpa using
+      (sq_sum_le_card_mul_sum_sq
+        (s := (Finset.univ : Finset ι))
+        (f := fun i ↦ C i i / diag i))
+  have hdiag_le :
+      (∑ i, (C i i / diag i) ^ 2) ≤
+        ∑ i, ∑ j, (C i j) ^ 2 / (diag i * diag j) := by
+    refine Finset.sum_le_sum ?_
+    intro i _
+    have hterm :
+        (C i i / diag i) ^ 2 =
+          (C i i) ^ 2 / (diag i * diag i) := by
+      field_simp [ne_of_gt (hdiag i)]
+    rw [hterm]
+    exact Finset.single_le_sum
+      (fun j _ ↦ div_nonneg (sq_nonneg _)
+        (le_of_lt (mul_pos (hdiag i) (hdiag j))))
+      (Finset.mem_univ i)
+  have hcard_nonneg : 0 ≤ ((Finset.univ : Finset ι).card : ℝ) := by positivity
+  have hmul :=
+    mul_le_mul_of_nonneg_left hdiag_le hcard_nonneg
+  exact hcs.trans (by simpa using hmul)
+
+private lemma weighted_trace_gradient_sq_le_three
+    {α β : Type*} [Fintype α] [Fintype β] [DecidableEq β]
+    (hcardβ : Fintype.card β = 3)
+    (diagA : α → ℝ) (diagB : β → ℝ)
+    (hdiagA : ∀ a, 0 < diagA a) (hdiagB : ∀ i, 0 < diagB i)
+    (D : α → ℝ) (C : α → β → β → ℝ)
+    (hD : ∀ a, D a = ∑ i, C a i i / diagB i) :
+    (∑ a, (D a) ^ 2 / diagA a) ≤
+      3 * ∑ a, ∑ i, ∑ j,
+        (C a i j) ^ 2 / (diagA a * diagB i * diagB j) := by
+  classical
+  have hper : ∀ a,
+      (D a) ^ 2 / diagA a ≤
+        3 * ∑ i, ∑ j,
+          (C a i j) ^ 2 / (diagA a * diagB i * diagB j) := by
+    intro a
+    have htrace :=
+      weighted_trace_sq_le_card_mul_cov_sq
+        (diag := diagB) hdiagB (C := C a)
+    have htrace3 :
+        (D a) ^ 2 ≤
+          3 * ∑ i, ∑ j, (C a i j) ^ 2 / (diagB i * diagB j) := by
+      simpa [hD a, hcardβ] using htrace
+    have hdiv :=
+      mul_le_mul_of_nonneg_right htrace3
+        (inv_nonneg.mpr (le_of_lt (hdiagA a)))
+    calc
+      (D a) ^ 2 / diagA a =
+          (D a) ^ 2 * (diagA a)⁻¹ := by ring
+      _ ≤ (3 * ∑ i, ∑ j, (C a i j) ^ 2 / (diagB i * diagB j)) *
+            (diagA a)⁻¹ := hdiv
+      _ = 3 * ∑ i, ∑ j,
+            (C a i j) ^ 2 / (diagA a * diagB i * diagB j) := by
+          rw [mul_assoc]
+          congr 1
+          rw [Finset.sum_mul]
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          rw [Finset.sum_mul]
+          refine Finset.sum_congr rfl fun j _ ↦ ?_
+          field_simp [ne_of_gt (hdiagA a), ne_of_gt (hdiagB i),
+            ne_of_gt (hdiagB j)]
+  calc
+    (∑ a, (D a) ^ 2 / diagA a) ≤
+        ∑ a, 3 * ∑ i, ∑ j,
+          (C a i j) ^ 2 / (diagA a * diagB i * diagB j) :=
+          Finset.sum_le_sum fun a _ ↦ hper a
+    _ = 3 * ∑ a, ∑ i, ∑ j,
+          (C a i j) ^ 2 / (diagA a * diagB i * diagB j) := by
+          rw [Finset.mul_sum]
+
 /--
 The spatial completed-square identity needed to assemble Hamilton's corrected
 pinching quotient evolution.  This is intentionally named as a separate
@@ -817,6 +902,143 @@ theorem scalarGradNormSqAt_eq_metricOrthogonalBasis_sum (x : M) :
       ∑ i, (extDerivFun (fun y : M ↦ g.scalarAt y) x (b i)) ^ 2 / diag i) := by
       simp [f, b, diag]
 
+theorem extDerivFun_scalarAt_eq_metricOrthogonalBasis_covRicci_trace
+    (x : M) (w : TM x) :
+    extDerivFun (fun y : M ↦ g.scalarAt y) x w =
+      (let b := metricOrthogonalBasisAt g x
+      let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+        fun k ↦ g.metricBilinAt x (b k) (b k)
+      ∑ i,
+        covTensor2DerivAt g (ricciVariationField g) x w (b i) (b i) /
+          diag i) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := metricOrthogonalBasisAt g x
+  let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+    fun k ↦ g.metricBilinAt x (b k) (b k)
+  let H : ∀ y : M, TM y → TM y → ℝ :=
+    fun y p q ↦ covTensor2DerivAt g (ricciVariationField g) y (extend E w y) p q
+  let B : LinearMap.BilinForm ℝ (TM x) :=
+    LinearMap.mk₂ ℝ
+      (fun p q ↦ covTensor2DerivAt g (ricciVariationField g) x w p q)
+      (fun p p' q ↦
+        covTensor2DerivAt_add_left
+          (g := g) (h := ricciVariationField g) (x := x)
+          (covTensor2ExtDifferentiableAt_ricciVariationField_canonical
+            (g := g) (x := x))
+          (tensor2AddLeft_ricciVariationField g) w p p' q)
+      (fun c p q ↦ by
+        simpa [smul_eq_mul] using
+          covTensor2DerivAt_smul_left
+            (g := g) (h := ricciVariationField g) (x := x)
+            (covTensor2ExtDifferentiableAt_ricciVariationField_canonical
+              (g := g) (x := x))
+            (tensor2SMulLeft_ricciVariationField g) c w p q)
+      (fun p q q' ↦
+        covTensor2DerivAt_add_right
+          (g := g) (h := ricciVariationField g) (x := x)
+          (covTensor2ExtDifferentiableAt_ricciVariationField_canonical
+            (g := g) (x := x))
+          (tensor2AddRight_ricciVariationField g) w p q q')
+      (fun c p q ↦ by
+        simpa [smul_eq_mul] using
+          covTensor2DerivAt_smul_right
+            (g := g) (h := ricciVariationField g) (x := x)
+            (covTensor2ExtDifferentiableAt_ricciVariationField_canonical
+              (g := g) (x := x))
+            (tensor2SMulRight_ricciVariationField g) c w p q)
+  have hB : ∀ p q : TM x, B p q = H x p q := by
+    intro p q
+    simp [B, H]
+  have hTraceDeriv : TraceMetricVariationDerivAt g (ricciVariationField g) x :=
+    traceMetricVariationDerivAt_of_covTensor2ExtDifferentiableAt
+      (g := g) (h := ricciVariationField g) (x := x)
+      (covTensor2ExtDifferentiableAt_ricciVariationField_canonical
+        (g := g) (x := x))
+      (tensor2AddLeft_ricciVariationField g)
+      (tensor2SMulLeft_ricciVariationField g)
+      (tensor2AddRight_ricciVariationField g)
+      (tensor2SMulRight_ricciVariationField g)
+      (ricciVariationBilinForm g)
+      (by intro y p q; rfl)
+  have hTraceH :
+      traceMetricVariationAt g H x =
+        extDerivFun (fun y : M ↦ g.scalarAt y) x w := by
+    calc
+      traceMetricVariationAt g H x =
+          (letI : FiniteDimensional ℝ (TM x) :=
+              inferInstanceAs (FiniteDimensional ℝ E)
+            ∑ i,
+              covTensor2DerivAt g (ricciVariationField g) x w
+                ((Module.finBasis ℝ (TM x)) i)
+                (metricDualVectorAt g x
+                  ((Module.finBasis ℝ (TM x)).coord i))) := by
+            simp [traceMetricVariationAt, H]
+      _ = extDerivFun
+            (fun y ↦ traceMetricVariationAt g (ricciVariationField g) y)
+            x w := hTraceDeriv w
+      _ = extDerivFun (fun y : M ↦ g.scalarAt y) x w := by
+            exact extDerivFun_traceMetricVariationAt_ricci (g := g) x w
+  have hOrtho : (g.metricBilinAt x).IsOrthoᵢ b := by
+    simpa [b, metricOrthogonalBasisAt] using
+      Classical.choose_spec
+        (LinearMap.BilinForm.exists_orthogonal_basis
+          (B := g.metricBilinAt x) (g.metricBilinAt_isSymm x))
+  calc
+    extDerivFun (fun y : M ↦ g.scalarAt y) x w =
+        traceMetricVariationAt g H x := hTraceH.symm
+    _ = metricTraceInBasisAt g x B b :=
+        traceMetricVariationAt_eq_metricTraceInBasisAt
+          (g := g) (h := H) (x := x) (B := B) (b := b) hB
+    _ =
+        (let b := metricOrthogonalBasisAt g x
+        let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+          fun k ↦ g.metricBilinAt x (b k) (b k)
+        ∑ i,
+          covTensor2DerivAt g (ricciVariationField g) x w (b i) (b i) /
+            diag i) := by
+        unfold metricTraceInBasisAt
+        refine Finset.sum_congr rfl fun i _ ↦ ?_
+        rw [metricDualVectorAt_orthogonalBasis_coord_eq
+          (g := g) (x := x) (b := b) hOrtho i]
+        simp [B, b, smul_eq_mul, div_eq_mul_inv]
+        ring
+
+theorem scalarGradNormSqAt_le_three_covRicciNormSqAt
+    (hn : n = 3) (x : M) :
+    g.scalarGradNormSqAt x ≤ 3 * covRicciNormSqAt g x := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := metricOrthogonalBasisAt g x
+  let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+    fun k ↦ g.metricBilinAt x (b k) (b k)
+  let D : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+    fun a ↦ extDerivFun (fun y : M ↦ g.scalarAt y) x (b a)
+  let C :
+      Fin (Module.finrank ℝ (TM x)) →
+        Fin (Module.finrank ℝ (TM x)) →
+          Fin (Module.finrank ℝ (TM x)) → ℝ :=
+    fun a i j ↦ covTensor2DerivAt g (ricciVariationField g) x (b a) (b i) (b j)
+  have hcard :
+      Fintype.card (Fin (Module.finrank ℝ (TM x))) = 3 := by
+    simp [ClosedSmoothRiemannianMetric.finrank_tangentSpace_eq
+      (n := n) (M := M) x, hn]
+  have hdiag : ∀ k, 0 < diag k := by
+    intro k
+    exact g.metricBilinAt_pos x (b.ne_zero k)
+  have hD : ∀ a, D a = ∑ i, C a i i / diag i := by
+    intro a
+    simpa [D, C, b, diag] using
+      g.extDerivFun_scalarAt_eq_metricOrthogonalBasis_covRicci_trace x (b a)
+  rw [g.scalarGradNormSqAt_eq_metricOrthogonalBasis_sum x,
+    covRicciNormSqAt_eq_metricOrthogonalBasis_sum (g := g) x]
+  simpa [D, C, b, diag] using
+    weighted_trace_gradient_sq_le_three
+      (hcardβ := hcard) (diagA := diag) (diagB := diag)
+      hdiag hdiag D C hD
+
 set_option maxHeartbeats 20000000 in
 /-- Orthogonal-frame expansion of the Ricci norm. -/
 theorem ricciNormSqAt_eq_metricOrthogonalBasis_sum (x : M) :
@@ -1028,6 +1250,30 @@ theorem pinchingGradientSquareAt_eq_completedSquareExpansion (x : M) :
         (g.metricBilinAt x (b j) (b j)))⁻¹
   simpa [b, A, B, W] using
     finset_sum_completed_square (R := g.scalarAt x) (A := A) (B := B) (W := W)
+
+/--
+Direct mixed-pairing control in the form needed by the traceless gradient
+absorption.  This is the Cauchy-Schwarz content of the completed square
+`|R ∇Ric - ∇R ⊗ Ric|² ≥ 0`.
+-/
+theorem pinchingMixedGradientPairingAt_absorption_bound (x : M) :
+    2 * g.scalarAt x * g.pinchingMixedGradientPairingAt x ≤
+      (g.scalarAt x) ^ 2 * covRicciNormSqAt g x
+        + g.scalarGradNormSqAt x * g.ricciNormSqAt x := by
+  have hsquare_nonneg : 0 ≤ g.pinchingGradientSquareAt x :=
+    g.pinchingGradientSquareAt_nonneg x
+  have hsquare :
+      g.pinchingGradientSquareAt x =
+        (g.scalarAt x) ^ 2 * covRicciNormSqAt g x
+          - 2 * g.scalarAt x * g.pinchingMixedGradientPairingAt x
+          + g.pinchingScalarRicciGradientProductAt x :=
+    g.pinchingGradientSquareAt_eq_completedSquareExpansion x
+  have hraw :
+      g.pinchingScalarRicciGradientProductAt x =
+        g.scalarGradNormSqAt x * g.ricciNormSqAt x :=
+    g.pinchingScalarRicciGradientProductAt_eq_scalarGradNormSqAt_mul_ricciNormSqAt x
+  rw [hsquare, hraw] at hsquare_nonneg
+  linarith
 
 /--
 Completed-square expansion with the real-power quotient coefficient
