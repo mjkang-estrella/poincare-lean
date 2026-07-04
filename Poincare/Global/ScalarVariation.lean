@@ -24588,6 +24588,108 @@ theorem pinchingRicciNormReactionMotionTraceCubicAt_eq_diagonal_of_ricciEndoAt_e
   rw [pinchingRicciNormReactionMotionTraceCubicAt,
     PinchingAlgebra.diagonalRicciNormReactionMotionTrace3_eq_cubic, hR, hN, hC]
 
+/-- The scalar reaction is diagonalized by a Ricci-endomorphism eigenbasis. -/
+theorem pinchingScalarReactionAt_eq_diagonal_of_ricciEndoAt_eigenbasis
+    {x : M} (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ)
+    (hEig : ∀ i : Fin 3, g.ricciEndoAt x (b i) = μ i • b i) :
+    g.pinchingScalarReactionAt x =
+      PinchingAlgebra.diagonalScalarReaction3 (μ 0) (μ 1) (μ 2) := by
+  have hN :
+      g.ricciNormSqAt x = PinchingAlgebra.diagonalRicciNormSq3 (μ 0) (μ 1) (μ 2) := by
+    rw [g.ricciNormSqAt_eq_sum_eigenvalues_sq_of_ricciEndoAt_eigenbasis b μ hEig]
+    simp [Fin.sum_univ_three, PinchingAlgebra.diagonalRicciNormSq3]
+  rw [pinchingScalarReactionAt, PinchingAlgebra.diagonalScalarReaction3, hN]
+
+/-- The trace-form traceless Ricci norm is diagonalized by a 3D Ricci eigenbasis. -/
+theorem tracelessRicciNormSqAt_eq_diagonal_of_ricciEndoAt_eigenbasis
+    (hn : n = 3) {x : M}
+    (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ)
+    (hEig : ∀ i : Fin 3, g.ricciEndoAt x (b i) = μ i • b i) :
+    g.tracelessRicciNormSqAt x =
+      PinchingAlgebra.diagonalTracelessRicciNormSq3 (μ 0) (μ 1) (μ 2) := by
+  have hR :
+      g.scalarAt x = PinchingAlgebra.diagonalScalar3 (μ 0) (μ 1) (μ 2) := by
+    rw [g.scalarAt_eq_sum_eigenvalues_of_ricciEndoAt_eigenbasis b μ hEig]
+    simp [Fin.sum_univ_three, PinchingAlgebra.diagonalScalar3]
+  have hN :
+      g.ricciNormSqAt x = PinchingAlgebra.diagonalRicciNormSq3 (μ 0) (μ 1) (μ 2) := by
+    rw [g.ricciNormSqAt_eq_sum_eigenvalues_sq_of_ricciEndoAt_eigenbasis b μ hEig]
+    simp [Fin.sum_univ_three, PinchingAlgebra.diagonalRicciNormSq3]
+  have hnR : (n : ℝ) = 3 := by
+    exact_mod_cast hn
+  rw [tracelessRicciNormSqAt, PinchingAlgebra.diagonalTracelessRicciNormSq3,
+    hR, hN, hnR]
+
+/-- The traceless Ricci reaction trace is diagonalized by a Ricci eigenbasis. -/
+theorem pinchingTracelessRicciReactionTrace3At_eq_diagonal_of_ricciEndoAt_eigenbasis
+    {x : M} (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ)
+    (hEig : ∀ i : Fin 3, g.ricciEndoAt x (b i) = μ i • b i) :
+    g.pinchingTracelessRicciReactionTrace3At x
+        (g.pinchingRicciNormReactionMotionTraceCubicAt x) =
+      PinchingAlgebra.diagonalTracelessRicciReactionTrace3 (μ 0) (μ 1) (μ 2) := by
+  have hR :
+      g.scalarAt x = PinchingAlgebra.diagonalScalar3 (μ 0) (μ 1) (μ 2) := by
+    rw [g.scalarAt_eq_sum_eigenvalues_of_ricciEndoAt_eigenbasis b μ hEig]
+    simp [Fin.sum_univ_three, PinchingAlgebra.diagonalScalar3]
+  have hM :
+      g.pinchingRicciNormReactionMotionTraceCubicAt x =
+        PinchingAlgebra.diagonalRicciNormReactionMotionTrace3 (μ 0) (μ 1) (μ 2) :=
+    g.pinchingRicciNormReactionMotionTraceCubicAt_eq_diagonal_of_ricciEndoAt_eigenbasis
+      b μ hEig
+  have hS :
+      g.pinchingScalarReactionAt x =
+        PinchingAlgebra.diagonalScalarReaction3 (μ 0) (μ 1) (μ 2) :=
+    g.pinchingScalarReactionAt_eq_diagonal_of_ricciEndoAt_eigenbasis b μ hEig
+  unfold pinchingTracelessRicciReactionTrace3At
+    PinchingAlgebra.diagonalTracelessRicciReactionTrace3
+  rw [hM, hR, hS]
+
+/--
+The invariant traceless reaction term is the diagonal improved reaction
+numerator divided by `R^(3 - delta)` in a 3D Ricci eigenbasis.
+-/
+theorem tracelessPinchingReactionTermAt_eq_diagonal_of_ricciEndoAt_eigenbasis
+    (hn : n = 3) {x : M}
+    (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ)
+    (hEig : ∀ i : Fin 3, g.ricciEndoAt x (b i) = μ i • b i)
+    (δ : ℝ) (hRpos : 0 < g.scalarAt x) :
+    g.tracelessPinchingReactionTermAt x δ
+        (g.pinchingTracelessRicciReactionTrace3At x
+          (g.pinchingRicciNormReactionMotionTraceCubicAt x)) =
+      PinchingAlgebra.diagonalTracelessPinchingReactionNumerator3
+          δ (μ 0) (μ 1) (μ 2) /
+        (PinchingAlgebra.diagonalScalar3 (μ 0) (μ 1) (μ 2)) ^ (3 - δ) := by
+  let D : ℝ := PinchingAlgebra.diagonalScalar3 (μ 0) (μ 1) (μ 2)
+  let U : ℝ := PinchingAlgebra.diagonalTracelessRicciNormSq3 (μ 0) (μ 1) (μ 2)
+  let T : ℝ := PinchingAlgebra.diagonalTracelessRicciReactionTrace3 (μ 0) (μ 1) (μ 2)
+  let S : ℝ := PinchingAlgebra.diagonalScalarReaction3 (μ 0) (μ 1) (μ 2)
+  have hR : g.scalarAt x = D := by
+    rw [g.scalarAt_eq_sum_eigenvalues_of_ricciEndoAt_eigenbasis b μ hEig]
+    simp [D, Fin.sum_univ_three, PinchingAlgebra.diagonalScalar3]
+  have hU : g.tracelessRicciNormSqAt x = U :=
+    by simpa [U] using
+      g.tracelessRicciNormSqAt_eq_diagonal_of_ricciEndoAt_eigenbasis hn b μ hEig
+  have hT :
+      g.pinchingTracelessRicciReactionTrace3At x
+          (g.pinchingRicciNormReactionMotionTraceCubicAt x) = T :=
+    by simpa [T] using
+      g.pinchingTracelessRicciReactionTrace3At_eq_diagonal_of_ricciEndoAt_eigenbasis b μ hEig
+  have hS : g.pinchingScalarReactionAt x = S :=
+    by simpa [S] using
+      g.pinchingScalarReactionAt_eq_diagonal_of_ricciEndoAt_eigenbasis b μ hEig
+  have hDpos : 0 < D := by
+    simpa [hR] using hRpos
+  have hDne : D ≠ 0 := ne_of_gt hDpos
+  have hDpow_ne : D ^ (2 - δ) ≠ 0 :=
+    ne_of_gt (Real.rpow_pos_of_pos hDpos (2 - δ))
+  have hpow : D ^ (3 - δ) = D ^ (2 - δ) * D := by
+    have h := Real.rpow_add_one hDne (2 - δ)
+    simpa [show 2 - δ + 1 = 3 - δ by ring] using h
+  rw [tracelessPinchingReactionTermAt, hR, hU, hT, hS, hpow]
+  change T / D ^ (2 - δ) - (2 - δ) * U * S / (D ^ (2 - δ) * D) =
+    (D * T - (2 - δ) * U * S) / (D ^ (2 - δ) * D)
+  field_simp [hDne, hDpow_ne]
+
 /--
 Given a Ricci-endomorphism eigenbasis, the invariant manifold remainder is the
 diagonal Hamilton reaction remainder.
@@ -24677,6 +24779,64 @@ theorem pinchingReactionRemainderAt_nonpos_of_scalar_pos
   exact
     g.pinchingReactionRemainderAt_nonpos_of_scalar_pos_of_ricciEndoAt_eigenbasis
       b μ hEig hRpos
+
+/--
+The improved traceless pinching reaction is nonpositive in a Ricci eigenbasis
+whose eigenvalues satisfy the `epsilon` pinching floor.
+-/
+theorem tracelessPinchingReactionTermAt_nonpos_of_ricciEndoAt_eigenbasis
+    (hn : n = 3) {ε δ : ℝ} {x : M}
+    (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ)
+    (hEig : ∀ i : Fin 3, g.ricciEndoAt x (b i) = μ i • b i)
+    (hεpos : 0 < ε) (hεle : ε ≤ 1 / 3)
+    (hδnonneg : 0 ≤ δ)
+    (hδle : δ ≤ PinchingAlgebra.pinchedTracelessAdmissibleDelta3 ε)
+    (hRpos : 0 < g.scalarAt x)
+    (hpin : ∀ i : Fin 3, ε * g.scalarAt x ≤ μ i) :
+    g.tracelessPinchingReactionTermAt x δ
+        (g.pinchingTracelessRicciReactionTrace3At x
+          (g.pinchingRicciNormReactionMotionTraceCubicAt x)) ≤ 0 := by
+  rw [g.tracelessPinchingReactionTermAt_eq_diagonal_of_ricciEndoAt_eigenbasis
+    hn b μ hEig δ hRpos]
+  have hR :
+      g.scalarAt x = PinchingAlgebra.diagonalScalar3 (μ 0) (μ 1) (μ 2) := by
+    rw [g.scalarAt_eq_sum_eigenvalues_of_ricciEndoAt_eigenbasis b μ hEig]
+    simp [Fin.sum_univ_three, PinchingAlgebra.diagonalScalar3]
+  have hDpos :
+      0 < PinchingAlgebra.diagonalScalar3 (μ 0) (μ 1) (μ 2) := by
+    simpa [← hR] using hRpos
+  have hnum :
+      PinchingAlgebra.diagonalTracelessPinchingReactionNumerator3
+          δ (μ 0) (μ 1) (μ 2) ≤ 0 :=
+    PinchingAlgebra.TracelessPinchingEigenvalueImprovementLemma3_holds ε δ
+      hεpos hεle hδnonneg hδle (μ 0) (μ 1) (μ 2) hDpos
+      (by simpa [← hR] using hpin 0)
+      (by simpa [← hR] using hpin 1)
+      (by simpa [← hR] using hpin 2)
+  exact div_nonpos_of_nonpos_of_nonneg hnum
+    (le_of_lt (Real.rpow_pos_of_pos hDpos (3 - δ)))
+
+/--
+Pointwise manifold transport of the improved reaction sign: if every Ricci
+eigenbasis witness has eigenvalues at least `epsilon R`, the named invariant
+reaction term is nonpositive.
+-/
+theorem tracelessPinchingReactionTermAt_nonpos_of_eigenvalue_pinched
+    (hn : n = 3) {ε δ : ℝ} {x : M}
+    (hεpos : 0 < ε) (hεle : ε ≤ 1 / 3)
+    (hδnonneg : 0 ≤ δ)
+    (hδle : δ ≤ PinchingAlgebra.pinchedTracelessAdmissibleDelta3 ε)
+    (hRpos : 0 < g.scalarAt x)
+    (hpin : ∀ (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ),
+      (∀ i : Fin 3, g.ricciEndoAt x (b i) = μ i • b i) →
+        ∀ i : Fin 3, ε * g.scalarAt x ≤ μ i) :
+    g.tracelessPinchingReactionTermAt x δ
+        (g.pinchingTracelessRicciReactionTrace3At x
+          (g.pinchingRicciNormReactionMotionTraceCubicAt x)) ≤ 0 := by
+  obtain ⟨b, μ, hEig⟩ := g.exists_ricciEndoAt_eigenbasis_of_dim_three hn (x := x)
+  exact
+    g.tracelessPinchingReactionTermAt_nonpos_of_ricciEndoAt_eigenbasis
+      hn b μ hEig hεpos hεle hδnonneg hδle hRpos (hpin b μ hEig)
 
 /--
 Corrected quotient-evolution target.  The reaction sign is intentionally not
