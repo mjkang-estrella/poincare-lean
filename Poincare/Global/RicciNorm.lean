@@ -732,6 +732,127 @@ theorem diagonalPinchingQuotient3_one_one_two :
     diagonalPinchingQuotient3 1 1 2 = 3 / 8 := by
   norm_num [diagonalPinchingQuotient3, diagonalRicciNormSq3, diagonalScalar3]
 
+/--
+If every diagonal Ricci eigenvalue is at least `epsilon R`, then the normalized
+Ricci quotient is bounded by the worst endpoint pattern
+`(epsilon, epsilon, 1 - 2 epsilon)`.
+-/
+theorem diagonalPinchingQuotient3_le_of_eigenvalue_floor
+    {ε a b c : ℝ} (hRpos : 0 < diagonalScalar3 a b c)
+    (ha : ε * diagonalScalar3 a b c ≤ a)
+    (hb : ε * diagonalScalar3 a b c ≤ b)
+    (hc : ε * diagonalScalar3 a b c ≤ c) :
+    diagonalPinchingQuotient3 a b c ≤ 1 - 4 * ε + 6 * ε ^ 2 := by
+  have hden : 0 < (diagonalScalar3 a b c) ^ 2 := sq_pos_of_pos hRpos
+  rw [diagonalPinchingQuotient3]
+  apply (div_le_iff₀ hden).mpr
+  have hab :
+      0 ≤ (a - ε * diagonalScalar3 a b c) *
+          (b - ε * diagonalScalar3 a b c) := by
+    exact mul_nonneg (sub_nonneg.mpr ha) (sub_nonneg.mpr hb)
+  have hbc :
+      0 ≤ (b - ε * diagonalScalar3 a b c) *
+          (c - ε * diagonalScalar3 a b c) := by
+    exact mul_nonneg (sub_nonneg.mpr hb) (sub_nonneg.mpr hc)
+  have hca :
+      0 ≤ (c - ε * diagonalScalar3 a b c) *
+          (a - ε * diagonalScalar3 a b c) := by
+    exact mul_nonneg (sub_nonneg.mpr hc) (sub_nonneg.mpr ha)
+  have hdiff :
+      (1 - 4 * ε + 6 * ε ^ 2) * (diagonalScalar3 a b c) ^ 2
+          - diagonalRicciNormSq3 a b c =
+        2 * ((a - ε * diagonalScalar3 a b c) *
+              (b - ε * diagonalScalar3 a b c)
+            + (b - ε * diagonalScalar3 a b c) *
+              (c - ε * diagonalScalar3 a b c)
+            + (c - ε * diagonalScalar3 a b c) *
+              (a - ε * diagonalScalar3 a b c)) := by
+    unfold diagonalScalar3 diagonalRicciNormSq3
+    ring
+  have hnonneg :
+      0 ≤ (1 - 4 * ε + 6 * ε ^ 2) * (diagonalScalar3 a b c) ^ 2
+          - diagonalRicciNormSq3 a b c := by
+    rw [hdiff]
+    nlinarith
+  linarith
+
+/--
+One-coordinate algebraic converse: a preserved quotient bound gives the
+explicit lower eigenvalue floor `2 epsilon - 1/3`.
+-/
+theorem diagonal_eigenvalue_floor1_of_pinchingQuotient3_le
+    {ε a b c : ℝ} (hεle : ε ≤ 1 / 3)
+    (hRpos : 0 < diagonalScalar3 a b c)
+    (hq : diagonalPinchingQuotient3 a b c ≤ 1 - 4 * ε + 6 * ε ^ 2) :
+    (2 * ε - 1 / 3) * diagonalScalar3 a b c ≤ a := by
+  let R : ℝ := diagonalScalar3 a b c
+  let κ : ℝ := 1 - 4 * ε + 6 * ε ^ 2
+  let α : ℝ := 2 * ε - 1 / 3
+  let β : ℝ := 1 - 2 * ε
+  have hRpos' : 0 < R := by simpa [R] using hRpos
+  have hden : 0 < R ^ 2 := sq_pos_of_pos hRpos'
+  have hq' : diagonalRicciNormSq3 a b c / R ^ 2 ≤ κ := by
+    simpa [diagonalPinchingQuotient3, R, κ] using hq
+  have hNle : diagonalRicciNormSq3 a b c ≤ κ * R ^ 2 :=
+    (div_le_iff₀ hden).mp hq'
+  change α * R ≤ a
+  by_contra hnot
+  have hltα : a < α * R := lt_of_not_ge hnot
+  have hαβ : α * R ≤ β * R := by
+    have hcoeff : α ≤ β := by
+      dsimp [α, β]
+      nlinarith [hεle]
+    exact mul_le_mul_of_nonneg_right hcoeff hRpos'.le
+  have hltβ : a < β * R := lt_of_lt_of_le hltα hαβ
+  have hquad_le : 2 * a ^ 2 + (R - a) ^ 2 ≤ 2 * κ * R ^ 2 := by
+    have hbc_sq : 0 ≤ (b - c) ^ 2 := sq_nonneg (b - c)
+    have hidentity :
+        2 * diagonalRicciNormSq3 a b c =
+          2 * a ^ 2 + (R - a) ^ 2 + (b - c) ^ 2 := by
+      simp [R, diagonalScalar3, diagonalRicciNormSq3]
+      ring
+    nlinarith
+  have hfact :
+      2 * a ^ 2 + (R - a) ^ 2 - 2 * κ * R ^ 2 =
+        3 * (a - α * R) * (a - β * R) := by
+    simp [R, κ, α, β, diagonalScalar3]
+    ring
+  have hquad_pos : 0 < 2 * a ^ 2 + (R - a) ^ 2 - 2 * κ * R ^ 2 := by
+    rw [hfact]
+    have hprod : 0 < (a - α * R) * (a - β * R) :=
+      mul_pos_of_neg_of_neg (sub_neg.mpr hltα) (sub_neg.mpr hltβ)
+    nlinarith
+  linarith
+
+/--
+Quotient closeness to the round value transports to the same explicit lower
+floor for all three diagonal eigenvalues.
+-/
+theorem diagonal_eigenvalue_floor_of_pinchingQuotient3_le
+    {ε a b c : ℝ} (hεle : ε ≤ 1 / 3)
+    (hRpos : 0 < diagonalScalar3 a b c)
+    (hq : diagonalPinchingQuotient3 a b c ≤ 1 - 4 * ε + 6 * ε ^ 2) :
+    (2 * ε - 1 / 3) * diagonalScalar3 a b c ≤ a ∧
+      (2 * ε - 1 / 3) * diagonalScalar3 a b c ≤ b ∧
+        (2 * ε - 1 / 3) * diagonalScalar3 a b c ≤ c := by
+  refine ⟨?_, ?_, ?_⟩
+  · exact diagonal_eigenvalue_floor1_of_pinchingQuotient3_le
+      hεle hRpos hq
+  · have hb := diagonal_eigenvalue_floor1_of_pinchingQuotient3_le
+      (ε := ε) (a := b) (b := a) (c := c) hεle
+      (by simpa [diagonalScalar3, add_comm, add_left_comm, add_assoc] using hRpos)
+      (by
+        simpa [diagonalPinchingQuotient3, diagonalRicciNormSq3, diagonalScalar3,
+          add_comm, add_left_comm, add_assoc] using hq)
+    simpa [diagonalScalar3, add_comm, add_left_comm, add_assoc] using hb
+  · have hc := diagonal_eigenvalue_floor1_of_pinchingQuotient3_le
+      (ε := ε) (a := c) (b := a) (c := b) hεle
+      (by simpa [diagonalScalar3, add_comm, add_left_comm, add_assoc] using hRpos)
+      (by
+        simpa [diagonalPinchingQuotient3, diagonalRicciNormSq3, diagonalScalar3,
+          add_comm, add_left_comm, add_assoc] using hq)
+    simpa [diagonalScalar3, add_comm, add_left_comm, add_assoc] using hc
+
 /-- Non-Einstein diagonal test pattern `(1,1,2)`: pinching gap coefficient `2`. -/
 theorem diagonalPinchingGap3_one_one_two :
     diagonalPinchingGap3 1 1 2 = 2 := by

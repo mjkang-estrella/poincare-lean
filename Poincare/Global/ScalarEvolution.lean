@@ -3712,6 +3712,61 @@ theorem pinchingQuotientAt_le_pinchingMaximumAt
   rw [pinchingMaximumAt_eq_of_isMaxOn (g := g) hx₀max]
   exact hx₀max trivial
 
+/-- On a compact closed manifold, the improved traceless quotient attains a global maximum. -/
+theorem exists_tracelessPinchingAt_isMaxOn
+    [CompactSpace M] [Nonempty M]
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (δ : ℝ)
+    (hQ :
+      ∀ x : M, ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ g.tracelessPinchingAt y δ) x) :
+    ∃ x : M, IsMaxOn (fun y : M ↦ g.tracelessPinchingAt y δ) Set.univ x := by
+  obtain ⟨x, hx, hmax⟩ := isCompact_univ.exists_isMaxOn
+    (Set.univ_nonempty) (fun y _ ↦ (hQ y).continuousAt.continuousWithinAt)
+  exact ⟨x, hmax⟩
+
+/-- The improved traceless-quotient maximum, defined as the supremum of the range. -/
+noncomputable def tracelessPinchingMaximumAt
+    (g : ClosedSmoothRiemannianMetric n M) (δ : ℝ) : ℝ :=
+  sSup (Set.range fun y : M ↦ g.tracelessPinchingAt y δ)
+
+/-- The improved traceless-quotient maximum track based at geometric time `t₀`. -/
+noncomputable def tracelessPinchingMaximumTrack
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ δ : ℝ) : ℝ → ℝ :=
+  fun τ ↦ tracelessPinchingMaximumAt (gt (t₀ + τ)) δ
+
+/-- If the improved traceless quotient attains its maximum at `x`, the supremum equals it. -/
+theorem tracelessPinchingMaximumAt_eq_of_isMaxOn
+    (g : ClosedSmoothRiemannianMetric n M) (δ : ℝ) {x : M}
+    (hmax : IsMaxOn (fun y : M ↦ g.tracelessPinchingAt y δ) Set.univ x) :
+    tracelessPinchingMaximumAt g δ = g.tracelessPinchingAt x δ := by
+  let S : Set ℝ := Set.range fun y : M ↦ g.tracelessPinchingAt y δ
+  have hne : S.Nonempty := ⟨g.tracelessPinchingAt x δ, ⟨x, rfl⟩⟩
+  have hupper : ∀ y ∈ S, y ≤ g.tracelessPinchingAt x δ := by
+    intro y hy
+    rcases hy with ⟨z, hzy⟩
+    exact hzy ▸ hmax trivial
+  have hbdd : BddAbove S := ⟨g.tracelessPinchingAt x δ, hupper⟩
+  apply le_antisymm
+  · exact csSup_le hne hupper
+  · exact le_csSup hbdd ⟨x, rfl⟩
+
+/-- The improved traceless-quotient supremum lies above every point value. -/
+theorem tracelessPinchingAt_le_tracelessPinchingMaximumAt
+    [CompactSpace M] [Nonempty M]
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (δ : ℝ)
+    (hQ :
+      ∀ x : M, ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ g.tracelessPinchingAt y δ) x)
+    (x : M) :
+    g.tracelessPinchingAt x δ ≤ tracelessPinchingMaximumAt g δ := by
+  obtain ⟨x₀, hx₀max⟩ := exists_tracelessPinchingAt_isMaxOn (g := g) δ hQ
+  rw [tracelessPinchingMaximumAt_eq_of_isMaxOn (g := g) δ hx₀max]
+  exact hx₀max trivial
+
 /--
 At a spatial maximum of the pinching quotient, Hamilton's quotient evolution
 has nonpositive time derivative in dimension three.
@@ -4507,6 +4562,325 @@ theorem hamilton_pinching_preserved
     simpa [u] using hnonneg
   rw [pinchingMaximumTrack, pinchingMaximumAt_eq_of_isMaxOn
     (g := gt (t₀ + τ)) hxτmax]
+  simpa [Q, C] using hQle
+
+/--
+Eigenvalue-pinching consequence of Hamilton's preserved quotient maximum.
+An initial floor `lambda_i >= epsilon R` gives the explicit transported floor
+`lambda_i >= (2 epsilon - 1/3) R` along the flow.
+-/
+theorem hamilton_eigenvalue_pinching_floor_preserved
+    [CompactSpace M] [Nonempty M]
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ T ε : ℝ}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hn : n = 3) (hεle : ε ≤ 1 / 3) (hT0 : 0 ≤ T)
+    (hQ_cont :
+      Continuous ↿(fun τ (x : M) ↦ (gt (t₀ + τ)).pinchingQuotientAt x))
+    (hQ₂ : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ (gt (t₀ + τ)).pinchingQuotientAt y) x)
+    (hEvol : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      ClosedSmoothRiemannianMetric.SatisfiesPinchingQuotientEvolutionAt
+        gt (t₀ + τ) x
+          ((gt (t₀ + τ)).pinchingRicciNormReactionMotionTraceCubicAt x))
+    (hRpos : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      0 < (gt (t₀ + τ)).scalarAt x)
+    (hInitPin : ∀ x : M,
+      ∀ (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ),
+        (∀ i : Fin 3, (gt t₀).ricciEndoAt x (b i) = μ i • b i) →
+          ∀ i : Fin 3, ε * (gt t₀).scalarAt x ≤ μ i) :
+    ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      ∀ (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ),
+        (∀ i : Fin 3, (gt (t₀ + τ)).ricciEndoAt x (b i) = μ i • b i) →
+          ∀ i : Fin 3, (2 * ε - 1 / 3) * (gt (t₀ + τ)).scalarAt x ≤ μ i := by
+  let κ : ℝ := 1 - 4 * ε + 6 * ε ^ 2
+  have hmax_preserved :
+      ∀ τ ∈ Icc (0 : ℝ) T,
+        pinchingMaximumTrack gt t₀ τ ≤ pinchingMaximumTrack gt t₀ 0 :=
+    hamilton_pinching_preserved
+      (gt := gt) (t₀ := t₀) (T := T)
+      hn hT0 hQ_cont hQ₂ hEvol
+  have hQ0₂ :
+      ∀ x : M, ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ (gt t₀).pinchingQuotientAt y) x := by
+    intro x
+    simpa using hQ₂ 0 ⟨le_refl 0, hT0⟩ x
+  have hmax0_le : pinchingMaximumTrack gt t₀ 0 ≤ κ := by
+    obtain ⟨x₀, hx₀max⟩ :=
+      exists_pinchingQuotientAt_isMaxOn
+        (g := gt (t₀ + 0))
+        (by
+          intro x
+          simpa [add_zero] using hQ0₂ x)
+    rw [pinchingMaximumTrack, pinchingMaximumAt_eq_of_isMaxOn
+      (g := gt (t₀ + 0)) hx₀max]
+    have hinit := (gt t₀).pinchingQuotientAt_le_of_eigenvalue_pinched
+      hn (by simpa [add_zero] using hRpos 0 ⟨le_refl 0, hT0⟩ x₀) (hInitPin x₀)
+    simpa [add_zero] using hinit
+  intro τ hτ x b μ hEig i
+  have hpoint_le_max :
+      (gt (t₀ + τ)).pinchingQuotientAt x ≤
+        pinchingMaximumTrack gt t₀ τ := by
+    have hQτ₂ :
+        ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2
+          (fun z : M ↦ (gt (t₀ + τ)).pinchingQuotientAt z) y :=
+      hQ₂ τ hτ
+    simpa [pinchingMaximumTrack] using
+      pinchingQuotientAt_le_pinchingMaximumAt
+        (g := gt (t₀ + τ)) hQτ₂ x
+  have hq :
+      (gt (t₀ + τ)).pinchingQuotientAt x ≤ 1 - 4 * ε + 6 * ε ^ 2 := by
+    exact le_trans hpoint_le_max
+      (le_trans (hmax_preserved τ hτ) (by simpa [κ] using hmax0_le))
+  exact (gt (t₀ + τ)).eigenvalue_pinched_of_pinchingQuotientAt_le
+    hεle (hRpos τ hτ x) hq b μ hEig i
+
+/--
+Hamilton's improved traceless pinching maximum principle.  Under positive
+scalar curvature, the improved evolution inequality, and an epsilon
+Ricci-eigenvalue pinching floor strong enough to make the improved reaction
+nonpositive, the spatial maximum of
+`|Ric°|² / R^(2 - delta)` is nonincreasing.
+-/
+theorem hamilton_pinching_improvement
+    [CompactSpace M] [Nonempty M]
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ T ε δ : ℝ}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hn : n = 3) (hT0 : 0 ≤ T)
+    (hεpos : 0 < ε) (hεle : ε ≤ 1 / 3)
+    (hδnonneg : 0 ≤ δ)
+    (hδadm : δ ≤ PinchingAlgebra.pinchedTracelessAdmissibleDelta3 ε)
+    (hQ_cont :
+      Continuous ↿(fun τ (x : M) ↦ (gt (t₀ + τ)).tracelessPinchingAt x δ))
+    (hQ₂ : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ (gt (t₀ + τ)).tracelessPinchingAt y δ) x)
+    (hEvol : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      ClosedSmoothRiemannianMetric.SatisfiesTracelessPinchingImprovementEvolutionAt
+        gt (t₀ + τ) x δ
+          ((gt (t₀ + τ)).pinchingRicciNormReactionMotionTraceCubicAt x))
+    (hPin : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      ∀ (b : Module.Basis (Fin 3) ℝ (TM x)) (μ : Fin 3 → ℝ),
+        (∀ i : Fin 3, (gt (t₀ + τ)).ricciEndoAt x (b i) = μ i • b i) →
+          ∀ i : Fin 3, ε * (gt (t₀ + τ)).scalarAt x ≤ μ i) :
+    ∀ τ ∈ Icc (0 : ℝ) T,
+      tracelessPinchingMaximumTrack gt t₀ δ τ ≤
+        tracelessPinchingMaximumTrack gt t₀ δ 0 := by
+  classical
+  let Q : ℝ → M → ℝ := fun τ x ↦ (gt (t₀ + τ)).tracelessPinchingAt x δ
+  let C : ℝ := tracelessPinchingMaximumTrack gt t₀ δ 0
+  let u : ℝ → M → ℝ := fun τ x ↦ C - Q τ x
+  let Q' : ℝ → M → ℝ := fun τ x ↦
+    if hτ : τ ∈ Icc (0 : ℝ) T then
+      Classical.choose (hEvol τ hτ x).2.2.2
+    else 0
+  let u' : ℝ → M → ℝ := fun τ x ↦ -Q' τ x
+  let L : ℝ → (M → ℝ) → M → ℝ := fun τ f x ↦
+    let g := gt (t₀ + τ)
+    g.laplacianAt f x +
+      ((2 - δ) / g.scalarAt x) *
+        g.inner x
+          (g.gradientAt (fun y : M ↦ g.scalarAt y) x)
+          (g.gradientAt f x)
+  have hQd : ∀ x : M, ∀ τ ∈ Icc (0 : ℝ) T,
+      HasDerivAt (fun s ↦ Q s x) (Q' τ x) τ := by
+    intro x τ hτ
+    have hτpair : 0 ≤ τ ∧ τ ≤ T := ⟨hτ.1, hτ.2⟩
+    have hspec := Classical.choose_spec (hEvol τ hτpair x).2.2.2
+    have hbase :
+        HasDerivAt (fun t ↦ (gt t).tracelessPinchingAt x δ)
+          (Q' τ x) (t₀ + τ) := by
+      simpa [Q', hτpair] using hspec.1
+    have hshift : HasDerivAt (fun s : ℝ ↦ t₀ + s) 1 τ := by
+      simpa using (hasDerivAt_id τ).const_add t₀
+    simpa [Q] using hbase.comp τ hshift
+  have hud : ∀ x : M, ∀ τ ∈ Icc (0 : ℝ) T,
+      HasDerivAt (fun s ↦ u s x) (u' τ x) τ := by
+    intro x τ hτ
+    have hconst : HasDerivAt (fun _ : ℝ ↦ C) 0 τ := hasDerivAt_const τ C
+    simpa [u, u'] using hconst.sub (hQd x τ hτ)
+  have hQ0₂ :
+      ∀ x : M, ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦ (gt t₀).tracelessPinchingAt y δ) x := by
+    intro x
+    simpa using hQ₂ 0 ⟨le_refl 0, hT0⟩ x
+  have h0point : ∀ x : M, 0 ≤ u 0 x := by
+    intro x
+    have hle :=
+      tracelessPinchingAt_le_tracelessPinchingMaximumAt
+        (g := gt t₀) δ hQ0₂ x
+    simpa [u, Q, C, tracelessPinchingMaximumTrack] using sub_nonneg.mpr hle
+  have hQtoU₂ : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      ContMDiffAt I 𝓘(ℝ) 2 (u τ) x := by
+    intro τ hτ x
+    have hconst : ContMDiffAt I 𝓘(ℝ) 2 (fun _ : M ↦ C) x :=
+      contMDiffAt_const
+    simpa [u, Q] using hconst.sub (hQ₂ τ hτ x)
+  have hlap_add_const : ∀ τ ∈ Icc (0 : ℝ) T, ∀ k : ℝ, ∀ x : M,
+      L τ (fun y : M ↦ u τ y + k) x = L τ (u τ) x := by
+    intro τ hτ k x
+    let g := gt (t₀ + τ)
+    have hf : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2 (u τ) y :=
+      hQtoU₂ τ hτ
+    have hk : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2 (fun _ : M ↦ k) y :=
+      fun _ ↦ contMDiffAt_const
+    have hlap :
+        g.laplacianAt (fun y : M ↦ u τ y + k) x =
+          g.laplacianAt (u τ) x := by
+      change g.laplacianAt ((u τ) + fun _ : M ↦ k) x =
+        g.laplacianAt (u τ) x
+      rw [g.laplacianAt_add' (f := u τ) (h := fun _ : M ↦ k) (x := x) hf hk]
+      rw [g.laplacianAt_const k x]
+      ring
+    have hgrad :
+        g.gradientAt (fun y : M ↦ u τ y + k) x =
+          g.gradientAt (u τ) x := by
+      change g.gradientAt ((u τ) + fun _ : M ↦ k) x =
+        g.gradientAt (u τ) x
+      rw [g.gradientAt_add
+        ((hf x).mdifferentiableAt two_ne_zero) mdifferentiableAt_const]
+      rw [g.gradientAt_const k x]
+      simp
+    change
+      g.laplacianAt (fun y : M ↦ u τ y + k) x +
+          ((2 - δ) / g.scalarAt x) *
+            g.inner x
+              (g.gradientAt (fun y : M ↦ g.scalarAt y) x)
+              (g.gradientAt (fun y : M ↦ u τ y + k) x) =
+        g.laplacianAt (u τ) x +
+          ((2 - δ) / g.scalarAt x) *
+            g.inner x
+              (g.gradientAt (fun y : M ↦ g.scalarAt y) x)
+              (g.gradientAt (u τ) x)
+    rw [hlap, hgrad]
+  have hsuper : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      L τ (u τ) x ≤ u' τ x := by
+    intro τ hτ x
+    let g := gt (t₀ + τ)
+    have hfQ : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2 (Q τ) y := by
+      intro y
+      simpa [Q, g] using hQ₂ τ hτ y
+    have hτpair : 0 ≤ τ ∧ τ ≤ T := ⟨hτ.1, hτ.2⟩
+    have hspec := Classical.choose_spec (hEvol τ hτpair x).2.2.2
+    have hRpos : 0 < g.scalarAt x := by
+      simpa [g] using (hEvol τ hτ x).2.2.1
+    have hQineq :
+        Q' τ x ≤
+          g.laplacianAt (Q τ) x
+            + g.tracelessPinchingGradientDrift3At x δ
+            + g.tracelessPinchingReactionTermAt x δ
+              (g.pinchingTracelessRicciReactionTrace3At x
+                (g.pinchingRicciNormReactionMotionTraceCubicAt x)) := by
+      simpa [Q', Q, g, hτpair] using hspec.2
+    have hreact :
+        g.tracelessPinchingReactionTermAt x δ
+            (g.pinchingTracelessRicciReactionTrace3At x
+              (g.pinchingRicciNormReactionMotionTraceCubicAt x)) ≤ 0 := by
+      exact g.tracelessPinchingReactionTermAt_nonpos_of_eigenvalue_pinched
+        hn hεpos hεle hδnonneg hδadm hRpos (hPin τ hτ x)
+    have hQineq' :
+        Q' τ x ≤ g.laplacianAt (Q τ) x + g.tracelessPinchingGradientDrift3At x δ := by
+      linarith
+    have hUfun :
+        u τ = (fun _ : M ↦ C) + (-1 : ℝ) • (Q τ) := by
+      funext y
+      simp [u, Q, sub_eq_add_neg]
+    have hlapU :
+        g.laplacianAt (u τ) x = -g.laplacianAt (Q τ) x := by
+      rw [hUfun]
+      rw [g.laplacianAt_add' (f := fun _ : M ↦ C)
+        (h := (-1 : ℝ) • (Q τ)) (x := x)
+        (fun _ ↦ contMDiffAt_const)
+        (fun y ↦ contMDiffAt_const.smul (hfQ y))]
+      rw [g.laplacianAt_const C x]
+      rw [g.laplacianAt_const_smul' (c := -1) (f := Q τ) (x := x) hfQ]
+      ring
+    have hgradU :
+        g.gradientAt (u τ) x = -g.gradientAt (Q τ) x := by
+      rw [hUfun]
+      rw [g.gradientAt_add
+        (f := fun _ : M ↦ C) (h := (-1 : ℝ) • (Q τ)) (x := x)
+        mdifferentiableAt_const
+        ((contMDiffAt_const.smul (hfQ x)).mdifferentiableAt two_ne_zero)]
+      rw [g.gradientAt_const C x]
+      rw [g.gradientAt_const_smul (c := -1) (f := Q τ) (x := x)
+        ((hfQ x).mdifferentiableAt two_ne_zero)]
+      simp
+    have hdriftU :
+        ((2 - δ) / g.scalarAt x) *
+            g.inner x
+              (g.gradientAt (fun y : M ↦ g.scalarAt y) x)
+              (g.gradientAt (u τ) x) =
+          -g.tracelessPinchingGradientDrift3At x δ := by
+      have hQfun : Q τ = fun y : M ↦ g.tracelessPinchingAt y δ := by
+        funext y
+        simp [Q, g]
+      unfold ClosedSmoothRiemannianMetric.tracelessPinchingGradientDrift3At
+      rw [hgradU, hQfun]
+      simp
+    have hL :
+        L τ (u τ) x =
+          -(g.laplacianAt (Q τ) x + g.tracelessPinchingGradientDrift3At x δ) := by
+      change
+        g.laplacianAt (u τ) x +
+            ((2 - δ) / g.scalarAt x) *
+              g.inner x
+                (g.gradientAt (fun y : M ↦ g.scalarAt y) x)
+                (g.gradientAt (u τ) x) =
+          -(g.laplacianAt (Q τ) x + g.tracelessPinchingGradientDrift3At x δ)
+      rw [hlapU, hdriftU]
+      ring
+    rw [hL]
+    simpa [u'] using neg_le_neg hQineq'
+  have hmin_lap : ∀ τ ∈ Icc (0 : ℝ) T, ∀ x : M,
+      IsMinOn (u τ) Set.univ x → 0 ≤ L τ (u τ) x := by
+    intro τ hτ x hmin
+    let g := gt (t₀ + τ)
+    have hfU : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2 (u τ) y :=
+      hQtoU₂ τ hτ
+    have hlocalMin : IsLocalMin (u τ) x :=
+      hmin.isLocalMin Filter.univ_mem
+    have hlap :
+        0 ≤ g.laplacianAt (u τ) x :=
+      laplacianAt_nonneg_of_isLocalMin
+        (g := g) (f := u τ) (x := x) (hfU x)
+        (g.mdifferentiableAt_gradient (hfU x)) hlocalMin
+    have hgrad :
+        g.gradientAt (u τ) x = 0 :=
+      gradientAt_eq_zero_of_isLocalMin
+        (g := g) (f := u τ) (x := x) (hfU x) hlocalMin
+    change
+      0 ≤ g.laplacianAt (u τ) x +
+        ((2 - δ) / g.scalarAt x) *
+          g.inner x
+            (g.gradientAt (fun y : M ↦ g.scalarAt y) x)
+            (g.gradientAt (u τ) x)
+    rw [hgrad]
+    simpa using hlap
+  have hkey := closed_parabolic_min_principle_var
+    (lap := L) (u := u) (u' := u') (c := fun _ _ ↦ (0 : ℝ))
+    (T := T) (M₀ := 0)
+    (by intro τ hτ x; exact le_refl (0 : ℝ))
+    (by
+      simpa [u, Q, C] using (continuous_const.sub hQ_cont))
+    hud
+    hlap_add_const
+    (by
+      intro τ hτ x
+      simpa using hsuper τ hτ x)
+    hmin_lap
+    h0point
+  intro τ hτ
+  obtain ⟨xτ, hxτmax⟩ :=
+    exists_tracelessPinchingAt_isMaxOn
+      (g := gt (t₀ + τ)) δ (hQ₂ τ hτ)
+  have hnonneg := hkey τ hτ xτ
+  have hQle : Q τ xτ ≤ C := by
+    simpa [u] using hnonneg
+  rw [tracelessPinchingMaximumTrack, tracelessPinchingMaximumAt_eq_of_isMaxOn
+    (g := gt (t₀ + τ)) δ hxτmax]
   simpa [Q, C] using hQle
 
 /--
