@@ -2357,6 +2357,152 @@ theorem metricVariationRicciPairingAt_eq_metricRicciPairingTraceInBasisAt
         metricRicciPairingTraceInBasisAt_eq_metricRicciPairingTraceInBasisAt
           (g := g) (x := x) (B := B) b b'
 
+set_option maxHeartbeats 5000000 in
+/--
+Anchored Gram-frame expansion of `⟨H,Ric⟩` for a symmetric fiberwise
+bilinear field.  The two raised slots are expressed using the Gram inverse of
+the frame seeded at `x`.
+-/
+theorem metricVariationRicciPairingAt_eq_sum_gram_inv_of_symm
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (h : ∀ y : M, TM y → TM y → ℝ)
+    (x y : M) (hG : IsUnit (gramMatrix g x y))
+    (B : LinearMap.BilinForm ℝ (TM y))
+    (hB : ∀ p q : TM y, B p q = h y p q)
+    (hSymm : ∀ p q : TM y, h y p q = h y q p) :
+    metricVariationRicciPairingAt g h y =
+      ∑ a, ∑ b, ∑ c, ∑ d,
+        (gramMatrix g x y)⁻¹ a c *
+          (gramMatrix g x y)⁻¹ b d *
+          h y (gramFrame x y b) (gramFrame x y c) *
+          g.ricciAt y (gramFrame x y a) (gramFrame x y d) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  letI : FiniteDimensional ℝ (TM y) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := gramFrameBasis g x y hG
+  let G : Matrix (Fin (Module.finrank ℝ (TM x)))
+      (Fin (Module.finrank ℝ (TM x))) ℝ := gramMatrix g x y
+  let e : Fin (Module.finrank ℝ (TM x)) → TM y := gramFrame x y
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM y :=
+    fun i ↦ metricDualVectorAt g y (b.coord i)
+  have hsharp : ∀ i, sharp i = ∑ j, G⁻¹ i j • e j := by
+    intro i
+    simpa [sharp, b, G, e] using
+      metricDualVectorAt_gramFrameBasis_coord_eq_sum_inv
+        (g := g) (x := x) (y := y) hG i
+  have hRicCoeff : ∀ a b',
+      b.coord b' (g.ricciEndoAt y (e a)) =
+        ∑ d, G⁻¹ b' d * g.ricciAt y (e a) (e d) := by
+    intro a b'
+    calc
+      b.coord b' (g.ricciEndoAt y (e a)) =
+          g.inner y (g.ricciEndoAt y (e a)) (sharp b') := by
+          simpa [sharp] using
+            coord_eq_inner_metricDualVectorAt_of_basis
+              (g := g) (x := y) (b := b) b' (g.ricciEndoAt y (e a))
+      _ = g.ricciAt y (e a) (sharp b') := by
+          simp [g.inner_ricciEndoAt]
+      _ = g.ricciAt y (e a) (∑ d, G⁻¹ b' d • e d) := by
+          rw [hsharp b']
+      _ = ∑ d, G⁻¹ b' d * g.ricciAt y (e a) (e d) := by
+          change (g.ricciDualContinuousAt y (e a)) (∑ d, G⁻¹ b' d • e d) =
+            ∑ d, G⁻¹ b' d * g.ricciAt y (e a) (e d)
+          rw [map_sum]
+          simp [smul_eq_mul]
+  have hRicExpand : ∀ a,
+      g.ricciEndoAt y (e a) =
+        ∑ b', (∑ d, G⁻¹ b' d * g.ricciAt y (e a) (e d)) • e b' := by
+    intro a
+    calc
+      g.ricciEndoAt y (e a) =
+          ∑ b', b.coord b' (g.ricciEndoAt y (e a)) • b b' := by
+          exact (b.sum_repr (g.ricciEndoAt y (e a))).symm
+      _ = ∑ b', (∑ d, G⁻¹ b' d * g.ricciAt y (e a) (e d)) • e b' := by
+          refine Finset.sum_congr rfl fun b' _ ↦ ?_
+          rw [hRicCoeff a b']
+          simp [b, e]
+  have hEntry : ∀ a,
+      B (g.ricciEndoAt y (e a)) (sharp a) =
+        ∑ b', ∑ c, ∑ d,
+          G⁻¹ a c * G⁻¹ b' d *
+            h y (e b') (e c) * g.ricciAt y (e a) (e d) := by
+    intro a
+    calc
+      B (g.ricciEndoAt y (e a)) (sharp a) =
+          B (∑ b', (∑ d, G⁻¹ b' d * g.ricciAt y (e a) (e d)) • e b')
+            (∑ c, G⁻¹ a c • e c) := by
+          rw [hRicExpand a, hsharp a]
+      _ =
+          ∑ c, G⁻¹ a c *
+            B (∑ b', (∑ d, G⁻¹ b' d * g.ricciAt y (e a) (e d)) • e b')
+              (e c) := by
+          rw [map_sum]
+          simp [smul_eq_mul]
+      _ =
+          ∑ c, G⁻¹ a c *
+            (∑ b', (∑ d, G⁻¹ b' d * g.ricciAt y (e a) (e d)) *
+              B (e b') (e c)) := by
+          refine Finset.sum_congr rfl fun c _ ↦ ?_
+          have hmap :=
+            congrArg (fun L : TM y →ₗ[ℝ] ℝ ↦ L (e c))
+              (map_sum B
+                (fun b' ↦
+                  (∑ d, G⁻¹ b' d * g.ricciAt y (e a) (e d)) • e b')
+                Finset.univ)
+          simpa [smul_eq_mul] using hmap
+      _ =
+          ∑ c, ∑ b',
+            G⁻¹ a c *
+              ((∑ d, G⁻¹ b' d * g.ricciAt y (e a) (e d)) *
+                B (e b') (e c)) := by
+          refine Finset.sum_congr rfl fun c _ ↦ ?_
+          rw [Finset.mul_sum]
+      _ =
+          ∑ b', ∑ c,
+            G⁻¹ a c *
+              ((∑ d, G⁻¹ b' d * g.ricciAt y (e a) (e d)) *
+                B (e b') (e c)) := by
+          rw [Finset.sum_comm]
+      _ =
+          ∑ b', ∑ c, ∑ d,
+            G⁻¹ a c *
+              ((G⁻¹ b' d * g.ricciAt y (e a) (e d)) *
+                B (e b') (e c)) := by
+          refine Finset.sum_congr rfl fun b' _ ↦ ?_
+          refine Finset.sum_congr rfl fun c _ ↦ ?_
+          rw [Finset.sum_mul, Finset.mul_sum]
+      _ =
+          ∑ b', ∑ c, ∑ d,
+            G⁻¹ a c * G⁻¹ b' d *
+              h y (e b') (e c) * g.ricciAt y (e a) (e d) := by
+          refine Finset.sum_congr rfl fun b' _ ↦ ?_
+          refine Finset.sum_congr rfl fun c _ ↦ ?_
+          refine Finset.sum_congr rfl fun d _ ↦ ?_
+          rw [hB]
+          ring
+  calc
+    metricVariationRicciPairingAt g h y =
+        metricRicciPairingTraceInBasisAt g y B b := by
+        exact metricVariationRicciPairingAt_eq_metricRicciPairingTraceInBasisAt
+          (g := g) (h := h) (x := y) (B := B) hB hSymm b
+    _ = ∑ a, B (g.ricciEndoAt y (e a)) (sharp a) := by
+        unfold metricRicciPairingTraceInBasisAt
+        simp [b, e, sharp]
+    _ = ∑ a, ∑ b', ∑ c, ∑ d,
+          G⁻¹ a c * G⁻¹ b' d *
+            h y (e b') (e c) * g.ricciAt y (e a) (e d) := by
+        refine Finset.sum_congr rfl fun a _ ↦ ?_
+        exact hEntry a
+    _ = ∑ a, ∑ b', ∑ c, ∑ d,
+        (gramMatrix g x y)⁻¹ a c *
+          (gramMatrix g x y)⁻¹ b' d *
+          h y (gramFrame x y b') (gramFrame x y c) *
+          g.ricciAt y (gramFrame x y a) (gramFrame x y d) := by
+        simp [G, e]
+
 /-- Continuous-linear version of `metricTraceEndomorphismAt`. -/
 noncomputable def metricTraceEndomorphismContinuousAt
     (g : ClosedSmoothRiemannianMetric n M) (x : M)
