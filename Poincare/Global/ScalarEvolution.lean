@@ -128,6 +128,39 @@ noncomputable def quotientRpowDerivativeAt
     (R N N' R' p : ℝ) : ℝ :=
   (N' * R ^ p - N * ((p * R ^ (p - 1)) * R')) / (R ^ p) ^ 2
 
+private lemma traceless_quotient_rpow_derivative_algebra
+    {R N U Q A B S lapU lapR T Sreact p δ : ℝ}
+    (hR : R ≠ 0) (hRp_ne : R ^ p ≠ 0)
+    (hRpm1_ne : R ^ (p - 1) ≠ 0)
+    (hRp : R ^ p = R ^ (p - 1) * R)
+    (hRp2 : R ^ (p + 2) = R ^ p * R ^ 2)
+    (hpδ : p = 2 - δ) (hQ : Q = U / R ^ p)
+    (hU : U = N - R ^ 2 / 3) :
+    quotientRpowDerivativeAt R U
+        (lapU - 2 * A + (2 / 3 : ℝ) * S + T)
+        (lapR + Sreact) p =
+      (lapU / R ^ p
+        - p * Q * lapR / R
+        - p * (2 * B - (2 / 3 : ℝ) * R * S) / (R * R ^ p)
+        + p * Q * S / R ^ 2)
+        + (T / R ^ p - p * U * Sreact / (R * R ^ p))
+        + PinchingAlgebra.tracelessPinchingGradientNumerator3 R N A B S δ /
+          R ^ (p + 2) := by
+  unfold quotientRpowDerivativeAt
+  unfold PinchingAlgebra.tracelessPinchingGradientNumerator3
+  subst Q
+  subst U
+  subst p
+  have hRpm1_ne' : R ^ (1 - δ) ≠ 0 := by
+    convert hRpm1_ne using 1
+    ring_nf
+  have hRp' : R ^ (2 - δ) = R ^ (1 - δ) * R := by
+    convert hRp using 2
+    ring_nf
+  rw [hRp2, hRp']
+  field_simp [hR, hRpm1_ne']
+  ring_nf
+
 /--
 Differentiating a positive-denominator real-power quotient from separate
 numerator and scalar-curvature derivatives.
@@ -2532,6 +2565,227 @@ theorem satisfiesPinchingQuotientEvolutionAt_of_ricciFlow
       exact (gt t₀).pinchingQuotient_spatial_expansion
         x hRpos hScalarCont hScalarDiff hQuotDiff
         hScalarGrad hQuotGrad hScalarSqGrad hQuotScalarSqGrad hRicNormGrad)
+
+set_option maxHeartbeats 12000000 in
+/--
+Corrected improved traceless pinching evolution.  The RHS contains only the
+Laplacian, Hamilton drift, and reaction-shape term; the whole gradient
+contribution is shown nonpositive by
+`tracelessPinchingGradientNumerator3At_nonpos`.  The gradient estimate itself
+only requires `0 ≤ δ ≤ 2`; this theorem states the maximum-principle-facing
+range `0 < δ ≤ 1` used by the predicate and the reaction layer.
+-/
+theorem satisfiesTracelessPinchingImprovementEvolutionAt_of_ricciFlow
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M} {δ : ℝ}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hRicci : SatisfiesRicciEvolutionAt gt t₀ x)
+    (hScalar : SatisfiesHamiltonScalarEvolutionAt gt t₀ x)
+    (hn : n = 3)
+    (hδpos : 0 < δ) (hδle : δ ≤ 1)
+    (hRpos : 0 < (gt t₀).scalarAt x)
+    (hRicNorm₂ : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2
+      (fun z : M ↦ (gt t₀).ricciNormSqAt z) y)
+    (hScalar₂ : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2
+      (fun z : M ↦ (gt t₀).scalarAt z) y)
+    (hScalarSqDiff : ∀ y : M, MDifferentiableAt I 𝓘(ℝ)
+      (fun z : M ↦ (gt t₀).scalarAt z ^ 2) y)
+    (hScalarSqGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% ((gt t₀).gradient
+          (fun z : M ↦ (gt t₀).scalarAt z ^ 2))) x)
+    (hPairDiff : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ covRicciRicciPairingAt (gt t₀) y (extend E w y)) x)
+    (hRicSecond :
+      CovTensor2DerivExtDifferentiableAt
+        (gt t₀) (ricciVariationField (gt t₀)) x)
+    (hScalarCont : ContinuousAt (fun y : M ↦ (gt t₀).scalarAt y) x)
+    (hScalarDiff : ∀ y : M,
+      MDifferentiableAt I 𝓘(ℝ) (fun z : M ↦ (gt t₀).scalarAt z) y)
+    (hScalarNe : ∀ y : M, (gt t₀).scalarAt y ≠ 0)
+    (hTraceQuotDiff : ∀ y : M,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun z : M ↦ (gt t₀).tracelessPinchingAt z δ) y)
+    (hTraceQuotGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% ((gt t₀).gradient
+          (fun y : M ↦ (gt t₀).tracelessPinchingAt y δ))) x)
+    (hScalarGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% ((gt t₀).gradient (fun y : M ↦ (gt t₀).scalarAt y))) x)
+    (hTraceProductGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% ((gt t₀).gradient
+          ((fun y : M ↦ (gt t₀).tracelessPinchingAt y δ) *
+            (fun y : M ↦ ((gt t₀).scalarAt y) ^ (2 - δ))))) x)
+    (hTraceNormGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% ((gt t₀).gradient
+          (fun y : M ↦ (gt t₀).tracelessRicciNormSqAt y))) x) :
+    let g : ClosedSmoothRiemannianMetric n M := gt t₀
+    let δRic3 : TM x → TM x → ℝ :=
+      fun u w ↦ ricciEvolution3ReactionRHSAt g x u w
+    let hRic3 : ∀ u w : TM x,
+        HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic3 u w) t₀ :=
+      SatisfiesRicciEvolutionAt.reaction3
+        (gt := gt) (t₀ := t₀) (x := x) hRicci hn
+    let fullTrace : ℝ :=
+      2 * LinearMap.trace ℝ (TM x)
+        ((((raise'.comp (g.ricciDualContinuousAt x) +
+            (g.metricRaiseContinuousAt x).comp
+              (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+                (gt := gt) (t₀ := t₀) (x := x) δRic3 hRic3)).comp
+            (g.ricciEndoContinuousAt x)) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x)
+    ClosedSmoothRiemannianMetric.SatisfiesTracelessPinchingImprovementEvolutionAt
+      gt t₀ x δ (g.pinchingRicciNormReactionMotionTraceAt x fullTrace) := by
+  classical
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let δRic3 : TM x → TM x → ℝ :=
+    fun u w ↦ ricciEvolution3ReactionRHSAt g x u w
+  let hRic3 : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic3 u w) t₀ :=
+    SatisfiesRicciEvolutionAt.reaction3
+      (gt := gt) (t₀ := t₀) (x := x) hRicci hn
+  let fullTrace : ℝ :=
+    2 * LinearMap.trace ℝ (TM x)
+      ((((raise'.comp (g.ricciDualContinuousAt x) +
+          (g.metricRaiseContinuousAt x).comp
+            (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+              (gt := gt) (t₀ := t₀) (x := x) δRic3 hRic3)).comp
+          (g.ricciEndoContinuousAt x)) : TM x →L[ℝ] TM x) :
+        TM x →ₗ[ℝ] TM x)
+  change
+    ClosedSmoothRiemannianMetric.SatisfiesTracelessPinchingImprovementEvolutionAt
+      gt t₀ x δ (g.pinchingRicciNormReactionMotionTraceAt x fullTrace)
+  let R : ℝ := g.scalarAt x
+  let N : ℝ := g.ricciNormSqAt x
+  let U : ℝ := g.tracelessRicciNormSqAt x
+  let Q : ℝ := g.tracelessPinchingAt x δ
+  let p : ℝ := 2 - δ
+  let lapU : ℝ := g.laplacianAt (fun y : M ↦ g.tracelessRicciNormSqAt y) x
+  let lapR : ℝ := g.laplacianAt (fun y : M ↦ g.scalarAt y) x
+  let A : ℝ := covRicciNormSqAt g x
+  let B : ℝ := g.pinchingMixedGradientPairingAt x
+  let S : ℝ := g.scalarGradNormSqAt x
+  let ricciReaction : ℝ := g.pinchingRicciNormReactionMotionTraceAt x fullTrace
+  let T : ℝ := g.pinchingTracelessRicciReactionTrace3At x ricciReaction
+  let Sreact : ℝ := g.pinchingScalarReactionAt x
+  let Urhs : ℝ := lapU - 2 * A + (2 / 3 : ℝ) * S + T
+  let Rrhs : ℝ := lapR + Sreact
+  have hUderiv :
+      HasDerivAt (fun t ↦ (gt t).tracelessRicciNormSqAt x) Urhs t₀ := by
+    simpa [g, δRic3, hRic3, fullTrace, ricciReaction, T, lapU, A, S, Urhs] using
+      hasDerivAt_tracelessRicciNormSqAt_eq_laplacianAt_sub_two_covNormSq_add_scalarGrad_add_tracelessReactionTrace3
+        (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
+        hRaise hRicci hScalar hn hRicNorm₂ hScalar₂ hScalarSqDiff
+        hScalarSqGrad hPairDiff hRicSecond
+  have hRderiv :
+      HasDerivAt (fun t ↦ (gt t).scalarAt x) Rrhs t₀ := by
+    simpa [SatisfiesHamiltonScalarEvolutionAt, g, lapR, Sreact, Rrhs,
+      ClosedSmoothRiemannianMetric.pinchingScalarReactionAt] using hScalar
+  have hF :
+      HasDerivAt (fun t ↦ (gt t).tracelessPinchingAt x δ)
+        (quotientRpowDerivativeAt R U Urhs Rrhs p) t₀ := by
+    simpa [g, R, U, p] using
+      ClosedSmoothRiemannianMetric.hasDerivAt_tracelessPinchingAt_of_scalar_and_tracelessNorm
+        (gt := gt) (t₀ := t₀) (x := x) (δ := δ)
+        hUderiv hRderiv hRpos
+  refine ⟨hδpos, hδle, hRpos, ?_⟩
+  refine ⟨quotientRpowDerivativeAt R U Urhs Rrhs p, hF, ?_⟩
+  have hRicNormDiffX : MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ g.ricciNormSqAt y) x :=
+    (hRicNorm₂ x).mdifferentiableAt two_ne_zero
+  have hSpatialRaw :=
+    g.tracelessPinching_spatial_expansion
+      x δ hRpos hScalarCont hScalarDiff hScalarNe hTraceQuotDiff
+      hTraceQuotGrad hScalarGrad hTraceProductGrad hTraceNormGrad
+  have hSpatial :
+      g.laplacianAt (fun y : M ↦ g.tracelessPinchingAt y δ) x
+          + g.tracelessPinchingGradientDrift3At x δ =
+        lapU / R ^ p
+          - p * Q * lapR / R
+          - p * (2 * B - (2 / 3 : ℝ) * R * S) / (R * R ^ p)
+          + p * Q * S / R ^ 2 := by
+    have hBridge :=
+      g.tracelessPinching_spatial_expansion_with_numerator_bridge
+        x δ hRicNormDiffX (hScalarDiff x) hSpatialRaw
+    have hnR : (n : ℝ) = 3 := by
+      exact_mod_cast hn
+    simpa [g, R, Q, p, lapU, lapR, B, S, hnR] using hBridge
+  have hReaction :
+      T / R ^ p - p * U * Sreact / (R * R ^ p) =
+        g.tracelessPinchingReactionTermAt x δ T := by
+    simpa [g, R, U, p, T, Sreact, mul_comm, mul_left_comm, mul_assoc] using
+      g.tracelessPinchingReactionTermAt_eq_rpow_reaction_expansion
+        x δ T hRpos
+  have hQeq : Q = U / R ^ p := by
+    simp [Q, U, R, p, ClosedSmoothRiemannianMetric.tracelessPinchingAt]
+  have hUeq : U = N - R ^ 2 / 3 := by
+    have hnR : (n : ℝ) = 3 := by
+      exact_mod_cast hn
+    simp [U, N, R, ClosedSmoothRiemannianMetric.tracelessRicciNormSqAt, hnR]
+  have hRne : R ≠ 0 := ne_of_gt (by simpa [g, R] using hRpos)
+  have hRp_ne : R ^ p ≠ 0 :=
+    ne_of_gt (Real.rpow_pos_of_pos (by simpa [g, R] using hRpos) p)
+  have hRpm1_ne : R ^ (p - 1) ≠ 0 :=
+    ne_of_gt (Real.rpow_pos_of_pos (by simpa [g, R] using hRpos) (p - 1))
+  have hRp : R ^ p = R ^ (p - 1) * R := by
+    have h := Real.rpow_add_one hRne (p - 1)
+    convert h using 2
+    ring_nf
+  have hRp2 : R ^ (p + 2) = R ^ p * R ^ 2 := by
+    have h1 := Real.rpow_add_one hRne p
+    have h2 := Real.rpow_add_one hRne (p + 1)
+    rw [show p + 2 = p + 1 + 1 by ring, h2, h1]
+    ring
+  have hAlg :
+      quotientRpowDerivativeAt R U Urhs Rrhs p =
+        (lapU / R ^ p
+          - p * Q * lapR / R
+          - p * (2 * B - (2 / 3 : ℝ) * R * S) / (R * R ^ p)
+          + p * Q * S / R ^ 2)
+          + (T / R ^ p - p * U * Sreact / (R * R ^ p))
+          + PinchingAlgebra.tracelessPinchingGradientNumerator3 R N A B S δ /
+            R ^ (p + 2) := by
+    simpa [Urhs, Rrhs, p] using
+      traceless_quotient_rpow_derivative_algebra
+        (R := R) (N := N) (U := U) (Q := Q) (A := A) (B := B)
+        (S := S) (lapU := lapU) (lapR := lapR) (T := T)
+        (Sreact := Sreact) (p := p) (δ := δ)
+        hRne hRp_ne hRpm1_ne hRp hRp2 (by simp [p]) hQeq hUeq
+  have hGrad :
+      PinchingAlgebra.tracelessPinchingGradientNumerator3 R N A B S δ ≤ 0 := by
+    have hδ0 : 0 ≤ δ := le_of_lt hδpos
+    have hδ2 : δ ≤ 2 := by linarith
+    simpa [g, R, N, A, B, S] using
+      g.tracelessPinchingGradientNumerator3At_nonpos hn hδ0 hδ2 x
+  have hGradDiv :
+      PinchingAlgebra.tracelessPinchingGradientNumerator3 R N A B S δ /
+          R ^ (p + 2) ≤ 0 := by
+    exact div_nonpos_of_nonpos_of_nonneg hGrad
+      (le_of_lt (Real.rpow_pos_of_pos (by simpa [g, R] using hRpos) (p + 2)))
+  calc
+    quotientRpowDerivativeAt R U Urhs Rrhs p
+        = (g.laplacianAt (fun y : M ↦ g.tracelessPinchingAt y δ) x
+            + g.tracelessPinchingGradientDrift3At x δ)
+          + g.tracelessPinchingReactionTermAt x δ T
+          + PinchingAlgebra.tracelessPinchingGradientNumerator3 R N A B S δ /
+            R ^ (p + 2) := by
+          rw [hAlg, ← hSpatial, hReaction]
+    _ ≤ (g.laplacianAt (fun y : M ↦ g.tracelessPinchingAt y δ) x
+            + g.tracelessPinchingGradientDrift3At x δ)
+          + g.tracelessPinchingReactionTermAt x δ T := by
+          linarith
+    _ =
+        g.laplacianAt (fun y : M ↦ g.tracelessPinchingAt y δ) x
+          + g.tracelessPinchingGradientDrift3At x δ
+          + g.tracelessPinchingReactionTermAt x δ
+            (g.pinchingTracelessRicciReactionTrace3At x ricciReaction) := by
+          simp [T, add_assoc]
 
 namespace ClosedSmoothRiemannianMetric
 
