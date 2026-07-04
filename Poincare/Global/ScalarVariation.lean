@@ -24288,6 +24288,90 @@ theorem hasDerivAt_ricciNormSqAt_of_satisfiesRicciEvolutionAt_reaction3
       (SatisfiesRicciEvolutionAt.reaction3
         (gt := gt) (t₀ := t₀) (x := x) hEvol hn)
 
+set_option maxHeartbeats 5000000 in
+/--
+Parabolic `|Ric|²` inequality in dimension three.  The right-hand correction is
+the reaction-substituted Ricci-norm trace, including inverse-metric motion,
+with the rough-Laplacian pairing removed; the Bochner identity and
+`|∇Ric|² ≥ 0` supply the scalar Laplacian domination.
+-/
+theorem deriv_ricciNormSqAt_le_laplacianAt_add_reactionMotionTrace3
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hEvol : SatisfiesRicciEvolutionAt gt t₀ x) (hn : n = 3)
+    (hRicNorm₂ : ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ (gt t₀).ricciNormSqAt y) x)
+    (hPairDiff : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ covRicciRicciPairingAt (gt t₀) y (extend E w y)) x)
+    (hRicSecond :
+      CovTensor2DerivExtDifferentiableAt
+        (gt t₀) (ricciVariationField (gt t₀)) x) :
+    let g : ClosedSmoothRiemannianMetric n M := gt t₀
+    let δRic3 : TM x → TM x → ℝ :=
+      fun u w ↦ ricciEvolution3ReactionRHSAt g x u w
+    let hRic3 : ∀ u w : TM x,
+        HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic3 u w) t₀ :=
+      SatisfiesRicciEvolutionAt.reaction3
+        (gt := gt) (t₀ := t₀) (x := x) hEvol hn
+    let fullTrace : ℝ :=
+      2 * LinearMap.trace ℝ (TM x)
+        ((((raise'.comp (g.ricciDualContinuousAt x) +
+            (g.metricRaiseContinuousAt x).comp
+              (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+                (gt := gt) (t₀ := t₀) (x := x) δRic3 hRic3)).comp
+            (g.ricciEndoContinuousAt x)) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x)
+    deriv (fun t ↦ (gt t).ricciNormSqAt x) t₀ ≤
+      g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x
+        + (fullTrace - 2 * roughRicciLaplacianPairingAt g x) := by
+  classical
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let δRic3 : TM x → TM x → ℝ :=
+    fun u w ↦ ricciEvolution3ReactionRHSAt g x u w
+  let hRic3 : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic3 u w) t₀ :=
+    SatisfiesRicciEvolutionAt.reaction3
+      (gt := gt) (t₀ := t₀) (x := x) hEvol hn
+  let fullTrace : ℝ :=
+    2 * LinearMap.trace ℝ (TM x)
+      ((((raise'.comp (g.ricciDualContinuousAt x) +
+          (g.metricRaiseContinuousAt x).comp
+            (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+              (gt := gt) (t₀ := t₀) (x := x) δRic3 hRic3)).comp
+          (g.ricciEndoContinuousAt x)) : TM x →L[ℝ] TM x) :
+        TM x →ₗ[ℝ] TM x)
+  change deriv (fun t ↦ (gt t).ricciNormSqAt x) t₀ ≤
+    g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x
+      + (fullTrace - 2 * roughRicciLaplacianPairingAt g x)
+  have hDeriv :
+      HasDerivAt (fun t ↦ (gt t).ricciNormSqAt x) fullTrace t₀ := by
+    simpa [g, δRic3, hRic3, fullTrace] using
+      hasDerivAt_ricciNormSqAt_of_satisfiesRicciEvolutionAt_reaction3
+        (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
+        hRaise hEvol hn
+  have hBochner :
+      g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x =
+        2 * roughRicciLaplacianPairingAt g x + 2 * covRicciNormSqAt g x := by
+    simpa [g] using
+      laplacianAt_ricciNormSqAt_eq_two_roughPairing_add_two_covNormSq
+        (g := gt t₀) (x := x) hRicNorm₂ hPairDiff hRicSecond
+  have hCovNonneg : 0 ≤ covRicciNormSqAt g x := by
+    simpa [g] using covRicciNormSqAt_nonneg (g := gt t₀) x
+  have hRoughLeLap :
+      2 * roughRicciLaplacianPairingAt g x ≤
+        g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x := by
+    rw [hBochner]
+    nlinarith [hCovNonneg]
+  calc
+    deriv (fun t ↦ (gt t).ricciNormSqAt x) t₀ = fullTrace := hDeriv.deriv
+    _ ≤ g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x
+        + (fullTrace - 2 * roughRicciLaplacianPairingAt g x) := by
+          linarith
+
 theorem satisfiesRicciEvolutionAt_of_secondDerivCommutation
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
     [∀ t : ℝ,
