@@ -1,3 +1,4 @@
+import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
 import Poincare.Global.Laplacian
 import Poincare.Global.RicciNorm
 import Poincare.Global.RicciFlow
@@ -26,6 +27,14 @@ open scoped Manifold ContDiff
 universe u
 
 namespace Poincare
+
+private lemma real_fromTangentSpace_toSpanSingleton_apply
+    (a b c : ℝ) (u : TangentSpace 𝓘(ℝ, ℝ) a) :
+    (@NormedSpace.fromTangentSpace ℝ _ ℝ _ _ b).toContinuousLinearMap
+        ((ContinuousLinearMap.toSpanSingleton ℝ c) u) =
+      c * (@NormedSpace.fromTangentSpace ℝ _ ℝ _ _ a).toContinuousLinearMap u := by
+  simp [NormedSpace.fromTangentSpace, ContinuousLinearMap.toSpanSingleton_apply,
+    smul_eq_mul, mul_comm]
 
 variable {n : ℕ} {M : Type u}
 variable [TopologicalSpace M] [T2Space M]
@@ -114,6 +123,52 @@ private lemma quotient_derivative_sq_algebra
   norm_num
   field_simp [hR]
 
+/-- Quotient-rule numerator for a general scalar power `N / R^p`. -/
+noncomputable def quotientRpowDerivativeAt
+    (R N N' R' p : ℝ) : ℝ :=
+  (N' * R ^ p - N * ((p * R ^ (p - 1)) * R')) / (R ^ p) ^ 2
+
+/--
+Differentiating a positive-denominator real-power quotient from separate
+numerator and scalar-curvature derivatives.
+-/
+theorem hasDerivAt_quotient_rpow_of_derivatives
+    {N Rf : ℝ → ℝ} {t₀ N' R' p : ℝ}
+    (hN : HasDerivAt N N' t₀)
+    (hR : HasDerivAt Rf R' t₀)
+    (hRpos : 0 < Rf t₀) :
+    HasDerivAt (fun t ↦ N t / (Rf t) ^ p)
+      (quotientRpowDerivativeAt (Rf t₀) (N t₀) N' R' p) t₀ := by
+  have hden :
+      HasDerivAt (fun t ↦ (Rf t) ^ p)
+        ((p * (Rf t₀) ^ (p - 1)) * R') t₀ := by
+    simpa [mul_comm, mul_left_comm, mul_assoc] using
+      hR.rpow_const (p := p) (Or.inl (ne_of_gt hRpos))
+  have hden_ne : (Rf t₀) ^ p ≠ 0 :=
+    ne_of_gt (Real.rpow_pos_of_pos hRpos p)
+  have hquot := hN.div hden hden_ne
+  simpa [quotientRpowDerivativeAt, mul_comm, mul_left_comm, mul_assoc] using hquot
+
+/--
+Time derivative of the improved traceless quotient
+`|Ric°|² / R^(2 - δ)` from separate numerator and scalar derivatives.
+-/
+theorem ClosedSmoothRiemannianMetric.hasDerivAt_tracelessPinchingAt_of_scalar_and_tracelessNorm
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M} {δ U' R' : ℝ}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hU : HasDerivAt (fun t ↦ (gt t).tracelessRicciNormSqAt x) U' t₀)
+    (hR : HasDerivAt (fun t ↦ (gt t).scalarAt x) R' t₀)
+    (hRpos : 0 < (gt t₀).scalarAt x) :
+    HasDerivAt (fun t ↦ (gt t).tracelessPinchingAt x δ)
+      (quotientRpowDerivativeAt ((gt t₀).scalarAt x)
+        ((gt t₀).tracelessRicciNormSqAt x) U' R' (2 - δ)) t₀ := by
+  simpa [ClosedSmoothRiemannianMetric.tracelessPinchingAt] using
+    hasDerivAt_quotient_rpow_of_derivatives
+      (N := fun t ↦ (gt t).tracelessRicciNormSqAt x)
+      (Rf := fun t ↦ (gt t).scalarAt x)
+      (p := 2 - δ) hU hR hRpos
+
 /-- Algebra identifying the reaction quotient with the normalized remainder. -/
 private lemma pinching_reaction_remainder_algebra
     {R N M S : ℝ} (hR : R ≠ 0) :
@@ -196,6 +251,257 @@ namespace ClosedSmoothRiemannianMetric
 
 variable (g : ClosedSmoothRiemannianMetric n M)
 variable [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+
+private theorem mdifferentiableAt_rpow_const_of_ne
+    {f : M → ℝ} {x : M} {p : ℝ}
+    (hf : MDifferentiableAt I 𝓘(ℝ) f x) (hfx : f x ≠ 0) :
+    MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ f y ^ p) x := by
+  let rp : ℝ → ℝ := fun r ↦ r ^ p
+  have hrp : MDifferentiableAt 𝓘(ℝ) 𝓘(ℝ) rp (f x) := by
+    exact (Real.differentiableAt_rpow_const_of_ne p hfx).mdifferentiableAt
+  simpa [rp, Function.comp_def] using hrp.comp x hf
+
+private theorem extDerivFun_rpow_const_of_ne
+    {f : M → ℝ} {x : M} {p : ℝ}
+    (hf : MDifferentiableAt I 𝓘(ℝ) f x) (hfx : f x ≠ 0) :
+    extDerivFun (fun y : M ↦ f y ^ p) x =
+      (p * f x ^ (p - 1)) • (extDerivFun f x : TM x →L[ℝ] ℝ) := by
+  let rp : ℝ → ℝ := fun r ↦ r ^ p
+  have hrp : MDifferentiableAt 𝓘(ℝ) 𝓘(ℝ) rp (f x) := by
+    exact (Real.differentiableAt_rpow_const_of_ne p hfx).mdifferentiableAt
+  have hmfcomp : mfderiv I 𝓘(ℝ) (rp ∘ f) x =
+      (mfderiv 𝓘(ℝ) 𝓘(ℝ) rp (f x)).comp (mfderiv I 𝓘(ℝ) f x) := by
+    exact mfderiv_comp x hrp hf
+  have hderiv : HasDerivAt rp (p * f x ^ (p - 1)) (f x) := by
+    exact Real.hasDerivAt_rpow_const (Or.inl hfx)
+  have hmf : mfderiv 𝓘(ℝ) 𝓘(ℝ) rp (f x) =
+      ContinuousLinearMap.toSpanSingleton ℝ (p * f x ^ (p - 1)) := by
+    exact hderiv.hasFDerivAt.hasMFDerivAt.mfderiv
+  ext v
+  unfold extDerivFun
+  change (NormedSpace.fromTangentSpace ((rp ∘ f) x)).toContinuousLinearMap
+      (mfderiv I 𝓘(ℝ) (rp ∘ f) x v) =
+    ((p * f x ^ (p - 1)) •
+      ((NormedSpace.fromTangentSpace (f x)).toContinuousLinearMap ∘L
+        mfderiv I 𝓘(ℝ) f x)) v
+  rw [hmfcomp, hmf]
+  change (NormedSpace.fromTangentSpace ((rp ∘ f) x)).toContinuousLinearMap
+      ((ContinuousLinearMap.toSpanSingleton ℝ (p * f x ^ (p - 1)))
+        ((mfderiv I 𝓘(ℝ) f x) v)) =
+    (p * f x ^ (p - 1)) *
+      (NormedSpace.fromTangentSpace (f x)).toContinuousLinearMap
+        ((mfderiv I 𝓘(ℝ) f x) v)
+  exact real_fromTangentSpace_toSpanSingleton_apply (f x) ((rp ∘ f) x)
+    (p * f x ^ (p - 1)) ((mfderiv I 𝓘(ℝ) f x) v)
+
+theorem gradientAt_rpow_const_of_ne
+    {f : M → ℝ} {x : M} {p : ℝ}
+    (hf : MDifferentiableAt I 𝓘(ℝ) f x) (hfx : f x ≠ 0) :
+    g.gradientAt (fun y : M ↦ f y ^ p) x =
+      (p * f x ^ (p - 1)) • g.gradientAt f x := by
+  apply sub_eq_zero.mp
+  refine LeviCivitaExistence.metric_nondegenerate g x _ ?_
+  intro w
+  have hdf := extDerivFun_rpow_const_of_ne (f := f) (x := x) (p := p) hf hfx
+  simp [map_sub, map_smul, g.inner_gradientAt, hdf, smul_eq_mul]
+
+theorem gradientAt_scalar_rpow
+    (x : M) (p : ℝ)
+    (hScalarDiff :
+      MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ g.scalarAt y) x)
+    (hRpos : 0 < g.scalarAt x) :
+    g.gradientAt (fun y : M ↦ (g.scalarAt y) ^ p) x =
+      (p * (g.scalarAt x) ^ (p - 1)) •
+        g.gradientAt (fun y : M ↦ g.scalarAt y) x :=
+  g.gradientAt_rpow_const_of_ne hScalarDiff (ne_of_gt hRpos)
+
+private theorem extDerivFun_const_mul_rpow_sub_one
+    {f : M → ℝ} {x : M} {p : ℝ}
+    (hf : MDifferentiableAt I 𝓘(ℝ) f x) (hfx : f x ≠ 0) :
+    extDerivFun (fun y : M ↦ p * f y ^ (p - 1)) x =
+      (p * (p - 1) * f x ^ (p - 2)) •
+        (extDerivFun f x : TM x →L[ℝ] ℝ) := by
+  let cfun : ℝ → ℝ := fun r ↦ p * r ^ (p - 1)
+  have hcfun : MDifferentiableAt 𝓘(ℝ) 𝓘(ℝ) cfun (f x) := by
+    have hrp : MDifferentiableAt 𝓘(ℝ) 𝓘(ℝ) (fun r : ℝ ↦ r ^ (p - 1)) (f x) := by
+      exact (Real.differentiableAt_rpow_const_of_ne (p - 1) hfx).mdifferentiableAt
+    simpa [cfun] using mdifferentiableAt_const.mul hrp
+  have hmfcomp : mfderiv I 𝓘(ℝ) (cfun ∘ f) x =
+      (mfderiv 𝓘(ℝ) 𝓘(ℝ) cfun (f x)).comp (mfderiv I 𝓘(ℝ) f x) := by
+    exact mfderiv_comp x hcfun hf
+  have hderiv : HasDerivAt cfun (p * (p - 1) * f x ^ (p - 2)) (f x) := by
+    have hpow :
+        HasDerivAt (fun r : ℝ ↦ r ^ (p - 1))
+          ((p - 1) * f x ^ ((p - 1) - 1)) (f x) := by
+      exact Real.hasDerivAt_rpow_const (Or.inl hfx)
+    have hraw := hpow.const_mul p
+    convert hraw using 1
+    ring
+  have hmf : mfderiv 𝓘(ℝ) 𝓘(ℝ) cfun (f x) =
+      ContinuousLinearMap.toSpanSingleton ℝ (p * (p - 1) * f x ^ (p - 2)) := by
+    exact hderiv.hasFDerivAt.hasMFDerivAt.mfderiv
+  ext v
+  unfold extDerivFun
+  change (NormedSpace.fromTangentSpace ((cfun ∘ f) x)).toContinuousLinearMap
+      (mfderiv I 𝓘(ℝ) (cfun ∘ f) x v) =
+    ((p * (p - 1) * f x ^ (p - 2)) •
+      ((NormedSpace.fromTangentSpace (f x)).toContinuousLinearMap ∘L
+        mfderiv I 𝓘(ℝ) f x)) v
+  rw [hmfcomp, hmf]
+  change (NormedSpace.fromTangentSpace ((cfun ∘ f) x)).toContinuousLinearMap
+      ((ContinuousLinearMap.toSpanSingleton ℝ
+        (p * (p - 1) * f x ^ (p - 2)))
+        ((mfderiv I 𝓘(ℝ) f x) v)) =
+    (p * (p - 1) * f x ^ (p - 2)) *
+      (NormedSpace.fromTangentSpace (f x)).toContinuousLinearMap
+        ((mfderiv I 𝓘(ℝ) f x) v)
+  exact real_fromTangentSpace_toSpanSingleton_apply (f x) ((cfun ∘ f) x)
+    (p * (p - 1) * f x ^ (p - 2)) ((mfderiv I 𝓘(ℝ) f x) v)
+
+private theorem hessianAt_rpow_const_of_ne
+    {f : M → ℝ} {x : M} {p : ℝ}
+    (hf : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) f y)
+    (hfne : ∀ y : M, f y ≠ 0)
+    (hgradf :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x)
+    (v w : TM x) :
+    g.hessianAt (fun y : M ↦ f y ^ p) x v w =
+      (p * f x ^ (p - 1)) * g.hessianAt f x v w
+        + (p * (p - 1) * f x ^ (p - 2)) *
+          extDerivFun f x v * extDerivFun f x w := by
+  let cfun : M → ℝ := fun y ↦ p * f y ^ (p - 1)
+  have hgrad :
+      g.gradient (fun y : M ↦ f y ^ p) = cfun • g.gradient f := by
+    funext y
+    simpa [cfun] using
+      (g.gradientAt_rpow_const_of_ne (f := f) (x := y) (p := p)
+        (hf y) (hfne y))
+  have hcfun : MDifferentiableAt I 𝓘(ℝ) cfun x := by
+    have hrpow :
+        MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ f y ^ (p - 1)) x :=
+      mdifferentiableAt_rpow_const_of_ne (f := f) (x := x)
+        (p := p - 1) (hf x) (hfne x)
+    simpa [cfun] using mdifferentiableAt_const.mul hrpow
+  have hdc :
+      extDerivFun cfun x =
+        (p * (p - 1) * f x ^ (p - 2)) •
+          (extDerivFun f x : TM x →L[ℝ] ℝ) := by
+    simpa [cfun] using
+      extDerivFun_const_mul_rpow_sub_one (f := f) (x := x) (p := p)
+        (hf x) (hfne x)
+  have hinnerw :
+      g.inner x (g.gradient f x) w = extDerivFun f x w := by
+    simpa [ClosedSmoothRiemannianMetric.gradient] using
+      g.inner_gradientAt f x w
+  unfold hessianAt
+  rw [hgrad, g.leviCivita_smul_function hcfun hgradf v]
+  simp [cfun, hdc, hinnerw, map_add, map_smul, smul_eq_mul]
+
+private theorem extDerivFun_metricDual_trace_eq_inner_gradient
+    (f : M → ℝ) (x : M) :
+    (letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+      ∑ i, extDerivFun f x ((Module.finBasis ℝ (TM x)) i) *
+        extDerivFun f x
+          (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i))) =
+      g.inner x (g.gradientAt f x) (g.gradientAt f x) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hrepr : (∑ i, g.inner x (g.gradientAt f x) (b i) • sharp i) =
+      g.gradientAt f x := by
+    simpa [b, sharp] using
+      sum_inner_basis_smul_metricDualVectorAt (g := g) (x := x)
+        (v := g.gradientAt f x)
+  have hdf := congrArg (fun v : TM x ↦ extDerivFun f x v) hrepr
+  have hleft : extDerivFun f x
+        (∑ i, g.inner x (g.gradientAt f x) (b i) • sharp i) =
+      ∑ i, g.inner x (g.gradientAt f x) (b i) * extDerivFun f x (sharp i) := by
+    have hmap := map_sum (extDerivFun f x)
+      (fun i ↦ g.inner x (g.gradientAt f x) (b i) • sharp i) Finset.univ
+    simpa [smul_eq_mul] using hmap
+  calc
+    (letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+      ∑ i, extDerivFun f x ((Module.finBasis ℝ (TM x)) i) *
+        extDerivFun f x
+          (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i))) =
+        ∑ i, g.inner x (g.gradientAt f x) (b i) * extDerivFun f x (sharp i) := by
+          simp [b, sharp, g.inner_gradientAt]
+    _ = extDerivFun f x
+          (∑ i, g.inner x (g.gradientAt f x) (b i) • sharp i) := hleft.symm
+    _ = extDerivFun f x (g.gradientAt f x) := hdf
+    _ = g.inner x (g.gradientAt f x) (g.gradientAt f x) := by
+          rw [g.inner_gradientAt]
+
+theorem laplacianAt_rpow_const_of_ne
+    {f : M → ℝ} {x : M} {p : ℝ}
+    (hf : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) f y)
+    (hfne : ∀ y : M, f y ≠ 0)
+    (hgradf :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x) :
+    g.laplacianAt (fun y : M ↦ f y ^ p) x =
+      (p * f x ^ (p - 1)) * g.laplacianAt f x
+        + (p * (p - 1) * f x ^ (p - 2)) *
+          g.inner x (g.gradientAt f x) (g.gradientAt f x) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hcross := g.extDerivFun_metricDual_trace_eq_inner_gradient f x
+  have hcross' :
+      (∑ i, extDerivFun f x (b i) * extDerivFun f x (sharp i)) =
+        g.inner x (g.gradientAt f x) (g.gradientAt f x) := by
+    simpa [b, sharp] using hcross
+  rw [laplacianAt_eq_sum_hessianAt (g := g)
+    (f := fun y : M ↦ f y ^ p) (x := x)]
+  rw [laplacianAt_eq_sum_hessianAt (g := g) (f := f) (x := x)]
+  change (∑ i, g.hessianAt (fun y : M ↦ f y ^ p) x (b i) (sharp i)) =
+    (p * f x ^ (p - 1)) * (∑ i, g.hessianAt f x (b i) (sharp i)) +
+      (p * (p - 1) * f x ^ (p - 2)) *
+        g.inner x (g.gradientAt f x) (g.gradientAt f x)
+  simp_rw [g.hessianAt_rpow_const_of_ne (f := f) (x := x) (p := p)
+    hf hfne hgradf]
+  rw [Finset.sum_add_distrib]
+  rw [← Finset.mul_sum]
+  have hsumCross :
+      (∑ i, p * (p - 1) * f x ^ (p - 2) *
+          extDerivFun f x (b i) * extDerivFun f x (sharp i)) =
+        (p * (p - 1) * f x ^ (p - 2)) *
+          g.inner x (g.gradientAt f x) (g.gradientAt f x) := by
+    calc
+      (∑ i, p * (p - 1) * f x ^ (p - 2) *
+          extDerivFun f x (b i) * extDerivFun f x (sharp i)) =
+          ∑ i, (p * (p - 1) * f x ^ (p - 2)) *
+            (extDerivFun f x (b i) * extDerivFun f x (sharp i)) := by
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            ring
+      _ = (p * (p - 1) * f x ^ (p - 2)) *
+          (∑ i, extDerivFun f x (b i) * extDerivFun f x (sharp i)) := by
+            rw [Finset.mul_sum]
+      _ = (p * (p - 1) * f x ^ (p - 2)) *
+          g.inner x (g.gradientAt f x) (g.gradientAt f x) := by
+            rw [hcross']
+  rw [hsumCross]
+
+theorem laplacianAt_scalar_rpow
+    (x : M) (p : ℝ)
+    (hScalarDiff : ∀ y : M,
+      MDifferentiableAt I 𝓘(ℝ) (fun z : M ↦ g.scalarAt z) y)
+    (hScalarNe : ∀ y : M, g.scalarAt y ≠ 0)
+    (hScalarGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient (fun y : M ↦ g.scalarAt y))) x) :
+    g.laplacianAt (fun y : M ↦ (g.scalarAt y) ^ p) x =
+      (p * (g.scalarAt x) ^ (p - 1)) *
+        g.laplacianAt (fun y : M ↦ g.scalarAt y) x
+        + (p * (p - 1) * (g.scalarAt x) ^ (p - 2)) *
+          g.scalarGradNormSqAt x := by
+  simpa [scalarGradNormSqAt] using
+    (g.laplacianAt_rpow_const_of_ne
+      (f := fun y : M ↦ g.scalarAt y) (x := x) (p := p)
+      hScalarDiff hScalarNe hScalarGrad)
 
 /--
 Mixed contraction `⟨∇Ric, ∇R ⊗ Ric⟩` in the same metric-orthogonal frame used
@@ -712,6 +1018,34 @@ theorem pinchingGradientSquareAt_eq_completedSquareExpansion (x : M) :
   simpa [b, A, B, W] using
     finset_sum_completed_square (R := g.scalarAt x) (A := A) (B := B) (W := W)
 
+/--
+Completed-square expansion with the real-power quotient coefficient
+`-2 / R^(p+2)`.
+-/
+theorem pinchingGradientSquareAt_rpowCoefficientExpansion (x : M) (p : ℝ) :
+    -(2 / (g.scalarAt x) ^ (p + 2)) * g.pinchingGradientSquareAt x =
+      -(2 / (g.scalarAt x) ^ (p + 2)) *
+        ((g.scalarAt x) ^ 2 * covRicciNormSqAt g x
+          - 2 * g.scalarAt x * g.pinchingMixedGradientPairingAt x
+          + g.pinchingScalarRicciGradientProductAt x) := by
+  rw [g.pinchingGradientSquareAt_eq_completedSquareExpansion x]
+
+/--
+The improved traceless quotient damping has the general-exponent completed
+square coefficient with `p = 2 - δ`, namely `-2 / R^(p+2)`.
+-/
+theorem tracelessPinchingGradientDampingAt_eq_rpowCoefficientExpansion
+    (x : M) (δ : ℝ) :
+    g.tracelessPinchingGradientDampingAt x δ =
+      -(2 / (g.scalarAt x) ^ ((2 - δ) + 2)) *
+        ((g.scalarAt x) ^ 2 * covRicciNormSqAt g x
+          - 2 * g.scalarAt x * g.pinchingMixedGradientPairingAt x
+          + g.pinchingScalarRicciGradientProductAt x) := by
+  rw [tracelessPinchingGradientDampingAt]
+  have hexp : (4 - δ : ℝ) = (2 - δ) + 2 := by ring
+  rw [hexp]
+  exact g.pinchingGradientSquareAt_rpowCoefficientExpansion x (2 - δ)
+
 end ClosedSmoothRiemannianMetric
 
 namespace ClosedSmoothRiemannianMetric
@@ -768,6 +1102,149 @@ theorem laplacianAt_quotient_eq_of_eventually_product_rule
     exact hmul
   rw [eq_div_iff hvx]
   linarith
+
+private lemma quotient_rpow_spatial_algebra
+    {R Rpm1 Rpm2 p Q LU LR S C IQ LQ : ℝ}
+    (hR : R ≠ 0) (hRpm2 : Rpm2 ≠ 0)
+    (hRp : R ^ p = Rpm1 * R)
+    (hRpm1 : Rpm1 = Rpm2 * R)
+    (hLap :
+      LQ =
+        (LU - Q * (p * Rpm1 * LR + p * (p - 1) * Rpm2 * S)
+          - 2 * (p * Rpm1 * IQ)) / R ^ p)
+    (hGrad : R ^ p * IQ = C - Q * (p * Rpm1 * S)) :
+    LQ + (p / R) * IQ =
+      LU / R ^ p - p * Q * LR / R - p * C / (R * R ^ p)
+        + p * Q * S / R ^ 2 := by
+  rw [hLap]
+  have hIQ : IQ = (C - Q * (p * Rpm1 * S)) / R ^ p := by
+    rw [eq_div_iff]
+    · simpa [mul_comm] using hGrad
+    · rw [hRp, hRpm1]
+      exact mul_ne_zero (mul_ne_zero hRpm2 hR) hR
+  rw [hIQ]
+  rw [hRp, hRpm1]
+  field_simp [hR, hRpm2]
+  ring
+
+set_option maxHeartbeats 8000000 in
+/--
+Spatial quotient/drift expansion for a positive real-power denominator.
+If `q * R^p = u` near `x`, then the `p/R ⟨∇q,∇R⟩` drift leaves only
+the numerator gradient pairing and one scalar-gradient-square term.
+-/
+theorem quotient_rpow_spatial_expansion_of_eventually_product_rule
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {u Rf q : M → ℝ} {x : M} {p : ℝ}
+    (hprod : (fun y : M ↦ q y * (Rf y) ^ p) =ᶠ[nhds x] u)
+    (hRpos : 0 < Rf x)
+    (hq : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) q y)
+    (hRdiff : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) Rf y)
+    (hRne : ∀ y : M, Rf y ≠ 0)
+    (hgradq : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient q)) x)
+    (hgradR : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient Rf)) x)
+    (hgradprod :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient ((fun y : M ↦ q y) * (fun y : M ↦ (Rf y) ^ p)))) x)
+    (hgradu : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient u)) x) :
+    g.laplacianAt q x
+        + (p / Rf x) * g.inner x (g.gradientAt q x) (g.gradientAt Rf x) =
+      g.laplacianAt u x / (Rf x) ^ p
+        - p * q x * g.laplacianAt Rf x / Rf x
+        - p * g.inner x (g.gradientAt u x) (g.gradientAt Rf x) /
+            (Rf x * (Rf x) ^ p)
+        + p * q x *
+            g.inner x (g.gradientAt Rf x) (g.gradientAt Rf x) / (Rf x) ^ 2 := by
+  classical
+  let Vf : M → ℝ := fun y ↦ (Rf y) ^ p
+  let cfun : M → ℝ := fun y ↦ p * (Rf y) ^ (p - 1)
+  let R : ℝ := Rf x
+  let Q : ℝ := q x
+  let LU : ℝ := g.laplacianAt u x
+  let LR : ℝ := g.laplacianAt Rf x
+  let S : ℝ := g.inner x (g.gradientAt Rf x) (g.gradientAt Rf x)
+  let C : ℝ := g.inner x (g.gradientAt u x) (g.gradientAt Rf x)
+  let IQ : ℝ := g.inner x (g.gradientAt q x) (g.gradientAt Rf x)
+  let LQ : ℝ := g.laplacianAt q x
+  have hRne_x : R ≠ 0 := ne_of_gt (by simpa [R] using hRpos)
+  have hVdiff : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) Vf y := by
+    intro y
+    exact mdifferentiableAt_rpow_const_of_ne (f := Rf) (x := y)
+      (p := p) (hRdiff y) (hRne y)
+  have hgradV_global : g.gradient Vf = cfun • g.gradient Rf := by
+    funext y
+    simpa [Vf, cfun] using
+      (g.gradientAt_rpow_const_of_ne (f := Rf) (x := y) (p := p)
+        (hRdiff y) (hRne y))
+  have hcfun : MDifferentiableAt I 𝓘(ℝ) cfun x := by
+    have hrpow :
+        MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ (Rf y) ^ (p - 1)) x :=
+      mdifferentiableAt_rpow_const_of_ne (f := Rf) (x := x)
+        (p := p - 1) (hRdiff x) (hRne x)
+    simpa [cfun] using mdifferentiableAt_const.mul hrpow
+  have hgradV :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient Vf)) x := by
+    rw [hgradV_global]
+    exact hcfun.smul_section hgradR
+  have hGradVeq :
+      g.gradientAt Vf x = (p * R ^ (p - 1)) • g.gradientAt Rf x := by
+    simpa [Vf, R] using
+      (g.gradientAt_rpow_const_of_ne (f := Rf) (x := x) (p := p)
+        (hRdiff x) (hRne x))
+  have hLapVeq :
+      g.laplacianAt Vf x =
+        (p * R ^ (p - 1)) * LR
+          + (p * (p - 1) * R ^ (p - 2)) * S := by
+    simpa [Vf, R, LR, S] using
+      (g.laplacianAt_rpow_const_of_ne (f := Rf) (x := x) (p := p)
+        hRdiff hRne hgradR)
+  have hLapQuot :
+      LQ =
+        (LU - Q * g.laplacianAt Vf x
+            - 2 * g.inner x (g.gradientAt q x) (g.gradientAt Vf x)) /
+          Vf x := by
+    simpa [LQ, LU, Q, Vf] using
+      (g.laplacianAt_quotient_eq_of_eventually_product_rule
+        (u := u) (v := Vf) (q := q) (x := x)
+        (by simpa [Vf] using hprod)
+        (ne_of_gt (Real.rpow_pos_of_pos hRpos p))
+        hq hVdiff hgradq hgradV
+        (by simpa [Vf] using hgradprod) hgradu)
+  have hGradQuot :
+      Vf x • g.gradientAt q x =
+        g.gradientAt u x - q x • g.gradientAt Vf x :=
+    g.gradientAt_quotient_eq_of_eventually_product_rule
+      (u := u) (v := Vf) (q := q) (x := x)
+      (by simpa [Vf] using hprod) (hq x) (hVdiff x)
+  have hInnerQV :
+      g.inner x (g.gradientAt q x) (g.gradientAt Vf x) =
+        (p * R ^ (p - 1)) * IQ := by
+    rw [hGradVeq]
+    simp [IQ, smul_eq_mul]
+  have hGradRel :
+      R ^ p * IQ = C - Q * ((p * R ^ (p - 1)) * S) := by
+    have h := congrArg
+      (fun v : TM x ↦ g.inner x v (g.gradientAt Rf x)) hGradQuot
+    rw [hGradVeq] at h
+    simpa [Vf, R, Q, C, IQ, S, smul_eq_mul, map_sub, map_smul,
+      mul_comm, mul_left_comm, mul_assoc] using h
+  have hRp : R ^ p = R ^ (p - 1) * R := by
+    have h := Real.rpow_add_one hRne_x (p - 1)
+    convert h using 2 <;> ring
+  have hRpm1 : R ^ (p - 1) = R ^ (p - 2) * R := by
+    have h := Real.rpow_add_one hRne_x (p - 2)
+    convert h using 2 <;> ring
+  have hRpm2_ne : R ^ (p - 2) ≠ 0 :=
+    ne_of_gt (Real.rpow_pos_of_pos (by simpa [R] using hRpos) (p - 2))
+  have hAlg := quotient_rpow_spatial_algebra
+    (R := R) (Rpm1 := R ^ (p - 1)) (Rpm2 := R ^ (p - 2))
+    (p := p) (Q := Q) (LU := LU) (LR := LR) (S := S) (C := C)
+    (IQ := IQ) (LQ := LQ) hRne_x hRpm2_ne hRp hRpm1
+    (by
+      rw [hLapQuot, hLapVeq, hInnerQV])
+    hGradRel
+  simpa [R, Q, LU, LR, S, C, IQ, LQ] using hAlg
 
 set_option maxHeartbeats 12000000 in
 /--
