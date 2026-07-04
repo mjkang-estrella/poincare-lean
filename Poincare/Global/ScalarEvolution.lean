@@ -134,6 +134,44 @@ private lemma finset_sum_completed_square
   simp_rw [Finset.mul_sum, Finset.sum_mul]
   ring_nf
 
+private lemma finset_sum_mul_sum₂
+    {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
+    (A : α → ℝ) (B : β → γ → ℝ) :
+    (∑ a, A a) * (∑ i, ∑ j, B i j) =
+      ∑ a, ∑ i, ∑ j, A a * B i j := by
+  rw [Finset.sum_mul]
+  refine Finset.sum_congr rfl fun a _ ↦ ?_
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [Finset.mul_sum]
+
+private lemma finset_sum_comm_three
+    {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
+    (F : α → β → γ → ℝ) :
+    (∑ i, ∑ j, ∑ a, F a i j) =
+      ∑ a, ∑ i, ∑ j, F a i j := by
+  calc
+    (∑ i, ∑ j, ∑ a, F a i j) =
+        ∑ i, ∑ a, ∑ j, F a i j := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          rw [Finset.sum_comm]
+    _ = ∑ a, ∑ i, ∑ j, F a i j := by
+          rw [Finset.sum_comm]
+
+private lemma finset_sum_pairing_linearize
+    {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
+    (D : α → ℝ) (C : α → β → γ → ℝ) (W : β → γ → ℝ) :
+    (∑ i, ∑ j, (∑ a, D a * C a i j) * W i j) =
+      ∑ a, ∑ i, ∑ j, D a * C a i j * W i j := by
+  calc
+    (∑ i, ∑ j, (∑ a, D a * C a i j) * W i j) =
+        ∑ i, ∑ j, ∑ a, (D a * C a i j) * W i j := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          refine Finset.sum_congr rfl fun j _ ↦ ?_
+          rw [Finset.sum_mul]
+    _ = ∑ a, ∑ i, ∑ j, D a * C a i j * W i j :=
+        finset_sum_comm_three (fun a i j ↦ D a * C a i j * W i j)
+
 /--
 The spatial completed-square identity needed to assemble Hamilton's corrected
 pinching quotient evolution.  This is intentionally named as a separate
@@ -190,6 +228,455 @@ noncomputable def pinchingScalarRicciGradientProductAt (x : M) : ℝ :=
           g.metricBilinAt x (b i) (b i) *
           g.metricBilinAt x (b j) (b j))
 
+set_option maxHeartbeats 5000000 in
+/--
+In a metric-orthogonal frame, the Ricci pairing of a symmetric `(0,2)` field is
+the double diagonal-inverse contraction.
+-/
+theorem metricVariationRicciPairingAt_eq_orthogonalBasis_sum_of_symm
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    [FiniteDimensional ℝ (TM x)]
+    (b : Module.Basis ι ℝ (TM x))
+    (hOrtho : (g.metricBilinAt x).IsOrthoᵢ b)
+    (B : LinearMap.BilinForm ℝ (TM x))
+    (hB : ∀ p q : TM x, B p q = h x p q)
+    (hSymm : ∀ p q : TM x, h x p q = h x q p) :
+    metricVariationRicciPairingAt g h x =
+      (let diag : ι → ℝ := fun k ↦ g.metricBilinAt x (b k) (b k)
+      ∑ i, ∑ j,
+        (diag i)⁻¹ * (diag j)⁻¹ *
+          h x (b i) (b j) * g.ricciAt x (b i) (b j)) := by
+  classical
+  let diag : ι → ℝ := fun k ↦ g.metricBilinAt x (b k) (b k)
+  let sharp : ι → TM x := fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hdual : ∀ i, sharp i = (diag i)⁻¹ • b i := by
+    intro i
+    simpa [sharp, diag] using
+      metricDualVectorAt_orthogonalBasis_coord_eq
+        (g := g) (x := x) (b := b) hOrtho i
+  have hRicExpand : ∀ i,
+      g.ricciEndoAt x (b i) =
+        ∑ j, ((diag j)⁻¹ * g.ricciAt x (b i) (b j)) • b j := by
+    intro i
+    calc
+      g.ricciEndoAt x (b i) =
+          ∑ j, b.coord j (g.ricciEndoAt x (b i)) • b j :=
+            (b.sum_repr (g.ricciEndoAt x (b i))).symm
+      _ = ∑ j, ((diag j)⁻¹ * g.ricciAt x (b i) (b j)) • b j := by
+            refine Finset.sum_congr rfl fun j _ ↦ ?_
+            have hcoord :
+                b.coord j (g.ricciEndoAt x (b i)) =
+                  (diag j)⁻¹ * g.ricciAt x (b i) (b j) := by
+              calc
+                b.coord j (g.ricciEndoAt x (b i)) =
+                    g.inner x (g.ricciEndoAt x (b i)) (sharp j) := by
+                      simpa [sharp] using
+                        coord_eq_inner_metricDualVectorAt_of_basis
+                          (g := g) (x := x) (b := b) j
+                          (g.ricciEndoAt x (b i))
+                _ = g.inner x (g.ricciEndoAt x (b i))
+                    ((diag j)⁻¹ • b j) := by rw [hdual j]
+                _ = (diag j)⁻¹ * g.ricciAt x (b i) (b j) := by
+                      rw [← g.inner_ricciEndoAt]
+                      simp [smul_eq_mul]
+            rw [hcoord]
+  have hTrace :
+      metricVariationRicciPairingAt g h x =
+        metricRicciPairingTraceInBasisAt g x B b :=
+    metricVariationRicciPairingAt_eq_metricRicciPairingTraceInBasisAt
+      (g := g) (h := h) (x := x) (B := B) hB hSymm b
+  calc
+    metricVariationRicciPairingAt g h x =
+        metricRicciPairingTraceInBasisAt g x B b := hTrace
+    _ = ∑ i, B (g.ricciEndoAt x (b i)) (sharp i) := by
+          rfl
+    _ = ∑ i, B (∑ j,
+            ((diag j)⁻¹ * g.ricciAt x (b i) (b j)) • b j)
+          ((diag i)⁻¹ • b i) := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          rw [hRicExpand i, hdual i]
+    _ = ∑ i, ∑ j,
+          (diag i)⁻¹ * (diag j)⁻¹ *
+            h x (b i) (b j) * g.ricciAt x (b i) (b j) := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          calc
+            B (∑ j, ((diag j)⁻¹ * g.ricciAt x (b i) (b j)) • b j)
+                ((diag i)⁻¹ • b i) =
+                (diag i)⁻¹ *
+                  B (∑ j,
+                    ((diag j)⁻¹ * g.ricciAt x (b i) (b j)) • b j)
+                    (b i) := by
+                  simp [smul_eq_mul]
+            _ = (diag i)⁻¹ *
+                (∑ j, ((diag j)⁻¹ * g.ricciAt x (b i) (b j)) *
+                  B (b j) (b i)) := by
+                  rw [map_sum]
+                  simp [smul_eq_mul]
+            _ = ∑ j,
+                (diag i)⁻¹ * (diag j)⁻¹ *
+                  h x (b i) (b j) * g.ricciAt x (b i) (b j) := by
+                  rw [Finset.mul_sum]
+                  refine Finset.sum_congr rfl fun j _ ↦ ?_
+                  rw [hB (b j) (b i), hSymm (b j) (b i)]
+                  ring
+    _ =
+        (let diag : ι → ℝ := fun k ↦ g.metricBilinAt x (b k) (b k)
+        ∑ i, ∑ j,
+          (diag i)⁻¹ * (diag j)⁻¹ *
+            h x (b i) (b j) * g.ricciAt x (b i) (b j)) := by
+        simp [diag]
+
+/-- Orthogonal-frame expansion of `⟨∇_v Ric,Ric⟩`. -/
+theorem covRicciRicciPairingAt_eq_metricOrthogonalBasis_sum
+    (x : M) (v : TM x) :
+    covRicciRicciPairingAt g x v =
+      (let b := metricOrthogonalBasisAt g x
+      let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+        fun k ↦ g.metricBilinAt x (b k) (b k)
+      ∑ i, ∑ j,
+        (diag i)⁻¹ * (diag j)⁻¹ *
+          covTensor2DerivAt g (ricciVariationField g) x v (b i) (b j) *
+          g.ricciAt x (b i) (b j)) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := metricOrthogonalBasisAt g x
+  let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+    fun k ↦ g.metricBilinAt x (b k) (b k)
+  let H : ∀ y : M, TM y → TM y → ℝ :=
+    fun y p q ↦
+      covTensor2DerivAt g (ricciVariationField g) y (extend E v y) p q
+  let B : LinearMap.BilinForm ℝ (TM x) :=
+    LinearMap.mk₂ ℝ
+      (fun p q ↦ covTensor2DerivAt g (ricciVariationField g) x v p q)
+      (fun p p' q ↦
+        covTensor2DerivAt_add_left
+          (g := g) (h := ricciVariationField g) (x := x)
+          (covTensor2ExtDifferentiableAt_ricciVariationField_canonical
+            (g := g) (x := x))
+          (tensor2AddLeft_ricciVariationField g) v p p' q)
+      (fun c p q ↦ by
+        simpa [smul_eq_mul] using
+          covTensor2DerivAt_smul_left
+            (g := g) (h := ricciVariationField g) (x := x)
+            (covTensor2ExtDifferentiableAt_ricciVariationField_canonical
+              (g := g) (x := x))
+            (tensor2SMulLeft_ricciVariationField g) c v p q)
+      (fun p q q' ↦
+        covTensor2DerivAt_add_right
+          (g := g) (h := ricciVariationField g) (x := x)
+          (covTensor2ExtDifferentiableAt_ricciVariationField_canonical
+            (g := g) (x := x))
+          (tensor2AddRight_ricciVariationField g) v p q q')
+      (fun c p q ↦ by
+        simpa [smul_eq_mul] using
+          covTensor2DerivAt_smul_right
+            (g := g) (h := ricciVariationField g) (x := x)
+            (covTensor2ExtDifferentiableAt_ricciVariationField_canonical
+              (g := g) (x := x))
+            (tensor2SMulRight_ricciVariationField g) c v p q)
+  have hOrtho : (g.metricBilinAt x).IsOrthoᵢ b := by
+    simpa [b, metricOrthogonalBasisAt] using
+      Classical.choose_spec
+        (LinearMap.BilinForm.exists_orthogonal_basis
+          (B := g.metricBilinAt x) (g.metricBilinAt_isSymm x))
+  have hB : ∀ p q : TM x, B p q = H x p q := by
+    intro p q
+    simp [B, H]
+  have hSymm : ∀ p q : TM x, H x p q = H x q p := by
+    intro p q
+    simp [H, covTensor2DerivAt_ricciVariationField_symm]
+  calc
+    covRicciRicciPairingAt g x v =
+        metricVariationRicciPairingAt g H x := by
+          simpa [H] using
+            covRicciRicciPairingAt_eq_metricVariationRicciPairingAt_covTensor2DerivAt
+              (g := g) (x := x) (v := v)
+    _ =
+        (let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+          fun k ↦ g.metricBilinAt x (b k) (b k)
+        ∑ i, ∑ j,
+          (diag i)⁻¹ * (diag j)⁻¹ *
+            H x (b i) (b j) * g.ricciAt x (b i) (b j)) :=
+          metricVariationRicciPairingAt_eq_orthogonalBasis_sum_of_symm
+            (g := g) (h := H) (x := x) (b := b) hOrtho
+            (B := B) hB hSymm
+    _ =
+        (let b := metricOrthogonalBasisAt g x
+        let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+          fun k ↦ g.metricBilinAt x (b k) (b k)
+        ∑ i, ∑ j,
+          (diag i)⁻¹ * (diag j)⁻¹ *
+            covTensor2DerivAt g (ricciVariationField g) x v (b i) (b j) *
+            g.ricciAt x (b i) (b j)) := by
+        simp [b, H]
+
+/-- The metric gradient in an orthogonal frame. -/
+theorem gradientAt_eq_metricOrthogonalBasis_sum (f : M → ℝ) (x : M) :
+    g.gradientAt f x =
+      (let b := metricOrthogonalBasisAt g x
+      let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+        fun k ↦ g.metricBilinAt x (b k) (b k)
+      ∑ i, ((diag i)⁻¹ * extDerivFun f x (b i)) • b i) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := metricOrthogonalBasisAt g x
+  let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+    fun k ↦ g.metricBilinAt x (b k) (b k)
+  have hOrtho : (g.metricBilinAt x).IsOrthoᵢ b := by
+    simpa [b, metricOrthogonalBasisAt] using
+      Classical.choose_spec
+        (LinearMap.BilinForm.exists_orthogonal_basis
+          (B := g.metricBilinAt x) (g.metricBilinAt_isSymm x))
+  have hcoord : ∀ i,
+      b.coord i (g.gradientAt f x) =
+        (diag i)⁻¹ * extDerivFun f x (b i) := by
+    intro i
+    calc
+      b.coord i (g.gradientAt f x) =
+          g.inner x (g.gradientAt f x)
+            (metricDualVectorAt g x (b.coord i)) := by
+            rw [coord_eq_inner_metricDualVectorAt_of_basis
+              (g := g) (x := x) (b := b)]
+      _ = g.inner x (g.gradientAt f x) ((diag i)⁻¹ • b i) := by
+            rw [metricDualVectorAt_orthogonalBasis_coord_eq
+              (g := g) (x := x) (b := b) hOrtho i]
+      _ = (diag i)⁻¹ * extDerivFun f x (b i) := by
+            simp [smul_eq_mul, g.inner_gradientAt]
+  calc
+    g.gradientAt f x = ∑ i, b.coord i (g.gradientAt f x) • b i :=
+      (b.sum_repr (g.gradientAt f x)).symm
+    _ = ∑ i, ((diag i)⁻¹ * extDerivFun f x (b i)) • b i := by
+      refine Finset.sum_congr rfl fun i _ ↦ ?_
+      rw [hcoord i]
+    _ =
+      (let b := metricOrthogonalBasisAt g x
+      let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+        fun k ↦ g.metricBilinAt x (b k) (b k)
+      ∑ i, ((diag i)⁻¹ * extDerivFun f x (b i)) • b i) := by
+      simp [b, diag]
+
+/-- Orthogonal-frame expansion of the scalar-gradient norm. -/
+theorem scalarGradNormSqAt_eq_metricOrthogonalBasis_sum (x : M) :
+    g.scalarGradNormSqAt x =
+      (let b := metricOrthogonalBasisAt g x
+      let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+        fun k ↦ g.metricBilinAt x (b k) (b k)
+      ∑ i, (extDerivFun (fun y : M ↦ g.scalarAt y) x (b i)) ^ 2 / diag i) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let f : M → ℝ := fun y ↦ g.scalarAt y
+  let b := metricOrthogonalBasisAt g x
+  let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+    fun k ↦ g.metricBilinAt x (b k) (b k)
+  have hgrad := g.gradientAt_eq_metricOrthogonalBasis_sum f x
+  unfold scalarGradNormSqAt
+  calc
+    g.inner x (g.gradientAt f x) (g.gradientAt f x) =
+        g.inner x
+          ((let b := metricOrthogonalBasisAt g x
+            let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+              fun k ↦ g.metricBilinAt x (b k) (b k)
+            ∑ i, ((diag i)⁻¹ * extDerivFun f x (b i)) • b i))
+          (g.gradientAt f x) := by
+          rw [hgrad]
+    _ =
+        ∑ i,
+          ((diag i)⁻¹ * extDerivFun f x (b i)) *
+            g.inner x (b i) (g.gradientAt f x) := by
+          simp [b, diag]
+    _ = ∑ i, (extDerivFun f x (b i)) ^ 2 / diag i := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          rw [g.inner_symm x (b i) (g.gradientAt f x),
+            g.inner_gradientAt]
+          field_simp
+    _ =
+      (let b := metricOrthogonalBasisAt g x
+      let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+        fun k ↦ g.metricBilinAt x (b k) (b k)
+      ∑ i, (extDerivFun (fun y : M ↦ g.scalarAt y) x (b i)) ^ 2 / diag i) := by
+      simp [f, b, diag]
+
+set_option maxHeartbeats 20000000 in
+/-- Orthogonal-frame expansion of the Ricci norm. -/
+theorem ricciNormSqAt_eq_metricOrthogonalBasis_sum (x : M) :
+    g.ricciNormSqAt x =
+      (let b := metricOrthogonalBasisAt g x
+      let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+        fun k ↦ g.metricBilinAt x (b k) (b k)
+      ∑ i, ∑ j, (g.ricciAt x (b i) (b j)) ^ 2 / (diag i * diag j)) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := metricOrthogonalBasisAt g x
+  let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+    fun k ↦ g.metricBilinAt x (b k) (b k)
+  let RicB : LinearMap.BilinForm ℝ (TM x) :=
+    LinearMap.mk₂ ℝ (fun p q ↦ g.ricciAt x p q)
+      (fun p p' q ↦ g.ricciAt_add_left x p p' q)
+      (fun c p q ↦ by
+        simpa [smul_eq_mul] using g.ricciAt_smul_left x c p q)
+      (fun p q q' ↦ g.ricciAt_add_right x p q q')
+      (fun c p q ↦ by
+        simpa [smul_eq_mul] using g.ricciAt_smul_right x c p q)
+  have hOrtho : (g.metricBilinAt x).IsOrthoᵢ b := by
+    simpa [b, metricOrthogonalBasisAt] using
+      Classical.choose_spec
+        (LinearMap.BilinForm.exists_orthogonal_basis
+          (B := g.metricBilinAt x) (g.metricBilinAt_isSymm x))
+  have hB : ∀ p q : TM x,
+      RicB p q = ricciVariationField g x p q := by
+    intro p q
+    simp [RicB, ricciVariationField]
+  have hSymm : ∀ p q : TM x,
+      ricciVariationField g x p q = ricciVariationField g x q p := by
+    intro p q
+    exact g.ricciAt_symm x p q
+  calc
+    g.ricciNormSqAt x =
+        metricVariationRicciPairingAt g (ricciVariationField g) x := by
+          exact (metricVariationRicciPairingAt_ricci g x).symm
+    _ =
+        (let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+          fun k ↦ g.metricBilinAt x (b k) (b k)
+        ∑ i, ∑ j,
+          (diag i)⁻¹ * (diag j)⁻¹ *
+            ricciVariationField g x (b i) (b j) *
+            g.ricciAt x (b i) (b j)) :=
+          metricVariationRicciPairingAt_eq_orthogonalBasis_sum_of_symm
+            (g := g) (h := ricciVariationField g) (x := x) (b := b)
+            hOrtho
+            (B := RicB)
+            hB hSymm
+    _ =
+        (let b := metricOrthogonalBasisAt g x
+        let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+          fun k ↦ g.metricBilinAt x (b k) (b k)
+        ∑ i, ∑ j, (g.ricciAt x (b i) (b j)) ^ 2 / (diag i * diag j)) := by
+        simp [b, ricciVariationField, div_eq_mul_inv, pow_two,
+          mul_comm, mul_left_comm, mul_assoc]
+
+set_option maxHeartbeats 20000000 in
+/-- The mixed completed-square contraction is the covariant Ricci/Ricci pairing
+evaluated on the scalar-gradient direction. -/
+theorem pinchingMixedGradientPairingAt_eq_covRicciRicciPairingAt_gradientAt_scalarAt
+    (x : M) :
+    g.pinchingMixedGradientPairingAt x =
+      covRicciRicciPairingAt g x
+        (g.gradientAt (fun y : M ↦ g.scalarAt y) x) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let f : M → ℝ := fun y ↦ g.scalarAt y
+  let b := metricOrthogonalBasisAt g x
+  let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+    fun k ↦ g.metricBilinAt x (b k) (b k)
+  have hgrad := g.gradientAt_eq_metricOrthogonalBasis_sum f x
+  have hpair :=
+    g.covRicciRicciPairingAt_eq_metricOrthogonalBasis_sum x
+      (g.gradientAt f x)
+  have hCovSum : ∀ i j,
+      covTensor2DerivAt g (ricciVariationField g) x
+          (∑ a, ((diag a)⁻¹ * extDerivFun f x (b a)) • b a)
+          (b i) (b j) =
+        ∑ a, ((diag a)⁻¹ * extDerivFun f x (b a)) *
+          covTensor2DerivAt g (ricciVariationField g) x (b a) (b i) (b j) := by
+    intro i j
+    set L : TM x →ₗ[ℝ] ℝ :=
+      IsLinearMap.mk' (fun v ↦
+          covTensor2DerivAt g (ricciVariationField g) x v (b i) (b j))
+        ⟨fun v₁ v₂ ↦
+            covTensor2DerivAt_add_deriv
+              (g := g) (h := ricciVariationField g) (x := x)
+              (tensor2AddLeft_ricciVariationField g)
+              (tensor2AddRight_ricciVariationField g) v₁ v₂ (b i) (b j),
+          fun c v ↦ by
+            simpa [smul_eq_mul] using
+              covTensor2DerivAt_smul_deriv
+                (g := g) (h := ricciVariationField g) (x := x)
+                (tensor2SMulLeft_ricciVariationField g)
+                (tensor2SMulRight_ricciVariationField g) c v (b i) (b j)⟩ with hL
+    change L (∑ a, ((diag a)⁻¹ * extDerivFun f x (b a)) • b a) =
+      ∑ a, ((diag a)⁻¹ * extDerivFun f x (b a)) * L (b a)
+    have hmap := map_sum L
+      (fun a ↦ ((diag a)⁻¹ * extDerivFun f x (b a)) • b a) Finset.univ
+    simpa [smul_eq_mul] using hmap
+  let D : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+    fun a ↦ (diag a)⁻¹ * extDerivFun f x (b a)
+  let C :
+      Fin (Module.finrank ℝ (TM x)) →
+        Fin (Module.finrank ℝ (TM x)) →
+          Fin (Module.finrank ℝ (TM x)) → ℝ :=
+    fun a i j ↦ covTensor2DerivAt g (ricciVariationField g) x (b a) (b i) (b j)
+  let W :
+      Fin (Module.finrank ℝ (TM x)) →
+        Fin (Module.finrank ℝ (TM x)) → ℝ :=
+    fun i j ↦ (diag i)⁻¹ * (diag j)⁻¹ * g.ricciAt x (b i) (b j)
+  have hRhs :
+      covRicciRicciPairingAt g x (g.gradientAt f x) =
+        ∑ i, ∑ j, (∑ a, D a * C a i j) * W i j := by
+    rw [hpair, hgrad]
+    change
+      (∑ i, ∑ j,
+        (diag i)⁻¹ * (diag j)⁻¹ *
+          covTensor2DerivAt g (ricciVariationField g) x
+            (∑ a, ((diag a)⁻¹ * extDerivFun f x (b a)) • b a)
+            (b i) (b j) *
+          g.ricciAt x (b i) (b j)) =
+        ∑ i, ∑ j, (∑ a, D a * C a i j) * W i j
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    refine Finset.sum_congr rfl fun j _ ↦ ?_
+    rw [hCovSum i j]
+    dsimp [D, C, W]
+    ring
+  rw [hRhs]
+  rw [finset_sum_pairing_linearize (D := D) (C := C) (W := W)]
+  dsimp [pinchingMixedGradientPairingAt, D, C, W]
+  refine Finset.sum_congr rfl fun a _ ↦ ?_
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  change
+    covTensor2DerivAt g (ricciVariationField g) x (b a) (b i) (b j) *
+        (extDerivFun f x (b a) * g.ricciAt x (b i) (b j)) /
+          (diag a * diag i * diag j) =
+      ((diag a)⁻¹ * extDerivFun f x (b a)) *
+        covTensor2DerivAt g (ricciVariationField g) x (b a) (b i) (b j) *
+          ((diag i)⁻¹ * (diag j)⁻¹ * g.ricciAt x (b i) (b j))
+  ring_nf
+
+set_option maxHeartbeats 20000000 in
+/-- The raw `∇R ⊗ Ric` norm factors into the scalar-gradient norm and Ricci norm. -/
+theorem pinchingScalarRicciGradientProductAt_eq_scalarGradNormSqAt_mul_ricciNormSqAt
+    (x : M) :
+    g.pinchingScalarRicciGradientProductAt x =
+      g.scalarGradNormSqAt x * g.ricciNormSqAt x := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := metricOrthogonalBasisAt g x
+  let diag : Fin (Module.finrank ℝ (TM x)) → ℝ :=
+    fun k ↦ g.metricBilinAt x (b k) (b k)
+  rw [g.scalarGradNormSqAt_eq_metricOrthogonalBasis_sum x,
+    g.ricciNormSqAt_eq_metricOrthogonalBasis_sum x]
+  dsimp [pinchingScalarRicciGradientProductAt]
+  change
+    (∑ a, ∑ i, ∑ j,
+      (extDerivFun (fun y : M ↦ g.scalarAt y) x (b a) *
+          g.ricciAt x (b i) (b j)) ^ 2 /
+        (diag a * diag i * diag j)) =
+      (∑ a, (extDerivFun (fun y : M ↦ g.scalarAt y) x (b a)) ^ 2 / diag a) *
+        ∑ i, ∑ j, (g.ricciAt x (b i) (b j)) ^ 2 / (diag i * diag j)
+  rw [finset_sum_mul_sum₂
+    (A := fun a ↦ (extDerivFun (fun y : M ↦ g.scalarAt y) x (b a)) ^ 2 / diag a)
+    (B := fun i j ↦ (g.ricciAt x (b i) (b j)) ^ 2 / (diag i * diag j))]
+  refine Finset.sum_congr rfl fun a _ ↦ ?_
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  ring_nf
+
 set_option maxHeartbeats 3000000 in
 /-- Orthogonal-frame expansion of Hamilton's completed gradient square. -/
 theorem pinchingGradientSquareAt_eq_completedSquareExpansion (x : M) :
@@ -224,6 +711,240 @@ theorem pinchingGradientSquareAt_eq_completedSquareExpansion (x : M) :
         (g.metricBilinAt x (b j) (b j)))⁻¹
   simpa [b, A, B, W] using
     finset_sum_completed_square (R := g.scalarAt x) (A := A) (B := B) (W := W)
+
+end ClosedSmoothRiemannianMetric
+
+namespace ClosedSmoothRiemannianMetric
+
+/--
+Local gradient form of the quotient product-rule trick.  If `q * v = u`
+eventually at `x`, then `v ∇q = ∇u - q ∇v` at `x`.
+-/
+theorem gradientAt_quotient_eq_of_eventually_product_rule
+    (g : ClosedSmoothRiemannianMetric n M)
+    {u v q : M → ℝ} {x : M}
+    (hprod : (fun y : M ↦ q y * v y) =ᶠ[nhds x] u)
+    (hq : MDifferentiableAt I 𝓘(ℝ) q x)
+    (hv : MDifferentiableAt I 𝓘(ℝ) v x) :
+    v x • g.gradientAt q x =
+      g.gradientAt u x - q x • g.gradientAt v x := by
+  have hmul := g.gradientAt_mul (f := q) (h := v) hq hv
+  have hgrad :
+      g.gradientAt (q * v) x = g.gradientAt u x :=
+    g.gradientAt_congr_of_eventuallyEq hprod
+  rw [← hgrad, hmul]
+  simp [add_comm]
+
+/--
+Local Laplacian form of the quotient product-rule trick.  If `q * v = u`
+eventually at `x` and `v x ≠ 0`, then `Δq` is obtained from `Δ(qv)` by
+solving the product rule.
+-/
+theorem laplacianAt_quotient_eq_of_eventually_product_rule
+    (g : ClosedSmoothRiemannianMetric n M)
+    {u v q : M → ℝ} {x : M}
+    (hprod : (fun y : M ↦ q y * v y) =ᶠ[nhds x] u)
+    (hvx : v x ≠ 0)
+    (hq : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) q y)
+    (hv : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) v y)
+    (hgradq : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient q)) x)
+    (hgradv : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient v)) x)
+    (hgradprod :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient (q * v))) x)
+    (hgradu : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient u)) x) :
+    g.laplacianAt q x =
+      (g.laplacianAt u x - q x * g.laplacianAt v x
+          - 2 * g.inner x (g.gradientAt q x) (g.gradientAt v x)) / v x := by
+  have hmul :=
+    g.laplacianAt_mul (f := q) (h := v) (x := x) hq hv hgradq hgradv
+  have hlap :
+      g.laplacianAt (q * v) x = g.laplacianAt u x :=
+    g.laplacianAt_congr_of_eventuallyEq hprod hgradprod hgradu
+  have hu :
+      g.laplacianAt u x =
+        q x * g.laplacianAt v x + v x * g.laplacianAt q x
+          + 2 * g.inner x (g.gradientAt q x) (g.gradientAt v x) := by
+    rw [← hlap]
+    exact hmul
+  rw [eq_div_iff hvx]
+  linarith
+
+set_option maxHeartbeats 12000000 in
+/--
+Spatial quotient/drift expansion for Hamilton's scalar-normalized Ricci
+pinching quotient on the positive-scalar domain.
+-/
+theorem pinchingQuotient_spatial_expansion
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hRpos : 0 < g.scalarAt x)
+    (hScalarCont : ContinuousAt (fun y : M ↦ g.scalarAt y) x)
+    (hScalarDiff : ∀ y : M,
+      MDifferentiableAt I 𝓘(ℝ) (fun z : M ↦ g.scalarAt z) y)
+    (hQuotDiff : ∀ y : M,
+      MDifferentiableAt I 𝓘(ℝ) (fun z : M ↦ g.pinchingQuotientAt z) y)
+    (hScalarGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient (fun y : M ↦ g.scalarAt y))) x)
+    (hQuotGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient (fun y : M ↦ g.pinchingQuotientAt y))) x)
+    (hScalarSqGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient (fun y : M ↦
+          g.scalarAt y * g.scalarAt y))) x)
+    (hQuotScalarSqGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient ((fun y : M ↦ g.pinchingQuotientAt y) *
+          (fun y : M ↦ g.scalarAt y * g.scalarAt y)))) x)
+    (hRicNormGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient (fun y : M ↦ g.ricciNormSqAt y))) x) :
+    g.laplacianAt (fun y : M ↦ g.pinchingQuotientAt y) x
+        + g.pinchingQuotientGradientDrift3At x =
+      g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x / (g.scalarAt x) ^ 2
+        - 2 * g.ricciNormSqAt x *
+            g.laplacianAt (fun y : M ↦ g.scalarAt y) x / (g.scalarAt x) ^ 3
+        - 4 * g.pinchingMixedGradientPairingAt x / (g.scalarAt x) ^ 3
+        + 2 * g.pinchingScalarRicciGradientProductAt x / (g.scalarAt x) ^ 4 := by
+  classical
+  let Rf : M → ℝ := fun y ↦ g.scalarAt y
+  let Nf : M → ℝ := fun y ↦ g.ricciNormSqAt y
+  let Qf : M → ℝ := fun y ↦ g.pinchingQuotientAt y
+  let Vf : M → ℝ := fun y ↦ Rf y * Rf y
+  let R : ℝ := Rf x
+  let N : ℝ := Nf x
+  let S : ℝ := g.scalarGradNormSqAt x
+  let B : ℝ := g.pinchingMixedGradientPairingAt x
+  let G : ℝ := g.pinchingScalarRicciGradientProductAt x
+  let IQ : ℝ := g.inner x (g.gradientAt Qf x) (g.gradientAt Rf x)
+  have hRne : R ≠ 0 := ne_of_gt (by simpa [R, Rf] using hRpos)
+  have hVdiff : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) Vf y := by
+    intro y
+    dsimp [Vf, Rf]
+    exact (hScalarDiff y).mul (hScalarDiff y)
+  have hGradQ :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient Qf)) x := by
+    simpa [Qf] using hQuotGrad
+  have hGradV :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient Vf)) x := by
+    simpa [Vf, Rf] using hScalarSqGrad
+  have hGradProd :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient (Qf * Vf))) x := by
+    simpa [Qf, Vf, Rf] using hQuotScalarSqGrad
+  have hGradN :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient Nf)) x := by
+    simpa [Nf] using hRicNormGrad
+  have hRpos_event : ∀ᶠ y in nhds x, 0 < Rf y := by
+    simpa [Rf] using hScalarCont.eventually (eventually_gt_nhds hRpos)
+  have hprod : (fun y : M ↦ Qf y * Vf y) =ᶠ[nhds x] Nf := by
+    filter_upwards [hRpos_event] with y hy
+    dsimp [Qf, Vf, Rf, Nf]
+    rw [g.pinchingQuotientAt_eq y]
+    field_simp [ne_of_gt hy, pow_two]
+    rw [mul_div_assoc, div_self (ne_of_gt hy), mul_one]
+  have hVxne : Vf x ≠ 0 := by
+    dsimp [Vf, Rf]
+    exact mul_ne_zero hRne hRne
+  have hLapQuot :
+      g.laplacianAt Qf x =
+        (g.laplacianAt Nf x - Qf x * g.laplacianAt Vf x
+            - 2 * g.inner x (g.gradientAt Qf x) (g.gradientAt Vf x)) / Vf x :=
+    g.laplacianAt_quotient_eq_of_eventually_product_rule
+      hprod hVxne hQuotDiff hVdiff hGradQ hGradV hGradProd hGradN
+  have hGradQuot :
+      Vf x • g.gradientAt Qf x =
+        g.gradientAt Nf x - Qf x • g.gradientAt Vf x :=
+    g.gradientAt_quotient_eq_of_eventually_product_rule
+      hprod (hQuotDiff x) (hVdiff x)
+  have hGradVeq :
+      g.gradientAt Vf x = (2 * R) • g.gradientAt Rf x := by
+    have h := g.gradientAt_mul (f := Rf) (h := Rf)
+      (x := x) (hScalarDiff x) (hScalarDiff x)
+    change g.gradientAt (Rf * Rf) x = (2 * R) • g.gradientAt Rf x
+    calc
+      g.gradientAt (Rf * Rf) x =
+          Rf x • g.gradientAt Rf x + Rf x • g.gradientAt Rf x := h
+      _ = (2 * R) • g.gradientAt Rf x := by
+          rw [← add_smul]
+          congr 1
+          ring
+  have hLapVeq :
+      g.laplacianAt Vf x =
+        2 * R * g.laplacianAt Rf x + 2 * S := by
+    have h := g.laplacianAt_mul (f := Rf) (h := Rf)
+      (x := x) hScalarDiff hScalarDiff
+      (by simpa [Rf] using hScalarGrad)
+      (by simpa [Rf] using hScalarGrad)
+    change g.laplacianAt (Rf * Rf) x =
+      2 * R * g.laplacianAt Rf x + 2 * S
+    rw [h]
+    simp [Rf, R, S, scalarGradNormSqAt, mul_comm, mul_left_comm]
+    ring
+  have hInnerQV :
+      g.inner x (g.gradientAt Qf x) (g.gradientAt Vf x) = (2 * R) * IQ := by
+    rw [hGradVeq]
+    simp [IQ, smul_eq_mul]
+  have hINR :
+      g.inner x (g.gradientAt Nf x) (g.gradientAt Rf x) = 2 * B := by
+    calc
+      g.inner x (g.gradientAt Nf x) (g.gradientAt Rf x) =
+          extDerivFun Nf x (g.gradientAt Rf x) := by
+            simpa [Nf] using
+              g.inner_gradientAt Nf x (g.gradientAt Rf x)
+      _ = 2 * covRicciRicciPairingAt g x (g.gradientAt Rf x) := by
+            simpa [Nf, Rf] using
+              extDerivFun_ricciNormSqAt_eq_two_covRicciRicciPairingAt
+                (g := g) x (g.gradientAt Rf x)
+      _ = 2 * B := by
+            rw [← g.pinchingMixedGradientPairingAt_eq_covRicciRicciPairingAt_gradientAt_scalarAt x]
+  have hIVR :
+      g.inner x (g.gradientAt Vf x) (g.gradientAt Rf x) = (2 * R) * S := by
+    rw [hGradVeq]
+    simp [S, Rf, scalarGradNormSqAt, smul_eq_mul]
+  have hQx : Qf x = N / R ^ 2 := by
+    simpa [Qf, N, R, Rf] using g.pinchingQuotientAt_eq x
+  have hInnerQuot :
+      Vf x * IQ =
+        g.inner x (g.gradientAt Nf x) (g.gradientAt Rf x)
+          - Qf x * g.inner x (g.gradientAt Vf x) (g.gradientAt Rf x) := by
+    have h := congrArg
+      (fun v : TM x ↦ g.inner x v (g.gradientAt Rf x)) hGradQuot
+    simpa [IQ, smul_eq_mul, map_sub, map_smul] using h
+  have hInnerRel :
+      R ^ 2 * IQ = 2 * B - (N / R ^ 2) * ((2 * R) * S) := by
+    rw [hINR, hIVR, hQx] at hInnerQuot
+    simpa [Vf, Rf, R, pow_two, mul_comm, mul_left_comm, mul_assoc] using hInnerQuot
+  have hIQR :
+      IQ = (2 * B - (N / R ^ 2) * ((2 * R) * S)) / R ^ 2 := by
+    rw [eq_div_iff (pow_ne_zero 2 hRne)]
+    simpa [pow_two, mul_comm, mul_left_comm, mul_assoc] using hInnerRel
+  have hDrift :
+      g.pinchingQuotientGradientDrift3At x = (2 / R) * IQ := by
+    dsimp [pinchingQuotientGradientDrift3At, R, Rf, Qf, IQ]
+    rw [g.inner_symm x (g.gradientAt (fun y : M ↦ g.scalarAt y) x)
+      (g.gradientAt (fun y : M ↦ g.pinchingQuotientAt y) x)]
+  have hRaw : g.pinchingScalarRicciGradientProductAt x = S * N := by
+    simpa [S, N] using
+      g.pinchingScalarRicciGradientProductAt_eq_scalarGradNormSqAt_mul_ricciNormSqAt x
+  calc
+    g.laplacianAt (fun y : M ↦ g.pinchingQuotientAt y) x
+        + g.pinchingQuotientGradientDrift3At x =
+        (g.laplacianAt Nf x - Qf x * g.laplacianAt Vf x
+            - 2 * g.inner x (g.gradientAt Qf x) (g.gradientAt Vf x)) / Vf x
+          + (2 / R) * IQ := by
+          rw [hLapQuot, hDrift]
+    _ =
+      g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x / (g.scalarAt x) ^ 2
+        - 2 * g.ricciNormSqAt x *
+            g.laplacianAt (fun y : M ↦ g.scalarAt y) x / (g.scalarAt x) ^ 3
+        - 4 * g.pinchingMixedGradientPairingAt x / (g.scalarAt x) ^ 3
+        + 2 * g.pinchingScalarRicciGradientProductAt x / (g.scalarAt x) ^ 4 := by
+        rw [hLapVeq, hInnerQV, hIQR, hQx, hRaw]
+        simp [Vf, Rf, Nf, S, B, R, N, pow_two]
+        field_simp [hRne]
+        ring
 
 end ClosedSmoothRiemannianMetric
 
@@ -359,7 +1080,7 @@ Assemble the corrected quotient evolution from the proved scalar and
 Ricci-norm parabolic forms, with the spatial completed-square algebra kept as
 an explicit named hypothesis.  No reaction-sign assumption is used.
 -/
-theorem satisfiesPinchingQuotientEvolutionAt_of_ricciFlow
+theorem satisfiesPinchingQuotientEvolutionAt_of_ricciFlow_of_completed_square
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
     [∀ t : ℝ,
       CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
@@ -551,11 +1272,84 @@ theorem satisfiesPinchingQuotientEvolutionAt_of_ricciFlow_of_spatial_expansion
           TM x →ₗ[ℝ] TM x)
     ClosedSmoothRiemannianMetric.SatisfiesPinchingQuotientEvolutionAt gt t₀ x
       (g.pinchingRicciNormReactionMotionTraceAt x fullTrace) := by
-  exact satisfiesPinchingQuotientEvolutionAt_of_ricciFlow
+  exact satisfiesPinchingQuotientEvolutionAt_of_ricciFlow_of_completed_square
     (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
     hRaise hRicci hScalar hn hRpos hRicNorm₂ hPairDiff hRicSecond
     (pinchingQuotientCompletedSquareIdentityAt_of_spatial_expansions
       (g := gt t₀) (x := x) hSpatial)
+
+set_option maxHeartbeats 8000000 in
+/--
+Unconditional quotient evolution assembly from Ricci flow and the proved
+spatial quotient/drift expansion.  The remaining hypotheses are regularity
+classes consumed by the scalar, Ricci-norm, and quotient product-rule APIs.
+-/
+theorem satisfiesPinchingQuotientEvolutionAt_of_ricciFlow
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hRicci : SatisfiesRicciEvolutionAt gt t₀ x)
+    (hScalar : SatisfiesHamiltonScalarEvolutionAt gt t₀ x)
+    (hn : n = 3)
+    (hRpos : 0 < (gt t₀).scalarAt x)
+    (hRicNorm₂ : ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ (gt t₀).ricciNormSqAt y) x)
+    (hPairDiff : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ covRicciRicciPairingAt (gt t₀) y (extend E w y)) x)
+    (hRicSecond :
+      CovTensor2DerivExtDifferentiableAt
+        (gt t₀) (ricciVariationField (gt t₀)) x)
+    (hScalarCont : ContinuousAt (fun y : M ↦ (gt t₀).scalarAt y) x)
+    (hScalarDiff : ∀ y : M,
+      MDifferentiableAt I 𝓘(ℝ) (fun z : M ↦ (gt t₀).scalarAt z) y)
+    (hQuotDiff : ∀ y : M,
+      MDifferentiableAt I 𝓘(ℝ) (fun z : M ↦ (gt t₀).pinchingQuotientAt z) y)
+    (hScalarGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% ((gt t₀).gradient (fun y : M ↦ (gt t₀).scalarAt y))) x)
+    (hQuotGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% ((gt t₀).gradient (fun y : M ↦ (gt t₀).pinchingQuotientAt y))) x)
+    (hScalarSqGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% ((gt t₀).gradient (fun y : M ↦
+          (gt t₀).scalarAt y * (gt t₀).scalarAt y))) x)
+    (hQuotScalarSqGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% ((gt t₀).gradient ((fun y : M ↦ (gt t₀).pinchingQuotientAt y) *
+          (fun y : M ↦ (gt t₀).scalarAt y * (gt t₀).scalarAt y)))) x) :
+    let g : ClosedSmoothRiemannianMetric n M := gt t₀
+    let δRic3 : TM x → TM x → ℝ :=
+      fun u w ↦ ricciEvolution3ReactionRHSAt g x u w
+    let hRic3 : ∀ u w : TM x,
+        HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic3 u w) t₀ :=
+      SatisfiesRicciEvolutionAt.reaction3
+        (gt := gt) (t₀ := t₀) (x := x) hRicci hn
+    let fullTrace : ℝ :=
+      2 * LinearMap.trace ℝ (TM x)
+        ((((raise'.comp (g.ricciDualContinuousAt x) +
+            (g.metricRaiseContinuousAt x).comp
+              (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+                (gt := gt) (t₀ := t₀) (x := x) δRic3 hRic3)).comp
+            (g.ricciEndoContinuousAt x)) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x)
+    ClosedSmoothRiemannianMetric.SatisfiesPinchingQuotientEvolutionAt gt t₀ x
+      (g.pinchingRicciNormReactionMotionTraceAt x fullTrace) := by
+  have hRicNormGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% ((gt t₀).gradient (fun y : M ↦ (gt t₀).ricciNormSqAt y))) x := by
+    simpa using (gt t₀).mdifferentiableAt_gradient hRicNorm₂
+  exact satisfiesPinchingQuotientEvolutionAt_of_ricciFlow_of_spatial_expansion
+    (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
+    hRaise hRicci hScalar hn hRpos hRicNorm₂ hPairDiff hRicSecond
+    (by
+      intro _
+      exact (gt t₀).pinchingQuotient_spatial_expansion
+        x hRpos hScalarCont hScalarDiff hQuotDiff
+        hScalarGrad hQuotGrad hScalarSqGrad hQuotScalarSqGrad hRicNormGrad)
 
 namespace ClosedSmoothRiemannianMetric
 
