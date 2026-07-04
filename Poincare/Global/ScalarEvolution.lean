@@ -1717,6 +1717,140 @@ theorem hasDerivAt_ricciNormSqAt_eq_laplacianAt_sub_two_covNormSq_add_reactionMo
 
 set_option maxHeartbeats 8000000 in
 /--
+Exact three-dimensional parabolic form for the trace-form traceless-Ricci
+numerator, obtained by subtracting the scalar-square equality from the
+Ricci-norm parabolic form.
+-/
+theorem hasDerivAt_tracelessRicciNormSqAt_eq_laplacianAt_sub_two_covNormSq_add_scalarGrad_add_tracelessReactionTrace3
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hRicci : SatisfiesRicciEvolutionAt gt t₀ x)
+    (hScalar : SatisfiesHamiltonScalarEvolutionAt gt t₀ x)
+    (hn : n = 3)
+    (hRicNorm₂ : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2
+      (fun z : M ↦ (gt t₀).ricciNormSqAt z) y)
+    (hScalar₂ : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2
+      (fun z : M ↦ (gt t₀).scalarAt z) y)
+    (hScalarSqDiff : ∀ y : M, MDifferentiableAt I 𝓘(ℝ)
+      (fun z : M ↦ (gt t₀).scalarAt z ^ 2) y)
+    (hScalarSqGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% ((gt t₀).gradient
+          (fun z : M ↦ (gt t₀).scalarAt z ^ 2))) x)
+    (hPairDiff : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ covRicciRicciPairingAt (gt t₀) y (extend E w y)) x)
+    (hRicSecond :
+      CovTensor2DerivExtDifferentiableAt
+        (gt t₀) (ricciVariationField (gt t₀)) x) :
+    let g : ClosedSmoothRiemannianMetric n M := gt t₀
+    let δRic3 : TM x → TM x → ℝ :=
+      fun u w ↦ ricciEvolution3ReactionRHSAt g x u w
+    let hRic3 : ∀ u w : TM x,
+        HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic3 u w) t₀ :=
+      SatisfiesRicciEvolutionAt.reaction3
+        (gt := gt) (t₀ := t₀) (x := x) hRicci hn
+    let fullTrace : ℝ :=
+      2 * LinearMap.trace ℝ (TM x)
+        ((((raise'.comp (g.ricciDualContinuousAt x) +
+            (g.metricRaiseContinuousAt x).comp
+              (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+                (gt := gt) (t₀ := t₀) (x := x) δRic3 hRic3)).comp
+            (g.ricciEndoContinuousAt x)) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x)
+    let ricciReaction : ℝ :=
+      g.pinchingRicciNormReactionMotionTraceAt x fullTrace
+    HasDerivAt (fun t ↦ (gt t).tracelessRicciNormSqAt x)
+      (g.laplacianAt (fun y : M ↦ g.tracelessRicciNormSqAt y) x
+        - 2 * covRicciNormSqAt g x
+        + (2 / 3 : ℝ) * g.scalarGradNormSqAt x
+        + g.pinchingTracelessRicciReactionTrace3At x ricciReaction) t₀ := by
+  classical
+  let g : ClosedSmoothRiemannianMetric n M := gt t₀
+  let δRic3 : TM x → TM x → ℝ :=
+    fun u w ↦ ricciEvolution3ReactionRHSAt g x u w
+  let hRic3 : ∀ u w : TM x,
+      HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic3 u w) t₀ :=
+    SatisfiesRicciEvolutionAt.reaction3
+      (gt := gt) (t₀ := t₀) (x := x) hRicci hn
+  let fullTrace : ℝ :=
+    2 * LinearMap.trace ℝ (TM x)
+      ((((raise'.comp (g.ricciDualContinuousAt x) +
+          (g.metricRaiseContinuousAt x).comp
+            (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+              (gt := gt) (t₀ := t₀) (x := x) δRic3 hRic3)).comp
+          (g.ricciEndoContinuousAt x)) : TM x →L[ℝ] TM x) :
+        TM x →ₗ[ℝ] TM x)
+  let ricciReaction : ℝ := g.pinchingRicciNormReactionMotionTraceAt x fullTrace
+  change HasDerivAt (fun t ↦ (gt t).tracelessRicciNormSqAt x)
+    (g.laplacianAt (fun y : M ↦ g.tracelessRicciNormSqAt y) x
+      - 2 * covRicciNormSqAt g x
+      + (2 / 3 : ℝ) * g.scalarGradNormSqAt x
+      + g.pinchingTracelessRicciReactionTrace3At x ricciReaction) t₀
+  let R : ℝ := g.scalarAt x
+  let N : ℝ := g.ricciNormSqAt x
+  let lapN : ℝ := g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x
+  let lapR : ℝ := g.laplacianAt (fun y : M ↦ g.scalarAt y) x
+  let lapR2 : ℝ := g.laplacianAt (fun y : M ↦ g.scalarAt y ^ 2) x
+  let lapU : ℝ := g.laplacianAt (fun y : M ↦ g.tracelessRicciNormSqAt y) x
+  let A : ℝ := covRicciNormSqAt g x
+  let S : ℝ := g.scalarGradNormSqAt x
+  let Nrhs : ℝ := lapN - 2 * A + ricciReaction
+  let R2rhs : ℝ := lapR2 - 2 * S + 4 * R * N
+  have hN :
+      HasDerivAt (fun t ↦ (gt t).ricciNormSqAt x) Nrhs t₀ := by
+    simpa [g, δRic3, hRic3, fullTrace, ricciReaction, lapN, A, Nrhs] using
+      hasDerivAt_ricciNormSqAt_eq_laplacianAt_sub_two_covNormSq_add_reactionMotionTrace3
+        (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
+        hRaise hRicci hn (hRicNorm₂ x) hPairDiff hRicSecond
+  have hR2 :
+      HasDerivAt (fun t ↦ (gt t).scalarAt x ^ 2) R2rhs t₀ := by
+    simpa [g, R, N, lapR2, S, R2rhs] using
+      hasDerivAt_scalarAt_sq_of_satisfiesHamiltonScalarEvolutionAt
+        (gt := gt) (t₀ := t₀) (x := x) hScalar hScalar₂
+  have hU :
+      HasDerivAt (fun t ↦ (gt t).tracelessRicciNormSqAt x)
+        (Nrhs - R2rhs / (n : ℝ)) t₀ :=
+    ClosedSmoothRiemannianMetric.hasDerivAt_tracelessRicciNormSqAt_of_ricciNormSq_and_scalar_sq
+      hN hR2
+  have hRicNormDiff : ∀ y : M, MDifferentiableAt I 𝓘(ℝ)
+      (fun z : M ↦ g.ricciNormSqAt z) y := by
+    intro y
+    exact (hRicNorm₂ y).mdifferentiableAt two_ne_zero
+  have hRicNormGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient (fun z : M ↦ g.ricciNormSqAt z))) x := by
+    exact g.mdifferentiableAt_gradient (hRicNorm₂ x)
+  have hLapU :
+      lapU =
+        lapN - (2 / (n : ℝ)) * R * lapR - (2 / (n : ℝ)) * S := by
+    simpa [g, lapU, lapN, lapR, R, S] using
+      g.laplacianAt_tracelessRicciNormSqAt_eq
+        x hRicNormDiff hRicNormGrad hScalar₂ hScalarSqDiff hScalarSqGrad
+  have hLapR2 :
+      lapR2 = 2 * R * lapR + 2 * S := by
+    simpa [g, lapR2, R, lapR, S,
+      ClosedSmoothRiemannianMetric.scalarGradNormSqAt] using
+      g.laplacianAt_sq (f := fun y : M ↦ g.scalarAt y) (x := x) hScalar₂
+  have hnR : (n : ℝ) = 3 := by
+    exact_mod_cast hn
+  have htarget :
+      Nrhs - R2rhs / (n : ℝ) =
+        lapU - 2 * A + (2 / 3 : ℝ) * S
+          + g.pinchingTracelessRicciReactionTrace3At x ricciReaction := by
+    dsimp [Nrhs, R2rhs]
+    rw [hLapU, hLapR2, hnR]
+    unfold ClosedSmoothRiemannianMetric.pinchingTracelessRicciReactionTrace3At
+      ClosedSmoothRiemannianMetric.pinchingScalarReactionAt
+    ring
+  convert hU using 1
+  exact htarget.symm
+
+set_option maxHeartbeats 8000000 in
+/--
 Assemble the corrected quotient evolution from the proved scalar and
 Ricci-norm parabolic forms, with the spatial completed-square algebra kept as
 an explicit named hypothesis.  No reaction-sign assumption is used.
