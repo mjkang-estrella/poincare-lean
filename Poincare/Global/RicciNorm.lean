@@ -1392,6 +1392,38 @@ theorem diagonalTracelessPinchingReactionNumerator3_near_degenerate_tenth_satura
   norm_num
 
 /--
+The spatial gradient numerator for the improved traceless quotient after the
+Laplacian and drift terms are moved to the right-hand side:
+`R` is scalar curvature, `N = |Ric|^2`, `A = |∇Ric|^2`,
+`B = <∇Ric, ∇R ⊗ Ric>`, and `S = |∇R|^2`.
+-/
+noncomputable def tracelessPinchingGradientNumerator3
+    (R N A B S δ : ℝ) : ℝ :=
+  let p : ℝ := 2 - δ;
+  -2 * R ^ 2 * A + 2 * p * R * B + (δ / 3) * R ^ 2 * S - p * N * S
+
+/--
+Pure-trace gradient pin from the `M4-ivey-5` refutation datum.  The full
+completed-square damping target would demand an extra `-δ*T*S`; the corrected
+drift-plus-reaction predicate only needs this total numerator, which has the
+expected nonpositive shape when `0 ≤ 2 - δ`, `0 ≤ T`, and `0 ≤ S`.
+-/
+theorem tracelessPinchingGradientNumerator3_pureTrace_pin
+    (R S T δ : ℝ) :
+    tracelessPinchingGradientNumerator3 R (R ^ 2 / 3 + T) (S / 3)
+        (R * S / 3) S δ =
+      -(2 - δ) * T * S := by
+  unfold tracelessPinchingGradientNumerator3
+  ring_nf
+
+/-- A mixed-gradient saturation pin for the reserve-absorption inequality. -/
+theorem tracelessPinchingGradientNumerator3_mixed_saturation_pin
+    (δ : ℝ) :
+    tracelessPinchingGradientNumerator3 1 1 1 2 3 δ = 0 := by
+  unfold tracelessPinchingGradientNumerator3
+  ring_nf
+
+/--
 Hamilton Lemma 10.1 statement layer for the improved traceless pinching
 reaction.  Under the Ricci pinching floor `lambda_i >= epsilon R`, choosing
 `delta` in the admissible range should make the improved reaction numerator

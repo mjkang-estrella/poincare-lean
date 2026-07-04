@@ -24704,6 +24704,13 @@ def SatisfiesPinchingQuotientEvolutionAt
 Target parabolic inequality for the improved Hamilton pinching quantity
 `|Ric°|^2 / R^(2 - delta)`.
 
+The earlier full-damping RHS with
+`tracelessPinchingGradientDampingAt` is intentionally deprecated: the
+pure-trace gradient pattern from `M4-ivey-5` refutes that stronger target.
+Hamilton's improved pinching argument only needs the total gradient
+contribution to be proved nonpositive and absorbed, so the predicate below
+contains the Laplacian, drift, and reaction terms only.
+
 The reaction term is deliberately still explicit.  The eigenvalue-level
 Hamilton lemma should later prove its sign after substituting the cubic
 three-dimensional reaction trace and the pinching floor.
@@ -24723,7 +24730,6 @@ def SatisfiesTracelessPinchingImprovementEvolutionAt
               (gt t₀).laplacianAt
                 (fun y ↦ (gt t₀).tracelessPinchingAt y δ) x
                 + (gt t₀).tracelessPinchingGradientDrift3At x δ
-                + (gt t₀).tracelessPinchingGradientDampingAt x δ
                 + (gt t₀).tracelessPinchingReactionTermAt x δ
                   ((gt t₀).pinchingTracelessRicciReactionTrace3At x
                     ricciNormReactionMotionTrace)
