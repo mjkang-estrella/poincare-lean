@@ -169,6 +169,17 @@ theorem ClosedSmoothRiemannianMetric.hasDerivAt_tracelessPinchingAt_of_scalar_an
       (Rf := fun t ↦ (gt t).scalarAt x)
       (p := 2 - δ) hU hR hRpos
 
+theorem ClosedSmoothRiemannianMetric.hasDerivAt_tracelessRicciNormSqAt_of_ricciNormSq_and_scalar_sq
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    {N' R2' : ℝ}
+    (hN : HasDerivAt (fun t ↦ (gt t).ricciNormSqAt x) N' t₀)
+    (hR2 : HasDerivAt (fun t ↦ (gt t).scalarAt x ^ 2) R2' t₀) :
+    HasDerivAt (fun t ↦ (gt t).tracelessRicciNormSqAt x)
+      (N' - R2' / (n : ℝ)) t₀ := by
+  simpa [ClosedSmoothRiemannianMetric.tracelessRicciNormSqAt, div_eq_mul_inv,
+    mul_comm, mul_left_comm, mul_assoc]
+    using hN.sub (hR2.const_mul (1 / (n : ℝ)))
+
 /-- Algebra identifying the reaction quotient with the normalized remainder. -/
 private lemma pinching_reaction_remainder_algebra
     {R N M S : ℝ} (hR : R ≠ 0) :
@@ -1045,6 +1056,159 @@ theorem tracelessPinchingGradientDampingAt_eq_rpowCoefficientExpansion
   have hexp : (4 - δ : ℝ) = (2 - δ) + 2 := by ring
   rw [hexp]
   exact g.pinchingGradientSquareAt_rpowCoefficientExpansion x (2 - δ)
+
+/--
+Gradient of the trace-form traceless Ricci numerator, paired with the scalar
+gradient.
+-/
+theorem inner_gradientAt_tracelessRicciNormSqAt_scalarAt
+    (x : M)
+    (hRicNormDiff : MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ g.ricciNormSqAt y) x)
+    (hScalarDiff : MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦ g.scalarAt y) x) :
+    g.inner x
+        (g.gradientAt (fun y : M ↦ g.tracelessRicciNormSqAt y) x)
+        (g.gradientAt (fun y : M ↦ g.scalarAt y) x) =
+      2 * g.pinchingMixedGradientPairingAt x
+        - (2 / (n : ℝ)) * g.scalarAt x * g.scalarGradNormSqAt x := by
+  let Rf : M → ℝ := fun y ↦ g.scalarAt y
+  let Nf : M → ℝ := fun y ↦ g.ricciNormSqAt y
+  let S : ℝ := g.scalarGradNormSqAt x
+  let B : ℝ := g.pinchingMixedGradientPairingAt x
+  have hSqDiff : MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ Rf y ^ 2) x := by
+    simpa [Rf, pow_two] using hScalarDiff.mul hScalarDiff
+  have hTraceEq :
+      (fun y : M ↦ g.tracelessRicciNormSqAt y) =
+        Nf + ((-((1 : ℝ) / (n : ℝ))) • fun y : M ↦ Rf y ^ 2) := by
+    funext y
+    simp [ClosedSmoothRiemannianMetric.tracelessRicciNormSqAt, Nf, Rf,
+      div_eq_mul_inv]
+    ring
+  have hGradTrace :
+      g.gradientAt (fun y : M ↦ g.tracelessRicciNormSqAt y) x =
+        g.gradientAt Nf x
+          + (-((1 : ℝ) / (n : ℝ))) •
+            g.gradientAt (fun y : M ↦ Rf y ^ 2) x := by
+    rw [hTraceEq]
+    rw [g.gradientAt_add
+      (f := Nf) (h := (-((1 : ℝ) / (n : ℝ))) • fun y : M ↦ Rf y ^ 2)
+      hRicNormDiff (hSqDiff.const_smul (-((1 : ℝ) / (n : ℝ))))]
+    rw [g.gradientAt_const_smul
+      (c := -((1 : ℝ) / (n : ℝ))) (f := fun y : M ↦ Rf y ^ 2)
+      (x := x) hSqDiff]
+  have hGradSq :
+      g.gradientAt (fun y : M ↦ Rf y ^ 2) x =
+        (2 * Rf x) • g.gradientAt Rf x := by
+    have h := g.gradientAt_mul (f := Rf) (h := Rf)
+      (x := x) hScalarDiff hScalarDiff
+    have hfun : (fun y : M ↦ Rf y ^ 2) = Rf * Rf := by
+      funext y
+      simp [pow_two]
+    rw [hfun, h]
+    rw [← add_smul]
+    congr 1
+    ring
+  have hINR :
+      g.inner x (g.gradientAt Nf x) (g.gradientAt Rf x) = 2 * B := by
+    calc
+      g.inner x (g.gradientAt Nf x) (g.gradientAt Rf x) =
+          extDerivFun Nf x (g.gradientAt Rf x) := by
+            simpa [Nf] using g.inner_gradientAt Nf x (g.gradientAt Rf x)
+      _ = 2 * covRicciRicciPairingAt g x (g.gradientAt Rf x) := by
+            simpa [Nf, Rf] using
+              extDerivFun_ricciNormSqAt_eq_two_covRicciRicciPairingAt
+                (g := g) x (g.gradientAt Rf x)
+      _ = 2 * B := by
+            rw [← g.pinchingMixedGradientPairingAt_eq_covRicciRicciPairingAt_gradientAt_scalarAt x]
+  calc
+    g.inner x
+        (g.gradientAt (fun y : M ↦ g.tracelessRicciNormSqAt y) x)
+        (g.gradientAt (fun y : M ↦ g.scalarAt y) x)
+        = g.inner x
+            (g.gradientAt Nf x
+              + (-((1 : ℝ) / (n : ℝ))) •
+                g.gradientAt (fun y : M ↦ Rf y ^ 2) x)
+            (g.gradientAt Rf x) := by
+              rw [hGradTrace]
+    _ = 2 * B - (2 / (n : ℝ)) * Rf x * S := by
+      rw [map_add, map_smul, hGradSq]
+      simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply]
+      rw [hINR]
+      simp [S, Rf, scalarGradNormSqAt, smul_eq_mul]
+      ring
+
+/-- Laplacian of the trace-form traceless Ricci numerator. -/
+theorem laplacianAt_tracelessRicciNormSqAt_eq
+    (x : M)
+    (hRicNormDiff : ∀ y : M, MDifferentiableAt I 𝓘(ℝ)
+      (fun z : M ↦ g.ricciNormSqAt z) y)
+    (hRicNormGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient (fun z : M ↦ g.ricciNormSqAt z))) x)
+    (hScalar₂ : ∀ y : M, ContMDiffAt I 𝓘(ℝ) 2
+      (fun z : M ↦ g.scalarAt z) y)
+    (hScalarSqDiff : ∀ y : M, MDifferentiableAt I 𝓘(ℝ)
+      (fun z : M ↦ g.scalarAt z ^ 2) y)
+    (hScalarSqGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient (fun z : M ↦ g.scalarAt z ^ 2))) x) :
+    g.laplacianAt (fun y : M ↦ g.tracelessRicciNormSqAt y) x =
+      g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x
+        - (2 / (n : ℝ)) * g.scalarAt x *
+            g.laplacianAt (fun y : M ↦ g.scalarAt y) x
+        - (2 / (n : ℝ)) * g.scalarGradNormSqAt x := by
+  let Rf : M → ℝ := fun y ↦ g.scalarAt y
+  let Nf : M → ℝ := fun y ↦ g.ricciNormSqAt y
+  let Sqf : M → ℝ := fun y ↦ Rf y ^ 2
+  have hTraceEq :
+      (fun y : M ↦ g.tracelessRicciNormSqAt y) =
+        Nf + ((-((1 : ℝ) / (n : ℝ))) • Sqf) := by
+    funext y
+    simp [ClosedSmoothRiemannianMetric.tracelessRicciNormSqAt, Nf, Rf, Sqf,
+      div_eq_mul_inv]
+    ring
+  have hSqDiff : ∀ y : M, MDifferentiableAt I 𝓘(ℝ) Sqf y := by
+    intro y
+    simpa [Sqf, Rf] using hScalarSqDiff y
+  have hScaledSqDiff : ∀ y : M,
+      MDifferentiableAt I 𝓘(ℝ) ((-((1 : ℝ) / (n : ℝ))) • Sqf) y := by
+    intro y
+    exact (hSqDiff y).const_smul (-((1 : ℝ) / (n : ℝ)))
+  have hScaledSqGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient ((-((1 : ℝ) / (n : ℝ))) • Sqf))) x := by
+    have hgrad :=
+      g.gradient_const_smul
+        (c := -((1 : ℝ) / (n : ℝ))) (f := Sqf) hSqDiff
+    rw [hgrad]
+    have hc : MDifferentiableAt I 𝓘(ℝ)
+        (fun _ : M ↦ -((1 : ℝ) / (n : ℝ))) x := mdifferentiableAt_const
+    exact hc.smul_section (by simpa [Sqf, Rf] using hScalarSqGrad)
+  have hLapTrace :
+      g.laplacianAt (fun y : M ↦ g.tracelessRicciNormSqAt y) x =
+        g.laplacianAt Nf x + g.laplacianAt ((-((1 : ℝ) / (n : ℝ))) • Sqf) x := by
+    rw [hTraceEq]
+    exact g.laplacianAt_add
+      (f := Nf) (h := (-((1 : ℝ) / (n : ℝ))) • Sqf) (x := x)
+      hRicNormDiff
+      hScaledSqDiff
+      (by simpa [Nf] using hRicNormGrad)
+      hScaledSqGrad
+  have hLapSmul :
+      g.laplacianAt ((-((1 : ℝ) / (n : ℝ))) • Sqf) x =
+        -((1 : ℝ) / (n : ℝ)) * g.laplacianAt Sqf x := by
+    exact g.laplacianAt_const_smul (-((1 : ℝ) / (n : ℝ)))
+      (fun y ↦ by simpa [Sqf, Rf] using hScalarSqDiff y)
+      (by simpa [Sqf, Rf] using hScalarSqGrad)
+  have hLapSq :
+      g.laplacianAt Sqf x =
+        2 * Rf x * g.laplacianAt Rf x + 2 * g.scalarGradNormSqAt x := by
+    simpa [Sqf, Rf, scalarGradNormSqAt] using
+      g.laplacianAt_sq (f := Rf) (x := x) hScalar₂
+  rw [hLapTrace, hLapSmul, hLapSq]
+  simp [Nf, Rf]
+  ring
 
 end ClosedSmoothRiemannianMetric
 
