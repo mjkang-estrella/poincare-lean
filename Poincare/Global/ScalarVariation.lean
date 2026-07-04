@@ -11584,6 +11584,235 @@ theorem pairing_gram_product_rule_expand
           unfold ricciPairingRicciSecondDerivGroup
           simp [Finset.sum_add_distrib, add_assoc]
 
+/-- The anchored four-index Gram expression for `⟨∇_w Ric,Ric⟩`. -/
+noncomputable def covRicciPairingGramRHS
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (w : TM x) (y : M) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    (gramMatrix g x y)⁻¹ a c *
+      (gramMatrix g x y)⁻¹ b d *
+      covTensor2DerivAt g (ricciVariationField g) y (extend E w y)
+        (gramFrame x y b) (gramFrame x y c) *
+      g.ricciAt y (gramFrame x y a) (gramFrame x y d)
+
+/-- Product-rule group differentiating the first inverse-Gram factor in `⟨∇Ric,Ric⟩`. -/
+noncomputable def covRicciPairingGramInvFirstDerivGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ a c) x u *
+      (gramMatrix g x x)⁻¹ b d *
+      covTensor2DerivAt g (ricciVariationField g) x w
+        (gramFrame x x b) (gramFrame x x c) *
+      g.ricciAt x (gramFrame x x a) (gramFrame x x d)
+
+/-- Product-rule group differentiating the second inverse-Gram factor in `⟨∇Ric,Ric⟩`. -/
+noncomputable def covRicciPairingGramInvSecondDerivGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ b d) x u *
+      covTensor2DerivAt g (ricciVariationField g) x w
+        (gramFrame x x b) (gramFrame x x c) *
+      g.ricciAt x (gramFrame x x a) (gramFrame x x d)
+
+/-- Product-rule group differentiating the covariant-Ricci entry in `⟨∇Ric,Ric⟩`. -/
+noncomputable def covRicciPairingCovRicciDerivGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      (gramMatrix g x x)⁻¹ b d *
+      extDerivFun
+        (fun y : M ↦
+          covTensor2DerivAt g (ricciVariationField g) y (extend E w y)
+            (gramFrame x y b) (gramFrame x y c)) x u *
+      g.ricciAt x (gramFrame x x a) (gramFrame x x d)
+
+/-- Product-rule group differentiating the Ricci entry in `⟨∇Ric,Ric⟩`. -/
+noncomputable def covRicciPairingRicciDerivGroup
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) : ℝ :=
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  ∑ a, ∑ b, ∑ c, ∑ d,
+    (gramMatrix g x x)⁻¹ a c *
+      (gramMatrix g x x)⁻¹ b d *
+      covTensor2DerivAt g (ricciVariationField g) x w
+        (gramFrame x x b) (gramFrame x x c) *
+      extDerivFun
+        (fun y : M ↦ g.ricciAt y (gramFrame x y a) (gramFrame x y d)) x u
+
+/-- The four product-rule groups for the anchored `⟨∇Ric,Ric⟩` Gram expression. -/
+noncomputable def covRicciPairingGramProductRuleRHS
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) : ℝ :=
+  covRicciPairingGramInvFirstDerivGroup g x u w
+    + covRicciPairingGramInvSecondDerivGroup g x u w
+    + covRicciPairingCovRicciDerivGroup g x u w
+    + covRicciPairingRicciDerivGroup g x u w
+
+set_option maxHeartbeats 5000000 in
+/--
+Product-rule expansion of the anchored four-factor Gram sum for
+`⟨∇_w Ric,Ric⟩`.
+-/
+theorem covRicci_pairing_gram_product_rule_expand
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (hRicSecond :
+      CovTensor2DerivExtDifferentiableAt g (ricciVariationField g) x)
+    (u w : TM x) :
+    extDerivFun (fun y : M ↦ covRicciPairingGramRHS g x w y) x u =
+      covRicciPairingGramProductRuleRHS g x u w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let term :
+      Fin (Module.finrank ℝ (TM x)) →
+      Fin (Module.finrank ℝ (TM x)) →
+      Fin (Module.finrank ℝ (TM x)) →
+      Fin (Module.finrank ℝ (TM x)) → M → ℝ :=
+    fun a b' c d y ↦
+      (gramMatrix g x y)⁻¹ a c *
+        (gramMatrix g x y)⁻¹ b' d *
+        covTensor2DerivAt g (ricciVariationField g) y (extend E w y)
+          (gramFrame x y b') (gramFrame x y c) *
+        g.ricciAt y (gramFrame x y a) (gramFrame x y d)
+  have hCovRicDiff : ∀ b' c,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦
+          covTensor2DerivAt g (ricciVariationField g) y (extend E w y)
+            (gramFrame x y b') (gramFrame x y c)) x := by
+    intro b' c
+    simpa [gramFrame, b] using hRicSecond w (b b') (b c)
+  have hRicDiff : ∀ a d,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ g.ricciAt y (gramFrame x y a) (gramFrame x y d)) x := by
+    intro a d
+    have h :=
+      covTensor2ExtDifferentiableAt_ricciVariationField_canonical
+        (g := g) x (b a) (b d)
+    simpa [ricciVariationField, gramFrame, b] using h
+  have htermDiff : ∀ a b' c d,
+      MDifferentiableAt I 𝓘(ℝ) (term a b' c d) x := by
+    intro a b' c d
+    have hA : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ (gramMatrix g x y)⁻¹ a c) x :=
+      gramMatrix_inv_entry_mdiffAt (g := g) x a c
+    have hB : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ (gramMatrix g x y)⁻¹ b' d) x :=
+      gramMatrix_inv_entry_mdiffAt (g := g) x b' d
+    have hC := hCovRicDiff b' c
+    have hR := hRicDiff a d
+    exact (((hA.mul hB).mul hC).mul hR).congr_of_eventuallyEq
+      (Filter.Eventually.of_forall fun y ↦ by simp [term])
+  have hsum := extDerivFun_sum_four_at
+    (n := n) (M := M)
+    (f := term) (x := x) htermDiff u
+  have htermDeriv : ∀ a b' c d,
+      extDerivFun (term a b' c d) x u =
+        extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ a c) x u *
+            (gramMatrix g x x)⁻¹ b' d *
+            covTensor2DerivAt g (ricciVariationField g) x w
+              (gramFrame x x b') (gramFrame x x c) *
+            g.ricciAt x (gramFrame x x a) (gramFrame x x d)
+          + (gramMatrix g x x)⁻¹ a c *
+            extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ b' d) x u *
+            covTensor2DerivAt g (ricciVariationField g) x w
+              (gramFrame x x b') (gramFrame x x c) *
+            g.ricciAt x (gramFrame x x a) (gramFrame x x d)
+          + (gramMatrix g x x)⁻¹ a c *
+            (gramMatrix g x x)⁻¹ b' d *
+            extDerivFun
+              (fun y : M ↦
+                covTensor2DerivAt g (ricciVariationField g) y (extend E w y)
+                  (gramFrame x y b') (gramFrame x y c)) x u *
+            g.ricciAt x (gramFrame x x a) (gramFrame x x d)
+          + (gramMatrix g x x)⁻¹ a c *
+            (gramMatrix g x x)⁻¹ b' d *
+            covTensor2DerivAt g (ricciVariationField g) x w
+              (gramFrame x x b') (gramFrame x x c) *
+            extDerivFun
+              (fun y : M ↦ g.ricciAt y (gramFrame x y a) (gramFrame x y d)) x u := by
+    intro a b' c d
+    have hA : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ (gramMatrix g x y)⁻¹ a c) x :=
+      gramMatrix_inv_entry_mdiffAt (g := g) x a c
+    have hB : MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ (gramMatrix g x y)⁻¹ b' d) x :=
+      gramMatrix_inv_entry_mdiffAt (g := g) x b' d
+    have hC := hCovRicDiff b' c
+    have hR := hRicDiff a d
+    simpa [term, mul_comm, mul_left_comm, mul_assoc] using
+      extDerivFun_mul_four_at
+        (n := n) (M := M)
+        (f₁ := fun y : M ↦ (gramMatrix g x y)⁻¹ a c)
+        (f₂ := fun y : M ↦ (gramMatrix g x y)⁻¹ b' d)
+        (f₃ := fun y : M ↦
+          covTensor2DerivAt g (ricciVariationField g) y (extend E w y)
+            (gramFrame x y b') (gramFrame x y c))
+        (f₄ := fun y : M ↦
+          g.ricciAt y (gramFrame x y a) (gramFrame x y d))
+        hA hB hC hR u
+  calc
+    extDerivFun (fun y : M ↦ covRicciPairingGramRHS g x w y) x u =
+        ∑ a, ∑ b', ∑ c, ∑ d, extDerivFun (term a b' c d) x u := by
+          simpa [covRicciPairingGramRHS, term] using hsum
+    _ =
+        ∑ a, ∑ b', ∑ c, ∑ d,
+          (extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ a c) x u *
+              (gramMatrix g x x)⁻¹ b' d *
+              covTensor2DerivAt g (ricciVariationField g) x w
+                (gramFrame x x b') (gramFrame x x c) *
+              g.ricciAt x (gramFrame x x a) (gramFrame x x d)
+            + (gramMatrix g x x)⁻¹ a c *
+              extDerivFun (fun y : M ↦ (gramMatrix g x y)⁻¹ b' d) x u *
+              covTensor2DerivAt g (ricciVariationField g) x w
+                (gramFrame x x b') (gramFrame x x c) *
+              g.ricciAt x (gramFrame x x a) (gramFrame x x d)
+            + (gramMatrix g x x)⁻¹ a c *
+              (gramMatrix g x x)⁻¹ b' d *
+              extDerivFun
+                (fun y : M ↦
+                  covTensor2DerivAt g (ricciVariationField g) y (extend E w y)
+                    (gramFrame x y b') (gramFrame x y c)) x u *
+              g.ricciAt x (gramFrame x x a) (gramFrame x x d)
+            + (gramMatrix g x x)⁻¹ a c *
+              (gramMatrix g x x)⁻¹ b' d *
+              covTensor2DerivAt g (ricciVariationField g) x w
+                (gramFrame x x b') (gramFrame x x c) *
+              extDerivFun
+                (fun y : M ↦ g.ricciAt y (gramFrame x y a) (gramFrame x y d)) x u) := by
+          refine Finset.sum_congr rfl fun a _ ↦ ?_
+          refine Finset.sum_congr rfl fun b' _ ↦ ?_
+          refine Finset.sum_congr rfl fun c _ ↦ ?_
+          refine Finset.sum_congr rfl fun d _ ↦ ?_
+          exact htermDeriv a b' c d
+    _ = covRicciPairingGramProductRuleRHS g x u w := by
+          unfold covRicciPairingGramProductRuleRHS
+          unfold covRicciPairingGramInvFirstDerivGroup
+          unfold covRicciPairingGramInvSecondDerivGroup
+          unfold covRicciPairingCovRicciDerivGroup
+          unfold covRicciPairingRicciDerivGroup
+          simp [Finset.sum_add_distrib, add_assoc]
+
 /-- Tensor contracted against the first inverse-Gram derivative group. -/
 noncomputable def ricciPairingInvFirstContractionTensor
     (g : ClosedSmoothRiemannianMetric n M)
