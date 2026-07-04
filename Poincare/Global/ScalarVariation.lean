@@ -11988,6 +11988,40 @@ theorem covRicciPairingSecondDerivExpansionGroup_eq_secondCovariant_plus_leviCor
   simp only [covTensor2SecondDerivExpansionAt]
   simp [Finset.sum_add_distrib, mul_add, add_mul, add_assoc, mul_assoc]
 
+set_option maxHeartbeats 5000000 in
+/-- The moving-direction correction is the covariant Ricci/Ricci pairing at `∇_u w`. -/
+theorem covRicciPairingDirectionLeviCorrectionGroup_eq_covRicciRicciPairingAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (u w : TM x) :
+    covRicciPairingDirectionLeviCorrectionGroup g x u w =
+      covRicciRicciPairingAt g x
+        (g.leviCivita (extend E w) x u) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let Γw : TM x := g.leviCivita (extend E w) x u
+  have hGram :
+      metricVariationRicciPairingAt g
+          (fun z p q ↦
+            covTensor2DerivAt g (ricciVariationField g) z
+              (extend E Γw z) p q) x =
+        covRicciPairingDirectionLeviCorrectionGroup g x u w := by
+    simpa [covRicciPairingDirectionLeviCorrectionGroup, Γw, gramFrame,
+      extend_apply_self] using
+      metricVariationRicciPairingAt_covTensor2DerivAt_eq_sum_gram_inv
+        (g := g) (K := extend E Γw) (x := x) (y := x)
+        (gramMatrix_at_base_isUnit (g := g) (x := x))
+  have hPair :
+      covRicciRicciPairingAt g x Γw =
+        metricVariationRicciPairingAt g
+          (fun z p q ↦
+            covTensor2DerivAt g (ricciVariationField g) z
+              (extend E Γw z) p q) x :=
+    covRicciRicciPairingAt_eq_metricVariationRicciPairingAt_covTensor2DerivAt
+      (g := g) (x := x) (v := Γw)
+  rw [← hGram, ← hPair]
+
 /-- Tensor contracted against the first inverse-Gram derivative group. -/
 noncomputable def ricciPairingInvFirstContractionTensor
     (g : ClosedSmoothRiemannianMetric n M)
