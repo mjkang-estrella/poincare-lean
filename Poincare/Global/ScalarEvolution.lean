@@ -1080,7 +1080,7 @@ Assemble the corrected quotient evolution from the proved scalar and
 Ricci-norm parabolic forms, with the spatial completed-square algebra kept as
 an explicit named hypothesis.  No reaction-sign assumption is used.
 -/
-theorem satisfiesPinchingQuotientEvolutionAt_of_ricciFlow
+theorem satisfiesPinchingQuotientEvolutionAt_of_ricciFlow_of_completed_square
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
     [∀ t : ℝ,
       CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
@@ -1272,11 +1272,84 @@ theorem satisfiesPinchingQuotientEvolutionAt_of_ricciFlow_of_spatial_expansion
           TM x →ₗ[ℝ] TM x)
     ClosedSmoothRiemannianMetric.SatisfiesPinchingQuotientEvolutionAt gt t₀ x
       (g.pinchingRicciNormReactionMotionTraceAt x fullTrace) := by
-  exact satisfiesPinchingQuotientEvolutionAt_of_ricciFlow
+  exact satisfiesPinchingQuotientEvolutionAt_of_ricciFlow_of_completed_square
     (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
     hRaise hRicci hScalar hn hRpos hRicNorm₂ hPairDiff hRicSecond
     (pinchingQuotientCompletedSquareIdentityAt_of_spatial_expansions
       (g := gt t₀) (x := x) hSpatial)
+
+set_option maxHeartbeats 8000000 in
+/--
+Unconditional quotient evolution assembly from Ricci flow and the proved
+spatial quotient/drift expansion.  The remaining hypotheses are regularity
+classes consumed by the scalar, Ricci-norm, and quotient product-rule APIs.
+-/
+theorem satisfiesPinchingQuotientEvolutionAt_of_ricciFlow
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    {raise' : (TM x →L[ℝ] ℝ) →L[ℝ] TM x}
+    (hRaise : HasDerivAt (fun t ↦ (gt t).metricRaiseContinuousAt x) raise' t₀)
+    (hRicci : SatisfiesRicciEvolutionAt gt t₀ x)
+    (hScalar : SatisfiesHamiltonScalarEvolutionAt gt t₀ x)
+    (hn : n = 3)
+    (hRpos : 0 < (gt t₀).scalarAt x)
+    (hRicNorm₂ : ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦ (gt t₀).ricciNormSqAt y) x)
+    (hPairDiff : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ covRicciRicciPairingAt (gt t₀) y (extend E w y)) x)
+    (hRicSecond :
+      CovTensor2DerivExtDifferentiableAt
+        (gt t₀) (ricciVariationField (gt t₀)) x)
+    (hScalarCont : ContinuousAt (fun y : M ↦ (gt t₀).scalarAt y) x)
+    (hScalarDiff : ∀ y : M,
+      MDifferentiableAt I 𝓘(ℝ) (fun z : M ↦ (gt t₀).scalarAt z) y)
+    (hQuotDiff : ∀ y : M,
+      MDifferentiableAt I 𝓘(ℝ) (fun z : M ↦ (gt t₀).pinchingQuotientAt z) y)
+    (hScalarGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% ((gt t₀).gradient (fun y : M ↦ (gt t₀).scalarAt y))) x)
+    (hQuotGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% ((gt t₀).gradient (fun y : M ↦ (gt t₀).pinchingQuotientAt y))) x)
+    (hScalarSqGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% ((gt t₀).gradient (fun y : M ↦
+          (gt t₀).scalarAt y * (gt t₀).scalarAt y))) x)
+    (hQuotScalarSqGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% ((gt t₀).gradient ((fun y : M ↦ (gt t₀).pinchingQuotientAt y) *
+          (fun y : M ↦ (gt t₀).scalarAt y * (gt t₀).scalarAt y)))) x) :
+    let g : ClosedSmoothRiemannianMetric n M := gt t₀
+    let δRic3 : TM x → TM x → ℝ :=
+      fun u w ↦ ricciEvolution3ReactionRHSAt g x u w
+    let hRic3 : ∀ u w : TM x,
+        HasDerivAt (fun t ↦ (gt t).ricciAt x u w) (δRic3 u w) t₀ :=
+      SatisfiesRicciEvolutionAt.reaction3
+        (gt := gt) (t₀ := t₀) (x := x) hRicci hn
+    let fullTrace : ℝ :=
+      2 * LinearMap.trace ℝ (TM x)
+        ((((raise'.comp (g.ricciDualContinuousAt x) +
+            (g.metricRaiseContinuousAt x).comp
+              (ClosedSmoothRiemannianMetric.ricciDerivativeDualContinuousAt
+                (gt := gt) (t₀ := t₀) (x := x) δRic3 hRic3)).comp
+            (g.ricciEndoContinuousAt x)) : TM x →L[ℝ] TM x) :
+          TM x →ₗ[ℝ] TM x)
+    ClosedSmoothRiemannianMetric.SatisfiesPinchingQuotientEvolutionAt gt t₀ x
+      (g.pinchingRicciNormReactionMotionTraceAt x fullTrace) := by
+  have hRicNormGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% ((gt t₀).gradient (fun y : M ↦ (gt t₀).ricciNormSqAt y))) x := by
+    simpa using (gt t₀).mdifferentiableAt_gradient hRicNorm₂
+  exact satisfiesPinchingQuotientEvolutionAt_of_ricciFlow_of_spatial_expansion
+    (gt := gt) (t₀ := t₀) (x := x) (raise' := raise')
+    hRaise hRicci hScalar hn hRpos hRicNorm₂ hPairDiff hRicSecond
+    (by
+      intro _
+      exact (gt t₀).pinchingQuotient_spatial_expansion
+        x hRpos hScalarCont hScalarDiff hQuotDiff
+        hScalarGrad hQuotGrad hScalarSqGrad hQuotScalarSqGrad hRicNormGrad)
 
 namespace ClosedSmoothRiemannianMetric
 
