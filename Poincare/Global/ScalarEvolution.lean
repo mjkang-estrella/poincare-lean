@@ -1410,6 +1410,86 @@ theorem quotient_rpow_spatial_expansion_of_eventually_product_rule
     hGradRel
   simpa [R, Q, LU, LR, S, C, IQ, LQ] using hAlg
 
+set_option maxHeartbeats 8000000 in
+/--
+Spatial quotient/drift expansion for the improved traceless quotient
+`|Ric°|² / R^(2 - δ)`, obtained by instantiating the generic real-power
+quotient rule with numerator `tracelessRicciNormSqAt`.
+-/
+theorem tracelessPinching_spatial_expansion
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (δ : ℝ)
+    (hRpos : 0 < g.scalarAt x)
+    (hScalarCont : ContinuousAt (fun y : M ↦ g.scalarAt y) x)
+    (hScalarDiff : ∀ y : M,
+      MDifferentiableAt I 𝓘(ℝ) (fun z : M ↦ g.scalarAt z) y)
+    (hScalarNe : ∀ y : M, g.scalarAt y ≠ 0)
+    (hTraceQuotDiff : ∀ y : M,
+      MDifferentiableAt I 𝓘(ℝ) (fun z : M ↦ g.tracelessPinchingAt z δ) y)
+    (hTraceQuotGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient (fun y : M ↦ g.tracelessPinchingAt y δ))) x)
+    (hScalarGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient (fun y : M ↦ g.scalarAt y))) x)
+    (hTraceProductGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient ((fun y : M ↦ g.tracelessPinchingAt y δ) *
+          (fun y : M ↦ (g.scalarAt y) ^ (2 - δ))))) x)
+    (hTraceNormGrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E))
+        (T% (g.gradient (fun y : M ↦ g.tracelessRicciNormSqAt y))) x) :
+    g.laplacianAt (fun y : M ↦ g.tracelessPinchingAt y δ) x
+        + g.tracelessPinchingGradientDrift3At x δ =
+      g.laplacianAt (fun y : M ↦ g.tracelessRicciNormSqAt y) x /
+          (g.scalarAt x) ^ (2 - δ)
+        - (2 - δ) * g.tracelessPinchingAt x δ *
+            g.laplacianAt (fun y : M ↦ g.scalarAt y) x / g.scalarAt x
+        - (2 - δ) *
+            g.inner x
+              (g.gradientAt (fun y : M ↦ g.tracelessRicciNormSqAt y) x)
+              (g.gradientAt (fun y : M ↦ g.scalarAt y) x) /
+            (g.scalarAt x * (g.scalarAt x) ^ (2 - δ))
+        + (2 - δ) * g.tracelessPinchingAt x δ *
+            g.scalarGradNormSqAt x / (g.scalarAt x) ^ 2 := by
+  classical
+  let Rf : M → ℝ := fun y ↦ g.scalarAt y
+  let Uf : M → ℝ := fun y ↦ g.tracelessRicciNormSqAt y
+  let Qf : M → ℝ := fun y ↦ g.tracelessPinchingAt y δ
+  let p : ℝ := 2 - δ
+  have hRpos_event : ∀ᶠ y in nhds x, 0 < Rf y := by
+    simpa [Rf] using hScalarCont.eventually (eventually_gt_nhds hRpos)
+  have hprod : (fun y : M ↦ Qf y * (Rf y) ^ p) =ᶠ[nhds x] Uf := by
+    filter_upwards [hRpos_event] with y hy
+    dsimp [Qf, Uf, Rf, p]
+    rw [g.tracelessPinchingAt_eq y]
+    have hden : (g.scalarAt y) ^ (2 - δ) ≠ 0 :=
+      ne_of_gt (Real.rpow_pos_of_pos hy (2 - δ))
+    field_simp [hden]
+  have hSpatial :=
+    g.quotient_rpow_spatial_expansion_of_eventually_product_rule
+      (u := Uf) (Rf := Rf) (q := Qf) (x := x) (p := p)
+      hprod (by simpa [Rf] using hRpos)
+      (by simpa [Qf] using hTraceQuotDiff)
+      (by simpa [Rf] using hScalarDiff)
+      (by simpa [Rf] using hScalarNe)
+      (by simpa [Qf] using hTraceQuotGrad)
+      (by simpa [Rf] using hScalarGrad)
+      (by simpa [Qf, Rf, p] using hTraceProductGrad)
+      (by simpa [Uf] using hTraceNormGrad)
+  have hDrift :
+      g.tracelessPinchingGradientDrift3At x δ =
+        (p / Rf x) *
+          g.inner x (g.gradientAt Qf x) (g.gradientAt Rf x) := by
+    dsimp [tracelessPinchingGradientDrift3At, Qf, Rf, p]
+    rw [g.inner_symm x
+      (g.gradientAt (fun y : M ↦ g.scalarAt y) x)
+      (g.gradientAt (fun y : M ↦ g.tracelessPinchingAt y δ) x)]
+  rw [hDrift]
+  simpa [Qf, Uf, Rf, p, ClosedSmoothRiemannianMetric.scalarGradNormSqAt] using
+    hSpatial
+
 set_option maxHeartbeats 12000000 in
 /--
 Spatial quotient/drift expansion for Hamilton's scalar-normalized Ricci
