@@ -2213,6 +2213,150 @@ theorem metricRicciPairingTraceInBasisAt_eq_metricRicciPairingTraceInBasisAt
     metricRicciPairingTraceInBasisAt_eq_linearMap_trace
       (g := g) (x := x) (B := B) (b := c)]
 
+set_option maxHeartbeats 5000000 in
+/--
+The existing double-raised definition of `metricVariationRicciPairingAt`
+agrees with the basis-free trace form `tr(H^# ∘ Ric^#)` for symmetric
+fiberwise bilinear forms.
+-/
+theorem metricVariationRicciPairingAt_eq_metricRicciPairingTraceInBasisAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (h : ∀ y : M, TM y → TM y → ℝ) (x : M)
+    [FiniteDimensional ℝ (TM x)]
+    (B : LinearMap.BilinForm ℝ (TM x))
+    (hB : ∀ p q : TM x, B p q = h x p q)
+    (hSymm : ∀ p q : TM x, h x p q = h x q p)
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b' : Module.Basis ι ℝ (TM x)) :
+    metricVariationRicciPairingAt g h x =
+      metricRicciPairingTraceInBasisAt g x B b' := by
+  classical
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  let ricSharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun j ↦ g.ricciEndoAt x (b j)
+  have hBsymm : ∀ p q : TM x, B p q = B q p := by
+    intro p q
+    rw [hB p q, hB q p, hSymm]
+  have hH_expand : ∀ j k : Fin (Module.finrank ℝ (TM x)),
+      B (sharp j) (sharp k) =
+        ∑ i, b.coord i (sharp k) * B (sharp j) (b i) := by
+    intro j k
+    have hrepr : sharp k = ∑ i, b.coord i (sharp k) • b i := by
+      conv_lhs => rw [(b.sum_repr (sharp k)).symm]
+      simp [Module.Basis.coord_apply]
+    calc
+      B (sharp j) (sharp k) =
+          B (sharp j) (∑ i, b.coord i (sharp k) • b i) :=
+            congrArg (fun u ↦ B (sharp j) u) hrepr
+      _ = ∑ i, b.coord i (sharp k) * B (sharp j) (b i) := by
+            rw [map_sum]
+            simp [smul_eq_mul]
+  have hRic_expand : ∀ j i : Fin (Module.finrank ℝ (TM x)),
+      g.ricciAt x (b j) (sharp i) =
+        ∑ k, b.coord k (sharp i) * g.ricciAt x (b j) (b k) := by
+    intro j i
+    have hrepr : sharp i = ∑ k, b.coord k (sharp i) • b k := by
+      conv_lhs => rw [(b.sum_repr (sharp i)).symm]
+      simp [Module.Basis.coord_apply]
+    calc
+      g.ricciAt x (b j) (sharp i) = (g.ricciDualContinuousAt x (b j)) (sharp i) := by
+        simp
+      _ = (g.ricciDualContinuousAt x (b j)) (∑ k, b.coord k (sharp i) • b k) :=
+            congrArg (fun u ↦ (g.ricciDualContinuousAt x (b j)) u) hrepr
+      _ = ∑ k, b.coord k (sharp i) * g.ricciAt x (b j) (b k) := by
+            rw [map_sum]
+            simp
+  have htrace_expand : ∀ j : Fin (Module.finrank ℝ (TM x)),
+      B (ricSharp j) (sharp j) =
+        ∑ i, ∑ k,
+          b.coord k (sharp i) * g.ricciAt x (b j) (b k) *
+            B (b i) (sharp j) := by
+    intro j
+    have hfirst : B (ricSharp j) (sharp j) =
+        ∑ i, b.coord i (ricSharp j) * B (b i) (sharp j) := by
+      have hrepr : ricSharp j = ∑ i, b.coord i (ricSharp j) • b i := by
+        conv_lhs => rw [(b.sum_repr (ricSharp j)).symm]
+        simp [Module.Basis.coord_apply]
+      calc
+        B (ricSharp j) (sharp j) =
+            B (∑ i, b.coord i (ricSharp j) • b i) (sharp j) :=
+              congrArg (fun u ↦ B u (sharp j)) hrepr
+        _ = ∑ i, b.coord i (ricSharp j) * B (b i) (sharp j) := by
+              rw [map_sum]
+              simp [smul_eq_mul]
+    rw [hfirst]
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    have hcoord : b.coord i (ricSharp j) = g.ricciAt x (b j) (sharp i) := by
+      calc
+        b.coord i (ricSharp j) = g.inner x (ricSharp j) (sharp i) := by
+          simpa [sharp] using
+            coord_eq_inner_metricDualVectorAt_of_basis
+              (g := g) (x := x) (b := b) i (ricSharp j)
+        _ = g.ricciAt x (b j) (sharp i) := by
+          simp [ricSharp, g.inner_ricciEndoAt]
+    rw [hcoord]
+    rw [hRic_expand j i]
+    rw [Finset.sum_mul]
+  have hfin :
+      metricVariationRicciPairingAt g h x =
+        metricRicciPairingTraceInBasisAt g x B b := by
+    calc
+      metricVariationRicciPairingAt g h x =
+          ∑ j, ∑ k, B (sharp j) (sharp k) *
+              g.ricciAt x (b k) (b j) := by
+            unfold metricVariationRicciPairingAt
+            simp [b, sharp, hB]
+      _ = ∑ j, ∑ k, (∑ i, b.coord i (sharp k) *
+            B (sharp j) (b i)) * g.ricciAt x (b k) (b j) := by
+            refine Finset.sum_congr rfl fun j _ ↦ ?_
+            refine Finset.sum_congr rfl fun k _ ↦ ?_
+            rw [hH_expand]
+      _ = ∑ j, ∑ k, ∑ i,
+            b.coord i (sharp k) * B (sharp j) (b i) *
+              g.ricciAt x (b k) (b j) := by
+            refine Finset.sum_congr rfl fun j _ ↦ ?_
+            refine Finset.sum_congr rfl fun k _ ↦ ?_
+            rw [Finset.sum_mul]
+      _ = ∑ j, ∑ i, ∑ k,
+            b.coord k (sharp i) * g.ricciAt x (b j) (b k) *
+              B (b i) (sharp j) := by
+            refine Finset.sum_congr rfl fun j _ ↦ ?_
+            rw [Finset.sum_comm]
+            refine Finset.sum_congr rfl fun i _ ↦ ?_
+            refine Finset.sum_congr rfl fun k _ ↦ ?_
+            have hcoordSwap : b.coord i (sharp k) = b.coord k (sharp i) := by
+              calc
+                b.coord i (sharp k) =
+                    g.inner x (sharp k) (sharp i) := by
+                    simpa [sharp] using
+                      coord_eq_inner_metricDualVectorAt_of_basis
+                        (g := g) (x := x) (b := b) i (sharp k)
+                _ = g.inner x (sharp i) (sharp k) := g.inner_symm x _ _
+                _ = b.coord k (sharp i) := by
+                    symm
+                    simpa [sharp] using
+                      coord_eq_inner_metricDualVectorAt_of_basis
+                        (g := g) (x := x) (b := b) k (sharp i)
+            rw [hcoordSwap]
+            rw [ClosedSmoothRiemannianMetric.ricciAt_symm]
+            rw [hBsymm (sharp j) (b i)]
+            ring
+      _ = ∑ j, B (ricSharp j) (sharp j) := by
+            refine (Finset.sum_congr rfl fun j _ ↦ ?_).symm
+            exact htrace_expand j
+      _ = metricRicciPairingTraceInBasisAt g x B b := by
+            unfold metricRicciPairingTraceInBasisAt
+            simp [b, sharp, ricSharp]
+  calc
+    metricVariationRicciPairingAt g h x =
+        metricRicciPairingTraceInBasisAt g x B b := hfin
+    _ = metricRicciPairingTraceInBasisAt g x B b' :=
+        metricRicciPairingTraceInBasisAt_eq_metricRicciPairingTraceInBasisAt
+          (g := g) (x := x) (B := B) b b'
+
 /-- Continuous-linear version of `metricTraceEndomorphismAt`. -/
 noncomputable def metricTraceEndomorphismContinuousAt
     (g : ClosedSmoothRiemannianMetric n M) (x : M)
