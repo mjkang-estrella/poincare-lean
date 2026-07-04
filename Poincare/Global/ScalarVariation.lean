@@ -12356,6 +12356,24 @@ theorem extDerivFun_ricciPairing_eq_two_covRicciRicciPairingAt
           linarith only [hCancel]
     _ = 2 * covRicciRicciPairingAt g x v := hCov
 
+/-- Direct `|Ric|^2` first-derivative form of the Ricci/Ricci pairing theorem. -/
+theorem extDerivFun_ricciNormSqAt_eq_two_covRicciRicciPairingAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) :
+    extDerivFun (fun y : M ↦ g.ricciNormSqAt y) x v =
+      2 * covRicciRicciPairingAt g x v := by
+  calc
+    extDerivFun (fun y : M ↦ g.ricciNormSqAt y) x v =
+        extDerivFun
+          (fun y : M ↦ metricVariationRicciPairingAt g (ricciVariationField g) y)
+          x v := by
+          exact extDerivFun_ricciNormSqAt_eq_metricVariationRicciPairingAt_ricci
+            (g := g) (x := x) (w := v)
+    _ = 2 * covRicciRicciPairingAt g x v :=
+        extDerivFun_ricciPairing_eq_two_covRicciRicciPairingAt
+          (g := g) x v
+
 theorem eventually_tensorDivergenceOneFormAt_ricciVariationField_eq_closedRicciDivergenceTraceAt_canonical
     (g : ClosedSmoothRiemannianMetric n M) (x : M) :
     ∀ᶠ y in nhds x, ∀ w : TM y,
@@ -13749,6 +13767,95 @@ theorem extDerivFun_extDerivFun_extend_eq_hessianAt_add
   have h := g.leviCivita_metricCompatibleAt x hgrad hY u
   rw [hpair, hYx, hgrad_cov] at h
   simpa [ClosedSmoothRiemannianMetric.hessianAt, Y] using h
+
+/--
+Hessian bridge obtained by differentiating the first-derivative identity along
+a transported direction.  The remaining Bochner work is to expand the exterior
+derivative of `covRicciRicciPairingAt` into the second-covariant Ricci term and
+the `|∇Ric|^2` term.
+-/
+theorem hessianAt_ricciNormSqAt_eq_two_extDerivFun_covRicciRicciPairingAt_sub
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M}
+    (hRicNorm₂ : ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ g.ricciNormSqAt y) x)
+    (hPairDiff : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ covRicciRicciPairingAt g y (extend E w y)) x)
+    (u w : TM x) :
+    g.hessianAt (fun y : M ↦ g.ricciNormSqAt y) x u w =
+      2 * extDerivFun
+          (fun y : M ↦ covRicciRicciPairingAt g y (extend E w y)) x u
+        - 2 * covRicciRicciPairingAt g x
+          (g.leviCivita (extend E w) x u) := by
+  let f : M → ℝ := fun y ↦ g.ricciNormSqAt y
+  let P : M → ℝ := fun y ↦ covRicciRicciPairingAt g y (extend E w y)
+  have hgrad :
+      MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (g.gradient f)) x := by
+    simpa [f] using g.mdifferentiableAt_gradient hRicNorm₂
+  have hfirst_fun :
+      (fun y : M ↦ extDerivFun f y (extend E w y)) =
+        fun y : M ↦ 2 * P y := by
+    funext y
+    simp [f, P, extDerivFun_ricciNormSqAt_eq_two_covRicciRicciPairingAt
+      (g := g) (x := y) (v := extend E w y)]
+  have hleft :
+      extDerivFun (fun y : M ↦ extDerivFun f y (extend E w y)) x u =
+        2 * extDerivFun P x u := by
+    rw [hfirst_fun]
+    have hscale :=
+      congrArg (fun L : TM x →L[ℝ] ℝ ↦ L u)
+        (extDerivFun_const_smul_at
+          (n := n) (M := M) (f := P) (x := x) (hPairDiff w) (2 : ℝ))
+    simpa [P, Pi.smul_apply, smul_eq_mul] using hscale
+  have hcorr :
+      extDerivFun f x (g.leviCivita (extend E w) x u) =
+        2 * covRicciRicciPairingAt g x
+          (g.leviCivita (extend E w) x u) := by
+    simpa [f] using
+      extDerivFun_ricciNormSqAt_eq_two_covRicciRicciPairingAt
+        (g := g) (x := x) (v := g.leviCivita (extend E w) x u)
+  have hcompat :=
+    extDerivFun_extDerivFun_extend_eq_hessianAt_add
+      (g := g) (f := f) (x := x) hgrad u w
+  linarith
+
+/--
+Trace form of the Hessian bridge for `|Ric|^2`.  This is the exact diagonal
+slot pattern that the Bochner identity must next expand and identify with
+`roughRicciLaplacianPairingAt` plus `covRicciNormSqAt`.
+-/
+theorem laplacianAt_ricciNormSqAt_eq_sum_extDerivFun_covRicciRicciPairingAt_sub
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hRicNorm₂ : ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ g.ricciNormSqAt y) x)
+    (hPairDiff : ∀ w : TM x,
+      MDifferentiableAt I 𝓘(ℝ)
+        (fun y : M ↦ covRicciRicciPairingAt g y (extend E w y)) x) :
+    g.laplacianAt (fun y : M ↦ g.ricciNormSqAt y) x =
+      (letI : FiniteDimensional ℝ (TM x) :=
+          inferInstanceAs (FiniteDimensional ℝ E)
+        let b := Module.finBasis ℝ (TM x)
+        let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+          fun i ↦ metricDualVectorAt g x (b.coord i)
+        ∑ i,
+          (2 * extDerivFun
+              (fun y : M ↦ covRicciRicciPairingAt g y (extend E (sharp i) y))
+              x (b i)
+            - 2 * covRicciRicciPairingAt g x
+              (g.leviCivita (extend E (sharp i)) x (b i)))) := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  rw [laplacianAt_eq_sum_hessianAt (g := g)
+    (f := fun y : M ↦ g.ricciNormSqAt y) (x := x)]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  simpa [b, sharp] using
+    hessianAt_ricciNormSqAt_eq_two_extDerivFun_covRicciRicciPairingAt_sub
+      (g := g) (x := x) hRicNorm₂ hPairDiff (b i) (sharp i)
 
 set_option maxHeartbeats 5000000 in
 /--
