@@ -5545,6 +5545,21 @@ theorem covRicciRicciPairingAt_eq_sum
           g.ricciAt x (b i) (b j)) := by
   rfl
 
+/--
+`covRicciRicciPairingAt` is the ordinary Ricci pairing applied to the
+`(0,2)` tensor field `∇_{extend v} Ric`.
+-/
+theorem covRicciRicciPairingAt_eq_metricVariationRicciPairingAt_covTensor2DerivAt
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (v : TM x) :
+    covRicciRicciPairingAt g x v =
+      metricVariationRicciPairingAt g
+        (fun y p q ↦
+          covTensor2DerivAt g (ricciVariationField g) y (extend E v y) p q) x := by
+  unfold covRicciRicciPairingAt metricVariationRicciPairingAt
+  simp
+
 /-- The covariant Ricci derivative norm is nonnegative, by the
 sum-of-squares expression in a metric-orthogonal frame. -/
 theorem covRicciNormSqAt_nonneg
